@@ -1,3 +1,3 @@
 # Developer Portal
 
-This repository generate the developer portal.
+This repository generates the developer portal.
