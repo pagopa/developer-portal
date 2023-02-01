@@ -17,20 +17,28 @@ export type Next = {
 }
 
 export type CollectionList = {
-    items: Collection[];
+    items: ReadonlyArray<Collection>;
     next?: Next;
 }
 
-export const getCollections = async (): Promise<CollectionList> => {
-    const getCollectionsReq = await fetch(`https://api.gitbook.com/v1/orgs/${pagoPaOrgId}/collections`, {
+const makeHttpCall = async (pageId?: string): Promise<CollectionList> => {
+    const url = pageId ? `https://api.gitbook.com/v1/orgs/${pagoPaOrgId}/collections?page=${pageId}` : `https://api.gitbook.com/v1/orgs/${pagoPaOrgId}/collections`;
+    const getCollectionsReq = await fetch(url, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     });
-    const getCollectionsResp = await getCollectionsReq.json();
-    return {
-        ...getCollectionsResp
-    };
+    return await getCollectionsReq.json();
+}
+
+export const getCollections = async (pageId?: string): Promise<CollectionList['items']> => {
+    let collections: Collection[] = [];
+    do {
+        const collList: CollectionList = await makeHttpCall(pageId);
+        pageId = collList.next?.page;
+        collections = collections.concat(collList.items);
+    } while (pageId);
+    return collections;
 }
 
 export const getProductDetail = async (id: string): Promise<Collection> => {

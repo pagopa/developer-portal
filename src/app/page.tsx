@@ -25,7 +25,7 @@ const Home = () => {
                     onAssistanceClick={ () => {} }
                 />
             </ThemeProvider>
-            <Products list={ list.items } />
+            <Products list={ list } />
         </>
     );
 }
