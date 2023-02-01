@@ -6,7 +6,7 @@ export default async function ProductList() {
     return (
         <>
             <h1>Collections</h1>
-            <Products list={ collections.items } />
+            <Products list={ collections } />
         </>
     );
 }
