@@ -1,3 +1,5 @@
+import { Collection } from "@/domain/collection";
+
 const pagoPaOrgId = process.env["PAGOPA_ORG_ID"];
 const token = process.env["GITBOOK_API_KEY"];
 
@@ -37,7 +39,7 @@ const makeHttpCall = async (
 
 export const getCollections = async (
   pageId?: string
-): Promise<GitBookCollectionList["items"]> => {
+): Promise<ReadonlyArray<Collection>> => {
   let collections: GitBookCollection[] = [];
   do {
     const collList: GitBookCollectionList = await makeHttpCall(pageId);
@@ -47,9 +49,7 @@ export const getCollections = async (
   return collections;
 };
 
-export const getCollectionById = async (
-  id: string
-): Promise<GitBookCollection> => {
+export const getCollectionById = async (id: string): Promise<Collection> => {
   const productDetailReq = await fetch(
     `https://api.gitbook.com/v1/collections/${id}`,
     {

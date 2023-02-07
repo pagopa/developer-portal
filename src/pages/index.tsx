@@ -1,6 +1,6 @@
 import { InferGetStaticPropsType } from "next";
-import CollectionList from "@/domain/collection";
 import { getCollections } from "@/adapters/gitbook/collections";
+import CollectionList from "@/domain/components/CollectionList";
 
 export const getStaticProps = async () => {
   return {
