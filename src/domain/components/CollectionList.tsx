@@ -1,13 +1,10 @@
-export type Collection = {
-  id: string;
-  title: string;
-};
+import { Collection } from "@/domain/collection";
 
 type Props = {
   collections: ReadonlyArray<Collection>;
 };
 
-function CollectionList({ collections }: Props) {
+const CollectionList = ({ collections }: Props) => {
   return (
     <ul>
       {collections.map((collection) => (
@@ -15,6 +12,6 @@ function CollectionList({ collections }: Props) {
       ))}
     </ul>
   );
-}
+};
 
 export default CollectionList;
