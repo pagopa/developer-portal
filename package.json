@@ -6,22 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettify": "prettier --write \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
-    "@mui/lab": "^5.0.0-alpha.118",
-    "@mui/material": "^5.11.7",
+    "@mui/lab": "^5.0.0-alpha.119",
+    "@mui/material": "^5.11.8",
     "@next/font": "13.1.6",
     "@pagopa/mui-italia": "^0.8.12",
-    "@types/node": "18.11.18",
+    "@types/node": "18.13.0",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
+    "prettier": "^2.8.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
