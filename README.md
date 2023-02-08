@@ -4,7 +4,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Before you start, make sure you have complete the following steps:
+- Get the GitBook API key from the [GitBook Developer Portal](https://developer.gitbook.com/api/authentication)
+- Get the OrganizationId of PagoPA used on GitBook
+- Create a `.env.local` file in the root of the project and add the environment variables shown in the `.env.default` file
+
+Now that you are ready, run the development server:
 
 ```bash
 yarn dev
