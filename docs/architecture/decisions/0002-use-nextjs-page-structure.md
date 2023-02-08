@@ -1,14 +1,16 @@
-# 1. Next.JS SSG
+# 2. Use NextJS page structure
 
 Date: 2023-02-07
 
 ## Status
 
-Proposal
+Accepted
 
 ## Context
 
-We need to create a static website using [Next.JS](https://nextjs.org/).
+We need to create a static website using [Next.JS](https://nextjs.org/).  
+At the moment, we are using version `13.1` of Next.JS, and this version contains some beta features that we could use 
+(e.g. the `app` directory and the `ServerComponent` vs `ClientComponent`). 
 
 ### Option 1
 Use the stable [^1] features of Next.JS.
