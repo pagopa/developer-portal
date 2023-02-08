@@ -1,4 +1,4 @@
-# 1. Use NextJS page structure
+# 2. Use NextJS page structure
 
 Date: 2023-02-07
 
