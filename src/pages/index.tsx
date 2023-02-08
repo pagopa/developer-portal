@@ -34,15 +34,16 @@ const Home = ({
           rootLink={pagoPALink}
           onAssistanceClick={() => {}}
         />
-      </ThemeProvider>
 
-      <Showcase
-        items={collections.map((coll) => ({
-          title: coll.title,
-          subtitle: coll.title,
-        }))}
-        title="Collections"
-      />
+        <Showcase
+          items={collections.map((coll) => ({
+            title: coll.title,
+            subtitle: coll.title,
+          }))}
+          title="Collections"
+        />
+
+      </ThemeProvider>
     </>
   );
 };
