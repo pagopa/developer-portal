@@ -26,6 +26,8 @@ const pagoPALink: RootLinkType = {
 const Home = ({
   collections,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // This is just an example. Here we are rendering a list of collections, using MUI-Italia components.
+  // Data are fetched from GitBook, using GitBook API.
   return (
     <>
       <ThemeProvider theme={theme}>
