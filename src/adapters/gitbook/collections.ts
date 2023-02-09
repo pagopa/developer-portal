@@ -1,7 +1,15 @@
 import { Collection } from "@/domain/collection";
 
-const gitBookOrgId = process.env["GITBOOK_ORG_ID"];
-const token = process.env["GITBOOK_API_KEY"];
+// TODO: Move this to a config file
+const gitBookApiKey = process.env["GITBOOK_API_KEY"];
+const gitBookConfig = {
+  baseURL: new URL("https://api.gitbook.com"),
+  orgId: process.env["GITBOOK_ORG_ID"],
+  apiKey: gitBookApiKey,
+  headers: {
+    Authorization: `Bearer ${gitBookApiKey}`,
+  }
+};
 
 type GitBookCollection = {
   object: string;
@@ -26,13 +34,16 @@ type GitBookCollectionList = {
 const getGitBookCollectionList = async (
   pageId?: string
 ): Promise<GitBookCollectionList> => {
-  const baseUrl = `https://api.gitbook.com/v1/orgs/${gitBookOrgId}/collections`;
-  const url = pageId ? `${baseUrl}?page=${pageId}` : baseUrl;
-  console.log(`Making http call to ${url}`);
-  const getCollectionsReq = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const { orgId, baseURL, headers } = gitBookConfig;
+  const collectionsUrl = new URL(`/v1/orgs/${orgId}/collections`, baseURL);
+  const searchParams = new URLSearchParams({nested: "false"});
+  if (pageId) {
+    searchParams.append("page", pageId);
+  }
+  collectionsUrl.search = searchParams.toString();
+  console.log(`Making http call to ${collectionsUrl.href}`);
+  const getCollectionsReq = await fetch(collectionsUrl, {
+    headers,
   });
   return getCollectionsReq.json();
 };
@@ -47,12 +58,11 @@ export const getCollections = async (pageId?: string): Promise<ReadonlyArray<Col
 };
 
 export const getCollectionById = async (id: string): Promise<Collection> => {
+  const { baseURL, headers } = gitBookConfig;
   const productDetailReq = await fetch(
-    `https://api.gitbook.com/v1/collections/${id}`,
+    new URL(`/v1/collections/${id}`, baseURL),
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     }
   );
   const productDetailResp = await productDetailReq.json();
