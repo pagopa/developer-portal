@@ -37,16 +37,13 @@ const getGitBookCollectionList = async (
   return getCollectionsReq.json();
 };
 
-export const getCollections = async (
-  pageId?: string
-): Promise<ReadonlyArray<Collection>> => {
-  let collections: GitBookCollection[] = [];
-  do {
-    const collList: GitBookCollectionList = await getGitBookCollectionList(pageId);
-    pageId = collList.next?.page;
-    collections = collections.concat(collList.items);
-  } while (pageId);
-  return collections;
+export const getCollections = async (pageId?: string): Promise<ReadonlyArray<Collection>> => {
+  const inner = async (acc: ReadonlyArray<Collection>, pageId?: string): Promise<ReadonlyArray<Collection>> => {
+    const { items, next } = await getGitBookCollectionList(pageId);
+    const result = [...acc, ...items];
+    return (next?.page) ? inner(result, next.page) : result;
+  }
+  return inner([], pageId);
 };
 
 export const getCollectionById = async (id: string): Promise<Collection> => {

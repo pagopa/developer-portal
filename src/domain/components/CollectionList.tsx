@@ -4,14 +4,12 @@ type Props = {
   collections: ReadonlyArray<Collection>;
 };
 
-const CollectionList = ({ collections }: Props) => {
-  return (
-    <ul>
-      {collections.map((collection) => (
-        <li key={collection.id}>{collection.title}</li>
-      ))}
-    </ul>
-  );
-};
+const CollectionList = ({ collections }: Props) => (
+  <ul>
+    {collections.map((collection) => (
+      <li key={collection.id}>{collection.title}</li>
+    ))}
+  </ul>
+);
 
 export default CollectionList;
