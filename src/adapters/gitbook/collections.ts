@@ -23,7 +23,7 @@ type GitBookCollectionList = {
   next?: Next;
 };
 
-const makeHttpCall = async (
+const getGitBookCollectionList = async (
   pageId?: string
 ): Promise<GitBookCollectionList> => {
   const baseUrl = `https://api.gitbook.com/v1/orgs/${pagoPaOrgId}/collections`;
@@ -34,7 +34,7 @@ const makeHttpCall = async (
       Authorization: `Bearer ${token}`,
     },
   });
-  return await getCollectionsReq.json();
+  return getCollectionsReq.json();
 };
 
 export const getCollections = async (
@@ -42,7 +42,7 @@ export const getCollections = async (
 ): Promise<ReadonlyArray<Collection>> => {
   let collections: GitBookCollection[] = [];
   do {
-    const collList: GitBookCollectionList = await makeHttpCall(pageId);
+    const collList: GitBookCollectionList = await getGitBookCollectionList(pageId);
     pageId = collList.next?.page;
     collections = collections.concat(collList.items);
   } while (pageId);
