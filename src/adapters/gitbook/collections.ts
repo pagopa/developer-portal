@@ -1,6 +1,6 @@
 import { Collection } from "@/domain/collection";
 
-const pagoPaOrgId = process.env["PAGOPA_ORG_ID"];
+const gitBookOrgId = process.env["GITBOOK_ORG_ID"];
 const token = process.env["GITBOOK_API_KEY"];
 
 type GitBookCollection = {
@@ -26,7 +26,7 @@ type GitBookCollectionList = {
 const getGitBookCollectionList = async (
   pageId?: string
 ): Promise<GitBookCollectionList> => {
-  const baseUrl = `https://api.gitbook.com/v1/orgs/${pagoPaOrgId}/collections`;
+  const baseUrl = `https://api.gitbook.com/v1/orgs/${gitBookOrgId}/collections`;
   const url = pageId ? `${baseUrl}?page=${pageId}` : baseUrl;
   console.log(`Making http call to ${url}`);
   const getCollectionsReq = await fetch(url, {
