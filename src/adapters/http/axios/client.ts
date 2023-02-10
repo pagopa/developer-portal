@@ -1,7 +1,7 @@
-import * as TE from 'fp-ts/lib/TaskEither';
-import * as E from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import * as TE from 'fp-ts/lib/TaskEither';
+import * as E from 'fp-ts/lib/Either';
 import { Task } from 'fp-ts/Task';
 import { pipe, flow } from 'fp-ts/lib/function';
 import { failure } from 'io-ts/lib/PathReporter';
@@ -11,9 +11,7 @@ export type HttpClientConfig = {
   headers?: Record<string, string>;
 };
 
-export type HttpClient = AxiosInstance;
-
-export const makeHttpClient = (config: HttpClientConfig): HttpClient =>
+export const makeHttpClient = (config: HttpClientConfig): AxiosInstance =>
   axios.create({
     baseURL: config.baseURL.href,
     headers: config.headers,
