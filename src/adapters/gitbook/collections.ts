@@ -1,14 +1,14 @@
-import { Collection } from "@/domain/collection";
+import { Collection } from '@/domain/collection';
 
 // TODO: Move this to a config file
-const gitBookApiKey = process.env["GITBOOK_API_KEY"];
+const gitBookApiKey = process.env['GITBOOK_API_KEY'];
 const gitBookConfig = {
-  baseURL: new URL("https://api.gitbook.com"),
-  orgId: process.env["GITBOOK_ORG_ID"],
+  baseURL: new URL('https://api.gitbook.com'),
+  orgId: process.env['GITBOOK_ORG_ID'],
   apiKey: gitBookApiKey,
   headers: {
     Authorization: `Bearer ${gitBookApiKey}`,
-  }
+  },
 };
 
 type GitBookCollection = {
@@ -36,9 +36,9 @@ const getGitBookCollectionList = async (
 ): Promise<GitBookCollectionList> => {
   const { orgId, baseURL, headers } = gitBookConfig;
   const collectionsUrl = new URL(`/v1/orgs/${orgId}/collections`, baseURL);
-  const searchParams = new URLSearchParams({nested: "false"});
+  const searchParams = new URLSearchParams({ nested: 'false' });
   if (pageId) {
-    searchParams.append("page", pageId);
+    searchParams.append('page', pageId);
   }
   collectionsUrl.search = searchParams.toString();
   console.log(`Making http call to ${collectionsUrl.href}`);
@@ -48,12 +48,17 @@ const getGitBookCollectionList = async (
   return getCollectionsReq.json();
 };
 
-export const getCollections = async (pageId?: string): Promise<ReadonlyArray<Collection>> => {
-  const inner = async (acc: ReadonlyArray<Collection>, pageId?: string): Promise<ReadonlyArray<Collection>> => {
+export const getCollections = async (
+  pageId?: string
+): Promise<ReadonlyArray<Collection>> => {
+  const inner = async (
+    acc: ReadonlyArray<Collection>,
+    pageId?: string
+  ): Promise<ReadonlyArray<Collection>> => {
     const { items, next } = await getGitBookCollectionList(pageId);
     const result = [...acc, ...items];
-    return (next?.page) ? inner(result, next.page) : result;
-  }
+    return next?.page ? inner(result, next.page) : result;
+  };
   return inner([], pageId);
 };
 

@@ -1,12 +1,12 @@
-import { InferGetStaticPropsType } from "next";
-import { getCollections } from "@/adapters/gitbook/collections";
+import { InferGetStaticPropsType } from 'next';
+import { getCollections } from '@/adapters/gitbook/collections';
 import {
   HeaderAccount,
   RootLinkType,
   Showcase,
   theme,
-} from "@pagopa/mui-italia";
-import { ThemeProvider } from "@emotion/react";
+} from '@pagopa/mui-italia';
+import { ThemeProvider } from '@emotion/react';
 
 export const getStaticProps = async () => {
   return {
@@ -17,10 +17,10 @@ export const getStaticProps = async () => {
 };
 
 const pagoPALink: RootLinkType = {
-  href: "https://www.pagopa.it/",
-  label: "PagoPA Dev Portal",
-  title: "PagoPA Dev Portal",
-  ariaLabel: "PagoPA Dev Portal",
+  href: 'https://www.pagopa.it/',
+  label: 'PagoPA Dev Portal',
+  title: 'PagoPA Dev Portal',
+  ariaLabel: 'PagoPA Dev Portal',
 };
 
 const Home = ({
@@ -42,9 +42,8 @@ const Home = ({
             title: coll.title,
             subtitle: coll.title,
           }))}
-          title="Collections"
+          title='Collections'
         />
-
       </ThemeProvider>
     </>
   );
