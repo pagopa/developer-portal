@@ -1,3 +1,8 @@
+import * as t from 'io-ts';
+import * as TE from 'fp-ts/lib/TaskEither';
+import * as E from 'fp-ts/lib/Either';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
+import { pipe, flow } from 'fp-ts/lib/function';
 import { Collection } from '@/domain/collection';
 
 // TODO: Move this to a config file
@@ -11,29 +16,32 @@ const gitBookConfig = {
   },
 };
 
-type GitBookCollection = {
-  object: string;
-  id: string;
-  title: string;
-  path?: string;
-  visibility: string;
-  collection?: string;
-  publishingType?: string;
-  primarySpace?: string;
-};
+const GitBookCollection = t.type({
+  object: t.string,
+  id: t.string,
+  title: t.string,
+  visibility: t.string,
+});
+export type GitBookCollection = t.TypeOf<typeof GitBookCollection>;
 
-type Next = {
-  page: string;
-};
+const Next = t.type({
+  page: t.string,
+});
 
-type GitBookCollectionList = {
-  items: ReadonlyArray<GitBookCollection>;
-  next?: Next;
-};
+const GitBookCollectionList = t.type({
+  items: t.readonlyArray(GitBookCollection),
+  next: t.union([Next, t.undefined]),
+});
+type GitBookCollectionList = t.TypeOf<typeof GitBookCollectionList>;
 
-const getGitBookCollectionList = async (
+const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
+  id: gitBookCollection.id,
+  title: gitBookCollection.title,
+});
+
+const getGitBookCollectionList = (
   pageId?: string
-): Promise<GitBookCollectionList> => {
+): TE.TaskEither<Error, GitBookCollectionList> => {
   const { orgId, baseURL, headers } = gitBookConfig;
   const collectionsUrl = new URL(`/v1/orgs/${orgId}/collections`, baseURL);
   const searchParams = new URLSearchParams({ nested: 'false' });
@@ -41,36 +49,87 @@ const getGitBookCollectionList = async (
     searchParams.append('page', pageId);
   }
   collectionsUrl.search = searchParams.toString();
-  const getCollectionsReq = await fetch(collectionsUrl, {
-    headers,
-  });
-  return getCollectionsReq.json();
-};
+  console.log(`Making http call to ${collectionsUrl.href}`);
 
-export const getCollections = async (
-  pageId?: string
-): Promise<ReadonlyArray<Collection>> => {
-  const inner = async (
-    acc: ReadonlyArray<Collection>,
-    pageId?: string
-  ): Promise<ReadonlyArray<Collection>> => {
-    const { items, next } = await getGitBookCollectionList(pageId);
-    const result = [...acc, ...items];
-    return next?.page ? inner(result, next.page) : result;
-  };
-  return inner([], pageId);
-};
-
-export const getCollectionById = async (id: string): Promise<Collection> => {
-  const { baseURL, headers } = gitBookConfig;
-  const productDetailReq = await fetch(
-    new URL(`/v1/collections/${id}`, baseURL),
-    {
-      headers,
-    }
+  return pipe(
+    TE.tryCatch(
+      () =>
+        fetch(collectionsUrl, {
+          headers,
+        }),
+      E.toError
+    ),
+    TE.chain((response) => TE.tryCatch(() => response.json(), E.toError)),
+    // Decode the response
+    TE.map(GitBookCollectionList.decode),
+    TE.map(
+      // Handle decoding errors and transform to a TaskEither
+      // TODO: Add custom logic to handle errors
+      flow(
+        E.mapLeft(
+          (errors) => new Error(`Error decoding collectionList: ${errors}`)
+        ),
+        TE.fromEither
+      )
+    ),
+    TE.flatten
   );
-  const productDetailResp = await productDetailReq.json();
-  return {
-    ...productDetailResp,
+};
+
+export const getCollections = (
+  pageId?: string
+): TE.TaskEither<Error, ReadonlyArray<Collection>> => {
+  const innerGetGitBookCollections = (
+    pageId?: string,
+    acc: ReadonlyArray<GitBookCollection> = []
+  ): TE.TaskEither<Error, ReadonlyArray<GitBookCollection>> => {
+    return pipe(
+      getGitBookCollectionList(pageId),
+      TE.map(({ items, next }) => {
+        const result = [...acc, ...items];
+        return next?.page
+          ? innerGetGitBookCollections(next.page, result)
+          : TE.of(result);
+      }),
+      TE.flatten
+    );
   };
+
+  return pipe(
+    innerGetGitBookCollections(pageId),
+    TE.map(RA.map(makeCollection))
+  );
+};
+
+export const getCollectionById = (
+  id: string
+): TE.TaskEither<Error, Collection> => {
+  const { baseURL, headers } = gitBookConfig;
+
+  return pipe(
+    TE.tryCatch(
+      () =>
+        fetch(new URL(`/v1/collections/${id}`, baseURL), {
+          headers,
+        }),
+      E.toError
+    ),
+    // response.json returns a Promise, so we handle it within a TaskEither.tryCatch
+    TE.chain((response) => TE.tryCatch(() => response.json(), E.toError)),
+    // Decode the response
+    TE.map(GitBookCollection.decode),
+    TE.map(
+      // Handle decoding errors and transform to a TaskEither
+      // TODO: Add custom logic to handle errors
+      flow(
+        E.mapLeft(
+          (errors) => new Error(`Error decoding collection: ${errors}`)
+        ),
+        TE.fromEither
+      )
+    ),
+    TE.flatten,
+    // Convert to domain type
+    TE.map(makeCollection)
+  );
 };
