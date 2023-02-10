@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { pipe, flow } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import { Collection } from '@/domain/collection';
+import { makeHttpClient, makeHttpRequest } from '@/adapters/http/axios/client';
 
 // TODO: Move this to a config file
 const gitBookApiKey = process.env['GITBOOK_API_KEY'];
@@ -39,10 +39,15 @@ const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
   title: gitBookCollection.title,
 });
 
+const gitBookClient = makeHttpClient({
+  baseURL: gitBookConfig.baseURL,
+  headers: gitBookConfig.headers,
+});
+
 const getGitBookCollectionList = (
   pageId?: string
 ): TE.TaskEither<Error, GitBookCollectionList> => {
-  const { orgId, baseURL, headers } = gitBookConfig;
+  const { orgId, baseURL } = gitBookConfig;
   const collectionsUrl = new URL(`/v1/orgs/${orgId}/collections`, baseURL);
   const searchParams = new URLSearchParams({ nested: 'false' });
   if (pageId) {
@@ -51,28 +56,8 @@ const getGitBookCollectionList = (
   collectionsUrl.search = searchParams.toString();
   console.log(`Making http call to ${collectionsUrl.href}`);
 
-  return pipe(
-    TE.tryCatch(
-      () =>
-        fetch(collectionsUrl, {
-          headers,
-        }),
-      E.toError
-    ),
-    TE.chain((response) => TE.tryCatch(() => response.json(), E.toError)),
-    // Decode the response
-    TE.map(GitBookCollectionList.decode),
-    TE.map(
-      // Handle decoding errors and transform to a TaskEither
-      // TODO: Add custom logic to handle errors
-      flow(
-        E.mapLeft(
-          (errors) => new Error(`Error decoding collectionList: ${errors}`)
-        ),
-        TE.fromEither
-      )
-    ),
-    TE.flatten
+  return makeHttpRequest(() => gitBookClient.get(collectionsUrl.href))(
+    GitBookCollectionList.decode
   );
 };
 
@@ -104,32 +89,15 @@ export const getCollections = (
 export const getCollectionById = (
   id: string
 ): TE.TaskEither<Error, Collection> => {
-  const { baseURL, headers } = gitBookConfig;
-
+  const getCollectionByIdUrl = new URL(
+    `/v1/collections/${id}`,
+    gitBookConfig.baseURL
+  );
+  console.log(`Making http call to ${getCollectionByIdUrl.href}`);
   return pipe(
-    TE.tryCatch(
-      () =>
-        fetch(new URL(`/v1/collections/${id}`, baseURL), {
-          headers,
-        }),
-      E.toError
+    makeHttpRequest(() => gitBookClient.get(getCollectionByIdUrl.href))(
+      GitBookCollection.decode
     ),
-    // response.json returns a Promise, so we handle it within a TaskEither.tryCatch
-    TE.chain((response) => TE.tryCatch(() => response.json(), E.toError)),
-    // Decode the response
-    TE.map(GitBookCollection.decode),
-    TE.map(
-      // Handle decoding errors and transform to a TaskEither
-      // TODO: Add custom logic to handle errors
-      flow(
-        E.mapLeft(
-          (errors) => new Error(`Error decoding collection: ${errors}`)
-        ),
-        TE.fromEither
-      )
-    ),
-    TE.flatten,
-    // Convert to domain type
     TE.map(makeCollection)
   );
 };
