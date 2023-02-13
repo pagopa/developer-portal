@@ -41,7 +41,6 @@ const getGitBookCollectionList = async (
     searchParams.append('page', pageId);
   }
   collectionsUrl.search = searchParams.toString();
-  console.log(`Making http call to ${collectionsUrl.href}`);
   const getCollectionsReq = await fetch(collectionsUrl, {
     headers,
   });
