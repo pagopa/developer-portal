@@ -9,12 +9,14 @@ import { failure } from 'io-ts/lib/PathReporter';
 export type HttpClientConfig = {
   baseURL: URL;
   headers?: Record<string, string>;
+  timeout?: number;
 };
 
 export const makeHttpClient = (config: HttpClientConfig): AxiosInstance =>
   axios.create({
     baseURL: config.baseURL.href,
     headers: config.headers,
+    timeout: config.timeout || 5000,
   });
 
 export const errorsToError = flow(

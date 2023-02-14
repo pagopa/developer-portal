@@ -7,13 +7,16 @@ import { makeHttpClient, makeHttpRequest } from '@/adapters/http/axios/client';
 
 // TODO: Move this to a config file
 const gitBookApiKey = process.env['GITBOOK_API_KEY'];
+const gitBookBaseUrl =
+  process.env['GITBOOK_BASE_URL'] || 'https://api.gitbook.com';
 const gitBookConfig = {
-  baseURL: new URL('https://api.gitbook.com'),
+  baseURL: new URL(gitBookBaseUrl),
   orgId: process.env['GITBOOK_ORG_ID'],
   apiKey: gitBookApiKey,
   headers: {
     Authorization: `Bearer ${gitBookApiKey}`,
   },
+  apiTimeout: Number(process.env['GITBOOK_API_TIMEOUT_MS']),
 };
 
 const GitBookCollection = t.type({
@@ -22,7 +25,7 @@ const GitBookCollection = t.type({
   title: t.string,
   visibility: t.string,
 });
-export type GitBookCollection = t.TypeOf<typeof GitBookCollection>;
+type GitBookCollection = t.TypeOf<typeof GitBookCollection>;
 
 const Next = t.type({
   page: t.string,
@@ -42,6 +45,7 @@ const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
 const gitBookClient = makeHttpClient({
   baseURL: gitBookConfig.baseURL,
   headers: gitBookConfig.headers,
+  timeout: gitBookConfig.apiTimeout,
 });
 
 const getGitBookCollectionList = (
@@ -54,7 +58,6 @@ const getGitBookCollectionList = (
     searchParams.append('page', pageId);
   }
   collectionsUrl.search = searchParams.toString();
-  console.log(`Making http call to ${collectionsUrl.href}`);
 
   return makeHttpRequest(() => gitBookClient.get(collectionsUrl.href))(
     GitBookCollectionList.decode
@@ -67,8 +70,8 @@ export const getCollections = (
   const innerGetGitBookCollections = (
     pageId?: string,
     acc: ReadonlyArray<GitBookCollection> = []
-  ): TE.TaskEither<Error, ReadonlyArray<GitBookCollection>> => {
-    return pipe(
+  ): TE.TaskEither<Error, ReadonlyArray<GitBookCollection>> =>
+    pipe(
       getGitBookCollectionList(pageId),
       TE.map(({ items, next }) => {
         const result = [...acc, ...items];
@@ -78,7 +81,6 @@ export const getCollections = (
       }),
       TE.flatten
     );
-  };
 
   return pipe(
     innerGetGitBookCollections(pageId),
@@ -93,7 +95,6 @@ export const getCollectionById = (
     `/v1/collections/${id}`,
     gitBookConfig.baseURL
   );
-  console.log(`Making http call to ${getCollectionByIdUrl.href}`);
   return pipe(
     makeHttpRequest(() => gitBookClient.get(getCollectionByIdUrl.href))(
       GitBookCollection.decode
