@@ -16,8 +16,7 @@ export const getStaticProps = () => {
   const emptyCollections: ReadonlyArray<Collection> = [];
   return pipe(
     getCollections(),
-    TE.mapLeft((_) => emptyCollections),
-    TE.toUnion,
+    TE.getOrElse(() => T.of(emptyCollections)),
     T.map((collections) => ({
       props: {
         collections,
