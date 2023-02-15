@@ -17,7 +17,7 @@ export const makeHttpClient = (config: HttpClientConfig): AxiosInstance =>
   axios.create({
     baseURL: config.baseURL.href,
     headers: config.headers,
-    timeout: config.timeout || 5000,
+    timeout: config.timeout ?? 5000,
   });
 
 const errorsToError = (errors: t.Errors): Error =>
