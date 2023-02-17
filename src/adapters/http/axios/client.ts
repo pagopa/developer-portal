@@ -6,6 +6,7 @@ import { Task } from 'fp-ts/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { failure } from 'io-ts/lib/PathReporter';
 import * as IO from 'fp-ts/IO';
+import { log } from 'fp-ts/lib/Console';
 
 export type HttpClientConfig = {
   baseURL: URL;
@@ -22,12 +23,6 @@ export const makeHttpClient = (config: HttpClientConfig): AxiosInstance =>
 
 const errorsToError = (errors: t.Errors): Error =>
   pipe(failure(errors), (errors) => new Error(errors.join('\n')));
-
-// TODO: This should be moved to a separate module
-const log =
-  (msg: string): IO.IO<void> =>
-  () =>
-    console.log(msg);
 
 export const makeHttpRequest =
   (task: Task<AxiosResponse>) =>
