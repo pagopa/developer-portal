@@ -35,7 +35,7 @@ export const getCollections = (
   const innerGetGitBookCollections = (
     pageId?: string,
     acc: ReadonlyArray<GitBookCollection> = []
-  ): TE.TaskEither<Error, GitBookCollection[]> =>
+  ): TE.TaskEither<Error, ReadonlyArray<GitBookCollection>> =>
     pipe(
       getGitBookCollectionList(pageId),
       TE.map(({ items, next }) => {
