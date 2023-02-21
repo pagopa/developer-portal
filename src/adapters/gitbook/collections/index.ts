@@ -3,35 +3,15 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
 import { Collection } from '@/domain/collection';
-import { makeGitBookApiClient } from '@/adapters/gitbook/client';
+import { gitBookClient, gitBookConfig } from '@/adapters/gitbook/client';
 import {
   GitBookCollection,
   GitBookList,
 } from '@/adapters/gitbook/generated/api/Api';
 
-// TODO: Move this to a config file
-const gitBookApiKey = process.env['GITBOOK_API_KEY'];
-const gitBookBaseUrl =
-  process.env['GITBOOK_BASE_URL'] || 'https://api.gitbook.com';
-const gitBookConfig = {
-  baseURL: new URL(gitBookBaseUrl),
-  orgId: process.env['GITBOOK_ORG_ID'] || '',
-  apiKey: gitBookApiKey,
-  headers: {
-    Authorization: `Bearer ${gitBookApiKey}`,
-  },
-  apiTimeout: Number(process.env['GITBOOK_API_TIMEOUT_MS']),
-};
-
 const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
   id: gitBookCollection.id,
   title: gitBookCollection.title,
-});
-
-const gitBookClient = makeGitBookApiClient({
-  baseURL: gitBookConfig.baseURL,
-  headers: gitBookConfig.headers,
-  timeout: gitBookConfig.apiTimeout,
 });
 
 const getGitBookCollectionList = (
