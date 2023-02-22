@@ -4,7 +4,7 @@
   "private": true,
   "config": {
     "codegen": {
-      "targetDir": "./src/adapters/gitbook/generated/api"
+      "targetDir": "./src/adapters/gitbook/generated/client"
     },
     "openapi": {
       "gitbook": {
@@ -15,12 +15,12 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "yarn generate:gitbook:api && next build",
+    "build": "yarn generate:gitbook:client && next build",
     "start": "next start",
     "lint": "next lint",
     "prettify": "prettier --write \"./**/*.{ts,tsx}\"",
     "prepare": "husky install",
-    "generate:gitbook:api": "shx rm -rf $npm_package_config_codegen_targetDir && shx mkdir -p $npm_package_config_codegen_targetDir && sta -p $npm_package_config_openapi_gitbook_prod -o $npm_package_config_codegen_targetDir --add-readonly --type-prefix GitBook --axios"
+    "generate:gitbook:client": "shx rm -rf $npm_package_config_codegen_targetDir && shx mkdir -p $npm_package_config_codegen_targetDir && sta -p $npm_package_config_openapi_gitbook_prod -o $npm_package_config_codegen_targetDir --add-readonly --type-prefix GitBook --axios"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

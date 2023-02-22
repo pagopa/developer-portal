@@ -7,10 +7,12 @@ import { gitBookClient, gitBookConfig } from '@/adapters/gitbook/client';
 import {
   GitBookCollection,
   GitBookList,
-} from '@/adapters/gitbook/generated/api/Api';
+} from '@/adapters/gitbook/generated/client/Api';
 
 // We can convert this type using generics
-type GitBookCollectionList = GitBookList & { items: ReadonlyArray<GitBookCollection> };
+type GitBookCollectionList = GitBookList & {
+  items: ReadonlyArray<GitBookCollection>;
+};
 
 const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
   id: gitBookCollection.id,

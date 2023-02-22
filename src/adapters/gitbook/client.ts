@@ -1,4 +1,4 @@
-import { Api as GitBookAPI } from '@/adapters/gitbook/generated/api/Api';
+import { Api as GitBookAPI } from '@/adapters/gitbook/generated/client/Api';
 
 type ClientConfig = {
   baseURL: URL;
