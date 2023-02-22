@@ -9,6 +9,9 @@ import {
   GitBookList,
 } from '@/adapters/gitbook/generated/api/Api';
 
+// We can convert this type using generics
+type GitBookCollectionList = GitBookList & { items: ReadonlyArray<GitBookCollection> };
+
 const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
   id: gitBookCollection.id,
   title: gitBookCollection.title,
@@ -16,7 +19,7 @@ const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
 
 const getGitBookCollectionList = (
   pageId?: string
-): TE.TaskEither<Error, GitBookList & { items: GitBookCollection[] }> =>
+): TE.TaskEither<Error, GitBookCollectionList> =>
   pipe(
     TE.tryCatch(
       () =>
