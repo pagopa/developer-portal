@@ -1,5 +1,4 @@
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
 import { Collection } from '@/domain/collection';
@@ -13,11 +12,6 @@ import {
 type GitBookCollectionList = GitBookList & {
   items: ReadonlyArray<GitBookCollection>;
 };
-
-const makeCollection = (gitBookCollection: GitBookCollection): Collection => ({
-  id: gitBookCollection.id,
-  title: gitBookCollection.title,
-});
 
 const getGitBookCollectionList = (
   pageId?: string
@@ -52,8 +46,5 @@ export const getCollections = (
       TE.flatten
     );
 
-  return pipe(
-    innerGetGitBookCollections(pageId),
-    TE.map(RA.map(makeCollection))
-  );
+  return innerGetGitBookCollections(pageId);
 };
