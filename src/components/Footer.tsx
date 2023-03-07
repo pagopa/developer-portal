@@ -19,7 +19,7 @@ const postLoginLinks: Array<FooterLinksType> = [
   },
 ];
 
-export const pagoPALink: CompanyLinkType = {
+const pagoPALink: CompanyLinkType = {
   href: 'https://www.pagopa.it/',
   ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
 };
