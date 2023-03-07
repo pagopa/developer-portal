@@ -30,14 +30,7 @@ const preLoginLinks: PreLoginFooterLinksType = {
   // First column
   aboutUs: {
     title: undefined,
-    links: [
-      {
-        label: 'Chi siamo',
-        href: '#chi-siamo',
-        ariaLabel: 'Vai al link: Chi siamo',
-        linkType: 'internal',
-      },
-    ],
+    links: [],
   },
   // Third column
   resources: {
@@ -94,9 +87,7 @@ const Footer = () => (
     postLoginLinks={postLoginLinks}
     preLoginLinks={preLoginLinks}
     currentLangCode={'it'}
-    onLanguageChanged={(newLang) => {
-      console.log(`Language changed to ${newLang}`);
-    }}
+    onLanguageChanged={(_) => _}
     languages={LANGUAGES}
   />
 );
