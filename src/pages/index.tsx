@@ -1,12 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import { getCollections } from '@/adapters/gitbook/collections';
-import {
-  HeaderAccount,
-  RootLinkType,
-  Showcase,
-  theme,
-} from '@pagopa/mui-italia';
-import { ThemeProvider } from '@emotion/react';
+import { HeaderAccount, RootLinkType, Showcase } from '@pagopa/mui-italia';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as T from 'fp-ts/lib/Task';
@@ -39,21 +33,19 @@ const Home = ({
   // Data are fetched from GitBook, using GitBook API.
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <HeaderAccount
-          enableLogin={false}
-          rootLink={pagoPALink}
-          onAssistanceClick={() => {}}
-        />
+      <HeaderAccount
+        enableLogin={false}
+        rootLink={pagoPALink}
+        onAssistanceClick={() => {}}
+      />
 
-        <Showcase
-          items={collections.map((coll) => ({
-            title: coll.title,
-            subtitle: coll.title,
-          }))}
-          title='Collections'
-        />
-      </ThemeProvider>
+      <Showcase
+        items={collections.map((coll) => ({
+          title: coll.title,
+          subtitle: coll.title,
+        }))}
+        title='Collections'
+      />
     </>
   );
 };
