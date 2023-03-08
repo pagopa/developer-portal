@@ -8,6 +8,7 @@ import { Collection } from '@/domain/collection';
 import { Box, Stack } from '@mui/material';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import HeroSpace from '@/components/HeroSpace';
 
 export const getStaticProps = () => {
   const emptyCollections: ReadonlyArray<Collection> = [];
@@ -32,9 +33,22 @@ const Home = ({
       <Stack>
         <Header />
         <Box>
-          {
-            // Showcase is here just as an example.
-          }
+          <HeroSpace
+            title='Firma lorem ipsum dolor sit'
+            description='Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien.'
+            image={{
+              src: 'https://raw.githubusercontent.com/pagopa/mui-italia/main/src/assets/LogoIOApp/originals/LogoIOApp.svg', // Just an example
+              altText: 'Logo IO App',
+            }}
+            buttons={[
+              { label: 'Inizia', title: 'Inizia', onClick: () => {} },
+              {
+                label: 'Reference API',
+                title: 'Reference API',
+                onClick: () => {},
+              },
+            ]}
+          />
           <Showcase
             items={collections.map((coll) => ({
               title: coll.title,
