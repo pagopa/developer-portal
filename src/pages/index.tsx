@@ -32,7 +32,13 @@ const Home = ({
     <Box>
       <Stack>
         <Header />
-        <ProductSubHeader title={'Prodotto'} pages={[{ title: 'Panoramica', href: 'prodotto/panoramica' }, { title: 'Quick Start', href: 'prodotto/quickstart' }]} />
+        <ProductSubHeader
+          title={'Prodotto'}
+          pages={[
+            { title: 'Panoramica', href: 'prodotto/panoramica' },
+            { title: 'Quick Start', href: 'prodotto/quickstart' },
+          ]}
+        />
         <Box>
           {
             // Showcase is here just as an example.

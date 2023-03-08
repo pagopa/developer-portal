@@ -11,18 +11,19 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
 type PageRef = {
-  title: string,
-  href: string,
+  title: string;
+  href: string;
 };
 
 type ProductSubHeaderProps = {
-  title: string,
-  pages: ReadonlyArray<PageRef>
+  title: string;
+  pages: ReadonlyArray<PageRef>;
 };
 
 const ProductSubHeader = (props: ProductSubHeaderProps) => {
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -33,14 +34,14 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position='static'>
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="a"
-            href="/"
+            component='a'
+            href='/'
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -53,17 +54,17 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
@@ -82,16 +83,18 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
             >
               {props.pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" component="a" href={page.href}>{page.title}</Typography>
+                  <Typography textAlign='center' component='a' href={page.href}>
+                    {page.title}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <Typography
-            variant="h5"
+            variant='h5'
             noWrap
-            component="a"
-            href=""
+            component='a'
+            href=''
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -108,13 +111,16 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
                 href={page.href}
                 key={page.title}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: { xs: 'none', md: 'flex' }}}
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  display: { xs: 'none', md: 'flex' },
+                }}
               >
                 {page.title}
               </Button>
             ))}
           </Box>
-
         </Toolbar>
       </Container>
     </AppBar>
