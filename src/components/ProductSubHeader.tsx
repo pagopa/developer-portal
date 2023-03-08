@@ -1,14 +1,16 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
+  MenuItem,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
 
 type PageRef = {
   title: string;
@@ -35,7 +37,12 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
 
   return (
     <AppBar position='static'>
-      <Container maxWidth={false}>
+      <Container
+        maxWidth={false}
+        sx={{
+          bgcolor: 'text.disabled', // Custom color for the whole container
+        }}
+      >
         <Toolbar disableGutters>
           <Typography
             variant='h6'
@@ -45,13 +52,35 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              color: 'inherit',
+              color: 'text.secondary',
               textDecoration: 'none',
             }}
           >
             {props.title}
           </Typography>
+          <Box
+            justifyContent='flex-end' // Elements within the box will be aligned to the right
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+          >
+            {props.pages.map((page) => (
+              <Button
+                href={page.href}
+                key={page.title}
+                onClick={handleCloseNavMenu}
+                sx={{
+                  my: 2,
+                  color: 'text.secondary', // Custom color for the button text
+                  display: { xs: 'none', md: 'flex' },
+                }}
+              >
+                {page.title}
+              </Button>
+            ))}
+          </Box>
 
+          {
+            // Mobile rendering
+          }
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size='large'
@@ -105,22 +134,6 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
           >
             {props.title}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {props.pages.map((page) => (
-              <Button
-                href={page.href}
-                key={page.title}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: { xs: 'none', md: 'flex' },
-                }}
-              >
-                {page.title}
-              </Button>
-            ))}
-          </Box>
         </Toolbar>
       </Container>
     </AppBar>
