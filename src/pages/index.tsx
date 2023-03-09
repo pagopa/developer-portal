@@ -8,7 +8,6 @@ import { Collection } from '@/domain/collection';
 import { Box, Stack } from '@mui/material';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import ProductSubHeader from '@/components/ProductSubHeader';
 
 export const getStaticProps = () => {
   const emptyCollections: ReadonlyArray<Collection> = [];
@@ -32,13 +31,6 @@ const Home = ({
     <Box>
       <Stack>
         <Header />
-        <ProductSubHeader
-          title={'Prodotto'}
-          pages={[
-            { title: 'Panoramica', href: 'prodotto/panoramica' },
-            { title: 'Quick Start', href: 'prodotto/quickstart' },
-          ]}
-        />
         <Box>
           {
             // Showcase is here just as an example.
