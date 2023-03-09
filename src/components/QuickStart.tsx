@@ -17,7 +17,11 @@ const QuickStart = (props: QuickStartProps) => {
       <Grid container spacing={2}>
         {props.cards.map((card, index) => (
           <Grid xs={6} key={index}>
-            <Card title={card.title} description={card.description} />
+            <Card
+              title={card.title}
+              description={card.description}
+              href={card.href}
+            />
           </Grid>
         ))}
       </Grid>

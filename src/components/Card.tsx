@@ -1,20 +1,28 @@
 import * as React from 'react';
-import { Card as MUICard, CardContent, Typography } from '@mui/material';
+import {
+  Card as MUICard,
+  CardActionArea,
+  CardContent,
+  Typography,
+} from '@mui/material';
 
 export type CardProps = {
   title: string;
   description: string;
+  href?: string;
 };
 
-const Card = ({ title, description }: CardProps) => {
+const Card = ({ title, description, href }: CardProps) => {
   return (
-    <MUICard>
-      <CardContent>
-        <Typography variant='sidenav' color='text.primary'>
-          {title}
-        </Typography>
-        <Typography variant='body2'>{description}</Typography>
-      </CardContent>
+    <MUICard variant='outlined'>
+      <CardActionArea component={'a'} href={href}>
+        <CardContent>
+          <Typography variant='sidenav' color='text.primary'>
+            {title}
+          </Typography>
+          <Typography variant='body2'>{description}</Typography>
+        </CardContent>
+      </CardActionArea>
     </MUICard>
   );
 };
