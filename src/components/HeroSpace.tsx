@@ -11,7 +11,8 @@ type HeroSpaceProps = {
   title: string;
   description: string;
   image?: ImageProps;
-  buttons?: [CTA, CTA]; // We are using an array of two elements, because we want to render two buttons. Let's evaluate if we need another type instead of using CTA.
+  // We are using an array of two elements, because we want to render two buttons. Let's evaluate if we need another type instead of using CTA.
+  buttons?: [CTA, CTA];
 };
 
 const HeroSpace = (props: HeroSpaceProps) => (
