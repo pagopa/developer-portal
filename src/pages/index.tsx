@@ -32,9 +32,6 @@ const Home = ({
       <Stack>
         <Header />
         <Box>
-          {
-            // Showcase is here just as an example.
-          }
           <Showcase
             items={collections.map((coll) => ({
               title: coll.title,
