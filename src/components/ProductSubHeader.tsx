@@ -11,11 +11,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-
-type PageRef = {
-  title: string;
-  href: string;
-};
+import { PageRef } from '@/domain/product';
 
 type ProductSubHeaderProps = {
   title: string;
