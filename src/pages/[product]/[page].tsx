@@ -30,12 +30,15 @@ const ProductPage = (props: ProductPage) => {
   const router = useRouter();
   const { product, page } = router.query;
   return (
-  <Box>
-    <Header />
-    <ProductSubHeader title={props.productName} pages={props.productPages} />
-    <div>{props.body} {product} {page}</div>
-    <Footer />
-  </Box>
-)};
+    <Box>
+      <Header />
+      <ProductSubHeader title={props.productName} pages={props.productPages} />
+      <div>
+        {props.body} {product} {page}
+      </div>
+      <Footer />
+    </Box>
+  );
+};
 
 export default ProductPage;
