@@ -4,8 +4,10 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ProductSubHeader from '@/components/ProductSubHeader';
 import { Page, pageList } from '@/domain/product';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { GetStaticPaths } from 'next';
+import { pipe } from 'fp-ts/lib/function';
+import PageElement from '@/components/Element';
 
 type Params = {
   params: Page;
@@ -29,6 +31,7 @@ const ProductPage = (props: Page) => {
     <Box>
       <Header />
       <ProductSubHeader title={props.name} pages={props.menu} />
+      <Stack spacing={2}>{pipe(props.body, RA.map(PageElement))}</Stack>
       <Footer />
     </Box>
   );
