@@ -1,6 +1,7 @@
 import { Element } from '@/domain/product';
 import { Typography } from '@mui/material';
 import Cards from '@/components/Cards';
+import HeroSpace from './HeroSpace';
 
 const PageElement = (props: Element) => {
   switch (props.type) {
@@ -12,6 +13,8 @@ const PageElement = (props: Element) => {
       return <Typography variant={'body2'}>{props.text}</Typography>;
     case 'cards':
       return Cards(props);
+    case 'hero':
+      return HeroSpace(props);
   }
 };
 

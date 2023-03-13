@@ -16,6 +16,23 @@ export const pageList: ReadonlyArray<Page> = [
     menu: pageRefList,
     body: [
       {
+        type: 'hero',
+        title: 'Firma lorem ipsum dolor sit',
+        subtitle: 'Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien.',
+        image: {
+          src: 'https://images.unsplash.com/photo-1674594145584-354a3e88e9b5?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwxOTcwMjR8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzcyNDUyNTY&ixlib=rb-4.0.3&q=80',
+          alt: '...'
+        },
+        primaryRef: {
+          title: 'Inizia',
+          href: '/firma-con-io/quick-start'
+        },
+        secondaryRef: {
+          title: 'Reference API',
+          href: '/firma-con-io/api'
+        },
+      },
+      {
         type: 'h2',
         text: 'Cosa puoi fare con Firma con IO',
       },
@@ -114,7 +131,19 @@ export type Cards = {
   cards: ReadonlyArray<Card>;
 };
 
-export type Element = Text | Cards;
+export type Hero = {
+  type: 'hero',
+  title: string,
+  subtitle: string,
+  image: {
+    src: string,
+    alt: string,
+  },
+  primaryRef: PageRef,
+  secondaryRef: PageRef
+};
+
+export type Element = Text | Cards | Hero;
 
 export type PageId = ReadonlyArray<string>;
 
