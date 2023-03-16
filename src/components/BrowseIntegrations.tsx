@@ -4,9 +4,9 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 
 const BrowseIntegrations = () => (
   <Container maxWidth='xl'>
-    <Grid container spacing={2} p={6}>
+    <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
-        <Typography variant='h4' pt={6} pb={6}>
+        <Typography variant='h4' py={6}>
           Esplora le risorse per l’integrazione
         </Typography>
         <Stack spacing={2}>

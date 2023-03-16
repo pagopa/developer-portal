@@ -31,7 +31,7 @@ const cardsContent = [
 const ComingSoon = () => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
-      <Stack spacing={4} p={10}>
+      <Stack spacing={4} py={10}>
         <Typography variant='overline' color={'primary.contrastText'}>
           in arrivo su pagopa docs
         </Typography>
