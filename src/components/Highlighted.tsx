@@ -62,9 +62,8 @@ const Highlighted = () => (
                     <Typography variant='body2' color='text.primary'>
                       {element.description}
                     </Typography>
-                    <Button size='small'>
+                    <Button size='small' endIcon={<ArrowForwardIcon />}>
                       Scopri di più
-                      <ArrowForwardIcon color='primary' />
                     </Button>
                   </CardContent>
                 </Card>
