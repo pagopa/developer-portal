@@ -41,37 +41,35 @@ const Highlighted = () => (
         alignItems='center'
         spacing={3}
       >
-        {
-          pipe(
-            elements,
-            RA.mapWithIndex((i, element) => (
-              <Card
-                raised
-                sx={{
-                  textAlign: 'center',
-                }}
-                key={i}
-              >
-                <CardContent>
-                  <Box>{element.icon}</Box>
-                  <Typography component='label' color='text.secondary'>
-                    {element.preTitle}
-                  </Typography>
-                  <Typography gutterBottom variant='h6' color='text.primary'>
-                    {element.title}
-                  </Typography>
-                  <Typography variant='body2' color='text.primary'>
-                    {element.description}
-                  </Typography>
-                  <Button size='small'>
-                    Scopri di più
-                    <ArrowForwardIcon color='primary' />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))
-          )
-        }
+        {pipe(
+          elements,
+          RA.mapWithIndex((i, element) => (
+            <Card
+              raised
+              sx={{
+                textAlign: 'center',
+              }}
+              key={i}
+            >
+              <CardContent>
+                <Box>{element.icon}</Box>
+                <Typography component='label' color='text.secondary'>
+                  {element.preTitle}
+                </Typography>
+                <Typography gutterBottom variant='h6' color='text.primary'>
+                  {element.title}
+                </Typography>
+                <Typography variant='body2' color='text.primary'>
+                  {element.description}
+                </Typography>
+                <Button size='small'>
+                  Scopri di più
+                  <ArrowForwardIcon color='primary' />
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </Stack>
     </Stack>
   </Box>
