@@ -32,49 +32,49 @@ const elements = [
 ];
 
 const Highlighted = () => (
-    <Container maxWidth='xl'>
+  <Container maxWidth='xl'>
     <Stack spacing={2} py={6}>
       <Typography variant='h4' textAlign='center'>
         In evidenza
       </Typography>
 
-        <Box>
-          <Grid container spacing={7} alignItems='stretch'>
-        {pipe(
-          elements,
-          RA.mapWithIndex((i, element) => (
-            <Grid item xs={6} md={6} key={i}>
-            <Card
-              raised
-              sx={{
-                textAlign: 'center',
-              }}
-              key={i}
-            >
-              <CardContent>
-                <Box>{element.icon}</Box>
-                <Typography component='label' color='text.secondary'>
-                  {element.preTitle}
-                </Typography>
-                <Typography gutterBottom variant='h6' color='text.primary'>
-                  {element.title}
-                </Typography>
-                <Typography variant='body2' color='text.primary'>
-                  {element.description}
-                </Typography>
-                <Button size='small'>
-                  Scopri di più
-                  <ArrowForwardIcon color='primary' />
-                </Button>
-              </CardContent>
-            </Card>
+      <Box>
+        <Grid container spacing={7} alignItems='stretch'>
+          {pipe(
+            elements,
+            RA.mapWithIndex((i, element) => (
+              <Grid item xs={6} md={6} key={i}>
+                <Card
+                  raised
+                  sx={{
+                    textAlign: 'center',
+                  }}
+                  key={i}
+                >
+                  <CardContent>
+                    <Box>{element.icon}</Box>
+                    <Typography component='label' color='text.secondary'>
+                      {element.preTitle}
+                    </Typography>
+                    <Typography gutterBottom variant='h6' color='text.primary'>
+                      {element.title}
+                    </Typography>
+                    <Typography variant='body2' color='text.primary'>
+                      {element.description}
+                    </Typography>
+                    <Button size='small'>
+                      Scopri di più
+                      <ArrowForwardIcon color='primary' />
+                    </Button>
+                  </CardContent>
+                </Card>
               </Grid>
-          ))
-        )}
-      </Grid>
-    </Box>
+            ))
+          )}
+        </Grid>
+      </Box>
     </Stack>
-    </Container>
+  </Container>
 );
 
 export default Highlighted;
