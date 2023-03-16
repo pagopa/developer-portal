@@ -12,7 +12,7 @@ const Hero = () => (
   >
     <Container maxWidth='xl'>
       <Breadcrumbs />
-      <Grid container spacing={0} sx={{ py: 10 }} >
+      <Grid container spacing={0} sx={{ py: 10 }}>
         <Grid item xs={5}>
           <Stack spacing={2}>
             <Typography variant='h1' color='text.primary'>
