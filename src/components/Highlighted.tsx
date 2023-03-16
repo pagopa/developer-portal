@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import {
   Box,
   Button,
@@ -9,6 +10,7 @@ import {
 import FlagIcon from '@mui/icons-material/Flag';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import { pipe } from 'fp-ts/lib/function';
 
 const elements = [
   {
@@ -39,31 +41,37 @@ const Highlighted = () => (
         alignItems='center'
         spacing={3}
       >
-        {elements.map((element) => (
-          <Card
-            raised
-            sx={{
-              textAlign: 'center',
-            }}
-          >
-            <CardContent>
-              <Box>{element.icon}</Box>
-              <Typography component='label' color='text.secondary'>
-                {element.preTitle}
-              </Typography>
-              <Typography gutterBottom variant='h6' color='text.primary'>
-                {element.title}
-              </Typography>
-              <Typography variant='body2' color='text.primary'>
-                {element.description}
-              </Typography>
-              <Button size='small'>
-                Scopri di più
-                <ArrowForwardIcon color='primary' />
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+        {
+          pipe(
+            elements,
+            RA.mapWithIndex((i, element) => (
+              <Card
+                raised
+                sx={{
+                  textAlign: 'center',
+                }}
+                key={i}
+              >
+                <CardContent>
+                  <Box>{element.icon}</Box>
+                  <Typography component='label' color='text.secondary'>
+                    {element.preTitle}
+                  </Typography>
+                  <Typography gutterBottom variant='h6' color='text.primary'>
+                    {element.title}
+                  </Typography>
+                  <Typography variant='body2' color='text.primary'>
+                    {element.description}
+                  </Typography>
+                  <Button size='small'>
+                    Scopri di più
+                    <ArrowForwardIcon color='primary' />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          )
+        }
       </Stack>
     </Stack>
   </Box>
