@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardContent,
-  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -29,47 +28,45 @@ const elements = [
 ];
 
 const Highlighted = () => (
-  <>
-    <Stack
-      spacing={2}
-      sx={{
-        p: 6,
-      }}
-    >
+  <Box>
+    <Stack spacing={2} p={6}>
       <Typography variant='h4' textAlign='center'>
         In evidenza
       </Typography>
-      <Grid container spacing={4}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent='center'
+        alignItems='center'
+        spacing={3}
+      >
         {elements.map((element) => (
-          <Grid item xs={6} alignItems='center'>
-            <Card
-              raised
-              sx={{
-                textAlign: 'center',
-              }}
-            >
-              <CardContent>
-                <Box>{element.icon}</Box>
-                <Typography component='label' color='text.secondary'>
-                  {element.preTitle}
-                </Typography>
-                <Typography gutterBottom variant='h6' color='text.primary'>
-                  {element.title}
-                </Typography>
-                <Typography variant='body2' color='text.primary'>
-                  {element.description}
-                </Typography>
-                <Button size='small'>
-                  Scopri di più
-                  <ArrowForwardIcon color='primary' />
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+          <Card
+            raised
+            sx={{
+              textAlign: 'center',
+            }}
+          >
+            <CardContent>
+              <Box>{element.icon}</Box>
+              <Typography component='label' color='text.secondary'>
+                {element.preTitle}
+              </Typography>
+              <Typography gutterBottom variant='h6' color='text.primary'>
+                {element.title}
+              </Typography>
+              <Typography variant='body2' color='text.primary'>
+                {element.description}
+              </Typography>
+              <Button size='small'>
+                Scopri di più
+                <ArrowForwardIcon color='primary' />
+              </Button>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Stack>
     </Stack>
-  </>
+  </Box>
 );
 
 export default Highlighted;
