@@ -40,7 +40,7 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
       <Container
         maxWidth={false}
         sx={{
-          bgcolor: 'text.disabled', // Custom color for the whole container
+          bgcolor: 'white', // Custom color for the whole container
         }}
       >
         <Toolbar disableGutters>
@@ -52,7 +52,7 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              color: 'text.secondary',
+              color: 'text.primary',
               textDecoration: 'none',
             }}
           >
@@ -69,7 +69,7 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: 'text.secondary', // Custom color for the button text
+                  color: 'primary.main', // Custom color for the button text
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
