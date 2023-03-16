@@ -1,6 +1,3 @@
-
-const TutorialPreview = () => (
-  <></>
-);
+const TutorialPreview = () => <></>;
 
 export default TutorialPreview;

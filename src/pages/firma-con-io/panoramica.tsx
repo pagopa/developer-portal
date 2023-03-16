@@ -7,25 +7,25 @@ import QuickStartPreview from '@/components/QuickStartPreview';
 import TutorialPreview from '@/components/TutorialPreview';
 import { Box, Stack } from '@mui/material';
 
-const pages = ([
+const pages = [
   {
-    title: "Panoramica",
-    href: "/firma-con-io/panoramica",
+    title: 'Panoramica',
+    href: '/firma-con-io/panoramica',
   },
   {
-    title: "Quick Start",
-    href: "/firma-con-io/quick-start",
-  }
-])
+    title: 'Quick Start',
+    href: '/firma-con-io/quick-start',
+  },
+];
 
 const ProductOverview = () => (
   <Box>
     <Stack>
       <Header />
-       <ProductSubHeader title={'Firma con IO'} pages={pages} />
-        <Hero />
-        <QuickStartPreview />
-        <TutorialPreview />
+      <ProductSubHeader title={'Firma con IO'} pages={pages} />
+      <Hero />
+      <QuickStartPreview />
+      <TutorialPreview />
       <Footer />
     </Stack>
   </Box>

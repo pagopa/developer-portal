@@ -1,6 +1,3 @@
-
-const QuickStartPreview = () => (
-  <></>
-);
+const QuickStartPreview = () => <></>;
 
 export default QuickStartPreview;
