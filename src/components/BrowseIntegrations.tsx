@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
@@ -25,6 +25,7 @@ const BrowseIntegrations = () => (
             pt: 3,
           }}
           endIcon={<ArrowForwardIcon color='primary' />}
+          href={'firma-con-io/panoramica'}
         >
           Scopri di più
         </ButtonNaked>
