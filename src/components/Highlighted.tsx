@@ -4,6 +4,8 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -30,20 +32,18 @@ const elements = [
 ];
 
 const Highlighted = () => (
-  <Box>
-    <Stack spacing={2} p={6}>
+    <Container maxWidth='xl'>
+    <Stack spacing={2} py={6}>
       <Typography variant='h4' textAlign='center'>
         In evidenza
       </Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        justifyContent='center'
-        alignItems='center'
-        spacing={3}
-      >
+
+        <Box>
+          <Grid container spacing={7} alignItems='stretch'>
         {pipe(
           elements,
           RA.mapWithIndex((i, element) => (
+            <Grid item xs={6} md={6} key={i}>
             <Card
               raised
               sx={{
@@ -68,11 +68,13 @@ const Highlighted = () => (
                 </Button>
               </CardContent>
             </Card>
+              </Grid>
           ))
         )}
-      </Stack>
+      </Grid>
+    </Box>
     </Stack>
-  </Box>
+    </Container>
 );
 
 export default Highlighted;
