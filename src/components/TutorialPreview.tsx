@@ -29,8 +29,8 @@ const TutorialPreview = (props: TutorialBlock) => (
         <CardMedia
           component='img'
           sx={{ width: 350 }}
-          image='https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80'
-          alt='Live from space album cover'
+          image={`${props.preview.image.url}`}
+          alt={`${props.preview.image.alt}`}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>

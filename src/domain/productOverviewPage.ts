@@ -1,9 +1,11 @@
 import { PageRef } from './PageRef';
+import { Image } from './Image';
 
 export type TutorialPreview = {
   date: string;
   title: string;
   description: string;
+  image: Image;
   pageRef: PageRef;
 };
 
