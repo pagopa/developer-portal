@@ -1,9 +1,18 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 
-const HeroHome = () => (
+type HeroHomeProps = {
+  title: {
+    plainWord: string;
+    boldWord: string;
+  };
+  subtitle: string;
+  image: string; // URL or path to a local image?
+};
+
+const HeroHome = ({ title, subtitle, image }: HeroHomeProps) => (
   <Box
     sx={{
-      backgroundImage: `url(https://github.com/pagopa/mui-italia/blob/main/src/components/Hero/assets/hero_background.png?raw=true)`,
+      backgroundImage: `url(${image})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       backgroundColor: '#0062C3',
@@ -18,13 +27,13 @@ const HeroHome = () => (
           color='primary.contrastText'
           align='center'
         >
-          PagoPA{' '}
+          {title.plainWord}{' '}
           <Box fontWeight='fontWeightMedium' display='inline'>
-            DevPortal
+            {title.boldWord}
           </Box>
         </Typography>
         <Typography variant='h1' color='primary.contrastText' align='center'>
-          Tutto ciò che serve per integrarsi con l’ecosistema di servizi PagoPA
+          {subtitle}
         </Typography>
       </Stack>
     </Container>
