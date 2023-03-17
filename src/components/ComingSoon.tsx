@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 
