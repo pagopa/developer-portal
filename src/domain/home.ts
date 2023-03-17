@@ -1,5 +1,3 @@
-import * as TE from 'fp-ts/lib/TaskEither';
-
 export type IntegrationBlock = {
   title: string;
   subtitle: string;
