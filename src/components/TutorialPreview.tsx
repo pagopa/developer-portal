@@ -29,7 +29,7 @@ const TutorialPreview = (props: TutorialBlock) => (
         <CardMedia
           component='img'
           sx={{ width: 350 }}
-          image={`${props.preview.image.url}`}
+          image={`${props.preview.image.src}`}
           alt={`${props.preview.image.alt}`}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
