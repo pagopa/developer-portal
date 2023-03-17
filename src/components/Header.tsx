@@ -2,9 +2,9 @@ import { HeaderAccount, RootLinkType } from '@pagopa/mui-italia';
 
 const pagoPALink: RootLinkType = {
   href: '/',
-  label: 'PagoPA Dev Portal',
-  title: 'PagoPA Dev Portal',
-  ariaLabel: 'PagoPA Dev Portal',
+  label: 'PagoPA DevPortal',
+  title: 'PagoPA DevPortal',
+  ariaLabel: 'PagoPA DevPortal',
 };
 
 const Header = () => (

@@ -1,19 +1,27 @@
-import { Box, Container, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import ComingSoon from '@/components/ComingSoon';
+import BrowseIntegrations from '@/components/BrowseIntegrations';
+import Highlighted from '@/components/Highlighted';
+import HeroHome from '@/components/HeroHome';
+import { GetStaticProps } from 'next';
+import { HomePage } from '@/domain/home';
+import { staticHomepage } from '@/adapters/static/staticHomepage';
 
-const Home = () => {
-  // This is just an example. Here we are rendering a list of collections, using MUI-Italia components.
-  // Data are fetched from GitBook, using GitBook API.
-  return (
-    <Box>
-      <Stack>
-        <Header />
-        <Container maxWidth='lg'>asd</Container>
-        <Footer />
-      </Stack>
-    </Box>
-  );
-};
+export const getStaticProps: GetStaticProps<HomePage> = async () => ({
+  props: staticHomepage,
+});
+
+const Home = (props: HomePage) => (
+  <Box>
+    <Header />
+    <HeroHome {...props.hero} />
+    <Highlighted {...props.highlighted} />
+    <BrowseIntegrations {...props.integrations} />
+    <ComingSoon {...props.comingSoon} />
+    <Footer />
+  </Box>
+);
 
 export default Home;
