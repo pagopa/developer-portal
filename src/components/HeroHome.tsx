@@ -24,7 +24,7 @@ const HeroHome = ({ title, subtitle, image }: HeroHomeProps) => (
         bottom: 0,
         left: 0,
         backgroundColor: 'rgba(0,98,195,0.65);',
-      }
+      },
     }}
   >
     <Container maxWidth='md' sx={{ p: 32 }}>
