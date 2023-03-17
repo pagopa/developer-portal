@@ -1,6 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 
-type HeroHomeProps = {
+export type HeroHomeProps = {
   title: {
     plainWord: string;
     boldWord: string;

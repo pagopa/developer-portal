@@ -7,7 +7,7 @@ export type CardContent = {
   description: string;
 };
 
-type ComingSoonProps = {
+export type ComingSoonProps = {
   title: string;
   cards: ReadonlyArray<CardContent>;
 };

@@ -1,10 +1,15 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-type BrowseIntegrationsProps = {
-  sectionTitle: string;
-  integrationTitle: string;
-  integrationDescription: string;
-  findMore: JSX.Element;
+export type BrowseIntegrationsProps = {
+  title: string;
+  subtitle: string;
+  description: string;
+  findMore: {
+    text: string;
+    href: string;
+  };
   image: {
     src: string;
     alt: string;
@@ -16,15 +21,23 @@ const BrowseIntegrations = (props: BrowseIntegrationsProps) => (
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
         <Typography variant='h4' py={6}>
-          {props.sectionTitle}
+          {props.title}
         </Typography>
         <Stack spacing={2}>
-          <Typography variant='h6'>{props.integrationTitle}</Typography>
-          <Typography variant='body2'>
-            {props.integrationDescription}
-          </Typography>
+          <Typography variant='h6'>{props.subtitle}</Typography>
+          <Typography variant='body2'>{props.description}</Typography>
         </Stack>
-        {props.findMore}
+        <ButtonNaked
+          size='small'
+          color='primary'
+          sx={{
+            pt: 3,
+          }}
+          endIcon={<ArrowForwardIcon color='primary' />}
+          href={props.findMore.href}
+        >
+          {props.findMore.text}
+        </ButtonNaked>
       </Grid>
       <Grid item xs={6}>
         <Box

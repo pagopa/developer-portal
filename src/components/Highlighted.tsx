@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
@@ -8,18 +9,23 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import FlagIcon from '@mui/icons-material/Flag';
 import { pipe } from 'fp-ts/lib/function';
 
 export type HighlightedElement = {
-  icon: JSX.Element;
-  preTitle: string;
+  type: 'quickstart' | 'tutorial';
+  pretitle: string;
   title: string;
   description: string;
-  href: string;
-  findMore: JSX.Element;
+  findMore: {
+    href: string;
+    text: string;
+  };
 };
 
-type HighlightedProps = {
+export type HighlightedProps = {
   title: string;
   elements: ReadonlyArray<HighlightedElement>;
 };
@@ -45,9 +51,16 @@ const Highlighted = ({ title, elements }: HighlightedProps) => (
                   key={i}
                 >
                   <CardContent>
-                    <Box>{element.icon}</Box>
+                    <Box>
+                      {element.type === 'quickstart' && (
+                        <FlagIcon color='primary' />
+                      )}
+                      {element.type === 'tutorial' && (
+                        <VideoLibraryIcon color='primary' />
+                      )}
+                    </Box>
                     <Typography component='label' color='text.secondary'>
-                      {element.preTitle}
+                      {element.pretitle}
                     </Typography>
                     <Typography gutterBottom variant='h6' color='text.primary'>
                       {element.title}
@@ -55,7 +68,13 @@ const Highlighted = ({ title, elements }: HighlightedProps) => (
                     <Typography variant='body2' color='text.primary'>
                       {element.description}
                     </Typography>
-                    {element.findMore}
+                    <Button
+                      size='small'
+                      href={element.findMore.href}
+                      endIcon={<ArrowForwardIcon />}
+                    >
+                      {element.findMore.text}
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>
