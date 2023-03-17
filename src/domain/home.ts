@@ -1,3 +1,6 @@
+import { PageRef } from './PageRef';
+import { Image } from './Image';
+
 export type IntegrationBlock = {
   title: string;
   subtitle: string;
@@ -23,16 +26,6 @@ export type HeroHomeBlock = {
   };
   subtitle: string;
   cover: string; // URL or path to a local image?
-};
-
-type PageRef = {
-  href: string;
-  text: string;
-};
-
-type Image = {
-  src: string;
-  alt: string;
 };
 
 type PagePreview = {
