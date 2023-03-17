@@ -15,8 +15,16 @@ const HeroHome = ({ title, subtitle, image }: HeroHomeProps) => (
       backgroundImage: `url(${image})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
-      backgroundColor: '#0062C3',
-      opacity: 65,
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'rgba(0,98,195,0.65);',
+      }
     }}
   >
     <Container maxWidth='md' sx={{ p: 32 }}>
