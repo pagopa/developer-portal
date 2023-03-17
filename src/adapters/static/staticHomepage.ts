@@ -6,7 +6,7 @@ export const staticHomepage: HomePage = {
     subtitle:
       'Tutto ciò che serve per integrarsi con l’ecosistema di servizi PagoPA',
     cover:
-      'https://images.pexels.com/photos/5053835/pexels-photo-5053835.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.pexels.com/photos/5053835/pexels-photo-5053835.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
   },
   highlighted: {
     title: 'In evidenza',
