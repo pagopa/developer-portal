@@ -1,28 +1,7 @@
+import { QuickStartBlock } from '@/domain/productOverviewPage';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 
-const items = [
-  {
-    title: 'Prepara i documenti',
-    description:
-      "Prepara i documenti da inviare in firma all'utente nei formati previsti.",
-  },
-  {
-    title: 'Crea una richiesta di firma',
-    description: 'Crea un dossier contenente uno o più documenti.',
-  },
-  {
-    title: 'Recupera il Codice Fiscale dell’utente',
-    description:
-      "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
-  },
-  {
-    title: 'Invia la richiesta di firma',
-    description:
-      "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
-  },
-];
-
-const QuickStartPreview = () => (
+const QuickStartPreview = (props: QuickStartBlock) => (
   <Container
     maxWidth='xl'
     sx={{
@@ -35,11 +14,10 @@ const QuickStartPreview = () => (
   >
     <Stack alignContent='center' spacing={{ xs: 4, md: 8 }}>
       <Typography variant='h4' textAlign='center'>
-        Scopri quanto è semplice integrarsi
+        {props.title}
       </Typography>
       <Typography variant='body2' textAlign='center'>
-        Firma con IO è una funzionalità che consente agli enti di richiedere la
-        firma di documenti e di gestire i processi relativi in un unico posto.
+        {props.description}
       </Typography>
       <Box
         sx={{
@@ -74,7 +52,7 @@ const QuickStartPreview = () => (
               },
             }}
           >
-            {items.map(({ title: itemTitle, description }, index) => (
+            {props.steps.map(({ title: itemTitle, description }, index) => (
               <Stack
                 key={index}
                 alignContent='center'

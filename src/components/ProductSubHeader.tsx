@@ -11,18 +11,9 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ProductOverviewPage } from '@/domain/productOverviewPage';
 
-type PageRef = {
-  title: string;
-  href: string;
-};
-
-type ProductSubHeaderProps = {
-  title: string;
-  pages: ReadonlyArray<PageRef>;
-};
-
-const ProductSubHeader = (props: ProductSubHeaderProps) => {
+const ProductSubHeader = (props: ProductOverviewPage) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -62,10 +53,10 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
             justifyContent='flex-end' // Elements within the box will be aligned to the right
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {props.pages.map((page) => (
+            {props.submenu.map((page) => (
               <Button
                 href={page.href}
-                key={page.title}
+                key={page.text}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -73,7 +64,7 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
-                {page.title}
+                {page.text}
               </Button>
             ))}
           </Box>
@@ -110,10 +101,10 @@ const ProductSubHeader = (props: ProductSubHeaderProps) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {props.pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+              {props.submenu.map((page) => (
+                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
                   <Typography textAlign='center' component='a' href={page.href}>
-                    {page.title}
+                    {page.text}
                   </Typography>
                 </MenuItem>
               ))}

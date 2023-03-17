@@ -1,15 +1,17 @@
+import { TutorialBlock } from '@/domain/productOverviewPage';
 import {
   Box,
   Card,
   CardContent,
   CardMedia,
   Container,
-  Link,
   Stack,
   Typography,
 } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
-const TutorialPreview = () => (
+const TutorialPreview = (props: TutorialBlock) => (
   <Container
     maxWidth='xl'
     sx={{
@@ -21,7 +23,7 @@ const TutorialPreview = () => (
     }}
   >
     <Stack spacing={{ xs: 4, md: 4 }}>
-      <Typography variant='h4'>Esplora i tutorial</Typography>
+      <Typography variant='h4'>{props.title}</Typography>
 
       <Card sx={{ display: 'flex' }}>
         <CardMedia
@@ -33,19 +35,23 @@ const TutorialPreview = () => (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant='subtitle1' component='div'>
-              13 luglio 2022
+              {props.preview.date}
             </Typography>
             <Typography variant='h5' component='div'>
-              Scopri Firma con IO in 3 minuti
+              {props.preview.title}
             </Typography>
             <Typography variant='body1' color='text.secondary' component='div'>
-              Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio
-              tutti gli atti di notifica che ti inviano Enti e Pubbliche
-              Amministrazioni.
+              {props.preview.description}
             </Typography>
-            <Link variant='body1' href='#' underline='none'>
-              {'Leggi'}
-            </Link>
+            <ButtonNaked
+              size='medium'
+              color='primary'
+              href={props.preview.pageRef.href}
+              // eslint-disable-next-line react/jsx-no-undef
+              endIcon={<ArrowForwardIcon />}
+            >
+              {props.preview.pageRef.text}
+            </ButtonNaked>
           </CardContent>
         </Box>
       </Card>
