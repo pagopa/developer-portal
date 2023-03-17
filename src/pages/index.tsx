@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import ComingSoon from '@/components/ComingSoon';
+import ComingSoon, { CardContent } from '@/components/ComingSoon';
 import BrowseIntegrations from '@/components/BrowseIntegrations';
 import Highlighted, { HighlightedElement } from '@/components/Highlighted';
 import HeroHome from '@/components/HeroHome';
@@ -34,6 +34,24 @@ const highlightedElements: ReadonlyArray<HighlightedElement> = [
         Scopri di più
       </Button>
     ),
+  },
+];
+
+const cardsContent: ReadonlyArray<CardContent> = [
+  {
+    title: 'IO, l’app dei servizi pubblici',
+    description:
+      'L’app per interagire in modo semplice e sicuro con i servizi pubblici locali e nazionali.',
+  },
+  {
+    title: 'pagoPA, il nodo dei pagamenti',
+    description:
+      'La piattaforma per effettuare pagamenti verso la Pubblica Amministrazione e non solo.',
+  },
+  {
+    title: 'Piattaforma notifiche digitali',
+    description:
+      'La piattaforma che consente di inviare, ricevere e gestire le comunicazioni a valore legale.',
   },
 ];
 
@@ -71,7 +89,7 @@ const Home = () => (
         alt: 'Immagine di Firma con IO',
       }}
     />
-    <ComingSoon />
+    <ComingSoon title='in arrivo su pagopa docs' cards={cardsContent} />
     <Footer />
   </Box>
 );

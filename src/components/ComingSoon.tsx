@@ -10,35 +10,27 @@ import {
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 
-const cardsContent = [
-  {
-    title: 'IO, l’app dei servizi pubblici',
-    description:
-      'L’app per interagire in modo semplice e sicuro con i servizi pubblici locali e nazionali.',
-  },
-  {
-    title: 'pagoPA, il nodo dei pagamenti',
-    description:
-      'La piattaforma per effettuare pagamenti verso la Pubblica Amministrazione e non solo.',
-  },
-  {
-    title: 'Piattaforma notifiche digitali',
-    description:
-      'La piattaforma che consente di inviare, ricevere e gestire le comunicazioni a valore legale.',
-  },
-];
+export type CardContent = {
+  title: string;
+  description: string;
+};
 
-const ComingSoon = () => (
+type ComingSoonProps = {
+  title: string;
+  cards: ReadonlyArray<CardContent>;
+};
+
+const ComingSoon = ({ title, cards }: ComingSoonProps) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={4} py={10}>
         <Typography variant='overline' color={'primary.contrastText'}>
-          in arrivo su pagopa docs
+          {title}
         </Typography>
         <Box>
           <Grid container spacing={7} alignItems='stretch'>
             {pipe(
-              cardsContent,
+              cards,
               RA.mapWithIndex((i, card) => (
                 <Grid item xs={6} md={4} key={i}>
                   <Paper
