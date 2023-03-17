@@ -9,33 +9,27 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import FlagIcon from '@mui/icons-material/Flag';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { pipe } from 'fp-ts/lib/function';
 
-const elements = [
-  {
-    icon: <FlagIcon color='primary' />,
-    preTitle: 'QUICK START',
-    title: 'Prepara i documenti per la firma',
-    description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-    href: '#',
-  },
-  {
-    icon: <VideoLibraryIcon color='primary' />,
-    preTitle: 'TUTORIAL',
-    title: 'Firma con IO in 3 minuti',
-    description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-    href: '#',
-  },
-];
+export type HighlightedElement = {
+  icon: JSX.Element;
+  preTitle: string;
+  title: string;
+  description: string;
+  href: string;
+  findMore: JSX.Element;
+};
 
-const Highlighted = () => (
+type HighlightedProps = {
+  title: string;
+  elements: ReadonlyArray<HighlightedElement>;
+};
+
+const Highlighted = ({ title, elements }: HighlightedProps) => (
   <Container maxWidth='xl'>
     <Stack spacing={2} py={6}>
       <Typography variant='h4' textAlign='center'>
-        In evidenza
+        {title}
       </Typography>
 
       <Box>
@@ -62,9 +56,7 @@ const Highlighted = () => (
                     <Typography variant='body2' color='text.primary'>
                       {element.description}
                     </Typography>
-                    <Button size='small' endIcon={<ArrowForwardIcon />}>
-                      Scopri di più
-                    </Button>
+                    {element.findMore}
                   </CardContent>
                 </Card>
               </Grid>
