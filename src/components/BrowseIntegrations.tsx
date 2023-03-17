@@ -1,34 +1,30 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { ButtonNaked } from '@pagopa/mui-italia';
 
-const BrowseIntegrations = () => (
+type BrowseIntegrationsProps = {
+  sectionTitle: string;
+  integrationTitle: string;
+  integrationDescription: string;
+  findMore: JSX.Element;
+  image: {
+    src: string;
+    alt: string;
+  };
+};
+
+const BrowseIntegrations = (props: BrowseIntegrationsProps) => (
   <Container maxWidth='xl'>
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
         <Typography variant='h4' py={6}>
-          Esplora le risorse per l’integrazione
+          {props.sectionTitle}
         </Typography>
         <Stack spacing={2}>
-          <Typography variant='h6'>Firma con IO</Typography>
+          <Typography variant='h6'>{props.integrationTitle}</Typography>
           <Typography variant='body2'>
-            Grazie a Firma con IO, i cittadini possono firmare documenti e
-            contratti in maniera semplice, veloce e sicura direttamente tramite
-            l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti
-            possono gestire tutti i processi di firma in un unico posto.
+            {props.integrationDescription}
           </Typography>
         </Stack>
-        <ButtonNaked
-          size='small'
-          color='primary'
-          sx={{
-            pt: 3,
-          }}
-          endIcon={<ArrowForwardIcon color='primary' />}
-          href={'firma-con-io/panoramica'}
-        >
-          Scopri di più
-        </ButtonNaked>
+        {props.findMore}
       </Grid>
       <Grid item xs={6}>
         <Box
@@ -37,8 +33,8 @@ const BrowseIntegrations = () => (
             height: '100%',
           }}
           component='img'
-          alt='Immagine di firma con IO'
-          src='https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80'
+          alt={props.image.alt}
+          src={props.image.src}
         />
       </Grid>
     </Grid>
