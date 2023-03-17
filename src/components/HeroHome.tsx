@@ -27,7 +27,7 @@ const HeroHome = ({ title, subtitle, image }: HeroHomeProps) => (
       },
     }}
   >
-    <Container maxWidth='md' sx={{ p: 32 }}>
+    <Container maxWidth='md' sx={{ p: 32, position: 'relative' }}>
       <Stack spacing={5}>
         <Typography
           variant='body1'
