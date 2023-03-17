@@ -1,18 +1,9 @@
 import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { ComingSoonBlock } from '@/domain/home';
 
-export type CardContent = {
-  title: string;
-  description: string;
-};
-
-export type ComingSoonProps = {
-  title: string;
-  cards: ReadonlyArray<CardContent>;
-};
-
-const ComingSoon = ({ title, cards }: ComingSoonProps) => (
+const ComingSoon = ({ title, cards }: ComingSoonBlock) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={4} py={10}>

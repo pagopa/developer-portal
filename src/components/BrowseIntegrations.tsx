@@ -1,22 +1,9 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { IntegrationBlock } from '@/domain/home';
 
-export type BrowseIntegrationsProps = {
-  title: string;
-  subtitle: string;
-  description: string;
-  findMore: {
-    text: string;
-    href: string;
-  };
-  image: {
-    src: string;
-    alt: string;
-  };
-};
-
-const BrowseIntegrations = (props: BrowseIntegrationsProps) => (
+const BrowseIntegrations = (props: IntegrationBlock) => (
   <Container maxWidth='xl'>
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>

@@ -1,18 +1,10 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
+import { HeroHomeBlock } from '@/domain/home';
 
-export type HeroHomeProps = {
-  title: {
-    plainWord: string;
-    boldWord: string;
-  };
-  subtitle: string;
-  image: string; // URL or path to a local image?
-};
-
-const HeroHome = ({ title, subtitle, image }: HeroHomeProps) => (
+const HeroHome = ({ title, subtitle, cover }: HeroHomeBlock) => (
   <Box
     sx={{
-      backgroundImage: `url(${image})`,
+      backgroundImage: `url(${cover})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       position: 'relative',
