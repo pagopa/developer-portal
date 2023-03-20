@@ -16,7 +16,7 @@ export const staticHomepage: HomePage = {
         preTitle: 'QUICK START',
         title: 'Prepara i documenti per la firma',
         description:
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+          'Tutti i passaggi per integrare rapidamente Firma con IO.',
         findMore: {
           text: 'Scopri di più',
           href: '#',
@@ -25,9 +25,9 @@ export const staticHomepage: HomePage = {
       {
         type: 'tutorial',
         preTitle: 'TUTORIAL',
-        title: 'Firma con IO in 3 minuti',
+        title: 'Come preparare un file PDF per la firma',
         description:
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+          'Un tutorial completo per realizzare un file PDF/A-2A pronto per la firma',
         findMore: {
           text: 'Scopri di più',
           href: '#',
