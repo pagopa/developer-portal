@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { RelatedResoucesBlock } from '@/domain/productQuickStartPage';
+import { RelatedResourcesBlock } from '@/domain/productQuickStartPage';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,7 +14,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
-const RelatedResources = (props: RelatedResoucesBlock) => (
+const RelatedResources = (props: RelatedResourcesBlock) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={2} py={6}>

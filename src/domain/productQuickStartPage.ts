@@ -1,7 +1,7 @@
 import { PageRef } from '@/domain/PageRef';
 import { PagePreview } from './PagePreview';
 
-export type RelatedResoucesBlock = {
+export type RelatedResourcesBlock = {
   title: string;
   previews: ReadonlyArray<PagePreview>;
 };
@@ -21,5 +21,5 @@ export type ProductQuickStartPage = {
   title: string;
   submenu: ReadonlyArray<PageRef>;
   intro: IntroBlock;
-  related: RelatedResoucesBlock;
+  related: RelatedResourcesBlock;
 };
