@@ -17,54 +17,76 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 const RelatedResources = (props: RelatedResoucesBlock) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
-    <Stack spacing={2} py={6}>
-        <Typography variant='h4' textAlign='center' color={'primary.contrastText'}>
+      <Stack spacing={2} py={6}>
+        <Typography
+          variant='h4'
+          textAlign='center'
+          color={'primary.contrastText'}
+        >
           {props.title}
         </Typography>
-    <Box>
-    <Container maxWidth='md'>
-    <Stack direction="row" spacing={3} justifyContent="center" alignItems="stretch">
-      {pipe(
-        props.previews,
-        RA.mapWithIndex((i, element) => (
-          <Card
-            raised
-            sx={{
-              textAlign: 'center',
-              py: 6,
-            }}
-            key={i}
-          >
-            <CardContent>
-              <Box>
-                {element.type === 'api' && <CodeIcon color='primary' sx={{ fontSize: 60 }} />}
-                {element.type === 'guide' && <MenuBookIcon color='primary' sx={{ fontSize: 60 }} />}
-                {element.type === 'quickstart' && <FlagIcon color='primary' sx={{ fontSize: 60 }} />}
-                {element.type === 'tutorial' && (
-                  <VideoLibraryIcon color='primary' sx={{ fontSize: 60 }} />
-                )}
-              </Box>
-              <Typography gutterBottom variant='h6' color='text.primary'>
-                {element.preTitle}
-              </Typography>
-              <Typography variant='body2' color='text.primary'>
-                {element.description}
-              </Typography>
-              <Button
-                size='small'
-                href={element.findMore.href}
-                endIcon={<ArrowForwardIcon />}
-              >
-                {element.findMore.text}
-              </Button>
-            </CardContent>
-          </Card>
-        ))
-      )}
-  </Stack>
-    </Container>
-    </Box>
-    </Stack>
+        <Box>
+          <Container maxWidth='md'>
+            <Stack
+              direction='row'
+              spacing={3}
+              justifyContent='center'
+              alignItems='stretch'
+            >
+              {pipe(
+                props.previews,
+                RA.mapWithIndex((i, element) => (
+                  <Card
+                    raised
+                    sx={{
+                      textAlign: 'center',
+                      py: 6,
+                    }}
+                    key={i}
+                  >
+                    <CardContent>
+                      <Box>
+                        {element.type === 'api' && (
+                          <CodeIcon color='primary' sx={{ fontSize: 60 }} />
+                        )}
+                        {element.type === 'guide' && (
+                          <MenuBookIcon color='primary' sx={{ fontSize: 60 }} />
+                        )}
+                        {element.type === 'quickstart' && (
+                          <FlagIcon color='primary' sx={{ fontSize: 60 }} />
+                        )}
+                        {element.type === 'tutorial' && (
+                          <VideoLibraryIcon
+                            color='primary'
+                            sx={{ fontSize: 60 }}
+                          />
+                        )}
+                      </Box>
+                      <Typography
+                        gutterBottom
+                        variant='h6'
+                        color='text.primary'
+                      >
+                        {element.preTitle}
+                      </Typography>
+                      <Typography variant='body2' color='text.primary'>
+                        {element.description}
+                      </Typography>
+                      <Button
+                        size='small'
+                        href={element.findMore.href}
+                        endIcon={<ArrowForwardIcon />}
+                      >
+                        {element.findMore.text}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </Stack>
+          </Container>
+        </Box>
+      </Stack>
     </Container>
   </Box>
 );
