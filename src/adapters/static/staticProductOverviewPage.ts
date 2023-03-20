@@ -15,7 +15,7 @@ export const staticProductOverviewPage: ProductOverviewPage = {
   hero: {
     title: 'Fai firmare documenti e contratti ai cittadini',
     description:
-      'Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Tutti i passaggi per integrare rapidamente Firma con IO.',
     cover:
       'https://github.com/pagopa/mui-italia/blob/main/src/components/Hero/assets/hero_background.png?raw=true',
   },
