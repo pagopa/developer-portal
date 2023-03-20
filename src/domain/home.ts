@@ -1,5 +1,6 @@
 import { PageRef } from './PageRef';
 import { Image } from './Image';
+import { PagePreview } from './PagePreview';
 
 export type IntegrationBlock = {
   title: string;
@@ -26,14 +27,6 @@ export type HeroHomeBlock = {
   };
   subtitle: string;
   cover: string; // URL or path to a local image?
-};
-
-type PagePreview = {
-  type: 'quickstart' | 'tutorial';
-  preTitle: string;
-  title: string;
-  description: string;
-  findMore: PageRef;
 };
 
 export type HighlightedBlock = {

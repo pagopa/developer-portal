@@ -7,10 +7,10 @@ import Intro from '@/components/Intro';
 import QuickStartSteps from '@/components/QuickStartSteps';
 import RelatedResources from '@/components/RelatedResources';
 import { GetStaticProps } from 'next';
-import { staticProductOverviewPage } from '@/adapters/static/staticProductOverviewPage';
+import { staticProductQuickStartPage } from '@/adapters/static/staticQuickStartPage';
 
 export const getStaticProps: GetStaticProps<ProductQuickStartPage> = () => ({
-  props: staticProductOverviewPage, // Change the static element
+  props: staticProductQuickStartPage, // Change the static element
 });
 
 const QuickStart = (props: ProductQuickStartPage) => (
@@ -20,7 +20,7 @@ const QuickStart = (props: ProductQuickStartPage) => (
       <ProductSubHeader {...props} />
       <Intro />
       <QuickStartSteps />
-      <RelatedResources />
+      <RelatedResources {...props.related} />
       <Footer />
     </Stack>
   </Box>
