@@ -12,6 +12,11 @@ export const staticProductQuickStartPage: ProductQuickStartPage = {
       href: '/firma-con-io/quick-start',
     },
   ],
+  intro: {
+    title: 'Quick start',
+    description:
+      'I cittadini possono essere notificati di eventuali multe e provvedere al pagamento attraverso Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien.',
+  },
   related: {
     title: 'Esplora i tutorial',
     previews: [
