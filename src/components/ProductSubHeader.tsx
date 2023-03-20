@@ -11,9 +11,9 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ProductOverviewPage } from '@/domain/productOverviewPage';
+import { ProductSubHeader as SubHeader } from '@/domain/productSubHeader';
 
-const ProductSubHeader = (props: ProductOverviewPage) => {
+const ProductSubHeader = (props: SubHeader) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
