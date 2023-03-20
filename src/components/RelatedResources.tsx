@@ -10,16 +10,20 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const RelatedResources = (props: RelatedResoucesBlock) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
-      <Stack spacing={4} py={10}>
-        <Typography variant='overline' color={'primary.contrastText'}>
+    <Stack spacing={2} py={6}>
+        <Typography variant='h4' textAlign='center' color={'primary.contrastText'}>
           {props.title}
         </Typography>
-      </Stack>
+    <Box>
+    <Container maxWidth='md'>
+    <Stack direction="row" spacing={3} justifyContent="center" alignItems="stretch">
       {pipe(
         props.previews,
         RA.mapWithIndex((i, element) => (
@@ -27,21 +31,21 @@ const RelatedResources = (props: RelatedResoucesBlock) => (
             raised
             sx={{
               textAlign: 'center',
+              py: 6,
             }}
             key={i}
           >
             <CardContent>
               <Box>
-                {element.type === 'quickstart' && <FlagIcon color='primary' />}
+                {element.type === 'api' && <CodeIcon color='primary' sx={{ fontSize: 60 }} />}
+                {element.type === 'guide' && <MenuBookIcon color='primary' sx={{ fontSize: 60 }} />}
+                {element.type === 'quickstart' && <FlagIcon color='primary' sx={{ fontSize: 60 }} />}
                 {element.type === 'tutorial' && (
-                  <VideoLibraryIcon color='primary' />
+                  <VideoLibraryIcon color='primary' sx={{ fontSize: 60 }} />
                 )}
               </Box>
-              <Typography component='label' color='text.secondary'>
-                {element.preTitle}
-              </Typography>
               <Typography gutterBottom variant='h6' color='text.primary'>
-                {element.title}
+                {element.preTitle}
               </Typography>
               <Typography variant='body2' color='text.primary'>
                 {element.description}
@@ -57,6 +61,10 @@ const RelatedResources = (props: RelatedResoucesBlock) => (
           </Card>
         ))
       )}
+  </Stack>
+    </Container>
+    </Box>
+    </Stack>
     </Container>
   </Box>
 );

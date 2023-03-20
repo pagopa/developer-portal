@@ -1,7 +1,7 @@
 import { PageRef } from './PageRef';
 
 export type PagePreview = {
-  type: 'quickstart' | 'tutorial';
+  type: 'quickstart' | 'tutorial' | 'api' | 'guide';
   preTitle: string;
   title: string;
   description: string;

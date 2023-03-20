@@ -18,12 +18,12 @@ export const staticProductQuickStartPage: ProductQuickStartPage = {
       'I cittadini possono essere notificati di eventuali multe e provvedere al pagamento attraverso Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien.',
   },
   related: {
-    title: 'Esplora i tutorial',
+    title: 'Risorse correlate',
     previews: [
       {
-        type: 'quickstart',
-        preTitle: 'QUICK START',
-        title: 'Prepara i documenti per la firma',
+        type: 'api',
+        preTitle: 'API',
+        title: 'Vedi le API',
         description:
           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
         findMore: {
@@ -33,8 +33,19 @@ export const staticProductQuickStartPage: ProductQuickStartPage = {
       },
       {
         type: 'tutorial',
-        preTitle: 'TUTORIAL',
-        title: 'Firma con IO in 3 minuti',
+        preTitle: 'Tutorial',
+        title: 'Scopri i tutorial',
+        description:
+          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        findMore: {
+          text: 'Scopri di più',
+          href: '#',
+        },
+      },
+      {
+        type: 'guide',
+        preTitle: 'Guida Tecnica',
+        title: 'Consulta la guida tecnica',
         description:
           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
         findMore: {
