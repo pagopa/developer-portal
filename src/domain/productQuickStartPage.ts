@@ -11,6 +11,12 @@ export type IntroBlock = {
   description: string;
 };
 
+export type QuickStartStep = {
+  title: string;
+  description: string; // TBD
+  example?: string; // TBD
+};
+
 export type ProductQuickStartPage = {
   title: string;
   submenu: ReadonlyArray<PageRef>;
