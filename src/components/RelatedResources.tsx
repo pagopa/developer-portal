@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { RelatedResourcesBlock } from '@/domain/productQuickStartPage';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,8 +12,9 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { ProductPageReferences } from '@/domain/product';
 
-const RelatedResources = (props: RelatedResourcesBlock) => (
+const RelatedResources = (props: ProductPageReferences) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={2} py={6}>
@@ -34,7 +34,7 @@ const RelatedResources = (props: RelatedResourcesBlock) => (
               alignItems='stretch'
             >
               {pipe(
-                props.previews,
+                props.references,
                 RA.mapWithIndex((i, element) => (
                   <Card
                     raised
@@ -67,17 +67,17 @@ const RelatedResources = (props: RelatedResourcesBlock) => (
                         variant='h6'
                         color='text.primary'
                       >
-                        {element.preTitle}
+                        {element.type}
                       </Typography>
                       <Typography variant='body2' color='text.primary'>
                         {element.description}
                       </Typography>
                       <Button
                         size='small'
-                        href={element.findMore.href}
+                        href={element.link}
                         endIcon={<ArrowForwardIcon />}
                       >
-                        {element.findMore.text}
+                        {`Scopri di più`}
                       </Button>
                     </CardContent>
                   </Card>

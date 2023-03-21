@@ -1,7 +1,7 @@
-import { QuickStartBlock } from '@/domain/productOverviewPage';
+import { ProductQuickStartPreview } from '@/domain/product';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 
-const QuickStartPreview = (props: QuickStartBlock) => (
+const QuickStartPreview = (props: ProductQuickStartPreview) => (
   <Container
     maxWidth='xl'
     sx={{

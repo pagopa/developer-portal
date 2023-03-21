@@ -1,8 +1,12 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { IntroBlock } from '@/domain/productQuickStartPage';
 
-const Intro = (props: IntroBlock) => (
+export type IntroProps = {
+  title: string;
+  description: string;
+};
+
+const Intro = (props: IntroProps) => (
   <Box bgcolor='#FFFFFF'>
     <Container maxWidth='xl'>
       <Breadcrumbs />

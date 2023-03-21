@@ -1,9 +1,9 @@
+import { Showcase } from '@/domain/homepage';
 import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ComingSoonBlock } from '@/domain/home';
 
-const ComingSoon = ({ title, cards }: ComingSoonBlock) => (
+const ComingSoon = ({ title, cards }: Showcase) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={4} py={10}>

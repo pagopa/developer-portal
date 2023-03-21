@@ -1,4 +1,3 @@
-import { TutorialBlock } from '@/domain/productOverviewPage';
 import {
   Box,
   Card,
@@ -10,8 +9,9 @@ import {
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { ProductTutorialPreview } from '@/domain/product';
 
-const TutorialPreview = (props: TutorialBlock) => (
+const TutorialPreview = (props: ProductTutorialPreview) => (
   <Container
     maxWidth='xl'
     sx={{
@@ -29,28 +29,28 @@ const TutorialPreview = (props: TutorialBlock) => (
         <CardMedia
           component='img'
           sx={{ width: 350 }}
-          image={`${props.preview.image.src}`}
-          alt={`${props.preview.image.alt}`}
+          image={`${props.tutorial.image.src}`}
+          alt={`${props.tutorial.image.alt}`}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant='subtitle1' component='div'>
-              {props.preview.date}
+              {props.tutorial.date}
             </Typography>
             <Typography variant='h5' component='div'>
-              {props.preview.title}
+              {props.tutorial.title}
             </Typography>
             <Typography variant='body1' color='text.secondary' component='div'>
-              {props.preview.description}
+              {props.tutorial.description}
             </Typography>
             <ButtonNaked
               size='medium'
               color='primary'
-              href={props.preview.pageRef.href}
+              href={props.tutorial.link}
               // eslint-disable-next-line react/jsx-no-undef
               endIcon={<ArrowForwardIcon />}
             >
-              {props.preview.pageRef.text}
+              {`Leggi`}
             </ButtonNaked>
           </CardContent>
         </Box>

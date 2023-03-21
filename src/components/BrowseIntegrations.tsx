@@ -1,9 +1,9 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { IntegrationBlock } from '@/domain/home';
+import { Integration } from '@/domain/homepage';
 
-const BrowseIntegrations = (props: IntegrationBlock) => (
+const BrowseIntegrations = (props: Integration) => (
   <Container maxWidth='xl'>
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
@@ -21,9 +21,9 @@ const BrowseIntegrations = (props: IntegrationBlock) => (
             pt: 3,
           }}
           endIcon={<ArrowForwardIcon color='primary' />}
-          href={props.findMore.href}
+          href={props.link}
         >
-          {props.findMore.text}
+          {`Scopri di più`}
         </ButtonNaked>
       </Grid>
       <Grid item xs={6}>

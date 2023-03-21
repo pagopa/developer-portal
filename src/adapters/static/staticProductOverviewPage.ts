@@ -1,17 +1,9 @@
-import { ProductOverviewPage } from '@/domain/productOverviewPage';
+import { ProductOverview } from '@/domain/product';
 
-export const staticProductOverviewPage: ProductOverviewPage = {
-  title: 'Firma con IO',
-  submenu: [
-    {
-      text: 'Panoramica',
-      href: '/firma-con-io/panoramica',
-    },
-    {
-      text: 'Quick Start',
-      href: '/firma-con-io/quick-start',
-    },
-  ],
+export const staticProductOverviewPage: ProductOverview = {
+  product: {
+    name: 'Firma con IO',
+  },
   hero: {
     title: 'Fai firmare documenti e contratti ai cittadini',
     description:
@@ -47,7 +39,8 @@ export const staticProductOverviewPage: ProductOverviewPage = {
   },
   tutorial: {
     title: 'Esplora i tutorial',
-    preview: {
+    tutorial: {
+      type: 'tutorial',
       date: '13 luglio 2022',
       title: 'Scopri Firma con IO in 3 minuti',
       description:
@@ -56,10 +49,7 @@ export const staticProductOverviewPage: ProductOverviewPage = {
         src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
         alt: 'Live from space album cover',
       },
-      pageRef: {
-        href: '#',
-        text: 'Leggi',
-      },
+      link: '#',
     },
   },
 };

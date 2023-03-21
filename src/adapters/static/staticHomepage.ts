@@ -1,49 +1,38 @@
-import { HomePage } from '@/domain/home';
+import { Homepage } from '@/domain/homepage';
 
-export const staticHomepage: HomePage = {
+export const staticHomepage: Homepage = {
   hero: {
-    title: { plainWord: 'PagoPA', boldWord: 'DevPortal' },
-    subtitle:
+    title:
       'Tutto ciò che serve per integrarsi con l’ecosistema di servizi PagoPA',
     cover:
       'https://images.pexels.com/photos/5053835/pexels-photo-5053835.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
   },
   highlighted: {
     title: 'In evidenza',
-    previews: [
+    references: [
       {
         type: 'quickstart',
-        preTitle: 'QUICK START',
         title: 'Prepara i documenti per la firma',
         description:
           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-        findMore: {
-          text: 'Scopri di più',
-          href: '#',
-        },
+        link: '#',
       },
       {
         type: 'tutorial',
-        preTitle: 'TUTORIAL',
         title: 'Firma con IO in 3 minuti',
         description:
           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-        findMore: {
-          text: 'Scopri di più',
-          href: '#',
-        },
+        link: '#',
       },
     ],
   },
-  integrations: {
+  integration: {
     title: 'Esplora le risorse per l’integrazione',
     subtitle: 'Firma con IO',
     description:
       'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
-    findMore: {
-      text: 'Scopri di più',
-      href: '/firma-con-io/panoramica',
-    },
+
+    link: '/firma-con-io/panoramica',
     image: {
       src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
       alt: 'Immagine di Firma con IO',

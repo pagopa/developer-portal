@@ -11,9 +11,14 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ProductSubHeader as SubHeader } from '@/domain/productSubHeader';
+import { ProductNavigation } from '@/domain/product';
 
-const ProductSubHeader = (props: SubHeader) => {
+export type ProductNavBarProps = {
+  title: string;
+  navLinks: ProductNavigation;
+};
+
+const ProductNavBar = (props: ProductNavBarProps) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -53,10 +58,10 @@ const ProductSubHeader = (props: SubHeader) => {
             justifyContent='flex-end' // Elements within the box will be aligned to the right
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {props.submenu.map((page) => (
+            {props.navLinks.map((link) => (
               <Button
-                href={page.href}
-                key={page.text}
+                href={link.path}
+                key={link.label}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -64,7 +69,7 @@ const ProductSubHeader = (props: SubHeader) => {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
-                {page.text}
+                {link.label}
               </Button>
             ))}
           </Box>
@@ -101,10 +106,10 @@ const ProductSubHeader = (props: SubHeader) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {props.submenu.map((page) => (
-                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center' component='a' href={page.href}>
-                    {page.text}
+              {props.navLinks.map((link) => (
+                <MenuItem key={link.label} onClick={handleCloseNavMenu}>
+                  <Typography textAlign='center' component='a' href={link.path}>
+                    {link.label}
                   </Typography>
                 </MenuItem>
               ))}
@@ -131,4 +136,4 @@ const ProductSubHeader = (props: SubHeader) => {
   );
 };
 
-export default ProductSubHeader;
+export default ProductNavBar;
