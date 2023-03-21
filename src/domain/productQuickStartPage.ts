@@ -39,8 +39,8 @@ export type QuickStartExample = {
 
 export type QuickStartStep = {
   title: string;
-  description: ReadonlyArray<QuickStartElement>; // TBD
-  example?: QuickStartExample; // TBD
+  description: ReadonlyArray<QuickStartElement>;
+  example?: QuickStartExample;
 };
 
 export type ProductQuickStartPage = {

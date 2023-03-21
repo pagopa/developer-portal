@@ -6,7 +6,7 @@ const Intro = (props: IntroBlock) => (
   <Box bgcolor='#FFFFFF'>
     <Container maxWidth='xl'>
       <Breadcrumbs />
-      <Grid container spacing={0} sx={{ py: 10 }}>
+      <Grid container spacing={0} sx={{ pt: 10, pb: 5 }}>
         <Grid item xs={7}>
           <Stack spacing={3}>
             <Typography variant='h4' color='text.primary'>

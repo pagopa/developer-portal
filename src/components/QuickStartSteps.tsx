@@ -18,7 +18,6 @@ import {
 } from '@/domain/productQuickStartPage';
 import {
   QuickStartExample,
-  QuickStartStep,
 } from '@/domain/productQuickStartPage';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
@@ -101,15 +100,15 @@ const QuickStartExample = (props: QuickStartExample) => (
 
 const QuickStartSteps = (props: ProductQuickStartPage) => (
   <Container maxWidth='xl'>
-    <Stack spacing={6}>
+    <Stack spacing={6} sx={{ py: 10 }}>
       {pipe(
         props.steps,
         RA.mapWithIndex((i, step) => (
-          <Stack spacing={1}>
+          <Stack spacing={2}>
             <Typography variant='h6' color='primary.dark'>
               {(i + 1).toString().padStart(2, '0')}{' '}
             </Typography>
-            <Typography variant='h5'>{props.title}</Typography>
+            <Typography variant='h5'>{step.title}</Typography>
             {pipe(
               step.description,
               RA.map((element) => QuickStartElement(element))
