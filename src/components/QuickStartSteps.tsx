@@ -16,9 +16,7 @@ import {
   ProductQuickStartPage,
   QuickStartElement,
 } from '@/domain/productQuickStartPage';
-import {
-  QuickStartExample,
-} from '@/domain/productQuickStartPage';
+import { QuickStartExample } from '@/domain/productQuickStartPage';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 
