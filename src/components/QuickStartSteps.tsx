@@ -96,7 +96,7 @@ const QuickStartExample = (props: QuickStartExample) => (
   </Box>
 );
 
-const QuickStartSteps = (props: ProductQuickStartPage) => (
+const QuickStartSteps = (props: Pick<ProductQuickStartPage, 'steps'>) => (
   <Container maxWidth='xl'>
     <Stack spacing={6} sx={{ py: 10 }}>
       {pipe(
