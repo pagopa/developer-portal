@@ -73,7 +73,7 @@ export const staticProductQuickStartPage: ProductQuickStartPage = {
         ],
         request: {
           title: 'Dossier ID',
-          body: `{"id":"01GG4NFBCN4ZH8ETCCKX3766KX","title": "Contratto 150 ore","documents":[{"title":"Contratto","signature_fields":[{"unique_name":"Signature1","clause":{"title":"Firma contratto","type":"REQUIRED"}}]}]}`,
+          body: `{"title": "Contratto 150 ore","documents_metadata":[{"title":"Contratto","signature_fields":[{"clause":{"title":"Firma del contratto","type":"REQUIRED"},"attrs":{"coordinates":{"x": 120,"y": 2340},"size":{"w": 120,"h": 2340},"page":1}}]}]}`,
         },
       },
     },
