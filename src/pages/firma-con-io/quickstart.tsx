@@ -19,7 +19,7 @@ const QuickStart = (props: ProductQuickStartPage) => (
       <Header />
       <ProductSubHeader {...props} />
       <Intro {...props.intro} />
-      <QuickStartSteps />
+      <QuickStartSteps {...props} />
       <RelatedResources {...props.related} />
       <Footer />
     </Stack>

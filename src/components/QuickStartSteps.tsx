@@ -4,59 +4,122 @@ import {
   AccordionSummary,
   Stack,
   Typography,
-  Card,
-  CardContent,
+  Button,
+  Paper,
+  Grid,
+  Container,
+  TextField,
+  Box,
 } from '@mui/material';
-import Box from '@mui/material/Box';
-import CodeIcon from '@mui/icons-material/Code';
 import { Expand } from '@mui/icons-material';
+import {
+  ProductQuickStartPage,
+  QuickStartElement,
+} from '@/domain/productQuickStartPage';
+import {
+  QuickStartExample,
+  QuickStartStep,
+} from '@/domain/productQuickStartPage';
+import { pipe } from 'fp-ts/lib/function';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 
-const QuickStartStep = () => (
-  <Stack>
-    <Typography variant='caption' color='primary.dark' alignSelf='flex-start'>
-      03
-    </Typography>
-    <Typography variant='h5'>Recupera il Codice Fiscale dell'utente</Typography>
-    <Typography variant='body2'>
-      Recupera l'ID del Cittadino effettuando una chiamata all'endpoint
-    </Typography>
-    <Typography variant='monospaced'>POST /api/v1/sign/signers</Typography>
-    <Typography variant='body2'>
-      specificando nella chiamata il Codice Fiscale dell'utente Il server ti
-      restituirà l’ID del cittadino che ti servirà nel prossimo passaggio.
-    </Typography>
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<Expand />}
-        aria-controls='panel1a-content'
-        id='panel1a-header'
-      >
-        <Typography>Nascondi esempio</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Card
-          raised
-          sx={{
-            textAlign: 'center',
-            py: 6,
-          }}
-          key={0}
+const QuickStartElement = (props: QuickStartElement) => {
+  switch (props.type) {
+    case 'paragraph':
+      return <Typography variant='body2'>{props.text}</Typography>;
+    case 'inline-code':
+      return (
+        <Paper sx={{ backgroundColor: '#F2F2F2', p: 2 }}>
+          <Typography variant='monospaced'>{props.text}</Typography>
+        </Paper>
+      );
+    case 'code-block':
+      return (
+        <Paper
+          variant='outlined'
+          sx={{ backgroundColor: '#363C42', height: '100%' }}
         >
-          <CardContent>
-            <Box>
-              <CodeIcon color='primary' sx={{ fontSize: 60 }} />
-            </Box>
-          </CardContent>
-        </Card>
+          <Stack spacing={3} sx={{ p: 6 }}>
+            <Typography variant='h6' color={'primary.contrastText'}>
+              {props.title}
+            </Typography>
+            <Typography variant='monospaced' color={'primary.contrastText'}>
+              <pre>{JSON.stringify(JSON.parse(props.text), null, 2)}</pre>
+            </Typography>
+          </Stack>
+        </Paper>
+      );
+  }
+};
+
+const QuickStartExample = (props: QuickStartExample) => (
+  <Box>
+    <Accordion defaultExpanded={true} sx={{ p: 0, m: 0 }}>
+      <AccordionSummary sx={{ p: 0 }}>
+        <Button
+          startIcon={<Expand />}
+          sx={{ p: 0 }}
+        >{`Nascondi esempio`}</Button>
+      </AccordionSummary>
+      <AccordionDetails sx={{ p: 0 }}>
+        <Paper variant='outlined'>
+          <Grid container alignItems='stretch'>
+            <Grid item xs>
+              <Stack spacing={3} sx={{ p: 6 }}>
+                <Typography variant='h6'>{props.title}</Typography>
+                {pipe(
+                  props.fields,
+                  RA.mapWithIndex((i, field) => (
+                    <TextField
+                      key={i}
+                      type={'text'}
+                      label={field.description}
+                      value={field.value}
+                      variant='standard'
+                      InputProps={{
+                        readOnly: true,
+                        disableUnderline: true,
+                      }}
+                    />
+                  ))
+                )}
+              </Stack>
+            </Grid>
+            <Grid item xs>
+              <QuickStartElement
+                type={'code-block'}
+                title={props.request.title}
+                text={props.request.body}
+              />
+            </Grid>
+          </Grid>
+        </Paper>
       </AccordionDetails>
     </Accordion>
-  </Stack>
+  </Box>
 );
 
-const QuickStartSteps = () => (
-  <Stack>
-    <QuickStartStep />
-  </Stack>
+const QuickStartSteps = (props: ProductQuickStartPage) => (
+  <Container maxWidth='xl'>
+    <Stack spacing={6}>
+      {pipe(
+        props.steps,
+        RA.mapWithIndex((i, step) => (
+          <Stack spacing={1}>
+            <Typography variant='h6' color='primary.dark'>
+              {(i + 1).toString().padStart(2, '0')}{' '}
+            </Typography>
+            <Typography variant='h5'>{props.title}</Typography>
+            {pipe(
+              step.description,
+              RA.map((element) => QuickStartElement(element))
+            )}
+            {step.example && <QuickStartExample {...step.example} />}
+          </Stack>
+        ))
+      )}
+    </Stack>
+  </Container>
 );
 
 export default QuickStartSteps;
