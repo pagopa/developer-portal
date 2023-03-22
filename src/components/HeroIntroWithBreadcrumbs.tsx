@@ -1,12 +1,12 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
-export type IntroProps = {
+export type HeroIntroProps = {
   title: string;
   description: string;
 };
 
-const Intro = (props: IntroProps) => (
+const HeroIntroWithBreadcrumbs = (props: HeroIntroProps) => (
   <Box bgcolor='#FFFFFF'>
     <Container maxWidth='xl'>
       <Breadcrumbs />
@@ -26,4 +26,4 @@ const Intro = (props: IntroProps) => (
   </Box>
 );
 
-export default Intro;
+export default HeroIntroWithBreadcrumbs;

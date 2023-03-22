@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Intro from '@/components/Intro';
+import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
 import QuickStartSteps from '@/components/QuickStartSteps';
 import RelatedResources from '@/components/RelatedResources';
 import { GetStaticProps } from 'next';
@@ -24,7 +24,7 @@ const QuickStart = (props: ProductQuickstartProps) => (
     <Stack>
       <Header />
       <ProductNavBar {...props} />
-      <Intro {...props} />
+      <HeroIntroWithBreadcrumbs {...props} />
       <QuickStartSteps {...props} />
       <RelatedResources {...props.related} />
       <Footer />

@@ -3,7 +3,7 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProductOverviewPreview } from '@/domain/product';
 
-const BrowseIntegrations = (props: ProductOverviewPreview) => (
+const ProductPreview = (props: ProductOverviewPreview) => (
   <Container maxWidth='xl'>
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
@@ -41,4 +41,4 @@ const BrowseIntegrations = (props: ProductOverviewPreview) => (
   </Container>
 );
 
-export default BrowseIntegrations;
+export default ProductPreview;

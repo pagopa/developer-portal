@@ -2,7 +2,7 @@ import { staticProductNavigation } from '@/adapters/static/staticProductNavigati
 import { staticProductOverviewPage } from '@/adapters/static/staticProductOverviewPage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import Hero from '@/components/Hero';
+import HeroWithBreadcrumbs from '@/components/HeroWithBreadcrumbs';
 import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
 import QuickStartPreview from '@/components/QuickStartPreview';
 import TutorialPreview from '@/components/TutorialPreview';
@@ -25,7 +25,7 @@ const ProductOverview = (props: ProductOverviewProps) => (
     <Stack>
       <Header />
       <ProductNavBar {...props} />
-      <Hero {...props.hero} />
+      <HeroWithBreadcrumbs {...props.hero} />
       <QuickStartPreview {...props.quickStart} />
       <TutorialPreview {...props.tutorial} />
       <Footer />

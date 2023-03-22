@@ -26,7 +26,7 @@ export const staticHomepage: Homepage = {
       },
     ],
   },
-  integration: {
+  productPreview: {
     title: 'Esplora le risorse per l’integrazione',
     preview: {
       title: 'Firma con IO',

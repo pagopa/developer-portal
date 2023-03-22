@@ -19,6 +19,6 @@ export type Showcase = {
 export type Homepage = {
   hero: Hero;
   highlighted: ProductPageReferences;
-  integration: ProductOverviewPreview;
+  productPreview: ProductOverviewPreview;
   comingSoon: Showcase;
 };

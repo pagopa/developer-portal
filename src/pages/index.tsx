@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ComingSoon from '@/components/ComingSoon';
-import BrowseIntegrations from '@/components/BrowseIntegrations';
+import ProductPreview from '@/components/ProductPreview';
 import Highlighted from '@/components/Highlighted';
 import HeroHome from '@/components/HeroHome';
 import { GetStaticProps } from 'next';
@@ -18,7 +18,7 @@ const Home = (props: Homepage) => (
     <Header />
     <HeroHome {...props.hero} />
     <Highlighted {...props.highlighted} />
-    <BrowseIntegrations {...props.integration} />
+    <ProductPreview {...props.productPreview} />
     <ComingSoon {...props.comingSoon} />
     <Footer />
   </Box>

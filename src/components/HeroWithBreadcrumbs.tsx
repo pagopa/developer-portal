@@ -2,7 +2,11 @@ import { ProductOverview } from '@/domain/product';
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import Breadcrumbs from './Breadcrumbs';
 
-const Hero = ({ title, description, cover }: ProductOverview['hero']) => (
+const HeroWithBreadcrumbs = ({
+  title,
+  description,
+  cover,
+}: ProductOverview['hero']) => (
   <Box
     bgcolor='#FFFFFF'
     sx={{
@@ -29,4 +33,4 @@ const Hero = ({ title, description, cover }: ProductOverview['hero']) => (
   </Box>
 );
 
-export default Hero;
+export default HeroWithBreadcrumbs;
