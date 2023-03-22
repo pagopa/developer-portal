@@ -38,8 +38,10 @@ type Breadcrumb = {
 
 export type Breadcrumbs = ReadonlyArray<Breadcrumb>;
 
-const isAncestor = (path: string) => (l: NavItem): boolean =>
-  path.startsWith(l.path);
+const isAncestor =
+  (path: string) =>
+  (l: NavItem): boolean =>
+    path.startsWith(l.path);
 
 export const makeBreadcrumbs =
   (nav: Nav) =>
@@ -49,7 +51,12 @@ export const makeBreadcrumbs =
       // keep only ancestors of current
       RA.filter(isAncestor(currentPath)),
       // order by path length
-      RA.sortBy([pipe(S.Ord, contramap((item: NavItem) => item.path))]),
+      RA.sortBy([
+        pipe(
+          S.Ord,
+          contramap((item: NavItem) => item.path)
+        ),
+      ]),
       RA.map((item) => ({
         path: item.path,
         name: item.name.breadcrumb,
