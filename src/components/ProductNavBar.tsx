@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
   AppBar,
   Box,
@@ -7,11 +8,14 @@ import {
   Typography,
   Menu as MUIMenu,
   Container,
-  Button,
   MenuItem,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Menu } from '@/domain/navigator';
+import { useRouter } from 'next/router';
+import { pipe } from 'fp-ts/lib/function';
 
 export type ProductNavBarProps = {
   title: string;
@@ -29,6 +33,12 @@ const ProductNavBar = (props: ProductNavBarProps) => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const [value, setValue] = React.useState(useRouter().pathname);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
   };
 
   return (
@@ -55,25 +65,30 @@ const ProductNavBar = (props: ProductNavBarProps) => {
             {props.title}
           </Typography>
           <Box
-            justifyContent='flex-end' // Elements within the box will be aligned to the right
+            justifyContent='flex-end'
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {props.navLinks.map((link) => (
-              <Button
-                href={link.path}
-                key={link.name}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: 'primary.main', // Custom color for the button text
-                  display: { xs: 'none', md: 'flex' },
-                }}
-              >
-                {link.name}
-              </Button>
-            ))}
+            <Tabs value={value} onChange={handleChange}>
+              {pipe(
+                props.navLinks,
+                RA.map((link) => (
+                  <Tab
+                    value={link.path}
+                    label={
+                      <Typography variant='sidenav' color='primary.main'>
+                        {link.name}
+                      </Typography>
+                    }
+                    href={link.path}
+                    key={link.path}
+                    sx={{
+                      my: 2,
+                    }}
+                  />
+                ))
+              )}
+            </Tabs>
           </Box>
-
           {
             // Mobile rendering
           }
