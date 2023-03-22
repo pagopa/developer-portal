@@ -21,13 +21,13 @@ export const staticNav: Nav = [
     },
     path: '/firma-con-io/quick-start',
   },
-  {
-    name: {
-      nav: 'Guide e manuali',
-      breadcrumb: 'Firma con IO - Guide e manuali',
-    },
-    path: '/firma-con-io/guide-e-manuali',
-  },
+  // {
+  //   name: {
+  //     nav: 'Guide e manuali',
+  //     breadcrumb: 'Firma con IO - Guide e manuali',
+  //   },
+  //   path: '/firma-con-io/guide-e-manuali',
+  // },
   {
     name: {
       breadcrumb: 'Firma con IO - Manuale - 1',
