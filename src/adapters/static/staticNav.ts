@@ -3,12 +3,6 @@ import { Nav } from '@/domain/navigator';
 export const staticNav: Nav = [
   {
     name: {
-      breadcrumb: 'Homepage',
-    },
-    path: '/',
-  },
-  {
-    name: {
       nav: 'Panoramica',
       breadcrumb: 'Firma con IO - Panoramica',
     },
@@ -33,6 +27,12 @@ export const staticNav: Nav = [
       breadcrumb: 'Firma con IO - Manuale - 1',
     },
     path: '/firma-con-io/guide-e-manuali/manuale-1',
+  },
+  {
+    name: {
+      breadcrumb: 'Homepage',
+    },
+    path: '/',
   },
   {
     name: {

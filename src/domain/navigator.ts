@@ -1,6 +1,8 @@
+import * as S from 'fp-ts/lib/string';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
+import { contramap } from 'fp-ts/lib/Ord';
 
 type NavItem = {
   path: string;
@@ -36,12 +38,18 @@ type Breadcrumb = {
 
 export type Breadcrumbs = ReadonlyArray<Breadcrumb>;
 
-// TODO: make breadcrumbs starting from current path
+const isAncestor = (path: string) => (l: NavItem): boolean =>
+  path.startsWith(l.path);
+
 export const makeBreadcrumbs =
   (nav: Nav) =>
   (currentPath: string): Breadcrumbs =>
     pipe(
       nav,
+      // keep only ancestors of current
+      RA.filter(isAncestor(currentPath)),
+      // order by path length
+      RA.sortBy([pipe(S.Ord, contramap((item: NavItem) => item.path))]),
       RA.map((item) => ({
         path: item.path,
         name: item.name.breadcrumb,
