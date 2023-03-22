@@ -65,7 +65,7 @@ const QuickStartPreview = (props: ProductQuickStartPreview) => (
                 }}
               >
                 <Typography
-                  variant='caption'
+                  variant='h6'
                   color='primary.dark'
                   alignSelf='flex-start'
                 >
