@@ -31,12 +31,20 @@ export const makeMenu = (nav: Nav): Menu =>
 type Breadcrumb = {
   name: string;
   path: string;
+  isCurrent: boolean;
 };
 
 export type Breadcrumbs = ReadonlyArray<Breadcrumb>;
 
-export const makeBreadcrumbs = (nav: Nav): Breadcrumbs =>
-  pipe(
-    nav,
-    RA.map((item) => ({ path: item.path, name: item.name.breadcrumb }))
-  );
+// TODO: make breadcrumbs starting from current path
+export const makeBreadcrumbs =
+  (nav: Nav) =>
+  (currentPath: string): Breadcrumbs =>
+    pipe(
+      nav,
+      RA.map((item) => ({
+        path: item.path,
+        name: item.name.breadcrumb,
+        isCurrent: item.path === currentPath,
+      }))
+    );

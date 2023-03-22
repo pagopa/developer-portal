@@ -1,37 +1,30 @@
 import { Breadcrumbs as MUIBreadcrumbs, Link, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as O from 'fp-ts/lib/Option';
-import { NavLinks } from '@/domain/navLinks';
-import { navLinks } from '@/adapters/static/staticNavLink';
 
-const getBreadcrumbPath = (navLinks: NavLinks, currentPath: string) =>
-  pipe(
-    navLinks,
-    RA.findFirst(({ path }) => currentPath.startsWith(path)),
-    O.chain(({ name: parentName, children }) =>
-      pipe(
-        children,
-        RA.findFirst(({ path }) => path === currentPath),
-        O.map(({ name: childName }) => `${parentName} - ${childName}`)
-      )
-    ),
-    O.getOrElseW(() => null)
-  );
+import { Breadcrumbs as BreadcrumbItems } from '@/domain/navigator';
 
-const Breadcrumbs = () => {
-  const path = getBreadcrumbPath(navLinks, useRouter().route);
+type BreadcrumbsProps = {
+  items: BreadcrumbItems;
+};
+
+const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
   return (
     <div role='presentation' onClick={() => {}}>
       <MUIBreadcrumbs aria-label='breadcrumb'>
-        <Link underline='hover' color='inherit' href='/'>
-          Homepage
-        </Link>
-        {path && (
-          <Typography color='text.primary' fontWeight='bold'>
-            {path}
-          </Typography>
+        {pipe(
+          items,
+          RA.map(({ name, path, isCurrent }) =>
+            isCurrent ? (
+              <Typography color='text.primary' fontWeight='bold' key={path}>
+                {name}
+              </Typography>
+            ) : (
+              <Link underline='hover' color='inherit' href={path} key={path}>
+                {name}
+              </Link>
+            )
+          )
         )}
       </MUIBreadcrumbs>
     </div>
