@@ -15,7 +15,7 @@ export const staticHomepage: Homepage = {
         title: 'Prepara i documenti per la firma',
         description:
           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-        link: '#',
+        link: '/firma-con-io/quick-start',
       },
       {
         type: 'tutorial',
