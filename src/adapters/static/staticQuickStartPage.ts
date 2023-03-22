@@ -3,6 +3,7 @@ import { ProductQuickStart } from '@/domain/product';
 export const staticProductQuickStartPage: ProductQuickStart = {
   product: {
     name: 'Firma con IO',
+    rootPath: '/firma-con-io',
   },
   title: 'Quick start',
   description:

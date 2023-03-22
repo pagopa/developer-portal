@@ -15,7 +15,7 @@ type ProductQuickstartProps = ProductQuickStart & ProductNavBarProps;
 
 export const getStaticProps: GetStaticProps<ProductQuickstartProps> = () => ({
   props: {
-    navLinks: makeMenu(staticNav),
+    navLinks: makeMenu(staticNav, staticProductQuickStartPage.product),
     ...staticProductQuickStartPage,
   },
 });

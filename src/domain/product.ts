@@ -1,7 +1,8 @@
 import { Image } from './Image';
 
-type Product = {
+export type Product = {
   name: string;
+  rootPath: string;
 };
 
 export type ProductPageType =

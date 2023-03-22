@@ -16,7 +16,7 @@ type ProductOverviewProps = ProductOverview & ProductNavBarProps;
 export const getStaticProps: GetStaticProps<ProductOverviewProps> = () => ({
   props: {
     title: staticProductOverviewPage.product.name,
-    navLinks: makeMenu(staticNav),
+    navLinks: makeMenu(staticNav, staticProductOverviewPage.product),
     ...staticProductOverviewPage,
   },
 });

@@ -3,6 +3,7 @@ import { ProductOverview } from '@/domain/product';
 export const staticProductOverviewPage: ProductOverview = {
   product: {
     name: 'Firma con IO',
+    rootPath: '/firma-con-io',
   },
   hero: {
     title: 'Fai firmare documenti e contratti ai cittadini',
