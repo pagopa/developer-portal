@@ -85,7 +85,12 @@ const QuickStartPreview = (props: ProductQuickStartPreview) => (
         </Box>
       </Box>
       <Box display='flex' justifyContent='center' alignItems='center'>
-        <Button size='medium' variant='contained' color='primary'>
+        <Button
+          size='medium'
+          variant='contained'
+          color='primary'
+          href={props.link}
+        >
           Inizia
         </Button>
       </Box>

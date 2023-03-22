@@ -18,7 +18,6 @@ import {
   ProductQuickStart,
   ProductQuickStartElement,
   ProductQuickStartExample,
-  ProductQuickStartStep,
 } from '@/domain/product';
 
 const QuickStartElement = (props: ProductQuickStartElement) => {

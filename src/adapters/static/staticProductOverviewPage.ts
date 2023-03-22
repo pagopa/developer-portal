@@ -36,11 +36,11 @@ export const staticProductOverviewPage: ProductOverview = {
           "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
       },
     ],
+    link: '/firma-con-io/quick-start',
   },
   tutorial: {
     title: 'Esplora i tutorial',
-    tutorial: {
-      type: 'tutorial',
+    preview: {
       date: '13 luglio 2022',
       title: 'Scopri Firma con IO in 3 minuti',
       description:

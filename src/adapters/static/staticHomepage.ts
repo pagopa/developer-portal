@@ -28,19 +28,20 @@ export const staticHomepage: Homepage = {
   },
   integration: {
     title: 'Esplora le risorse per l’integrazione',
-    subtitle: 'Firma con IO',
-    description:
-      'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
-
-    link: '/firma-con-io/panoramica',
-    image: {
-      src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-      alt: 'Immagine di Firma con IO',
+    preview: {
+      title: 'Firma con IO',
+      description:
+        'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
+      link: '/firma-con-io/panoramica',
+      image: {
+        src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
+        alt: 'Immagine di Firma con IO',
+      },
     },
   },
   comingSoon: {
     title: 'In arrivo su PagoPA DevPortal',
-    cards: [
+    items: [
       {
         title: 'IO, l’app dei servizi pubblici',
         description:

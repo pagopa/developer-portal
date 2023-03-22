@@ -11,7 +11,7 @@ export type ProductPageType =
   | 'api'
   | 'guide';
 
-export type ProductPagePreview = {
+export type ProductPageReference = {
   type: ProductPageType;
   title: string;
   description: string;
@@ -20,7 +20,7 @@ export type ProductPagePreview = {
 
 export type ProductPageReferences = {
   title: string;
-  references: ReadonlyArray<ProductPagePreview>;
+  references: ReadonlyArray<ProductPageReference>;
 };
 
 type ProductNavigationItem = {
@@ -45,6 +45,16 @@ export type ProductOverview = {
   tutorial: ProductTutorialPreview;
 };
 
+export type ProductOverviewPreview = {
+  title: string;
+  preview: {
+    title: string;
+    description: string;
+    link: string;
+    image: Image;
+  };
+};
+
 // Quickstart /////////////////////////////////////////////////////////////////
 
 type ProductQuickStartPreviewStep = {
@@ -56,6 +66,7 @@ export type ProductQuickStartPreview = {
   title: string;
   description: string;
   steps: ReadonlyArray<ProductQuickStartPreviewStep>;
+  link: string;
 };
 
 export type ProductQuickStartElement =
@@ -102,10 +113,11 @@ export type ProductQuickStart = {
 
 export type ProductTutorialPreview = {
   title: string;
-  tutorial: ProductTutorialReference;
-};
-
-export type ProductTutorialReference = ProductPagePreview & {
-  date: string;
-  image: Image;
+  preview: {
+    title: string;
+    description: string;
+    link: string;
+    image: Image;
+    date: string;
+  };
 };
