@@ -1,5 +1,7 @@
 import { ProductQuickStartPreview } from '@/domain/product';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { pipe } from 'fp-ts/lib/function';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 
 const QuickStartPreview = (props: ProductQuickStartPreview) => (
   <Container
@@ -52,35 +54,38 @@ const QuickStartPreview = (props: ProductQuickStartPreview) => (
               },
             }}
           >
-            {props.steps.map(({ title: itemTitle, description }, index) => (
-              <Stack
-                key={index}
-                alignContent='center'
-                justifyContent='flex-start'
-                spacing={1}
-                sx={{
-                  minWidth: { xs: '80%', sm: '40%', md: 'auto' },
-                  flex: 1,
-                  scrollSnapAlign: 'start',
-                }}
-              >
-                <Typography
-                  variant='h6'
-                  color='primary.dark'
-                  alignSelf='flex-start'
+            {pipe(
+              props.steps,
+              RA.mapWithIndex((index, { title: itemTitle, description }) => (
+                <Stack
+                  key={index}
+                  alignContent='center'
+                  justifyContent='flex-start'
+                  spacing={1}
+                  sx={{
+                    minWidth: { xs: '80%', sm: '40%', md: 'auto' },
+                    flex: 1,
+                    scrollSnapAlign: 'start',
+                  }}
                 >
-                  {(index + 1).toString().padStart(2, '0')}{' '}
-                </Typography>
-                <Stack spacing={1}>
-                  <Typography variant='h5'>{itemTitle}</Typography>
-                  <>
-                    {description && (
-                      <Typography variant='body2'>{description}</Typography>
-                    )}
-                  </>
+                  <Typography
+                    variant='h6'
+                    color='primary.dark'
+                    alignSelf='flex-start'
+                  >
+                    {(index + 1).toString().padStart(2, '0')}{' '}
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Typography variant='h5'>{itemTitle}</Typography>
+                    <>
+                      {description && (
+                        <Typography variant='body2'>{description}</Typography>
+                      )}
+                    </>
+                  </Stack>
                 </Stack>
-              </Stack>
-            ))}
+              ))
+            )}
           </Stack>
         </Box>
       </Box>
