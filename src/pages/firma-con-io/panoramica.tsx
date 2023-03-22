@@ -1,4 +1,3 @@
-import { staticProductNavigation } from '@/adapters/static/staticProductNavigation';
 import { staticProductOverviewPage } from '@/adapters/static/staticProductOverviewPage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
@@ -9,13 +8,15 @@ import TutorialPreview from '@/components/TutorialPreview';
 import { ProductOverview } from '@/domain/product';
 import { Box, Stack } from '@mui/material';
 import { GetStaticProps } from 'next';
+import { makeMenu } from '@/domain/navigator';
+import { staticNav } from '@/adapters/static/staticNav';
 
 type ProductOverviewProps = ProductOverview & ProductNavBarProps;
 
 export const getStaticProps: GetStaticProps<ProductOverviewProps> = () => ({
   props: {
     title: staticProductOverviewPage.product.name,
-    navLinks: staticProductNavigation,
+    navLinks: makeMenu(staticNav),
     ...staticProductOverviewPage,
   },
 });

@@ -7,14 +7,15 @@ import RelatedResources from '@/components/RelatedResources';
 import { GetStaticProps } from 'next';
 import { staticProductQuickStartPage } from '@/adapters/static/staticQuickStartPage';
 import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
-import { staticProductNavigation } from '@/adapters/static/staticProductNavigation';
 import { ProductQuickStart } from '@/domain/product';
+import { makeMenu } from '@/domain/navigator';
+import { staticNav } from '@/adapters/static/staticNav';
 
 type ProductQuickstartProps = ProductQuickStart & ProductNavBarProps;
 
 export const getStaticProps: GetStaticProps<ProductQuickstartProps> = () => ({
   props: {
-    navLinks: staticProductNavigation,
+    navLinks: makeMenu(staticNav),
     ...staticProductQuickStartPage,
   },
 });

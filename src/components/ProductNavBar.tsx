@@ -5,17 +5,17 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Menu,
+  Menu as MUIMenu,
   Container,
   Button,
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ProductNavigation } from '@/domain/product';
+import { Menu } from '@/domain/navigator';
 
 export type ProductNavBarProps = {
   title: string;
-  navLinks: ProductNavigation;
+  navLinks: Menu;
 };
 
 const ProductNavBar = (props: ProductNavBarProps) => {
@@ -61,7 +61,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
             {props.navLinks.map((link) => (
               <Button
                 href={link.path}
-                key={link.label}
+                key={link.name}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -69,7 +69,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
-                {link.label}
+                {link.name}
               </Button>
             ))}
           </Box>
@@ -88,7 +88,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            <MUIMenu
               id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -107,13 +107,13 @@ const ProductNavBar = (props: ProductNavBarProps) => {
               }}
             >
               {props.navLinks.map((link) => (
-                <MenuItem key={link.label} onClick={handleCloseNavMenu}>
+                <MenuItem key={link.name} onClick={handleCloseNavMenu}>
                   <Typography textAlign='center' component='a' href={link.path}>
-                    {link.label}
+                    {link.name}
                   </Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </MUIMenu>
           </Box>
           <Typography
             variant='h5'
