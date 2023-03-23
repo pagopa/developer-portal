@@ -204,7 +204,8 @@ export const staticProductQuickStartPage: ProductQuickStart = {
       {
         type: 'tutorial',
         title: 'Scopri i tutorial',
-        description: 'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
+        description:
+          'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
         link: '#',
       },
       {
