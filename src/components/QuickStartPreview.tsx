@@ -2,6 +2,7 @@ import { ProductQuickStartPreview } from '@/domain/product';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
+import Link from 'next/link';
 
 const QuickStartPreview = (props: ProductQuickStartPreview) => (
   <Container
@@ -95,6 +96,7 @@ const QuickStartPreview = (props: ProductQuickStartPreview) => (
           variant='contained'
           color='primary'
           href={props.link}
+          component={Link}
         >
           Inizia
         </Button>

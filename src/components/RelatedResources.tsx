@@ -13,6 +13,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { ProductPageReferences } from '@/domain/product';
+import Link from 'next/link';
 
 const RelatedResources = (props: ProductPageReferences) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
@@ -76,6 +77,7 @@ const RelatedResources = (props: ProductPageReferences) => (
                         size='small'
                         href={element.link}
                         endIcon={<ArrowForwardIcon />}
+                        component={Link}
                       >
                         {'Scopri di più'}
                       </Button>

@@ -2,6 +2,7 @@ import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProductOverviewPreview } from '@/domain/product';
+import Link from 'next/link';
 
 const ProductPreview = (props: ProductOverviewPreview) => (
   <Container maxWidth='xl'>
@@ -22,6 +23,7 @@ const ProductPreview = (props: ProductOverviewPreview) => (
           }}
           endIcon={<ArrowForwardIcon color='primary' />}
           href={props.preview.link}
+          component={Link}
         >
           {'Scopri di più'}
         </ButtonNaked>

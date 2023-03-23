@@ -16,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Menu } from '@/domain/navigator';
 import { useRouter } from 'next/router';
 import { pipe } from 'fp-ts/lib/function';
+import Link from 'next/link';
 
 export type ProductNavBarProps = {
   title: string;
@@ -53,7 +54,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
           <Typography
             variant='h6'
             noWrap
-            component='a'
+            component={Link}
             href='/'
             sx={{
               mr: 2,
@@ -75,11 +76,16 @@ const ProductNavBar = (props: ProductNavBarProps) => {
                   <Tab
                     value={link.path}
                     label={
-                      <Typography variant='sidenav' color='primary.main'>
+                      <Typography
+                        variant='sidenav'
+                        color='primary.main'
+                        component={Link}
+                        href={link.path}
+                        sx={{ textDecoration: 'none' }}
+                      >
                         {link.name}
                       </Typography>
                     }
-                    href={link.path}
                     key={link.path}
                     sx={{
                       my: 2,
@@ -123,7 +129,11 @@ const ProductNavBar = (props: ProductNavBarProps) => {
             >
               {props.navLinks.map((link) => (
                 <MenuItem key={link.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center' component='a' href={link.path}>
+                  <Typography
+                    textAlign='center'
+                    component={Link}
+                    href={link.path}
+                  >
                     {link.name}
                   </Typography>
                 </MenuItem>
@@ -133,7 +143,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
           <Typography
             variant='h5'
             noWrap
-            component='a'
+            component={Link}
             href=''
             sx={{
               mr: 2,
