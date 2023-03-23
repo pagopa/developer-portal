@@ -198,22 +198,19 @@ export const staticProductQuickStartPage: ProductQuickStart = {
       {
         type: 'api',
         title: 'Vedi le API',
-        description:
-          'Naviga e prova le API di Firma con IO',
+        description: 'Naviga e prova le API di Firma con IO',
         link: '#',
       },
       {
         type: 'tutorial',
         title: 'Scopri i tutorial',
-        description:
-          'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
+        description: 'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
         link: '#',
       },
       {
         type: 'guide',
         title: 'Consulta la guida tecnica',
-        description:
-          'La guida tecnica completa per l\'integrazione di Firma con IO' ,
+        description: 'La guida tecnica completa per integrare Firma con IO',
         link: '#',
       },
     ],
