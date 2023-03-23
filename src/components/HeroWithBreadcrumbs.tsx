@@ -13,7 +13,7 @@ const HeroWithBreadcrumbs = ({
   const breadcrumbs = makeBreadcrumbs(staticNav)(useRouter().pathname);
   return (
     <Box
-      bgcolor='#FFFFFF'
+      bgcolor='background.paper'
       sx={{
         backgroundImage: `url(${cover})`,
         backgroundSize: 'cover',

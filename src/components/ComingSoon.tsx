@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 
 const ComingSoon = ({ title, items }: Showcase) => (
-  <Box sx={{ backgroundColor: '#0073E6' }}>
+  <Box sx={{ backgroundColor: 'primary.main' }}>
     <Container maxWidth='xl'>
       <Stack spacing={4} py={10}>
         <Typography variant='overline' color={'primary.contrastText'}>
@@ -19,7 +19,7 @@ const ComingSoon = ({ title, items }: Showcase) => (
                   <Paper
                     elevation={0}
                     sx={{
-                      backgroundColor: 'rgba(27, 50, 77, 0.3)',
+                      backgroundColor: 'primary.dark',
                       padding: 6,
                       borderRadius: '16px',
                       minHeight: 170,

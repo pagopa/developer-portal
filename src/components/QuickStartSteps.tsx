@@ -26,7 +26,7 @@ const QuickStartElement = (props: ProductQuickStartElement) => {
       return <Typography variant='body2'>{props.text}</Typography>;
     case 'inline-code':
       return (
-        <Paper sx={{ backgroundColor: '#F2F2F2', p: 2 }}>
+        <Paper sx={{ backgroundColor: 'background.default', p: 2 }}>
           <Typography variant='monospaced'>{props.text}</Typography>
         </Paper>
       );
@@ -34,7 +34,7 @@ const QuickStartElement = (props: ProductQuickStartElement) => {
       return (
         <Paper
           variant='outlined'
-          sx={{ backgroundColor: '#363C42', height: '100%' }}
+          sx={{ backgroundColor: 'background.code', height: '100%' }}
         >
           <Stack spacing={3} sx={{ p: 6 }}>
             <Typography variant='h6' color={'primary.contrastText'}>

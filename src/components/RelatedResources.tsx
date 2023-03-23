@@ -15,7 +15,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { ProductPageReferences } from '@/domain/product';
 
 const RelatedResources = (props: ProductPageReferences) => (
-  <Box sx={{ backgroundColor: '#0073E6' }}>
+  <Box sx={{ backgroundColor: 'primary.main' }}>
     <Container maxWidth='xl'>
       <Stack spacing={2} py={6}>
         <Typography
