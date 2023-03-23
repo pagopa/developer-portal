@@ -74,15 +74,11 @@ const ProductNavBar = (props: ProductNavBarProps) => {
                 props.navLinks,
                 RA.map((link) => (
                   <Tab
+                    component={Link}
+                    href={link.path}
                     value={link.path}
                     label={
-                      <Typography
-                        variant='sidenav'
-                        color='primary.main'
-                        component={Link}
-                        href={link.path}
-                        sx={{ textDecoration: 'none' }}
-                      >
+                      <Typography variant='sidenav' color='primary.main'>
                         {link.name}
                       </Typography>
                     }
