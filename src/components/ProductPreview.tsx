@@ -1,9 +1,9 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { IntegrationBlock } from '@/domain/home';
+import { ProductOverviewPreview } from '@/domain/product';
 
-const BrowseIntegrations = (props: IntegrationBlock) => (
+const ProductPreview = (props: ProductOverviewPreview) => (
   <Container maxWidth='xl'>
     <Grid container spacing={2} py={6}>
       <Grid item xs={6}>
@@ -11,8 +11,8 @@ const BrowseIntegrations = (props: IntegrationBlock) => (
           {props.title}
         </Typography>
         <Stack spacing={2}>
-          <Typography variant='h6'>{props.subtitle}</Typography>
-          <Typography variant='body2'>{props.description}</Typography>
+          <Typography variant='h6'>{props.preview.title}</Typography>
+          <Typography variant='body2'>{props.preview.description}</Typography>
         </Stack>
         <ButtonNaked
           size='small'
@@ -21,9 +21,9 @@ const BrowseIntegrations = (props: IntegrationBlock) => (
             pt: 3,
           }}
           endIcon={<ArrowForwardIcon color='primary' />}
-          href={props.findMore.href}
+          href={props.preview.link}
         >
-          {props.findMore.text}
+          {'Scopri di più'}
         </ButtonNaked>
       </Grid>
       <Grid item xs={6}>
@@ -33,12 +33,12 @@ const BrowseIntegrations = (props: IntegrationBlock) => (
             height: '100%',
           }}
           component='img'
-          alt={props.image.alt}
-          src={props.image.src}
+          alt={props.preview.image.alt}
+          src={props.preview.image.src}
         />
       </Grid>
     </Grid>
   </Container>
 );
 
-export default BrowseIntegrations;
+export default ProductPreview;

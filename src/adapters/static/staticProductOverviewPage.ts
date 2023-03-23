@@ -1,21 +1,13 @@
-import { ProductOverviewPage } from '@/domain/productOverviewPage';
+import { ProductOverview } from '@/domain/product';
 
-export const staticProductOverviewPage: ProductOverviewPage = {
-  title: 'Firma con IO',
-  submenu: [
-    {
-      text: 'Panoramica',
-      href: '/firma-con-io/panoramica',
-    },
-    {
-      text: 'Quick Start',
-      href: '/firma-con-io/quick-start',
-    },
-  ],
+export const staticProductOverviewPage: ProductOverview = {
+  product: {
+    name: 'Firma con IO',
+    rootPath: '/firma-con-io',
+  },
   hero: {
     title: 'Fai firmare documenti e contratti ai cittadini',
-    description:
-      'Tutti i passaggi per integrare rapidamente Firma con IO.',
+    description: 'Tutti i passaggi per integrare rapidamente Firma con IO.',
     cover:
       'https://github.com/pagopa/mui-italia/blob/main/src/components/Hero/assets/hero_background.png?raw=true',
   },
@@ -44,6 +36,7 @@ export const staticProductOverviewPage: ProductOverviewPage = {
           "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
       },
     ],
+    link: '/firma-con-io/quick-start',
   },
   tutorial: {
     title: 'Esplora i tutorial',
@@ -56,10 +49,7 @@ export const staticProductOverviewPage: ProductOverviewPage = {
         src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
         alt: 'Live from space album cover',
       },
-      pageRef: {
-        href: '#',
-        text: 'Leggi',
-      },
+      link: '#',
     },
   },
 };

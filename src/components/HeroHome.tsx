@@ -1,7 +1,7 @@
+import { Hero } from '@/domain/homepage';
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { HeroHomeBlock } from '@/domain/home';
 
-const HeroHome = ({ title, subtitle, cover }: HeroHomeBlock) => (
+const HeroHome = ({ title, cover }: Hero) => (
   <Box
     sx={{
       backgroundImage: `url(${cover})`,
@@ -27,13 +27,13 @@ const HeroHome = ({ title, subtitle, cover }: HeroHomeBlock) => (
           color='primary.contrastText'
           align='center'
         >
-          {title.plainWord}{' '}
+          {'PagoPA'}{' '}
           <Box fontWeight='fontWeightMedium' display='inline'>
-            {title.boldWord}
+            {'DevPortal'}
           </Box>
         </Typography>
         <Typography variant='h1' color='primary.contrastText' align='center'>
-          {subtitle}
+          {title}
         </Typography>
       </Stack>
     </Container>

@@ -1,9 +1,9 @@
+import { Showcase } from '@/domain/homepage';
 import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ComingSoonBlock } from '@/domain/home';
 
-const ComingSoon = ({ title, cards }: ComingSoonBlock) => (
+const ComingSoon = ({ title, items }: Showcase) => (
   <Box sx={{ backgroundColor: '#0073E6' }}>
     <Container maxWidth='xl'>
       <Stack spacing={4} py={10}>
@@ -13,7 +13,7 @@ const ComingSoon = ({ title, cards }: ComingSoonBlock) => (
         <Box>
           <Grid container spacing={7} alignItems='stretch'>
             {pipe(
-              cards,
+              items,
               RA.mapWithIndex((i, card) => (
                 <Grid item xs={6} md={4} key={i}>
                   <Paper

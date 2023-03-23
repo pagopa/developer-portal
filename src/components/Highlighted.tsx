@@ -13,9 +13,9 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlagIcon from '@mui/icons-material/Flag';
 import { pipe } from 'fp-ts/lib/function';
-import { HighlightedBlock } from '@/domain/home';
+import { ProductPageReferences } from '@/domain/product';
 
-const Highlighted = ({ title, previews }: HighlightedBlock) => (
+const Highlighted = ({ title, references }: ProductPageReferences) => (
   <Container maxWidth='xl'>
     <Stack spacing={2} py={6}>
       <Typography variant='h4' textAlign='center'>
@@ -25,7 +25,7 @@ const Highlighted = ({ title, previews }: HighlightedBlock) => (
       <Box>
         <Grid container spacing={7} alignItems='stretch'>
           {pipe(
-            previews,
+            references,
             RA.mapWithIndex((i, element) => (
               <Grid item xs={6} md={6} key={i}>
                 <Card
@@ -45,7 +45,7 @@ const Highlighted = ({ title, previews }: HighlightedBlock) => (
                       )}
                     </Box>
                     <Typography component='label' color='text.secondary'>
-                      {element.preTitle}
+                      {element.type}
                     </Typography>
                     <Typography gutterBottom variant='h6' color='text.primary'>
                       {element.title}
@@ -55,10 +55,10 @@ const Highlighted = ({ title, previews }: HighlightedBlock) => (
                     </Typography>
                     <Button
                       size='small'
-                      href={element.findMore.href}
+                      href={element.link}
                       endIcon={<ArrowForwardIcon />}
                     >
-                      {element.findMore.text}
+                      {'Scopri di più'}
                     </Button>
                   </CardContent>
                 </Card>

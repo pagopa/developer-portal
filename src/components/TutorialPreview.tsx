@@ -1,4 +1,3 @@
-import { TutorialBlock } from '@/domain/productOverviewPage';
 import {
   Box,
   Card,
@@ -10,8 +9,9 @@ import {
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { ProductTutorialPreview } from '@/domain/product';
 
-const TutorialPreview = (props: TutorialBlock) => (
+const TutorialPreview = (props: ProductTutorialPreview) => (
   <Container
     maxWidth='xl'
     sx={{
@@ -46,11 +46,10 @@ const TutorialPreview = (props: TutorialBlock) => (
             <ButtonNaked
               size='medium'
               color='primary'
-              href={props.preview.pageRef.href}
-              // eslint-disable-next-line react/jsx-no-undef
+              href={props.preview.link}
               endIcon={<ArrowForwardIcon />}
             >
-              {props.preview.pageRef.text}
+              {'Leggi'}
             </ButtonNaked>
           </CardContent>
         </Box>
