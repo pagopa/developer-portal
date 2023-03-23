@@ -11,7 +11,6 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  modulePathIgnorePatterns: ['./__tests__/data.ts'],
   coverageThreshold: {
     global: {
       branches: 70,
