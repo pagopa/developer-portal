@@ -41,7 +41,7 @@ describe('makeBreadcrumbs', () => {
       productNavItem.path
     );
 
-    expect(breadcrumbs).toEqual([
+    expect(breadcrumbs).toStrictEqual([
       {
         path: productNavItem.path,
         name: productNavItem.name.breadcrumb,
@@ -57,7 +57,7 @@ describe('makeBreadcrumbs', () => {
       productBarNavItem,
     ])(productFooNavItem.path);
 
-    expect(breadcrumbs).toEqual([
+    expect(breadcrumbs).toStrictEqual([
       {
         path: productNavItem.path,
         name: productNavItem.name.breadcrumb,
