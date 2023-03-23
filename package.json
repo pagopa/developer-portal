@@ -2,25 +2,13 @@
   "name": "developer-portal",
   "version": "0.1.0",
   "private": true,
-  "config": {
-    "codegen": {
-      "targetDir": "./src/adapters/gitbook/generated/client"
-    },
-    "openapi": {
-      "gitbook": {
-        "prod": "https://api.gitbook.com/openapi.yaml",
-        "staging": "https://api.gitbook-staging.com/openapi.yaml"
-      }
-    }
-  },
   "scripts": {
     "dev": "next dev",
-    "build": "yarn generate:gitbook:client && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prettify": "prettier --write \"./**/*.{ts,tsx}\"",
-    "prepare": "husky install",
-    "generate:gitbook:client": "shx rm -rf $npm_package_config_codegen_targetDir && shx mkdir -p $npm_package_config_codegen_targetDir && sta -p $npm_package_config_openapi_gitbook_prod -o $npm_package_config_codegen_targetDir --add-readonly --type-prefix GitBook --axios"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
