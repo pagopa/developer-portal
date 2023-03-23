@@ -24,13 +24,6 @@ export type ProductPageReferences = {
   references: ReadonlyArray<ProductPageReference>;
 };
 
-type ProductNavigationItem = {
-  label: string;
-  path: string;
-};
-
-export type ProductNavigation = ReadonlyArray<ProductNavigationItem>;
-
 // Overview ///////////////////////////////////////////////////////////////////
 
 type ProductHero = {
