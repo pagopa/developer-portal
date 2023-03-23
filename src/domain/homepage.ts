@@ -1,4 +1,4 @@
-import { ProductOverviewPreview, ProductPageReferences } from './product';
+import { ProductOverviewPreview, ProductPageReferences } from '@/domain/product';
 
 export type Hero = {
   title: string;

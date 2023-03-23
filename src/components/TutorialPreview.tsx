@@ -49,7 +49,7 @@ const TutorialPreview = (props: ProductTutorialPreview) => (
               href={props.preview.link}
               endIcon={<ArrowForwardIcon />}
             >
-              {`Leggi`}
+              {'Leggi'}
             </ButtonNaked>
           </CardContent>
         </Box>

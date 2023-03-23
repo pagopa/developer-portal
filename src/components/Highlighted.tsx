@@ -58,7 +58,7 @@ const Highlighted = ({ title, references }: ProductPageReferences) => (
                       href={element.link}
                       endIcon={<ArrowForwardIcon />}
                     >
-                      {`Scopri di più`}
+                      {'Scopri di più'}
                     </Button>
                   </CardContent>
                 </Card>

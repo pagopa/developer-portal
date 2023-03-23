@@ -23,7 +23,7 @@ const ProductPreview = (props: ProductOverviewPreview) => (
           endIcon={<ArrowForwardIcon color='primary' />}
           href={props.preview.link}
         >
-          {`Scopri di più`}
+          {'Scopri di più'}
         </ButtonNaked>
       </Grid>
       <Grid item xs={6}>

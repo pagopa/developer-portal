@@ -27,9 +27,9 @@ const HeroHome = ({ title, cover }: Hero) => (
           color='primary.contrastText'
           align='center'
         >
-          {`PagoPA`}{' '}
+          {'PagoPA'}{' '}
           <Box fontWeight='fontWeightMedium' display='inline'>
-            {`DevPortal`}
+            {'DevPortal'}
           </Box>
         </Typography>
         <Typography variant='h1' color='primary.contrastText' align='center'>

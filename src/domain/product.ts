@@ -1,4 +1,4 @@
-import { Image } from './Image';
+import { Image } from '@/domain/Image';
 
 export type Product = {
   name: string;

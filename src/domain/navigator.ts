@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 import { contramap } from 'fp-ts/lib/Ord';
-import { Product } from './product';
+import { Product } from '@/domain/product';
 
 type NavItem = {
   path: string;
