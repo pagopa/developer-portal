@@ -14,6 +14,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlagIcon from '@mui/icons-material/Flag';
 import { pipe } from 'fp-ts/lib/function';
 import { ProductPageReferences } from '@/domain/product';
+import Link from 'next/link';
 
 const Highlighted = ({ title, references }: ProductPageReferences) => (
   <Container maxWidth='xl'>
@@ -55,6 +56,7 @@ const Highlighted = ({ title, references }: ProductPageReferences) => (
                     </Typography>
                     <Button
                       size='small'
+                      component={Link}
                       href={element.link}
                       endIcon={<ArrowForwardIcon />}
                     >

@@ -10,6 +10,7 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { ProductTutorialPreview } from '@/domain/product';
+import Link from 'next/link';
 
 const TutorialPreview = (props: ProductTutorialPreview) => (
   <Container
@@ -48,6 +49,7 @@ const TutorialPreview = (props: ProductTutorialPreview) => (
               color='primary'
               href={props.preview.link}
               endIcon={<ArrowForwardIcon />}
+              component={Link}
             >
               {'Leggi'}
             </ButtonNaked>
