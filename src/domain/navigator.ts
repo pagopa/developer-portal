@@ -16,13 +16,31 @@ type NavItem = {
 
 export type Nav = ReadonlyArray<NavItem>;
 
+// Represents a menu item in a menu.
 type MenuItem = {
+  // The name of the menu item.
   name: string;
+  // The path of the menu item.
   path: string;
 };
 
+/**
+ * Represents a menu, which is an array of menu items.
+ */
 export type Menu = ReadonlyArray<MenuItem>;
 
+/**
+ * Generates a menu from a navigation structure (Nav) and a product object.
+ * The resulting menu is an array of objects where each item has a name
+ * and a path.
+ *
+ * @param nav - The navigation structure to generate the menu from.
+ * @param product - The product object to filter the navigation structure with.
+ * Only NavItem objects that are children of the product's rootPath will be
+ * included in the menu.
+ *
+ * @returns A Menu - an array of MenuItem objects, each with a name and a path.
+ */
 export const makeMenu = (nav: Nav, product: Product): Menu =>
   pipe(
     nav,
@@ -34,13 +52,20 @@ export const makeMenu = (nav: Nav, product: Product): Menu =>
     )
   );
 
-type Breadcrumb = {
+// Represents a breadcrumb item in a breadcrumb trail.
+type BreadcrumbItem = {
+  // The name of the breadcrumb item.
   name: string;
+  // The path of the breadcrumb item.
   path: string;
+  // Indicates whether the breadcrumb item is the current one.
   isCurrent: boolean;
 };
 
-export type Breadcrumbs = ReadonlyArray<Breadcrumb>;
+/**
+ * Represents a breadcrumb trail, which is an array of breadcrumb items.
+ */
+export type Breadcrumbs = ReadonlyArray<BreadcrumbItem>;
 
 const isChild =
   (path: string) =>
@@ -52,6 +77,17 @@ const isAncestor =
   (l: NavItem): boolean =>
     path.startsWith(l.path);
 
+/**
+ * Generates breadcrumbs from a navigation structure (Nav) and a current path.
+ * The resulting breadcrumbs are an array of breadcrumb objects, where each
+ * object represents a level in the breadcrumb trail.
+ *
+ * @param nav - The navigation structure to generate the breadcrumbs from.
+ *
+ * @returns A function that takes a `currentPath` argument and returns a
+ * Breadcrumbs - an array of breadcrumb, each with a name, path,
+ * and boolean flag indicating whether it is the current breadcrumb.
+ */
 export const makeBreadcrumbs =
   (nav: Nav) =>
   (currentPath: string): Breadcrumbs =>
