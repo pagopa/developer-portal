@@ -1,7 +1,11 @@
-import { Breadcrumbs as MUIBreadcrumbs, Link, Typography } from '@mui/material';
+import {
+  Breadcrumbs as MUIBreadcrumbs,
+  Link as MUILink,
+  Typography,
+} from '@mui/material';
+import Link from 'next/link';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-
 import { Breadcrumbs as BreadcrumbItems } from '@/domain/navigator';
 
 type BreadcrumbsProps = {
@@ -20,9 +24,15 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
                 {name}
               </Typography>
             ) : (
-              <Link underline='hover' color='inherit' href={path} key={path}>
+              <MUILink
+                underline='hover'
+                color='inherit'
+                href={path}
+                key={path}
+                component={Link}
+              >
                 {name}
-              </Link>
+              </MUILink>
             )
           )
         )}
