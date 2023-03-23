@@ -1,5 +1,4 @@
 import { ProductOverviewPreview, ProductPageReferences } from './product';
-import { Image } from './Image';
 
 export type Hero = {
   title: string;
