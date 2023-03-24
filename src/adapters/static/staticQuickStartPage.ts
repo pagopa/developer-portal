@@ -5,9 +5,9 @@ export const staticProductQuickStartPage: ProductQuickStart = {
     name: 'Firma con IO',
     rootPath: '/firma-con-io',
   },
-  title: 'Quick start',
+  title: 'Guida rapida',
   description:
-    'I cittadini possono essere notificati di eventuali multe e provvedere al pagamento attraverso Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien.',
+    'Firma con IO è una funzionalità che consente ai cittadini di firmare documenti e contratti tramite l’app IO in maniera semplice, veloce e sicura; agli enti di gestire tutti i processi di firma in un unico posto. In questa guida rapida apprenderai i passaggi di base per integrare rapidamente Firma con IO nel tuo servizio.',
   steps: [
     {
       title: 'Prepara i documenti',
@@ -198,22 +198,20 @@ export const staticProductQuickStartPage: ProductQuickStart = {
       {
         type: 'api',
         title: 'Vedi le API',
-        description:
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'Naviga e prova le API di Firma con IO',
         link: '#',
       },
       {
         type: 'tutorial',
         title: 'Scopri i tutorial',
         description:
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+          'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
         link: '#',
       },
       {
         type: 'guide',
         title: 'Consulta la guida tecnica',
-        description:
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'La guida tecnica completa per integrare Firma con IO',
         link: '#',
       },
     ],
