@@ -10,7 +10,7 @@ export type HeroIntroProps = {
 };
 
 const HeroIntroWithBreadcrumbs = (props: HeroIntroProps) => {
-  const breadcrumbs = makeBreadcrumbs(staticNav)(useRouter().pathname);
+  const breadcrumbs = makeBreadcrumbs(staticNav, useRouter().pathname);
   return (
     <Box bgcolor='background.paper'>
       <Container maxWidth='xl'>

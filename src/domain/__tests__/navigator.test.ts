@@ -32,12 +32,13 @@ describe('makeMenu', () => {
 
 describe('makeBreadcrumbs', () => {
   it('should return empty breadcrumbs for an unknown path', () => {
-    const breadcrumbs = makeBreadcrumbs([productNavItem])('/unknown/path');
+    const breadcrumbs = makeBreadcrumbs([productNavItem], '/unknown/path');
     expect(breadcrumbs).toStrictEqual([]);
   });
 
   it('should return breadcrumbs for the root path', () => {
-    const breadcrumbs = makeBreadcrumbs([productFooNavItem, productNavItem])(
+    const breadcrumbs = makeBreadcrumbs(
+      [productFooNavItem, productNavItem],
       productNavItem.path
     );
 
@@ -51,11 +52,10 @@ describe('makeBreadcrumbs', () => {
   });
 
   it('should return breadcrumbs for a child path', () => {
-    const breadcrumbs = makeBreadcrumbs([
-      productFooNavItem,
-      productNavItem,
-      productBarNavItem,
-    ])(productFooNavItem.path);
+    const breadcrumbs = makeBreadcrumbs(
+      [productFooNavItem, productNavItem, productBarNavItem],
+      productFooNavItem.path
+    );
 
     expect(breadcrumbs).toStrictEqual([
       {

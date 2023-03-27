@@ -34,12 +34,8 @@ export type Menu = ReadonlyArray<MenuItem>;
  * The resulting menu is an array of objects where each item has a name
  * and a path.
  *
- * @param nav - The navigation structure to generate the menu from.
- * @param product - The product object to filter the navigation structure with.
  * Only NavItem objects that are children of the product's rootPath will be
  * included in the menu.
- *
- * @returns A Menu - an array of MenuItem objects, each with a name and a path.
  */
 export const makeMenu = (nav: Nav, product: Product): Menu =>
   pipe(
@@ -81,30 +77,22 @@ const isAncestor =
  * Generates breadcrumbs from a navigation structure (Nav) and a current path.
  * The resulting breadcrumbs are an array of breadcrumb objects, where each
  * object represents a level in the breadcrumb trail.
- *
- * @param nav - The navigation structure to generate the breadcrumbs from.
- *
- * @returns A function that takes a `currentPath` argument and returns a
- * Breadcrumbs - an array of breadcrumb, each with a name, path,
- * and boolean flag indicating whether it is the current breadcrumb.
  */
-export const makeBreadcrumbs =
-  (nav: Nav) =>
-  (currentPath: string): Breadcrumbs =>
-    pipe(
-      nav,
-      // keep only ancestors of current
-      RA.filter(isAncestor(currentPath)),
-      // order by path length
-      RA.sortBy([
-        pipe(
-          S.Ord,
-          contramap((item: NavItem) => item.path)
-        ),
-      ]),
-      RA.map((item) => ({
-        path: item.path,
-        name: item.name.breadcrumb,
-        isCurrent: item.path === currentPath,
-      }))
-    );
+export const makeBreadcrumbs = (nav: Nav, currentPath: string): Breadcrumbs =>
+  pipe(
+    nav,
+    // keep only ancestors of current
+    RA.filter(isAncestor(currentPath)),
+    // order by path length
+    RA.sortBy([
+      pipe(
+        S.Ord,
+        contramap((item: NavItem) => item.path)
+      ),
+    ]),
+    RA.map((item) => ({
+      path: item.path,
+      name: item.name.breadcrumb,
+      isCurrent: item.path === currentPath,
+    }))
+  );

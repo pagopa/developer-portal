@@ -10,7 +10,7 @@ const HeroWithBreadcrumbs = ({
   description,
   cover,
 }: ProductOverview['hero']) => {
-  const breadcrumbs = makeBreadcrumbs(staticNav)(useRouter().pathname);
+  const breadcrumbs = makeBreadcrumbs(staticNav, useRouter().pathname);
   return (
     <Box
       bgcolor='background.paper'
