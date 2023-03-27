@@ -7,6 +7,7 @@ const theme = createTheme(muiItaliaTheme, {
   palette: {
     background: {
       code: '#363C42',
+      dark: '#4D5D6D',
     },
   },
 });
