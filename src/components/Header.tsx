@@ -1,18 +1,10 @@
 import { Box, Container } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import {
-  ButtonNaked,
-  HeaderAccount,
-  RootLinkType,
-  Tag,
-  theme,
-} from '@pagopa/mui-italia';
+import { ButtonNaked, theme } from '@pagopa/mui-italia';
 
-const pagoPALink: RootLinkType = {
+const values = {
   href: '/',
-  label: 'PagoPA DevPortal',
   title: 'PagoPA DevPortal',
-  ariaLabel: 'PagoPA DevPortal',
 };
 
 const Header = () => (
@@ -36,9 +28,9 @@ const Header = () => (
           size={'medium'}
           weight={'light'}
           component='a'
-          aria-label={'PagoPA DevPortal'}
-          href={`/`}
-          title={'PagoPA DevPortal'}
+          aria-label={values.title}
+          href={values.href}
+          title={values.title}
         >
           {'PagoPA'}
           <Box fontWeight={'bold'} sx={{ pl: 0.8, pr: 1.6 }}>
