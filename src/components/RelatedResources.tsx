@@ -16,7 +16,7 @@ import { ProductPageReferences } from '@/domain/product';
 import Link from 'next/link';
 
 const RelatedResources = (props: ProductPageReferences) => (
-  <Box sx={{ backgroundColor: '#0073E6' }}>
+  <Box sx={{ backgroundColor: 'primary.main' }}>
     <Container maxWidth='xl'>
       <Stack spacing={2} py={6}>
         <Typography
