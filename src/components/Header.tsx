@@ -40,7 +40,7 @@ const Header = () => (
             sx={{
               py: 0.2,
               px: 0.75,
-              backgroundColor: 'background.dark',
+              backgroundColor: theme.palette.text.primary,
               color: theme.palette.primary.contrastText,
               fontFamily: theme.typography.fontFamily,
               fontSize: 14,
