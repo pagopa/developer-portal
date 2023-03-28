@@ -19,6 +19,12 @@ const ioSignImage = {
   alt: 'Immagine di Firma con IO',
 };
 
+const ioSignPageLinks = {
+  overview: `${ioSignProduct.rootPath}/panoramica`,
+  tutorial: `${ioSignProduct.rootPath}/tutorial`,
+  quickStart: `${ioSignProduct.rootPath}/quick-start`,
+};
+
 const ioSignRelated: ProductPageReferences = {
   title: 'Risorse correlate',
   references: [
@@ -33,7 +39,7 @@ const ioSignRelated: ProductPageReferences = {
       title: 'Scopri i tutorial',
       description:
         'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
-      link: '/firma-con-io/tutorial',
+      link: ioSignPageLinks.tutorial,
     },
     {
       type: 'guide',
@@ -55,7 +61,8 @@ export const ioSignTutorialPreview: ProductTutorialPreview = {
     description:
       'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
     image: ioSignImage,
-    link: '/firma-con-io/tutorial',
+    // TODO: Change to the tutorial detail
+    link: ioSignPageLinks.tutorial,
   },
 };
 
@@ -96,7 +103,7 @@ export const ioSignQuickStartPreview: ProductQuickStartPreview = {
         "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
     },
   ],
-  link: '/firma-con-io/quick-start',
+  link: ioSignPageLinks.quickStart,
 };
 
 export const ioSignQuickStartPage: ProductQuickStart = {
@@ -299,7 +306,7 @@ export const ioSignOverviewPreview: ProductOverviewPreview = {
     title: 'Firma con IO',
     description:
       'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
-    link: '/firma-con-io/panoramica',
+    link: ioSignPageLinks.overview,
     image: ioSignImage,
   },
 };
