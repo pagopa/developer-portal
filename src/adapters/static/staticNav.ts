@@ -33,4 +33,11 @@ export const staticNav: Nav = [
     },
     path: ioSignTutorialPreview.preview.link,
   },
+  {
+    name: {
+      breadcrumb:
+        'Come creare e preparare il documento  da firmare digitalmente con Firma con IO',
+    },
+    path: '/firma-con-io/tutorial/come-preparare-il-documento-da-firmare',
+  },
 ];
