@@ -1,10 +1,113 @@
-import { ProductQuickStart } from '@/domain/product';
+import {
+  Product,
+  ProductOverview,
+  ProductOverviewPreview,
+  ProductPageReferences,
+  ProductQuickStart,
+  ProductQuickStartPreview,
+  ProductTutorial,
+  ProductTutorialPreview,
+} from '@/domain/product';
 
-export const staticProductQuickStartPage: ProductQuickStart = {
-  product: {
-    name: 'Firma con IO',
-    rootPath: '/firma-con-io',
+const ioSignProduct: Product = {
+  name: 'Firma con IO',
+  rootPath: '/firma-con-io',
+};
+
+const ioSignImage = {
+  src: 'https://images.pexels.com/photos/175045/pexels-photo-175045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  alt: 'Immagine di Firma con IO',
+};
+
+const ioSignPageLinks = {
+  overview: `${ioSignProduct.rootPath}/panoramica`,
+  tutorial: `${ioSignProduct.rootPath}/tutorial`,
+  quickStart: `${ioSignProduct.rootPath}/quick-start`,
+};
+
+const ioSignRelated: ProductPageReferences = {
+  title: 'Risorse correlate',
+  references: [
+    {
+      type: 'api',
+      title: 'Vedi le API',
+      description: 'Naviga e prova le API di Firma con IO',
+      link: '#',
+    },
+    {
+      type: 'tutorial',
+      title: 'Scopri i tutorial',
+      description:
+        'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
+      link: ioSignPageLinks.tutorial,
+    },
+    {
+      type: 'guide',
+      title: 'Consulta la guida tecnica',
+      description: 'La guida tecnica completa per integrare Firma con IO',
+      link: '#',
+    },
+  ],
+};
+
+// Tutorial ///////////////////////////////////////////////////////////////////
+
+export const ioSignTutorialPreview: ProductTutorialPreview = {
+  title: '',
+  // TODO: Change the type, remove the title
+  preview: {
+    date: '13 luglio 2022',
+    title: 'Scopri Firma con IO in 3 minuti',
+    description:
+      'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
+    image: ioSignImage,
+    // TODO: Change to the tutorial detail
+    link: ioSignPageLinks.tutorial,
   },
+};
+
+export const ioSignTutorialPage: ProductTutorial = {
+  product: ioSignProduct,
+  title: 'Tutorial',
+  description:
+    'Firma con IO è una funzionalità che consente ai cittadini di firmare documenti e contratti tramite l’app IO in maniera semplice, veloce e sicura; agli enti di gestire tutti i processi di firma in un unico posto. In questa guida rapida apprenderai i passaggi di base per integrare rapidamente Firma con IO nel tuo servizio.',
+  // TODO: Change the type, remove the title
+  tutorial: ioSignTutorialPreview,
+  related: ioSignRelated,
+};
+
+// Quickstart /////////////////////////////////////////////////////////////////
+
+export const ioSignQuickStartPreview: ProductQuickStartPreview = {
+  title: 'Scopri quanto è semplice integrarsi',
+  description:
+    'Firma con IO è una funzionalità che consente agli enti di richiedere la firma di documenti e di gestire i processi relativi in un unico posto.',
+  steps: [
+    {
+      title: 'Prepara i documenti',
+      description:
+        "Prepara i documenti da inviare in firma all'utente nei formati previsti.",
+    },
+    {
+      title: 'Crea una richiesta di firma',
+      description: 'Crea un dossier contenente uno o più documenti.',
+    },
+    {
+      title: 'Recupera il Codice Fiscale dell’utente',
+      description:
+        "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
+    },
+    {
+      title: 'Invia la richiesta di firma',
+      description:
+        "Recupera l'ID del Cittadino effettuando una chiamata all'endpoint.",
+    },
+  ],
+  link: ioSignPageLinks.quickStart,
+};
+
+export const ioSignQuickStartPage: ProductQuickStart = {
+  product: ioSignProduct,
   title: 'Guida rapida',
   description:
     'Firma con IO è una funzionalità che consente ai cittadini di firmare documenti e contratti tramite l’app IO in maniera semplice, veloce e sicura; agli enti di gestire tutti i processi di firma in un unico posto. In questa guida rapida apprenderai i passaggi di base per integrare rapidamente Firma con IO nel tuo servizio.',
@@ -192,28 +295,33 @@ export const staticProductQuickStartPage: ProductQuickStart = {
       ],
     },
   ],
-  related: {
-    title: 'Risorse correlate',
-    references: [
-      {
-        type: 'api',
-        title: 'Vedi le API',
-        description: 'Naviga e prova le API di Firma con IO',
-        link: '#',
-      },
-      {
-        type: 'tutorial',
-        title: 'Scopri i tutorial',
-        description:
-          'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
-        link: '#',
-      },
-      {
-        type: 'guide',
-        title: 'Consulta la guida tecnica',
-        description: 'La guida tecnica completa per integrare Firma con IO',
-        link: '#',
-      },
-    ],
+  related: ioSignRelated,
+};
+
+// Overview ///////////////////////////////////////////////////////////////////
+
+export const ioSignOverviewPreview: ProductOverviewPreview = {
+  title: 'Esplora le risorse per l’integrazione',
+  preview: {
+    title: 'Firma con IO',
+    description:
+      'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
+    link: ioSignPageLinks.overview,
+    image: ioSignImage,
+  },
+};
+
+export const ioSignOverviewPage: ProductOverview = {
+  product: ioSignProduct,
+  hero: {
+    title: 'Fai firmare documenti e contratti ai cittadini',
+    description: 'Tutti i passaggi per integrare rapidamente Firma con IO.',
+    cover:
+      'https://github.com/pagopa/mui-italia/blob/main/src/components/Hero/assets/hero_background.png?raw=true',
+  },
+  quickStart: ioSignQuickStartPreview,
+  tutorial: {
+    ...ioSignTutorialPreview,
+    title: 'Esplora i tutorial',
   },
 };

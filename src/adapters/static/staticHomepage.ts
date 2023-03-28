@@ -1,4 +1,9 @@
 import { Homepage } from '@/domain/homepage';
+import {
+  ioSignOverviewPreview,
+  ioSignQuickStartPreview,
+  ioSignTutorialPreview,
+} from './staticProduct';
 
 export const staticHomepage: Homepage = {
   hero: {
@@ -14,29 +19,20 @@ export const staticHomepage: Homepage = {
         type: 'quickstart',
         title: 'Prepara i documenti per la firma',
         description: 'Tutti i passaggi per integrare rapidamente Firma con IO.',
-        link: '/firma-con-io/quick-start',
+        link: ioSignQuickStartPreview.link,
       },
       {
         type: 'tutorial',
         title: 'Come preparare un file PDF per la firma',
         description:
           'Un tutorial completo per realizzare un file PDF/A-2A pronto per la firma.',
-        link: '#',
+        link: ioSignTutorialPreview.preview.link,
       },
     ],
   },
   productPreview: {
     title: 'Esplora le risorse per l’integrazione',
-    preview: {
-      title: 'Firma con IO',
-      description:
-        'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
-      link: '/firma-con-io/panoramica',
-      image: {
-        src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-        alt: 'Immagine di Firma con IO',
-      },
-    },
+    preview: ioSignOverviewPreview.preview,
   },
   comingSoon: {
     title: 'In arrivo su PagoPA DevPortal',

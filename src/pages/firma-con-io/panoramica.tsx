@@ -1,4 +1,3 @@
-import { staticProductOverviewPage } from '@/adapters/static/staticProductOverviewPage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HeroWithBreadcrumbs from '@/components/HeroWithBreadcrumbs';
@@ -10,14 +9,15 @@ import { Box, Stack } from '@mui/material';
 import { GetStaticProps } from 'next';
 import { makeMenu } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
+import { ioSignOverviewPage } from '@/adapters/static/staticProduct';
 
 type ProductOverviewProps = ProductOverview & ProductNavBarProps;
 
 export const getStaticProps: GetStaticProps<ProductOverviewProps> = () => ({
   props: {
-    title: staticProductOverviewPage.product.name,
-    navLinks: makeMenu(staticNav, staticProductOverviewPage.product),
-    ...staticProductOverviewPage,
+    title: ioSignOverviewPage.product.name,
+    navLinks: makeMenu(staticNav, ioSignOverviewPage.product),
+    ...ioSignOverviewPage,
   },
 });
 
