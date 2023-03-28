@@ -14,6 +14,11 @@ const ioSignProduct: Product = {
   rootPath: '/firma-con-io',
 };
 
+const ioSignImage = {
+  src: 'https://images.pexels.com/photos/175045/pexels-photo-175045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  alt: 'Immagine di Firma con IO',
+};
+
 const ioSignRelated: ProductPageReferences = {
   title: 'Risorse correlate',
   references: [
@@ -42,19 +47,16 @@ const ioSignRelated: ProductPageReferences = {
 // Tutorial ///////////////////////////////////////////////////////////////////
 
 export const ioSignTutorialPreview: ProductTutorialPreview = {
-    title: '',
-    // TODO: Change the type, remove the title
-    preview: {
-      date: '13 luglio 2022',
-      title: 'Scopri Firma con IO in 3 minuti',
-      description:
-        'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
-      image: {
-        src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-        alt: 'Live from space album cover',
-      },
-      link: '/firma-con-io/tutorial',
-    },
+  title: '',
+  // TODO: Change the type, remove the title
+  preview: {
+    date: '13 luglio 2022',
+    title: 'Scopri Firma con IO in 3 minuti',
+    description:
+      'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
+    image: ioSignImage,
+    link: '/firma-con-io/tutorial',
+  },
 };
 
 export const ioSignTutorialPage: ProductTutorial = {
@@ -298,10 +300,7 @@ export const ioSignOverviewPreview: ProductOverviewPreview = {
     description:
       'Grazie a Firma con IO, i cittadini possono firmare documenti e contratti in maniera semplice, veloce e sicura direttamente tramite l’app IO. Integrandosi unicamente con questa funzionalità, gli Enti possono gestire tutti i processi di firma in un unico posto.',
     link: '/firma-con-io/panoramica',
-    image: {
-      src: 'https://images.unsplash.com/photo-1677324661707-3afad71c0307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-      alt: 'Immagine di Firma con IO',
-    },
+    image: ioSignImage,
   },
 };
 
