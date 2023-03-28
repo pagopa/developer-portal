@@ -1,5 +1,9 @@
 import { Nav } from '@/domain/navigator';
-import { ioSignOverviewPreview, ioSignQuickStartPreview, ioSignTutorialPreview } from './staticProduct';
+import {
+  ioSignOverviewPreview,
+  ioSignQuickStartPreview,
+  ioSignTutorialPreview,
+} from './staticProduct';
 
 export const staticNav: Nav = [
   {

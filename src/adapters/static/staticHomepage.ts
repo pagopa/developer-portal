@@ -1,5 +1,9 @@
 import { Homepage } from '@/domain/homepage';
-import { ioSignOverviewPreview, ioSignQuickStartPreview, ioSignTutorialPreview } from './staticProduct';
+import {
+  ioSignOverviewPreview,
+  ioSignQuickStartPreview,
+  ioSignTutorialPreview,
+} from './staticProduct';
 
 export const staticHomepage: Homepage = {
   hero: {
