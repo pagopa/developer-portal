@@ -21,4 +21,11 @@ export const staticNav: Nav = [
     },
     path: '/firma-con-io/quick-start',
   },
+  {
+    name: {
+      nav: 'Tutorial',
+      breadcrumb: 'Firma con IO - Tutorial',
+    },
+    path: '/firma-con-io/tutorial',
+  }
 ];
