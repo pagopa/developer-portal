@@ -41,6 +41,7 @@ const RelatedResources = (props: ProductPageReferences) => (
                     raised
                     sx={{
                       textAlign: 'center',
+                      minWidth: 270,
                       py: 6,
                     }}
                     key={i}
