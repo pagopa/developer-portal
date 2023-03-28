@@ -105,7 +105,7 @@ export type ProductQuickStart = {
 
 // Tutorial ///////////////////////////////////////////////////////////////////
 
-export type ProductTutorial = {
+export type ProductTutorialIndex = {
   product: Product;
   title: string;
   description: string;

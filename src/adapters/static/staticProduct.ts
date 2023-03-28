@@ -5,7 +5,7 @@ import {
   ProductPageReferences,
   ProductQuickStart,
   ProductQuickStartPreview,
-  ProductTutorial,
+  ProductTutorialIndex,
   ProductTutorialPreview,
 } from '@/domain/product';
 
@@ -66,7 +66,7 @@ export const ioSignTutorialPreview: ProductTutorialPreview = {
   },
 };
 
-export const ioSignTutorialPage: ProductTutorial = {
+export const ioSignTutorialIndexPage: ProductTutorialIndex = {
   product: ioSignProduct,
   title: 'Tutorial',
   description:
