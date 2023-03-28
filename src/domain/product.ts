@@ -109,7 +109,7 @@ export type ProductTutorial = {
   product: Product;
   title: string;
   description: string;
-  tutorial: ProductTutorialPreview,
+  tutorial: ProductTutorialPreview;
   related: ProductPageReferences;
 };
 

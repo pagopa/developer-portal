@@ -5,18 +5,18 @@ import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
 import QuickStartSteps from '@/components/QuickStartSteps';
 import RelatedResources from '@/components/RelatedResources';
 import { GetStaticProps } from 'next';
-import { staticProductQuickStartPage } from '@/adapters/static/staticQuickStartPage';
 import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
 import { ProductQuickStart } from '@/domain/product';
 import { makeMenu } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
+import { ioSignQuickStartPage } from '@/adapters/static/staticProduct';
 
 type ProductQuickstartProps = ProductQuickStart & ProductNavBarProps;
 
 export const getStaticProps: GetStaticProps<ProductQuickstartProps> = () => ({
   props: {
-    navLinks: makeMenu(staticNav, staticProductQuickStartPage.product),
-    ...staticProductQuickStartPage,
+    navLinks: makeMenu(staticNav, ioSignQuickStartPage.product),
+    ...ioSignQuickStartPage,
   },
 });
 
