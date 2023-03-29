@@ -88,7 +88,7 @@ A questo punto dovrai identificare i campi firma del documento, individuandone l
 
 Le informazioni da indicare verranno riportate all’interno dei campi **Posizione** e **Dimensione.** Assicurati che l’unità di misura sia impostata in Punti (pt) sia per la posizione che la dimensione.
 
-![Amazing](/tutorial-sign-gimp.png)
+![Immagine che indica come trovare la posizione della firma usando GIMP](/tutorial-sign-gimp.png)
 
 ## Usare le coordinate nella la creazione del dossier di richiesta di firma
 

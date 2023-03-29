@@ -32,7 +32,7 @@ export const staticNav: Nav = [
   {
     name: {
       breadcrumb:
-        'Come creare e preparare il documento  da firmare digitalmente con Firma con IO',
+        'Preparare il documento da firmare digitalmente con Firma con IO',
     },
     path: ioSignPageLinks.tutorialHowCreatePdf,
   },
