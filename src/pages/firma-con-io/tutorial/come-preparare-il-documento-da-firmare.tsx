@@ -22,7 +22,7 @@ const Tutorial = (props: ProductTutorial) => {
     <Box>
       <Stack>
         <Header />
-        <Box bgcolor='background.paper'>
+        <Box bgcolor='background.paper' sx={{ p: 5 }}>
           <Container maxWidth='xl'>
             <Breadcrumbs
               items={makeBreadcrumbs(staticNav, useRouter().pathname)}
