@@ -3,7 +3,7 @@ import { Homepage } from '@/domain/homepage';
 export const staticHomepage: Homepage = {
   hero: {
     title:
-      'Tutto ciò che serve per integrarsi con l’ecosistema di servizi PagoPA',
+      'Tutto ciò che serve per integrarsi con l’ecosistema dei servizi PagoPA',
     cover:
       'https://images.pexels.com/photos/5053835/pexels-photo-5053835.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
   },
@@ -39,7 +39,7 @@ export const staticHomepage: Homepage = {
     },
   },
   comingSoon: {
-    title: 'In arrivo su PagoPA DevPortal',
+    title: 'In arrivo sul Developer Portal di PagoPA',
     items: [
       {
         title: 'IO, l’app dei servizi pubblici',

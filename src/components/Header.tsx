@@ -4,7 +4,7 @@ import { ButtonNaked, theme } from '@pagopa/mui-italia';
 
 const values = {
   href: '/',
-  title: 'PagoPA DevPortal',
+  title: 'PagoPA Developer Portal',
 };
 
 const Header = () => (
@@ -34,7 +34,7 @@ const Header = () => (
         >
           {'PagoPA'}
           <Box fontWeight={'bold'} sx={{ pl: 0.8, pr: 1.6 }}>
-            {'DevPortal'}
+            {'Developer Portal'}
           </Box>
           <Box
             sx={{
