@@ -122,11 +122,8 @@ export type ProductTutorial = {
 
 export type ProductTutorialPreview = {
   title: string;
-  preview: {
-    title: string;
-    description: string;
-    link: string;
-    image: Image;
-    date: string;
-  };
+  description: string;
+  link: string;
+  image: Image;
+  date: string;
 };
