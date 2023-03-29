@@ -1,5 +1,4 @@
-import { Box, Container } from '@mui/material';
-import Stack from '@mui/material/Stack';
+import { Box, Container, Stack } from '@mui/material';
 import { ButtonNaked, theme } from '@pagopa/mui-italia';
 import Link from 'next/link';
 
