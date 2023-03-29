@@ -114,10 +114,11 @@ export type ProductTutorialIndex = {
 };
 
 export type ProductTutorial = {
+  title: string;
+  description: string;
   // TODO: At the moment use string
   // which is a markdown content
   body: string;
-  related: ProductPageReferences;
 };
 
 export type ProductTutorialPreview = {

@@ -54,6 +54,10 @@ const ioSignRelated: ProductPageReferences = {
 // Tutorial ///////////////////////////////////////////////////////////////////
 
 export const ioSignTutorial: ProductTutorial = {
+  title:
+    'Come creare e preparare il documento da firmare digitalmente con Firma con IO',
+  description:
+    'In questo tutorial vedremo come creare un documento in formato PDF o PDF/A-2A, e come identificare i campi firma per definire dove verrà apposta la firma digitale.',
   body: `
   # Come creare e preparare il documento  da firmare digitalmente con Firma con IO
 
@@ -106,7 +110,6 @@ A questo punto, le coordinate identificate andranno inserite nella richiesta di 
 Puoi fare un test di creazione del dossier - inserendo anche le coordinate appena ricavate - nella guida rapida a tua disposizione qui.
 
   `,
-  related: ioSignRelated,
 };
 
 export const ioSignTutorialPreview: ProductTutorialPreview = {

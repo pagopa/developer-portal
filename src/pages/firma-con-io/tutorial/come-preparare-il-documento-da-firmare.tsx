@@ -9,6 +9,7 @@ import { ProductTutorial } from '@/domain/product';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
@@ -22,14 +23,29 @@ const Tutorial = (props: ProductTutorial) => {
       <Stack>
         <Header />
         <Box bgcolor='background.paper'>
-          <Container maxWidth='xl' sx={{ py: 6 }}>
+          <Container maxWidth='xl'>
             <Breadcrumbs
               items={makeBreadcrumbs(staticNav, useRouter().pathname)}
             />
+            <Container maxWidth='md'>
+              <Stack
+                spacing={3}
+                sx={{ pt: 10, pb: 5 }}
+                justifyContent='center'
+                textAlign='center'
+              >
+                <Typography variant='h4' color='text.primary'>
+                  {props.title}
+                </Typography>
+                <Typography variant='body1' color='text.primary'>
+                  {props.description}
+                </Typography>
+              </Stack>
+            </Container>
           </Container>
         </Box>
         <Container maxWidth='lg'>
-          <Stack spacing={3} sx={{ py: 20 }}>
+          <Stack spacing={3} sx={{ pt: 10, pb: 20 }}>
             <MuiMarkdown body={props.body} />
           </Stack>
         </Container>
