@@ -20,9 +20,10 @@ const ioSignImage = {
   alt: 'Immagine di Firma con IO',
 };
 
-const ioSignPageLinks = {
+export const ioSignPageLinks = {
   overview: `${ioSignProduct.rootPath}/panoramica`,
   tutorial: `${ioSignProduct.rootPath}/tutorial`,
+  tutorialHowCreatePdf: `${ioSignProduct.rootPath}/tutorial/come-preparare-il-documento-da-firmare`,
   quickStart: `${ioSignProduct.rootPath}/quick-start`,
 };
 
@@ -40,7 +41,7 @@ const ioSignRelated: ProductPageReferences = {
       title: 'Scopri i tutorial',
       description:
         'Tutorial semplici ed efficaci per approfondire ed apprendere task specifici',
-      link: ioSignPageLinks.tutorial,
+      link: ioSignPageLinks.tutorialHowCreatePdf,
     },
     {
       type: 'guide',
@@ -59,11 +60,11 @@ export const ioSignTutorial: ProductTutorial = {
   description:
     'In questo tutorial vedremo come creare un documento in formato PDF o PDF/A-2A, e come identificare i campi firma per definire dove verrà apposta la firma digitale.',
   body: `
-  # Come creare e preparare il documento  da firmare digitalmente con Firma con IO
+# Come creare e preparare il documento  da firmare digitalmente con Firma con IO
 
-  Firma con IO è una funzionalità che consente ai cittadini di **firmare documenti e contratti** tramite l’app IO in maniera semplice, veloce e sicura, e agli enti di **gestire tutti i processi di firma.** È una Firma Elettronica Qualificata (FEQ), ed  ha quindi il massimo valore legale probatorio, pari alla firma autografa, senza alcuna esclusione normativa.
+Firma con IO è una funzionalità che consente ai cittadini di **firmare documenti e contratti** tramite l’app IO in maniera semplice, veloce e sicura, e agli enti di **gestire tutti i processi di firma.** È una Firma Elettronica Qualificata (FEQ), ed  ha quindi il massimo valore legale probatorio, pari alla firma autografa, senza alcuna esclusione normativa.
 
-  Per l’avvio del processo di firma digitale con Firma con IO è necessario creare il documento da firmare, e identificare i punti in cui il cittadino dovrà firmarlo. **In questo tutorial vedremo come creare un documento in formato PDF o PDF/A-2A, e come identificare i campi firma per definire dove verrà apposta la firma digitale.**
+Per l’avvio del processo di firma digitale con Firma con IO è necessario creare il documento da firmare, e identificare i punti in cui il cittadino dovrà firmarlo. **In questo tutorial vedremo come creare un documento in formato PDF o PDF/A-2A, e come identificare i campi firma per definire dove verrà apposta la firma digitale.**
 
 ## Creare un file in formato PDF/A-2A
 Per creare un file in formato PDF/A2-A dovrai scrivere un documento utilizzando un qualsiasi word processor, avendo cura di verificare che preveda l’esportazione in questo formato (come ad esempio Microsoft Word, OpenOffice e LibreOffice). Non potrai creare un PDF da testi scansionati, perché verrebbero rappresentati come immagini e non come testi.
@@ -107,8 +108,7 @@ A questo punto, le coordinate identificate andranno inserite nella richiesta di 
 }
 \`\`\`
 
-Puoi fare un test di creazione del dossier - inserendo anche le coordinate appena ricavate - nella guida rapida a tua disposizione qui.
-
+Puoi fare un test di creazione del dossier - inserendo anche le coordinate appena ricavate - nella guida rapida a tua disposizione [qui](${ioSignPageLinks.quickStart}).
   `,
 };
 
@@ -121,8 +121,7 @@ export const ioSignTutorialPreview: ProductTutorialPreview = {
     description:
       'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
     image: ioSignImage,
-    // TODO: Change to the tutorial detail
-    link: ioSignPageLinks.tutorial,
+    link: ioSignPageLinks.tutorialHowCreatePdf,
   },
 };
 
