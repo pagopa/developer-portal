@@ -14,53 +14,53 @@ type MuiMarkdownProps = {
 const MuiMarkdown = ({ body }: MuiMarkdownProps) => (
   <ReactMarkdown
     components={{
-      h1({ node, className, children, ...props }) {
+      h1({ children }) {
         return <Typography variant='h4'>{children}</Typography>;
       },
-      h2({ node, className, children, ...props }) {
+      h2({ children }) {
         return <Typography variant='h5'>{children}</Typography>;
       },
-      h3({ node, className, children, ...props }) {
+      h3({ children }) {
         return <Typography variant='h5'>{children}</Typography>;
       },
-      h4({ node, className, children, ...props }) {
+      h4({ children }) {
         return <Typography variant='h5'>{children}</Typography>;
       },
-      h5({ node, className, children, ...props }) {
+      h5({ children }) {
         return <Typography variant='h5'>{children}</Typography>;
       },
-      h6({ node, className, children, ...props }) {
+      h6({ children }) {
         return <Typography variant='h6'>{children}</Typography>;
       },
-      p({ node, className, children, ...props }) {
+      p({ children }) {
         return <Typography variant='body2'>{children}</Typography>;
       },
       a({ node, className, children, ...props }) {
         return <Link {...props}>{children}</Link>;
       },
-      li({ node, className, children, ...props }) {
+      li({ children }) {
         return (
           <Box component='li' mt={1}>
             <Typography variant='body2'>{children}</Typography>
           </Box>
         );
       },
-      hr({ node, className, children, ...props }) {
+      hr() {
         return <Divider />;
       },
-      img({ node, className, alt, width, height, ...props }) {
+      img({ alt, src }) {
         return (
           <Container maxWidth='sm'>
             <Box sx={{ height: '50vh' }} position='relative'>
-              <Image alt={alt || 'empty'} src={props.src || ''} fill />
+              <Image alt={alt || 'empty'} src={src || ''} fill />
             </Box>
           </Container>
         );
       },
-      blockquote({ node, className, children, ...props }) {
+      blockquote({ children }) {
         return <blockquote>{children}</blockquote>;
       },
-      code({ node, className, children, inline, ...props }) {
+      code({ children, inline }) {
         return inline ? (
           <Typography variant='monospaced'>{children}</Typography>
         ) : (
