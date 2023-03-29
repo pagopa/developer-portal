@@ -16,14 +16,13 @@ export const getStaticProps: GetStaticProps<ProductTutorial> = () => ({
   props: ioSignTutorial,
 });
 
-
 const Tutorial = (props: ProductTutorial) => {
   return (
     <Box>
       <Stack>
         <Header />
         <Box bgcolor='background.paper'>
-          <Container maxWidth='xl' sx={{py: 6}}>
+          <Container maxWidth='xl' sx={{ py: 6 }}>
             <Breadcrumbs
               items={makeBreadcrumbs(staticNav, useRouter().pathname)}
             />
