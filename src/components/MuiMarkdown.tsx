@@ -3,9 +3,10 @@ import Container from '@mui/material/Container';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Link from '@mui/material/Link';
+import MUILink from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type MuiMarkdownProps = {
   body: string;
@@ -35,8 +36,8 @@ const MuiMarkdown = ({ body }: MuiMarkdownProps) => (
       p({ children }) {
         return <Typography variant='body2'>{children}</Typography>;
       },
-      a({ node, className, children, ...props }) {
-        return <Link {...props}>{children}</Link>;
+      a({ children, href }) {
+        return <MUILink component={Link} href={href}>{children}</MUILink>;
       },
       li({ children }) {
         return (
