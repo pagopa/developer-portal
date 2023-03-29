@@ -28,7 +28,7 @@ const Tutorial = (props: ProductTutorial) => {
             />
           </Container>
         </Box>
-        <Container maxWidth='xl'>
+        <Container maxWidth='lg'>
           <Stack spacing={3} sx={{ py: 20 }}>
             <MuiMarkdown body={props.body} />
           </Stack>
