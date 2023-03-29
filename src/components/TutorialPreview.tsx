@@ -30,24 +30,24 @@ const TutorialPreview = (props: ProductTutorialPreview) => (
         <CardMedia
           component='img'
           sx={{ width: 350 }}
-          image={`${props.preview.image.src}`}
-          alt={`${props.preview.image.alt}`}
+          image={`${props.image.src}`}
+          alt={`${props.image.alt}`}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant='subtitle1' component='div'>
-              {props.preview.date}
+              {props.date}
             </Typography>
             <Typography variant='h5' component='div'>
-              {props.preview.title}
+              {props.title}
             </Typography>
             <Typography variant='body1' color='text.secondary' component='div'>
-              {props.preview.description}
+              {props.description}
             </Typography>
             <ButtonNaked
               size='medium'
               color='primary'
-              href={props.preview.link}
+              href={props.link}
               endIcon={<ArrowForwardIcon />}
               component={Link}
             >

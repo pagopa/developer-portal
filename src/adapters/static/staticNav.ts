@@ -31,7 +31,7 @@ export const staticNav: Nav = [
       nav: 'Tutorial',
       breadcrumb: 'Firma con IO - Tutorial',
     },
-    path: ioSignTutorialPreview.preview.link,
+    path: ioSignTutorialPreview.link,
   },
   {
     name: {

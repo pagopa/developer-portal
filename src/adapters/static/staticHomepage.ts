@@ -26,7 +26,7 @@ export const staticHomepage: Homepage = {
         title: 'Come preparare un file PDF per la firma',
         description:
           'Un tutorial completo per realizzare un file PDF/A-2A pronto per la firma.',
-        link: ioSignTutorialPreview.preview.link,
+        link: ioSignTutorialPreview.link,
       },
     ],
   },
