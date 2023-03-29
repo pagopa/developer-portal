@@ -34,7 +34,11 @@ const MuiMarkdown = ({ body }: MuiMarkdownProps) => (
         return <Typography variant='h6'>{children}</Typography>;
       },
       p({ children }) {
-        return <Typography variant='body2'>{children}</Typography>;
+        return (
+          <Typography variant='body2' component='div'>
+            {children}
+          </Typography>
+        );
       },
       a({ children, href }) {
         return (
