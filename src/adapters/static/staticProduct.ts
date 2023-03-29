@@ -110,17 +110,13 @@ Puoi fare un test di creazione del dossier - inserendo anche le coordinate appen
 };
 
 export const ioSignTutorialPreview: ProductTutorialPreview = {
-  title: '',
-  // TODO: Change the type, remove the title
-  preview: {
-    date: '13 luglio 2022',
-    title: 'Scopri Firma con IO in 3 minuti',
-    description:
-      'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
-    image: ioSignImage,
-    // TODO: Change to the tutorial detail
-    link: ioSignPageLinks.tutorial,
-  },
+  date: '13 luglio 2022',
+  title: 'Scopri Firma con IO in 3 minuti',
+  description:
+    'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
+  image: ioSignImage,
+  // TODO: Change to the tutorial detail
+  link: ioSignPageLinks.tutorial,
 };
 
 export const ioSignTutorialIndexPage: ProductTutorialIndex = {
