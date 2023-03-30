@@ -105,12 +105,20 @@ export type ProductQuickStart = {
 
 // Tutorial ///////////////////////////////////////////////////////////////////
 
-export type ProductTutorial = {
+export type ProductTutorialIndex = {
   product: Product;
   title: string;
   description: string;
   tutorial: ProductTutorialPreview;
   related: ProductPageReferences;
+};
+
+export type ProductTutorial = {
+  title: string;
+  description: string;
+  // TODO: At the moment use string
+  // which is a markdown content
+  body: string;
 };
 
 export type ProductTutorialPreview = {
