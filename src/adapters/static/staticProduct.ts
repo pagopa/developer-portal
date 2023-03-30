@@ -117,9 +117,9 @@ export const ioSignTutorialPreview: ProductTutorialPreview = {
   // TODO: Change the type, remove the title
   preview: {
     date: '13 luglio 2022',
-    title: 'Scopri Firma con IO in 3 minuti',
+    title: ioSignTutorial.title,
     description:
-      'Con Piattaforma Notifiche, ricevi e gestisci nello stesso spazio tutti gli atti di notifica che ti inviano Enti e Pubbliche Amministrazioni.',
+      ioSignTutorial.description,
     image: ioSignImage,
     link: ioSignPageLinks.tutorialHowCreatePdf,
   },
