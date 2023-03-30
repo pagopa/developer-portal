@@ -118,8 +118,7 @@ export const ioSignTutorialPreview: ProductTutorialPreview = {
   preview: {
     date: '13 luglio 2022',
     title: ioSignTutorial.title,
-    description:
-      ioSignTutorial.description,
+    description: ioSignTutorial.description,
     image: ioSignImage,
     link: ioSignPageLinks.tutorialHowCreatePdf,
   },
