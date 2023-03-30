@@ -10,6 +10,9 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@pagopa/mui-italia'],
   trailingSlash: true,
+  images: {
+    unoptimized: true,
+  }
 }
 
 module.exports = nextConfig
