@@ -24,7 +24,7 @@ export const ioSignPageLinks = {
   overview: `${ioSignProduct.rootPath}/panoramica`,
   tutorial: `${ioSignProduct.rootPath}/tutorial`,
   tutorialHowCreatePdf: `${ioSignProduct.rootPath}/tutorial/come-preparare-il-documento-da-firmare`,
-  quickStart: `${ioSignProduct.rootPath}/quick-start`,
+  quickStart: `${ioSignProduct.rootPath}/guida-rapida`,
 };
 
 const ioSignRelated: ProductPageReferences = {

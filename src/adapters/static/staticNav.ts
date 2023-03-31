@@ -17,8 +17,8 @@ export const staticNav: Nav = [
   },
   {
     name: {
-      nav: 'Quick Start',
-      breadcrumb: 'Firma con IO - Quick Start',
+      nav: 'Guida Rapida',
+      breadcrumb: 'Firma con IO - Guida Rapida',
     },
     path: ioSignPageLinks.quickStart,
   },

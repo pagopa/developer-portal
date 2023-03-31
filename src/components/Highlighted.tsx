@@ -46,7 +46,7 @@ const Highlighted = ({ title, references }: ProductPageReferences) => (
                       )}
                     </Box>
                     <Typography component='label' color='text.secondary'>
-                      {element.type}
+                      {(element.type === 'quickstart') ? 'Guida Rapida' : element.type}
                     </Typography>
                     <Typography gutterBottom variant='h6' color='text.primary'>
                       {element.title}
