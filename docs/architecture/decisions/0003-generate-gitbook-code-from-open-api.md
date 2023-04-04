@@ -4,7 +4,7 @@ Date: 2023-02-22
 
 ## Status
 
-Deprecated
+Deprecated by [ADR 4](0004-use-gitbook-client.md)
 
 ## Context
 
