@@ -8,7 +8,7 @@ Proposed
 
 ## Context
 
-We need to interact with GitBook API from our static website.
+We need to interact with GitBook API so we can retrieve some information required to generate some pages of the website.
 
 ### Option 1
 Use the [`@gitbook/api`](https://www.npmjs.com/package/@gitbook/api) package to interact with the API.
