@@ -1,10 +1,10 @@
-import { ProductQuickStartPreview } from '@/domain/product';
+import { QuickStartPreviewBlock } from '@/domain/pageBlock';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import Link from 'next/link';
 
-const QuickStartPreview = (props: ProductQuickStartPreview) => (
+const QuickStartPreview = (props: QuickStartPreviewBlock) => (
   <Container
     maxWidth='xl'
     sx={{

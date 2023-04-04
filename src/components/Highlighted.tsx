@@ -13,10 +13,10 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlagIcon from '@mui/icons-material/Flag';
 import { pipe } from 'fp-ts/lib/function';
-import { ProductPageReferences } from '@/domain/product';
 import Link from 'next/link';
+import { RelatedResourcesBlock } from '@/domain/pageBlock';
 
-const Highlighted = ({ title, references }: ProductPageReferences) => (
+const Highlighted = ({ title, references }: RelatedResourcesBlock) => (
   <Container maxWidth='xl'>
     <Stack spacing={2} py={6}>
       <Typography variant='h4' textAlign='center'>

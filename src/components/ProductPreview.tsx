@@ -1,8 +1,8 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { ProductOverviewPreview } from '@/domain/product';
 import Link from 'next/link';
+import { ProductOverviewPreview } from '@/domain/homepage';
 
 const ProductPreview = (props: ProductOverviewPreview) => (
   <Container maxWidth='xl'>

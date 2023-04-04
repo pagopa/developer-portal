@@ -12,10 +12,10 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { ProductPageReferences } from '@/domain/product';
 import Link from 'next/link';
+import { RelatedResourcesBlock } from '@/domain/pageBlock';
 
-const RelatedResources = (props: ProductPageReferences) => (
+const RelatedResources = (props: RelatedResourcesBlock) => (
   <Box sx={{ backgroundColor: 'primary.main' }}>
     <Container maxWidth='xl'>
       <Stack spacing={2} py={6}>

@@ -3,7 +3,7 @@ import {
   ioSignOverviewPreview,
   ioSignQuickStartPreview,
   ioSignTutorialPreview,
-} from './staticProduct';
+} from './products/ioSignPages';
 
 export const staticHomepage: Homepage = {
   hero: {
@@ -13,6 +13,7 @@ export const staticHomepage: Homepage = {
       'https://images.pexels.com/photos/5053835/pexels-photo-5053835.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
   },
   highlighted: {
+    type: 'related-resources',
     title: 'In evidenza',
     references: [
       {
