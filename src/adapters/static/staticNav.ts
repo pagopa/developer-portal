@@ -1,5 +1,6 @@
 import { Nav } from '@/domain/navigator';
 import { ioSignPageLinks } from './products/ioSignPages';
+import { ioAppPageLinks } from './products/ioAppPages';
 
 export const staticNav: Nav = [
   {
@@ -35,5 +36,19 @@ export const staticNav: Nav = [
         'Preparare il documento da firmare digitalmente con Firma con IO',
     },
     path: ioSignPageLinks.tutorialHowCreatePdf,
+  },
+  {
+    name: {
+      breadcrumb:
+        `Guida tecnica all'integrazione dei servizi`,
+    },
+    path: ioAppPageLinks.guideTechGuideV23Home,
+  },
+  {
+    name: {
+      breadcrumb:
+        `Guida tecnica all'integrazione dei servizi`,
+    },
+    path: ioAppPageLinks.guideTechGuideV23Changelog,
   },
 ];
