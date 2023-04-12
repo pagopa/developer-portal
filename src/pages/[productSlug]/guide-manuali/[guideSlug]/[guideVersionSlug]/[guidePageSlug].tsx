@@ -14,6 +14,8 @@ import { pipe } from 'fp-ts/lib/function';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { makeMenu } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
+import ProductGuideNav from '@/components/ProductGuideNav';
+import ProductGuideContent from '@/components/ProductGuideContent';
 
 type Params = {
   productSlug: string;
@@ -69,7 +71,10 @@ const GuidePage = (props: ProductGuidePageProps) => (
     <Stack>
       <Header />
       <ProductNavBar {...props} />
-      <></>
+      <Stack direction='row' alignItems='stretch'>
+        <ProductGuideNav />
+        <ProductGuideContent />
+      </Stack>
       <Footer />
     </Stack>
   </Box>
