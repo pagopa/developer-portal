@@ -39,15 +39,13 @@ export const staticNav: Nav = [
   },
   {
     name: {
-      breadcrumb:
-        `Guida tecnica all'integrazione dei servizi`,
+      breadcrumb: `Guida tecnica all'integrazione dei servizi`,
     },
     path: ioAppPageLinks.guideTechGuideV23Home,
   },
   {
     name: {
-      breadcrumb:
-        `Guida tecnica all'integrazione dei servizi`,
+      breadcrumb: `Guida tecnica all'integrazione dei servizi`,
     },
     path: ioAppPageLinks.guideTechGuideV23Changelog,
   },

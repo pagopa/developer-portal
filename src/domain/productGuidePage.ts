@@ -3,8 +3,8 @@ import { Product } from './productPage';
 
 export type ProductGuidePage = {
   product: Product;
-  guideSlug: string,
-  versionSlug: string,
+  guideSlug: string;
+  versionSlug: string;
   slug: string;
   title: string;
   // TODO: At the moment use string
