@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as O from 'fp-ts/lib/Option';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
   AppBar,
@@ -13,7 +14,7 @@ import {
   Tab,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Menu } from '@/domain/navigator';
+import { Menu, isAncestor } from '@/domain/navigator';
 import { useRouter } from 'next/router';
 import { pipe } from 'fp-ts/lib/function';
 import Link from 'next/link';
@@ -24,6 +25,7 @@ export type ProductNavBarProps = {
 };
 
 const ProductNavBar = (props: ProductNavBarProps) => {
+  const currentPath = useRouter().asPath;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -36,9 +38,18 @@ const ProductNavBar = (props: ProductNavBarProps) => {
     setAnchorElNav(null);
   };
 
-  const [value, setValue] = React.useState(useRouter().asPath);
+  const [value, setValue] = React.useState(
+    pipe(
+      props.navLinks,
+      RA.findFirst(isAncestor(currentPath)),
+      O.fold(
+        () => currentPath,
+        (item) => item.path
+      )
+    )
+  );
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 

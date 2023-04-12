@@ -24,6 +24,7 @@ export const ioAppGuideTechGuideV23Changelog: ProductGuidePage = {
 };
 
 export const ioAppPageLinks = {
+  guide: `/${ioAppProduct.slug}/guide-manuali/`,
   guideTechGuideV23Home: `/${ioAppProduct.slug}/guide-manuali/${ioAppGuideTechGuideV23Home.guideSlug}/${ioAppGuideTechGuideV23Home.versionSlug}/${ioAppGuideTechGuideV23Home.slug}`,
   guideTechGuideV23Changelog: `/${ioAppProduct.slug}/guide-manuali/${ioAppGuideTechGuideV23Changelog.guideSlug}/${ioAppGuideTechGuideV23Changelog.versionSlug}/${ioAppGuideTechGuideV23Changelog.slug}`,
 };
