@@ -65,12 +65,12 @@ export type Breadcrumbs = ReadonlyArray<BreadcrumbItem>;
 
 const isChild =
   (path: string) =>
-  (l: NavItem): boolean =>
+  (l: Pick<NavItem, 'path'>): boolean =>
     l.path.startsWith(path);
 
-const isAncestor =
+export const isAncestor =
   (path: string) =>
-  (l: NavItem): boolean =>
+  (l: Pick<NavItem, 'path'>): boolean =>
     path.startsWith(l.path);
 
 /**
