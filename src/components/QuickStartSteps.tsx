@@ -15,12 +15,12 @@ import { Expand } from '@mui/icons-material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
-  ProductQuickStart,
-  ProductQuickStartElement,
-  ProductQuickStartExample,
-} from '@/domain/product';
+  QuickStartBlock,
+  QuickStartExample,
+  QuickStartElement,
+} from '@/domain/pageBlock';
 
-const QuickStartElement = (props: ProductQuickStartElement) => {
+const QuickStartElement = (props: QuickStartElement) => {
   switch (props.type) {
     case 'paragraph':
       return <Typography variant='body2'>{props.text}</Typography>;
@@ -49,7 +49,7 @@ const QuickStartElement = (props: ProductQuickStartElement) => {
   }
 };
 
-const QuickStartExample = (props: ProductQuickStartExample) => (
+const QuickStartExample = (props: QuickStartExample) => (
   <Box>
     <Accordion defaultExpanded={true} sx={{ p: 0, m: 0 }}>
       <AccordionSummary sx={{ p: 0 }}>
@@ -96,7 +96,7 @@ const QuickStartExample = (props: ProductQuickStartExample) => (
   </Box>
 );
 
-const QuickStartSteps = (props: Pick<ProductQuickStart, 'steps'>) => (
+const QuickStartSteps = (props: QuickStartBlock) => (
   <Container maxWidth='xl'>
     <Stack spacing={6} sx={{ py: 10 }}>
       {pipe(

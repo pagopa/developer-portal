@@ -1,5 +1,5 @@
 import { Nav } from '@/domain/navigator';
-import { ioSignPageLinks } from './staticProduct';
+import { ioSignPageLinks } from './products/ioSignPages';
 
 export const staticNav: Nav = [
   {

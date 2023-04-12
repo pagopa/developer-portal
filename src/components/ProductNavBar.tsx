@@ -36,7 +36,7 @@ const ProductNavBar = (props: ProductNavBarProps) => {
     setAnchorElNav(null);
   };
 
-  const [value, setValue] = React.useState(useRouter().pathname);
+  const [value, setValue] = React.useState(useRouter().asPath);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);

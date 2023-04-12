@@ -1,6 +1,6 @@
 import { makeMenu, makeBreadcrumbs } from '../navigator';
 
-const product = { rootPath: '/products', name: 'Product 1' };
+const product = { slug: 'products', name: 'Product 1' };
 
 const productNavItem = {
   path: '/products',

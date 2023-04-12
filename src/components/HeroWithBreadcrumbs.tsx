@@ -1,16 +1,12 @@
-import { ProductOverview } from '@/domain/product';
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import Breadcrumbs from './Breadcrumbs';
 import { makeBreadcrumbs } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
 import { useRouter } from 'next/router';
+import { HeroBlock } from '@/domain/pageBlock';
 
-const HeroWithBreadcrumbs = ({
-  title,
-  description,
-  cover,
-}: ProductOverview['hero']) => {
-  const breadcrumbs = makeBreadcrumbs(staticNav, useRouter().pathname);
+const HeroWithBreadcrumbs = ({ title, description, cover }: HeroBlock) => {
+  const breadcrumbs = makeBreadcrumbs(staticNav, useRouter().asPath);
   return (
     <Box
       bgcolor='background.paper'

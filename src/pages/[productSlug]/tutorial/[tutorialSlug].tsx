@@ -1,23 +1,59 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { staticNav } from '@/adapters/static/staticNav';
-import { ioSignTutorial } from '@/adapters/static/staticProduct';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import MuiMarkdown from '@/components/MuiMarkdown';
 import { makeBreadcrumbs } from '@/domain/navigator';
-import { ProductTutorial } from '@/domain/product';
+import { ProductTutorialPage } from '@/domain/productTutorialPage';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { GetStaticProps } from 'next';
+import { pipe } from 'fp-ts/lib/function';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import {
+  getProductTutorialPageBy,
+  getProductTutorialPages,
+} from '@/adapters/static/staticProductTutorialPage';
 
-export const getStaticProps: GetStaticProps<ProductTutorial> = () => ({
-  props: ioSignTutorial,
+type Params = {
+  productSlug: string;
+  tutorialSlug: string;
+};
+
+export const getStaticPaths: GetStaticPaths<Params> = () => ({
+  paths: pipe(
+    getProductTutorialPages(),
+    RA.map(({ product, slug }) => ({
+      params: { productSlug: product.slug, tutorialSlug: slug },
+    })),
+    (array) => [...array]
+  ),
+  fallback: false,
 });
 
-const Tutorial = (props: ProductTutorial) => {
+export const getStaticProps: GetStaticProps<ProductTutorialPage, Params> = (
+  context
+) =>
+  pipe(
+    O.fromNullable(context.params),
+    O.chain(({ productSlug, tutorialSlug }) =>
+      getProductTutorialPageBy(productSlug, tutorialSlug)
+    ),
+    O.foldW(
+      () => ({ notFound: true }),
+      (page) => ({
+        props: {
+          ...page,
+        },
+      })
+    )
+  );
+
+const Tutorial = (props: ProductTutorialPage) => {
   return (
     <Box>
       <Stack>
@@ -25,7 +61,7 @@ const Tutorial = (props: ProductTutorial) => {
         <Box bgcolor='background.paper' sx={{ p: 5 }}>
           <Container maxWidth='xl'>
             <Breadcrumbs
-              items={makeBreadcrumbs(staticNav, useRouter().pathname)}
+              items={makeBreadcrumbs(staticNav, useRouter().asPath)}
             />
             <Container maxWidth='md'>
               <Stack

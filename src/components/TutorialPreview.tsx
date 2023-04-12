@@ -9,10 +9,10 @@ import {
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
-import { ProductTutorialPreview } from '@/domain/product';
 import Link from 'next/link';
+import { TutorialPreviewBlock } from '@/domain/pageBlock';
 
-const TutorialPreview = (props: ProductTutorialPreview) => (
+const TutorialPreview = (props: TutorialPreviewBlock) => (
   <Container
     maxWidth='xl'
     sx={{

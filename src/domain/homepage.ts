@@ -1,7 +1,5 @@
-import {
-  ProductOverviewPreview,
-  ProductPageReferences,
-} from '@/domain/product';
+import { Image } from '@/domain/Image';
+import { RelatedResourcesBlock } from './pageBlock';
 
 export type Hero = {
   title: string;
@@ -18,9 +16,19 @@ export type Showcase = {
   items: ReadonlyArray<ShowcaseItem>;
 };
 
+export type ProductOverviewPreview = {
+  title: string;
+  preview: {
+    title: string;
+    description: string;
+    link: string;
+    image: Image;
+  };
+};
+
 export type Homepage = {
   hero: Hero;
-  highlighted: ProductPageReferences;
+  highlighted: RelatedResourcesBlock;
   productPreview: ProductOverviewPreview;
   comingSoon: Showcase;
 };

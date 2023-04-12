@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 import { contramap } from 'fp-ts/lib/Ord';
-import { Product } from '@/domain/product';
+import { Product } from './productPage';
 
 type NavItem = {
   path: string;
@@ -41,7 +41,7 @@ export const makeMenu = (nav: Nav, product: Product): Menu =>
   pipe(
     nav,
     // keep only children items
-    RA.filter(isChild(product.rootPath)),
+    RA.filter(isChild(`/${product.slug}`)),
     // keep only items with a nav value
     RA.filterMap((item) =>
       item.name.nav ? O.some({ path: item.path, name: item.name.nav }) : O.none
