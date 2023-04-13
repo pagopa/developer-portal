@@ -13,8 +13,8 @@
     "lint": "next lint",
     "prettify": "prettier --write \"./**/*.{ts,tsx}\"",
     "prepare": "husky install",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook:run": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -33,12 +33,13 @@
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.4",
-    "@storybook/addon-interactions": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
     "@storybook/blocks": "^7.0.4",
+    "@storybook/manager-api": "^7.0.4",
     "@storybook/nextjs": "^7.0.4",
     "@storybook/react": "^7.0.4",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "@storybook/theming": "^7.0.4",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.28",
