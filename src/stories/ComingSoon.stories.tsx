@@ -2,15 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import ComingSoon from '@/components/ComingSoon';
 
 const meta: Meta<typeof ComingSoon> = {
-  /* The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
   title: 'Components/Coming Soon',
   component: ComingSoon,
-  /*
-   * This will generate a documentation page.
-   */
   tags: ['autodocs'],
 };
 
@@ -18,7 +11,6 @@ export default meta;
 
 export const Showcase: StoryObj<typeof ComingSoon> = {
   args: {
-    // The args you need here will depend on your component
     title: 'Coming Soon',
     items: [
       {

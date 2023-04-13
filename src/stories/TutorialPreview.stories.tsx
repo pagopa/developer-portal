@@ -2,15 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import TutorialPreview from '@/components/TutorialPreview';
 
 const meta: Meta<typeof TutorialPreview> = {
-  /* The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
   title: 'Components/Tutorial',
   component: TutorialPreview,
-  /*
-   * This will generate a documentation page.
-   */
   tags: ['autodocs'],
 };
 
@@ -18,7 +11,6 @@ export default meta;
 
 export const Preview: StoryObj<typeof TutorialPreview> = {
   args: {
-    // The args you need here will depend on your component
     type: 'tutorial-preview',
     title: 'Tutorial Title',
     preview: {
