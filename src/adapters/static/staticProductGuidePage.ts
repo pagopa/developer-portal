@@ -1,17 +1,29 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
+  GetProductGuideNavigationBy,
   GetProductGuidePageBy,
   GetProductGuidePages,
+  makeProductGuideMenuItem,
 } from '@/domain/productGuidePage';
 import {
+  ioAppGuideTechGuideV23SetUp,
   ioAppGuideTechGuideV23Changelog,
+  ioAppGuideTechGuideV23CreateService,
+  ioAppGuideTechGuideV23Functionalities,
   ioAppGuideTechGuideV23Home,
+  ioAppGuideTechGuideV23PublishService,
+  ioAppGuideTechGuideV23Adesione,
 } from './products/ioAppPages';
 
 export const getProductGuidePages: GetProductGuidePages = () => [
+  ioAppGuideTechGuideV23SetUp,
+  ioAppGuideTechGuideV23Adesione,
   ioAppGuideTechGuideV23Home,
   ioAppGuideTechGuideV23Changelog,
+  ioAppGuideTechGuideV23Functionalities,
+  ioAppGuideTechGuideV23PublishService,
+  ioAppGuideTechGuideV23CreateService,
 ];
 
 export const getProductGuidePageBy: GetProductGuidePageBy = (
@@ -29,4 +41,20 @@ export const getProductGuidePageBy: GetProductGuidePageBy = (
         page.versionSlug === versionSlug &&
         page.slug === pageSlug
     )
+  );
+
+export const getProductGuideNavigationBy: GetProductGuideNavigationBy = (
+  productSlug,
+  guideSlug,
+  versionSlug
+) =>
+  pipe(
+    getProductGuidePages(),
+    RA.filter(
+      (page) =>
+        page.product.slug === productSlug &&
+        page.guideSlug === guideSlug &&
+        page.versionSlug === versionSlug
+    ),
+    RA.map(makeProductGuideMenuItem)
   );

@@ -1,20 +1,22 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import {
+  getProductGuideNavigationBy,
   getProductGuidePageBy,
   getProductGuidePages,
 } from '@/adapters/static/staticProductGuidePage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
-import { ProductGuidePage } from '@/domain/productGuidePage';
+import ProductNavBar from '@/components/ProductNavBar';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { pipe } from 'fp-ts/lib/function';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { makeMenu } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
-import ProductGuideNav from '@/components/ProductGuideNav';
+import ProductGuideNav, {
+  ProductGuidePageProps,
+} from '@/components/ProductGuideNav';
 import ProductGuideContent from '@/components/ProductGuideContent';
 
 type Params = {
@@ -40,8 +42,6 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
   fallback: false,
 });
 
-type ProductGuidePageProps = ProductGuidePage & ProductNavBarProps;
-
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = (
   context
 ) =>
@@ -60,6 +60,11 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = (
       (page) => ({
         props: {
           navLinks: makeMenu(staticNav, page.product),
+          productGuideNav: getProductGuideNavigationBy(
+            page.product.slug,
+            page.guideSlug,
+            page.versionSlug
+          ),
           ...page,
         },
       })
@@ -72,7 +77,7 @@ const GuidePage = (props: ProductGuidePageProps) => (
       <Header />
       <ProductNavBar {...props} />
       <Stack direction='row' alignItems='stretch'>
-        <ProductGuideNav />
+        <ProductGuideNav {...props} />
         <ProductGuideContent />
       </Stack>
       <Footer />
