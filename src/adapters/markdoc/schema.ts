@@ -7,6 +7,7 @@ import Heading from './components/Heading';
 import Paragraph from './components/Paragraph';
 import Document from './components/Document';
 import Link from './components/Link';
+import PageLink from './components/PageLink';
 
 // https://docs.gitbook.com/content-creation/blocks/hint
 export const hint: Schema = {
@@ -40,6 +41,29 @@ export const embed: Schema = {
       required: true,
     },
   },
+};
+
+// https://docs.gitbook.com/content-creation/blocks/page-link
+export const pageLink: Schema = {
+  render: 'PageLink',
+  children: ['Link'],
+  attributes: {
+    url: {
+      type: String,
+      required: true,
+    },
+  },
+  transform: (node, config) =>
+    Array.from(node.walk())
+      .filter((current) => current.type === 'link')
+      .map(
+        (link) =>
+          new Tag(
+            'PageLink',
+            node.transformAttributes(config),
+            link.transformChildren(config)
+          )
+      ),
 };
 
 // https://docs.gitbook.com/content-creation/blocks/expandable
@@ -79,7 +103,7 @@ const link: Schema = { ...Markdoc.nodes.link, render: 'Link' };
 
 // config
 export const config: ConfigType = {
-  tags: { hint, file, embed, details, summary },
+  tags: { hint, file, embed, details, summary, 'content-ref': pageLink },
   nodes: {
     document,
     heading,
@@ -97,5 +121,6 @@ export const components = {
   Hint: Hint,
   File: File,
   Embed: Embed,
+  PageLink: PageLink,
   Expandable: Expandable,
 };
