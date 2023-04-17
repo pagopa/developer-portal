@@ -1,6 +1,7 @@
-import Markdoc from '@markdoc/markdoc';
-import { components, config } from './schema';
+import Markdoc, { RenderableTreeNode } from '@markdoc/markdoc';
+import { config } from './schema';
 import React from 'react';
+import { components } from './components';
 
 const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)<\/${tag}>`, 'gs'),
@@ -24,7 +25,7 @@ const thR = pairedHtmlTag('th');
 const trR = pairedHtmlTag('tr');
 const tdR = pairedHtmlTag('td');
 
-export const renderGitBookMarkdown = (markdown: string): React.ReactNode => {
+export const transform = (markdown: string): RenderableTreeNode => {
   // Ugly workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   const manipulated = markdown
     .replaceAll('{% end', '{% /')
@@ -41,6 +42,8 @@ export const renderGitBookMarkdown = (markdown: string): React.ReactNode => {
     .replaceAll(trR.regex, trR.replace)
     .replaceAll(tdR.regex, tdR.replace);
   const ast = Markdoc.parse(manipulated);
-  const content = Markdoc.transform(ast, config);
-  return Markdoc.renderers.react(content, React, { components });
+  return Markdoc.transform(ast, config);
 };
+
+export const renderGitBookMarkdown = (markdown: string): React.ReactNode =>
+  Markdoc.renderers.react(transform(markdown), React, { components });

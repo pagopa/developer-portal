@@ -1,13 +1,4 @@
 import Markdoc, { ConfigType, Schema, Tag } from '@markdoc/markdoc';
-import Hint from './components/Hint';
-import File from './components/File';
-import Embed from './components/Embed';
-import Expandable from './components/Expandable';
-import Heading from './components/Heading';
-import Paragraph from './components/Paragraph';
-import Document from './components/Document';
-import Link from './components/Link';
-import PageLink from './components/PageLink';
 
 // https://docs.gitbook.com/content-creation/blocks/hint
 export const hint: Schema = {
@@ -110,17 +101,4 @@ export const config: ConfigType = {
     paragraph,
     link,
   },
-};
-
-// The key must be the same string as `tag` in the schema
-export const components = {
-  Document: Document,
-  Heading: Heading,
-  Link: Link,
-  Paragraph: Paragraph,
-  Hint: Hint,
-  File: File,
-  Embed: Embed,
-  PageLink: PageLink,
-  Expandable: Expandable,
 };
