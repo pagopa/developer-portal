@@ -26,7 +26,10 @@ const trR = pairedHtmlTag('tr');
 const tdR = pairedHtmlTag('td');
 
 export const transform = (markdown: string): RenderableTreeNode => {
-  // Ugly workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
+  // TODO: Ugly workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
+  // The html tag into the markdown can be parsed as following:
+  // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
+  // In this way many RegExp can be removed
   const manipulated = markdown
     .replaceAll('{% end', '{% /')
     .replaceAll(imgR.regex, imgR.replace)
