@@ -72,10 +72,6 @@ export const summary: Schema = {
   render: 'string',
 };
 
-// https://docs.gitbook.com/content-creation/blocks/tabs
-export const tabs: Schema = {};
-export const tab: Schema = {};
-
 // nodes override
 
 const heading: Schema = {
