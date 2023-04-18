@@ -2,7 +2,7 @@ import { Tag } from '@markdoc/markdoc';
 import { transform } from '..';
 
 describe('transfrom', () => {
-  it('should handle content-ref', () => {
+  it('should transform content-ref', () => {
     const markdown =
       '{% content-ref url="../setup-iniziale" %}\n[setup-iniziale](../setup-iniziale)\n{% endcontent-ref %}';
     const actual = transform(markdown);

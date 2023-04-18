@@ -1,5 +1,4 @@
-import { Card, CardActionArea, CardContent } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia/dist/components/ButtonNaked';
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -10,17 +9,9 @@ type PageLinkProps = {
 
 const PageLink = ({ url, children }: PageLinkProps) => (
   <Card variant='outlined'>
-    <CardActionArea>
+    <CardActionArea component={Link} href={url}>
       <CardContent>
-        <ButtonNaked
-          color='text'
-          onFocusVisible={function noRefCheck() {}}
-          size='medium'
-          href={url}
-          component={Link}
-        >
-          {children}
-        </ButtonNaked>
+        <Typography variant={'body1'}> {children} </Typography>
       </CardContent>
     </CardActionArea>
   </Card>
