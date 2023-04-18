@@ -28,7 +28,7 @@ export type ProductGuidePageProps = ProductGuidePage & {
 
 const renderMenuItemText =
   (isCurrent: boolean) => (menuItem: ProductGuideMenuItem) =>
-    (
+    pipe(
       <Typography
         variant='sidenav'
         color={isCurrent ? 'primary.main' : 'text.primary'}
@@ -49,7 +49,7 @@ const renderGroup =
   ) =>
   (currentPath: string) =>
   ({ title: groupName, pages }: ProductGuideMenuItem) =>
-    (
+    pipe(
       <Stack mt={5} spacing={1}>
         <Typography
           color='text.secondary'
