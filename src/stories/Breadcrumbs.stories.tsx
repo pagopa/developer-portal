@@ -6,7 +6,7 @@ const meta: Meta<typeof Breadcrumbs> = {
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: 'Components/Breadcrumbs',
+  title: 'Components/Navigation/Breadcrumbs',
   component: Breadcrumbs,
   /*
    * This will generate a documentation page.

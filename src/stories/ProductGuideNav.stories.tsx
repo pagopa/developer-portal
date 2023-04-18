@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import ProductGuideNav from '@/components/ProductGuideNav';
 
 const meta: Meta<typeof ProductGuideNav> = {
-  title: 'Components/Product Guide Navigator',
+  title: 'Components/Navigation/Product Guide Navigator',
   component: ProductGuideNav,
   tags: ['autodocs'],
 };
