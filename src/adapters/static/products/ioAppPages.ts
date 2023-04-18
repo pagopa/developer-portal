@@ -13,8 +13,6 @@ export const ioAppGuideTechGuideV23Home: ProductGuidePage = {
   slug: 'per-iniziare',
   title: 'Per Iniziare',
   body: 'Hello, start here',
-  kind: 'page',
-  children: [],
 };
 export const ioAppGuideTechGuideV23Changelog: ProductGuidePage = {
   product: ioAppProduct,
@@ -23,8 +21,6 @@ export const ioAppGuideTechGuideV23Changelog: ProductGuidePage = {
   slug: 'changelog',
   title: 'Changelog',
   body: 'version 1',
-  kind: 'page',
-  children: [],
 };
 
 export const ioAppGuideTechGuideV23CreateService: ProductGuidePage = {
@@ -34,8 +30,6 @@ export const ioAppGuideTechGuideV23CreateService: ProductGuidePage = {
   slug: 'creare-un-servizio',
   title: 'Creare un servizio',
   body: 'some content that should say how to create a service',
-  kind: 'page',
-  children: [],
 };
 
 export const ioAppGuideTechGuideV23PublishService: ProductGuidePage = {
@@ -45,8 +39,6 @@ export const ioAppGuideTechGuideV23PublishService: ProductGuidePage = {
   slug: 'pubblicare-un-servizio',
   title: 'Pubblicare un servizio',
   body: 'some content that should say how to publish a service',
-  kind: 'page',
-  children: [ioAppGuideTechGuideV23CreateService],
 };
 
 export const ioAppGuideTechGuideV23Functionalities: ProductGuidePage = {
@@ -56,8 +48,6 @@ export const ioAppGuideTechGuideV23Functionalities: ProductGuidePage = {
   slug: 'funzionalita',
   title: 'Funzionalità',
   body: '',
-  kind: 'group',
-  children: [ioAppGuideTechGuideV23PublishService],
 };
 
 export const ioAppGuideTechGuideV23Adesione: ProductGuidePage = {
@@ -67,8 +57,6 @@ export const ioAppGuideTechGuideV23Adesione: ProductGuidePage = {
   slug: 'adesione-tramite-larea-riservata',
   title: "Adesione tramite l'Area Riservata",
   body: '',
-  kind: 'page',
-  children: [],
 };
 
 export const ioAppGuideTechGuideV23SetUp: ProductGuidePage = {
@@ -78,8 +66,6 @@ export const ioAppGuideTechGuideV23SetUp: ProductGuidePage = {
   slug: 'setup-iniziale',
   title: 'Setup iniziale',
   body: '',
-  kind: 'page',
-  children: [ioAppGuideTechGuideV23Adesione],
 };
 
 export const ioAppPageLinks = {

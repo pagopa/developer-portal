@@ -1,76 +1,173 @@
-import { Box, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Collapse,
+  List,
+  ListItemButton,
+  ListSubheader,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
+import * as b from 'fp-ts/lib/boolean';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import Link from 'next/link';
 import * as React from 'react';
-import { ProductGuideMenu, ProductGuidePage } from '@/domain/productGuidePage';
+import { ProductGuidePage } from '@/domain/productGuidePage';
 import { Menu } from '@/domain/navigator';
 import { useRouter } from 'next/router';
+import {
+  ProductGuideMenu,
+  ProductGuideMenuItem,
+} from '@/domain/productGuideMenu';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 export type ProductGuidePageProps = ProductGuidePage & {
   navLinks: Menu;
-} & { productGuideNav: ProductGuideMenu };
+  productGuideNavLinks: ProductGuideMenu;
+};
+
+const renderMenuItemText =
+  (isCurrent: boolean) => (menuItem: ProductGuideMenuItem) =>
+    (
+      <Typography
+        variant='sidenav'
+        color={isCurrent ? 'primary.main' : 'text.primary'}
+        key={menuItem.title}
+        component={Link}
+        href={menuItem.path}
+        sx={{ textDecoration: 'none', fontSize: 16 }}
+      >
+        {menuItem.title}
+      </Typography>
+    );
+
+const renderGroup =
+  (
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    handleClick: () => void
+  ) =>
+  (currentPath: string) =>
+  ({ title: groupName, pages }: ProductGuideMenuItem) =>
+    (
+      <Stack mt={5} spacing={1}>
+        <Typography
+          color='text.secondary'
+          textTransform='uppercase'
+          sx={{
+            fontSize: 14,
+          }}
+        >
+          {groupName}
+        </Typography>
+        {pipe(
+          pages,
+          RA.map(renderPage(open, setOpen, handleClick)(currentPath))
+        )}
+      </Stack>
+    );
+
+const renderPage =
+  (
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    handleClick: () => void
+  ) =>
+  (currentPath: string) =>
+  (menuItem: ProductGuideMenuItem) =>
+    pipe(menuItem.pages, (pages) =>
+      pipe(
+        pages,
+        RA.isEmpty,
+        b.fold(
+          // // If page has children, render a collapsible list
+          () => (
+            <>
+              <ListItemButton onClick={handleClick}>
+                <Stack
+                  direction='row'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  spacing={2}
+                >
+                  {renderMenuItemText(currentPath.includes(menuItem.path))(
+                    menuItem
+                  )}
+                  {open ? <ExpandLess /> : <ExpandMore />}
+                </Stack>
+              </ListItemButton>
+              <Collapse in={open} timeout='auto' unmountOnExit>
+                <Box>
+                  <List component='div'>
+                    {pipe(
+                      menuItem.pages,
+                      RA.map(
+                        renderPage(open, setOpen, handleClick)(currentPath)
+                      )
+                    )}
+                  </List>
+                </Box>
+              </Collapse>
+            </>
+          ),
+          () => (
+            // If page hasn't children, render a simple list item
+            <ListItemButton>
+              {renderMenuItemText(currentPath.includes(menuItem.path))(
+                menuItem
+              )}
+            </ListItemButton>
+          )
+        )
+      )
+    );
 
 const ProductGuideNav = ({
   title,
   versionSlug,
-  productGuideNav,
+  productGuideNavLinks,
 }: ProductGuidePageProps) => {
   const currentPath = useRouter().asPath;
+
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <Stack spacing={2} bgcolor='background.default' maxWidth='354'>
-      {/* From Figma bgcolor should be #FAFAFA, but it doesn't exist on MUI-Italia */}
-      <Box sx={{ p: 1 }}>
+    <Stack spacing={2} bgcolor='background.default' sx={{ pl: 2 }}>
+      <Box sx={{ p: 1, mt: 8 }}>
         <Typography variant='h6'>{title}</Typography>
       </Box>
-      <Box sx={{ p: 1 }}>
-        <Typography color='text.secondary'>{versionSlug}</Typography>
-      </Box>
-      {pipe(
-        productGuideNav,
-        // If the menuItem is a group, render it without the link reference;
-        RA.map((menuItem) =>
-          menuItem.kind === 'group' ? (
-            <Box key={menuItem.name} component='span' sx={{ p: 1 }}>
-              <Typography
-                key={menuItem.name}
-                color='text.disabled'
-                textTransform='uppercase'
-              >
-                {menuItem.name}
-              </Typography>
-            </Box>
-          ) : currentPath.includes(menuItem.path) ? (
-            // This is the current page, so we render it in a different color
-            // TODO: Missing opacity here
-            <Box key={menuItem.name} component='span' sx={{ p: 1 }}>
-              <Typography
-                variant='sidenav'
-                color='primary.main'
-                key={menuItem.name}
-                component={Link}
-                href={menuItem.path}
-                sx={{ textDecoration: 'none' }}
-              >
-                {menuItem.name}
-              </Typography>
-            </Box>
-          ) : (
-            // This is a link to another page (not the current one)
-            <Box key={menuItem.name} component='span' sx={{ p: 1 }}>
-              <Typography
-                variant='sidenav'
-                key={menuItem.name}
-                component={Link}
-                href={menuItem.path}
-                sx={{ textDecoration: 'none' }}
-              >
-                {menuItem.name}
-              </Typography>
-            </Box>
+      <List
+        component='nav'
+        aria-labelledby='nested-list-subheader'
+        subheader={
+          <ListSubheader
+            component='div'
+            id='nested-list-subheader'
+            sx={{ bgcolor: 'background.default' }}
+          >
+            <Typography color='text.secondary'>
+              Versione {versionSlug}
+            </Typography>
+          </ListSubheader>
+        }
+      >
+        {pipe(
+          productGuideNavLinks,
+          RA.map((menuItem) =>
+            menuItem.kind === 'group'
+              ? renderGroup(isOpen, setIsOpen, handleClick)(currentPath)(
+                  menuItem
+                )
+              : renderPage(isOpen, setIsOpen, handleClick)(currentPath)(
+                  menuItem
+                )
           )
-        )
-      )}
+        )}
+      </List>
     </Stack>
   );
 };

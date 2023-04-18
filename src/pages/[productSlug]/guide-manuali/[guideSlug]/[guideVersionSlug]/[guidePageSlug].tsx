@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import {
-  getProductGuideNavigationBy,
   getProductGuidePageBy,
   getProductGuidePages,
 } from '@/adapters/static/staticProductGuidePage';
@@ -18,6 +17,7 @@ import ProductGuideNav, {
   ProductGuidePageProps,
 } from '@/components/ProductGuideNav';
 import ProductGuideContent from '@/components/ProductGuideContent';
+import { getProductGuideMenu } from '@/domain/productGuideMenu';
 
 type Params = {
   productSlug: string;
@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = (
       (page) => ({
         props: {
           navLinks: makeMenu(staticNav, page.product),
-          productGuideNav: getProductGuideNavigationBy(
+          productGuideNavLinks: getProductGuideMenu(
             page.product.slug,
             page.guideSlug,
             page.versionSlug

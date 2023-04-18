@@ -1,10 +1,8 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
-  GetProductGuideNavigationBy,
   GetProductGuidePageBy,
   GetProductGuidePages,
-  makeProductGuideMenuItem,
 } from '@/domain/productGuidePage';
 import {
   ioAppGuideTechGuideV23SetUp,
@@ -41,20 +39,4 @@ export const getProductGuidePageBy: GetProductGuidePageBy = (
         page.versionSlug === versionSlug &&
         page.slug === pageSlug
     )
-  );
-
-export const getProductGuideNavigationBy: GetProductGuideNavigationBy = (
-  productSlug,
-  guideSlug,
-  versionSlug
-) =>
-  pipe(
-    getProductGuidePages(),
-    RA.filter(
-      (page) =>
-        page.product.slug === productSlug &&
-        page.guideSlug === guideSlug &&
-        page.versionSlug === versionSlug
-    ),
-    RA.map(makeProductGuideMenuItem)
   );

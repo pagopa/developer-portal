@@ -20,20 +20,20 @@ export const GuideNav: StoryObj<typeof ProductGuideNav> = {
     slug: 'setup-iniziale',
     title: 'Setup iniziale',
     body: 'Questa è la guida tecnica',
-    kind: 'page',
-    children: [],
     navLinks: [
       {
         name: 'Home',
         path: '/',
       },
     ],
-    productGuideNav: [
+    productGuideNavLinks: [
       {
-        name: 'Setup',
+        title: 'Setup',
         path: '/app-io/io-guida-tecnica/v2.3/setup-iniziale',
         kind: 'page',
-        children: [],
+        pages: [],
+        slug: 'setup-iniziale',
+        description: 'Questa è la guida tecnica',
       },
     ],
   },
