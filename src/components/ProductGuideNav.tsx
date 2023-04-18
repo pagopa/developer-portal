@@ -16,10 +16,12 @@ const ProductGuideNav = ({
   productGuideNav,
 }: ProductGuidePageProps) => (
   <Stack spacing={2} bgcolor='background.default'>
+    {/* From Figma bgcolor should be #FAFAFA, but it doesn't exist on MUI-Italia */}
     <Typography variant='h6'>{title}</Typography>
     <Typography color='text.secondary'>{versionSlug}</Typography>
     {pipe(
       productGuideNav,
+      // If the menuItem is a group, render it without the link reference;
       RA.map((menuItem) =>
         menuItem.kind === 'group' ? (
           <Typography
