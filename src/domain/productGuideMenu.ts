@@ -1,14 +1,23 @@
 import { IOTechGuide } from '@/adapters/static/staticProductGuideNav';
 
-// TODO Union type of PageGuideMenuItem and GroupGuideMenuItem (group doesn't have description)
-export type ProductGuideMenuItem = {
+type ProductGuideMenuPage = {
   title: string;
-  kind: 'page' | 'group';
-  description?: string;
+  kind: 'page';
+  description: string;
   path: string;
   slug: string;
-  pages: ReadonlyArray<ProductGuideMenuItem>;
+  pages: ReadonlyArray<ProductGuideMenuPage>;
 };
+
+type ProductGuideMenuGroup = {
+  title: string;
+  kind: 'group';
+  path: string;
+  slug: string;
+  pages: ReadonlyArray<ProductGuideMenuPage>;
+};
+
+export type ProductGuideMenuItem = ProductGuideMenuPage | ProductGuideMenuGroup;
 
 export type ProductGuideMenu = ReadonlyArray<ProductGuideMenuItem>;
 
