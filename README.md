@@ -17,3 +17,21 @@ Now that you are ready, run the development server:
 yarn dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Storybook
+To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
+```bash
+yarn storybook:run
+```
+and you will get a message like this:
+```bash
+╭───────────────────────────────────────────────────╮
+│                                                   │
+│   Storybook 7.0.4 for nextjs started              │
+│   240 ms for manager and 17 s for preview         │
+│                                                   │
+│    Local:            http://localhost:6006/       │
+│                                                   │
+╰───────────────────────────────────────────────────╯
+```
+Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
