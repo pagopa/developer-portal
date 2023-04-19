@@ -27,14 +27,29 @@ export type ProductGuidePageProps = ProductGuidePage & {
 };
 
 const renderMenuItemText =
-  (isCurrent: boolean) => (menuItem: ProductGuideMenuItem) =>
+  (isCurrent: boolean) =>
+  (
+    menuItem: ProductGuideMenuItem,
+    {
+      product: { slug: productSlug },
+      guideSlug,
+      versionSlug,
+    }: ProductGuidePageProps
+  ) =>
     pipe(
       <Typography
         variant='sidenav'
         color={isCurrent ? 'primary.main' : 'text.primary'}
         key={menuItem.slug}
-        component={Link}
-        href={menuItem.path}
+        component={(props) => {
+          return (
+            <Link
+              href={menuItem.slug}
+              as={`/${productSlug}/guide-manuali/${guideSlug}/${versionSlug}/${menuItem.slug}`}
+              {...props}
+            />
+          );
+        }}
         sx={{ textDecoration: 'none', fontSize: 16 }}
       >
         {menuItem.title}
@@ -50,7 +65,7 @@ const renderGroup =
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
     handleClick: (_: string) => void
   ) =>
-  (currentPath: string) =>
+  (currentPath: string, productGuideProps: ProductGuidePageProps) =>
   ({ title: groupName, pages }: ProductGuideMenuItem) =>
     pipe(
       <Stack mt={5} spacing={1}>
@@ -68,7 +83,13 @@ const renderGroup =
         </Box>
         {pipe(
           pages,
-          RA.map(renderPage(open, setOpen, handleClick)(currentPath))
+          RA.map(
+            renderPage(
+              open,
+              setOpen,
+              handleClick
+            )(currentPath, productGuideProps)
+          )
         )}
       </Stack>
     );
@@ -82,7 +103,7 @@ const renderPage =
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
     handleClick: (id: string) => void
   ) =>
-  (currentPath: string) =>
+  (currentPath: string, productGuideProps: ProductGuidePageProps) =>
   (menuItem: ProductGuideMenuItem) =>
     pipe(menuItem.pages, (pages) =>
       pipe(
@@ -101,7 +122,8 @@ const renderPage =
                   width={1}
                 >
                   {renderMenuItemText(currentPath.includes(menuItem.path))(
-                    menuItem
+                    menuItem,
+                    productGuideProps
                   )}
                   {open[menuItem.slug] ? <ExpandLess /> : <ExpandMore />}
                 </Stack>
@@ -112,7 +134,11 @@ const renderPage =
                     {pipe(
                       menuItem.pages,
                       RA.map(
-                        renderPage(open, setOpen, handleClick)(currentPath)
+                        renderPage(
+                          open,
+                          setOpen,
+                          handleClick
+                        )(currentPath, productGuideProps)
                       )
                     )}
                   </List>
@@ -124,7 +150,8 @@ const renderPage =
             // If page hasn't children, render a simple list item
             <ListItemButton>
               {renderMenuItemText(currentPath.includes(menuItem.path))(
-                menuItem
+                menuItem,
+                productGuideProps
               )}
             </ListItemButton>
           )
@@ -134,11 +161,7 @@ const renderPage =
 
 type ProductGuideNavOpenState = { [key: string]: boolean };
 
-const ProductGuideNav = ({
-  title,
-  versionSlug,
-  productGuideNavLinks,
-}: ProductGuidePageProps) => {
+const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
   const currentPath = useRouter().asPath;
 
   const [openState, setOpen] = React.useState<ProductGuideNavOpenState>({});
@@ -150,7 +173,7 @@ const ProductGuideNav = ({
   return (
     <Stack spacing={2} bgcolor='background.default' sx={{ pl: 2 }}>
       <Box sx={{ p: 1, mt: 8 }}>
-        <Typography variant='h6'>{title}</Typography>
+        <Typography variant='h6'>{productGuideProps.title}</Typography>
       </Box>
       <List
         component='nav'
@@ -162,21 +185,31 @@ const ProductGuideNav = ({
             sx={{ bgcolor: 'background.default' }}
           >
             <Typography color='text.secondary'>
-              Versione {versionSlug}
+              Versione {productGuideProps.versionSlug}
             </Typography>
           </ListSubheader>
         }
       >
         {pipe(
-          productGuideNavLinks,
+          productGuideProps.productGuideNavLinks,
           RA.map((menuItem) =>
             menuItem.kind === 'group' // If menu item is a group, it has a different type so we render it differently
-              ? renderGroup(openState, setOpen, handleClick)(currentPath)(
-                  menuItem
-                )
-              : renderPage(openState, setOpen, handleClick)(currentPath)(
-                  menuItem
-                )
+              ? renderGroup(
+                  openState,
+                  setOpen,
+                  handleClick
+                )(
+                  currentPath,
+                  productGuideProps
+                )(menuItem)
+              : renderPage(
+                  openState,
+                  setOpen,
+                  handleClick
+                )(
+                  currentPath,
+                  productGuideProps
+                )(menuItem)
           )
         )}
       </List>

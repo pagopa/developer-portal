@@ -5,23 +5,19 @@ import {
   GetProductGuidePages,
 } from '@/domain/productGuidePage';
 import {
-  ioAppGuideTechGuideV23SetUp,
-  ioAppGuideTechGuideV23Changelog,
+  ioAppGuideTechGuideV23InitialSetup,
+  ioAppGuideTechGuideV23DevPortalSignUp,
   ioAppGuideTechGuideV23CreateService,
-  ioAppGuideTechGuideV23Functionalities,
   ioAppGuideTechGuideV23Home,
   ioAppGuideTechGuideV23PublishService,
-  ioAppGuideTechGuideV23Adesione,
 } from './products/ioAppPages';
 
 export const getProductGuidePages: GetProductGuidePages = () => [
-  ioAppGuideTechGuideV23SetUp,
-  ioAppGuideTechGuideV23Adesione,
   ioAppGuideTechGuideV23Home,
-  ioAppGuideTechGuideV23Changelog,
-  ioAppGuideTechGuideV23Functionalities,
-  ioAppGuideTechGuideV23PublishService,
+  ioAppGuideTechGuideV23InitialSetup,
   ioAppGuideTechGuideV23CreateService,
+  ioAppGuideTechGuideV23PublishService,
+  ioAppGuideTechGuideV23DevPortalSignUp,
 ];
 
 export const getProductGuidePageBy: GetProductGuidePageBy = (

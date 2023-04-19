@@ -54,6 +54,6 @@ export const staticNav: Nav = [
     name: {
       breadcrumb: `Guida tecnica all'integrazione dei servizi`,
     },
-    path: ioAppPageLinks.guideTechGuideV23Changelog,
+    path: ioAppPageLinks.guideTechGuideV23InitialSetUp,
   },
 ];
