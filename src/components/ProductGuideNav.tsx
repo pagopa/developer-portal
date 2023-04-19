@@ -59,7 +59,7 @@ const renderMenuItemText =
 /**
  * This function renders a group of pages.
  */
-const renderGroup =
+const renderMenuItemGroup =
   (
     open: ProductGuideNavOpenState,
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
@@ -69,22 +69,20 @@ const renderGroup =
   ({ title: groupName, pages }: ProductGuideMenuItem) =>
     pipe(
       <Stack mt={5} spacing={1}>
-        <Box>
-          <Typography
-            color='text.secondary'
-            textTransform='uppercase'
-            sx={{
-              fontSize: 14,
-              ml: 2,
-            }}
-          >
-            {groupName}
-          </Typography>
-        </Box>
+        <Typography
+          color='text.secondary'
+          textTransform='uppercase'
+          sx={{
+            fontSize: 14,
+            ml: 2,
+          }}
+        >
+          {groupName}
+        </Typography>
         {pipe(
           pages,
           RA.map(
-            renderPage(
+            renderMenuItemPage(
               open,
               setOpen,
               handleClick
@@ -97,7 +95,7 @@ const renderGroup =
 /**
  * This function renders a page (note that a page can contain a list of child pages, so it can call itself recursively).
  */
-const renderPage =
+const renderMenuItemPage =
   (
     open: ProductGuideNavOpenState,
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
@@ -134,7 +132,7 @@ const renderPage =
                     {pipe(
                       menuItem.pages,
                       RA.map(
-                        renderPage(
+                        renderMenuItemPage(
                           open,
                           setOpen,
                           handleClick
@@ -200,7 +198,7 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
           productGuideProps.productGuideNavLinks,
           RA.map((menuItem) =>
             menuItem.kind === 'group' // If menu item is a group, it has a different type so we render it differently
-              ? renderGroup(
+              ? renderMenuItemGroup(
                   openState,
                   setOpen,
                   handleClick
@@ -208,7 +206,7 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
                   currentPath,
                   productGuideProps
                 )(menuItem)
-              : renderPage(
+              : renderMenuItemPage(
                   openState,
                   setOpen,
                   handleClick
