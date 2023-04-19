@@ -95,6 +95,7 @@ const renderPage =
                   justifyContent='space-between'
                   alignItems='center'
                   spacing={2}
+                  width={1}
                 >
                   {renderMenuItemText(currentPath.includes(menuItem.path))(
                     menuItem
