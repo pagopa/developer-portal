@@ -54,15 +54,18 @@ const renderGroup =
   ({ title: groupName, pages }: ProductGuideMenuItem) =>
     pipe(
       <Stack mt={5} spacing={1}>
-        <Typography
-          color='text.secondary'
-          textTransform='uppercase'
-          sx={{
-            fontSize: 14,
-          }}
-        >
-          {groupName}
-        </Typography>
+        <Box>
+          <Typography
+            color='text.secondary'
+            textTransform='uppercase'
+            sx={{
+              fontSize: 14,
+              ml: 2,
+            }}
+          >
+            {groupName}
+          </Typography>
+        </Box>
         {pipe(
           pages,
           RA.map(renderPage(open, setOpen, handleClick)(currentPath))
@@ -104,7 +107,7 @@ const renderPage =
                 </Stack>
               </ListItemButton>
               <Collapse in={open[menuItem.slug]} timeout='auto' unmountOnExit>
-                <Box>
+                <Box sx={{ ml: 2 }}>
                   <List component='div'>
                     {pipe(
                       menuItem.pages,
