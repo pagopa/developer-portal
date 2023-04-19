@@ -32,7 +32,7 @@ const renderMenuItemText =
       <Typography
         variant='sidenav'
         color={isCurrent ? 'primary.main' : 'text.primary'}
-        key={menuItem.title}
+        key={menuItem.slug}
         component={Link}
         href={menuItem.path}
         sx={{ textDecoration: 'none', fontSize: 16 }}
@@ -41,11 +41,14 @@ const renderMenuItemText =
       </Typography>
     );
 
+/**
+ * This function renders a group of pages.
+ */
 const renderGroup =
   (
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    handleClick: () => void
+    open: ProductGuideNavOpenState,
+    setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
+    handleClick: (_: string) => void
   ) =>
   (currentPath: string) =>
   ({ title: groupName, pages }: ProductGuideMenuItem) =>
@@ -67,11 +70,14 @@ const renderGroup =
       </Stack>
     );
 
+/**
+ * This function renders a page (note that a page can contain a list of child pages, so it can call itself recursively).
+ */
 const renderPage =
   (
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    handleClick: () => void
+    open: ProductGuideNavOpenState,
+    setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
+    handleClick: (id: string) => void
   ) =>
   (currentPath: string) =>
   (menuItem: ProductGuideMenuItem) =>
@@ -83,7 +89,7 @@ const renderPage =
           // // If page has children, render a collapsible list
           () => (
             <>
-              <ListItemButton onClick={handleClick}>
+              <ListItemButton onClick={() => handleClick(menuItem.slug)}>
                 <Stack
                   direction='row'
                   justifyContent='space-between'
@@ -93,10 +99,10 @@ const renderPage =
                   {renderMenuItemText(currentPath.includes(menuItem.path))(
                     menuItem
                   )}
-                  {open ? <ExpandLess /> : <ExpandMore />}
+                  {open[menuItem.slug] ? <ExpandLess /> : <ExpandMore />}
                 </Stack>
               </ListItemButton>
-              <Collapse in={open} timeout='auto' unmountOnExit>
+              <Collapse in={open[menuItem.slug]} timeout='auto' unmountOnExit>
                 <Box>
                   <List component='div'>
                     {pipe(
@@ -122,6 +128,8 @@ const renderPage =
       )
     );
 
+type ProductGuideNavOpenState = { [key: string]: boolean };
+
 const ProductGuideNav = ({
   title,
   versionSlug,
@@ -129,10 +137,10 @@ const ProductGuideNav = ({
 }: ProductGuidePageProps) => {
   const currentPath = useRouter().asPath;
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [openState, setOpen] = React.useState<ProductGuideNavOpenState>({});
 
-  const handleClick = () => {
-    setIsOpen(!isOpen);
+  const handleClick = (id: string) => {
+    setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
   };
 
   return (
@@ -158,11 +166,11 @@ const ProductGuideNav = ({
         {pipe(
           productGuideNavLinks,
           RA.map((menuItem) =>
-            menuItem.kind === 'group'
-              ? renderGroup(isOpen, setIsOpen, handleClick)(currentPath)(
+            menuItem.kind === 'group' // If menu item is a group, it has a different type so we render it differently
+              ? renderGroup(openState, setOpen, handleClick)(currentPath)(
                   menuItem
                 )
-              : renderPage(isOpen, setIsOpen, handleClick)(currentPath)(
+              : renderPage(openState, setOpen, handleClick)(currentPath)(
                   menuItem
                 )
           )
