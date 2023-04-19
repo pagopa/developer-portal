@@ -121,7 +121,7 @@ const renderPage =
                   spacing={2}
                   width={1}
                 >
-                  {renderMenuItemText(currentPath.includes(menuItem.path))(
+                  {renderMenuItemText(isCurrent(currentPath, menuItem))(
                     menuItem,
                     productGuideProps
                   )}
@@ -149,7 +149,7 @@ const renderPage =
           () => (
             // If page hasn't children, render a simple list item
             <ListItemButton>
-              {renderMenuItemText(currentPath.includes(menuItem.path))(
+              {renderMenuItemText(isCurrent(currentPath, menuItem))(
                 menuItem,
                 productGuideProps
               )}
@@ -158,6 +158,12 @@ const renderPage =
         )
       )
     );
+
+const isCurrent = (currentPath: string, menuItem: ProductGuideMenuItem) =>
+  pipe(
+    currentPath.split('/'),
+    RA.exists((path) => path === menuItem.slug)
+  );
 
 type ProductGuideNavOpenState = { [key: string]: boolean };
 
