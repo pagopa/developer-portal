@@ -186,7 +186,7 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
           <ListSubheader
             component='div'
             id='nested-list-subheader'
-            sx={{ bgcolor: 'background.default' }}
+            sx={{ bgcolor: 'background.default', mb: 4 }}
           >
             <Typography color='text.secondary'>
               Versione {productGuideProps.versionSlug}
