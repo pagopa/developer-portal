@@ -61,7 +61,7 @@ const renderMenuItemText =
  */
 const renderMenuItemGroup =
   (
-    open: ProductGuideNavOpenState,
+    isOpen: ProductGuideNavOpenState,
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
     handleClick: (_: string) => void
   ) =>
@@ -83,7 +83,7 @@ const renderMenuItemGroup =
           pages,
           RA.map(
             renderMenuItemPage(
-              open,
+              isOpen,
               setOpen,
               handleClick
             )(currentPath, productGuideProps)
@@ -97,13 +97,15 @@ const renderMenuItemGroup =
  */
 const renderMenuItemPage =
   (
-    open: ProductGuideNavOpenState,
+    isOpen: ProductGuideNavOpenState,
     setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
     handleClick: (id: string) => void
   ) =>
   (currentPath: string, productGuideProps: ProductGuidePageProps) =>
-  (menuItem: ProductGuideMenuItem) =>
-    pipe(menuItem.pages, (pages) =>
+  (menuItem: ProductGuideMenuItem) => {
+    const collapseOpen =
+      isOnAChildPage(currentPath, menuItem) || isOpen[menuItem.slug];
+    return pipe(menuItem.pages, (pages) =>
       pipe(
         pages,
         RA.isEmpty,
@@ -123,17 +125,17 @@ const renderMenuItemPage =
                     menuItem,
                     productGuideProps
                   )}
-                  {open[menuItem.slug] ? <ExpandLess /> : <ExpandMore />}
+                  {collapseOpen ? <ExpandLess /> : <ExpandMore />}
                 </Stack>
               </ListItemButton>
-              <Collapse in={open[menuItem.slug]} timeout='auto' unmountOnExit>
+              <Collapse in={collapseOpen} timeout='auto' unmountOnExit>
                 <Box sx={{ ml: 2 }}>
                   <List component='div'>
                     {pipe(
                       menuItem.pages,
                       RA.map(
                         renderMenuItemPage(
-                          open,
+                          isOpen,
                           setOpen,
                           handleClick
                         )(currentPath, productGuideProps)
@@ -156,11 +158,24 @@ const renderMenuItemPage =
         )
       )
     );
+  };
 
 const isCurrent = (currentPath: string, menuItem: ProductGuideMenuItem) =>
   pipe(
     currentPath.split('/'),
     RA.exists((path) => path === menuItem.slug)
+  );
+
+const isOnAChildPage = (currentPath: string, menuItem: ProductGuideMenuItem) =>
+  pipe(
+    currentPath.split('/'),
+    RA.exists((pathSlug) =>
+      pipe(
+        menuItem.pages,
+        RA.map(({ slug }) => slug),
+        RA.exists((pageSlug) => pageSlug === pathSlug)
+      )
+    )
   );
 
 type ProductGuideNavOpenState = { [key: string]: boolean };
