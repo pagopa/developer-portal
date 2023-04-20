@@ -8,6 +8,7 @@ const jestConfig: JestConfigWithTsJest = {
     'test',
   ],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
+  modulePathIgnorePatterns: ['./__tests__/data.ts'],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
