@@ -3,13 +3,14 @@ import type { JestConfigWithTsJest } from 'ts-jest';
 const jestConfig: JestConfigWithTsJest = {
   roots: ['<rootDir>/src'],
   testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/?(*.)+(spec|test).+(ts|tsx|js)',
+    '**/__tests__/**/*.+(ts|tsx)',
+    '**/?(*.)+(spec|test).+(ts|tsx)',
     'test',
   ],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    // See the discussion https://github.com/vercel/next.js/issues/8663
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
   coverageThreshold: {
     global: {
