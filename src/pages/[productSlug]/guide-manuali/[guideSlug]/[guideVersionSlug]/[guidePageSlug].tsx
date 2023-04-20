@@ -17,7 +17,7 @@ import ProductGuideNav, {
   ProductGuidePageProps,
 } from '@/components/ProductGuideNav';
 import ProductGuideContent from '@/components/ProductGuideContent';
-import { getProductGuideMenu } from '@/domain/productGuideMenu';
+import { getProductGuideMenu } from '@/adapters/static/staticProductGuideNav';
 
 type Params = {
   productSlug: string;

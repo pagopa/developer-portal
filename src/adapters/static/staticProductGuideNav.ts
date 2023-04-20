@@ -54,3 +54,9 @@ export const IOTechGuide: ProductGuideMenu = [
     ],
   },
 ];
+
+export const getProductGuideMenu = (
+  productSlug: string,
+  guideSlug: string,
+  versionSlug: string
+): ProductGuideMenu => IOTechGuide;
