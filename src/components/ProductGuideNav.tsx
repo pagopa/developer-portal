@@ -16,6 +16,8 @@ import { ProductGuidePage } from '@/domain/productGuidePage';
 import { Menu } from '@/domain/navigator';
 import { useRouter } from 'next/router';
 import {
+  isCurrent,
+  isOnAChildPage,
   ProductGuideMenu,
   ProductGuideMenuItem,
 } from '@/domain/productGuideMenu';
@@ -159,24 +161,6 @@ const renderMenuItemPage =
       )
     );
   };
-
-const isCurrent = (currentPath: string, menuItem: ProductGuideMenuItem) =>
-  pipe(
-    currentPath.split('/'),
-    RA.exists((path) => path === menuItem.slug)
-  );
-
-const isOnAChildPage = (currentPath: string, menuItem: ProductGuideMenuItem) =>
-  pipe(
-    currentPath.split('/'),
-    RA.exists((pathSlug) =>
-      pipe(
-        menuItem.pages,
-        RA.map(({ slug }) => slug),
-        RA.exists((pageSlug) => pageSlug === pathSlug)
-      )
-    )
-  );
 
 type ProductGuideNavOpenState = { [key: string]: boolean };
 
