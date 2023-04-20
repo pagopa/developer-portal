@@ -174,24 +174,15 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
   };
 
   return (
-    <Stack spacing={2} bgcolor='background.default' sx={{ pl: 2 }}>
-      <Box sx={{ p: 1, mt: 8 }}>
-        <Typography variant='h6'>{productGuideProps.title}</Typography>
-      </Box>
+    <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }}>
+      <Typography variant='h6'>{productGuideProps.title}</Typography>
+      <Typography color='text.secondary'>
+        Versione {productGuideProps.versionSlug}
+      </Typography>
       <List
         component='nav'
         aria-labelledby='nested-list-subheader'
-        subheader={
-          <ListSubheader
-            component='div'
-            id='nested-list-subheader'
-            sx={{ bgcolor: 'background.default', mb: 4 }}
-          >
-            <Typography color='text.secondary'>
-              Versione {productGuideProps.versionSlug}
-            </Typography>
-          </ListSubheader>
-        }
+        sx={{py: 4}}
       >
         {pipe(
           productGuideProps.productGuideNavLinks,
