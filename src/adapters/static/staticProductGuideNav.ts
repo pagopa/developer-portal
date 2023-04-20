@@ -31,25 +31,21 @@ export const IOTechGuide: ProductGuideMenu = [
   {
     title: 'Funzionalità',
     kind: 'group',
-    path: 'funzionalita',
-    slug: 'funzionalita',
+  },
+  {
+    title: 'Pubblicare un servizio',
+    kind: 'page',
+    description: '',
+    path: 'funzionalita/pubblicare-un-servizio',
+    slug: 'pubblicare-un-servizio',
     pages: [
       {
-        title: 'Pubblicare un servizio',
+        title: 'Creare un servizio',
         kind: 'page',
         description: '',
-        path: 'funzionalita/pubblicare-un-servizio',
-        slug: 'pubblicare-un-servizio',
-        pages: [
-          {
-            title: 'Creare un servizio',
-            kind: 'page',
-            description: '',
-            path: 'funzionalita/pubblicare-un-servizio/creare-un-servizio',
-            slug: 'creare-un-servizio',
-            pages: [],
-          },
-        ],
+        path: 'funzionalita/pubblicare-un-servizio/creare-un-servizio',
+        slug: 'creare-un-servizio',
+        pages: [],
       },
     ],
   },

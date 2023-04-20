@@ -1,24 +1,25 @@
 import {
   isCurrent,
   isOnAChildPage,
-  ProductGuideMenuItem,
+  ProductGuideMenuPage,
 } from '../productGuideMenu';
 
-const menuItemPage: ProductGuideMenuItem = {
+const menuItemPage: ProductGuideMenuPage = {
   kind: 'page',
   title: 'some title',
   description: '',
   path: '/some/path/slug',
   slug: 'slug',
-  pages: [],
-};
-
-const menuItemGroup: ProductGuideMenuItem = {
-  kind: 'group',
-  title: 'some group title',
-  path: '/some/path',
-  slug: '',
-  pages: [menuItemPage],
+  pages: [
+    {
+      kind: 'page',
+      title: 'some title sub page',
+      description: '',
+      path: '/some/path/slug/sub-page',
+      slug: 'sub-page',
+      pages: [],
+    },
+  ],
 };
 
 describe('productGuideMenu', () => {
@@ -37,11 +38,13 @@ describe('productGuideMenu', () => {
 
   describe('isOnAChildPage', () => {
     it('should return true if currentPath contains a page slug from menuItem', () => {
-      expect(isOnAChildPage(currentPath, menuItemGroup)).toStrictEqual(true);
+      expect(
+        isOnAChildPage(`${currentPath}/sub-page`, menuItemPage)
+      ).toStrictEqual(true);
     });
 
     it('should return false if currentPath does not contain a page slug from menuItem', () => {
-      expect(isOnAChildPage(anotherPath, menuItemGroup)).toStrictEqual(false);
+      expect(isOnAChildPage(anotherPath, menuItemPage)).toStrictEqual(false);
     });
   });
 });

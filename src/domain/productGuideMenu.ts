@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 
-type ProductGuideMenuPage = {
+export type ProductGuideMenuPage = {
   title: string;
   kind: 'page';
   description: string;
@@ -10,12 +10,9 @@ type ProductGuideMenuPage = {
   pages: ReadonlyArray<ProductGuideMenuPage>;
 };
 
-type ProductGuideMenuGroup = {
+export type ProductGuideMenuGroup = {
   title: string;
   kind: 'group';
-  path: string;
-  slug: string;
-  pages: ReadonlyArray<ProductGuideMenuPage>;
 };
 
 export type ProductGuideMenuItem = ProductGuideMenuPage | ProductGuideMenuGroup;
@@ -24,7 +21,7 @@ export type ProductGuideMenu = ReadonlyArray<ProductGuideMenuItem>;
 
 export const isCurrent = (
   currentPath: string,
-  menuItem: ProductGuideMenuItem
+  menuItem: ProductGuideMenuPage
 ) =>
   pipe(
     currentPath.split('/'),
@@ -33,7 +30,7 @@ export const isCurrent = (
 
 export const isOnAChildPage = (
   currentPath: string,
-  menuItem: ProductGuideMenuItem
+  menuItem: ProductGuideMenuPage
 ) =>
   pipe(
     currentPath.split('/'),

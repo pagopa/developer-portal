@@ -3,6 +3,8 @@ import {
   Collapse,
   List,
   ListItemButton,
+  ListItemText,
+  ListSubheader,
   Stack,
   Typography,
 } from '@mui/material';
@@ -18,7 +20,7 @@ import {
   isCurrent,
   isOnAChildPage,
   ProductGuideMenu,
-  ProductGuideMenuItem,
+  ProductGuideMenuPage,
 } from '@/domain/productGuideMenu';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
@@ -27,10 +29,10 @@ export type ProductGuidePageProps = ProductGuidePage & {
   productGuideNavLinks: ProductGuideMenu;
 };
 
-const renderMenuItemText =
+const renderListItemText =
   (isCurrent: boolean) =>
   (
-    menuItem: ProductGuideMenuItem,
+    menuItem: ProductGuideMenuPage,
     {
       product: { slug: productSlug },
       guideSlug,
@@ -38,59 +40,27 @@ const renderMenuItemText =
     }: ProductGuidePageProps
   ) =>
     pipe(
-      <Typography
-        variant='sidenav'
-        color={isCurrent ? 'primary.main' : 'text.primary'}
-        key={menuItem.slug}
-        component={(props) => {
-          return (
-            <Link
-              href={menuItem.slug}
-              as={`/${productSlug}/guide-manuali/${guideSlug}/${versionSlug}/${menuItem.slug}`}
-              {...props}
-            />
-          );
-        }}
-        sx={{ textDecoration: 'none', fontSize: 16 }}
-      >
-        {menuItem.title}
-      </Typography>
-    );
-
-/**
- * This function renders a group of pages.
- */
-const renderMenuItemGroup =
-  (
-    isOpen: ProductGuideNavOpenState,
-    setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
-    handleClick: (_: string) => void
-  ) =>
-  (currentPath: string, productGuideProps: ProductGuidePageProps) =>
-  ({ title: groupName, pages }: ProductGuideMenuItem) =>
-    pipe(
-      <Stack mt={5} spacing={1}>
-        <Typography
-          color='text.secondary'
-          textTransform='uppercase'
-          sx={{
-            fontSize: 14,
-            ml: 2,
-          }}
-        >
-          {groupName}
-        </Typography>
-        {pipe(
-          pages,
-          RA.map(
-            renderMenuItemPage(
-              isOpen,
-              setOpen,
-              handleClick
-            )(currentPath, productGuideProps)
-          )
-        )}
-      </Stack>
+      <ListItemText
+        primary={
+          <Typography
+            variant='sidenav'
+            color={isCurrent ? 'primary.main' : 'text.primary'}
+            key={menuItem.slug}
+            component={(props) => {
+              return (
+                <Link
+                  href={menuItem.slug}
+                  as={`/${productSlug}/guide-manuali/${guideSlug}/${versionSlug}/${menuItem.slug}`}
+                  {...props}
+                />
+              );
+            }}
+            sx={{ textDecoration: 'none', fontSize: 16 }}
+          >
+            {menuItem.title}
+          </Typography>
+        }
+      />
     );
 
 /**
@@ -103,7 +73,7 @@ const renderMenuItemPage =
     handleClick: (id: string) => void
   ) =>
   (currentPath: string, productGuideProps: ProductGuidePageProps) =>
-  (menuItem: ProductGuideMenuItem) => {
+  (menuItem: ProductGuideMenuPage) => {
     const collapseOpen =
       isOnAChildPage(currentPath, menuItem) || isOpen[menuItem.slug];
     return pipe(menuItem.pages, (pages) =>
@@ -115,19 +85,11 @@ const renderMenuItemPage =
           () => (
             <>
               <ListItemButton onClick={() => handleClick(menuItem.slug)}>
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  spacing={2}
-                  width={1}
-                >
-                  {renderMenuItemText(isCurrent(currentPath, menuItem))(
-                    menuItem,
-                    productGuideProps
-                  )}
-                  {collapseOpen ? <ExpandLess /> : <ExpandMore />}
-                </Stack>
+                {renderListItemText(isCurrent(currentPath, menuItem))(
+                  menuItem,
+                  productGuideProps
+                )}
+                {collapseOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <Collapse in={collapseOpen} timeout='auto' unmountOnExit>
                 <Box sx={{ ml: 2 }}>
@@ -150,7 +112,7 @@ const renderMenuItemPage =
           () => (
             // If page hasn't children, render a simple list item
             <ListItemButton>
-              {renderMenuItemText(isCurrent(currentPath, menuItem))(
+              {renderListItemText(isCurrent(currentPath, menuItem))(
                 menuItem,
                 productGuideProps
               )}
@@ -185,24 +147,19 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
       >
         {pipe(
           productGuideProps.productGuideNavLinks,
-          RA.map((menuItem) =>
-            menuItem.kind === 'group' // If menu item is a group, it has a different type so we render it differently
-              ? renderMenuItemGroup(
-                  openState,
-                  setOpen,
-                  handleClick
-                )(
-                  currentPath,
-                  productGuideProps
-                )(menuItem)
-              : renderMenuItemPage(
-                  openState,
-                  setOpen,
-                  handleClick
-                )(
-                  currentPath,
-                  productGuideProps
-                )(menuItem)
+          RA.mapWithIndex((index, menuItem) =>
+            menuItem.kind === 'group' ? ( // If menu item is a group, it has a different type so we render it differently
+              <ListSubheader key={index} title={menuItem.title} />
+            ) : (
+              renderMenuItemPage(
+                openState,
+                setOpen,
+                handleClick
+              )(
+                currentPath,
+                productGuideProps
+              )(menuItem)
+            )
           )
         )}
       </List>
