@@ -3,7 +3,6 @@ import {
   Collapse,
   List,
   ListItemButton,
-  ListSubheader,
   Stack,
   Typography,
 } from '@mui/material';
@@ -182,7 +181,7 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
       <List
         component='nav'
         aria-labelledby='nested-list-subheader'
-        sx={{py: 4}}
+        sx={{ py: 4 }}
       >
         {pipe(
           productGuideProps.productGuideNavLinks,
