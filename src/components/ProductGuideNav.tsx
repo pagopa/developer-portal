@@ -1,12 +1,4 @@
-import {
-  Box,
-  Collapse,
-  List,
-  ListItemButton,
-  ListSubheader,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Collapse, List, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as b from 'fp-ts/lib/boolean';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
@@ -20,8 +12,8 @@ import {
   ProductGuideMenu,
   ProductGuideMenuPage,
 } from '@/domain/productGuideMenu';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import ListItemText from '@/components/ListItemText';
+import ListItemButton from '@/components/ListItemButton';
+import ListSubheader from '@/components/ListSubheader';
 
 export type ProductGuidePageProps = ProductGuidePage & {
   navLinks: Menu;
@@ -42,16 +34,16 @@ const makeProductGuidePageRef = (
  * This function renders a page (note that a page can contain a list of child pages, so it can call itself recursively).
  */
 const renderMenuItemPage =
-  (
-    isOpen: ProductGuideNavOpenState,
-    setOpen: React.Dispatch<React.SetStateAction<ProductGuideNavOpenState>>,
-    handleClick: (id: string) => void
-  ) =>
+  (isOpen: ProductGuideNavOpenState, handleClick: (id: string) => void) =>
   (currentPath: string, productGuideProps: ProductGuidePageProps) =>
   (menuItem: ProductGuideMenuPage) => {
     const collapseOpen =
       isOnAChildPage(currentPath, menuItem) || isOpen[menuItem.slug];
     const isCurrentItem = isCurrent(currentPath, menuItem);
+    const productGuidePageRef = makeProductGuidePageRef(
+      productGuideProps,
+      menuItem
+    );
     return pipe(menuItem.pages, (pages) =>
       pipe(
         pages,
@@ -60,25 +52,24 @@ const renderMenuItemPage =
           // If page has children, render a collapsible list
           () => (
             <>
-              <ListItemButton onClick={() => handleClick(menuItem.slug)}>
-                <ListItemText
-                  text={menuItem.title}
-                  isCurrent={isCurrentItem}
-                  href={makeProductGuidePageRef(productGuideProps, menuItem)}
-                />
-                {collapseOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
+              <ListItemButton
+                text={menuItem.title}
+                isCurrent={isCurrentItem}
+                href={productGuidePageRef}
+                hasChildren={true}
+                onClick={() => handleClick(menuItem.slug)}
+                collapseOpen={collapseOpen}
+              />
               <Collapse in={collapseOpen} timeout='auto' unmountOnExit>
                 <Box sx={{ ml: 2 }}>
                   <List component='div'>
                     {pipe(
                       menuItem.pages,
                       RA.map(
-                        renderMenuItemPage(
-                          isOpen,
-                          setOpen,
-                          handleClick
-                        )(currentPath, productGuideProps)
+                        renderMenuItemPage(isOpen, handleClick)(
+                          currentPath,
+                          productGuideProps
+                        )
                       )
                     )}
                   </List>
@@ -88,13 +79,11 @@ const renderMenuItemPage =
           ),
           () => (
             // If page hasn't children, render a simple list item
-            <ListItemButton>
-              <ListItemText
-                text={menuItem.title}
-                isCurrent={isCurrentItem}
-                href={makeProductGuidePageRef(productGuideProps, menuItem)}
-              />
-            </ListItemButton>
+            <ListItemButton
+              text={menuItem.title}
+              isCurrent={isCurrentItem}
+              href={productGuidePageRef}
+            />
           )
         )
       )
@@ -126,14 +115,10 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
         {pipe(
           productGuideProps.productGuideNavLinks,
           RA.mapWithIndex((index, menuItem) =>
-            menuItem.kind === 'group' ? ( // If menu item is a group, it has a different type, so we render it differently
+            menuItem.kind === 'group' ? (
               <ListSubheader key={index} title={menuItem.title} />
             ) : (
-              renderMenuItemPage(
-                openState,
-                setOpen,
-                handleClick
-              )(
+              renderMenuItemPage(openState, handleClick)(
                 currentPath,
                 productGuideProps
               )(menuItem)
