@@ -169,12 +169,10 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
             menuItem.kind === 'group' ? (
               <ListSubheader key={index} title={menuItem.title} />
             ) : (
-              pipe(
-                renderMenuItemPage(openState, handleClick)(
-                  currentPath,
-                  productGuideProps
-                )(menuItem)
-              )
+              renderMenuItemPage(openState, handleClick)(
+                currentPath,
+                productGuideProps
+              )(menuItem)
             )
           )
         )}
