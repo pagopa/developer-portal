@@ -31,7 +31,16 @@ const makeProductGuidePageRef = (
   `/${productSlug}/guide-manuali/${guideSlug}/${versionSlug}/${menuItem.slug}`;
 
 /**
- * This function renders a page (note that a page can contain a list of child pages, so it can call itself recursively).
+ * Renders a collapsible list for a product guide menu page.
+ *
+ * @param {ProductGuideMenuPage} menuItem - The menu item to render.
+ * @param {ProductGuideNavOpenState} isOpen - The open state of the product guide navigation.
+ * @param {(id: string) => void} handleClick - The function to handle clicks on the list item.
+ * @param {string} currentPath - The current path of the page.
+ * @param {ProductGuidePageProps} productGuideProps - The props for the product guide page.
+ * @param {boolean} isCurrentItem - Whether the menu item is the current item.
+ * @param {string} productGuidePageRef - The reference to the product guide page.
+ * @returns {JSX.Element} The rendered collapsible list.
  */
 const renderCollapsibleList = (
   menuItem: ProductGuideMenuPage,
@@ -73,6 +82,14 @@ const renderCollapsibleList = (
   );
 };
 
+/**
+ * Renders a simple list item for a product guide menu page.
+ *
+ * @param {ProductGuideMenuPage} menuItem - The menu item to render.
+ * @param {boolean} isCurrentItem - Whether the menu item is the current item.
+ * @param {string} productGuidePageRef - The reference to the product guide page.
+ * @returns {JSX.Element} The rendered list item.
+ */
 const renderSimpleListItem = (
   menuItem: ProductGuideMenuPage,
   isCurrentItem: boolean,
@@ -86,16 +103,18 @@ const renderSimpleListItem = (
   />
 );
 
+/**
+ * Renders a menu item for a product guide page.
+ *
+ * @param {ProductGuideNavOpenState} isOpen - The open state of the product guide navigation.
+ * @param {(id: string) => void} handleClick - The function to handle clicks on the list item.
+ * @returns {(currentPath: string, guidePath: string) => (menuItem: ProductGuideMenuPage) => JSX.Element} A function that takes the current path and guide path and returns a function that takes a menu item and returns the rendered menu item.
+ */
 const renderMenuItemPage =
   (isOpen: ProductGuideNavOpenState, handleClick: (id: string) => void) =>
   (currentPath: string, productGuideProps: ProductGuidePageProps) =>
-  (menuItem: ProductGuideMenuPage) => {
-    const isCurrentItem = isCurrent(currentPath, menuItem);
-    const productGuidePageRef = makeProductGuidePageRef(
-      productGuideProps,
-      menuItem
-    );
-    return pipe(
+  (menuItem: ProductGuideMenuPage) =>
+    pipe(
       menuItem.pages,
       flow(
         RA.isEmpty,
@@ -108,16 +127,19 @@ const renderMenuItemPage =
               handleClick,
               currentPath,
               productGuideProps,
-              isCurrentItem,
-              productGuidePageRef
+              isCurrent(currentPath, menuItem),
+              makeProductGuidePageRef(productGuideProps, menuItem)
             ),
           // If page hasn't children, render a simple list item
           () =>
-            renderSimpleListItem(menuItem, isCurrentItem, productGuidePageRef)
+            renderSimpleListItem(
+              menuItem,
+              isCurrent(currentPath, menuItem),
+              makeProductGuidePageRef(productGuideProps, menuItem)
+            )
         )
       )
     );
-  };
 
 type ProductGuideNavOpenState = { [key: string]: boolean };
 
@@ -147,10 +169,12 @@ const ProductGuideNav = (productGuideProps: ProductGuidePageProps) => {
             menuItem.kind === 'group' ? (
               <ListSubheader key={index} title={menuItem.title} />
             ) : (
-              renderMenuItemPage(openState, handleClick)(
-                currentPath,
-                productGuideProps
-              )(menuItem)
+              pipe(
+                renderMenuItemPage(openState, handleClick)(
+                  currentPath,
+                  productGuideProps
+                )(menuItem)
+              )
             )
           )
         )}
