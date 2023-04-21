@@ -7,14 +7,12 @@ import {
 const menuItemPage: ProductGuideMenuPage = {
   kind: 'page',
   title: 'some title',
-  description: '',
   path: '/some/path/slug',
   slug: 'slug',
   pages: [
     {
       kind: 'page',
       title: 'some title sub page',
-      description: '',
       path: '/some/path/slug/sub-page',
       slug: 'sub-page',
       pages: [],

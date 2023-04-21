@@ -4,7 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 export type ProductGuideMenuPage = {
   title: string;
   kind: 'page';
-  description: string;
   path: string;
   slug: string;
   pages: ReadonlyArray<ProductGuideMenuPage>;

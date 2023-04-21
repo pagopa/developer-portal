@@ -33,7 +33,6 @@ export const GuideNav: StoryObj<typeof ProductGuideNav> = {
         kind: 'page',
         pages: [],
         slug: 'setup-iniziale',
-        description: 'Questa è la guida tecnica',
       },
     ],
   },
