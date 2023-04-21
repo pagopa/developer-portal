@@ -53,10 +53,10 @@ const renderMenuItemPage =
           () => (
             <>
               <ListItemButton
+                kind={'withChildren'}
                 text={menuItem.title}
                 isCurrent={isCurrentItem}
                 href={productGuidePageRef}
-                hasChildren={true}
                 onClick={() => handleClick(menuItem.slug)}
                 collapseOpen={collapseOpen}
               />
@@ -80,6 +80,7 @@ const renderMenuItemPage =
           () => (
             // If page hasn't children, render a simple list item
             <ListItemButton
+              kind={'single'}
               text={menuItem.title}
               isCurrent={isCurrentItem}
               href={productGuidePageRef}

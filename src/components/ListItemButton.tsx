@@ -1,24 +1,32 @@
 import { ListItemButton as MUIListItemButton } from '@mui/material';
 import ListItemText from '@/components/ListItemText';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import * as React from 'react';
 
-type Props = {
+type SingleElementProps = {
+  kind: 'single';
   text: string;
   isCurrent: boolean;
   href: string;
-  hasChildren?: boolean;
-  onClick?: () => void;
-  collapseOpen?: boolean;
 };
 
-const renderSingleItemButton = (props: Props) => (
+type ElementWithChildrenProps = {
+  kind: 'withChildren';
+  text: string;
+  isCurrent: boolean;
+  href: string;
+  onClick: () => void;
+  collapseOpen: boolean;
+};
+
+type Props = SingleElementProps | ElementWithChildrenProps;
+
+const renderSingleItemButton = (props: SingleElementProps) => (
   <MUIListItemButton>
     <ListItemText {...props} />
   </MUIListItemButton>
 );
 
-const renderItemWithChildren = (props: Props) => (
+const renderItemWithChildren = (props: ElementWithChildrenProps) => (
   <MUIListItemButton onClick={props.onClick}>
     <ListItemText {...props} />
     {props.collapseOpen ? <ExpandLess /> : <ExpandMore />}
@@ -26,7 +34,7 @@ const renderItemWithChildren = (props: Props) => (
 );
 
 export const ListItemButton = (props: Props) =>
-  props.hasChildren
+  props.kind === 'withChildren'
     ? renderItemWithChildren(props)
     : renderSingleItemButton(props);
 
