@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import * as React from 'react';
 import { ListItemText as MUIListItemText } from '@mui/material';
 import Link from 'next/link';
 

@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import * as React from 'react';
 import { ListSubheader as MUIListSubheader } from '@mui/material';
 
 type Props = {
