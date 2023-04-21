@@ -1,5 +1,5 @@
 import { Box, Collapse, List, Stack, Typography } from '@mui/material';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import * as b from 'fp-ts/lib/boolean';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as React from 'react';
@@ -33,59 +33,87 @@ const makeProductGuidePageRef = (
 /**
  * This function renders a page (note that a page can contain a list of child pages, so it can call itself recursively).
  */
+const renderCollapsibleList = (
+  menuItem: ProductGuideMenuPage,
+  isOpen: ProductGuideNavOpenState,
+  handleClick: (id: string) => void,
+  currentPath: string,
+  productGuideProps: ProductGuidePageProps,
+  isCurrentItem: boolean,
+  productGuidePageRef: string
+) => {
+  const collapseOpen =
+    isOnAChildPage(currentPath, menuItem) || isOpen[menuItem.slug];
+  return (
+    <>
+      <ListItemButton
+        kind={'withChildren'}
+        text={menuItem.title}
+        isCurrent={isCurrentItem}
+        href={productGuidePageRef}
+        onClick={() => handleClick(menuItem.slug)}
+        collapseOpen={collapseOpen}
+      />
+      <Collapse in={collapseOpen} timeout='auto' unmountOnExit>
+        <Box sx={{ ml: 2 }}>
+          <List component='div'>
+            {pipe(
+              menuItem.pages,
+              RA.map(
+                renderMenuItemPage(isOpen, handleClick)(
+                  currentPath,
+                  productGuideProps
+                )
+              )
+            )}
+          </List>
+        </Box>
+      </Collapse>
+    </>
+  );
+};
+
+const renderSimpleListItem = (
+  menuItem: ProductGuideMenuPage,
+  isCurrentItem: boolean,
+  productGuidePageRef: string
+) => (
+  <ListItemButton
+    kind={'single'}
+    text={menuItem.title}
+    isCurrent={isCurrentItem}
+    href={productGuidePageRef}
+  />
+);
+
 const renderMenuItemPage =
   (isOpen: ProductGuideNavOpenState, handleClick: (id: string) => void) =>
   (currentPath: string, productGuideProps: ProductGuidePageProps) =>
   (menuItem: ProductGuideMenuPage) => {
-    const collapseOpen =
-      isOnAChildPage(currentPath, menuItem) || isOpen[menuItem.slug];
     const isCurrentItem = isCurrent(currentPath, menuItem);
     const productGuidePageRef = makeProductGuidePageRef(
       productGuideProps,
       menuItem
     );
-    return pipe(menuItem.pages, (pages) =>
-      pipe(
-        pages,
+    return pipe(
+      menuItem.pages,
+      flow(
         RA.isEmpty,
         b.fold(
           // If page has children, render a collapsible list
-          () => (
-            <>
-              <ListItemButton
-                kind={'withChildren'}
-                text={menuItem.title}
-                isCurrent={isCurrentItem}
-                href={productGuidePageRef}
-                onClick={() => handleClick(menuItem.slug)}
-                collapseOpen={collapseOpen}
-              />
-              <Collapse in={collapseOpen} timeout='auto' unmountOnExit>
-                <Box sx={{ ml: 2 }}>
-                  <List component='div'>
-                    {pipe(
-                      menuItem.pages,
-                      RA.map(
-                        renderMenuItemPage(isOpen, handleClick)(
-                          currentPath,
-                          productGuideProps
-                        )
-                      )
-                    )}
-                  </List>
-                </Box>
-              </Collapse>
-            </>
-          ),
-          () => (
-            // If page hasn't children, render a simple list item
-            <ListItemButton
-              kind={'single'}
-              text={menuItem.title}
-              isCurrent={isCurrentItem}
-              href={productGuidePageRef}
-            />
-          )
+          () =>
+            renderCollapsibleList(
+              menuItem,
+              isOpen,
+              handleClick,
+              currentPath,
+              productGuideProps,
+              isCurrentItem,
+              productGuidePageRef
+            ),
+          // If page hasn't children, render a simple list item
+          () =>
+            renderSimpleListItem(menuItem, isCurrentItem, productGuidePageRef)
         )
       )
     );

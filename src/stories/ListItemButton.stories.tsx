@@ -46,7 +46,4 @@ export const ItemWithChildrenCollapseClosed: StoryObj<typeof ListItemButton> = {
     onClick: () => {},
     collapseOpen: false,
   },
-  parameters: {
-
-  }
 };
