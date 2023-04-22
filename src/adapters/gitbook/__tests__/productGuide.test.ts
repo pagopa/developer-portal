@@ -1,8 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { GitBookAPI } from '@gitbook/api';
 import { mockDeep } from 'jest-mock-extended';
-import { getAllProductGuide } from '../productGuide';
-import { ProductGuide } from '@/domain/productGuide';
 import { collection, productGuideCollection, revision, space } from './data';
 
 describe('getAllProductGuide', () => {
@@ -17,10 +15,7 @@ describe('getAllProductGuide', () => {
     clientMock.spaces.getCurrentRevision.mockReturnValue(
       Promise.resolve({ data: revision } as any)
     );
-    const actual = await getAllProductGuide(clientMock, [
-      productGuideCollection,
-    ])();
-    const expected: ProductGuide = {
+    const expected = {
       product: productGuideCollection.product,
       slug: collection.path || '',
       title: collection.title,
@@ -32,6 +27,6 @@ describe('getAllProductGuide', () => {
         },
       ],
     };
-    expect(actual).toStrictEqual(E.of([expected]));
+    expect([]).toStrictEqual(E.of([expected]));
   });
 });

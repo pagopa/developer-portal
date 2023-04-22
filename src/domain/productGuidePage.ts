@@ -1,8 +1,8 @@
-import * as O from 'fp-ts/Option';
 import { Product } from './productPage';
 
 export type ProductGuidePage = {
   product: Product;
+  // TODO: Remove all the slug
   guideSlug: string;
   versionSlug: string;
   slug: string;
@@ -11,12 +11,3 @@ export type ProductGuidePage = {
   // which is a markdown content
   body: string;
 };
-
-export type GetProductGuidePages = () => ReadonlyArray<ProductGuidePage>;
-
-export type GetProductGuidePageBy = (
-  productSlug: string,
-  guideSlug: string,
-  versionSlug: string,
-  pageSlug: string
-) => O.Option<ProductGuidePage>;
