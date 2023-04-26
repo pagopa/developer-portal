@@ -7,12 +7,11 @@ import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import ProductGuideNav from '@/components/ProductGuideNav';
 import ProductGuideContent from '@/components/ProductGuideContent';
-import {
-  getAllProductGuidePagePaths,
-  getProductGuidePageBy,
-} from '@/adapters/nextjs/productGuidePage';
 import { staticNav } from '@/adapters/static/staticNav';
 import { makeMenu } from '@/domain/navigator';
+import { pipe } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { makeAppEnv } from '@/AppEnv';
 
 type ProductGuidePageParams = {
   productSlug: string;
@@ -23,34 +22,47 @@ type ProductGuidePageProps = ProductGuidePage & ProductNavBarProps;
 export const getStaticPaths: GetStaticPaths<
   ProductGuidePageParams
 > = async () => ({
-  paths: await getAllProductGuidePagePaths(),
+  paths: await pipe(
+    makeAppEnv(process.env),
+    TE.chain(({ productGuidePageReader }) =>
+      productGuidePageReader.getAllPaths()
+    ),
+    TE.bimap(
+      () => [],
+      (result) => [...result]
+    ),
+    TE.toUnion
+  )(),
   fallback: false,
 });
 
 export const getStaticProps: GetStaticProps<
   ProductGuidePageProps,
   ProductGuidePageParams
-> = async ({ params }) => {
-  const path = params
-    ? `/${params.productSlug}/${params.productGuidePage.join('/')}`
-    : undefined;
-
-  const page = path ? await getProductGuidePageBy(path) : undefined;
-
-  if (path && page) {
-    // const menu = await getProductGuideMenuBy(path);
-    return {
-      props: {
-        navLinks: makeMenu(staticNav, page.product),
-        // makeVersionMenu(productSlug, guideSlug)
-        // guideNavLinks: makeGuideMenu(productSlug, guideSlug, versionSlug)
-        ...page,
-      },
-    };
-  } else {
-    return { notFound: true };
-  }
-};
+> = async ({ params }) =>
+  pipe(
+    TE.Do,
+    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
+    TE.apS('appEnv', makeAppEnv(process.env)),
+    TE.chain(({ appEnv, params: { productSlug, productGuidePage } }) =>
+      appEnv.productGuidePageReader.getPageBy(
+        `/${productSlug}/${productGuidePage.join('/')}`
+      )
+    ),
+    TE.chain(TE.fromOption(() => new Error('Not Found'))),
+    TE.bimap(
+      () => ({ notFound: true as const }),
+      (page) => ({
+        props: {
+          navLinks: makeMenu(staticNav, page.product),
+          // makeVersionMenu(productSlug, guideSlug)
+          // guideNavLinks: makeGuideMenu(productSlug, guideSlug, versionSlug)
+          ...page,
+        },
+      })
+    ),
+    TE.toUnion
+  )();
 
 const GuidePage = (props: ProductGuidePageProps) => (
   <Box>
