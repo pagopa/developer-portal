@@ -23,15 +23,10 @@ export const makeGitBookEnv = (
   env: Record<string, string | undefined>
 ): TE.TaskEither<Error, GitBookEnv> =>
   pipe(
-    TE.Do,
-    TE.apS(
-      'client',
-      pipe(
-        env['GITBOOK_API_KEY'],
-        TE.fromNullable(new Error('GITBOOK_API_KEY not defined')),
-        TE.map(makeGitBookClient)
-      )
-    ),
+    env['GITBOOK_API_KEY'],
+    TE.fromNullable(new Error('GITBOOK_API_KEY not defined')),
+    TE.map(makeGitBookClient),
+    TE.bindTo('client'),
     TE.bind('allGitBookProductGuide', ({ client }) =>
       fetchAllGitBookProductGuide(guideCollection)(client)
     )
