@@ -1,4 +1,10 @@
-import { Collection, ContentVisibility, Revision, Space } from '@gitbook/api';
+import {
+  Collection,
+  ContentVisibility,
+  Revision,
+  RevisionPage,
+  Space,
+} from '@gitbook/api';
 
 export const productGuideCollection = {
   product: { name: 'aProd', slug: 'aSlug' },
@@ -31,3 +37,31 @@ export const revision: Revision = {
   files: [],
   urls: { app: '' },
 };
+
+const revision00: RevisionPage = {
+  kind: 'sheet',
+  id: 'anId',
+  title: 'aTitle',
+  slug: 'aSlug00',
+  path: '/aSlug0/aSlug00',
+  pages: [],
+};
+const revision0: RevisionPage = {
+  kind: 'sheet',
+  id: 'anId',
+  title: 'aTitle',
+  slug: 'aSlug0',
+  path: '/aSlug0',
+  pages: [revision00],
+};
+const revision1: RevisionPage = {
+  kind: 'link',
+  id: 'anId',
+  title: 'aTitle',
+  href: 'anHref',
+};
+
+export const gitBookProductGuideItemList = [
+  { parentPath: '/parent', ...revision0 },
+  { parentPath: '/parent', ...revision1 },
+];
