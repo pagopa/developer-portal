@@ -26,7 +26,7 @@ const makeGitBookProductGuide = (
   guide: Omit<GitBookProductGuide, 'nav' | 'path'>
 ): GitBookProductGuide => {
   const { product, collection, space, revision } = guide;
-  const path = `/${product.slug}/guide-manual/${collection.path ?? 'unknown'}/${
+  const path = `/${product.slug}/guide-manuali/${collection.path ?? 'unknown'}/${
     space.title
   }`;
   const nav = pipe(

@@ -2,10 +2,12 @@ import * as E from 'fp-ts/Either';
 import { GitBookAPI } from '@gitbook/api';
 import { mockDeep } from 'jest-mock-extended';
 import { collection, productGuideCollection, revision, space } from './data';
+import { fetchAllGitBookProductGuide } from '../gitbookProductGuide';
 
-describe('getAllProductGuide', () => {
-  it('should fetch collections', async () => {
+describe('fetchAllGitBookProductGuide', () => {
+  it('should fetch all the product guides', async () => {
     const clientMock = mockDeep<GitBookAPI>();
+    /* mock */
     clientMock.collections.getCollectionById.mockReturnValue(
       Promise.resolve({ data: collection } as any)
     );
@@ -17,16 +19,15 @@ describe('getAllProductGuide', () => {
     );
     const expected = {
       product: productGuideCollection.product,
-      slug: collection.path || '',
-      title: collection.title,
-      versions: [
-        {
-          title: space.title,
-          slug: space.title,
-          pages: [],
-        },
-      ],
+      collection,
+      space,
+      revision,
+      path: `/${productGuideCollection.product.slug}/guide-manuali/${collection.path}/${space.title}`,
+      nav: [],
     };
-    expect([]).toStrictEqual(E.of([expected]));
+    const actual = await fetchAllGitBookProductGuide([productGuideCollection])(
+      clientMock
+    )();
+    expect(actual).toStrictEqual(E.of([expected]));
   });
 });
