@@ -62,6 +62,9 @@ const fetchCurrentRevisionBySpace = (space: Space) => (client: GitBookAPI) =>
     TE.map(({ data }) => ({ space, revision: data }))
   );
 
+/**
+ * Fetches the GitBook product guide for a specific collection.
+ */
 const fetchGitBookProductGuide = ({
   product,
   collectionId,
@@ -83,6 +86,11 @@ const fetchGitBookProductGuide = ({
     )
   );
 
+/**
+ * Fetches the GitBook product guides for all collections of a product.
+ * Returns a `ReaderTaskEither` that, when executed, returns a flattened list of
+ * `GitBookProductGuide` objects.
+ */
 export const fetchAllGitBookProductGuide = flow(
   RTE.traverseArray(fetchGitBookProductGuide),
   RTE.map(RA.flatten)
