@@ -68,6 +68,9 @@ const gitBookGetPageBy = (path: string) =>
     )
   );
 
+/**
+ * Given a GitBookConfig creates an instance of ProductGuidePageReader.
+ */
 export const makeProductGuidePageReader = (
   config: GitBookConfig
 ): TE.TaskEither<Error, ProductGuidePageReader> =>
