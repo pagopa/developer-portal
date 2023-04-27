@@ -8,6 +8,9 @@ import { RevisionPage } from '@gitbook/api';
 
 type GitBookProductGuideItem = { parentPath: string } & RevisionPage;
 
+/**
+ * Given a `GitBookProductGuideItem`, creates a `ProductGuideNavItem`.
+ */
 const makeProductGuideNavItem = (
   item: GitBookProductGuideItem
 ): ProductGuideNavItem => ({
@@ -19,6 +22,10 @@ const makeProductGuideNavItem = (
     : { kind: item.kind === 'sheet' ? 'page' : item.kind }),
 });
 
+/**
+ * Given an array of `GitBookProductGuideItem`s and an initial result, creates
+ * a `ProductGuideNav`.
+ */
 export const makeProductGuideNav = (
   unprocessed: ReadonlyArray<GitBookProductGuideItem>,
   result: ProductGuideNav
