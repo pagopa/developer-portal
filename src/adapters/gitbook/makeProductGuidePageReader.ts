@@ -5,7 +5,7 @@ import * as R from 'fp-ts/Reader';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { ProductGuidePageReader } from '@/domain/productGuidePage';
-import { GitBookEnv, makeGitBookEnv } from './GitBookEnv';
+import { GitBookConfig, GitBookEnv, makeGitBookEnv } from './GitBookEnv';
 import { GitBookProductGuide } from './gitbookProductGuide';
 import { GitBookAPI } from '@gitbook/api';
 
@@ -69,10 +69,10 @@ const gitBookGetPageBy = (path: string) =>
   );
 
 export const makeProductGuidePageReader = (
-  env: Record<string, string | undefined>
+  config: GitBookConfig
 ): TE.TaskEither<Error, ProductGuidePageReader> =>
   pipe(
-    makeGitBookEnv(env),
+    makeGitBookEnv(config),
     TE.map((gitBookEnv) => ({
       getAllPaths: () => TE.of(gitBookGetAllPaths(gitBookEnv)),
       getPageBy: (path) => gitBookGetPageBy(path)(gitBookEnv),

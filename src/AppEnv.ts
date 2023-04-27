@@ -1,7 +1,9 @@
+import { pipe } from 'fp-ts/lib/function';
 import * as Apply from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { ProductGuidePageReader } from './domain/productGuidePage';
 import { makeProductGuidePageReader } from './adapters/gitbook/makeProductGuidePageReader';
+import { makeConfig } from './AppConfig';
 
 /**
  * Defines the shape of the environment that is needed for the application to
@@ -19,6 +21,11 @@ export type AppEnv = {
 export const makeAppEnv = (
   env: Record<string, string | undefined>
 ): TE.TaskEither<Error, AppEnv> =>
-  Apply.sequenceS(TE.ApplySeq)({
-    productGuidePageReader: makeProductGuidePageReader(env),
-  });
+  pipe(
+    TE.fromEither(makeConfig(env)),
+    TE.chain((config) =>
+      Apply.sequenceS(TE.ApplySeq)({
+        productGuidePageReader: makeProductGuidePageReader(config.gitbook),
+      })
+    )
+  );
