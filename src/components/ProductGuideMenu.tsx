@@ -1,4 +1,7 @@
-import { ProductGuideMenu } from '@/domain/productGuideNavigator';
+import {
+  ProductGuideNav,
+  getDirectChildrenOf,
+} from '@/domain/productGuideNavigator';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -7,10 +10,11 @@ import { TreeItem, TreeView } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-type ProductGuideNavProps = {
+type ProductGuideMenuProps = {
   title: string;
   versions: string;
-  items: ProductGuideMenu;
+  guidePath: string;
+  nav: ProductGuideNav;
   selected?: string;
   expanded?: Array<string>;
 };
@@ -28,9 +32,12 @@ const customStyle = {
     m: 0,
     pl: 2,
   },
-}
+};
 
-const renderItem = (item: ProductGuideMenu[0]) => {
+const renderItem = (
+  item: ProductGuideNav[0],
+  nav: ProductGuideNav
+): JSX.Element => {
   const label =
     item.kind === 'page' ? (
       <Typography
@@ -39,7 +46,7 @@ const renderItem = (item: ProductGuideMenu[0]) => {
         href={item.path}
         style={{ textDecoration: 'none' }}
       >
-        {item.name}
+        {item.name.nav}
       </Typography>
     ) : item.kind === 'group' ? (
       <Typography
@@ -48,34 +55,49 @@ const renderItem = (item: ProductGuideMenu[0]) => {
         fontSize={14}
         style={{ textDecoration: 'none' }}
       >
-        {item.name}
+        {item.name.nav}
       </Typography>
     ) : (
       <Typography
         variant='sidenav'
         component={Link}
         href={item.href}
-        title={item.name}
         style={{ textDecoration: 'none' }}
       >
-        {item.name}
+        {item.name.nav}
       </Typography>
     );
   return (
-    <TreeItem
-      key={item.name}
-      nodeId={ (item.kind === 'link') ? item.href : item.path }
-      label={label}
-      disabled={item.kind === 'group'}
-      icon={item.kind === 'link' ? <OpenInNewIcon /> : undefined}
-      sx={customStyle}
-    >
-      {item.kind === 'page' ? item.children.map(renderItem) : undefined}
-    </TreeItem>
+    <>
+      <TreeItem
+        key={item.path}
+        nodeId={item.kind === 'link' ? item.href : item.path}
+        label={label}
+        disabled={item.kind === 'group'}
+        icon={item.kind === 'link' ? <OpenInNewIcon /> : undefined}
+        sx={customStyle}
+      >
+        {item.kind === 'page' &&
+          getDirectChildrenOf(item.path, nav).map((child) =>
+            renderItem(child, nav)
+          )}
+      </TreeItem>
+      {item.kind === 'group' &&
+        getDirectChildrenOf(item.path, nav).map((child) =>
+          renderItem(child, nav)
+        )}
+    </>
   );
 };
 
-const ProductGuideNav = ({ title, versions, items, selected, expanded }: ProductGuideNavProps) => (
+const ProductGuideMenu = ({
+  title,
+  versions,
+  guidePath,
+  nav,
+  selected,
+  expanded,
+}: ProductGuideMenuProps) => (
   <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }}>
     <Typography variant='h6'>{title}</Typography>
     <Typography color='text.secondary'>Versione {versions}</Typography>
@@ -85,9 +107,9 @@ const ProductGuideNav = ({ title, versions, items, selected, expanded }: Product
       selected={selected}
       defaultExpandIcon={<ExpandMoreIcon />}
     >
-      {items.map(renderItem)}
+      {getDirectChildrenOf(guidePath, nav).map((item) => renderItem(item, nav))}
     </TreeView>
   </Stack>
 );
 
-export default ProductGuideNav;
+export default ProductGuideMenu;

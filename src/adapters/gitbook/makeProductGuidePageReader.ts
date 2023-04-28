@@ -27,10 +27,7 @@ const gitBookGetAllPaths = pipe(
 );
 
 const fetchPageByPath =
-  (
-    { path, product, space, nav }: GitBookProductGuide,
-    pagePath: string
-  ) =>
+  ({ path, product, space, nav }: GitBookProductGuide, pagePath: string) =>
   (client: GitBookAPI) =>
     pipe(
       TE.tryCatch(
@@ -44,6 +41,7 @@ const fetchPageByPath =
       ),
       TE.map(({ data }) => ({
         product,
+        guidePath: path,
         nav,
         title: data.title,
         body: 'markdown' in data ? data.markdown : '',

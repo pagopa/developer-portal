@@ -5,6 +5,7 @@ import { ProductGuideNav } from './productGuideNavigator';
 
 export type ProductGuidePage = {
   product: Product;
+  guidePath: string;
   nav: ProductGuideNav;
   title: string;
   // TODO: At the moment use string

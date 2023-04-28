@@ -5,7 +5,7 @@ import { ProductGuidePage } from '@/domain/productGuidePage';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import ProductGuideNav from '@/components/ProductGuideNav';
+import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
 import { staticNav } from '@/adapters/static/staticNav';
 import { makeMenu } from '@/domain/navigator';
@@ -55,8 +55,6 @@ export const getStaticProps: GetStaticProps<
       (page) => ({
         props: {
           navLinks: makeMenu(staticNav, page.product),
-          // makeVersionMenu(productSlug, guideSlug)
-          // guideNavLinks: makeGuideMenu(productSlug, guideSlug, versionSlug)
           ...page,
         },
       })
@@ -70,9 +68,7 @@ const GuidePage = (props: ProductGuidePageProps) => (
       <Header />
       <ProductNavBar {...props} />
       <Stack direction='row' alignItems='stretch'>
-        <ProductGuideNav
-          {...{ ...props, versions: '0', items: [] }}
-        />
+        <ProductGuideMenu {...{ ...props, versions: '0' }} />
         <ProductGuideContent markdown={props.body} />
       </Stack>
       <Footer />
