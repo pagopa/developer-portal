@@ -27,20 +27,12 @@ const makeGitBookClient = (apiKey: string) => {
   });
 };
 
-/**
- * Defines the shape of the environment that is needed for the gitbook adapters
- * to run.
- */
 export type GitBookEnv = {
   client: GitBookAPI;
   allGitBookProductGuide: ReadonlyArray<GitBookProductGuide>;
 };
 
-/**
- * Creates an instance of GitBookEnv. It takes a GitBookConfig object as
- * input, and returns a TaskEither that either resolves to an instance of
- * GitBookEnv or rejects with an error.
- */
+/** Provide a way to create an instance of GitBookEnv */
 export const makeGitBookEnv = (
   config: GitBookConfig
 ): TE.TaskEither<Error, GitBookEnv> =>
