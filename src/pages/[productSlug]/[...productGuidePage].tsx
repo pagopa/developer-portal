@@ -70,7 +70,9 @@ const GuidePage = (props: ProductGuidePageProps) => (
       <Header />
       <ProductNavBar {...props} />
       <Stack direction='row' alignItems='stretch'>
-        <ProductGuideNav />
+        <ProductGuideNav
+          {...{ ...props, versions: '0', items: [] }}
+        />
         <ProductGuideContent markdown={props.body} />
       </Stack>
       <Footer />
