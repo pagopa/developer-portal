@@ -37,7 +37,7 @@ export const makeProductGuideNav = (
       page.kind === 'link' ? [] : page.pages,
       RA.map((child) => ({ parentPath: navItem.path, ...child }))
     );
-    return makeProductGuideNav([...children, ...rest], [navItem, ...result]);
+    return makeProductGuideNav([...children, ...rest], [...result, navItem]);
   } else {
     return result;
   }
