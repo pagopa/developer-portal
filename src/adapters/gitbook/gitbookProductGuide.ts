@@ -86,11 +86,7 @@ const fetchGitBookProductGuide = ({
     )
   );
 
-/**
- * Fetches the GitBook product guides for all collections of a product.
- * Returns a `ReaderTaskEither` that, when executed, returns a flattened list of
- * `GitBookProductGuide` objects.
- */
+/** Fetches the GitBook product guides for all collections of a product. */
 export const fetchAllGitBookProductGuide = flow(
   RTE.traverseArray(fetchGitBookProductGuide),
   RTE.map(RA.flatten)

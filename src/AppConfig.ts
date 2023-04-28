@@ -19,10 +19,7 @@ const guideToSync: AppConfig['gitbook']['guideToSync'] = [
   },
 ];
 
-/**
- * Reads environment variables and creates an AppConfig object.
- * Returns Either an error message or an instance of AppConfig
- */
+/** Provides a way to create an instance of AppConfig */
 export const makeConfig = (
   env: Record<string, string | undefined>
 ): E.Either<Error, AppConfig> =>

@@ -5,19 +5,12 @@ import { ProductGuidePageReader } from './domain/productGuidePage';
 import { makeProductGuidePageReader } from './adapters/gitbook/makeProductGuidePageReader';
 import { makeConfig } from './AppConfig';
 
-/**
- * Defines the shape of the environment that is needed for the application to
- * run.
- */
+/** Defines the environment that is needed for the application to run. */
 export type AppEnv = {
   productGuidePageReader: ProductGuidePageReader;
 };
 
-/**
- * Creates an instance of AppEnv. It takes an environment object as input, and
- * returns a TaskEither that either resolves to an instance of AppEnv or rejects
- * with an error.
- */
+/** Provides a way to create an instance of AppEnv */
 export const makeAppEnv = (
   env: Record<string, string | undefined>
 ): TE.TaskEither<Error, AppEnv> =>
