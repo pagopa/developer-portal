@@ -32,10 +32,7 @@ export const getDirectChildrenOf = (
     nav,
     RA.filter(
       (item) =>
-        isChild(
-          path.replace(/\/$/, ''),
-          item.path.replace(/\/$/, '')
-        ) ||
+        isChild(path.replace(/\/$/, ''), item.path.replace(/\/$/, '')) ||
         (item.kind === 'link' && item.path === path)
     )
   );
