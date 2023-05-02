@@ -15,7 +15,7 @@ import { Product } from '@/domain/productPage';
  */
 export type GitBookConfig = {
   apiKey: string;
-  guideToSync: ReadonlyArray<{
+  guidesToSync: ReadonlyArray<{
     product: Product;
     collectionId: string;
   }>;
@@ -40,6 +40,6 @@ export const makeGitBookEnv = (
     TE.Do,
     TE.apS('client', TE.of(makeGitBookClient(config.apiKey))),
     TE.bind('allGitBookProductGuide', ({ client }) =>
-      fetchAllGitBookProductGuide(config.guideToSync)(client)
+      fetchAllGitBookProductGuide(config.guidesToSync)(client)
     )
   );

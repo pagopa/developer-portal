@@ -12,7 +12,7 @@ const EnvCodec = t.type({
   GITBOOK_API_KEY: t.string,
 });
 
-const guideToSync: AppConfig['gitbook']['guideToSync'] = [
+const guidesToSync: AppConfig['gitbook']['guidesToSync'] = [
   {
     product: { name: 'p0', slug: 'ps0' },
     collectionId: 'Cw40sL8INZ5p5FDkWQSD',
@@ -30,7 +30,7 @@ export const makeConfig = (
       (envs) => ({
         gitbook: {
           apiKey: envs.GITBOOK_API_KEY,
-          guideToSync,
+          guidesToSync,
         },
       })
     )
