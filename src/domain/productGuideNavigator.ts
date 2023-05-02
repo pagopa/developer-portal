@@ -14,8 +14,10 @@ export const isChild =
   (path: string) =>
   (item: ProductGuideNavItem): boolean => {
     // Remove the trailing slash if any
-    const _path = path.replace(/\/$/, '');
-    const _itemPath = item.path.replace(/\/$/, '');
-    return (_itemPath.startsWith(_path) &&
-      item.path.replace(`${_path}/`, '').split('/').length === 1);
-  }
+    const pathWithoutTrailing = path.replace(/\/$/, '');
+    const itemPathWithoutTrailing = item.path.replace(/\/$/, '');
+    return (
+      itemPathWithoutTrailing.startsWith(pathWithoutTrailing) &&
+      item.path.replace(`${pathWithoutTrailing}/`, '').split('/').length === 1
+    );
+  };
