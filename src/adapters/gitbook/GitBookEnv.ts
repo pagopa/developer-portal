@@ -29,7 +29,7 @@ const makeGitBookClient = (apiKey: string) => {
 
 export type GitBookEnv = {
   client: GitBookAPI;
-  allGitBookProductGuide: ReadonlyArray<GitBookProductGuide>;
+  allGitBookProductGuides: ReadonlyArray<GitBookProductGuide>;
 };
 
 /** Provide a way to create an instance of GitBookEnv */
@@ -39,7 +39,7 @@ export const makeGitBookEnv = (
   pipe(
     TE.Do,
     TE.apS('client', TE.of(makeGitBookClient(config.apiKey))),
-    TE.bind('allGitBookProductGuide', ({ client }) =>
+    TE.bind('allGitBookProductGuides', ({ client }) =>
       fetchAllGitBookProductGuide(config.guidesToSync)(client)
     )
   );
