@@ -8,6 +8,7 @@ import { ProductGuidePageReader } from '@/domain/productGuidePage';
 import { GitBookConfig, GitBookEnv, makeGitBookEnv } from './GitBookEnv';
 import { GitBookProductGuide } from './gitbookProductGuide';
 import { GitBookAPI } from '@gitbook/api';
+import { isSibling } from '@/domain/navigator';
 
 const gitBookGetAllPaths = pipe(
   R.ask<GitBookEnv>(),
@@ -48,15 +49,40 @@ const fetchPageByPath =
       }))
     );
 
+const makeVersionsNav = (path: string) =>
+  pipe(
+    R.ask<GitBookEnv>(),
+    R.map(({ allGitBookProductGuides }) =>
+      pipe(
+        allGitBookProductGuides,
+        RA.findFirst(({ path: guidePath }) => path.startsWith(guidePath)),
+        O.map(({ path }) =>
+          pipe(allGitBookProductGuides, RA.filter(isSibling(path)))
+        ),
+        O.fold(
+          () => [],
+          RA.map(({ path, space: { title } }) => ({
+            path,
+            name: { nav: title, breadcrumb: title },
+          }))
+        )
+      )
+    )
+  );
+
 const gitBookGetPageBy = (path: string) =>
   pipe(
     R.ask<GitBookEnv>(),
-    R.map(({ client, allGitBookProductGuides }) =>
+    R.apS('versionsNav', makeVersionsNav(path)),
+    R.map(({ client, allGitBookProductGuides, versionsNav }) =>
       pipe(
         allGitBookProductGuides,
         RA.findFirst(({ path: guidePath }) => path.startsWith(guidePath)),
         O.traverse(TE.ApplicativeSeq)((guide) =>
-          fetchPageByPath(guide, path)(client)
+          pipe(
+            fetchPageByPath(guide, path)(client),
+            TE.map((guide) => ({ ...guide, versionsNav }))
+          )
         )
       )
     )
