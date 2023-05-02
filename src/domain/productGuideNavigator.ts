@@ -21,7 +21,7 @@ type ProductGuideMenuItem = {
 
 export type ProductGuideMenu = ReadonlyArray<ProductGuideMenuItem>;
 
-const isDirectChildren = (path: string, child: string): boolean =>
+const isChild = (path: string, child: string): boolean =>
   child.startsWith(path) && child.replace(path, '').split('/').length === 2;
 
 export const getDirectChildrenOf = (
@@ -32,7 +32,7 @@ export const getDirectChildrenOf = (
     nav,
     RA.filter(
       (item) =>
-        isDirectChildren(
+        isChild(
           path.replace(/\/$/, ''),
           item.path.replace(/\/$/, '')
         ) ||
