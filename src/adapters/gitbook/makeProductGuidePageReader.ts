@@ -62,7 +62,7 @@ const gitBookGetPageBy = (path: string) =>
         allGitBookProductGuides,
         RA.findFirst(({ path: guidePath }) => path.startsWith(guidePath)),
         O.traverse(TE.ApplicativeSeq)((guide) =>
-          pipe(fetchPageByPath(guide, path)(client))
+          fetchPageByPath(guide, path)(client)
         )
       )
     )
