@@ -35,7 +35,7 @@ const customStyle = {
     pl: 2,
   },
   '& .Mui-selected > .MuiTreeItem-label > *': {
-    color: "primary.dark"
+    color: 'primary.dark',
   },
 };
 
@@ -105,7 +105,9 @@ const ProductGuideMenu = ({
   <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }}>
     <Typography variant='h6'>{title}</Typography>
     <Box sx={{ py: 2 }}>
-      <Typography color='text.secondary' variant='body2'>Versione {versions}</Typography>
+      <Typography color='text.secondary' variant='body2'>
+        Versione {versions}
+      </Typography>
     </Box>
     <TreeView
       defaultCollapseIcon={<ExpandLessIcon />}
