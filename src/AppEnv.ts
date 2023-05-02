@@ -6,7 +6,7 @@ import { makeProductGuidePageReader } from './adapters/gitbook/makeProductGuideP
 import { makeConfig } from './AppConfig';
 
 /** Defines the environment that is needed for the application to run. */
-export type AppEnv = {
+type AppEnv = {
   productGuidePageReader: ProductGuidePageReader;
 };
 
