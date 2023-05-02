@@ -29,5 +29,17 @@ describe('fetchAllGitBookProductGuide', () => {
       clientMock
     )();
     expect(actual).toStrictEqual(E.of([expected]));
+    expect(clientMock.collections.getCollectionById).toBeCalledWith(
+      productGuideCollection.collectionId
+    );
+    expect(clientMock.collections.listSpacesInCollectionById).toBeCalledWith(
+      productGuideCollection.collectionId
+    );
+    expect(clientMock.spaces.getCurrentRevision).toBeCalledWith(space.id);
+    expect(clientMock.collections.getCollectionById).toBeCalledTimes(1);
+    expect(clientMock.collections.listSpacesInCollectionById).toBeCalledTimes(
+      1
+    );
+    expect(clientMock.spaces.getCurrentRevision).toBeCalledTimes(1);
   });
 });
