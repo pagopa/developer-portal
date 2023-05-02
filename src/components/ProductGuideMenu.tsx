@@ -1,7 +1,4 @@
-import {
-  ProductGuideNav,
-  getDirectChildrenOf,
-} from '@/domain/productGuideNavigator';
+import { ProductGuideNav, isChild } from '@/domain/productGuideNavigator';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -83,14 +80,10 @@ const renderItem = (
         sx={customStyle}
       >
         {item.kind === 'page' &&
-          getDirectChildrenOf(item.path, nav).map((child) =>
-            renderItem(child, nav)
-          )}
+          nav.filter(isChild(item.path)).map((child) => renderItem(child, nav))}
       </TreeItem>
       {item.kind === 'group' &&
-        getDirectChildrenOf(item.path, nav).map((child) =>
-          renderItem(child, nav)
-        )}
+        nav.filter(isChild(item.path)).map((child) => renderItem(child, nav))}
     </>
   );
 };
@@ -115,7 +108,7 @@ const ProductGuideMenu = ({
       selected={selected}
       defaultExpandIcon={<ExpandMoreIcon />}
     >
-      {getDirectChildrenOf(guidePath, nav).map((item) => renderItem(item, nav))}
+      {nav.filter(isChild(guidePath)).map((item) => renderItem(item, nav))}
     </TreeView>
   </Stack>
 );

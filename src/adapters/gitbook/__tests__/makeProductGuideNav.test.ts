@@ -29,7 +29,7 @@ describe('makeProductGuideNav', () => {
           breadcrumb: 'aTitle',
           nav: 'aTitle',
         },
-        path: '/parent',
+        path: '/parent/ext-link',
       },
     ];
     expect(actual).toStrictEqual(expected);

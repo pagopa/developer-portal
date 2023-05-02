@@ -1,6 +1,3 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-
 export type ProductGuideNavItem = {
   path: string;
   name: {
@@ -11,28 +8,14 @@ export type ProductGuideNavItem = {
 
 export type ProductGuideNav = ReadonlyArray<ProductGuideNavItem>;
 
-type ProductGuideMenuItem = {
-  name: string;
-} & (
-  | { kind: 'group'; path: string }
-  | { kind: 'page'; path: string; children: ProductGuideMenu }
-  | { kind: 'link'; href: string }
-);
-
-export type ProductGuideMenu = ReadonlyArray<ProductGuideMenuItem>;
-
-const isChild = (path: string, child: string): boolean =>
-  child.startsWith(path) && child.replace(path, '').split('/').length === 2;
-
-export const getDirectChildrenOf = (
-  path: string,
-  nav: ProductGuideNav
-): ProductGuideNav =>
-  pipe(
-    nav,
-    RA.filter(
-      (item) =>
-        isChild(path.replace(/\/$/, ''), item.path.replace(/\/$/, '')) ||
-        (item.kind === 'link' && item.path === path)
-    )
-  );
+// TODO: Create a new type for path and provide a smart constructor that removes
+// the trailing slash
+export const isChild =
+  (path: string) =>
+  (item: ProductGuideNavItem): boolean => {
+    // Remove the trailing slash if any
+    const _path = path.replace(/\/$/, '');
+    const _itemPath = item.path.replace(/\/$/, '');
+    return (_itemPath.startsWith(_path) &&
+      item.path.replace(`${_path}/`, '').split('/').length === 1);
+  }
