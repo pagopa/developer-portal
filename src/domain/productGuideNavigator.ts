@@ -8,16 +8,21 @@ export type ProductGuideNavItem = {
 
 export type ProductGuideNav = ReadonlyArray<ProductGuideNavItem>;
 
-// TODO: Create a new type for path and provide a smart constructor that removes
-// the trailing slash
+/**
+ * Given a parent path and an nav item return true if the nav is a children
+ * of the given parent path
+ */
 export const isChild =
-  (path: string) =>
+  (parentPath: string) =>
   (item: ProductGuideNavItem): boolean => {
+    // TODO: Create a new type for path and provide a smart constructor that removes
+    // the trailing slash
     // Remove the trailing slash if any
-    const pathWithoutTrailing = path.replace(/\/$/, '');
+    const parentPathWithoutTrailing = parentPath.replace(/\/$/, '');
     const itemPathWithoutTrailing = item.path.replace(/\/$/, '');
     return (
-      itemPathWithoutTrailing.startsWith(pathWithoutTrailing) &&
-      item.path.replace(`${pathWithoutTrailing}/`, '').split('/').length === 1
+      itemPathWithoutTrailing.startsWith(parentPathWithoutTrailing) &&
+      item.path.replace(`${parentPathWithoutTrailing}/`, '').split('/')
+        .length === 1
     );
   };
