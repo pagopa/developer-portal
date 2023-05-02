@@ -9,7 +9,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@pagopa/mui-italia'],
-  trailingSlash: true,
+  trailingSlash: false,
   images: {
     unoptimized: true,
   }
