@@ -9,20 +9,22 @@ import Link from 'next/link';
 import { TreeItem, TreeView } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { isAncestor } from '@/domain/navigator';
+import Box from '@mui/material/Box';
 
 type ProductGuideMenuProps = {
   title: string;
   versions: string;
   guidePath: string;
   nav: ProductGuideNav;
-  selected?: string;
+  selected: string;
   expanded?: Array<string>;
 };
 
 const customStyle = {
   '& .MuiTreeItem-content': {
     flexDirection: 'row-reverse',
-    pl: 2,
+    pl: 1,
     py: 1,
   },
   '& .MuiTreeItem-label': {
@@ -31,6 +33,9 @@ const customStyle = {
   '& .MuiCollapse-root': {
     m: 0,
     pl: 2,
+  },
+  '& .Mui-selected > .MuiTreeItem-label > *': {
+    color: "primary.dark"
   },
 };
 
@@ -96,14 +101,15 @@ const ProductGuideMenu = ({
   guidePath,
   nav,
   selected,
-  expanded,
 }: ProductGuideMenuProps) => (
   <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }}>
     <Typography variant='h6'>{title}</Typography>
-    <Typography color='text.secondary'>Versione {versions}</Typography>
+    <Box sx={{ py: 2 }}>
+      <Typography color='text.secondary' variant='body2'>Versione {versions}</Typography>
+    </Box>
     <TreeView
       defaultCollapseIcon={<ExpandLessIcon />}
-      defaultExpanded={expanded}
+      defaultExpanded={nav.filter(isAncestor(selected)).map(({ path }) => path)}
       selected={selected}
       defaultExpandIcon={<ExpandMoreIcon />}
     >

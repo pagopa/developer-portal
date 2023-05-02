@@ -12,6 +12,7 @@ import { makeMenu } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { makeAppEnv } from '@/AppEnv';
+import { useRouter } from 'next/router';
 
 type ProductGuidePageParams = {
   productSlug: string;
@@ -62,18 +63,25 @@ export const getStaticProps: GetStaticProps<
     TE.toUnion
   )();
 
-const GuidePage = (props: ProductGuidePageProps) => (
-  <Box>
-    <Stack>
-      <Header />
-      <ProductNavBar {...props} />
-      <Stack direction='row' alignItems='stretch'>
-        <ProductGuideMenu {...{ ...props, versions: '0' }} />
-        <ProductGuideContent markdown={props.body} />
+const GuidePage = (props: ProductGuidePageProps) => {
+  const currentPath = useRouter().asPath;
+  return (
+    <Box>
+      <Stack>
+        <Header />
+        <ProductNavBar {...props} />
+        <Stack direction='row' alignItems='stretch'>
+          <Box px={{ minWidth: 360 }}>
+            <ProductGuideMenu
+              {...{ ...props, versions: '0', selected: currentPath }}
+            />
+          </Box>
+          <ProductGuideContent markdown={props.body} />
+        </Stack>
+        <Footer />
       </Stack>
-      <Footer />
-    </Stack>
-  </Box>
-);
+    </Box>
+  );
+};
 
 export default GuidePage;

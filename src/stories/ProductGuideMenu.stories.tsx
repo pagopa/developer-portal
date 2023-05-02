@@ -14,12 +14,7 @@ export const GuideNav: StoryObj<typeof ProductGuideMenu> = {
     title: 'Setup iniziale',
     versions: '0',
     guidePath: '/guide-root',
-    selected: '/guide-root/page-1/page-1-1/page-1-1-1',
-    expanded: [
-      '/guide-root/page-1/page-1-1/page-1-1-1',
-      '/guide-root/page-1/page-1-1',
-      '/guide-root/page-1',
-    ],
+    selected: '/guide-root/page-1',
     nav: [
       {
         kind: 'page',
