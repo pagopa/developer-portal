@@ -41,7 +41,7 @@ export const makeMenu = (nav: Nav, product: Product): Menu =>
   pipe(
     nav,
     // keep only children items
-    RA.filter(isChild(`/${product.slug}`)),
+    RA.filter(isSubTreeNode(`/${product.slug}`)),
     // keep only items with a nav value
     RA.filterMap((item) =>
       item.name.nav ? O.some({ path: item.path, name: item.name.nav }) : O.none
@@ -63,7 +63,7 @@ type BreadcrumbItem = {
  */
 export type Breadcrumbs = ReadonlyArray<BreadcrumbItem>;
 
-const isChild =
+const isSubTreeNode =
   (path: string) =>
   (l: Pick<NavItem, 'path'>): boolean =>
     l.path.startsWith(path);
@@ -72,6 +72,11 @@ export const isAncestor =
   (path: string) =>
   (l: Pick<NavItem, 'path'>): boolean =>
     path.startsWith(l.path);
+
+export const isSibling =
+  (path: string) =>
+  (l: Pick<NavItem, 'path'>): boolean =>
+    !isSubTreeNode(path)(l) && !isAncestor(path)(l);
 
 /**
  * Generates breadcrumbs from a navigation structure (Nav) and a current path.
