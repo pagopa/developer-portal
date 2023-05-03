@@ -9,7 +9,7 @@ export type ProductGuideNavItem = {
 export type ProductGuideNav = ReadonlyArray<ProductGuideNavItem>;
 
 /**
- * Given a parent path and an nav item return true if the nav is a children
+ * Given a parent path and a nav item return true if the nav is a children
  * of the given parent path
  */
 export const isChild =
