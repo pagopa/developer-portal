@@ -80,18 +80,13 @@ const GuidePage = (props: ProductGuidePageProps) => {
         <Header />
         <ProductNavBar {...props} />
         <Stack direction='row' alignItems='stretch'>
-          <Box px={{ minWidth: 360 }}>
-            <ProductGuideMenu
-              {...{
-                ...props,
-                versionsMenu: pipe(
-                  props.versionsNav,
-                  RA.filterMap(makeMenuItem)
-                ),
-                selected: currentPath,
-              }}
-            />
-          </Box>
+          <ProductGuideMenu
+            {...{
+              ...props,
+              versionsMenu: pipe(props.versionsNav, RA.filterMap(makeMenuItem)),
+              selected: currentPath,
+            }}
+          />
           <ProductGuideContent markdown={props.body} />
         </Stack>
         <Footer />
