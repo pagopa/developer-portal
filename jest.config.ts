@@ -8,6 +8,7 @@ const jestConfig: JestConfigWithTsJest = {
     'test',
   ],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
+  modulePathIgnorePatterns: ['./__tests__/data.ts'],
   transform: {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
