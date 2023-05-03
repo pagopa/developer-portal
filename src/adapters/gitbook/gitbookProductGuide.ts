@@ -78,8 +78,11 @@ const fetchGitBookProductGuide = ({
         spaces,
         RTE.traverseArray(fetchCurrentRevisionBySpace),
         RTE.map(
-          RA.map(({ space, revision }) =>
-            makeGitBookProductGuide({ product, collection, space, revision })
+          flow(
+            RA.filter(({ space }) => space.visibility === 'in-collection'),
+            RA.map(({ space, revision }) =>
+              makeGitBookProductGuide({ product, collection, space, revision })
+            )
           )
         )
       )
