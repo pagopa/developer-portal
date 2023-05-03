@@ -12,6 +12,14 @@ import { makeMenu } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { makeAppEnv } from '@/AppEnv';
+import { makeAppConfig } from '@/AppConfig';
+
+// TODO: Find a way to load the appEnv only once and
+// somehow provides it to the entire application
+const appEnv = pipe(
+  TE.fromEither(makeAppConfig(process.env)),
+  TE.chain(makeAppEnv)
+);
 
 type ProductGuidePageParams = {
   productSlug: string;
@@ -23,7 +31,7 @@ export const getStaticPaths: GetStaticPaths<
   ProductGuidePageParams
 > = async () => ({
   paths: await pipe(
-    makeAppEnv(process.env),
+    appEnv,
     TE.chain(({ productGuidePageReader }) =>
       productGuidePageReader.getAllPaths()
     ),
@@ -43,7 +51,7 @@ export const getStaticProps: GetStaticProps<
   pipe(
     TE.Do,
     TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
-    TE.apS('appEnv', makeAppEnv(process.env)),
+    TE.apS('appEnv', appEnv),
     TE.chain(({ appEnv, params: { productSlug, productGuidePage } }) =>
       appEnv.productGuidePageReader.getPageBy(
         `/${productSlug}/${productGuidePage.join('/')}`
@@ -55,8 +63,6 @@ export const getStaticProps: GetStaticProps<
       (page) => ({
         props: {
           navLinks: makeMenu(staticNav, page.product),
-          // makeVersionMenu(productSlug, guideSlug)
-          // guideNavLinks: makeGuideMenu(productSlug, guideSlug, versionSlug)
           ...page,
         },
       })

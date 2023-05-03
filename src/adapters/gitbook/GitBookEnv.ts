@@ -8,10 +8,9 @@ import {
 import { Product } from '@/domain/productPage';
 
 /**
- * Represents the configuration needed to create a GitBook environment.
- * `apiKey` is the GitBook API key used to access the GitBook API.
- * `guideToSync` is an array of objects that define the product and the GitBook
- * collection that should be synced.
+ * Represents the configuration needed to create a GitBookEnv.
+ * `guidesToSync` defines the GitBook collection that should be synced and the
+ * product which belongs to
  */
 export type GitBookConfig = {
   apiKey: string;
