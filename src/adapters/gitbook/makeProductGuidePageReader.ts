@@ -4,11 +4,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Reader';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as P from 'fp-ts/Predicate';
 import { ProductGuidePageReader } from '@/domain/productGuidePage';
 import { GitBookConfig, GitBookEnv, makeGitBookEnv } from './GitBookEnv';
 import { GitBookProductGuide } from './gitbookProductGuide';
 import { GitBookAPI } from '@gitbook/api';
-import { isSibling } from '@/domain/navigator';
+import { isEq, isSibling } from '@/domain/navigator';
 
 const gitBookGetAllPaths = pipe(
   R.ask<GitBookEnv>(),
@@ -57,7 +58,10 @@ const makeVersionsNav = (path: string) =>
         allGitBookProductGuides,
         RA.findFirst(({ path: guidePath }) => path.startsWith(guidePath)),
         O.map(({ path }) =>
-          pipe(allGitBookProductGuides, RA.filter(isSibling(path)))
+          pipe(
+            allGitBookProductGuides,
+            RA.filter(P.or(isSibling(path))(isEq(path)))
+          )
         ),
         O.fold(
           () => [],
