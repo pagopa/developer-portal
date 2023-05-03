@@ -4,7 +4,7 @@ import * as E from 'fp-ts/Either';
 import * as PR from 'io-ts/PathReporter';
 import { GitBookConfig } from './adapters/gitbook/GitBookEnv';
 
-type AppConfig = {
+export type AppConfig = {
   gitbook: GitBookConfig;
 };
 
@@ -12,7 +12,7 @@ const EnvCodec = t.type({
   GITBOOK_API_KEY: t.string,
 });
 
-const guideToSync: AppConfig['gitbook']['guideToSync'] = [
+const guidesToSync: AppConfig['gitbook']['guidesToSync'] = [
   {
     product: { name: 'p0', slug: 'ps0' },
     collectionId: 'Cw40sL8INZ5p5FDkWQSD',
@@ -20,7 +20,7 @@ const guideToSync: AppConfig['gitbook']['guideToSync'] = [
 ];
 
 /** Provides a way to create an instance of AppConfig */
-export const makeConfig = (
+export const makeAppConfig = (
   env: Record<string, string | undefined>
 ): E.Either<Error, AppConfig> =>
   pipe(
@@ -30,7 +30,7 @@ export const makeConfig = (
       (envs) => ({
         gitbook: {
           apiKey: envs.GITBOOK_API_KEY,
-          guideToSync,
+          guidesToSync,
         },
       })
     )

@@ -11,9 +11,9 @@ import { GitBookAPI } from '@gitbook/api';
 
 const gitBookGetAllPaths = pipe(
   R.ask<GitBookEnv>(),
-  R.map(({ allGitBookProductGuide }) =>
+  R.map(({ allGitBookProductGuides }) =>
     pipe(
-      allGitBookProductGuide,
+      allGitBookProductGuides,
       RA.chain(({ nav }) =>
         pipe(
           nav,
@@ -51,12 +51,12 @@ const fetchPageByPath =
 const gitBookGetPageBy = (path: string) =>
   pipe(
     R.ask<GitBookEnv>(),
-    R.map(({ client, allGitBookProductGuide }) =>
+    R.map(({ client, allGitBookProductGuides }) =>
       pipe(
-        allGitBookProductGuide,
+        allGitBookProductGuides,
         RA.findFirst(({ path: guidePath }) => path.startsWith(guidePath)),
         O.traverse(TE.ApplicativeSeq)((guide) =>
-          pipe(fetchPageByPath(guide, path)(client))
+          fetchPageByPath(guide, path)(client)
         )
       )
     )
