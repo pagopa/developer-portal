@@ -60,7 +60,15 @@ const makeVersionsNav = (path: string) =>
         O.map(({ path }) =>
           pipe(
             allGitBookProductGuides,
-            RA.filter(P.or(isSibling(path))(isEq(path)))
+            RA.filter(P.or(isSibling(path))(isEq(path))),
+            // The path of a version shold be the homepage of the space
+            // which is the first available 'sheet' if any
+            RA.filterMap((guide) =>
+              pipe(
+                getHomepage(guide),
+                O.map((path) => ({ ...guide, path }))
+              )
+            )
           )
         ),
         O.fold(
@@ -72,6 +80,13 @@ const makeVersionsNav = (path: string) =>
         )
       )
     )
+  );
+
+const getHomepage = (guide: GitBookEnv['allGitBookProductGuides'][0]) =>
+  pipe(
+    guide.revision.pages,
+    RA.findFirstMap((page) => (page.kind === 'sheet' ? O.some(page) : O.none)),
+    O.map(({ path }) => `${guide.path}/${path}`)
   );
 
 const gitBookGetPageBy = (path: string) =>
