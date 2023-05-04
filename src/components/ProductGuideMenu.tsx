@@ -3,11 +3,12 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { TreeItem, TreeView } from '@mui/lab';
+import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { isAncestor } from '@/domain/navigator';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 type ProductGuideMenuProps = {
   title: string;
@@ -18,23 +19,22 @@ type ProductGuideMenuProps = {
   expanded?: Array<string>;
 };
 
-const customStyle = {
-  '& .MuiTreeItem-content': {
+const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
+  [`& .${treeItemClasses.content}`]: {
     flexDirection: 'row-reverse',
-    pl: 1,
-    py: 1,
+    padding: 8,
   },
-  '& .MuiTreeItem-label': {
-    p: 0,
+  [`& .${treeItemClasses.label}`]: {
+    padding: 0,
   },
-  '& .MuiCollapse-root': {
-    m: 0,
-    pl: 2,
+  [`& .${treeItemClasses.root}`]: {
+    margin: 0,
+    paddingLeft: 2,
   },
-  '& .Mui-selected > .MuiTreeItem-label > *': {
-    color: 'primary.dark',
+  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
+    color: theme.palette.primary.dark,
   },
-};
+}));
 
 const renderItem = (
   item: ProductGuideNav[0],
@@ -71,17 +71,16 @@ const renderItem = (
     );
   return (
     <>
-      <TreeItem
+      <StyledTreeItem
         key={item.path}
         nodeId={item.kind === 'link' ? item.href : item.path}
         label={label}
         disabled={item.kind === 'group'}
         icon={item.kind === 'link' ? <OpenInNewIcon /> : undefined}
-        sx={customStyle}
       >
         {item.kind === 'page' &&
           nav.filter(isChild(item.path)).map((child) => renderItem(child, nav))}
-      </TreeItem>
+      </StyledTreeItem>
       {item.kind === 'group' &&
         nav.filter(isChild(item.path)).map((child) => renderItem(child, nav))}
     </>
