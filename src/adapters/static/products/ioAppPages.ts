@@ -8,7 +8,7 @@ const ioAppProduct: Product = {
 
 export const ioAppGuideTechGuideV23Home: ProductGuidePage = {
   product: ioAppProduct,
-  guidePath: '/${ioAppProduct.slug}/guide-manuali/v0',
+  guidePath: `/${ioAppProduct.slug}/guide-manuali/v0`,
   versionsNav: [],
   nav: [],
   title: 'Guida tecnica',
@@ -16,7 +16,7 @@ export const ioAppGuideTechGuideV23Home: ProductGuidePage = {
 };
 export const ioAppGuideTechGuideV23Changelog: ProductGuidePage = {
   product: ioAppProduct,
-  guidePath: '/${ioAppProduct.slug}/guide-manuali/v0',
+  guidePath: `/${ioAppProduct.slug}/guide-manuali/v0`,
   versionsNav: [],
   nav: [],
   title: 'Changelog',
