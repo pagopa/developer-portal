@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { Breadcrumbs as BreadcrumbItems } from '@/domain/navigator';
 
-type BreadcrumbsProps = {
+export type BreadcrumbsProps = {
   items: BreadcrumbItems;
 };
 
