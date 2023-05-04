@@ -7,13 +7,12 @@ describe('makeProductGuideNav', () => {
     const actual = makeProductGuideNav(gitBookProductGuideItemList, []);
     const expected: ProductGuideNav = [
       {
-        href: 'anHref',
-        kind: 'link',
+        kind: 'page',
         name: {
           breadcrumb: 'aTitle',
           nav: 'aTitle',
         },
-        path: '/parent',
+        path: '/parent/aSlug0',
       },
       {
         kind: 'page',
@@ -24,12 +23,13 @@ describe('makeProductGuideNav', () => {
         path: '/parent/aSlug0/aSlug00',
       },
       {
-        kind: 'page',
+        href: 'anHref',
+        kind: 'link',
         name: {
           breadcrumb: 'aTitle',
           nav: 'aTitle',
         },
-        path: '/parent/aSlug0',
+        path: '/parent/ext-link',
       },
     ];
     expect(actual).toStrictEqual(expected);

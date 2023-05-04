@@ -5,13 +5,14 @@ import { ProductGuidePage } from '@/domain/productGuidePage';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import ProductGuideNav from '@/components/ProductGuideNav';
+import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
 import { staticNav } from '@/adapters/static/staticNav';
 import { makeMenu } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { makeAppEnv } from '@/AppEnv';
+import { useRouter } from 'next/router';
 import { makeAppConfig } from '@/AppConfig';
 
 // TODO: Find a way to load the appEnv only once and
@@ -70,18 +71,25 @@ export const getStaticProps: GetStaticProps<
     TE.toUnion
   )();
 
-const GuidePage = (props: ProductGuidePageProps) => (
-  <Box>
-    <Stack>
-      <Header />
-      <ProductNavBar {...props} />
-      <Stack direction='row' alignItems='stretch'>
-        <ProductGuideNav />
-        <ProductGuideContent markdown={props.body} />
+const GuidePage = (props: ProductGuidePageProps) => {
+  const currentPath = useRouter().asPath;
+  return (
+    <Box>
+      <Stack>
+        <Header />
+        <ProductNavBar {...props} />
+        <Stack direction='row' alignItems='stretch'>
+          <Box px={{ minWidth: 360 }}>
+            <ProductGuideMenu
+              {...{ ...props, versions: '0', selected: currentPath }}
+            />
+          </Box>
+          <ProductGuideContent markdown={props.body} />
+        </Stack>
+        <Footer />
       </Stack>
-      <Footer />
-    </Stack>
-  </Box>
-);
+    </Box>
+  );
+};
 
 export default GuidePage;

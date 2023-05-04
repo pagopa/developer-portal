@@ -1,13 +1,12 @@
 import * as T from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { Product } from './productPage';
+import { ProductGuideNav } from './productGuideNavigator';
 
 export type ProductGuidePage = {
   product: Product;
-  // TODO: Remove all the slug
-  guideSlug: string;
-  versionSlug: string;
-  slug: string;
+  guidePath: string;
+  nav: ProductGuideNav;
   title: string;
   // TODO: At the moment use string
   // which is a markdown content
