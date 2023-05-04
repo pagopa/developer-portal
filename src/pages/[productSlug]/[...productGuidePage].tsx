@@ -8,7 +8,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
 import { staticNav } from '@/adapters/static/staticNav';
-import { makeMenu, makeMenuItem } from '@/domain/navigator';
+import { makeBreadcrumbs, makeMenu, makeMenuItem } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -78,7 +78,7 @@ const GuidePage = (props: ProductGuidePageProps) => {
     <Box>
       <Stack>
         <Header />
-        <ProductNavBar {...props} />
+        <ProductNavBar title={props.product.name} navLinks={props.navLinks} />
         <Stack direction='row' alignItems='stretch'>
           <ProductGuideMenu
             {...{
@@ -87,7 +87,13 @@ const GuidePage = (props: ProductGuidePageProps) => {
               currentPath,
             }}
           />
-          <ProductGuideContent markdown={props.body} />
+          <ProductGuideContent
+            breadcrumbs={makeBreadcrumbs(
+              [...staticNav, ...props.nav],
+              currentPath
+            )}
+            markdown={props.body}
+          />
         </Stack>
         <Footer />
       </Stack>
