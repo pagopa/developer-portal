@@ -96,10 +96,15 @@ const ProductGuideMenu = ({
 }: ProductGuideMenuProps) => (
   <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }} minWidth={360}>
     <Typography variant='h6'>{title}</Typography>
-    <ProductGuideVersionsMenu currentPath={currentPath} versionsMenu={versionsMenu} />
+    <ProductGuideVersionsMenu
+      currentPath={currentPath}
+      versionsMenu={versionsMenu}
+    />
     <TreeView
       defaultCollapseIcon={<ExpandLessIcon />}
-      defaultExpanded={nav.filter(isAncestor(currentPath)).map(({ path }) => path)}
+      defaultExpanded={nav
+        .filter(isAncestor(currentPath))
+        .map(({ path }) => path)}
       selected={currentPath}
       defaultExpandIcon={<ExpandMoreIcon />}
     >
