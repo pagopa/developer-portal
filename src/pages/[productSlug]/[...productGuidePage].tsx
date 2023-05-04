@@ -8,8 +8,9 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
 import { staticNav } from '@/adapters/static/staticNav';
-import { makeMenu } from '@/domain/navigator';
+import { makeMenu, makeMenuItem } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { makeAppEnv } from '@/AppEnv';
 import { useRouter } from 'next/router';
@@ -79,11 +80,13 @@ const GuidePage = (props: ProductGuidePageProps) => {
         <Header />
         <ProductNavBar {...props} />
         <Stack direction='row' alignItems='stretch'>
-          <Box px={{ minWidth: 360 }}>
-            <ProductGuideMenu
-              {...{ ...props, versions: '0', selected: currentPath }}
-            />
-          </Box>
+          <ProductGuideMenu
+            {...{
+              ...props,
+              versionsMenu: pipe(props.versionsNav, RA.filterMap(makeMenuItem)),
+              currentPath,
+            }}
+          />
           <ProductGuideContent markdown={props.body} />
         </Stack>
         <Footer />

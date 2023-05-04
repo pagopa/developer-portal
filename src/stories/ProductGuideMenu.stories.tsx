@@ -12,9 +12,12 @@ export default meta;
 export const GuideNav: StoryObj<typeof ProductGuideMenu> = {
   args: {
     title: 'Setup iniziale',
-    versions: '0',
+    versionsMenu: [
+      { name: '0', path: '/guide-root/v0' },
+      { name: '1', path: '/guide-root/v1' },
+    ],
     guidePath: '/guide-root',
-    selected: '/guide-root/page-1',
+    currentPath: '/guide-root/page-1',
     nav: [
       {
         kind: 'page',

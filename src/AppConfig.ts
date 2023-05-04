@@ -14,8 +14,8 @@ const EnvCodec = t.type({
 
 const guidesToSync: AppConfig['gitbook']['guidesToSync'] = [
   {
-    product: { name: 'p0', slug: 'ps0' },
-    collectionId: 'Cw40sL8INZ5p5FDkWQSD',
+    product: { name: 'App IO', slug: 'app-io' },
+    collectionId: 'jGL1aFISone0197CLeGA',
   },
 ];
 

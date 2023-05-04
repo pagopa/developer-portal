@@ -6,16 +6,16 @@ import Link from 'next/link';
 import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { isAncestor } from '@/domain/navigator';
-import Box from '@mui/material/Box';
+import { Menu, isAncestor } from '@/domain/navigator';
 import { styled } from '@mui/material/styles';
+import ProductGuideVersionsMenu from './ProductGuideVersionsMenu';
 
 type ProductGuideMenuProps = {
   title: string;
-  versions: string;
+  versionsMenu: Menu;
   guidePath: string;
   nav: ProductGuideNav;
-  selected: string;
+  currentPath: string;
   expanded?: Array<string>;
 };
 
@@ -89,22 +89,23 @@ const renderItem = (
 
 const ProductGuideMenu = ({
   title,
-  versions,
+  versionsMenu,
   guidePath,
   nav,
-  selected,
+  currentPath,
 }: ProductGuideMenuProps) => (
-  <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }}>
+  <Stack bgcolor='background.default' sx={{ px: 3, py: 10 }} minWidth={360}>
     <Typography variant='h6'>{title}</Typography>
-    <Box sx={{ py: 2 }}>
-      <Typography color='text.secondary' variant='body2'>
-        Versione {versions}
-      </Typography>
-    </Box>
+    <ProductGuideVersionsMenu
+      currentPath={currentPath}
+      versionsMenu={versionsMenu}
+    />
     <TreeView
       defaultCollapseIcon={<ExpandLessIcon />}
-      defaultExpanded={nav.filter(isAncestor(selected)).map(({ path }) => path)}
-      selected={selected}
+      defaultExpanded={nav
+        .filter(isAncestor(currentPath))
+        .map(({ path }) => path)}
+      selected={currentPath}
       defaultExpandIcon={<ExpandMoreIcon />}
     >
       {nav.filter(isChild(guidePath)).map((item) => renderItem(item, nav))}

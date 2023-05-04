@@ -1,11 +1,13 @@
 import * as T from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import { Nav } from './navigator';
 import { Product } from './productPage';
 import { ProductGuideNav } from './productGuideNavigator';
 
 export type ProductGuidePage = {
   product: Product;
   guidePath: string;
+  versionsNav: Nav;
   nav: ProductGuideNav;
   title: string;
   // TODO: At the moment use string

@@ -1,4 +1,4 @@
-import { makeMenu, makeBreadcrumbs } from '../navigator';
+import { makeMenu, makeBreadcrumbs, isSibling } from '../navigator';
 
 const product = { slug: 'products', name: 'Product 1' };
 
@@ -15,6 +15,16 @@ const productBarNavItem = {
   path: '/products/bar',
   name: { breadcrumb: 'Bar', nav: 'Bar Nav' },
 };
+
+describe('isSibling', () => {
+  it('should return true given two sibling path', () => {
+    expect(isSibling('/root/node-a')({ path: '/root/node-b' })).toBeTruthy();
+  });
+  it('should return false given two not sibling path', () => {
+    expect(isSibling('/root')({ path: '/root/node-b' })).toBeFalsy();
+    expect(isSibling('/root')({ path: '/root/node-b/leaf-b' })).toBeFalsy();
+  });
+});
 
 describe('makeMenu', () => {
   it('should return an empty array when the navigation is empty', () => {

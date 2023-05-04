@@ -18,10 +18,10 @@ const ioSignImage = {
 };
 
 export const ioSignPageLinks = {
-  overview: `/${ioSignProduct.slug}/panoramica/`,
-  tutorial: `/${ioSignProduct.slug}/tutorial/`,
-  tutorialHowCreatePdf: `/${ioSignProduct.slug}/tutorial/come-preparare-il-documento-da-firmare/`,
-  quickStart: `/${ioSignProduct.slug}/guida-rapida/`,
+  overview: `/${ioSignProduct.slug}/panoramica`,
+  tutorial: `/${ioSignProduct.slug}/tutorial`,
+  tutorialHowCreatePdf: `/${ioSignProduct.slug}/tutorial/come-preparare-il-documento-da-firmare`,
+  quickStart: `/${ioSignProduct.slug}/guida-rapida`,
 };
 
 const ioSignRelated: RelatedResourcesBlock = {
