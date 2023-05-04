@@ -87,7 +87,13 @@ const GuidePage = (props: ProductGuidePageProps) => {
               currentPath,
             }}
           />
-          <ProductGuideContent breadcrumbs={makeBreadcrumbs([...staticNav, ...props.nav], currentPath)} markdown={props.body} />
+          <ProductGuideContent
+            breadcrumbs={makeBreadcrumbs(
+              [...staticNav, ...props.nav],
+              currentPath
+            )}
+            markdown={props.body}
+          />
         </Stack>
         <Footer />
       </Stack>
