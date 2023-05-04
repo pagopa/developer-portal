@@ -5,21 +5,23 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import MUIMenu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Menu } from '@/domain/navigator';
+import { Menu, isAncestor } from '@/domain/navigator';
 import React from 'react';
 import Link from 'next/link';
 import { theme } from '@/pages/_app';
 
 type ProductGuideVersionsMenuProps = {
   versionsMenu: Menu;
+  currentPath: string;
 };
 
 const ProductGuideVersionsMenu = ({
   versionsMenu,
+  currentPath,
 }: ProductGuideVersionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selected, setSelected] = React.useState<null | Menu[0]>(
-    versionsMenu[0] || null
+    versionsMenu.find(isAncestor(currentPath)) || null
   );
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);

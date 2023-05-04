@@ -84,7 +84,7 @@ const GuidePage = (props: ProductGuidePageProps) => {
             {...{
               ...props,
               versionsMenu: pipe(props.versionsNav, RA.filterMap(makeMenuItem)),
-              selected: currentPath,
+              currentPath,
             }}
           />
           <ProductGuideContent markdown={props.body} />
