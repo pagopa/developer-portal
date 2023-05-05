@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { staticNav } from '@/adapters/static/staticNav';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
@@ -12,46 +10,63 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { pipe } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { makeAppEnv } from '@/AppEnv';
+import { makeAppConfig } from '@/AppConfig';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import {
-  getProductTutorialPageBy,
-  getProductTutorialPages,
-} from '@/adapters/static/staticProductTutorialPage';
+
+// TODO: Find a way to load the appEnv only once and
+// somehow provides it to the entire application
+const appEnv = pipe(
+  TE.fromEither(makeAppConfig(process.env)),
+  TE.chain(makeAppEnv)
+);
 
 type Params = {
   productSlug: string;
-  tutorialSlug: string;
+  productTutorialPath: Array<string>;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: pipe(
-    getProductTutorialPages(),
-    RA.map(({ product, slug }) => ({
-      params: { productSlug: product.slug, tutorialSlug: slug },
-    })),
-    (array) => [...array]
-  ),
+export const getStaticPaths: GetStaticPaths<Params> = async () => ({
+  paths: await pipe(
+    appEnv,
+    TE.chain(({ productTutorialPageReader }) =>
+      productTutorialPageReader.getAllPaths()
+    ),
+    TE.bimap(
+      () => [],
+      (result) => [...result]
+    ),
+    TE.toUnion
+  )(),
   fallback: false,
 });
 
-export const getStaticProps: GetStaticProps<ProductTutorialPage, Params> = (
-  context
-) =>
+export const getStaticProps: GetStaticProps<
+  ProductTutorialPage,
+  Params
+> = async ({ params }) =>
   pipe(
-    O.fromNullable(context.params),
-    O.chain(({ productSlug, tutorialSlug }) =>
-      getProductTutorialPageBy(productSlug, tutorialSlug)
+    TE.Do,
+    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
+    TE.apS('appEnv', appEnv),
+    TE.chain(({ appEnv, params: { productSlug, productTutorialPath } }) =>
+      appEnv.productTutorialPageReader.getPageBy(
+        `/${productSlug}/tutorial/${productTutorialPath.join('/')}`
+      )
     ),
-    O.foldW(
-      () => ({ notFound: true }),
+    TE.chain(TE.fromOption(() => new Error('Not Found'))),
+    TE.bimap(
+      () => ({ notFound: true as const }),
       (page) => ({
         props: {
           ...page,
         },
       })
-    )
-  );
+    ),
+    TE.toUnion
+  )();
 
 const Tutorial = (props: ProductTutorialPage) => {
   return (

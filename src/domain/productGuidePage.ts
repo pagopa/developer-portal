@@ -15,8 +15,7 @@ export type ProductGuidePage = {
   body: string;
 };
 
-// Capabilities
-
+/** The entry-point to retrieve guides */
 export type ProductGuidePageReader = {
   // return full path of all product guide page
   getAllPaths: () => T.TaskEither<Error, ReadonlyArray<string>>;
