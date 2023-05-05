@@ -19,6 +19,7 @@ import {
   getAllProductPagePaths,
   nextEnv,
 } from '@/adapters/nextjs/lib';
+import { BreadcrumbsProps } from '@/components/Breadcrumbs';
 
 type Params = {
   productSlug: string;
@@ -34,7 +35,10 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   fallback: false,
 });
 
-type ProductPageProps = ProductPage & ProductNavBarProps;
+type ProductPageProps = ProductPage &
+  ProductNavBarProps & {
+    breadcrumbs: BreadcrumbsProps['items'];
+  };
 
 export const getStaticProps: GetStaticProps<ProductPageProps, Params> = async ({
   params,
@@ -62,9 +66,17 @@ const ProductPage = (props: ProductPageProps) => (
         RA.map((block) => {
           switch (block.type) {
             case 'hero':
-              return <HeroWithBreadcrumbs {...block} />;
+              return (
+                <HeroWithBreadcrumbs
+                  {...{ ...block, breadcrumbs: { items: props.breadcrumbs } }}
+                />
+              );
             case 'hero-info':
-              return <HeroIntroWithBreadcrumbs {...block} />;
+              return (
+                <HeroIntroWithBreadcrumbs
+                  {...{ ...block, breadcrumbs: { items: props.breadcrumbs } }}
+                />
+              );
             case 'quickstart-preview':
               return <QuickStartPreview {...block} />;
             case 'quickstart':

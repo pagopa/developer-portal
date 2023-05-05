@@ -1,7 +1,7 @@
-import { Nav } from '@/domain/navigator';
+import { Nav, NavReader } from '@/domain/navigator';
 import { ioSignPageLinks } from './products/ioSignPages';
 
-export const staticNav: Nav = [
+const staticNav: Nav = [
   {
     name: {
       breadcrumb: 'Homepage',
@@ -41,6 +41,10 @@ export const staticNav: Nav = [
       nav: 'Guide e Manuali',
       breadcrumb: 'App IO - Guide e Manuali',
     },
-    path: 'io-app/guide-manuali',
+    path: '/app-io/guide-manuali',
   },
 ];
+
+export const makeNavReader = (): NavReader => ({
+  getNav: () => staticNav,
+});

@@ -2,9 +2,9 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Reader';
 import * as TE from 'fp-ts/TaskEither';
+import * as RTE from 'fp-ts/ReaderTaskEither';
 import { NextEnv, makeNextConfig, makeNextEnv } from './NextEnv';
-import { makeMenu } from '@/domain/navigator';
-import { staticNav } from '../static/staticNav';
+import { makeBreadcrumbs, makeMenu } from '@/domain/navigator';
 
 // TODO: Find a way to load the appEnv only once and
 // somehow provides it to the entire application
@@ -33,13 +33,14 @@ export const getAllProductPagePaths = pipe(
 // Return a product page given the path if any
 export const findProductPageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productPageReader'>>(),
-    R.map(({ productPageReader }) =>
+    R.ask<Pick<NextEnv, 'productPageReader' | 'navReader'>>(),
+    R.map(({ productPageReader, navReader }) =>
       pipe(
         productPageReader.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(staticNav, page.product),
+            navLinks: makeMenu(navReader.getNav(), page.product),
+            breadcrumbs: makeBreadcrumbs(navReader.getNav(), pagePath),
             ...page,
           }))
         )
@@ -61,13 +62,17 @@ export const getAllProductGudePagePaths = pipe(
 // Return a product guide page given the path if any
 export const findProductGuidePageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productGuidePageReader'>>(),
-    R.map(({ productGuidePageReader }) =>
+    R.ask<Pick<NextEnv, 'productGuidePageReader' | 'navReader'>>(),
+    R.map(({ productGuidePageReader, navReader }) =>
       pipe(
         productGuidePageReader.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(staticNav, page.product),
+            navLinks: makeMenu(navReader.getNav(), page.product),
+            breadcrumbs: makeBreadcrumbs(
+              [...navReader.getNav(), ...page.nav],
+              pagePath
+            ),
             ...page,
           }))
         )
@@ -89,13 +94,14 @@ export const getAllProductTutorialPagePaths = pipe(
 // Return a product tutorial page given the path if any
 export const findProductTutorialPageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productTutorialPageReader'>>(),
-    R.map(({ productTutorialPageReader }) =>
+    R.ask<Pick<NextEnv, 'productTutorialPageReader' | 'navReader'>>(),
+    R.map(({ productTutorialPageReader, navReader }) =>
       pipe(
         productTutorialPageReader.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(staticNav, page.product),
+            navLinks: makeMenu(navReader.getNav(), page.product),
+            breadcrumbs: makeBreadcrumbs(navReader.getNav(), pagePath),
             ...page,
           }))
         )

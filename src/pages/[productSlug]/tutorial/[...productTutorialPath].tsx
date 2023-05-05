@@ -1,6 +1,9 @@
-import { findProductTutorialPageByPath, getAllProductTutorialPagePaths, nextEnv } from '@/adapters/nextjs/lib';
-import { staticNav } from '@/adapters/static/staticNav';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import {
+  findProductTutorialPageByPath,
+  getAllProductTutorialPagePaths,
+  nextEnv,
+} from '@/adapters/nextjs/lib';
+import Breadcrumbs, { BreadcrumbsProps } from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import MuiMarkdown from '@/components/MuiMarkdown';
@@ -19,6 +22,10 @@ import { useRouter } from 'next/router';
 type Params = {
   productSlug: string;
   productTutorialPath: Array<string>;
+};
+
+type ProductTutorialPageProps = ProductTutorialPage & {
+  breadcrumbs: BreadcrumbsProps['items'];
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => ({
@@ -49,16 +56,14 @@ export const getStaticProps: GetStaticProps<
     TE.toUnion
   )();
 
-const Tutorial = (props: ProductTutorialPage) => {
+const Tutorial = (props: ProductTutorialPageProps) => {
   return (
     <Box>
       <Stack>
         <Header />
         <Box bgcolor='background.paper' sx={{ p: 5 }}>
           <Container maxWidth='xl'>
-            <Breadcrumbs
-              items={makeBreadcrumbs(staticNav, useRouter().asPath)}
-            />
+            <Breadcrumbs items={props.breadcrumbs} />
             <Container maxWidth='md'>
               <Stack
                 spacing={3}

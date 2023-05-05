@@ -5,5 +5,5 @@ import { ioSignPageLinks, ioSignTutorialPage } from './products/ioSignPages';
 
 export const makeProductTutorialPageReader = (): ProductTutorialPageReader => ({
   getAllPaths: () => TE.of([ioSignPageLinks.tutorialHowCreatePdf]),
-  getPageBy: (page) => TE.of(O.some(ioSignTutorialPage)),
+  getPageBy: (path) => TE.of(O.some(ioSignTutorialPage)),
 });

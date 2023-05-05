@@ -7,8 +7,6 @@ import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
-import { staticNav } from '@/adapters/static/staticNav';
-import { makeBreadcrumbs, makeMenu, makeMenuItem } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
@@ -19,15 +17,22 @@ import {
   findProductGuidePageByPath,
   nextEnv,
 } from '@/adapters/nextjs/lib';
+import { makeMenuItem } from '@/domain/navigator';
+import { BreadcrumbsProps } from '@/components/Breadcrumbs';
 
-type Params = {
+export type ProductGuidePageParams = {
   productSlug: string;
   productGuidePage: Array<string>;
 };
 
-type ProductGuidePageProps = ProductGuidePage & ProductNavBarProps;
+export type ProductGuidePageProps = ProductGuidePage &
+  ProductNavBarProps & {
+    breadcrumbs: BreadcrumbsProps['items'];
+  };
 
-export const getStaticPaths: GetStaticPaths<Params> = async () => ({
+export const getStaticPaths: GetStaticPaths<
+  ProductGuidePageParams
+> = async () => ({
   paths: await pipe(
     nextEnv,
     TE.chain(getAllProductGudePagePaths),
@@ -38,7 +43,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
 
 export const getStaticProps: GetStaticProps<
   ProductGuidePageProps,
-  Params
+  ProductGuidePageParams
 > = async ({ params }) =>
   pipe(
     nextEnv,
@@ -71,10 +76,7 @@ const GuidePage = (props: ProductGuidePageProps) => {
             }}
           />
           <ProductGuideContent
-            breadcrumbs={makeBreadcrumbs(
-              [...staticNav, ...props.nav],
-              currentPath
-            )}
+            breadcrumbs={props.breadcrumbs}
             markdown={props.body}
           />
         </Stack>
