@@ -1,3 +1,4 @@
+import { findProductTutorialPageByPath, getAllProductTutorialPagePaths, nextEnv } from '@/adapters/nextjs/lib';
 import { staticNav } from '@/adapters/static/staticNav';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
@@ -10,18 +11,10 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { makeAppEnv } from '@/AppEnv';
-import { makeAppConfig } from '@/AppConfig';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-
-// TODO: Find a way to load the appEnv only once and
-// somehow provides it to the entire application
-const appEnv = pipe(
-  TE.fromEither(makeAppConfig(process.env)),
-  TE.chain(makeAppEnv)
-);
 
 type Params = {
   productSlug: string;
@@ -30,15 +23,9 @@ type Params = {
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
-    appEnv,
-    TE.chain(({ productTutorialPageReader }) =>
-      productTutorialPageReader.getAllPaths()
-    ),
-    TE.bimap(
-      () => [],
-      (result) => [...result]
-    ),
-    TE.toUnion
+    nextEnv,
+    TE.chain(getAllProductTutorialPagePaths),
+    TE.getOrElse(() => T.of(Array()))
   )(),
   fallback: false,
 });
@@ -48,22 +35,16 @@ export const getStaticProps: GetStaticProps<
   Params
 > = async ({ params }) =>
   pipe(
-    TE.Do,
-    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
-    TE.apS('appEnv', appEnv),
-    TE.chain(({ appEnv, params: { productSlug, productTutorialPath } }) =>
-      appEnv.productTutorialPageReader.getPageBy(
-        `/${productSlug}/tutorial/${productTutorialPath.join('/')}`
+    nextEnv,
+    TE.chain(
+      findProductTutorialPageByPath(
+        `/${params?.productSlug}/tutorial/${params?.productTutorialPath}`
       )
     ),
     TE.chain(TE.fromOption(() => new Error('Not Found'))),
     TE.bimap(
       () => ({ notFound: true as const }),
-      (page) => ({
-        props: {
-          ...page,
-        },
-      })
+      (page) => ({ props: page })
     ),
     TE.toUnion
   )();

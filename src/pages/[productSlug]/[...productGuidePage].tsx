@@ -11,63 +11,46 @@ import { staticNav } from '@/adapters/static/staticNav';
 import { makeBreadcrumbs, makeMenu, makeMenuItem } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
+import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { makeAppEnv } from '@/AppEnv';
 import { useRouter } from 'next/router';
-import { makeAppConfig } from '@/AppConfig';
+import {
+  getAllProductGudePagePaths,
+  findProductGuidePageByPath,
+  nextEnv,
+} from '@/adapters/nextjs/lib';
 
-// TODO: Find a way to load the appEnv only once and
-// somehow provides it to the entire application
-const appEnv = pipe(
-  TE.fromEither(makeAppConfig(process.env)),
-  TE.chain(makeAppEnv)
-);
-
-type ProductGuidePageParams = {
+type Params = {
   productSlug: string;
   productGuidePage: Array<string>;
 };
+
 type ProductGuidePageProps = ProductGuidePage & ProductNavBarProps;
 
-export const getStaticPaths: GetStaticPaths<
-  ProductGuidePageParams
-> = async () => ({
+export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
-    appEnv,
-    TE.chain(({ productGuidePageReader }) =>
-      productGuidePageReader.getAllPaths()
-    ),
-    TE.bimap(
-      () => [],
-      (result) => [...result]
-    ),
-    TE.toUnion
+    nextEnv,
+    TE.chain(getAllProductGudePagePaths),
+    TE.getOrElse(() => T.of(Array()))
   )(),
   fallback: false,
 });
 
 export const getStaticProps: GetStaticProps<
   ProductGuidePageProps,
-  ProductGuidePageParams
+  Params
 > = async ({ params }) =>
   pipe(
-    TE.Do,
-    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
-    TE.apS('appEnv', appEnv),
-    TE.chain(({ appEnv, params: { productSlug, productGuidePage } }) =>
-      appEnv.productGuidePageReader.getPageBy(
-        `/${productSlug}/${productGuidePage.join('/')}`
+    nextEnv,
+    TE.chain(
+      findProductGuidePageByPath(
+        `/${params?.productSlug}/${params?.productGuidePage.join('/')}`
       )
     ),
     TE.chain(TE.fromOption(() => new Error('Not Found'))),
     TE.bimap(
       () => ({ notFound: true as const }),
-      (page) => ({
-        props: {
-          navLinks: makeMenu(staticNav, page.product),
-          ...page,
-        },
-      })
+      (page) => ({ props: page })
     ),
     TE.toUnion
   )();
