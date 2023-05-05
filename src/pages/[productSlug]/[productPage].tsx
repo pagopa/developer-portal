@@ -34,9 +34,7 @@ type Params = {
 export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
     appEnv,
-    TE.chain(({ productPageReader }) =>
-      productPageReader.getAllPaths()
-    ),
+    TE.chain(({ productPageReader }) => productPageReader.getAllPaths()),
     TE.bimap(
       () => [],
       (result) => [...result]
@@ -48,15 +46,15 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
 
 type ProductPageProps = ProductPage & ProductNavBarProps;
 
-export const getStaticProps: GetStaticProps<ProductPageProps, Params> = async ({ params }) =>
+export const getStaticProps: GetStaticProps<ProductPageProps, Params> = async ({
+  params,
+}) =>
   pipe(
     TE.Do,
     TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
     TE.apS('appEnv', appEnv),
     TE.chain(({ appEnv, params: { productSlug, productPage } }) =>
-      appEnv.productPageReader.getPageBy(
-        `/${productSlug}/${productPage}`
-      )
+      appEnv.productPageReader.getPageBy(`/${productSlug}/${productPage}`)
     ),
     TE.chain(TE.fromOption(() => new Error('Not Found'))),
     TE.bimap(

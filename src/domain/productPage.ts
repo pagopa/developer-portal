@@ -14,14 +14,6 @@ export type ProductPage = {
   blocks: ReadonlyArray<PageBlock>;
 };
 
-// Return all pages of type product
-export type GetProductPages = () => ReadonlyArray<ProductPage>;
-
-export type GetProductPageBy = (
-  productSlug: string,
-  pageSlug: string
-) => O.Option<ProductPage>;
-
 /** The entry point to retrieve product pages */
 export type ProductPageReader = {
   // return full path of all product pages
