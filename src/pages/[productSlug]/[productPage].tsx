@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HeroWithBreadcrumbs from '@/components/HeroWithBreadcrumbs';
@@ -11,51 +12,64 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { makeMenu } from '@/domain/navigator';
 import { staticNav } from '@/adapters/static/staticNav';
 import { pipe } from 'fp-ts/lib/function';
-import {
-  getProductPageBy,
-  getProductPages,
-} from '@/adapters/static/staticProductPage';
 import { ProductPage } from '@/domain/productPage';
 import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
 import RelatedResources from '@/components/RelatedResources';
 import QuickStartSteps from '@/components/QuickStartSteps';
+import { makeAppConfig } from '@/AppConfig';
+import { makeAppEnv } from '@/AppEnv';
+
+// TODO: Find a way to load the appEnv only once and
+// somehow provides it to the entire application
+const appEnv = pipe(
+  TE.fromEither(makeAppConfig(process.env)),
+  TE.chain(makeAppEnv)
+);
 
 type Params = {
   productSlug: string;
   productPage: string;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: pipe(
-    getProductPages(),
-    RA.map(({ product, slug }) => ({
-      params: { productSlug: product.slug, productPage: slug },
-    })),
-    (array) => [...array]
-  ),
+export const getStaticPaths: GetStaticPaths<Params> = async () => ({
+  paths: await pipe(
+    appEnv,
+    TE.chain(({ productPageReader }) =>
+      productPageReader.getAllPaths()
+    ),
+    TE.bimap(
+      () => [],
+      (result) => [...result]
+    ),
+    TE.toUnion
+  )(),
   fallback: false,
 });
 
 type ProductPageProps = ProductPage & ProductNavBarProps;
 
-export const getStaticProps: GetStaticProps<ProductPageProps, Params> = (
-  context
-) =>
+export const getStaticProps: GetStaticProps<ProductPageProps, Params> = async ({ params }) =>
   pipe(
-    O.fromNullable(context.params),
-    O.chain(({ productSlug, productPage }) =>
-      getProductPageBy(productSlug, productPage)
+    TE.Do,
+    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
+    TE.apS('appEnv', appEnv),
+    TE.chain(({ appEnv, params: { productSlug, productPage } }) =>
+      appEnv.productPageReader.getPageBy(
+        `/${productSlug}/${productPage}`
+      )
     ),
-    O.foldW(
-      () => ({ notFound: true }),
+    TE.chain(TE.fromOption(() => new Error('Not Found'))),
+    TE.bimap(
+      () => ({ notFound: true as const }),
       (page) => ({
         props: {
           navLinks: makeMenu(staticNav, page.product),
           ...page,
         },
       })
-    )
-  );
+    ),
+    TE.toUnion
+  )();
 
 const ProductPage = (props: ProductPageProps) => (
   <Box>
