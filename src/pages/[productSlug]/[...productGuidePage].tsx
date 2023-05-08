@@ -13,7 +13,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { useRouter } from 'next/router';
 import {
-  getAllProductGudePagePaths,
+  getAllProductGuidePagePaths,
   findProductGuidePageByPath,
   nextEnv,
 } from '@/adapters/nextjs/lib';
@@ -35,7 +35,7 @@ export const getStaticPaths: GetStaticPaths<
 > = async () => ({
   paths: await pipe(
     nextEnv,
-    TE.chain(getAllProductGudePagePaths),
+    TE.chain(getAllProductGuidePagePaths),
     TE.getOrElse(() => T.of(Array()))
   )(),
   fallback: false,

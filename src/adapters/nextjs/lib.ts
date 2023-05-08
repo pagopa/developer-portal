@@ -47,7 +47,7 @@ export const findProductPageByPath = (pagePath: string) =>
   );
 
 // Return all the product guide page paths
-export const getAllProductGudePagePaths = pipe(
+export const getAllProductGuidePagePaths = pipe(
   R.ask<Pick<NextEnv, 'productGuidePageCollector'>>(),
   R.map(({ productGuidePageCollector }) =>
     pipe(
