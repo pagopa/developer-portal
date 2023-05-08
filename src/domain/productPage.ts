@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { PageBlock } from './pageBlock';
-import { Breadcrumbs } from './navigator';
 
 export type Product = {
   name: string;

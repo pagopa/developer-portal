@@ -7,7 +7,6 @@ import Breadcrumbs, { BreadcrumbsProps } from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import MuiMarkdown from '@/components/MuiMarkdown';
-import { makeBreadcrumbs } from '@/domain/navigator';
 import { ProductTutorialPage } from '@/domain/productTutorialPage';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';

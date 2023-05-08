@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { Product } from './productPage';
-import { Breadcrumbs } from './navigator';
 
 export type ProductTutorialPage = {
   product: Product;

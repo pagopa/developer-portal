@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/lib/function';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { ProductPageCollector } from '@/domain/productPage';
