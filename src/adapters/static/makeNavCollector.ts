@@ -1,4 +1,4 @@
-import { Nav, NavReader } from '@/domain/navigator';
+import { Nav, NavCollector } from '@/domain/navigator';
 import { ioSignPageLinks } from './products/ioSignPages';
 
 const staticNav: Nav = [
@@ -45,6 +45,6 @@ const staticNav: Nav = [
   },
 ];
 
-export const makeNavReader = (): NavReader => ({
+export const makeNavCollector = (): NavCollector => ({
   getNav: () => staticNav,
 });

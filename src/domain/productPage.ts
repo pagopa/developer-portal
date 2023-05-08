@@ -16,7 +16,7 @@ export type ProductPage = {
 };
 
 /** The entry point to retrieve product pages */
-export type ProductPageReader = {
+export type ProductPageCollector = {
   // return full path of all product pages
   getAllPaths: () => TE.TaskEither<Error, ReadonlyArray<string>>;
   // return a product page given a path

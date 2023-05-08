@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { ProductPageReader } from '@/domain/productPage';
+import { ProductPageCollector } from '@/domain/productPage';
 import {
   ioSignOverviewPage,
   ioSignQuickStartPage,
@@ -15,7 +15,7 @@ const pages = [
   ioSignTutorialIndexPage,
 ];
 
-export const makeProductPageReader = (): ProductPageReader => ({
+export const makeProductPageCollector = (): ProductPageCollector => ({
   getAllPaths: () =>
     pipe(
       pages,

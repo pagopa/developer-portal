@@ -13,16 +13,16 @@ export const nextEnv = pipe(
 
 // Return the homepage
 export const getHomepage = pipe(
-  R.ask<Pick<NextEnv, 'homepageReader'>>(),
-  R.map(({ homepageReader }) => homepageReader.getPage())
+  R.ask<Pick<NextEnv, 'homepageCollector'>>(),
+  R.map(({ homepageCollector }) => homepageCollector.getPage())
 );
 
 // Return all the product page paths
 export const getAllProductPagePaths = pipe(
-  R.ask<Pick<NextEnv, 'productPageReader'>>(),
-  R.map(({ productPageReader }) =>
+  R.ask<Pick<NextEnv, 'productPageCollector'>>(),
+  R.map(({ productPageCollector }) =>
     pipe(
-      productPageReader.getAllPaths(),
+      productPageCollector.getAllPaths(),
       TE.map((paths) => Array.from(paths))
     )
   )
@@ -31,14 +31,14 @@ export const getAllProductPagePaths = pipe(
 // Return a product page given the path if any
 export const findProductPageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productPageReader' | 'navReader'>>(),
-    R.map(({ productPageReader, navReader }) =>
+    R.ask<Pick<NextEnv, 'productPageCollector' | 'navCollector'>>(),
+    R.map(({ productPageCollector, navCollector }) =>
       pipe(
-        productPageReader.getPageBy(pagePath),
+        productPageCollector.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(navReader.getNav(), page.product),
-            breadcrumbs: makeBreadcrumbs(navReader.getNav(), pagePath),
+            navLinks: makeMenu(navCollector.getNav(), page.product),
+            breadcrumbs: makeBreadcrumbs(navCollector.getNav(), pagePath),
             ...page,
           }))
         )
@@ -48,10 +48,10 @@ export const findProductPageByPath = (pagePath: string) =>
 
 // Return all the product guide page paths
 export const getAllProductGudePagePaths = pipe(
-  R.ask<Pick<NextEnv, 'productGuidePageReader'>>(),
-  R.map(({ productGuidePageReader }) =>
+  R.ask<Pick<NextEnv, 'productGuidePageCollector'>>(),
+  R.map(({ productGuidePageCollector }) =>
     pipe(
-      productGuidePageReader.getAllPaths(),
+      productGuidePageCollector.getAllPaths(),
       TE.map((paths) => Array.from(paths))
     )
   )
@@ -60,15 +60,15 @@ export const getAllProductGudePagePaths = pipe(
 // Return a product guide page given the path
 export const findProductGuidePageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productGuidePageReader' | 'navReader'>>(),
-    R.map(({ productGuidePageReader, navReader }) =>
+    R.ask<Pick<NextEnv, 'productGuidePageCollector' | 'navCollector'>>(),
+    R.map(({ productGuidePageCollector, navCollector }) =>
       pipe(
-        productGuidePageReader.getPageBy(pagePath),
+        productGuidePageCollector.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(navReader.getNav(), page.product),
+            navLinks: makeMenu(navCollector.getNav(), page.product),
             breadcrumbs: makeBreadcrumbs(
-              [...navReader.getNav(), ...page.nav],
+              [...navCollector.getNav(), ...page.nav],
               pagePath
             ),
             ...page,
@@ -80,10 +80,10 @@ export const findProductGuidePageByPath = (pagePath: string) =>
 
 // Return all the product tutorial page paths
 export const getAllProductTutorialPagePaths = pipe(
-  R.ask<Pick<NextEnv, 'productTutorialPageReader'>>(),
-  R.map(({ productTutorialPageReader }) =>
+  R.ask<Pick<NextEnv, 'productTutorialPageCollector'>>(),
+  R.map(({ productTutorialPageCollector }) =>
     pipe(
-      productTutorialPageReader.getAllPaths(),
+      productTutorialPageCollector.getAllPaths(),
       TE.map((paths) => Array.from(paths))
     )
   )
@@ -92,14 +92,14 @@ export const getAllProductTutorialPagePaths = pipe(
 // Return a product tutorial page given the path
 export const findProductTutorialPageByPath = (pagePath: string) =>
   pipe(
-    R.ask<Pick<NextEnv, 'productTutorialPageReader' | 'navReader'>>(),
-    R.map(({ productTutorialPageReader, navReader }) =>
+    R.ask<Pick<NextEnv, 'productTutorialPageCollector' | 'navCollector'>>(),
+    R.map(({ productTutorialPageCollector, navCollector }) =>
       pipe(
-        productTutorialPageReader.getPageBy(pagePath),
+        productTutorialPageCollector.getPageBy(pagePath),
         TE.map(
           O.map((page) => ({
-            navLinks: makeMenu(navReader.getNav(), page.product),
-            breadcrumbs: makeBreadcrumbs(navReader.getNav(), pagePath),
+            navLinks: makeMenu(navCollector.getNav(), page.product),
+            breadcrumbs: makeBreadcrumbs(navCollector.getNav(), pagePath),
             ...page,
           }))
         )

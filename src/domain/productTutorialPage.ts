@@ -14,7 +14,7 @@ export type ProductTutorialPage = {
 };
 
 /** The entry point to retrieve tutorials */
-export type ProductTutorialPageReader = {
+export type ProductTutorialPageCollector = {
   // return full path of all tutorial pages
   getAllPaths: () => TE.TaskEither<Error, ReadonlyArray<string>>;
   // return a ProductTutorialPage given a path

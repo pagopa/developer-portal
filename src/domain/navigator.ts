@@ -24,7 +24,7 @@ type MenuItem = {
   path: string;
 };
 
-export type NavReader = {
+export type NavCollector = {
   getNav: () => Nav;
 };
 

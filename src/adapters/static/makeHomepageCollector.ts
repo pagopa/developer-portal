@@ -1,4 +1,4 @@
-import { HomepageReader } from '@/domain/homepage';
+import { HomepageCollector } from '@/domain/homepage';
 import * as TE from 'fp-ts/TaskEither';
 import {
   ioSignOverviewPreview,
@@ -6,7 +6,7 @@ import {
   ioSignTutorialPreview,
 } from './products/ioSignPages';
 
-export const makeHomepageReader = (): HomepageReader => ({
+export const makeHomepageCollector = (): HomepageCollector => ({
   getPage: () =>
     TE.of({
       hero: {

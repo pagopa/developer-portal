@@ -35,6 +35,6 @@ export type Homepage = {
 };
 
 /** The entry point to retrieve homepage */
-export type HomepageReader = {
+export type HomepageCollector = {
   getPage: () => TE.TaskEither<Error, Homepage>;
 };

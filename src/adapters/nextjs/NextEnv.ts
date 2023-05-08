@@ -1,20 +1,20 @@
-import { HomepageReader } from '@/domain/homepage';
-import { ProductGuidePageReader } from '@/domain/productGuidePage';
-import { ProductPageReader } from '@/domain/productPage';
-import { ProductTutorialPageReader } from '@/domain/productTutorialPage';
+import { HomepageCollector } from '@/domain/homepage';
+import { ProductGuidePageCollector } from '@/domain/productGuidePage';
+import { ProductPageCollector } from '@/domain/productPage';
+import { ProductTutorialPageCollector } from '@/domain/productTutorialPage';
 import * as t from 'io-ts';
 import * as Apply from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as PR from 'io-ts/PathReporter';
 import { GitBookConfig } from '../gitbook/GitBookEnv';
-import { makeProductGuidePageReader } from '../gitbook/makeProductGuidePageReader';
-import { makeProductTutorialPageReader } from '../static/makeProductTutorialPageReader';
-import { makeProductPageReader } from '../static/makeProductPageReader';
-import { makeHomepageReader } from '../static/makeHomepageReader';
+import { makeProductGuidePageCollector } from '../gitbook/makeProductGuidePageCollector';
+import { makeProductTutorialPageCollector } from '../static/makeProductTutorialPageCollector';
+import { makeProductPageCollector } from '../static/makeProductPageCollector';
+import { makeHomepageCollector } from '../static/makeHomepageCollector';
 import { pipe } from 'fp-ts/lib/function';
-import { NavReader } from '@/domain/navigator';
-import { makeNavReader } from '../static/makeNavReader';
+import { NavCollector } from '@/domain/navigator';
+import { makeNavCollector } from '../static/makeNavCollector';
 
 export type NextConfig = {
   gitbook: GitBookConfig;
@@ -49,20 +49,20 @@ export const makeNextConfig = (
 
 /** Contains everything required to run the next application */
 export type NextEnv = {
-  navReader: NavReader;
-  productGuidePageReader: ProductGuidePageReader;
-  productTutorialPageReader: ProductTutorialPageReader;
-  productPageReader: ProductPageReader;
-  homepageReader: HomepageReader;
+  navCollector: NavCollector;
+  productGuidePageCollector: ProductGuidePageCollector;
+  productTutorialPageCollector: ProductTutorialPageCollector;
+  productPageCollector: ProductPageCollector;
+  homepageCollector: HomepageCollector;
 };
 
 export const makeNextEnv = (
   config: NextConfig
 ): TE.TaskEither<Error, NextEnv> =>
   Apply.sequenceS(TE.ApplySeq)({
-    navReader: TE.of(makeNavReader()),
-    productGuidePageReader: makeProductGuidePageReader(config.gitbook),
-    productTutorialPageReader: TE.of(makeProductTutorialPageReader()),
-    productPageReader: TE.of(makeProductPageReader()),
-    homepageReader: TE.of(makeHomepageReader()),
+    navCollector: TE.of(makeNavCollector()),
+    productGuidePageCollector: makeProductGuidePageCollector(config.gitbook),
+    productTutorialPageCollector: TE.of(makeProductTutorialPageCollector()),
+    productPageCollector: TE.of(makeProductPageCollector()),
+    homepageCollector: TE.of(makeHomepageCollector()),
   });
