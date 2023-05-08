@@ -47,7 +47,7 @@ export const makeNextConfig = (
     )
   );
 
-/** Defines the environment that is needed for the application to run */
+/** Contains everything required to run the next application */
 export type NextEnv = {
   navReader: NavReader;
   productGuidePageReader: ProductGuidePageReader;
@@ -56,7 +56,6 @@ export type NextEnv = {
   homepageReader: HomepageReader;
 };
 
-/** The entrypoint to create a environment */
 export const makeNextEnv = (
   config: NextConfig
 ): TE.TaskEither<Error, NextEnv> =>
