@@ -61,11 +61,11 @@ const makeVersionsNav = (path: string) =>
           pipe(
             allGitBookProductGuides,
             RA.filter(P.or(isSibling(path))(isEq(path))),
-            // The path of a version should be the homepage of the space
+            // The path of a version should be the homepage path of the space
             // which is the first available 'sheet' if any
             RA.filterMap((guide) =>
               pipe(
-                getHomepage(guide),
+                getHomepagePath(guide),
                 O.map((path) => ({ ...guide, path }))
               )
             )
@@ -82,7 +82,7 @@ const makeVersionsNav = (path: string) =>
     )
   );
 
-const getHomepage = (guide: GitBookEnv['allGitBookProductGuides'][0]) =>
+const getHomepagePath = (guide: GitBookEnv['allGitBookProductGuides'][0]) =>
   pipe(
     guide.revision.pages,
     RA.findFirstMap((page) => (page.kind === 'sheet' ? O.some(page) : O.none)),
