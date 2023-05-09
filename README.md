@@ -1,37 +1,72 @@
 # Developer Portal
 [![CI](https://github.com/pagopa/developer-portal/actions/workflows/ci.yaml/badge.svg)](https://github.com/pagopa/developer-portal/actions/workflows/ci.yaml)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+In this repository you can find anything you need to work on the developer portal project.
 
-## Getting Started
+## Requirements
+
+- [Node.js](https://nodejs.org/docs/latest-v18.x/api/index.html)
+- [yarnpkg](https://yarnpkg.com/)
+
+## Local development
 
 Before you start, make sure you have complete the following steps:
-- Create a `.env.local` file in the root of the project and add the environment variables shown in the `.env.default` file
-- Get the GitBook API key from the [GitBook Developer Portal](https://developer.gitbook.com/api/authentication)
-- Get the OrganizationId used on GitBook (you can find it in the URL when you are on the organization page; e.g.: `https://app.gitbook.com/o/myAmazingOrgId/`, the `myAmazingOrgId` is the OrganizationId)
-- Install the dependencies: `yarn install`
+- Create a `.env.local` starting from `.env.default` and fill all the environment variables.
+  - Get the GitBook API key from the [GitBook Developer Portal](https://developer.gitbook.com/api/authentication).
+- Install the dependencies: `yarn install`.
 
-Now that you are ready, run the development server:
+### Run the developer portal locally
 
-```bash
+Run the following command from the root folder.
+
+``` bash
 yarn dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Storybook
+### Run the Storybook locally
+
 To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
+
 ```bash
-yarn storybook:run
+yarn workspace nextjs-website storybook:run
 ```
-and you will get a message like this:
-```bash
-╭───────────────────────────────────────────────────╮
-│                                                   │
-│   Storybook 7.0.4 for nextjs started              │
-│   240 ms for manager and 17 s for preview         │
-│                                                   │
-│    Local:            http://localhost:6006/       │
-│                                                   │
-╰───────────────────────────────────────────────────╯
+
+Open [http://localhost:6006](http://localhost:6006) to access to the storybook.
+
+## Commands Cheat Sheet
+
+### Workspace
+
+For more information check [yarnpkg workspace documentation](https://classic.yarnpkg.com/en/docs/cli/workspace).
+
+#### Run commands
+
+Run the chosen Yarn command in each workspace.
+
+``` bash
+yarn workspaces run <command>
 ```
-Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
+
+Run the chosen Yarn `command` on package `<package-name>`.
+
+``` bash
+yarn workspace <package-name> <command>
+```
+
+#### Manage dependencies
+
+Add to the root the dependency `<dependency-name>`.
+
+``` bash
+yarn add <dependency-name>
+```
+
+Add to the package `<package-name>` the dependency `<dependency-name>` as `devDependencies`.
+
+``` bash
+yarn workspace <package-name> add <dependency-name> --dev
+```
+
+
