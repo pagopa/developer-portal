@@ -2,7 +2,7 @@ import Alert, { AlertColor } from '@mui/material/Alert';
 import { ReactNode } from 'react';
 
 export type HintProps = {
-  style: 'info' | 'success' | 'warning' | 'danger' | 'info';
+  style: 'info' | 'success' | 'warning' | 'danger';
   children: ReactNode;
 };
 

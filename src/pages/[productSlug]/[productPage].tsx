@@ -1,5 +1,7 @@
-import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HeroWithBreadcrumbs from '@/components/HeroWithBreadcrumbs';
@@ -8,54 +10,51 @@ import QuickStartPreview from '@/components/QuickStartPreview';
 import TutorialPreview from '@/components/TutorialPreview';
 import { Box, Stack } from '@mui/material';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { makeMenu } from '@/domain/navigator';
-import { staticNav } from '@/adapters/static/staticNav';
-import { pipe } from 'fp-ts/lib/function';
-import {
-  getProductPageBy,
-  getProductPages,
-} from '@/adapters/static/staticProductPage';
 import { ProductPage } from '@/domain/productPage';
 import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
 import RelatedResources from '@/components/RelatedResources';
 import QuickStartSteps from '@/components/QuickStartSteps';
+import {
+  findProductPageByPath,
+  getAllProductPagePaths,
+  nextEnv,
+} from '@/adapters/nextjs/lib';
+import { BreadcrumbsProps } from '@/components/Breadcrumbs';
 
 type Params = {
   productSlug: string;
   productPage: string;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: pipe(
-    getProductPages(),
-    RA.map(({ product, slug }) => ({
-      params: { productSlug: product.slug, productPage: slug },
-    })),
-    (array) => [...array]
-  ),
+export const getStaticPaths: GetStaticPaths<Params> = async () => ({
+  paths: await pipe(
+    nextEnv,
+    TE.chain(getAllProductPagePaths),
+    TE.getOrElse(() => T.of(Array()))
+  )(),
   fallback: false,
 });
 
-type ProductPageProps = ProductPage & ProductNavBarProps;
+type ProductPageProps = ProductPage &
+  ProductNavBarProps & {
+    breadcrumbs: BreadcrumbsProps['items'];
+  };
 
-export const getStaticProps: GetStaticProps<ProductPageProps, Params> = (
-  context
-) =>
+export const getStaticProps: GetStaticProps<ProductPageProps, Params> = async ({
+  params,
+}) =>
   pipe(
-    O.fromNullable(context.params),
-    O.chain(({ productSlug, productPage }) =>
-      getProductPageBy(productSlug, productPage)
+    nextEnv,
+    TE.chain(
+      findProductPageByPath(`/${params?.productSlug}/${params?.productPage}`)
     ),
-    O.foldW(
-      () => ({ notFound: true }),
-      (page) => ({
-        props: {
-          navLinks: makeMenu(staticNav, page.product),
-          ...page,
-        },
-      })
-    )
-  );
+    TE.chain(TE.fromOption(() => new Error('Not Found'))),
+    TE.bimap(
+      () => ({ notFound: true as const }),
+      (page) => ({ props: page })
+    ),
+    TE.toUnion
+  )();
 
 const ProductPage = (props: ProductPageProps) => (
   <Box>
@@ -67,9 +66,17 @@ const ProductPage = (props: ProductPageProps) => (
         RA.map((block) => {
           switch (block.type) {
             case 'hero':
-              return <HeroWithBreadcrumbs {...block} />;
+              return (
+                <HeroWithBreadcrumbs
+                  {...{ ...block, breadcrumbs: { items: props.breadcrumbs } }}
+                />
+              );
             case 'hero-info':
-              return <HeroIntroWithBreadcrumbs {...block} />;
+              return (
+                <HeroIntroWithBreadcrumbs
+                  {...{ ...block, breadcrumbs: { items: props.breadcrumbs } }}
+                />
+              );
             case 'quickstart-preview':
               return <QuickStartPreview {...block} />;
             case 'quickstart':

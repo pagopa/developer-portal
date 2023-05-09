@@ -1,3 +1,4 @@
+import * as TE from 'fp-ts/TaskEither';
 import { Image } from '@/domain/Image';
 import { RelatedResourcesBlock } from './pageBlock';
 
@@ -31,4 +32,9 @@ export type Homepage = {
   highlighted: RelatedResourcesBlock;
   productPreview: ProductOverviewPreview;
   comingSoon: Showcase;
+};
+
+/** The entry point to retrieve homepage */
+export type HomepageCollector = {
+  getPage: () => TE.TaskEither<Error, Homepage>;
 };

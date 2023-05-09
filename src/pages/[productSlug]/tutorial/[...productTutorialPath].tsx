@@ -1,68 +1,67 @@
-import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { staticNav } from '@/adapters/static/staticNav';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import {
+  findProductTutorialPageByPath,
+  getAllProductTutorialPagePaths,
+  nextEnv,
+} from '@/adapters/nextjs/lib';
+import Breadcrumbs, { BreadcrumbsProps } from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import MuiMarkdown from '@/components/MuiMarkdown';
-import { makeBreadcrumbs } from '@/domain/navigator';
 import { ProductTutorialPage } from '@/domain/productTutorialPage';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
-import {
-  getProductTutorialPageBy,
-  getProductTutorialPages,
-} from '@/adapters/static/staticProductTutorialPage';
 
 type Params = {
   productSlug: string;
-  tutorialSlug: string;
+  productTutorialPath: Array<string>;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: pipe(
-    getProductTutorialPages(),
-    RA.map(({ product, slug }) => ({
-      params: { productSlug: product.slug, tutorialSlug: slug },
-    })),
-    (array) => [...array]
-  ),
+type ProductTutorialPageProps = ProductTutorialPage & {
+  breadcrumbs: BreadcrumbsProps['items'];
+};
+
+export const getStaticPaths: GetStaticPaths<Params> = async () => ({
+  paths: await pipe(
+    nextEnv,
+    TE.chain(getAllProductTutorialPagePaths),
+    TE.getOrElse(() => T.of(Array()))
+  )(),
   fallback: false,
 });
 
-export const getStaticProps: GetStaticProps<ProductTutorialPage, Params> = (
-  context
-) =>
+export const getStaticProps: GetStaticProps<
+  ProductTutorialPage,
+  Params
+> = async ({ params }) =>
   pipe(
-    O.fromNullable(context.params),
-    O.chain(({ productSlug, tutorialSlug }) =>
-      getProductTutorialPageBy(productSlug, tutorialSlug)
+    nextEnv,
+    TE.chain(
+      findProductTutorialPageByPath(
+        `/${params?.productSlug}/tutorial/${params?.productTutorialPath}`
+      )
     ),
-    O.foldW(
-      () => ({ notFound: true }),
-      (page) => ({
-        props: {
-          ...page,
-        },
-      })
-    )
-  );
+    TE.chain(TE.fromOption(() => new Error('Not Found'))),
+    TE.bimap(
+      () => ({ notFound: true as const }),
+      (page) => ({ props: page })
+    ),
+    TE.toUnion
+  )();
 
-const Tutorial = (props: ProductTutorialPage) => {
+const Tutorial = (props: ProductTutorialPageProps) => {
   return (
     <Box>
       <Stack>
         <Header />
         <Box bgcolor='background.paper' sx={{ p: 5 }}>
           <Container maxWidth='xl'>
-            <Breadcrumbs
-              items={makeBreadcrumbs(staticNav, useRouter().asPath)}
-            />
+            <Breadcrumbs items={props.breadcrumbs} />
             <Container maxWidth='md'>
               <Stack
                 spacing={3}

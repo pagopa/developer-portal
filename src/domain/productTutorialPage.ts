@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import { Product } from './productPage';
 
 export type ProductTutorialPage = {
@@ -11,9 +12,12 @@ export type ProductTutorialPage = {
   body: string;
 };
 
-export type GetProductTutorialPages = () => ReadonlyArray<ProductTutorialPage>;
-
-export type GetProductTutorialPageBy = (
-  productSlug: string,
-  tutorialSlug: string
-) => O.Option<ProductTutorialPage>;
+/** The entry point to retrieve tutorials */
+export type ProductTutorialPageCollector = {
+  // return full path of all tutorial pages
+  getAllPaths: () => TE.TaskEither<Error, ReadonlyArray<string>>;
+  // return a ProductTutorialPage given a path
+  getPageBy: (
+    path: string
+  ) => TE.TaskEither<Error, O.Option<ProductTutorialPage>>;
+};

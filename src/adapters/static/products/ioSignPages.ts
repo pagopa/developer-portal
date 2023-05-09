@@ -52,7 +52,7 @@ const ioSignRelated: RelatedResourcesBlock = {
 
 // Tutorial ///////////////////////////////////////////////////////////////////
 
-export const ioSignTutorialPage: ProductTutorialPage = {
+export const ioSignTutorialPage: Omit<ProductTutorialPage, 'breadcrumbs'> = {
   product: ioSignProduct,
   slug: 'come-preparare-il-documento-da-firmare',
   title:
@@ -125,7 +125,7 @@ export const ioSignTutorialPreview: TutorialPreviewBlock = {
   },
 };
 
-export const ioSignTutorialIndexPage: ProductPage = {
+export const ioSignTutorialIndexPage: Omit<ProductPage, 'breadcrumbs'> = {
   product: ioSignProduct,
   slug: 'tutorial',
   title: 'Tutorial',
@@ -172,7 +172,7 @@ export const ioSignQuickStartPreview: QuickStartPreviewBlock = {
   link: ioSignPageLinks.quickStart,
 };
 
-export const ioSignQuickStartPage: ProductPage = {
+export const ioSignQuickStartPage: Omit<ProductPage, 'breadcrumbs'> = {
   product: ioSignProduct,
   title: 'Guida rapida',
   slug: 'guida-rapida',
@@ -387,7 +387,7 @@ export const ioSignOverviewPreview: ProductOverviewPreview = {
   },
 };
 
-export const ioSignOverviewPage: ProductPage = {
+export const ioSignOverviewPage: Omit<ProductPage, 'breadcrumbs'> = {
   product: ioSignProduct,
   slug: 'panoramica',
   title: 'Panoramica',

@@ -7,41 +7,36 @@ import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import ProductGuideMenu from '@/components/ProductGuideMenu';
 import ProductGuideContent from '@/components/ProductGuideContent';
-import { staticNav } from '@/adapters/static/staticNav';
-import { makeBreadcrumbs, makeMenu, makeMenuItem } from '@/domain/navigator';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
+import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { makeAppEnv } from '@/AppEnv';
 import { useRouter } from 'next/router';
-import { makeAppConfig } from '@/AppConfig';
+import {
+  getAllProductGuidePagePaths,
+  findProductGuidePageByPath,
+  nextEnv,
+} from '@/adapters/nextjs/lib';
+import { makeMenuItem } from '@/domain/navigator';
+import { BreadcrumbsProps } from '@/components/Breadcrumbs';
 
-// TODO: Find a way to load the appEnv only once and
-// somehow provides it to the entire application
-const appEnv = pipe(
-  TE.fromEither(makeAppConfig(process.env)),
-  TE.chain(makeAppEnv)
-);
-
-type ProductGuidePageParams = {
+export type ProductGuidePageParams = {
   productSlug: string;
   productGuidePage: Array<string>;
 };
-type ProductGuidePageProps = ProductGuidePage & ProductNavBarProps;
+
+export type ProductGuidePageProps = ProductGuidePage &
+  ProductNavBarProps & {
+    breadcrumbs: BreadcrumbsProps['items'];
+  };
 
 export const getStaticPaths: GetStaticPaths<
   ProductGuidePageParams
 > = async () => ({
   paths: await pipe(
-    appEnv,
-    TE.chain(({ productGuidePageReader }) =>
-      productGuidePageReader.getAllPaths()
-    ),
-    TE.bimap(
-      () => [],
-      (result) => [...result]
-    ),
-    TE.toUnion
+    nextEnv,
+    TE.chain(getAllProductGuidePagePaths),
+    TE.getOrElse(() => T.of(Array()))
   )(),
   fallback: false,
 });
@@ -51,23 +46,16 @@ export const getStaticProps: GetStaticProps<
   ProductGuidePageParams
 > = async ({ params }) =>
   pipe(
-    TE.Do,
-    TE.apS('params', TE.fromNullable(new Error('params is undefined'))(params)),
-    TE.apS('appEnv', appEnv),
-    TE.chain(({ appEnv, params: { productSlug, productGuidePage } }) =>
-      appEnv.productGuidePageReader.getPageBy(
-        `/${productSlug}/${productGuidePage.join('/')}`
+    nextEnv,
+    TE.chain(
+      findProductGuidePageByPath(
+        `/${params?.productSlug}/${params?.productGuidePage.join('/')}`
       )
     ),
     TE.chain(TE.fromOption(() => new Error('Not Found'))),
     TE.bimap(
       () => ({ notFound: true as const }),
-      (page) => ({
-        props: {
-          navLinks: makeMenu(staticNav, page.product),
-          ...page,
-        },
-      })
+      (page) => ({ props: page })
     ),
     TE.toUnion
   )();
@@ -88,10 +76,7 @@ const GuidePage = (props: ProductGuidePageProps) => {
             }}
           />
           <ProductGuideContent
-            breadcrumbs={makeBreadcrumbs(
-              [...staticNav, ...props.nav],
-              currentPath
-            )}
+            breadcrumbs={props.breadcrumbs}
             markdown={props.body}
           />
         </Stack>
