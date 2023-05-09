@@ -4,6 +4,8 @@ import React from 'react';
 import { components } from './components';
 
 const pairedHtmlTag = (tag: string) => ({
+  // FIXME add a test and remove the useless escape char
+  // eslint-disable-next-line no-useless-escape
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)<\/${tag}>`, 'gs'),
   replace: `{% ${tag}$1 %}$2{% /${tag} %}`,
 });

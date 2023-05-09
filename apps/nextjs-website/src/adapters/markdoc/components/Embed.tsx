@@ -12,13 +12,7 @@ const Embed = ({ url, children }: EmbedProps) => (
   <Card variant='outlined'>
     <CardActionArea>
       <CardContent>
-        <ButtonNaked
-          color='text'
-          onFocusVisible={function noRefCheck() {}}
-          size='medium'
-          href={url}
-          component={Link}
-        >
+        <ButtonNaked color='text' size='medium' href={url} component={Link}>
           {children}
         </ButtonNaked>
       </CardContent>

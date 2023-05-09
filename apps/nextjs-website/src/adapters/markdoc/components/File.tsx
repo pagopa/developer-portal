@@ -10,7 +10,6 @@ export type FileProps = {
 const File = ({ src, children }: FileProps) => (
   <ButtonNaked
     color='text'
-    onFocusVisible={function noRefCheck() {}}
     size='medium'
     href={src}
     target='_blank'

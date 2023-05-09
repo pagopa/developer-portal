@@ -9,13 +9,13 @@ describe('fetchAllGitBookProductGuide', () => {
     const clientMock = mockDeep<GitBookAPI>();
     /* mock */
     clientMock.collections.getCollectionById.mockReturnValue(
-      Promise.resolve({ data: collection } as any)
+      Promise.resolve({ data: collection } as never)
     );
     clientMock.collections.listSpacesInCollectionById.mockReturnValue(
-      Promise.resolve({ data: { items: [space] } } as any)
+      Promise.resolve({ data: { items: [space] } } as never)
     );
     clientMock.spaces.getCurrentRevision.mockReturnValue(
-      Promise.resolve({ data: revision } as any)
+      Promise.resolve({ data: revision } as never)
     );
     const expected = {
       product: productGuideCollection.product,

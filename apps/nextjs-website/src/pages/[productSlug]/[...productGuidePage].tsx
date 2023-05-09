@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths<
   paths: await pipe(
     nextEnv,
     TE.chain(getAllProductGuidePagePaths),
-    TE.getOrElse(() => T.of(Array()))
+    TE.getOrElseW(() => T.of([]))
   )(),
   fallback: false,
 });

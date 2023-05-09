@@ -14,7 +14,7 @@ export type BreadcrumbsProps = {
 
 const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
   return (
-    <div role='presentation' onClick={() => {}}>
+    <div role='presentation' onClick={void 0}>
       <MUIBreadcrumbs aria-label='breadcrumb'>
         {pipe(
           items,

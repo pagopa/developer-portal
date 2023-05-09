@@ -30,7 +30,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
     nextEnv,
     TE.chain(getAllProductPagePaths),
-    TE.getOrElse(() => T.of(Array()))
+    TE.getOrElseW(() => T.of([]))
   )(),
   fallback: false,
 });
