@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,emacs,macos,storybookjs,intellij+all,nextjs
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,emacs,macos,storybookjs,intellij+all,nextjs
+# Created by https://www.toptal.com/developers/gitignore/api/node,emacs,macos,nextjs,storybookjs,intellij+all,turbo
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,emacs,macos,nextjs,storybookjs,intellij+all,turbo
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -349,6 +349,10 @@ dist
 
 storybook-static/
 
-# End of https://www.toptal.com/developers/gitignore/api/node,emacs,macos,storybookjs,intellij+all,nextjs
+### Turbo ###
+# Turborepo task cache
+.turbo
+
+# End of https://www.toptal.com/developers/gitignore/api/node,emacs,macos,nextjs,storybookjs,intellij+all,turbo
 
 .idea/
