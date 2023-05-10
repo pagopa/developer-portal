@@ -18,7 +18,7 @@ import {
   QuickStartBlock,
   QuickStartExample,
   QuickStartElement,
-} from '@/domain/pageBlock';
+} from 'core/domain/pageBlock';
 
 const QuickStartElement = (props: QuickStartElement) => {
   switch (props.type) {

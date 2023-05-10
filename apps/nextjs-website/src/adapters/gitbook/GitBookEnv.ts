@@ -5,7 +5,7 @@ import {
   GitBookProductGuide,
   fetchAllGitBookProductGuide,
 } from './gitbookProductGuide';
-import { Product } from '@/domain/productPage';
+import { Product } from 'core/domain/productPage';
 
 /**
  * Represents the configuration needed to create a GitBookEnv.

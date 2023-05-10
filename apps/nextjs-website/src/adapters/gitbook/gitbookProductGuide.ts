@@ -3,8 +3,8 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import * as RTE from 'fp-ts/lib/ReaderTaskEither';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as E from 'fp-ts/lib/Either';
-import { ProductGuideNav } from '@/domain/productGuideNavigator';
-import { Product } from '@/domain/productPage';
+import { ProductGuideNav } from 'core/domain/productGuideNavigator';
+import { Product } from 'core/domain/productPage';
 import { Collection, GitBookAPI, Revision, Space } from '@gitbook/api';
 import { makeProductGuideNav } from './makeProductGuideNav';
 

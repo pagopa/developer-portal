@@ -14,7 +14,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlagIcon from '@mui/icons-material/Flag';
 import { pipe } from 'fp-ts/lib/function';
 import Link from 'next/link';
-import { RelatedResourcesBlock } from '@/domain/pageBlock';
+import { RelatedResourcesBlock } from 'core/domain/pageBlock';
 
 const Highlighted = ({ title, references }: RelatedResourcesBlock) => (
   <Container maxWidth='xl'>

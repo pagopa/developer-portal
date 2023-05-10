@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Reader';
 import * as TE from 'fp-ts/TaskEither';
 import { NextEnv, makeNextConfig, makeNextEnv } from './NextEnv';
-import { makeBreadcrumbs, makeMenu } from '@/domain/navigator';
+import { makeBreadcrumbs, makeMenu } from 'core/domain/navigator';
 
 /** Produce a production environment ready to use */
 export const nextEnv = pipe(

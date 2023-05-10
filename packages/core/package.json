@@ -1,0 +1,24 @@
+{
+  "name": "core",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./": "./dist/"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["./dist/*"]
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "compile": "tsc",
+    "test": "jest -i"
+  },
+  "dependencies": {
+    "fp-ts": "^2.13.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  }
+}

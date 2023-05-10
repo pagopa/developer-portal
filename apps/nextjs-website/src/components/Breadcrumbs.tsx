@@ -6,7 +6,7 @@ import {
 import Link from 'next/link';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { Breadcrumbs as BreadcrumbItems } from '@/domain/navigator';
+import { Breadcrumbs as BreadcrumbItems } from 'core/domain/navigator';
 
 export type BreadcrumbsProps = {
   items: BreadcrumbItems;

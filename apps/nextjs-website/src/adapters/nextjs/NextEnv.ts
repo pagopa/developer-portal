@@ -1,7 +1,7 @@
-import { HomepageCollector } from '@/domain/homepage';
-import { ProductGuidePageCollector } from '@/domain/productGuidePage';
-import { ProductPageCollector } from '@/domain/productPage';
-import { ProductTutorialPageCollector } from '@/domain/productTutorialPage';
+import { HomepageCollector } from 'core/domain/homepage';
+import { ProductGuidePageCollector } from 'core/domain/productGuidePage';
+import { ProductPageCollector } from 'core/domain/productPage';
+import { ProductTutorialPageCollector } from 'core/domain/productTutorialPage';
 import * as t from 'io-ts';
 import * as Apply from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
@@ -13,7 +13,7 @@ import { makeProductTutorialPageCollector } from '../static/makeProductTutorialP
 import { makeProductPageCollector } from '../static/makeProductPageCollector';
 import { makeHomepageCollector } from '../static/makeHomepageCollector';
 import { pipe } from 'fp-ts/lib/function';
-import { NavCollector } from '@/domain/navigator';
+import { NavCollector } from 'core/domain/navigator';
 import { makeNavCollector } from '../static/makeNavCollector';
 
 export type NextConfig = {

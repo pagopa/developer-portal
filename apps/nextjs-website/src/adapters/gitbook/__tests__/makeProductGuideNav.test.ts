@@ -1,4 +1,4 @@
-import { ProductGuideNav } from '@/domain/productGuideNavigator';
+import { ProductGuideNav } from 'core/domain/productGuideNavigator';
 import { makeProductGuideNav } from '../makeProductGuideNav';
 import { gitBookProductGuideItemList } from './data';
 

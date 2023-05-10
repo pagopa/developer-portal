@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { ProductTutorialPageCollector } from '@/domain/productTutorialPage';
+import { ProductTutorialPageCollector } from 'core/domain/productTutorialPage';
 import { ioSignPageLinks, ioSignTutorialPage } from './products/ioSignPages';
 
 export const makeProductTutorialPageCollector =

@@ -10,7 +10,7 @@ import QuickStartPreview from '@/components/QuickStartPreview';
 import TutorialPreview from '@/components/TutorialPreview';
 import { Box, Stack } from '@mui/material';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { ProductPage } from '@/domain/productPage';
+import { ProductPage } from 'core/domain/productPage';
 import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
 import RelatedResources from '@/components/RelatedResources';
 import QuickStartSteps from '@/components/QuickStartSteps';

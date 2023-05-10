@@ -1,4 +1,4 @@
-import { Nav, NavCollector } from '@/domain/navigator';
+import { Nav, NavCollector } from 'core/domain/navigator';
 import { ioSignPageLinks } from './products/ioSignPages';
 
 const staticNav: Nav = [

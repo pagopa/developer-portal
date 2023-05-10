@@ -1,4 +1,4 @@
-import { Showcase } from '@/domain/homepage';
+import { Showcase } from 'core/domain/homepage';
 import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';

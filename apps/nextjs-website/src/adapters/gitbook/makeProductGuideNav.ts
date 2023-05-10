@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import {
   ProductGuideNav,
   ProductGuideNavItem,
-} from '@/domain/productGuideNavigator';
+} from 'core/domain/productGuideNavigator';
 import { RevisionPage } from '@gitbook/api';
 
 type GitBookProductGuideItem = { parentPath: string } & RevisionPage;

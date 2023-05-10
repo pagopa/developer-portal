@@ -1,4 +1,4 @@
-import { Hero } from '@/domain/homepage';
+import { Hero } from 'core/domain/homepage';
 import { Box, Container, Stack, Typography } from '@mui/material';
 
 const HeroHome = ({ title, cover }: Hero) => (

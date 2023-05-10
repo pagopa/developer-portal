@@ -5,11 +5,11 @@ import * as R from 'fp-ts/Reader';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as P from 'fp-ts/Predicate';
-import { ProductGuidePageCollector } from '@/domain/productGuidePage';
+import { ProductGuidePageCollector } from 'core/domain/productGuidePage';
 import { GitBookConfig, GitBookEnv, makeGitBookEnv } from './GitBookEnv';
 import { GitBookProductGuide } from './gitbookProductGuide';
 import { GitBookAPI } from '@gitbook/api';
-import { isEq, isSibling } from '@/domain/navigator';
+import { isEq, isSibling } from 'core/domain/navigator';
 
 const gitBookGetAllPaths = pipe(
   R.ask<GitBookEnv>(),

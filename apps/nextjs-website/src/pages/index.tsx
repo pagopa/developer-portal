@@ -7,8 +7,8 @@ import ComingSoon from '@/components/ComingSoon';
 import ProductPreview from '@/components/ProductPreview';
 import Highlighted from '@/components/Highlighted';
 import HeroHome from '@/components/HeroHome';
+import { Homepage } from 'core/domain/homepage';
 import { GetStaticProps } from 'next';
-import { Homepage } from '@/domain/homepage';
 import { getHomepage, nextEnv } from '@/adapters/nextjs/lib';
 
 export const getStaticProps: GetStaticProps<Homepage> = async () =>

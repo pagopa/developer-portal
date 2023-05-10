@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
-import { ProductGuidePage } from '@/domain/productGuidePage';
+import { ProductGuidePage } from 'core/domain/productGuidePage';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -17,7 +17,7 @@ import {
   findProductGuidePageByPath,
   nextEnv,
 } from '@/adapters/nextjs/lib';
-import { makeMenuItem } from '@/domain/navigator';
+import { makeMenuItem } from 'core/domain/navigator';
 import { BreadcrumbsProps } from '@/components/Breadcrumbs';
 
 export type ProductGuidePageParams = {

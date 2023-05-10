@@ -13,7 +13,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import FlagIcon from '@mui/icons-material/Flag';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Link from 'next/link';
-import { RelatedResourcesBlock } from '@/domain/pageBlock';
+import { RelatedResourcesBlock } from 'core/domain/pageBlock';
 
 const RelatedResources = (props: RelatedResourcesBlock) => (
   <Box sx={{ backgroundColor: 'primary.main' }}>

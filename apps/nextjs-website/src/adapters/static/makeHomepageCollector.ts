@@ -1,4 +1,4 @@
-import { HomepageCollector } from '@/domain/homepage';
+import { HomepageCollector } from 'core/domain/homepage';
 import * as TE from 'fp-ts/TaskEither';
 import {
   ioSignOverviewPreview,

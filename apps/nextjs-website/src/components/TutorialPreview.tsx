@@ -10,7 +10,7 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
-import { TutorialPreviewBlock } from '@/domain/pageBlock';
+import { TutorialPreviewBlock } from 'core/domain/pageBlock';
 
 const TutorialPreview = (props: TutorialPreviewBlock) => (
   <Container

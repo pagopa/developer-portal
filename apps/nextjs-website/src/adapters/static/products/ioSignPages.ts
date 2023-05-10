@@ -1,11 +1,11 @@
-import { ProductOverviewPreview } from '@/domain/homepage';
+import { ProductOverviewPreview } from 'core/domain/homepage';
 import {
   QuickStartPreviewBlock,
   RelatedResourcesBlock,
   TutorialPreviewBlock,
-} from '@/domain/pageBlock';
-import { Product, ProductPage } from '@/domain/productPage';
-import { ProductTutorialPage } from '@/domain/productTutorialPage';
+} from 'core/domain/pageBlock';
+import { Product, ProductPage } from 'core/domain/productPage';
+import { ProductTutorialPage } from 'core/domain/productTutorialPage';
 
 const ioSignProduct: Product = {
   name: 'Firma con IO',

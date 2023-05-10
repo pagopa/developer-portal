@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { ProductPageCollector } from '@/domain/productPage';
+import { ProductPageCollector } from 'core/domain/productPage';
 import {
   ioSignOverviewPage,
   ioSignQuickStartPage,

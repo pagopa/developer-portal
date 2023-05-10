@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import Breadcrumbs, { BreadcrumbsProps } from './Breadcrumbs';
-import { HeroBlock } from '@/domain/pageBlock';
+import { HeroBlock } from 'core/domain/pageBlock';
 
 export type HeroWithBreadcrumbsProps = HeroBlock & {
   breadcrumbs: BreadcrumbsProps;

@@ -14,7 +14,7 @@ import {
   Tab,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Menu, isAncestor } from '@/domain/navigator';
+import { Menu, isAncestor } from 'core/domain/navigator';
 import { useRouter } from 'next/router';
 import { pipe } from 'fp-ts/lib/function';
 import Link from 'next/link';

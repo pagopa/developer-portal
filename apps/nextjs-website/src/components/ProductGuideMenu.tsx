@@ -1,4 +1,4 @@
-import { ProductGuideNav, isChild } from '@/domain/productGuideNavigator';
+import { ProductGuideNav, isChild } from 'core/domain/productGuideNavigator';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { Menu, isAncestor } from '@/domain/navigator';
+import { Menu, isAncestor } from 'core/domain/navigator';
 import { styled } from '@mui/material/styles';
 import ProductGuideVersionsMenu from './ProductGuideVersionsMenu';
 
