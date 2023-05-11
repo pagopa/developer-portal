@@ -9,12 +9,12 @@ import * as E from 'fp-ts/Either';
 import * as PR from 'io-ts/PathReporter';
 import { GitBookConfig } from 'gitbook-adapters/adapters/gitbook/GitBookEnv';
 import { makeProductGuidePageCollector } from 'gitbook-adapters/adapters/gitbook/makeProductGuidePageCollector';
-import { makeProductTutorialPageCollector } from '../static/makeProductTutorialPageCollector';
-import { makeProductPageCollector } from '../static/makeProductPageCollector';
-import { makeHomepageCollector } from '../static/makeHomepageCollector';
+import { makeProductTutorialPageCollector } from 'static-adapters/adapters/static/makeProductTutorialPageCollector';
+import { makeProductPageCollector } from 'static-adapters/adapters/static/makeProductPageCollector';
+import { makeHomepageCollector } from 'static-adapters/adapters/static/makeHomepageCollector';
 import { pipe } from 'fp-ts/lib/function';
 import { NavCollector } from 'core/domain/navigator';
-import { makeNavCollector } from '../static/makeNavCollector';
+import { makeNavCollector } from 'static-adapters/adapters/static/makeNavCollector';
 
 export type NextConfig = {
   gitbook: GitBookConfig;
