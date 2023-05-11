@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { Box } from '@mui/material';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import ComingSoon from '@/components/ComingSoon';
-import ProductPreview from '@/components/ProductPreview';
-import Highlighted from '@/components/Highlighted';
-import HeroHome from '@/components/HeroHome';
+import Footer from 'ui/components/Footer';
+import Header from 'ui/components/Header';
+import ComingSoon from 'ui/components/ComingSoon';
+import ProductPreview from 'ui/components/ProductPreview';
+import Highlighted from 'ui/components/Highlighted';
+import HeroHome from 'ui/components/HeroHome';
 import { Homepage } from 'core/domain/homepage';
 import { GetStaticProps } from 'next';
 import { getHomepage, nextEnv } from '@/adapters/nextjs/lib';

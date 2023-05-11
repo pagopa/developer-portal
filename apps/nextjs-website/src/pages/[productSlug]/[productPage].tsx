@@ -2,24 +2,24 @@ import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import HeroWithBreadcrumbs from '@/components/HeroWithBreadcrumbs';
-import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
-import QuickStartPreview from '@/components/QuickStartPreview';
-import TutorialPreview from '@/components/TutorialPreview';
+import Footer from 'ui/components/Footer';
+import Header from 'ui/components/Header';
+import HeroWithBreadcrumbs from 'ui/components/HeroWithBreadcrumbs';
+import ProductNavBar, { ProductNavBarProps } from 'ui/components/ProductNavBar';
+import QuickStartPreview from 'ui/components/QuickStartPreview';
+import TutorialPreview from 'ui/components/TutorialPreview';
 import { Box, Stack } from '@mui/material';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ProductPage } from 'core/domain/productPage';
-import HeroIntroWithBreadcrumbs from '@/components/HeroIntroWithBreadcrumbs';
-import RelatedResources from '@/components/RelatedResources';
-import QuickStartSteps from '@/components/QuickStartSteps';
+import HeroIntroWithBreadcrumbs from 'ui/components/HeroIntroWithBreadcrumbs';
+import RelatedResources from 'ui/components/RelatedResources';
+import QuickStartSteps from 'ui/components/QuickStartSteps';
 import {
   findProductPageByPath,
   getAllProductPagePaths,
   nextEnv,
 } from '@/adapters/nextjs/lib';
-import { BreadcrumbsProps } from '@/components/Breadcrumbs';
+import { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
 
 type Params = {
   productSlug: string;

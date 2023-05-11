@@ -1,12 +1,12 @@
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import ProductNavBar, { ProductNavBarProps } from '@/components/ProductNavBar';
+import Footer from 'ui/components/Footer';
+import Header from 'ui/components/Header';
+import ProductNavBar, { ProductNavBarProps } from 'ui/components/ProductNavBar';
 import { ProductGuidePage } from 'core/domain/productGuidePage';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import ProductGuideMenu from '@/components/ProductGuideMenu';
-import ProductGuideContent from '@/components/ProductGuideContent';
+import ProductGuideMenu from 'ui/components/ProductGuideMenu';
+import ProductGuideContent from 'ui/components/ProductGuideContent';
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
@@ -18,7 +18,7 @@ import {
   nextEnv,
 } from '@/adapters/nextjs/lib';
 import { makeMenuItem } from 'core/domain/navigator';
-import { BreadcrumbsProps } from '@/components/Breadcrumbs';
+import { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
 
 export type ProductGuidePageParams = {
   productSlug: string;

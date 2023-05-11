@@ -3,10 +3,10 @@ import {
   getAllProductTutorialPagePaths,
   nextEnv,
 } from '@/adapters/nextjs/lib';
-import Breadcrumbs, { BreadcrumbsProps } from '@/components/Breadcrumbs';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import MuiMarkdown from '@/components/MuiMarkdown';
+import Breadcrumbs, { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
+import Footer from 'ui/components/Footer';
+import Header from 'ui/components/Header';
+import MuiMarkdown from 'ui/components/MuiMarkdown';
 import { ProductTutorialPage } from 'core/domain/productTutorialPage';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
