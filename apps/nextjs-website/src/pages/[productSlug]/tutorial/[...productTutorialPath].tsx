@@ -2,7 +2,7 @@ import {
   findProductTutorialPageByPath,
   getAllProductTutorialPagePaths,
   nextEnv,
-} from '@/adapters/nextjs/lib';
+} from '@/lib/api';
 import Breadcrumbs, { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
 import Footer from 'ui/components/Footer';
 import Header from 'ui/components/Header';

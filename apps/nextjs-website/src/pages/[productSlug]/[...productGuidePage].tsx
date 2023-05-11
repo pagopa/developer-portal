@@ -16,7 +16,7 @@ import {
   getAllProductGuidePagePaths,
   findProductGuidePageByPath,
   nextEnv,
-} from '@/adapters/nextjs/lib';
+} from '@/lib/api';
 import { makeMenuItem } from 'core/domain/navigator';
 import { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
 

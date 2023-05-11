@@ -18,7 +18,7 @@ import {
   findProductPageByPath,
   getAllProductPagePaths,
   nextEnv,
-} from '@/adapters/nextjs/lib';
+} from '@/lib/api';
 import { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
 
 type Params = {

@@ -9,7 +9,7 @@ import Highlighted from 'ui/components/Highlighted';
 import HeroHome from 'ui/components/HeroHome';
 import { Homepage } from 'core/domain/homepage';
 import { GetStaticProps } from 'next';
-import { getHomepage, nextEnv } from '@/adapters/nextjs/lib';
+import { getHomepage, nextEnv } from '@/lib/api';
 
 export const getStaticProps: GetStaticProps<Homepage> = async () =>
   pipe(
