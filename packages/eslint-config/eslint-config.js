@@ -24,7 +24,8 @@ module.exports = {
     "prettier/prettier": [
       "error", {
         // prettier options
-        "singleQuote": true
+        "singleQuote": true,
+        "jsxSingleQuote": true
       }
     ],
   }
