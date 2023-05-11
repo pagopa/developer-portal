@@ -1,0 +1,29 @@
+{
+  "name": "ui",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./": "./dist/"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["./dist/*"]
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "compile": "tsc",
+    "test": "jest -i"
+  },
+  "dependencies": {
+    "@pagopa/mui-italia": "^0.8.12",
+    "fp-ts": "^2.13.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.2"
+  }
+}
