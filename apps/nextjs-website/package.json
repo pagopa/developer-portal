@@ -16,9 +16,11 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "core": "*",
+    "ui": "*",
+    "gitbook-adapters": "*",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@gitbook/api": "^0.3.0",
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.8",
@@ -33,8 +35,6 @@
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "eslint-config-custom": "*",
-    "core": "*",
-    "ui": "*",
     "jest": "^29.5.0",
     "jest-mock-extended": "^3.0.4",
     "prettier": "^2.8.6",
