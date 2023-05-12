@@ -9,9 +9,6 @@
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "declaration": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "declaration": true
   }
 }
