@@ -12,7 +12,7 @@ const nextConfig = {
   trailingSlash: false,
   images: {
     unoptimized: true,
-  }
-}
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
