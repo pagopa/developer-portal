@@ -19,6 +19,7 @@
     "fp-ts": "^2.13.1"
   },
   "devDependencies": {
+    "eslint-config-custom": "*",
     "typescript": "^5.0.2"
   }
 }
