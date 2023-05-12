@@ -18,7 +18,6 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "dev": "storybook dev -p 6006",
     "test": "jest -i"
   },
   "dependencies": {
@@ -37,18 +36,9 @@
     "react-markdown": "^8.0.6"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.0.4",
-    "@storybook/addon-links": "^7.0.4",
-    "@storybook/blocks": "^7.0.4",
-    "@storybook/manager-api": "^7.0.4",
-    "@storybook/nextjs": "^7.0.4",
-    "@storybook/react": "^7.0.4",
-    "@storybook/testing-library": "^0.0.14-next.2",
-    "@storybook/theming": "^7.0.4",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "eslint-config-custom": "*",
-    "storybook": "^7.0.4",
     "typescript": "^5.0.2"
   }
 }
