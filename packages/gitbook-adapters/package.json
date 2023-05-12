@@ -7,20 +7,25 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*"]
+      "*": [
+        "./dist/*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "compile": "tsc",
     "test": "jest -i"
   },
   "dependencies": {
-    "fp-ts": "^2.13.1",
-    "@gitbook/api": "^0.3.0"
+    "@gitbook/api": "^0.3.0",
+    "fp-ts": "^2.13.1"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "jest-mock-extended": "^3.0.4",
     "typescript": "^5.0.2"
   }
 }
