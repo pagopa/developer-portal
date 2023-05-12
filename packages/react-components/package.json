@@ -24,6 +24,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@markdoc/markdoc": "^0.2.2",
     "@pagopa/mui-italia": "^0.8.12",
     "fp-ts": "^2.13.1",
     "next": "13.1.6",
