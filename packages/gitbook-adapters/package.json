@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@gitbook/api": "^0.3.0",
+    "core": "*",
     "fp-ts": "^2.13.1"
   },
   "devDependencies": {
