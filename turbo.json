@@ -5,6 +5,7 @@
       "cache": false
     },
     "compile": {
+      "dependsOn": ["^compile"]
     },
     "build": {
       "outputs": [
