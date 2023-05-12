@@ -7,10 +7,14 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*"]
+      "*": [
+        "./dist/*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "compile": "tsc",
     "test": "jest -i"
@@ -19,6 +23,7 @@
     "fp-ts": "^2.13.1"
   },
   "devDependencies": {
+    "eslint-config-custom": "*",
     "typescript": "^5.0.2"
   }
 }
