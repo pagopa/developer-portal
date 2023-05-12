@@ -28,6 +28,7 @@
     "gitbook-adapters": "*",
     "io-ts": "^2.2.20",
     "next": "13.1.6",
+    "static-adapters": "*",
     "ui": "*"
   },
   "devDependencies": {
