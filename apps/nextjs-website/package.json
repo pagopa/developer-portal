@@ -16,19 +16,19 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
-    "core": "*",
-    "ui": "*",
-    "gitbook-adapters": "*",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.8",
     "@next/font": "13.1.6",
+    "@pagopa/mui-italia": "^0.9.5",
+    "core": "*",
     "fp-ts": "^2.13.1",
+    "gitbook-adapters": "*",
     "io-ts": "^2.2.20",
     "next": "13.1.6",
-    "react-markdown": "^8.0.6"
+    "ui": "*"
   },
   "devDependencies": {
     "@markdoc/markdoc": "^0.2.2",
