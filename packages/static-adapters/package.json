@@ -16,6 +16,7 @@
     "test": "jest -i"
   },
   "dependencies": {
+    "core": "*",
     "fp-ts": "^2.13.1"
   },
   "devDependencies": {
