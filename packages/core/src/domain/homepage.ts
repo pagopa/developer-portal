@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import { Image } from '@/domain/Image';
 import { RelatedResourcesBlock } from './pageBlock';
+import { Image } from './Image';
 
 export type Hero = {
   title: string;

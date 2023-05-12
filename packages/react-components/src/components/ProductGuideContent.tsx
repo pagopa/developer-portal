@@ -1,7 +1,7 @@
-import { renderGitBookMarkdown } from '@/markdoc';
 import { Container, Stack } from '@mui/material';
 import React from 'react';
 import Breadcrumbs, { BreadcrumbsProps } from './Breadcrumbs';
+import { renderGitBookMarkdown } from '../markdoc';
 
 type ProductGuideContentProps = {
   breadcrumbs: BreadcrumbsProps['items'];

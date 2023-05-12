@@ -1,4 +1,4 @@
-import { Image } from '@/domain/Image';
+import { Image } from './Image';
 
 export type HeroBlock = {
   type: 'hero';

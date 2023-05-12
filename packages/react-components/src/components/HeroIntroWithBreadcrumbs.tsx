@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
-import Breadcrumbs, { BreadcrumbsProps } from '@/components/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbsProps } from './Breadcrumbs';
 
 export type HeroIntroProps = {
   title: string;

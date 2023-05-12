@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import TutorialPreview from '@/components/TutorialPreview';
+import TutorialPreview from '../components/TutorialPreview';
 
 const meta: Meta<typeof TutorialPreview> = {
   title: 'Components/Tutorial',

@@ -9,7 +9,7 @@ import { Menu, isAncestor } from 'core/domain/navigator';
 import React from 'react';
 import Link from 'next/link';
 // FIXME: Don't import theme, inject the stype somehow
-import { theme } from '@/theme';
+import { theme } from '../theme';
 
 type ProductGuideVersionsMenuProps = {
   versionsMenu: Menu;

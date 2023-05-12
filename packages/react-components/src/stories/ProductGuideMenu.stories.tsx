@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ProductGuideMenu from '@/components/ProductGuideMenu';
+import ProductGuideMenu from '../components/ProductGuideMenu';
 
 const meta: Meta<typeof ProductGuideMenu> = {
   title: 'Components/Navigation/Product Guide Navigator',
