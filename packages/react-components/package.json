@@ -7,27 +7,30 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*"]
+      "*": [
+        "./dist/*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "compile": "tsc",
     "dev": "storybook dev -p 6006",
     "test": "jest -i"
   },
   "dependencies": {
-    "next": "13.1.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@pagopa/mui-italia": "^0.8.12",
     "fp-ts": "^2.13.1",
+    "next": "13.1.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.7"
   },
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
     "@storybook/addon-essentials": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
     "@storybook/blocks": "^7.0.4",
@@ -36,6 +39,8 @@
     "@storybook/react": "^7.0.4",
     "@storybook/testing-library": "^0.0.14-next.2",
     "@storybook/theming": "^7.0.4",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "storybook": "^7.0.4",
     "typescript": "^5.0.2"
   }
