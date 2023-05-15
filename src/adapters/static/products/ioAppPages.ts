@@ -10,7 +10,7 @@ const ioAppProduct: Product = {
 
 const image: Image = {
   src: 'https://images.pexels.com/photos/175045/pexels-photo-175045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  alt: 'Immagine di Firma con IO',
+  alt: 'Immagine di IO',
 };
 
 const techGuideIOSign: GuidePreviewBlock = {
