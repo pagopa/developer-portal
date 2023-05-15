@@ -96,10 +96,33 @@ export type RelatedResourcesBlock = {
   references: ReadonlyArray<RelatedResource>;
 };
 
+type GuideCategory = {
+  id: string;
+  title: string;
+};
+
+export type GuidePreviewBlock = {
+  type: 'guide-preview';
+  title: string;
+  preview: {
+    title: string;
+    description: ReadonlyArray<string>;
+    link: string;
+    image: Image;
+  };
+};
+
+export type GuidesCollectionBlock = {
+  type: 'guide-collection';
+  category: GuideCategory;
+  guides: ReadonlyArray<GuidePreviewBlock>;
+};
+
 export type PageBlock =
   | HeroBlock
   | HeroInfoBlock
   | QuickStartBlock
   | QuickStartPreviewBlock
   | TutorialPreviewBlock
-  | RelatedResourcesBlock;
+  | RelatedResourcesBlock
+  | GuidesCollectionBlock;
