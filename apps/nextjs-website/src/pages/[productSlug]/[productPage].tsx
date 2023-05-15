@@ -31,8 +31,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
     nextEnv,
     TE.chain(getAllProductPagePaths),
-    // eslint-disable-next-line
-    TE.getOrElse(() => T.of(Array()))
+    TE.getOrElseW(() => T.of([]))
   )(),
   fallback: false,
 });
