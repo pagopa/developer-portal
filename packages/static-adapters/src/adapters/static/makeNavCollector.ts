@@ -1,5 +1,6 @@
 import { Nav, NavCollector } from 'core/domain/navigator';
 import { ioSignPageLinks } from './products/ioSignPages';
+import { ioAppPageLinks } from './products/ioAppPages';
 
 const staticNav: Nav = [
   {
@@ -41,7 +42,7 @@ const staticNav: Nav = [
       nav: 'Guide e Manuali',
       breadcrumb: 'App IO - Guide e Manuali',
     },
-    path: '/app-io/guide-manuali',
+    path: ioAppPageLinks.guides,
   },
 ];
 

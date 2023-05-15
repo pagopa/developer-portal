@@ -20,6 +20,7 @@ import {
   nextEnv,
 } from '@/lib/api';
 import { BreadcrumbsProps } from 'ui/components/Breadcrumbs';
+import GuideCollection from 'ui/components/GuideCollection';
 
 type Params = {
   productSlug: string;
@@ -30,7 +31,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => ({
   paths: await pipe(
     nextEnv,
     TE.chain(getAllProductPagePaths),
-    TE.getOrElseW(() => T.of([]))
+    TE.getOrElse(() => T.of([]))
   )(),
   fallback: false,
 });
@@ -85,6 +86,8 @@ const ProductPage = (props: ProductPageProps) => (
               return <TutorialPreview {...block} />;
             case 'related-resources':
               return <RelatedResources {...block} />;
+            case 'guide-collection':
+              return <GuideCollection {...block} />;
           }
         })
       )}

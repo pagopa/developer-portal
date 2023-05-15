@@ -1,0 +1,99 @@
+import { GuidePreviewBlock, GuidesCollectionBlock } from 'core/domain/pageBlock';
+import { Image } from 'core/domain/Image';
+import { Product, ProductPage } from 'core/domain/productPage';
+import { ioSignPageLinks } from './ioSignPages';
+
+const ioAppProduct: Product = {
+  name: 'App IO',
+  slug: 'app-io',
+};
+
+const image: Image = {
+  src: 'https://images.pexels.com/photos/175045/pexels-photo-175045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  alt: 'Immagine di IO',
+};
+
+const techGuideIOSign: GuidePreviewBlock = {
+  type: 'guide-preview',
+  title: 'Guida tecnica IO',
+  preview: {
+    title: 'Argomenti trattati',
+    description: [
+      'Setup iniziale: come aderire',
+      'Creare e pubblicare un servizio',
+      'Inviare un messaggio',
+      'Eseguire test sulle funzionalità',
+    ],
+    link: ioSignPageLinks.overview,
+    image,
+  },
+};
+const manual: GuidePreviewBlock = {
+  type: 'guide-preview',
+  title: 'Manuale dei servizi',
+  preview: {
+    title: 'Argomenti trattati',
+    description: [
+      'Setup iniziale: come aderire',
+      'Creare e pubblicare un servizio',
+      'Inviare un messaggio',
+      'Eseguire test sulle funzionalità',
+    ],
+    link: ioSignPageLinks.overview,
+    image,
+  },
+};
+const content: GuidePreviewBlock = {
+  type: 'guide-preview',
+  title: "Guida di contenuto dell'app IO",
+  preview: {
+    title: 'Argomenti trattati',
+    description: [
+      'Setup iniziale: come aderire',
+      'Creare e pubblicare un servizio',
+      'Inviare un messaggio',
+      'Eseguire test sulle funzionalità',
+    ],
+    link: ioSignPageLinks.overview,
+    image,
+  },
+};
+
+const integrationCategory: GuidesCollectionBlock['category'] = {
+  id: 'integration-category',
+  title: "Per l'integrazione",
+};
+const usageCategory: GuidesCollectionBlock['category'] = {
+  id: 'usage-category',
+  title: "Per l'utilizzo",
+};
+const integrationGuides: GuidesCollectionBlock = {
+  type: 'guide-collection',
+  category: integrationCategory,
+  guides: [techGuideIOSign],
+};
+const usageGuides: GuidesCollectionBlock = {
+  type: 'guide-collection',
+  category: usageCategory,
+  guides: [manual, content],
+};
+
+export const ioAppGuideIndex: ProductPage = {
+  product: ioAppProduct,
+  slug: 'guide-manuali',
+  title: 'Guide e Manuali',
+  blocks: [
+    {
+      type: 'hero-info',
+      title: 'Guide e Manuali',
+      description:
+        'Learn what content testing is, the methods of testing content available to you, and how to plan and conduct your research.',
+    },
+    integrationGuides,
+    usageGuides,
+  ],
+};
+
+export const ioAppPageLinks = {
+  guides: `/${ioAppProduct.slug}/${ioAppGuideIndex.slug}`,
+};

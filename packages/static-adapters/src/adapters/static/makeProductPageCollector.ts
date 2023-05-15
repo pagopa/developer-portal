@@ -7,11 +7,13 @@ import {
   ioSignQuickStartPage,
   ioSignTutorialIndexPage,
 } from './products/ioSignPages';
+import { ioAppGuideIndex } from './products/ioAppPages';
 
 const pages = [
   ioSignOverviewPage,
   ioSignQuickStartPage,
   ioSignTutorialIndexPage,
+  ioAppGuideIndex,
 ];
 
 export const makeProductPageCollector = (): ProductPageCollector => ({
