@@ -1,6 +1,6 @@
 import { Container, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { GuideCategoryPreview as GuideCategoryPreviewBlock } from '@/domain/pageBlock';
+import { GuidesCollectionBlock as GuideCategoryPreviewBlock } from '@/domain/pageBlock';
 import ProductGuidePreview from '@/components/ProductGuidePreview';
 
 const GuideCategoryPreview = ({

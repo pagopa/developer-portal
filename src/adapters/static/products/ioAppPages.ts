@@ -1,6 +1,6 @@
 import { Product, ProductPage } from '@/domain/productPage';
 import { ioSignPageLinks } from '@/adapters/static/products/ioSignPages';
-import { GuidePreviewBlock, GuideCategoryPreview } from '@/domain/pageBlock';
+import { GuidePreviewBlock, GuidesCollectionBlock } from '@/domain/pageBlock';
 import { Image } from '@/domain/Image';
 
 const ioAppProduct: Product = {
@@ -59,21 +59,21 @@ const content: GuidePreviewBlock = {
   },
 };
 
-const integrationCategory: GuideCategoryPreview['category'] = {
+const integrationCategory: GuidesCollectionBlock['category'] = {
   id: 'integration-category',
   title: "Per l'integrazione",
 };
-const usageCategory: GuideCategoryPreview['category'] = {
+const usageCategory: GuidesCollectionBlock['category'] = {
   id: 'usage-category',
   title: "Per l'utilizzo",
 };
-const integrationGuides: GuideCategoryPreview = {
-  type: 'guide-category-preview',
+const integrationGuides: GuidesCollectionBlock = {
+  type: 'guide-collection',
   category: integrationCategory,
   guides: [techGuideIOSign],
 };
-const usageGuides: GuideCategoryPreview = {
-  type: 'guide-category-preview',
+const usageGuides: GuidesCollectionBlock = {
+  type: 'guide-collection',
   category: usageCategory,
   guides: [manual, content],
 };

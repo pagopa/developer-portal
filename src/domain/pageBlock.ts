@@ -112,8 +112,8 @@ export type GuidePreviewBlock = {
   };
 };
 
-export type GuideCategoryPreview = {
-  type: 'guide-category-preview';
+export type GuidesCollectionBlock = {
+  type: 'guide-collection';
   category: GuideCategory;
   guides: ReadonlyArray<GuidePreviewBlock>;
 };
@@ -125,4 +125,4 @@ export type PageBlock =
   | QuickStartPreviewBlock
   | TutorialPreviewBlock
   | RelatedResourcesBlock
-  | GuideCategoryPreview;
+  | GuidesCollectionBlock;

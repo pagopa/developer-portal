@@ -86,7 +86,7 @@ const ProductPage = (props: ProductPageProps) => (
               return <TutorialPreview {...block} />;
             case 'related-resources':
               return <RelatedResources {...block} />;
-            case 'guide-category-preview':
+            case 'guide-collection':
               return <GuideCategoryPreview {...block} />;
           }
         })
