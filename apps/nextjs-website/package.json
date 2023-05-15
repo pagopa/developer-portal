@@ -4,8 +4,6 @@
   "private": true,
   "scripts": {
     "compile": "tsc",
-    "test": "jest -i",
-    "test:coverage": "yarn run test -- --coverage",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
