@@ -10,5 +10,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "declaration": true
-  }
+  },
+  "exclude": ["jest.config.ts"]
 }

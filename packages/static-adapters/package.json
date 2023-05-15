@@ -7,12 +7,17 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*"]
+      "*": [
+        "./dist/*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "compile": "tsc"
+    "clean": "shx rm -rf dist/",
+    "compile": "npm run clean && tsc"
   },
   "dependencies": {
     "core": "*",
@@ -20,6 +25,7 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "shx": "^0.3.4",
     "typescript": "^5.0.2"
   }
 }

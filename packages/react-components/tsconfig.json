@@ -12,5 +12,6 @@
     "declaration": true,
     "jsx": "preserve",
     "moduleResolution": "node"
-  }
+  },
+  "exclude": ["jest.config.ts"]
 }
