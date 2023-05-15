@@ -20,7 +20,7 @@ import {
   nextEnv,
 } from '@/adapters/nextjs/lib';
 import { BreadcrumbsProps } from '@/components/Breadcrumbs';
-import GuideCategoryPreview from '@/components/GuideCategoryPreview';
+import GuideCollection from '@/components/GuideCollection';
 
 type Params = {
   productSlug: string;
@@ -87,7 +87,7 @@ const ProductPage = (props: ProductPageProps) => (
             case 'related-resources':
               return <RelatedResources {...block} />;
             case 'guide-collection':
-              return <GuideCategoryPreview {...block} />;
+              return <GuideCollection {...block} />;
           }
         })
       )}

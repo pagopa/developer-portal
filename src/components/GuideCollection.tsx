@@ -1,12 +1,9 @@
 import { Container, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { GuidesCollectionBlock as GuideCategoryPreviewBlock } from '@/domain/pageBlock';
+import { GuidesCollectionBlock } from '@/domain/pageBlock';
 import ProductGuidePreview from '@/components/ProductGuidePreview';
 
-const GuideCategoryPreview = ({
-  category,
-  guides,
-}: GuideCategoryPreviewBlock) => (
+const GuideCollection = ({ category, guides }: GuidesCollectionBlock) => (
   <Container
     maxWidth='xl'
     sx={{
@@ -35,4 +32,4 @@ const GuideCategoryPreview = ({
   </Container>
 );
 
-export default GuideCategoryPreview;
+export default GuideCollection;
