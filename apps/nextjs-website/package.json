@@ -30,7 +30,6 @@
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
     "prettier": "^2.8.6",
-    "storybook": "^7.0.4",
     "ts-jest": "^29.0.5",
     "typescript": "^5.0.2"
   }
