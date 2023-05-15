@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*",
-    "prettier": "^2.8.6",
     "typescript": "^5.0.2"
   }
 }
