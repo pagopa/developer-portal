@@ -17,13 +17,15 @@
   ],
   "scripts": {
     "clean": "shx rm -rf dist/",
-    "compile": "npm run clean && tsc"
+    "compile": "npm run clean && tsc",
+    "lint": "eslint src"
   },
   "dependencies": {
     "core": "*",
     "fp-ts": "^2.13.1"
   },
   "devDependencies": {
+    "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "shx": "^0.3.4",
     "typescript": "^5.0.2"

@@ -1,4 +1,7 @@
-import { GuidePreviewBlock, GuidesCollectionBlock } from 'core/domain/pageBlock';
+import {
+  GuidePreviewBlock,
+  GuidesCollectionBlock,
+} from 'core/domain/pageBlock';
 import { Image } from 'core/domain/Image';
 import { Product, ProductPage } from 'core/domain/productPage';
 import { ioSignPageLinks } from './ioSignPages';

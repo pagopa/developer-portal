@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "eslint src",
     "dev": "storybook dev -p 6006 --ci"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@mui/material": "^5.13.0",
     "@pagopa/mui-italia": "^0.9.5",
@@ -18,6 +18,7 @@
     "@storybook/react": "^7.0.4",
     "@storybook/testing-library": "^0.0.14-next.2",
     "@storybook/theming": "^7.0.4",
+    "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "storybook": "^7.0.4",
     "ui": "*"

@@ -18,6 +18,7 @@
   "scripts": {
     "clean": "shx rm -rf dist/",
     "compile": "npm run clean && tsc",
+    "lint": "eslint src",
     "test": "jest -i"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
+    "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
     "jest-mock-extended": "^3.0.4",

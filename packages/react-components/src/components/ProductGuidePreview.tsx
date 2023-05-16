@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
