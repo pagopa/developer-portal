@@ -6,7 +6,7 @@ In this repository you can find anything you need to work on the developer porta
 ## Requirements
 
 - [Node.js](https://nodejs.org/docs/latest-v18.x/api/index.html)
-- [yarnpkg](https://yarnpkg.com/)
+- [npm CLI](https://docs.npmjs.com/cli/v9)
 
 ## Local development
 
@@ -20,7 +20,7 @@ Before you start, make sure you have complete the following steps:
 Run the following command from the root folder.
 
 ``` bash
-yarn dev
+npm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
@@ -32,43 +32,44 @@ Open [http://localhost:6006](http://localhost:6006) with your browser to see the
 To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
 
 ```bash
-yarn workspace storybook-playground dev
+npm -w storybook-playground run dev
 ```
 
 Open [http://localhost:6006](http://localhost:6006) to access to the storybook.
 
 ## Commands Cheat Sheet
 
+
 ### Workspace
 
-For more information check [yarnpkg workspace documentation](https://classic.yarnpkg.com/en/docs/cli/workspace).
+For more information check [npm CLI workspace documentation](https://docs.npmjs.com/cli/v9/using-npm/workspaces).
 
 #### Run commands
 
-Run the chosen Yarn command in each workspace.
+Run the chosen command in each workspace.
 
 ``` bash
-yarn workspaces run <command>
+npm run <command> --workspaces
 ```
 
-Run the chosen Yarn `command` on package `<package-name>`.
+Run the chosen `command` on workspace `<workspace>`.
 
 ``` bash
-yarn workspace <package-name> <command>
+npm -w <workspace> run <command>
 ```
 
 #### Manage dependencies
 
-Add to the root the dependency `<dependency-name>`.
+Add to the root the dependency `<dependency>`.
 
 ``` bash
-yarn add <dependency-name>
+npm install <dependency>
 ```
 
-Add to the package `<package-name>` the dependency `<dependency-name>` as `devDependencies`.
+Add to the package `<package>` the dependency `<dependency>` as `devDependencies`.
 
 ``` bash
-yarn workspace <package-name> add <dependency-name> --dev
+npm -w <package> install <dependency> --D
 ```
 
 
