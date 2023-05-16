@@ -22,13 +22,13 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --immutable
+        run: npm run install --immutable
 
       - name: Compile
-        run: npm compile
+        run: npm run compile
 
       - name: Lint code
-        run: npm lint
+        run: npm run lint
 
       - name: Execute tests
-        run: npm test
+        run: npm run test
