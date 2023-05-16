@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "BROWSER=none storybook dev -p 6006"
+    "dev": "storybook dev -p 6006 --ci"
   },
   "dependencies": {
   },
