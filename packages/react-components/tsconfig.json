@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "module": "esnext",
+    "module": "commonjs",
     "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,

@@ -5,7 +5,10 @@
       "cache": false
     },
     "compile": {
-      "dependsOn": ["^compile"]
+      "dependsOn": ["^compile"],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "build": {
       "outputs": [
