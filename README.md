@@ -23,7 +23,9 @@ Run the following command from the root folder.
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
+
+Open [http://localhost:6006](http://localhost:6006) with your browser to see the components playground.
 
 ### Run the Storybook locally
 
