@@ -30,7 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
 
 ```bash
-yarn workspace nextjs-website storybook:run
+yarn workspace storybook-playground dev
 ```
 
 Open [http://localhost:6006](http://localhost:6006) to access to the storybook.
