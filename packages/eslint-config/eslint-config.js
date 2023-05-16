@@ -7,8 +7,6 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     // Load prettier recommended rules
     "plugin:prettier/recommended",
-    // Load next rules
-    "next",
   ],
   // This is required, or else ESLint will throw errors as it tries to parse
   // TypeScript code as if it were regular JavaScript
