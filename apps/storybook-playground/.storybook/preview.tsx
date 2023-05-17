@@ -1,7 +1,7 @@
 import { Decorator } from '@storybook/react';
 import { storybookTheme } from './theme';
 import { ThemeProvider, Box } from '@mui/material';
-import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
+import { theme as muiItaliaTheme } from 'ui/theme';
 import { ReactNode } from 'react';
 
 export const parameters = {
