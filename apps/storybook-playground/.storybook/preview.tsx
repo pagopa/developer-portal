@@ -1,7 +1,7 @@
 import { Decorator } from '@storybook/react';
 import { storybookTheme } from './theme';
 import { ThemeProvider, Box } from '@mui/material';
-import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
+import { theme } from 'ui/theme';
 import { ReactNode } from 'react';
 
 export const parameters = {
@@ -26,7 +26,7 @@ const StoryContainer = ({ children }: { children: ReactNode }) => (
 );
 
 export const withTheme: Decorator = (Story, context) => (
-  <ThemeProvider theme={muiItaliaTheme}>
+  <ThemeProvider theme={theme}>
     <StoryContainer>
       <Story />
     </StoryContainer>

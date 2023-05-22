@@ -7,10 +7,8 @@
     "lint": "eslint src",
     "dev": "storybook dev -p 6006 --ci"
   },
-  "dependencies": {},
   "devDependencies": {
     "@mui/material": "^5.13.0",
-    "@pagopa/mui-italia": "^0.9.5",
     "@storybook/addon-essentials": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
     "@storybook/blocks": "^7.0.4",
