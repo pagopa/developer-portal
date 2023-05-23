@@ -4,7 +4,6 @@ import {
 } from 'core/domain/pageBlock';
 import { Image } from 'core/domain/Image';
 import { Product, ProductPage } from 'core/domain/productPage';
-import { ioSignPageLinks } from './ioSignPages';
 
 const ioAppProduct: Product = {
   name: 'App IO',
@@ -16,48 +15,46 @@ const image: Image = {
   alt: 'Immagine di IO',
 };
 
-const techGuideIOSign: GuidePreviewBlock = {
+const integrationTechGuide: GuidePreviewBlock = {
   type: 'guide-preview',
-  title: 'Guida tecnica IO',
+  title: "Guida tecnica all'integrazione dei servizi",
   preview: {
     title: 'Argomenti trattati',
     description: [
-      'Setup iniziale: come aderire',
-      'Creare e pubblicare un servizio',
-      'Inviare un messaggio',
-      'Eseguire test sulle funzionalità',
+      'Come creare un servizio',
+      'Come inviare un messaggio',
+      'Come aggiungere allegati',
     ],
-    link: ioSignPageLinks.overview,
+    link: '#',
     image,
   },
 };
-const manual: GuidePreviewBlock = {
+
+const servicesManual: GuidePreviewBlock = {
   type: 'guide-preview',
-  title: 'Manuale dei servizi',
+  title: "Il manuale dei servizi dell'app IO",
   preview: {
     title: 'Argomenti trattati',
     description: [
-      'Setup iniziale: come aderire',
-      'Creare e pubblicare un servizio',
-      'Inviare un messaggio',
-      'Eseguire test sulle funzionalità',
+      'Chiarire cosa si intende per servizio nel contesto di IO',
+      'Spiegare quali sono le tipologie di servizio si possono erogare in IO e quali funzionalità si possono sfruttare',
+      'Dare indicazioni su come creare i servizi',
+      'Fornire modelli di servizi da poter utilizzare',
     ],
-    link: ioSignPageLinks.overview,
+    link: '#',
     image,
   },
 };
-const content: GuidePreviewBlock = {
+
+const cgn: GuidePreviewBlock = {
   type: 'guide-preview',
-  title: "Guida di contenuto dell'app IO",
+  title: 'Carta Giovani Nazionale',
   preview: {
     title: 'Argomenti trattati',
     description: [
-      'Setup iniziale: come aderire',
-      'Creare e pubblicare un servizio',
-      'Inviare un messaggio',
-      'Eseguire test sulle funzionalità',
+      'I processi di adesione e attuazione della convenzione al Programma attraverso il Portale dedicato',
     ],
-    link: ioSignPageLinks.overview,
+    link: '#',
     image,
   },
 };
@@ -66,19 +63,11 @@ const integrationCategory: GuidesCollectionBlock['category'] = {
   id: 'integration-category',
   title: "Per l'integrazione",
 };
-const usageCategory: GuidesCollectionBlock['category'] = {
-  id: 'usage-category',
-  title: "Per l'utilizzo",
-};
+
 const integrationGuides: GuidesCollectionBlock = {
   type: 'guide-collection',
   category: integrationCategory,
-  guides: [techGuideIOSign],
-};
-const usageGuides: GuidesCollectionBlock = {
-  type: 'guide-collection',
-  category: usageCategory,
-  guides: [manual, content],
+  guides: [integrationTechGuide, servicesManual, cgn],
 };
 
 export const ioAppGuideIndex: ProductPage = {
@@ -90,10 +79,9 @@ export const ioAppGuideIndex: ProductPage = {
       type: 'hero-info',
       title: 'Guide e Manuali',
       description:
-        'Learn what content testing is, the methods of testing content available to you, and how to plan and conduct your research.',
+        'Per una conoscenza ancora più approfondita, consulta i manuale e le guide disponibili per l’app IO.',
     },
     integrationGuides,
-    usageGuides,
   ],
 };
 
