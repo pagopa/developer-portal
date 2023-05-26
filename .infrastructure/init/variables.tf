@@ -13,7 +13,7 @@ variable "environment" {
 variable "github_repository" {
   type        = string
   description = "This github repository"
-  default     = "developer-portal"
+  default     = "pagopa/developer-portal"
 }
 
 
