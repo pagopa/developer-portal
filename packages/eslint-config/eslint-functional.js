@@ -4,7 +4,7 @@ module.exports = {
   rules: {
     // No exceptions
     'functional/no-promise-reject': 'error',
-    'functional/no-throw-statements': 'warn',
+    'functional/no-throw-statements': 'error',
     'functional/no-try-statements': 'error',
     // No mutations
     'functional/immutable-data': 'error',
