@@ -2,10 +2,9 @@ name: "Terraform-Plan"
 
 on:
   push:
-    branches:
-      - '!main'     # excludes main
     pull_request:
       branches: '**'
+      # Run only if there are at least one change matching the following paths
       paths:
         - '.infrastructure/main/**'
         - '.github/workflows/*.yml'
