@@ -11,6 +11,7 @@ module.exports = {
     'prettier',
   ],
   extends: [
+   // Load rules to enforce the functional paradigm
     './eslint-functional.js',
     // Load eslint recommended rules
     "eslint:recommended",
