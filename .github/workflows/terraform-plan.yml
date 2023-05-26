@@ -6,9 +6,9 @@ on:
       - '!main'     # excludes main
     pull_request:
       branches: '**'
-    paths:
-      - '.infrastructure/main/**'
-      - '.github/workflows/*.yml'
+      paths:
+        - '.infrastructure/main/**'
+        - '.github/workflows/*.yml'
 
 defaults:
   run:
