@@ -7,6 +7,7 @@ variable "aws_region" {
 variable "app_name" {
   type        = string
   description = "App name."
+  default     = "devportal"
 }
 
 variable "environment" {
@@ -61,6 +62,7 @@ variable "enable_nat_gateway" {
 variable "public_dns_zones" {
   type        = map(any)
   description = "Route53 Hosted Zone"
+  default     = null
 }
 
 variable "dns_record_ttl" {
