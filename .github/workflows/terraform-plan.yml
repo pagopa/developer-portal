@@ -1,4 +1,4 @@
-name: "Terraform-Plan"
+name: "CI"
 
 on:
   push:

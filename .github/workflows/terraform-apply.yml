@@ -1,4 +1,4 @@
-name: "Terraform-Apply"
+name: "CD"
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
 
   merge-trigger:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      name: "terraform-apply (merge)"
+      name: "terraform-apply (push)"
       strategy:
         max-parallel: 1
         matrix:
