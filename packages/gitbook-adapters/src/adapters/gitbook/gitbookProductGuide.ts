@@ -9,17 +9,17 @@ import { Collection, GitBookAPI, Revision, Space } from '@gitbook/api';
 import { makeProductGuideNav } from './makeProductGuideNav';
 
 export type GitBookProductCollection = {
-  product: Product;
-  collectionId: string;
+  readonly product: Product;
+  readonly collectionId: string;
 };
 
 export type GitBookProductGuide = {
-  path: string;
-  product: Product;
-  collection: Collection;
-  space: Space;
-  revision: Revision;
-  nav: ProductGuideNav;
+  readonly path: string;
+  readonly product: Product;
+  readonly collection: Collection;
+  readonly space: Space;
+  readonly revision: Revision;
+  readonly nav: ProductGuideNav;
 };
 
 const makeGitBookProductGuide = (

@@ -6,11 +6,11 @@ import { contramap } from 'fp-ts/lib/Ord';
 import { Product } from './productPage';
 
 type NavItem = {
-  path: string;
-  name: {
+  readonly path: string;
+  readonly name: {
     // No nav, not in Menu
-    nav?: string;
-    breadcrumb: string;
+    readonly nav?: string;
+    readonly breadcrumb: string;
   };
 };
 
@@ -19,13 +19,13 @@ export type Nav = ReadonlyArray<NavItem>;
 // Represents a menu item in a menu.
 type MenuItem = {
   // The name of the menu item.
-  name: string;
+  readonly name: string;
   // The path of the menu item.
-  path: string;
+  readonly path: string;
 };
 
 export type NavCollector = {
-  getNav: () => Nav;
+  readonly getNav: () => Nav;
 };
 
 /**
@@ -53,11 +53,11 @@ export const makeMenu = (nav: Nav, product: Product): Menu =>
 // Represents a breadcrumb item in a breadcrumb trail.
 type BreadcrumbItem = {
   // The name of the breadcrumb item.
-  name: string;
+  readonly name: string;
   // The path of the breadcrumb item.
-  path: string;
+  readonly path: string;
   // Indicates whether the breadcrumb item is the current one.
-  isCurrent: boolean;
+  readonly isCurrent: boolean;
 };
 
 /**

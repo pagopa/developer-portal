@@ -6,7 +6,7 @@ import {
 } from 'core/domain/productGuideNavigator';
 import { RevisionPage } from '@gitbook/api';
 
-type GitBookProductGuideItem = { parentPath: string } & RevisionPage;
+type GitBookProductGuideItem = { readonly parentPath: string } & RevisionPage;
 
 /**
  * Given a `GitBookProductGuideItem`, creates a `ProductGuideNavItem`.

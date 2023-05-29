@@ -3,38 +3,38 @@ import { RelatedResourcesBlock } from './pageBlock';
 import { Image } from './Image';
 
 export type Hero = {
-  title: string;
-  cover: string;
+  readonly title: string;
+  readonly cover: string;
 };
 
 type ShowcaseItem = {
-  title: string;
-  description: string;
+  readonly title: string;
+  readonly description: string;
 };
 
 export type Showcase = {
-  title: string;
-  items: ReadonlyArray<ShowcaseItem>;
+  readonly title: string;
+  readonly items: ReadonlyArray<ShowcaseItem>;
 };
 
 export type ProductOverviewPreview = {
-  title: string;
-  preview: {
-    title: string;
-    description: string;
-    link: string;
-    image: Image;
+  readonly title: string;
+  readonly preview: {
+    readonly title: string;
+    readonly description: string;
+    readonly link: string;
+    readonly image: Image;
   };
 };
 
 export type Homepage = {
-  hero: Hero;
-  highlighted: RelatedResourcesBlock;
-  productPreview: ProductOverviewPreview;
-  comingSoon: Showcase;
+  readonly hero: Hero;
+  readonly highlighted: RelatedResourcesBlock;
+  readonly productPreview: ProductOverviewPreview;
+  readonly comingSoon: Showcase;
 };
 
 /** The entry point to retrieve homepage */
 export type HomepageCollector = {
-  getPage: () => TE.TaskEither<Error, Homepage>;
+  readonly getPage: () => TE.TaskEither<Error, Homepage>;
 };
