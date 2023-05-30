@@ -1,13 +1,12 @@
 name: "CI"
 
 on:
-  push:
-    pull_request:
-      branches: '**'
-      # Run only if there are at least one change matching the following paths
-      paths:
-        - '.infrastructure/main/**'
-        - '.github/workflows/*.yml'
+  pull_request:
+    branches: '**'
+    # Run only if there are at least one change matching the following paths
+    paths:
+      - '.infrastructure/main/**'
+      - '.github/workflows/*.yml'
 
 defaults:
   run:
