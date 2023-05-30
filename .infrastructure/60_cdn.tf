@@ -33,8 +33,8 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
 resource "aws_cloudfront_distribution" "website" {
 
   origin {
-    domain_name = module.website_bucket.regional_domain_name
-    origin_id   = module.website_bucket.name
+    domain_name = aws_s3_bucket.website.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.website.bucket
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "website" {
   comment             = "CloudFront distribution for the static website."
   default_root_object = "index.html"
 
-  aliases = var.enable_cdn_https && var.public_dns_zones != [] ? [format("www.%s", keys(var.public_dns_zones)[0], )] : []
+  aliases = []
 
   custom_error_response {
     error_code         = 404
@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "website" {
     # HTTPS requests we permit the distribution to serve
     allowed_methods            = ["GET", "HEAD", "OPTIONS", ]
     cached_methods             = ["GET", "HEAD"]
-    target_origin_id           = module.website_bucket.name
+    target_origin_id           = aws_s3_bucket.website.bucket
     response_headers_policy_id = aws_cloudfront_response_headers_policy.websites.id
 
     forwarded_values {
@@ -73,11 +73,6 @@ resource "aws_cloudfront_distribution" "website" {
     min_ttl                = 0     # min time for objects to live in the distribution cache
     default_ttl            = 3600  # default time for objects to live in the distribution cache
     max_ttl                = 86400 # max time for objects to live in the distribution cache
-
-    function_association {
-      event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.rewrite_uri.arn
-    }
 
   }
   restrictions {
