@@ -1,44 +1,74 @@
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> <terraform latest version eg: 1.1.0> |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> <terraform aws plugin version eg: 4.0.0> |
+The following tools are required to setup and manage a new environment. 
 
-## Providers
+1. [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed.
+2. [tfenv](https://github.com/tfutils/tfenv) to mange terraform versions.
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> <terraform aws plugin version eg: 4.0.0> |
+## How setup a new environment
 
-## Modules
+To create a new environment you need to make a first `apply` manually. This is why you have to disable the backend that keep a shared state between executions. Comment the `backend "s3" {}` line from `00-main.tf` file:
 
-No modules.
+``` sh
+terraform {
+  required_version = "1.2.8"
 
-## Resources
+  # v------- this line!
+  # backend "s3" {}
 
-| Name | Type |
-|------|------|
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.67.0"
+    }
+  }
+}
+```
 
-## Inputs
+Then execute the command that initialize the env, and finally apply the resources.
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | App name. | `string` | n/a | yes |
-| <a name="input_public_dns_zones"></a> [public\_dns\_zones](#input\_public\_dns\_zones) | Route53 Hosted Zone | `map(any)` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_azs"></a> [azs](#input\_azs) | Availability zones | `list(string)` | <pre>[<br>  "eu-south-1a",<br>  "eu-south-1b",<br>  "eu-south-1c"<br>]</pre> | no |
-| <a name="input_dns_record_ttl"></a> [dns\_record\_ttl](#input\_dns\_record\_ttl) | Dns record ttl (in sec) | `number` | `86400` | no |
-| <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Enable/Create nat gateway | `bool` | `false` | no |
-| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | Evnironment short. | `string` | `"d"` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | `"dev"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
-| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | VPC cidr. | `string` | `"10.0.0.0/16"` | no |
-| <a name="input_vpc_internal_subnets_cidr"></a> [vpc\_internal\_subnets\_cidr](#input\_vpc\_internal\_subnets\_cidr) | Internal subnets list of cidr. Mainly for private endpoints | `list(string)` | <pre>[<br>  "10.0.201.0/24",<br>  "10.0.202.0/24",<br>  "10.0.203.0/24"<br>]</pre> | no |
-| <a name="input_vpc_private_subnets_cidr"></a> [vpc\_private\_subnets\_cidr](#input\_vpc\_private\_subnets\_cidr) | Private subnets list of cidr. | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
-| <a name="input_vpc_public_subnets_cidr"></a> [vpc\_public\_subnets\_cidr](#input\_vpc\_public\_subnets\_cidr) | Private subnets list of cidr. | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |
+```bash
+# init the resources for the new dev environment
+cd src/main
 
-## Outputs
+# Init the new env
+./terraform.sh init dev
 
-No outputs.
+# Apply the changes
+./terraform.sh apply dev
+```
+
+Among other things the previous steps creates the following resources:
+* An S3 bucket to store the terraform state.
+* A DynamoDB table to manage terraform locks.
+* The Github OpenId connection
+
+These resources are needed to keep the locks and state of terraform and to allow github workflows to access to them.
+
+Finally remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
+
+``` sh
+terraform {
+  required_version = "1.2.8"
+
+  # v------- this line!
+  backend "s3" {}
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.67.0"
+    }
+  }
+}
+```
+
+And update the `env/<env_name>/backend.tfvars` file adding the information required to the backend, you can find the bucket and dynamodb_table as output of the previous apply command. The following is just an example:
+
+``` sh
+bucket         = "terraform-backend-20220513123912057800000001"
+key            = "dev/main/tfstate"
+region         = "eu-south-1"
+dynamodb_table = "terraform-lock"
+```
+

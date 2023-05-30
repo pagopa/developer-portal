@@ -4,23 +4,14 @@ variable "aws_region" {
   default     = "eu-south-1"
 }
 
-variable "environment" {
-  type        = string
-  description = "Environment. Possible values are: Dev, Uat, Prod"
-  default     = "Uat"
-}
-
 variable "github_repository" {
   type        = string
-  description = "This github repository"
-  default     = "pagopa/developer-portal"
+  description = "The repository where the IaC workflows will run"
 }
-
 
 variable "tags" {
   type = map(any)
   default = {
-    "CreatedBy" : "Terraform",
-    "Environment" : "Uat"
+    "CreatedBy" : "Terraform"
   }
 }

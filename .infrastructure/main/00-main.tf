@@ -19,7 +19,7 @@ provider "aws" {
 }
 
 locals {
-  project = format("%s-%s", var.app_name, var.env_short)
+  project = format("%s-%s", substr(var.environment, 0, 1), var.app_name)
 }
 
 data "aws_caller_identity" "current" {}

@@ -1,4 +1,3 @@
-env_short   = "d"
 environment = "dev"
 
 
