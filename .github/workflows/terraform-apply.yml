@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.infrastructure/main/**'
+      - '.infrastructure/**'
       - '.github/workflows/*.yml'
   workflow_dispatch:
     inputs:
@@ -55,7 +55,7 @@ jobs:
         uses: ./.github/workflows/apply
         with:
           env: ${{ inputs.environment }}
-          working-directory: src/main
+          working-directory: .infrastructure
 
   merge-trigger:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}

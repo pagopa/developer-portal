@@ -5,13 +5,13 @@ on:
     branches: '**'
     # Run only if there are at least one change matching the following paths
     paths:
-      - '.infrastructure/main/**'
+      - '.infrastructure/**'
       - '.github/workflows/*.yml'
 
 defaults:
   run:
     shell: bash
-    working-directory: .infrastructure/main
+    working-directory: .infrastructure
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -41,7 +41,7 @@ jobs:
       - name: Read terraform version 
         id: read-version
         run: |
-          echo "TERRAFORM_VERSION=`cat ../.terraform-version`" >> $GITHUB_ENV
+          echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
