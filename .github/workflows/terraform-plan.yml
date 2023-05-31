@@ -5,7 +5,7 @@ on:
     branches: '**'
     # Run only if there are at least one change matching the following paths
     paths:
-      - '.infrastructure/main/**'
+      - '.infrastructure/**'
       - '.github/workflows/*.yml'
 
 defaults:
