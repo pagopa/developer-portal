@@ -1,6 +1,11 @@
-# terraform state file setup
 
-# create an S3 bucket to store the state file in
+data "aws_caller_identity" "current" {}
+
+###############################################################################
+#                       Define Terraform State Resources                      #
+###############################################################################
+
+# Define S3 bucket to store the terraform state file ##########################
 resource "aws_s3_bucket" "terraform_states" {
   bucket_prefix = "terraform-backend-"
 
@@ -42,12 +47,15 @@ resource "aws_s3_bucket_versioning" "terraform_states" {
   }
 }
 
-# create a DynamoDB table for locking the state file
+###############################################################################
+#                       Define Terraform Lock Resources                       #
+###############################################################################
+
+## Define DynamoDB table where store the lock file ############################
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   name           = "terraform-lock"
   hash_key       = "LockID"
-  read_capacity  = 4
-  write_capacity = 4
+  billing_mode    = "PAY_PER_REQUEST"
 
   attribute {
     name = "LockID"
@@ -56,9 +64,14 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
 
   tags = merge(var.tags, {
     name = "DynamoDB Terraform State Lock Table",
+    Scope = "tflock"
   })
 
 }
+
+###############################################################################
+#          Define resources that allow GitHub to apply infra changes          #
+###############################################################################
 
 data "aws_iam_policy" "admin_access" {
   name = "AdministratorAccess"

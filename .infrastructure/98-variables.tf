@@ -6,7 +6,6 @@ variable "aws_region" {
 
 variable "environment" {
   type        = string
-  default     = "dev"
   description = "Environment"
 }
 
@@ -18,7 +17,6 @@ variable "github_repository" {
 variable "app_name" {
   type        = string
   description = "App name."
-  default     = "devportal"
 }
 
 variable "tags" {

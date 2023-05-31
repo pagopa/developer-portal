@@ -22,4 +22,9 @@ locals {
   project = format("%s-%s", substr(var.environment, 0, 1), var.app_name)
 }
 
-data "aws_caller_identity" "current" {}
+# Init IaC resources ##########################################################
+module "identity" {
+  source            = "./identity"
+  github_repository = var.github_repository
+  tags              = var.tags
+}
