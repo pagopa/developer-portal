@@ -1,24 +1,6 @@
-terraform {
-  required_version = "1.2.8"
-
-  # TODO Uncomment once the backend S3 bucket is created and upload the state tate file.
-  #backend "s3" {}
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.67.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
 # terraform state file setup
-# create an S3 bucket to store the state file in
 
+# create an S3 bucket to store the state file in
 resource "aws_s3_bucket" "terraform_states" {
   bucket_prefix = "terraform-backend-"
 
@@ -27,7 +9,8 @@ resource "aws_s3_bucket" "terraform_states" {
   }
 
   tags = merge(var.tags, {
-    name = "S3 Remote Terraform State Store"
+    name = "S3 Remote Terraform State Store",
+    Scope = "tfstate"
   })
 }
 
@@ -72,7 +55,7 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   }
 
   tags = merge(var.tags, {
-    name = "DynamoDB Terraform State Lock Table"
+    name = "DynamoDB Terraform State Lock Table",
   })
 
 }
@@ -80,8 +63,6 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
 data "aws_iam_policy" "admin_access" {
   name = "AdministratorAccess"
 }
-
-data "aws_caller_identity" "current" {}
 
 # github openid identity provider.
 resource "aws_iam_openid_connect_provider" "github" {

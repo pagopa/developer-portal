@@ -29,9 +29,9 @@ Then execute the command that initialize the env, and finally apply the resource
 
 ```bash
 # init the resources for the new dev environment
-cd src/main
+cd .infrastructure
 
-# Init the new env
+# Init terraform
 ./terraform.sh init dev
 
 # Apply the changes
@@ -72,3 +72,14 @@ region         = "eu-south-1"
 dynamodb_table = "terraform-lock"
 ```
 
+
+
+
+``` sh
+terraform init \
+    -input=false \
+    -backend-config="bucket=state.terraform.$TF_VAR_bucket_extension" \
+    -backend-config="key=$TF_VAR_resourcetier/$namespace/terraform.tfstate" \
+    -backend-config="region=$AWS_DEFAULT_REGION" \
+    -backend-config="dynamodb_table=locks.state.terraform.$TF_VAR_bucket_extension"
+```
