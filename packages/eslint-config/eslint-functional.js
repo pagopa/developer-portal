@@ -26,15 +26,16 @@ module.exports = {
   },
   overrides: [
     {
+      // Exclude also react components, allowing us to use setState()
       files: ['**/*.tsx'],
       rules: {
         'functional/prefer-readonly-type': 'off',
+        'functional/no-expression-statements': 'off',
       },
     },
     {
       // Exclude tests from this rule, allowing us to use describe() and it()
-      // Exclude also react components, allowing us to use setState()
-      files: ['**/__tests__/*.ts', '**/*.tsx'],
+      files: ['**/__tests__/*.ts'],
       rules: {
         'functional/no-expression-statements': 'off',
       },
