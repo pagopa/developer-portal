@@ -1,4 +1,4 @@
-name: "CI"
+name: "Infrastructure checks"
 
 on:
   pull_request:

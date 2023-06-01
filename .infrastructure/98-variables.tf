@@ -14,11 +14,6 @@ variable "github_repository" {
   description = "The repository where the IaC workflows will run"
 }
 
-variable "app_name" {
-  type        = string
-  description = "App name."
-}
-
 variable "tags" {
   type = map(any)
   default = {

@@ -1,6 +1,5 @@
 aws_region  = "eu-south-1"
 environment = "dev"
-app_name = "devportal"
 github_repository = "pagopa/developer-portal"
 
 tags = {
@@ -8,5 +7,5 @@ tags = {
   Environment = "dev"
   Owner       = "Devportal"
   Source      = "https://github.com/pagopa/developer-portal"
-  CostCenter  = "BD100 - STRATEGIC INNOVATION"
+  CostCenter  = "BD110 - PORTALS & TOOLS"
 }

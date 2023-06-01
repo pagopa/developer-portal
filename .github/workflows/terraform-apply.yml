@@ -1,4 +1,4 @@
-name: "CD"
+name: "Infrastructure deploy"
 
 on:
   push:
@@ -25,8 +25,7 @@ on:
         default: dev
         options:
         - dev
-        - uat
-
+        - prod
 
 jobs:
   manual-trigger:
@@ -58,33 +57,33 @@ jobs:
           working-directory: .infrastructure
 
   merge-trigger:
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      name: "terraform-apply (push)"
-      strategy:
-        max-parallel: 1
-        matrix:
-          environment: [dev, uat, prod_w]
-      runs-on: ubuntu-latest
-      continue-on-error: false
-      environment: ${{ matrix.environment }}
-      permissions:
-        id-token: write   # This is required for requesting the JWT
-        contents: read    # This is required for actions/checkout
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    name: "terraform-apply (push)"
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [dev]
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: ${{ matrix.environment }}
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: Configure AWS Credentials
-          env:
-            AWS_REGION: eu-south-1
-          uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
-          with:
-            role-to-assume: ${{ secrets.IAM_ROLE }}
-            aws-region: ${{ env.AWS_REGION }}
-        
-        - name: Apply
-          uses: ./.github/workflows/apply
-          with:
-            env: ${{ matrix.environment }}
-            working-directory: src/main
+      - name: Configure AWS Credentials
+        env:
+          AWS_REGION: eu-south-1
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Apply
+        uses: ./.github/workflows/apply
+        with:
+          env: ${{ matrix.environment }}
+          working-directory: src/main

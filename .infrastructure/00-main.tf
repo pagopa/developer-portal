@@ -18,10 +18,6 @@ provider "aws" {
   }
 }
 
-locals {
-  project = format("%s-%s", substr(var.environment, 0, 1), var.app_name)
-}
-
 # Init IaC resources ##########################################################
 module "identity" {
   source            = "./identity"
