@@ -13,7 +13,7 @@ if [ -z "$action" ]; then
 fi
 
 if [ -z "$env" ]; then
-  echo "env should be: dev, uat or prod."
+  echo "env should be: dev or prod."
   exit 0
 fi
 
