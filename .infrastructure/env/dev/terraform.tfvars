@@ -9,3 +9,11 @@ tags = {
   Source      = "https://github.com/pagopa/developer-portal"
   CostCenter  = "BD110 - PORTALS & TOOLS"
 }
+
+cdn_custom_headers = [
+  {
+    header   = "X-Robots-Tag"
+    override = true
+    value    = "noindex"
+  }
+]

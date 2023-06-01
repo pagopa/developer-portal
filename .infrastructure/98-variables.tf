@@ -20,3 +20,14 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+
+variable "cdn_custom_headers" {
+  type = list(object(
+    {
+      header   = string
+      override = bool
+      value    = string
+    }
+  ))
+  default = []
+}
