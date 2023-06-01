@@ -1,10 +1,14 @@
 export type ProductGuideNavItem = {
-  path: string;
-  name: {
-    nav: string;
-    breadcrumb: string;
+  readonly path: string;
+  readonly name: {
+    readonly nav: string;
+    readonly breadcrumb: string;
   };
-} & ({ kind: 'group' } | { kind: 'page' } | { kind: 'link'; href: string });
+} & (
+  | { readonly kind: 'group' }
+  | { readonly kind: 'page' }
+  | { readonly kind: 'link'; readonly href: string }
+);
 
 export type ProductGuideNav = ReadonlyArray<ProductGuideNavItem>;
 

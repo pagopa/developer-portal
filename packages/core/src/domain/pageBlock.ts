@@ -1,78 +1,78 @@
 import { Image } from './Image';
 
 export type HeroBlock = {
-  type: 'hero';
-  title: string;
-  description: string;
+  readonly type: 'hero';
+  readonly title: string;
+  readonly description: string;
   // change to image
-  cover: string;
+  readonly cover: string;
 };
 
 export type HeroInfoBlock = {
-  type: 'hero-info';
-  title: string;
-  description: string;
+  readonly type: 'hero-info';
+  readonly title: string;
+  readonly description: string;
 };
 
 type QuickStartPreviewBlockStep = {
-  title: string;
-  description: string;
+  readonly title: string;
+  readonly description: string;
 };
 
 export type QuickStartPreviewBlock = {
-  type: 'quickstart-preview';
-  title: string;
-  description: string;
-  steps: ReadonlyArray<QuickStartPreviewBlockStep>;
-  link: string;
+  readonly type: 'quickstart-preview';
+  readonly title: string;
+  readonly description: string;
+  readonly steps: ReadonlyArray<QuickStartPreviewBlockStep>;
+  readonly link: string;
 };
 
 export type QuickStartElement =
   | {
-      type: 'paragraph' | 'inline-code';
-      text: string;
+      readonly type: 'paragraph' | 'inline-code';
+      readonly text: string;
     }
   | {
-      type: 'code-block';
-      text: string;
-      title: string;
+      readonly type: 'code-block';
+      readonly text: string;
+      readonly title: string;
     };
 
 type QuickStartField = {
-  description: string;
-  value: string;
+  readonly description: string;
+  readonly value: string;
 };
 
 export type QuickStartExample = {
-  title: string;
-  fields: ReadonlyArray<QuickStartField>;
+  readonly title: string;
+  readonly fields: ReadonlyArray<QuickStartField>;
   // TODO enforce a Json type
-  request: {
-    title: string;
-    body: string;
+  readonly request: {
+    readonly title: string;
+    readonly body: string;
   };
 };
 
 export type QuickStartStep = {
-  title: string;
-  description: ReadonlyArray<QuickStartElement>;
-  example?: QuickStartExample;
+  readonly title: string;
+  readonly description: ReadonlyArray<QuickStartElement>;
+  readonly example?: QuickStartExample;
 };
 
 export type QuickStartBlock = {
-  type: 'quickstart';
-  steps: ReadonlyArray<QuickStartStep>;
+  readonly type: 'quickstart';
+  readonly steps: ReadonlyArray<QuickStartStep>;
 };
 
 export type TutorialPreviewBlock = {
-  type: 'tutorial-preview';
-  title: string;
-  preview: {
-    title: string;
-    description: string;
-    link: string;
-    image: Image;
-    date: string;
+  readonly type: 'tutorial-preview';
+  readonly title: string;
+  readonly preview: {
+    readonly title: string;
+    readonly description: string;
+    readonly link: string;
+    readonly image: Image;
+    readonly date: string;
   };
 };
 
@@ -84,38 +84,38 @@ export type ResourceType =
   | 'guide';
 
 type RelatedResource = {
-  type: ResourceType;
-  title: string;
-  description: string;
-  link: string;
+  readonly type: ResourceType;
+  readonly title: string;
+  readonly description: string;
+  readonly link: string;
 };
 
 export type RelatedResourcesBlock = {
-  type: 'related-resources';
-  title: string;
-  references: ReadonlyArray<RelatedResource>;
+  readonly type: 'related-resources';
+  readonly title: string;
+  readonly references: ReadonlyArray<RelatedResource>;
 };
 
 type GuideCategory = {
-  id: string;
-  title: string;
+  readonly id: string;
+  readonly title: string;
 };
 
 export type GuidePreviewBlock = {
-  type: 'guide-preview';
-  title: string;
-  preview: {
-    title: string;
-    description: ReadonlyArray<string>;
-    link: string;
-    image: Image;
+  readonly type: 'guide-preview';
+  readonly title: string;
+  readonly preview: {
+    readonly title: string;
+    readonly description: ReadonlyArray<string>;
+    readonly link: string;
+    readonly image: Image;
   };
 };
 
 export type GuidesCollectionBlock = {
-  type: 'guide-collection';
-  category: GuideCategory;
-  guides: ReadonlyArray<GuidePreviewBlock>;
+  readonly type: 'guide-collection';
+  readonly category: GuideCategory;
+  readonly guides: ReadonlyArray<GuidePreviewBlock>;
 };
 
 export type PageBlock =

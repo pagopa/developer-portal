@@ -17,7 +17,7 @@ import { NavCollector } from 'core/domain/navigator';
 import { makeNavCollector } from 'static-adapters/adapters/static/makeNavCollector';
 
 export type NextConfig = {
-  gitbook: GitBookConfig;
+  readonly gitbook: GitBookConfig;
 };
 
 const EnvCodec = t.type({
@@ -49,11 +49,11 @@ export const makeNextConfig = (
 
 /** Contains everything required to run the next application */
 export type NextEnv = {
-  navCollector: NavCollector;
-  productGuidePageCollector: ProductGuidePageCollector;
-  productTutorialPageCollector: ProductTutorialPageCollector;
-  productPageCollector: ProductPageCollector;
-  homepageCollector: HomepageCollector;
+  readonly navCollector: NavCollector;
+  readonly productGuidePageCollector: ProductGuidePageCollector;
+  readonly productTutorialPageCollector: ProductTutorialPageCollector;
+  readonly productPageCollector: ProductPageCollector;
+  readonly homepageCollector: HomepageCollector;
 };
 
 export const makeNextEnv = (
