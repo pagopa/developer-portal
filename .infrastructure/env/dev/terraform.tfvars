@@ -7,7 +7,7 @@ tags = {
   Environment = "dev"
   Owner       = "Devportal"
   Source      = "https://github.com/pagopa/developer-portal"
-  CostCenter  = "BD110 - PORTALS & TOOLS"
+  CostCenter  = "BD110 - PORTALS and TOOLS"
 }
 
 cdn_custom_headers = [
