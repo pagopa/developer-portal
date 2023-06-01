@@ -4,7 +4,7 @@ resource "random_integer" "website_bucket_random_integer" {
 }
 
 locals {
-  bucket_name = join("-", ["website_bucket", random_integer.website_bucket_random_integer.result])
+  bucket_name = join("-", ["website-bucket", random_integer.website_bucket_random_integer.result])
 }
 
 resource "aws_s3_bucket" "website" {
