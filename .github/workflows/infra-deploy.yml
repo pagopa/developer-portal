@@ -1,12 +1,25 @@
-name: "Infrastructure checks"
+name: "Infra CD"
 
 on:
-  pull_request:
-    branches: '**'
-    # Run only if there are at least one change matching the following paths
-    paths:
-      - '.infrastructure/**'
-      - '.github/workflows/*.yml'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning' 
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+        - dev
 
 defaults:
   run:
@@ -18,17 +31,15 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 jobs:
-  terraform:
-    strategy:
-      matrix:
-        environment: [dev]
-    name: "terraform-plan"
+  deploy:
+    name: Terraform apply (manual)
     runs-on: ubuntu-latest
-    environment: ${{ matrix.environment }}
-     
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
 
       - name: Configure AWS Credentials
         env:
@@ -37,9 +48,8 @@ jobs:
         with:
           role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
-      
-      - name: Read terraform version 
-        id: read-version
+
+      - name: Set terraform version
         run: |
           echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
 
@@ -49,15 +59,12 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
       - name: Terraform Format
-        id: fmt
         run: terraform fmt -check
 
       - name: Terraform Init
-        id: init
         run: |
           ./terraform.sh init ${{ matrix.environment }}
 
-      - name: Terraform Plan
-        id: plan
+      - name: Terraform Apply
         run: |
-          ./terraform.sh plan ${{ matrix.environment }}
+          ./terraform.sh apply ${{ matrix.environment }} -auto-approve
