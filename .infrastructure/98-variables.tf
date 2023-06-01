@@ -26,19 +26,6 @@ variable "tags" {
   }
 }
 
-# ## Public Dns zones
-# variable "public_dns_zones" {
-#   type        = map(any)
-#   description = "Route53 Hosted Zone"
-#   default     = null
-# }
-
-# variable "dns_record_ttl" {
-#   type        = number
-#   description = "Dns record ttl (in sec)"
-#   default     = 86400 # 24 hours
-# }
-
 variable "cdn_custom_headers" {
   type = list(object(
     {
