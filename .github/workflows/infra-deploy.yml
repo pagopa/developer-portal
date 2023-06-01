@@ -63,8 +63,8 @@ jobs:
 
       - name: Terraform Init
         run: |
-          ./terraform.sh init ${{ matrix.environment }}
+          ./terraform.sh init ${{ inputs.environment }}
 
       - name: Terraform Apply
         run: |
-          ./terraform.sh apply ${{ matrix.environment }} -auto-approve
+          ./terraform.sh apply ${{ inputs.environment }} -auto-approve
