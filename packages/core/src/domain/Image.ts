@@ -1,4 +1,4 @@
 export type Image = {
-  src: string;
-  alt: string;
+  readonly src: string;
+  readonly alt: string;
 };

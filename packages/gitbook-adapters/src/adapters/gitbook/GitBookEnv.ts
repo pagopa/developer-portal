@@ -13,10 +13,10 @@ import { Product } from 'core/domain/productPage';
  * product which belongs to
  */
 export type GitBookConfig = {
-  apiKey: string;
-  guidesToSync: ReadonlyArray<{
-    product: Product;
-    collectionId: string;
+  readonly apiKey: string;
+  readonly guidesToSync: ReadonlyArray<{
+    readonly product: Product;
+    readonly collectionId: string;
   }>;
 };
 
@@ -27,8 +27,8 @@ const makeGitBookClient = (apiKey: string) => {
 };
 
 export type GitBookEnv = {
-  client: GitBookAPI;
-  allGitBookProductGuides: ReadonlyArray<GitBookProductGuide>;
+  readonly client: GitBookAPI;
+  readonly allGitBookProductGuides: ReadonlyArray<GitBookProductGuide>;
 };
 
 /** Provide a way to create an instance of GitBookEnv */
