@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  developer-portal:
+    stdin_open: true
+    build:
+      context: ../
+      dockerfile: docker/developer-portal-development.Dockerfile
+    volumes:
+    - ../:/developer-portal/
+    ports:
+    - '3000:3000'
+    - '6006:6006'
+    environment:
+    - GITBOOK_API_KEY=xxx
