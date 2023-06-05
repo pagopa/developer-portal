@@ -385,3 +385,5 @@ terraform.rc
 # End of https://www.toptal.com/developers/gitignore/api/node,emacs,macos,turbo,nextjs,storybookjs,intellij+all,terraform
 
 .idea/
+
+.prettierrc
