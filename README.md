@@ -17,10 +17,31 @@ Before you start, make sure you have complete the following steps:
 
 ### Run the developer portal locally
 
+#### Using NPM
+
 Run the following command from the root folder.
 
 ``` bash
 npm run dev
+```
+
+#### Using docker
+
+Run the following command from the root folder.
+
+Build image using:
+``` bash
+docker compose -f docker/developer-portal-development.compose.yml build
+```
+
+Start container:
+``` bash
+docker compose -f docker/developer-portal-development.compose.yml up
+```
+
+(optional) Access to development container:
+``` bash
+docker compose -f developer-portal-development.compose.yml run developer-portal bash
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
@@ -71,5 +92,3 @@ Add to the package `<package>` the dependency `<dependency>` as `devDependencies
 ``` bash
 npm -w <package> install <dependency> -D
 ```
-
-
