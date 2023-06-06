@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to S3 Bucket
         env:
           S3_BUCKET_NAME: 'website-bucket-6479' # FIXME
-        run: aws s3 sync ./apps/nextjs-website/out s3://${{ env.S3_BUCKET_NAME }}
+        run: aws s3 sync ./apps/nextjs-website/out s3://${{ env.S3_BUCKET_NAME }} --delete
 
       - name: Create AWS Cloudfront Invalidation
         env:
