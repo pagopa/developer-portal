@@ -22,5 +22,4 @@ provider "aws" {
 module "identity" {
   source            = "./identity"
   github_repository = var.github_repository
-  tags              = var.tags
 }

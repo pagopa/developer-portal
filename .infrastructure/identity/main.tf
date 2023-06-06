@@ -13,10 +13,10 @@ resource "aws_s3_bucket" "terraform_states" {
     prevent_destroy = true
   }
 
-  tags = merge(var.tags, {
+  tags = {
     name = "S3 Remote Terraform State Store",
     Scope = "tfstate"
-  })
+  }
 }
 
 resource "aws_s3_bucket_ownership_controls" "terraform_states" {
@@ -62,10 +62,10 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
     type = "S"
   }
 
-  tags = merge(var.tags, {
+  tags = {
     name = "DynamoDB Terraform State Lock Table",
     Scope = "tflock"
-  })
+  }
 
 }
 
