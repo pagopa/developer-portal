@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy:
-    strategy:
+    strategy: # FIXME
       matrix:
         environment: [ dev ]
     name: Deploy website to S3
@@ -33,10 +33,10 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Build with Next.js
+      - name: Build static website
         run: npm run build -w nextjs-website
 
-      - name: Static HTML export with Next.js
+      - name: Export static website
         run: npm run export -w nextjs-website
 
       - name: Configure AWS Credentials
