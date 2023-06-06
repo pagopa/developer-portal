@@ -1,0 +1,50 @@
+name: Deploy Static Website to S3
+
+on:
+  pull_request:
+    branches: '**'
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        environment: [ dev ]
+    name: Deploy website to S3
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+
+    steps:
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Setup node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+        with:
+          node-version-file: '.node-version'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
+      - name: Build with Next.js
+        run: npm run build -w nextjs-website
+
+      - name: Static HTML export with Next.js
+        run: npm run export -w nextjs-website
+
+      - name: Configure AWS Credentials
+        env:
+          AWS_REGION: eu-south-1
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }} # FIXME Maybe use a different role!
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to S3 Bucket
+        env:
+          S3_BUCKET_NAME: 'website-bucket-6479' # FIXME
+        run: aws s3 sync ./out s3://${{ env.S3_BUCKET_NAME }}
+
+      # TODO Add invalidazione cache cloudfront
