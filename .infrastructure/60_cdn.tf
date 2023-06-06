@@ -29,6 +29,14 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
   }
 }
 
+## Function to manipulate the request
+resource "aws_cloudfront_function" "website_viewer_request_handler" {
+  name    = "website-viewer-request-handler"
+  runtime = "cloudfront-js-1.0"
+  publish = true
+  code    = file("${path.module}/../apps/cloudfront-functions/dist/viewer-request-handler.js")
+}
+
 ## Static website CDN
 resource "aws_cloudfront_distribution" "website" {
 
@@ -74,6 +82,10 @@ resource "aws_cloudfront_distribution" "website" {
     default_ttl            = 3600  # default time for objects to live in the distribution cache
     max_ttl                = 86400 # max time for objects to live in the distribution cache
 
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
+    }
   }
   restrictions {
     geo_restriction {
