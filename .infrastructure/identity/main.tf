@@ -127,7 +127,7 @@ resource "aws_iam_role_policy_attachment" "githubiac" {
 #                      Define IAM Role to use on deploy                       #
 ###############################################################################
 data "aws_iam_policy" "deploy_access" {
-  name = "DeployAccess"
+  name = "AmazonS3FullAccess"
 }
 
 resource "aws_iam_role" "githubaction_deploy" {
