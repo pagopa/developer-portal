@@ -12,13 +12,13 @@ on:
           - info
           - warning
           - debug
-    environment:
-      description: 'The environment used as target'
-      type: choice
-      required: true
-      default: dev
-      options:
-        - dev
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
   pull_request:
     types:
       - closed # Trigger when the PR is closed
