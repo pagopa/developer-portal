@@ -71,5 +71,3 @@ Add to the package `<package>` the dependency `<dependency>` as `devDependencies
 ``` bash
 npm -w <package> install <dependency> -D
 ```
-
-
