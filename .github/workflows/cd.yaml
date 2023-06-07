@@ -1,9 +1,6 @@
 name: Deploy Website
 
 on:
-  pull_request:
-    types:
-      - closed # Trigger when the PR is closed
   workflow_dispatch:
     inputs:
       logLevel:
@@ -15,6 +12,16 @@ on:
           - info
           - warning
           - debug
+    environment:
+      description: 'The environment used as target'
+      type: choice
+      required: true
+      default: dev
+      options:
+        - dev
+  pull_request:
+    types:
+      - closed # Trigger when the PR is closed
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
