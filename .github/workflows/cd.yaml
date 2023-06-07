@@ -2,7 +2,19 @@ name: Deploy Website
 
 on:
   pull_request:
-    branches: '**'
+    types:
+      - closed # Trigger when the PR is closed
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
@@ -11,12 +23,15 @@ permissions:
 
 jobs:
   deploy:
-    strategy: # FIXME
+    strategy:
       matrix:
         environment: [ dev ]
     name: Deploy website to S3
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
+
+    # Only run if the PR is merged or if the workflow is manually triggered
+    if: ${{ github.event.pull_request.merged }} || ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
