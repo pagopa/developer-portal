@@ -24,13 +24,6 @@ const EnvCodec = t.type({
   GITBOOK_API_KEY: t.string,
 });
 
-const guidesToSync: NextConfig['gitbook']['guidesToSync'] = [
-  {
-    product: { name: 'App IO', slug: 'app-io' },
-    collectionId: 'jGL1aFISone0197CLeGA',
-  },
-];
-
 export const makeNextConfig = (
   env: Record<string, string | undefined>
 ): E.Either<Error, NextConfig> =>
@@ -41,7 +34,7 @@ export const makeNextConfig = (
       (envs) => ({
         gitbook: {
           apiKey: envs.GITBOOK_API_KEY,
-          guidesToSync,
+          guidesToSync: [],
         },
       })
     )
