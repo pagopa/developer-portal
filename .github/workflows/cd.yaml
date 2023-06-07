@@ -39,8 +39,6 @@ jobs:
         run: npm run build -w nextjs-website
 
       - name: Export static website
-        env:
-          GITBOOK_API_KEY: ${{ secrets.GITBOOK_API_KEY }}
         run: npm run export -w nextjs-website
 
       - name: Configure AWS Credentials
