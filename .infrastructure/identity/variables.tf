@@ -3,10 +3,3 @@ variable "github_repository" {
   description = "The repository where the IaC workflows will run"
   # e.g. username/repository
 }
-
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
