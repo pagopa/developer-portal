@@ -68,7 +68,7 @@ jobs:
           AWS_REGION: eu-south-1
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
         with:
-          role-to-assume: ${{ secrets.IAM_ROLE }} # FIXME Maybe use a different role!
+          role-to-assume: ${{ secrets.DEPLOY_IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy to S3 Bucket
