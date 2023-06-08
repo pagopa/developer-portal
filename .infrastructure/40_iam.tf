@@ -4,8 +4,8 @@ data "aws_caller_identity" "current" {}
 #                      Define IAM Role to use on deploy                       #
 ###############################################################################
 resource "aws_iam_role" "deploy_website" {
-  name        = "GitHubActionDeployToS3"
-  description = "Role to assume to deploy the website to S3"
+  name        = "GitHubActionDeployWebsite"
+  description = "Role to assume to deploy the website"
 
 
   assume_role_policy = jsonencode({
@@ -31,9 +31,9 @@ resource "aws_iam_role" "deploy_website" {
   })
 }
 
-resource "aws_iam_policy" "publish_to_s3" {
-  name        = "PublishWebsite"
-  description = "Policy to allow to publish the website to S3"
+resource "aws_iam_policy" "deploy_website" {
+  name        = "DeployWebsite"
+  description = "Policy to allow to deploy the website"
 
   policy = jsonencode({
     Version = "2012-10-17"
