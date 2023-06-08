@@ -1,29 +1,22 @@
+data "aws_caller_identity" "current" {}
+
 ###############################################################################
 #                      Define IAM Role to use on deploy                       #
 ###############################################################################
-data "aws_iam_policy" "deploy_access" {
-  name = "AmazonS3FullAccess"
-}
+resource "aws_iam_role" "deploy_website" {
+  name        = "GitHubActionDeployToS3"
+  description = "Role to assume to deploy the website to S3"
 
-resource "aws_iam_role" "githubaction_deploy" {
-  name        = "GitHubActionDeployRole"
-  description = "Role to assume to deploy the website"
 
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
-          "s3:ListBucket",
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject"
-        ],
-        "Resource": [
-          "arn:aws:s3:::*",
-          "arn:aws:s3:::*/*"
-        ],
+        Effect = "Allow",
+        Principal = {
+          "Federated" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {
           StringLike = {
             "token.actions.githubusercontent.com:sub" : "repo:${var.github_repository}:*"
@@ -38,7 +31,48 @@ resource "aws_iam_role" "githubaction_deploy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "githubaction_deploy" {
-  role       = aws_iam_role.githubaction_deploy.name
-  policy_arn = data.aws_iam_policy.deploy_access.arn
+resource "aws_iam_policy" "publish_to_s3" {
+  name        = "PublishWebsite"
+  description = "Policy to allow to publish the website to S3"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:PutObjectAcl",
+          "s3:DeleteObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          format("%s/*", aws_s3_bucket.website.arn)
+        ]
+      },
+      {
+        Action = [
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_s3_bucket.website.arn
+        ]
+      },
+      {
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_cloudfront_distribution.website.arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "deploy_website" {
+  role       = aws_iam_role.deploy_website.name
+  policy_arn = aws_iam_policy.publish_to_s3.arn
 }
