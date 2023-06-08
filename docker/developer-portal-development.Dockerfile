@@ -18,7 +18,7 @@ ENV PATH /developer-portal/node_modules/.bin:$PATH
 # Non root user
 ARG USER=node
 ENV USER $USER
-run addgroup -S sudo \
+RUN addgroup -S sudo \
   && adduser $USER sudo \
   && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/50-$USER \
   && chown -R $USER:$USER /developer-portal
