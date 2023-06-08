@@ -38,7 +38,7 @@ jobs:
     environment: ${{ matrix.environment }}
 
     # Only run if the PR is merged or if the workflow is manually triggered
-    if: ${{ github.event.pull_request.merged }} || ${{ github.event_name == 'workflow_dispatch' }}
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
