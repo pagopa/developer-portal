@@ -1,7 +1,6 @@
 // This code is executed in the CloudFront Functions JavaScript runtime. In this
 // context we prefer performance over immutability.
 // https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/writing-function-code.html#function-code-modify-request
-
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-expression-statements */
 
@@ -14,7 +13,7 @@ const handler = (
     const { request } = event;
     const uri = request.uri;
 
-    // Add the .html extention if missing
+    // Add the .html extension if missing
     if (!uri.endsWith('/') && !uri.includes('.')) {
       request.uri += '.html';
     }

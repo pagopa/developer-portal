@@ -1,6 +1,6 @@
 import rewire from 'rewire';
 
-// rewire doens't work with ts file. As workaround import the compiled js file
+// rewire doesn't work with ts file. As workaround import the compiled js file
 const rewired = rewire('../../dist/viewer-request-handler');
 const handler = rewired.__get__('handler');
 
