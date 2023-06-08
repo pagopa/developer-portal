@@ -74,5 +74,5 @@ resource "aws_iam_policy" "deploy_website" {
 
 resource "aws_iam_role_policy_attachment" "deploy_website" {
   role       = aws_iam_role.deploy_website.name
-  policy_arn = aws_iam_policy.publish_to_s3.arn
+  policy_arn = aws_iam_policy.deploy_website.arn
 }
