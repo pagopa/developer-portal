@@ -74,12 +74,12 @@ jobs:
         run: terraform fmt -check
 
       - name: Terraform Init
-        env:
-          # publish the cloudfront functions
-          TF_VAR_publish_cloudfront_functions: true
         run: |
           ./terraform.sh init ${{ inputs.environment }}
 
       - name: Terraform Apply
+        env:
+          # publish the cloudfront functions
+          TF_VAR_publish_cloudfront_functions: true
         run: |
           ./terraform.sh apply ${{ inputs.environment }} -auto-approve
