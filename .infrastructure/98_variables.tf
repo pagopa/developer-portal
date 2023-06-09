@@ -31,3 +31,16 @@ variable "cdn_custom_headers" {
   ))
   default = []
 }
+## Public Dns zones
+variable "public_dns_zones" {
+  type        = map(any)
+  description = "Route53 Hosted Zone"
+  default     = null
+}
+
+variable "enable_cdn_https" {
+  type        = bool
+  description = "Enable ApiGw https support: the TLS certificate must be issued and verified"
+  default     = true
+}
+
