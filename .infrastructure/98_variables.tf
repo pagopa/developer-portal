@@ -31,6 +31,13 @@ variable "cdn_custom_headers" {
   ))
   default = []
 }
+
+variable "publish_cloudfront_functions" {
+  type        = bool
+  description = "Defines if cloudfront functions should be published"
+  default     = false
+}
+
 ## Public Dns zones
 variable "public_dns_zones" {
   type        = map(any)
@@ -43,4 +50,3 @@ variable "enable_cdn_https" {
   description = "Enable ApiGw https support: the TLS certificate must be issued and verified"
   default     = true
 }
-
