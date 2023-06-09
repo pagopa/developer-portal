@@ -1,0 +1,78 @@
+name: Deploy Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+  pull_request:
+    types:
+      - closed # Trigger when the PR is closed
+
+# These permissions are needed to interact with GitHub's OIDC Token endpoint.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        environment: [ dev ]
+    name: Deploy website to S3
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+
+    # Only run if the PR is merged or if the workflow is manually triggered
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
+    steps:
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Setup node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+        with:
+          node-version-file: '.node-version'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
+      - name: Build static website
+        env:
+          GITBOOK_API_KEY: ${{ secrets.GITBOOK_API_KEY }}
+        run: npm run build -w nextjs-website
+
+      - name: Export static website
+        run: npm run export -w nextjs-website
+
+      - name: Configure AWS Credentials
+        env:
+          AWS_REGION: eu-south-1
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+        with:
+          role-to-assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to S3 Bucket
+        run: aws s3 sync ./apps/nextjs-website/out s3://${{ vars.S3_BUCKET_NAME }} --delete
+
+      - name: Create AWS Cloudfront Invalidation
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*" # At the moment we invalidate all the paths
