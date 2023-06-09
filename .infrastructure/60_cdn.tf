@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "website" {
   comment             = "CloudFront distribution for the static website."
   default_root_object = "index.html"
 
-  aliases = var.enable_cdn_https && var.public_dns_zones != [] ? [format("www.%s", keys(var.public_dns_zones)[0], )] : []
+  aliases = []
 
   custom_error_response {
     error_code         = 404
@@ -95,9 +95,8 @@ resource "aws_cloudfront_distribution" "website" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = var.enable_cdn_https ? false : true
-    acm_certificate_arn            = var.enable_cdn_https ? aws_acm_certificate.website.arn : null
-    ssl_support_method             = var.enable_cdn_https ? "sni-only" : null
+    cloudfront_default_certificate = true
+    acm_certificate_arn            = null
+    ssl_support_method             = null
   }
-
 }
