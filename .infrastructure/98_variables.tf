@@ -31,3 +31,9 @@ variable "cdn_custom_headers" {
   ))
   default = []
 }
+
+variable "publish_cloudfront_functions" {
+  type        = bool
+  description = "Defines if cloudfront functions should be published"
+  default     = false
+}
