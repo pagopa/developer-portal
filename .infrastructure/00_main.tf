@@ -23,7 +23,3 @@ module "identity" {
   source            = "./identity"
   github_repository = var.github_repository
 }
-
-module "dns" {
-  source = "./dns"
-}
