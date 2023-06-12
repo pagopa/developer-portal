@@ -39,8 +39,8 @@ variable "publish_cloudfront_functions" {
 }
 
 ## Public Dns zones
-variable "public_dns_zones" {
-  type        = map(any)
-  description = "Route53 Hosted Zone"
-  default     = null
+variable "dns_domain_name" {
+  description = "DNS domain for the Developer Portal product"
+  type        = string
+
 }

@@ -18,8 +18,4 @@ cdn_custom_headers = [
   }
 ]
 
-public_dns_zones = {
-  "dev.developer.pagopa.it" = {
-    comment = "Developer Portal Dev environment"
-  }
-}
+dns_domain_name = "dev.developer.pagopa.it"
