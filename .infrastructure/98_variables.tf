@@ -38,7 +38,6 @@ variable "publish_cloudfront_functions" {
   default     = false
 }
 
-## Public Dns zones
 variable "dns_domain_name" {
   description = "DNS domain for the Developer Portal product"
   type        = string
