@@ -47,6 +47,6 @@ variable "public_dns_zones" {
 
 variable "enable_cdn_https" {
   type        = bool
-  description = "Enable ApiGw https support: the TLS certificate must be issued and verified"
+  description = "Enable https support: the TLS certificate must be issued and verified"
   default     = true
 }
