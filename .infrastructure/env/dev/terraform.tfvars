@@ -18,7 +18,6 @@ cdn_custom_headers = [
   }
 ]
 
-enable_cdn_https = true
 public_dns_zones = {
   "dev.developer.pagopa.it" = {
     comment = "Developer Portal Dev environment"

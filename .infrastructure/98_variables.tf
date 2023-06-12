@@ -44,9 +44,3 @@ variable "public_dns_zones" {
   description = "Route53 Hosted Zone"
   default     = null
 }
-
-variable "enable_cdn_https" {
-  type        = bool
-  description = "Enable https support: the TLS certificate must be issued and verified"
-  default     = true
-}
