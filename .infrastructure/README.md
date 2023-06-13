@@ -7,6 +7,8 @@ The following tools are required to setup and manage a new environment.
 
 ## How setup a new environment
 
+Make sure you don't have a `*.tfstate` file within the `.infrastructure/.terraform` folder. If you have any, delete them.
+
 ### Step 1: Disable the backend
 
 Comment the `backend "s3" {}` line from `00-main.tf` file:
@@ -27,7 +29,7 @@ terraform {
 }
 ```
 
-### Step 1: Create IaC resources
+### Step 2: Create IaC resources
 
 The following steps require a valid aws session
 
@@ -36,6 +38,9 @@ cd .infrastructure
 
 # create an empty terraform vars file
 touch env/<env_name>/terraform.tfvars
+
+# install dependencies
+./terraform.sh init <env_name>
 
 # plan to see what is created for the environment <env_name>
 ./terraform.sh plan <env_name> -target module.identity
@@ -55,7 +60,7 @@ Copy the output provided by terraform, you need the following two outputs:
 * `terraform_backend_bucket_name`
 * `terraform_lock_dynamodb_table`
 
-### Step 2: Add the backend and upload the local state
+### Step 3: Add the backend and upload the local state
 
 Remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
 
@@ -91,6 +96,6 @@ And finally execute the following command that upload state to S3. Reply yes to 
  ./terraform.sh init <env_name>
 ```
 
-### Step 3: Add the IAM role as GitHub environment secret
+### Step 4: Add the IAM role as GitHub environment secret
 
 In order to allow github to manage the aws resources you have to add the `IAM_ROLE` environment secret filled with the `arn` of `GitHubActionIACRole` role. Find the `arn` of the role via management console. 
