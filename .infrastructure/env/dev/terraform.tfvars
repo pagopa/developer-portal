@@ -17,3 +17,5 @@ cdn_custom_headers = [
     value    = "noindex"
   }
 ]
+
+dns_domain_name = "dev.developer.pagopa.it"
