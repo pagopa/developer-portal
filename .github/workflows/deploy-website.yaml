@@ -19,9 +19,7 @@ on:
         default: dev
         options:
           - dev
-  pull_request:
-    types:
-      - closed # Trigger when the PR is closed
+          - prod
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
@@ -30,15 +28,9 @@ permissions:
 
 jobs:
   deploy:
-    strategy:
-      matrix:
-        environment: [ dev ]
     name: Deploy website to S3
     runs-on: ubuntu-latest
-    environment: ${{ matrix.environment }}
-
-    # Only run if the PR is merged or if the workflow is manually triggered
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
