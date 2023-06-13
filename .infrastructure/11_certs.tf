@@ -28,5 +28,5 @@ resource "aws_route53_record" "website" {
 }
 
 resource "aws_acm_certificate_validation" "website" {
-  certificate_arn         = aws_acm_certificate.website.arn
+  certificate_arn = aws_acm_certificate.website.arn
 }
