@@ -19,3 +19,4 @@ cdn_custom_headers = [
 ]
 
 dns_domain_name = "dev.developer.pagopa.it"
+enable_cdn_https = true

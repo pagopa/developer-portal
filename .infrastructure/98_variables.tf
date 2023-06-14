@@ -42,3 +42,9 @@ variable "dns_domain_name" {
   description = "DNS domain for the Developer Portal product"
   type        = string
 }
+
+variable "enable_cdn_https" {
+  type        = bool
+  description = "Enable CDN https support: the TLS certificate must be issued and verified"
+  default     = true
+}
