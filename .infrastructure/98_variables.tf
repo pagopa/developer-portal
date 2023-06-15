@@ -43,6 +43,12 @@ variable "dns_domain_name" {
   type        = string
 }
 
+variable "dns_delegate_records" {
+  type        = map(any)
+  description = "DNS delegate records"
+  default     = {}
+}
+
 variable "use_custom_certificate" {
   type        = bool
   description = "Enable CDN https support with a custom certificate instead using the default one"
