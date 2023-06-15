@@ -8,7 +8,7 @@ resource "aws_route53_record" "devportal_delegate" {
 
   allow_overwrite = true
   name            = each.key
-  ttl             = 172800
+  ttl             = 3600
   type            = "NS"
   zone_id         = aws_route53_zone.dev_portal.zone_id
 
