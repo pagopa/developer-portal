@@ -26,7 +26,3 @@ resource "aws_route53_record" "website" {
   type            = each.value.type
   zone_id         = aws_route53_zone.dev_portal.zone_id
 }
-
-resource "aws_acm_certificate_validation" "website" {
-  certificate_arn = aws_acm_certificate.website.arn
-}
