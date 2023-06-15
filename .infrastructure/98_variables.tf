@@ -44,9 +44,9 @@ variable "dns_domain_name" {
 }
 
 variable "dns_delegate_records" {
-  type = map(any)
+  type        = map(any)
   description = "DNS delegate records"
-  default = {}
+  default     = {}
 }
 
 variable "use_custom_certificate" {
