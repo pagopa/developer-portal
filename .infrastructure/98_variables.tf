@@ -43,8 +43,8 @@ variable "dns_domain_name" {
   type        = string
 }
 
-variable "enable_cdn_https" {
+variable "use_custom_certificate" {
   type        = bool
-  description = "Enable CDN https support: the TLS certificate must be issued and verified"
+  description = "Enable CDN https support with a custom certificate instead using the default one"
   default     = true
 }
