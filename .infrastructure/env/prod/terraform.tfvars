@@ -19,4 +19,14 @@ cdn_custom_headers = [
 ]
 
 dns_domain_name = "developer.pagopa.it"
+
+dns_delegate_records = {
+  dev = [
+    "ns-584.awsdns-09.net",
+    "ns-1109.awsdns-10.org",
+    "ns-135.awsdns-16.com",
+    "ns-1781.awsdns-30.co.uk",
+  ]
+}
+
 use_custom_certificate = true
