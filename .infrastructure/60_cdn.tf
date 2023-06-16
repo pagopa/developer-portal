@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "website" {
   comment             = "CloudFront distribution for the static website."
   default_root_object = "index.html"
 
-  aliases = var.use_custom_certificate && var.dns_domain_name != "" ? [format("www.%s", var.dns_domain_name)] : []
+  aliases = var.use_custom_certificate && var.dns_domain_name != "" ? [format("www.%s", var.dns_domain_name), var.dns_domain_name] : []
 
   custom_error_response {
     error_code         = 404
@@ -65,7 +65,7 @@ resource "aws_cloudfront_distribution" "website" {
 
   default_cache_behavior {
     # HTTPS requests we permit the distribution to serve
-    allowed_methods            = ["GET", "HEAD", "OPTIONS", ]
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]
     target_origin_id           = aws_s3_bucket.website.bucket
     response_headers_policy_id = aws_cloudfront_response_headers_policy.websites.id
