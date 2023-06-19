@@ -60,6 +60,18 @@ npm -w <workspace> run <command>
 
 #### Manage dependencies
 
+Install all the dependencies.
+
+``` bash
+npm install
+```
+
+In case of troubles with dependencies, try this:
+
+``` bash
+npm i --legacy-peer-deps
+```
+
 Add to the root the dependency `<dependency>`.
 
 ``` bash
