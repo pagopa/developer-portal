@@ -21,6 +21,13 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
   rules: {
+    "@typescript-eslint/array-type": [
+      "error",
+      {
+        default: "generic",
+        readonly: "generic",
+      },
+    ],
     "prettier/prettier": [
       "error", {
         // prettier options
