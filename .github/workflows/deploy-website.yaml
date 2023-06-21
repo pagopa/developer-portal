@@ -35,7 +35,7 @@ jobs:
 
   cd_deploy:
     name: Deploy to S3 - (dev)
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true # Trigger when the PR is merged
     runs-on: 'ubuntu-latest'
     environment: 'dev'
 
