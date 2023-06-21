@@ -33,7 +33,7 @@ permissions:
 
 jobs:
 
-  deploy_cd:
+  cd_deploy:
     name: Deploy to S3 - (dev)
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
