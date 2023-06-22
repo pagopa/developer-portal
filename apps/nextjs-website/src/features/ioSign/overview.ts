@@ -1,13 +1,10 @@
-import { PageOverview } from '@/pages/api/types/pageOverview';
-import { Path } from '@/pages/api/types/path';
+import { OverviewData } from '@/api/types/overviewData';
+import { ioSign } from '@/features/ioSign/ioSign';
+import { ioSignOverviewPath } from '@/features/ioSign/overviewPath';
 
-export const overviewPath: Path = {
-  name: 'IO Sign overview',
-  slug: 'overview',
-};
-
-export const ioSignOverview: PageOverview = {
-  ...overviewPath,
+export const ioSignOverview: OverviewData = {
+  ...ioSignOverviewPath,
+  product: ioSign,
   hero: {
     title: 'Raccogli i servizi del tuo ente in unico spazio',
     subtitle:
