@@ -1,4 +1,4 @@
-import { OverviewData } from '@/api/types/overviewData';
+import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/features/appIO/appIO';
 import { appIoOverviewPath } from '@/features/appIO/overviewPath';
 

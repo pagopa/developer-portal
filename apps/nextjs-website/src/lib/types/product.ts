@@ -1,4 +1,4 @@
-import { Path } from '@/api/types/path';
+import { Path } from '@/lib/types/path';
 
 export type Product = {
   readonly paths: readonly Path[];

@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { Product } from '@/api/types/product';
-import { getOverview, getOverviewPaths } from '@/api/api';
+import { Product } from '@/lib/types/product';
+import { getOverview, getOverviewPaths } from '@/lib/api';
 
 type Params = {
   productSlug: string;

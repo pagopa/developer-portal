@@ -1,4 +1,4 @@
-import { OverviewData } from '@/api/types/overviewData';
+import { OverviewData } from '@/lib/types/overviewData';
 import { ioSign } from '@/features/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/features/ioSign/overviewPath';
 

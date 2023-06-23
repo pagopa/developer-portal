@@ -1,4 +1,4 @@
-import { Product } from '@/api/types/product';
+import { Product } from '@/lib/types/product';
 import { ioSignOverviewPath } from '@/features/ioSign/overviewPath';
 
 export const ioSign: Product = {
