@@ -1,0 +1,61 @@
+name: deploy
+description: Deploy on AWS S3 Bucket
+
+inputs:
+  gitbook_api_key:
+    description: 'The API key to use to fetch content from GitBook'
+    required: true
+  iam_role:
+    description: 'The IAM Role to use to perform the deploy'
+    required: true
+  bucket:
+    description: "The AWS S3 Bucket's name selected as destination"
+    required: true
+  cloudfront_distribution_id:
+    description: 'The ID of the Cloudfront distribution to invalidate'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+    - name: Setup node
+      uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+      with:
+        node-version-file: '.node-version'
+        cache: 'npm'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Compile packages
+      shell: bash
+      run: npm run compile
+
+    - name: Build static website
+      env:
+        GITBOOK_API_KEY: ${{ inputs.gitbook_api_key }}
+      shell: bash
+      run: npm run build -w nextjs-website
+
+    - name: Export static website
+      shell: bash
+      run: npm run export -w nextjs-website
+
+    - name: Configure AWS Credentials
+      env:
+        AWS_REGION: eu-south-1
+      uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+      with:
+        role-to-assume: ${{ inputs.iam_role }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy to S3 Bucket
+      shell: bash
+      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete
+
+    - name: Create AWS Cloudfront Invalidation
+      shell: bash
+      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront_distribution_id }} --paths "/*" # At the moment we invalidate all the paths
