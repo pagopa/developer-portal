@@ -1,5 +1,5 @@
-import { appIOOverview } from '@/features/appIO/overview';
-import { ioSignOverview } from '@/features/ioSign/overview';
+import { appIOOverview } from '@/_contents/appIO/overview';
+import { ioSignOverview } from '@/_contents/ioSign/overview';
 
 export const overviews = [appIOOverview, ioSignOverview];
 export const quickStarts = [];

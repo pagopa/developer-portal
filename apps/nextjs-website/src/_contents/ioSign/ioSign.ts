@@ -1,5 +1,5 @@
 import { Product } from '@/lib/types/product';
-import { ioSignOverviewPath } from '@/features/ioSign/overviewPath';
+import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 
 export const ioSign: Product = {
   name: 'Firma con IO',

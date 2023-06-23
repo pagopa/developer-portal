@@ -1,4 +1,4 @@
-import { overviews } from '@/features/products';
+import { overviews } from '@/_contents/products';
 
 export function getOverviewPaths(): readonly string[] {
   return overviews.map((overview) => overview.slug);

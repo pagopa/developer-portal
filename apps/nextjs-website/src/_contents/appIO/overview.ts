@@ -1,10 +1,10 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { ioSign } from '@/features/ioSign/ioSign';
-import { ioSignOverviewPath } from '@/features/ioSign/overviewPath';
+import { appIO } from '@/_contents/appIO/appIO';
+import { appIoOverviewPath } from '@/_contents/appIO/overviewPath';
 
-export const ioSignOverview: OverviewData = {
-  ...ioSignOverviewPath,
-  product: ioSign,
+export const appIOOverview: OverviewData = {
+  ...appIoOverviewPath,
+  product: appIO,
   hero: {
     title: 'Raccogli i servizi del tuo ente in unico spazio',
     subtitle:
