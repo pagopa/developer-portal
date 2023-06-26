@@ -4,6 +4,5 @@ import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 export const ioSign: Product = {
   name: 'Firma con IO',
   slug: 'firma-con-io',
-  paths: [ioSignOverviewPath],
-  type: 'product',
+  paths: { overview: ioSignOverviewPath },
 };

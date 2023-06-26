@@ -1,8 +1,8 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { appIO } from '@/_contents/appIO/appIO';
-import { appIoOverviewPath } from '@/_contents/appIO/overviewPath';
+import { appIO } from '@/_contents/appIo/appIO';
+import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 
-export const appIOOverview: OverviewData = {
+export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
   product: appIO,
   hero: {
