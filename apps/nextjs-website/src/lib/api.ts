@@ -10,12 +10,12 @@ export function getOverviewPaths(): readonly string[] {
 
 export function getGuides(productSlug?: string) {
   return productsGuides.find(
-    (productGuides) => productGuides.product.path === productSlug
+    (productGuides) => productGuides.product.path === `/${productSlug}`
   );
 }
 
 export function getOverview(productSlug?: string) {
   return overviews.find(
-    (overviewData) => overviewData.product.path === productSlug
+    (overviewData) => overviewData.product.path === `/${productSlug}`
   );
 }
