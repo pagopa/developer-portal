@@ -3,6 +3,6 @@ import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 
 export const appIO: Product = {
   name: 'App IO',
-  path: 'app-io',
+  path: '/app-io',
   subpaths: { overview: appIoOverviewPath },
 };
