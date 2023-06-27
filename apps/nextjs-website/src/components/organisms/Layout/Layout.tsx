@@ -1,19 +1,28 @@
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
+import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
 import React, { Fragment, ReactNode } from 'react';
 
-interface LayoutProps {
-  currentProduct?: Product;
-  currentSlug: string;
-  children: ReactNode | ReactNode[];
-}
+export type LayoutProps = {
+  readonly products: Product[];
+  readonly product?: Product;
+  readonly slug: string;
+};
 
-const Layout = ({ currentSlug, currentProduct, children }: LayoutProps) => (
+type LayoutPropsWithChildren = {
+  children: ReactNode | ReactNode[];
+} & LayoutProps;
+
+const Layout = ({
+  slug,
+  product,
+  products,
+  children,
+}: LayoutPropsWithChildren) => (
   <Fragment>
     <header>
-      {currentProduct && (
-        <ProductHeader product={currentProduct} currentSlug={currentSlug} />
-      )}
+      <SiteHeader products={products} />
+      {product && <ProductHeader product={product} slug={slug} />}
     </header>
     <main>{children}</main>
   </Fragment>
