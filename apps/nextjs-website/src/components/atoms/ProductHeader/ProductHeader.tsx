@@ -20,13 +20,13 @@ function productToMenuItems(
   active: boolean;
   theme: Theme;
 }[] {
-  return Object.entries(product.paths)
-    .filter(([name, path]: [string, Path]) => !!name && !!path)
-    .map(([name, path]: [string, Path]) => {
+  return Object.entries(product.subpaths)
+    .filter(([name, subpath]: [string, Path]) => !!name && !!subpath)
+    .map(([name, subpath]: [string, Path]) => {
       return {
-        label: path.name || name,
-        href: path.slug,
-        active: currentSlug === path.slug,
+        label: subpath.name || name,
+        href: subpath.path,
+        active: currentSlug === subpath.path,
         theme,
       };
     });
@@ -40,7 +40,7 @@ const ProductHeader = ({ product, currentSlug }: ProductHeaderProps) => {
       <Header
         menu={productToMenuItems(product, currentSlug, themeVariant)}
         product={{
-          href: product.paths.overview.slug,
+          href: product.subpaths.overview.path,
           name: product.name,
         }}
         theme={themeVariant}

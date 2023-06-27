@@ -14,7 +14,7 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 });
 
 export type OverviewPageProps = {
-  readonly slug: string;
+  readonly path: string;
   readonly product: Product;
   readonly hero?: {
     readonly title: string;
@@ -33,9 +33,9 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
   }
 };
 
-const OverviewPage = ({ hero, product, slug }: OverviewPageProps) => {
+const OverviewPage = ({ hero, product, path }: OverviewPageProps) => {
   return (
-    <Layout currentProduct={product} currentSlug={slug}>
+    <Layout currentProduct={product} currentSlug={path}>
       <Hero title={hero?.title || 'missing title'} subtitle={hero?.subtitle} />
     </Layout>
   );
