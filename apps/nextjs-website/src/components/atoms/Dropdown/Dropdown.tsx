@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { useTheme } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
@@ -13,7 +12,6 @@ type DropdownProps = {
 };
 
 const Dropdown = ({ label, items }: DropdownProps) => {
-  const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
