@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import { Product } from '@/lib/types/product';
 import { getOverview, getOverviewPaths } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
+import ApiViewer from '@/components/ApiViewer/ApiViewer';
 
 type Params = {
   productSlug: string;
@@ -34,6 +35,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 const OverviewPage = ({ hero }: OverviewPageProps) => (
   <>
     <Hero title={hero?.title || 'missing title'} subtitle={hero?.subtitle} />
+    <ApiViewer />
   </>
 );
 
