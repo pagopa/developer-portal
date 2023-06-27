@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { useTheme } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
 type DropdownProps = {
   label: string;
@@ -52,21 +53,19 @@ const Dropdown = ({ label, items }: DropdownProps) => {
       >
         {items.map((item, index) => {
           return (
-            <MenuItem
-              key={index}
-              href={item.href}
-              onClick={handleClose}
-              disableRipple
-            >
-              <Link
-                style={{
-                  textDecoration: 'none',
-                  color: theme.palette.common.black,
-                }}
+            <MenuItem key={index} onClick={handleClose} disableRipple>
+              <ButtonNaked
+                style={{ justifyContent: 'flex-start' }}
+                fullWidth={true}
+                size={'medium'}
+                weight={'light'}
+                component={Link}
+                aria-label={item.label}
                 href={item.href}
+                title={item.label}
               >
                 {item.label}
-              </Link>
+              </ButtonNaked>
             </MenuItem>
           );
         })}
