@@ -6,7 +6,7 @@ import React, { Fragment, ReactNode } from 'react';
 export type LayoutProps = {
   readonly products: Product[];
   readonly product?: Product;
-  readonly slug: string;
+  readonly path: string;
 };
 
 type LayoutPropsWithChildren = {
@@ -14,7 +14,7 @@ type LayoutPropsWithChildren = {
 } & LayoutProps;
 
 const Layout = ({
-  slug,
+  path,
   product,
   products,
   children,
@@ -22,7 +22,7 @@ const Layout = ({
   <Fragment>
     <header>
       <SiteHeader products={products} />
-      {product && <ProductHeader product={product} slug={slug} />}
+      {product && <ProductHeader product={product} path={path} />}
     </header>
     <main>{children}</main>
   </Fragment>

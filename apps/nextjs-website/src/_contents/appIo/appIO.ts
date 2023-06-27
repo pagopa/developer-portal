@@ -4,6 +4,6 @@ import { appIoTutorialPath } from '@/_contents/appIo/tutorialPath';
 
 export const appIO: Product = {
   name: 'App IO',
-  slug: 'app-io',
-  paths: { overview: appIoOverviewPath, tutorial: appIoTutorialPath },
+  path: '/app-io',
+  subpaths: { overview: appIoOverviewPath, tutorial: appIoTutorialPath },
 };

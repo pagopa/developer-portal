@@ -24,7 +24,7 @@ const SiteHeader = ({ products }: SiteHeaderProps) => {
         <Dropdown
           label={header.products}
           items={products.map((product) => ({
-            href: product.paths.overview.slug,
+            href: product.subpaths.overview.path,
             label: product.name,
           }))}
         />

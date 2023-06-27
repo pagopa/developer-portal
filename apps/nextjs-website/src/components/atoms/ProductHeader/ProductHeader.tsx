@@ -7,12 +7,12 @@ import React, { Fragment } from 'react';
 
 type ProductHeaderProps = {
   product: Product;
-  slug: string;
+  path: string;
 };
 
 function productToMenuItems(
   product: Product,
-  slug: string,
+  path: string,
   theme: Theme
 ): {
   href: string;
@@ -20,27 +20,27 @@ function productToMenuItems(
   active: boolean;
   theme: Theme;
 }[] {
-  return Object.entries(product.paths)
-    .filter(([name, path]: [string, Path]) => !!name && !!path)
-    .map(([name, path]: [string, Path]) => {
+  return Object.entries(product.subpaths)
+    .filter(([name, subpath]: [string, Path]) => !!name && !!subpath)
+    .map(([name, subpath]: [string, Path]) => {
       return {
-        label: path.name || name,
-        href: path.slug,
-        active: slug === path.slug,
+        label: subpath.name || name,
+        href: subpath.path,
+        active: path === subpath.path,
         theme,
       };
     });
 }
 
-const ProductHeader = ({ product, slug }: ProductHeaderProps) => {
+const ProductHeader = ({ product, path }: ProductHeaderProps) => {
   const { palette } = useTheme();
   const themeVariant = palette.mode;
   return (
     <Fragment>
       <Header
-        menu={productToMenuItems(product, slug, themeVariant)}
+        menu={productToMenuItems(product, path, themeVariant)}
         product={{
-          href: product.paths.overview.slug,
+          href: product.subpaths.overview.path,
           name: product.name,
         }}
         theme={themeVariant}

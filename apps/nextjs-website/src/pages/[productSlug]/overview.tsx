@@ -30,9 +30,9 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
   }
 };
 
-const OverviewPage = ({ hero, product, products, slug }: OverviewPageProps) => {
+const OverviewPage = ({ hero, product, products, path }: OverviewPageProps) => {
   return (
-    <Layout products={products} product={product} slug={slug}>
+    <Layout products={products} product={product} path={path}>
       <Hero title={hero.title} subtitle={hero.subtitle} />
     </Layout>
   );
