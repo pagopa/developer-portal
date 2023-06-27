@@ -3,6 +3,6 @@ import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 
 export const appIO: Product = {
   name: 'App IO',
-  slug: 'app-io',
-  paths: { overview: appIoOverviewPath },
+  path: 'app-io',
+  subpaths: { overview: appIoOverviewPath },
 };
