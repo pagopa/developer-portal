@@ -1,12 +1,19 @@
-import { translations } from '@/_contents/translations';
 import { Box } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React from 'react';
 
-const HomepageButton = () => {
-  const title = translations.header.title;
-  const boldTitle = translations.header.boldTitle;
+type HomepageButtonProps = {
+  readonly title: string;
+  readonly boldTitle: string;
+  readonly href?: string;
+};
+
+const HomepageButton = ({
+  title,
+  boldTitle,
+  href = '/',
+}: HomepageButtonProps) => {
   const completeTitle = [title, boldTitle].join(' ');
   return (
     <ButtonNaked
@@ -14,7 +21,7 @@ const HomepageButton = () => {
       weight={'light'}
       component={Link}
       aria-label={completeTitle}
-      href={'/'}
+      href={href}
       title={completeTitle}
     >
       {title}
