@@ -35,3 +35,7 @@ jobs:
 
       - name: Execute tests
         run: npm run test
+
+      - name: Build static website
+        shell: bash
+        run: npm run build -w nextjs-website
