@@ -10,6 +10,7 @@ import { appIO } from './appIo/appIO';
 import { ioSign } from './ioSign/ioSign';
 import { pagoPa } from './pagoPa/pagoPa';
 import { send } from '@/_contents/send/send';
+import { appIoGuides } from './appIo/guides';
 
 export const overviews = [
   appIoOverview,
@@ -23,3 +24,4 @@ export const tutorials = [];
 export const tools = [];
 export const guideLists = [pagoPaGuideLists, ioSignGuideLists, sendGuideLists];
 export const products = [appIO, ioSign, pagoPa, send];
+export const guides = [...appIoGuides];

@@ -18,8 +18,7 @@
   "scripts": {
     "clean": "shx rm -rf dist/",
     "compile": "npm run clean && tsc",
-    "lint": "eslint src",
-    "test": "jest -i"
+    "lint": "eslint src"
   },
   "dependencies": {
     "fp-ts": "^2.13.1"

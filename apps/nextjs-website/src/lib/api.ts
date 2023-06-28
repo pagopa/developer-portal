@@ -1,4 +1,4 @@
-import { apis, overviews, products, guideLists } from '@/_contents/products';
+import { apis, overviews, products, guideLists, guides } from '@/_contents/products';
 import { Product } from './types/product';
 
 export function getProducts(): readonly Product[] {
@@ -17,6 +17,10 @@ export function getGuideListsPaths(): readonly string[] {
   return guideLists.map((guideList) => guideList.path);
 }
 
+export function getGuidePaths() {
+  return guides.map((page) => page.page.path);
+}
+
 export function getGuideLists(productSlug?: string) {
   return guideLists.find(
     (guideList) => guideList.product.path === `/${productSlug}`
@@ -31,4 +35,7 @@ export function getOverview(productSlug?: string) {
 
 export function getApi(productSlug?: string) {
   return apis.find((apiData) => apiData.product.path === `/${productSlug}`);
+
+export function getGuide(path?: string) {
+  return guides.find((page) => page.page.path === path);
 }
