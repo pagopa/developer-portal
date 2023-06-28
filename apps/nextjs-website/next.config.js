@@ -9,6 +9,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
+    '@pagopa/pagopa-editorial-components',
     '@pagopa/mui-italia',
   ],
   trailingSlash: false,
