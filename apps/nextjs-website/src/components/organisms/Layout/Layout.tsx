@@ -1,3 +1,4 @@
+import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
@@ -25,6 +26,7 @@ const Layout = ({
       {product && path && <ProductHeader product={product} path={path} />}
     </header>
     <main>{children}</main>
+    <SiteFooter />
   </Fragment>
 );
 
