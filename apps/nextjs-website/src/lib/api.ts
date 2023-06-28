@@ -14,16 +14,16 @@ export function getApisPaths(): readonly string[] {
 
 export function getGuides(productSlug?: string) {
   return productsGuides.find(
-    (productGuides) => productGuides.product.path === productSlug
+    (productGuides) => productGuides.product.path === `/${productSlug}`
   );
 }
 
 export function getOverview(productSlug?: string) {
   return overviews.find(
-    (overviewData) => overviewData.product.path === productSlug
+    (overviewData) => overviewData.product.path === `/${productSlug}`
   );
 }
 
 export function getApi(productSlug?: string) {
-  return apis.find((apiData) => apiData.product.path === productSlug);
+  return apis.find((apiData) => apiData.product.path === `/${productSlug}`);
 }
