@@ -59,7 +59,6 @@ npm -w <workspace> run <command>
 ```
 
 #### Manage dependencies
-
 Add to the root the dependency `<dependency>`.
 
 ``` bash

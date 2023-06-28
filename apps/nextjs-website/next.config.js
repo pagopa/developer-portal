@@ -8,7 +8,9 @@
  */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@pagopa/mui-italia'],
+  transpilePackages: [
+    '@pagopa/mui-italia',
+  ],
   trailingSlash: false,
   images: {
     unoptimized: true,
