@@ -1,6 +1,6 @@
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import { Product } from '@/lib/types/product';
-import React, { Fragment, ReactNode } from 'react';
+import React, { Fragment, ReactNode, FC } from 'react';
 
 interface LayoutProps {
   currentProduct?: Product;
@@ -8,7 +8,7 @@ interface LayoutProps {
   children: ReactNode | ReactNode[];
 }
 
-const Layout = ({ currentSlug, currentProduct, children }: LayoutProps) => (
+const Layout: FC<LayoutProps> = ({ currentSlug, currentProduct, children }) => (
   <Fragment>
     <header>
       {currentProduct && (

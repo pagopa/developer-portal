@@ -3,7 +3,7 @@ import { Product } from '@/lib/types/product';
 import { Divider, useTheme } from '@mui/material';
 import { Header } from '@pagopa/pagopa-editorial-components/dist/components/Header';
 import { Theme } from '@pagopa/pagopa-editorial-components/dist/types/components';
-import React, { Fragment } from 'react';
+import React, { Fragment, FC } from 'react';
 
 type ProductHeaderProps = {
   product: Product;
@@ -32,7 +32,7 @@ function productToMenuItems(
     });
 }
 
-const ProductHeader = ({ product, currentSlug }: ProductHeaderProps) => {
+const ProductHeader: FC<ProductHeaderProps> = ({ product, currentSlug }) => {
   const { palette } = useTheme();
   const themeVariant = palette.mode;
   return (
