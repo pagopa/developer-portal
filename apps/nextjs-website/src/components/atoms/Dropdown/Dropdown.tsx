@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { useMemo } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { ArrowDropDown } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
 type DropdownProps = {
@@ -13,7 +13,7 @@ type DropdownProps = {
 
 const Dropdown = ({ label, items }: DropdownProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -21,14 +21,14 @@ const Dropdown = ({ label, items }: DropdownProps) => {
     setAnchorEl(null);
   };
   return (
-    <Fragment>
+    <>
       <Button
         aria-controls={open ? `${label}-menu` : undefined}
         aria-expanded={open ? 'true' : undefined}
         variant='naked'
         disableElevation
         onClick={handleClick}
-        endIcon={<ArrowDropDown />}
+        endIcon={open ? <ArrowDropUp /> : <ArrowDropDown />}
       >
         {label}
       </Button>
@@ -68,7 +68,7 @@ const Dropdown = ({ label, items }: DropdownProps) => {
           );
         })}
       </Menu>
-    </Fragment>
+    </>
   );
 };
 
