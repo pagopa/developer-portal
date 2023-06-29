@@ -62,14 +62,12 @@ const OverviewPage = ({
         useHoverlay={false}
         altText={hero.altText}
       />
-      {feature && (
-        <Feature
-          items={feature.items}
-          showCarouselMobile={false}
-          theme={palette.mode}
-          title={feature.title}
-        />
-      )}
+      <Feature
+        items={feature.items}
+        showCarouselMobile={false}
+        theme={palette.mode}
+        title={feature.title}
+      />
     </Layout>
   );
 };
