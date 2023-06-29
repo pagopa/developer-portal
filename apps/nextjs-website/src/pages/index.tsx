@@ -7,7 +7,7 @@ type HomeProps = LayoutProps;
 export const getStaticProps: GetStaticProps<
   HomeProps
 > = (): GetStaticPropsResult<LayoutProps> => {
-  return { props: { products: getProducts().concat() } };
+  return { props: { products: [...getProducts()] } };
 };
 
 const Home = ({ products }: HomeProps) => {

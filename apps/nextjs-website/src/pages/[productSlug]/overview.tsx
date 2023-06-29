@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 }): GetStaticPropsResult<OverviewPageProps> => {
   const props = getOverview(params?.productSlug);
   if (props) {
-    return { props: { ...props, products: getProducts().concat() } };
+    return { props: { ...props, products: [...getProducts()] } };
   } else {
     return { notFound: true as const };
   }
