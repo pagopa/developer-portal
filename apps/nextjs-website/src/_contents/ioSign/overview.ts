@@ -11,4 +11,9 @@ export const ioSignOverview: OverviewData = {
     subtitle:
       "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",
   },
+  feature: {
+    title: 'title',
+    subtitle: 'subtitle',
+    items: [],
+  },
 };

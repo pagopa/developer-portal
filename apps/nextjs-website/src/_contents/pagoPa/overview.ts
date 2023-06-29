@@ -11,4 +11,9 @@ export const pagoPaOverview: OverviewData = {
     subtitle:
       'pagoPA permette alle Pubbliche Amministrazioni di gestire gli incassi in modo centralizzato, offrendo servizi automatici di rendicontazione e riconciliazione con un significativo risparmio nei costi di gestione.',
   },
+  feature: {
+    title: 'title',
+    subtitle: 'subtitle',
+    items: [],
+  },
 };
