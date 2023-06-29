@@ -9,7 +9,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
-import { LinkButton, LinkButtonProps } from '@/components/atoms/NavigateButton/LinkButton';
+import {
+  LinkButton,
+  LinkButtonProps,
+} from '@/components/atoms/NavigateButton/LinkButton';
 
 type Description = {
   readonly listItems: ReadonlyArray<string>;
