@@ -1,5 +1,5 @@
 frontend: apps/nextjs-website/**/*
-internal: packages/**/*
+packages: packages/**/*
 docs: docs/**/*
-ci: .github/workflows/**/*
+workflows: .github/workflows/**/*
 infra: .infrastructure/**/*
