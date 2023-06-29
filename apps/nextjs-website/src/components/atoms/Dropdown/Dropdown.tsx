@@ -55,8 +55,8 @@ const Dropdown = ({ label, items }: DropdownProps) => {
               <ButtonNaked
                 style={{ justifyContent: 'flex-start' }}
                 fullWidth={true}
-                size={'medium'}
-                weight={'light'}
+                size='medium'
+                weight='light'
                 component={Link}
                 aria-label={item.label}
                 href={item.href}
