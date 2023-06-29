@@ -14,12 +14,7 @@ function productToMenuItems(
   product: Product,
   currentSlug: string,
   theme: Theme
-): {
-  href: string;
-  label: string;
-  active: boolean;
-  theme: Theme;
-}[] {
+): MenuDropdownProp[] {
   return Object.entries(product.subpaths)
     .filter(([name, subpath]: [string, Path]) => !!name && !!subpath)
     .map(([name, subpath]: [string, Path]) => {
