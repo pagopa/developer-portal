@@ -28,9 +28,9 @@ it('should convert product to menu items', () => {
   const overviewItem = menuItems.find(
     ({ href }) => href === product.subpaths.overview.path
   );
-  expect(!!overviewItem).toBeTruthy;
+  expect(overviewItem).not.toBeUndefined();
   expect(overviewItem?.label).toBe(product.subpaths.overview.name);
   expect(overviewItem?.href).toBe(product.subpaths.overview.path);
-  expect(overviewItem && overviewItem?.active).toBeTruthy;
+  expect(overviewItem?.active).toBeTruthy();
   expect(overviewItem?.theme).toBe(themeLight);
 });
