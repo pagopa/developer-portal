@@ -6,6 +6,8 @@ export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
   product: appIO,
   hero: {
+    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio.',
+    backgroundImage: '/images/hero.jpg',
     title: 'Raccogli i servizi del tuo ente in unico spazio',
     subtitle:
       "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",

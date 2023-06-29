@@ -14,6 +14,8 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 
 export type OverviewPageProps = {
   readonly hero: {
+    readonly backgroundImage: string;
+    readonly altText?: string;
     readonly title: string;
     readonly subtitle: string;
   };
@@ -33,7 +35,14 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 const OverviewPage = ({ hero, product, products, path }: OverviewPageProps) => {
   return (
     <Layout products={products} product={product} path={path}>
-      <Hero title={hero.title} subtitle={hero.subtitle} />
+      <Hero
+        background={hero.backgroundImage}
+        title={hero.title}
+        subtitle={hero.subtitle}
+        size='small'
+        useHoverlay={false}
+        altText={hero.altText}
+      />
     </Layout>
   );
 };
