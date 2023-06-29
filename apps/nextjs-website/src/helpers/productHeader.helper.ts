@@ -9,10 +9,10 @@ export function productToMenuItems(
   theme: Theme
 ): readonly MenuDropdownProp[] {
   return Object.entries(product.subpaths)
-    .filter(([name, subpath]: readonly [string, Path]) => !!name && !!subpath)
-    .map(([name, subpath]: readonly [string, Path]) => {
+    .filter(([name, subpath]) => !!name && !!subpath)
+    .map(([, subpath]) => {
       return {
-        label: subpath.name || name,
+        label: subpath.name
         href: subpath.path,
         active: path === subpath.path,
         theme,
