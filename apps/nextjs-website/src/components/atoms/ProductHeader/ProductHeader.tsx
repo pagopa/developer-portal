@@ -15,7 +15,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   return (
     <>
       <Header
-        menu={productToMenuItems(product, path, themeVariant)}
+        menu={productToMenuItems(product, path, themeVariant).concat()}
         product={{
           href: product.subpaths.overview.path,
           name: product.name,
