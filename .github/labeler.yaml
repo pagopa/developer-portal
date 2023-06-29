@@ -1,0 +1,5 @@
+website: apps/nextjs-website/**/*
+packages: packages/**/*
+docs: docs/**/*
+workflows: .github/workflows/**/*
+infra: .infrastructure/**/*
