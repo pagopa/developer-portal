@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { Product } from '@/lib/types/product';
-import { getOverview, getOverviewPaths } from '@/lib/api';
+import { getOverview, getOverviewPaths, getProducts } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
-import Layout from '@/components/organisms/Layout/Layout';
+import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import { Product } from '@/lib/types/product';
 
 type Params = {
   productSlug: string;
@@ -16,27 +16,27 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 export type OverviewPageProps = {
   readonly path: string;
   readonly product: Product;
-  readonly hero?: {
+  readonly hero: {
     readonly title: string;
     readonly subtitle: string;
   };
-};
+} & LayoutProps;
 
 export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
   params,
 }): GetStaticPropsResult<OverviewPageProps> => {
   const props = getOverview(params?.productSlug);
   if (props) {
-    return { props };
+    return { props: { ...props, products: [...getProducts()] } };
   } else {
     return { notFound: true as const };
   }
 };
 
-const OverviewPage = ({ hero, product, path }: OverviewPageProps) => {
+const OverviewPage = ({ hero, product, products, path }: OverviewPageProps) => {
   return (
-    <Layout product={product} path={path}>
-      <Hero title={hero?.title || 'missing title'} subtitle={hero?.subtitle} />
+    <Layout products={products} product={product} path={path}>
+      <Hero title={hero.title} subtitle={hero.subtitle} />
     </Layout>
   );
 };
