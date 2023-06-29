@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 
 const OverviewPage = ({ hero, product, path }: OverviewPageProps) => {
   return (
-    <Layout currentProduct={product} currentSlug={path}>
+    <Layout product={product} path={path}>
       <Hero title={hero?.title || 'missing title'} subtitle={hero?.subtitle} />
     </Layout>
   );

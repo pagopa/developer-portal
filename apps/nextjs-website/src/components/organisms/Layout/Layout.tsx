@@ -3,17 +3,15 @@ import { Product } from '@/lib/types/product';
 import React, { Fragment, ReactNode, FC } from 'react';
 
 interface LayoutProps {
-  currentProduct?: Product;
-  currentSlug: string;
+  product?: Product;
+  path: string;
   children: ReactNode | ReactNode[];
 }
 
-const Layout: FC<LayoutProps> = ({ currentSlug, currentProduct, children }) => (
+const Layout: FC<LayoutProps> = ({ path, product, children }) => (
   <Fragment>
     <header>
-      {currentProduct && (
-        <ProductHeader product={currentProduct} currentSlug={currentSlug} />
-      )}
+      {product && <ProductHeader product={product} path={path} />}
     </header>
     <main>{children}</main>
   </Fragment>
