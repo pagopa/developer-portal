@@ -1,9 +1,9 @@
+import React from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import HomepageButton from '@/components/atoms/HomepageButton/HomepageButton';
 import { Product } from '@/lib/types/product';
 import { Divider, Stack } from '@mui/material';
-import React, { Fragment } from 'react';
 
 type SiteHeaderProps = {
   products: Product[];
@@ -12,7 +12,7 @@ type SiteHeaderProps = {
 const SiteHeader = ({ products }: SiteHeaderProps) => {
   const { header } = translations;
   return (
-    <Fragment>
+    <>
       <Stack
         sx={{ m: 2 }}
         spacing={2}
@@ -30,7 +30,7 @@ const SiteHeader = ({ products }: SiteHeaderProps) => {
         />
       </Stack>
       <Divider />
-    </Fragment>
+    </>
   );
 };
 
