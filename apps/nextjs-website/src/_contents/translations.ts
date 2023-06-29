@@ -5,6 +5,17 @@ export const translations = {
     boldTitle: 'Developer Portal',
     products: 'Prodotti',
   },
+  shared: {
+    readTutorial: 'Leggi il tutorial',
+  },
+  overview: {
+    tutorial: {
+      title: 'Esplora i tutorial',
+      subtitle:
+        'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+      ctaLabel: 'Vedi tutti i tutorial',
+    },
+  },
   footer: {
     companyLink: {
       ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
