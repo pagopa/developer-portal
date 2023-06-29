@@ -2,7 +2,7 @@ import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
-import React, { Fragment, ReactNode, FC } from 'react';
+import React, { ReactNode, FC } from 'react';
 
 export type LayoutProps = {
   readonly products: Product[];
@@ -20,14 +20,14 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   products,
   children,
 }) => (
-  <Fragment>
+  <>
     <header>
       <SiteHeader products={products} />
       {product && path && <ProductHeader product={product} path={path} />}
     </header>
     <main>{children}</main>
     <SiteFooter />
-  </Fragment>
+  </>
 );
 
 export default Layout;
