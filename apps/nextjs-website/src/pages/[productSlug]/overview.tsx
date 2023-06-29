@@ -5,6 +5,7 @@ import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Feature } from '@pagopa/pagopa-editorial-components';
 import { useTheme } from '@mui/material';
 import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components/Feature/FeatureStackItem';
+import { Product } from '@/lib/types/product';
 
 type Params = {
   productSlug: string;
@@ -16,6 +17,8 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 });
 
 export type OverviewPageProps = {
+  readonly path: string;
+  readonly product: Product;
   readonly hero: {
     readonly backgroundImage: string;
     readonly altText?: string;
@@ -34,7 +37,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 }): GetStaticPropsResult<OverviewPageProps> => {
   const props = getOverview(params?.productSlug);
   if (props) {
-    return { props: { ...props, products: getProducts().concat() } };
+    return { props: { ...props, products: [...getProducts()] } };
   } else {
     return { notFound: true as const };
   }
