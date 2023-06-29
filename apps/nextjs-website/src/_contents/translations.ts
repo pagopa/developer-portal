@@ -20,24 +20,41 @@ export const translations = {
       '<strong>PagoPA S.p.A.</strong> - Società per azioni con socio unico - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <br />CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
     links: {
       followUs: {
+        socialLinks: [
+          {
+            ariaLabel: 'Link: vai al sito LinkedIn di PagoPA S.p.A.',
+            href: 'https://www.linkedin.com/company/pagopa/',
+            icon: 'LinkedIn',
+          },
+          {
+            ariaLabel: 'Link: vai al sito Twitter di PagoPA S.p.A.',
+            href: 'https://twitter.com/pagopa',
+            icon: 'Twitter',
+          },
+          {
+            ariaLabel: 'Link: vai al sito Instagram di PagoPA S.p.A.',
+            href: 'https://www.instagram.com/pagopa/',
+            icon: 'Instagram',
+          },
+        ],
         links: [
           {
             ariaLabel: 'Vai al link: Accessibilità',
-            href: '#accessibilità',
+            href: 'https://form.agid.gov.it/view/eca3487c-f3cb-40be-a590-212eafc70058/',
             label: 'Accessibilità',
-            linkType: 'internal',
+            linkType: 'external',
           },
         ],
         title: 'Seguici su',
       },
       aboutUs: {
-        title: 'about us',
+        title: '',
         links: [
           {
             ariaLabel: 'Vai al link: Chi siamo',
-            href: '#chi-siamo',
+            href: 'https://www.pagopa.it/it/societa/chi-siamo',
             label: 'Chi siamo',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: PNRR',
@@ -47,15 +64,15 @@ export const translations = {
           },
           {
             ariaLabel: 'Vai al link: Media',
-            href: '#media',
+            href: 'https://www.pagopa.it/it/media',
             label: 'Media',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Lavora con noi',
-            href: '#lavora-con-noi',
+            href: 'https://www.pagopa.it/it/lavora-con-noi',
             label: 'Lavora con noi',
-            linkType: 'internal',
+            linkType: 'external',
           },
         ],
       },
@@ -64,34 +81,34 @@ export const translations = {
         links: [
           {
             ariaLabel: 'Vai al link: Informativa Privacy',
-            href: '#informativa-privacy',
+            href: 'https://www.pagopa.it/it/privacy-policy-assistenza',
             label: 'Informativa Privacy',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Termini e Condizioni',
-            href: '#terms-conditions',
+            href: 'https://www.pagopa.it/it/termini-e-condizioni-di-utilizzo-del-sito',
             label: 'Termini e Condizioni',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Certificazioni',
-            href: '#certificazioni',
+            href: 'https://www.pagopa.it/static/e1979a4c34b4756ec4e8ff9fe115b92a/Certificazine_ISO27001.pdf',
             label: 'Certificazioni',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Sicurezza delle informazioni',
-            href: '#sicurezza-delle-informazioni',
+            href: 'https://www.pagopa.it/static/781646994f1f8ddad2d95af3aaedac3d/Sicurezza-delle-informazioni_PagoPA-S.p.A..pdf',
             label: 'Sicurezza delle informazioni',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel:
               'Vai al link: Diritto alla protezione dei dati personali',
-            href: '#diritto-alla-protezione-dei-dati-personali',
+            href: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
             label: 'Diritto alla protezione dei dati personali',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Preferenze Cookie',
@@ -101,21 +118,21 @@ export const translations = {
           },
           {
             ariaLabel: 'Vai al link: Società trasparente',
-            href: '#societa-trasparente',
+            href: 'https://pagopa.portaleamministrazionetrasparente.it/',
             label: 'Società trasparente',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Responsible Disclosure Policy',
-            href: '#responsible-disclosure-policy',
+            href: 'https://www.pagopa.it/it/responsible-disclosure-policy/',
             label: 'Responsible Disclosure Policy',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Modello 321',
-            href: '#modello-321',
+            href: 'https://pagopa.portaleamministrazionetrasparente.it/pagina746_altri-contenuti.html',
             label: 'Modello 321',
-            linkType: 'internal',
+            linkType: 'external',
           },
         ],
       },

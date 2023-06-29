@@ -10,7 +10,7 @@ export function getOverviewPaths(): readonly string[] {
 }
 
 export function getProducts(): readonly Product[] {
-  return products.map((product) => product);
+  return products;
 }
 
 export function getGuides(productSlug?: string) {
