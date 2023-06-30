@@ -17,8 +17,8 @@ export type CtaCardProps = {
     readonly label: string;
     readonly href: string;
   };
-  icon?: ReactNode;
-  children?: ReactNode | ReactNode[];
+  readonly icon?: ReactNode;
+  readonly children?: ReactNode | ReactNode[];
 };
 
 const CtaCard = ({
@@ -35,8 +35,8 @@ const CtaCard = ({
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
       }}
     >
-      <CardMedia>{children}</CardMedia>
-      <CardContent sx={{ minHeight: minHeight }}>
+      {children && <CardMedia>{children}</CardMedia>}
+      <CardContent sx={{ minHeight: minHeight || 'auto' }}>
         {icon}
         <Typography variant='h6' gutterBottom>
           {title}
@@ -46,12 +46,12 @@ const CtaCard = ({
       <CardActions>
         {cta && (
           <Button
-            href={cta?.href}
+            href={cta.href}
             variant='contained'
             LinkComponent={Link}
             size='small'
           >
-            {cta?.label}
+            {cta.label}
           </Button>
         )}
       </CardActions>

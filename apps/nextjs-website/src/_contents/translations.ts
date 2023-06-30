@@ -17,16 +17,6 @@ export const translations = {
         href: '/',
       },
       title: 'Si comincia da qui',
-      quickStart: {
-        title: 'Quick Start',
-        text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-        href: '/',
-      },
-      api: {
-        title: 'Documentazione Api',
-        text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
-        href: '/',
-      },
     },
     tutorial: {
       title: 'Esplora i tutorial',
