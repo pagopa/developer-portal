@@ -43,4 +43,14 @@ export const appIoOverview: OverviewData = {
     ],
   },
   tutorials: tutorials,
+  relatedLinks: [
+    {
+      path: '/',
+      name: 'Scarica il contratto di adesione a IO',
+    },
+    {
+      path: '/',
+      name: 'Leggi kit di comunicazione',
+    },
+  ],
 };

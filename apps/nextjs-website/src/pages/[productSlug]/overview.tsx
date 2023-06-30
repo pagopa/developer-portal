@@ -11,6 +11,8 @@ import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import { FlagOutlined, FolderOutlined } from '@mui/icons-material';
+import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import { Path } from '@/lib/types/path';
 
 type Params = {
   productSlug: string;
@@ -36,6 +38,7 @@ export type OverviewPageProps = {
     readonly items: FeatureItem[];
   };
   readonly tutorials?: readonly Tutorial[];
+  readonly relatedLinks?: Path[];
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
@@ -56,6 +59,7 @@ const OverviewPage = ({
   products,
   path,
   tutorials,
+  relatedLinks,
 }: OverviewPageProps) => {
   const { shared, overview } = translations;
   const { palette } = useTheme();
@@ -108,6 +112,15 @@ const OverviewPage = ({
         <News
           tutorialPath={product.subpaths.tutorial}
           tutorials={[...tutorials]}
+        />
+      )}
+      {relatedLinks && (
+        <RelatedLinks
+          title={overview.relatedLinks.title}
+          links={relatedLinks.map(({ path, name }) => ({
+            text: name,
+            href: path,
+          }))}
         />
       )}
     </Layout>
