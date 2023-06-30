@@ -4,7 +4,7 @@ import { pagoPaOverview } from '@/_contents/pagoPa/overview';
 import { pagoPaGuides } from '@/_contents/pagoPa/guides';
 import { appIO } from './appIo/appIO';
 import { ioSign } from './ioSign/ioSign';
-import { pagoPA } from './pagoPa/pagoPA';
+import { pagoPa } from './pagoPa/pagoPa';
 
 export const overviews = [appIoOverview, ioSignOverview, pagoPaOverview];
 export const quickStarts = [];
@@ -12,4 +12,4 @@ export const apis = [];
 export const tutorials = [];
 export const tools = [];
 export const productsGuides = [pagoPaGuides];
-export const products = [appIO, ioSign, pagoPA];
+export const products = [appIO, ioSign, pagoPa];
