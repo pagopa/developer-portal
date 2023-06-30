@@ -6,7 +6,7 @@ export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
   product: ioSign,
   hero: {
-    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio.',
+    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
     backgroundImage: '/images/hero.jpg',
     title: 'Raccogli i servizi del tuo ente in unico spazio',
     subtitle:
