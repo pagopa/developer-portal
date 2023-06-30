@@ -6,7 +6,7 @@ export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
   product: pagoPA,
   hero: {
-    altText: 'Hero: La piattaforma per gestire e rendicontare i pagamenti.',
+    altText: 'Hero: La piattaforma per gestire e rendicontare i pagamenti',
     backgroundImage: '/images/hero.jpg',
     title: 'La piattaforma per gestire e rendicontare i pagamenti',
     subtitle:
