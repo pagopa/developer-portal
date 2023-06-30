@@ -23,7 +23,7 @@ export type OverviewPageProps = {
   readonly product: Product;
   readonly hero: {
     readonly backgroundImage: string;
-    readonly altText?: string;
+    readonly altText: string;
     readonly title: string;
     readonly subtitle: string;
   };
