@@ -21,6 +21,6 @@ export function getGuides(productSlug?: string) {
 
 export function getOverview(productSlug?: string) {
   return overviews.find(
-    (overviewData) => overviewData.product?.path === `/${productSlug}`
+    (overviewData) => overviewData.product.path === `/${productSlug}`
   );
 }
