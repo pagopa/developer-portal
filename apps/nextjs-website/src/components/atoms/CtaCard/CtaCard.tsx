@@ -5,7 +5,6 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  makeStyles,
 } from '@mui/material';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
@@ -13,6 +12,7 @@ import React, { ReactNode } from 'react';
 export type CtaCardProps = {
   readonly title: string;
   readonly text: string;
+  readonly minHeight?: number;
   readonly cta?: {
     readonly label: string;
     readonly href: string;
@@ -21,7 +21,14 @@ export type CtaCardProps = {
   children?: ReactNode | ReactNode[];
 };
 
-const CtaCard = ({ title, text, cta, icon, children }: CtaCardProps) => {
+const CtaCard = ({
+  title,
+  text,
+  minHeight,
+  cta,
+  icon,
+  children,
+}: CtaCardProps) => {
   return (
     <Card
       style={{
@@ -29,7 +36,7 @@ const CtaCard = ({ title, text, cta, icon, children }: CtaCardProps) => {
       }}
     >
       <CardMedia>{children}</CardMedia>
-      <CardContent>
+      <CardContent sx={{ minHeight: minHeight }}>
         {icon}
         <Typography variant='h6' gutterBottom>
           {title}
