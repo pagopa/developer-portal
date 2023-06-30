@@ -3,12 +3,13 @@ import { API } from '@stoplight/elements';
 import '@stoplight/elements/styles.min.css';
 
 type ApiViewerProps = {
-  url: string;
+  specURL: string;
 };
-export const ApiViewer: FC<ApiViewerProps> = ({ url }) => {
+export const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   return (
     <API
-      apiDescriptionUrl={url}
+      apiDescriptionUrl={specURL}
+      hideTryIt
       router={typeof window === 'undefined' ? 'memory' : 'history'}
     />
   );

@@ -8,7 +8,7 @@ export function getOverviewPaths(): readonly string[] {
   return overviews.map((overview) => overview.path);
 }
 
-export function getApisPaths(): readonly string[] {
+export function getApiPaths(): readonly string[] {
   return apis.map((api) => api.path);
 }
 

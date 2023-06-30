@@ -5,6 +5,6 @@ export type Product = {
     readonly overview?: Path;
     readonly quickStart?: Path;
     readonly guides?: Path;
-    readonly apis?: Path;
+    readonly api?: Path;
   };
 } & Path;

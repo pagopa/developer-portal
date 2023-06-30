@@ -1,1 +1,1 @@
-export * from './ApiViewer';
+export * from './atoms/ApiViewer';
