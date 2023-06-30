@@ -8,6 +8,9 @@ import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components
 import { Product } from '@/lib/types/product';
 import News from '@/components/organisms/News/News';
 import { Tutorial } from '@/lib/types/tutorialData';
+import StartInfo from '@/components/organisms/StartInfo/StartInfo';
+import { translations } from '@/_contents/translations';
+import { FlagOutlined, FolderOutlined } from '@mui/icons-material';
 
 type Params = {
   productSlug: string;
@@ -54,6 +57,7 @@ const OverviewPage = ({
   path,
   tutorials,
 }: OverviewPageProps) => {
+  const { shared, overview } = translations;
   const { palette } = useTheme();
 
   return (
@@ -71,6 +75,34 @@ const OverviewPage = ({
         showCarouselMobile={false}
         theme={palette.mode}
         title={feature.title}
+      />
+      <StartInfo
+        title={overview.startInfo.title}
+        cta={overview.startInfo.cta}
+        cards={[
+          {
+            title: overview.startInfo.quickStart.title,
+            text: overview.startInfo.quickStart.text,
+            cta: {
+              href: overview.startInfo.quickStart.href,
+              label: shared.moreInfo,
+            },
+            icon: (
+              <FlagOutlined color='primary' sx={{ width: 40, height: 40 }} />
+            ),
+          },
+          {
+            title: overview.startInfo.quickStart.title,
+            text: overview.startInfo.quickStart.text,
+            cta: {
+              href: overview.startInfo.quickStart.href,
+              label: shared.moreInfo,
+            },
+            icon: (
+              <FolderOutlined color='primary' sx={{ width: 40, height: 40 }} />
+            ),
+          },
+        ]}
       />
       {product.subpaths.tutorial && tutorials && (
         <News
