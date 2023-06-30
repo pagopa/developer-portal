@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-expression-statements */
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
 
