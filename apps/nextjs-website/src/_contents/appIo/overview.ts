@@ -43,4 +43,18 @@ export const appIoOverview: OverviewData = {
     ],
   },
   tutorials: tutorials,
+  startCards: [
+    {
+      title: 'Quick Start',
+      text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
+      href: '/',
+      iconName: 'FlagOutlined',
+    },
+    {
+      title: 'Documentazione Api',
+      text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
+      href: '/',
+      iconName: 'FolderOutlined',
+    },
+  ],
 };

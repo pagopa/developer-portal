@@ -35,6 +35,12 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly items: FeatureItem[];
   };
+  readonly startCards?: {
+    readonly title: string;
+    readonly text: string;
+    readonly href: string;
+    readonly iconName: string;
+  }[];
   readonly tutorials?: readonly Tutorial[];
 } & LayoutProps;
 
@@ -51,13 +57,14 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 
 const OverviewPage = ({
   hero,
+  startCards,
   feature,
   product,
   products,
   path,
   tutorials,
 }: OverviewPageProps) => {
-  const { shared, overview } = translations;
+  const { overview } = translations;
   const { palette } = useTheme();
 
   return (
@@ -76,34 +83,13 @@ const OverviewPage = ({
         theme={palette.mode}
         title={feature.title}
       />
-      <StartInfo
-        title={overview.startInfo.title}
-        cta={overview.startInfo.cta}
-        cards={[
-          {
-            title: overview.startInfo.quickStart.title,
-            text: overview.startInfo.quickStart.text,
-            cta: {
-              href: overview.startInfo.quickStart.href,
-              label: shared.moreInfo,
-            },
-            icon: (
-              <FlagOutlined color='primary' sx={{ width: 40, height: 40 }} />
-            ),
-          },
-          {
-            title: overview.startInfo.quickStart.title,
-            text: overview.startInfo.quickStart.text,
-            cta: {
-              href: overview.startInfo.quickStart.href,
-              label: shared.moreInfo,
-            },
-            icon: (
-              <FolderOutlined color='primary' sx={{ width: 40, height: 40 }} />
-            ),
-          },
-        ]}
-      />
+      {startCards && (
+        <StartInfo
+          title={overview.startInfo.title}
+          cta={overview.startInfo.cta}
+          cards={startCards}
+        />
+      )}
       {product.subpaths.tutorial && tutorials && (
         <News
           tutorialPath={product.subpaths.tutorial}
