@@ -1,10 +1,10 @@
-import { pagoPA } from '@/_contents/pagoPa/pagoPA';
+import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { GuidesData } from '@/lib/types/guidesData';
 import { pagoPaGuidesPath } from '@/_contents/pagoPa/guidesPath';
 
 export const pagoPaGuides: GuidesData = {
   ...pagoPaGuidesPath,
-  product: pagoPA,
+  product: pagoPa,
   abstract: {
     title: 'La piattaforma per gestire e rendicontare i pagamenti',
     description:
