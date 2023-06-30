@@ -1,14 +1,18 @@
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
-import CtaCard, { CtaCardProps } from '@/components/atoms/CtaCard/CtaCard';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { MenuBook } from '@mui/icons-material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import StartCards from '@/components/molecules/StartCards/StartCards';
 
 type StartInfoProps = {
   title: string;
-  cards: CtaCardProps[];
+  cards: {
+    title: string;
+    text: string;
+    href: string;
+    iconName: string;
+  }[];
   cta?: {
     text: string;
     label: string;
@@ -22,17 +26,14 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
     <>
       <Box py={11} sx={{ backgroundColor: theme.palette.background.default }}>
         <SectionTitle title={title} />
-        <EContainer>
-          <Box pb={4}>
-            <Grid container spacing={2}>
-              {cards.map((props, index) => (
-                <Grid key={index} item xs={12} md>
-                  <CtaCard {...props} />
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </EContainer>
+        <StartCards
+          cards={cards.map((card) => ({
+            title: card.title,
+            text: card.text,
+            href: card.href,
+            iconName: card.iconName,
+          }))}
+        ></StartCards>
       </Box>
       {cta && (
         <Box py={4} sx={{ backgroundColor: theme.palette.background.default }}>
