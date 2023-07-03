@@ -10,6 +10,7 @@ export const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     <API
       apiDescriptionUrl={specURL}
       hideTryIt
+      hideExport
       router={typeof window === 'undefined' ? 'memory' : 'history'}
     />
   );
