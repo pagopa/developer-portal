@@ -8,7 +8,6 @@ const jestConfig: JestConfigWithTsJest = {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
-  // TODO Add coverage threshold here
 };
 
 export default jestConfig;
