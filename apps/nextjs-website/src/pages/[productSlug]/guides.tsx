@@ -1,6 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { getGuides, getGuidesPaths, getProducts } from '@/lib/api';
+import { getGuideLists, getGuideListsPaths, getProducts } from '@/lib/api';
 import {
   GuidesSection,
   GuidesSectionProps,
@@ -14,7 +14,7 @@ type Params = {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: getGuidesPaths() as string[],
+  paths: getGuideListsPaths() as string[],
   fallback: false,
 });
 
@@ -30,7 +30,7 @@ export type GuidesPageProps = {
 export const getStaticProps: GetStaticProps<GuidesPageProps, Params> = ({
   params,
 }): GetStaticPropsResult<GuidesPageProps> => {
-  const props = getGuides(params?.productSlug);
+  const props = getGuideLists(params?.productSlug);
   if (props) {
     return { props: { ...props, products: getProducts().concat() } };
   } else {
@@ -50,9 +50,6 @@ const GuidesPage = ({
   return (
     <Layout products={products} product={product} path={path}>
       <>
-        {/*<Breadcrumbs size="md">
-          <Link />
-        </Breadcrumbs>*/}
         {abstract && (
           <Abstract
             description={abstract?.description}
