@@ -33,7 +33,7 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
             href: card.href,
             iconName: card.iconName,
           }))}
-        ></StartCards>
+        />
       </Box>
       {cta && (
         <Box py={4} sx={{ backgroundColor: theme.palette.background.default }}>

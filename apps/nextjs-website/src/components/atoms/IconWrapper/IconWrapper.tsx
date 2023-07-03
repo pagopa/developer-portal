@@ -12,14 +12,14 @@ type IconName = keyof typeof Icons;
 
 const IconWrapper = ({
   iconName,
-  color = 'primary',
+  color = 'primary.main',
   size = 40,
 }: IconWrapperProps) => {
   const props = {
     color,
     sx: { width: size, height: size },
   };
-  return <EIcon icon={iconName as IconName} {...props}></EIcon>;
+  return <EIcon icon={iconName as IconName} {...props} />;
 };
 
 export default IconWrapper;
