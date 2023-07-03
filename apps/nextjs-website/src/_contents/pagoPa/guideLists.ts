@@ -31,6 +31,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
+          mobileImagePath: '/images/saci-mobile.png',
         },
         {
           title: 'SANP 3.4.1',
@@ -49,6 +50,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/sanp.png',
+          mobileImagePath: '/images/sanp-mobile.png',
         },
       ],
     },
@@ -71,7 +73,8 @@ export const pagoPaGuideLists: GuideListsData = {
             icon: '',
             title: 'Vai al manuale',
           },
-          imagePath: '/images/avvisi.png',
+          imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
+          mobileImagePath: '/images/avvisi-mobile.png',
         },
         {
           title: 'Linee Guida Brand pagoPA',
@@ -90,6 +93,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
+          mobileImagePath: '/images/saci-mobile.png',
         },
         {
           title: 'Portale delle Adesioni',
@@ -105,6 +109,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
+          mobileImagePath: '/images/saci-mobile.png',
         },
       ],
     },

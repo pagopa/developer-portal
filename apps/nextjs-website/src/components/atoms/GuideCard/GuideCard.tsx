@@ -21,18 +21,20 @@ type Description = {
 
 export type GuideCardProps = {
   description: Description;
-  link: LinkButtonProps;
   imagePath: string;
   layout?: 'left' | 'center' | 'right';
+  link: LinkButtonProps;
+  mobileImagePath: string;
   title: string;
 };
 
 export const GuideCard: FC<GuideCardProps> = ({
   description,
-  link,
   imagePath,
-  title,
   layout = 'center',
+  link,
+  mobileImagePath,
+  title,
 }: GuideCardProps) => {
   const { spacing } = useTheme();
 
@@ -59,7 +61,13 @@ export const GuideCard: FC<GuideCardProps> = ({
           width: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: { xs: '100%', lg: '50%' },
+          }}
+        >
           <CardContent>
             <Typography variant='h6' mb={spacing(1.75)}>
               {title}
@@ -71,7 +79,24 @@ export const GuideCard: FC<GuideCardProps> = ({
             <LinkButton {...link}></LinkButton>
           </CardContent>
         </Box>
-        <CardMedia component='img' image={imagePath} alt={title} />
+        <CardMedia
+          sx={{
+            display: { xs: 'block', lg: 'none' },
+            width: { xs: '100%', lg: '50%' },
+          }}
+          component='img'
+          image={mobileImagePath}
+          alt={title}
+        />
+        <CardMedia
+          sx={{
+            display: { xs: 'none', lg: 'block' },
+            width: { xs: '100%', lg: '50%' },
+          }}
+          component='img'
+          image={imagePath}
+          alt={title}
+        />
       </Card>
     </Stack>
   );
