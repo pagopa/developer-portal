@@ -27,8 +27,7 @@ export const ioSignGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/guida-tecnica.png',
           mobileImagePath: '/images/guida-tecnica-mobile.png',

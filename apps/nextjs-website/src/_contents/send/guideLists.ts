@@ -27,8 +27,7 @@ export const sendGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
           mobileImagePath: '/images/manuale-operativo-mobile.png',
@@ -46,8 +45,7 @@ export const sendGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/approfondimenti-integrazione.png',
           mobileImagePath: '/images/approfondimenti-integrazione-mobile.png',
@@ -65,8 +63,7 @@ export const sendGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai alla guida',
+            label: 'Vai alla guida',
           },
           imagePath: '/images/modello-integrazione.png',
           mobileImagePath: '/images/modello-integrazione-mobile.png',

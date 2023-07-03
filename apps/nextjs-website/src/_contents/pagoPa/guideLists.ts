@@ -27,8 +27,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
           mobileImagePath: '/images/saci-mobile.png',
@@ -46,8 +45,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/sanp.png',
           mobileImagePath: '/images/sanp-mobile.png',
@@ -70,8 +68,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
           mobileImagePath: '/images/avvisi-mobile.png',
@@ -89,8 +86,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
           mobileImagePath: '/images/saci-mobile.png',
@@ -105,8 +101,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            icon: '',
-            title: 'Vai al manuale',
+            label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
           mobileImagePath: '/images/saci-mobile.png',
