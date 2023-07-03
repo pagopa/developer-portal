@@ -24,6 +24,9 @@ export const translations = {
         'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
       ctaLabel: 'Vedi tutti i tutorial',
     },
+    relatedLinks: {
+      title: 'LINK UTILI',
+    },
   },
   footer: {
     companyLink: {

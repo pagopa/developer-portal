@@ -10,6 +10,8 @@ import News from '@/components/organisms/News/News';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
+import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import { Path } from '@/lib/types/path';
 
 type Params = {
   productSlug: string;
@@ -41,6 +43,7 @@ export type OverviewPageProps = {
     readonly iconName: string;
   }[];
   readonly tutorials?: readonly Tutorial[];
+  readonly relatedLinks?: Path[];
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
@@ -62,6 +65,7 @@ const OverviewPage = ({
   products,
   path,
   tutorials,
+  relatedLinks,
   bannerLinks,
 }: OverviewPageProps) => {
   const { overview } = translations;
@@ -99,6 +103,15 @@ const OverviewPage = ({
         <News
           tutorialPath={product.subpaths.tutorial}
           tutorials={[...tutorials]}
+        />
+      )}
+      {relatedLinks && (
+        <RelatedLinks
+          title={overview.relatedLinks.title}
+          links={relatedLinks.map(({ path, name }) => ({
+            text: name,
+            href: path,
+          }))}
         />
       )}
     </Layout>
