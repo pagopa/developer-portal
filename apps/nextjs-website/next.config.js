@@ -11,6 +11,7 @@ const nextConfig = {
   transpilePackages: [
     '@pagopa/pagopa-editorial-components',
     '@pagopa/mui-italia',
+    '@mui/material'
   ],
   trailingSlash: false,
   images: {
