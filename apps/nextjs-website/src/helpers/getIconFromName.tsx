@@ -14,9 +14,12 @@ export const getIconFromName = ({
   fill = 'black',
   size = 12,
 }: IconFromNameParams) => {
-  if (type === 'HeadsetMic')
-    return <HeadsetMicIcon sx={{ color: fill, fontSize: size }} />;
-  if (type === 'Feedback')
-    return <FeedbackIcon sx={{ color: fill, fontSize: size }} />;
-  return <></>;
+  switch (type) {
+    case 'HeadsetMic':
+      return <HeadsetMicIcon sx={{ color: fill, fontSize: size }} />;
+    case 'Feedback':
+      return <FeedbackIcon sx={{ color: fill, fontSize: size }} />;
+    default:
+      return <></>;
+  }
 };
