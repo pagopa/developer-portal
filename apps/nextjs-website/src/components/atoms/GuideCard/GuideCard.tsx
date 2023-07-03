@@ -9,10 +9,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
-import {
-  LinkButton,
-  LinkButtonProps,
-} from '@/components/atoms/NavigateButton/LinkButton';
+import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 
 type Description = {
   readonly listItems: ReadonlyArray<string>;
@@ -23,7 +20,10 @@ export type GuideCardProps = {
   description: Description;
   imagePath: string;
   layout?: 'left' | 'center' | 'right';
-  link: LinkButtonProps;
+  link: {
+    label: string;
+    href: string;
+  };
   mobileImagePath: string;
   title: string;
 };
@@ -68,15 +68,28 @@ export const GuideCard: FC<GuideCardProps> = ({
             width: { xs: '100%', lg: '50%' },
           }}
         >
-          <CardContent>
-            <Typography variant='h6' mb={spacing(1.75)}>
-              {title}
-            </Typography>
-            <Typography variant='subtitle2' color='text.primary'>
-              {description.title}
-            </Typography>
-            <UnorderedList listItems={description?.listItems} />
-            <LinkButton {...link}></LinkButton>
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box>
+              <Typography variant='h6' mb={spacing(1.75)}>
+                {title}
+              </Typography>
+              <Typography variant='subtitle2' color='text.primary'>
+                {description.title}
+              </Typography>
+              <UnorderedList listItems={description?.listItems} />
+            </Box>
+            <LinkButton
+              label={link.label}
+              href={link.href}
+              size={14}
+            ></LinkButton>
           </CardContent>
         </Box>
         <CardMedia
