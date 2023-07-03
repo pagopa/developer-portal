@@ -35,7 +35,7 @@ module.exports = {
     },
     {
       // Exclude tests from this rule, allowing us to use describe() and it()
-      files: ['**/__tests__/*.ts'],
+      files: ['**/__tests__/**/*.ts'],
       rules: {
         'functional/no-expression-statements': 'off',
       },
