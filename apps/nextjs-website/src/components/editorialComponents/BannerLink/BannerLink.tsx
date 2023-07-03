@@ -20,7 +20,7 @@ export const BannerLink = (props: BannerLinkProps) => {
             <Typography color={textColor} variant='h6'>
               {title}
             </Typography>
-            <Typography color={textColor} variant='body2'>
+            <Typography color={textColor} variant='body2' component='div'>
               <div dangerouslySetInnerHTML={{ __html: body }} />
             </Typography>
           </Stack>
