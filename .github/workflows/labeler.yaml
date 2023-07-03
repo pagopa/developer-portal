@@ -1,0 +1,27 @@
+name: Pull Request Labeler
+
+on: pull_request
+
+jobs:
+  labeling:
+
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/labeler@9fcb2c2f5584144ca754f8bfe8c6f81e77753375 # v4.1.0
+        name: Add labels to PR
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yaml
+          sync-labels: true
+
+      - uses: pagopa/github-actions-template/check-pr-size@d91a1fd0b913c9830589be5d86cdb71c90813fae # v1.5.4
+        name: Add size label to PR
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          ignored_files: 'package-lock.json, docs/'
+          min_size: 200
+          max_size: 400
