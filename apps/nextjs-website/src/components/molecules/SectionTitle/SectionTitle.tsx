@@ -28,7 +28,7 @@ const SectionTitle = ({
         alignItems='flex-start'
       >
         {title && (
-          <Typography variant='h4' mb={2} width={'100%'}>
+          <Typography variant='h4' mb={2} width='100%'>
             {title}
           </Typography>
         )}
