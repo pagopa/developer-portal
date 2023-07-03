@@ -3,11 +3,14 @@ import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
 import React, { ReactNode, FC } from 'react';
+import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
+import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 
 export type LayoutProps = {
   readonly products: Product[];
   readonly product?: Product;
   readonly path?: string;
+  readonly bannerLinks?: BannerLinkProps[];
 };
 
 type LayoutPropsWithChildren = {
@@ -18,6 +21,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   path,
   product,
   products,
+  bannerLinks,
   children,
 }) => (
   <>
@@ -26,6 +30,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
       {product && path && <ProductHeader product={product} path={path} />}
     </header>
     <main>{children}</main>
+    {bannerLinks && <BannerLinks banners={bannerLinks} />}
     <SiteFooter />
   </>
 );
