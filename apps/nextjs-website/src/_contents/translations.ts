@@ -7,8 +7,17 @@ export const translations = {
   },
   shared: {
     readTutorial: 'Leggi il tutorial',
+    moreInfo: 'Scopri di più',
   },
   overview: {
+    startInfo: {
+      cta: {
+        text: 'Scopri tutti i dettagli dell’integrazione',
+        label: 'Leggi la guida tecnica',
+        href: '/',
+      },
+      title: 'Si comincia da qui',
+    },
     tutorial: {
       title: 'Esplora i tutorial',
       subtitle:

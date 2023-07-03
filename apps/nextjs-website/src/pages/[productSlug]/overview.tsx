@@ -8,6 +8,8 @@ import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components
 import { Product } from '@/lib/types/product';
 import News from '@/components/organisms/News/News';
 import { Tutorial } from '@/lib/types/tutorialData';
+import StartInfo from '@/components/organisms/StartInfo/StartInfo';
+import { translations } from '@/_contents/translations';
 
 type Params = {
   productSlug: string;
@@ -32,6 +34,12 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly items: FeatureItem[];
   };
+  readonly startCards?: {
+    readonly title: string;
+    readonly text: string;
+    readonly href: string;
+    readonly iconName: string;
+  }[];
   readonly tutorials?: readonly Tutorial[];
 } & LayoutProps;
 
@@ -48,6 +56,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 
 const OverviewPage = ({
   hero,
+  startCards,
   feature,
   product,
   products,
@@ -55,6 +64,7 @@ const OverviewPage = ({
   tutorials,
   bannerLinks,
 }: OverviewPageProps) => {
+  const { overview } = translations;
   const { palette } = useTheme();
 
   return (
@@ -78,6 +88,13 @@ const OverviewPage = ({
         theme={palette.mode}
         title={feature.title}
       />
+      {startCards && (
+        <StartInfo
+          title={overview.startInfo.title}
+          cta={overview.startInfo.cta}
+          cards={startCards}
+        />
+      )}
       {product.subpaths.tutorial && tutorials && (
         <News
           tutorialPath={product.subpaths.tutorial}
