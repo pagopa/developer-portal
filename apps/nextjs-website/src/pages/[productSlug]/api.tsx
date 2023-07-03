@@ -42,7 +42,7 @@ const ApisPage = ({
     path={path}
     bannerLinks={bannerLinks}
   >
-    <ApiViewer specURL={specURL} />
+    <ApiViewer specURL={specURL} product={product} />
   </Layout>
 );
 
