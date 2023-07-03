@@ -1,9 +1,9 @@
 import { Product } from '@/lib/types/product';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
-import { pagoPaGuidesPath } from '@/_contents/pagoPa/guidesPath';
+import { pagoPaGuideListsPath } from '@/_contents/pagoPa/guideListsPath';
 
 export const pagoPa: Product = {
   name: 'Piattaforma pagoPA',
   path: '/pago-pa',
-  subpaths: { overview: pagoPaOverviewPath, guides: pagoPaGuidesPath },
+  subpaths: { overview: pagoPaOverviewPath, guides: pagoPaGuideListsPath },
 };
