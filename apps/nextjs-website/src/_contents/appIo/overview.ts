@@ -1,6 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/_contents/appIo/appIO';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
+import { tutorials } from '@/_contents/appIo/tutorials';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
@@ -41,6 +42,7 @@ export const appIoOverview: OverviewData = {
       },
     ],
   },
+  tutorials: tutorials,
   bannerLinks: [
     {
       theme: 'dark',

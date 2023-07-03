@@ -6,6 +6,8 @@ import { Feature } from '@pagopa/pagopa-editorial-components';
 import { useTheme } from '@mui/material';
 import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components/Feature/FeatureStackItem';
 import { Product } from '@/lib/types/product';
+import News from '@/components/organisms/News/News';
+import { Tutorial } from '@/lib/types/tutorialData';
 
 type Params = {
   productSlug: string;
@@ -30,6 +32,7 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly items: FeatureItem[];
   };
+  readonly tutorials?: readonly Tutorial[];
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
@@ -49,6 +52,7 @@ const OverviewPage = ({
   product,
   products,
   path,
+  tutorials,
   bannerLinks,
 }: OverviewPageProps) => {
   const { palette } = useTheme();
@@ -74,6 +78,12 @@ const OverviewPage = ({
         theme={palette.mode}
         title={feature.title}
       />
+      {product.subpaths.tutorial && tutorials && (
+        <News
+          tutorialPath={product.subpaths.tutorial}
+          tutorials={[...tutorials]}
+        />
+      )}
     </Layout>
   );
 };
