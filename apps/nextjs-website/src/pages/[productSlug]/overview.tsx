@@ -10,7 +10,6 @@ import News from '@/components/organisms/News/News';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
-import { FlagOutlined, FolderOutlined } from '@mui/icons-material';
 
 type Params = {
   productSlug: string;
