@@ -8,7 +8,7 @@ export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
   product: appIO,
   hero: {
-    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio.',
+    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
     backgroundImage: '/images/hero.jpg',
     title: 'Raccogli i servizi del tuo ente in unico spazio',
     subtitle:
@@ -67,6 +67,20 @@ export const appIoOverview: OverviewData = {
       text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
       href: '/',
       iconName: 'FolderOutlined',
+    },
+  ],
+  bannerLinks: [
+    {
+      theme: 'dark',
+      title: 'Hai bisogno di aiuto?',
+      decoration: 'HeadsetMic',
+      body: "Scrivi un'email in cui descrivi il tuo problema o dubbio all'indirizzo <strong>onboarding@io.italia.it</strong>",
+    },
+    {
+      theme: 'light',
+      title: 'Dicci cosa ne pensi',
+      decoration: 'Feedback',
+      body: "Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio Github</strong> dell'app IO",
     },
   ],
 };
