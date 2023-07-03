@@ -31,6 +31,7 @@ export const sendGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
+          mobileImagePath: '/images/manuale-operativo-mobile.png',
         },
         {
           title: 'Knowledge-base di Piattaforma Notifiche',
@@ -49,6 +50,7 @@ export const sendGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/approfondimenti-integrazione.png',
+          mobileImagePath: '/images/approfondimenti-integrazione-mobile.png',
         },
         {
           title: 'Modello di integrazione di Piattaforma Notifiche Digitali',
@@ -67,6 +69,7 @@ export const sendGuideLists: GuideListsData = {
             title: 'Vai alla guida',
           },
           imagePath: '/images/modello-integrazione.png',
+          mobileImagePath: '/images/modello-integrazione-mobile.png',
         },
       ],
     },
