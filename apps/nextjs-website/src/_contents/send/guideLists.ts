@@ -47,8 +47,9 @@ export const sendGuideLists: GuideListsData = {
             href: '#',
             label: 'Vai al manuale',
           },
-          imagePath: '/images/approfondimenti-integrazione.png',
-          mobileImagePath: '/images/approfondimenti-integrazione-mobile.png',
+          imagePath: '/images/approfondimenti-sull-integrazione.png',
+          mobileImagePath:
+            '/images/approfondimenti-sull-integrazione-mobile.png',
         },
         {
           title: 'Modello di integrazione di Piattaforma Notifiche Digitali',
@@ -65,8 +66,8 @@ export const sendGuideLists: GuideListsData = {
             href: '#',
             label: 'Vai alla guida',
           },
-          imagePath: '/images/modello-integrazione.png',
-          mobileImagePath: '/images/modello-integrazione-mobile.png',
+          imagePath: '/images/modello-di-integrazione.png',
+          mobileImagePath: '/images/modello-di-integrazione-mobile.png',
         },
       ],
     },
