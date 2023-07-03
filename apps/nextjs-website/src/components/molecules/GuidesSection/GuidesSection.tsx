@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   GuideCard,
   GuideCardProps,
-} from '@/components/atoms/GuideCard/GuideCard';
+} from '@/components/molecules/GuideCard/GuideCard';
 import { Typography, useTheme } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
