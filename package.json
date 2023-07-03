@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
+    "download-docs": "cd docs/gitbook-export && ./fetch-docs.sh",
     "prepare": "husky install",
     "clean": "turbo run clean",
     "compile": "turbo run compile",
