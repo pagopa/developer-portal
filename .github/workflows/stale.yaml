@@ -1,0 +1,28 @@
+name: Mark stale pull requests
+
+on:
+  schedule:
+    - cron: '0 2 1/7 * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write # only for delete-branch option
+
+    env:
+      DAYS_BEFORE_STALE: 60
+      DAYS_BEFORE_CLOSE: 14
+
+    steps:
+      - uses: actions/stale@1160a2240286f5da8ec72b1c0816ce2481aabf84 # v8.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-pr-stale: ${{ env.DAYS_BEFORE_STALE }}
+          days-before-pr-close: ${{ env.DAYS_BEFORE_CLOSE }}
+          stale-pr-message: This pull request is stale because it has been open for ${{ env.DAYS_BEFORE_STALE }} days with no activity. If the pull request is still valid, please update it within ${{ env.DAYS_BEFORE_CLOSE }} days to keep it open or merge it, otherwise it will be closed automatically.
+          close-pr-message: This pull request was closed because it has been inactive for ${{ env.DAYS_BEFORE_CLOSE }} days since being marked as stale.
+          stale-pr-label: 'stale'
+          remove-stale-when-updated: true
+          delete-branch: true
