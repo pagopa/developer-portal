@@ -6,6 +6,10 @@ import {
 } from '@/_contents/products';
 import { Product } from './types/product';
 
+export function getProducts(): readonly Product[] {
+  return products;
+}
+
 export function getGuidesPaths(): readonly string[] {
   return productsGuides.map((productGuides) => productGuides.path);
 }
@@ -16,9 +20,6 @@ export function getOverviewPaths(): readonly string[] {
 
 export function getApiPaths(): readonly string[] {
   return apis.map((api) => api.path);
-}
-export function getProducts(): readonly Product[] {
-  return products;
 }
 
 export function getGuides(productSlug?: string) {

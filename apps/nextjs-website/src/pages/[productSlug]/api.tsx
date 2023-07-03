@@ -29,9 +29,20 @@ export const getStaticProps: GetStaticProps<ApiPageProps, Params> = ({
   }
 };
 
-const ApisPage = ({ products, path, product, specURL }: ApiPageProps) => (
-  <Layout products={products} product={product} path={path}>
-    <ApiViewer specURL={specURL} product={product} />
+const ApisPage = ({
+  products,
+  path,
+  product,
+  specURL,
+  bannerLinks,
+}: ApiPageProps) => (
+  <Layout
+    products={products}
+    product={product}
+    path={path}
+    bannerLinks={bannerLinks}
+  >
+    <ApiViewer specURL={specURL} />
   </Layout>
 );
 
