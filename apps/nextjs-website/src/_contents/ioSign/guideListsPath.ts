@@ -1,6 +1,6 @@
 import { Path } from '@/lib/types/path';
 
-export const ioSignGuidesPath: Path = {
+export const ioSignGuideListsPath: Path = {
   name: 'Guide e manuali',
-  path: '/firma-con-io/guides',
+  path: '/io-sign/guides',
 };

@@ -1,9 +1,9 @@
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { GuidesData } from '@/lib/types/guidesData';
-import { ioSignGuidesPath } from '@/_contents/ioSign/guidesPath';
+import { GuideListsData } from '@/lib/types/guideListsData';
+import { ioSignGuideListsPath } from '@/_contents/ioSign/guideListsPath';
 
-export const ioSignGuides: GuidesData = {
-  ...ioSignGuidesPath,
+export const ioSignGuideLists: GuideListsData = {
+  ...ioSignGuideListsPath,
   product: ioSign,
   abstract: {
     title: 'Richiedi la firma di contratti e documenti',

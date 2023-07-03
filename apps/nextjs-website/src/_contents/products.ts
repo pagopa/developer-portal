@@ -1,7 +1,7 @@
 import { appIoOverview } from '@/_contents/appIo/overview';
 import { ioSignOverview } from '@/_contents/ioSign/overview';
 import { pagoPaOverview } from '@/_contents/pagoPa/overview';
-import { ioSignGuides } from '@/_contents/ioSign/guides';
+import { ioSignGuideLists } from '@/_contents/ioSign/guideLists';
 import { pagoPaGuideLists } from '@/_contents/pagoPa/guideLists';
 import { appIO } from './appIo/appIO';
 import { ioSign } from './ioSign/ioSign';
@@ -12,5 +12,5 @@ export const quickStarts = [];
 export const apis = [];
 export const tutorials = [];
 export const tools = [];
-export const guideLists = [pagoPaGuideLists, ioSignGuides];
+export const guideLists = [pagoPaGuideLists, ioSignGuideLists];
 export const products = [appIO, ioSign, pagoPa];
