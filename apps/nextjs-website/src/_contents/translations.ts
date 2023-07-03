@@ -33,7 +33,7 @@ export const translations = {
           },
           {
             ariaLabel: 'Link: vai al sito Instagram di PagoPA S.p.A.',
-            href: 'https://www.instagram.com/pagopa/',
+            href: 'https://www.instagram.com/pagopaspa/',
             icon: 'Instagram',
           },
         ],
