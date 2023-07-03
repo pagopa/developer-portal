@@ -1,9 +1,9 @@
 import { Product } from '@/lib/types/product';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
-import { sendGuidesPath } from '@/_contents/send/guidesPath';
+import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 
 export const send: Product = {
   name: 'Piattaforma Notifiche',
-  path: '/piattaforma-notifiche',
-  subpaths: { overview: sendOverviewPath, guides: sendGuidesPath },
+  path: '/send',
+  subpaths: { overview: sendOverviewPath, guides: sendGuideListsPath },
 };

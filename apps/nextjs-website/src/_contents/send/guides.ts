@@ -1,9 +1,9 @@
 import { send } from '@/_contents/send/send';
 import { GuidesData } from '@/lib/types/guidesData';
-import { sendGuidesPath } from '@/_contents/send/guidesPath';
+import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 
-export const sendGuides: GuidesData = {
-  ...sendGuidesPath,
+export const sendGuideLists: GuidesData = {
+  ...sendGuideListsPath,
   product: send,
   abstract: {
     title: 'Guide e manuali',

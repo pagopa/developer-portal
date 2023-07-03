@@ -165,7 +165,7 @@ export const translations = {
           },
           {
             ariaLabel: 'Vai al link: Piattaforma Notifiche Digitali',
-            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/send-digitali',
             label: 'Piattaforma Notifiche Digitali',
             linkType: 'external',
           },
