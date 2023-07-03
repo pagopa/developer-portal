@@ -6,5 +6,9 @@ import { appIoTutorialPath } from '@/_contents/appIo/tutorialPath';
 export const appIO: Product = {
   name: 'App IO',
   path: '/app-io',
-  subpaths: { overview: appIoOverviewPath, api: appIoApiPath, tutorial: appIoTutorialPath },
+  subpaths: {
+    overview: appIoOverviewPath,
+    api: appIoApiPath,
+    tutorial: appIoTutorialPath,
+  },
 };

@@ -3,8 +3,8 @@ import {
   overviews,
   productsGuides,
   products,
-} from "@/_contents/products";
-import { Product } from "./types/product";
+} from '@/_contents/products';
+import { Product } from './types/product';
 
 export function getGuidesPaths(): readonly string[] {
   return productsGuides.map((productGuides) => productGuides.path);
