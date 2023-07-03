@@ -63,12 +63,18 @@ const OverviewPage = ({
   products,
   path,
   tutorials,
+  bannerLinks,
 }: OverviewPageProps) => {
   const { overview } = translations;
   const { palette } = useTheme();
 
   return (
-    <Layout products={products} product={product} path={path}>
+    <Layout
+      products={products}
+      product={product}
+      path={path}
+      bannerLinks={bannerLinks}
+    >
       <Hero
         background={hero.backgroundImage}
         title={hero.title}

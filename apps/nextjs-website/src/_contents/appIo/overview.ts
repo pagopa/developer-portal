@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/_contents/appIo/appIO';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { tutorials } from './tutorials';
+import { tutorials } from '@/_contents/appIo/tutorials';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
@@ -55,6 +55,20 @@ export const appIoOverview: OverviewData = {
       text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
       href: '/',
       iconName: 'FolderOutlined',
+    },
+  ],
+  bannerLinks: [
+    {
+      theme: 'dark',
+      title: 'Hai bisogno di aiuto?',
+      decoration: 'HeadsetMic',
+      body: "Scrivi un'email in cui descrivi il tuo problema o dubbio all'indirizzo <strong>onboarding@io.italia.it</strong>",
+    },
+    {
+      theme: 'light',
+      title: 'Dicci cosa ne pensi',
+      decoration: 'Feedback',
+      body: "Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio Github</strong> dell'app IO",
     },
   ],
 };

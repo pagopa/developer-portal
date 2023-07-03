@@ -1,0 +1,5 @@
+# The assignee is the author of the PR
+addAssignees: author
+
+# Assign also draft PR
+runOnDraft: true
