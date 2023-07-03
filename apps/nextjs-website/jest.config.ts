@@ -1,14 +1,14 @@
-import nextJest from 'next/jest';
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-const createJestConfig = nextJest({
-  dir: './',
-});
-
-// Add any custom config to be passed to Jest
-const customJestConfig = {
-  moduleDirectories: ['node_modules', '<rootDir>/'],
-  moduleFileExtensions: ['ts', 'tsx', 'js'],
-  testEnvironment: 'jest-environment-jsdom',
+const jestConfig: JestConfigWithTsJest = {
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/__tests__/**/*.+(ts|tsx)'],
+  moduleFileExtensions: ['ts', 'js', 'tsx'],
+  transform: {
+    // See the discussion https://github.com/vercel/next.js/issues/8663
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
+  },
+  // TODO Add coverage threshold here
 };
 
-export default createJestConfig(customJestConfig);
+export default jestConfig;
