@@ -31,6 +31,7 @@ export const ioSignGuideLists: GuideListsData = {
             title: 'Vai al manuale',
           },
           imagePath: '/images/guida-tecnica.png',
+          mobileImagePath: '/images/guida-tecnica-mobile.png',
         },
       ],
     },
