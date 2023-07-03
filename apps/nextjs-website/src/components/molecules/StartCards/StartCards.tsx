@@ -32,7 +32,7 @@ const StartCards = ({ cards }: StartCardsProps) => {
                     label: shared.moreInfo,
                     href,
                   }}
-                  icon={<IconWrapper iconName={iconName}></IconWrapper>}
+                  icon={<IconWrapper iconName={iconName} />}
                 />
               </Grid>
             );
