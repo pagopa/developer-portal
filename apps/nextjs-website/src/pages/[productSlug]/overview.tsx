@@ -12,6 +12,8 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { Path } from '@/lib/types/path';
+import { Guide } from '@/lib/types/guideData';
+import LinkCards from '@/components/organisms/LinkCards/LinkCards';
 
 type Params = {
   productSlug: string;
@@ -43,6 +45,7 @@ export type OverviewPageProps = {
     readonly iconName: string;
   }[];
   readonly tutorials?: readonly Tutorial[];
+  readonly postIntegration?: readonly Guide[];
   readonly relatedLinks?: Path[];
 } & LayoutProps;
 
@@ -65,6 +68,7 @@ const OverviewPage = ({
   products,
   path,
   tutorials,
+  postIntegration,
   relatedLinks,
   bannerLinks,
 }: OverviewPageProps) => {
@@ -103,6 +107,20 @@ const OverviewPage = ({
         <News
           tutorialPath={product.subpaths.tutorial}
           tutorials={[...tutorials]}
+        />
+      )}
+      {product.subpaths.guides && postIntegration && (
+        <LinkCards
+          title={overview.guide.title}
+          subtitle={overview.guide.subtitle}
+          ctaLabel={overview.guide.ctaLabel}
+          href={overview.guide.href}
+          cardsTitle={overview.guide.cardsTitle}
+          cards={postIntegration.map((guide) => ({
+            title: guide.title,
+            text: guide.description,
+            href: guide.path,
+          }))}
         />
       )}
       {relatedLinks && (

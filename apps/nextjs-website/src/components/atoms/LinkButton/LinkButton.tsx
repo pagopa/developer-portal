@@ -22,7 +22,6 @@ const LinkButton = ({ label, href, width }: LinkButtonProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        textTransform='capitalize'
         href={href}
         aria-label={label}
         title={label}
