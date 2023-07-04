@@ -23,7 +23,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
       <Box
         component={'div'}
         sx={{ display: { xs: 'none', md: 'block' } }}
-        ml={26}
+        ml={18}
         my={2}
       >
         <Breadcrumbs sx={{ paddingTop: 2 }} aria-label='breadcrumb'>
