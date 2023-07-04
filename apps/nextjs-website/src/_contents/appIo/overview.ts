@@ -1,7 +1,6 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/_contents/appIo/appIO';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { postIntegration } from '@/_contents/appIo/postIntegration';
 import { tutorials } from '@/_contents/appIo/tutorials';
 
 export const appIoOverview: OverviewData = {
@@ -44,7 +43,36 @@ export const appIoOverview: OverviewData = {
     ],
   },
   tutorials: tutorials,
-  postIntegration: postIntegration,
+  postIntegration: [
+    {
+      title: 'Tassa sui rifiuti (TARI)',
+      description:
+        'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI).',
+      path: '/app-io/guides/1',
+      name: 'guides 1',
+    },
+    {
+      title: "Carta d'Identità Elettronica",
+      description:
+        "Scheda e modelli di messaggi del servizio che riguarda la richiesta e l'emissione della Carta d'Identità Elettronica.",
+      path: '/app-io/guides/2',
+      name: 'guides 2',
+    },
+    {
+      title: 'Rimozione veicoli',
+      description:
+        'Scheda e modelli di messaggi del servizio che riguarda la rimozione, il deposito e il ritorno alla circolazione dei veicoli.',
+      path: '/app-io/guides/3',
+      name: 'guides 3',
+    },
+    {
+      title: 'Multe per violazioni codice della strada',
+      description:
+        'Scheda e modelli di messaggi del servizio che riguarda le violazioni al Codice della Strada.',
+      path: '/app-io/guides/4',
+      name: 'guides 4',
+    },
+  ],
   relatedLinks: [
     {
       path: '/',

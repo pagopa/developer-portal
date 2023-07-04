@@ -12,7 +12,6 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { Path } from '@/lib/types/path';
-import { Guide } from '@/lib/types/guideData';
 import LinkCards from '@/components/organisms/LinkCards/LinkCards';
 
 type Params = {
@@ -45,7 +44,12 @@ export type OverviewPageProps = {
     readonly iconName: string;
   }[];
   readonly tutorials?: readonly Tutorial[];
-  readonly postIntegration?: readonly Guide[];
+  readonly postIntegration?: readonly {
+    readonly title: string;
+    readonly description: string;
+    readonly path: string;
+    readonly name: string;
+  }[];
   readonly relatedLinks?: Path[];
 } & LayoutProps;
 
