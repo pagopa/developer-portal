@@ -23,7 +23,7 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
 
   security_headers_config {
     content_security_policy {
-      content_security_policy = "script-src 'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud https://pagopa.matomo.cloud https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' recaptcha.net; object-src 'none'; form-action 'self'; font-src data: 'self'; connect-src 'self' https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com; img-src data: 'self' recaptcha.net; frame-src https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com"
+      content_security_policy = "script-src 'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud https://pagopa.matomo.cloud https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' recaptcha.net; object-src 'none'; form-action 'self'; font-src data: 'self'; connect-src 'self' https://raw.githubusercontent.com/pagopa/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com; img-src data: 'self' https://io.italia.it/assets/ recaptcha.net; frame-src https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com"
       override                = true
     }
   }

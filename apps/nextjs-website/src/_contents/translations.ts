@@ -8,6 +8,38 @@ export const translations = {
   breadcrumbs: {
     title: 'DevPortal',
   },
+  shared: {
+    readTutorial: 'Leggi il tutorial',
+    moreInfo: 'Scopri di più',
+    goToModel: 'Vai al modello',
+  },
+  overview: {
+    startInfo: {
+      cta: {
+        text: 'Scopri tutti i dettagli dell’integrazione',
+        label: 'Leggi la guida tecnica',
+        href: '/',
+      },
+      title: 'Si comincia da qui',
+    },
+    tutorial: {
+      title: 'Esplora i tutorial',
+      subtitle:
+        'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+      ctaLabel: 'Vedi tutti i tutorial',
+    },
+    guide: {
+      title: "Dopo l'integrazione",
+      subtitle:
+        'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
+      ctaLabel: 'Vai al manuale dei servizi',
+      href: '/',
+      cardsTitle: 'MODELLI DEI SERVIZI',
+    },
+    relatedLinks: {
+      title: 'LINK UTILI',
+    },
+  },
   footer: {
     companyLink: {
       ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
