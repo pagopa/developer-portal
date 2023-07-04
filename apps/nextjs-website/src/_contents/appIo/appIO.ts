@@ -6,6 +6,9 @@ import { appIOGuidesPath } from '@/_contents/appIo/guidesPath';
 
 export const appIO: Product = {
   name: 'App IO',
+  description:
+    'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
+  svgPath: '/icons/AppIO.svg',
   path: '/app-io',
   subpaths: {
     overview: appIoOverviewPath,
