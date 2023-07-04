@@ -6,7 +6,7 @@ export const appIoApi: ApiData = {
   ...appIoApiPath,
   product: appIO,
   specURL:
-    'https://raw.githubusercontent.com/pagopa/io-functions-services/50a116f/openapi/index.yaml',
+    'https://raw.githubusercontent.com/pagopa/io-functions-services/master/openapi/index.yaml',
   bannerLinks: [
     {
       theme: 'dark',
