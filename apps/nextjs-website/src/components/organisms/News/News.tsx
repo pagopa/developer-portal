@@ -1,42 +1,49 @@
 import React from 'react';
-import { translations } from '@/_contents/translations';
 import { Newsroom } from '@pagopa/pagopa-editorial-components';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Tutorial } from '@/lib/types/tutorialData';
-import { Path } from '@/lib/types/path';
 import { Box } from '@mui/material';
 
 type NewsProps = {
-  tutorialPath: Path;
-  tutorials: Tutorial[];
+  title: string;
+  subtitle?: string;
+  ctaLabel?: string;
+  href?: string;
+  cards: {
+    title: string;
+    dateString: string;
+    image?: {
+      url: string;
+      alt: string;
+    };
+    href: {
+      label: string;
+      link: string;
+      title: string;
+    };
+  }[];
 };
 
-const News = ({ tutorials, tutorialPath }: NewsProps) => {
-  const { overview, shared } = translations;
+const News = ({ title, subtitle, ctaLabel, href, cards }: NewsProps) => {
   return (
     <>
-      <Box mt={10} />
+      <Box mt={5} />
       <SectionTitle
-        title={overview.tutorial.title}
-        subtitle={overview.tutorial.subtitle}
-        ctaLabel={overview.tutorial.ctaLabel}
-        href={tutorialPath.path}
+        title={title}
+        subtitle={subtitle}
+        ctaLabel={ctaLabel}
+        href={href}
       />
       <Newsroom
-        items={tutorials.map((tutorial) => ({
+        items={cards.map((card) => ({
+          title: card.title,
           date: {
-            date: new Date(tutorial.dateString),
+            date: new Date(card.dateString),
           },
-          href: {
-            label: shared.readTutorial,
-            link: tutorial.path,
-            title: shared.readTutorial,
-          },
+          href: card.href,
           img: {
-            alt: tutorial.image?.alt || '',
-            src: tutorial.image?.url || '/images/news.png',
+            alt: card.image?.alt || '',
+            src: card.image?.url || '/images/news.png',
           },
-          title: tutorial.title,
         }))}
       />
     </>
