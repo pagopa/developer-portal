@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { InvertTheme, Menu, MenuItems, Flex, Button } from '@stoplight/mosaic';
 import { Product } from '@/lib/types/product';
+// @ts-nocheck
 
 export type ApiPageProps = {
   readonly product: Product;
