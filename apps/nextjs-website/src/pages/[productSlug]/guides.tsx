@@ -1,40 +1,70 @@
 import { Product } from '@/lib/types/product';
-import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { getGuides, getGuidesPaths } from '@/lib/api';
+import { getGuideLists, getGuideListsPaths, getProducts } from '@/lib/api';
+import {
+  GuidesSection,
+  GuidesSectionProps,
+} from '@/components/molecules/GuidesSection/GuidesSection';
+import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import { Box, useTheme } from '@mui/material';
+import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 
 type Params = {
   productSlug: string;
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: getGuidesPaths() as string[],
+  paths: [...getGuideListsPaths()],
   fallback: false,
 });
 
 export type GuidesPageProps = {
   readonly product: Product;
-  readonly hero?: {
+  readonly abstract?: {
     readonly title: string;
-    readonly subtitle: string;
+    readonly description: string;
   };
-};
+  readonly guidesSections?: GuidesSectionProps[];
+} & LayoutProps;
 
 export const getStaticProps: GetStaticProps<GuidesPageProps, Params> = ({
   params,
 }): GetStaticPropsResult<GuidesPageProps> => {
-  const props = getGuides(params?.productSlug);
+  const props = getGuideLists(params?.productSlug);
   if (props) {
-    return { props };
+    return { props: { ...props, products: getProducts().concat() } };
   } else {
     return { notFound: true as const };
   }
 };
 
-const GuidesPage = ({ hero }: GuidesPageProps) => (
-  <>
-    <Hero title={hero?.title || 'missing title'} subtitle={hero?.subtitle} />
-  </>
-);
+const GuidesPage = ({
+  abstract,
+  guidesSections,
+  product,
+  products,
+  path,
+}: GuidesPageProps) => {
+  const { palette } = useTheme();
+
+  return (
+    <Layout products={products} product={product} path={path}>
+      {abstract && (
+        <Abstract
+          description={abstract?.description}
+          overline=''
+          title={abstract?.title}
+          theme={palette.mode}
+        />
+      )}
+      <Box bgcolor={palette.grey[100]}>
+        {guidesSections?.length &&
+          guidesSections.map((props, index) => (
+            <GuidesSection key={index} {...props}></GuidesSection>
+          ))}
+      </Box>
+    </Layout>
+  );
+};
 
 export default GuidesPage;
