@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/_contents/appIo/appIO';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { guides } from './guides';
+import { guides } from '@/_contents/appIo/guides';
 import { tutorials } from '@/_contents/appIo/tutorials';
 
 export const appIoOverview: OverviewData = {

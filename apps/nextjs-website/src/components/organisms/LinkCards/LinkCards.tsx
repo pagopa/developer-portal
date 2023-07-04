@@ -30,7 +30,6 @@ const LinkCards = ({
   const { shared } = translations;
 
   return (
-    <>
       <Box py={11} sx={{ backgroundColor: theme.palette.background.default }}>
         <SectionTitle
           title={title}
@@ -74,7 +73,6 @@ const LinkCards = ({
           </Box>
         </EContainer>
       </Box>
-    </>
   );
 };
 
