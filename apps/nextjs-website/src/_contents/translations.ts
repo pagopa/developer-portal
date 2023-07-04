@@ -5,6 +5,9 @@ export const translations = {
     boldTitle: 'Developer Portal',
     products: 'Prodotti',
   },
+  breadcrumbs: {
+    title: 'DevPortal',
+  },
   footer: {
     companyLink: {
       ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
