@@ -13,6 +13,10 @@ export function getApiPaths(): readonly string[] {
   return apis.map((api) => api.path);
 }
 
+export function getGuideListsPaths(): readonly string[] {
+  return guideLists.map((guideList) => guideList.path);
+}
+
 export function getGuideLists(productSlug?: string) {
   return guideLists.find(
     (guideList) => guideList.product.path === `/${productSlug}`
