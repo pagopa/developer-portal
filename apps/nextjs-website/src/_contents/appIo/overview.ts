@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { appIO } from '@/_contents/appIo/appIO';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { guides } from '@/_contents/appIo/guides';
+import { postIntegration } from '@/_contents/appIo/postIntegration';
 import { tutorials } from '@/_contents/appIo/tutorials';
 
 export const appIoOverview: OverviewData = {
@@ -44,7 +44,7 @@ export const appIoOverview: OverviewData = {
     ],
   },
   tutorials: tutorials,
-  guides: guides,
+  postIntegration: postIntegration,
   relatedLinks: [
     {
       path: '/',

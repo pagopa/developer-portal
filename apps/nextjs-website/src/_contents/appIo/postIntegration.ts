@@ -1,6 +1,6 @@
 import { Guide } from '@/lib/types/guideData';
 
-export const guides: readonly Guide[] = [
+export const postIntegration: readonly Guide[] = [
   {
     title: 'Tassa sui rifiuti (TARI)',
     description:
