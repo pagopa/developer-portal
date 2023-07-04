@@ -12,6 +12,10 @@ export function getProducts(): readonly Product[] {
 
 export function getGuidesPaths(): readonly string[] {
   return productsGuides.map((productGuides) => productGuides.path);
+
+
+export function getGuideListsPaths(): readonly string[] {
+  return guideLists.map((guideList) => guideList.path);
 }
 
 export function getOverviewPaths(): readonly string[] {
@@ -22,9 +26,9 @@ export function getApiPaths(): readonly string[] {
   return apis.map((api) => api.path);
 }
 
-export function getGuides(productSlug?: string) {
-  return productsGuides.find(
-    (productGuides) => productGuides.product.path === `/${productSlug}`
+export function getGuideLists(productSlug?: string) {
+  return guideLists.find(
+    (guideList) => guideList.product.path === `/${productSlug}`
   );
 }
 
