@@ -7,16 +7,23 @@ export type FileProps = {
   children: ReactNode;
 };
 
-const File = ({ src, children }: FileProps) => (
-  <ButtonNaked
-    color='text'
-    size='medium'
-    href={src}
-    target='_blank'
-    startIcon={<AttachFileIcon />}
-  >
-    {children}
-  </ButtonNaked>
-);
+export const convertAssetsPath = (assetsPrefix: string, src: string) =>
+  src.replace('../', `${assetsPrefix}/`);
+
+const File = (assetsPrefix: string) =>
+  Object.assign(
+    ({ src, children }: FileProps) => (
+      <ButtonNaked
+        color='text'
+        size='medium'
+        href={convertAssetsPath(assetsPrefix, src)}
+        target='_blank'
+        startIcon={<AttachFileIcon />}
+      >
+        {children}
+      </ButtonNaked>
+    ),
+    { displayName: 'File' }
+  );
 
 export default File;

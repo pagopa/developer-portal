@@ -1,4 +1,10 @@
-import { apis, overviews, products, guideLists, guides } from '@/_contents/products';
+import {
+  apis,
+  overviews,
+  products,
+  guideLists,
+  guides,
+} from '@/_contents/products';
 import { Product } from './types/product';
 
 export function getProducts(): readonly Product[] {
@@ -35,6 +41,7 @@ export function getOverview(productSlug?: string) {
 
 export function getApi(productSlug?: string) {
   return apis.find((apiData) => apiData.product.path === `/${productSlug}`);
+}
 
 export function getGuide(path?: string) {
   return guides.find((page) => page.page.path === path);

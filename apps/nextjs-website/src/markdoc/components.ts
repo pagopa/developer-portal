@@ -9,14 +9,14 @@ import File from './components/File';
 import Document from './components/Document';
 
 // The key must be the same string as `tag` in the schema
-export const components = (prefix: string) => ({
+export const components = (linkPrefix: string, assetsPrefix: string) => ({
   Document: Document,
   Heading: Heading,
-  Link: Link(prefix),
+  Link: Link(linkPrefix),
   Paragraph: Paragraph,
   Hint: Hint,
-  File: File,
+  File: File(assetsPrefix),
   Embed: Embed,
-  PageLink: PageLink(prefix),
+  PageLink: PageLink(linkPrefix),
   Expandable: Expandable,
 });

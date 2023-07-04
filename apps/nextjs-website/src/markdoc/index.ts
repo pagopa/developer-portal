@@ -52,8 +52,9 @@ export const transform = (markdown: string): RenderableTreeNode => {
 
 export const renderGitBookMarkdown = (
   markdown: string,
-  pathPrefix: string
+  pathPrefix: string,
+  assetsPrefix: string
 ): React.ReactNode =>
   Markdoc.renderers.react(transform(markdown), React, {
-    components: components(pathPrefix),
+    components: components(pathPrefix, assetsPrefix),
   });

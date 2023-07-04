@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { docsPath } from '@/config';
+import { docsAssetsPath, docsPath } from '@/config';
 import { appIO } from './appIO';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 
@@ -35,6 +35,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${guidaTecnica.path}/v2.4`,
+      assetsPrefix: `${docsAssetsPath}/r65fve0XPThNw1ljBi57`,
       dirPath: `${docsPath}/r65fve0XPThNw1ljBi57`,
     },
   },
@@ -47,6 +48,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${guidaTecnica.path}/v2.3`,
+      assetsPrefix: `${docsAssetsPath}/mzwjFv2XaE1mjbz7I8gt`,
       dirPath: `${docsPath}/mzwjFv2XaE1mjbz7I8gt`,
     },
   },
@@ -59,6 +61,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${guidaTecnica.path}/v2.2`,
+      assetsPrefix: `${docsAssetsPath}/coSKRte21UjDBRWKLtEs`,
       dirPath: `${docsPath}/coSKRte21UjDBRWKLtEs`,
     },
   },
@@ -71,6 +74,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${guidaTecnica.path}/v1.3`,
+      assetsPrefix: `${docsAssetsPath}/OoU8rMn4ZUWvfkSueJIl`,
       dirPath: `${docsPath}/OoU8rMn4ZUWvfkSueJIl`,
     },
   },
@@ -83,6 +87,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${guidaTecnica.path}/v1.2`,
+      assetsPrefix: `${docsAssetsPath}/DOaGsRYKzkZYmIAbjNII`,
       dirPath: `${docsPath}/DOaGsRYKzkZYmIAbjNII`,
     },
   },
@@ -95,6 +100,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${manualeDeiServizi.path}/v1.0`,
+      assetsPrefix: `${docsAssetsPath}/zcLztiq5qDSVw9rRjW7p`,
       dirPath: `${docsPath}/zcLztiq5qDSVw9rRjW7p`,
     },
   },
@@ -107,6 +113,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${supportoAgliEnti.path}/v1.0`,
+      assetsPrefix: `${docsAssetsPath}/rPr79NYJ4xbKA7EvgHxo`,
       dirPath: `${docsPath}/rPr79NYJ4xbKA7EvgHxo`,
     },
   },
@@ -119,6 +126,7 @@ const appIoGuideListSource = [
     },
     source: {
       pathPrefix: `${kitDiComunicazione.path}/v1.0`,
+      assetsPrefix: `${docsAssetsPath}/SpNLdqKSqoCvaOneGN7K`,
       dirPath: `${docsPath}/SpNLdqKSqoCvaOneGN7K`,
     },
   },
