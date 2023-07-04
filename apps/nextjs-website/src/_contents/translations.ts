@@ -15,6 +15,19 @@ export const translations = {
   },
   homepage: {
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
+    comingsoonDocumentation: {
+      title: 'Documentazione in arrivo',
+      links: [
+        {
+          text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
+          href: '#homepage-doc-1',
+        },
+        {
+          text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
+          href: '#homepage-doc-2',
+        },
+      ],
+    },
   },
   overview: {
     startInfo: {
