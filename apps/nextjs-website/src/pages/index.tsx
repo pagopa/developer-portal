@@ -1,6 +1,7 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
 import { GetStaticProps, GetStaticPropsResult } from 'next';
@@ -17,6 +18,7 @@ const Home = ({ products }: HomeProps) => {
   const { homepage } = translations;
   return (
     <Layout products={products}>
+      <News title={homepage.news.title} cards={homepage.news.list} />
       <ProductsShowcase
         title={homepage.productsShowcaseTitle}
         cards={products.map((product) => ({
