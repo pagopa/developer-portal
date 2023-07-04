@@ -1,21 +1,8 @@
-import {
-  apis,
-  overviews,
-  productsGuides,
-  products,
-} from '@/_contents/products';
+import { apis, overviews, products, guideLists } from '@/_contents/products';
 import { Product } from './types/product';
 
 export function getProducts(): readonly Product[] {
   return products;
-}
-
-export function getGuidesPaths(): readonly string[] {
-  return productsGuides.map((productGuides) => productGuides.path);
-
-
-export function getGuideListsPaths(): readonly string[] {
-  return guideLists.map((guideList) => guideList.path);
 }
 
 export function getOverviewPaths(): readonly string[] {
