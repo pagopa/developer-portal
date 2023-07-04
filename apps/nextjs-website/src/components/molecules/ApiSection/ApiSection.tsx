@@ -8,7 +8,6 @@ export type ApiPageProps = {
   readonly specURLs: {
     url: string;
     hideTryIt?: boolean;
-    hideExport?: boolean;
   }[];
 };
 
