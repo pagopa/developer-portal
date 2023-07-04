@@ -3,6 +3,8 @@ import { Product } from '@/lib/types/product';
 
 const product: Product = {
   name: 'test',
+  description: 'test',
+  svgPath: 'test',
   path: '/path',
   subpaths: {
     overview: {
