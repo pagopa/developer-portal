@@ -6,8 +6,15 @@ export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
   product: pagoPa,
   hero: {
+    altText: 'Hero: La piattaforma per gestire e rendicontare i pagamenti',
+    backgroundImage: '/images/hero.jpg',
     title: 'La piattaforma per gestire e rendicontare i pagamenti',
     subtitle:
       'pagoPA permette alle Pubbliche Amministrazioni di gestire gli incassi in modo centralizzato, offrendo servizi automatici di rendicontazione e riconciliazione con un significativo risparmio nei costi di gestione.',
+  },
+  feature: {
+    title: 'title',
+    subtitle: 'subtitle',
+    items: [],
   },
 };
