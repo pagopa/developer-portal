@@ -1,10 +1,10 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { pagoPA } from '@/_contents/pagoPa/pagoPA';
+import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
-  product: pagoPA,
+  product: pagoPa,
   hero: {
     altText: 'Hero: La piattaforma per gestire e rendicontare i pagamenti',
     backgroundImage: '/images/hero.jpg',

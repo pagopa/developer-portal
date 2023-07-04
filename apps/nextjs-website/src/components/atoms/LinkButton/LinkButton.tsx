@@ -4,12 +4,13 @@ import Link from 'next/link';
 import React from 'react';
 
 type LinkButtonProps = {
-  readonly label: string;
   readonly href: string;
+  readonly label: string;
+  readonly size?: number;
   readonly width?: string;
 };
 
-const LinkButton = ({ label, href, width }: LinkButtonProps) => {
+const LinkButton = ({ label, href, size = 18, width }: LinkButtonProps) => {
   return (
     <Stack
       mt={2}
@@ -26,7 +27,16 @@ const LinkButton = ({ label, href, width }: LinkButtonProps) => {
         aria-label={label}
         title={label}
       >
-        <Typography fontSize={18} fontWeight={700} color='inherit'>
+        <Typography
+          fontSize={size}
+          fontWeight={700}
+          color='inherit'
+          sx={{
+            '&::first-letter': {
+              textTransform: 'capitalize',
+            },
+          }}
+        >
           {label}
         </Typography>
       </LinkMui>

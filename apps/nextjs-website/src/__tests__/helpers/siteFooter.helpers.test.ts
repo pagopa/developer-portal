@@ -1,9 +1,8 @@
-/* eslint-disable functional/no-expression-statements */
 import {
   linkToFooterLinkTypeArray,
   linkToIconProps,
-} from '@/helpers/siteFooter.helper';
-import { LinkType } from '@pagopa/mui-italia';
+} from '../../helpers/siteFooter.helper';
+import { LinkType } from '@pagopa/pagopa-editorial-components/dist/components/Footer/types';
 
 const links = [
   {
