@@ -13,7 +13,12 @@ const unpairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}(.*?)>`, 'g'),
   replace: `{% ${tag}$1 %}`,
 });
+const selfClosingTag = (tag: string) => ({
+  regex: new RegExp(`{% ${tag}(.*?) %}`, 'g'),
+  replace: `{% ${tag}$1 /%}`,
+});
 
+const fileR = selfClosingTag('file');
 const imgR = unpairedHtmlTag('img');
 const markR = pairedHtmlTag('mark');
 const detailsR = pairedHtmlTag('details');
@@ -34,6 +39,7 @@ export const transform = (markdown: string): RenderableTreeNode => {
   // In this way many RegExp can be removed
   const manipulated = markdown
     .replaceAll('{% end', '{% /')
+    .replaceAll(fileR.regex, fileR.replace)
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
