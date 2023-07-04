@@ -6,7 +6,7 @@ export const ioSignApi: ApiData = {
   ...ioSignApiPath,
   product: ioSign,
   specURL:
-    'https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-func-sign-issuer/openapi.yaml',
+    'https://raw.githubusercontent.com/pagopa/io-sign/latest/apps/io-func-sign-issuer/openapi.yaml',
   bannerLinks: [
     {
       theme: 'dark',
