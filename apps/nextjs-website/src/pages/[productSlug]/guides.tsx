@@ -49,22 +49,20 @@ const GuidesPage = ({
 
   return (
     <Layout products={products} product={product} path={path}>
-      <>
-        {abstract && (
-          <Abstract
-            description={abstract?.description}
-            overline=''
-            title={abstract?.title}
-            theme={palette.mode}
-          />
-        )}
-        <Box bgcolor={palette.grey[100]}>
-          {guidesSections?.length &&
-            guidesSections.map((props, index) => (
-              <GuidesSection key={index} {...props}></GuidesSection>
-            ))}
-        </Box>
-      </>
+      {abstract && (
+        <Abstract
+          description={abstract?.description}
+          overline=''
+          title={abstract?.title}
+          theme={palette.mode}
+        />
+      )}
+      <Box bgcolor={palette.grey[100]}>
+        {guidesSections?.length &&
+          guidesSections.map((props, index) => (
+            <GuidesSection key={index} {...props}></GuidesSection>
+          ))}
+      </Box>
     </Layout>
   );
 };
