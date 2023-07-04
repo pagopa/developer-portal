@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import { Product } from '@/lib/types/product';
 import { getApi, getApiPaths, getProducts } from '@/lib/api';
-import { ApiViewer } from '@/components/atoms/ApiViewer/ApiViewer';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 type Params = {
   productSlug: string;
@@ -15,7 +15,10 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 
 export type ApiPageProps = {
   readonly product: Product;
-  readonly specURL: string;
+  readonly specURLs: {
+    url: string;
+    hideTryIt?: boolean;
+  }[];
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ApiPageProps, Params> = ({
@@ -33,17 +36,19 @@ const ApisPage = ({
   products,
   path,
   product,
-  specURL,
+  specURLs,
   bannerLinks,
-}: ApiPageProps) => (
-  <Layout
-    products={products}
-    product={product}
-    path={path}
-    bannerLinks={bannerLinks}
-  >
-    <ApiViewer specURL={specURL} product={product} />
-  </Layout>
-);
+}: ApiPageProps) => {
+  return (
+    <Layout
+      products={products}
+      product={product}
+      path={path}
+      bannerLinks={bannerLinks}
+    >
+      <ApiSection specURLs={specURLs} product={product} />
+    </Layout>
+  );
+};
 
 export default ApisPage;
