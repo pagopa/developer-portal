@@ -14,7 +14,7 @@ type Params = {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: getGuideListsPaths() as string[],
+  paths: [...getGuideListsPaths()],
   fallback: false,
 });
 
