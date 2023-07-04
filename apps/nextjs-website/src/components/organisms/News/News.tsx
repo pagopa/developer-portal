@@ -26,7 +26,6 @@ type NewsProps = {
 const News = ({ title, subtitle, ctaLabel, href, cards }: NewsProps) => {
   return (
     <>
-      <Box mt={5} />
       <SectionTitle
         title={title}
         subtitle={subtitle}
