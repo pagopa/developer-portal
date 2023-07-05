@@ -4,7 +4,7 @@ import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { sendApiPath } from './apiPath';
 
 export const send: Product = {
-  name: 'Piattaforma Notifiche',
+  name: 'SEND',
   path: '/send',
   subpaths: {
     overview: sendOverviewPath,

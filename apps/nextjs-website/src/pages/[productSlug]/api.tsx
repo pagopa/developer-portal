@@ -39,17 +39,16 @@ const ApisPage = ({
   product,
   specURLs,
   bannerLinks,
-}: ApiPageProps) => {
-  return (
-    <Layout
-      products={products}
-      product={product}
-      path={path}
-      bannerLinks={bannerLinks}
-    >
-      <ApiSection specURLs={specURLs} product={product} />
-    </Layout>
-  );
-};
+}: ApiPageProps) => (
+  <Layout
+    products={products}
+    product={product}
+    path={path}
+    bannerLinks={bannerLinks}
+    showBreadcrumbs={true}
+  >
+    <ApiSection specURLs={specURLs} product={product} />
+  </Layout>
+);
 
 export default ApisPage;
