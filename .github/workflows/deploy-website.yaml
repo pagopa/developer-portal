@@ -46,7 +46,7 @@ jobs:
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
-          gitbook_api_key: ${{ secrets.GITBOOK_API_KEY }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
@@ -64,7 +64,7 @@ jobs:
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
-          gitbook_api_key: ${{ secrets.GITBOOK_API_KEY }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}

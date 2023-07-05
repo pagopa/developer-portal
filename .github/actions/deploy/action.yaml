@@ -2,8 +2,8 @@ name: deploy
 description: Deploy on AWS S3 Bucket
 
 inputs:
-  gitbook_api_key:
-    description: 'The API key to use to fetch content from GitBook'
+  path_to_gitbook_docs:
+    description: 'The absolute path to GitBook content'
     required: true
   iam_role:
     description: 'The IAM Role to use to perform the deploy'
@@ -34,9 +34,12 @@ runs:
       shell: bash
       run: npm run compile
 
+    - name: Download GitBook docs
+      run: npm run download-docs -w nextjs-website
+
     - name: Build static website
       env:
-        GITBOOK_API_KEY: ${{ inputs.gitbook_api_key }}
+        PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
       shell: bash
       run: npm run build -w nextjs-website
 
