@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
-import { InvertTheme, Menu, MenuItems, Flex, Button } from '@stoplight/mosaic';
 import { Product } from '@/lib/types/product';
-// @ts-nocheck
+import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
+import { styles } from './ApiSection.styles';
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -12,53 +12,38 @@ export type ApiPageProps = {
   }[];
 };
 
-/* Component from DemoNavbar in Elements */
 const ApiSection = ({ product, specURLs }: ApiPageProps) => {
-  const [apiDescriptionUrl, setApiDescriptionUrl] = useState(specURLs[0].url);
-
-  const menuItems = useMemo(() => {
-    const items: MenuItems = [
-      {
-        type: 'option_group',
-        value: apiDescriptionUrl,
-        onChange: setApiDescriptionUrl,
-        children: specURLs.map((s) => ({
-          ...s,
-          title: s.url,
-          value: s.url,
-        })),
-      },
-    ];
-
-    return items;
-  }, [apiDescriptionUrl, specURLs]);
+  const [selectedItem, setSelectedItem] = useState(specURLs[0].url);
+  const handleChange = (event: SelectChangeEvent) => {
+    setSelectedItem(event.target.value);
+  };
 
   const selectedApi = useMemo(
-    () =>
-      specURLs.find((item) => item?.url === apiDescriptionUrl) || specURLs[0],
-    [apiDescriptionUrl, specURLs]
+    () => specURLs.find((item) => item?.url === selectedItem) || specURLs[0],
+    [selectedItem, specURLs]
   );
 
   return (
     <>
-      <InvertTheme>
-        <Flex h='2xl' shrink={0} px={5} alignItems='center' bg='canvas-pure'>
-          <Flex justifyContent='center' w='1/6'>
-            {specURLs.length > 1 && (
-              <Menu
-                closeOnPress
-                aria-label='Select the api'
-                items={menuItems}
-                renderTrigger={({ isOpen }) => (
-                  <Button iconRight={['fas', 'caret-down']} active={isOpen}>
-                    {selectedApi.url}
-                  </Button>
-                )}
-              />
-            )}
-          </Flex>
-        </Flex>
-      </InvertTheme>
+      {specURLs.length > 1 && (
+        <Stack sx={{ background: '#0D1018' }}>
+          <Stack width={400}>
+            <Select
+              value={selectedItem}
+              onChange={handleChange}
+              size='small'
+              variant='outlined'
+              sx={styles.select}
+            >
+              {specURLs.map((item, index) => (
+                <MenuItem value={item.url} key={index}>
+                  {item.url}
+                </MenuItem>
+              ))}
+            </Select>
+          </Stack>
+        </Stack>
+      )}
       <ApiViewer
         product={product}
         specURL={selectedApi.url}
