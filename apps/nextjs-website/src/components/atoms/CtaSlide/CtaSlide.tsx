@@ -34,7 +34,7 @@ const CtaSlide = ({
       direction={'row'}
     >
       <Stack
-        px={{ xs: 4, md: 20 }}
+        px={{ xs: 4, md: 30 }}
         direction={'column'}
         textAlign={'center'}
         zIndex={10}

@@ -6,13 +6,13 @@ import { Feature } from '@pagopa/pagopa-editorial-components';
 import { useTheme } from '@mui/material';
 import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components/Feature/FeatureStackItem';
 import { Product } from '@/lib/types/product';
-import News from '@/components/organisms/News/News';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { Path } from '@/lib/types/path';
 import LinkCards from '@/components/organisms/LinkCards/LinkCards';
+import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 
 type Params = {
   productSlug: string;
@@ -108,7 +108,7 @@ const OverviewPage = ({
         />
       )}
       {product.subpaths.tutorial && tutorials && (
-        <News
+        <TutorialsOverview
           tutorialPath={product.subpaths.tutorial}
           tutorials={[...tutorials]}
         />

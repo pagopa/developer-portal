@@ -1,6 +1,6 @@
 import { Path } from '@/lib/types/path';
 
 export const ioSignOverviewPath: Path = {
-  name: 'IO Sign overview',
+  name: 'Panoramica',
   path: '/io-sign/overview',
 };

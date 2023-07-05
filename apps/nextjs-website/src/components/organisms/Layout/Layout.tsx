@@ -5,12 +5,15 @@ import { Product } from '@/lib/types/product';
 import React, { ReactNode, FC } from 'react';
 import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 export type LayoutProps = {
   readonly products: Product[];
   readonly product?: Product;
   readonly path?: string;
   readonly bannerLinks?: BannerLinkProps[];
+  readonly showBreadcrumbs?: boolean;
 };
 
 type LayoutPropsWithChildren = {
@@ -23,11 +26,17 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   products,
   bannerLinks,
   children,
+  showBreadcrumbs = false,
 }) => (
   <>
     <header>
       <SiteHeader products={products} />
       {product && path && <ProductHeader product={product} path={path} />}
+      {product && showBreadcrumbs && (
+        <ProductBreadcrumbs
+          breadcrumbs={[...productPageToBreadcrumbs(product, path)]}
+        />
+      )}
     </header>
     <main>{children}</main>
     {bannerLinks && <BannerLinks banners={bannerLinks} />}

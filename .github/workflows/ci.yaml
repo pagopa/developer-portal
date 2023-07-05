@@ -30,6 +30,9 @@ jobs:
       - name: Compile
         run: npm run compile
 
+      - name: Download GitBook docs
+        run: npm run download-docs -w nextjs-website
+
       - name: Lint code
         run: npm run lint
 
@@ -38,4 +41,6 @@ jobs:
 
       - name: Build static website
         shell: bash
+        env:
+          PATH_TO_GITBOOK_DOCS: ${{ github.workspace }}/apps/nextjs-website/docs
         run: npm run build -w nextjs-website
