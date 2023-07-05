@@ -19,15 +19,15 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Come generare un codice IUV',
-              'La gestione e gli attributi delle operazioni di trasferimento fondi',
-              'Come creare  il flusso di rendicontazione da inoltrare al Nodo dei Pagamenti-SPC',
-              'Come EC riconcilia il flusso dei pagamenti',
+              'Genera un codice IUV',
+              'Comprendi la gestione delle operazioni di trasferimento fondi',
+              'Crea il flusso di rendicontazione',
+              'Riconcilia il flusso dei pagamenti',
             ],
           },
           link: {
             href: '#',
-            label: 'Vai al manuale',
+            label: 'Vai al documento',
           },
           imagePath: '/images/saci.png',
           mobileImagePath: '/images/saci-mobile.png',
@@ -37,15 +37,15 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Conoscere usare e gestire il prodotto pagoPA',
-              'Principali casi d’uso per PSP, Ec e Touchpoint',
-              'Come un EC può aderire e integrarsi in pagoPA',
-              'Come PSP può aderire e integrarsi in pagoPA',
+              'Conosci, usa e gestisci il prodotto pagoPA',
+              'Esplora i principali casi d’uso per PSP ed Enti Creditori',
+              'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
+              'Scopri come un PSP può aderire e integrarsi in pagoPA',
             ],
           },
           link: {
             href: '#',
-            label: 'Vai al manuale',
+            label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
           mobileImagePath: '/images/sanp-mobile.png',
@@ -56,7 +56,7 @@ export const pagoPaGuideLists: GuideListsData = {
       title: "Per l'utilizzo",
       guides: [
         {
-          title: 'Avvisi di Pagamento',
+          title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -68,7 +68,7 @@ export const pagoPaGuideLists: GuideListsData = {
           },
           link: {
             href: '#',
-            label: 'Vai al manuale',
+            label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
           mobileImagePath: '/images/avvisi-mobile.png',
@@ -78,33 +78,18 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Linee guida per la comunicazione corretta del brand per EC, PSP, Partner e Intermediari Tecnologici',
+              'Utilizza correttamente il brand pagoPA',
               'Crea una campagna di sensibilizzazione',
-              'Scopri come come comunicare il brand pagoPA nei post sui social media',
+              'Scopri come come comunicare il brand pagoPA sui social media',
               'Leggi i suggerimenti per una comunicazione efficace',
             ],
           },
           link: {
             href: '#',
-            label: 'Vai al manuale',
+            label: 'Vai al documento',
           },
-          imagePath: '/images/saci.png',
-          mobileImagePath: '/images/saci-mobile.png',
-        },
-        {
-          title: 'Portale delle Adesioni',
-          description: {
-            title: 'Argomenti trattati',
-            listItems: [
-              'Scarica il PDF per iscriversi e comprendere il “portale delle Adesioni“',
-            ],
-          },
-          link: {
-            href: '#',
-            label: 'Vai al manuale',
-          },
-          imagePath: '/images/saci.png',
-          mobileImagePath: '/images/saci-mobile.png',
+          imagePath: '/images/linee-guida-di-brand.png',
+          mobileImagePath: '/images/linee-guida-di-brand-mobile.png',
         },
       ],
     },
