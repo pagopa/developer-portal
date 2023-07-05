@@ -6,9 +6,9 @@ export const ioSignGuideLists: GuideListsData = {
   ...ioSignGuideListsPath,
   product: ioSign,
   abstract: {
-    title: 'Richiedi la firma di contratti e documenti',
+    title: 'Guide e manuali',
     description:
-      'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
+      'Per una conoscenza approfondita o dubbi puntuali, consulta i manuali e le guide disponibili per l’app IO.',
   },
   guidesSections: [
     {
@@ -19,7 +19,7 @@ export const ioSignGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Scopri cos`è e come funziona Firma con IO',
+              "Scopri cos'è e come funziona Firma con IO",
               'Crea un dossier e fallo firmare',
               'Scopri le modalità di installazione e utilizzo di Firma con IO',
               'Naviga fra le API',
@@ -29,8 +29,8 @@ export const ioSignGuideLists: GuideListsData = {
             href: `${ioSignGuideListsPath.path}/manuale-operativo/v1.0`,
             label: 'Vai al manuale',
           },
-          imagePath: '/images/guida-tecnica.png',
-          mobileImagePath: '/images/guida-tecnica-mobile.png',
+          imagePath: '/images/manuale-operativo.png',
+          mobileImagePath: '/images/manuale-operativo-mobile.png',
         },
       ],
     },
