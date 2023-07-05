@@ -6,9 +6,9 @@ export const pagoPaGuideLists: GuideListsData = {
   ...pagoPaGuideListsPath,
   product: pagoPa,
   abstract: {
-    title: 'La piattaforma per gestire e rendicontare i pagamenti',
+    title: 'Guide e manuali',
     description:
-      'pagoPA permette alle Pubbliche Amministrazioni di gestire gli incassi in modo centralizzato, offrendo servizi automatici di rendicontazione e riconciliazione con un significativo risparmio nei costi di gestione.',
+      'Per una conoscenza approfondita o dubbi puntuali, consulta i manuali e le guide disponibili per la piattaforma pagoPA.',
   },
   guidesSections: [
     {
