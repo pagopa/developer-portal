@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
-import { tutorials } from '@/_contents/ioSign/tutorials';
+import { tutorials as ioSignTutorials } from '@/_contents/ioSign/tutorials';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -58,7 +58,7 @@ export const ioSignOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorials: tutorials,
+  tutorials: ioSignTutorials,
   bannerLinks: [
     {
       theme: 'dark',
