@@ -11,6 +11,8 @@ import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
 import { IconName, getIconFromName } from '@/helpers/getIconFromName';
 import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
+import Link from 'next/link';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
 export type ApiPageProps = {
   readonly product: Product;
