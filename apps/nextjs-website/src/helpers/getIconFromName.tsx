@@ -1,8 +1,19 @@
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import PaymentIcon from '@mui/icons-material/Payment';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
-export type IconName = 'HeadsetMic' | 'Feedback' | 'LiveHelp';
+export type IconName =
+  | 'HeadsetMic'
+  | 'Feedback'
+  | 'LiveHelp'
+  | 'AccountBalance'
+  | 'Payment'
+  | 'PeopleAlt'
+  | 'TrendingUp';
 
 type IconFromNameParams = {
   type: IconName;
@@ -22,6 +33,14 @@ export const getIconFromName = ({
       return <FeedbackIcon sx={{ color: fill, fontSize: size }} />;
     case 'LiveHelp':
       return <LiveHelpIcon sx={{ color: fill, fontSize: size }} />;
+    case 'AccountBalance':
+      return <AccountBalanceIcon sx={{ color: fill, fontSize: size }} />;
+    case 'Payment':
+      return <PaymentIcon sx={{ color: fill, fontSize: size }} />;
+    case 'PeopleAlt':
+      return <PeopleAltIcon sx={{ color: fill, fontSize: size }} />;
+    case 'TrendingUp':
+      return <TrendingUpIcon sx={{ color: fill, fontSize: size }} />;
     default:
       return <></>;
   }
