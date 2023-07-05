@@ -1,4 +1,5 @@
 import { translations } from '@/_contents/translations';
+import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
@@ -24,6 +25,10 @@ const Home = ({ products }: HomeProps) => {
           href: product.subpaths.overview.path,
           svgPath: product.svgPath,
         }))}
+      />
+      <RelatedLinks
+        title={homepage.comingsoonDocumentation.title}
+        links={homepage.comingsoonDocumentation.links}
       />
     </Layout>
   );
