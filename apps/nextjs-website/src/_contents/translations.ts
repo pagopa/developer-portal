@@ -14,6 +14,40 @@ export const translations = {
     goToModel: 'Vai al modello',
   },
   homepage: {
+    news: {
+      title: 'In evidenza',
+      list: [
+        {
+          title:
+            'Usa il validatore di SEND per fare una verifica sull’integrazione',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai al validatore',
+            link: '#news-1',
+            title: 'Vai al validatore',
+          },
+        },
+        {
+          title: 'Scopri i nuovi tutorial interattivi di Firma con IO',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai al tutorial',
+            link: '#news-2',
+            title: 'Vai al tutorial',
+          },
+        },
+        {
+          title:
+            'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai alla guida',
+            link: '#news-3',
+            title: 'Vai alla guida',
+          },
+        },
+      ],
+    },
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
