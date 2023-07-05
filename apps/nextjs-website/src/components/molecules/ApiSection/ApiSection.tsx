@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
 import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { styles } from './ApiSection.styles';
+import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
 
 export type ApiPageProps = {
   readonly product: Product;
