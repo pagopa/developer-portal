@@ -92,4 +92,18 @@ export const pagoPaOverview: OverviewData = {
       name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
     },
   ],
+  bannerLinks: [
+    {
+      theme: 'dark',
+      title: 'Hai bisogno di aiuto?',
+      decoration: 'HeadsetMic',
+      body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua area riservata di Self Care.',
+    },
+    {
+      theme: 'light',
+      title: 'Dicci cosa ne pensi',
+      decoration: 'Feedback',
+      body: 'Per chiarimenti sulle specifiche d’implementazione di pagoPA, come ad esempio SACI e SANP, puoi aprire una segnalazione su GitHub',
+    },
+  ],
 };
