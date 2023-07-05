@@ -1,4 +1,10 @@
+import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
+import { ioSign } from './ioSign';
+import { docsAssetsPath, docsPath } from '@/config';
 import { Tutorial } from '@/lib/types/tutorialData';
+import { parseDoc } from 'gitbook-docs/parseDoc';
 
 export const tutorials: readonly Tutorial[] = [
   {
@@ -20,3 +26,25 @@ export const tutorials: readonly Tutorial[] = [
     name: 'tutorial 3',
   },
 ];
+
+export const ioSignTutorials = pipe(
+  [
+    {
+      product: ioSign,
+      source: {
+        pathPrefix: `${ioSign.path}/tutorial`,
+        assetsPrefix: `${docsAssetsPath}/mUZRgUVe9jRK4f0tHceu`,
+        dirPath: `${docsPath}/mUZRgUVe9jRK4f0tHceu`,
+      },
+    },
+  ],
+  RA.traverse(E.Applicative)(parseDoc),
+  E.fold((e) => {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.log(e);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw e;
+  }, RA.flatten),
+  // This is a workaround that removes the "index" space from tutorial docs
+  RA.filter(({ page: { path } }) => path !== `${ioSign.path}/tutorial`)
+);
