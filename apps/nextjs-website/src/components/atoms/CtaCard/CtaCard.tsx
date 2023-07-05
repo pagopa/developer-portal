@@ -16,6 +16,7 @@ export type CtaCardProps = {
   readonly cta?: {
     readonly label: string;
     readonly href: string;
+    readonly variant?: 'text' | 'contained' | 'outlined';
   };
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
@@ -38,7 +39,7 @@ const CtaCard = ({
       {children && <CardMedia>{children}</CardMedia>}
       <CardContent sx={{ minHeight: minHeight || 'auto' }}>
         {icon}
-        <Typography variant='h6' gutterBottom>
+        <Typography mt={2} variant='h6' gutterBottom>
           {title}
         </Typography>
         <Typography variant='body2'>{text}</Typography>
@@ -47,7 +48,7 @@ const CtaCard = ({
         {cta && (
           <Button
             href={cta.href}
-            variant='contained'
+            variant={cta.variant || 'contained'}
             LinkComponent={Link}
             size='small'
           >

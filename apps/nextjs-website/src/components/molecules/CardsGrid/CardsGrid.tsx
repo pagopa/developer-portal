@@ -5,25 +5,28 @@ import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { translations } from '@/_contents/translations';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
-type StartCardsProps = {
+type CardsGridProps = {
+  cardVariant?: 'text' | 'contained' | 'outlined';
+  cardSvg?: boolean;
+  cardSize?: boolean;
   cards: {
     title: string;
     text: string;
     href: string;
-    iconName: string;
+    icon: string;
   }[];
 };
 
-const StartCards = ({ cards }: StartCardsProps) => {
+const CardsGrid = ({ cards, cardVariant, cardSvg }: CardsGridProps) => {
   const { shared } = translations;
 
   return (
     <EContainer>
       <Box pb={4}>
         <Grid container spacing={2}>
-          {cards.map(({ title, text, href, iconName }, index) => {
+          {cards.map(({ title, text, href, icon }, index) => {
             return (
-              <Grid key={index} item xs={12} md>
+              <Grid key={index} item xs={12} md={6}>
                 <CtaCard
                   minHeight={150}
                   title={title}
@@ -31,8 +34,9 @@ const StartCards = ({ cards }: StartCardsProps) => {
                   cta={{
                     label: shared.moreInfo,
                     href,
+                    variant: cardVariant,
                   }}
-                  icon={<IconWrapper iconName={iconName} />}
+                  icon={<IconWrapper icon={icon} isSvg={cardSvg} />}
                 />
               </Grid>
             );
@@ -43,4 +47,4 @@ const StartCards = ({ cards }: StartCardsProps) => {
   );
 };
 
-export default StartCards;
+export default CardsGrid;

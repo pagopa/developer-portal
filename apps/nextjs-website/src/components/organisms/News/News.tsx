@@ -4,6 +4,7 @@ import { Newsroom } from '@pagopa/pagopa-editorial-components';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { Path } from '@/lib/types/path';
+import { Box } from '@mui/material';
 
 type NewsProps = {
   tutorialPath: Path;
@@ -14,6 +15,7 @@ const News = ({ tutorials, tutorialPath }: NewsProps) => {
   const { overview, shared } = translations;
   return (
     <>
+      <Box mt={10} />
       <SectionTitle
         title={overview.tutorial.title}
         subtitle={overview.tutorial.subtitle}
