@@ -80,16 +80,22 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
             direction='row'
             gap={spacing(1)}
           >
-            <Typography>
-              <Link href={soapDocumentation.url}>
-                {soapDocumentation.buttonLabel}
-                {getIconFromName({
-                  type: soapDocumentation.icon,
-                  fill: textColor,
-                  size: 24,
-                })}
-              </Link>
-            </Typography>
+            <ButtonNaked
+              sx={{
+                color: textColor,
+              }}
+              component={Link}
+              aria-label={soapDocumentation.buttonLabel}
+              href={soapDocumentation.url}
+              title={soapDocumentation.buttonLabel}
+              endIcon={getIconFromName({
+                type: soapDocumentation.icon,
+                fill: textColor,
+                size: 24,
+              })}
+            >
+              {soapDocumentation.buttonLabel}
+            </ButtonNaked>
           </Stack>
         </Stack>
       )}
