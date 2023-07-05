@@ -1,14 +1,15 @@
 import { appIoOverview } from '@/_contents/appIo/overview';
-import { ioSignOverview } from '@/_contents/ioSign/overview';
-import { pagoPaOverview } from '@/_contents/pagoPa/overview';
+import { appIO } from '@/_contents/appIo/appIO';
 import { appIoApi } from '@/_contents/appIo/api';
-import { sendOverview } from '@/_contents/send/overview';
+import { ioSignOverview } from '@/_contents/ioSign/overview';
+import { ioSignApi } from '@/_contents/ioSign/api';
+import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignGuideLists } from '@/_contents/ioSign/guideLists';
+import { pagoPaOverview } from '@/_contents/pagoPa/overview';
 import { pagoPaGuideLists } from '@/_contents/pagoPa/guideLists';
+import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { sendGuideLists } from '@/_contents/send/guideLists';
-import { appIO } from './appIo/appIO';
-import { ioSign } from './ioSign/ioSign';
-import { pagoPa } from './pagoPa/pagoPa';
+import { sendOverview } from '@/_contents/send/overview';
 import { send } from '@/_contents/send/send';
 
 export const overviews = [
@@ -18,7 +19,7 @@ export const overviews = [
   sendOverview,
 ];
 export const quickStarts = [];
-export const apis = [appIoApi];
+export const apis = [appIoApi, ioSignApi];
 export const tutorials = [];
 export const tools = [];
 export const guideLists = [pagoPaGuideLists, ioSignGuideLists, sendGuideLists];
