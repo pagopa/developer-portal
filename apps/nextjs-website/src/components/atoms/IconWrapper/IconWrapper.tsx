@@ -1,8 +1,27 @@
 import React from 'react';
-import * as Icons from '@mui/icons-material';
-import { EIcon } from '@pagopa/pagopa-editorial-components/dist/components/EIcon';
 import { Icon } from '@mui/material';
 import Image from 'next/image';
+import {
+  Feedback,
+  FlagOutlined,
+  FolderOutlined,
+  HeadsetMic,
+} from '@mui/icons-material';
+
+const getIconFromName = (iconName: string) => {
+  switch (iconName) {
+    case 'HeadsetMic':
+      return <HeadsetMic />;
+    case 'Feedback':
+      return <Feedback />;
+    case 'FlagOutlined':
+      return <FlagOutlined />;
+    case 'FolderOutlined':
+      return <FolderOutlined />;
+    default:
+      return <></>;
+  }
+};
 
 type IconWrapperProps = {
   icon: string;
@@ -10,8 +29,6 @@ type IconWrapperProps = {
   color?: string;
   size?: number;
 };
-
-type IconName = keyof typeof Icons;
 
 const IconWrapper = ({
   icon,
@@ -26,11 +43,10 @@ const IconWrapper = ({
       </Icon>
     );
   } else {
-    const props = {
-      color,
-      sx: { width: size, height: size },
-    };
-    return <EIcon icon={icon as IconName} {...props} />;
+    const muiIcon = React.cloneElement(getIconFromName(icon), {
+      sx: { color: color, width: size, height: size },
+    });
+    return muiIcon;
   }
 };
 
