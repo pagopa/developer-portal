@@ -7,6 +7,7 @@ import { styles } from './ApiSection.styles';
 export type ApiPageProps = {
   readonly product: Product;
   readonly specURLs: {
+    name?: string;
     url: string;
     hideTryIt?: boolean;
   }[];
@@ -37,7 +38,7 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
             >
               {specURLs.map((item, index) => (
                 <MenuItem value={item.url} key={index}>
-                  {item.url}
+                  {item.name}
                 </MenuItem>
               ))}
             </Select>

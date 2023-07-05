@@ -16,6 +16,7 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 export type ApiPageProps = {
   readonly product: Product;
   readonly specURLs: {
+    name?: string;
     url: string;
     hideTryIt?: boolean;
   }[];

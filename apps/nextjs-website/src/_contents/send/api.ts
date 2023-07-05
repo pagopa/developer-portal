@@ -7,10 +7,12 @@ export const sendApi: ApiData = {
   product: send,
   specURLs: [
     {
-      url: 'https://raw.githubusercontent.com/send/pn-delivery/develop/docs/openapi/api-external-b2c.yaml',
+      name: 'API 1',
+      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/develop/docs/openapi/api-external-b2b-pa.yaml',
     },
     {
-      url: 'https://raw.githubusercontent.com/send/pn-delivery-push/develop/docs/openapi/api-external-b2c-webhook.yaml',
+      name: 'API 2',
+      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery-push/develop/docs/openapi/api-external-b2b-webhook.yaml',
     },
   ],
   bannerLinks: [
