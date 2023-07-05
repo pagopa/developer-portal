@@ -3,7 +3,7 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { MenuBook } from '@mui/icons-material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import StartCards from '@/components/molecules/StartCards/StartCards';
+import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
 type StartInfoProps = {
   title: string;
@@ -26,12 +26,12 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
     <>
       <Box py={11} sx={{ backgroundColor: theme.palette.background.default }}>
         <SectionTitle title={title} />
-        <StartCards
+        <CardsGrid
           cards={cards.map((card) => ({
             title: card.title,
             text: card.text,
             href: card.href,
-            iconName: card.iconName,
+            icon: card.iconName,
           }))}
         />
       </Box>

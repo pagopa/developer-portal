@@ -21,7 +21,7 @@ const SectionTitle = ({
   return (
     <EContainer>
       <Stack
-        sx={{ m: 2, mt: 10 }}
+        sx={{ m: 2 }}
         spacing={2}
         direction='column'
         justifyContent={{ sm: 'space-between', md: 'center' }}

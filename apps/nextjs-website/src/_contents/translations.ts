@@ -13,6 +13,9 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
   },
+  homepage: {
+    productsShowcaseTitle: 'Scopri il nostro ecosistema',
+  },
   overview: {
     startInfo: {
       cta: {
