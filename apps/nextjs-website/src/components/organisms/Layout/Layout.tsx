@@ -5,7 +5,6 @@ import { Product } from '@/lib/types/product';
 import React, { ReactNode, FC } from 'react';
 import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { Provider as MosaicProvider } from '@stoplight/mosaic';
 
 export type LayoutProps = {
   readonly products: Product[];
@@ -25,7 +24,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   bannerLinks,
   children,
 }) => (
-  <MosaicProvider>
+  <>
     <header>
       <SiteHeader products={products} />
       {product && path && <ProductHeader product={product} path={path} />}
@@ -33,7 +32,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
     <main>{children}</main>
     {bannerLinks && <BannerLinks banners={bannerLinks} />}
     <SiteFooter />
-  </MosaicProvider>
+  </>
 );
 
 export default Layout;
