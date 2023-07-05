@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
 import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { styles } from './ApiSection.styles';
+import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -14,14 +14,14 @@ export type ApiPageProps = {
 };
 
 const ApiSection = ({ product, specURLs }: ApiPageProps) => {
-  const [selectedItem, setSelectedItem] = useState(specURLs[0].url);
+  const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
   const handleChange = (event: SelectChangeEvent) => {
-    setSelectedItem(event.target.value);
+    setSelectedItemURL(event.target.value);
   };
 
   const selectedApi = useMemo(
-    () => specURLs.find((item) => item?.url === selectedItem) || specURLs[0],
-    [selectedItem, specURLs]
+    () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
+    [selectedItemURL, specURLs]
   );
 
   return (
@@ -30,7 +30,7 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
         <Stack sx={{ background: '#0D1018' }}>
           <Stack width={400}>
             <Select
-              value={selectedItem}
+              value={selectedItemURL}
               onChange={handleChange}
               size='small'
               variant='outlined'

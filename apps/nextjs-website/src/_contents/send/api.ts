@@ -7,11 +7,11 @@ export const sendApi: ApiData = {
   product: send,
   specURLs: [
     {
-      name: 'API 1',
+      name: 'API B2B per le Pubbliche Amministrazioni',
       url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/develop/docs/openapi/api-external-b2b-pa.yaml',
     },
     {
-      name: 'API 2',
+      name: 'API B2B avanzamento notifiche,
       url: 'https://raw.githubusercontent.com/pagopa/pn-delivery-push/develop/docs/openapi/api-external-b2b-webhook.yaml',
     },
   ],
