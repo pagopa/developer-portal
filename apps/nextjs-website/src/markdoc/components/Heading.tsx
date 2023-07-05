@@ -1,5 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
+import { removeEmojis } from '@/markdoc/helpers';
 
 type HeadingProps = {
   level: number;
@@ -20,7 +21,9 @@ const asVariant = (level: number) =>
     : 'h6';
 
 const Heading = ({ level, children }: HeadingProps) => (
-  <Typography variant={asVariant(level)}>{children}</Typography>
+  <Typography variant={asVariant(level)}>
+    {typeof children === 'string' ? removeEmojis(children) : children}
+  </Typography>
 );
 
 export default Heading;

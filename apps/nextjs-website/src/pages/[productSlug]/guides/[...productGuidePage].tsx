@@ -1,10 +1,9 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
-import { getGuidePaths, getGuide, getProducts } from '@/lib/api';
+import { getGuide, getGuidePaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import { renderGitBookMarkdown } from '@/markdoc';
-import Stack from '@mui/material/Stack';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
+import { Box, useTheme } from '@mui/material';
 
 type Params = {
   productSlug: string;
@@ -48,23 +47,50 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
   }
 };
 
-const Page = (props: ProductGuidePageProps) => (
-  <Layout products={props.products} product={props.product} path={props.path}>
-    <EContainer>
-      <Stack direction='row'>
-        {renderGitBookMarkdown(
-          props.menu,
-          props.pathPrefix,
-          props.assetsPrefix
-        )}
-        {renderGitBookMarkdown(
-          props.body,
-          props.pathPrefix,
-          props.assetsPrefix
-        )}
-      </Stack>
-    </EContainer>
-  </Layout>
-);
+const Page = (props: ProductGuidePageProps) => {
+  const { palette } = useTheme();
+
+  return (
+    <Layout
+      products={props.products}
+      product={props.product}
+      path={props.path}
+      bannerLinks={props.bannerLinks}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column-reverse', lg: 'row' },
+        }}
+      >
+        <Box
+          bgcolor={palette.grey[50]}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '32px 0',
+            flexBasis: { lg: '354px' },
+            flexGrow: { lg: 0 },
+            flexShrink: { lg: 0 },
+          }}
+        >
+          {renderGitBookMarkdown(
+            props.menu,
+            props.pathPrefix,
+            props.assetsPrefix,
+            true
+          )}
+        </Box>
+        <Box sx={{ padding: '25px' }}>
+          {renderGitBookMarkdown(
+            props.body,
+            props.pathPrefix,
+            props.assetsPrefix
+          )}
+        </Box>
+      </Box>
+    </Layout>
+  );
+};
 
 export default Page;

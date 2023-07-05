@@ -20,7 +20,7 @@ const File = (assetsPrefix: string) =>
         target='_blank'
         startIcon={<AttachFileIcon />}
       >
-        {children}
+        {children || src.split('/').slice(-1)}
       </ButtonNaked>
     ),
     { displayName: 'File' }

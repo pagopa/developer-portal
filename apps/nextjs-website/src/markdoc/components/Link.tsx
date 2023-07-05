@@ -1,20 +1,12 @@
 import { ReactNode } from 'react';
 import MUILink from '@mui/material/Link';
 import NextLink from 'next/link';
+import { convertLink, removeEmojis } from '@/markdoc/helpers';
 
 type LinkProps = {
   title: string;
   href: string;
   children: ReactNode;
-};
-
-export const convertLink = (prefix: string, href: string) => {
-  if (!href.startsWith('http')) {
-    const updated = href.replace('README.md', '').replace('.md', '');
-    return `${prefix}/${updated}`;
-  } else {
-    return href;
-  }
 };
 
 const Link = (prefix: string) =>
@@ -23,9 +15,15 @@ const Link = (prefix: string) =>
       <MUILink
         component={NextLink}
         href={convertLink(prefix, href)}
-        title={title}
+        title={removeEmojis(title)}
+        sx={{
+          color: '#0073E6',
+          fontSize: '16px',
+          fontWeight: 700,
+          textDecoration: 'none',
+        }}
       >
-        {children}
+        {typeof children === 'string' ? removeEmojis(children) : children}
       </MUILink>
     ),
     { displayName: 'Link' }

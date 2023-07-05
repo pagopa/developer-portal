@@ -10,7 +10,9 @@ const toMuiSeverity = (style: HintProps['style']): AlertColor =>
   style === 'danger' ? 'warning' : style;
 
 const Hint = ({ style, children }: HintProps) => (
-  <Alert severity={toMuiSeverity(style)}>{children}</Alert>
+  <Alert severity={toMuiSeverity(style)} sx={{ margin: '16px 0' }}>
+    {children}
+  </Alert>
 );
 
 export default Hint;

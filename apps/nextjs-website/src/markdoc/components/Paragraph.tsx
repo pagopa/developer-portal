@@ -1,11 +1,11 @@
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 
-type HeadingProps = {
+type ParagraphProps = {
   children: ReactNode;
 };
 
-const Paragraph = ({ children }: HeadingProps) => (
+const Paragraph = ({ children }: ParagraphProps) => (
   <Typography variant={'body2'} component='div'>
     {children}
   </Typography>

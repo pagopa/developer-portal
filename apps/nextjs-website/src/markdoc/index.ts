@@ -2,21 +2,12 @@ import Markdoc, { RenderableTreeNode } from '@markdoc/markdoc';
 import { config } from './schema';
 import React from 'react';
 import { components } from './components';
-
-const pairedHtmlTag = (tag: string) => ({
-  // FIXME add a test and remove the useless escape char
-  // eslint-disable-next-line no-useless-escape
-  regex: new RegExp(`<${tag}([^>]*?)>(.*?)<\/${tag}>`, 'gs'),
-  replace: `{% ${tag}$1 %}$2{% /${tag} %}`,
-});
-const unpairedHtmlTag = (tag: string) => ({
-  regex: new RegExp(`<${tag}(.*?)>`, 'g'),
-  replace: `{% ${tag}$1 %}`,
-});
-const selfClosingTag = (tag: string) => ({
-  regex: new RegExp(`{% ${tag}(.*?) %}`, 'g'),
-  replace: `{% ${tag}$1 /%}`,
-});
+import {
+  pairedHtmlTag,
+  pairedHtmlTagCouple,
+  selfClosingTag,
+  unpairedHtmlTag,
+} from '@/markdoc/helpers';
 
 const fileR = selfClosingTag('file');
 const imgR = unpairedHtmlTag('img');
@@ -31,6 +22,8 @@ const tbodyR = pairedHtmlTag('tbody');
 const thR = pairedHtmlTag('th');
 const trR = pairedHtmlTag('tr');
 const tdR = pairedHtmlTag('td');
+const pStrongR = pairedHtmlTagCouple('p', 'strong');
+const pR = pairedHtmlTag('p');
 
 export const transform = (markdown: string): RenderableTreeNode => {
   // TODO: Ugly workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
@@ -51,7 +44,9 @@ export const transform = (markdown: string): RenderableTreeNode => {
     .replaceAll(tbodyR.regex, tbodyR.replace)
     .replaceAll(thR.regex, thR.replace)
     .replaceAll(trR.regex, trR.replace)
-    .replaceAll(tdR.regex, tdR.replace);
+    .replaceAll(tdR.regex, tdR.replace)
+    .replaceAll(pStrongR.regex, pStrongR.replace)
+    .replaceAll(pR.regex, pR.replace);
   const ast = Markdoc.parse(manipulated);
   return Markdoc.transform(ast, config);
 };
@@ -59,8 +54,12 @@ export const transform = (markdown: string): RenderableTreeNode => {
 export const renderGitBookMarkdown = (
   markdown: string,
   pathPrefix: string,
-  assetsPrefix: string
-): React.ReactNode =>
-  Markdoc.renderers.react(transform(markdown), React, {
-    components: components(pathPrefix, assetsPrefix),
+  assetsPrefix: string,
+  isSummary = false
+): React.ReactNode => {
+  return Markdoc.renderers.react(transform(markdown), React, {
+    components: isSummary
+      ? components(pathPrefix, assetsPrefix, isSummary)
+      : components(pathPrefix, assetsPrefix),
   });
+};
