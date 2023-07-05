@@ -73,4 +73,18 @@ export const sendOverview: OverviewData = {
     },
   ],
   tutorials: sendTutorials,
+  relatedLinks: [
+    {
+      path: '/',
+      name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
+    },
+    {
+      path: '/',
+      name: 'Consulta la documentazione sul modello di integrazione SEND',
+    },
+    {
+      path: '/',
+      name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
+    },
+  ],
 };
