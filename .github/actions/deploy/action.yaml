@@ -35,6 +35,7 @@ runs:
       run: npm run compile
 
     - name: Download GitBook docs
+      shell: bash
       run: npm run download-docs -w nextjs-website
 
     - name: Build static website
