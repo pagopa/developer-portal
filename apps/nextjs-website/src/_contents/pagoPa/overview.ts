@@ -2,6 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { ioSign } from '@/_contents/ioSign/ioSign';
+import { tutorials as pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -72,4 +73,5 @@ export const pagoPaOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
+  tutorials: pagoPaTutorials,
 };
