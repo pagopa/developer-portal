@@ -24,4 +24,4 @@ export const apis = [appIoApi, ioSignApi, sendApi];
 export const tutorials = [];
 export const tools = [];
 export const guideLists = [pagoPaGuideLists, ioSignGuideLists, sendGuideLists];
-export const products = [appIO, ioSign, pagoPa, send];
+export const products = [appIO, ioSign, send, pagoPa];

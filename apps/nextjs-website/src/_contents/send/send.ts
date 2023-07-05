@@ -11,4 +11,7 @@ export const send: Product = {
     api: sendApiPath,
     guides: sendGuideListsPath,
   },
+  description:
+    'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
+  svgPath: '/icons/SEND.svg',
 };
