@@ -2,7 +2,7 @@
 export const translations = {
   header: {
     title: 'PagoPA',
-    boldTitle: 'Developer Portal',
+    boldTitle: 'DevPortal',
     products: 'Prodotti',
   },
   shared: {
@@ -12,6 +12,25 @@ export const translations = {
   },
   homepage: {
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
+    heroItems: [
+      {
+        title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
+      },
+      {
+        title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
+        cta: {
+          label: 'Vai a SEND',
+          href: '/send/overview',
+        },
+      },
+      {
+        title: 'Richiedi una firma su documenti e contratti',
+        cta: {
+          label: 'Vai a Firma con IO',
+          href: '/io-sign/overview',
+        },
+      },
+    ],
   },
   overview: {
     startInfo: {
