@@ -12,8 +12,8 @@ export const appIO: Product = {
   path: '/app-io',
   subpaths: {
     overview: appIoOverviewPath,
+    api: appIoApiPath,
     tutorial: appIoTutorialPath,
     guides: appIOGuidesPath,
-    api: appIoApiPath,
   },
 };
