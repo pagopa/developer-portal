@@ -71,7 +71,9 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
           height={spacing(8)}
           gap={spacing(2)}
         >
-          <Typography>{soapDocumentation.title}</Typography>
+           <Typography variant='body2' color={textColor}>
+            {soapDocumentation.title}
+          </Typography>
           <Stack
             alignItems='center'
             justifyContent='flex-end'
