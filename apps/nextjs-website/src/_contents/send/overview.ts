@@ -51,4 +51,24 @@ export const sendOverview: OverviewData = {
       },
     ],
   },
+  startCards: [
+    {
+      title: 'Quick Start',
+      text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
+      href: '/',
+      iconName: 'FlagOutlined',
+    },
+    {
+      title: 'API B2B per le Pubbliche Amministrazioni',
+      text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
+      href: send.subpaths.api?.path ?? '#',
+      iconName: 'FolderOutlined',
+    },
+    {
+      title: 'API B2B avanzamento notifiche',
+      text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
+      href: send.subpaths.api?.path ?? '#',
+      iconName: 'FolderOutlined',
+    },
+  ],
 };
