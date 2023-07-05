@@ -48,7 +48,12 @@ const GuidesPage = ({
   const { palette } = useTheme();
 
   return (
-    <Layout products={products} product={product} path={path}>
+    <Layout
+      products={products}
+      product={product}
+      path={path}
+      showBreadcrumbs={true}
+    >
       {abstract && (
         <Abstract
           description={abstract?.description}

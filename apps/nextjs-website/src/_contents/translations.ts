@@ -5,6 +5,9 @@ export const translations = {
     boldTitle: 'Developer Portal',
     products: 'Prodotti',
   },
+  breadcrumbs: {
+    title: 'DevPortal',
+  },
   shared: {
     readTutorial: 'Leggi il tutorial',
     moreInfo: 'Scopri di più',

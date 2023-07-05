@@ -41,6 +41,7 @@ const ApisPage = ({
     product={product}
     path={path}
     bannerLinks={bannerLinks}
+    showBreadcrumbs={true}
   >
     <ApiViewer specURL={specURL} product={product} />
   </Layout>
