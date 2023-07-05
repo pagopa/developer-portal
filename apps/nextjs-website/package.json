@@ -18,8 +18,8 @@
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.8",
     "@pagopa/mui-italia": "^0.9.5",
-    "@stoplight/elements": "^7.7.18",
     "@pagopa/pagopa-editorial-components": "2.0.0",
+    "@stoplight/elements": "^7.7.18",
     "next": "^13.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

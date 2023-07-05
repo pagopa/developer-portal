@@ -5,8 +5,11 @@ import { appIoApiPath } from '@/_contents/appIo/apiPath';
 export const appIoApi: ApiData = {
   ...appIoApiPath,
   product: appIO,
-  specURL:
-    'https://raw.githubusercontent.com/pagopa/io-functions-services/master/openapi/index.yaml',
+  specURLs: [
+    {
+      url: 'https://raw.githubusercontent.com/pagopa/io-functions-services/master/openapi/index.yaml',
+    },
+  ],
   bannerLinks: [
     {
       theme: 'dark',
