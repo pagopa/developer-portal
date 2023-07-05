@@ -7,11 +7,9 @@ export function productPageToBreadcrumbs(
   path?: string,
   paths?: readonly Path[]
 ): readonly Path[] {
-  const subpath = [
-    ...Object.entries(product.subpaths)
-      .filter((entry) => path?.includes(entry[1].path))
-      .map((entry) => entry[1]),
-  ];
+  const subpath = Object.entries(product.subpaths)
+    .filter(([, subpath]) => path?.includes(subpath.path))
+    .map(([, subpath]) => subpath);
   return [
     {
       name: translations.breadcrumbs.title,
