@@ -13,4 +13,7 @@ export const styles = {
       borderColor: 'white',
     },
   },
+  container: {
+    background: '#0D1018',
+  },
 };

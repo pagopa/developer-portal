@@ -27,7 +27,7 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
   return (
     <>
       {specURLs.length > 1 && (
-        <Stack sx={{ background: '#0D1018' }}>
+        <Stack sx={styles.container}>
           <Stack width={400}>
             <Select
               value={selectedItemURL}
