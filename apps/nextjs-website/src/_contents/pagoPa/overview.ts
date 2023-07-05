@@ -10,7 +10,7 @@ export const pagoPaOverview: OverviewData = {
     backgroundImage: '/images/hero.jpg',
     title: 'La piattaforma per gestire e rendicontare i pagamenti',
     subtitle:
-      'pagoPA permette alle Pubbliche Amministrazioni di gestire gli incassi in modo centralizzato, offrendo servizi automatici di rendicontazione e riconciliazione con un significativo risparmio nei costi di gestione.',
+      'pagoPA permette agli Enti Creditori di gestire gli incassi in modo centralizzato, offrendo servizi automatici di rendicontazione e riconciliazione con un significativo risparmio nei costi di gestione.',
   },
   feature: {
     title: 'title',
