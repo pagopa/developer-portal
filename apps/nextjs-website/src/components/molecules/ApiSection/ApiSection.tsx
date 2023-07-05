@@ -1,7 +1,16 @@
 import { useMemo, useState } from 'react';
+import {
+  Link,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
-import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
+import { IconName, getIconFromName } from '@/helpers/getIconFromName';
 import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
 
 export type ApiPageProps = {
@@ -11,9 +20,17 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
+  readonly soapDocumentation?: {
+    title: string;
+    url: string;
+    buttonLabel: string;
+    icon: IconName;
+  };
 };
 
-const ApiSection = ({ product, specURLs }: ApiPageProps) => {
+const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
+  const { palette, spacing } = useTheme();
+
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
@@ -23,11 +40,12 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
     () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
     [selectedItemURL, specURLs]
   );
+  const textColor = palette.primary.contrastText;
 
   return (
     <>
       {specURLs.length > 1 && (
-        <Stack sx={styles.container}>
+        <Stack sx={styles.selectContainer}>
           <Stack width={400}>
             <Select
               value={selectedItemURL}
@@ -42,6 +60,35 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
                 </MenuItem>
               ))}
             </Select>
+          </Stack>
+        </Stack>
+      )}
+      {soapDocumentation && (
+        <Stack
+          sx={styles.soapContainer}
+          alignItems='center'
+          justifyContent='flex-end'
+          direction='row'
+          height={spacing(8)}
+          gap={spacing(2)}
+        >
+          <Typography>{soapDocumentation.title}</Typography>
+          <Stack
+            alignItems='center'
+            justifyContent='flex-end'
+            direction='row'
+            gap={spacing(1)}
+          >
+            <Typography>
+              <Link href={soapDocumentation.url}>
+                {soapDocumentation.buttonLabel}
+                {getIconFromName({
+                  type: soapDocumentation.icon,
+                  fill: textColor,
+                  size: 24,
+                })}
+              </Link>
+            </Typography>
           </Stack>
         </Stack>
       )}
