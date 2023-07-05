@@ -1,6 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
+import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -71,4 +72,5 @@ export const sendOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
+  tutorials: sendTutorials,
 };
