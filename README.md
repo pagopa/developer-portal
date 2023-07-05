@@ -11,17 +11,16 @@ In this repository you can find anything you need to work on the developer porta
 ## Local development
 
 Before you start, make sure you have complete the following steps:
-- Install the dependencies: `npm install`.
-- Download the documentation that come from GitBook running the following command: `npm run download-docs -w nextjs-website` (it may take a while).
-- In the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 
 ``` bash
 # install dependencies
 npm i
 
-# download static documentation
+# Download the static documentation that come from GitBook. It may take a while.
 npm run download-docs -w nextjs-website
 ```
+
+Finally in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 
 ### Run the developer portal locally
 
