@@ -1,7 +1,8 @@
 import { Product } from '@/lib/types/product';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
-import { sendApiPath } from './apiPath';
+import { sendApiPath } from '@/_contents/send/apiPath';
+import { sendTutorialPath } from '@/_contents/send/tutorialPath';
 
 export const send: Product = {
   name: 'SEND',
@@ -9,6 +10,7 @@ export const send: Product = {
   subpaths: {
     overview: sendOverviewPath,
     api: sendApiPath,
+    tutorial: sendTutorialPath,
     guides: sendGuideListsPath,
   },
   description:
