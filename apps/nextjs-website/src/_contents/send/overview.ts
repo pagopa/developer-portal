@@ -13,8 +13,42 @@ export const sendOverview: OverviewData = {
       'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
   },
   feature: {
-    title: 'title',
-    subtitle: 'subtitle',
-    items: [],
+    title: 'Perché usare SEND',
+    subtitle:
+      'Con SEND diminuisci l’incertezza della reperibilità dei destinatari e riduci i tempi e i costi di gestione. La piattaforma infatti permette al tuo ente di:',
+    items: [
+      {
+        stackIcon: {
+          icon: 'MarkEmailRead',
+        },
+        subtitle:
+          'Tu depositi i documenti e SEND li invia, in digitale o cartaceo',
+        title: 'Inviare notifiche con API o manualmente',
+      },
+      {
+        stackIcon: {
+          icon: 'QueryStats',
+        },
+        subtitle:
+          'Visualizza la cronologia degli stati della notifica e le relative attestazioni',
+        title: 'Tracciare i cambi di stato',
+      },
+      {
+        stackIcon: {
+          icon: 'TimerSharp',
+        },
+        subtitle:
+          'Se il destinatario ha un recapito digitale, i tempi di invio sono minori',
+        title: 'Diminuire i tempi di invio',
+      },
+      {
+        stackIcon: {
+          icon: 'Approval',
+        },
+        subtitle:
+          'Il processo di notificazione è normato e c’è maggiore certezza di consegna',
+        title: 'Seguire un processo normato',
+      },
+    ],
   },
 };
