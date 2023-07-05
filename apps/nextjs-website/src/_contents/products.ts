@@ -12,6 +12,7 @@ import { sendApi } from '@/_contents/send/api';
 import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { send } from '@/_contents/send/send';
+import { appIOGuideLists } from '@/_contents/appIo/guideLists';
 
 export const overviews = [
   appIoOverview,
@@ -23,5 +24,10 @@ export const quickStarts = [];
 export const apis = [appIoApi, ioSignApi, sendApi];
 export const tutorials = [];
 export const tools = [];
-export const guideLists = [pagoPaGuideLists, ioSignGuideLists, sendGuideLists];
+export const guideLists = [
+  appIOGuideLists,
+  pagoPaGuideLists,
+  ioSignGuideLists,
+  sendGuideLists,
+];
 export const products = [appIO, ioSign, send, pagoPa];
