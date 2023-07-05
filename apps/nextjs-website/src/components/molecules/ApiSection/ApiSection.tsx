@@ -14,14 +14,14 @@ export type ApiPageProps = {
 };
 
 const ApiSection = ({ product, specURLs }: ApiPageProps) => {
-  const [selectedItem, setSelectedItem] = useState(specURLs[0].url);
+  const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
   const handleChange = (event: SelectChangeEvent) => {
-    setSelectedItem(event.target.value);
+    setSelectedItemURL(event.target.value);
   };
 
   const selectedApi = useMemo(
-    () => specURLs.find((item) => item?.url === selectedItem) || specURLs[0],
-    [selectedItem, specURLs]
+    () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
+    [selectedItemURL, specURLs]
   );
 
   return (
@@ -30,7 +30,7 @@ const ApiSection = ({ product, specURLs }: ApiPageProps) => {
         <Stack sx={{ background: '#0D1018' }}>
           <Stack width={400}>
             <Select
-              value={selectedItem}
+              value={selectedItemURL}
               onChange={handleChange}
               size='small'
               variant='outlined'
