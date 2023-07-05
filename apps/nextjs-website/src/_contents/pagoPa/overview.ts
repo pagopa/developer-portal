@@ -74,4 +74,22 @@ export const pagoPaOverview: OverviewData = {
     },
   ],
   tutorials: pagoPaTutorials,
+  relatedLinks: [
+    {
+      path: 'https://survey.pagopa.it/238313',
+      name: 'Contribuisci al miglioramento della Tassonomia',
+    },
+    {
+      path: 'https://docs.pagopa.it/linee-guida-brand-pagopa/',
+      name: 'Consulta le linee guida brand pagoPA',
+    },
+    {
+      path: 'https://www.gazzettaufficiale.it/eli/id/2018/07/03/18A04494/sg',
+      name: 'Consulta le linee Guida Gazzetta Ufficiale',
+    },
+    {
+      path: 'https://docs.pagopa.it/portale-delle-adesioni/portale-delle-adesioni',
+      name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
+    },
+  ],
 };
