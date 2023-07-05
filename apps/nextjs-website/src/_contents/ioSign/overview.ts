@@ -43,4 +43,18 @@ export const ioSignOverview: OverviewData = {
       },
     ],
   },
+  startCards: [
+    {
+      title: 'Quick Start',
+      text: '6 semplici passi per inviare e ricevere un documento firmato digitalmente',
+      href: '/',
+      iconName: 'FlagOutlined',
+    },
+    {
+      title: 'Documentazione API',
+      text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
+      href: ioSign.subpaths.api?.path ?? '#',
+      iconName: 'FolderOutlined',
+    },
+  ],
 };
