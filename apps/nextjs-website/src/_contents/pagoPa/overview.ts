@@ -1,6 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
+import { ioSign } from '@/_contents/ioSign/ioSign';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -51,4 +52,24 @@ export const pagoPaOverview: OverviewData = {
       },
     ],
   },
+  startCards: [
+    {
+      title: 'Quick Start',
+      text: 'Cinque semplici passi per aderire a Nuova connettività',
+      href: '/',
+      iconName: 'FlagOutlined',
+    },
+    {
+      title: 'Documentazione API REST',
+      text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
+      href: ioSign.subpaths.api?.path ?? '#',
+      iconName: 'FolderOutlined',
+    },
+    {
+      title: 'Documentazione  SOAP',
+      text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
+      href: '#',
+      iconName: 'FolderOutlined',
+    },
+  ],
 };
