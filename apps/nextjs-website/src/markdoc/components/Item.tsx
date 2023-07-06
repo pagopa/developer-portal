@@ -8,7 +8,7 @@ type ItemProps = {
 const Item = ({ children }: ItemProps) => {
   return (
     <li style={{ listStyleType: 'square', marginLeft: '32px', padding: 0 }}>
-      <Typography variant={'body2'} component='span'>
+      <Typography variant={'body1'} component='span'>
         {children}
       </Typography>
     </li>

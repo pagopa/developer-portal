@@ -6,7 +6,7 @@ type StrongProps = {
 };
 
 const Strong = ({ children }: StrongProps) => (
-  <Typography variant={'body2'} component='strong' fontWeight={700}>
+  <Typography variant={'body1'} component='strong' fontWeight={700}>
     {children}
   </Typography>
 );

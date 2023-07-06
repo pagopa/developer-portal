@@ -7,7 +7,7 @@ type ParagraphProps = {
 
 const Paragraph = ({ children }: ParagraphProps) => (
   <Typography
-    variant={'body2'}
+    variant={'body1'}
     component='div'
     sx={{ margin: '24px 0 8px 0 !important' }}
   >

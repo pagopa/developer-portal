@@ -8,7 +8,7 @@ type SummaryItemProps = {
 const SummaryItem = ({ children }: SummaryItemProps) => {
   return (
     <Typography
-      variant={'body2'}
+      variant={'body1'}
       component={'div'}
       sx={{
         margin: 0,
