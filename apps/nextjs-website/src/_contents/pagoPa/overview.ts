@@ -61,7 +61,7 @@ export const pagoPaOverview: OverviewData = {
     {
       title: 'Documentazione  SOAP',
       text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
-      href: '#',
+      href: 'https://github.com/pagopa/pagopa-api',
       iconName: 'FolderOutlined',
     },
   ],
