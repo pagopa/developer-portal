@@ -100,7 +100,7 @@ export const appIoOverview: OverviewData = {
     {
       title: 'Documentazione Api',
       text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
-      href: '/',
+      href: '/app-io/api',
       iconName: 'FolderOutlined',
     },
   ],
