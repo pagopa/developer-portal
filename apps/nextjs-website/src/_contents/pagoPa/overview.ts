@@ -73,7 +73,11 @@ export const pagoPaOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorials: pagoPaTutorials,
+  tutorial: {
+    subtitle:
+      'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
+    list: pagoPaTutorials,
+  },
   relatedLinks: [
     {
       path: 'https://survey.pagopa.it/238313',

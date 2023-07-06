@@ -6,9 +6,11 @@ import { Box } from '@mui/material';
 type NewsProps = {
   title: string;
   subtitle?: string;
-  ctaLabel?: string;
+  cta?: {
+    label: string;
+    href: string;
+  };
   marginTop?: number;
-  href?: string;
   cards: {
     title: string;
     dateString: string;
@@ -24,22 +26,10 @@ type NewsProps = {
   }[];
 };
 
-const News = ({
-  title,
-  subtitle,
-  ctaLabel,
-  href,
-  cards,
-  marginTop,
-}: NewsProps) => {
+const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
   return (
     <Box marginTop={marginTop}>
-      <SectionTitle
-        title={title}
-        subtitle={subtitle}
-        ctaLabel={ctaLabel}
-        href={href}
-      />
+      <SectionTitle title={title} subtitle={subtitle} cta={cta} />
       <Newsroom
         items={cards.map((card) => ({
           title: card.title,

@@ -44,13 +44,20 @@ export type OverviewPageProps = {
     readonly href?: string;
     readonly iconName: string;
   }[];
-  readonly tutorials?: readonly Tutorial[];
-  readonly postIntegration?: readonly {
-    readonly title: string;
-    readonly description: string;
-    readonly path: string;
-    readonly name: string;
-  }[];
+  readonly tutorial: {
+    readonly subtitle: string;
+    readonly list?: readonly Tutorial[];
+  };
+  readonly postIntegration?: {
+    readonly subtitle: string;
+    readonly cardsTitle: string;
+    readonly list: readonly {
+      readonly title: string;
+      readonly description: string;
+      readonly path: string;
+      readonly name: string;
+    }[];
+  };
   readonly relatedLinks?: Path[];
 } & LayoutProps;
 
@@ -72,7 +79,7 @@ const OverviewPage = ({
   product,
   products,
   path,
-  tutorials,
+  tutorial,
   postIntegration,
   relatedLinks,
   bannerLinks,
@@ -108,20 +115,25 @@ const OverviewPage = ({
           cards={startCards}
         />
       )}
-      {product.subpaths.tutorial && tutorials && (
+      {product.subpaths.tutorial && tutorial && (
         <TutorialsOverview
+          title={overview.tutorial.title}
+          subtitle={tutorial.subtitle}
+          ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorial}
-          tutorials={[...tutorials]}
+          tutorials={[...(tutorial.list || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (
         <LinkCards
-          title={overview.guide.title}
-          subtitle={overview.guide.subtitle}
-          ctaLabel={overview.guide.ctaLabel}
-          href={overview.guide.href}
-          cardsTitle={overview.guide.cardsTitle}
-          cards={postIntegration.map((guide) => ({
+          title={overview.postIntegration.title}
+          subtitle={postIntegration.subtitle}
+          cta={{
+            label: overview.postIntegration.ctaLabel,
+            href: overview.postIntegration.href,
+          }}
+          cardsTitle={postIntegration.cardsTitle}
+          cards={postIntegration.list?.map((guide) => ({
             title: guide.title,
             text: guide.description,
             href: guide.path,

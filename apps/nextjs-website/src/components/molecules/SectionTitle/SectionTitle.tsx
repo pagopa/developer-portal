@@ -6,16 +6,17 @@ import React, { ReactNode } from 'react';
 type SectionTitleProps = {
   title: string;
   subtitle?: string;
-  ctaLabel?: string;
-  href?: string;
+  cta?: {
+    label: string;
+    href: string;
+  };
   children?: ReactNode | ReactNode[];
 };
 
 const SectionTitle = ({
   title,
   subtitle,
-  ctaLabel,
-  href,
+  cta,
   children,
 }: SectionTitleProps) => {
   return (
@@ -37,7 +38,7 @@ const SectionTitle = ({
             {subtitle}
           </Typography>
         )}
-        {ctaLabel && href && <LinkButton href={href} label={ctaLabel} />}
+        {cta && <LinkButton href={cta.href} label={cta.label} />}
       </Stack>
       {children}
     </EContainer>
