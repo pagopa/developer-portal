@@ -72,7 +72,7 @@ export const sendOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,
