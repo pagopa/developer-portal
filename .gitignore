@@ -389,3 +389,9 @@ terraform.rc
 
 # Docker config files
 docker/
+
+# Ignore files managed by gitbook fetch step
+apps/nextjs-website/.tmp/
+apps/nextjs-website/docs/
+# Ignore static assets provided by the gitbook-export script
+apps/nextjs-website/public/gitbook/

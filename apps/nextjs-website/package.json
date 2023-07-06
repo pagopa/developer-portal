@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "download-docs": "./scripts/fetch-docs.sh 875c69f",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
@@ -18,11 +19,12 @@
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.8",
     "@pagopa/mui-italia": "^0.9.5",
-    "@stoplight/elements": "^7.7.18",
     "@pagopa/pagopa-editorial-components": "2.0.0",
+    "@stoplight/elements": "^7.7.18",
     "next": "^13.4.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "swiper": "^10.0.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

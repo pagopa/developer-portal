@@ -1,3 +1,16 @@
 body {
   margin: 0;
 }
+
+.swiper-pagination-bullet {
+  width: 40px;
+  height: 4px;
+  border-radius: 25px;
+  text-align: center;
+  opacity: 0.5;
+  background-color: white;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}

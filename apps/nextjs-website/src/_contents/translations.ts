@@ -2,8 +2,11 @@
 export const translations = {
   header: {
     title: 'PagoPA',
-    boldTitle: 'Developer Portal',
+    boldTitle: 'DevPortal',
     products: 'Prodotti',
+  },
+  breadcrumbs: {
+    title: 'DevPortal',
   },
   shared: {
     readTutorial: 'Leggi il tutorial',
@@ -11,7 +14,73 @@ export const translations = {
     goToModel: 'Vai al modello',
   },
   homepage: {
+    news: {
+      title: 'In evidenza',
+      list: [
+        {
+          title:
+            'Usa il validatore di SEND per fare una verifica sull’integrazione',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai al validatore',
+            link: '#news-1',
+            title: 'Vai al validatore',
+          },
+        },
+        {
+          title: 'Scopri i nuovi tutorial interattivi di Firma con IO',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai al tutorial',
+            link: '#news-2',
+            title: 'Vai al tutorial',
+          },
+        },
+        {
+          title:
+            'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
+          dateString: '2023-06-29T22:15:53.780Z',
+          href: {
+            label: 'Vai alla guida',
+            link: '#news-3',
+            title: 'Vai alla guida',
+          },
+        },
+      ],
+    },
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
+    heroItems: [
+      {
+        title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
+      },
+      {
+        title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
+        cta: {
+          label: 'Vai a SEND',
+          href: '/send/overview',
+        },
+      },
+      {
+        title: 'Richiedi una firma su documenti e contratti',
+        cta: {
+          label: 'Vai a Firma con IO',
+          href: '/io-sign/overview',
+        },
+      },
+    ],
+    comingsoonDocumentation: {
+      title: 'Documentazione in arrivo',
+      links: [
+        {
+          text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
+          href: '#homepage-doc-1',
+        },
+        {
+          text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
+          href: '#homepage-doc-2',
+        },
+      ],
+    },
   },
   overview: {
     startInfo: {

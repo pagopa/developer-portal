@@ -6,8 +6,10 @@ import { Product } from '@/lib/types/product';
 type ApiViewerProps = {
   specURL: string;
   product: Product;
+  hideTryIt?: boolean;
 };
 export const ApiViewer: FC<ApiViewerProps> = ({
+  hideTryIt = true,
   specURL,
   product: {
     path,
@@ -17,7 +19,7 @@ export const ApiViewer: FC<ApiViewerProps> = ({
   return (
     <API
       apiDescriptionUrl={specURL}
-      hideTryIt
+      hideTryIt={hideTryIt}
       hideExport
       basePath={`${api?.path}` ?? `${path}/api`}
       router={typeof window === 'undefined' ? 'memory' : 'history'}
