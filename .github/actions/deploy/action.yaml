@@ -45,6 +45,8 @@ runs:
       run: npm run build -w nextjs-website
 
     - name: Export static website
+      env:
+        PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
       shell: bash
       run: npm run export -w nextjs-website
 
