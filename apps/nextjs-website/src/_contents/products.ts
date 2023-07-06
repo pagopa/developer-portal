@@ -14,12 +14,12 @@ import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { send } from '@/_contents/send/send';
 import { appIOGuideLists } from '@/_contents/appIo/guideLists';
-import { appIoGuides } from './appIo/guides';
-import { appIoTutorials } from './appIo/tutorials';
-import { ioSignTutorials } from './ioSign/tutorials';
-import { ioSignGuides } from './ioSign/guides';
-import { pagoPaGuides } from './pagoPa/guides';
-import { sendGuides } from './send/guides';
+import { appIoGuides } from ' @/_contents/appIo/guides';
+import { appIoTutorials } from '@/_contents/appIo/tutorials';
+import { ioSignTutorials } from '@/_contents/ioSign/tutorials';
+import { ioSignGuides } from '@/_contents/ioSign/guides';
+import { pagoPaGuides } from '@/_contents/pagoPa/guides';
+import { sendGuides } from '@/_contents/send/guides';
 
 export const overviews = [
   appIoOverview,
