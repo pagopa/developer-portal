@@ -98,8 +98,6 @@ export const translations = {
     },
     postIntegration: {
       title: "Dopo l'integrazione",
-      ctaLabel: 'Vai al manuale dei servizi',
-      href: '/',
     },
     relatedLinks: {
       title: 'LINK UTILI',

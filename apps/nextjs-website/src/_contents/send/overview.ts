@@ -13,6 +13,30 @@ export const sendOverview: OverviewData = {
     subtitle:
       'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
   },
+  postIntegration: {
+    subtitle:
+      'Verifica che l’integrazione con SEND soddisfi i criteri minimi per poter operare in ambiente di staging.',
+    guides: [
+      {
+        title: 'Guida Tecnica all’integrazione dei servizi',
+        description: {
+          title: 'Argomenti trattati',
+          listItems: [
+            'Scopri come aderire',
+            'Crea e pubblica un servizio',
+            'Testa e invia un messaggio',
+            'Esegui test sulle funzionalità',
+          ],
+        },
+        link: {
+          href: `/`,
+          label: 'Vai alla guida',
+        },
+        imagePath: '/images/guida-tecnica.png',
+        mobileImagePath: '/images/guida-tecnica-mobile.png',
+      },
+    ],
+  },
   feature: {
     title: 'Perché usare SEND',
     subtitle:
