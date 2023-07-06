@@ -1,19 +1,19 @@
 import { Product } from '@/lib/types/product';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoApiPath } from '@/_contents/appIo/apiPath';
-import { appIoTutorialPath } from '@/_contents/appIo/tutorialPath';
-import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIoGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
 
-export const appIO: Product = {
-  name: 'App IO',
+export const appIo: Product = {
+  name: "L'App IO",
   description:
     'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
-  svgPath: '/icons/AppIO.svg',
+  svgPath: '/icons/appIo.svg',
   path: '/app-io',
   subpaths: {
     overview: appIoOverviewPath,
     api: appIoApiPath,
-    tutorial: appIoTutorialPath,
-    guides: appIOGuideListsPath,
+    tutorials: appIoTutorialListsPath,
+    guides: appIoGuideListsPath,
   },
 };

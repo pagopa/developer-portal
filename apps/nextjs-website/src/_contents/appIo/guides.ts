@@ -1,8 +1,8 @@
-import { appIO } from './appIO';
+import { appIo } from './appIo';
 import { makeGuide } from '../makeDocs';
 
 const guidaTecnica = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Guida tecnica',
     slug: `io-guida-tecnica`,
@@ -32,7 +32,7 @@ const guidaTecnica = makeGuide({
 });
 
 const manualeDeiServizi = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: "Manuale dei servizi dell'app IO",
     slug: 'manuale-servizi',
@@ -46,7 +46,7 @@ const manualeDeiServizi = makeGuide({
 });
 
 const supportoAgliEnti = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Supporto agli enti',
     slug: 'supporto-agli-enti',
@@ -60,7 +60,7 @@ const supportoAgliEnti = makeGuide({
 });
 
 const kitDiComunicazione = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Kit di comunicazione',
     slug: 'kit-comunicazione',
@@ -74,7 +74,7 @@ const kitDiComunicazione = makeGuide({
 });
 
 const cartaGiovani = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Carta Giovani - Documentazione Tecnica Portale Operatori',
     slug: 'carta-giovani-nazionale',
