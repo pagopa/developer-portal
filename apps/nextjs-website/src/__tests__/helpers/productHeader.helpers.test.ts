@@ -11,8 +11,8 @@ const product: Product = {
       name: 'overview',
       path: '/path/overview_path',
     },
-    tutorial: {
-      name: 'tutorial',
+    tutorials: {
+      name: 'tutorials',
       path: '/path/tutorial_path',
     },
   },
