@@ -9,6 +9,7 @@ export const translations = {
     title: 'DevPortal',
   },
   shared: {
+    coomingSoon: 'In Arrivo',
     readTutorial: 'Leggi il tutorial',
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
