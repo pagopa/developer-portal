@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import styles from './Item.module.css';
 import Typography from '@mui/material/Typography';
 
 type ItemProps = {
@@ -8,7 +7,7 @@ type ItemProps = {
 
 const Item = ({ children }: ItemProps) => {
   return (
-    <li className={styles.Item}>
+    <li style={{ listStyleType: 'square', marginLeft: '32px', padding: 0 }}>
       <Typography variant={'body2'} component='span'>
         {children}
       </Typography>

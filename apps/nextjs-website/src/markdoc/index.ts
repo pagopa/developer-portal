@@ -7,7 +7,7 @@ import {
   pairedHtmlTagCouple,
   selfClosingTag,
   unpairedHtmlTag,
-} from '@/markdoc/helpers';
+} from './helpers';
 
 const fileR = selfClosingTag('file');
 const imgR = unpairedHtmlTag('img');

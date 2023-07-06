@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
-import { removeEmojis } from '@/markdoc/helpers';
+import { removeEmojis } from '../helpers';
 
 type HeadingProps = {
   level: number;

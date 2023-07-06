@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
-import styles from './SummaryUnorderedList.module.css';
 
 type SummaryUnorderedListProps = {
   children: ReactNode[];
 };
 
 const SummaryUnorderedList = ({ children }: SummaryUnorderedListProps) => {
-  return <div className={styles.SummaryUnorderedList}>{children}</div>;
+  return (
+    <div style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+      {children}
+    </div>
+  );
 };
 
 export default SummaryUnorderedList;

@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { convertLink } from '@/markdoc/helpers';
+import { convertLink } from '../helpers';
 
 type PageLinkProps = {
   url: string;

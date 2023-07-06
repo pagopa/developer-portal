@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import MUILink from '@mui/material/Link';
 import NextLink from 'next/link';
-import { convertLink, removeEmojis } from '@/markdoc/helpers';
+import { convertLink, removeEmojis } from '../helpers';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 

@@ -1,20 +1,20 @@
-import Document from '@/markdoc/components/Document';
-import Embed from '@/markdoc/components/Embed';
-import Expandable from '@/markdoc/components/Expandable';
-import File from '@/markdoc/components/File';
-import Heading from '@/markdoc/components/Heading';
-import Hint from '@/markdoc/components/Hint';
-import Item from '@/markdoc/components/Item';
-import Link from '@/markdoc/components/Link';
-import PageLink from '@/markdoc/components/PageLink';
-import Paragraph from '@/markdoc/components/Paragraph';
-import Strong from '@/markdoc/components/Strong';
-import SummaryHeading from '@/markdoc/components/SummaryHeading';
-import SummaryHr from '@/markdoc/components/SummaryHr';
-import SummaryItem from '@/markdoc/components/SummaryItem';
-import SummaryLink from '@/markdoc/components/SummaryLink';
-import SummaryUnorderedList from '@/markdoc/components/SummaryUnorderedList';
-import UnorderedList from '@/markdoc/components/UnorderedList';
+import Document from './components/Document';
+import Embed from './components/Embed';
+import Expandable from './components/Expandable';
+import File from './components/File';
+import Heading from './components/Heading';
+import Hint from './components/Hint';
+import Item from './components/Item';
+import Link from './components/Link';
+import PageLink from './components/PageLink';
+import Paragraph from './components/Paragraph';
+import Strong from './components/Strong';
+import SummaryHeading from './components/SummaryHeading';
+import SummaryHr from './components/SummaryHr';
+import SummaryItem from './components/SummaryItem';
+import SummaryLink from './components/SummaryLink';
+import SummaryUnorderedList from './components/SummaryUnorderedList';
+import UnorderedList from './components/UnorderedList';
 
 // The key must be the same string as `tag` in the schema
 export const components = (
