@@ -5,7 +5,7 @@ const guidaTecnica = makeGuide({
   product: appIO,
   guide: {
     name: 'Guida tecnica',
-    slug: `guida-tecnica`,
+    slug: `io-guida-tecnica`,
   },
   versions: [
     {
@@ -35,7 +35,7 @@ const manualeDeiServizi = makeGuide({
   product: appIO,
   guide: {
     name: "Manuale dei servizi dell'app IO",
-    slug: 'manuale-dei-servizi',
+    slug: 'manuale-servizi',
   },
   versions: [
     {
@@ -73,9 +73,25 @@ const kitDiComunicazione = makeGuide({
   ],
 });
 
+const cartaGiovani = makeGuide({
+  product: appIO,
+  guide: {
+    name: 'Carta Giovani - Documentazione Tecnica Portale Operatori',
+    slug: 'carta-giovani-nazionale',
+  },
+  versions: [
+    // TODO: Uncomment once in sync
+    // {
+    //   version: '1.1.0',
+    //   dirName: 'Vgh5yq561A3SOPVQrWes',
+    // },
+  ],
+});
+
 export const appIoGuides = [
   ...guidaTecnica,
   ...manualeDeiServizi,
   ...supportoAgliEnti,
   ...kitDiComunicazione,
+  ...cartaGiovani,
 ];

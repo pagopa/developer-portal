@@ -37,7 +37,7 @@ const manualeOperativo = makeGuide({
 const knowledgeBase = makeGuide({
   product: send,
   guide: {
-    name: 'Knowledge-base di Send',
+    name: 'Knowledge-base di SEND',
     slug: `knowledge-base`,
   },
   versions: [

@@ -80,8 +80,8 @@ const sanp = makeGuide({
 const avvisi = makeGuide({
   product: pagoPa,
   guide: {
-    name: 'Avvisi',
-    slug: 'avvisi',
+    name: 'Avvisi di Pagamento',
+    slug: 'avviso-pagamento',
   },
   versions: [
     {
@@ -99,8 +99,8 @@ const avvisi = makeGuide({
 const brand = makeGuide({
   product: pagoPa,
   guide: {
-    name: 'Brand',
-    slug: 'brand',
+    name: 'Linee Guida Brand pagoPA',
+    slug: 'linee-guida-brand-pagopa',
   },
 
   versions: [
@@ -114,8 +114,8 @@ const brand = makeGuide({
 const pda = makeGuide({
   product: pagoPa,
   guide: {
-    name: 'PdA',
-    slug: `pda`,
+    name: 'Portale delle Adesioni',
+    slug: `portale-delle-adesioni`,
   },
   versions: [
     {

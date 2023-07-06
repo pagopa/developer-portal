@@ -26,7 +26,7 @@ export const ioSignGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${ioSignGuideListsPath}/manuale-operativo/v1.0`,
+            href: `${ioSignGuideListsPath.path}/manuale-operativo/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/guida-tecnica.png',

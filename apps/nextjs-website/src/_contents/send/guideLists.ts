@@ -19,14 +19,14 @@ export const sendGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Il processo di creazione e la timeline di una notifica e degli atti prodotti',
-              'Come vengono protetti i dati',
-              'Mittenti e destinatari delle notifiche',
-              'Altri modi per accedere alle notifiche',
+              'Crea una notifica e monitora il suo ciclo di vita',
+              'Scopri come vengono protetti i dati',
+              'Scopri come funziona la piattaforma per mittenti e destinatari',
+              'Scopri i canali per accedere alle notifiche',
             ],
           },
           link: {
-            href: '#',
+            href: `${sendGuideListsPath.path}/manuale-operativo/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
@@ -37,14 +37,14 @@ export const sendGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Domande e risposte sull’utilizzo delle API',
-              'Come inserire e perfezionare una notifica',
-              'Le modalità di validazione di una notifica',
-              'Come integrare le spese di notifica',
+              'Leggi domande e risposte sull’utilizzo delle API',
+              'Scopri come inserire e perfezionare una notifica',
+              'Scopri le modalità di validazione di una notifica',
+              'Integra le spese di notifica',
             ],
           },
           link: {
-            href: '#',
+            href: `${sendGuideListsPath.path}/knowledge-base/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/approfondimenti-sull-integrazione.png',
@@ -56,14 +56,14 @@ export const sendGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Come integrarsi manualmente',
-              'Come integrare in sistemi informativi dell’ente e quelli di Piattaforma Notifiche',
-              'Come gestire le variazioni di costo nello stream creato',
-              'Come accedere utilizzando PDND',
+              'Effettua l’integrazione manualmente',
+              'Effettua l’integrazione in sistemi informativi del tuo Ente e di SEND',
+              'Gestisci le variazioni di costo nello stream creato',
+              'Accedi utilizzando PDND',
             ],
           },
           link: {
-            href: '#',
+            href: `${sendGuideListsPath.path}/modello-di-integrazione/v1.0`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/modello-di-integrazione.png',
