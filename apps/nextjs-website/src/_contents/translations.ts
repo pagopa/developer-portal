@@ -30,7 +30,7 @@ export const translations = {
           },
         },
         {
-          title: 'Scopri i nuovi tutorial interattivi di Firma con IO',
+          title: 'Scopri i nuovi tutorial di Firma con IO',
           dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai al tutorial',
