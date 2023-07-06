@@ -12,7 +12,7 @@ export const ioSignGuideLists: GuideListsData = {
   },
   guidesSections: [
     {
-      title: "Per l'utilizzo",
+      title: "Per l'integrazione",
       guides: [
         {
           title: 'Manuale operativo di Firma con IO',
