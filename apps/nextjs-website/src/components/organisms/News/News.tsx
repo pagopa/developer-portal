@@ -33,20 +33,24 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
   return (
     <Box marginTop={marginTop}>
       <SectionTitle title={title} subtitle={subtitle} cta={cta} />
-      <Newsroom
-        items={cards.map((card) => ({
-          coomingSoonLabel: !card.coomingSoon ? undefined : shared.coomingSoon,
-          title: card.title,
-          date: {
-            date: new Date(card.dateString),
-          },
-          href: card.href,
-          img: {
-            alt: card.image?.alt || '',
-            src: card.image?.url || '/images/news.png',
-          },
-        }))}
-      />
+      <Box mt={2}>
+        <Newsroom
+          items={cards.map((card) => ({
+            coomingSoonLabel: !card.coomingSoon
+              ? undefined
+              : shared.coomingSoon,
+            title: card.title,
+            date: {
+              date: new Date(card.dateString),
+            },
+            href: card.href,
+            img: {
+              alt: card.image?.alt || '',
+              src: card.image?.url || '/images/news.png',
+            },
+          }))}
+        />
+      </Box>
     </Box>
   );
 };
