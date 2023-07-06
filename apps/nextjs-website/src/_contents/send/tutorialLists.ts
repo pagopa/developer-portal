@@ -8,19 +8,19 @@ export const sendTutorials: readonly Tutorial[] = [
   {
     title: 'Inserisci una Notifica via curl',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/1',
+    path: `${sendTutorialListsPath.path}/1`,
     name: 'tutorial 1',
   },
   {
     title: 'Inserisci una Notifica via postman',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/2',
+    path: `${sendTutorialListsPath.path}/2`,
     name: 'tutorial 2',
   },
   {
     title: 'Genera il tuo client per le nostre API',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/3',
+    path: `${sendTutorialListsPath.path}/3`,
     name: 'tutorial 3',
   },
 ];

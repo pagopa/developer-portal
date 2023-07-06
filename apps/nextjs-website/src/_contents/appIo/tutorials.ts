@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { docsAssetsPath, docsPath } from '@/config';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { appIo } from '@/_contents/appIo/appIo';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoTutorials = pipe(
   [
@@ -14,6 +15,7 @@ export const appIoTutorials = pipe(
         assetsPrefix: `${docsAssetsPath}/I4tX18g9wQQvTbyNkmIT`,
         dirPath: `${docsPath}/I4tX18g9wQQvTbyNkmIT`,
       },
+      bannerLinks: appIoBannerLinks,
     },
   ],
   RA.traverse(E.Applicative)(parseDoc),
