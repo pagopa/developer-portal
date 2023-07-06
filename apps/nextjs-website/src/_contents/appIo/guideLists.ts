@@ -26,7 +26,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v2.4`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',
@@ -49,7 +49,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -67,7 +67,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `https://docs.pagopa.it/kb-enti/`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -85,7 +85,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
             label: 'Vai al kit',
           },
           imagePath: '/images/kit-di-comunicazione.png',
@@ -108,7 +108,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: 'https://docs.pagopa.it/carta-giovani-nazionale/',
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-di-carta-giovani-nazionale.png',

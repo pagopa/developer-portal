@@ -26,7 +26,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/saci/3.1.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/saci.png',
@@ -44,7 +44,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/sanp/3.4.1`,
             label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
@@ -67,7 +67,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
@@ -85,7 +85,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/linee-guida-di-brand.png',
