@@ -3,7 +3,7 @@ import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { Product } from '@/lib/types/product';
 import { Divider, Stack } from '@mui/material';
-import HomepageButton from '../HomepageButton/HomepageButton';
+import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 
 type SiteHeaderProps = {
   products: Product[];
