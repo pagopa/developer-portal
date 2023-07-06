@@ -19,14 +19,14 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Come generare un codice IUV',
-              'La gestione e gli attributi delle operazioni di trasferimento fondi',
-              'Come creare  il flusso di rendicontazione da inoltrare al Nodo dei Pagamenti-SPC',
-              'Come EC riconcilia il flusso dei pagamenti',
+              'Genera un codice IUV',
+              'Comprendi la gestione delle operazioni di trasferimento fondi',
+              'Crea il flusso di rendicontazione',
+              'Riconcilia il flusso dei pagamenti',
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/saci/3.1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
@@ -37,14 +37,14 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Conoscere usare e gestire il prodotto pagoPA',
-              'Principali casi d’uso per PSP, Ec e Touchpoint',
-              'Come un EC può aderire e integrarsi in pagoPA',
-              'Come PSP può aderire e integrarsi in pagoPA',
+              'Conosci, usa e gestisci il prodotto pagoPA',
+              'Esplora i principali casi d’uso per PSP ed Enti Creditori',
+              'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
+              'Scopri come un PSP può aderire e integrarsi in pagoPA',
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/sanp/3.4.1`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/sanp.png',
@@ -67,7 +67,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
@@ -78,14 +78,14 @@ export const pagoPaGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              'Linee guida per la comunicazione corretta del brand per EC, PSP, Partner e Intermediari Tecnologici',
-              'Crea una campagna di sensibilizzazione',
-              'Scopri come come comunicare il brand pagoPA nei post sui social media',
+              'Utilizza correttamente il brand pagoPA',
+              'Crea una campagna di sensibilizzazion',
+              'Scopri come come comunicare il brand pagoPA sui social media',
               'Leggi i suggerimenti per una comunicazione efficace',
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
@@ -100,7 +100,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: '#',
+            href: `${pagoPaGuideListsPath.path}/portale-delle-adesioni/v4`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/saci.png',
