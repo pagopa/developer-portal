@@ -74,7 +74,7 @@ export const sendOverview: OverviewData = {
   ],
   tutorial: {
     subtitle:
-      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+      'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,
   },
   relatedLinks: [

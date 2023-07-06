@@ -60,7 +60,7 @@ export const ioSignOverview: OverviewData = {
   ],
   tutorial: {
     subtitle:
-      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+      'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,
   },
   bannerLinks: [
