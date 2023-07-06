@@ -30,7 +30,7 @@ export default function Document() {
       </Head>
       <body>
         <Main />
-        <NextScript></NextScript>
+        <NextScript />
       </body>
     </Html>
   );
