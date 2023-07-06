@@ -1,5 +1,4 @@
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
-import { Box } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React from 'react';
