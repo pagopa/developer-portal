@@ -33,7 +33,7 @@ export const sendGuideLists: GuideListsData = {
           mobileImagePath: '/images/manuale-operativo-mobile.png',
         },
         {
-          title: 'Knowledge-base di Piattaforma Notifiche',
+          title: 'Approfondimenti sull’integrazione',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -45,7 +45,7 @@ export const sendGuideLists: GuideListsData = {
           },
           link: {
             href: `${sendGuideListsPath.path}/knowledge-base/v1.0`,
-            label: 'Vai al manuale',
+            label: 'Vai al documento',
           },
           imagePath: '/images/approfondimenti-sull-integrazione.png',
           mobileImagePath:
@@ -64,7 +64,7 @@ export const sendGuideLists: GuideListsData = {
           },
           link: {
             href: `${sendGuideListsPath.path}/modello-di-integrazione/v1.0`,
-            label: 'Vai alla guida',
+            label: 'Vai al documento',
           },
           imagePath: '/images/modello-di-integrazione.png',
           mobileImagePath: '/images/modello-di-integrazione-mobile.png',
