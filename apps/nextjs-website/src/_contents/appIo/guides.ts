@@ -1,8 +1,4 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { appIO } from './appIO';
-import { parseDoc } from 'gitbook-docs/parseDoc';
 import { makeGuide } from '../makeDocs';
 
 const guidaTecnica = makeGuide({
@@ -77,18 +73,9 @@ const kitDiComunicazione = makeGuide({
   ],
 });
 
-export const appIoGuides = pipe(
-  [
-    ...guidaTecnica,
-    ...manualeDeiServizi,
-    ...supportoAgliEnti,
-    ...kitDiComunicazione,
-  ],
-  RA.traverse(E.Applicative)(parseDoc),
-  E.fold((e) => {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log(e);
-    // eslint-disable-next-line functional/no-throw-statements
-    throw e;
-  }, RA.flatten)
-);
+export const appIoGuides = [
+  ...guidaTecnica,
+  ...manualeDeiServizi,
+  ...supportoAgliEnti,
+  ...kitDiComunicazione,
+];

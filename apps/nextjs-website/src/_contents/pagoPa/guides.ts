@@ -1,8 +1,4 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { pagoPa } from './pagoPa';
-import { parseDoc } from 'gitbook-docs/parseDoc';
 import { makeGuide } from '../makeDocs';
 
 const saci = makeGuide({
@@ -137,13 +133,4 @@ const pda = makeGuide({
   ],
 });
 
-export const pagoPaGuides = pipe(
-  [...saci, ...sanp, ...avvisi, ...brand, ...pda],
-  RA.traverse(E.Applicative)(parseDoc),
-  E.fold((e) => {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log(e);
-    // eslint-disable-next-line functional/no-throw-statements
-    throw e;
-  }, RA.flatten)
-);
+export const pagoPaGuides = [...saci, ...sanp, ...avvisi, ...brand, ...pda];

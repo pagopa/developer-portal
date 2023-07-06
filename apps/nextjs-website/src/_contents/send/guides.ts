@@ -1,8 +1,4 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { send } from './send';
-import { parseDoc } from 'gitbook-docs/parseDoc';
 import { makeGuide } from '../makeDocs';
 
 const validatore = makeGuide({
@@ -71,18 +67,9 @@ const modelloDiIntegrazione = makeGuide({
   ],
 });
 
-export const sendGuides = pipe(
-  [
-    ...validatore,
-    ...manualeOperativo,
-    ...knowledgeBase,
-    ...modelloDiIntegrazione,
-  ],
-  RA.traverse(E.Applicative)(parseDoc),
-  E.fold((e) => {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log(e);
-    // eslint-disable-next-line functional/no-throw-statements
-    throw e;
-  }, RA.flatten)
-);
+export const sendGuides = [
+  ...validatore,
+  ...manualeOperativo,
+  ...knowledgeBase,
+  ...modelloDiIntegrazione,
+];
