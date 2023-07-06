@@ -4,7 +4,6 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
-import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 
 export type GuideDefinition = {
