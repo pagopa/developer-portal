@@ -8,8 +8,10 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 type LinkCardsProps = {
   title: string;
   subtitle: string;
-  ctaLabel: string;
-  href: string;
+  cta: {
+    label: string;
+    href: string;
+  };
   cardsTitle: string;
   cards: {
     title: string;
@@ -21,8 +23,7 @@ type LinkCardsProps = {
 const LinkCards = ({
   title,
   subtitle,
-  ctaLabel,
-  href,
+  cta,
   cardsTitle,
   cards,
 }: LinkCardsProps) => {
@@ -31,12 +32,7 @@ const LinkCards = ({
 
   return (
     <Box py={11} sx={{ backgroundColor: theme.palette.background.default }}>
-      <SectionTitle
-        title={title}
-        subtitle={subtitle}
-        ctaLabel={ctaLabel}
-        href={href}
-      >
+      <SectionTitle title={title} subtitle={subtitle} cta={cta}>
         <Typography
           content='div'
           mb={3}
