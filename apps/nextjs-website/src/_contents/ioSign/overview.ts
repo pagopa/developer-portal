@@ -7,11 +7,11 @@ export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
   product: ioSign,
   hero: {
-    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
+    altText: 'Hero: Richiedi la firma di contratti e documenti',
     backgroundImage: '/images/hero.jpg',
-    title: 'Raccogli i servizi del tuo ente in unico spazio',
+    title: 'Richiedi la firma di contratti e documenti',
     subtitle:
-      "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",
+      'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
   },
   feature: {
     title: 'Perché Firma con IO',
