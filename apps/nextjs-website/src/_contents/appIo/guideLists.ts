@@ -1,10 +1,10 @@
 import { GuideListsData } from '@/lib/types/guideListsData';
-import { appIO } from '@/_contents/appIo/appIO';
-import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIo } from '@/_contents/appIo/appIo';
+import { appIoGuideListsPath } from '@/_contents/appIo/guideListsPath';
 
-export const appIOGuideLists: GuideListsData = {
-  ...appIOGuideListsPath,
-  product: appIO,
+export const appIoGuideLists: GuideListsData = {
+  ...appIoGuideListsPath,
+  product: appIo,
   abstract: {
     title: 'Guide e manuali',
     description:
@@ -26,7 +26,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v2.4`,
+            href: `${appIoGuideListsPath.path}/io-guida-tecnica/v2.4`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',
@@ -49,7 +49,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
+            href: `${appIoGuideListsPath.path}/manuale-servizi/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -85,7 +85,7 @@ export const appIOGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
+            href: `${appIoGuideListsPath.path}/kit-comunicazione/v1.0`,
             label: 'Vai al kit',
           },
           imagePath: '/images/kit-di-comunicazione.png',

@@ -120,12 +120,12 @@ const OverviewPage = ({
           cards={startCards}
         />
       )}
-      {product.subpaths.tutorial && tutorial && (
+      {product.subpaths.tutorials && tutorial && (
         <TutorialsOverview
           title={overview.tutorial.title}
           subtitle={tutorial.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
-          tutorialPath={product.subpaths.tutorial}
+          tutorialPath={product.subpaths.tutorials}
           tutorials={[...(tutorial.list || [])]}
         />
       )}
