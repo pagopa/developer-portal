@@ -7,6 +7,7 @@ type NewsProps = {
   title: string;
   subtitle?: string;
   ctaLabel?: string;
+  marginTop?: number;
   href?: string;
   cards: {
     title: string;
@@ -23,9 +24,16 @@ type NewsProps = {
   }[];
 };
 
-const News = ({ title, subtitle, ctaLabel, href, cards }: NewsProps) => {
+const News = ({
+  title,
+  subtitle,
+  ctaLabel,
+  href,
+  cards,
+  marginTop,
+}: NewsProps) => {
   return (
-    <>
+    <Box marginTop={marginTop}>
       <SectionTitle
         title={title}
         subtitle={subtitle}
@@ -45,7 +53,7 @@ const News = ({ title, subtitle, ctaLabel, href, cards }: NewsProps) => {
           },
         }))}
       />
-    </>
+    </Box>
   );
 };
 
