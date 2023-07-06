@@ -4,6 +4,7 @@ import { Product } from '@/lib/types/product';
 import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
 type Params = {
   productSlug: string;
@@ -19,6 +20,7 @@ export const getStaticPaths: GetStaticPaths<Params> = () => {
 
 type ProductGuidePageProps = {
   product: Product;
+  guide: { name: string; path: string };
   path: string;
   pathPrefix: string;
   assetsPrefix: string;
@@ -37,6 +39,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
     const page = {
       ...props.page,
       product: props.product,
+      guide: props.guide,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
@@ -68,18 +71,33 @@ const Page = (props: ProductGuidePageProps) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            padding: '32px 0',
+            padding: '80px 0',
             flexBasis: { lg: '354px' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}
         >
-          {renderGitBookMarkdown(
-            props.menu,
-            props.pathPrefix,
-            props.assetsPrefix,
-            true
-          )}
+          <Typography
+            variant='h6'
+            sx={{
+              padding: '16px 32px',
+              verticalAlign: 'middle',
+            }}
+          >
+            {props.guide.name}
+          </Typography>
+          <Box
+            sx={{
+              margin: '32px 0 0 0',
+            }}
+          >
+            {renderGitBookMarkdown(
+              props.menu,
+              props.pathPrefix,
+              props.assetsPrefix,
+              true
+            )}
+          </Box>
         </Box>
         <Box sx={{ padding: { xs: '80px 40px', lg: '80px 438px 80px 40px' } }}>
           {renderGitBookMarkdown(
