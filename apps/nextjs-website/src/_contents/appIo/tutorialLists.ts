@@ -13,7 +13,7 @@ export const appIoTutorials: readonly Tutorial[] = [
   {
     title: 'Come inviare un messaggio con un avviso di pagamento',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: '/app-io/tutorials/come-spedire-un-avviso-di-pagamento-in-un-messaggio',
+    path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio',
     name: 'Come spedire un avviso di pagamento in un messaggio',
   },
   {
