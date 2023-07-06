@@ -26,10 +26,6 @@ export const unpairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}(.*?)>`, 'g'),
   replace: `{% ${tag}$1 %}`,
 });
-export const selfClosingTag = (tag: string) => ({
-  regex: new RegExp(`{% ${tag}(.*?) %}`, 'g'),
-  replace: `{% ${tag}$1 /%}`,
-});
 
 export function removeEmojis(text: string): string {
   if (!text) {
