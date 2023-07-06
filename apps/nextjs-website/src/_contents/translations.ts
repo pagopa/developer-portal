@@ -74,17 +74,12 @@ export const translations = {
     },
     tutorial: {
       title: 'Esplora i tutorial',
-      subtitle:
-        'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
       ctaLabel: 'Vedi tutti i tutorial',
     },
-    guide: {
+    postIntegration: {
       title: "Dopo l'integrazione",
-      subtitle:
-        'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
       ctaLabel: 'Vai al manuale dei servizi',
       href: '/',
-      cardsTitle: 'MODELLI DEI SERVIZI',
     },
     relatedLinks: {
       title: 'LINK UTILI',

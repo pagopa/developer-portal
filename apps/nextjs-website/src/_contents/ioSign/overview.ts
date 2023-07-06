@@ -58,7 +58,11 @@ export const ioSignOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorials: ioSignTutorials,
+  tutorial: {
+    subtitle:
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+    list: ioSignTutorials,
+  },
   bannerLinks: [
     {
       theme: 'dark',

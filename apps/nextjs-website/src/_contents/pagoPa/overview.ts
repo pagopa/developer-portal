@@ -73,7 +73,11 @@ export const pagoPaOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorials: pagoPaTutorials,
+  tutorial: {
+    subtitle:
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+    list: pagoPaTutorials,
+  },
   relatedLinks: [
     {
       path: 'https://survey.pagopa.it/238313',

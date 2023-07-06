@@ -72,7 +72,11 @@ export const sendOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorials: sendTutorials,
+  tutorial: {
+    subtitle:
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
+    list: sendTutorials,
+  },
   relatedLinks: [
     {
       path: 'https://docs.pagopa.it/f.a.q.-per-integratori/',
