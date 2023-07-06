@@ -1,3 +1,4 @@
+import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import { Box } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
@@ -24,10 +25,7 @@ const HomepageButton = ({
       href={href}
       title={completeTitle}
     >
-      {title}
-      <Box fontWeight={'bold'} sx={{ pl: 0.8, pr: 1.6 }}>
-        {boldTitle}
-      </Box>
+      <SiteLabel title={title} boldTitle={boldTitle} />
     </ButtonNaked>
   );
 };
