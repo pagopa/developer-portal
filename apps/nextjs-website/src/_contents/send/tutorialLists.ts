@@ -2,6 +2,7 @@ import { send } from '@/_contents/send/send';
 import { sendTutorialListsPath } from '@/_contents/send/tutorialListsPath';
 import { TutorialListsData } from '@/lib/types/tutorialListsData';
 import { Tutorial } from '@/lib/types/tutorialData';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
 export const sendTutorials: readonly Tutorial[] = [
   {
@@ -29,7 +30,9 @@ export const sendTutorialLists: TutorialListsData = {
   product: send,
   abstract: {
     title: 'Tutorial',
-    description: '',
+    description:
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi video.',
   },
   tutorials: sendTutorials,
+  bannerLinks: sendBannerLinks,
 };

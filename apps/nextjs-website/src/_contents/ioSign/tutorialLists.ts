@@ -2,6 +2,7 @@ import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { TutorialListsData } from '@/lib/types/tutorialListsData';
 import { Tutorial } from '@/lib/types/tutorialData';
+import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 
 export const ioSignTutorials: readonly Tutorial[] = [
   {
@@ -29,7 +30,9 @@ export const ioSignTutorialLists: TutorialListsData = {
   product: ioSign,
   abstract: {
     title: 'Tutorial',
-    description: '',
+    description:
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare?  Risolvi ogni dubbio con questi brevi video.',
   },
   tutorials: ioSignTutorials,
+  bannerLinks: ioSignBannerLinks,
 };
