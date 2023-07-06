@@ -11,20 +11,19 @@ export const tutorials: readonly Tutorial[] = [
     title: 'Quali sono i possibili accordi di adesione all’app IO',
     dateString: '2023-06-29T22:15:53.780Z',
     path: '/app-io/tutorial/quale-accordo-di-adesione-scegliere',
-    name: 'tutorial 1',
+    name: 'Quale accordo di adesione scegliere',
   },
   {
     title: 'Come inviare un messaggio con un avviso di pagamento',
     dateString: '2023-06-29T22:15:53.780Z',
-    // TODO: Fix this link
-    path: '/app-io/tutorial',
-    name: 'tutorial 2',
+    path: '/app-io/tutorial/come-spedire-un-avviso-di-pagamento-in-un-messaggio',
+    name: 'Come spedire un avviso di pagamento in un messaggio',
   },
   {
     title: 'Come allegare documenti a un messaggio',
     dateString: '2023-06-29T22:15:53.780Z',
     path: '/app-io/tutorial/come-allegare-documenti-a-un-messaggio',
-    name: 'tutorial 3',
+    name: 'Come allegare documenti a un messaggio',
   },
 ];
 
