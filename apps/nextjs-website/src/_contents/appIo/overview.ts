@@ -82,7 +82,7 @@ export const appIoOverview: OverviewData = {
   },
   relatedLinks: [
     {
-      path: '/',
+      path: 'https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FKkqRR4GLnQtJ04He1afT%2FAccordo%20Base%20di%20Adesione%20App%20IO_Standard_Ver.2.4.16_1_2023.docx.pdf?alt=media',
       name: 'Scarica il contratto di adesione a IO',
     },
     {
