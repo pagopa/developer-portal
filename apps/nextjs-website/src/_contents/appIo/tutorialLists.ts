@@ -7,7 +7,7 @@ export const appIoTutorials: readonly Tutorial[] = [
   {
     title: 'Quali sono i possibili accordi di adesione all’app IO',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: '/app-io/tutorials/quale-accordo-di-adesione-scegliere',
+    path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere',
     name: 'Quale accordo di adesione scegliere',
   },
   {
