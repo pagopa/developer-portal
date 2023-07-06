@@ -1,6 +1,7 @@
 import React from 'react';
 import { Newsroom } from '@pagopa/pagopa-editorial-components';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { Box } from '@mui/material';
 
 type NewsProps = {
   title: string;
@@ -9,6 +10,7 @@ type NewsProps = {
     label: string;
     href: string;
   };
+  marginTop?: number;
   cards: {
     title: string;
     dateString: string;
@@ -24,9 +26,9 @@ type NewsProps = {
   }[];
 };
 
-const News = ({ title, subtitle, cta, cards }: NewsProps) => {
+const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
   return (
-    <>
+    <Box marginTop={marginTop}>
       <SectionTitle title={title} subtitle={subtitle} cta={cta} />
       <Newsroom
         items={cards.map((card) => ({
@@ -41,7 +43,7 @@ const News = ({ title, subtitle, cta, cards }: NewsProps) => {
           },
         }))}
       />
-    </>
+    </Box>
   );
 };
 
