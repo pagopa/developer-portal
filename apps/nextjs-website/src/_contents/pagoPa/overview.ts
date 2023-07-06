@@ -57,7 +57,6 @@ export const pagoPaOverview: OverviewData = {
     {
       title: 'Quick Start',
       text: 'Cinque semplici passi per aderire a Nuova connettività',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {
