@@ -1,6 +1,9 @@
+import { send } from '@/_contents/send/send';
+import { sendTutorialListsPath } from '@/_contents/send/tutorialListsPath';
+import { TutorialListsData } from '@/lib/types/tutorialListsData';
 import { Tutorial } from '@/lib/types/tutorialData';
 
-export const tutorials: readonly Tutorial[] = [
+export const sendTutorials: readonly Tutorial[] = [
   {
     title: 'Inserisci una Notifica via curl',
     dateString: '2023-06-29T22:15:53.780Z',
@@ -20,3 +23,13 @@ export const tutorials: readonly Tutorial[] = [
     name: 'tutorial 3',
   },
 ];
+
+export const sendTutorialLists: TutorialListsData = {
+  ...sendTutorialListsPath,
+  product: send,
+  abstract: {
+    title: 'Tutorial',
+    description: '',
+  },
+  tutorials: sendTutorials,
+};

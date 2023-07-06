@@ -1,19 +1,19 @@
 import { Product } from '@/lib/types/product';
-import { sendOverviewPath } from '@/_contents/send/overviewPath';
-import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { sendApiPath } from '@/_contents/send/apiPath';
-import { sendTutorialPath } from '@/_contents/send/tutorialPath';
+import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
+import { sendOverviewPath } from '@/_contents/send/overviewPath';
+import { sendTutorialListsPath } from '@/_contents/send/tutorialListsPath';
 
 export const send: Product = {
-  name: 'SEND',
+  name: 'SEND - Servizio Notifiche Digitali',
   path: '/send',
+  description:
+    'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
+  svgPath: '/icons/send.svg',
   subpaths: {
     overview: sendOverviewPath,
     api: sendApiPath,
-    tutorial: sendTutorialPath,
+    tutorials: sendTutorialListsPath,
     guides: sendGuideListsPath,
   },
-  description:
-    'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
-  svgPath: '/icons/SEND.svg',
 };

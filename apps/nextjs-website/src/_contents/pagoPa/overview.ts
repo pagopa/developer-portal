@@ -2,7 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { tutorials as pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
