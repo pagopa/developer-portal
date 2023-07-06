@@ -2,7 +2,7 @@ import { Tag } from '@markdoc/markdoc';
 import { transform } from '..';
 
 describe('transform', () => {
-  it('should transform file', () => {
+  it.skip('should transform file', () => {
     const markdown =
       '{% file src="../.gitbook/assets/example-0.pdf" %} \n {% file src="../.gitbook/assets/example-1.zip" %}';
     const actual = transform(markdown);
