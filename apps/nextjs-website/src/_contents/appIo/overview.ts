@@ -87,7 +87,6 @@ export const appIoOverview: OverviewData = {
     {
       title: 'Quick Start',
       text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {

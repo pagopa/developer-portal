@@ -10,7 +10,7 @@ type StartInfoProps = {
   cards: {
     title: string;
     text: string;
-    href: string;
+    href?: string;
     iconName: string;
   }[];
   cta?: {
@@ -21,12 +21,16 @@ type StartInfoProps = {
 };
 
 const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
-  const theme = useTheme();
+  const { palette } = useTheme();
   return (
     <>
-      <Box py={11} sx={{ backgroundColor: theme.palette.background.default }}>
+      <Box py={11} sx={{ backgroundColor: palette.background.default }}>
         <SectionTitle title={title} />
         <CardsGrid
+          cardSize={{
+            xs: 12,
+            md: 12 / cards.length,
+          }}
           cards={cards.map((card) => ({
             title: card.title,
             text: card.text,
@@ -36,7 +40,7 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
         />
       </Box>
       {cta && (
-        <Box py={4} sx={{ backgroundColor: theme.palette.background.default }}>
+        <Box py={4} sx={{ backgroundColor: palette.background.default }}>
           <Stack
             spacing={2}
             direction={{ md: 'row', xs: 'column' }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, GridSize } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { translations } from '@/_contents/translations';
@@ -8,16 +8,24 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 type CardsGridProps = {
   cardVariant?: 'text' | 'contained' | 'outlined';
   cardSvg?: boolean;
-  cardSize?: boolean;
+  cardSize?: {
+    xs: boolean | GridSize;
+    md: boolean | GridSize;
+  };
   cards: {
     title: string;
     text: string;
-    href: string;
+    href?: string;
     icon: string;
   }[];
 };
 
-const CardsGrid = ({ cards, cardVariant, cardSvg }: CardsGridProps) => {
+const CardsGrid = ({
+  cards,
+  cardVariant,
+  cardSvg,
+  cardSize,
+}: CardsGridProps) => {
   const { shared } = translations;
 
   return (
@@ -26,13 +34,17 @@ const CardsGrid = ({ cards, cardVariant, cardSvg }: CardsGridProps) => {
         <Grid container spacing={2}>
           {cards.map(({ title, text, href, icon }, index) => {
             return (
-              <Grid key={index} item xs={12} md={6}>
+              <Grid
+                key={index}
+                item
+                xs={cardSize?.xs || 12}
+                md={cardSize?.md || 6}
+              >
                 <CtaCard
-                  minHeight={150}
                   title={title}
                   text={text}
                   cta={{
-                    label: shared.moreInfo,
+                    label: !href ? shared.coomingsoon : shared.moreInfo,
                     href,
                     variant: cardVariant,
                   }}
