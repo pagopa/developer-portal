@@ -9,6 +9,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export type IconName =
   | 'HeadsetMic'
@@ -21,7 +22,8 @@ export type IconName =
   | 'AccountBalance'
   | 'Payment'
   | 'PeopleAlt'
-  | 'TrendingUp';
+  | 'TrendingUp'
+  | 'ExitToApp';
 
 type IconFromNameParams = {
   type: IconName;
@@ -57,6 +59,8 @@ export const getIconFromName = ({
       return <PeopleAltIcon sx={{ color: fill, fontSize: size }} />;
     case 'TrendingUp':
       return <TrendingUpIcon sx={{ color: fill, fontSize: size }} />;
+    case 'ExitToApp':
+      return <ExitToAppIcon sx={{ color: fill, fontSize: size }} />;
     default:
       return <></>;
   }

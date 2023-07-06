@@ -3,6 +3,7 @@ import { Product } from '@/lib/types/product';
 import { getApi, getApiPaths, getProducts } from '@/lib/api';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { IconName } from '@/helpers/getIconFromName';
 
 type Params = {
   productSlug: string;
@@ -15,6 +16,12 @@ export const getStaticPaths: GetStaticPaths<Params> = () => ({
 
 export type ApiPageProps = {
   readonly product: Product;
+  readonly soapDocumentation?: {
+    title: string;
+    url: string;
+    buttonLabel: string;
+    icon: IconName;
+  };
   readonly specURLs: {
     name?: string;
     url: string;
@@ -39,6 +46,7 @@ const ApisPage = ({
   product,
   specURLs,
   bannerLinks,
+  soapDocumentation,
 }: ApiPageProps) => (
   <Layout
     products={products}
@@ -47,7 +55,11 @@ const ApisPage = ({
     bannerLinks={bannerLinks}
     showBreadcrumbs={true}
   >
-    <ApiSection specURLs={specURLs} product={product} />
+    <ApiSection
+      specURLs={specURLs}
+      product={product}
+      soapDocumentation={soapDocumentation}
+    />
   </Layout>
 );
 

@@ -13,7 +13,15 @@ export const styles = {
       borderColor: 'white',
     },
   },
-  container: {
+  selectContainer: {
     background: '#0D1018',
+  },
+  soapContainer: {
+    background: '#0062C3',
+    color: 'white',
+    padding: '0 1rem',
+  },
+  soapButton: {
+    cursor: 'pointer',
   },
 };
