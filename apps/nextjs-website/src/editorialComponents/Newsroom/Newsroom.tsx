@@ -3,7 +3,7 @@ import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
 interface INewsroomItem {
-  coomingsoonLabel?: string;
+  coomingSoonLabel?: string;
   img: {
     src: string;
     alt: string;
@@ -29,7 +29,7 @@ export interface INewsroom {
 const Item = (props: INewsroomItem) => {
   const theme = useTheme();
   const {
-    coomingsoonLabel,
+    coomingSoonLabel,
     img,
     date: {
       date,
@@ -49,7 +49,7 @@ const Item = (props: INewsroomItem) => {
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
       >
-        {coomingsoonLabel && (
+        {coomingSoonLabel && (
           <Box
             py={0.5}
             px={2}
@@ -62,7 +62,7 @@ const Item = (props: INewsroomItem) => {
             }}
           >
             <Typography fontSize={14} fontWeight={600}>
-              {coomingsoonLabel}
+              {coomingSoonLabel}
             </Typography>
           </Box>
         )}
@@ -74,7 +74,7 @@ const Item = (props: INewsroomItem) => {
       <Typography variant='h6'>{title}</Typography>
       <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
         <LinkButton
-          disabled={!!coomingsoonLabel}
+          disabled={!!coomingSoonLabel}
           href={href.link}
           label={href.label}
         />
