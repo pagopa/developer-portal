@@ -1,5 +1,6 @@
 import { appIo } from './appIo';
 import { makeGuide } from '../makeDocs';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 const guidaTecnica = makeGuide({
   product: appIo,
@@ -29,6 +30,7 @@ const guidaTecnica = makeGuide({
       dirName: 'DOaGsRYKzkZYmIAbjNII',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const manualeDeiServizi = makeGuide({
@@ -43,6 +45,7 @@ const manualeDeiServizi = makeGuide({
       dirName: 'zcLztiq5qDSVw9rRjW7p',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const supportoAgliEnti = makeGuide({
@@ -57,6 +60,7 @@ const supportoAgliEnti = makeGuide({
       dirName: 'rPr79NYJ4xbKA7EvgHxo',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const kitDiComunicazione = makeGuide({
@@ -71,6 +75,7 @@ const kitDiComunicazione = makeGuide({
       dirName: 'SpNLdqKSqoCvaOneGN7K',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const cartaGiovani = makeGuide({
@@ -86,6 +91,7 @@ const cartaGiovani = makeGuide({
     //   dirName: 'Vgh5yq561A3SOPVQrWes',
     // },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 export const appIoGuides = [
