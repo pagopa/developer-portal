@@ -32,6 +32,16 @@ export const file: Schema = {
       required: true,
     },
   },
+  transform: (node, config) => {
+    // workaround to render unclosing file tag as self-closing without children
+    const isMissingClosing = node.errors.find(
+      ({ id }) => id === 'missing-closing'
+    );
+    const tag = new Tag('File', node.transformAttributes(config));
+    return !isMissingClosing
+      ? new Tag(tag.name, tag.attributes, node.transformChildren(config))
+      : [tag, ...node.transformChildren(config)];
+  },
 };
 
 // https://docs.gitbook.com/content-creation/blocks/hint
