@@ -16,6 +16,7 @@ const TutorialsOverview = ({
   const { overview, shared } = translations;
   return (
     <News
+      marginTop={6}
       title={overview.tutorial.title}
       subtitle={overview.tutorial.subtitle}
       ctaLabel={overview.tutorial.ctaLabel}
