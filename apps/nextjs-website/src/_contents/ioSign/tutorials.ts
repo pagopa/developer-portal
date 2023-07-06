@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { ioSign } from './ioSign';
 import { docsAssetsPath, docsPath } from '@/config';
 import { parseDoc } from 'gitbook-docs/parseDoc';
+import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 
 export const ioSignTutorials = pipe(
   [
@@ -14,6 +15,7 @@ export const ioSignTutorials = pipe(
         assetsPrefix: `${docsAssetsPath}/mUZRgUVe9jRK4f0tHceu`,
         dirPath: `${docsPath}/mUZRgUVe9jRK4f0tHceu`,
       },
+      bannerLinks: ioSignBannerLinks,
     },
   ],
   RA.traverse(E.Applicative)(parseDoc),
