@@ -14,7 +14,7 @@ import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { send } from '@/_contents/send/send';
 import { appIOGuideLists } from '@/_contents/appIo/guideLists';
-import { appIoGuides } from ' @/_contents/appIo/guides';
+import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorials';
 import { ioSignGuides } from '@/_contents/ioSign/guides';
