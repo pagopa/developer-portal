@@ -47,6 +47,7 @@ export const ioSignOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingsoon: true,
       text: '6 semplici passi per inviare e ricevere un documento firmato digitalmente',
       iconName: 'FlagOutlined',
     },

@@ -38,9 +38,10 @@ export type OverviewPageProps = {
     readonly items: FeatureItem[];
   };
   readonly startCards?: {
+    readonly coomingsoon?: boolean;
     readonly title: string;
     readonly text: string;
-    readonly href: string;
+    readonly href?: string;
     readonly iconName: string;
   }[];
   readonly tutorials?: readonly Tutorial[];

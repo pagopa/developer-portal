@@ -13,6 +13,7 @@ type CardsGridProps = {
     md: boolean | GridSize;
   };
   cards: {
+    coomingsoon?: boolean;
     title: string;
     text: string;
     href?: string;
@@ -32,7 +33,7 @@ const CardsGrid = ({
     <EContainer>
       <Box pb={4}>
         <Grid container spacing={2}>
-          {cards.map(({ title, text, href, icon }, index) => {
+          {cards.map(({ title, text, href, icon, coomingsoon }, index) => {
             return (
               <Grid
                 key={index}
@@ -41,10 +42,11 @@ const CardsGrid = ({
                 md={cardSize?.md || 6}
               >
                 <CtaCard
+                  coomingsoon={coomingsoon}
                   title={title}
                   text={text}
                   cta={{
-                    label: !href ? shared.coomingsoon : shared.moreInfo,
+                    label: coomingsoon ? shared.coomingsoon : shared.moreInfo,
                     href,
                     variant: cardVariant,
                   }}
