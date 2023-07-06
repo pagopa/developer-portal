@@ -52,7 +52,7 @@ export const ioSignOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,

@@ -44,7 +44,7 @@ export type OverviewPageProps = {
     readonly href: string;
     readonly iconName: string;
   }[];
-  readonly tutorial: {
+  readonly tutorials: {
     readonly subtitle: string;
     readonly list?: readonly Tutorial[];
   };
@@ -84,7 +84,7 @@ const OverviewPage = ({
   product,
   products,
   path,
-  tutorial,
+  tutorials,
   postIntegration,
   relatedLinks,
   bannerLinks,
@@ -120,13 +120,13 @@ const OverviewPage = ({
           cards={startCards}
         />
       )}
-      {product.subpaths.tutorials && tutorial && (
+      {product.subpaths.tutorials && tutorials && (
         <TutorialsOverview
           title={overview.tutorial.title}
-          subtitle={tutorial.subtitle}
+          subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorials}
-          tutorials={[...(tutorial.list || [])]}
+          tutorials={[...(tutorials.list || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (
