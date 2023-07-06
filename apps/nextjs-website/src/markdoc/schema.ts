@@ -6,7 +6,7 @@ export const details: Schema = {
   transform: (node, config) => {
     const attributes = node.transformAttributes(config);
     const children = node.transformChildren(config);
-    // TODO This is dangerous, use a better way
+    // TODO This is unsafe, find a safer solution
     const [head, ...rest] = children;
     return new Tag(`Expandable`, { ...attributes, title: head }, rest);
   },
