@@ -1,31 +1,26 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { docsAssetsPath, docsPath } from '@/config';
 import { ioSign } from './ioSign';
 import { parseDoc } from 'gitbook-docs/parseDoc';
+import { makeGuide } from '../makeDocs';
 
-const manualeOperativo = {
-  name: 'Manuale Operativo',
-  path: `${ioSign.path}/guides/manuale-operativo`,
-};
-
-export const ioSignGuides = pipe(
-  [
+const manualeOperativo = makeGuide({
+  product: ioSign,
+  guide: {
+    name: 'Manuale Operativo',
+    slug: 'manuale-operativo',
+  },
+  versions: [
     {
-      product: ioSign,
-      guide: manualeOperativo,
-      version: {
-        name: 'v1.0',
-        path: `${manualeOperativo.path}/v1.0`,
-      },
-      source: {
-        pathPrefix: `${manualeOperativo.path}/v1.0`,
-        assetsPrefix: `${docsAssetsPath}/AdBuOCmwur7AhLlgfCeG`,
-        dirPath: `${docsPath}/AdBuOCmwur7AhLlgfCeG`,
-      },
+      version: 'v1.0',
+      dirName: 'AdBuOCmwur7AhLlgfCeG',
     },
   ],
+});
+
+export const ioSignGuides = pipe(
+  manualeOperativo,
   RA.traverse(E.Applicative)(parseDoc),
   E.fold((e) => {
     // eslint-disable-next-line functional/no-expression-statements
