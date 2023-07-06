@@ -32,5 +32,9 @@ describe('handler', () => {
     expect(handler(makeEvent('/page')).uri).toBe('/page.html');
     expect(handler(makeEvent('/page/')).uri).toBe('/page/');
     expect(handler(makeEvent('/image.jpg')).uri).toBe('/image.jpg');
+    const example0 = '/i-s/g/mo/v1.0/i-p/p-i/v-d';
+    expect(handler(makeEvent(example0)).uri).toBe(`${example0}.html`);
+    const example1 = '/i-s/g/mo/v1.0';
+    expect(handler(makeEvent(example1)).uri).toBe(`${example1}.html`);
   });
 });
