@@ -2,6 +2,7 @@ import { appIo } from '@/_contents/appIo/appIo';
 import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
 import { TutorialListsData } from '@/lib/types/tutorialListsData';
 import { Tutorial } from '@/lib/types/tutorialData';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoTutorials: readonly Tutorial[] = [
   {
@@ -33,4 +34,5 @@ export const appIoTutorialLists: TutorialListsData = {
       'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi video.',
   },
   tutorials: appIoTutorials,
+  bannerLinks: appIoBannerLinks,
 };

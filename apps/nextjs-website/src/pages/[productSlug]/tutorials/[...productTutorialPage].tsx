@@ -54,6 +54,7 @@ const Page = (props: ProductTutorialPageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      showBreadcrumbs={true}
     >
       <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
         {renderGitBookMarkdown(

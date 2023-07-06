@@ -2,6 +2,7 @@ import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaTutorialListsPath } from '@/_contents/pagoPa/tutorialListsPath';
 import { TutorialListsData } from '@/lib/types/tutorialListsData';
 import { Tutorial } from '@/lib/types/tutorialData';
+import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
 export const pagoPaTutorials: readonly Tutorial[] = [
   {
@@ -29,7 +30,9 @@ export const pagoPaTutorialLists: TutorialListsData = {
   product: pagoPa,
   abstract: {
     title: 'Tutorial',
-    description: '',
+    description:
+      'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
   },
   tutorials: pagoPaTutorials,
+  bannerLinks: pagoPaBannerLinks,
 };

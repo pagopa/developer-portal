@@ -59,6 +59,7 @@ const Page = (props: ProductGuidePageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      showBreadcrumbs={true}
     >
       <Box
         sx={{

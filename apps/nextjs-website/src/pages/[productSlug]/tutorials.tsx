@@ -44,9 +44,10 @@ export const getStaticProps: GetStaticProps<TutorialsPageProps, Params> = ({
 
 const TutorialsPage = ({
   abstract,
+  bannerLinks,
+  path,
   product,
   products,
-  path,
   tutorials,
 }: TutorialsPageProps) => {
   const { palette } = useTheme();
@@ -58,6 +59,7 @@ const TutorialsPage = ({
       product={product}
       path={path}
       showBreadcrumbs={true}
+      bannerLinks={bannerLinks}
     >
       {abstract && (
         <Abstract

@@ -1,6 +1,7 @@
 import { GuideListsData } from '@/lib/types/guideListsData';
 import { appIo } from '@/_contents/appIo/appIo';
 import { appIoGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoGuideLists: GuideListsData = {
   ...appIoGuideListsPath,
@@ -118,4 +119,5 @@ export const appIoGuideLists: GuideListsData = {
       ],
     },
   ],
+  bannerLinks: appIoBannerLinks,
 };
