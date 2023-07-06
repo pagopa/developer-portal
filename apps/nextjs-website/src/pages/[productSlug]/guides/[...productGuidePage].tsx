@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
+      bannerLinks: props.bannerLinks,
     };
     return { props: page };
   } else {
