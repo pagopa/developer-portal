@@ -1,7 +1,8 @@
 import React from 'react';
-import { Newsroom } from '@pagopa/pagopa-editorial-components';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box } from '@mui/material';
+import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
+import { translations } from '@/_contents/translations';
 
 type NewsProps = {
   title: string;
@@ -10,6 +11,7 @@ type NewsProps = {
   marginTop?: number;
   href?: string;
   cards: {
+    coomingsoon?: boolean;
     title: string;
     dateString: string;
     image?: {
@@ -32,6 +34,8 @@ const News = ({
   cards,
   marginTop,
 }: NewsProps) => {
+  const { shared } = translations;
+
   return (
     <Box marginTop={marginTop}>
       <SectionTitle
@@ -42,6 +46,7 @@ const News = ({
       />
       <Newsroom
         items={cards.map((card) => ({
+          coomingsoonLabel: !card.coomingsoon ? undefined : shared.coomingsoon,
           title: card.title,
           date: {
             date: new Date(card.dateString),
