@@ -22,6 +22,7 @@ interface INewsroomItem {
 }
 
 export interface INewsroom {
+  py?: number;
   items: INewsroomItem[];
 }
 
@@ -83,9 +84,9 @@ const Item = (props: INewsroomItem) => {
 };
 
 const Newsroom = (props: INewsroom) => {
-  const { items } = props;
+  const { items, py = 2 } = props;
   return (
-    <EContainer background='background.paper' py={16}>
+    <EContainer background='background.paper' py={py}>
       <Grid item md={12}>
         <Grid container spacing={3}>
           {items.map((item, i) => (
