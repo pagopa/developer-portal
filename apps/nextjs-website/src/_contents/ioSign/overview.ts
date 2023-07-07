@@ -43,7 +43,7 @@ export const ioSignOverview: OverviewData = {
       {
         title: 'Quick Start',
         coomingSoon: true,
-        text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente.',
+        text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente',
         iconName: 'FlagOutlined',
       },
       {
@@ -56,7 +56,7 @@ export const ioSignOverview: OverviewData = {
   },
   tutorials: {
     subtitle:
-      'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial',
     list: ioSignTutorials,
   },
   bannerLinks: [
