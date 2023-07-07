@@ -19,23 +19,17 @@ export const appIoOverview: OverviewData = {
       'Che tu sia un ente pubblico, privato, centrale o locale, tramite IO potrai:',
     items: [
       {
-        stackIcon: {
-          icon: 'MessageRounded',
-        },
+        iconName: 'MessageRounded',
         subtitle: 'Contatta le cittadine e i cittadini in modo rapido e sicuro',
         title: 'Inviare messaggi',
       },
       {
-        stackIcon: {
-          icon: 'PaymentsRounded',
-        },
+        iconName: 'PaymentsRounded',
         subtitle: 'Invia avvisi di pagamento e riduci i tempi di incasso',
         title: 'Ottenere pagamenti',
       },
       {
-        stackIcon: {
-          icon: 'CreateRounded',
-        },
+        iconName: 'CreateRounded',
         subtitle:
           'Richiedi la firma digitale di documenti e contratti grazie a Firma con IO ',
         title: 'Far firmare documenti',
@@ -99,8 +93,8 @@ export const appIoOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {

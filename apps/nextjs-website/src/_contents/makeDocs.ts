@@ -31,6 +31,10 @@ export const makeGuide = ({ product, guide, versions }: GuideDefinition) => {
         name: version,
         path: `${guidePath}/${version}`,
       },
+      versions: versions.map(({ version }) => ({
+        name: version,
+        path: `${guidePath}/${version}`,
+      })),
       source: {
         pathPrefix: `${guidePath}/${version}`,
         assetsPrefix: `${docsAssetsPath}/${dirName}`,
