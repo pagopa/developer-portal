@@ -1,3 +1,4 @@
+import { environment } from '@/config';
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
@@ -23,10 +24,12 @@ export default function Document() {
     <Html lang='en'>
       <Head>
         <meta name='robots' content='noindex,nofollow' />
-        <script
-          key='script-matomo'
-          dangerouslySetInnerHTML={{ __html: matomo }}
-        />
+        {environment === 'production' && (
+          <script
+            key='script-matomo'
+            dangerouslySetInnerHTML={{ __html: matomo }}
+          />
+        )}
       </Head>
       <body>
         <Main />
