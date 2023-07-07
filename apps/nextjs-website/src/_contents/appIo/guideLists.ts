@@ -16,7 +16,7 @@ export const appIoGuideLists: GuideListsData = {
       title: "Per l'integrazione",
       guides: [
         {
-          title: 'Guida Tecnica all’integrazione dei servizi',
+          title: 'Guida tecnica IO',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -39,7 +39,7 @@ export const appIoGuideLists: GuideListsData = {
       title: "Per l'utilizzo",
       guides: [
         {
-          title: 'Manuale dei servizi dell’app IO',
+          title: 'Manuale dei servizi',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -51,24 +51,6 @@ export const appIoGuideLists: GuideListsData = {
           },
           link: {
             href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
-            label: 'Vai al manuale',
-          },
-          imagePath: '/images/manuale-dei-servizi.png',
-          mobileImagePath: '/images/manuale-dei-servizi-mobile.png',
-        },
-        {
-          title: 'Supporto agli Enti',
-          description: {
-            title: 'Argomenti trattati',
-            listItems: [
-              'Domande e risposte su Adesione,Accordi e Assistenza',
-              'Tutorial e Domande Frequenti sui Servizi',
-              'Tutorial e Domande Frequenti sui Messaggi',
-              'Tutorial e Domande Frequenti sui Pagamenti',
-            ],
-          },
-          link: {
-            href: `https://docs.pagopa.it/kb-enti/`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -98,7 +80,7 @@ export const appIoGuideLists: GuideListsData = {
       title: 'Programmi e iniziative',
       guides: [
         {
-          title: 'Carta Giovani Nazionale',
+          title: 'Manuale di Carta Giovani Nazionale',
           description: {
             title: 'Argomenti trattati',
             listItems: [
