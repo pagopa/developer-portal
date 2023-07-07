@@ -99,7 +99,7 @@ export const appIoOverview: OverviewData = {
     cta: {
       text: 'Scopri tutti i dettagli dell’integrazione',
       label: 'Leggi la guida tecnica',
-      href: appIoGuideListsPath.path,
+      href: `${appIOGuideListsPath.path}/io-guida-tecnica/v2.4`,
     },
     cards: [
       {
@@ -111,7 +111,7 @@ export const appIoOverview: OverviewData = {
       {
         title: 'Documentazione Api',
         text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
-        href: '/',
+        href: '/app-io/api',
         iconName: 'FolderOutlined',
       },
     ],
