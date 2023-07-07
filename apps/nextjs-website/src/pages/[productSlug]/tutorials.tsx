@@ -58,7 +58,7 @@ const TutorialsPage = ({
       products={products}
       product={product}
       path={path}
-      showBreadcrumbs={true}
+      showBreadcrumbs={false}
       bannerLinks={bannerLinks}
     >
       {abstract && (
