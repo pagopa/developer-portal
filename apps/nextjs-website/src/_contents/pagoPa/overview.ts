@@ -105,8 +105,8 @@ export const pagoPaOverview: OverviewData = {
           href: 'https://github.com/pagopa/lg-pagopa-docs/blob/master/documentazione_tecnica_collegata/adesione/A_PdT_EC_NM3.cleaned.docx',
           label: 'Scopri di più',
         },
-        imagePath: '/images/validatore.png',
-        mobileImagePath: '/images/validatore-mobile.png',
+        imagePath: '/images/pago-pa-test-esercizio.png',
+        mobileImagePath: '/images/pago-pa-test-esercizio.png',
       },
       {
         title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
