@@ -15,11 +15,9 @@ export const translations = {
     goToModel: 'Vai al modello',
   },
   pageNotFound: {
+    overline: '404',
     title: 'Pagina non trovata',
-    cta: {
-      label: 'Torna alla home',
-      href: '/',
-    },
+    description: 'La pagina che stai cercando non esiste',
   },
   homepage: {
     news: {

@@ -1,8 +1,9 @@
-import { translations } from '@/_contents/translations';
-import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import { getProducts } from '@/lib/api';
-import { GetStaticProps, GetStaticPropsResult } from 'next';
+import { translations } from "@/_contents/translations";
+import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
+import Layout, { LayoutProps } from "@/components/organisms/Layout/Layout";
+import { getProducts } from "@/lib/api";
+import { Abstract } from "@pagopa/pagopa-editorial-components";
+import { GetStaticProps, GetStaticPropsResult } from "next";
 
 export type PageNotFoundProps = LayoutProps;
 
@@ -17,12 +18,10 @@ export default function PageNotFound({ products }: PageNotFoundProps) {
 
   return (
     <Layout products={products}>
-      <SectionTitle
+      <Abstract
+        overline={pageNotFound.overline}
         title={pageNotFound.title}
-        cta={{
-          label: pageNotFound.cta.label,
-          href: pageNotFound.cta.href,
-        }}
+        description={pageNotFound.description}
       />
     </Layout>
   );
