@@ -3,7 +3,6 @@ import { Product } from '@/lib/types/product';
 import { getApi, getApiPaths, getProducts } from '@/lib/api';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
-import { IconName } from '@/helpers/getIconFromName';
 
 type Params = {
   productSlug: string;
@@ -20,7 +19,7 @@ export type ApiPageProps = {
     title: string;
     url: string;
     buttonLabel: string;
-    icon: IconName;
+    icon: string;
   };
   readonly specURLs: {
     name?: string;

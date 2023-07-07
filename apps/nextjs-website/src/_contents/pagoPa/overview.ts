@@ -2,7 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { tutorials as pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -20,33 +20,25 @@ export const pagoPaOverview: OverviewData = {
       'Che tu sia un ente pubblico, privato, centrale o locale, tramite pagoPA potrai:',
     items: [
       {
-        stackIcon: {
-          icon: 'AccountBalance',
-        },
+        iconName: 'AccountBalance',
         subtitle:
           'Un unico accordo quadro che abilita EC e PSP a operare e definisce gli standard di comunicazione, senza la necessità di stipulare accordi multipli',
         title: 'Un unico accordo per Enti Creditori e PSP',
       },
       {
-        stackIcon: {
-          icon: 'Payment',
-        },
+        iconName: 'Payment',
         subtitle:
           'Una gestione centralizzata degli incassi per gli Enti Creditori, tramite servizi automatici di rendicontazione e riconciliazione',
         title: 'Un modo semplice per gestire i pagamenti',
       },
       {
-        stackIcon: {
-          icon: 'PeopleAlt',
-        },
+        iconName: 'PeopleAlt',
         subtitle:
           "Accesso diretto al settore dei pagamenti per i servizi pubblici e possibilità di promuovere la tua offerta multicanale da un'unica piattaforma",
         title: 'Milioni di cittadini e imprese raggiunti',
       },
       {
-        stackIcon: {
-          icon: 'TrendingUp',
-        },
+        iconName: 'TrendingUp',
         subtitle:
           'Esiti immediati e riduzione di tempi e costi sviluppo IT per gli Enti Creditori. Risparmio e accesso ad un più regolato mercato dei pagamenti per i PSP',
         title: 'Più efficienza su tempi  e costi',
@@ -56,8 +48,8 @@ export const pagoPaOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Cinque semplici passi per aderire a Nuova connettività',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {
@@ -73,7 +65,7 @@ export const pagoPaOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: pagoPaTutorials,

@@ -1,17 +1,31 @@
-import React, { useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { PaperProps, PopoverOrigin, SxProps } from '@mui/material';
 
 type DropdownProps = {
   label: string;
   items: { href: string; label: string }[];
+  icons?: { opened?: ReactNode; closed?: ReactNode };
+  buttonStyle?: SxProps;
+  menuStyle?: Partial<PaperProps>;
+  menuAnchorOrigin?: PopoverOrigin;
+  menuTransformOrigin?: PopoverOrigin;
 };
 
-const Dropdown = ({ label, items }: DropdownProps) => {
+const Dropdown = ({
+  label,
+  items,
+  icons,
+  buttonStyle,
+  menuStyle,
+  menuAnchorOrigin,
+  menuTransformOrigin,
+}: DropdownProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +34,7 @@ const Dropdown = ({ label, items }: DropdownProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       <Button
@@ -28,26 +43,36 @@ const Dropdown = ({ label, items }: DropdownProps) => {
         variant='naked'
         disableElevation
         onClick={handleClick}
-        endIcon={open ? <ArrowDropUp /> : <ArrowDropDown />}
+        endIcon={
+          open
+            ? icons?.opened || <ArrowDropUp />
+            : icons?.closed || <ArrowDropDown />
+        }
+        sx={buttonStyle}
       >
         {label}
       </Button>
       <Menu
         elevation={0}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
+        anchorOrigin={
+          menuAnchorOrigin || {
+            vertical: 'bottom',
+            horizontal: 'right',
+          }
+        }
+        transformOrigin={
+          menuTransformOrigin || {
+            vertical: 'top',
+            horizontal: 'center',
+          }
+        }
         MenuListProps={{
           'aria-labelledby': `${label}-button`,
         }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        PaperProps={menuStyle}
       >
         {items.map((item, index) => {
           return (

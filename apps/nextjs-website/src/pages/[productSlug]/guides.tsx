@@ -40,10 +40,11 @@ export const getStaticProps: GetStaticProps<GuidesPageProps, Params> = ({
 
 const GuidesPage = ({
   abstract,
+  bannerLinks,
   guidesSections,
+  path,
   product,
   products,
-  path,
 }: GuidesPageProps) => {
   const { palette } = useTheme();
 
@@ -53,6 +54,7 @@ const GuidesPage = ({
       product={product}
       path={path}
       showBreadcrumbs={true}
+      bannerLinks={bannerLinks}
     >
       {abstract && (
         <Abstract

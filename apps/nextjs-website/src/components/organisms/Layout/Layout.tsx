@@ -12,7 +12,7 @@ export type LayoutProps = {
   readonly products: Product[];
   readonly product?: Product;
   readonly path?: string;
-  readonly bannerLinks?: BannerLinkProps[];
+  readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
 };
 

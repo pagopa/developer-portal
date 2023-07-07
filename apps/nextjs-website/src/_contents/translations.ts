@@ -13,6 +13,7 @@ export const translations = {
     readTutorial: 'Leggi il tutorial',
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
+    version: 'Versione',
   },
   pageNotFound: {
     overline: '404',

@@ -1,6 +1,7 @@
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { GuideListsData } from '@/lib/types/guideListsData';
 import { ioSignGuideListsPath } from '@/_contents/ioSign/guideListsPath';
+import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 
 export const ioSignGuideLists: GuideListsData = {
   ...ioSignGuideListsPath,
@@ -35,4 +36,5 @@ export const ioSignGuideLists: GuideListsData = {
       ],
     },
   ],
+  bannerLinks: ioSignBannerLinks,
 };
