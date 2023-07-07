@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { translations } from '@/_contents/translations';
 
 type Params = {
   productSlug: string;
@@ -65,6 +66,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
+  const { shared } = translations;
 
   return (
     <Layout
@@ -100,7 +102,7 @@ const Page = (props: ProductGuidePageProps) => {
             {props.guide.name}
           </Typography>
           <Dropdown
-            label={props.version.name}
+            label={`${shared.version} ${props.version.name}`}
             items={props.versions.map((version) => ({
               href: version.path,
               label: version.name,
