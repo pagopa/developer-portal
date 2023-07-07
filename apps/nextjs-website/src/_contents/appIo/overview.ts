@@ -1,11 +1,11 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { appIO } from '@/_contents/appIo/appIO';
+import { appIo } from '@/_contents/appIo/appIo';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { tutorials } from '@/_contents/appIo/tutorials';
+import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
-  product: appIO,
+  product: appIo,
   hero: {
     altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
     backgroundImage: '/images/hero.jpg',
@@ -19,33 +19,27 @@ export const appIoOverview: OverviewData = {
       'Che tu sia un ente pubblico, privato, centrale o locale, tramite IO potrai:',
     items: [
       {
-        stackIcon: {
-          icon: 'MessageRounded',
-        },
+        iconName: 'MessageRounded',
         subtitle: 'Contatta le cittadine e i cittadini in modo rapido e sicuro',
         title: 'Inviare messaggi',
       },
       {
-        stackIcon: {
-          icon: 'PaymentsRounded',
-        },
+        iconName: 'PaymentsRounded',
         subtitle: 'Invia avvisi di pagamento e riduci i tempi di incasso',
         title: 'Ottenere pagamenti',
       },
       {
-        stackIcon: {
-          icon: 'CreateRounded',
-        },
+        iconName: 'CreateRounded',
         subtitle:
           'Richiedi la firma digitale di documenti e contratti grazie a Firma con IO ',
         title: 'Far firmare documenti',
       },
     ],
   },
-  tutorial: {
+  tutorials: {
     subtitle:
       'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
-    list: tutorials,
+    list: appIoTutorials,
   },
   postIntegration: {
     cta: {
@@ -99,8 +93,8 @@ export const appIoOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {

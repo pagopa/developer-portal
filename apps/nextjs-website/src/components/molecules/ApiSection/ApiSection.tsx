@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
-import { IconName, getIconFromName } from '@/helpers/getIconFromName';
 import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
@@ -25,7 +24,7 @@ export type ApiPageProps = {
     title: string;
     url: string;
     buttonLabel: string;
-    icon: IconName;
+    icon: string;
   };
 };
 
@@ -90,11 +89,7 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
               aria-label={soapDocumentation.buttonLabel}
               href={soapDocumentation.url}
               title={soapDocumentation.buttonLabel}
-              endIcon={getIconFromName({
-                type: soapDocumentation.icon,
-                fill: textColor,
-                size: 24,
-              })}
+              endIcon={soapDocumentation.icon}
             >
               {soapDocumentation.buttonLabel}
             </ButtonNaked>

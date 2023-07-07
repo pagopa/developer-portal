@@ -1,6 +1,7 @@
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { GuideListsData } from '@/lib/types/guideListsData';
 import { pagoPaGuideListsPath } from '@/_contents/pagoPa/guideListsPath';
+import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
 export const pagoPaGuideLists: GuideListsData = {
   ...pagoPaGuideListsPath,
@@ -94,4 +95,5 @@ export const pagoPaGuideLists: GuideListsData = {
       ],
     },
   ],
+  bannerLinks: pagoPaBannerLinks,
 };

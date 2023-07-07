@@ -1,5 +1,6 @@
 import { pagoPa } from './pagoPa';
 import { makeGuide } from '../makeDocs';
+import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
 const saci = makeGuide({
   product: pagoPa,
@@ -25,6 +26,7 @@ const saci = makeGuide({
       dirName: 'E6d6iTzjBzUfzNoZjadZ',
     },
   ],
+  bannerLinks: pagoPaBannerLinks,
 });
 
 const sanp = makeGuide({
@@ -75,6 +77,7 @@ const sanp = makeGuide({
       dirName: 'P8TYVFYipQYir4JqodY3',
     },
   ],
+  bannerLinks: pagoPaBannerLinks,
 });
 
 const avvisi = makeGuide({
@@ -94,6 +97,7 @@ const avvisi = makeGuide({
     //   dirName: 'lph4boTulr49pD0pPBVM',
     // },
   ],
+  bannerLinks: pagoPaBannerLinks,
 });
 
 const brand = makeGuide({
@@ -109,6 +113,7 @@ const brand = makeGuide({
       dirName: '8phwN5u2QXllSKsqBjQU',
     },
   ],
+  bannerLinks: pagoPaBannerLinks,
 });
 
 const pda = makeGuide({
@@ -131,6 +136,7 @@ const pda = makeGuide({
       dirName: '1phXXCgPXYbaIjTEs5C4',
     },
   ],
+  bannerLinks: pagoPaBannerLinks,
 });
 
 export const pagoPaGuides = [...saci, ...sanp, ...avvisi, ...brand, ...pda];

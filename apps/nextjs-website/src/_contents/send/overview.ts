@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
-import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
@@ -42,33 +42,25 @@ export const sendOverview: OverviewData = {
       'Con SEND diminuisci l’incertezza della reperibilità dei destinatari e riduci i tempi e i costi di gestione. La piattaforma infatti permette al tuo ente di:',
     items: [
       {
-        stackIcon: {
-          icon: 'MarkEmailRead',
-        },
+        iconName: 'MarkEmailRead',
         subtitle:
           'Tu depositi i documenti e SEND li invia, in digitale o cartaceo',
         title: 'Inviare notifiche con API o manualmente',
       },
       {
-        stackIcon: {
-          icon: 'QueryStats',
-        },
+        iconName: 'QueryStats',
         subtitle:
           'Visualizza la cronologia degli stati della notifica e le relative attestazioni',
         title: 'Tracciare i cambi di stato',
       },
       {
-        stackIcon: {
-          icon: 'TimerSharp',
-        },
+        iconName: 'TimerSharp',
         subtitle:
           'Se il destinatario ha un recapito digitale, i tempi di invio sono minori',
         title: 'Diminuire i tempi di invio',
       },
       {
-        stackIcon: {
-          icon: 'Approval',
-        },
+        iconName: 'Approval',
         subtitle:
           'Il processo di notificazione è normato e c’è maggiore certezza di consegna',
         title: 'Seguire un processo normato',
@@ -78,8 +70,8 @@ export const sendOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {
@@ -95,7 +87,7 @@ export const sendOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,
