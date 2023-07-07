@@ -109,7 +109,7 @@ export const appIoOverview: OverviewData = {
         iconName: 'FlagOutlined',
       },
       {
-        title: 'Documentazione Api',
+        title: 'Documentazione API',
         text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
         href: '/app-io/api',
         iconName: 'FolderOutlined',
