@@ -1,7 +1,6 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
-import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 import { pagoPaGuideListsPath } from '@/_contents/pagoPa/guideListsPath';
 
@@ -56,7 +55,7 @@ export const pagoPaOverview: OverviewData = {
     {
       title: 'Documentazione API REST',
       text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
-      href: ioSign.subpaths.api?.path ?? '#',
+      href: pagoPa.subpaths.api?.path ?? '#',
       iconName: 'FolderOutlined',
     },
     {
