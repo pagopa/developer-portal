@@ -11,18 +11,20 @@ type SectionTitleProps = {
     href: string;
   };
   children?: ReactNode | ReactNode[];
+  margin?: number;
 };
 
 const SectionTitle = ({
   title,
   subtitle,
   cta,
+  margin,
   children,
 }: SectionTitleProps) => {
   return (
     <EContainer>
       <Stack
-        sx={{ m: 2 }}
+        m={margin}
         spacing={2}
         direction='column'
         justifyContent={{ sm: 'space-between', md: 'center' }}

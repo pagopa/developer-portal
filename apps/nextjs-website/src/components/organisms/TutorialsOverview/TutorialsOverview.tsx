@@ -22,6 +22,7 @@ const TutorialsOverview = ({
   const { shared } = translations;
   return (
     <News
+      marginTop={10}
       title={title}
       subtitle={subtitle}
       cta={{
