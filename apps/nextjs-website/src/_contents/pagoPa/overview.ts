@@ -56,7 +56,7 @@ export const pagoPaOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
-      coomingsoon: true,
+      coomingSoon: true,
       text: 'Cinque semplici passi per aderire a Nuova connettività',
       iconName: 'FlagOutlined',
     },

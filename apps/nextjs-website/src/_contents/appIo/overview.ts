@@ -99,7 +99,7 @@ export const appIoOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
-      coomingsoon: true,
+      coomingSoon: true,
       text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
       iconName: 'FlagOutlined',
     },
