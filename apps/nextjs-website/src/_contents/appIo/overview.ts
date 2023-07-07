@@ -54,7 +54,7 @@ export const appIoOverview: OverviewData = {
         title: 'Tassa sui rifiuti (TARI)',
         description:
           'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI).',
-        path: '/app-io/guides/1',
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v1.0/modelli/i-modelli-dei-servizi-piu-comuni/tassa-sui-rifiuti-tari`,
         name: 'guides 1',
       },
       {
