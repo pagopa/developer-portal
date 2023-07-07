@@ -28,13 +28,13 @@ export const ioSignOverview: OverviewData = {
         iconName: 'PaymentsRounded',
         subtitle:
           'Richiedi la firma di uno o più documenti direttamente sul tuo sito web, attraverso un pulsante dedicato che permette di aprire i documenti su IO e completare l’operazione',
-        title: 'Richiedere una firma online, direttamente sul tuo sito web',
+        title: 'Richiedere una firma direttamente sul tuo sito',
       },
       {
         iconName: 'CreateRounded',
         subtitle:
-          'Una firma totalmente da remoto e con massima validità legale. Erogata attraverso un canale già noto e affidabile, con una UX efficace è più semplice possibile',
-        title: 'Ottenere firme digitali con massimo valore legale',
+          'Una firma totalmente da remoto e con massima validità legale. Erogata attraverso un canale già noto e affidabile, nel modo più semplice possibile',
+        title: 'Ottenere firme digitali con valore legale',
       },
     ],
   },
