@@ -2,6 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -13,39 +14,53 @@ export const sendOverview: OverviewData = {
     subtitle:
       'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
   },
+  postIntegration: {
+    subtitle:
+      'Verifica che l’integrazione con SEND soddisfi i criteri minimi per poter operare in ambiente di staging.',
+    guides: [
+      {
+        title: 'Validatore SEND',
+        description: {
+          title: 'Cosa ti permette di fare',
+          listItems: [
+            'Utilizzare un’emulazione del sistema SEND',
+            'Produrre un report in formato JSON sull’integrazione',
+          ],
+        },
+        link: {
+          href: `${sendGuideListsPath.path}/validatore/v1.0`,
+          label: 'Usa il validatore',
+        },
+        imagePath: '/images/validatore.png',
+        mobileImagePath: '/images/validatore-mobile.png',
+      },
+    ],
+  },
   feature: {
     title: 'Perché usare SEND',
     subtitle:
       'Con SEND diminuisci l’incertezza della reperibilità dei destinatari e riduci i tempi e i costi di gestione. La piattaforma infatti permette al tuo ente di:',
     items: [
       {
-        stackIcon: {
-          icon: 'MarkEmailRead',
-        },
+        iconName: 'MarkEmailRead',
         subtitle:
           'Tu depositi i documenti e SEND li invia, in digitale o cartaceo',
         title: 'Inviare notifiche con API o manualmente',
       },
       {
-        stackIcon: {
-          icon: 'QueryStats',
-        },
+        iconName: 'QueryStats',
         subtitle:
           'Visualizza la cronologia degli stati della notifica e le relative attestazioni',
         title: 'Tracciare i cambi di stato',
       },
       {
-        stackIcon: {
-          icon: 'TimerSharp',
-        },
+        iconName: 'TimerSharp',
         subtitle:
           'Se il destinatario ha un recapito digitale, i tempi di invio sono minori',
         title: 'Diminuire i tempi di invio',
       },
       {
-        stackIcon: {
-          icon: 'Approval',
-        },
+        iconName: 'Approval',
         subtitle:
           'Il processo di notificazione è normato e c’è maggiore certezza di consegna',
         title: 'Seguire un processo normato',
@@ -55,8 +70,8 @@ export const sendOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {

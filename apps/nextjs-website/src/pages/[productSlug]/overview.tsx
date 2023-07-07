@@ -2,17 +2,18 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import { getOverview, getOverviewPaths, getProducts } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import { Feature } from '@pagopa/pagopa-editorial-components';
 import { useTheme } from '@mui/material';
-import { FeatureItem } from '@pagopa/pagopa-editorial-components/dist/components/Feature/FeatureStackItem';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { Path } from '@/lib/types/path';
-import LinkCards from '@/components/organisms/LinkCards/LinkCards';
 import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
+import Feature from '@/editorialComponents/Feature/Feature';
+import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
+import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
+import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 
 type Params = {
   productSlug: string;
@@ -38,9 +39,10 @@ export type OverviewPageProps = {
     readonly items: FeatureItem[];
   };
   readonly startCards?: {
+    readonly coomingSoon?: boolean;
     readonly title: string;
     readonly text: string;
-    readonly href: string;
+    readonly href?: string;
     readonly iconName: string;
   }[];
   readonly tutorial: {
@@ -49,8 +51,13 @@ export type OverviewPageProps = {
   };
   readonly postIntegration?: {
     readonly subtitle: string;
-    readonly cardsTitle: string;
-    readonly list: readonly {
+    readonly listTitle?: string;
+    readonly cta?: {
+      readonly label: string;
+      readonly href: string;
+    };
+    readonly guides?: GuideCardProps[];
+    readonly list?: readonly {
       readonly title: string;
       readonly description: string;
       readonly path: string;
@@ -103,9 +110,9 @@ const OverviewPage = ({
       />
       <Feature
         items={feature.items}
-        showCarouselMobile={false}
         theme={palette.mode}
         title={feature.title}
+        subtitle={feature.subtitle}
       />
       {startCards && (
         <StartInfo
@@ -124,19 +131,22 @@ const OverviewPage = ({
         />
       )}
       {product.subpaths.guides && postIntegration && (
-        <LinkCards
+        <PostIntegration
           title={overview.postIntegration.title}
           subtitle={postIntegration.subtitle}
-          cta={{
-            label: overview.postIntegration.ctaLabel,
-            href: overview.postIntegration.href,
-          }}
-          cardsTitle={postIntegration.cardsTitle}
+          cta={
+            postIntegration.cta && {
+              label: postIntegration.cta.label,
+              href: postIntegration.cta.href,
+            }
+          }
+          listTitle={postIntegration.listTitle}
           cards={postIntegration.list?.map((guide) => ({
             title: guide.title,
             text: guide.description,
             href: guide.path,
           }))}
+          guides={postIntegration.guides}
         />
       )}
       {relatedLinks && (
