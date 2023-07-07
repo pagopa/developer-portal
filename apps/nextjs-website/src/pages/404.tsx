@@ -1,9 +1,8 @@
-import { translations } from "@/_contents/translations";
-import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
-import Layout, { LayoutProps } from "@/components/organisms/Layout/Layout";
-import { getProducts } from "@/lib/api";
-import { Abstract } from "@pagopa/pagopa-editorial-components";
-import { GetStaticProps, GetStaticPropsResult } from "next";
+import { translations } from '@/_contents/translations';
+import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import { getProducts } from '@/lib/api';
+import { Abstract } from '@pagopa/pagopa-editorial-components';
+import { GetStaticProps, GetStaticPropsResult } from 'next';
 
 export type PageNotFoundProps = LayoutProps;
 
