@@ -196,39 +196,14 @@ export const translations = {
         links: [
           {
             ariaLabel: 'Vai al link: Informativa Privacy',
-            href: 'https://www.pagopa.it/it/privacy-policy-assistenza',
+            href: '/privacy-policy',
             label: 'Informativa Privacy',
-            linkType: 'external',
+            linkType: 'internal',
           },
           {
             ariaLabel: 'Vai al link: Termini e Condizioni',
-            href: 'https://www.pagopa.it/it/termini-e-condizioni-di-utilizzo-del-sito',
+            href: '/terms-of-service',
             label: 'Termini e Condizioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Certificazioni',
-            href: 'https://www.pagopa.it/static/e1979a4c34b4756ec4e8ff9fe115b92a/Certificazine_ISO27001.pdf',
-            label: 'Certificazioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Sicurezza delle informazioni',
-            href: 'https://www.pagopa.it/static/781646994f1f8ddad2d95af3aaedac3d/Sicurezza-delle-informazioni_PagoPA-S.p.A..pdf',
-            label: 'Sicurezza delle informazioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel:
-              'Vai al link: Diritto alla protezione dei dati personali',
-            href: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
-            label: 'Diritto alla protezione dei dati personali',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Preferenze Cookie',
-            href: '#preferenze-cookie',
-            label: 'Preferenze Cookie',
             linkType: 'internal',
           },
           {
