@@ -46,6 +46,11 @@ export const pagoPaOverview: OverviewData = {
     ],
   },
   startInfo: {
+    cta: {
+      label: 'Leggi la guida tecnica',
+      text: 'Scopri tutti i dettagli dell’integrazione',
+      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+    },
     cards: [
       {
         title: 'Quick Start',
