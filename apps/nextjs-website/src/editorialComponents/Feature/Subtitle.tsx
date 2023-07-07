@@ -1,4 +1,3 @@
-/* eslint-disable valid-typeof */
 import { Link, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -19,12 +18,12 @@ const Subtitle = ({ subtitle, textLink, url, theme }: SubtitleProps) => {
       >
         {subtitle}
       </Typography>
-      {textLink !== undefined && (
+      {textLink && (
         <Stack
           spacing={1}
           justifyContent='center'
           alignItems='center'
-          direction={'row'}
+          direction='row'
           color={theme === 'light' ? 'primary' : 'background.paper'}
         >
           <Link
@@ -38,7 +37,7 @@ const Subtitle = ({ subtitle, textLink, url, theme }: SubtitleProps) => {
             {textLink}
           </Link>
 
-          <ArrowForwardIcon color='inherit'></ArrowForwardIcon>
+          <ArrowForwardIcon color='inherit' />
         </Stack>
       )}
     </Stack>

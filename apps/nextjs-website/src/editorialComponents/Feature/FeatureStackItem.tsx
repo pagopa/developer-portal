@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
-import Subtitle from './Subtitle';
+import Subtitle from '@/editorialComponents/Feature/Subtitle';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 export interface FeatureItem {
@@ -46,12 +46,12 @@ export const FeatureStackItem = ({ item, theme }: FeatureStackItemProps) => {
         <IconWrapper size={64} color={imageStyle} icon={item.iconName} />
       </Box>
       <Stack color={textStyle} spacing={1} textAlign='center'>
-        <Typography color={'inerith'} variant='h6'>
+        <Typography color='inherit' variant='h6'>
           {item.title}
         </Typography>
         <>
           {!item.link ? (
-            <Typography variant='body2' color={'inerith'}>
+            <Typography variant='body2' color='inherit'>
               {item.subtitle}
             </Typography>
           ) : (
