@@ -14,7 +14,7 @@ const handler = (
     const uri = request.uri;
 
     // Add the .html extension if missing
-    if (!uri.endsWith('/') && !uri.includes('.')) {
+    if (!uri.endsWith('/') && !/\.[a-zA-Z]+$/.test(uri)) {
       request.uri += '.html';
     }
 
