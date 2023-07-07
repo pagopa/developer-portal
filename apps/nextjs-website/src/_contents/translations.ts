@@ -180,9 +180,9 @@ export const translations = {
         links: [
           {
             ariaLabel: 'Vai al link: Informativa Privacy',
-            href: 'https://www.pagopa.it/it/privacy-policy-assistenza',
+            href: '/privacy-policy',
             label: 'Informativa Privacy',
-            linkType: 'external',
+            linkType: 'internal',
           },
           {
             ariaLabel: 'Vai al link: Termini e Condizioni',
