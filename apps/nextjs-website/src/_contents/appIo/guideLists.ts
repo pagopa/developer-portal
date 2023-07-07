@@ -57,6 +57,24 @@ export const appIoGuideLists: GuideListsData = {
           mobileImagePath: '/images/manuale-dei-servizi-mobile.png',
         },
         {
+          title: 'Supporto agli Enti',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Domande e risposte su Adesione,Accordi e Assistenza',
+              'Tutorial e Domande Frequenti sui Servizi',
+              'Tutorial e Domande Frequenti sui Messaggi',
+              'Tutorial e Domande Frequenti sui Pagamenti',
+            ],
+          },
+          link: {
+            href: `${appIOGuideListsPath.path}/supporto-agli-enti/v1.0`,
+            label: 'Vai al manuale',
+          },
+          imagePath: '/images/app-io-supporto-enti.png',
+          mobileImagePath: '/images/app-io-supporto-enti.png',
+        },
+        {
           title: 'Kit di comunicazione',
           description: {
             title: 'Argomenti trattati',
