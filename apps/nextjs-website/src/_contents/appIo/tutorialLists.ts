@@ -11,17 +11,32 @@ export const appIoTutorials: readonly Tutorial[] = [
     path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere`,
     name: 'Quale accordo di adesione scegliere',
   },
-  {
-    title: 'Come inviare un messaggio con un avviso di pagamento',
-    dateString: '2023-06-29T22:15:53.780Z',
-    path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
-    name: 'Come spedire un avviso di pagamento in un messaggio',
-  },
+  // {
+  //   title: 'Come inviare un messaggio con un avviso di pagamento',
+  //   dateString: '2023-06-29T22:15:53.780Z',
+  //   path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
+  //   name: 'Come spedire un avviso di pagamento in un messaggio',
+  //   coomingSoon: true,
+  // },
   {
     title: 'Come allegare documenti a un messaggio',
     dateString: '2023-06-29T22:15:53.780Z',
     path: `${appIoTutorialListsPath.path}/come-allegare-documenti-a-un-messaggio`,
     name: 'Come allegare documenti a un messaggio',
+    image: {
+      url: '/images/app-io-come-allegare-documenti.png',
+      alt: 'Immagine: Come allegare documenti a un messaggio',
+    },
+  },
+  {
+    title: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
+    dateString: '2023-06-29T22:15:53.780Z',
+    path: `${appIoTutorialListsPath.path}/come-sapere-se-un-cittadino-ha-abilitata-la-ricezione-dei-messaggi-per-un-servizio`,
+    name: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
+    image: {
+      url: '/images/app-io-ricevere-messaggi.png',
+      alt: 'Immagine: Come sapere se un cittadino può ricevere messaggi da un servizio',
+    },
   },
 ];
 
