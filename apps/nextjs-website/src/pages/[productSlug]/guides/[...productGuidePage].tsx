@@ -5,6 +5,10 @@ import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import Dropdown from '@/components/atoms/Dropdown/Dropdown';
+import React from 'react';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { translations } from '@/_contents/translations';
 
 type Params = {
   productSlug: string;
@@ -21,6 +25,14 @@ export const getStaticPaths: GetStaticPaths<Params> = () => {
 type ProductGuidePageProps = {
   product: Product;
   guide: { name: string; path: string };
+  version: {
+    name: string;
+    path: string;
+  };
+  versions: {
+    name: string;
+    path: string;
+  }[];
   path: string;
   pathPrefix: string;
   assetsPrefix: string;
@@ -40,6 +52,8 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       ...props.page,
       product: props.product,
       guide: props.guide,
+      version: props.version,
+      versions: props.versions,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
@@ -52,6 +66,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
+  const { shared } = translations;
 
   return (
     <Layout
@@ -86,6 +101,32 @@ const Page = (props: ProductGuidePageProps) => {
           >
             {props.guide.name}
           </Typography>
+          <Dropdown
+            label={`${shared.version} ${props.version.name}`}
+            items={props.versions.map((version) => ({
+              href: version.path,
+              label: version.name,
+            }))}
+            icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
+            buttonStyle={{
+              color: '#5C6F82',
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '16px 32px',
+            }}
+            menuStyle={{
+              style: {
+                width: '354px',
+                maxWidth: '354px',
+                left: 0,
+                right: 0,
+              },
+            }}
+            menuAnchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+          />
           <Box
             sx={{
               margin: '32px 0 0 0',
