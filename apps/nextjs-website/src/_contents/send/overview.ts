@@ -19,7 +19,7 @@ export const sendOverview: OverviewData = {
       'Verifica che l’integrazione con SEND soddisfi i criteri minimi per poter operare in ambiente di staging.',
     guides: [
       {
-        title: 'Guida Tecnica all’integrazione dei servizi',
+        title: 'Validatore SEND',
         description: {
           title: 'Cosa ti permette di fare',
           listItems: [
