@@ -21,7 +21,7 @@ export const sendOverview: OverviewData = {
       {
         title: 'Validatore SEND',
         description: {
-          title: 'Cosa ti permette di fare',
+          title: 'Cosa ti permette di fare:',
           listItems: [
             'Utilizzare un’emulazione del sistema SEND',
             'Produrre un report in formato JSON sull’integrazione',
@@ -29,7 +29,7 @@ export const sendOverview: OverviewData = {
         },
         link: {
           href: `${sendGuideListsPath.path}/validatore/v1.0`,
-          label: 'Usa il validatore',
+          label: 'Scopri di più',
         },
         imagePath: '/images/validatore.png',
         mobileImagePath: '/images/validatore-mobile.png',
@@ -68,6 +68,11 @@ export const sendOverview: OverviewData = {
     ],
   },
   startInfo: {
+    cta: {
+      label: 'Leggi il manuale operativo',
+      text: "Scopri i dettagli dell'integrazione",
+      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0`,
+    },
     cards: [
       {
         title: 'Quick Start',
@@ -76,13 +81,13 @@ export const sendOverview: OverviewData = {
         iconName: 'FlagOutlined',
       },
       {
-        title: 'API B2B per le Pubbliche Amministrazioni',
+        title: 'API B2B per le PA',
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
         href: send.subpaths.api?.path ?? '#',
         iconName: 'FolderOutlined',
       },
       {
-        title: 'API B2B avanzamento notifiche',
+        title: 'API per avanzamento notifiche',
         text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
         href: send.subpaths.api?.path ?? '#',
         iconName: 'FolderOutlined',
