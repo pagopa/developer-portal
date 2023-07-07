@@ -1,4 +1,6 @@
 // TODO: move to proper localization system
+import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
+
 export const translations = {
   header: {
     title: 'PagoPA',
@@ -33,9 +35,9 @@ export const translations = {
           title: 'Scopri i nuovi tutorial di Firma con IO',
           dateString: '2023-06-29T22:15:53.780Z',
           href: {
-            label: 'Vai al tutorial',
-            link: '#news-2',
-            title: 'Vai al tutorial',
+            label: 'Vai ai tutorial',
+            link: `${ioSignTutorialListsPath.path}`,
+            title: 'Vai ai tutorial',
           },
         },
         {
@@ -75,11 +77,11 @@ export const translations = {
       links: [
         {
           text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
-          href: '#homepage-doc-1',
+          href: 'https://www.interop.pagopa.it/',
         },
         {
           text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
-          href: '#homepage-doc-2',
+          href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
         },
       ],
     },
