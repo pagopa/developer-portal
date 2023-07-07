@@ -96,15 +96,15 @@ export const sendOverview: OverviewData = {
   },
   relatedLinks: [
     {
-      path: 'https://docs.pagopa.it/f.a.q.-per-integratori/',
+      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: 'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/',
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.0/modello-di-integrazione-di-piattaforma-notifiche`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
-      path: 'https://docs.pagopa.it/f.a.q.-per-integratori/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche',
+      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],
