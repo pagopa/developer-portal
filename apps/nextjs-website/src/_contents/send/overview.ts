@@ -2,6 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -12,6 +13,28 @@ export const sendOverview: OverviewData = {
     title: 'Gestisci le notifiche in modo più semplice',
     subtitle:
       'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
+  },
+  postIntegration: {
+    subtitle:
+      'Verifica che l’integrazione con SEND soddisfi i criteri minimi per poter operare in ambiente di staging.',
+    guides: [
+      {
+        title: 'Validatore SEND',
+        description: {
+          title: 'Cosa ti permette di fare',
+          listItems: [
+            'Utilizzare un’emulazione del sistema SEND',
+            'Produrre un report in formato JSON sull’integrazione',
+          ],
+        },
+        link: {
+          href: `${sendGuideListsPath.path}/validatore/v1.0`,
+          label: 'Usa il validatore',
+        },
+        imagePath: '/images/validatore.png',
+        mobileImagePath: '/images/validatore-mobile.png',
+      },
+    ],
   },
   feature: {
     title: 'Perché usare SEND',
