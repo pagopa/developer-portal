@@ -3,19 +3,20 @@ import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { docsAssetsPath, docsPath } from '@/config';
 import { parseDoc } from 'gitbook-docs/parseDoc';
-import { appIo } from '@/_contents/appIo/appIo';
-import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
+import { send } from '@/_contents/send/send';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
+import { sendTutorialListsPath } from './tutorialListsPath';
 
-export const appIoTutorials = pipe(
+export const sendTutorials = pipe(
   [
     {
-      product: appIo,
+      product: send,
       source: {
-        pathPrefix: `${appIo.path}/tutorials`,
-        assetsPrefix: `${docsAssetsPath}/I4tX18g9wQQvTbyNkmIT`,
-        dirPath: `${docsPath}/I4tX18g9wQQvTbyNkmIT`,
+        pathPrefix: sendTutorialListsPath.path,
+        assetsPrefix: `${docsAssetsPath}/QzrvHJmSUOaAVsgD4qWK`,
+        dirPath: `${docsPath}/QzrvHJmSUOaAVsgD4qWK`,
       },
-      bannerLinks: appIoBannerLinks,
+      bannerLinks: sendBannerLinks,
     },
   ],
   RA.traverse(E.Applicative)(parseDoc),
@@ -26,5 +27,5 @@ export const appIoTutorials = pipe(
     throw e;
   }, RA.flatten),
   // This is a workaround that removes the 'index' space from tutorial docs
-  RA.filter(({ page: { path } }) => path !== `${appIo.path}/tutorials`)
+  RA.filter(({ page: { path } }) => path !== sendTutorialListsPath.path)
 );

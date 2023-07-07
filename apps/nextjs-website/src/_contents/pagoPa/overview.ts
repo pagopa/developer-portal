@@ -1,8 +1,8 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
-import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
+import { pagoPaGuideListsPath } from '@/_contents/pagoPa/guideListsPath';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -46,6 +46,11 @@ export const pagoPaOverview: OverviewData = {
     ],
   },
   startInfo: {
+    cta: {
+      label: 'Leggi la guida tecnica',
+      text: 'Scopri tutti i dettagli dell’integrazione',
+      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+    },
     cards: [
       {
         title: 'Quick Start',
@@ -56,13 +61,13 @@ export const pagoPaOverview: OverviewData = {
       {
         title: 'Documentazione API REST',
         text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
-        href: ioSign.subpaths.api?.path ?? '#',
+        href: pagoPa.subpaths.api?.path ?? '#',
         iconName: 'FolderOutlined',
       },
       {
         title: 'Documentazione  SOAP',
         text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
-        href: '#',
+        href: 'https://github.com/pagopa/pagopa-api',
         iconName: 'FolderOutlined',
       },
     ],
@@ -78,7 +83,7 @@ export const pagoPaOverview: OverviewData = {
       name: 'Contribuisci al miglioramento della Tassonomia',
     },
     {
-      path: 'https://docs.pagopa.it/linee-guida-brand-pagopa/',
+      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
       name: 'Consulta le linee guida brand pagoPA',
     },
     {
@@ -86,22 +91,60 @@ export const pagoPaOverview: OverviewData = {
       name: 'Consulta le linee Guida Gazzetta Ufficiale',
     },
     {
-      path: 'https://docs.pagopa.it/portale-delle-adesioni/portale-delle-adesioni',
+      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni/v4`,
       name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
     },
   ],
+  postIntegration: {
+    subtitle:
+      'Se hai da poco terminato il processo di integrazione con pagoPA o lo stai già utilizzando, queste risorse potrebbero fare al caso tuo.',
+    guides: [
+      {
+        title: "Piano di test per l'avvio di esercizio",
+        description: {
+          title: 'Argomenti trattati',
+          listItems: [
+            'Scenari di test per veriﬁcare la corretta implementazione dei workﬂow di pagamento',
+            'Specifiche relative al processo di Pagamento presso PSP previste dall’attuale versione delle SANP',
+          ],
+        },
+        link: {
+          href: 'https://github.com/pagopa/lg-pagopa-docs/raw/master/documentazione_tecnica_collegata/adesione/A_PdT_EC_NM3.cleaned.docx',
+          label: 'Scarica il documento',
+        },
+        imagePath: '/images/pago-pa-test-esercizio.png',
+        mobileImagePath: '/images/pago-pa-test-esercizio.png',
+      },
+      {
+        title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
+        description: {
+          title: 'Argomenti trattati',
+          listItems: [
+            'Tutte le specifiche per la produzione dell’avviso analogico di pagamento pagoPA',
+          ],
+        },
+        link: {
+          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+          label: 'Scopri di più',
+        },
+        imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
+        mobileImagePath:
+          '/images/guida-tecnica-sugli-avvisi-di-pagamento-mobile.png',
+      },
+    ],
+  },
   bannerLinks: [
     {
       theme: 'dark',
       title: 'Hai bisogno di aiuto?',
       decoration: 'HeadsetMic',
-      body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua area riservata di Self Care.',
+      body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua <strong>area riservata di Self Care</strong>.',
     },
     {
       theme: 'light',
       title: 'Dicci cosa ne pensi',
       decoration: 'Feedback',
-      body: 'Per chiarimenti sulle specifiche d’implementazione di pagoPA, come ad esempio SACI e SANP, puoi aprire una segnalazione su GitHub',
+      body: 'Per chiarimenti sulle specifiche d’implementazione di pagoPA, come ad esempio SACI e SANP, puoi aprire una segnalazione su <strong>GitHub</strong>',
     },
   ],
 };

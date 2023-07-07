@@ -25,6 +25,7 @@ import { sendGuides } from '@/_contents/send/guides';
 import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
+import { sendTutorials } from '@/_contents/send/tutorials';
 
 export const overviews = [
   appIoOverview,
@@ -47,6 +48,7 @@ export const tutorials = [
   ...appIoTutorials,
   ...ioSignTutorials,
   ...pagoPaTutorials,
+  ...sendTutorials,
 ];
 
 export const tools = [];
