@@ -14,6 +14,13 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
   },
+  pageNotFound: {
+    title: 'Pagina non trovata',
+    cta: {
+      label: 'Torna alla home',
+      href: '/',
+    },
+  },
   homepage: {
     news: {
       title: 'In evidenza',
