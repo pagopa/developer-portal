@@ -6,22 +6,34 @@ import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
 export const sendTutorials: readonly Tutorial[] = [
   {
-    title: 'Inserisci una Notifica via curl',
+    title: 'Inserisci una notifica via curl',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${sendTutorialListsPath.path}/1`,
-    name: 'tutorial 1',
+    path: `${sendTutorialListsPath.path}/come-inserire-una-notifica-via-curl`,
+    name: 'Inserisci una notifica via curl',
+    image: {
+      alt: 'Immagine: Inserisci una notifica via curl',
+      url: '/images/send-tutorial-1.png',
+    },
   },
   {
-    title: 'Inserisci una Notifica via postman',
+    title: 'Inserisci una notifica via postman',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${sendTutorialListsPath.path}/2`,
-    name: 'tutorial 2',
+    path: `${sendTutorialListsPath.path}/come-inserire-una-notifica-con-postman`,
+    name: 'Inserisci una notifica via postman',
+    image: {
+      alt: 'Immagine: Inserisci una notifica via postman',
+      url: '/images/send-tutorial-1.png',
+    },
   },
   {
-    title: 'Genera il tuo client per le nostre API',
+    title: 'Genera il tuo client',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${sendTutorialListsPath.path}/3`,
-    name: 'tutorial 3',
+    path: `${sendTutorialListsPath.path}/come-generare-il-tuo-api-client-per-le-api-di-send`,
+    name: 'Genera il tuo client',
+    image: {
+      alt: 'Immagine: Genera il tuo client',
+      url: '/images/send-tutorial-0.png',
+    },
   },
 ];
 
