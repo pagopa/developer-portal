@@ -1,6 +1,7 @@
 import { send } from '@/_contents/send/send';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { GuideListsData } from '@/lib/types/guideListsData';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
 export const sendGuideLists: GuideListsData = {
   ...sendGuideListsPath,
@@ -52,7 +53,7 @@ export const sendGuideLists: GuideListsData = {
             '/images/approfondimenti-sull-integrazione-mobile.png',
         },
         {
-          title: 'Modello di integrazione di Piattaforma Notifiche Digitali',
+          title: 'Modello di integrazione',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -72,4 +73,5 @@ export const sendGuideLists: GuideListsData = {
       ],
     },
   ],
+  bannerLinks: sendBannerLinks,
 };

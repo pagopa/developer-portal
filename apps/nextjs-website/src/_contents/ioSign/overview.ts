@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
-import { tutorials as ioSignTutorials } from '@/_contents/ioSign/tutorials';
+import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -38,21 +38,23 @@ export const ioSignOverview: OverviewData = {
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente.',
-      iconName: 'FlagOutlined',
-    },
-    {
-      title: 'Documentazione API',
-      text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
-      href: ioSign.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-  ],
-  tutorial: {
+  startInfo: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente.',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione API',
+        text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
+        href: ioSign.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
+  tutorials: {
     subtitle:
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,

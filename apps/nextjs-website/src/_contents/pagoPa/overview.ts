@@ -2,7 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { tutorials as pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -45,27 +45,29 @@ export const pagoPaOverview: OverviewData = {
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Cinque semplici passi per aderire a Nuova connettività',
-      iconName: 'FlagOutlined',
-    },
-    {
-      title: 'Documentazione API REST',
-      text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
-      href: ioSign.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-    {
-      title: 'Documentazione  SOAP',
-      text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
-      href: '#',
-      iconName: 'FolderOutlined',
-    },
-  ],
-  tutorial: {
+  startInfo: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Cinque semplici passi per aderire a Nuova connettività',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione API REST',
+        text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
+        href: ioSign.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+      {
+        title: 'Documentazione  SOAP',
+        text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
+        href: '#',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
+  tutorials: {
     subtitle:
       'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: pagoPaTutorials,

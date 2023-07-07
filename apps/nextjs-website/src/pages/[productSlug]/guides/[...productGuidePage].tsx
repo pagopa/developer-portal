@@ -57,6 +57,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
+      bannerLinks: props.bannerLinks,
     };
     return { props: page };
   } else {
@@ -74,6 +75,7 @@ const Page = (props: ProductGuidePageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      showBreadcrumbs={true}
     >
       <Box
         sx={{

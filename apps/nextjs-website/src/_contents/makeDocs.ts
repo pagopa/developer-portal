@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
+import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 
 export type GuideDefinition = {
   readonly product: Product;
@@ -15,9 +16,15 @@ export type GuideDefinition = {
     readonly version: string;
     readonly dirName: string;
   }>;
+  readonly bannerLinks: readonly BannerLinkProps[];
 };
 
-export const makeGuide = ({ product, guide, versions }: GuideDefinition) => {
+export const makeGuide = ({
+  product,
+  guide,
+  versions,
+  bannerLinks,
+}: GuideDefinition) => {
   const guidePath = `${product.path}/guides/${guide.slug}`;
   return pipe(
     versions,
@@ -40,6 +47,7 @@ export const makeGuide = ({ product, guide, versions }: GuideDefinition) => {
         assetsPrefix: `${docsAssetsPath}/${dirName}`,
         dirPath: `${docsPath}/${dirName}`,
       },
+      bannerLinks: bannerLinks,
     })),
     // parse docs files
     RA.traverse(E.Applicative)(parseDoc),

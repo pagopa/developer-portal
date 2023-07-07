@@ -1,11 +1,12 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { appIO } from '@/_contents/appIo/appIO';
+import { appIo } from '@/_contents/appIo/appIo';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { tutorials } from '@/_contents/appIo/tutorials';
+import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
+import { appIoGuideListsPath } from './guideListsPath';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
-  product: appIO,
+  product: appIo,
   hero: {
     altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
     backgroundImage: '/images/hero.jpg',
@@ -36,10 +37,10 @@ export const appIoOverview: OverviewData = {
       },
     ],
   },
-  tutorial: {
+  tutorials: {
     subtitle:
       'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
-    list: tutorials,
+    list: appIoTutorials,
   },
   postIntegration: {
     cta: {
@@ -90,20 +91,27 @@ export const appIoOverview: OverviewData = {
       name: 'Leggi kit di comunicazione',
     },
   ],
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-      iconName: 'FlagOutlined',
+  startInfo: {
+    cta: {
+      text: 'Scopri tutti i dettagli dell’integrazione',
+      label: 'Leggi la guida tecnica',
+      href: appIoGuideListsPath.path,
     },
-    {
-      title: 'Documentazione Api',
-      text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
-      href: '/',
-      iconName: 'FolderOutlined',
-    },
-  ],
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione Api',
+        text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
+        href: '/',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
   bannerLinks: [
     {
       theme: 'dark',

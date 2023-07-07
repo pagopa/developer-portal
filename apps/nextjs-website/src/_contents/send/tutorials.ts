@@ -1,22 +1,31 @@
-import { Tutorial } from '@/lib/types/tutorialData';
+import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
+import { docsAssetsPath, docsPath } from '@/config';
+import { parseDoc } from 'gitbook-docs/parseDoc';
+import { send } from '@/_contents/send/send';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
+import { sendTutorialListsPath } from './tutorialListsPath';
 
-export const tutorials: readonly Tutorial[] = [
-  {
-    title: 'Inserisci una Notifica via curl',
-    dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/1',
-    name: 'tutorial 1',
-  },
-  {
-    title: 'Inserisci una Notifica via postman',
-    dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/2',
-    name: 'tutorial 2',
-  },
-  {
-    title: 'Genera il tuo client per le nostre API',
-    dateString: '2023-06-29T22:15:53.780Z',
-    path: '/send/tutorial/3',
-    name: 'tutorial 3',
-  },
-];
+export const sendTutorials = pipe(
+  [
+    {
+      product: send,
+      source: {
+        pathPrefix: sendTutorialListsPath.path,
+        assetsPrefix: `${docsAssetsPath}/QzrvHJmSUOaAVsgD4qWK`,
+        dirPath: `${docsPath}/QzrvHJmSUOaAVsgD4qWK`,
+      },
+      bannerLinks: sendBannerLinks,
+    },
+  ],
+  RA.traverse(E.Applicative)(parseDoc),
+  E.fold((e) => {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.log(e);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw e;
+  }, RA.flatten),
+  // This is a workaround that removes the 'index' space from tutorial docs
+  RA.filter(({ page: { path } }) => path !== sendTutorialListsPath.path)
+);

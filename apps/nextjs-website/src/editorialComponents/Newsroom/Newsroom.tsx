@@ -66,7 +66,14 @@ const Item = (props: INewsroomItem) => {
             </Typography>
           </Box>
         )}
-        {img && <img src={img.src} alt={img.alt} width='100%' />}
+        {img && (
+          <img
+            src={img.src}
+            alt={img.alt}
+            width='100%'
+            style={{ borderRadius: 16 }}
+          />
+        )}
       </Box>
       <Typography color='text.secondary' fontSize={16} fontWeight={400} my={2}>
         {new Intl.DateTimeFormat(locale, options).format(date)}

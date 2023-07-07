@@ -1,10 +1,10 @@
 import { ApiData } from '@/lib/types/apiData';
-import { appIO } from '@/_contents/appIo/appIO';
+import { appIo } from '@/_contents/appIo/appIo';
 import { appIoApiPath } from '@/_contents/appIo/apiPath';
 
 export const appIoApi: ApiData = {
   ...appIoApiPath,
-  product: appIO,
+  product: appIo,
   specURLs: [
     {
       url: 'https://raw.githubusercontent.com/pagopa/io-functions-services/master/openapi/index.yaml',

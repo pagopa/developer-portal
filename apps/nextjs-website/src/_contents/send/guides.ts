@@ -1,5 +1,6 @@
 import { send } from './send';
 import { makeGuide } from '../makeDocs';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
 const validatore = makeGuide({
   product: send,
@@ -13,6 +14,7 @@ const validatore = makeGuide({
       dirName: 'niZ9BM7pjxsgBMMWBim1',
     },
   ],
+  bannerLinks: sendBannerLinks,
 });
 
 const manualeOperativo = makeGuide({
@@ -32,6 +34,7 @@ const manualeOperativo = makeGuide({
     //   dirName: 'E1H8qAvYcaMYhDZ2iIp5',
     // },
   ],
+  bannerLinks: sendBannerLinks,
 });
 
 const knowledgeBase = makeGuide({
@@ -46,6 +49,7 @@ const knowledgeBase = makeGuide({
       dirName: '8hvzBYw259fYwQSqzmf6',
     },
   ],
+  bannerLinks: sendBannerLinks,
 });
 
 const modelloDiIntegrazione = makeGuide({
@@ -59,12 +63,12 @@ const modelloDiIntegrazione = makeGuide({
       version: 'v1.0',
       dirName: '4QKqt9mkQAzNdmxbW9Ab',
     },
-    // TODO: Uncomment once in sync
-    // {
-    //   version: 'v2.0',
-    //   dirName: 'TmWy4VGVx84G3qBQqH89',
-    // },
+    {
+      version: 'v2.0',
+      dirName: 'TmWy4VGVx84G3qBQqH89',
+    },
   ],
+  bannerLinks: sendBannerLinks,
 });
 
 export const sendGuides = [

@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
-import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
@@ -21,7 +21,7 @@ export const sendOverview: OverviewData = {
       {
         title: 'Validatore SEND',
         description: {
-          title: 'Cosa ti permette di fare',
+          title: 'Cosa ti permette di fare:',
           listItems: [
             'Utilizzare un’emulazione del sistema SEND',
             'Produrre un report in formato JSON sull’integrazione',
@@ -29,7 +29,7 @@ export const sendOverview: OverviewData = {
         },
         link: {
           href: `${sendGuideListsPath.path}/validatore/v1.0`,
-          label: 'Usa il validatore',
+          label: 'Scopri di più',
         },
         imagePath: '/images/validatore.png',
         mobileImagePath: '/images/validatore-mobile.png',
@@ -67,42 +67,49 @@ export const sendOverview: OverviewData = {
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
-      iconName: 'FlagOutlined',
+  startInfo: {
+    cta: {
+      label: 'Leggi il manuale operativo',
+      text: "Scopri i dettagli dell'integrazione",
+      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0`,
     },
-    {
-      title: 'API B2B per le Pubbliche Amministrazioni',
-      text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
-      href: send.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-    {
-      title: 'API B2B avanzamento notifiche',
-      text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
-      href: send.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-  ],
-  tutorial: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'API B2B per le PA',
+        text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
+        href: send.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+      {
+        title: 'API per avanzamento notifiche',
+        text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
+        href: send.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
+  tutorials: {
     subtitle:
       'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,
   },
   relatedLinks: [
     {
-      path: 'https://docs.pagopa.it/f.a.q.-per-integratori/',
+      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: 'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/',
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.0`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
-      path: 'https://docs.pagopa.it/f.a.q.-per-integratori/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche',
+      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],
