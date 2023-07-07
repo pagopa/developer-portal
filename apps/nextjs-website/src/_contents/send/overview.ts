@@ -2,6 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -20,17 +21,15 @@ export const sendOverview: OverviewData = {
       {
         title: 'Guida Tecnica all’integrazione dei servizi',
         description: {
-          title: 'Argomenti trattati',
+          title: 'Cosa ti permette di fare',
           listItems: [
-            'Scopri come aderire',
-            'Crea e pubblica un servizio',
-            'Testa e invia un messaggio',
-            'Esegui test sulle funzionalità',
+            'Utilizzare un’emulazione del sistema SEND',
+            'Produrre un report in formato JSON sull’integrazione',
           ],
         },
         link: {
-          href: `/`,
-          label: 'Vai alla guida',
+          href: `${sendGuideListsPath.path}/validatore/v1.0`,
+          label: 'Usa il validatore',
         },
         imagePath: '/images/guida-tecnica.png',
         mobileImagePath: '/images/guida-tecnica-mobile.png',
