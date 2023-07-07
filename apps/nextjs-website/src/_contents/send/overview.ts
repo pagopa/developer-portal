@@ -70,8 +70,8 @@ export const sendOverview: OverviewData = {
   startCards: [
     {
       title: 'Quick Start',
+      coomingSoon: true,
       text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
-      href: '/',
       iconName: 'FlagOutlined',
     },
     {
