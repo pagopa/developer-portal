@@ -1,5 +1,6 @@
 // TODO: move to proper localization system
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
+import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 
 export const translations = {
   header: {
@@ -27,8 +28,12 @@ export const translations = {
           dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai al validatore',
-            link: '#news-1',
+            link: `${sendGuideListsPath.path}/validatore/v1.0`,
             title: 'Vai al validatore',
+          },
+          image: {
+            url: '/images/homepage-validatore.png',
+            alt: 'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
           },
         },
         {
@@ -39,6 +44,10 @@ export const translations = {
             link: `${ioSignTutorialListsPath.path}`,
             title: 'Vai ai tutorial',
           },
+          image: {
+            url: '/images/homepage-io-sign.png',
+            alt: 'Immagine: Scopri i nuovi tutorial di Firma con IO',
+          },
         },
         {
           title:
@@ -48,6 +57,11 @@ export const translations = {
             label: 'Vai alla guida',
             link: '#news-3',
             title: 'Vai alla guida',
+          },
+          coomingSoon: true,
+          image: {
+            url: '/images/homepage-pago-pa.png',
+            alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
           },
         },
       ],
