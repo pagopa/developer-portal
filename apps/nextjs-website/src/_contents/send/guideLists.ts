@@ -53,7 +53,7 @@ export const sendGuideLists: GuideListsData = {
             '/images/approfondimenti-sull-integrazione-mobile.png',
         },
         {
-          title: 'Modello di integrazione di Piattaforma Notifiche Digitali',
+          title: 'Modello di integrazione',
           description: {
             title: 'Argomenti trattati',
             listItems: [
