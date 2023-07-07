@@ -194,12 +194,12 @@ export const translations = {
       resources: {
         title: 'Risorse',
         links: [
-          // {
-          //   ariaLabel: 'Vai al link: Informativa Privacy',
-          //   href: 'https://www.pagopa.it/it/privacy-policy-assistenza',
-          //   label: 'Informativa Privacy',
-          //   linkType: 'external',
-          // },
+          {
+            ariaLabel: 'Vai al link: Informativa Privacy',
+            href: '/privacy-policy',
+            label: 'Informativa Privacy',
+            linkType: 'internal',
+          },
           // {
           //   ariaLabel: 'Vai al link: Termini e Condizioni',
           //   href: 'https://www.pagopa.it/it/termini-e-condizioni-di-utilizzo-del-sito',
