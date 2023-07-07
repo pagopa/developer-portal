@@ -10,18 +10,30 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-richiedere-pagamenti-che-contengono-marca-da-bollo-digitale`,
     name: 'Come richiedere pagamenti che contengono marca da bollo digitale',
+    image: {
+      url: '/images/pago-pa-marca-bollo.png',
+      alt: 'Immagine: Come richiedere pagamenti che contengono marca da bollo digitale',
+    },
   },
   {
     title: 'Come avviare un esercizio come Ente Creditore su pagoPA',
     dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-avviare-un-esercizio-come-ente-creditore-su-pagopa`,
     name: 'Come avviare un esercizio come Ente Creditore su pagoPA',
+    image: {
+      url: '/images/pago-pa-creare-esercizio-ente-creditore.png',
+      alt: 'Immagine: Come avviare un esercizio come Ente Creditore su pagoPA',
+    },
   },
   {
     title: 'Come stampare un avviso di pagamento in formato PDF',
     dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-stampare-un-avviso-di-pagamento-in-formato-pdf`,
     name: 'Come stampare un avviso di pagamento in formato PDF',
+    image: {
+      url: '/images/pago-pa-stampare-avviso-pagamento.png',
+      alt: 'Immagine: Come stampare un avviso di pagamento in formato PDF',
+    },
   },
 ];
 
