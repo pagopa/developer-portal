@@ -67,6 +67,8 @@ const TutorialsPage = ({
           overline=''
           title={abstract?.title}
           theme={palette.mode}
+          containerStyle={{}}
+          stackStyle={{}}
         />
       )}
       {product.subpaths.tutorials && tutorials && (

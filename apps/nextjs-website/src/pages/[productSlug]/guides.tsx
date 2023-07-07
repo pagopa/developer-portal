@@ -46,8 +46,10 @@ const GuidesPage = ({
   product,
   products,
 }: GuidesPageProps) => {
-  const { palette } = useTheme();
+  const { palette, spacing } = useTheme();
 
+  // containerStyle={{ height: { lg: spacing(66) } }}
+  // stackStyle={{ paddingY: spacing(10), paddingX: { sm: spacing(2) } }}
   return (
     <Layout
       products={products}
@@ -62,6 +64,8 @@ const GuidesPage = ({
           overline=''
           title={abstract?.title}
           theme={palette.mode}
+          containerStyle={{}}
+          stackStyle={{}}
         />
       )}
       <Box bgcolor={palette.grey[100]}>

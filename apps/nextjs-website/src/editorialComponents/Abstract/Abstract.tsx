@@ -1,5 +1,5 @@
 // TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, SxProps, Typography, useTheme } from '@mui/material';
 import {
   Theme,
   Generic,
@@ -13,6 +13,8 @@ export interface AbstractProps {
   background?: string | Generic;
   layout?: 'left' | 'center' | 'right';
   theme: Theme;
+  containerStyle?: SxProps;
+  stackStyle?: SxProps;
 }
 
 export const Abstract: React.FC<AbstractProps> = ({
@@ -22,6 +24,8 @@ export const Abstract: React.FC<AbstractProps> = ({
   theme,
   background,
   layout = 'left',
+  containerStyle,
+  stackStyle,
 }) => {
   const textColor = theme === 'dark' ? 'background.paper' : 'text.primary';
 
@@ -64,11 +68,12 @@ export const Abstract: React.FC<AbstractProps> = ({
   return (
     <EContainer
       background={!background ? backgroundColor : BackgroundImage}
-      sx={{ height: { lg: spacing(66) } }}
+      sx={containerStyle || { height: { lg: spacing(66) } }}
     >
       <Stack
-        py={spacing(10)}
-        px={{ sm: spacing(2) }}
+        sx={
+          stackStyle || { paddingY: spacing(10), paddingX: { sm: spacing(2) } }
+        }
         width='100%'
         justifyContent='center'
         alignItems={flexLayoutMap[layout]}
