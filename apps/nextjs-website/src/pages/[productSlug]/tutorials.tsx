@@ -75,7 +75,7 @@ const TutorialsPage = ({
             items={tutorials.map((tutorial) => ({
               title: tutorial.title,
               date: {
-                date: new Date(),
+                date: new Date(tutorial.dateString),
               },
               href: {
                 label: shared.readTutorial,
