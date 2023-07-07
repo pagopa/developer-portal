@@ -45,26 +45,28 @@ export const pagoPaOverview: OverviewData = {
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Cinque semplici passi per aderire a Nuova connettività',
-      iconName: 'FlagOutlined',
-    },
-    {
-      title: 'Documentazione API REST',
-      text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
-      href: pagoPa.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-    {
-      title: 'Documentazione  SOAP',
-      text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
-      href: 'https://github.com/pagopa/pagopa-api',
-      iconName: 'FolderOutlined',
-    },
-  ],
+  startInfo: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Cinque semplici passi per aderire a Nuova connettività',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione API REST',
+        text: 'Esplora le API Rest per la gestione delle posizioni debitorie',
+        href: pagoPa.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+      {
+        title: 'Documentazione  SOAP',
+        text: 'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
+        href: 'https://github.com/pagopa/pagopa-api',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
   tutorials: {
     subtitle:
       'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
