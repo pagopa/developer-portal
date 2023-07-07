@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
-import { tutorials as ioSignTutorials } from '@/_contents/ioSign/tutorials';
+import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -52,7 +52,7 @@ export const ioSignOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,

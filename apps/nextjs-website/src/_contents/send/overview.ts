@@ -1,7 +1,7 @@
 import { OverviewData } from '@/lib/types/overviewData';
 import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
-import { tutorials as sendTutorials } from '@/_contents/send/tutorials';
+import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 
 export const sendOverview: OverviewData = {
@@ -87,7 +87,7 @@ export const sendOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,

@@ -2,7 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { tutorials as pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -65,7 +65,7 @@ export const pagoPaOverview: OverviewData = {
       iconName: 'FolderOutlined',
     },
   ],
-  tutorial: {
+  tutorials: {
     subtitle:
       'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: pagoPaTutorials,

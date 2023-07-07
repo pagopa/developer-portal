@@ -40,6 +40,7 @@ export const getStaticProps: GetStaticProps<
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
+      bannerLinks: props.bannerLinks,
     };
     return { props: page };
   } else {
@@ -54,6 +55,7 @@ const Page = (props: ProductTutorialPageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      showBreadcrumbs={true}
     >
       <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
         {renderGitBookMarkdown(

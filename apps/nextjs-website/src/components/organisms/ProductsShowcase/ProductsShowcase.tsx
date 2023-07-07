@@ -1,8 +1,6 @@
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { MenuBook } from '@mui/icons-material';
-import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import { Box, useTheme } from '@mui/material';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
 type ProductsShowcaseProps = {

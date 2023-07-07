@@ -4,14 +4,14 @@ import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/compon
 import { BannerLink } from '@/editorialComponents/BannerLink/BannerLink';
 
 type BannerLinksProps = {
-  banners?: BannerLinkProps[];
+  banners?: readonly BannerLinkProps[];
 };
 
 const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
   <Stack
     direction='row'
     justifyContent='space-between'
-    alignItems='center'
+    alignItems='stretch'
     sx={{
       width: '100%',
     }}

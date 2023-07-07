@@ -1,11 +1,11 @@
 import { OverviewData } from '@/lib/types/overviewData';
-import { appIO } from '@/_contents/appIo/appIO';
+import { appIo } from '@/_contents/appIo/appIo';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
-import { tutorials } from '@/_contents/appIo/tutorials';
+import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
-  product: appIO,
+  product: appIo,
   hero: {
     altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
     backgroundImage: '/images/hero.jpg',
@@ -36,10 +36,10 @@ export const appIoOverview: OverviewData = {
       },
     ],
   },
-  tutorial: {
+  tutorials: {
     subtitle:
       'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
-    list: tutorials,
+    list: appIoTutorials,
   },
   postIntegration: {
     cta: {
