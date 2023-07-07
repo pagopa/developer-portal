@@ -9,10 +9,11 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { Path } from '@/lib/types/path';
-import LinkCards from '@/components/organisms/LinkCards/LinkCards';
 import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
+import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
+import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 
 type Params = {
   productSlug: string;
@@ -49,8 +50,13 @@ export type OverviewPageProps = {
   };
   readonly postIntegration?: {
     readonly subtitle: string;
-    readonly cardsTitle: string;
-    readonly list: readonly {
+    readonly listTitle?: string;
+    readonly cta?: {
+      readonly label: string;
+      readonly href: string;
+    };
+    readonly guides?: GuideCardProps[];
+    readonly list?: readonly {
       readonly title: string;
       readonly description: string;
       readonly path: string;
@@ -124,19 +130,22 @@ const OverviewPage = ({
         />
       )}
       {product.subpaths.guides && postIntegration && (
-        <LinkCards
+        <PostIntegration
           title={overview.postIntegration.title}
           subtitle={postIntegration.subtitle}
-          cta={{
-            label: overview.postIntegration.ctaLabel,
-            href: overview.postIntegration.href,
-          }}
-          cardsTitle={postIntegration.cardsTitle}
+          cta={
+            postIntegration.cta && {
+              label: postIntegration.cta.label,
+              href: postIntegration.cta.href,
+            }
+          }
+          listTitle={postIntegration.listTitle}
           cards={postIntegration.list?.map((guide) => ({
             title: guide.title,
             text: guide.description,
             href: guide.path,
           }))}
+          guides={postIntegration.guides}
         />
       )}
       {relatedLinks && (
