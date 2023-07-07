@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<
 > = ({ params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage.join('/');
-  const path = `/${productSlug}/tutorial/${tutorialPath}`;
+  const path = `/${productSlug}/tutorials/${tutorialPath}`;
   const props = getTutorial(path);
   if (props) {
     const page = {
