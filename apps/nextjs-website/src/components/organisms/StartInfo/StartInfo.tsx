@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { MenuBook } from '@mui/icons-material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 type StartInfoProps = {
   title: string;
@@ -18,6 +18,7 @@ type StartInfoProps = {
     text: string;
     label: string;
     href: string;
+    iconName?: string;
   };
 };
 
@@ -49,7 +50,13 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
             justifyContent='center'
             alignItems='center'
           >
-            <MenuBook />
+            <Box pt={0.5}>
+              <IconWrapper
+                color={palette.text.primary}
+                size={26}
+                icon={cta.iconName || 'MenuBook'}
+              />
+            </Box>
             <Typography variant='body1' mb={2}>
               {cta.text}
             </Typography>

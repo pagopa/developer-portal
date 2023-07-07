@@ -1,10 +1,10 @@
 import { GuideListsData } from '@/lib/types/guideListsData';
 import { appIo } from '@/_contents/appIo/appIo';
-import { appIoGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
 import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoGuideLists: GuideListsData = {
-  ...appIoGuideListsPath,
+  ...appIOGuideListsPath,
   product: appIo,
   abstract: {
     title: 'Guide e manuali',
@@ -16,7 +16,7 @@ export const appIoGuideLists: GuideListsData = {
       title: "Per l'integrazione",
       guides: [
         {
-          title: 'Guida Tecnica all’integrazione dei servizi',
+          title: 'Guida tecnica IO',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -27,7 +27,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIoGuideListsPath.path}/io-guida-tecnica/v2.4`,
+            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v2.4`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',
@@ -39,7 +39,7 @@ export const appIoGuideLists: GuideListsData = {
       title: "Per l'utilizzo",
       guides: [
         {
-          title: 'Manuale dei servizi dell’app IO',
+          title: 'Manuale dei servizi',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -50,7 +50,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIoGuideListsPath.path}/manuale-servizi/v1.0`,
+            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -68,11 +68,11 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `https://docs.pagopa.it/kb-enti/`,
+            href: `${appIOGuideListsPath.path}/supporto-agli-enti/v1.0`,
             label: 'Vai al manuale',
           },
-          imagePath: '/images/manuale-dei-servizi.png',
-          mobileImagePath: '/images/manuale-dei-servizi-mobile.png',
+          imagePath: '/images/app-io-supporto-enti.png',
+          mobileImagePath: '/images/app-io-supporto-enti.png',
         },
         {
           title: 'Kit di comunicazione',
@@ -86,7 +86,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIoGuideListsPath.path}/kit-comunicazione/v1.0`,
+            href: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
             label: 'Vai al kit',
           },
           imagePath: '/images/kit-di-comunicazione.png',
@@ -98,7 +98,7 @@ export const appIoGuideLists: GuideListsData = {
       title: 'Programmi e iniziative',
       guides: [
         {
-          title: 'Carta Giovani Nazionale',
+          title: 'Manuale di Carta Giovani Nazionale',
           description: {
             title: 'Argomenti trattati',
             listItems: [

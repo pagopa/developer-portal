@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<
 > = ({ params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage.join('/');
-  const path = `/${productSlug}/tutorial/${tutorialPath}`;
+  const path = `/${productSlug}/tutorials/${tutorialPath}`;
   const props = getTutorial(path);
   if (props) {
     const page = {
@@ -55,7 +55,7 @@ const Page = (props: ProductTutorialPageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs={true}
+      showBreadcrumbs={false}
     >
       <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
         {renderGitBookMarkdown(

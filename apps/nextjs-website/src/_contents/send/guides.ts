@@ -63,11 +63,10 @@ const modelloDiIntegrazione = makeGuide({
       version: 'v1.0',
       dirName: '4QKqt9mkQAzNdmxbW9Ab',
     },
-    // TODO: Uncomment once in sync
-    // {
-    //   version: 'v2.0',
-    //   dirName: 'TmWy4VGVx84G3qBQqH89',
-    // },
+    {
+      version: 'v2.0',
+      dirName: 'TmWy4VGVx84G3qBQqH89',
+    },
   ],
   bannerLinks: sendBannerLinks,
 });

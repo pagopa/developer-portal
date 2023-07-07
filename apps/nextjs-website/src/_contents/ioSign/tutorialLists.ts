@@ -8,20 +8,32 @@ export const ioSignTutorials: readonly Tutorial[] = [
   {
     title: 'Come creare e preparare il documento da firmare digitalmente',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${ioSignTutorialListsPath.path}/1`,
-    name: 'tutorial 1',
+    path: `${ioSignTutorialListsPath.path}/come-creare-e-preparare-il-documento-da-firmare-digitalmente-con-firma-con-io`,
+    name: 'Come creare e preparare il documento da firmare digitalmente',
+    image: {
+      alt: 'Immagine: Come creare e preparare il documento da firmare digitalmente',
+      url: '/images/io-sign-firmare-documento.png',
+    },
   },
   {
     title: 'Come creare il Dossier per la richiesta di firma',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${ioSignTutorialListsPath.path}/2`,
-    name: 'tutorial 2',
+    path: `${ioSignTutorialListsPath.path}/come-creare-il-dossier-per-la-richiesta-di-firma`,
+    name: 'Come creare il Dossier per la richiesta di firma',
+    image: {
+      alt: 'Immagine: Come creare il Dossier per la richiesta di firma',
+      url: '/images/io-sign-creare-dossier.png',
+    },
   },
   {
     title: 'Come effettuare l’upload dei documenti',
     dateString: '2023-06-29T22:15:53.780Z',
-    path: `${ioSignTutorialListsPath.path}/3`,
-    name: 'tutorial 3',
+    path: `${ioSignTutorialListsPath.path}/upload-dei-documenti`,
+    name: 'Come effettuare l’upload dei documenti',
+    image: {
+      alt: 'Immagine: Come effettuare l’upload dei documenti',
+      url: '/images/io-sign-effettuare-upload-documento.png',
+    },
   },
 ];
 

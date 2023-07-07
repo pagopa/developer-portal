@@ -58,7 +58,7 @@ const TutorialsPage = ({
       products={products}
       product={product}
       path={path}
-      showBreadcrumbs={true}
+      showBreadcrumbs={false}
       bannerLinks={bannerLinks}
     >
       {abstract && (
@@ -73,6 +73,9 @@ const TutorialsPage = ({
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
+              coomingSoonLabel: !tutorial.coomingSoon
+                ? undefined
+                : shared.coomingSoon,
               title: tutorial.title,
               date: {
                 date: new Date(tutorial.dateString),

@@ -1,11 +1,11 @@
 import {
   Box,
   Breadcrumbs,
-  Divider,
   Link as MuiLink,
   Typography,
   useTheme,
 } from '@mui/material';
+import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 import Link from 'next/link';
 import React from 'react';
 
@@ -19,11 +19,10 @@ type ProductBreadcrumbsProps = {
 const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
   const theme = useTheme();
   return (
-    <>
+    <EContainer>
       <Box
         component={'div'}
         sx={{ display: { xs: 'none', md: 'block' } }}
-        ml={18}
         my={2}
       >
         <Breadcrumbs sx={{ paddingTop: 2 }} aria-label='breadcrumb'>
@@ -51,8 +50,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
           })}
         </Breadcrumbs>
       </Box>
-      <Divider />
-    </>
+    </EContainer>
   );
 };
 

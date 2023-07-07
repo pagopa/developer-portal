@@ -7,11 +7,11 @@ export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
   product: ioSign,
   hero: {
-    altText: 'Hero: Raccogli i servizi del tuo ente in unico spazio',
+    altText: 'Hero: Richiedi la firma di contratti e documenti',
     backgroundImage: '/images/hero.jpg',
-    title: 'Raccogli i servizi del tuo ente in unico spazio',
+    title: 'Richiedi la firma di contratti e documenti',
     subtitle:
-      "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",
+      'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
   },
   feature: {
     title: 'Perché Firma con IO',
@@ -28,30 +28,32 @@ export const ioSignOverview: OverviewData = {
         iconName: 'PaymentsRounded',
         subtitle:
           'Richiedi la firma di uno o più documenti direttamente sul tuo sito web, attraverso un pulsante dedicato che permette di aprire i documenti su IO e completare l’operazione',
-        title: 'Richiedere una firma online, direttamente sul tuo sito web',
+        title: 'Richiedere una firma direttamente sul tuo sito',
       },
       {
         iconName: 'CreateRounded',
         subtitle:
-          'Una firma totalmente da remoto e con massima validità legale. Erogata attraverso un canale già noto e affidabile, con una UX efficace è più semplice possibile',
-        title: 'Ottenere firme digitali con massimo valore legale',
+          'Una firma totalmente da remoto e con massima validità legale. Erogata attraverso un canale già noto e affidabile, nel modo più semplice possibile',
+        title: 'Ottenere firme digitali con valore legale',
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: '6 semplici passi per inviare e ricevere un documento firmato digitalmente',
-      iconName: 'FlagOutlined',
-    },
-    {
-      title: 'Documentazione API',
-      text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
-      href: ioSign.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-  ],
+  startInfo: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione API',
+        text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
+        href: ioSign.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
   tutorials: {
     subtitle:
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
