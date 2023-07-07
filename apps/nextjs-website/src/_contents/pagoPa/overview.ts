@@ -89,6 +89,44 @@ export const pagoPaOverview: OverviewData = {
       name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
     },
   ],
+  postIntegration: {
+    subtitle:
+      'Se hai da poco terminato il processo di integrazione con pagoPA o lo stai già utilizzando, queste risorse potrebbero fare al caso tuo.',
+    guides: [
+      {
+        title: "Piano di test per l'avvio di esercizio",
+        description: {
+          title: 'Argomenti trattati',
+          listItems: [
+            'Scenari di test per veriﬁcare la corretta implementazione dei workﬂow di pagamento',
+            'Specifiche relative al processo di Pagamento presso PSP previste dall’attuale versione delle SANP',
+          ],
+        },
+        link: {
+          href: 'https://github.com/pagopa/lg-pagopa-docs/blob/master/documentazione_tecnica_collegata/adesione/A_PdT_EC_NM3.cleaned.docx',
+          label: 'Scopri di più',
+        },
+        imagePath: '/images/validatore.png',
+        mobileImagePath: '/images/validatore-mobile.png',
+      },
+      {
+        title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
+        description: {
+          title: 'Argomenti trattati',
+          listItems: [
+            'Tutte le specifiche per la produzione dell’avviso analogico di pagamento pagoPA',
+          ],
+        },
+        link: {
+          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+          label: 'Scopri di più',
+        },
+        imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
+        mobileImagePath:
+          '/images/guida-tecnica-sugli-avvisi-di-pagamento-mobile.png',
+      },
+    ],
+  },
   bannerLinks: [
     {
       theme: 'dark',
