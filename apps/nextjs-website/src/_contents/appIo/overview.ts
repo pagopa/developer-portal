@@ -90,7 +90,7 @@ export const appIoOverview: OverviewData = {
       name: 'Scarica il contratto di adesione a IO',
     },
     {
-      path: '/',
+      path: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
       name: 'Leggi kit di comunicazione',
     },
   ],
