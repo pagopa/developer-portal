@@ -38,13 +38,21 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly items: FeatureItem[];
   };
-  readonly startCards?: {
-    readonly coomingSoon?: boolean;
-    readonly title: string;
-    readonly text: string;
-    readonly href?: string;
-    readonly iconName: string;
-  }[];
+  readonly startInfo?: {
+    readonly cta?: {
+      readonly text: string;
+      readonly label: string;
+      readonly href: string;
+      readonly iconName?: string;
+    };
+    readonly cards: {
+      readonly coomingSoon?: boolean;
+      readonly title: string;
+      readonly text: string;
+      readonly href?: string;
+      readonly iconName: string;
+    }[];
+  };
   readonly tutorials: {
     readonly subtitle: string;
     readonly list?: readonly Tutorial[];
@@ -80,7 +88,7 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 
 const OverviewPage = ({
   hero,
-  startCards,
+  startInfo,
   feature,
   product,
   products,
@@ -114,11 +122,11 @@ const OverviewPage = ({
         title={feature.title}
         subtitle={feature.subtitle}
       />
-      {startCards && (
+      {startInfo && (
         <StartInfo
           title={overview.startInfo.title}
-          cta={overview.startInfo.cta}
-          cards={startCards}
+          cta={startInfo.cta}
+          cards={startInfo.cards}
         />
       )}
       {product.subpaths.tutorials && tutorials && (
