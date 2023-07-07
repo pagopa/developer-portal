@@ -38,14 +38,22 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly items: FeatureItem[];
   };
-  readonly startCards?: {
-    readonly coomingSoon?: boolean;
-    readonly title: string;
-    readonly text: string;
-    readonly href?: string;
-    readonly iconName: string;
-  }[];
-  readonly tutorial: {
+  readonly startInfo?: {
+    readonly cta?: {
+      readonly text: string;
+      readonly label: string;
+      readonly href: string;
+      readonly iconName?: string;
+    };
+    readonly cards: {
+      readonly coomingSoon?: boolean;
+      readonly title: string;
+      readonly text: string;
+      readonly href?: string;
+      readonly iconName: string;
+    }[];
+  };
+  readonly tutorials: {
     readonly subtitle: string;
     readonly list?: readonly Tutorial[];
   };
@@ -80,12 +88,12 @@ export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
 
 const OverviewPage = ({
   hero,
-  startCards,
+  startInfo,
   feature,
   product,
   products,
   path,
-  tutorial,
+  tutorials,
   postIntegration,
   relatedLinks,
   bannerLinks,
@@ -114,20 +122,20 @@ const OverviewPage = ({
         title={feature.title}
         subtitle={feature.subtitle}
       />
-      {startCards && (
+      {startInfo && (
         <StartInfo
           title={overview.startInfo.title}
-          cta={overview.startInfo.cta}
-          cards={startCards}
+          cta={startInfo.cta}
+          cards={startInfo.cards}
         />
       )}
-      {product.subpaths.tutorial && tutorial && (
+      {product.subpaths.tutorials && tutorials && (
         <TutorialsOverview
           title={overview.tutorial.title}
-          subtitle={tutorial.subtitle}
+          subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
-          tutorialPath={product.subpaths.tutorial}
-          tutorials={[...(tutorial.list || [])]}
+          tutorialPath={product.subpaths.tutorials}
+          tutorials={[...(tutorials.list || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (

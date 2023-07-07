@@ -1,10 +1,11 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { appIO } from './appIO';
 import { docsAssetsPath, docsPath } from '@/config';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { parseDoc } from 'gitbook-docs/parseDoc';
+import { appIo } from '@/_contents/appIo/appIo';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const tutorials: readonly Tutorial[] = [
   {
@@ -30,12 +31,13 @@ export const tutorials: readonly Tutorial[] = [
 export const appIoTutorials = pipe(
   [
     {
-      product: appIO,
+      product: appIo,
       source: {
-        pathPrefix: `${appIO.path}/tutorial`,
+        pathPrefix: `${appIo.path}/tutorials`,
         assetsPrefix: `${docsAssetsPath}/I4tX18g9wQQvTbyNkmIT`,
         dirPath: `${docsPath}/I4tX18g9wQQvTbyNkmIT`,
       },
+      bannerLinks: appIoBannerLinks,
     },
   ],
   RA.traverse(E.Applicative)(parseDoc),
@@ -45,6 +47,6 @@ export const appIoTutorials = pipe(
     // eslint-disable-next-line functional/no-throw-statements
     throw e;
   }, RA.flatten),
-  // This is a workaround that removes the "index" space from tutorial docs
-  RA.filter(({ page: { path } }) => path !== `${appIO.path}/tutorial`)
+  // This is a workaround that removes the 'index' space from tutorial docs
+  RA.filter(({ page: { path } }) => path !== `${appIo.path}/tutorials`)
 );

@@ -74,6 +74,10 @@ export const GuideCard: FC<GuideCardProps> = ({
               flexDirection: 'column',
               flexGrow: 1,
               justifyContent: 'space-between',
+              padding: '40px',
+              '&:last-child': {
+                paddingBottom: '40px',
+              },
             }}
           >
             <Box>

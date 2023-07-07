@@ -1,8 +1,9 @@
-import { appIO } from './appIO';
+import { appIo } from './appIo';
 import { makeGuide } from '../makeDocs';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 const guidaTecnica = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Guida tecnica',
     slug: `io-guida-tecnica`,
@@ -29,10 +30,11 @@ const guidaTecnica = makeGuide({
       dirName: 'DOaGsRYKzkZYmIAbjNII',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const manualeDeiServizi = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: "Manuale dei servizi dell'app IO",
     slug: 'manuale-servizi',
@@ -43,10 +45,11 @@ const manualeDeiServizi = makeGuide({
       dirName: 'zcLztiq5qDSVw9rRjW7p',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const supportoAgliEnti = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Supporto agli enti',
     slug: 'supporto-agli-enti',
@@ -57,10 +60,11 @@ const supportoAgliEnti = makeGuide({
       dirName: 'rPr79NYJ4xbKA7EvgHxo',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const kitDiComunicazione = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Kit di comunicazione',
     slug: 'kit-comunicazione',
@@ -71,10 +75,11 @@ const kitDiComunicazione = makeGuide({
       dirName: 'SpNLdqKSqoCvaOneGN7K',
     },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 const cartaGiovani = makeGuide({
-  product: appIO,
+  product: appIo,
   guide: {
     name: 'Carta Giovani - Documentazione Tecnica Portale Operatori',
     slug: 'carta-giovani-nazionale',
@@ -86,6 +91,7 @@ const cartaGiovani = makeGuide({
     //   dirName: 'Vgh5yq561A3SOPVQrWes',
     // },
   ],
+  bannerLinks: appIoBannerLinks,
 });
 
 export const appIoGuides = [
