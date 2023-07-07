@@ -127,7 +127,7 @@ export const appIoOverview: OverviewData = {
       theme: 'light',
       title: 'Dicci cosa ne pensi',
       decoration: 'Feedback',
-      body: "Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio Github</strong> dell'app IO",
+      body: "Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio GitHub</strong> dell'app IO",
     },
   ],
 };
