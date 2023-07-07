@@ -44,7 +44,7 @@ export const appIoOverview: OverviewData = {
   postIntegration: {
     cta: {
       label: 'Vai al manuale dei servizi',
-      href: '/',
+      href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
     },
     subtitle:
       'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
