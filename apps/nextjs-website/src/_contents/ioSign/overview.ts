@@ -38,20 +38,22 @@ export const ioSignOverview: OverviewData = {
       },
     ],
   },
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: '6 semplici passi per inviare e ricevere un documento firmato digitalmente',
-      iconName: 'FlagOutlined',
-    },
-    {
-      title: 'Documentazione API',
-      text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
-      href: ioSign.subpaths.api?.path ?? '#',
-      iconName: 'FolderOutlined',
-    },
-  ],
+  startInfo: {
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: '6 semplici passi per inviare e ricevere un documento firmato digitalmente',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione API',
+        text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
+        href: ioSign.subpaths.api?.path ?? '#',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
   tutorials: {
     subtitle:
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',

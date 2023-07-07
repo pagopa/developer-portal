@@ -2,6 +2,7 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { appIo } from '@/_contents/appIo/appIo';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
+import { appIoGuideListsPath } from './guideListsPath';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
@@ -90,20 +91,27 @@ export const appIoOverview: OverviewData = {
       name: 'Leggi kit di comunicazione',
     },
   ],
-  startCards: [
-    {
-      title: 'Quick Start',
-      coomingSoon: true,
-      text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
-      iconName: 'FlagOutlined',
+  startInfo: {
+    cta: {
+      text: 'Scopri tutti i dettagli dell’integrazione',
+      label: 'Leggi la guida tecnica',
+      href: appIoGuideListsPath.path,
     },
-    {
-      title: 'Documentazione Api',
-      text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
-      href: '/',
-      iconName: 'FolderOutlined',
-    },
-  ],
+    cards: [
+      {
+        title: 'Quick Start',
+        coomingSoon: true,
+        text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa.',
+        iconName: 'FlagOutlined',
+      },
+      {
+        title: 'Documentazione Api',
+        text: "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO.",
+        href: '/',
+        iconName: 'FolderOutlined',
+      },
+    ],
+  },
   bannerLinks: [
     {
       theme: 'dark',

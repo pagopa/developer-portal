@@ -91,11 +91,6 @@ export const translations = {
   },
   overview: {
     startInfo: {
-      cta: {
-        text: 'Scopri tutti i dettagli dell’integrazione',
-        label: 'Leggi la guida tecnica',
-        href: '/',
-      },
       title: 'Si comincia da qui',
     },
     tutorial: {
