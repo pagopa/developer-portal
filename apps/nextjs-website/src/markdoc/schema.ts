@@ -6,7 +6,7 @@ export const details: Schema = {
   transform: (node, config) => {
     const attributes = node.transformAttributes(config);
     const children = node.transformChildren(config);
-    // TODO This is dangerous, use a better way
+    // TODO This is unsafe, find a safer solution
     const [head, ...rest] = children;
     return new Tag(`Expandable`, { ...attributes, title: head }, rest);
   },
@@ -31,6 +31,16 @@ export const file: Schema = {
       type: String,
       required: true,
     },
+  },
+  transform: (node, config) => {
+    // workaround to render unclosing file tag as self-closing without children
+    const isMissingClosing = node.errors.find(
+      ({ id }) => id === 'missing-closing'
+    );
+    const tag = new Tag('File', node.transformAttributes(config));
+    return !isMissingClosing
+      ? new Tag(tag.name, tag.attributes, node.transformChildren(config))
+      : [tag, ...node.transformChildren(config)];
   },
 };
 
