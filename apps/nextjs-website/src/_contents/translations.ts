@@ -18,6 +18,11 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
   },
+  pageNotFound: {
+    overline: '404',
+    title: 'Pagina non trovata',
+    description: 'La pagina che stai cercando non esiste',
+  },
   homepage: {
     news: {
       title: 'In evidenza',
