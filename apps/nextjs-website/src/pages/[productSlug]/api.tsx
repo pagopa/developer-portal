@@ -52,7 +52,7 @@ const ApisPage = ({
     product={product}
     path={path}
     bannerLinks={bannerLinks}
-    showBreadcrumbs={true}
+    showBreadcrumbs={false}
   >
     <ApiSection
       specURLs={specURLs}
