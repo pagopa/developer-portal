@@ -9,7 +9,7 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box, useTheme } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Tutorial } from '@/lib/types/tutorialData';
-import { Newsroom } from '@pagopa/pagopa-editorial-components';
+import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 
