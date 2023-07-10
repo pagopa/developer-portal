@@ -24,7 +24,7 @@ export default function Document() {
     <Html lang='en'>
       <Head>
         <meta name='robots' content='noindex,nofollow' />
-        {environment === 'production' && (
+        {environment === 'prod' && (
           <script
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: matomo }}
