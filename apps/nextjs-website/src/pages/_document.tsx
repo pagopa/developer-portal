@@ -30,6 +30,7 @@ export default function Document() {
             dangerouslySetInnerHTML={{ __html: matomo }}
           />
         )}
+        <link rel='icon' href='favicon.svg' />
       </Head>
       <body>
         <Main />
