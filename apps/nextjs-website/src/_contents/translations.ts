@@ -260,12 +260,6 @@ export const translations = {
             label: 'Piattaforma Digitale Nazionale Dati - Interoperabilità',
             linkType: 'external',
           },
-          {
-            ariaLabel: 'Vai al link: Self Care',
-            href: '#self-care',
-            label: 'Self Care',
-            linkType: 'internal',
-          },
         ],
       },
     },
