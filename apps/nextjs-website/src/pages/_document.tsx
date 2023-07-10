@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang='en'>
       <Head>
         <meta name='robots' content='noindex,nofollow' />
+        <link rel='icon' href='favicon.svg' />
       </Head>
       <body>
         <Main />
