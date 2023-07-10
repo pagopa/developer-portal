@@ -172,12 +172,6 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: PNRR',
-            href: '#pnrr',
-            label: 'PNRR',
-            linkType: 'internal',
-          },
-          {
             ariaLabel: 'Vai al link: Media',
             href: 'https://www.pagopa.it/it/media',
             label: 'Media',
@@ -262,15 +256,9 @@ export const translations = {
           {
             ariaLabel:
               'Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            href: '#piattaforma-digitale-nazionale-dati-interoperabilita',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/',
             label: 'Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            linkType: 'internal',
-          },
-          {
-            ariaLabel: 'Vai al link: Self Care',
-            href: '#self-care',
-            label: 'Self Care',
-            linkType: 'internal',
+            linkType: 'external',
           },
         ],
       },
