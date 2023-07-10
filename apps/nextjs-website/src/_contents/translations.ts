@@ -172,12 +172,6 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: PNRR',
-            href: '#pnrr',
-            label: 'PNRR',
-            linkType: 'internal',
-          },
-          {
             ariaLabel: 'Vai al link: Media',
             href: 'https://www.pagopa.it/it/media',
             label: 'Media',
