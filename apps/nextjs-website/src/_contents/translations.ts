@@ -256,9 +256,9 @@ export const translations = {
           {
             ariaLabel:
               'Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            href: '#piattaforma-digitale-nazionale-dati-interoperabilita',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/',
             label: 'Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            linkType: 'internal',
+            linkType: 'external',
           },
           {
             ariaLabel: 'Vai al link: Self Care',
