@@ -71,7 +71,7 @@ export const sendOverview: OverviewData = {
     cta: {
       label: 'Leggi il manuale operativo',
       text: "Scopri i dettagli dell'integrazione",
-      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0`,
+      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0.1`,
     },
     cards: [
       {
