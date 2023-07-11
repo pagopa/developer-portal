@@ -1,4 +1,7 @@
 // TODO: move to proper localization system
+import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
+import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
+
 export const translations = {
   header: {
     title: 'PagoPA',
@@ -15,6 +18,11 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
   },
+  pageNotFound: {
+    overline: '404',
+    title: 'Pagina non trovata',
+    description: 'La pagina che stai cercando non esiste',
+  },
   homepage: {
     news: {
       title: 'In evidenza',
@@ -25,17 +33,25 @@ export const translations = {
           dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai al validatore',
-            link: '#news-1',
+            link: `${sendGuideListsPath.path}/validatore/v1.0`,
             title: 'Vai al validatore',
+          },
+          image: {
+            url: '/images/homepage-validatore.png',
+            alt: 'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
           },
         },
         {
-          title: 'Scopri i nuovi tutorial interattivi di Firma con IO',
+          title: 'Scopri i nuovi tutorial di Firma con IO',
           dateString: '2023-06-29T22:15:53.780Z',
           href: {
-            label: 'Vai al tutorial',
-            link: '#news-2',
-            title: 'Vai al tutorial',
+            label: 'Vai ai tutorial',
+            link: `${ioSignTutorialListsPath.path}`,
+            title: 'Vai ai tutorial',
+          },
+          image: {
+            url: '/images/homepage-io-sign.png',
+            alt: 'Immagine: Scopri i nuovi tutorial di Firma con IO',
           },
         },
         {
@@ -46,6 +62,11 @@ export const translations = {
             label: 'Vai alla guida',
             link: '#news-3',
             title: 'Vai alla guida',
+          },
+          coomingSoon: true,
+          image: {
+            url: '/images/homepage-pago-pa.png',
+            alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
           },
         },
       ],
@@ -75,11 +96,11 @@ export const translations = {
       links: [
         {
           text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
-          href: '#homepage-doc-1',
+          href: 'https://www.interop.pagopa.it/',
         },
         {
           text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
-          href: '#homepage-doc-2',
+          href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
         },
       ],
     },
@@ -151,12 +172,6 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: PNRR',
-            href: '#pnrr',
-            label: 'PNRR',
-            linkType: 'internal',
-          },
-          {
             ariaLabel: 'Vai al link: Media',
             href: 'https://www.pagopa.it/it/media',
             label: 'Media',
@@ -175,39 +190,14 @@ export const translations = {
         links: [
           {
             ariaLabel: 'Vai al link: Informativa Privacy',
-            href: 'https://www.pagopa.it/it/privacy-policy-assistenza',
+            href: '/privacy-policy',
             label: 'Informativa Privacy',
-            linkType: 'external',
+            linkType: 'internal',
           },
           {
             ariaLabel: 'Vai al link: Termini e Condizioni',
-            href: 'https://www.pagopa.it/it/termini-e-condizioni-di-utilizzo-del-sito',
+            href: '/terms-of-service',
             label: 'Termini e Condizioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Certificazioni',
-            href: 'https://www.pagopa.it/static/e1979a4c34b4756ec4e8ff9fe115b92a/Certificazine_ISO27001.pdf',
-            label: 'Certificazioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Sicurezza delle informazioni',
-            href: 'https://www.pagopa.it/static/781646994f1f8ddad2d95af3aaedac3d/Sicurezza-delle-informazioni_PagoPA-S.p.A..pdf',
-            label: 'Sicurezza delle informazioni',
-            linkType: 'external',
-          },
-          {
-            ariaLabel:
-              'Vai al link: Diritto alla protezione dei dati personali',
-            href: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
-            label: 'Diritto alla protezione dei dati personali',
-            linkType: 'external',
-          },
-          {
-            ariaLabel: 'Vai al link: Preferenze Cookie',
-            href: '#preferenze-cookie',
-            label: 'Preferenze Cookie',
             linkType: 'internal',
           },
           {
@@ -266,15 +256,9 @@ export const translations = {
           {
             ariaLabel:
               'Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            href: '#piattaforma-digitale-nazionale-dati-interoperabilita',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/',
             label: 'Piattaforma Digitale Nazionale Dati - Interoperabilità',
-            linkType: 'internal',
-          },
-          {
-            ariaLabel: 'Vai al link: Self Care',
-            href: '#self-care',
-            label: 'Self Care',
-            linkType: 'internal',
+            linkType: 'external',
           },
         ],
       },

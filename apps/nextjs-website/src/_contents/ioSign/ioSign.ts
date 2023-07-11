@@ -9,7 +9,7 @@ export const ioSign: Product = {
   path: '/io-sign',
   description:
     'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
-  svgPath: '/icons/AppIO.svg',
+  svgPath: '/icons/appIo.svg',
   subpaths: {
     overview: ioSignOverviewPath,
     api: ioSignApiPath,
