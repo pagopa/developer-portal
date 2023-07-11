@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -16,6 +18,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 export type ApiPageProps = {
   readonly product: Product;
+  readonly specURLsName?: string;
   readonly specURLs: {
     name?: string;
     url: string;
@@ -29,7 +32,12 @@ export type ApiPageProps = {
   };
 };
 
-const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
+const ApiSection = ({
+  product,
+  specURLs,
+  specURLsName,
+  soapDocumentation,
+}: ApiPageProps) => {
   const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
@@ -45,15 +53,24 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
 
   return (
     <>
-      {specURLs.length > 1 && (
-        <Stack sx={styles.selectContainer}>
-          <Stack width={400}>
+      {specURLs.length > 1 && specURLsName && (
+        <Stack
+          sx={styles.selectContainer}
+          direction='row'
+          justifyContent='flex-end'
+          alignContent='center'
+        >
+          <FormControl size='medium' sx={styles.formControl}>
+            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
             <Select
+              labelId='select-api-label'
               value={selectedItemURL}
               onChange={handleChange}
               size='small'
-              variant='outlined'
               sx={styles.select}
+              id='select-api'
+              variant='outlined'
+              label={specURLsName}
             >
               {specURLs.map((item, index) => (
                 <MenuItem value={item.url} key={index}>
@@ -61,7 +78,7 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
                 </MenuItem>
               ))}
             </Select>
-          </Stack>
+          </FormControl>
         </Stack>
       )}
       {soapDocumentation && (

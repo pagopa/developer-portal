@@ -1,20 +1,26 @@
 export const styles = {
+  formControl: {
+    alignSelf: 'center',
+    '& .MuiFormLabel-root': {
+      color: 'white !important', // TODO: find a way to override this
+      marginTop: '7px',
+      marginLeft: '8px',
+    },
+  },
   select: {
     color: 'white',
-    border: '1px solid white',
     margin: 1,
-    '&:before': {
-      borderColor: 'white',
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white !important', // TODO: find a way to override this
     },
-    '&:after': {
-      borderColor: 'white',
-    },
-    '&:not(.Mui-disabled):hover::before': {
-      borderColor: 'white',
+
+    '& .MuiSelect-icon': {
+      color: 'white',
     },
   },
   selectContainer: {
-    background: '#0D1018',
+    background: '#0062C3',
+    height: 72,
   },
   soapContainer: {
     background: '#0062C3',
