@@ -53,7 +53,7 @@ const GuidesPage = ({
       products={products}
       product={product}
       path={path}
-      showBreadcrumbs={false}
+      showBreadcrumbs={true}
       bannerLinks={bannerLinks}
     >
       {abstract && (

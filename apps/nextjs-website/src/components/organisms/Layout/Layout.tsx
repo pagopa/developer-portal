@@ -7,6 +7,7 @@ import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/compon
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { Path } from '@/lib/types/path';
 
 export type LayoutProps = {
   readonly products: Product[];
@@ -14,6 +15,7 @@ export type LayoutProps = {
   readonly path?: string;
   readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
+  readonly additionalBreadcrumbsPaths?: readonly Path[];
 };
 
 type LayoutPropsWithChildren = {
@@ -27,6 +29,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   bannerLinks,
   children,
   showBreadcrumbs = false,
+  additionalBreadcrumbsPaths,
 }) => (
   <>
     <header>
@@ -34,7 +37,13 @@ const Layout: FC<LayoutPropsWithChildren> = ({
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
         <ProductBreadcrumbs
-          breadcrumbs={[...productPageToBreadcrumbs(product, path)]}
+          breadcrumbs={[
+            ...productPageToBreadcrumbs(
+              product,
+              path,
+              additionalBreadcrumbsPaths
+            ),
+          ]}
         />
       )}
     </header>
