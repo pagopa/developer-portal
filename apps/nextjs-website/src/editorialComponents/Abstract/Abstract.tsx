@@ -68,11 +68,14 @@ export const Abstract: React.FC<AbstractProps> = ({
   return (
     <EContainer
       background={!background ? backgroundColor : BackgroundImage}
-      sx={containerStyle || { height: { lg: spacing(66) } }}
+      sx={containerStyle}
     >
       <Stack
         sx={
-          stackStyle || { paddingY: spacing(10), paddingX: { sm: spacing(2) } }
+          stackStyle || {
+            paddingY: { xs: spacing(5), md: spacing(10) },
+            paddingX: { xs: spacing(2), md: 0 },
+          }
         }
         width='100%'
         justifyContent='center'
