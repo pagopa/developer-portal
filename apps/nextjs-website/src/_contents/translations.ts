@@ -1,6 +1,7 @@
 // TODO: move to proper localization system
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
+import { quickStartGuides } from '@/_contents/products';
 
 export const translations = {
   header: {
@@ -103,6 +104,12 @@ export const translations = {
           href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
         },
       ],
+    },
+  },
+  quickStartGuide: {
+    content: {
+      next: 'Prossimo contenuto',
+      previous: 'Contenuto precedente',
     },
   },
   overview: {

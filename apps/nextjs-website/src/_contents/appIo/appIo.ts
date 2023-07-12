@@ -1,7 +1,8 @@
 import { Product } from '@/lib/types/product';
-import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoApiPath } from '@/_contents/appIo/apiPath';
 import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
+import { appIoQuickStartGuidePath } from '@/_contents/appIo/quickStartGuidePath';
 import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
 
 export const appIo: Product = {
@@ -12,6 +13,7 @@ export const appIo: Product = {
   path: '/app-io',
   subpaths: {
     overview: appIoOverviewPath,
+    quickStart: appIoQuickStartGuidePath,
     api: appIoApiPath,
     tutorials: appIoTutorialListsPath,
     guides: appIOGuideListsPath,
