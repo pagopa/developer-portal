@@ -46,7 +46,7 @@ const GuidesPage = ({
   product,
   products,
 }: GuidesPageProps) => {
-  const { palette, spacing } = useTheme();
+  const { palette } = useTheme();
 
   return (
     <Layout
