@@ -1,14 +1,12 @@
 import { ButtonNaked } from '@pagopa/mui-italia/dist/components/ButtonNaked';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { ReactNode } from 'react';
+import { convertAssetsPath } from '../helpers';
 
 export type FileProps = {
   src: string;
   children: ReactNode;
 };
-
-export const convertAssetsPath = (assetsPrefix: string, src: string) =>
-  src.replace('../', `${assetsPrefix}/`);
 
 const File = (assetsPrefix: string) =>
   Object.assign(

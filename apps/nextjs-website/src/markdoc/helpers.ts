@@ -1,3 +1,9 @@
+export const convertAssetsPath = (assetsPrefix: string, src: string) =>
+  src.replace(
+    new RegExp('^.*(.gitbook/assets/)'),
+    `${assetsPrefix}/.gitbook/assets/`
+  );
+
 export const convertLink = (prefix: string, href: string) => {
   if (!href.startsWith('http')) {
     const updated = href.replace('README.md', '').replace('.md', '');
@@ -24,7 +30,7 @@ export const pairedHtmlTagCouple = (tag: string, innerTag: string) => ({
 });
 export const unpairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}(.*?)>`, 'g'),
-  replace: `{% ${tag}$1 %}`,
+  replace: `{% ${tag}$1 /%}`,
 });
 
 export function removeEmojis(text: string): string {

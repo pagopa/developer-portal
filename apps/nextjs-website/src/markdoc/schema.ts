@@ -83,6 +83,29 @@ export const summary: Schema = {
   render: 'string',
 };
 
+export const figure: Schema = {
+  render: 'Figure',
+  children: ['img', 'figcaption'],
+};
+
+export const figcaption: Schema = {
+  render: 'Figcaption',
+};
+
+export const img: Schema = {
+  render: 'Img',
+  attributes: {
+    src: {
+      type: String,
+      required: true,
+    },
+    alt: {
+      type: String,
+      required: false,
+    },
+  },
+};
+
 // nodes override
 
 const document: Schema = { ...Markdoc.nodes.document, render: 'Document' };
@@ -132,7 +155,17 @@ const text: Schema = {
 
 // config
 export const config: ConfigType = {
-  tags: { hint, file, embed, details, summary, 'content-ref': pageLink },
+  tags: {
+    hint,
+    file,
+    embed,
+    details,
+    summary,
+    'content-ref': pageLink,
+    figure,
+    figcaption,
+    img,
+  },
   nodes: {
     document,
     heading,

@@ -1,9 +1,12 @@
 import Document from './components/Document';
 import Embed from './components/Embed';
 import Expandable from './components/Expandable';
+import Figcaption from './components/Figcaption';
+import Figure from './components/Figure';
 import File from './components/File';
 import Heading from './components/Heading';
 import Hint from './components/Hint';
+import Img from './components/Img';
 import Item from './components/Item';
 import Link from './components/Link';
 import PageLink from './components/PageLink';
@@ -36,6 +39,9 @@ export const components = (
     PageLink: PageLink(linkPrefix),
     Paragraph: Paragraph,
     Strong: Strong,
+    Figure: Figure,
+    Figcaption: Figcaption,
+    Img: Img(assetsPrefix),
   };
 
   return isSummary
