@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<GuidesPageProps, Params> = ({
 }): GetStaticPropsResult<GuidesPageProps> => {
   const props = getGuideLists(params?.productSlug);
   if (props) {
-    return { props: { ...props, products: getProducts().concat() } };
+    return { props: { ...props, products: [...getProducts()] } };
   } else {
     return { notFound: true as const };
   }
