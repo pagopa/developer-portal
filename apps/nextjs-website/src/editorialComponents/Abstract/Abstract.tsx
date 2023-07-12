@@ -74,7 +74,7 @@ export const Abstract: React.FC<AbstractProps> = ({
         sx={
           stackStyle || {
             paddingY: { xs: spacing(5), md: spacing(10) },
-            paddingX: { xs: spacing(2), md: 0 },
+            paddingX: 0,
           }
         }
         width='100%'
