@@ -10,11 +10,14 @@ curl -L "https://github.com/pagopa/devportal-docs/archive/$hash.zip" > ./.tmp/do
 # unzip the contents
 unzip -o -q -d ./.tmp ./.tmp/docs.zip
 
+# remove old docs if any
+rm -r ./docs
+
 # move files
 mv ./.tmp/devportal-docs-$hash*/docs .
 
 # cleanup
-rm -rf ./tmp
+rm -r ./tmp
 
 # copy all gitbook assets to public assets of nextjs-website
 dest='public/gitbook/'
