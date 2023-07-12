@@ -4,6 +4,7 @@ import { Product } from '@/lib/types/product';
 import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
+import { pathToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 type Params = {
   productSlug: string;
@@ -55,7 +56,8 @@ const Page = (props: ProductTutorialPageProps) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs={false}
+      showBreadcrumbs={true}
+      additionalBreadcrumbsPaths={pathToBreadcrumbs(props.path)}
     >
       <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
         {renderGitBookMarkdown(

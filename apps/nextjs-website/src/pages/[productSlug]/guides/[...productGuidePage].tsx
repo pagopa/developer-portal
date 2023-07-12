@@ -68,14 +68,14 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
   const { shared } = translations;
-
   return (
     <Layout
       products={props.products}
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs={false}
+      showBreadcrumbs={true}
+      additionalBreadcrumbsPaths={[props.guide]}
     >
       <Box
         sx={{
