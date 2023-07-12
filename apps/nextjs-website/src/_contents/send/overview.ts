@@ -3,6 +3,7 @@ import { send } from '@/_contents/send/send';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
+import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -113,12 +114,5 @@ export const sendOverview: OverviewData = {
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],
-  bannerLinks: [
-    {
-      theme: 'dark',
-      title: 'Hai bisogno di aiuto?',
-      decoration: 'HeadsetMic',
-      body: 'Scrivi un’e-mail in cui descrivi il tuo problema o dubbio all’indirizzo <strong>pn-supporto-enti@pagopa.it</strong>',
-    },
-  ],
+  bannerLinks: sendBannerLinks,
 };
