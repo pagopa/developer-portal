@@ -2,6 +2,7 @@ import { QuickStartGuideData } from '@/lib/types/quickStartGuideData';
 import { appIo } from '@/_contents/appIo/appIo';
 import { appIoQuickStartGuidePath } from '@/_contents/appIo/quickStartGuidePath';
 import { ComponentType } from '@/lib/enums/componentType';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoQuickStartGuide: QuickStartGuideData = {
   ...appIoQuickStartGuidePath,
@@ -51,18 +52,5 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
       ],
     },
   ],
-  bannerLinks: [
-    {
-      theme: 'dark',
-      title: 'Hai bisogno di aiuto?',
-      decoration: 'HeadsetMic',
-      body: "Scrivi un'email in cui descrivi il tuo problema o dubbio all'indirizzo <strong>onboarding@io.italia.it</strong>",
-    },
-    {
-      theme: 'light',
-      title: 'Dicci cosa ne pensi',
-      decoration: 'Feedback',
-      body: 'Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio GitHub</strong> dellapp IO',
-    },
-  ],
+  bannerLinks: appIoBannerLinks,
 };
