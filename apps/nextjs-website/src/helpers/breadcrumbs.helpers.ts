@@ -23,3 +23,18 @@ export function productPageToBreadcrumbs(
     ...(paths || []),
   ];
 }
+
+export function pathToBreadcrumbs(path: string): readonly Path[] {
+  const slugs = path.split('/');
+  if (slugs.length < 4) {
+    return [];
+  }
+
+  const name = slugs[slugs.length - 1].replaceAll('-', ' ');
+  return [
+    {
+      name,
+      path: path,
+    },
+  ];
+}
