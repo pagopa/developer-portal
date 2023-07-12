@@ -6,6 +6,7 @@ import {
   guides,
   tutorials,
   tutorialLists,
+  quickStartGuides,
 } from '@/_contents/products';
 import { Product } from './types/product';
 
@@ -47,6 +48,16 @@ export function getOverviewPaths(): readonly string[] {
 
 export function getProducts(): readonly Product[] {
   return products;
+}
+
+export function getQuickStartGuide(productSlug?: string) {
+  return quickStartGuides.find(
+    (overviewData) => overviewData.product.path === `/${productSlug}`
+  );
+}
+
+export function getQuickStartGuidePaths(): readonly string[] {
+  return quickStartGuides.map((overview) => overview.path);
 }
 
 export function getTutorial(path?: string) {
