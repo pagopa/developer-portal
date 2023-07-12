@@ -6,7 +6,7 @@ import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 export const sendApi: ApiData = {
   ...sendApiPath,
   product: send,
-  specURLsName: 'Documentazione API di Send',
+  specURLsName: 'Documentazione API di SEND',
   specURLs: [
     {
       name: 'API B2B per le Pubbliche Amministrazioni',
