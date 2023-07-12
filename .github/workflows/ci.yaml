@@ -43,4 +43,5 @@ jobs:
         shell: bash
         env:
           PATH_TO_GITBOOK_DOCS: ${{ github.workspace }}/apps/nextjs-website/docs
+          NEXT_TELEMETRY_DISABLED: "1"
         run: npm run build -w nextjs-website
