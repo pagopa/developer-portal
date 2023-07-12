@@ -41,6 +41,9 @@ function Tab({ id, children }: TabProps) {
       sx={{
         backgroundColor: isActive ? '#e6eef9' : 'transparent',
         borderRight: isActive ? '2px solid #0062C3' : 'none',
+        '& > div > span': {
+          color: isActive ? '#0062C3' : '#17324D',
+        },
         cursor: 'pointer',
       }}
     >
