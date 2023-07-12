@@ -1,25 +1,33 @@
 import { environment } from '@/config';
 import { Html, Head, Main, NextScript } from 'next/document';
 
-export default function Document() {
-  const matomo = `
-  var _paq = (window._paq = window._paq || []);
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(["trackPageView"]);
-  _paq.push(["enableLinkTracking"]);
-  (function () {
-    var u = "https://pagopa.matomo.cloud/";
-    _paq.push(["setTrackerUrl", u + "matomo.php"]);
-    _paq.push(["setSiteId", "8"]);
-    var d = document,
-      g = d.createElement("script"),
-      s = d.getElementsByTagName("script")[0];
-    g.async = true;
-    g.src = "//cdn.matomo.cloud/pagopa.matomo.cloud/matomo.js";
-    s.parentNode.insertBefore(g, s);
-  })();
-  `;
+const COOKIE_SCRIPT = `
+  <!-- Inizio informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
+  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="a8c87faf-1769-4c95-a2e5-a6fff26eadab" ></script>
+  <script type="text/javascript">
+  function OptanonWrapper() { }
+  </script>
+  <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
+`;
 
+const MATOMO_SCRIPT = `
+var _paq = (window._paq = window._paq || []);
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(["trackPageView"]);
+_paq.push(["enableLinkTracking"]);
+(function () {
+  var u = "https://pagopa.matomo.cloud/";
+  _paq.push(["setTrackerUrl", u + "matomo.php"]);
+  _paq.push(["setSiteId", "8"]);
+  var d = document,
+    g = d.createElement("script"),
+    s = d.getElementsByTagName("script")[0];
+  g.async = true;
+  g.src = "//cdn.matomo.cloud/pagopa.matomo.cloud/matomo.js";
+  s.parentNode.insertBefore(g, s);
+})();
+`;
+export default function Document() {
   return (
     <Html lang='en'>
       <Head>
@@ -27,9 +35,10 @@ export default function Document() {
         {environment === 'prod' && (
           <script
             key='script-matomo'
-            dangerouslySetInnerHTML={{ __html: matomo }}
+            dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
+        <div dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }} />
         <link rel='icon' href='favicon.svg' />
       </Head>
       <body>
