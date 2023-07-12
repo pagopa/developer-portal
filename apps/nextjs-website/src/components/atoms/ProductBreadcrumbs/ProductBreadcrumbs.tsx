@@ -25,7 +25,10 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
         sx={{ display: { xs: 'none', md: 'block' } }}
         my={2}
       >
-        <Breadcrumbs sx={{ paddingTop: 2 }} aria-label='breadcrumb'>
+        <Breadcrumbs
+          sx={{ paddingTop: 2, textTransform: 'capitalize' }}
+          aria-label='breadcrumb'
+        >
           {breadcrumbs.map((breadcrumb, index) => {
             return index === breadcrumbs.length - 1 ? (
               <Typography key={index} fontSize={16} fontWeight={600}>
