@@ -10,6 +10,10 @@ const guidaTecnica = makeGuide({
   },
   versions: [
     {
+      version: 'v3.0',
+      dirName: 'KaAXw9uMBC5zBbJ5o8a6',
+    },
+    {
       version: 'v2.4',
       dirName: 'r65fve0XPThNw1ljBi57',
     },

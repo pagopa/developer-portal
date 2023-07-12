@@ -25,14 +25,13 @@ const manualeOperativo = makeGuide({
   },
   versions: [
     {
+      version: 'v1.0.1',
+      dirName: 'E1H8qAvYcaMYhDZ2iIp5',
+    },
+    {
       version: 'v1.0',
       dirName: 'oBwhR0C1TZjRAwNbGVus',
     },
-    // TODO: Uncomment once in sync
-    // {
-    //   version: 'v1.0.1',
-    //   dirName: 'E1H8qAvYcaMYhDZ2iIp5',
-    // },
   ],
   bannerLinks: sendBannerLinks,
 });
