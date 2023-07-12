@@ -45,6 +45,7 @@ runs:
       env:
         ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
+        NEXT_TELEMETRY_DISABLED: "1"
       shell: bash
       run: npm run build -w nextjs-website
 
