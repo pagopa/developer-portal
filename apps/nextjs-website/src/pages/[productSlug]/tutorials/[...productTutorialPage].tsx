@@ -3,8 +3,8 @@ import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
-import { Box } from '@mui/material';
 import { pathToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
 type Params = {
   productSlug: string;
@@ -59,13 +59,13 @@ const Page = (props: ProductTutorialPageProps) => {
       showBreadcrumbs={true}
       additionalBreadcrumbsPaths={pathToBreadcrumbs(props.path)}
     >
-      <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
+      <EContainer sx={{ paddingY: { xs: '40px', lg: '80px' } }}>
         {renderGitBookMarkdown(
           props.body,
           props.pathPrefix,
           props.assetsPrefix
         )}
-      </Box>
+      </EContainer>
     </Layout>
   );
 };

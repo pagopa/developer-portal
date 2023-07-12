@@ -26,7 +26,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
         my={2}
       >
         <Breadcrumbs
-          sx={{ paddingTop: 2, textTransform: 'capitalize' }}
+          sx={{ paddingTop: 2, textTransform: 'capitalize::first-letter' }}
           aria-label='breadcrumb'
         >
           {breadcrumbs.map((breadcrumb, index) => {
