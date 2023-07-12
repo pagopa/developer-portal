@@ -1,6 +1,6 @@
 // TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
