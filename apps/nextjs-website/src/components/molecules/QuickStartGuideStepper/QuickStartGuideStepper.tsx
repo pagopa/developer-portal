@@ -52,7 +52,6 @@ const QuickStartGuideStepper = ({
                   <Typography
                     component='span'
                     sx={{
-                      color: '#17324D',
                       fontSize: '18px',
                       fontWeight: 600,
                       overflow: 'hidden',
