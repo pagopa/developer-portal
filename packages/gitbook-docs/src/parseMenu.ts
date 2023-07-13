@@ -26,6 +26,19 @@ const list: Schema = {
   render: 'List',
 };
 
+const heading: Schema = {
+  transform: (node, config) => {
+    // skip headers of level 1
+    if (node.attributes['level'] !== 1)
+      return new Markdoc.Tag(
+        'Title',
+        node.transformAttributes(config),
+        node.transformChildren(config)
+      );
+    else return [];
+  },
+};
+
 const text: Schema = {
   attributes: {
     content: { type: String, required: true },
@@ -39,6 +52,7 @@ const schema: ConfigType = {
     document: {},
     paragraph: {},
     hr: {},
+    heading,
     list,
     item,
     link,

@@ -23,10 +23,15 @@ type ListProps = {
   children: ReactNode;
 };
 
+type TitleProps = {
+  children: ReactNode;
+};
+
 const components = {
   Link: ({ href, children }: LinkProps) => <a href={href}>{children}</a>,
   Item: ({ children }: ItemProps) => <li>{children}</li>,
   List: ({ children }: ListProps) => <ul>{children}</ul>,
+  Title: ({ children }: TitleProps) => <h2>{children}</h2>,
 };
 
 const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) => (
