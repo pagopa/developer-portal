@@ -49,13 +49,6 @@ runs:
       shell: bash
       run: npm run build -w nextjs-website
 
-    - name: Export static website
-      env:
-        ENVIRONMENT: ${{ inputs.environment }}
-        PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
-      shell: bash
-      run: npm run export -w nextjs-website
-
     - name: Configure AWS Credentials
       env:
         AWS_REGION: eu-south-1
