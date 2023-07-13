@@ -1,24 +1,8 @@
 import { productToMenuItems } from '../../helpers/productHeader.helper';
-import { Product } from '@/lib/types/product';
-
-const product: Product = {
-  name: 'test',
-  description: 'test',
-  svgPath: 'test',
-  path: '/path',
-  subpaths: {
-    overview: {
-      name: 'overview',
-      path: '/path/overview_path',
-    },
-    tutorials: {
-      name: 'tutorials',
-      path: '/path/tutorial_path',
-    },
-  },
-};
+import { mockProduct } from '../fixtures/mockProduct';
 
 it('should convert product to menu items', () => {
+  const product = mockProduct;
   const themeLight = 'light';
   const menuItems = productToMenuItems(
     product,

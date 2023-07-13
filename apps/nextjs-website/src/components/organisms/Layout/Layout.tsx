@@ -8,6 +8,7 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Path } from '@/lib/types/path';
+import { translations } from '@/_contents/translations';
 
 export type LayoutProps = {
   readonly products: Product[];
@@ -38,11 +39,12 @@ const Layout: FC<LayoutPropsWithChildren> = ({
       {product && showBreadcrumbs && (
         <ProductBreadcrumbs
           breadcrumbs={[
-            ...productPageToBreadcrumbs(
+            ...productPageToBreadcrumbs({
+              homepageTitle: translations.breadcrumbs.title,
               product,
               path,
-              additionalBreadcrumbsPaths
-            ),
+              paths: additionalBreadcrumbsPaths,
+            }),
           ]}
         />
       )}

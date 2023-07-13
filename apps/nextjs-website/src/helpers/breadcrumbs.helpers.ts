@@ -1,18 +1,19 @@
-import { translations } from '@/_contents/translations';
 import { Path } from '@/lib/types/path';
 import { Product } from '@/lib/types/product';
 
-export function productPageToBreadcrumbs(
-  product: Product,
-  path?: string,
-  paths?: readonly Path[]
-): readonly Path[] {
+export function productPageToBreadcrumbs(props: {
+  readonly homepageTitle: string;
+  readonly product: Product;
+  readonly path?: string;
+  readonly paths?: readonly Path[];
+}): readonly Path[] {
+  const { homepageTitle, product, path, paths } = props;
   const subpath = Object.entries(product.subpaths)
     .filter(([, subpath]) => path?.includes(subpath.path))
     .map(([, subpath]) => subpath);
   return [
     {
-      name: translations.breadcrumbs.title,
+      name: homepageTitle,
       path: '/',
     },
     {
@@ -25,7 +26,7 @@ export function productPageToBreadcrumbs(
 }
 
 export function pathToBreadcrumbs(path: string): readonly Path[] {
-  const slugs = path.split('/');
+  const slugs = path.split('/').filter(Boolean);
   if (slugs.length < 4) {
     return [];
   }
