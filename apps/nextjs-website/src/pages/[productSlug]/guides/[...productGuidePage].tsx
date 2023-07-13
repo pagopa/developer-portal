@@ -9,7 +9,6 @@ import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
-import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 
 type Params = {
   productSlug: string;
