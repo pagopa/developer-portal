@@ -55,7 +55,15 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
         {
           componentType: ComponentType.codeBlock,
           props: {
-            code: 'Code snippet: POST /api/v1/sign/dossiers',
+            code:
+              'const user = {\n' +
+              '  firstName: "Angela",\n' +
+              '  lastName: "Davis",\n' +
+              '  role: "Professor",\n' +
+              '}\n' +
+              ' \n' +
+              'console.log(user.name)',
+            language: 'typescript',
           },
         },
         {

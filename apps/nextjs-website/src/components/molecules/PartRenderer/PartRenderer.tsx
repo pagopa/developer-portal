@@ -7,6 +7,9 @@ import TypographyPart, {
 import InnerHtmlPart, {
   InnerHtmlPartProps,
 } from '@/components/atoms/InnerHtmlPart/InnerHtmlPart';
+import CodeBlockPart, {
+  CodeBlockPartProps,
+} from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 
 type PartRendererProps = {
   part: Part;
@@ -15,7 +18,7 @@ type PartRendererProps = {
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.componentType) {
     case ComponentType.codeBlock:
-      return <div>{JSON.stringify(part.props)}</div>;
+      return <CodeBlockPart {...(part.props as CodeBlockPartProps)} />;
     case ComponentType.innerHTML:
       return <InnerHtmlPart html={(part.props as InnerHtmlPartProps).html} />;
     case ComponentType.typography:
