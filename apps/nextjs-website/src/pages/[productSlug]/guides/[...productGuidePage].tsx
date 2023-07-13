@@ -9,6 +9,7 @@ import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
+import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 
 type Params = {
   productSlug: string;
@@ -134,12 +135,11 @@ const Page = (props: ProductGuidePageProps) => {
               margin: '32px 0 0 0',
             }}
           >
-            {renderGitBookMarkdown(
-              props.menu,
-              props.pathPrefix,
-              props.assetsPrefix,
-              true
-            )}
+            <GuideMenu
+              menu={props.menu}
+              assetsPrefix={props.assetsPrefix}
+              linkPrefix={props.pathPrefix}
+            />
           </Box>
         </Box>
         <Box sx={{ padding: { xs: '80px 40px', lg: '80px 438px 80px 40px' } }}>
