@@ -33,8 +33,23 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
         {
           componentType: ComponentType.innerHTML,
           props: {
-            innerHtml:
-              'Codice HTML come un iframe o come questo: Crea un <strong>Dossier</strong> (ovvero un template per la creazione della richiesta di firma) e invia la chiamata a...',
+            html: 'Codice HTML come un iframe o come questo: Crea un <strong>Dossier</strong> (ovvero un template per la creazione della richiesta di firma) e invia la chiamata a...',
+          },
+        },
+        {
+          componentType: ComponentType.innerHTML,
+          props: {
+            html:
+              '<div style="position: relative; padding-bottom: calc(79.25311203319502% + 41px); height: 0; width: 100%">\n' +
+              '  <iframe src="https://demo.arcade.software/hWcAEDgFao55XEhXvIJN?embed"\n' +
+              '          frameBorder="0" loading="lazy"\n' +
+              '          webkitallowfullscreen\n' +
+              '          mozallowfullscreen\n' +
+              '          allowFullScreen\n' +
+              '          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;color-scheme: light;"\n' +
+              '          title="PagoPA Piattaforma Self Care – App IO">\n' +
+              '  </iframe>\n' +
+              '</div>',
           },
         },
         {
