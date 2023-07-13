@@ -7,6 +7,24 @@ const config = {
 };
 
 describe('parseMenu', () => {
+  it('should fill the isLeaf attribute without error', () => {
+    expect(parseMenu('* Page', config)).toStrictEqual([
+      new Markdoc.Tag('List', {}, [
+        new Markdoc.Tag('Item', { isLeaf: true }, ['Page']),
+      ]),
+    ]);
+    expect(parseMenu('* Page\n    * Child', config)).toStrictEqual([
+      new Markdoc.Tag('List', {}, [
+        new Markdoc.Tag('Item', { isLeaf: false }, [
+          'Page',
+          new Markdoc.Tag('List', {}, [
+            new Markdoc.Tag('Item', { isLeaf: true }, ['Child']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
   it('should append linkPrefix to links', () => {
     expect(parseMenu('[🏠 Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Link', { href: `${config.linkPrefix}/` }, ['🏠 Guida']),

@@ -18,8 +18,18 @@ const link: Schema = {
   },
 };
 
-const item = {
+const item: Schema = {
   render: 'Item',
+  transform: (node, config) => {
+    // track if the node has nested list or not
+    const isLeaf = node.children.length === 1;
+    const attrs = node.transformAttributes(config);
+    return new Markdoc.Tag(
+      'Item',
+      { ...attrs, isLeaf },
+      node.transformChildren(config)
+    );
+  },
 };
 
 const list: Schema = {

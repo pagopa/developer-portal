@@ -16,6 +16,7 @@ type LinkProps = {
 };
 
 type ItemProps = {
+  isLeaf: boolean;
   children: ReactNode;
 };
 
@@ -29,7 +30,9 @@ type TitleProps = {
 
 const components = {
   Link: ({ href, children }: LinkProps) => <a href={href}>{children}</a>,
-  Item: ({ children }: ItemProps) => <li>{children}</li>,
+  Item: ({ isLeaf, children }: ItemProps) => (
+    <li className={isLeaf ? 'leaf' : 'node'}>{children}</li>
+  ),
   List: ({ children }: ListProps) => <ul>{children}</ul>,
   Title: ({ children }: TitleProps) => <h2>{children}</h2>,
 };
