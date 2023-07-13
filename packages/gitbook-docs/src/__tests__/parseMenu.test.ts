@@ -25,19 +25,23 @@ describe('parseMenu', () => {
     ]);
   });
 
+  it('should remove invalid characters from Link', () => {
+    expect(parseMenu('[🏠  G e C](README.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/` }, ['G e C']),
+    ]);
+  });
+
   it('should append linkPrefix to links', () => {
-    expect(parseMenu('[🏠 Guida](README.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/` }, ['🏠 Guida']),
+    expect(parseMenu('[Guida](README.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/` }, ['Guida']),
     ]);
-    expect(parseMenu('[🕗 Changelog](changelog.md)', config)).toStrictEqual([
+    expect(parseMenu('[Changelog](changelog.md)', config)).toStrictEqual([
       new Markdoc.Tag('Link', { href: `${config.linkPrefix}/changelog` }, [
-        '🕗 Changelog',
+        'Changelog',
       ]),
     ]);
-    expect(parseMenu('[🔢 Setup](p-e/README.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/p-e` }, [
-        '🔢 Setup',
-      ]),
+    expect(parseMenu('[Setup](p-e/README.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/p-e` }, ['Setup']),
     ]);
     expect(parseMenu('[Adesione](s-i/a-t.md)', config)).toStrictEqual([
       new Markdoc.Tag('Link', { href: `${config.linkPrefix}/s-i/a-t` }, [

@@ -53,8 +53,12 @@ const text: Schema = {
   attributes: {
     content: { type: String, required: true },
   },
-  // remove emoji
-  transform: (node) => node.attributes.content,
+  transform: (node) => {
+    // remove invalid characters
+    return node.attributes.content
+      .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
+      .replace(/^\s*/, '');
+  },
 };
 
 const schema: ConfigType = {
