@@ -9,7 +9,7 @@ type GuideMenuProps = {
   menu: string;
 };
 
-type AProps = {
+type LinkProps = {
   href: string;
   title?: string;
   children: ReactNode;
@@ -24,7 +24,7 @@ type ListProps = {
 };
 
 const components = {
-  Link: ({ href, children }: AProps) => <a href={href}>{children}</a>,
+  Link: ({ href, children }: LinkProps) => <a href={href}>{children}</a>,
   Item: ({ children }: ItemProps) => <li>{children}</li>,
   List: ({ children }: ListProps) => <ul>{children}</ul>,
 };
