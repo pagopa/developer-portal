@@ -135,11 +135,12 @@ const Page = (props: ProductGuidePageProps) => {
               margin: '32px 0 0 0',
             }}
           >
-            <GuideMenu
-              menu={props.menu}
-              assetsPrefix={props.assetsPrefix}
-              linkPrefix={props.pathPrefix}
-            />
+            {renderGitBookMarkdown(
+              props.menu,
+              props.pathPrefix,
+              props.assetsPrefix,
+              true
+            )}
           </Box>
         </Box>
         <Box sx={{ padding: { xs: '80px 40px', lg: '80px 438px 80px 40px' } }}>
