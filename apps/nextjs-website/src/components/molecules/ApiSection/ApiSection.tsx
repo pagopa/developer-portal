@@ -12,6 +12,7 @@ import { Product } from '@/lib/types/product';
 import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -89,7 +90,9 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
               aria-label={soapDocumentation.buttonLabel}
               href={soapDocumentation.url}
               title={soapDocumentation.buttonLabel}
-              endIcon={soapDocumentation.icon}
+              endIcon={
+                <IconWrapper icon={soapDocumentation.icon} color={textColor} />
+              }
             >
               {soapDocumentation.buttonLabel}
             </ButtonNaked>
