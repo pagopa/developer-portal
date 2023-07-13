@@ -1,6 +1,5 @@
 import Markdoc from '@markdoc/markdoc';
 import { parseMenu } from 'gitbook-docs/parseMenu';
-
 import React, { ReactNode } from 'react';
 
 type GuideMenuProps = {
