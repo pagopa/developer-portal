@@ -8,15 +8,6 @@ on:
       - 'main' # Target branch is main
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
       environment:
         description: 'The environment used as target'
         type: choice
@@ -34,10 +25,15 @@ permissions:
 jobs:
 
   cd_deploy:
-    name: Deploy to S3 - (dev)
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true # Trigger when the PR is merged
+    name: Deploy to S3
+    # Trigger when the PR is merged
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
-    environment: 'dev'
+    strategy:
+      matrix:
+        environment: [ 'dev', 'prod' ]
+
+    environment: ${{ matrix.environment }}
 
     steps:
       - name: Checkout
@@ -46,7 +42,7 @@ jobs:
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
-          environment: 'dev'
+          environment: ${{ matrix.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
