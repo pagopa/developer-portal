@@ -1,21 +1,10 @@
 import { Part } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
-import { ComponentType } from '@/lib/enums/componentType';
-import TypographyPart, {
-  TypographyPartProps,
-} from '@/components/atoms/TypographyPart/TypographyPart';
-import InnerHtmlPart, {
-  InnerHtmlPartProps,
-} from '@/components/atoms/InnerHtmlPart/InnerHtmlPart';
-import CodeBlockPart, {
-  CodeBlockPartProps,
-} from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import AlertPart, {
-  AlertPartProps,
-} from '@/components/atoms/AlertPart/AlertPart';
-import ApiTesterPart, {
-  ApiTesterPartProps,
-} from '@/components/organisms/ApiTesterPart/ApiTesterPart';
+import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
+import InnerHtmlPart from '@/components/atoms/InnerHtmlPart/InnerHtmlPart';
+import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
+import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 
 type PartRendererProps = {
   part: Part;
@@ -23,16 +12,16 @@ type PartRendererProps = {
 
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.componentType) {
-    case ComponentType.alert:
-      return <AlertPart {...(part.props as AlertPartProps)} />;
-    case ComponentType.apiTester:
-      return <ApiTesterPart {...(part.props as ApiTesterPartProps)} />;
-    case ComponentType.codeBlock:
-      return <CodeBlockPart {...(part.props as CodeBlockPartProps)} />;
-    case ComponentType.innerHTML:
-      return <InnerHtmlPart html={(part.props as InnerHtmlPartProps).html} />;
-    case ComponentType.typography:
-      return <TypographyPart {...(part.props as TypographyPartProps)} />;
+    case 'alert':
+      return <AlertPart {...part} />;
+    case 'apiTester':
+      return <ApiTesterPart {...part} />;
+    case 'codeBlock':
+      return <CodeBlockPart {...part} />;
+    case 'innerHTML':
+      return <InnerHtmlPart html={part.html} />;
+    case 'typography':
+      return <TypographyPart {...part} />;
     default:
       return null;
   }
