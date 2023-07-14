@@ -59,11 +59,13 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
           <Button
             onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
           >
-            <IconWrapper
-              color={'#0073E6'}
-              size={26}
-              icon={quickStartGuide.content.apiPhases.response.cta.icon}
-            />
+            <Box sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}>
+              <IconWrapper
+                color={'#0073E6'}
+                size={20}
+                icon={quickStartGuide.content.apiPhases.response.cta.icon}
+              />
+            </Box>
             {quickStartGuide.content.apiPhases.response.cta.label}
           </Button>
         )}
