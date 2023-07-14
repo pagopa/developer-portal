@@ -8,9 +8,9 @@ import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustom
 export type CodeBlockPartProps = {
   code: string;
   language: string;
-  mode: 'light' | 'dark';
-  showLineNumbers: boolean;
-  wrapLines: boolean;
+  mode?: 'light' | 'dark';
+  showLineNumbers?: boolean;
+  wrapLines?: boolean;
 };
 
 const CodeBlockPart = ({
