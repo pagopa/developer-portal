@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ContentCopy } from '@mui/icons-material';
 import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCustomStyle';
 import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustomStyle';
+import styles from './CodeBlockPart.module.css';
 
 export type CodeBlockPartProps = {
   code: string;
@@ -29,16 +30,14 @@ const CodeBlockPart = ({
     <Box
       className={'container'}
       sx={{
-        borderRadius: {
-          xs: '0 0 0.375rem 0.375rem',
-          md: '0 0.375rem 0.375rem 0',
-        },
+        borderRadius: '0.375rem',
         display: isLightMode ? 'block' : 'flex',
         marginBottom: isLightMode ? spacing(5) : 0,
         position: 'relative',
       }}
     >
       <SyntaxHighlighter
+        className={styles.SyntaxHighlighter}
         language={language}
         lineNumberStyle={{ fontWeight: 700 }}
         showLineNumbers={showLineNumbers}
