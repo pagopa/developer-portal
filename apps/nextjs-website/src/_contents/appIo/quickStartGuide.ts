@@ -27,7 +27,6 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
         {
           componentType: ComponentType.alert,
           props: {
-            alertStyle: 'warning',
             severity: 'info',
             text: 'Testo del warning',
             title: 'Titolo del warning',
