@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ContentCopy } from '@mui/icons-material';
 import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCustomStyle';
@@ -10,6 +10,7 @@ export type CodeBlockPartProps = {
   language: string;
   mode?: 'light' | 'dark';
   showLineNumbers?: boolean;
+  title?: string;
   wrapLines?: boolean;
 };
 
@@ -18,6 +19,7 @@ const CodeBlockPart = ({
   language,
   mode = 'light',
   showLineNumbers = false,
+  title,
   wrapLines = true,
 }: CodeBlockPartProps) => {
   const { spacing } = useTheme();
@@ -26,7 +28,15 @@ const CodeBlockPart = ({
   return (
     <Box
       className={'container'}
-      sx={{ position: 'relative', marginBottom: spacing(5) }}
+      sx={{
+        borderRadius: {
+          xs: '0 0 0.375rem 0.375rem',
+          md: '0 0.375rem 0.375rem 0',
+        },
+        display: 'flex',
+        marginBottom: isLightMode ? spacing(5) : 0,
+        position: 'relative',
+      }}
     >
       <SyntaxHighlighter
         language={language}
@@ -34,9 +44,24 @@ const CodeBlockPart = ({
         showLineNumbers={showLineNumbers}
         wrapLines={wrapLines}
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
+        customStyle={{
+          padding: title ? '5em 1em 1.25em 1em' : '1.25em 1em',
+        }}
       >
         {code}
       </SyntaxHighlighter>
+      {title && (
+        <Typography
+          sx={{
+            color: 'white',
+            fontSize: '16px',
+            fontWeight: 700,
+            position: 'absolute',
+            left: '24px',
+            top: '24px',
+          }}
+        >{title}</Typography>
+      )}
       <IconButton
         onClick={() => {
           navigator.clipboard.writeText(code);

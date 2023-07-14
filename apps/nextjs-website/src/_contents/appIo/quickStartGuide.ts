@@ -25,6 +25,72 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           },
         },
         {
+          componentType: ComponentType.apiTester,
+          props: {
+            apiCall: {
+              code:
+                '{\n' +
+                '  "id": "01GG4NFBCN4ZH8ETCCKX3766KX",\n' +
+                '  "title": "Contratto 150 ore",\n' +
+                '  "documents": [\n' +
+                '    {\n' +
+                '      "title": "Contratto",\n' +
+                '      "signature_fields": [\n' +
+                '        {\n' +
+                '          "unique_name": "Signature1",\n' +
+                '          "clause": {\n' +
+                '            "title": "Firma contratto",\n' +
+                '            "type": "REQUIRED"\n' +
+                '          }\n' +
+                '        }\n' +
+                '      ]\n' +
+                '    }\n' +
+                '  ]\n' +
+                '}\n',
+              language: 'json',
+              parts: [
+                {
+                  componentType: ComponentType.typography,
+                  props: {
+                    text: 'Invia la richiesta per vedere la risposta del server.',
+                    variant: 'body2',
+                  },
+                },
+                {
+                  componentType: ComponentType.typography,
+                  props: {
+                    color: '#5C6F82',
+                    fontSize: '12px',
+                    sx: { marginBottom: '0' },
+                    text: 'Nome del Dossier',
+                    variant: 'subtitle1',
+                  },
+                },
+                {
+                  componentType: ComponentType.typography,
+                  props: {
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    text: 'Contratto 150 ore',
+                  },
+                },
+              ],
+            },
+            apiResponse: {
+              code: '{\n' + '  "fiscal_code": "AAABBB00A00A000"\n' + '}',
+              language: 'json',
+              parts: [
+                {
+                  componentType: ComponentType.innerHTML,
+                  props: {
+                    html: "Ecco la risposta del server contenente l'ID del Cittadino, che ti servirà nel prossimo step.",
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
           componentType: ComponentType.alert,
           props: {
             severity: 'info',

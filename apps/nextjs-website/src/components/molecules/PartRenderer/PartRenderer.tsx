@@ -13,6 +13,9 @@ import CodeBlockPart, {
 import AlertPart, {
   AlertPartProps,
 } from '@/components/atoms/AlertPart/AlertPart';
+import ApiTesterPart, {
+  ApiTesterPartProps,
+} from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 
 type PartRendererProps = {
   part: Part;
@@ -22,6 +25,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.componentType) {
     case ComponentType.alert:
       return <AlertPart {...(part.props as AlertPartProps)} />;
+    case ComponentType.apiTester:
+      return <ApiTesterPart {...(part.props as ApiTesterPartProps)} />;
     case ComponentType.codeBlock:
       return <CodeBlockPart {...(part.props as CodeBlockPartProps)} />;
     case ComponentType.innerHTML:
