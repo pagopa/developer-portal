@@ -23,7 +23,6 @@ export const darkCustomStyle: {
   'pre[class*="language-"]': {
     alignItems: 'stretch',
     background: '#414141',
-    borderRadius: '0 0.375rem 0.375rem 0',
     color: '#eee',
     fontFamily: 'Roboto Mono, monospace',
     fontSize: '1em',
