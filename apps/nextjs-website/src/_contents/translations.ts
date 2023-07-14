@@ -108,6 +108,21 @@ export const translations = {
   },
   quickStartGuide: {
     content: {
+      apiPhases: {
+        call: {
+          cta: {
+            label: 'Invia la richiesta',
+          },
+          title: 'Chiamata API',
+        },
+        response: {
+          cta: {
+            icon: 'Replay',
+            label: 'Ripristina la chiamata',
+          },
+          title: 'Risposta del server',
+        },
+      },
       next: 'Prossimo contenuto',
       previous: 'Contenuto precedente',
     },

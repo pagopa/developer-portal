@@ -8,10 +8,7 @@ const TypographyPart = (props: TypographyPartProps) => {
   const { spacing } = useTheme();
 
   return (
-    <Typography
-      {...(props as TypographyProps)}
-      sx={{ marginBottom: spacing(5) }}
-    >
+    <Typography {...props} sx={{ marginBottom: spacing(5), ...props.sx }}>
       {props.text}
     </Typography>
   );
