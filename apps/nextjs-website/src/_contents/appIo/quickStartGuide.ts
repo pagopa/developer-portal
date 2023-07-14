@@ -24,6 +24,15 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             text: 'paragrafo di testo senza particolari formattazioni',
           },
         },
+        {
+          componentType: ComponentType.alert,
+          props: {
+            alertStyle: 'warning',
+            severity: 'info',
+            text: 'Testo del warning',
+            title: 'Titolo del warning',
+          },
+        },
       ],
     },
     {

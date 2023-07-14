@@ -10,6 +10,9 @@ import InnerHtmlPart, {
 import CodeBlockPart, {
   CodeBlockPartProps,
 } from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import AlertPart, {
+  AlertPartProps,
+} from '@/components/atoms/AlertPart/AlertPart';
 
 type PartRendererProps = {
   part: Part;
@@ -17,6 +20,8 @@ type PartRendererProps = {
 
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.componentType) {
+    case ComponentType.alert:
+      return <AlertPart {...(part.props as AlertPartProps)} />;
     case ComponentType.codeBlock:
       return <CodeBlockPart {...(part.props as CodeBlockPartProps)} />;
     case ComponentType.innerHTML:
