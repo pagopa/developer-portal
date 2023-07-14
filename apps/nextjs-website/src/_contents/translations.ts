@@ -1,7 +1,6 @@
 // TODO: move to proper localization system
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
-import { quickStartGuides } from '@/_contents/products';
 
 export const translations = {
   header: {
