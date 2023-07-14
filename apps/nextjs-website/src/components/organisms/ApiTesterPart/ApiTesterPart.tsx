@@ -19,7 +19,7 @@ export type ApiTesterPartProps = {
 };
 
 const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
-  const { palette, spacing } = useTheme();
+  const { spacing } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const { quickStartGuide } = translations;
 
@@ -40,8 +40,6 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
           borderTop: '1px solid #DCDCDC',
           borderBottom: { xs: 'none', md: '1px solid #DCDCDC' },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
-          display: 'flex',
-          flexDirection: 'column',
           padding: spacing(3),
         }}
       >

@@ -33,7 +33,7 @@ const CodeBlockPart = ({
           xs: '0 0 0.375rem 0.375rem',
           md: '0 0.375rem 0.375rem 0',
         },
-        display: 'flex',
+        display: isLightMode ? 'block' : 'flex',
         marginBottom: isLightMode ? spacing(5) : 0,
         position: 'relative',
       }}
@@ -46,6 +46,7 @@ const CodeBlockPart = ({
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
         customStyle={{
           padding: title ? '5em 1em 1.25em 1em' : '1.25em 1em',
+          width: isLightMode ? '' : '100%',
         }}
       >
         {code}
@@ -60,7 +61,9 @@ const CodeBlockPart = ({
             left: '24px',
             top: '24px',
           }}
-        >{title}</Typography>
+        >
+          {title}
+        </Typography>
       )}
       <IconButton
         onClick={() => {

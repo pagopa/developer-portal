@@ -6,7 +6,6 @@ import React, {
   SetStateAction,
   Dispatch,
 } from 'react';
-import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 
 type TabSwitcherContextType = {
