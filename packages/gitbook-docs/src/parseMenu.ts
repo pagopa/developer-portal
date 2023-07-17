@@ -79,6 +79,5 @@ export const parseMenu = (
   config: ParseMenuConfig
 ): RenderableTreeNode => {
   const ast = Markdoc.parse(markdown);
-  const transformed = Markdoc.transform(ast, { ...schema, variables: config });
-  return transformed;
+  return Markdoc.transform(ast, { ...schema, variables: config });
 };
