@@ -43,7 +43,7 @@ export const sendTutorialLists: TutorialListsData = {
   abstract: {
     title: 'Tutorial',
     description:
-      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi video.',
+      'Non sai come si manda un messaggio? Vuoi creare un servizio ma non sai da dove iniziare? Risolvi ogni dubbio con questi brevi tutorial.',
   },
   tutorials: sendTutorials,
   bannerLinks: sendBannerLinks,
