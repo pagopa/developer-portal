@@ -37,13 +37,11 @@ const components = {
 };
 
 const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) => (
-  <>
-    {Markdoc.renderers.react(
-      parseMenu(menu, { assetsPrefix, linkPrefix }),
-      React,
-      { components }
-    )}
-  </>
+  Markdoc.renderers.react(
+    parseMenu(menu, { assetsPrefix, linkPrefix }),
+    React,
+    { components }
+  );
 );
 
 export default GuideMenu;
