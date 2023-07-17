@@ -36,12 +36,11 @@ const components = {
   Title: ({ children }: TitleProps) => <h2>{children}</h2>,
 };
 
-const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) => (
+const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) =>
   Markdoc.renderers.react(
     parseMenu(menu, { assetsPrefix, linkPrefix }),
     React,
     { components }
   );
-);
 
 export default GuideMenu;
