@@ -60,7 +60,7 @@ describe('parseMenu', () => {
     ]);
   });
 
-  it('should convert href as expected', () => {
+  it('should not convert external href', () => {
     expect(parseMenu('[Ext](http://pagopa.it)', config)).toStrictEqual([
       new Markdoc.Tag('Link', { href: 'http://pagopa.it' }, ['Ext']),
     ]);
