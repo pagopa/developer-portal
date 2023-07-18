@@ -34,8 +34,8 @@ export const parseContent = (
   markdown: string,
   config: ParseConfig
 ): RenderableTreeNode => {
-  // TODO: Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
-  // A better alternative could be to parse the html as following:
+  // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
+  // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
   // In this way many RegExp can be removed
   const markdoc = markdown

@@ -5,7 +5,6 @@ export type HintProps<A> = {
   readonly children: ReadonlyArray<A>;
 };
 
-// https://docs.gitbook.com/content-creation/blocks/hint
 export const hint: Schema = {
   render: 'Hint',
   attributes: {
