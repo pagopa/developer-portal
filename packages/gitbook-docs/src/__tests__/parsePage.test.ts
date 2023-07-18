@@ -61,4 +61,23 @@ describe('parsePage', () => {
       ]),
     ]);
   });
+
+  it('should parse swagger', () => {
+    expect(
+      parsePage(
+        '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Swagger',
+        {
+          src: 'index.yaml',
+          path: '/p',
+          method: 'post',
+        },
+        []
+      ),
+    ]);
+  });
 });
