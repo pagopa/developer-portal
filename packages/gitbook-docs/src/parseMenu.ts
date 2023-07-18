@@ -1,64 +1,21 @@
-import Markdoc, {
-  ConfigType,
-  RenderableTreeNode,
-  Schema,
-} from '@markdoc/markdoc';
+import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { link } from './markdoc/schema/link';
 import { ParseConfig } from './ParseConfig';
-
-const item: Schema = {
-  render: 'Item',
-  transform: (node, config) => {
-    // track if the node has nested list or not
-    const isLeaf = node.children.length === 1;
-    const attrs = node.transformAttributes(config);
-    return new Markdoc.Tag(
-      'Item',
-      { ...attrs, isLeaf },
-      node.transformChildren(config)
-    );
-  },
-};
-
-const list: Schema = {
-  render: 'List',
-};
-
-const heading: Schema = {
-  transform: (node, config) => {
-    // skip headers of level 1
-    if (node.attributes['level'] !== 1)
-      return new Markdoc.Tag(
-        'Title',
-        node.transformAttributes(config),
-        node.transformChildren(config)
-      );
-    else return [];
-  },
-};
-
-const text: Schema = {
-  attributes: {
-    content: { type: String, required: true },
-  },
-  transform: (node) => {
-    // remove invalid characters
-    return node.attributes.content
-      .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
-      .replace(/^\s*/, '');
-  },
-};
+import { title } from './markdoc/schema/title';
+import { menuList } from './markdoc/schema/menuList';
+import { menuItem } from './markdoc/schema/menuItem';
+import { menuText } from './markdoc/schema/menuText';
 
 const schema: ConfigType = {
   nodes: {
     document: {},
     paragraph: {},
     hr: {},
-    heading,
-    list,
-    item,
+    heading: title,
+    list: menuList,
+    item: menuItem,
     link,
-    text,
+    text: menuText,
   },
 };
 
