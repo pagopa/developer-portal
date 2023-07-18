@@ -7,6 +7,13 @@ const config = {
 };
 
 describe('parseContent', () => {
+  it('should parse heading', () => {
+    expect(parseContent('# h1\n## h2', config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
+      new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
+    ]);
+  });
+
   it('should parse paragraph', () => {
     expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),

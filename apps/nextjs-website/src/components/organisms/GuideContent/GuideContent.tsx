@@ -14,6 +14,11 @@ const components: RenderingComponents<ReactNode> = {
   Hint: ({ children }) => <div>TODO: render Hint {children}</div>,
   Figure: ({ children }) => <div>TODO: render Figure {children}</div>,
   Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
+  Heading: ({ level, children }) => (
+    <div>
+      H{level} {children}
+    </div>
+  ),
 };
 
 const GuideContent = ({

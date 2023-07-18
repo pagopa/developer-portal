@@ -6,6 +6,7 @@ import { LinkProps } from './markdoc/schema/link';
 import { HintProps } from './markdoc/schema/hint';
 import { FigureProps } from './markdoc/schema/figure';
 import { ParagraphProps } from './markdoc/schema/paragraph';
+import { HeadingProps } from './markdoc/schema/heading';
 
 export type RenderingComponents<A> = {
   readonly Swagger: (props: SwaggerProps) => A;
@@ -13,6 +14,7 @@ export type RenderingComponents<A> = {
   readonly Hint: (props: HintProps<A>) => A;
   readonly Figure: (props: FigureProps<A>) => A;
   readonly Paragraph: (props: ParagraphProps<A>) => A;
+  readonly Heading: (props: HeadingProps<A>) => A;
 };
 
 export const renderContent = (
