@@ -11,7 +11,7 @@ const img: Schema = {
 export type FigureProps<A> = {
   readonly src: string;
   readonly alt?: string;
-  readonly children: ReadonlyArray<A>;
+  readonly children: A;
 };
 
 export const figure: Schema = {

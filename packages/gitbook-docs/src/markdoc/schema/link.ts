@@ -4,7 +4,7 @@ import { LinkAttr } from '../attributes';
 export type LinkProps<A> = {
   readonly href: string;
   readonly title?: string;
-  readonly children: ReadonlyArray<A>;
+  readonly children: A;
 };
 
 export const link: Schema = {
