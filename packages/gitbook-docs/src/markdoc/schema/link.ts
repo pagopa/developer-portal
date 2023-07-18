@@ -1,6 +1,12 @@
 import { Schema } from '@markdoc/markdoc';
 import { LinkAttr } from '../attributes';
 
+export type LinkProps<A> = {
+  readonly href: string;
+  readonly title?: string;
+  readonly children: ReadonlyArray<A>;
+};
+
 export const link: Schema = {
   render: 'Link',
   attributes: {

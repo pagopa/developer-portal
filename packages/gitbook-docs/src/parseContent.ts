@@ -3,6 +3,7 @@ import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
 import { figure } from './markdoc/schema/figure';
 import { swagger } from './markdoc/schema/swagger';
+import { paragraph } from './markdoc/schema/paragraph';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -25,11 +26,11 @@ const schema: ConfigType = {
   },
   nodes: {
     document: undefined,
-    paragraph: { render: 'Paragraph' },
+    paragraph,
   },
 };
 
-export const parsePage = (
+export const parseContent = (
   markdown: string,
   config: ParseConfig
 ): RenderableTreeNode => {

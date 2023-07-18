@@ -1,21 +1,21 @@
 import Markdoc from '@markdoc/markdoc';
-import { parsePage } from '../parsePage';
+import { parseContent } from '../parseContent';
 
 const config = {
   linkPrefix: '/link/prefix',
   assetsPrefix: '/assets/prefix',
 };
 
-describe('parsePage', () => {
+describe('parseContent', () => {
   it('should parse paragraph', () => {
-    expect(parsePage('This is a paragraph', config)).toStrictEqual([
+    expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
     ]);
   });
 
   it('should parse hint', () => {
     expect(
-      parsePage('{% hint style="info" %}\nText\n{% endhint %}\nText', config)
+      parseContent('{% hint style="info" %}\nText\n{% endhint %}\nText', config)
     ).toStrictEqual([
       new Markdoc.Tag(
         'Hint',
@@ -30,7 +30,10 @@ describe('parsePage', () => {
 
   it('should parse Image', () => {
     expect(
-      parsePage('<figure><img src="img-src.jpg" alt="anAlt"></figure>', config)
+      parseContent(
+        '<figure><img src="img-src.jpg" alt="anAlt"></figure>',
+        config
+      )
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag(
@@ -44,7 +47,7 @@ describe('parsePage', () => {
       ]),
     ]);
     expect(
-      parsePage(
+      parseContent(
         '<figure><img src="img-src.jpg" alt="anAlt"><figcaption>Caption</figcaption></figure>',
         config
       )
@@ -64,7 +67,7 @@ describe('parsePage', () => {
 
   it('should parse swagger', () => {
     expect(
-      parsePage(
+      parseContent(
         '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
         config
       )

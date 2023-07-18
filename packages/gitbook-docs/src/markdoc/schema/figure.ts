@@ -8,6 +8,12 @@ const img: Schema = {
   },
 };
 
+export type FigureProps<A> = {
+  readonly src: string;
+  readonly alt?: string;
+  readonly children: ReadonlyArray<A>;
+};
+
 export const figure: Schema = {
   attributes: {
     src: { type: SrcAttr, required: true },

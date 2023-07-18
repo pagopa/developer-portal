@@ -1,0 +1,30 @@
+import { parseContent } from 'gitbook-docs/parseContent';
+import { RenderingComponents, renderContent } from 'gitbook-docs/renderContent';
+import React, { ReactNode } from 'react';
+
+type GuideContentProps = {
+  linkPrefix: string;
+  assetsPrefix: string;
+  content: string;
+};
+
+const components: RenderingComponents<ReactNode> = {
+  Swagger: ({ src }) => <div>TODO: render Swagger element {src}</div>,
+  Link: ({ href, children }) => <a href={href}>{children}</a>,
+  Hint: ({ children }) => <div>TODO: render Hint {children}</div>,
+  Figure: ({ children }) => <div>TODO: render Figure {children}</div>,
+  Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
+};
+
+const GuideContent = ({
+  content,
+  assetsPrefix,
+  linkPrefix,
+}: GuideContentProps) =>
+  renderContent(
+    parseContent(content, { assetsPrefix, linkPrefix }),
+    React,
+    components
+  );
+
+export default GuideContent;
