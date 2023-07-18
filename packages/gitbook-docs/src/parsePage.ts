@@ -2,6 +2,7 @@ import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
 import { figure } from './markdoc/schema/figure';
+import { swagger } from './markdoc/schema/swagger';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -20,6 +21,7 @@ const schema: ConfigType = {
   tags: {
     hint,
     figure,
+    swagger,
   },
   nodes: {
     document: undefined,
