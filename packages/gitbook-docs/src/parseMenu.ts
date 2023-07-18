@@ -3,20 +3,8 @@ import Markdoc, {
   RenderableTreeNode,
   Schema,
 } from '@markdoc/markdoc';
-import { LinkAttr } from './markdoc/attributes';
-
-type ParseMenuConfig = {
-  readonly linkPrefix: string;
-  readonly assetsPrefix: string;
-};
-
-const link: Schema = {
-  render: 'Link',
-  attributes: {
-    href: { type: LinkAttr, required: true },
-    title: { type: String },
-  },
-};
+import { link } from './markdoc/schema/link';
+import { ParseConfig } from './ParseConfig';
 
 const item: Schema = {
   render: 'Item',
@@ -76,7 +64,7 @@ const schema: ConfigType = {
 
 export const parseMenu = (
   markdown: string,
-  config: ParseMenuConfig
+  config: ParseConfig
 ): RenderableTreeNode => {
   const ast = Markdoc.parse(markdown);
   return Markdoc.transform(ast, { ...schema, variables: config });
