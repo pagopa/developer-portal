@@ -1,5 +1,5 @@
-import Markdoc from '@markdoc/markdoc';
 import { parseMenu } from 'gitbook-docs/parseMenu';
+import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import React, { ReactNode } from 'react';
 
 type GuideMenuProps = {
@@ -8,39 +8,16 @@ type GuideMenuProps = {
   menu: string;
 };
 
-type LinkProps = {
-  href: string;
-  title?: string;
-  children: ReactNode;
-};
-
-type ItemProps = {
-  isLeaf: boolean;
-  children: ReactNode;
-};
-
-type ListProps = {
-  children: ReactNode;
-};
-
-type TitleProps = {
-  children: ReactNode;
-};
-
-const components = {
-  Link: ({ href, children }: LinkProps) => <a href={href}>{children}</a>,
-  Item: ({ isLeaf, children }: ItemProps) => (
+const components: RenderingComponents<ReactNode> = {
+  Link: ({ href, children }) => <a href={href}>{children}</a>,
+  Item: ({ isLeaf, children }) => (
     <li className={isLeaf ? 'leaf' : 'node'}>{children}</li>
   ),
-  List: ({ children }: ListProps) => <ul>{children}</ul>,
-  Title: ({ children }: TitleProps) => <h2>{children}</h2>,
+  List: ({ children }) => <ul>{children}</ul>,
+  Title: ({ children }) => <h2>{children}</h2>,
 };
 
 const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) =>
-  Markdoc.renderers.react(
-    parseMenu(menu, { assetsPrefix, linkPrefix }),
-    React,
-    { components }
-  );
+  renderMenu(parseMenu(menu, { assetsPrefix, linkPrefix }), React, components);
 
 export default GuideMenu;
