@@ -7,7 +7,7 @@ import { HintProps } from './markdoc/schema/hint';
 import { FigureProps } from './markdoc/schema/figure';
 import { ParagraphProps } from './markdoc/schema/paragraph';
 import { HeadingProps } from './markdoc/schema/heading';
-import { CodeBlockProps } from './markdoc/schema/codeBlock';
+import { CodeBlockProps } from './markdoc/schema/code';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;

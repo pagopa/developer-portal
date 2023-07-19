@@ -100,13 +100,25 @@ describe('parseContent', () => {
   });
 
   it('should parse code block', () => {
+    const code =
+      '```javascript\n' +
+      "console.log('Hello')\n" +
+      "console.log('there')\n" +
+      '```\n';
+    expect(parseContent(code, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          lineNumbers: true,
+          language: 'javascript',
+        },
+        ["console.log('Hello')\nconsole.log('there')\n"]
+      ),
+    ]);
     expect(
       parseContent(
         '{% code title="i.js" overflow="wrap" lineNumbers="true" %}\n' +
-          '```javascript\n' +
-          "console.log('Hello')\n" +
-          "console.log('there')\n" +
-          '```\n' +
+          code +
           '{% endcode %}',
         config
       )
@@ -116,7 +128,7 @@ describe('parseContent', () => {
         {
           title: 'i.js',
           overflow: 'wrap',
-          lineNumbers: 'true',
+          lineNumbers: true,
           language: 'javascript',
         },
         ["console.log('Hello')\nconsole.log('there')\n"]
