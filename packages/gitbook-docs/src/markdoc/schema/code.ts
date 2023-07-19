@@ -15,12 +15,10 @@ export const fence: Schema = {
     process: { type: Boolean, render: false, default: true },
   },
   transform: (node, config) => {
-    const attrs = node.transformAttributes(config);
-    const children = node.transformChildren(config);
     return new Markdoc.Tag(
       'CodeBlock',
-      { ...attrs, lineNumbers: true },
-      children
+      { ...node.transformAttributes(config), lineNumbers: true },
+      node.transformChildren(config)
     );
   },
 };
