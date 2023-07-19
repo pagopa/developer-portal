@@ -3,7 +3,6 @@ import { RenderingComponents, renderContent } from 'gitbook-docs/renderContent';
 import React, { ReactNode } from 'react';
 
 type GuideContentProps = {
-  linkPrefix: string;
   assetsPrefix: string;
   content: string;
 };
@@ -21,15 +20,7 @@ const components: RenderingComponents<ReactNode> = {
   ),
 };
 
-const GuideContent = ({
-  content,
-  assetsPrefix,
-  linkPrefix,
-}: GuideContentProps) =>
-  renderContent(
-    parseContent(content, { assetsPrefix, linkPrefix }),
-    React,
-    components
-  );
+const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>
+  renderContent(parseContent(content, { assetsPrefix }), React, components);
 
 export default GuideContent;

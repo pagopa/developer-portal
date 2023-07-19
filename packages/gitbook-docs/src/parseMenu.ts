@@ -1,5 +1,5 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
-import { link } from './markdoc/schema/link';
+import { menuLink } from './markdoc/schema/link';
 import { ParseConfig } from './ParseConfig';
 import { title } from './markdoc/schema/title';
 import { menuList } from './markdoc/schema/menuList';
@@ -14,7 +14,7 @@ const schema: ConfigType = {
     heading: title,
     list: menuList,
     item: menuItem,
-    link,
+    link: menuLink,
     text: menuText,
   },
 };

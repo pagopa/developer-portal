@@ -1,5 +1,5 @@
 import { Schema } from '@markdoc/markdoc';
-import { LinkAttr } from '../attributes';
+import { LinkAttr, PrefixLinkAttr } from '../attributes';
 
 export type LinkProps<A> = {
   readonly href: string;
@@ -11,6 +11,14 @@ export const link: Schema = {
   render: 'Link',
   attributes: {
     href: { type: LinkAttr, required: true },
+    title: { type: String },
+  },
+};
+
+export const menuLink: Schema = {
+  render: 'Link',
+  attributes: {
+    href: { type: PrefixLinkAttr, required: true },
     title: { type: String },
   },
 };

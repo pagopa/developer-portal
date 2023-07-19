@@ -2,8 +2,8 @@ import Markdoc from '@markdoc/markdoc';
 import { parseContent } from '../parseContent';
 
 const config = {
-  linkPrefix: '/link/prefix',
   assetsPrefix: '/assets/prefix',
+  linkPrefix: '/assets/prefix',
 };
 
 describe('parseContent', () => {
@@ -17,6 +17,14 @@ describe('parseContent', () => {
   it('should parse paragraph', () => {
     expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+    ]);
+  });
+
+  it('should convert href as expected', () => {
+    expect(parseContent('[Guida](../../a/b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '../../a/b' }, ['Guida']),
+      ]),
     ]);
   });
 

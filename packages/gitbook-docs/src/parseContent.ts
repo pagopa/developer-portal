@@ -5,6 +5,7 @@ import { figure } from './markdoc/schema/figure';
 import { swagger } from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
+import { link } from './markdoc/schema/link';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -29,12 +30,13 @@ const schema: ConfigType = {
     document: undefined,
     paragraph,
     heading,
+    link,
   },
 };
 
 export const parseContent = (
   markdown: string,
-  config: ParseConfig
+  config: Omit<ParseConfig, 'linkPrefix'>
 ): RenderableTreeNode => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
