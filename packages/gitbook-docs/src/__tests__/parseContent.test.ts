@@ -98,4 +98,29 @@ describe('parseContent', () => {
       ),
     ]);
   });
+
+  it('should parse code block', () => {
+    expect(
+      parseContent(
+        '{% code title="i.js" overflow="wrap" lineNumbers="true" %}\n' +
+          '```javascript\n' +
+          "console.log('Hello')\n" +
+          "console.log('there')\n" +
+          '```\n' +
+          '{% endcode %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          title: 'i.js',
+          overflow: 'wrap',
+          lineNumbers: 'true',
+          language: 'javascript',
+        },
+        ["console.log('Hello')\nconsole.log('there')\n"]
+      ),
+    ]);
+  });
 });
