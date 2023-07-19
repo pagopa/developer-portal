@@ -17,11 +17,9 @@ export const codeBlock: Schema = {
     lineNumbers: { type: String },
   },
   transform: (node, config) => {
-    console.log('node', JSON.stringify(node, null, 2));
     const langAttr = node.children
       .find(({ type }) => type === 'fence')
       ?.transformAttributes({ ...config, tags: { codeBlockContent } });
-    // console.log('langAttr', JSON.stringify(langAttr, null, 2));
     const attrs = node.transformAttributes(config);
     const children = node.children
       .find(({ type }) => type === 'fence')
