@@ -18,11 +18,11 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
       anchor: '01',
       parts: [
         {
-          componentType: 'typography',
+          component: 'typography',
           text: 'paragrafo di testo senza particolari formattazioni',
         },
         {
-          componentType: 'apiTester',
+          component: 'apiTester',
           apiCall: {
             code:
               '{\n' +
@@ -46,12 +46,12 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                componentType: 'typography',
+                component: 'typography',
                 text: 'Invia la richiesta per vedere la risposta del server.',
                 variant: 'body2',
               },
               {
-                componentType: 'typography',
+                component: 'typography',
                 color: '#5C6F82',
                 fontSize: '12px',
                 sx: { marginBottom: '0' },
@@ -59,7 +59,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
                 variant: 'subtitle1',
               },
               {
-                componentType: 'typography',
+                component: 'typography',
                 fontSize: '16px',
                 fontWeight: '600',
                 text: 'Contratto 150 ore',
@@ -71,14 +71,14 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                componentType: 'innerHTML',
+                component: 'innerHTML',
                 html: "Ecco la risposta del server contenente l'ID del Cittadino, che ti servirà nel prossimo step.",
               },
             ],
           },
         },
         {
-          componentType: 'alert',
+          component: 'alert',
           severity: 'info',
           text: 'Testo del warning',
           title: 'Titolo del warning',
@@ -90,11 +90,11 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
       anchor: '02',
       parts: [
         {
-          componentType: 'innerHTML',
+          component: 'innerHTML',
           html: 'Codice HTML come un iframe o come questo: Crea un <strong>Dossier</strong> (ovvero un template per la creazione della richiesta di firma) e invia la chiamata a...',
         },
         {
-          componentType: 'innerHTML',
+          component: 'innerHTML',
           html:
             '<div style="position: relative; padding-bottom: calc(79.25311203319502% + 41px); height: 0; width: 100%">\n' +
             '  <iframe src="https://demo.arcade.software/hWcAEDgFao55XEhXvIJN?embed"\n' +
@@ -108,7 +108,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             '</div>',
         },
         {
-          componentType: 'codeBlock',
+          component: 'codeBlock',
           code:
             'const user = {\n' +
             '  firstName: "Angela",\n' +
@@ -120,7 +120,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           language: 'typescript',
         },
         {
-          componentType: 'typography',
+          component: 'typography',
           text: 'paragrafo di testo senza particolari formattazioni',
         },
       ],
