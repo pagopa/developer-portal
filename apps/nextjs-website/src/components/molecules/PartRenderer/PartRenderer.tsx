@@ -11,7 +11,7 @@ type PartRendererProps = {
 };
 
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
-  switch (part.componentType) {
+  switch (part.component) {
     case 'alert':
       return <AlertPart {...part} />;
     case 'apiTester':

@@ -5,8 +5,8 @@ import { InnerHtmlPartProps } from '@/components/atoms/InnerHtmlPart/InnerHtmlPa
 import { TypographyPartProps } from '@/components/atoms/TypographyPart/TypographyPart';
 
 export type Part =
-  | (AlertPartProps & { readonly componentType: 'alert' })
-  | (ApiTesterPartProps & { readonly componentType: 'apiTester' })
-  | (CodeBlockPartProps & { readonly componentType: 'codeBlock' })
-  | (InnerHtmlPartProps & { readonly componentType: 'innerHTML' })
-  | (TypographyPartProps & { readonly componentType: 'typography' });
+  | (AlertPartProps & { readonly component: 'alert' })
+  | (ApiTesterPartProps & { readonly component: 'apiTester' })
+  | (CodeBlockPartProps & { readonly component: 'codeBlock' })
+  | (InnerHtmlPartProps & { readonly component: 'innerHTML' })
+  | (TypographyPartProps & { readonly component: 'typography' });
