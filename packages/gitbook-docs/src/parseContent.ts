@@ -9,6 +9,7 @@ import { link } from './markdoc/schema/link';
 import { list } from './markdoc/schema/list';
 import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
+import { blockquote } from './markdoc/schema/blockquote';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -38,6 +39,7 @@ const schema: ConfigType = {
     list,
     item,
     fence,
+    blockquote,
   },
 };
 
