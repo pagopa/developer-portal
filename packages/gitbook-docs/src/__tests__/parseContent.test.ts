@@ -135,4 +135,23 @@ describe('parseContent', () => {
       ),
     ]);
   });
+
+  it('should parse file', () => {
+    const prefix = config.assetsPrefix;
+    expect(parseContent('{% file src="p/a-src.jpg" %}', config)).toStrictEqual([
+      new Markdoc.Tag('File', {
+        src: `${prefix}/p/a-src.jpg`,
+        filename: 'a-src',
+      }),
+    ]);
+    expect(
+      parseContent('{% file src="a-src.jpg" %}\nCaption\n{% endfile %}', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a-src.jpg`,
+        filename: 'a-src',
+        caption: 'Caption',
+      }),
+    ]);
+  });
 });

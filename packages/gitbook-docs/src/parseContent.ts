@@ -7,6 +7,7 @@ import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
 import { link } from './markdoc/schema/link';
 import { code, fence } from './markdoc/schema/code';
+import { file } from './markdoc/schema/file';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -27,6 +28,7 @@ const schema: ConfigType = {
     figure,
     swagger,
     code,
+    file,
   },
   nodes: {
     document: undefined,

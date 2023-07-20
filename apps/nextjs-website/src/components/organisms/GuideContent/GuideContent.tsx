@@ -13,6 +13,7 @@ const components: RenderingComponents<ReactNode> = {
   Hint: ({ children }) => <div>TODO: render Hint {children}</div>,
   CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
   Figure: ({ children }) => <div>TODO: render Figure {children}</div>,
+  File: ({ src }) => <div>TODO: render File {src}</div>,
   Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
   Heading: ({ level, children }) => (
     <div>
