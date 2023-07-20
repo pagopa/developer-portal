@@ -1,17 +1,18 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 import { SrcAttr } from '../attributes';
 
-const img: Schema = {
+export type ImageProps = {
+  readonly src: string;
+  readonly alt?: string;
+  readonly caption?: string;
+};
+
+export const img: Schema = {
+  render: 'Image',
   attributes: {
     src: { type: SrcAttr, required: true },
     alt: { type: String },
   },
-};
-
-export type FigureProps<A> = {
-  readonly src: string;
-  readonly alt?: string;
-  readonly children: A;
 };
 
 export const figure: Schema = {
@@ -20,12 +21,15 @@ export const figure: Schema = {
     alt: { type: String },
   },
   transform: (node, config) => {
-    const attrs = node.children
-      .find(({ tag }) => tag === 'img')
-      ?.transformAttributes({ ...config, tags: { img } });
-    const children = node.children
+    const caption = node.children
       .find(({ tag }) => tag === 'figcaption')
-      ?.transformChildren(config);
-    return new Markdoc.Tag('Figure', attrs, children);
+      ?.transformChildren(config)
+      .find((text) => typeof text === 'string');
+    const imgAttrs = node.children
+      .find(({ tag }) => tag === 'img')
+      ?.transformAttributes(config);
+    const attrs =
+      typeof caption === 'string' ? { ...imgAttrs, caption } : imgAttrs;
+    return new Markdoc.Tag('Image', attrs);
   },
 };
