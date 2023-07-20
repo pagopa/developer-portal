@@ -8,6 +8,11 @@ type GuideContentProps = {
 };
 
 const components: RenderingComponents<ReactNode> = {
+  StyledText: ({ style, children }) => (
+    <div>
+      TODO: render styled-text {style} {children}
+    </div>
+  ),
   Swagger: ({ src }) => <div>TODO: render Swagger element {src}</div>,
   Link: ({ href, children }) => <a href={href}>{children}</a>,
   Hint: ({ children }) => <div>TODO: render Hint {children}</div>,

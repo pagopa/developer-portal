@@ -9,6 +9,7 @@ import { link } from './markdoc/schema/link';
 import { list } from './markdoc/schema/list';
 import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
+import * as styled from './markdoc/schema/styledText';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -22,6 +23,7 @@ export const unpairedHtmlTag = (tag: string) => ({
 const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
+const markR = pairedHtmlTag('mark');
 
 const schema: ConfigType = {
   tags: {
@@ -38,6 +40,10 @@ const schema: ConfigType = {
     list,
     item,
     fence,
+    strong: styled.strong,
+    em: styled.em,
+    code: styled.code,
+    s: styled.strikethrough,
   },
 };
 
@@ -53,7 +59,8 @@ export const parseContent = (
     .replaceAll('{% end', '{% /')
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
-    .replaceAll(figcaptionR.regex, figcaptionR.replace);
+    .replaceAll(figcaptionR.regex, figcaptionR.replace)
+    .replaceAll(markR.regex, markR.replace);
 
   const ast = Markdoc.parse(markdoc);
   return Markdoc.transform(ast, { ...schema, variables: config });
