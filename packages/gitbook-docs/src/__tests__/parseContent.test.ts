@@ -165,10 +165,10 @@ describe('parseContent', () => {
     ]);
   });
 
-  xit('should parse quote', () => {
-    const quote =
-      '> _« ... al fine di consentire le attività di riconciliazione del pagamento... »_';
-    expect(parseContent(quote, config)).toStrictEqual([
+  it('should parse quote', () => {
+    const inlineQuote =
+      '> « ... al fine di consentire le attività di riconciliazione del pagamento... »';
+    expect(parseContent(inlineQuote, config)).toStrictEqual([
       new Markdoc.Tag('Quote', {}, [
         new Markdoc.Tag('Paragraph', {}, [
           '« ... al fine di consentire le attività di riconciliazione del pagamento... »',
