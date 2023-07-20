@@ -1,15 +1,6 @@
 import { environment } from '@/config';
 import { Html, Head, Main, NextScript } from 'next/document';
 
-const COOKIE_SCRIPT = `
-  <!-- Inizio informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
-  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="a8c87faf-1769-4c95-a2e5-a6fff26eadab" ></script>
-  <script type="text/javascript">
-  function OptanonWrapper() { }
-  </script>
-  <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
-`;
-
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
 /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -38,7 +29,6 @@ export default function Document() {
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
-        <div dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }} />
         <link rel='icon' href='favicon.svg' />
       </Head>
       <body>
