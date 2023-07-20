@@ -33,6 +33,35 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse unordered list', () => {
+    expect(parseContent('* Item', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse ordered list', () => {
+    expect(parseContent('1. Item', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: true }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse task list', () => {
+    expect(parseContent('* [ ] Item', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', { checked: false }, ['Item']),
+      ]),
+    ]);
+    expect(parseContent('* [x] Item', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', { checked: true }, ['Item']),
+      ]),
+    ]);
+  });
+
   it('should parse hint', () => {
     expect(
       parseContent('{% hint style="info" %}\nText\n{% endhint %}\nText', config)

@@ -6,6 +6,8 @@ import { swagger } from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
 import { link } from './markdoc/schema/link';
+import { list } from './markdoc/schema/list';
+import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
 
 export const pairedHtmlTag = (tag: string) => ({
@@ -34,6 +36,8 @@ const schema: ConfigType = {
     paragraph,
     heading,
     link,
+    list,
+    item,
     fence,
   },
 };

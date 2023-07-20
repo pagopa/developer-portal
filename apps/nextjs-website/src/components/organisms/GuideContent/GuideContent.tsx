@@ -19,6 +19,14 @@ const components: RenderingComponents<ReactNode> = {
       H{level} {children}
     </div>
   ),
+  List: ({ children, ordered }) =>
+    ordered ? <ol>{children}</ol> : <ul>{children}</ul>,
+  Item: ({ children, checked }) =>
+    checked === undefined ? (
+      <li>{children}</li>
+    ) : (
+      <li className={'checkable'}>{children}</li>
+    ),
 };
 
 const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>
