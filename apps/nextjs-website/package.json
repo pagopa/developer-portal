@@ -26,12 +26,14 @@
     "gitbook-docs": "*",
     "next": "^13.4.6",
     "react": "18.2.0",
+    "react-syntax-highlighter": "^15.5.0",
     "react-dom": "18.2.0",
     "swiper": "^10.0.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
     "@types/react": "^18.0.28",
+    "@types/react-syntax-highlighter": "^15.5.7",
     "@types/react-dom": "^18.0.11",
     "eslint-config-custom": "*",
     "eslint-config-next": "^13.4.6",
