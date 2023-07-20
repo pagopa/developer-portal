@@ -23,7 +23,7 @@ const CodeBlockPart = ({
   title,
   wrapLines = true,
 }: CodeBlockPartProps) => {
-  const { spacing } = useTheme();
+  const { spacing, palette } = useTheme();
   const isLightMode = mode === 'light';
 
   return (
@@ -78,7 +78,9 @@ const CodeBlockPart = ({
       >
         <ContentCopy
           sx={{
-            color: isLightMode ? '#0073E6' : '#FFFFFF',
+            color: isLightMode
+              ? palette.primary.main
+              : palette.primary.contrastText,
             height: '24px',
             width: '24px',
           }}

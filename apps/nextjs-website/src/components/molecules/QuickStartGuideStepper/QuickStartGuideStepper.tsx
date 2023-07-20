@@ -20,7 +20,7 @@ const QuickStartGuideStepper = ({
   defaultStepAnchor,
   steps,
 }: QuickStartGuideStepperProps): ReactNode | null => {
-  const { spacing } = useTheme();
+  const { spacing, palette } = useTheme();
 
   return (
     <EContainer sx={{ paddingBottom: spacing(5) }}>
@@ -80,7 +80,7 @@ const QuickStartGuideStepper = ({
                 <>
                   <Typography
                     sx={{
-                      color: '#0062C3',
+                      color: palette.primary.dark,
                       fontSize: '18px',
                       fontWeight: 600,
                       marginBottom: '24px',
