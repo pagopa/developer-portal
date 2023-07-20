@@ -10,6 +10,7 @@ import { HeadingProps } from './markdoc/schema/heading';
 import { ListProps } from './markdoc/schema/list';
 import { ItemProps } from './markdoc/schema/item';
 import { CodeBlockProps } from './markdoc/schema/code';
+import { QuoteProps } from './markdoc/schema/blockquote';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -18,7 +19,7 @@ export type RenderingComponents<A> = {
   readonly List: (props: ListProps<A>) => A;
   readonly Item: (props: ItemProps<A>) => A;
   readonly Hint: (props: HintProps<A>) => A;
-  // readonly Quote: (props: QuoteProps<A>) => A;
+  readonly Quote: (props: QuoteProps<A>) => A;
   readonly CodeBlock: (props: CodeBlockProps<A>) => A;
   // readonly File: (props: FileProps<A>) => A;
   readonly Figure: (props: FigureProps<A>) => A;
