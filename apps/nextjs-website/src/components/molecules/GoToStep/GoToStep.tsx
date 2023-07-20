@@ -1,6 +1,6 @@
 import React, { createElement } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 
@@ -10,9 +10,11 @@ type GoToStepProps = {
 };
 
 const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
+  const { palette } = useTheme();
+
   const arrowIcon = createElement(
     previousOrNext === 'next' ? ArrowForward : ArrowBack,
-    { sx: { color: '#5C6F82', height: '24px', width: '24px' } }
+    { sx: { color: palette.text.secondary, height: '24px', width: '24px' } }
   );
   const { quickStartGuide } = translations;
 

@@ -19,9 +19,10 @@ export type ApiTesterPartProps = {
 };
 
 const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
-  const { spacing } = useTheme();
+  const { spacing, palette } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const { quickStartGuide } = translations;
+  const boxBorder = `1px solid #DCDCDC`;
 
   return (
     <Box
@@ -35,10 +36,10 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
     >
       <Box
         sx={{
-          borderLeft: '1px solid #DCDCDC',
-          borderRight: { xs: '1px solid #DCDCDC', md: 'none' },
-          borderTop: '1px solid #DCDCDC',
-          borderBottom: { xs: 'none', md: '1px solid #DCDCDC' },
+          borderLeft: boxBorder,
+          borderRight: { xs: boxBorder, md: 'none' },
+          borderTop: boxBorder,
+          borderBottom: { xs: 'none', md: boxBorder },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
           padding: spacing(3),
         }}
@@ -61,7 +62,7 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
           >
             <Box sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}>
               <IconWrapper
-                color={'#0073E6'}
+                color={palette.primary.main}
                 size={20}
                 icon={quickStartGuide.content.apiPhases.response.cta.icon}
               />

@@ -4,7 +4,7 @@ import { Box, useTheme } from '@mui/material';
 export type InnerHtmlPartProps = { html: string };
 
 const InnerHtmlPart = ({ html }: InnerHtmlPartProps) => {
-  const { spacing } = useTheme();
+  const { spacing, palette } = useTheme();
 
   return (
     <Box
@@ -14,7 +14,7 @@ const InnerHtmlPart = ({ html }: InnerHtmlPartProps) => {
         fontFamily: 'Titillium Web',
         fontWeight: 400,
         fontSize: '18px',
-        color: '#17324D',
+        color: palette.text.primary,
       }}
     ></Box>
   );

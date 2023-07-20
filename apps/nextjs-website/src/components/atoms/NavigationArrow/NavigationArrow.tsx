@@ -1,5 +1,5 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import React, { createElement } from 'react';
 
@@ -9,6 +9,7 @@ type NavigationArrowProps = {
 };
 
 const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
+  const { palette } = useTheme();
   if (hidden) {
     return null;
   }
@@ -28,7 +29,7 @@ const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
           position: 'absolute',
           top: '45%',
           borderRadius: 100,
-          backgroundColor: '#17324D',
+          backgroundColor: palette.text.primary,
           height: 14,
           width: 14,
           padding: 2,
