@@ -164,4 +164,16 @@ describe('parseContent', () => {
       ),
     ]);
   });
+
+  xit('should parse quote', () => {
+    const quote =
+      '> _« ... al fine di consentire le attività di riconciliazione del pagamento... »_';
+    expect(parseContent(quote, config)).toStrictEqual([
+      new Markdoc.Tag('Quote', {}, [
+        new Markdoc.Tag('Paragraph', {}, [
+          '« ... al fine di consentire le attività di riconciliazione del pagamento... »',
+        ]),
+      ]),
+    ]);
+  });
 });
