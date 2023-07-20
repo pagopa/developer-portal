@@ -22,6 +22,7 @@ export const unpairedHtmlTag = (tag: string) => ({
 const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
+const anchorR = pairedHtmlTag('a');
 
 const schema: ConfigType = {
   tags: {
@@ -53,7 +54,8 @@ export const parseContent = (
     .replaceAll('{% end', '{% /')
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
-    .replaceAll(figcaptionR.regex, figcaptionR.replace);
+    .replaceAll(figcaptionR.regex, figcaptionR.replace)
+    .replaceAll(anchorR.regex, anchorR.replace);
 
   const ast = Markdoc.parse(markdoc);
   return Markdoc.transform(ast, { ...schema, variables: config });

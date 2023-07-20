@@ -7,6 +7,11 @@ const config = {
 };
 
 describe('parseContent', () => {
+  it('should ignore any anchor tag', () => {
+    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, []),
+    ]);
+  });
   it('should parse heading', () => {
     expect(parseContent('# h1\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
