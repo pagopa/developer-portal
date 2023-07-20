@@ -11,6 +11,7 @@ const components: RenderingComponents<ReactNode> = {
   Swagger: ({ src }) => <div>TODO: render Swagger element {src}</div>,
   Link: ({ href, children }) => <a href={href}>{children}</a>,
   Hint: ({ children }) => <div>TODO: render Hint {children}</div>,
+  CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
   Figure: ({ children }) => <div>TODO: render Figure {children}</div>,
   Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
   Heading: ({ level, children }) => (
