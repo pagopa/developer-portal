@@ -6,7 +6,7 @@ import React, {
   SetStateAction,
   Dispatch,
 } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 type TabSwitcherContextType = {
   setActiveTabID: Dispatch<SetStateAction<string>>;
@@ -23,6 +23,7 @@ type TabProps = {
 
 function Tab({ id, children }: TabProps) {
   const context = useContext(TabSwitcherContext);
+  const { palette } = useTheme();
   if (!context) {
     console.error(
       'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
@@ -33,15 +34,16 @@ function Tab({ id, children }: TabProps) {
   const { activeTabID, setActiveTabID } = context;
 
   const isActive = id === activeTabID;
+  const tabColor = palette.primary.dark;
 
   return (
     <Box
       onClick={() => setActiveTabID(id)}
       sx={{
-        backgroundColor: isActive ? '#e6eef9' : 'transparent',
-        borderRight: isActive ? '2px solid #0062C3' : 'none',
+        backgroundColor: isActive ? palette.primaryAction.hover : 'transparent',
+        borderRight: isActive ? `2px solid ${tabColor}` : 'none',
         '& > div > span': {
-          color: isActive ? '#0062C3' : '#17324D',
+          color: isActive ? tabColor : palette.text.primary,
         },
         cursor: 'pointer',
       }}
