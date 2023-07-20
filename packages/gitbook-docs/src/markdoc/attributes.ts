@@ -1,5 +1,10 @@
 import { Config } from '@markdoc/markdoc';
 
+// eslint-disable-next-line functional/no-classes
+export class BooleanAttr {
+  readonly transform = (value: string) => value === 'true';
+}
+
 const convertLink = (link: string): string =>
   link.replace('/README.md', '').replace('README.md', '').replace('.md', '');
 
