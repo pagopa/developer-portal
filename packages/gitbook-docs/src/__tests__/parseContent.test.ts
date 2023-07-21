@@ -3,7 +3,9 @@ import { parseContent } from '../parseContent';
 
 const config = {
   assetsPrefix: '/assets/prefix',
-  linkPrefix: '/assets/prefix',
+  linkPrefix: '/link/prefix',
+  pagePath: '/path/to/page',
+  isPageIndex: false,
 };
 
 describe('parseContent', () => {
@@ -31,9 +33,33 @@ describe('parseContent', () => {
   });
 
   it('should convert href as expected', () => {
-    expect(parseContent('[Guida](../../a/b.md)', config)).toStrictEqual([
+    expect(parseContent('[Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '../../a/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/path/to' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should convert href as expected given an index page', () => {
+    const customConfig = { ...config, isPageIndex: true };
+    expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/page/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/a/b' }, ['Guida']),
       ]),
     ]);
   });

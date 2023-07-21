@@ -16,6 +16,9 @@ export type DocPage<T> = T & {
     readonly path: string;
     readonly menu: string;
     readonly body: string;
+    // track of the page is index or no
+    // in other words if was a README.md file
+    readonly isIndex: boolean;
   };
 };
 
@@ -71,6 +74,7 @@ export const parseDoc = <T>(
                   source.source.dirPath,
                   source.source.pathPrefix
                 ),
+                isIndex: path.parse(abs).name === 'README',
                 menu,
                 body: env.readFile(abs, 'utf-8'),
               }),
