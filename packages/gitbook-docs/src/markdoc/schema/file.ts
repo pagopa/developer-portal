@@ -26,7 +26,7 @@ export const file: Schema = {
         ?.attributes['content'];
       return new Markdoc.Tag('File', { ...attrs, caption: textCnt });
     } else {
-      // consider unclosing file tag as self-closing tag wihtout children
+      // consider unclosing file tag as self-closing tag without children
       // render the children as sibling
       const result = new Markdoc.Tag('File', { ...attrs, filename });
       return [result, ...node.transformChildren(config)];
