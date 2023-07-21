@@ -293,5 +293,17 @@ describe('parseContent', () => {
         [new Markdoc.Tag('Paragraph', {}, ['This is a caption'])]
       ),
     ]);
+
+    expect(
+      parseContent('{% embed url="https://www.pagopa.it/" %}', config)
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Embed',
+        {
+          url: 'https://www.pagopa.it/',
+        },
+        []
+      ),
+    ]);
   });
 });
