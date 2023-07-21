@@ -16,8 +16,8 @@ export type DocPage<T> = T & {
     readonly path: string;
     readonly menu: string;
     readonly body: string;
-    // track of the page is index or no
-    // in other words if was a README.md file
+    // tracks if the page is index or is not
+    // in other words if it was a README.md file
     readonly isIndex: boolean;
   };
 };
