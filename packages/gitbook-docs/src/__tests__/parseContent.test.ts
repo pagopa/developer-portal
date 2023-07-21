@@ -251,6 +251,5 @@ describe('parseContent', () => {
         [new Markdoc.Tag('Paragraph', {}, ['This is a caption'])]
       ),
     ]);
-
   });
 });

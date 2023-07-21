@@ -11,7 +11,6 @@ export const embed: Schema = {
     url: { type: SrcAttr, required: true },
   },
   transform: (node, config) => {
-    console.log('node', JSON.stringify(node, null, 2));
     return new Markdoc.Tag(
       'Embed',
       node.transformAttributes(config),
