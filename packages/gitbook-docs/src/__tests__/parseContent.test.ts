@@ -82,7 +82,18 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should parse Image', () => {
+  it('should parse img', () => {
+    expect(
+      parseContent('<img src="img-src.jpg" alt="anAlt">', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+      }),
+    ]);
+  });
+
+  it('should parse figure', () => {
     expect(
       parseContent(
         '<figure><img src="img-src.jpg" alt="anAlt"></figure>',
@@ -90,14 +101,10 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag(
-          'Figure',
-          {
-            src: `${config.assetsPrefix}/img-src.jpg`,
-            alt: 'anAlt',
-          },
-          []
-        ),
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+        }),
       ]),
     ]);
     expect(
@@ -107,14 +114,11 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag(
-          'Figure',
-          {
-            src: `${config.assetsPrefix}/img-src.jpg`,
-            alt: 'anAlt',
-          },
-          ['Caption']
-        ),
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: 'Caption',
+        }),
       ]),
     ]);
   });

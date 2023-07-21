@@ -17,7 +17,7 @@ const components: RenderingComponents<ReactNode> = {
   Link: ({ href, children }) => <a href={href}>{children}</a>,
   Hint: ({ children }) => <div>TODO: render Hint {children}</div>,
   CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
-  Figure: ({ children }) => <div>TODO: render Figure {children}</div>,
+  Image: ({ src }) => <div>TODO: render Figure {src}</div>,
   File: ({ src }) => <div>TODO: render File {src}</div>,
   Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
   Heading: ({ level, children }) => (

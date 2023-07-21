@@ -1,7 +1,7 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
-import { figure } from './markdoc/schema/figure';
+import { figure, img } from './markdoc/schema/image';
 import { swagger } from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
@@ -31,6 +31,7 @@ const pR = pairedHtmlTag('p');
 const schema: ConfigType = {
   tags: {
     hint,
+    img,
     figure,
     swagger,
     code,
