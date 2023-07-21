@@ -232,5 +232,4 @@ describe('parseContent', () => {
       parseContent('This is <mark style="color:orange;">Mark</mark>', config)
     ).toStrictEqual([new Markdoc.Tag('Paragraph', {}, ['This is ', 'Mark'])]);
   });
-
 });
