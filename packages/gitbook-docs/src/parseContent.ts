@@ -11,6 +11,7 @@ import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
 import { file } from './markdoc/schema/file';
 import * as styled from './markdoc/schema/styledText';
+import { blockquote } from './markdoc/schema/blockquote';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -49,6 +50,7 @@ const schema: ConfigType = {
     em: styled.em,
     code: styled.code,
     s: styled.strikethrough,
+    blockquote,
   },
 };
 
