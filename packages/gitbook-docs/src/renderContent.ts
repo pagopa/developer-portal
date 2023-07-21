@@ -4,16 +4,18 @@ import { ReactShape } from './ReactShape';
 import { SwaggerProps } from './markdoc/schema/swagger';
 import { LinkProps } from './markdoc/schema/link';
 import { HintProps } from './markdoc/schema/hint';
-import { FigureProps } from './markdoc/schema/figure';
+import { ImageProps } from './markdoc/schema/image';
 import { ParagraphProps } from './markdoc/schema/paragraph';
 import { HeadingProps } from './markdoc/schema/heading';
 import { ListProps } from './markdoc/schema/list';
 import { ItemProps } from './markdoc/schema/item';
 import { CodeBlockProps } from './markdoc/schema/code';
+import { StyledText } from './markdoc/schema/styledText';
 import { QuoteProps } from './markdoc/schema/blockquote';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
+  readonly StyledText: (props: StyledText) => A;
   readonly Paragraph: (props: ParagraphProps<A>) => A;
   readonly Heading: (props: HeadingProps<A>) => A;
   readonly List: (props: ListProps<A>) => A;
@@ -22,7 +24,7 @@ export type RenderingComponents<A> = {
   readonly Quote: (props: QuoteProps<A>) => A;
   readonly CodeBlock: (props: CodeBlockProps<A>) => A;
   // readonly File: (props: FileProps<A>) => A;
-  readonly Figure: (props: FigureProps<A>) => A;
+  readonly Image: (props: ImageProps) => A;
   // readonly Embed: (props: EmbedProps<A>) => A;
   // readonly Table: (props: TableProps<A>) => A;
   // readonly Cards: (props: CardsProps<A>) => A;

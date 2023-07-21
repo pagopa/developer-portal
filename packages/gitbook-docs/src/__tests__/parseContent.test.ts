@@ -7,6 +7,16 @@ const config = {
 };
 
 describe('parseContent', () => {
+  it('should ignore any <p> tag', () => {
+    expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
+    ]);
+  });
+  it('should ignore any anchor tag', () => {
+    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, []),
+    ]);
+  });
   it('should parse heading', () => {
     expect(parseContent('# h1\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
@@ -72,7 +82,18 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should parse Image', () => {
+  it('should parse img', () => {
+    expect(
+      parseContent('<img src="img-src.jpg" alt="anAlt">', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+      }),
+    ]);
+  });
+
+  it('should parse figure', () => {
     expect(
       parseContent(
         '<figure><img src="img-src.jpg" alt="anAlt"></figure>',
@@ -80,14 +101,10 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag(
-          'Figure',
-          {
-            src: `${config.assetsPrefix}/img-src.jpg`,
-            alt: 'anAlt',
-          },
-          []
-        ),
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+        }),
       ]),
     ]);
     expect(
@@ -97,14 +114,11 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag(
-          'Figure',
-          {
-            src: `${config.assetsPrefix}/img-src.jpg`,
-            alt: 'anAlt',
-          },
-          ['Caption']
-        ),
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: 'Caption',
+        }),
       ]),
     ]);
   });
@@ -163,6 +177,41 @@ describe('parseContent', () => {
         ["console.log('Hello')\nconsole.log('there')\n"]
       ),
     ]);
+  });
+
+  it('should parse styled text', () => {
+    expect(parseContent('This is **Bold**', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Bold']),
+      ]),
+    ]);
+    expect(parseContent('This is _Italic_', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'italic' }, ['Italic']),
+      ]),
+    ]);
+    expect(parseContent('This is `Code`', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'code' }, ['Code']),
+      ]),
+    ]);
+    expect(parseContent('This is ~~Strikethrough~~', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strikethrough' }, [
+          'Strikethrough',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should ignore mark tag', () => {
+    expect(
+      parseContent('This is <mark style="color:orange;">Mark</mark>', config)
+    ).toStrictEqual([new Markdoc.Tag('Paragraph', {}, ['This is ', 'Mark'])]);
   });
 
   it('should parse quote', () => {

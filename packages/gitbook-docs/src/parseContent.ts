@@ -1,7 +1,7 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
-import { figure } from './markdoc/schema/figure';
+import { figure, img } from './markdoc/schema/image';
 import { swagger } from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
@@ -9,6 +9,7 @@ import { link } from './markdoc/schema/link';
 import { list } from './markdoc/schema/list';
 import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
+import * as styled from './markdoc/schema/styledText';
 import { blockquote } from './markdoc/schema/blockquote';
 
 export const pairedHtmlTag = (tag: string) => ({
@@ -23,10 +24,14 @@ export const unpairedHtmlTag = (tag: string) => ({
 const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
+const markR = pairedHtmlTag('mark');
+const anchorR = pairedHtmlTag('a');
+const pR = pairedHtmlTag('p');
 
 const schema: ConfigType = {
   tags: {
     hint,
+    img,
     figure,
     swagger,
     code,
@@ -39,6 +44,10 @@ const schema: ConfigType = {
     list,
     item,
     fence,
+    strong: styled.strong,
+    em: styled.em,
+    code: styled.code,
+    s: styled.strikethrough,
     blockquote,
   },
 };
@@ -55,7 +64,10 @@ export const parseContent = (
     .replaceAll('{% end', '{% /')
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
-    .replaceAll(figcaptionR.regex, figcaptionR.replace);
+    .replaceAll(figcaptionR.regex, figcaptionR.replace)
+    .replaceAll(markR.regex, markR.replace)
+    .replaceAll(anchorR.regex, anchorR.replace)
+    .replaceAll(pR.regex, pR.replace);
 
   const ast = Markdoc.parse(markdoc);
   return Markdoc.transform(ast, { ...schema, variables: config });
