@@ -9,6 +9,7 @@ import { link } from './markdoc/schema/link';
 import { list } from './markdoc/schema/list';
 import { item } from './markdoc/schema/item';
 import { code, fence } from './markdoc/schema/code';
+import { file } from './markdoc/schema/file';
 import * as styled from './markdoc/schema/styledText';
 import { blockquote } from './markdoc/schema/blockquote';
 import { embed } from './markdoc/schema/embed';
@@ -37,6 +38,7 @@ const schema: ConfigType = {
     swagger,
     code,
     embed,
+    file,
   },
   nodes: {
     document: undefined,
