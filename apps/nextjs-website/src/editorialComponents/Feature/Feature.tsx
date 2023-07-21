@@ -1,6 +1,6 @@
 // TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
@@ -44,9 +44,14 @@ const Feature = (props: FeatureProps) => {
         )}
       </Grid>
       <Grid item mt={8}>
-        <Grid container spacing={{ xs: 6, md: 4 }} justifyContent='center'>
+        <Grid container justifyContent='center'>
           {items.map((item, index) => (
-            <Grid md={3} item key={index}>
+            <Grid
+              md={items.length < 4 ? 4 : 3}
+              px={{ xs: 4, md: items.length < 4 ? 7 : 2 }}
+              item
+              key={index}
+            >
               <FeatureStackItem theme={theme} item={item} />
             </Grid>
           ))}

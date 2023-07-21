@@ -11,9 +11,11 @@ import { ListProps } from './markdoc/schema/list';
 import { ItemProps } from './markdoc/schema/item';
 import { CodeBlockProps } from './markdoc/schema/code';
 import { FileProps } from './markdoc/schema/file';
+import { StyledText } from './markdoc/schema/styledText';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
+  readonly StyledText: (props: StyledText) => A;
   readonly Paragraph: (props: ParagraphProps<A>) => A;
   readonly Heading: (props: HeadingProps<A>) => A;
   readonly List: (props: ListProps<A>) => A;

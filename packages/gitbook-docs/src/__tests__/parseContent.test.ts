@@ -7,6 +7,16 @@ const config = {
 };
 
 describe('parseContent', () => {
+  it('should ignore any <p> tag', () => {
+    expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
+    ]);
+  });
+  it('should ignore any anchor tag', () => {
+    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, []),
+    ]);
+  });
   it('should parse heading', () => {
     expect(parseContent('# h1\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
@@ -183,4 +193,40 @@ describe('parseContent', () => {
       }),
     ]);
   });
+
+  it('should parse styled text', () => {
+    expect(parseContent('This is **Bold**', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Bold']),
+      ]),
+    ]);
+    expect(parseContent('This is _Italic_', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'italic' }, ['Italic']),
+      ]),
+    ]);
+    expect(parseContent('This is `Code`', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'code' }, ['Code']),
+      ]),
+    ]);
+    expect(parseContent('This is ~~Strikethrough~~', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strikethrough' }, [
+          'Strikethrough',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should ignore mark tag', () => {
+    expect(
+      parseContent('This is <mark style="color:orange;">Mark</mark>', config)
+    ).toStrictEqual([new Markdoc.Tag('Paragraph', {}, ['This is ', 'Mark'])]);
+  });
+
 });
