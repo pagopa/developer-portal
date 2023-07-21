@@ -213,4 +213,27 @@ describe('parseContent', () => {
       parseContent('This is <mark style="color:orange;">Mark</mark>', config)
     ).toStrictEqual([new Markdoc.Tag('Paragraph', {}, ['This is ', 'Mark'])]);
   });
+
+  it('should parse quote', () => {
+    const inlineQuote = '> « attività di riconciliazione del pagamento »';
+    expect(parseContent(inlineQuote, config)).toStrictEqual([
+      new Markdoc.Tag('Quote', {}, [
+        new Markdoc.Tag('Paragraph', {}, [
+          '« attività di riconciliazione del pagamento »',
+        ]),
+      ]),
+    ]);
+
+    expect(
+      parseContent('> This is a quote.\n> Another line, same quote', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Quote', {}, [
+        new Markdoc.Tag('Paragraph', {}, [
+          'This is a quote.',
+          ' ',
+          'Another line, same quote',
+        ]),
+      ]),
+    ]);
+  });
 });
