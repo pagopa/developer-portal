@@ -256,6 +256,29 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse tabs', () => {
+    const tabsText =
+      '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}';
+    expect(parseContent(tabsText, config)).toStrictEqual([
+      new Markdoc.Tag('Tabs', {}, [
+        new Markdoc.Tag(
+          'Tab',
+          {
+            title: 'Tab 1',
+          },
+          [new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content'])]
+        ),
+        new Markdoc.Tag(
+          'Tab',
+          {
+            title: 'Tab 2',
+          },
+          [new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content'])]
+        ),
+      ]),
+    ]);
+  });
+
   it('should parse embed', () => {
     const embed =
       '{% embed url="https://www.pagopa.it/" %}\n' +

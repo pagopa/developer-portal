@@ -35,6 +35,8 @@ const components: RenderingComponents<ReactNode> = {
     ) : (
       <li className={'checkable'}>{children}</li>
     ),
+  Tabs: ({ children }) => <div>TODO: render Tabs</div>,
+  Tab: ({ children }) => <div>TODO: rebder Tab</div>,
 };
 
 const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>
