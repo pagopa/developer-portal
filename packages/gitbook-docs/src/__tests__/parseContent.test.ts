@@ -256,7 +256,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it.only('should parse embed', () => {
+  it('should parse embed', () => {
     const embed =
       '{% embed url="https://www.pagopa.it/" %}\n' +
       'This is a caption\n' +
