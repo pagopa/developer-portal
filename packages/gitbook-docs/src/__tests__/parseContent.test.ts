@@ -174,4 +174,39 @@ describe('parseContent', () => {
       ),
     ]);
   });
+
+  it('should parse styled text', () => {
+    expect(parseContent('This is **Bold**', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Bold']),
+      ]),
+    ]);
+    expect(parseContent('This is _Italic_', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'italic' }, ['Italic']),
+      ]),
+    ]);
+    expect(parseContent('This is `Code`', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'code' }, ['Code']),
+      ]),
+    ]);
+    expect(parseContent('This is ~~Strikethrough~~', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'This is ',
+        new Markdoc.Tag('StyledText', { style: 'strikethrough' }, [
+          'Strikethrough',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should ignore mark tag', () => {
+    expect(
+      parseContent('This is <mark style="color:orange;">Mark</mark>', config)
+    ).toStrictEqual([new Markdoc.Tag('Paragraph', {}, ['This is ', 'Mark'])]);
+  });
 });
