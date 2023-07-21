@@ -1,5 +1,4 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
-import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
 import { figure, img } from './markdoc/schema/image';
 import { swagger } from './markdoc/schema/swagger';
@@ -15,7 +14,8 @@ import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
 import { tab } from './markdoc/schema/tab';
 
-export type ParseContentConfig = Pick<ParseConfig, 'assetsPrefix'> & {
+export type ParseContentConfig = {
+  readonly assetsPrefix: string;
   readonly pagePath: string;
   readonly isPageIndex: boolean;
 };
