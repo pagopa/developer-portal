@@ -278,5 +278,4 @@ describe('parseContent', () => {
       ]),
     ]);
   });
-
 });
