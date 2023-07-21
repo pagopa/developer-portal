@@ -4,7 +4,7 @@ import { ReactShape } from './ReactShape';
 import { SwaggerProps } from './markdoc/schema/swagger';
 import { LinkProps } from './markdoc/schema/link';
 import { HintProps } from './markdoc/schema/hint';
-import { ImageProps } from './markdoc/schema/figure';
+import { ImageProps } from './markdoc/schema/image';
 import { ParagraphProps } from './markdoc/schema/paragraph';
 import { HeadingProps } from './markdoc/schema/heading';
 import { ListProps } from './markdoc/schema/list';
