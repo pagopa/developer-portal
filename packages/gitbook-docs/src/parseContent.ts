@@ -14,6 +14,7 @@ import * as styled from './markdoc/schema/styledText';
 import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
 import { tab } from './markdoc/schema/tab';
+import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
 
 export const pairedHtmlTag = (tag: string) => ({
@@ -31,6 +32,8 @@ const figcaptionR = pairedHtmlTag('figcaption');
 const markR = pairedHtmlTag('mark');
 const anchorR = pairedHtmlTag('a');
 const pR = pairedHtmlTag('p');
+const detailsR = pairedHtmlTag('details');
+const summaryR = pairedHtmlTag('summary');
 
 const schema: ConfigType = {
   tags: {
@@ -43,6 +46,7 @@ const schema: ConfigType = {
     file,
     tab,
     tabs,
+    details,
   },
   nodes: {
     document: undefined,
@@ -75,7 +79,9 @@ export const parseContent = (
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(anchorR.regex, anchorR.replace)
-    .replaceAll(pR.regex, pR.replace);
+    .replaceAll(pR.regex, pR.replace)
+    .replaceAll(detailsR.regex, detailsR.replace)
+    .replaceAll(summaryR.regex, summaryR.replace);
 
   const ast = Markdoc.parse(markdoc);
   return Markdoc.transform(ast, { ...schema, variables: config });

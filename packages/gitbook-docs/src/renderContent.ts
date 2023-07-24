@@ -16,6 +16,11 @@ import { QuoteProps } from './markdoc/schema/blockquote';
 import { TabsProps } from './markdoc/schema/tabs';
 import { TabProps } from './markdoc/schema/tab';
 import { EmbedProps } from './markdoc/schema/embed';
+import {
+  ExpandableDetailsProps,
+  ExpandableProps,
+  ExpandableSummaryProps,
+} from './markdoc/schema/details';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -34,7 +39,9 @@ export type RenderingComponents<A> = {
   // readonly Cards: (props: CardsProps<A>) => A;
   readonly Tabs: (props: TabsProps<A>) => A;
   readonly Tab: (props: TabProps<A>) => A;
-  // readonly Expandable: (props: ExpandableProps<A>) => A;
+  readonly Expandable: (props: ExpandableProps<A>) => A;
+  readonly ExpandableSummary: (props: ExpandableSummaryProps<A>) => A;
+  readonly ExpandableDetails: (props: ExpandableDetailsProps<A>) => A;
   readonly Swagger: (props: SwaggerProps) => A;
   // readonly PageLink: (props: PageLinkProps<A>) => A;
 };
