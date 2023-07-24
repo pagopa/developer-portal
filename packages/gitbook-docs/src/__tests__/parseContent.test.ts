@@ -297,13 +297,9 @@ describe('parseContent', () => {
     expect(
       parseContent('{% embed url="https://www.pagopa.it/" %}\nhi', config)
     ).toStrictEqual([
-      new Markdoc.Tag(
-        'Embed',
-        {
-          url: 'https://www.pagopa.it/',
-        },
-        []
-      ),
+      new Markdoc.Tag('Embed', {
+        url: 'https://www.pagopa.it/',
+      }),
       new Markdoc.Tag('Paragraph', {}, ['hi']),
     ]);
   });
