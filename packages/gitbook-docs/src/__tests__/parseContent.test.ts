@@ -278,4 +278,29 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+
+  it('should parse embed', () => {
+    const embed =
+      '{% embed url="https://www.pagopa.it/" %}\n' +
+      'This is a caption\n' +
+      '{% endembed %}';
+    expect(parseContent(embed, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'Embed',
+        {
+          url: 'https://www.pagopa.it/',
+        },
+        [new Markdoc.Tag('Paragraph', {}, ['This is a caption'])]
+      ),
+    ]);
+
+    expect(
+      parseContent('{% embed url="https://www.pagopa.it/" %}\nhi', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Embed', {
+        url: 'https://www.pagopa.it/',
+      }),
+      new Markdoc.Tag('Paragraph', {}, ['hi']),
+    ]);
+  });
 });

@@ -15,6 +15,7 @@ import { StyledText } from './markdoc/schema/styledText';
 import { QuoteProps } from './markdoc/schema/blockquote';
 import { TabsProps } from './markdoc/schema/tabs';
 import { TabProps } from './markdoc/schema/tab';
+import { EmbedProps } from './markdoc/schema/embed';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -28,7 +29,7 @@ export type RenderingComponents<A> = {
   readonly CodeBlock: (props: CodeBlockProps<A>) => A;
   readonly File: (props: FileProps) => A;
   readonly Image: (props: ImageProps) => A;
-  // readonly Embed: (props: EmbedProps<A>) => A;
+  readonly Embed: (props: EmbedProps<A>) => A;
   // readonly Table: (props: TableProps<A>) => A;
   // readonly Cards: (props: CardsProps<A>) => A;
   readonly Tabs: (props: TabsProps<A>) => A;
