@@ -1,6 +1,7 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 import path from 'path';
 import { SrcAttr } from '../attributes';
+import { hasMissingClosingError } from '../errors';
 
 export type FileProps = {
   readonly src: string;
@@ -20,7 +21,7 @@ export const file: Schema = {
     const filename = typeof src === 'string' ? path.parse(src).name : 'Unknown';
     const attrs = { ...node.transformAttributes(config), filename };
     // handle a file without closing tag as self-closing tag
-    if (!node.errors.find((n) => n.id === 'missing-closing')) {
+    if (!hasMissingClosingError(node.errors, 'missing-closing')) {
       // find text node to use as caption
       const textCnt = Array.from(node.walk()).find((n) => n.type === 'text')
         ?.attributes['content'];

@@ -19,6 +19,7 @@ const components: RenderingComponents<ReactNode> = {
   Quote: ({ children }) => <div>TODO: render Quote {children}</div>,
   CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
   Image: ({ src }) => <div>TODO: render Figure {src}</div>,
+  Embed: ({ url }) => <a href={url} />,
   File: ({ src }) => <div>TODO: render File {src}</div>,
   Paragraph: ({ children }) => <div>TODO: render Paragraph {children}</div>,
   Heading: ({ level, children }) => (

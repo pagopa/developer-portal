@@ -15,6 +15,7 @@ import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
 import { tab } from './markdoc/schema/tab';
 import { details } from './markdoc/schema/details';
+import { embed } from './markdoc/schema/embed';
 
 export const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
@@ -41,6 +42,7 @@ const schema: ConfigType = {
     figure,
     swagger,
     code,
+    embed,
     file,
     tab,
     tabs,
