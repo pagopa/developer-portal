@@ -44,6 +44,12 @@ const components: RenderingComponents<ReactNode> = {
   ExpandableDetails: ({ children }) => (
     <div className={'details'}>{children}</div>
   ),
+  Table: ({ children }) => <table>{children}</table>,
+  TableHead: ({ children }) => <thead>{children}</thead>,
+  TableBody: ({ children }) => <tbody>{children}</tbody>,
+  TableH: ({ children }) => <th>{children}</th>,
+  TableR: ({ children }) => <tr>{children}</tr>,
+  TableD: ({ children }) => <td>{children}</td>,
 };
 
 const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>
