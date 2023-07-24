@@ -4,6 +4,8 @@ import React, { ReactNode } from 'react';
 
 type GuideContentProps = {
   assetsPrefix: string;
+  pagePath: string;
+  isPageIndex: boolean;
   content: string;
 };
 
@@ -52,7 +54,16 @@ const components: RenderingComponents<ReactNode> = {
   TableD: ({ children }) => <td>{children}</td>,
 };
 
-const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>
-  renderContent(parseContent(content, { assetsPrefix }), React, components);
+const GuideContent = ({
+  content,
+  assetsPrefix,
+  pagePath,
+  isPageIndex,
+}: GuideContentProps) =>
+  renderContent(
+    parseContent(content, { assetsPrefix, pagePath, isPageIndex }),
+    React,
+    components
+  );
 
 export default GuideContent;

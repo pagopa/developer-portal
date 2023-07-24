@@ -1,5 +1,4 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
-import { ParseConfig } from './ParseConfig';
 import { hint } from './markdoc/schema/hint';
 import { figure, img } from './markdoc/schema/image';
 import { swagger } from './markdoc/schema/swagger';
@@ -18,11 +17,17 @@ import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
 import * as t from './markdoc/schema/table';
 
-export const pairedHtmlTag = (tag: string) => ({
+export type ParseContentConfig = {
+  readonly assetsPrefix: string;
+  readonly pagePath: string;
+  readonly isPageIndex: boolean;
+};
+
+const pairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}([^>]*?)>(.*?)</${tag}>`, 'gs'),
   replace: `{% ${tag}$1 %}$2{% /${tag} %}`,
 });
-export const unpairedHtmlTag = (tag: string) => ({
+const unpairedHtmlTag = (tag: string) => ({
   regex: new RegExp(`<${tag}(.*?)>`, 'g'),
   replace: `{% ${tag}$1 / %}`,
 });
@@ -73,7 +78,7 @@ const schema: ConfigType = {
 
 export const parseContent = (
   markdown: string,
-  config: Omit<ParseConfig, 'linkPrefix'>
+  config: ParseContentConfig
 ): RenderableTreeNode => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
