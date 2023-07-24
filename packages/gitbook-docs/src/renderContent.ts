@@ -21,6 +21,14 @@ import {
   ExpandableProps,
   ExpandableSummaryProps,
 } from './markdoc/schema/details';
+import {
+  TableBodyProps,
+  TableDProps,
+  TableHProps,
+  TableHeadProps,
+  TableProps,
+  TableRProps,
+} from './markdoc/schema/table';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -35,7 +43,12 @@ export type RenderingComponents<A> = {
   readonly File: (props: FileProps) => A;
   readonly Image: (props: ImageProps) => A;
   readonly Embed: (props: EmbedProps<A>) => A;
-  // readonly Table: (props: TableProps<A>) => A;
+  readonly Table: (props: TableProps<A>) => A;
+  readonly TableHead: (props: TableHeadProps<A>) => A;
+  readonly TableBody: (props: TableBodyProps<A>) => A;
+  readonly TableH: (props: TableHProps<A>) => A;
+  readonly TableR: (props: TableRProps<A>) => A;
+  readonly TableD: (props: TableDProps<A>) => A;
   // readonly Cards: (props: CardsProps<A>) => A;
   readonly Tabs: (props: TabsProps<A>) => A;
   readonly Tab: (props: TabProps<A>) => A;
