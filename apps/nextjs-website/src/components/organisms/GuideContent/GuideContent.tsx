@@ -36,6 +36,13 @@ const components: RenderingComponents<ReactNode> = {
     ),
   Tabs: ({ children }) => <div>TODO: render Tabs</div>,
   Tab: ({ children }) => <div>TODO: rebder Tab</div>,
+  Expandable: ({ children }) => <div className={'expandable'}>{children}</div>,
+  ExpandableSummary: ({ children }) => (
+    <div className={'summary'}>{children}</div>
+  ),
+  ExpandableDetails: ({ children }) => (
+    <div className={'details'}>{children}</div>
+  ),
 };
 
 const GuideContent = ({ content, assetsPrefix }: GuideContentProps) =>

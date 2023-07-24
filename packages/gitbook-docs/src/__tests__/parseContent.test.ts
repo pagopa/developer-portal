@@ -278,4 +278,20 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+
+  it('should parse expandable', () => {
+    expect(
+      parseContent(
+        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n\n</details>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Expandable', {}, [
+        new Markdoc.Tag('ExpandableSummary', {}, ['A Summary']),
+        new Markdoc.Tag('ExpandableDetails', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['A Details']),
+        ]),
+      ]),
+    ]);
+  });
 });
