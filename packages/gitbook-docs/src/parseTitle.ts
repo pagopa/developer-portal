@@ -9,10 +9,9 @@ const parseText = ({ type, attributes }: Node): O.Option<string> =>
     ? O.fromNullable(attributes.content)
     : O.none;
 
-export const parseTitle = (markdown: string): O.Option<string> => {
-  const ast = Markdoc.parse(markdown);
-  const result = pipe(
-    Array.from(ast.walk()),
+export const parseTitle = (markdown: string): O.Option<string> =>
+  pipe(
+    Array.from(Markdoc.parse(markdown).walk()),
     RA.findFirst(
       ({ type, attributes }) => type === 'heading' && attributes.level === 1
     ),
@@ -24,5 +23,3 @@ export const parseTitle = (markdown: string): O.Option<string> => {
       )
     )
   );
-  return result;
-};
