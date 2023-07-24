@@ -15,7 +15,6 @@ const summary: Schema = {
 };
 
 export const details: Schema = {
-  render: 'Expandable',
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
     const children = node.transformChildren({
