@@ -292,6 +292,8 @@ describe('parseContent', () => {
           new Markdoc.Tag('Paragraph', {}, ['A Details']),
         ]),
       ]),
+    ]);
+  });
 
   it('should parse embed', () => {
     const embed =
