@@ -42,6 +42,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           borderBottom: { xs: 'none', md: boxBorder },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
           padding: spacing(3),
+          minWidth: 200,
         }}
       >
         <Stack>
@@ -78,6 +79,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
         language={
           isLifeCycleCallPhase ? apiRequest.language : apiResponse.language
         }
+        maxWidth={450}
         mode='dark'
         title={
           isLifeCycleCallPhase

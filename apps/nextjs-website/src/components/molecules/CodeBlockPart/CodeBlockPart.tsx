@@ -12,6 +12,7 @@ export type CodeBlockPartProps = {
   mode?: 'light' | 'dark';
   showLineNumbers?: boolean;
   title?: string;
+  maxWidth?: number | 'auto';
   wrapLines?: boolean;
 };
 
@@ -21,6 +22,7 @@ const CodeBlockPart = ({
   mode = 'light',
   showLineNumbers = false,
   title,
+  maxWidth = 'auto',
   wrapLines = true,
 }: CodeBlockPartProps) => {
   const { spacing, palette } = useTheme();
@@ -46,6 +48,7 @@ const CodeBlockPart = ({
         customStyle={{
           padding: title ? '5em 1em 1.25em 1em' : '1.25em 1em',
           width: isLightMode ? '' : '100%',
+          maxWidth,
         }}
       >
         {code}
@@ -73,7 +76,7 @@ const CodeBlockPart = ({
           padding: 0,
           position: 'absolute',
           right: '20px',
-          top: '20px',
+          top: '28px',
         }}
       >
         <ContentCopy
