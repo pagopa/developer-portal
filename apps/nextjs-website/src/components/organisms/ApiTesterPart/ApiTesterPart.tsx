@@ -14,11 +14,11 @@ type ApiPhaseDescription = {
 };
 
 export type ApiTesterPartProps = {
-  apiCall: ApiPhaseDescription;
+  apiRequest: ApiPhaseDescription;
   apiResponse: ApiPhaseDescription;
 };
 
-const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
+const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
   const { spacing, palette } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const { quickStartGuide } = translations;
@@ -44,7 +44,7 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
           padding: spacing(3),
         }}
       >
-        {(isLifeCycleCallPhase ? apiCall.parts : apiResponse.parts).map(
+        {(isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts).map(
           (part: Part, index: number) => (
             <PartRenderer key={index} part={part} />
           )
@@ -54,7 +54,7 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
             onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
             variant='contained'
           >
-            {quickStartGuide.content.apiPhases.call.cta.label}
+            {quickStartGuide.content.apiPhases.request.cta.label}
           </Button>
         ) : (
           <Button
@@ -72,14 +72,14 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
         )}
       </Box>
       <CodeBlockPart
-        code={isLifeCycleCallPhase ? apiCall.code : apiResponse.code}
+        code={isLifeCycleCallPhase ? apiRequest.code : apiResponse.code}
         language={
-          isLifeCycleCallPhase ? apiCall.language : apiResponse.language
+          isLifeCycleCallPhase ? apiRequest.language : apiResponse.language
         }
         mode='dark'
         title={
           isLifeCycleCallPhase
-            ? quickStartGuide.content.apiPhases.call.title
+            ? quickStartGuide.content.apiPhases.request.title
             : quickStartGuide.content.apiPhases.response.title
         }
       ></CodeBlockPart>
