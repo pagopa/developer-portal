@@ -108,7 +108,7 @@ export const translations = {
   quickStartGuide: {
     content: {
       apiPhases: {
-        call: {
+        request: {
           cta: {
             label: 'Invia la richiesta',
           },
