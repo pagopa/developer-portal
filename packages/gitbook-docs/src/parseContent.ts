@@ -1,4 +1,5 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
+import { document } from './markdoc/schema/document';
 import { hint } from './markdoc/schema/hint';
 import { figure, img } from './markdoc/schema/image';
 import { swagger } from './markdoc/schema/swagger';
@@ -55,7 +56,7 @@ const schema: ConfigType = {
     details,
   },
   nodes: {
-    document: undefined,
+    document,
     paragraph,
     heading,
     link,

@@ -26,6 +26,18 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse the description from frontmatter and put after the title or on beginning', () => {
+    const markdown = '---\ndescription: >-\n  This is\n  a description\n---\n';
+    expect(parseContent(`${markdown}# A Title`, config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1 }, ['A Title']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+    ]);
+    expect(parseContent(`${markdown}A paragraph`, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+      new Markdoc.Tag('Paragraph', {}, ['A paragraph']),
+    ]);
+  });
+
   it('should parse paragraph', () => {
     expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
