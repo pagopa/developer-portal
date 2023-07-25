@@ -22,7 +22,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
   const { spacing, palette } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const { quickStartGuide } = translations;
-  const boxBorder = `1px solid #DCDCDC`;
+  const boxBorder = `1px solid ${palette.grey[300]}`;
 
   return (
     <Box
