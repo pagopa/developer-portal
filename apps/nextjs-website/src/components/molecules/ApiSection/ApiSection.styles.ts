@@ -21,6 +21,7 @@ export const styles = {
   selectContainer: {
     background: '#0062C3',
     height: 72,
+    paddingRight: 2,
   },
   soapContainer: {
     background: '#0062C3',
