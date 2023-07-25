@@ -17,7 +17,7 @@ type Params = {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: getQuickStartGuidePaths() as string[],
+  paths: [...getQuickStartGuidePaths()],
   fallback: false,
 });
 
