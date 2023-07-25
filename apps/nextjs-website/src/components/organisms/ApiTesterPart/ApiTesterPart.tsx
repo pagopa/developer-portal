@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
@@ -44,32 +44,34 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           padding: spacing(3),
         }}
       >
-        {(isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts).map(
-          (part: Part, index: number) => (
-            <PartRenderer key={index} part={part} />
-          )
-        )}
-        {isLifeCycleCallPhase ? (
-          <Button
-            onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
-            variant='contained'
-          >
-            {quickStartGuide.content.apiPhases.request.cta.label}
-          </Button>
-        ) : (
-          <Button
-            onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
-          >
-            <Box sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}>
-              <IconWrapper
-                color={palette.primary.main}
-                size={20}
-                icon={quickStartGuide.content.apiPhases.response.cta.icon}
-              />
-            </Box>
-            {quickStartGuide.content.apiPhases.response.cta.label}
-          </Button>
-        )}
+        <Stack>
+          {(isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts).map(
+            (part: Part, index: number) => (
+              <PartRenderer key={index} part={part} />
+            )
+          )}
+          {isLifeCycleCallPhase ? (
+            <Button
+              onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
+              variant='contained'
+            >
+              {quickStartGuide.content.apiPhases.request.cta.label}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
+            >
+              <Box sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}>
+                <IconWrapper
+                  color={palette.primary.main}
+                  size={20}
+                  icon={quickStartGuide.content.apiPhases.response.cta.icon}
+                />
+              </Box>
+              {quickStartGuide.content.apiPhases.response.cta.label}
+            </Button>
+          )}
+        </Stack>
       </Box>
       <CodeBlockPart
         code={isLifeCycleCallPhase ? apiRequest.code : apiResponse.code}
