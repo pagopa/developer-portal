@@ -25,7 +25,8 @@ function Tab({ id, children }: TabProps) {
   const context = useContext(TabSwitcherContext);
   const { palette } = useTheme();
   if (!context) {
-    return new Error(
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
       'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
     );
   }
@@ -60,7 +61,8 @@ type TabPanelProps = {
 function TabPanel({ whenActive, children }: TabPanelProps) {
   const context = useContext(TabSwitcherContext);
   if (!context) {
-    return new Error(
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
       'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
     );
   }
