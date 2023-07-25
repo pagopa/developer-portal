@@ -37,6 +37,7 @@ const CodeBlockPart = ({
         marginBottom: isLightMode ? spacing(5) : 0,
         position: 'relative',
       }}
+      maxWidth={{ xs: '100%', md: maxWidth }}
     >
       <SyntaxHighlighter
         className={styles.SyntaxHighlighter}
@@ -48,7 +49,6 @@ const CodeBlockPart = ({
         customStyle={{
           padding: title ? '5em 1em 1.25em 1em' : '1.25em 1em',
           width: isLightMode ? '' : '100%',
-          maxWidth,
         }}
       >
         {code}
