@@ -23,7 +23,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'apiTester',
-          apiCall: {
+          apiRequest: {
             code:
               '{\n' +
               '  "id": "01GG4NFBCN4ZH8ETCCKX3766KX",\n' +
