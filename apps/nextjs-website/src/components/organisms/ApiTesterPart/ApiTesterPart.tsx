@@ -77,7 +77,11 @@ const ApiTesterPart = ({ apiCall, apiResponse }: ApiTesterPartProps) => {
           isLifeCycleCallPhase ? apiCall.language : apiResponse.language
         }
         mode='dark'
-        title={isLifeCycleCallPhase ? 'Chiamata' : 'Risposta'}
+        title={
+          isLifeCycleCallPhase
+            ? quickStartGuide.content.apiPhases.call.title
+            : quickStartGuide.content.apiPhases.response.title
+        }
       ></CodeBlockPart>
     </Box>
   );

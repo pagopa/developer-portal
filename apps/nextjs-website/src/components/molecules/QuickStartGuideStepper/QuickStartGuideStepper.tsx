@@ -9,7 +9,7 @@ import TabSwitcherProvider, {
   Tab,
   TabPanel,
 } from '@/components/organisms/TabSwitcherProvider/TabSwitcherProvider';
-import GoToStep from '@/components/molecules/GoToStep/GoToStep';
+import GoToStep from '@/components/atoms/GoToStep/GoToStep';
 
 type QuickStartGuideStepperProps = {
   readonly defaultStepAnchor?: string;
