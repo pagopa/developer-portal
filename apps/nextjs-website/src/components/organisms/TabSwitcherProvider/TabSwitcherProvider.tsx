@@ -25,10 +25,9 @@ function Tab({ id, children }: TabProps) {
   const context = useContext(TabSwitcherContext);
   const { palette } = useTheme();
   if (!context) {
-    console.error(
+    return new Error(
       'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
     );
-    return null;
   }
 
   const { activeTabID, setActiveTabID } = context;
@@ -61,10 +60,9 @@ type TabPanelProps = {
 function TabPanel({ whenActive, children }: TabPanelProps) {
   const context = useContext(TabSwitcherContext);
   if (!context) {
-    console.error(
+    return new Error(
       'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
     );
-    return null;
   }
   const { activeTabID } = context;
 
