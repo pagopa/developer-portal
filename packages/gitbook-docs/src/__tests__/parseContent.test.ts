@@ -129,6 +129,14 @@ describe('parseContent', () => {
         alt: 'anAlt',
       }),
     ]);
+    expect(
+      parseContent('<img src="../../../img-src.jpg" alt="anAlt">', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+      }),
+    ]);
   });
 
   it('should parse figure', () => {
