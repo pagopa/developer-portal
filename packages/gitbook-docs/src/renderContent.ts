@@ -11,7 +11,7 @@ import { ListProps } from './markdoc/schema/list';
 import { ItemProps } from './markdoc/schema/item';
 import { CodeBlockProps } from './markdoc/schema/code';
 import { FileProps } from './markdoc/schema/file';
-import { StyledText } from './markdoc/schema/styledText';
+import { StyledTextProps } from './markdoc/schema/styledText';
 import { QuoteProps } from './markdoc/schema/blockquote';
 import { TabsProps } from './markdoc/schema/tabs';
 import { TabProps } from './markdoc/schema/tab';
@@ -32,7 +32,7 @@ import {
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
-  readonly StyledText: (props: StyledText) => A;
+  readonly StyledText: (props: StyledTextProps) => A;
   readonly Paragraph: (props: ParagraphProps<A>) => A;
   readonly Heading: (props: HeadingProps<A>) => A;
   readonly List: (props: ListProps<A>) => A;

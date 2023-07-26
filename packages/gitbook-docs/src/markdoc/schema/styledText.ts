@@ -1,6 +1,6 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 
-export type StyledText = {
+export type StyledTextProps = {
   readonly style: 'strong' | 'italic' | 'code' | 'strikethrough';
   readonly children: string;
 };

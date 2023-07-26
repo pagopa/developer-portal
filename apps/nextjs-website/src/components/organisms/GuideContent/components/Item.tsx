@@ -1,10 +1,15 @@
+import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 
 type ItemProps = {
-  checked: boolean;
+  checked?: boolean;
   children: ReactNode;
 };
 
-const Item = ({ checked, children }: ItemProps) => <li>{children}</li>;
+const Item = ({ children }: ItemProps) => (
+  <Typography component='li' variant='body1'>
+    {children}
+  </Typography>
+);
 
 export default Item;
