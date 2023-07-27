@@ -29,6 +29,9 @@ const CodeBlockPart = ({
   const { spacing, palette } = useTheme();
   const { shared } = translations;
   const isLightMode = mode === 'light';
+  const codeBackground = isLightMode
+    ? lightCustomStyle['code[class*="language-"]'].background
+    : darkCustomStyle['code[class*="language-"]'].background;
 
   return (
     <Box
@@ -71,7 +74,7 @@ const CodeBlockPart = ({
       )}
       <Box
         sx={{
-          backgroundColor: isLightMode ? '#F2F2F2' : '#414141',
+          backgroundColor: `${codeBackground}`,
           padding: 0,
           position: 'absolute',
           right: 0,

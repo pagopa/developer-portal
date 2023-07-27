@@ -4,6 +4,7 @@ import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
 import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
 import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
+import { appIoQuickStartGuidePath } from './quickStartGuidePath';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
