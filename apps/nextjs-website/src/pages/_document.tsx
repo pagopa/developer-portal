@@ -1,4 +1,4 @@
-import { environment } from '@/config';
+import { cookieDomainScript, environment } from '@/config';
 import { Html, Head, Main, NextScript } from 'next/document';
 
 const MATOMO_SCRIPT = `
@@ -18,7 +18,18 @@ _paq.push(["enableLinkTracking"]);
   s.parentNode.insertBefore(g, s);
 })();
 `;
+
+function makeCookieScript(dataDomainScript?: string) {
+  return `<!-- Inizio informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
+  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="${dataDomainScript}" ></script>
+  <script type="text/javascript">
+  function OptanonWrapper() { }
+  </script>
+  <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->`;
+}
+
 export default function Document() {
+  const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
     <Html lang='en'>
       <Head>
@@ -29,6 +40,7 @@ export default function Document() {
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
+        <div dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }} />
         <link rel='icon' href='favicon.svg' />
       </Head>
       <body>
