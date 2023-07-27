@@ -1,14 +1,9 @@
 import { ReactNode } from 'react';
 import MUILink from '@mui/material/Link';
 import NextLink from 'next/link';
+import { LinkProps } from 'gitbook-docs/markdoc/schema/link';
 
-type LinkProps = {
-  title?: string;
-  href: string;
-  children: ReactNode;
-};
-
-export const Link = ({ title, href, children }: LinkProps) => (
+export const Link = ({ title, href, children }: LinkProps<ReactNode>) => (
   <MUILink
     component={NextLink}
     href={href}

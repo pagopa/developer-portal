@@ -1,11 +1,7 @@
+import { ListProps } from 'gitbook-docs/markdoc/schema/list';
 import { ReactNode } from 'react';
 
-type ListProps = {
-  ordered: boolean;
-  children: ReactNode;
-};
-
-const List = ({ ordered, children }: ListProps) =>
+const List = ({ ordered, children }: ListProps<ReactNode>) =>
   ordered ? <ol>{children}</ol> : <ul>{children}</ul>;
 
 export default List;

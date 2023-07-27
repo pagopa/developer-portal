@@ -1,10 +1,6 @@
 import Typography from '@mui/material/Typography';
+import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import { ReactNode } from 'react';
-
-type HeadingProps = {
-  level: number;
-  children: ReactNode;
-};
 
 const asVariant = (level: number) => {
   switch (level) {
@@ -21,7 +17,7 @@ const asVariant = (level: number) => {
   }
 };
 
-const Heading = ({ level, children }: HeadingProps) => (
+const Heading = ({ level, children }: HeadingProps<ReactNode>) => (
   <Typography variant={asVariant(level)}>{children}</Typography>
 );
 

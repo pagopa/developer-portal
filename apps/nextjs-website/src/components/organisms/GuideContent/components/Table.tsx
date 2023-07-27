@@ -7,10 +7,7 @@ import MUITableRow from '@mui/material/TableRow';
 import MUITableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { ReactNode } from 'react';
 import Paper from '@mui/material/Paper';
-
-type Props = {
-  children: ReactNode;
-};
+import { TableProps } from 'gitbook-docs/markdoc/schema/table';
 
 const StyledTableCell = styled(MUITableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -22,7 +19,7 @@ const StyledTableCell = styled(MUITableCell)(({ theme }) => ({
   },
 }));
 
-export const Table = ({ children }: Props) => (
+export const Table = ({ children }: TableProps<ReactNode>) => (
   <MUITableContainer component={Paper}>
     <MUITable>{children}</MUITable>
   </MUITableContainer>
