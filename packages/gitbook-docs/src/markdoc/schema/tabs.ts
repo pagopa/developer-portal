@@ -5,10 +5,18 @@ export type TabsProps<A> = {
   readonly children: ReadonlyArray<A>;
 };
 
-export const tabs: Schema = {
-  children: ['tab'],
+const tab: Schema = {
   transform: (node, config) => {
     const children = node.transformChildren(config);
+    // Empty tab is not allowed. Fallback to an empty string
+    return children.length === 0 ? [''] : children;
+  },
+};
+
+export const tabs: Schema = {
+  transform: (node, config) => {
+    const tags = { ...config.tags, tab };
+    const children = node.transformChildren({ ...config, tags });
     // Assumption: children are tab tag. Take all titles from children
     const titles = node.children
       .filter((child) => typeof child.attributes.title === 'string')

@@ -303,12 +303,27 @@ describe('parseContent', () => {
   });
 
   it('should parse tabs', () => {
-    const tabsText =
-      '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}';
-    expect(parseContent(tabsText, config)).toStrictEqual([
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
       new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
         new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
         new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\n\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        '',
       ]),
     ]);
   });
