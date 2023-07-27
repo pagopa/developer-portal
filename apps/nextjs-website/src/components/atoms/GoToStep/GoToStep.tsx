@@ -19,7 +19,15 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
   const { quickStartGuide } = translations;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        paddingLeft: previousOrNext === 'next' ? 1 : 0,
+        paddingRight: previousOrNext === 'next' ? 0 : 1,
+        textAlign: previousOrNext === 'next' ? 'end' : 'start',
+      }}
+    >
       <Typography
         color='text.secondary'
         fontSize={14}
