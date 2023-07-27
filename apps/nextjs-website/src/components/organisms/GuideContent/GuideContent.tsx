@@ -22,6 +22,7 @@ import Expandable, {
   ExpandableSummary,
 } from './components/Expandable';
 import Tabs from './components/Tabs';
+import Quote from './components/Quote';
 
 type GuideContentProps = {
   assetsPrefix: string;
@@ -35,7 +36,7 @@ const components: RenderingComponents<ReactNode> = {
   Swagger: ({ src }) => <div>TODO: render Swagger element {src}</div>,
   Link: Link,
   Hint: Hint,
-  Quote: ({ children }) => <div>TODO: render Quote {children}</div>,
+  Quote: Quote,
   CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
   Image: Image,
   Embed: ({ url }) => <div>TODO: embed</div>,
