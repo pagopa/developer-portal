@@ -23,6 +23,7 @@ import Expandable, {
 } from './components/Expandable';
 import Tabs from './components/Tabs';
 import Quote from './components/Quote';
+import Embed from './components/Embed';
 
 type GuideContentProps = {
   assetsPrefix: string;
@@ -39,7 +40,7 @@ const components: RenderingComponents<ReactNode> = {
   Quote: Quote,
   CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
   Image: Image,
-  Embed: ({ url }) => <div>TODO: embed</div>,
+  Embed: Embed,
   File: File,
   Paragraph: Paragraph,
   Heading: Heading,
