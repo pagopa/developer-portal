@@ -1,7 +1,7 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { renderGitBookMarkdown } from '@/markdoc';
+import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
 
@@ -58,11 +58,12 @@ const Page = (props: ProductTutorialPageProps) => {
       showBreadcrumbs={false}
     >
       <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
-        {renderGitBookMarkdown(
-          props.body,
-          props.pathPrefix,
-          props.assetsPrefix
-        )}
+        <GitBookContent
+          assetsPrefix={props.assetsPrefix}
+          pagePath={props.path}
+          isPageIndex={false}
+          content={props.body}
+        />
       </Box>
     </Layout>
   );

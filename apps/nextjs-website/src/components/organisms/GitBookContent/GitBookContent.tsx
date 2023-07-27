@@ -25,7 +25,7 @@ import Tabs from './components/Tabs';
 import Quote from './components/Quote';
 import Embed from './components/Embed';
 
-type GuideContentProps = {
+type GitBookContentProps = {
   assetsPrefix: string;
   pagePath: string;
   isPageIndex: boolean;
@@ -58,16 +58,16 @@ const components: RenderingComponents<ReactNode> = {
   TableD: TableD,
 };
 
-const GuideContent = ({
+const GitBookContent = ({
   content,
   assetsPrefix,
   pagePath,
   isPageIndex,
-}: GuideContentProps) =>
+}: GitBookContentProps) =>
   renderContent(
     parseContent(content, { assetsPrefix, pagePath, isPageIndex }),
     React,
     components
   );
 
-export default GuideContent;
+export default GitBookContent;

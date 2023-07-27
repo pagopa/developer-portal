@@ -18,7 +18,9 @@ const asVariant = (level: number) => {
 };
 
 const Heading = ({ level, children }: HeadingProps<ReactNode>) => (
-  <Typography variant={asVariant(level)}>{children}</Typography>
+  <Typography variant={asVariant(level)} sx={{ py: 3 }}>
+    {children}
+  </Typography>
 );
 
 export default Heading;

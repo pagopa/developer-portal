@@ -10,7 +10,7 @@ import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
-import GuideContent from '@/components/organisms/GuideContent/GuideContent';
+import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 
 type Params = {
   productSlug: string;
@@ -151,7 +151,7 @@ const Page = (props: ProductGuidePageProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: { xs: '80px 40px', lg: '80px 438px 80px 40px' } }}>
-          <GuideContent
+          <GitBookContent
             assetsPrefix={props.assetsPrefix}
             pagePath={props.path}
             isPageIndex={props.isIndex}
