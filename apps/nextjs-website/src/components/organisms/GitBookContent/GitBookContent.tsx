@@ -24,6 +24,8 @@ import Expandable, {
 import Tabs from './components/Tabs';
 import Quote from './components/Quote';
 import Embed from './components/Embed';
+import CodeBlock from './components/CodeBlock';
+import Swagger from './components/Swagger';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -34,11 +36,11 @@ type GitBookContentProps = {
 
 const components: RenderingComponents<ReactNode> = {
   StyledText: StyledText,
-  Swagger: ({ src }) => <div>TODO: render Swagger element {src}</div>,
+  Swagger: Swagger,
   Link: Link,
   Hint: Hint,
   Quote: Quote,
-  CodeBlock: ({ children }) => <div>TODO: render code block {children}</div>,
+  CodeBlock: CodeBlock,
   Image: Image,
   Embed: Embed,
   File: File,
