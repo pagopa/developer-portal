@@ -13,7 +13,6 @@ import { file } from './markdoc/schema/file';
 import * as styled from './markdoc/schema/styledText';
 import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
-import { tab } from './markdoc/schema/tab';
 import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
 import * as t from './markdoc/schema/table';
@@ -51,7 +50,6 @@ const schema: ConfigType = {
     code,
     embed,
     file,
-    tab,
     tabs,
     details,
   },

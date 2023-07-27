@@ -21,6 +21,7 @@ import Expandable, {
   ExpandableDetails,
   ExpandableSummary,
 } from './components/Expandable';
+import Tabs from './components/Tabs';
 
 type GuideContentProps = {
   assetsPrefix: string;
@@ -43,8 +44,7 @@ const components: RenderingComponents<ReactNode> = {
   Heading: Heading,
   List: List,
   Item: Item,
-  Tabs: ({ children }) => <div>TODO: render Tabs</div>,
-  Tab: ({ children }) => <div>TODO: rebder Tab</div>,
+  Tabs: Tabs,
   Expandable: Expandable,
   ExpandableSummary: ExpandableSummary,
   ExpandableDetails: ExpandableDetails,
