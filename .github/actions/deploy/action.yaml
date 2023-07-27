@@ -8,6 +8,9 @@ inputs:
   path_to_gitbook_docs:
     description: 'The absolute path to GitBook content'
     required: true
+  cookie_domain_script:
+    description: 'The data-domain-script code needed by cookie script from One Trust'
+    required: false
   iam_role:
     description: 'The IAM Role to use to perform the deploy'
     required: true
@@ -55,6 +58,7 @@ runs:
       env:
         ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
+        COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         NEXT_TELEMETRY_DISABLED: "1"
       shell: bash
       run: npm run build -w nextjs-website
