@@ -17,6 +17,7 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
     version: 'Versione',
+    copiedTooltip: 'Elemento copiato',
   },
   pageNotFound: {
     overline: '404',
