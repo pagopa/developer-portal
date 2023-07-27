@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { ContentCopy } from '@mui/icons-material';
 import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCustomStyle';
 import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustomStyle';
 import styles from './CodeBlockPart.module.css';
+import { translations } from '@/_contents/translations';
+import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
 
 export type CodeBlockPartProps = {
   code: string;
@@ -26,6 +27,7 @@ const CodeBlockPart = ({
   wrapLines = true,
 }: CodeBlockPartProps) => {
   const { spacing, palette } = useTheme();
+  const { shared } = translations;
   const isLightMode = mode === 'light';
 
   return (
@@ -47,7 +49,7 @@ const CodeBlockPart = ({
         wrapLines={wrapLines}
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
         customStyle={{
-          padding: title ? '5em 1em 1.25em 1em' : '1.25em 1em',
+          padding: title ? '5em 1em 1.25em 1em' : '1.25em 2.25em 1.25em 1em',
           width: isLightMode ? '' : '100%',
         }}
       >
@@ -67,28 +69,25 @@ const CodeBlockPart = ({
           {title}
         </Typography>
       )}
-      <IconButton
-        onClick={() => {
-          navigator.clipboard.writeText(code);
-        }}
+      <Box
         sx={{
-          cursor: 'pointer',
+          backgroundColor: isLightMode ? '#F2F2F2' : '#414141',
           padding: 0,
           position: 'absolute',
-          right: '20px',
-          top: '28px',
+          right: 0,
+          top: '14px',
         }}
       >
-        <ContentCopy
-          sx={{
-            color: isLightMode
-              ? palette.primary.main
-              : palette.primary.contrastText,
-            height: '24px',
-            width: '24px',
-          }}
-        />
-      </IconButton>
+        <Box marginY={'4px'} marginRight={{ xs: '5px', md: '10px' }}>
+          <CopyToClipboard
+            textToCopy={code}
+            copiedTooltipLabel={shared.copiedTooltip}
+            copyColor={
+              isLightMode ? palette.primary.main : palette.primary.contrastText
+            }
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };
