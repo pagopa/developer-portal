@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
-import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
+import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
@@ -50,6 +50,7 @@ const ApiSection = ({
     [selectedItemURL, specURLs]
   );
   const textColor = palette.primary.contrastText;
+  const styles = getStyles(palette);
 
   return (
     <>

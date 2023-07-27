@@ -1,34 +1,39 @@
-export const styles = {
-  formControl: {
-    alignSelf: 'center',
-    '& .MuiFormLabel-root': {
-      color: 'white !important', // TODO: find a way to override this
-      marginTop: '7px',
-      marginLeft: '8px',
-    },
-  },
-  select: {
-    color: 'white',
-    margin: 1,
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'white !important', // TODO: find a way to override this
-    },
+import { Palette } from '@mui/material';
 
-    '& .MuiSelect-icon': {
-      color: 'white',
+export const getStyles = (palette: Palette) => {
+  const white = palette.common.white;
+  return {
+    formControl: {
+      alignSelf: 'center',
+      '& .MuiFormLabel-root': {
+        color: `${white} !important`,
+        marginTop: '7px',
+        marginLeft: '8px',
+      },
     },
-  },
-  selectContainer: {
-    background: '#0062C3',
-    height: 72,
-    paddingRight: 2,
-  },
-  soapContainer: {
-    background: '#0062C3',
-    color: 'white',
-    padding: '0 1rem',
-  },
-  soapButton: {
-    cursor: 'pointer',
-  },
+    select: {
+      color: white,
+      margin: 1,
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: `${white} !important`,
+      },
+
+      '& .MuiSelect-icon': {
+        color: white,
+      },
+    },
+    selectContainer: {
+      background: palette.primary.dark,
+      height: 72,
+      paddingRight: 2,
+    },
+    soapContainer: {
+      background: palette.primary.dark,
+      color: white,
+      padding: '0 1rem',
+    },
+    soapButton: {
+      cursor: 'pointer',
+    },
+  };
 };
