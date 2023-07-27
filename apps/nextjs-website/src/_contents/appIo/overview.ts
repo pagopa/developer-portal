@@ -4,6 +4,7 @@ import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
 import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
 import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
+import { appIoQuickStartGuidePath } from '@/_contents/appIo/quickStartGuidePath';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
@@ -105,8 +106,8 @@ export const appIoOverview: OverviewData = {
     cards: [
       {
         title: 'Quick Start',
-        coomingSoon: true,
         text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa',
+        href: `${appIoQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
       },
       {
