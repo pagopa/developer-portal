@@ -37,11 +37,36 @@ const components: RenderingComponents<ReactNode> = {
         style={{
           width: "100%",
           backgroundColor: isSelected ? "rgba(0, 115, 230, 0.08)" : undefined,
+          position: "relative",
         }}
       >
+        {isSelected && (
+          <div
+            style={{
+              position: "absolute",
+              left: -300,
+              width: 300,
+              height: "100%",
+              backgroundColor: "rgba(0, 115, 230, 0.08)",
+            }}
+          />
+        )}
+
         <Typography color={isSelected ? "#0062C3" : "black"}>
           {children}
         </Typography>
+
+        {isSelected && (
+          <div
+            style={{
+              position: "absolute",
+              right: 0,
+              width: 2,
+              height: "100%",
+              backgroundColor: "rgba(0, 98, 195, 1)",
+            }}
+          />
+        )}
       </ListItemButton>
     );
   },
@@ -55,6 +80,7 @@ const components: RenderingComponents<ReactNode> = {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
+          padding: 0,
           paddingLeft: "1rem",
         }}
       >
@@ -67,12 +93,17 @@ const components: RenderingComponents<ReactNode> = {
               width: "100%",
               paddingRight: 0,
             }}
-            defaultExpanded={children[0].props.href.includes(router.asPath)}
+            defaultExpanded={router.asPath.includes(children[0].props.href)}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              style={{ height: 60 }}
+            >
               {children[0]}
             </AccordionSummary>
-            <AccordionDetails>{children.slice(1)}</AccordionDetails>
+            <AccordionDetails style={{ padding: 0 }}>
+              {children.slice(1)}
+            </AccordionDetails>
           </Accordion>
         )}
       </ListItem>
