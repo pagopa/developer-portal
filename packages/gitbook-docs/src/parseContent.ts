@@ -40,6 +40,7 @@ const anchorR = pairedHtmlTag('a');
 const pR = pairedHtmlTag('p');
 const detailsR = pairedHtmlTag('details');
 const summaryR = pairedHtmlTag('summary');
+const strongR = pairedHtmlTag('strong');
 
 const schema: ConfigType = {
   tags: {
@@ -52,6 +53,7 @@ const schema: ConfigType = {
     file,
     tabs,
     details,
+    strong: styled.strong,
   },
   nodes: {
     document,
@@ -92,7 +94,8 @@ export const parseContent = (
     .replaceAll(anchorR.regex, anchorR.replace)
     .replaceAll(pR.regex, pR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
-    .replaceAll(summaryR.regex, summaryR.replace);
+    .replaceAll(summaryR.regex, summaryR.replace)
+    .replaceAll(strongR.regex, strongR.replace);
 
   const ast = Markdoc.parse(markdoc);
   return Markdoc.transform(ast, { ...schema, variables: config });
