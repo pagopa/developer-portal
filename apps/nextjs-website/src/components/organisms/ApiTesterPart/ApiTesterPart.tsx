@@ -42,7 +42,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           borderBottom: { xs: 'none', md: boxBorder },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
           padding: spacing(3),
-          minWidth: 200,
+          width: { xs: 'auto', md: 200 },
         }}
       >
         <Stack>
@@ -61,15 +61,31 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           ) : (
             <Button
               onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
+              style={{
+                paddingLeft: 0,
+                paddingRight: 0,
+              }}
             >
-              <Box sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}>
-                <IconWrapper
-                  color={palette.primary.main}
-                  size={20}
-                  icon={quickStartGuide.content.apiPhases.response.cta.icon}
-                />
-              </Box>
-              {quickStartGuide.content.apiPhases.response.cta.label}
+              <Stack
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
+                spacing={2}
+              >
+                <Box
+                  display={'flex'}
+                  flexDirection={'column'}
+                  justifyContent={'center'}
+                  sx={{ lineHeight: '0.5', marginRight: spacing(1.5) }}
+                >
+                  <IconWrapper
+                    color={palette.primary.main}
+                    size={20}
+                    icon={quickStartGuide.content.apiPhases.response.cta.icon}
+                  />
+                </Box>
+                {quickStartGuide.content.apiPhases.response.cta.label}
+              </Stack>
             </Button>
           )}
         </Stack>
@@ -79,7 +95,6 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
         language={
           isLifeCycleCallPhase ? apiRequest.language : apiResponse.language
         }
-        maxWidth={450}
         mode='dark'
         title={
           isLifeCycleCallPhase
