@@ -6,7 +6,7 @@ export const getStyles = (palette: Palette) => {
     formControl: {
       alignSelf: 'center',
       '& .MuiFormLabel-root': {
-        color: `${white} !important`,
+        color: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
         marginTop: '7px',
         marginLeft: '8px',
       },
@@ -15,7 +15,7 @@ export const getStyles = (palette: Palette) => {
       color: white,
       margin: 1,
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: `${white} !important`,
+        borderColor: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
       },
 
       '& .MuiSelect-icon': {
