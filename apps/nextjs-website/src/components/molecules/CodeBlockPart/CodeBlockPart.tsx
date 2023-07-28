@@ -43,16 +43,20 @@ const CodeBlockPart = ({
         position: 'relative',
       }}
       maxWidth={{ xs: '100%', md: maxWidth }}
+      flexGrow={1}
     >
       <SyntaxHighlighter
         className={styles.SyntaxHighlighter}
         language={language}
         lineNumberStyle={{ fontWeight: 700 }}
         showLineNumbers={showLineNumbers}
+        lineProps={{
+          style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' },
+        }}
         wrapLines={wrapLines}
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
         customStyle={{
-          padding: title ? '5em 1em 1.25em 1em' : '1.25em 2.25em 1.25em 1em',
+          padding: title ? '5em 1em 1.25em 1em' : '1.25em 3em 1.25em 1em',
           width: isLightMode ? '' : '100%',
         }}
       >

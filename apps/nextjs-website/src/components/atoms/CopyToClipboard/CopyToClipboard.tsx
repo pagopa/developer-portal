@@ -18,15 +18,11 @@ const CopyToClipboard = ({
   iconSize = '24px',
 }: CopyToClipboardProps) => {
   const [copied, setCopied] = useState(false);
-  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const onCopyToClipboard = () => {
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
-    setTooltipVisible(true);
-    setTimeout(() => {
-      return setTooltipVisible(false);
-    }, tooltipDuration);
+    setTimeout(() => setCopied(false), tooltipDuration);
   };
 
   const size = {
@@ -46,7 +42,7 @@ const CopyToClipboard = ({
           sx={{
             display: 'block',
           }}
-          open={tooltipVisible}
+          open={true}
           placement='top'
           title={copiedTooltipLabel}
           arrow
