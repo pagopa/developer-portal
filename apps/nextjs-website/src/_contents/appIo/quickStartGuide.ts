@@ -32,7 +32,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           text: 'In questo video troverai tutti i passaggi per creare un servizio destinato ai cittadini e generare l’API-key, che dovrà essere utilizzata in tutte le chiamate API.',
         },
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html:
             `<div style="position: relative; padding-bottom: calc(64.41666666666667% + 41px); height: 0; width: 100%"> \n` +
             `  <iframe \n` +
