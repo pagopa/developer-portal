@@ -19,8 +19,8 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, []),
     ]);
   });
-  it('should parse heading', () => {
-    expect(parseContent('# h1\n## h2', config)).toStrictEqual([
+  it.only('should parse heading', () => {
+    expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
       new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
     ]);
