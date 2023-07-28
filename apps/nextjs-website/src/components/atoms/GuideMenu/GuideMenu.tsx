@@ -1,18 +1,14 @@
-/* eslint-disable */
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  List,
-  ListItem,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
-import { parseMenu } from "gitbook-docs/parseMenu";
-import { RenderingComponents, renderMenu } from "gitbook-docs/renderMenu";
-import React, { ReactNode, use, useEffect, useMemo } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useRouter } from "next/router";
+import React, { ReactNode } from 'react';
+import NextLink from 'next/link';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useRouter } from 'next/router';
+import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
+import { styled } from '@mui/material/styles';
+import { parseMenu } from 'gitbook-docs/parseMenu';
+import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -20,113 +16,78 @@ type GuideMenuProps = {
   menu: string;
 };
 
+const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
+  [`& .${treeItemClasses.content}`]: {
+    flexDirection: 'row-reverse',
+    padding: 8,
+  },
+  [`& .${treeItemClasses.label}`]: {
+    padding: 0,
+  },
+  [`& .${treeItemClasses.root}`]: {
+    margin: 0,
+    paddingLeft: 2,
+  },
+  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
+    color: theme.palette.primary.dark,
+  },
+}));
+
 const components: RenderingComponents<ReactNode> = {
-  Link: ({ href, children }: any) => {
-    const router = useRouter();
-    const isSelected = useMemo(() => {
-      const lastPathSegment = href?.split("/")[href?.split("/").length - 1];
-      const routerLastPathSegment =
-        router.asPath?.split("/")[router.asPath?.split("/").length - 1];
-
-      return lastPathSegment === routerLastPathSegment;
-    }, [children, href, router.asPath]);
-    return (
-      <ListItemButton
-        component="a"
+  Item: ({ href, title, children }) => {
+    const label = (
+      <Typography
+        variant='sidenav'
+        component={NextLink}
         href={href}
-        style={{
-          width: "100%",
-          backgroundColor: isSelected ? "rgba(0, 115, 230, 0.08)" : undefined,
-          position: "relative",
-        }}
+        style={{ textDecoration: 'none' }}
       >
-        {isSelected && (
-          <div
-            style={{
-              position: "absolute",
-              left: -300,
-              width: 300,
-              height: "100%",
-              backgroundColor: "rgba(0, 115, 230, 0.08)",
-            }}
-          />
-        )}
-
-        <Typography color={isSelected ? "#0062C3" : "black"}>
-          {children}
-        </Typography>
-
-        {isSelected && (
-          <div
-            style={{
-              position: "absolute",
-              right: 0,
-              width: 2,
-              height: "100%",
-              backgroundColor: "rgba(0, 98, 195, 1)",
-            }}
-          />
-        )}
-      </ListItemButton>
+        {title}
+      </Typography>
     );
-  },
-  Item: ({ isLeaf, children }: any) => {
-    const router = useRouter();
 
     return (
-      <ListItem
-        className={isLeaf ? "leaf" : "node"}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          padding: 0,
-          paddingLeft: "1rem",
-        }}
+      <StyledTreeItem
+        key={href}
+        nodeId={href}
+        label={label}
+        disabled={false}
+        icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
       >
-        {isLeaf ? (
-          children
-        ) : (
-          <Accordion
-            style={{
-              background: "transparent",
-              width: "100%",
-              paddingRight: 0,
-            }}
-            defaultExpanded={router.asPath.includes(children[0].props.href)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              style={{ height: 60 }}
-            >
-              {children[0]}
-            </AccordionSummary>
-            <AccordionDetails style={{ padding: 0 }}>
-              {children.slice(1)}
-            </AccordionDetails>
-          </Accordion>
-        )}
-      </ListItem>
+        {children}
+      </StyledTreeItem>
     );
   },
-  List: ({ children }: any) => <List>{children}</List>,
-  Title: ({ children }: any) => (
+  Title: ({ children }) => (
     <Typography
-      component={"h2"}
-      style={{
-        color: "#5C6F82",
-        textTransform: "uppercase",
-        fontWeight: 700,
-        fontSize: 14,
-        marginLeft: "1rem",
-      }}
+      color='text.secondary'
+      textTransform='uppercase'
+      fontSize={14}
+      style={{ textDecoration: 'none' }}
     >
       {children}
     </Typography>
   ),
 };
 
-const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) =>
-  renderMenu(parseMenu(menu, { assetsPrefix, linkPrefix }), React, components);
+const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) => {
+  const currentPath = useRouter().asPath;
+  const segments = currentPath.split('/');
+  const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
+  return (
+    <TreeView
+      defaultCollapseIcon={<ExpandLessIcon />}
+      defaultExpanded={expanded}
+      selected={currentPath}
+      defaultExpandIcon={<ExpandMoreIcon />}
+    >
+      {renderMenu(
+        parseMenu(menu, { assetsPrefix, linkPrefix }),
+        React,
+        components
+      )}
+    </TreeView>
+  );
+};
 
 export default GuideMenu;
