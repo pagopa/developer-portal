@@ -393,4 +393,13 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, ['hi']),
     ]);
   });
+
+  it('should parse strong html tag', () => {
+    const strongText = '<strong>Text</strong>';
+    expect(parseContent(strongText, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Text']),
+      ]),
+    ]);
+  });
 });
