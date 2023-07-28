@@ -21,7 +21,7 @@ type GuideMenuProps = {
 };
 
 const components: RenderingComponents<ReactNode> = {
-  Link: ({ href, children }) => {
+  Link: ({ href, children }: any) => {
     const router = useRouter();
     const isSelected = useMemo(() => {
       const lastPathSegment = href?.split("/")[href?.split("/").length - 1];
@@ -70,7 +70,7 @@ const components: RenderingComponents<ReactNode> = {
       </ListItemButton>
     );
   },
-  Item: ({ isLeaf, children }) => {
+  Item: ({ isLeaf, children }: any) => {
     const router = useRouter();
 
     return (
@@ -109,8 +109,8 @@ const components: RenderingComponents<ReactNode> = {
       </ListItem>
     );
   },
-  List: ({ children }) => <List>{children}</List>,
-  Title: ({ children }) => (
+  List: ({ children }: any) => <List>{children}</List>,
+  Title: ({ children }: any) => (
     <Typography
       component={"h2"}
       style={{
