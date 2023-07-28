@@ -57,6 +57,7 @@ const schema: ConfigType = {
     document,
     paragraph,
     heading,
+    image: img,
     link,
     list,
     item,
