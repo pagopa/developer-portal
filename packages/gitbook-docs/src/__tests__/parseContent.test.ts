@@ -410,4 +410,19 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+
+  it('ignore table tag', () => {
+    expect(
+      parseContent(
+        '<table data-card-size="large" data-view="cards"><thead></thead><tbody></tbody></table>',
+        config
+      )
+    ).toStrictEqual([]);
+    expect(
+      parseContent(
+        '<table data-header-hidden><thead></thead><tbody></tbody></table>',
+        config
+      )
+    ).toStrictEqual([]);
+  });
 });

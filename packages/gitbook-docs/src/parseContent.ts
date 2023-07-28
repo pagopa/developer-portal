@@ -98,6 +98,11 @@ export const parseContent = (
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll(strongR.regex, strongR.replace);
 
-  const ast = Markdoc.parse(markdoc);
+  // Enable the parsing of html elements (e.g. <tables>). During the parse phase
+  // the html content is handled as a Node of type html_block. For now this type
+  // of node is ignored on rendering phase.
+  const tokenizer = new Markdoc.Tokenizer({ html: true });
+  const tokens = tokenizer.tokenize(markdoc);
+  const ast = Markdoc.parse(tokens);
   return Markdoc.transform(ast, { ...schema, variables: config });
 };
