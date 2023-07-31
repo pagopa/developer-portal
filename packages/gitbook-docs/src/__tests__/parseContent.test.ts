@@ -137,6 +137,14 @@ describe('parseContent', () => {
         alt: 'anAlt',
       }),
     ]);
+    expect(parseContent('![an-alt](../../img-src.jpg)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'an-alt',
+        }),
+      ]),
+    ]);
   });
 
   it('should parse figure', () => {
