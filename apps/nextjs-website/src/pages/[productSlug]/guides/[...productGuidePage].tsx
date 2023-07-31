@@ -37,6 +37,7 @@ type ProductGuidePageProps = {
   path: string;
   pathPrefix: string;
   assetsPrefix: string;
+  isIndex: boolean;
   menu: string;
   body: string;
 } & LayoutProps;
