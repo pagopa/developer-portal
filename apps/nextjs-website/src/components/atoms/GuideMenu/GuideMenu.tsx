@@ -6,12 +6,12 @@ import {
   ListItem,
   ListItemButton,
   Typography,
-} from "@mui/material";
-import { parseMenu } from "gitbook-docs/parseMenu";
-import { RenderingComponents, renderMenu } from "gitbook-docs/renderMenu";
-import React, { ReactNode, use, useEffect, useMemo } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useRouter } from "next/router";
+} from '@mui/material';
+import { parseMenu } from 'gitbook-docs/parseMenu';
+import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
+import React, { ReactNode, use, useEffect, useMemo } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRouter } from 'next/router';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -23,46 +23,46 @@ const components: RenderingComponents<ReactNode> = {
   Link: ({ href, children }) => {
     const router = useRouter();
     const isSelected = useMemo(() => {
-      const lastPathSegment = href?.split("/")[href?.split("/").length - 1];
+      const lastPathSegment = href?.split('/')[href?.split('/').length - 1];
       const routerLastPathSegment =
-        router.asPath?.split("/")[router.asPath?.split("/").length - 1];
+        router.asPath?.split('/')[router.asPath?.split('/').length - 1];
 
       return lastPathSegment === routerLastPathSegment;
     }, [children, href, router.asPath]);
     return (
       <ListItemButton
-        component="a"
+        component='a'
         href={href}
         style={{
-          width: "100%",
-          backgroundColor: isSelected ? "rgba(0, 115, 230, 0.08)" : undefined,
-          position: "relative",
+          width: '100%',
+          backgroundColor: isSelected ? 'rgba(0, 115, 230, 0.08)' : undefined,
+          position: 'relative',
         }}
       >
         {isSelected && (
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: -300,
               width: 300,
-              height: "100%",
-              backgroundColor: "rgba(0, 115, 230, 0.08)",
+              height: '100%',
+              backgroundColor: 'rgba(0, 115, 230, 0.08)',
             }}
           />
         )}
 
-        <Typography color={isSelected ? "#0062C3" : "black"}>
+        <Typography color={isSelected ? '#0062C3' : 'black'}>
           {children}
         </Typography>
 
         {isSelected && (
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               right: 0,
               width: 2,
-              height: "100%",
-              backgroundColor: "rgba(0, 98, 195, 1)",
+              height: '100%',
+              backgroundColor: 'rgba(0, 98, 195, 1)',
             }}
           />
         )}
@@ -74,13 +74,13 @@ const components: RenderingComponents<ReactNode> = {
 
     return (
       <ListItem
-        className={isLeaf ? "leaf" : "node"}
+        className={isLeaf ? 'leaf' : 'node'}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
           padding: 0,
-          paddingLeft: "1rem",
+          paddingLeft: '1rem',
         }}
       >
         {isLeaf ? (
@@ -88,8 +88,8 @@ const components: RenderingComponents<ReactNode> = {
         ) : (
           <Accordion
             style={{
-              background: "transparent",
-              width: "100%",
+              background: 'transparent',
+              width: '100%',
               paddingRight: 0,
             }}
             defaultExpanded={router.asPath.includes(children[0].props.href)}
@@ -111,13 +111,13 @@ const components: RenderingComponents<ReactNode> = {
   List: ({ children }: any) => <List>{children}</List>,
   Title: ({ children }: any) => (
     <Typography
-      component={"h2"}
+      component={'h2'}
       style={{
-        color: "#5C6F82",
-        textTransform: "uppercase",
+        color: '#5C6F82',
+        textTransform: 'uppercase',
         fontWeight: 700,
         fontSize: 14,
-        marginLeft: "1rem",
+        marginLeft: '1rem',
       }}
     >
       {children}
