@@ -19,7 +19,7 @@ export const details: Schema = {
     const attrs = node.transformAttributes(config);
     const children = node.transformChildren({
       ...config,
-      tags: { ...config.tags, summary },
+      tags: { summary },
     });
     const [head, ...tail] = children;
     const summaryTag = Markdoc.Tag.isTag(head) ? head.children : [head];
