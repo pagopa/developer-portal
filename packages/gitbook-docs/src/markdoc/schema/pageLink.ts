@@ -15,6 +15,7 @@ export const pageLink: Schema = {
     },
   },
   transform: (node, config) => {
+    // To avoid to render a paragraph as child of PageLink, we Search the `link` types within the children and transform them
     const children = Array.from(node.walk())
       .find(({ type }) => type === 'link')
       ?.transformChildren(config);
