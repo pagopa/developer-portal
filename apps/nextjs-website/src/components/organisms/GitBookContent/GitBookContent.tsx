@@ -26,6 +26,7 @@ import Quote from './components/Quote';
 import Embed from './components/Embed';
 import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
+import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -58,6 +59,7 @@ const components: RenderingComponents<ReactNode> = {
   TableH: TableH,
   TableR: TableR,
   TableD: TableD,
+  PageLink: PageLink,
 };
 
 const GitBookContent = ({

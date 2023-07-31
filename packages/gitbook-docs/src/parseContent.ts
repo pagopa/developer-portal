@@ -16,6 +16,7 @@ import { tabs } from './markdoc/schema/tabs';
 import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
 import * as t from './markdoc/schema/table';
+import { pageLink } from './markdoc/schema/pageLink';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -54,6 +55,7 @@ const schema: ConfigType = {
     tabs,
     details,
     strong: styled.strong,
+    'content-ref': pageLink,
   },
   nodes: {
     document,

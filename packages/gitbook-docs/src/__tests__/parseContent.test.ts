@@ -410,4 +410,20 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+
+  it('should parse content-ref', () => {
+    const contentRef =
+      '{% content-ref url="a/b.md" %}\n' +
+      '[b.md](a/b.md)\n' +
+      '{% endcontent-ref %}';
+    expect(parseContent(contentRef, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        {
+          url: '/path/to/a/b',
+        },
+        ['b.md']
+      ),
+    ]);
+  });
 });

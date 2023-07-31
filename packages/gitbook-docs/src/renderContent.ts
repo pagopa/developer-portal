@@ -28,6 +28,7 @@ import {
   TableProps,
   TableRProps,
 } from './markdoc/schema/table';
+import { PageLinkProps } from './markdoc/schema/pageLink';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -54,7 +55,7 @@ export type RenderingComponents<A> = {
   readonly ExpandableSummary: (props: ExpandableSummaryProps<A>) => A;
   readonly ExpandableDetails: (props: ExpandableDetailsProps<A>) => A;
   readonly Swagger: (props: SwaggerProps) => A;
-  // readonly PageLink: (props: PageLinkProps<A>) => A;
+  readonly PageLink: (props: PageLinkProps<A>) => A;
 };
 
 export const renderContent = (
