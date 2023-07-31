@@ -10,6 +10,7 @@ import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
+import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
 type Params = {
   productSlug: string;
@@ -51,15 +52,11 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
   const props = getGuide(path);
   if (props) {
     const page = {
+      ...props,
       ...props.page,
-      product: props.product,
-      guide: props.guide,
-      version: props.version,
-      versions: props.versions,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
       products: getProducts().concat(),
-      bannerLinks: props.bannerLinks,
     };
     return { props: page };
   } else {
@@ -113,7 +110,7 @@ const Page = (props: ProductGuidePageProps) => {
             }))}
             icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
             buttonStyle={{
-              color: '#5C6F82',
+              color: palette.action.active,
               display: 'flex',
               justifyContent: 'space-between',
               padding: '16px 32px',
@@ -144,14 +141,16 @@ const Page = (props: ProductGuidePageProps) => {
             )}
           </Box>
         </Box>
-        <Box sx={{ padding: { xs: '80px 40px', lg: '80px 438px 80px 40px' } }}>
-          <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={props.isIndex}
-            content={props.body}
-          />
-        </Box>
+        <EContainer>
+          <Box>
+            <GitBookContent
+              assetsPrefix={props.assetsPrefix}
+              pagePath={props.path}
+              isPageIndex={props.isIndex}
+              content={props.body}
+            />
+          </Box>
+        </EContainer>
       </Box>
     </Layout>
   );
