@@ -1,10 +1,6 @@
 import { Schema } from '@markdoc/markdoc';
 
-export type MenuTextProps<A> = {
-  readonly children: A;
-};
-
-export const menuText: Schema = {
+export const sanitizedText: Schema = {
   attributes: {
     content: { type: String, required: true },
   },

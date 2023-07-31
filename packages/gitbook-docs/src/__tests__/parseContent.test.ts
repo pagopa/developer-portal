@@ -20,7 +20,7 @@ describe('parseContent', () => {
     ]);
   });
   it('should parse heading', () => {
-    expect(parseContent('# h1\n## h2', config)).toStrictEqual([
+    expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
       new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
     ]);
@@ -136,6 +136,14 @@ describe('parseContent', () => {
         src: `${config.assetsPrefix}/img-src.jpg`,
         alt: 'anAlt',
       }),
+    ]);
+    expect(parseContent('![an-alt](../../img-src.jpg)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'an-alt',
+        }),
+      ]),
     ]);
   });
 
@@ -391,6 +399,15 @@ describe('parseContent', () => {
         url: 'https://www.pagopa.it/',
       }),
       new Markdoc.Tag('Paragraph', {}, ['hi']),
+    ]);
+  });
+
+  it('should parse strong html tag', () => {
+    const strongText = '<strong>Text</strong>';
+    expect(parseContent(strongText, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Text']),
+      ]),
     ]);
   });
 
