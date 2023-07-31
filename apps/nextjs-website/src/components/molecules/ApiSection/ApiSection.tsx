@@ -7,6 +7,8 @@ import {
   SelectChangeEvent,
   Stack,
   Typography,
+  formLabelClasses,
+  styled,
   useTheme,
 } from '@mui/material';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
@@ -31,6 +33,18 @@ export type ApiPageProps = {
     icon: string;
   };
 };
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  alignSelf: 'center',
+  [`& .${formLabelClasses.root}`]: {
+    color: `${theme.palette.common.white}`,
+    marginTop: '7px',
+    marginLeft: '8px',
+  },
+  [`& .${formLabelClasses.root}.${formLabelClasses.focused}`]: {
+    color: `${theme.palette.common.white}`,
+  },
+}));
 
 const ApiSection = ({
   product,
@@ -61,7 +75,7 @@ const ApiSection = ({
           justifyContent='flex-end'
           alignContent='center'
         >
-          <FormControl size='medium' sx={styles.formControl}>
+          <StyledFormControl size='medium'>
             <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
             <Select
               labelId='select-api-label'
@@ -79,7 +93,7 @@ const ApiSection = ({
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </StyledFormControl>
         </Stack>
       )}
       {soapDocumentation && (

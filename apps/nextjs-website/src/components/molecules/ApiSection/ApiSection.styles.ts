@@ -3,14 +3,6 @@ import { Palette } from '@mui/material';
 export const getStyles = (palette: Palette) => {
   const white = palette.common.white;
   return {
-    formControl: {
-      alignSelf: 'center',
-      '& .MuiFormLabel-root': {
-        color: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
-        marginTop: '7px',
-        marginLeft: '8px',
-      },
-    },
     select: {
       color: white,
       margin: 1,
