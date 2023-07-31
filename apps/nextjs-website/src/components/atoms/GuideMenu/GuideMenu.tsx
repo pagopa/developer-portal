@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
   Accordion,
   AccordionDetails,
@@ -21,7 +20,7 @@ type GuideMenuProps = {
 };
 
 const components: RenderingComponents<ReactNode> = {
-  Link: ({ href, children }: any) => {
+  Link: ({ href, children }) => {
     const router = useRouter();
     const isSelected = useMemo(() => {
       const lastPathSegment = href?.split("/")[href?.split("/").length - 1];
