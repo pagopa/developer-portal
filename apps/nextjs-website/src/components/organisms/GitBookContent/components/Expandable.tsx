@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 
 const Expandable = ({ children }: ExpandableProps<ReactNode>) =>
   children && (
-    <Accordion disableGutters variant='outlined'>
+    <Accordion disableGutters variant='outlined' sx={{ my: 2 }}>
       {children}
     </Accordion>
   );
