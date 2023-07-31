@@ -320,7 +320,7 @@ describe('parseContent', () => {
   it('should parse expandable', () => {
     expect(
       parseContent(
-        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n\n</details>',
+        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n<img src="../path.jpg">\n\n</details>',
         config
       )
     ).toStrictEqual([
@@ -328,6 +328,9 @@ describe('parseContent', () => {
         new Markdoc.Tag('ExpandableSummary', {}, ['A Summary']),
         new Markdoc.Tag('ExpandableDetails', {}, [
           new Markdoc.Tag('Paragraph', {}, ['A Details']),
+          new Markdoc.Tag('Image', {
+            src: `${config.assetsPrefix}/path.jpg`,
+          }),
         ]),
       ]),
     ]);
