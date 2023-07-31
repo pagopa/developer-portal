@@ -3,7 +3,9 @@ import { parseContent } from '../parseContent';
 
 const config = {
   assetsPrefix: '/assets/prefix',
-  linkPrefix: '/assets/prefix',
+  linkPrefix: '/link/prefix',
+  pagePath: '/path/to/page',
+  isPageIndex: false,
 };
 
 describe('parseContent', () => {
@@ -24,6 +26,18 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse the description from frontmatter and put after the title or on beginning', () => {
+    const markdown = '---\ndescription: >-\n  This is\n  a description\n---\n';
+    expect(parseContent(`${markdown}# A Title`, config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1 }, ['A Title']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+    ]);
+    expect(parseContent(`${markdown}A paragraph`, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+      new Markdoc.Tag('Paragraph', {}, ['A paragraph']),
+    ]);
+  });
+
   it('should parse paragraph', () => {
     expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
@@ -31,9 +45,33 @@ describe('parseContent', () => {
   });
 
   it('should convert href as expected', () => {
-    expect(parseContent('[Guida](../../a/b.md)', config)).toStrictEqual([
+    expect(parseContent('[Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '../../a/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/path/to' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should convert href as expected given an index page', () => {
+    const customConfig = { ...config, isPageIndex: true };
+    expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/page/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/a/b' }, ['Guida']),
       ]),
     ]);
   });
@@ -275,6 +313,47 @@ describe('parseContent', () => {
           },
           [new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content'])]
         ),
+      ]),
+    ]);
+  });
+
+  it('should parse expandable', () => {
+    expect(
+      parseContent(
+        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n\n</details>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Expandable', {}, [
+        new Markdoc.Tag('ExpandableSummary', {}, ['A Summary']),
+        new Markdoc.Tag('ExpandableDetails', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['A Details']),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse table', () => {
+    const table =
+      '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', {}, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
       ]),
     ]);
   });

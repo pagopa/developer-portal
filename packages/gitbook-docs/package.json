@@ -23,10 +23,12 @@
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
-    "fp-ts": "^2.13.1"
+    "fp-ts": "^2.13.1",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
+    "@types/js-yaml": "^4.0.5",
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
