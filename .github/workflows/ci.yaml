@@ -30,14 +30,14 @@ jobs:
       - name: Compile
         run: npm run compile
 
-      - name: Download GitBook docs
-        uses: ./.github/actions/download-gitbook-docs
-
       - name: Lint code
         run: npm run lint
 
       - name: Execute tests
         run: npm run test
+
+      - name: Download GitBook docs
+        uses: ./.github/actions/download-gitbook-docs
 
       - name: Build static website
         uses: ./.github/actions/build-nextjs-website
