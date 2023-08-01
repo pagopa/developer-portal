@@ -36,7 +36,7 @@ jobs:
         run: cd ../.. && npm ci
 
       - name: Compile source code
-        run: npm run compile
+        run: cd ../.. && npm run compile
 
       - name: Download GitBook docs
         shell: bash
