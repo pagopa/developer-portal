@@ -2,6 +2,10 @@ name: build-website
 description: Build NextJS website
 
 inputs:
+  environment:
+    description: 'The target environment'
+    default: 'dev'
+    required: false
   path_to_gitbook_docs:
     description: 'The absolute path to GitBook content'
     required: true
