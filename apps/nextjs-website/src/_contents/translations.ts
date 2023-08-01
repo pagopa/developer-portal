@@ -194,6 +194,12 @@ export const translations = {
             linkType: 'external',
           },
           {
+            ariaLabel: 'Vai al link: PNRR',
+            href: 'https://www.pagopa.it/it/opportunita/pnrr/progetti/',
+            label: 'PNRR',
+            linkType: 'external',
+          },
+          {
             ariaLabel: 'Vai al link: Media',
             href: 'https://www.pagopa.it/it/media',
             label: 'Media',

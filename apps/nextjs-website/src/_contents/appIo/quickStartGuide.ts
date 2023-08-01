@@ -29,7 +29,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'typography',
-          text: 'In questo video troverai tutti i passaggi per creare un servizio destinato ai cittadini e generare l’API-key, che dovrà essere utilizzata in tutte le chiamate API.',
+          text: 'Segui i passaggi indicati nel video interattivo per scoprire come creare un servizio destinato ai cittadini e generare l’API-key che ti servirà per chiamare tutte le API di IO.',
         },
         {
           component: 'innerHTMLLazyLoaded',

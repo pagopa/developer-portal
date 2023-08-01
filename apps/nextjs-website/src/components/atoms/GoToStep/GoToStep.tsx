@@ -25,7 +25,6 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
         flexDirection: 'column',
         paddingLeft: previousOrNext === 'next' ? 1 : 0,
         paddingRight: previousOrNext === 'next' ? 0 : 1,
-        textAlign: previousOrNext === 'next' ? 'end' : 'start',
       }}
     >
       <Typography
