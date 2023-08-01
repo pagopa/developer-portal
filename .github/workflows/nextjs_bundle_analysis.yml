@@ -35,6 +35,13 @@ jobs:
       - name: Install dependencies
         run: cd ../.. && npm ci
 
+      - name: Compile source code
+        run: npm run compile
+
+      - name: Download GitBook docs
+        shell: bash
+        run: cd ../.. && npm run download-docs -w nextjs-website
+
       - name: Restore next build
         uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
         id: restore-build-cache
@@ -49,7 +56,7 @@ jobs:
 
       - name: Build next.js app
         # change this if your site requires a custom build command
-        run: npm run build # FIXME: Check this only build the static website
+        run: npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
