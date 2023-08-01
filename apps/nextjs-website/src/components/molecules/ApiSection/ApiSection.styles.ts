@@ -1,3 +1,5 @@
+import { theme } from '@pagopa/mui-italia';
+
 export const styles = {
   select: {
     color: 'white',
@@ -17,7 +19,7 @@ export const styles = {
     background: '#0D1018',
   },
   soapContainer: {
-    background: '#0062C3',
+    background: theme.palette.primary.dark,
     color: 'white',
     padding: '0 1rem',
   },

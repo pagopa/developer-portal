@@ -12,6 +12,7 @@ import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import React, { ReactNode, use, useEffect, useMemo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
+import { theme } from '@pagopa/mui-italia';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -51,7 +52,7 @@ const components: RenderingComponents<ReactNode> = {
           />
         )}
 
-        <Typography color={isSelected ? '#0062C3' : 'black'}>
+        <Typography color={isSelected ? theme.palette.primary.dark : 'black'}>
           {children}
         </Typography>
 
