@@ -8,7 +8,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  compile_test:
     name: Compile and test
     runs-on: ubuntu-latest
 
@@ -36,12 +36,18 @@ jobs:
       - name: Execute tests
         run: npm run test
 
-      - name: Download GitBook docs
-        uses: ./.github/actions/download-gitbook-docs
+  build_website:
+    name: Compile and test
+    runs-on: ubuntu-latest
 
+    needs:
+      - compile_test
+
+    steps:
       - name: Build static website
         uses: ./.github/actions/build-nextjs-website
         with:
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           nextjs_telemetry: "1"
+
