@@ -56,7 +56,8 @@ jobs:
           COOKIE_DOMAIN_SCRIPT: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           NEXT_TELEMETRY_DISABLED: "1"
         # change this if your site requires a custom build command
-        run: npm run build
+        run: npm run build -w nextjs-website
+
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
