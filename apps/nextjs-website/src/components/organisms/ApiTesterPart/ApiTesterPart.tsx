@@ -42,10 +42,9 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           borderBottom: { xs: 'none', md: boxBorder },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
           padding: spacing(3),
-          width: { xs: 'auto', md: 200 },
         }}
       >
-        <Stack>
+        <Stack width={{ xs: 'auto', md: '200px' }}>
           {(isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts).map(
             (part: Part, index: number) => (
               <PartRenderer key={index} part={part} />
