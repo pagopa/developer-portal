@@ -4,6 +4,7 @@ export const getStyles = (palette: Palette) => {
   const white = palette.common.white;
   return {
     select: {
+      minWidth: { sx: 'auto', sm: '400px' },
       color: white,
       margin: 1,
       '& .MuiOutlinedInput-notchedOutline': {
