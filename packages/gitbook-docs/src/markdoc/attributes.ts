@@ -1,4 +1,5 @@
 import { Config } from '@markdoc/markdoc';
+import path from 'path';
 
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
@@ -10,30 +11,32 @@ const convertLink = (link: string): string =>
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
-  readonly transform = (value: string) =>
-    !value.startsWith('http') ? convertLink(value) : value;
-}
-
-// eslint-disable-next-line functional/no-classes
-export class PrefixLinkAttr {
-  readonly transform = (value: string, config: Config) => {
-    const prefix = config.variables?.linkPrefix;
+  readonly transform = (value: string, { variables }: Config) => {
     if (!value.startsWith('http')) {
-      const href = typeof prefix === 'string' ? `${prefix}/${value}` : value;
+      const isIndex = variables?.isPageIndex === true;
+      const pagePath = isIndex
+        ? variables.pagePath
+        : path.parse(variables?.pagePath).dir;
+      const href = path.join(pagePath, value);
       return convertLink(href);
     } else return value;
   };
 }
 
-const convertAssetsPath = (assetsPrefix: string, src: string) =>
-  !src.startsWith('http') ? `${assetsPrefix}/${src}` : src;
+// eslint-disable-next-line functional/no-classes
+export class PrefixLinkAttr {
+  readonly transform = (value: string, { variables }: Config) => {
+    if (!value.startsWith('http')) {
+      const href = path.join(variables?.linkPrefix, value);
+      return convertLink(href);
+    } else return value;
+  };
+}
 
 // eslint-disable-next-line functional/no-classes
 export class SrcAttr {
-  readonly transform = (value: string, config: Config) => {
-    const prefix = config.variables?.assetsPrefix;
-    return typeof prefix === 'string'
-      ? convertAssetsPath(prefix, value)
+  readonly transform = (value: string, { variables }: Config) =>
+    !value.startsWith('http')
+      ? path.join(variables?.assetsPrefix, value)
       : value;
-  };
 }
