@@ -1,0 +1,45 @@
+name: build-website
+description: Build NextJS website
+
+inputs:
+  path_to_gitbook_docs:
+    description: 'The absolute path to GitBook content'
+    required: true
+  cookie_domain_script:
+    description: 'The data-domain-script code needed by cookie script from One Trust'
+    required: false
+  nextjs_telemetry:
+    description: 'Value to enable or disable telemetry. 0 to enable; 1 to disable' # FIXME: Convert to boolean
+    default: '1'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+    - name: Install Node.js
+      uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3.7.0
+      with:
+        node-version-file: '.node-version'
+        cache: 'npm'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Compile packages
+      shell: bash
+      run: npm run compile
+
+    - name: Fetch GitBook docs
+      uses: ./.github/actions/download-gitbook-docs
+
+    - name: Build static website
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+        PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
+        COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        NEXT_TELEMETRY_DISABLED: "1"
+      shell: bash
+      run: npm run build -w nextjs-website
