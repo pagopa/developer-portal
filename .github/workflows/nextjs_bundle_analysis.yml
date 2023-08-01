@@ -55,6 +55,10 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Build next.js app
+        env:
+          PATH_TO_GITBOOK_DOCS: ${{ github.workspace }}/apps/nextjs-website/docs
+          COOKIE_DOMAIN_SCRIPT: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          NEXT_TELEMETRY_DISABLED: "1"
         # change this if your site requires a custom build command
         run: npm run build
 
