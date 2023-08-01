@@ -37,7 +37,7 @@ jobs:
         run: npm run test
 
   build_website:
-    name: Compile and test
+    name: Build static website
     runs-on: ubuntu-latest
 
     needs:
