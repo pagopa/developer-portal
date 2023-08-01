@@ -3,6 +3,7 @@ import { appIoApi } from '@/_contents/appIo/api';
 import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoGuideLists } from '@/_contents/appIo/guideLists';
 import { appIoOverview } from '@/_contents/appIo/overview';
+import { appIoQuickStartGuide } from '@/_contents/appIo/quickStartGuide';
 import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { appIoTutorialLists } from '@/_contents/appIo/tutorialLists';
 import { ioSign } from '@/_contents/ioSign/ioSign';
@@ -34,7 +35,7 @@ export const overviews = [
   sendOverview,
 ];
 
-export const quickStarts = [];
+export const quickStartGuides = [appIoQuickStartGuide];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
 

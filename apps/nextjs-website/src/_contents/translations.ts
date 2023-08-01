@@ -17,6 +17,7 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
     version: 'Versione',
+    copiedTooltip: 'Elemento copiato',
   },
   pageNotFound: {
     overline: '404',
@@ -103,6 +104,27 @@ export const translations = {
           href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
         },
       ],
+    },
+  },
+  quickStartGuide: {
+    content: {
+      apiPhases: {
+        request: {
+          cta: {
+            label: 'Invia la richiesta',
+          },
+          title: 'Chiamata API',
+        },
+        response: {
+          cta: {
+            icon: 'Replay',
+            label: 'Ripristina la chiamata',
+          },
+          title: 'Risposta del server',
+        },
+      },
+      next: 'Prossimo contenuto',
+      previous: 'Contenuto precedente',
     },
   },
   overview: {
