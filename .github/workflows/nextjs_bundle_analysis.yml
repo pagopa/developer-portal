@@ -54,16 +54,6 @@ jobs:
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
-#      - name: Analyze bundle
-#        working-directory: ./apps/nextjs-website
-#        run: npx -p nextjs-bundle-analysis@0.5.0 report
-#
-#      - name: Upload bundle
-#        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
-#        with:
-#          name: bundle
-#          path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
-
       - name: Generate NextJS bundle stats
         uses: ./.github/actions/upload-nextjs-bundle-stats
         with:
@@ -81,26 +71,13 @@ jobs:
           if_no_artifact_found: warn
 
       # TODO: Here we should checkout repo from base branch
-
-      # Workaround: if it wasn't possible to download artifact of base branch
-      # generates it. TODO: if this works, then move these steps under the action folder (create composite)
-      - name: Generate base branch bundle
-        if: ${{ steps.base-branch-stats.outputs.error_message }} !== ''
-        working-directory: ./apps/nextjs-website
-        run: |
-          echo ${{ steps.base-branch-stats.outputs.found_artifact }}   
-          npx -p nextjs-bundle-analysis@0.5.0 report
-
-
-      # Workaround: Upload the generated bundle to a destination
-      # TODO: if this works, then move these steps under the action folder (create composite)
-      - name: Upload bundle
-        if: ${{ steps.base-branch-stats.outputs.error_message }} !== ''
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      # Workaround: if it wasn't possible to download artifact of base branch generates it.
+      - name: Generate NextJS bundle stats of base branch
+        if: ${{ steps.base-branch-stats.outputs.found_artifact }} == 'false'
+        uses: ./.github/actions/upload-nextjs-bundle-stats
         with:
-          name: bundle
-          path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
-
+          path_to_nextjs_folder: ./apps/nextjs-website
+          upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
 
       # And here's the second place - this runs after we have both the current and
       # base branch bundle stats, and will compare them to determine what changed.
