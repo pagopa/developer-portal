@@ -40,11 +40,21 @@ runs:
       shell: bash
       run: npm run download-docs -w nextjs-website
 
+    - name: Restore NextJS build
+      uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+      id: restore-build-cache
+      with:
+        path: ${{ github.workspace }}/apps/nextjs-website/.next/cache
+        # Generate a new cache whenever packages or source files change.
+        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+        # If source files changed but packages didn't, rebuild from a prior cache.
+        restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
     - name: Build static website
       env:
         ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
-        NEXT_TELEMETRY_DISABLED: "1"
+        NEXT_TELEMETRY_DISABLED: ${{ inputs.nextjs_telemetry }}
       shell: bash
       run: npm run build -w nextjs-website
