@@ -41,11 +41,9 @@ jobs:
         env:
           cache-name: cache-next-build
         with:
-          # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
-          # ex: if your app builds to `dist`, replace `.next` with `dist`
-          path: ${{ github.workspace }}/apps/nextjs-website/.next/cache
+          path: apps/nextjs-website/.next/cache
           # change this if you prefer a more strict cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - name: Build NextJS Website
         uses: ./.github/actions/build-nextjs-website
@@ -90,9 +88,7 @@ jobs:
       - name: Compare with base branch bundle
         if: success() && github.event.number
         working-directory: ./apps/nextjs-website
-        run: |
-          cd apps/nextjs-website
-          ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+        run: npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
         id: get-comment-body
