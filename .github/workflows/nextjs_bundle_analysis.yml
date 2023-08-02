@@ -60,13 +60,18 @@ jobs:
           path: apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
-      # Workaround: if it wasn't possible to download artifact of base branch generates it.
+      # If it wasn't possible to download artifact of base branch generates it.
       - name: Generate NextJS bundle stats of base branch
-        if: ${{ steps.base-branch-stats.outputs.found_artifact }} == 'false'
-        uses: ./.github/actions/upload-nextjs-bundle-stats
-        with:
-          path_to_nextjs_folder: ./apps/nextjs-website
-          upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
+#        if: ${{ steps.base-branch-stats.outputs.found_artifact }} == 'false'
+        shell: bash
+        run: |
+          echo ${{ steps.base-branch-stats.outputs.found_artifact }}
+          echo ${{ steps.base-branch-stats.outputs.found_artifact }} == 'false'
+          ${{ steps.base-branch-stats.outputs.found_artifact }} == false
+#        uses: ./.github/actions/upload-nextjs-bundle-stats
+#        with:
+#          path_to_nextjs_folder: ./apps/nextjs-website
+#          upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
 
       # And here's the second place - this runs after we have both the current and
       # base branch bundle stats, and will compare them to determine what changed.
