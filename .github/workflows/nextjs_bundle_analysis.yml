@@ -10,6 +10,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read # for checkout repository
   actions: read # for fetching base branch bundle stats
@@ -69,7 +73,7 @@ jobs:
         uses: dawidd6/action-download-artifact@246dbf436b23d7c49e21a7ab8204ca9ecd1fe615 # v2.27.0
         if: success() && github.event.number
         with:
-          branch: ${{ github.event.pull_request.base.ref }}
+          branch: main # FIXME with ${{ github.event.pull_request.base.ref }}
           path: ${{ github.workspace }}/apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
@@ -89,7 +93,7 @@ jobs:
       - name: Compare with base branch bundle
         if: success() && github.event.number
         working-directory: ./apps/nextjs-website
-        run: pwd && ls -laR ./apps/nextjs-website/.next/analyze/base && npx -p nextjs-bundle-analysis compare
+        run: npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
         id: get-comment-body
