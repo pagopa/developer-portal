@@ -36,12 +36,9 @@ runs:
       shell: bash
       run: npm run compile
 
-    - name: Fetch GitBook docs
-      uses: ./.github/actions/download-gitbook-docs
-
-    # TODO: Find a way to avoid this
-    - name: Checkout repository
-      uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+    - name: Fetch docs from GitBook
+      shell: bash
+      run: npm run download-docs -w nextjs-website
 
     - name: Build static website
       env:
