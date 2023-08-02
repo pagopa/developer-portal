@@ -54,15 +54,21 @@ jobs:
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
-      - name: Analyze bundle
-        working-directory: ./apps/nextjs-website
-        run: npx -p nextjs-bundle-analysis@0.5.0 report
+#      - name: Analyze bundle
+#        working-directory: ./apps/nextjs-website
+#        run: npx -p nextjs-bundle-analysis@0.5.0 report
+#
+#      - name: Upload bundle
+#        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+#        with:
+#          name: bundle
+#          path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
 
-      - name: Upload bundle
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      - name: Generate NextJS bundle stats
+        uses: ./.github/actions/upload-nextjs-bundle-stats
         with:
-          name: bundle
-          path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
+          path_to_nextjs_folder: ./apps/nextjs-website
+          upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
 
       - name: Download base branch bundle stats
         id: base-branch-stats
@@ -81,7 +87,9 @@ jobs:
       - name: Generate base branch bundle
         if: ${{ steps.base-branch-stats.outputs.error_message }} !== ''
         working-directory: ./apps/nextjs-website
-        run: npx -p nextjs-bundle-analysis@0.5.0 report # TODO: Use package's version
+        run: |
+          echo ${{ steps.base-branch-stats.outputs.found_artifact }}   
+          npx -p nextjs-bundle-analysis@0.5.0 report
 
 
       # Workaround: Upload the generated bundle to a destination
@@ -121,6 +129,7 @@ jobs:
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
+
 
       - name: Find Comment
         uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2.4.0
