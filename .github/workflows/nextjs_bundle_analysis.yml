@@ -82,7 +82,7 @@ jobs:
       # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
       # entry in your package.json file.
       - name: Compare with base branch bundle
-        if: ${{ steps.base-branch-stats.outputs.found_artifact }} == false && success() && github.event.number
+        if: ${{ steps.base-branch-stats.outputs.found_artifact }} == true && success() && github.event.number
         working-directory: ./apps/nextjs-website
         run: npx -p nextjs-bundle-analysis@0.5.0 compare
 
