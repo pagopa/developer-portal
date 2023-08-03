@@ -36,7 +36,10 @@ export class PrefixLinkAttr {
 // eslint-disable-next-line functional/no-classes
 export class SrcAttr {
   readonly transform = (value: string, { variables }: Config) =>
+    // Ignore any '../' (a.k.a parent directory of current directory)
+    // The path.join('/', value) do the trick. It removes any '../' before join
+    // it with assetsPrefix. E.g.: ../../../a/b => /a/b
     !value.startsWith('http')
-      ? path.join(variables?.assetsPrefix, value)
+      ? path.join(variables?.assetsPrefix, path.join('/', value))
       : value;
 }
