@@ -42,9 +42,7 @@
     "typescript": "^5.0.2"
   },
   "nextBundleAnalysis": {
-    "budget": null,
-    "budgetPercentIncreaseRed": 20,
-    "minimumChangeThreshold": 0,
-    "showDetails": true
+    "budget": 358400,
+    "budgetPercentIncreaseRed": 20
   }
 }
