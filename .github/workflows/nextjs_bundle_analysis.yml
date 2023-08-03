@@ -57,7 +57,7 @@ jobs:
           path: apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
-      - name: Print previous step output
+      - name: Print previous step outputs
         shell: bash
         run: |
           echo ${{ steps.base-branch-stats.outputs.found_artifact }}
@@ -67,7 +67,7 @@ jobs:
 
       # If it wasn't possible to download artifact of base branch generates it.
       - name: Generate NextJS bundle stats of base branch
-        if: steps.base-branch-stats.outputs.found_artifact == "false"
+        if: steps.base-branch-stats.outputs.found_artifact == false
         uses: ./.github/actions/upload-nextjs-bundle-stats
         with:
           path_to_nextjs_folder: ./apps/nextjs-website
@@ -75,7 +75,7 @@ jobs:
 
       - name: Create comment for no bundle found
         uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
-        if: steps.base-branch-stats.outputs.found_artifact == "false"
+        if: steps.base-branch-stats.outputs.found_artifact == false
         with:
           issue-number: ${{ github.event.number }}
           body: Bundle not found for branch ${{ github.event.pull_request.base.ref }}. It wasn't possible to compare bundles size.
@@ -94,13 +94,13 @@ jobs:
       # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
       # entry in your package.json file.
       - name: Compare with base branch bundle
-        if: steps.base-branch-stats.outputs.found_artifact == "true" && success() && github.event.number
+        if: steps.base-branch-stats.outputs.found_artifact == true && success() && github.event.number
         working-directory: ./apps/nextjs-website
         run: npx -p nextjs-bundle-analysis@0.5.0 compare
 
       - name: Get Comment Body
         id: get-comment-body
-        if: steps.base-branch-stats.outputs.found_artifact == "true" && success() && github.event.number
+        if: steps.base-branch-stats.outputs.found_artifact == true && success() && github.event.number
         working-directory: ./apps/nextjs-website
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
@@ -111,7 +111,7 @@ jobs:
 
       - name: Find Comment
         uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2.4.0
-        if: steps.base-branch-stats.outputs.found_artifact == "true" && success() && github.event.number
+        if: steps.base-branch-stats.outputs.found_artifact == true && success() && github.event.number
         id: fc
         with:
           issue-number: ${{ github.event.number }}
@@ -119,14 +119,14 @@ jobs:
 
       - name: Create Comment
         uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
-        if: steps.base-branch-stats.outputs.found_artifact == "true" && success() && github.event.number && steps.fc.outputs.comment-id == 0
+        if: steps.base-branch-stats.outputs.found_artifact == true && success() && github.event.number && steps.fc.outputs.comment-id == 0
         with:
           issue-number: ${{ github.event.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
 
       - name: Update Comment
         uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
-        if: steps.base-branch-stats.outputs.found_artifact == "true" && success() && github.event.number && steps.fc.outputs.comment-id != 0
+        if: steps.base-branch-stats.outputs.found_artifact == true && success() && github.event.number && steps.fc.outputs.comment-id != 0
         with:
           issue-number: ${{ github.event.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
