@@ -57,6 +57,12 @@ jobs:
           path: apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
+      - name: Print previous step outputs
+        shell: bash
+        run: |
+          echo ${{ steps.base-branch-stats.outputs.found_artifact }}
+          echo ${{ toJSON(steps.base-branch-stats.outputs) }}
+
       # If it wasn't possible to download artifact of base branch generates it.
       - name: Generate NextJS bundle stats of base branch
         if: steps.base-branch-stats.outputs.found_artifact == false

@@ -37,6 +37,7 @@ jobs:
       - name: Execute tests
         run: npm run test
 
+  # TODO: Move this job to a separate action?
   build_website:
     name: Build static website
     runs-on: ubuntu-latest
