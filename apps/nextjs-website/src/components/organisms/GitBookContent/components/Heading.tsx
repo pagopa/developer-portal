@@ -17,8 +17,8 @@ const asVariant = (level: number) => {
   }
 };
 
-const Heading = ({ level, children }: HeadingProps<ReactNode>) => (
-  <Typography variant={asVariant(level)} sx={{ py: 3 }}>
+const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
+  <Typography id={id} variant={asVariant(level)} sx={{ py: 3 }}>
     {children}
   </Typography>
 );
