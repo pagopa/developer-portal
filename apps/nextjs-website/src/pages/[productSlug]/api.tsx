@@ -21,6 +21,7 @@ export type ApiPageProps = {
     buttonLabel: string;
     icon: string;
   };
+  readonly specURLsName?: string;
   readonly specURLs: {
     name?: string;
     url: string;
@@ -46,6 +47,7 @@ const ApisPage = ({
   specURLs,
   bannerLinks,
   soapDocumentation,
+  specURLsName,
 }: ApiPageProps) => (
   <Layout
     products={products}
@@ -57,6 +59,7 @@ const ApisPage = ({
     <ApiSection
       specURLs={specURLs}
       product={product}
+      specURLsName={specURLsName}
       soapDocumentation={soapDocumentation}
     />
   </Layout>

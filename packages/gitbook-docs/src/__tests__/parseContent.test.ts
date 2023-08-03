@@ -14,13 +14,8 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
     ]);
   });
-  it('should ignore any anchor tag', () => {
-    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, []),
-    ]);
-  });
   it('should parse heading', () => {
-    expect(parseContent('# h1\n## h2', config)).toStrictEqual([
+    expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
       new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
     ]);
@@ -128,6 +123,22 @@ describe('parseContent', () => {
         src: `${config.assetsPrefix}/img-src.jpg`,
         alt: 'anAlt',
       }),
+    ]);
+    expect(
+      parseContent('<img src="../../../img-src.jpg" alt="anAlt">', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+      }),
+    ]);
+    expect(parseContent('![an-alt](../../img-src.jpg)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'an-alt',
+        }),
+      ]),
     ]);
   });
 
@@ -295,24 +306,27 @@ describe('parseContent', () => {
   });
 
   it('should parse tabs', () => {
-    const tabsText =
-      '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}';
-    expect(parseContent(tabsText, config)).toStrictEqual([
-      new Markdoc.Tag('Tabs', {}, [
-        new Markdoc.Tag(
-          'Tab',
-          {
-            title: 'Tab 1',
-          },
-          [new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content'])]
-        ),
-        new Markdoc.Tag(
-          'Tab',
-          {
-            title: 'Tab 2',
-          },
-          [new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content'])]
-        ),
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\n\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        '',
       ]),
     ]);
   });
@@ -320,7 +334,7 @@ describe('parseContent', () => {
   it('should parse expandable', () => {
     expect(
       parseContent(
-        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n\n</details>',
+        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n<img src="../path.jpg">\n\n</details>',
         config
       )
     ).toStrictEqual([
@@ -328,6 +342,9 @@ describe('parseContent', () => {
         new Markdoc.Tag('ExpandableSummary', {}, ['A Summary']),
         new Markdoc.Tag('ExpandableDetails', {}, [
           new Markdoc.Tag('Paragraph', {}, ['A Details']),
+          new Markdoc.Tag('Image', {
+            src: `${config.assetsPrefix}/path.jpg`,
+          }),
         ]),
       ]),
     ]);
@@ -336,6 +353,31 @@ describe('parseContent', () => {
   it('should parse table', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', {}, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse html table', () => {
+    const table =
+      '<table data-header-hidden><thead><tr><th width="165">col A</th><th width="518">col B</th></tr></thead><tbody><tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr></tbody></table>';
     expect(parseContent(table, config)).toStrictEqual([
       new Markdoc.Tag('Table', {}, [
         new Markdoc.Tag('TableHead', {}, [
@@ -380,6 +422,31 @@ describe('parseContent', () => {
         url: 'https://www.pagopa.it/',
       }),
       new Markdoc.Tag('Paragraph', {}, ['hi']),
+    ]);
+  });
+
+  it('should parse strong html tag', () => {
+    const strongText = '<strong>Text</strong>';
+    expect(parseContent(strongText, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Text']),
+      ]),
+    ]);
+  });
+
+  it('should parse content-ref', () => {
+    const contentRef =
+      '{% content-ref url="a/b.md" %}\n' +
+      '[b.md](a/b.md)\n' +
+      '{% endcontent-ref %}';
+    expect(parseContent(contentRef, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        {
+          url: '/path/to/a/b',
+        },
+        ['b.md']
+      ),
     ]);
   });
 });

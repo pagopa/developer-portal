@@ -4,7 +4,7 @@ import { ParseConfig } from './ParseConfig';
 import { title } from './markdoc/schema/title';
 import { menuList } from './markdoc/schema/menuList';
 import { menuItem } from './markdoc/schema/menuItem';
-import { menuText } from './markdoc/schema/menuText';
+import { sanitizedText } from './markdoc/schema/sanitizedText';
 
 const schema: ConfigType = {
   nodes: {
@@ -15,7 +15,7 @@ const schema: ConfigType = {
     list: menuList,
     item: menuItem,
     link: menuLink,
-    text: menuText,
+    text: sanitizedText,
   },
 };
 
