@@ -1,14 +1,13 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
 name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+
+concurrency:
+  # In case of multiple commits of same PR, the previous run of the Action will be deleted
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read # for checkout repository
@@ -22,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3.7.0
         with:
           node-version-file: '.node-version'
@@ -31,52 +30,48 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Compile source code
-        run: npm run compile
-
-      - name: Download GitBook docs
-        shell: bash
-        run: npm run download-docs -w nextjs-website
-
-      - name: Restore next build
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
-        id: restore-build-cache
-        env:
-          cache-name: cache-next-build
+      - name: Build NextJS Website
+        uses: ./.github/actions/build-nextjs-website
         with:
-          # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
-          # ex: if your app builds to `dist`, replace `.next` with `dist`
-          path: ${{ github.workspace }}/apps/nextjs-website/.next/cache
-          # change this if you prefer a more strict cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-      - name: Build next.js app
-        env:
-          PATH_TO_GITBOOK_DOCS: ${{ github.workspace }}/apps/nextjs-website/docs
-          COOKIE_DOMAIN_SCRIPT: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
-          NEXT_TELEMETRY_DISABLED: "1"
-        # change this if your site requires a custom build command
-        run: npm run build -w nextjs-website
-
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          disable_next_telemetry: true
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
-      - name: Analyze bundle
-        run: cd apps/nextjs-website && npx -p nextjs-bundle-analysis report
-
-      - name: Upload bundle
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      - name: Generate NextJS bundle stats
+        uses: ./.github/actions/upload-nextjs-bundle-stats
         with:
-          name: bundle
-          path: ${{ github.workspace }}/apps/nextjs-website/.next/analyze/__bundle_analysis.json
+          path_to_nextjs_folder: ./apps/nextjs-website
+          upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
 
       - name: Download base branch bundle stats
+        id: base-branch-stats
         uses: dawidd6/action-download-artifact@246dbf436b23d7c49e21a7ab8204ca9ecd1fe615 # v2.27.0
         if: success() && github.event.number
         with:
           workflow: nextjs_bundle_analysis.yml
           branch: ${{ github.event.pull_request.base.ref }}
-          path: ${{ github.workspace }}/apps/nextjs-website/.next/analyze/base
+          path: apps/nextjs-website/.next/analyze/base
+          if_no_artifact_found: warn
+
+      # If it wasn't possible to download artifact of base branch, generates it.
+      - name: Generate NextJS bundle stats of base branch
+        if: steps.base-branch-stats.outputs.found_artifact == 'false'
+        uses: ./.github/actions/upload-nextjs-bundle-stats
+        with:
+          path_to_nextjs_folder: ./apps/nextjs-website
+          upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
+
+      # If no bundle found for base branch, drop a comment on the PR saying that.
+      - name: Create comment for no bundle found
+        uses: marocchino/sticky-pull-request-comment@f6a2580ed520ae15da6076e7410b088d1c5dddd9 # v2.7.0
+        if: steps.base-branch-stats.outputs.found_artifact == 'false'
+        with:
+          header: next-bundle-analysis
+          message: |
+            Bundle not found for branch `${{ github.event.pull_request.base.ref }}`.
+            It wasn't possible to compare bundles size.
 
       # And here's the second place - this runs after we have both the current and
       # base branch bundle stats, and will compare them to determine what changed.
@@ -92,38 +87,24 @@ jobs:
       # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
       # entry in your package.json file.
       - name: Compare with base branch bundle
-        if: success() && github.event.number
-        run: cd apps/nextjs-website && ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+        if: steps.base-branch-stats.outputs.found_artifact == 'true' && success() && github.event.number
+        working-directory: ./apps/nextjs-website
+        run: npx -p nextjs-bundle-analysis@0.5.0 compare
 
       - name: Get Comment Body
         id: get-comment-body
-        if: success() && github.event.number
+        if: steps.base-branch-stats.outputs.found_artifact == 'true' && success() && github.event.number
+        working-directory: ./apps/nextjs-website
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
 
-      - name: Find Comment
-        uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2.4.0
-        if: success() && github.event.number
-        id: fc
+      - name: Create commend with bundle size report
+        uses: marocchino/sticky-pull-request-comment@f6a2580ed520ae15da6076e7410b088d1c5dddd9 # v2.7.0
+        if: steps.base-branch-stats.outputs.found_artifact == 'true' && success()
         with:
-          issue-number: ${{ github.event.number }}
-          body-includes: '<!-- __NEXTJS_BUNDLE -->'
-
-      - name: Create Comment
-        uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
-        if: success() && github.event.number && steps.fc.outputs.comment-id == 0
-        with:
-          issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
-
-      - name: Update Comment
-        uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
-        if: success() && github.event.number && steps.fc.outputs.comment-id != 0
-        with:
-          issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          edit-mode: replace
+          header: next-bundle-analysis
+          message: ${{ steps.get-comment-body.outputs.body }}
+          append: true
