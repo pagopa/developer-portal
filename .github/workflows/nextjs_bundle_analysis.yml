@@ -87,13 +87,12 @@ jobs:
         id: get-comment-body
         if: steps.base-branch-stats.outputs.found_artifact == 'true' && success() && github.event.number
         working-directory: ./apps/nextjs-website
-        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
 
-      - name: Create commend with bundle size report
+      - name: Create comment with bundle size report
         uses: marocchino/sticky-pull-request-comment@f6a2580ed520ae15da6076e7410b088d1c5dddd9 # v2.7.0
         if: steps.base-branch-stats.outputs.found_artifact == 'true' && success()
         with:
