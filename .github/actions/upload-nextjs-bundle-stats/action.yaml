@@ -12,7 +12,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Analyze bundle
+    - name: Generate bundle report
       working-directory: ${{ inputs.path_to_nextjs_folder }}
       shell: bash
       run: npx -p nextjs-bundle-analysis@0.5.0 report
