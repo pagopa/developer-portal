@@ -1,9 +1,10 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import Box from '@mui/material/Box';
 import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { renderGitBookMarkdown } from '@/markdoc';
+import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
-import { Box } from '@mui/material';
 
 type Params = {
   productSlug: string;
@@ -57,13 +58,16 @@ const Page = (props: ProductTutorialPageProps) => {
       bannerLinks={props.bannerLinks}
       showBreadcrumbs={false}
     >
-      <Box sx={{ padding: { xs: '80px 40px', lg: '80px 338px 80px 40px' } }}>
-        {renderGitBookMarkdown(
-          props.body,
-          props.pathPrefix,
-          props.assetsPrefix
-        )}
-      </Box>
+      <EContainer>
+        <Box>
+          <GitBookContent
+            assetsPrefix={props.assetsPrefix}
+            pagePath={props.path}
+            isPageIndex={false}
+            content={props.body}
+          />
+        </Box>
+      </EContainer>
     </Layout>
   );
 };
