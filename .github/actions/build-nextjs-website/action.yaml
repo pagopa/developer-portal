@@ -12,9 +12,10 @@ inputs:
   cookie_domain_script:
     description: 'The data-domain-script code needed by cookie script from One Trust'
     required: false
-  nextjs_telemetry:
-    description: 'Value to enable or disable telemetry. 0 to enable; 1 to disable' # FIXME: Convert to boolean
-    default: '1'
+  disable_next_telemetry:
+    description: 'True to disable NextJS tracking telemetry'
+    required: true
+    default: 'false'
 
 runs:
   using: "composite"
@@ -55,6 +56,6 @@ runs:
         ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
-        NEXT_TELEMETRY_DISABLED: ${{ inputs.nextjs_telemetry }}
+        NEXT_TELEMETRY_DISABLED: ${{ inputs.disable_next_telemetry == 'true' && '1' || '0' }}
       shell: bash
       run: npm run build -w nextjs-website
