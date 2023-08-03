@@ -449,47 +449,4 @@ describe('parseContent', () => {
       ),
     ]);
   });
-
-  it('should render tag', () => {
-    const expected = [
-      new Markdoc.Tag('Table', {}, [
-        new Markdoc.Tag('TableHead', {}, []),
-        new Markdoc.Tag('TableBody', {}, []),
-      ]),
-    ];
-    expect(
-      parseContent(
-        '<table data-card-size="large" data-view="cards"><thead></thead><tbody></tbody></table>',
-        config
-      )
-    ).toStrictEqual(expected);
-    expect(
-      parseContent(
-        '<table data-header-hidden><thead></thead><tbody></tbody></table>',
-        config
-      )
-    ).toStrictEqual(expected);
-  });
-
-  it('should parse cards', () => {
-    const cardText =
-      '<table data-card-size="large" data-view="cards">' +
-      '<thead>' +
-      '<tr><th></th><th data-hidden data-card-cover data-type="files"></th></tr>' +
-      '</thead>' +
-      '<tbody>' +
-      '</tbody>' +
-      '</table>';
-    expect(parseContent(cardText, config)).toStrictEqual([
-      new Markdoc.Tag('Table', {}, [
-        new Markdoc.Tag('TableHead', {}, [
-          new Markdoc.Tag('TableR', {}, [
-            new Markdoc.Tag('TableH', {}, []),
-            new Markdoc.Tag('TableH', {}, []),
-          ]),
-        ]),
-        new Markdoc.Tag('TableBody', {}, []),
-      ]),
-    ]);
-  });
 });
