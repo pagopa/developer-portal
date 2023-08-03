@@ -99,4 +99,3 @@ jobs:
         with:
           header: next-bundle-analysis
           message: ${{ steps.get-comment-body.outputs.body }}
-          delete: true
