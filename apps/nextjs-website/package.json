@@ -44,7 +44,6 @@
   "nextBundleAnalysis": {
     "budget": null,
     "budgetPercentIncreaseRed": 20,
-    "minimumChangeThreshold": 0,
-    "showDetails": true
+    "minimumChangeThreshold": 0
   }
 }
