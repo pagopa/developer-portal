@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Stack,
   Typography,
+  formLabelClasses,
+  styled,
   useTheme,
 } from '@mui/material';
 import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
-import { styles } from '@/components/molecules/ApiSection/ApiSection.styles';
+import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
@@ -17,6 +21,7 @@ import { useRouter } from 'next/router';
 
 export type ApiPageProps = {
   readonly product: Product;
+  readonly specURLsName?: string;
   readonly specURLs: {
     name?: string;
     url: string;
@@ -30,7 +35,24 @@ export type ApiPageProps = {
   };
 };
 
-const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  alignSelf: 'center',
+  [`& .${formLabelClasses.root}`]: {
+    color: `${theme.palette.common.white}`,
+    marginTop: '7px',
+    marginLeft: '8px',
+  },
+  [`& .${formLabelClasses.root}.${formLabelClasses.focused}`]: {
+    color: `${theme.palette.common.white}`,
+  },
+}));
+
+const ApiSection = ({
+  product,
+  specURLs,
+  specURLsName,
+  soapDocumentation,
+}: ApiPageProps) => {
   const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
@@ -57,18 +79,28 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
     [selectedItemURL, specURLs]
   );
   const textColor = palette.primary.contrastText;
+  const styles = getStyles(palette);
 
   return (
     <>
-      {specURLs.length > 1 && (
-        <Stack sx={styles.selectContainer}>
-          <Stack width={400}>
+      {specURLs.length > 1 && specURLsName && (
+        <Stack
+          sx={styles.selectContainer}
+          direction='row'
+          justifyContent='flex-end'
+          alignContent='center'
+        >
+          <StyledFormControl size='medium'>
+            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
             <Select
+              labelId='select-api-label'
               value={selectedItemURL}
               onChange={handleChange}
               size='small'
-              variant='outlined'
               sx={styles.select}
+              id='select-api'
+              variant='outlined'
+              label={specURLsName}
             >
               {specURLs.map((item, index) => (
                 <MenuItem value={item.url} key={index}>
@@ -76,7 +108,7 @@ const ApiSection = ({ product, specURLs, soapDocumentation }: ApiPageProps) => {
                 </MenuItem>
               ))}
             </Select>
-          </Stack>
+          </StyledFormControl>
         </Stack>
       )}
       {soapDocumentation && (
