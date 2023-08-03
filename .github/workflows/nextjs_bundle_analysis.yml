@@ -55,14 +55,6 @@ jobs:
           path: apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
-      # If it wasn't possible to download artifact of base branch, generates it.
-      - name: Generate NextJS bundle stats of base branch
-        if: steps.base-branch-stats.outputs.found_artifact == 'false'
-        uses: ./.github/actions/upload-nextjs-bundle-stats
-        with:
-          path_to_nextjs_folder: ./apps/nextjs-website
-          upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
-
       # If no bundle found for base branch, drop a comment on the PR saying that.
       - name: Create comment for no bundle found
         uses: marocchino/sticky-pull-request-comment@f6a2580ed520ae15da6076e7410b088d1c5dddd9 # v2.7.0
