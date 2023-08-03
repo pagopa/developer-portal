@@ -59,7 +59,7 @@ export type RenderingComponents<A> = {
 };
 
 export const renderContent = (
-  node: RenderableTreeNode,
+  node: ReadonlyArray<RenderableTreeNode>,
   React: ReactShape,
   components: RenderingComponents<ReactNode>
-): ReactNode => Markdoc.renderers.react(node, React, { components });
+): ReactNode => Markdoc.renderers.react([...node], React, { components });
