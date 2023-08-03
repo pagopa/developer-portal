@@ -62,6 +62,7 @@ jobs:
         run: |
           echo ${{ steps.base-branch-stats.outputs.found_artifact }}
           echo ${{ toJSON(steps.base-branch-stats.outputs) }}
+          echo ${{ steps.base-branch-stats.outputs.found_artifact == false && 'KO' || 'OK' }}
 
       # If it wasn't possible to download artifact of base branch generates it.
       - name: Generate NextJS bundle stats of base branch
