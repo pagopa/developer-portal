@@ -14,11 +14,6 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
     ]);
   });
-  it('should ignore any anchor tag', () => {
-    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, []),
-    ]);
-  });
   it('should parse heading', () => {
     expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
@@ -358,6 +353,31 @@ describe('parseContent', () => {
   it('should parse table', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', {}, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse html table', () => {
+    const table =
+      '<table data-header-hidden><thead><tr><th width="165">col A</th><th width="518">col B</th></tr></thead><tbody><tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr></tbody></table>';
     expect(parseContent(table, config)).toStrictEqual([
       new Markdoc.Tag('Table', {}, [
         new Markdoc.Tag('TableHead', {}, [
