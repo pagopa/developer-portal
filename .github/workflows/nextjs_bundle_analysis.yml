@@ -2,12 +2,10 @@ name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
+  # In case of multiple commits of same PR, the previous run of the Action will be deleted
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
@@ -57,7 +55,7 @@ jobs:
           path: apps/nextjs-website/.next/analyze/base
           if_no_artifact_found: warn
 
-      # If it wasn't possible to download artifact of base branch generates it.
+      # If it wasn't possible to download artifact of base branch, generates it.
       - name: Generate NextJS bundle stats of base branch
         if: steps.base-branch-stats.outputs.found_artifact == 'false'
         uses: ./.github/actions/upload-nextjs-bundle-stats
@@ -65,6 +63,7 @@ jobs:
           path_to_nextjs_folder: ./apps/nextjs-website
           upload_path: apps/nextjs-website/.next/analyze/base/bundle/__bundle_analysis.json
 
+      # If no bundle found for base branch, drop a comment on the PR saying that.
       - name: Create comment for no bundle found
         uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
         if: steps.base-branch-stats.outputs.found_artifact == 'false'
