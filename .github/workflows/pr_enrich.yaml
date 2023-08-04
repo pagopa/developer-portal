@@ -6,6 +6,7 @@ on:
 jobs:
 
   add_labels:
+    name: Add labels
     permissions:
       contents: read
       pull-requests: write
@@ -28,6 +29,7 @@ jobs:
           max_size: 400
 
   add_assignee:
+    name: Add assignee
     runs-on: ubuntu-latest
 
     steps:
