@@ -1,6 +1,6 @@
 name: Auto Assign PR
 
-on: pull_request
+on: workflow_dispatch
 
 jobs:
   assign:
