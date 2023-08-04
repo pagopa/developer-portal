@@ -3,7 +3,7 @@ import path from 'path';
 
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
-  readonly transform = (value: string) => value === 'true';
+  readonly transform = (value: string) => value === '' || value === 'true';
 }
 
 const convertLink = (link: string): string =>

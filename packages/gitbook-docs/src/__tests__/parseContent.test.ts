@@ -354,11 +354,25 @@ describe('parseContent', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', {}, [
+      new Markdoc.Tag('Table', { 'data-header-hidden': false }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
-            new Markdoc.Tag('TableH', {}, ['col A']),
-            new Markdoc.Tag('TableH', {}, ['col B']),
+            new Markdoc.Tag(
+              'TableH',
+              {
+                'data-card-target': false,
+                'data-hidden': false,
+              },
+              ['col A']
+            ),
+            new Markdoc.Tag(
+              'TableH',
+              {
+                'data-card-target': false,
+                'data-hidden': false,
+              },
+              ['col B']
+            ),
           ]),
         ]),
         new Markdoc.Tag('TableBody', {}, [
@@ -379,11 +393,25 @@ describe('parseContent', () => {
     const table =
       '<table data-header-hidden><thead><tr><th width="165">col A</th><th width="518">col B</th></tr></thead><tbody><tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr></tbody></table>';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', {}, [
+      new Markdoc.Tag('Table', { 'data-header-hidden': true }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
-            new Markdoc.Tag('TableH', {}, ['col A']),
-            new Markdoc.Tag('TableH', {}, ['col B']),
+            new Markdoc.Tag(
+              'TableH',
+              {
+                'data-card-target': false,
+                'data-hidden': false,
+              },
+              ['col A']
+            ),
+            new Markdoc.Tag(
+              'TableH',
+              {
+                'data-card-target': false,
+                'data-hidden': false,
+              },
+              ['col B']
+            ),
           ]),
         ]),
         new Markdoc.Tag('TableBody', {}, [
@@ -397,6 +425,58 @@ describe('parseContent', () => {
           ]),
         ]),
       ]),
+    ]);
+  });
+
+  it('should parse cards table', () => {
+    const table =
+      '<table data-card-size="large" data-view="cards">' +
+      '<thead><tr>' +
+      '<th></th>' +
+      '<th data-hidden data-card-target data-type="content-ref"></th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td>0 - A</td><td><a href="ref.md">0 - B</a></td></tr>' +
+      '<tr><td>1 - A</td><td><a href="ref.md">1 - B</a></td></tr>' +
+      '</tbody></table>';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'Table',
+        {
+          'data-card-size': 'large',
+          'data-view': 'cards',
+          'data-header-hidden': false,
+        },
+        [
+          new Markdoc.Tag('TableHead', {}, [
+            new Markdoc.Tag('TableR', {}, [
+              new Markdoc.Tag('TableH', {
+                'data-card-target': false,
+                'data-hidden': false,
+              }),
+              new Markdoc.Tag('TableH', {
+                'data-hidden': true,
+                'data-card-target': true,
+                'data-type': 'content-ref',
+              }),
+            ]),
+          ]),
+          new Markdoc.Tag('TableBody', {}, [
+            new Markdoc.Tag('TableR', {}, [
+              new Markdoc.Tag('TableD', {}, ['0 - A']),
+              new Markdoc.Tag('TableD', {}, [
+                new Markdoc.Tag('Link', { href: `/path/to/ref` }, ['0 - B']),
+              ]),
+            ]),
+            new Markdoc.Tag('TableR', {}, [
+              new Markdoc.Tag('TableD', {}, ['1 - A']),
+              new Markdoc.Tag('TableD', {}, [
+                new Markdoc.Tag('Link', { href: `/path/to/ref` }, ['1 - B']),
+              ]),
+            ]),
+          ]),
+        ]
+      ),
     ]);
   });
 
