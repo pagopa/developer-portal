@@ -82,7 +82,7 @@ const schema: ConfigType = {
   },
 };
 
-const parseAst = (markdown: string) => {
+export const parseAst = (markdown: string) => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
@@ -103,8 +103,7 @@ const parseAst = (markdown: string) => {
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
   const tokens = processHtmlTokens(tokenizer.tokenize(markdoc));
-  const ast = Markdoc.parse([...tokens]);
-  return ast;
+  return Markdoc.parse([...tokens]);
 };
 
 export const parseContent = (
@@ -113,14 +112,4 @@ export const parseContent = (
 ): ReadonlyArray<RenderableTreeNode> => {
   const ast = parseAst(markdown);
   return Markdoc.transform([ast], { ...schema, variables: config });
-};
-
-export const parseInPageMenu = (
-  markdown: string,
-  config: ParseContentConfig
-): ReadonlyArray<RenderableTreeNode> => {
-  const ast = Array.from(parseAst(markdown).walk()).filter(
-    ({ type }) => type === 'heading'
-  );
-  return Markdoc.transform(ast, { ...schema, variables: config });
 };

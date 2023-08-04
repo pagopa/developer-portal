@@ -1,5 +1,5 @@
 import Markdoc from '@markdoc/markdoc';
-import { parseInPageMenu } from '../parseContent';
+import { parseInPageMenu } from '../parseInPageMenu';
 
 const config = {
   assetsPrefix: '/assets/prefix',

@@ -11,6 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 
 type Params = {
   productSlug: string;
@@ -151,6 +152,13 @@ const Page = (props: ProductGuidePageProps) => {
             />
           </Box>
         </EContainer>
+        <Box>
+          <GuideInPageMenu
+            assetsPrefix={props.assetsPrefix}
+            pagePath={props.path}
+            inPageMenu={props.body}
+          />
+        </Box>
       </Box>
     </Layout>
   );
