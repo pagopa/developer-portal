@@ -1,7 +1,12 @@
-name: "Infra CI"
+name: Code Review Infra
 
 on:
-  workflow_dispatch:
+  pull_request:
+    branches: '**'
+    # Run only if there are at least one change matching the following paths
+    paths:
+      - '.infrastructure/**'
+      - '.github/workflows/code_review_infra.yaml'
 
 defaults:
   run:
@@ -13,37 +18,27 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 jobs:
-  terraform_plan:
+  infrastructure_checks:
     strategy:
       matrix:
         environment: [dev, prod]
-    name: Terraform plan
+    name: Infra checks
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-
-      - name: Setup node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+      - name: Restore cache
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        id: restore-build
         with:
-          node-version-file: '.node-version'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Compile
-        run: npm run compile
+          path: ./*
+          key: ${{ github.sha }}
 
       - name: Configure AWS Credentials
-        env:
-          AWS_REGION: eu-south-1
-        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+        uses: ./.github/actions/configure-aws-credentials
         with:
-          role-to-assume: ${{ secrets.IAM_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws_region: 'eu-south-1'
+          role_to_assume: ${{ secrets.IAM_ROLE }}
 
       - name: Set terraform version
         run: |
