@@ -11,6 +11,7 @@ runs:
   steps:
     - name: Set Terraform version
       shell: bash
+      working-directory: .infrastructure
       run: echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
 
     - name: Setup Terraform
@@ -24,4 +25,5 @@ runs:
 
     - name: Terraform Init
       shell: bash
+      working-directory: .infrastructure
       run: ./terraform.sh init ${{ inputs.environment }}
