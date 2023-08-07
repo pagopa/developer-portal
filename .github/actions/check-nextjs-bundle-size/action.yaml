@@ -41,6 +41,7 @@ runs:
       if: steps.base-branch-stats.outputs.found_artifact == 'false'
       with:
         header: next-bundle-analysis
+        recreate: true
         message: |
           Bundle not found for branch `${{ github.event.pull_request.base.ref }}`.
           It wasn't possible to compare bundles size.
@@ -79,4 +80,5 @@ runs:
       if: steps.base-branch-stats.outputs.found_artifact == 'true' && success()
       with:
         header: next-bundle-analysis
+        recreate: true
         message: ${{ steps.get-comment-body.outputs.body }}
