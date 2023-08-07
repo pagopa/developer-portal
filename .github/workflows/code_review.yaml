@@ -1,0 +1,89 @@
+name: Code Review
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  compile:
+    name: Compile project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Check lock file
+        run: npx -y package-lock-utd@1.1.3
+
+      - name: Install dependencies
+        run: npm ci --audit=false --fund=false
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Store in cache
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+  code_checks:
+    name: Code checks
+    runs-on: ubuntu-latest
+
+    needs: compile
+
+    steps:
+      - name: Restore cache
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Check lint rules
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+  build_website:
+    name: Build Website
+    runs-on: ubuntu-latest
+
+    needs: compile
+
+    steps:
+      - name: Restore cache
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+      - name: Build NextJS Website
+        uses: ./.github/actions/build-nextjs-website
+        with:
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+
+      - name: Check NextJS bundle size
+        uses: ./.github/actions/check-nextjs-bundle-size
+        with:
+          path_to_nextjs_folder: ./apps/nextjs-website
+          upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json

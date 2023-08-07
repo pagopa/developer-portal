@@ -26,11 +26,8 @@ runs:
   steps:
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
 
-    - name: Setup node
-      uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
-      with:
-        node-version-file: '.node-version'
-        cache: 'npm'
+    - name: Setup Node.JS
+      uses: ./.github/actions/setup-node
 
     - name: Configure NextJS cache
       uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
@@ -63,12 +60,10 @@ runs:
       run: npm run build -w nextjs-website
 
     - name: Configure AWS Credentials
-      env:
-        AWS_REGION: eu-south-1
-      uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+      uses: ./.github/actions/configure-aws-credentials
       with:
-        role-to-assume: ${{ inputs.iam_role }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws_region: 'eu-south-1'
+        role_to_assume: ${{ inputs.iam_role }}
 
     - name: Deploy to S3 Bucket
       shell: bash
