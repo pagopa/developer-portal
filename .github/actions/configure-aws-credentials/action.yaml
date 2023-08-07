@@ -1,0 +1,22 @@
+name: Configure AWS Credentials
+description: Configure AWS Credentials
+
+inputs:
+  aws_region:
+    description: 'The AWS region'
+    default: 'eu-south-1'
+    required: true
+  role_to_assume:
+    description: 'The IAM role to assume'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure AWS Credentials
+      env:
+        AWS_REGION: ${{ inputs.aws_region }}
+      uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+      with:
+        role-to-assume: ${{ inputs.role_to_assume }}
+        aws-region: ${{ env.AWS_REGION }}
