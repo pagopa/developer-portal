@@ -21,9 +21,9 @@ export const heading: Schema = {
     const attributes = node.transformAttributes(config);
 
     const id: string = children
-      .filter((child) => typeof child === 'string')
+      .map((child) => (typeof child === 'string' ? child : ''))
       .map((child) =>
-        (child as string)
+        child
           .trim()
           .toLowerCase()
           .normalize('NFD')
