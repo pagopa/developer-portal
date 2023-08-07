@@ -1,4 +1,4 @@
-name: "Infra CD"
+name: "Deploy Infrastructure"
 
 on:
   # Allows you to run this workflow manually from the Actions tab
