@@ -1,6 +1,5 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
-import Box from '@mui/material/Box';
 import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
@@ -59,14 +58,12 @@ const Page = (props: ProductTutorialPageProps) => {
       showBreadcrumbs={false}
     >
       <EContainer>
-        <Box>
-          <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={false}
-            content={props.body}
-          />
-        </Box>
+        <GitBookContent
+          assetsPrefix={props.assetsPrefix}
+          pagePath={props.path}
+          isPageIndex={false}
+          content={props.body}
+        />
       </EContainer>
     </Layout>
   );

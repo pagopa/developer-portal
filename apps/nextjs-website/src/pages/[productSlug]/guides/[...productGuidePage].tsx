@@ -142,14 +142,12 @@ const Page = (props: ProductGuidePageProps) => {
           </Box>
         </Box>
         <EContainer>
-          <Box>
-            <GitBookContent
-              assetsPrefix={props.assetsPrefix}
-              pagePath={props.path}
-              isPageIndex={props.isIndex}
-              content={props.body}
-            />
-          </Box>
+          <GitBookContent
+            assetsPrefix={props.assetsPrefix}
+            pagePath={props.path}
+            isPageIndex={props.isIndex}
+            content={props.body}
+          />
         </EContainer>
       </Box>
     </Layout>
