@@ -1,4 +1,4 @@
-name: build-website
+name: Build NextJS website
 description: Build NextJS website
 
 inputs:
