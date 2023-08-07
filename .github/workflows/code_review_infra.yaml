@@ -8,11 +8,6 @@ on:
       - '.infrastructure/**'
       - '.github/workflows/code_review_infra.yaml'
 
-defaults:
-  run:
-    shell: bash
-    working-directory: .infrastructure
-
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
@@ -36,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --audit=false --fund=false
 
-      - name: Compile
+      - name: Compile Cloudfront Functions
         run: npm run compile -w cloudfront-functions
 
       - name: Configure AWS Credentials
@@ -51,4 +46,5 @@ jobs:
           environment: ${{ matrix.environment }}
 
       - name: Terraform Plan
+        working-directory: .infrastructure
         run: ./terraform.sh plan ${{ matrix.environment }}
