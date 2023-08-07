@@ -46,10 +46,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --audit=false --fund=false
 
-      - name: Compile
-        run: npm run compile
+      - name: Compile Cloudfront Functions
+        run: npm run compile -w cloudfront-functions
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
@@ -57,21 +57,10 @@ jobs:
           aws_region: 'eu-south-1'
           role_to_assume: ${{ secrets.IAM_ROLE }}
 
-      - name: Set terraform version
-        run: |
-          echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
-
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
+        uses: ./.github/actions/setup-terraform
         with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-
-      - name: Terraform Format
-        run: terraform fmt -check
-
-      - name: Terraform Init
-        run: |
-          ./terraform.sh init ${{ inputs.environment }}
+          environment: ${{ inputs.environment }}
 
       - name: Terraform Apply
         env:
