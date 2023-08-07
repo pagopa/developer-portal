@@ -45,7 +45,7 @@ jobs:
           aws_region: 'eu-south-1'
           role_to_assume: ${{ secrets.IAM_ROLE }}
 
-      - name: Set terraform version
+      - name: Setup Terraform
         uses: ./.github/actions/setup-terraform
         with:
           environment: ${{ matrix.environment }}
