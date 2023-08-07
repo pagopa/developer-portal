@@ -10,7 +10,6 @@ import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 
 type Params = {
@@ -81,6 +80,7 @@ const Page = (props: ProductGuidePageProps) => {
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column-reverse', lg: 'row' },
+          maxWidth: '1900px',
         }}
       >
         <Box
@@ -142,22 +142,22 @@ const Page = (props: ProductGuidePageProps) => {
             )}
           </Box>
         </Box>
-        <EContainer>
-          <Box>
-            <GitBookContent
-              assetsPrefix={props.assetsPrefix}
-              pagePath={props.path}
-              isPageIndex={props.isIndex}
-              content={props.body}
-            />
-          </Box>
-        </EContainer>
-        <Box>
-          <GuideInPageMenu
+        <Box sx={{ margin: '0 auto', maxWidth: '1008px' }}>
+          <GitBookContent
             assetsPrefix={props.assetsPrefix}
             pagePath={props.path}
-            inPageMenu={props.body}
+            isPageIndex={props.isIndex}
+            content={props.body}
           />
+        </Box>
+        <Box sx={{ display: { xs: 'none', lg: 'initial' }, minWidth: '240px' }}>
+          <Box sx={{ position: 'fixed' }}>
+            <GuideInPageMenu
+              assetsPrefix={props.assetsPrefix}
+              pagePath={props.path}
+              inPageMenu={props.body}
+            />
+          </Box>
         </Box>
       </Box>
     </Layout>
