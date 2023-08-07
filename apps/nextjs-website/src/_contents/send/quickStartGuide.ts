@@ -19,7 +19,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTML',
-          html: "Accedi alla <a href='https://dev.selfcare.pagopa.it/auth/login'>piattaforma Self Care</a> ed entra su SEND. In questo video troverai tutti i passaggi per generare le API Key, che <b>dovrà essere utilizzata in tutte le chiamate API</b>.",
+          html: "Accedi alla <a href='https://dev.selfcare.pagopa.it/auth/login'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare le API Key, che <b>dovrà essere utilizzata in tutte le chiamate API</b>.",
         },
         {
           component: 'innerHTMLLazyLoaded',
