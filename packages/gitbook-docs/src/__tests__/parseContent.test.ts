@@ -6,6 +6,26 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
+  gitBookContents: [
+    {
+      page: {
+        path: '/path/to/page',
+        title: 'Who am I',
+        menu: '',
+        body: '# Who am I\n hello',
+        isIndex: false,
+      },
+    },
+    {
+      page: {
+        path: '/path/page',
+        title: 'Page',
+        menu: '',
+        body: '# Page',
+        isIndex: false,
+      },
+    },
+  ],
 };
 
 describe('parseContent', () => {
@@ -447,6 +467,16 @@ describe('parseContent', () => {
         },
         ['b.md']
       ),
+    ]);
+  });
+
+  it.skip('should parse mention', () => {
+    const mention = 'Go to [page.md](../../page.md "mention")';
+    expect(parseContent(mention, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Go to ',
+        new Markdoc.Tag('Link', { title: 'Page', href: '/path/page' }, []),
+      ]),
     ]);
   });
 });
