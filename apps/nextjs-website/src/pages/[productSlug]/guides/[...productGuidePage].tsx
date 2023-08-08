@@ -70,13 +70,11 @@ const Page = (props: ProductGuidePageProps) => {
 
   const { productGuidePage, shared } = translations;
 
-  const guideInPageMenu: ReactNode | null = (
-    <GuideInPageMenu
-      assetsPrefix={props.assetsPrefix}
-      pagePath={props.path}
-      inPageMenu={props.body}
-    />
-  );
+  const guideInPageMenu: ReactNode | null = GuideInPageMenu({
+    assetsPrefix: props.assetsPrefix,
+    pagePath: props.path,
+    inPageMenu: props.body,
+  });
 
   return (
     <Layout
