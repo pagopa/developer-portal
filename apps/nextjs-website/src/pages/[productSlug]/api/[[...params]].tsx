@@ -9,7 +9,7 @@ type Params = {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: [...getApiPaths()],
+  paths: [...getApiPaths(), '/send/api/schemas/PreLoadResponse'],
   fallback: false,
 });
 
@@ -28,14 +28,14 @@ export type ApiPageProps = {
   }[];
 } & LayoutProps;
 
-export const getStaticProps: GetStaticProps<ApiPageProps, Params> = ({
+export const getStaticProps: GetStaticProps<any, Params> = ({
   params,
-}): GetStaticPropsResult<ApiPageProps> => {
+}): GetStaticPropsResult<any> => {
   const props = getApi(params?.productSlug);
   if (props) {
     return { props: { ...props, products: [...getProducts()] } };
   } else {
-    return { notFound: true as const };
+    return {} as any;
   }
 };
 
@@ -48,7 +48,7 @@ const ApisPage = ({
   soapDocumentation,
 }: ApiPageProps) => (
   <Layout
-    products={products}
+    products={products ?? []}
     product={product}
     path={path}
     bannerLinks={bannerLinks}

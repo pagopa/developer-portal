@@ -1,4 +1,4 @@
 import { Page } from '@/lib/types/page';
-import { ApiPageProps } from '@/pages/[productSlug]/api';
+import { ApiPageProps } from '@/pages/[productSlug]/api/[[...params]]';
 
 export type ApiData = Page<Omit<ApiPageProps, 'products'>>;
