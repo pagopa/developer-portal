@@ -9,6 +9,10 @@ inputs:
   role_to_assume:
     description: 'The IAM role to assume'
     required: true
+  role_duration_seconds:
+    description: 'The duration, in seconds, of the credentials'
+    required: false
+    default: 1800 # 30 minutes
 
 runs:
   using: "composite"
@@ -18,3 +22,4 @@ runs:
       with:
         role-to-assume: ${{ inputs.role_to_assume }}
         aws-region: ${{ inputs.aws_region }}
+        role-duration-seconds: ${{ inputs.role_duration_seconds }}
