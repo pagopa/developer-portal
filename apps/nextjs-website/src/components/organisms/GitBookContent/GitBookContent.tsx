@@ -27,7 +27,6 @@ import Embed from './components/Embed';
 import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
-import { gitBookContents } from '@/_contents/products';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -74,7 +73,7 @@ const GitBookContent = ({
       assetsPrefix,
       pagePath,
       isPageIndex,
-      gitBookContents,
+      gitBookContents: [], // TODO: Get from GitBookContentProps
     }),
     React,
     components
