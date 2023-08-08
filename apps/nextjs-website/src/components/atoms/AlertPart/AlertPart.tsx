@@ -6,7 +6,7 @@ export type AlertPartProps = {
   alertStyle?: SxProps;
   severity: AlertColor;
   text?: string;
-  title?: string;
+  title: string;
 };
 
 const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {
