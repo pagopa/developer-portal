@@ -67,4 +67,6 @@ export const guides = [
   ...sendGuides,
 ];
 
+export const gitBookContents = [...tutorials, ...guides];
+
 export const products = [appIo, ioSign, send, pagoPa];
