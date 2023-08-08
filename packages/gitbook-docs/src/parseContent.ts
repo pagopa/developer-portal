@@ -19,11 +19,13 @@ import * as t from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { htmltable } from './markdoc/schema/htmltable';
+import { DocPage } from './parseDoc';
 
-export type ParseContentConfig = {
+export type ParseContentConfig<T> = {
   readonly assetsPrefix: string;
   readonly pagePath: string;
   readonly isPageIndex: boolean;
+  readonly gitBookContents: ReadonlyArray<DocPage<T>>;
 };
 
 const pairedHtmlTag = (tag: string) => ({
@@ -82,9 +84,9 @@ const schema: ConfigType = {
   },
 };
 
-export const parseContent = (
+export const parseContent = <T>(
   markdown: string,
-  config: ParseContentConfig
+  config: ParseContentConfig<T>
 ): RenderableTreeNode => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:

@@ -27,6 +27,7 @@ import Embed from './components/Embed';
 import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
+import { gitBookContents } from '@/_contents/products';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -69,7 +70,12 @@ const GitBookContent = ({
   isPageIndex,
 }: GitBookContentProps) =>
   renderContent(
-    parseContent(content, { assetsPrefix, pagePath, isPageIndex }),
+    parseContent(content, {
+      assetsPrefix,
+      pagePath,
+      isPageIndex,
+      gitBookContents,
+    }),
     React,
     components
   );
