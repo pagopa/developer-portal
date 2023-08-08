@@ -54,7 +54,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
-          aws_region: 'eu-south-1'
+          aws_region: ${{ env.AWS_REGION || 'eu-south-1' }}
           role_to_assume: ${{ secrets.IAM_ROLE }}
 
       - name: Setup Terraform
