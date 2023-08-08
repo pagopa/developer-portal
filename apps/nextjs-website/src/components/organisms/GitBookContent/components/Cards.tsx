@@ -30,9 +30,9 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
         {href ? (
           <CardActionArea
             sx={{ height: '100%' }}
-            // FIXME: the href render this element as anchor find a way to
-            // render to a div causing an Hydration error: Expected server HTML
-            // to contain a matching <div> in <a>.
+            // FIXME: the href attribute renders this element as anchor. Find a
+            // way to render to a div causing an Hydration error: Expected
+            // server HTML to contain a matching <div> in <a>.
             href={href}
           >
             {content}
