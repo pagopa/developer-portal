@@ -20,6 +20,10 @@ inputs:
   cloudfront_distribution_id:
     description: 'The ID of the Cloudfront distribution to invalidate'
     required: true
+  aws_region:
+    description: 'The AWS region selected'
+    required: false
+    default: 'eu-south-1'
 
 runs:
   using: "composite"
@@ -62,7 +66,7 @@ runs:
     - name: Configure AWS Credentials
       uses: ./.github/actions/configure-aws-credentials
       with:
-        aws_region: 'eu-south-1'
+        aws_region: ${{ inputs.aws_region }}
         role_to_assume: ${{ inputs.iam_role }}
 
     - name: Deploy to S3 Bucket
