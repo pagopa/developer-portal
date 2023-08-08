@@ -22,6 +22,7 @@ export const heading: Schema = {
 
     const id: string = children
       .map((child) => (typeof child === 'string' ? child : ''))
+      .filter((child) => !!child)
       .map((child) =>
         child
           .trim()
