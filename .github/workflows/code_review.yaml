@@ -53,9 +53,6 @@ jobs:
           path: ./*
           key: ${{ github.sha }}
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-
       - name: Check lint rules
         run: npm run lint
 

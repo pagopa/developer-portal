@@ -3,7 +3,7 @@ description: Setup Node.JS
 
 inputs:
   package_manager:
-    description: 'The package manager used'
+    description: 'The package manager to use'
     default: 'npm'
     required: true
 
