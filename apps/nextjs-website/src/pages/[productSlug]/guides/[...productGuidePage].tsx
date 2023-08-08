@@ -11,6 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
+import { HashProvider } from '@/components/organisms/HashProvider/HashProvider';
 
 type Params = {
   productSlug: string;
@@ -85,99 +86,107 @@ const Page = (props: ProductGuidePageProps) => {
       bannerLinks={props.bannerLinks}
       showBreadcrumbs={false}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column-reverse', lg: 'row' },
-          maxWidth: '1900px',
-        }}
-      >
+      <HashProvider>
         <Box
-          bgcolor={palette.grey[50]}
           sx={{
             display: 'flex',
-            flexDirection: 'column',
-            padding: '80px 0',
-            flexBasis: { lg: '354px' },
-            flexGrow: { lg: 0 },
-            flexShrink: { lg: 0 },
+            flexDirection: { xs: 'column-reverse', lg: 'row' },
+            maxWidth: '1900px',
           }}
         >
-          <Typography
-            variant='h6'
+          <Box
+            bgcolor={palette.grey[50]}
             sx={{
-              padding: '16px 32px',
-              verticalAlign: 'middle',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '80px 0',
+              flexBasis: { lg: '354px' },
+              flexGrow: { lg: 0 },
+              flexShrink: { lg: 0 },
             }}
           >
-            {props.guide.name}
-          </Typography>
-          <Dropdown
-            label={`${shared.version} ${props.version.name}`}
-            items={props.versions.map((version) => ({
-              href: version.path,
-              label: version.name,
-            }))}
-            icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
-            buttonStyle={{
-              color: palette.action.active,
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '16px 32px',
-            }}
-            menuStyle={{
-              style: {
-                width: '354px',
-                maxWidth: '354px',
-                left: 0,
-                right: 0,
-              },
-            }}
-            menuAnchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          />
+            <Typography
+              variant='h6'
+              sx={{
+                padding: '16px 32px',
+                verticalAlign: 'middle',
+              }}
+            >
+              {props.guide.name}
+            </Typography>
+            <Dropdown
+              label={`${shared.version} ${props.version.name}`}
+              items={props.versions.map((version) => ({
+                href: version.path,
+                label: version.name,
+              }))}
+              icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
+              buttonStyle={{
+                color: palette.action.active,
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '16px 32px',
+              }}
+              menuStyle={{
+                style: {
+                  width: '354px',
+                  maxWidth: '354px',
+                  left: 0,
+                  right: 0,
+                },
+              }}
+              menuAnchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+            />
+            <Box
+              sx={{
+                margin: '32px 0 0 0',
+              }}
+            >
+              {renderGitBookMarkdown(
+                props.menu,
+                props.pathPrefix,
+                props.assetsPrefix,
+                true
+              )}
+            </Box>
+          </Box>
+          <Box sx={{ margin: '0 auto', maxWidth: '1008px' }}>
+            <GitBookContent
+              assetsPrefix={props.assetsPrefix}
+              pagePath={props.path}
+              isPageIndex={props.isIndex}
+              content={props.body}
+            />
+          </Box>
           <Box
             sx={{
-              margin: '32px 0 0 0',
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              minWidth: '240px',
             }}
           >
-            {renderGitBookMarkdown(
-              props.menu,
-              props.pathPrefix,
-              props.assetsPrefix,
-              true
-            )}
+            <Box sx={{ position: 'sticky', top: 20 }}>
+              {guideInPageMenu && (
+                <>
+                  <Typography
+                    color={palette.text.secondary}
+                    fontSize={14}
+                    fontWeight={700}
+                    textTransform={'uppercase'}
+                    marginBottom={'18px'}
+                  >
+                    {productGuidePage.onThisPage}
+                  </Typography>
+                  {guideInPageMenu}
+                </>
+              )}
+            </Box>
           </Box>
         </Box>
-        <Box sx={{ margin: '0 auto', maxWidth: '1008px' }}>
-          <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={props.isIndex}
-            content={props.body}
-          />
-        </Box>
-        <Box sx={{ display: { xs: 'none', lg: 'initial' }, minWidth: '240px' }}>
-          <Box sx={{ position: 'fixed' }}>
-            {guideInPageMenu && (
-              <>
-                <Typography
-                  color={palette.text.secondary}
-                  fontSize={14}
-                  fontWeight={700}
-                  textTransform={'uppercase'}
-                  marginBottom={'18px'}
-                >
-                  {productGuidePage.onThisPage}
-                </Typography>
-                {guideInPageMenu}
-              </>
-            )}
-          </Box>
-        </Box>
-      </Box>
+      </HashProvider>
     </Layout>
   );
 };
