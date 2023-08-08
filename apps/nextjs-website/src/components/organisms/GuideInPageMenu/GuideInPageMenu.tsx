@@ -20,11 +20,10 @@ const GuideInPageMenu = ({
   inPageMenu,
   assetsPrefix,
   pagePath,
-}: GuideInPageMenuProps) =>
-  renderInPageMenu(
-    parseInPageMenu(inPageMenu, { assetsPrefix, pagePath }),
-    React,
-    components
-  );
+}: GuideInPageMenuProps) => {
+  const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
+
+  return nodes.length ? renderInPageMenu(nodes, React, components) : null;
+};
 
 export default GuideInPageMenu;

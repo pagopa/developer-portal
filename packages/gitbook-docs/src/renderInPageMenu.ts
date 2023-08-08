@@ -8,7 +8,7 @@ export type RenderingComponents<A> = {
 };
 
 export const renderInPageMenu = (
-  node: ReadonlyArray<RenderableTreeNode>,
+  nodes: ReadonlyArray<RenderableTreeNode>,
   React: ReactShape,
   components: RenderingComponents<ReactNode>
-): ReactNode => Markdoc.renderers.react([...node], React, { components });
+): ReactNode => Markdoc.renderers.react([...nodes], React, { components });

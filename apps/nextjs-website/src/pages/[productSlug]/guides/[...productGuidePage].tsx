@@ -6,7 +6,7 @@ import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
@@ -66,7 +66,16 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
+
+  const { productGuidePage, shared } = translations;
+
+  const guideInPageMenu: ReactNode | null = (
+    <GuideInPageMenu
+      assetsPrefix={props.assetsPrefix}
+      pagePath={props.path}
+      inPageMenu={props.body}
+    />
+  );
 
   return (
     <Layout
@@ -152,11 +161,20 @@ const Page = (props: ProductGuidePageProps) => {
         </Box>
         <Box sx={{ display: { xs: 'none', lg: 'initial' }, minWidth: '240px' }}>
           <Box sx={{ position: 'fixed' }}>
-            <GuideInPageMenu
-              assetsPrefix={props.assetsPrefix}
-              pagePath={props.path}
-              inPageMenu={props.body}
-            />
+            {guideInPageMenu && (
+              <>
+                <Typography
+                  color={palette.text.secondary}
+                  fontSize={14}
+                  fontWeight={700}
+                  textTransform={'uppercase'}
+                  marginBottom={'18px'}
+                >
+                  {productGuidePage.onThisPage}
+                </Typography>
+                {guideInPageMenu}
+              </>
+            )}
           </Box>
         </Box>
       </Box>
