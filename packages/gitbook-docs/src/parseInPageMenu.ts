@@ -8,6 +8,8 @@ export type ParseInPageMenuConfig = {
   readonly pagePath: string;
 };
 
+const HEADING_LEVELS_TO_SHOW = [3];
+
 const schema: ConfigType = {
   nodes: {
     document,
@@ -20,7 +22,8 @@ export const parseInPageMenu = (
   config: ParseInPageMenuConfig
 ): ReadonlyArray<RenderableTreeNode> => {
   const ast = Array.from(parseAst(markdown).walk()).filter(
-    ({ type }) => type === 'heading'
+    ({ type, attributes }) =>
+      type === 'heading' && HEADING_LEVELS_TO_SHOW.includes(attributes.level)
   );
   return Markdoc.transform(ast, { ...schema, variables: config });
 };

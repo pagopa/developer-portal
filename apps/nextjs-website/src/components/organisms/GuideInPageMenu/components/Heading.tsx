@@ -4,7 +4,7 @@ import MUILink from '@mui/material/Link';
 import { Typography, useTheme } from '@mui/material';
 import { useHash } from '@/components/organisms/HashProvider/HashProvider';
 
-const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
+const Heading = ({ id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
   const { hash } = useHash();
@@ -13,10 +13,6 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   useEffect(() => {
     setIsCurrentHash(hash === `#${id}`);
   }, [hash, id]);
-
-  if (level < 2 || level > 4) {
-    return;
-  }
 
   return (
     <MUILink
