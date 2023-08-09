@@ -18,7 +18,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       anchor: '01',
       parts: [
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html:
             `Prepara i documenti da inviare in firma all'utente in uno dei seguenti formati: \n` +
             `</br> \n` +
@@ -202,7 +202,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la risposta del server che conferma i dati inviati e fornisce l’ID di Firma',
               },
             ],
@@ -261,7 +261,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la risposta del server che fornisce l’ID del cittadino corrispondente al codice fiscale fornito',
               },
             ],
@@ -370,7 +370,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la risposta del server che contiene l’ID della Signature request',
               },
             ],
@@ -451,7 +451,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la risposta del server che contiene l’ID del messaggio ricevuto dall’utente',
               },
             ],
