@@ -18,7 +18,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
       anchor: '01',
       parts: [
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html: "Prima di poter utilizzare le API di IO, il tuo ente dovrà avere un'adesione base attiva. Se non la possiede, il primo passo è quello di eseguire il processo di <a href='https://selfcare.pagopa.it/auth/login?onSuccess=%2Fonboarding%2Fprod-io'>onboarding ad App IO</a> tramite Self Care.",
         },
       ],
@@ -94,7 +94,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server, che contiene l’esito sull’esistenza dell’utente desiderato.',
               },
             ],
@@ -229,7 +229,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server, che contiene l’identificato del messaggio.',
               },
             ],
@@ -333,7 +333,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server, che contiene tutte le informazioni relative allo stato di notifica del messaggio.',
               },
             ],
