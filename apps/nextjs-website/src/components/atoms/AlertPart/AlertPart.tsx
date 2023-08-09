@@ -17,7 +17,7 @@ const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {
       severity={severity}
       sx={{ borderRadius: '4px', marginBottom: spacing(5), ...alertStyle }}
     >
-      {title && <AlertTitle>{title}</AlertTitle>}
+      <AlertTitle>{title}</AlertTitle>
       {text}
     </Alert>
   );
