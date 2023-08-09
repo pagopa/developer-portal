@@ -1,8 +1,7 @@
 import { Part } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
-import InnerHtmlPart from '@/components/atoms/InnerHtmlPart/InnerHtmlPart';
-import InnerHtmlLazyLoadedPart from '@/components/molecules/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart';
+import InnerHtmlLazyLoadedPart from '@/components/atoms/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
@@ -19,8 +18,6 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
       return <ApiTesterPart {...part} />;
     case 'codeBlock':
       return <CodeBlockPart {...part} />;
-    case 'innerHTML':
-      return <InnerHtmlPart html={part.html} />;
     case 'innerHTMLLazyLoaded':
       return <InnerHtmlLazyLoadedPart html={part.html} />;
     case 'typography':
