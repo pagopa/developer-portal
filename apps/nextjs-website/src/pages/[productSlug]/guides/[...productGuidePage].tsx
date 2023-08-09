@@ -155,7 +155,7 @@ const Page = (props: ProductGuidePageProps) => {
             sx={{
               margin: '0 auto',
               maxWidth: '1008px',
-              padding: { lg: '0 32px' },
+              padding: '0 32px',
             }}
           >
             <GitBookContent
