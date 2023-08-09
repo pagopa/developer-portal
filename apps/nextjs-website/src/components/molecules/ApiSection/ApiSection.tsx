@@ -72,6 +72,17 @@ const ApiSection = ({
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
+
+    const spec = specURLs.find((item) => item?.url === event.target.value);
+    if (spec) {
+      console.log('spec', spec);
+    }
+
+    if (specURLsName) {
+      // update the url with the spec query param
+      const currentUrl = router.asPath.split('?')[0];
+      router.replace(`${currentUrl}?spec=${spec?.name}`);
+    }
   };
 
   const selectedApi = useMemo(
