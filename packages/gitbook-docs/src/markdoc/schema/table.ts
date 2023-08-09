@@ -50,6 +50,10 @@ const cards: Schema = {
   attributes: {
     'data-card-size': {
       type: String,
+      // The 'data-card-size' attribute can assume only the value 'large'. The
+      // value 'small' is never provided. When the property 'data-card-size'
+      // is missing it is intended as small. This is why the default value is
+      // small
       matches: ['large'],
       render: 'size',
       default: 'small',
@@ -106,7 +110,9 @@ const makeCardsNode = (node: Node) =>
           A.map((carditems) => {
             const coverSrc = extractDataCardHref('data-card-cover', carditems);
             const href = extractDataCardHref('data-card-target', carditems);
+            // Add coverSrc and href as attribute taking them from card children
             const attrs = { coverSrc, href };
+            // Keep only the visible children
             const children = carditems.filter(
               ({ attributes }) => attributes['data-hidden'] !== ''
             );
