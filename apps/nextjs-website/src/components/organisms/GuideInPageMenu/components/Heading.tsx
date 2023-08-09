@@ -1,7 +1,6 @@
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import React, { ReactNode } from 'react';
 import MUILink from '@mui/material/Link';
-import { removeEmojis } from '@/markdoc/helpers';
 import { Typography, useTheme } from '@mui/material';
 import { useHash } from '@/components/organisms/HashProvider/HashProvider';
 
@@ -19,7 +18,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   return (
     <MUILink
       href={`#${id}`}
-      title={isString ? removeEmojis(children) : ''}
+      title={isString ? children : ''}
       sx={{
         display: 'block',
         fontFamily: 'Titillium Web',
@@ -34,7 +33,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
           fontWeight: isCurrentHash ? 700 : 400,
         }}
       >
-        {isString ? removeEmojis(children) : children}
+        {children}
       </Typography>
     </MUILink>
   );
