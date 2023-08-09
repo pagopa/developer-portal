@@ -6,7 +6,7 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
-  gitBookContents: [
+  gitBookPages: [
     {
       page: {
         path: '/path/to/page',
@@ -470,7 +470,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it.skip('should parse mention', () => {
+  it('should parse mention', () => {
     const mention = 'Go to [page.md](../../page.md "mention")';
     expect(parseContent(mention, config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
