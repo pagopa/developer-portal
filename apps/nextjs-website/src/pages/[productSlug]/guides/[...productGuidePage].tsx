@@ -89,7 +89,7 @@ const Page = (props: ProductGuidePageProps) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column-reverse', lg: 'row' },
-            maxWidth: '1900px',
+            maxWidth: '2560px',
           }}
         >
           <Box
