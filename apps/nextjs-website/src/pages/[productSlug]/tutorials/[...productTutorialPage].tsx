@@ -5,6 +5,7 @@ import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
+import { gitBookContents } from '@/_contents/products';
 
 type Params = {
   productSlug: string;
@@ -65,6 +66,7 @@ const Page = (props: ProductTutorialPageProps) => {
             pagePath={props.path}
             isPageIndex={false}
             content={props.body}
+            gitBookPages={gitBookContents}
           />
         </Box>
       </EContainer>

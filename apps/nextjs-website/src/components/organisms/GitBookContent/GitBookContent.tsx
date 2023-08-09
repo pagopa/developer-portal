@@ -27,12 +27,14 @@ import Embed from './components/Embed';
 import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
+import { DocPage } from 'gitbook-docs/parseDoc';
 
 type GitBookContentProps = {
   assetsPrefix: string;
   pagePath: string;
   isPageIndex: boolean;
   content: string;
+  gitBookPages: ReadonlyArray<Pick<DocPage<unknown>, 'page'>>;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -67,13 +69,14 @@ const GitBookContent = ({
   assetsPrefix,
   pagePath,
   isPageIndex,
+  gitBookPages,
 }: GitBookContentProps) =>
   renderContent(
     parseContent(content, {
       assetsPrefix,
       pagePath,
       isPageIndex,
-      gitBookContents: [], // TODO: Get from GitBookContentProps
+      gitBookPages,
     }),
     React,
     components

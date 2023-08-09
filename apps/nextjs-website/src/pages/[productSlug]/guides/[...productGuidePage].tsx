@@ -11,6 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import { gitBookContents } from '@/_contents/products';
 
 type Params = {
   productSlug: string;
@@ -148,6 +149,7 @@ const Page = (props: ProductGuidePageProps) => {
               pagePath={props.path}
               isPageIndex={props.isIndex}
               content={props.body}
+              gitBookPages={gitBookContents}
             />
           </Box>
         </EContainer>
