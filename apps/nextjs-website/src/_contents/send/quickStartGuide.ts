@@ -18,7 +18,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       anchor: '01',
       parts: [
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html: "Accedi alla <a href='https://dev.selfcare.pagopa.it/auth/login'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare le API Key, che <b>dovrà essere utilizzata in tutte le chiamate API</b>.",
         },
         {
@@ -54,7 +54,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           language: 'txt',
         },
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html: 'Otterai due stringhe hash code che <b>dovrai conservare per le chiamate API successive.</b>',
         },
       ],
@@ -144,7 +144,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server, che contiene l’URL di caricamento, e le stringhe <code style="background-color: #F4F5F7; font-size: 0.875em;">key</code> e <code style="background-color: #F4F5F7; font-size: 0.875em;">secret</code> associate al documento.',
               },
             ],
@@ -164,7 +164,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       anchor: '04',
       parts: [
         {
-          component: 'innerHTML',
+          component: 'innerHTMLLazyLoaded',
           html:
             `Per poter inviare i documenti è necessario caricarli sullo storage, utilizzando i parametri ricevuti in risposta allo step 03 e generati nello step 02: \n` +
             `<br /> \n` +
@@ -265,7 +265,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             language: 'txt',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server di caricamento per il file Notifica.pdf, che contiene  il campo  <b>x-amz-version-id</b> da utilizzare nello step successivo',
               },
             ],
@@ -449,7 +449,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             parts: [
               {
-                component: 'innerHTML',
+                component: 'innerHTMLLazyLoaded',
                 html: 'Ecco la simulazione della risposta del server , che contiene l’ID della notifica e il numero di protocollo che hai scelto.',
               },
             ],
