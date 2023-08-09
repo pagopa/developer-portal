@@ -151,7 +151,13 @@ const Page = (props: ProductGuidePageProps) => {
               )}
             </Box>
           </Box>
-          <Box sx={{ margin: '0 auto', maxWidth: '1008px', padding: '0 32px' }}>
+          <Box
+            sx={{
+              margin: '0 auto',
+              maxWidth: '1008px',
+              padding: { lg: '0 32px' },
+            }}
+          >
             <GitBookContent
               assetsPrefix={props.assetsPrefix}
               pagePath={props.path}
