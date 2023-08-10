@@ -13,9 +13,11 @@ export const list: Schema = {
     marker: { type: String, render: false },
   },
   transform(node, config) {
+    const ordered = node.tag === 'htmlol';
+    const attr = node.transformAttributes(config);
     return new Markdoc.Tag(
       'List',
-      node.transformAttributes(config),
+      { ordered, ...attr },
       node.transformChildren(config)
     );
   },
