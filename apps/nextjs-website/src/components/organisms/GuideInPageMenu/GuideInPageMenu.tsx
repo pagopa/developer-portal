@@ -23,8 +23,7 @@ const GuideInPageMenu = ({
 }: GuideInPageMenuProps) => {
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
 
-  // Do not render the menu if it contains only the title
-  return nodes.length > 1 ? renderInPageMenu(nodes, React, components) : null;
+  return nodes.length ? renderInPageMenu(nodes, React, components) : null;
 };
 
 export default GuideInPageMenu;
