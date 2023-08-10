@@ -2,17 +2,17 @@ import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import React, { ReactNode, useEffect, useState } from 'react';
 import MUILink from '@mui/material/Link';
 import { Typography, useTheme } from '@mui/material';
-import { useHash } from '@/components/organisms/HashProvider/HashProvider';
+import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
-  const { hash } = useHash();
+  const { fragment } = useFragment();
   const [isCurrentHash, setIsCurrentHash] = useState(false);
 
   useEffect(() => {
-    setIsCurrentHash(hash === `#${id}`);
-  }, [hash, id]);
+    setIsCurrentHash(fragment === `#${id}`);
+  }, [fragment, id]);
 
   return (
     <MUILink
@@ -28,7 +28,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
       <Typography
         sx={{
           color: isCurrentHash ? palette.primary.main : palette.text.secondary,
-          fontSize: level !== 2 ? 16 : 14,
+          fontSize: level === 2 ? 18 : 16,
           fontWeight: isCurrentHash ? 700 : 400,
           overflow: 'hidden',
           textOverflow: 'ellipsis',

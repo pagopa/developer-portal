@@ -6,12 +6,12 @@ import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { HashProvider } from '@/components/organisms/HashProvider/HashProvider';
+import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 type Params = {
   productSlug: string;
@@ -77,7 +77,7 @@ const Page = (props: ProductGuidePageProps) => {
       bannerLinks={props.bannerLinks}
       showBreadcrumbs={false}
     >
-      <HashProvider>
+      <FragmentProvider>
         <Box
           sx={{
             display: 'flex',
@@ -183,7 +183,7 @@ const Page = (props: ProductGuidePageProps) => {
             </Box>
           </Box>
         </Box>
-      </HashProvider>
+      </FragmentProvider>
     </Layout>
   );
 };
