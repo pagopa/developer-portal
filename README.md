@@ -1,5 +1,4 @@
 # Developer Portal
-[![CI](https://github.com/pagopa/developer-portal/actions/workflows/ci.yaml/badge.svg)](https://github.com/pagopa/developer-portal/actions/workflows/ci.yaml)
 
 In this repository you can find anything you need to work on the developer portal project.
 
