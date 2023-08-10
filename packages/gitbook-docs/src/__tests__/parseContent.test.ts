@@ -100,6 +100,22 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse html unordered list', () => {
+    expect(parseContent('<ul><li>Item</li></ul>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse html ordered list', () => {
+    expect(parseContent('<ol><li>Item</li></ol>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: true }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
   it('should parse hint', () => {
     expect(
       parseContent('{% hint style="info" %}\nText\n{% endhint %}\nText', config)
