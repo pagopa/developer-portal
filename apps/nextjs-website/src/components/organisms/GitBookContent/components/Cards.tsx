@@ -10,12 +10,14 @@ import { ReactNode } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { useRouter } from 'next/router';
 
 export const CardItem = ({ children }: CardItemProps<ReactNode>) => (
   <Typography component='div'>{children}</Typography>
 );
 
 export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
+  const router = useRouter();
   const content = (
     <>
       {coverSrc && (
@@ -30,10 +32,8 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
         {href ? (
           <CardActionArea
             sx={{ height: '100%' }}
-            // FIXME: the href attribute renders this element as anchor. Find a
-            // way to render to a div causing an Hydration error: Expected
-            // server HTML to contain a matching <div> in <a>.
-            href={href}
+            // eslint-disable-next-line functional/immutable-data
+            onClick={() => router.push(href)}
           >
             {content}
           </CardActionArea>
@@ -46,7 +46,13 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
 };
 
 export const Cards = ({ children }: CardsProps<ReactNode>) => (
-  <Grid container spacing={2} columns={{ xs: 12, md: 12 }} alignItems='stretch'>
+  <Grid
+    container
+    spacing={2}
+    columns={{ xs: 12, md: 12 }}
+    marginBottom={2}
+    alignItems='stretch'
+  >
     {children}
   </Grid>
 );
