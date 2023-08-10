@@ -9,7 +9,7 @@ type ChildrenAttr<A> = {
 };
 
 export type TableProps<A> = ChildrenAttr<A> & {
-  readonly 'data-header-hidden': boolean;
+  readonly headerIsHidden: boolean;
 };
 export type TableHeadProps<A> = ChildrenAttr<A>;
 export type TableBodyProps<A> = ChildrenAttr<A>;
@@ -126,7 +126,7 @@ const makeCardsNode = (node: Node) =>
 
 export const table: Schema = {
   attributes: {
-    'data-header-hidden': { type: BooleanAttr },
+    'data-header-hidden': { type: BooleanAttr, render: 'headerIsHidden' },
   },
   transform: (node, config) => {
     // A table can be a Markdown table and an html table.

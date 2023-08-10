@@ -370,7 +370,7 @@ describe('parseContent', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', { 'data-header-hidden': false }, [
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableH', {}, ['col A']),
@@ -402,7 +402,7 @@ describe('parseContent', () => {
       '<tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr>' +
       '</tbody></table>';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', { 'data-header-hidden': true }, [
+      new Markdoc.Tag('Table', { headerIsHidden: true }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableH', {}, ['col A']),
