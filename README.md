@@ -1,5 +1,4 @@
 # Developer Portal
-[![Code Review](https://github.com/pagopa/developer-portal/actions/workflows/code_review.yaml/badge.svg)](https://github.com/pagopa/developer-portal/actions/workflows/code_review.yaml)
 
 In this repository you can find anything you need to work on the developer portal project.
 
