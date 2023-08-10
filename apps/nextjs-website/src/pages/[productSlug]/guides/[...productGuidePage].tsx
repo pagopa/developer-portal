@@ -67,14 +67,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
-
   const { productGuidePage, shared } = translations;
-
-  const guideInPageMenu: ReactNode | null = GuideInPageMenu({
-    assetsPrefix: props.assetsPrefix,
-    pagePath: props.path,
-    inPageMenu: props.body,
-  });
 
   return (
     <Layout
@@ -181,20 +174,12 @@ const Page = (props: ProductGuidePageProps) => {
                 top: 20,
               }}
             >
-              {guideInPageMenu && (
-                <>
-                  <Typography
-                    color={palette.text.secondary}
-                    fontSize={14}
-                    fontWeight={700}
-                    textTransform={'uppercase'}
-                    marginBottom={'18px'}
-                  >
-                    {productGuidePage.onThisPage}
-                  </Typography>
-                  {guideInPageMenu}
-                </>
-              )}
+              <GuideInPageMenu
+                assetsPrefix={props.assetsPrefix}
+                pagePath={props.path}
+                inPageMenu={props.body}
+                title={productGuidePage.onThisPage}
+              />
             </Box>
           </Box>
         </Box>

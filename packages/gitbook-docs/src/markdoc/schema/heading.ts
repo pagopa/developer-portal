@@ -23,13 +23,14 @@ export const heading: Schema = {
     const id: string = children
       .map((child) => (typeof child === 'string' ? child : ''))
       .filter((child) => !!child)
-      .map((child) =>
-        child
-          .trim()
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/ /g, '-')
+      .map(
+        (child) =>
+          child
+            .trim()
+            .toLowerCase()
+            .normalize('NFD') // Split an accented letter in the base letter and the accent
+            .replace(/[\u0300-\u036f]/g, '') // Remove all accents
+            .replace(/ /g, '-') // Replace spaces with -
       )
       .join('-');
 
