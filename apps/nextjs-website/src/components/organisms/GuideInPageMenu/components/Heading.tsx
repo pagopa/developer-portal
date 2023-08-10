@@ -22,14 +22,13 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
         display: 'block',
         fontFamily: 'Titillium Web',
         marginBottom: '12px',
-        paddingLeft: level !== 2 ? level : '',
         textDecoration: 'none',
       }}
     >
       <Typography
         sx={{
           color: isCurrentHash ? palette.primary.main : palette.text.secondary,
-          fontSize: 16,
+          fontSize: level !== 2 ? 16 : 14,
           fontWeight: isCurrentHash ? 700 : 400,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
