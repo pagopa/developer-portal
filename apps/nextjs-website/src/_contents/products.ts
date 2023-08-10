@@ -51,6 +51,7 @@ export const tutorialLists = [
   pagoPaTutorialLists,
   sendTutorialLists,
 ];
+
 export const tutorials = [
   ...appIoTutorials,
   ...ioSignTutorials,
