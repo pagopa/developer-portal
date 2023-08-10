@@ -15,10 +15,9 @@ import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
 import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
-import * as t from './markdoc/schema/table';
+import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
-import { htmltable } from './markdoc/schema/htmltable';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -54,10 +53,13 @@ const schema: ConfigType = {
     file,
     tabs,
     details,
-    htmltable,
+    'content-ref': pageLink,
+    htmlul: list,
+    htmlol: list,
+    htmlli: item,
+    htmltable: table,
     htmla: link,
     htmlstrong: styled.strong,
-    'content-ref': pageLink,
   },
   nodes: {
     document,
@@ -73,12 +75,7 @@ const schema: ConfigType = {
     code: styled.code,
     s: styled.strikethrough,
     blockquote,
-    table: t.table,
-    thead: t.thead,
-    tbody: t.tbody,
-    tr: t.tr,
-    th: t.th,
-    td: t.td,
+    table,
   },
 };
 
