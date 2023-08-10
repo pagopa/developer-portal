@@ -20,14 +20,14 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         {
           component: 'innerHTMLLazyLoaded',
           html:
-            `Prepara i documenti da inviare in firma all'utente in uno dei seguenti formati: \n` +
-            `</br> \n` +
-            `<ul> \n` +
-            `	<li>PDF standard</li> \n` +
-            `	<li>PDF A-2A</li> \n` +
-            `	<li>PDF già firmati con firma PAdES</li> \n` +
-            `</ul> \n` +
-            `Individua le coordinate dove l’utente dovrà apporre la sua firma. \n`,
+            `Prepara i documenti da inviare in firma all'utente in uno dei seguenti formati:` +
+            `</br>` +
+            `<ul>` +
+            `	<li>PDF standard</li>` +
+            `	<li>PDF A-2A</li>` +
+            `	<li>PDF già firmati con firma PAdES</li>` +
+            `</ul>` +
+            `Individua le coordinate dove l’utente dovrà apporre la sua firma.`,
         },
       ],
     },
@@ -301,7 +301,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             parts: [
               {
                 component: 'typography',
-                text: 'Ecco la risposta del server che contiene l’ID della Signature request',
+                text: 'Invia la richiesta con i dati ottenuti dagli step precedenti, per vedere la simulazione della risposta del server',
                 variant: 'body2',
               },
               {
@@ -456,6 +456,16 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
               },
             ],
           },
+        },
+        {
+          component: 'typography',
+          text: 'Ricevi i documenti firmati effettuando una chiamata a questo endpoint:',
+          variant: 'body2',
+        },
+        {
+          component: 'codeBlock',
+          code: `GET /api/v1/sign/signature-requests/{signature_request_id}`,
+          language: 'txt',
         },
       ],
     },
