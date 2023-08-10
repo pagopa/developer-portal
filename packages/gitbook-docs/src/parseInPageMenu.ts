@@ -8,7 +8,7 @@ export type ParseInPageMenuConfig = {
   readonly pagePath: string;
 };
 
-const HEADING_LEVELS_TO_SHOW = [3];
+const HEADING_LEVELS_TO_SHOW = [2, 3];
 
 const schema: ConfigType = {
   nodes: {

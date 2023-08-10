@@ -4,7 +4,7 @@ import MUILink from '@mui/material/Link';
 import { Typography, useTheme } from '@mui/material';
 import { useHash } from '@/components/organisms/HashProvider/HashProvider';
 
-const Heading = ({ id, children }: HeadingProps<ReactNode>) => {
+const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
   const { hash } = useHash();
@@ -22,6 +22,7 @@ const Heading = ({ id, children }: HeadingProps<ReactNode>) => {
         display: 'block',
         fontFamily: 'Titillium Web',
         marginBottom: '12px',
+        paddingLeft: level !== 2 ? level : '',
         textDecoration: 'none',
       }}
     >
@@ -30,6 +31,9 @@ const Heading = ({ id, children }: HeadingProps<ReactNode>) => {
           color: isCurrentHash ? palette.primary.main : palette.text.secondary,
           fontSize: 16,
           fontWeight: isCurrentHash ? 700 : 400,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
       >
         {children}

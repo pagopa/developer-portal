@@ -173,7 +173,7 @@ const Page = (props: ProductGuidePageProps) => {
               minWidth: '240px',
             }}
           >
-            <Box sx={{ position: 'sticky', top: 20 }}>
+            <Box sx={{ position: 'sticky', maxWidth: '300px', paddingRight: '16px', top: 20 }}>
               {guideInPageMenu && (
                 <>
                   <Typography
