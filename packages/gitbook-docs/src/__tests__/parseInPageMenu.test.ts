@@ -13,6 +13,7 @@ describe('parseInPageMenu', () => {
     expect(
       parseInPageMenu('# Title 1\n## Title 2\n### Title 3\nParagraph', config)
     ).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'title-2' }, ['Title 2']),
       new Markdoc.Tag('Heading', { level: 3, id: 'title-3' }, ['Title 3']),
     ]);
   });
