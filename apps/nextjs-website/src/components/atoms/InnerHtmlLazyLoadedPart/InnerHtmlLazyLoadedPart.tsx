@@ -9,20 +9,18 @@ const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartProps) => {
   useEffect(() => setLoaded(true), []);
 
   return (
-    <>
-      {loaded && (
-        <Box
-          dangerouslySetInnerHTML={{ __html: html }}
-          sx={{
-            marginBottom: spacing(5),
-            fontFamily: 'Titillium Web',
-            fontWeight: 400,
-            fontSize: '18px',
-            color: palette.text.primary,
-          }}
-        ></Box>
-      )}
-    </>
+    loaded && (
+      <Box
+        dangerouslySetInnerHTML={{ __html: html }}
+        sx={{
+          marginBottom: spacing(5),
+          fontFamily: 'Titillium Web',
+          fontWeight: 400,
+          fontSize: '18px',
+          color: palette.text.primary,
+        }}
+      />
+    )
   );
 };
 
