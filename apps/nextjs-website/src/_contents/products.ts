@@ -27,6 +27,7 @@ import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
 import { sendTutorials } from '@/_contents/send/tutorials';
+import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
 
 export const overviews = [
   appIoOverview,
@@ -35,7 +36,7 @@ export const overviews = [
   sendOverview,
 ];
 
-export const quickStartGuides = [appIoQuickStartGuide];
+export const quickStartGuides = [appIoQuickStartGuide, sendQuickStartGuide];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
 
