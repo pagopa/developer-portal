@@ -1,3 +1,4 @@
+'use client';
 import React, { FC } from 'react';
 import { Stack } from '@mui/material';
 import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';

@@ -12,7 +12,7 @@ const Embed = ({ url, children }: EmbedProps) => (
   <Card variant='outlined'>
     <CardActionArea>
       <CardContent>
-        <ButtonNaked color='text' size='medium' href={url} component={Link}>
+        <ButtonNaked size='medium' href={url} component={Link}>
           {children}
         </ButtonNaked>
       </CardContent>

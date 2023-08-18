@@ -1,3 +1,4 @@
+'use client';
 import { translations } from '@/_contents/translations';
 import {
   linkToFooterLinkTypeArray,

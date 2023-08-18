@@ -1,3 +1,4 @@
+'use client';
 import React, { ReactNode } from 'react';
 import { Step } from '@/lib/types/step';
 import { Box, useTheme } from '@mui/material';

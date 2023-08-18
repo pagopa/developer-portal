@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import * as Icons from '@mui/icons-material';
 import { EIcon } from '@pagopa/pagopa-editorial-components/dist/components/EIcon';

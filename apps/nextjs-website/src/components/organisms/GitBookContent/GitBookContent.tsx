@@ -1,3 +1,4 @@
+'use client';
 import { parseContent } from 'gitbook-docs/parseContent';
 import { RenderingComponents, renderContent } from 'gitbook-docs/renderContent';
 import React, { ReactNode } from 'react';

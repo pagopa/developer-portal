@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography/Typography';

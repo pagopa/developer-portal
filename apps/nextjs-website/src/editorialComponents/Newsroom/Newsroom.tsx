@@ -1,3 +1,4 @@
+'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';

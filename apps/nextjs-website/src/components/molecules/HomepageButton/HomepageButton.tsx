@@ -1,3 +1,4 @@
+'use client';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';

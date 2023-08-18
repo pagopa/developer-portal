@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';

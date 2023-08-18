@@ -1,3 +1,4 @@
+'use client';
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
 import { useTheme } from '@mui/material';

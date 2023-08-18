@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box, Grid, GridSize } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';

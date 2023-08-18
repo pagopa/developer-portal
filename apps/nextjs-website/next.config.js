@@ -7,6 +7,7 @@
   NextJS reference: https://nextjs.org/docs/advanced-features/compiler#module-transpilation
  */
 const nextConfig = {
+  appDir: true,
   reactStrictMode: true,
   transpilePackages: [
     '@pagopa/pagopa-editorial-components',

@@ -1,3 +1,4 @@
+'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { Card, CardActions, CardContent, Typography } from '@mui/material';
 import React from 'react';

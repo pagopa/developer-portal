@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box } from '@mui/material';

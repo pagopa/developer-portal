@@ -1,3 +1,4 @@
+'use client';
 import { ArrowForward } from '@mui/icons-material';
 import { Link as LinkMui, Stack, Typography } from '@mui/material';
 import Link from 'next/link';

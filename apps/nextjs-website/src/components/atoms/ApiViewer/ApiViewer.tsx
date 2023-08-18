@@ -1,3 +1,4 @@
+'use client';
 import { FC } from 'react';
 import { API } from '@stoplight/elements';
 import '@stoplight/elements/styles.min.css';

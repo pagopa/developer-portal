@@ -1,3 +1,4 @@
+'use client';
 import { parseMenu } from 'gitbook-docs/parseMenu';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import React, { ReactNode } from 'react';

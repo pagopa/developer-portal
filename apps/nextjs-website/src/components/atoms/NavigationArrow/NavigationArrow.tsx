@@ -1,3 +1,4 @@
+'use client';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';

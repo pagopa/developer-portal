@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
