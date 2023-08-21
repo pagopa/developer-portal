@@ -18,7 +18,11 @@ const Home = () => {
           ...itemProp,
           child:
             index === 0 ? (
-              <SiteLabel title={header.title} boldTitle={header.boldTitle} />
+              <SiteLabel
+                title={header.title}
+                color='white'
+                boldTitle={header.boldTitle}
+              />
             ) : undefined,
         }))}
       />
