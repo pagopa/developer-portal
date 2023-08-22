@@ -7,7 +7,6 @@
   NextJS reference: https://nextjs.org/docs/advanced-features/compiler#module-transpilation
  */
 const nextConfig = {
-  appDir: true,
   reactStrictMode: true,
   transpilePackages: [
     '@pagopa/pagopa-editorial-components',
@@ -19,6 +18,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    esmExternals: false,
+  }
 };
 
 module.exports = nextConfig;
