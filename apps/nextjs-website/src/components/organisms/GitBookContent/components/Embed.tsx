@@ -8,7 +8,7 @@ const Embed = ({ url, children }: EmbedProps<ReactNode>) => (
   <Card variant='outlined'>
     <CardActionArea>
       <CardContent>
-        <ButtonNaked size='medium' href={url} component={Link}>
+        <ButtonNaked color='text' size='medium' href={url} component={Link}>
           {children}
         </ButtonNaked>
       </CardContent>

@@ -11,7 +11,7 @@ export const BannerLink = (props: BannerLinkProps) => {
 
   const textColor = palette.primary.contrastText;
   return (
-    <Box component='section' sx={{ width: '100%' }}>
+    <Box bgcolor={backgroundColor} component='section' sx={{ width: '100%' }}>
       <Container>
         <Stack gap={4} sx={styles.main}>
           <IconWrapper icon={decoration} color={textColor} size={60} />

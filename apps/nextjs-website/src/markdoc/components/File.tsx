@@ -14,6 +14,7 @@ const File = (assetsPrefix: string) =>
   Object.assign(
     ({ src, children }: FileProps) => (
       <ButtonNaked
+        color='text'
         size='medium'
         href={convertAssetsPath(assetsPrefix, src)}
         target='_blank'
