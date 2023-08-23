@@ -1,8 +1,7 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
+import { GetStaticPaths } from 'next';
 import { getOverview, getOverviewPaths, getProducts } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import { useTheme } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
@@ -75,31 +74,35 @@ export type OverviewPageProps = {
   readonly relatedLinks?: Path[];
 } & LayoutProps;
 
-export const getStaticProps: GetStaticProps<OverviewPageProps, Params> = ({
-  params,
-}): GetStaticPropsResult<OverviewPageProps> => {
-  const props = getOverview(params?.productSlug);
-  if (props) {
-    return { props: { ...props, products: [...getProducts()] } };
-  } else {
-    return { notFound: true as const };
+async function getProps(slug?: string) {
+  const props = getOverview(slug);
+  if (!props) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
   }
-};
 
-const OverviewPage = ({
-  hero,
-  startInfo,
-  feature,
-  product,
-  products,
-  path,
-  tutorials,
-  postIntegration,
-  relatedLinks,
-  bannerLinks,
-}: OverviewPageProps) => {
+  return { ...props, products: [...getProducts()] };
+}
+
+const OverviewPage = async ({
+  params,
+}: {
+  params: { productSlug: string };
+}) => {
+  const {
+    hero,
+    startInfo,
+    feature,
+    product,
+    products,
+    path,
+    tutorials,
+    postIntegration,
+    relatedLinks,
+    bannerLinks,
+  } =  await getProps(params?.productSlug);
   const { overview } = translations;
-  const { palette } = useTheme();
+  // const { palette } = useTheme();
 
   return (
     <Layout
@@ -118,7 +121,6 @@ const OverviewPage = ({
       />
       <Feature
         items={feature.items}
-        theme={palette.mode}
         title={feature.title}
         subtitle={feature.subtitle}
       />

@@ -1,3 +1,4 @@
+'use client';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';

@@ -5,8 +5,8 @@
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh e786983",
     "compile": "tsc --noEmit",
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "set NODE_OPTIONS=--max-old-space-size=8192 && next dev",
+    "build": "set NODE_OPTIONS=--max-old-space-size=8192 && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest -i"
@@ -15,15 +15,14 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@markdoc/markdoc": "0.3.0",
-    "@mui/icons-material": "^5.11.0",
-    "@mui/lab": "5.0.0-alpha.119",
-    "@mui/utils": "5.12.3",
-    "@mui/material": "5.11.8",
-    "@pagopa/mui-italia": "0.9.5",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/lab": "^5.0.0-alpha.140",
+    "@mui/utils": "^5.14.5",
+    "@mui/material": "^5.14.5",
+    "@pagopa/mui-italia": "1.0.1",
     "@pagopa/pagopa-editorial-components": "2.0.0",
     "@stoplight/elements": "^7.7.18",
     "fp-ts": "^2.13.1",
-    "gitbook-docs": "*",
     "next": "^13.4.19",
     "react": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
@@ -31,15 +30,17 @@
     "swiper": "^10.0.3"
   },
   "devDependencies": {
+    "@types/node": "20.5.3",
+    "eslint": "8.47.0",
     "@types/jest": "^29.5.1",
-    "@types/react": "^18.0.28",
+    "@types/react": "18.2.21",
     "@types/react-syntax-highlighter": "^15.5.7",
-    "@types/react-dom": "^18.0.11",
+    "@types/react-dom": "18.2.7",
     "eslint-config-custom": "*",
-    "eslint-config-next": "^13.4.6",
+    "eslint-config-next": "13.4.19",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.0.2"
+    "typescript": "5.1.6"
   },
   "nextBundleAnalysis": {
     "budget": 358400,

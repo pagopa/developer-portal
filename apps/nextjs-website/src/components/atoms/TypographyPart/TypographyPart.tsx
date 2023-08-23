@@ -1,9 +1,15 @@
 'use client';
 import React from 'react';
-import { Typography, useTheme } from '@mui/material';
-import { TypographyProps } from '@mui/material/Typography/Typography';
+import { SxProps, Theme, Typography, useTheme } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 
-export type TypographyPartProps = TypographyProps & {
+export type TypographyPartProps = {
+  color?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  sx?: SxProps<Theme>;
+  style?: React.CSSProperties;
+  variant?: Variant | 'inherit';
   text: string;
   asHtml?: boolean;
 };
@@ -13,7 +19,11 @@ const TypographyPart = (props: TypographyPartProps) => {
 
   return (
     <Typography
-      {...props}
+      fontSize={props.fontSize || 'inherit'}
+      variant={props.variant || 'body1'}
+      fontWeight={props.fontWeight || 'inherit'}
+      color={props.color || 'inherit'}
+      style={props.style}
       sx={{ wordBreak: 'break-all', marginBottom: spacing(5), ...props.sx }}
     >
       {props.asHtml === true ? (

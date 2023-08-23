@@ -49,7 +49,7 @@ const LinkButton = ({
           component={Link}
           color='primary.main'
           underline='none'
-          href={href}
+          href={href || '#'}
           aria-label={label}
           title={label}
         >

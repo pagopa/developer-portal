@@ -1,6 +1,8 @@
+'use client';
+
 // TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
 import React from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
@@ -8,12 +10,13 @@ export interface FeatureProps {
   title: string;
   subtitle?: string;
   items: FeatureItem[];
-  theme: 'dark' | 'light';
   background?: string;
 }
 
 const Feature = (props: FeatureProps) => {
-  const { title, subtitle, items, theme, background } = props;
+  const { title, subtitle, items, background } = props;
+  const { palette } = useTheme();
+  const theme = palette.mode;
 
   const themeStyle = theme === 'light' ? 'text.primary' : 'background.paper';
   const themeStyleBg = theme === 'light' ? 'background.paper' : 'primary.dark';

@@ -53,6 +53,7 @@ const CtaSlide = ({
             <ButtonNaked
               component={Link}
               href={cta.href}
+              color={'negative'}
               variant={cta.variant || 'contained'}
             >
               {cta.label}
