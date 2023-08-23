@@ -2,7 +2,6 @@ import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { getProducts } from '@/lib/api';
 import { Box } from '@mui/material';
 
-
 const privacyPolicyScript = `
 <!-- OneTrust Privacy Notice start -->
  <!-- Container in which the privacy notice will be rendered -->
@@ -23,7 +22,6 @@ const privacyPolicyScript = `
 `;
 
 const PrivacyPolicy = () => {
-
   const products = [...getProducts()];
 
   return (
