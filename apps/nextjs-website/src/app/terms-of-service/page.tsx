@@ -1,16 +1,6 @@
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { getProducts } from '@/lib/api';
 import { Box } from '@mui/material';
-import { GetStaticProps, GetStaticPropsResult } from 'next';
-
-type TermsOfServiceProps = LayoutProps;
-
-export const getStaticProps: GetStaticProps<
-  TermsOfServiceProps
-> = (): GetStaticPropsResult<LayoutProps> => {
-  return { props: { products: [...getProducts()] } };
-};
 
 const TermsOfServiceScript = `
   <!-- OneTrust Privacy Notice start -->
@@ -31,7 +21,8 @@ const TermsOfServiceScript = `
   <!-- OneTrust Privacy Notice end -->
 `;
 
-const TermsOfService = ({ products }: TermsOfServiceProps) => {
+const TermsOfService = () => {
+  const products = [...getProducts()];
   return (
     <>
       <SiteHeader products={products} />
