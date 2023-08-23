@@ -5,8 +5,8 @@
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh e786983",
     "compile": "tsc --noEmit",
-    "dev": "set NODE_OPTIONS=--max-old-space-size=8192 && next dev",
-    "build": "set NODE_OPTIONS=--max-old-space-size=8192 && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest -i"

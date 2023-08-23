@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 'use client';
 import { useState } from 'react';
 import createCache from '@emotion/cache';
@@ -18,6 +19,7 @@ export default function ThemeRegistry(props: any) {
     const cache = createCache(options);
     cache.compat = true;
     const prevInsert = cache.insert;
+    // eslint-disable-next-line functional/no-let
     let inserted: string[] = [];
     cache.insert = (...args) => {
       const serialized = args[1];
@@ -39,10 +41,11 @@ export default function ThemeRegistry(props: any) {
     if (names.length === 0) {
       return null;
     }
+    // eslint-disable-next-line functional/no-let
     let styles = '';
-    for (const name of names) {
+    names.forEach((name) => {
       styles += cache.inserted[name];
-    }
+    });
     return (
       <style
         key={cache.key}
