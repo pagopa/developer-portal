@@ -2,15 +2,8 @@ import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { getProducts } from '@/lib/api';
 import { Box } from '@mui/material';
-import { GetStaticProps, GetStaticPropsResult } from 'next';
 
 type PrivacyPolicyProps = LayoutProps;
-
-export const getStaticProps: GetStaticProps<
-  PrivacyPolicyProps
-> = (): GetStaticPropsResult<LayoutProps> => {
-  return { props: { products: [...getProducts()] } };
-};
 
 const privacyPolicyScript = `
 <!-- OneTrust Privacy Notice start -->
@@ -32,6 +25,9 @@ const privacyPolicyScript = `
 `;
 
 const PrivacyPolicy = ({ products }: PrivacyPolicyProps) => {
+
+  products = [...getProducts()];
+
   return (
     <>
       <SiteHeader products={products} />
