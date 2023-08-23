@@ -1,4 +1,3 @@
-import { GetStaticPaths } from 'next';
 import { getOverview, getOverviewPaths, getProducts } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
@@ -14,14 +13,9 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 
-type Params = {
-  productSlug: string;
-};
-
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: getOverviewPaths() as string[],
-  fallback: false,
-});
+export async function generateStaticParams() {
+  return getOverviewPaths() as string[];
+}
 
 export type OverviewPageProps = {
   readonly path: string;
@@ -102,7 +96,6 @@ const OverviewPage = async ({
     bannerLinks,
   } = await getProps(params?.productSlug);
   const { overview } = translations;
-  // const { palette } = useTheme();
 
   return (
     <Layout
