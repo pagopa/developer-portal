@@ -100,7 +100,7 @@ const OverviewPage = async ({
     postIntegration,
     relatedLinks,
     bannerLinks,
-  } =  await getProps(params?.productSlug);
+  } = await getProps(params?.productSlug);
   const { overview } = translations;
   // const { palette } = useTheme();
 
