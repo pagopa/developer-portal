@@ -11,15 +11,16 @@ import {
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
+import { useRouter } from 'next/navigation';
 
 type Params = {
   productSlug: string;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: [...getQuickStartGuidePaths()],
-  fallback: false,
-});
+// export const getStaticPaths: GetStaticPaths<Params> = () => ({
+//   paths: [...getQuickStartGuidePaths()],
+//   fallback: false,
+// });
 
 export type QuickStartGuidePageProps = {
   readonly product: Product;
@@ -31,27 +32,12 @@ export type QuickStartGuidePageProps = {
   readonly steps?: ReadonlyArray<Step>;
 } & LayoutProps;
 
-export const getStaticProps: GetStaticProps<
-  QuickStartGuidePageProps,
-  Params
-> = ({ params }): GetStaticPropsResult<QuickStartGuidePageProps> => {
-  const props = getQuickStartGuide(params?.productSlug);
-  if (props) {
-    return { props: { ...props, products: [...getProducts()] } };
-  } else {
-    return { notFound: true as const };
-  }
-};
-const QuickStartGuidesPage = ({
-  abstract,
-  bannerLinks,
-  defaultStepAnchor,
-  path,
-  product,
-  products,
-  steps,
-}: QuickStartGuidePageProps) => {
-  const { palette } = useTheme();
+const QuickStartGuidesPage = ({ params }: any) => {
+  const { productSlug } = params;
+  const products = [...getProducts()];
+
+  const { abstract, bannerLinks, defaultStepAnchor, path, product, steps } =
+    getQuickStartGuide(productSlug) as any;
 
   return (
     <Layout
@@ -66,7 +52,6 @@ const QuickStartGuidesPage = ({
           description={abstract?.description}
           overline=''
           title={abstract?.title}
-          theme={palette.mode}
         />
       )}
       <QuickStartGuideStepper

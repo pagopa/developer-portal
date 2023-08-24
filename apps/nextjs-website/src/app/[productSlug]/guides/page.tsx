@@ -13,40 +13,19 @@ type Params = {
   productSlug: string;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: [...getGuideListsPaths()],
-  fallback: false,
-});
+// export const getStaticPaths: GetStaticPaths<Params> = () => ({
+//   paths: [...getGuideListsPaths()],
+//   fallback: false,
+// });
 
-export type GuidesPageProps = {
-  readonly product: Product;
-  readonly abstract?: {
-    readonly title: string;
-    readonly description: string;
-  };
-  readonly guidesSections?: GuidesSectionProps[];
-} & LayoutProps;
+export type GuidesPageProps = any;
 
-export const getStaticProps: GetStaticProps<GuidesPageProps, Params> = ({
-  params,
-}): GetStaticPropsResult<GuidesPageProps> => {
-  const props = getGuideLists(params?.productSlug);
-  if (props) {
-    return { props: { ...props, products: [...getProducts()] } };
-  } else {
-    return { notFound: true as const };
-  }
-};
+const GuidesPage = ({ params }: any) => {
+  const { productSlug } = params;
+  const props = getGuideLists(productSlug);
 
-const GuidesPage = ({
-  abstract,
-  bannerLinks,
-  guidesSections,
-  path,
-  product,
-  products,
-}: GuidesPageProps) => {
-  const { palette } = useTheme();
+  const products = [...getProducts()];
+  const { abstract, bannerLinks, guidesSections, path, product } = props as any;
 
   return (
     <Layout
@@ -61,12 +40,11 @@ const GuidesPage = ({
           description={abstract?.description}
           overline=''
           title={abstract?.title}
-          theme={palette.mode}
         />
       )}
-      <Box bgcolor={palette.grey[100]}>
+      <Box>
         {guidesSections?.length &&
-          guidesSections.map((props, index) => (
+          guidesSections.map((props: any, index: any) => (
             <GuidesSection key={index} {...props}></GuidesSection>
           ))}
       </Box>

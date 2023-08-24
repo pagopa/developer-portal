@@ -17,40 +17,21 @@ type Params = {
   productSlug: string;
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => ({
-  paths: [...getTutorialListsPaths()],
-  fallback: false,
-});
+// export const getStaticPaths: GetStaticPaths<Params> = () => ({
+//   paths: [...getTutorialListsPaths()],
+//   fallback: false,
+// });
 
-export type TutorialsPageProps = {
-  readonly product: Product;
-  readonly abstract?: {
-    readonly title: string;
-    readonly description: string;
-  };
-  readonly tutorials: readonly Tutorial[];
-} & LayoutProps;
+export type TutorialsPageProps = any;
 
-export const getStaticProps: GetStaticProps<TutorialsPageProps, Params> = ({
-  params,
-}): GetStaticPropsResult<TutorialsPageProps> => {
-  const props = getTutorialLists(params?.productSlug);
-  if (props) {
-    return { props: { ...props, products: getProducts().concat() } };
-  } else {
-    return { notFound: true as const };
-  }
-};
+const TutorialsPage = ({ params }: any) => {
+  const { productSlug } = params;
+  const { abstract, bannerLinks, path, product, tutorials } = getTutorialLists(
+    productSlug
+  ) as any;
 
-const TutorialsPage = ({
-  abstract,
-  bannerLinks,
-  path,
-  product,
-  products,
-  tutorials,
-}: TutorialsPageProps) => {
-  const { palette } = useTheme();
+  const products = getProducts().concat();
+
   const { shared } = translations;
 
   return (
@@ -66,13 +47,12 @@ const TutorialsPage = ({
           description={abstract?.description}
           overline=''
           title={abstract?.title}
-          theme={palette.mode}
         />
       )}
       {product.subpaths.tutorials && tutorials && (
         <Box>
           <Newsroom
-            items={tutorials.map((tutorial) => ({
+            items={tutorials.map((tutorial: any) => ({
               coomingSoonLabel: !tutorial.coomingSoon
                 ? undefined
                 : shared.coomingSoon,
