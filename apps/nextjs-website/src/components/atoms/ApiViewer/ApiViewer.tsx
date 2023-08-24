@@ -18,12 +18,14 @@ export const ApiViewer: FC<ApiViewerProps> = ({
   },
 }) => {
   return (
-    <API
-      apiDescriptionUrl={specURL}
-      hideTryIt={hideTryIt}
-      hideExport
-      basePath={`${api?.path}` ?? `${path}/api`}
-      router={typeof window === 'undefined' ? 'memory' : 'history'}
-    />
+    <div>API</div>
+    //  TODO: fix
+    // <API
+    //   apiDescriptionUrl={specURL}
+    //   hideTryIt={hideTryIt}
+    //   hideExport
+    //   basePath={`${api?.path}` ?? `${path}/api`}
+    //   router={typeof window === 'undefined' ? 'memory' : 'history'}
+    // />
   );
 };

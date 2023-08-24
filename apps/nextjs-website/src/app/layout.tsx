@@ -54,12 +54,17 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
-        <script dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }} />
+        {environment === 'prod' && (
+          <script
+            key='script-cookie'
+            dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+          />
+        )}
         <link rel='icon' href='favicon.svg' />
       </head>
-      <body>
-        <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
-      </body>
+      <ThemeRegistry options={{ key: 'mui' }}>
+        <body>{children}</body>
+      </ThemeRegistry>
     </html>
   );
 }

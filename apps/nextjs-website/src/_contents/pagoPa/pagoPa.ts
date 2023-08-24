@@ -7,6 +7,7 @@ import { Product } from '@/lib/types/product';
 export const pagoPa: Product = {
   name: 'Piattaforma pagoPA',
   path: '/pago-pa',
+  slug: 'pago-pa',
   description:
     'Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.',
   svgPath: '/icons/pagoPa.svg',

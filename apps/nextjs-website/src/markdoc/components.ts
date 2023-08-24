@@ -1,3 +1,4 @@
+'use client';
 import Document from './components/Document';
 import Embed from './components/Embed';
 import Expandable from './components/Expandable';

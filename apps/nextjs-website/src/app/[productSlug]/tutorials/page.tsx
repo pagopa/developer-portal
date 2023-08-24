@@ -1,37 +1,33 @@
 import { Product } from '@/lib/types/product';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import {
-  getTutorialLists,
-  getTutorialListsPaths,
-  getProducts,
-} from '@/lib/api';
+import { getTutorialLists, getProductsSlugs } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
+import { ProductParams } from '@/lib/types/productParams';
 
-type Params = {
-  productSlug: string;
-};
+export async function generateStaticParams() {
+  return [...getProductsSlugs('tutorials')].map((productSlug) => ({
+    productSlug,
+  }));
+}
 
-// export const getStaticPaths: GetStaticPaths<Params> = () => ({
-//   paths: [...getTutorialListsPaths()],
-//   fallback: false,
-// });
+export type TutorialsPageProps = {
+  readonly product: Product;
+  readonly abstract?: {
+    readonly title: string;
+    readonly description: string;
+  };
+  readonly tutorials: readonly Tutorial[];
+} & LayoutProps;
 
-export type TutorialsPageProps = any;
-
-const TutorialsPage = ({ params }: any) => {
+const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials } = getTutorialLists(
-    productSlug
-  ) as any;
-
-  const products = getProducts().concat();
-
+  const { abstract, bannerLinks, path, product, tutorials, products } =
+    await getTutorialLists(productSlug);
   const { shared } = translations;
 
   return (
@@ -52,7 +48,7 @@ const TutorialsPage = ({ params }: any) => {
       {product.subpaths.tutorials && tutorials && (
         <Box>
           <Newsroom
-            items={tutorials.map((tutorial: any) => ({
+            items={tutorials.map((tutorial) => ({
               coomingSoonLabel: !tutorial.coomingSoon
                 ? undefined
                 : shared.coomingSoon,

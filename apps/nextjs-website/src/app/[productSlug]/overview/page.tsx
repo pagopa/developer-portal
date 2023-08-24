@@ -1,4 +1,4 @@
-import { getOverview, getOverviewPaths, getProducts } from '@/lib/api';
+import { getOverview, getProductsSlugs } from '@/lib/api';
 import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Product } from '@/lib/types/product';
@@ -12,9 +12,12 @@ import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
+import { ProductParams } from '@/lib/types/productParams';
 
 export async function generateStaticParams() {
-  return getOverviewPaths() as string[];
+  return [...getProductsSlugs('overview')].map((productSlug) => ({
+    productSlug,
+  }));
 }
 
 export type OverviewPageProps = {
@@ -68,21 +71,7 @@ export type OverviewPageProps = {
   readonly relatedLinks?: Path[];
 } & LayoutProps;
 
-async function getProps(slug?: string) {
-  const props = getOverview(slug);
-  if (!props) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
-  }
-
-  return { ...props, products: [...getProducts()] };
-}
-
-const OverviewPage = async ({
-  params,
-}: {
-  params: { productSlug: string };
-}) => {
+const OverviewPage = async ({ params }: ProductParams) => {
   const {
     hero,
     startInfo,
@@ -94,7 +83,7 @@ const OverviewPage = async ({
     postIntegration,
     relatedLinks,
     bannerLinks,
-  } = await getProps(params?.productSlug);
+  } = await getOverview(params.productSlug);
   const { overview } = translations;
 
   return (

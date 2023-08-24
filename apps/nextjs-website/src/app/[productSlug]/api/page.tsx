@@ -1,26 +1,32 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { getApi, getApiPaths, getProducts } from '@/lib/api';
-import Layout from '@/components/organisms/Layout/Layout';
+import { getApi, getProductsSlugs } from '@/lib/api';
+import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { ProductParams } from '@/lib/types/productParams';
+import { Product } from '@/lib/types/product';
 
-import { ApiData } from '@/lib/types/apiData';
+export async function generateStaticParams() {
+  return [...getProductsSlugs('api')].map((productSlug) => ({
+    productSlug,
+  }));
+}
 
-// type Params = {
-//   productSlug: string;
-// };
+export type ApiPageProps = {
+  readonly product: Product;
+  readonly soapDocumentation?: {
+    title: string;
+    url: string;
+    buttonLabel: string;
+    icon: string;
+  };
+  readonly specURLsName?: string;
+  readonly specURLs: {
+    name?: string;
+    url: string;
+    hideTryIt?: boolean;
+  }[];
+} & LayoutProps;
 
-// export const getStaticPaths = () => ({
-//   paths: [...getApiPaths()],
-//   fallback: 'blocking',
-// });
-
-export type ApiPageProps = any;
-
-const ApisPage = ({ params }: any) => {
-  const { productSlug } = params;
-
-  const api = getApi(productSlug as string) as ApiData;
-
+const ApisPage = async ({ params }: ProductParams) => {
   const {
     products,
     path,
@@ -29,7 +35,8 @@ const ApisPage = ({ params }: any) => {
     bannerLinks,
     soapDocumentation,
     specURLsName,
-  }: any = { ...api, products: [...getProducts()] };
+  } = await getApi(params.productSlug);
+
   return (
     <Layout
       products={products}
@@ -49,3 +56,27 @@ const ApisPage = ({ params }: any) => {
 };
 
 export default ApisPage;
+
+// import { LayoutProps } from '@/components/organisms/Layout/Layout';
+// import { Product } from '@/lib/types/product';
+
+// export type ApiPageProps = {
+//   readonly product: Product;
+//   readonly soapDocumentation?: {
+//     title: string;
+//     url: string;
+//     buttonLabel: string;
+//     icon: string;
+//   };
+//   readonly specURLsName?: string;
+//   readonly specURLs: {
+//     name?: string;
+//     url: string;
+//     hideTryIt?: boolean;
+//   }[];
+// } & LayoutProps;
+// const Test = () => {
+//   return <div>test</div>;
+// };
+
+// export default Test;

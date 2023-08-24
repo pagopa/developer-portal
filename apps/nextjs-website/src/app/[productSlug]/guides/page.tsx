@@ -1,31 +1,32 @@
 import { Product } from '@/lib/types/product';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
-import { getGuideLists, getGuideListsPaths, getProducts } from '@/lib/api';
+import { getGuideLists, getProductsSlugs } from '@/lib/api';
 import {
   GuidesSection,
   GuidesSectionProps,
 } from '@/components/molecules/GuidesSection/GuidesSection';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import { ProductParams } from '@/lib/types/productParams';
 
-type Params = {
-  productSlug: string;
-};
+export async function generateStaticParams() {
+  return [...getProductsSlugs('guides')].map((productSlug) => ({
+    productSlug,
+  }));
+}
 
-// export const getStaticPaths: GetStaticPaths<Params> = () => ({
-//   paths: [...getGuideListsPaths()],
-//   fallback: false,
-// });
+export type GuidesPageProps = {
+  readonly product: Product;
+  readonly abstract?: {
+    readonly title: string;
+    readonly description: string;
+  };
+  readonly guidesSections?: GuidesSectionProps[];
+} & LayoutProps;
 
-export type GuidesPageProps = any;
-
-const GuidesPage = ({ params }: any) => {
-  const { productSlug } = params;
-  const props = getGuideLists(productSlug);
-
-  const products = [...getProducts()];
-  const { abstract, bannerLinks, guidesSections, path, product } = props as any;
+const GuidesPage = async ({ params }: ProductParams) => {
+  const { abstract, bannerLinks, guidesSections, path, product, products } =
+    await getGuideLists(params?.productSlug);
 
   return (
     <Layout
@@ -44,7 +45,7 @@ const GuidesPage = ({ params }: any) => {
       )}
       <Box>
         {guidesSections?.length &&
-          guidesSections.map((props: any, index: any) => (
+          guidesSections.map((props, index) => (
             <GuidesSection key={index} {...props}></GuidesSection>
           ))}
       </Box>

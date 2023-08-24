@@ -1,3 +1,5 @@
+'use client';
+
 import Markdoc, { RenderableTreeNode } from '@markdoc/markdoc';
 import { config } from './schema';
 import React from 'react';

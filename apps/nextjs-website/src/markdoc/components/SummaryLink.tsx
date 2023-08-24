@@ -1,9 +1,10 @@
+'use client';
 import { ReactNode } from 'react';
 import MUILink from '@mui/material/Link';
 import NextLink from 'next/link';
 import { convertLink, removeEmojis } from '../helpers';
 import Typography from '@mui/material/Typography';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 type SummaryLinkProps = {
   title: string;
@@ -12,11 +13,11 @@ type SummaryLinkProps = {
 };
 
 const SummaryLink = (prefix: string) => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return Object.assign(
     ({ title, href, children }: SummaryLinkProps) => {
-      const isActive = router.asPath === convertLink(prefix, href);
+      const isActive = pathname === convertLink(prefix, href);
       return (
         <MUILink
           component={NextLink}
