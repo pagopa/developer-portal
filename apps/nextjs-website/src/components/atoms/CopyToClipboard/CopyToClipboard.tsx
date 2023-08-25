@@ -1,5 +1,6 @@
 'use client';
-import { Check, ContentCopy } from '@mui/icons-material';
+import Check from '@mui/icons-material/Check';
+import ContentCopy from '@mui/icons-material/ContentCopy';
 import { IconButton, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 

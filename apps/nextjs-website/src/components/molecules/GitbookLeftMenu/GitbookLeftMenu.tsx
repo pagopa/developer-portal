@@ -1,7 +1,8 @@
 'use client';
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { translations } from '@/_contents/translations';
 import { renderGitBookMarkdown } from '@/markdoc';

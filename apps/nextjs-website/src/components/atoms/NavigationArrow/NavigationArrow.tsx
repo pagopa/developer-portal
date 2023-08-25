@@ -1,5 +1,6 @@
 'use client';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { Box, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import React, { createElement } from 'react';
