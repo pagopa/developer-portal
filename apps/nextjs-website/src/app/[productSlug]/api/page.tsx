@@ -56,27 +56,3 @@ const ApisPage = async ({ params }: ProductParams) => {
 };
 
 export default ApisPage;
-
-// import { LayoutProps } from '@/components/organisms/Layout/Layout';
-// import { Product } from '@/lib/types/product';
-
-// export type ApiPageProps = {
-//   readonly product: Product;
-//   readonly soapDocumentation?: {
-//     title: string;
-//     url: string;
-//     buttonLabel: string;
-//     icon: string;
-//   };
-//   readonly specURLsName?: string;
-//   readonly specURLs: {
-//     name?: string;
-//     url: string;
-//     hideTryIt?: boolean;
-//   }[];
-// } & LayoutProps;
-// const Test = () => {
-//   return <div>test</div>;
-// };
-
-// export default Test;
