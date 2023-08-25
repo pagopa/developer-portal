@@ -1,6 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
 import {
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,12 +13,33 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import dynamic from 'next/dynamic';
+
+/* TODO: Workaround due to error in SSR of elements package:
+ * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
+ * Error: Cannot find module './impl/format'
+ */
+const NotSsrApiViewer = dynamic(
+  () => import('@/components/atoms/ApiViewer/ApiViewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <Stack
+        justifyContent={'center'}
+        height={500}
+        padding={2}
+        alignItems='center'
+      >
+        <CircularProgress />
+      </Stack>
+    ),
+  }
+);
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -132,7 +154,7 @@ const ApiSection = ({
           </Stack>
         </Stack>
       )}
-      <ApiViewer
+      <NotSsrApiViewer
         product={product}
         specURL={selectedApi.url}
         hideTryIt={selectedApi.hideTryIt}

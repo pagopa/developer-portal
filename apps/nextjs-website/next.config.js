@@ -8,11 +8,6 @@
  */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [
-    '@pagopa/pagopa-editorial-components',
-    '@pagopa/mui-italia',
-    '@mui/material',
-  ],
   output: 'export',
   trailingSlash: false,
   images: {

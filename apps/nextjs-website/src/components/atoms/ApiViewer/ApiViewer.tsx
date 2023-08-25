@@ -9,7 +9,7 @@ type ApiViewerProps = {
   product: Product;
   hideTryIt?: boolean;
 };
-export const ApiViewer: FC<ApiViewerProps> = ({
+const ApiViewer: FC<ApiViewerProps> = ({
   hideTryIt = true,
   specURL,
   product: {
@@ -18,14 +18,14 @@ export const ApiViewer: FC<ApiViewerProps> = ({
   },
 }) => {
   return (
-    <div>API</div>
-    //  TODO: fix
-    // <API
-    //   apiDescriptionUrl={specURL}
-    //   hideTryIt={hideTryIt}
-    //   hideExport
-    //   basePath={`${api?.path}` ?? `${path}/api`}
-    //   router={typeof window === 'undefined' ? 'memory' : 'history'}
-    // />
+    <API
+      apiDescriptionUrl={specURL}
+      hideTryIt={hideTryIt}
+      hideExport
+      basePath={`${api?.path}` ?? `${path}/api`}
+      router={typeof window === 'undefined' ? 'memory' : 'history'}
+    />
   );
 };
+
+export default ApiViewer;

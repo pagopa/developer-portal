@@ -1,8 +1,8 @@
 import { getApi, getProductsSlugs } from '@/lib/api';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
+import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('api')].map((productSlug) => ({
