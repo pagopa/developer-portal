@@ -18,7 +18,6 @@ import { embed } from './markdoc/schema/embed';
 import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
-import { htmltable } from './markdoc/schema/htmltable';
 import { DocPage } from './parseDoc';
 
 export type ParseContentConfig = {

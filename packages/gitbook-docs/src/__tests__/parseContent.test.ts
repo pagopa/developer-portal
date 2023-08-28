@@ -538,7 +538,9 @@ describe('parseContent', () => {
     expect(parseContent(mention, config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         'Go to ',
-        new Markdoc.Tag('Link', { title: 'Page', href: '/path/page' }, []),
+        new Markdoc.Tag('Link', { title: 'Who am I', href: '/page' }, [
+          'page.md',
+        ]),
       ]),
     ]);
   });
