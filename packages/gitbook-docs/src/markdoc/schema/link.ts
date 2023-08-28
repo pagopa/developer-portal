@@ -1,6 +1,5 @@
 import { Schema, Tag } from '@markdoc/markdoc';
 import { LinkAttr, PrefixLinkAttr } from '../attributes';
-import { cons } from 'fp-ts/Array';
 
 export type LinkProps<A> = {
   readonly href: string;
