@@ -150,6 +150,7 @@ const Page = (props: ProductGuidePageProps) => {
               margin: '0 auto',
               maxWidth: '1008px',
               padding: '0 32px',
+              flexGrow: { lg: 1 },
             }}
           >
             <GitBookContent
