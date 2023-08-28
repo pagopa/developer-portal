@@ -28,6 +28,7 @@ import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 import { DocPage } from 'gitbook-docs/parseDoc';
+import Cards, { Card, CardItem } from './components/Cards';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -61,6 +62,9 @@ const components: RenderingComponents<ReactNode> = {
   TableH: TableH,
   TableR: TableR,
   TableD: TableD,
+  Cards: Cards,
+  Card: Card,
+  CardItem: CardItem,
   PageLink: PageLink,
 };
 

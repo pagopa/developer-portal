@@ -54,11 +54,7 @@ const QuickStartGuideStepper = ({
                     sx={{
                       fontSize: '18px',
                       fontWeight: 600,
-                      overflow: 'hidden',
                       textDecoration: 'none',
-                      textOverflow: 'ellipsis',
-                      textWrap: 'nowrap',
-                      whiteSpace: 'nowrap',
                     }}
                   >
                     {step.anchor} - {step.title}

@@ -4,6 +4,7 @@ import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 import { sendBannerLinks } from '@/_contents/send/bannerLinks';
+import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -77,8 +78,8 @@ export const sendOverview: OverviewData = {
     cards: [
       {
         title: 'Quick Start',
-        coomingSoon: true,
         text: 'Dalla generazione di API Key all’inserimento dei dati: cinque step per inviare una notifica',
+        href: sendQuickStartGuidePath.path,
         iconName: 'FlagOutlined',
       },
       {

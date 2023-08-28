@@ -5,7 +5,7 @@ import Alert, { AlertColor } from '@mui/material/Alert';
 export type AlertPartProps = {
   alertStyle?: SxProps;
   severity: AlertColor;
-  text: string;
+  text?: string;
   title: string;
 };
 
