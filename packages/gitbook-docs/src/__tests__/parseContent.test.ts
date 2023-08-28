@@ -9,7 +9,7 @@ const config = {
   gitBookPages: [
     {
       page: {
-        path: '/path/to/page',
+        path: '/path/to/page/1',
         title: 'Who am I',
         menu: '',
         body: '# Who am I\n hello',
@@ -535,10 +535,12 @@ describe('parseContent', () => {
 
   it('should parse mention', () => {
     const mention = 'Go to [page.md](../../page.md "mention")';
-    expect(parseContent(mention, config)).toStrictEqual([
+    expect(
+      parseContent(mention, { ...config, pagePath: '/path/to/page/1' })
+    ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         'Go to ',
-        new Markdoc.Tag('Link', { title: 'Who am I', href: '/page' }, [
+        new Markdoc.Tag('Link', { title: 'Who am I', href: '/path/page' }, [
           'page.md',
         ]),
       ]),
