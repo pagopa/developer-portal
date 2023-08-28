@@ -8,26 +8,22 @@ export type LinkProps<A> = {
 };
 
 export const link: Schema = {
-  render: 'Link',
   attributes: {
     href: { type: LinkAttr, required: true },
     title: { type: String },
   },
   transform: (node, config) => {
-    const attributes = node.transformAttributes(config);
     const gitBookPages = [
       // eslint-disable-next-line no-unsafe-optional-chaining
       ...config.variables?.gitBookPages,
     ];
     // Find a page with same path, if any get its title. If not, use an empty string.
-    const title =
-      gitBookPages.find(({ page }) => page.path === config.variables?.pagePath)
-        ?.page.title ?? '';
-    return new Tag(
-      'Link',
-      { ...attributes, title },
-      node.transformChildren(config)
-    );
+    const title = gitBookPages.find(
+      ({ page }) => page.path === config.variables?.pagePath
+    )?.page.title;
+    const attrs = node.transformAttributes(config);
+    const attributes = title ? { ...attrs, title } : attrs;
+    return new Tag('Link', attributes, node.transformChildren(config));
   },
 };
 
