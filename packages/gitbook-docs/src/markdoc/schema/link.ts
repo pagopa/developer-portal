@@ -1,5 +1,6 @@
 import { Schema, Tag } from '@markdoc/markdoc';
 import { LinkAttr, PrefixLinkAttr } from '../attributes';
+import { PageTitlePath } from '../../parseDoc';
 
 export type LinkProps<A> = {
   readonly href: string;
@@ -13,10 +14,9 @@ export const link: Schema = {
     title: { type: String },
   },
   transform: (node, config) => {
-    const gitBookPagesWithTitle = [
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      ...config.variables?.gitBookPagesWithTitle,
-    ];
+    const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
+      ? [...config.variables.gitBookPagesWithTitle]
+      : [];
     const page = gitBookPagesWithTitle.find(
       ({ path }) => path === config.variables?.pagePath
     );
