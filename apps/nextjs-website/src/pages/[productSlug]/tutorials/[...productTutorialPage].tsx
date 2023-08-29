@@ -5,6 +5,7 @@ import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
+import { DocPage } from 'gitbook-docs/parseDoc';
 import { gitBookContents } from '@/_contents/products';
 
 type Params = {
@@ -14,7 +15,7 @@ type Params = {
 
 export const getStaticPaths: GetStaticPaths<Params> = () => {
   return {
-    paths: getTutorialPaths() as string[],
+    paths: [...getTutorialPaths()],
     fallback: false,
   };
 };
@@ -25,6 +26,7 @@ type ProductTutorialPageProps = {
   pathPrefix: string;
   assetsPrefix: string;
   body: string;
+  gitBookPages: ReadonlyArray<Pick<DocPage<unknown>, 'page'>>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<
@@ -41,8 +43,9 @@ export const getStaticProps: GetStaticProps<
       product: props.product,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
-      products: getProducts().concat(),
+      products: [...getProducts()],
       bannerLinks: props.bannerLinks,
+      gitBookPages: gitBookContents,
     };
     return { props: page };
   } else {
@@ -66,7 +69,7 @@ const Page = (props: ProductTutorialPageProps) => {
             pagePath={props.path}
             isPageIndex={false}
             content={props.body}
-            gitBookPages={gitBookContents}
+            gitBookPages={props.gitBookPages}
           />
         </Box>
       </EContainer>

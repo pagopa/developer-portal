@@ -11,6 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import { DocPage } from 'gitbook-docs/parseDoc';
 import { gitBookContents } from '@/_contents/products';
 
 type Params = {
@@ -20,7 +21,7 @@ type Params = {
 
 export const getStaticPaths: GetStaticPaths<Params> = () => {
   return {
-    paths: getGuidePaths() as string[],
+    paths: [...getGuidePaths()],
     fallback: false,
   };
 };
@@ -42,6 +43,7 @@ type ProductGuidePageProps = {
   isIndex: boolean;
   menu: string;
   body: string;
+  gitBookPages: ReadonlyArray<Pick<DocPage<unknown>, 'page'>>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -57,7 +59,8 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       ...props.page,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
-      products: getProducts().concat(),
+      products: [...getProducts()],
+      gitBookPages: gitBookContents,
     };
     return { props: page };
   } else {
@@ -149,7 +152,7 @@ const Page = (props: ProductGuidePageProps) => {
               pagePath={props.path}
               isPageIndex={props.isIndex}
               content={props.body}
-              gitBookPages={gitBookContents}
+              gitBookPages={props.gitBookPages}
             />
           </Box>
         </EContainer>
