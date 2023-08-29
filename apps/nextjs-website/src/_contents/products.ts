@@ -3,6 +3,7 @@ import { appIoApi } from '@/_contents/appIo/api';
 import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoGuideLists } from '@/_contents/appIo/guideLists';
 import { appIoOverview } from '@/_contents/appIo/overview';
+import { appIoQuickStartGuide } from '@/_contents/appIo/quickStartGuide';
 import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { appIoTutorialLists } from '@/_contents/appIo/tutorialLists';
 import { ioSign } from '@/_contents/ioSign/ioSign';
@@ -26,6 +27,8 @@ import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendOverview } from '@/_contents/send/overview';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
 import { sendTutorials } from '@/_contents/send/tutorials';
+import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
+import { ioSignQuickStartGuide } from './ioSign/quickStartGuide';
 
 export const overviews = [
   appIoOverview,
@@ -34,7 +37,11 @@ export const overviews = [
   sendOverview,
 ];
 
-export const quickStarts = [];
+export const quickStartGuides = [
+  appIoQuickStartGuide,
+  sendQuickStartGuide,
+  ioSignQuickStartGuide,
+];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
 
@@ -44,6 +51,7 @@ export const tutorialLists = [
   pagoPaTutorialLists,
   sendTutorialLists,
 ];
+
 export const tutorials = [
   ...appIoTutorials,
   ...ioSignTutorials,

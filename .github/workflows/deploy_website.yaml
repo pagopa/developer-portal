@@ -1,0 +1,70 @@
+name: Deploy Website
+
+on:
+  pull_request:
+    types:
+      - closed # Trigger when the PR is closed
+    branches:
+      - 'main' # Target branch is main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - prod
+
+# These permissions are needed to interact with GitHub's OIDC Token endpoint.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  cd_deploy:
+    name: Deploy to S3
+    # Trigger when the PR is merged
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        environment: [ 'dev', 'prod' ]
+
+    environment: ${{ matrix.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Deploy website
+        uses: ./.github/actions/deploy
+        with:
+          environment: ${{ matrix.environment }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          bucket: ${{ vars.S3_BUCKET_NAME }}
+          cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+
+  manual_deploy:
+    name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: 'ubuntu-latest'
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Deploy website
+        uses: ./.github/actions/deploy
+        with:
+          environment: ${{ inputs.environment }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          bucket: ${{ vars.S3_BUCKET_NAME }}
+          cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}

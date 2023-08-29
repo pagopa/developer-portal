@@ -3,6 +3,8 @@ import { appIo } from '@/_contents/appIo/appIo';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoTutorials } from '@/_contents/appIo/tutorialLists';
 import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
+import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
+import { appIoQuickStartGuidePath } from '@/_contents/appIo/quickStartGuidePath';
 
 export const appIoOverview: OverviewData = {
   ...appIoOverviewPath,
@@ -104,8 +106,8 @@ export const appIoOverview: OverviewData = {
     cards: [
       {
         title: 'Quick Start',
-        coomingSoon: true,
         text: 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa',
+        href: `${appIoQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
       },
       {
@@ -116,18 +118,5 @@ export const appIoOverview: OverviewData = {
       },
     ],
   },
-  bannerLinks: [
-    {
-      theme: 'dark',
-      title: 'Hai bisogno di aiuto?',
-      decoration: 'HeadsetMic',
-      body: "Scrivi un'email in cui descrivi il tuo problema o dubbio all'indirizzo <strong>onboarding@io.italia.it</strong>",
-    },
-    {
-      theme: 'light',
-      title: 'Dicci cosa ne pensi',
-      decoration: 'Feedback',
-      body: "Per segnalare problemi o dare feedback, lascia un commento nello <strong>spazio GitHub</strong> dell'app IO",
-    },
-  ],
+  bannerLinks: appIoBannerLinks,
 };

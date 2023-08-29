@@ -1,8 +1,9 @@
 import { Config } from '@markdoc/markdoc';
+import path from 'path';
 
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
-  readonly transform = (value: string) => value === 'true';
+  readonly transform = (value: string) => value === '' || value === 'true';
 }
 
 const convertLink = (link: string): string =>
@@ -10,30 +11,35 @@ const convertLink = (link: string): string =>
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
-  readonly transform = (value: string) =>
-    !value.startsWith('http') ? convertLink(value) : value;
-}
-
-// eslint-disable-next-line functional/no-classes
-export class PrefixLinkAttr {
-  readonly transform = (value: string, config: Config) => {
-    const prefix = config.variables?.linkPrefix;
-    if (!value.startsWith('http')) {
-      const href = typeof prefix === 'string' ? `${prefix}/${value}` : value;
+  readonly transform = (value: string | null, { variables }: Config) => {
+    if (value && !value.startsWith('http')) {
+      const isIndex = variables?.isPageIndex === true;
+      const pagePath = isIndex
+        ? variables.pagePath
+        : path.parse(variables?.pagePath).dir;
+      const href = path.join(pagePath, value);
       return convertLink(href);
     } else return value;
   };
 }
 
-const convertAssetsPath = (assetsPrefix: string, src: string) =>
-  !src.startsWith('http') ? `${assetsPrefix}/${src}` : src;
+// eslint-disable-next-line functional/no-classes
+export class PrefixLinkAttr {
+  readonly transform = (value: string | null, { variables }: Config) => {
+    if (value && !value.startsWith('http')) {
+      const href = path.join(variables?.linkPrefix, value);
+      return convertLink(href);
+    } else return value;
+  };
+}
 
 // eslint-disable-next-line functional/no-classes
 export class SrcAttr {
-  readonly transform = (value: string, config: Config) => {
-    const prefix = config.variables?.assetsPrefix;
-    return typeof prefix === 'string'
-      ? convertAssetsPath(prefix, value)
+  readonly transform = (value: string | null, { variables }: Config) =>
+    // Ignore any '../' (a.k.a parent directory of current directory)
+    // The path.join('/', value) do the trick. It removes any '../' before join
+    // it with assetsPrefix. E.g.: ../../../a/b => /a/b
+    value && !value.startsWith('http')
+      ? path.join(variables?.assetsPrefix, path.join('/', value))
       : value;
-  };
 }

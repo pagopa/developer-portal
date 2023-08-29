@@ -17,6 +17,7 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
     version: 'Versione',
+    copiedTooltip: 'Elemento copiato',
   },
   pageNotFound: {
     overline: '404',
@@ -105,6 +106,27 @@ export const translations = {
       ],
     },
   },
+  quickStartGuide: {
+    content: {
+      apiPhases: {
+        request: {
+          cta: {
+            label: 'Invia la richiesta',
+          },
+          title: 'Chiamata API',
+        },
+        response: {
+          cta: {
+            icon: 'Replay',
+            label: 'Ripristina la chiamata',
+          },
+          title: 'Risposta del server',
+        },
+      },
+      next: 'Prossimo contenuto',
+      previous: 'Contenuto precedente',
+    },
+  },
   overview: {
     startInfo: {
       title: 'Si comincia da qui',
@@ -169,6 +191,12 @@ export const translations = {
             ariaLabel: 'Vai al link: Chi siamo',
             href: 'https://www.pagopa.it/it/societa/chi-siamo',
             label: 'Chi siamo',
+            linkType: 'external',
+          },
+          {
+            ariaLabel: 'Vai al link: PNRR',
+            href: 'https://www.pagopa.it/it/opportunita/pnrr/progetti/',
+            label: 'PNRR',
             linkType: 'external',
           },
           {

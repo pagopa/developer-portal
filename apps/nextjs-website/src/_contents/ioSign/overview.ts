@@ -2,6 +2,8 @@ import { OverviewData } from '@/lib/types/overviewData';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
+import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
+import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -42,8 +44,8 @@ export const ioSignOverview: OverviewData = {
     cards: [
       {
         title: 'Quick Start',
-        coomingSoon: true,
         text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente',
+        href: `${ioSignQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
       },
       {
@@ -59,18 +61,5 @@ export const ioSignOverview: OverviewData = {
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,
   },
-  bannerLinks: [
-    {
-      theme: 'dark',
-      title: 'Serve aiuto durante l’integrazione?',
-      decoration: 'LiveHelp',
-      body: 'Scrivi un’e-mail in cui descrivi il tuo problema o dubbio all’indirizzo <strong>firmaconio-tech@pagopa.it</strong>',
-    },
-    {
-      theme: 'light',
-      title: 'Assistenza continua',
-      decoration: 'HeadsetMic',
-      body: 'Per problemi o dubbi dopo l’integrazione, scrivici all’indirizzo <strong>enti-firmaconio@assistenza.pagopa.it</strong>',
-    },
-  ],
+  bannerLinks: ioSignBannerLinks,
 };

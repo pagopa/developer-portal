@@ -3,6 +3,7 @@ import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { pagoPaTutorials } from '@/_contents/pagoPa/tutorialLists';
 import { pagoPaGuideListsPath } from '@/_contents/pagoPa/guideListsPath';
+import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
 export const pagoPaOverview: OverviewData = {
   ...pagoPaOverviewPath,
@@ -133,18 +134,5 @@ export const pagoPaOverview: OverviewData = {
       },
     ],
   },
-  bannerLinks: [
-    {
-      theme: 'dark',
-      title: 'Hai bisogno di aiuto?',
-      decoration: 'HeadsetMic',
-      body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua <strong>area riservata di Self Care</strong>.',
-    },
-    {
-      theme: 'light',
-      title: 'Dicci cosa ne pensi',
-      decoration: 'Feedback',
-      body: 'Per chiarimenti sulle specifiche d’implementazione di pagoPA, come ad esempio SACI e SANP, puoi aprire una segnalazione su <strong>GitHub</strong>',
-    },
-  ],
+  bannerLinks: pagoPaBannerLinks,
 };

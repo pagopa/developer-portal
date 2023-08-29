@@ -3,7 +3,9 @@ import { parseContent } from '../parseContent';
 
 const config = {
   assetsPrefix: '/assets/prefix',
-  linkPrefix: '/assets/prefix',
+  linkPrefix: '/link/prefix',
+  pagePath: '/path/to/page',
+  isPageIndex: false,
 };
 
 describe('parseContent', () => {
@@ -12,15 +14,22 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
     ]);
   });
-  it('should ignore any anchor tag', () => {
-    expect(parseContent('<a href="#_o" id="_o"></a>', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, []),
-    ]);
-  });
   it('should parse heading', () => {
-    expect(parseContent('# h1\n## h2', config)).toStrictEqual([
+    expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
       new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
+    ]);
+  });
+
+  it('should parse the description from frontmatter and put after the title or on beginning', () => {
+    const markdown = '---\ndescription: >-\n  This is\n  a description\n---\n';
+    expect(parseContent(`${markdown}# A Title`, config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1 }, ['A Title']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+    ]);
+    expect(parseContent(`${markdown}A paragraph`, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['This is a description']),
+      new Markdoc.Tag('Paragraph', {}, ['A paragraph']),
     ]);
   });
 
@@ -31,9 +40,33 @@ describe('parseContent', () => {
   });
 
   it('should convert href as expected', () => {
-    expect(parseContent('[Guida](../../a/b.md)', config)).toStrictEqual([
+    expect(parseContent('[Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '../../a/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/path/to' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should convert href as expected given an index page', () => {
+    const customConfig = { ...config, isPageIndex: true };
+    expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/page/b' }, ['Guida']),
+      ]),
+    ]);
+    expect(parseContent('[Guida](../a/b.md)', customConfig)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/a/b' }, ['Guida']),
       ]),
     ]);
   });
@@ -67,6 +100,22 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse html unordered list', () => {
+    expect(parseContent('<ul><li>Item</li></ul>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse html ordered list', () => {
+    expect(parseContent('<ol><li>Item</li></ol>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: true }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
   it('should parse hint', () => {
     expect(
       parseContent('{% hint style="info" %}\nText\n{% endhint %}\nText', config)
@@ -90,6 +139,22 @@ describe('parseContent', () => {
         src: `${config.assetsPrefix}/img-src.jpg`,
         alt: 'anAlt',
       }),
+    ]);
+    expect(
+      parseContent('<img src="../../../img-src.jpg" alt="anAlt">', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+      }),
+    ]);
+    expect(parseContent('![an-alt](../../img-src.jpg)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'an-alt',
+        }),
+      ]),
     ]);
   });
 
@@ -257,25 +322,144 @@ describe('parseContent', () => {
   });
 
   it('should parse tabs', () => {
-    const tabsText =
-      '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}';
-    expect(parseContent(tabsText, config)).toStrictEqual([
-      new Markdoc.Tag('Tabs', {}, [
-        new Markdoc.Tag(
-          'Tab',
-          {
-            title: 'Tab 1',
-          },
-          [new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content'])]
-        ),
-        new Markdoc.Tag(
-          'Tab',
-          {
-            title: 'Tab 2',
-          },
-          [new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content'])]
-        ),
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
       ]),
+    ]);
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n{% endtab %}\n\n{% tab title="Tab 2" %}\n\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        '',
+      ]),
+    ]);
+  });
+
+  it('should parse expandable', () => {
+    expect(
+      parseContent(
+        '<details>\n\n<summary>A Summary</summary>\n\nA Details\n<img src="../path.jpg">\n\n</details>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Expandable', {}, [
+        new Markdoc.Tag('ExpandableSummary', {}, ['A Summary']),
+        new Markdoc.Tag('ExpandableDetails', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['A Details']),
+          new Markdoc.Tag('Image', {
+            src: `${config.assetsPrefix}/path.jpg`,
+          }),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse table', () => {
+    const table =
+      '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse html table', () => {
+    const table =
+      '<table data-header-hidden>' +
+      '<thead><tr>' +
+      '<th width="165">col A</th>' +
+      '<th width="518">col B</th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr>' +
+      '</tbody></table>';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: true }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse html table viewed as cards', () => {
+    const table =
+      '<table data-card-size="large" data-view="cards">' +
+      '<thead><tr>' +
+      '<th></th>' +
+      '<th data-hidden data-card-cover data-type="files"></th>' +
+      '<th data-hidden data-card-target data-type="content-ref"></th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td>0 - A</td><td><a href="img-0.jpg">0 - B</a></td><td><a href="ref-0.md">0 - C</a></td></tr>' +
+      '<tr><td>1 - A</td><td><a href="img-1.jpg">1 - B</a></td><td><a href="ref-1.md">1 - C</a></td></tr>' +
+      '</tbody></table>';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'Cards',
+        {
+          size: 'large',
+        },
+        [
+          new Markdoc.Tag(
+            'Card',
+            {
+              coverSrc: `${config.assetsPrefix}/img-0.jpg`,
+              href: '/path/to/ref-0',
+            },
+            [new Markdoc.Tag('CardItem', {}, ['0 - A'])]
+          ),
+          new Markdoc.Tag(
+            'Card',
+            {
+              coverSrc: `${config.assetsPrefix}/img-1.jpg`,
+              href: '/path/to/ref-1',
+            },
+            [new Markdoc.Tag('CardItem', {}, ['1 - A'])]
+          ),
+        ]
+      ),
     ]);
   });
 
@@ -301,6 +485,31 @@ describe('parseContent', () => {
         url: 'https://www.pagopa.it/',
       }),
       new Markdoc.Tag('Paragraph', {}, ['hi']),
+    ]);
+  });
+
+  it('should parse strong html tag', () => {
+    const strongText = '<strong>Text</strong>';
+    expect(parseContent(strongText, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Text']),
+      ]),
+    ]);
+  });
+
+  it('should parse content-ref', () => {
+    const contentRef =
+      '{% content-ref url="a/b.md" %}\n' +
+      '[b.md](a/b.md)\n' +
+      '{% endcontent-ref %}';
+    expect(parseContent(contentRef, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        {
+          url: '/path/to/a/b',
+        },
+        ['b.md']
+      ),
     ]);
   });
 });

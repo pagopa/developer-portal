@@ -3,6 +3,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as fs from 'fs';
 import * as path from 'path';
+import { parseTitle } from './parseTitle';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -14,8 +15,12 @@ export type DocSource<T> = T & {
 export type DocPage<T> = T & {
   readonly page: {
     readonly path: string;
+    readonly title: string;
     readonly menu: string;
     readonly body: string;
+    // tracks if the page is index or is not
+    // in other words if it was a README.md file
+    readonly isIndex: boolean;
   };
 };
 
@@ -31,7 +36,7 @@ export const makeParseDocsEnv = (): ParseDocEnv => ({
   readStat: fs.statSync,
 });
 
-export const transformPath = (
+const transformPath = (
   path: string,
   dirPath: string,
   pathPrefix: string
@@ -60,23 +65,38 @@ export const parseDoc = <T>(
     E.chain(({ files, menu, menuPath }) =>
       pipe(
         files,
+        // exclude the menu file (a.k.a. SUMMARY.md)
         RA.filter((abs) => abs !== menuPath),
+        // include only markdown files
         RA.filter((abs) => abs.endsWith('.md')),
         RA.traverse(E.Applicative)((abs) =>
           pipe(
-            E.tryCatch(
-              () => ({
+            E.Do,
+            E.bind('body', () =>
+              E.tryCatch(() => env.readFile(abs, 'utf-8'), E.toError)
+            ),
+            E.bind('title', ({ body }) =>
+              pipe(
+                parseTitle(body),
+                E.fromOption(
+                  () => new Error(`Title (h1) not found for '${abs}'`)
+                )
+              )
+            ),
+            E.map(({ title, body }) => ({
+              ...source,
+              page: {
                 path: transformPath(
                   abs,
                   source.source.dirPath,
                   source.source.pathPrefix
                 ),
+                isIndex: path.parse(abs).name === 'README',
+                title,
                 menu,
-                body: env.readFile(abs, 'utf-8'),
-              }),
-              E.toError
-            ),
-            E.map((page) => ({ ...source, page }))
+                body,
+              },
+            }))
           )
         )
       )

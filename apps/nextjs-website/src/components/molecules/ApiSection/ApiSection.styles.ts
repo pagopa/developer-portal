@@ -1,27 +1,32 @@
-export const styles = {
-  select: {
-    color: 'white',
-    border: '1px solid white',
-    margin: 1,
-    '&:before': {
-      borderColor: 'white',
+import { Palette } from '@mui/material';
+
+export const getStyles = (palette: Palette) => {
+  const white = palette.common.white;
+  return {
+    select: {
+      minWidth: { sx: 'auto', sm: '400px' },
+      color: white,
+      margin: 1,
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
+      },
+
+      '& .MuiSelect-icon': {
+        color: white,
+      },
     },
-    '&:after': {
-      borderColor: 'white',
+    selectContainer: {
+      background: palette.primary.dark,
+      height: 72,
+      paddingRight: 2,
     },
-    '&:not(.Mui-disabled):hover::before': {
-      borderColor: 'white',
+    soapContainer: {
+      background: palette.primary.dark,
+      color: white,
+      padding: '0 1rem',
     },
-  },
-  selectContainer: {
-    background: '#0D1018',
-  },
-  soapContainer: {
-    background: '#0062C3',
-    color: 'white',
-    padding: '0 1rem',
-  },
-  soapButton: {
-    cursor: 'pointer',
-  },
+    soapButton: {
+      cursor: 'pointer',
+    },
+  };
 };
