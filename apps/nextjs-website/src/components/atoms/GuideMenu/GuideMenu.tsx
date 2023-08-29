@@ -20,6 +20,11 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.content}`]: {
     flexDirection: 'row-reverse',
     padding: 8,
+    width: 'calc(100% - 26px)',
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 64,
+    marginLeft: -48,
   },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
@@ -30,6 +35,9 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
   [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
     color: theme.palette.primary.dark,
+  },
+  [`& .${treeItemClasses.selected}`]: {
+    borderRight: `2px solid ${theme.palette.primary.dark}`,
   },
 }));
 
@@ -61,9 +69,13 @@ const components: RenderingComponents<ReactNode> = {
   Title: ({ children }) => (
     <Typography
       color='text.secondary'
+      style={{
+        padding: 16,
+        textDecoration: 'none',
+        fontSize: 16,
+        fontWeight: 700,
+      }}
       textTransform='uppercase'
-      fontSize={14}
-      style={{ textDecoration: 'none' }}
     >
       {children}
     </Typography>
