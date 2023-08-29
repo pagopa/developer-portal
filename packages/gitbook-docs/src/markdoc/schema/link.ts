@@ -17,7 +17,6 @@ export const link: Schema = {
       // eslint-disable-next-line no-unsafe-optional-chaining
       ...config.variables?.gitBookPagesWithTitle,
     ];
-    // Find a page with same path, if any get its title. If not, use an empty string.
     const page = gitBookPagesWithTitle.find(
       ({ path }) => path === config.variables?.pagePath
     );
