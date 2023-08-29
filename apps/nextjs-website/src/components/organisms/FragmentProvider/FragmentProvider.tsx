@@ -11,9 +11,7 @@ type FragmentContextType = {
   setFragment: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-export const FragmentContext = React.createContext<FragmentContextType | null>(
-  null
-);
+const FragmentContext = React.createContext<FragmentContextType | null>(null);
 
 type FragmentProviderProps = {
   children: ReactNode;
