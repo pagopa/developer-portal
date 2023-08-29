@@ -18,15 +18,13 @@ import { embed } from './markdoc/schema/embed';
 import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
-import { DocPage } from './parseDoc';
+import { PageTitlePath } from './parseDoc';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
   readonly pagePath: string;
   readonly isPageIndex: boolean;
-  readonly gitBookPagesWithTitle: ReadonlyArray<
-    Pick<DocPage<unknown>['page'], 'title' | 'path'>
-  >;
+  readonly gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 };
 
 const pairedHtmlTag = (tag: string) => ({

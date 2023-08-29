@@ -12,7 +12,7 @@ import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 import { gitBookPagesWithTitle } from '@/_contents/products';
-import { DocPage } from 'gitbook-docs/parseDoc';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type Params = {
   productSlug: string;
@@ -43,9 +43,7 @@ type ProductGuidePageProps = {
   isIndex: boolean;
   menu: string;
   body: string;
-  gitBookPagesWithTitle: ReadonlyArray<
-    Pick<DocPage<unknown>['page'], 'title' | 'path'>
-  >;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({

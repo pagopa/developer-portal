@@ -6,7 +6,7 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
 import { gitBookPagesWithTitle } from '@/_contents/products';
-import { DocPage } from 'gitbook-docs/parseDoc';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type Params = {
   productSlug: string;
@@ -26,9 +26,7 @@ type ProductTutorialPageProps = {
   pathPrefix: string;
   assetsPrefix: string;
   body: string;
-  gitBookPagesWithTitle: ReadonlyArray<
-    Pick<DocPage<unknown>['page'], 'title' | 'path'>
-  >;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<

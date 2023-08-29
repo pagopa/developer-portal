@@ -28,16 +28,14 @@ import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 import Cards, { Card, CardItem } from './components/Cards';
-import { DocPage } from 'gitbook-docs/parseDoc';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type GitBookContentProps = {
   assetsPrefix: string;
   pagePath: string;
   isPageIndex: boolean;
   content: string;
-  gitBookPagesWithTitle: ReadonlyArray<
-    Pick<DocPage<unknown>['page'], 'title' | 'path'>
-  >;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 };
 
 const components: RenderingComponents<ReactNode> = {
