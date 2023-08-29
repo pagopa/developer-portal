@@ -8,10 +8,10 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
   const { fragment } = useFragment();
-  const [isCurrentHash, setIsCurrentHash] = useState(false);
+  const [isCurrentFragment, setIsCurrentFragment] = useState(false);
 
   useEffect(() => {
-    setIsCurrentHash(fragment === `#${id}`);
+    setIsCurrentFragment(fragment === `#${id}`);
   }, [fragment, id]);
 
   return (
@@ -27,9 +27,11 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
     >
       <Typography
         sx={{
-          color: isCurrentHash ? palette.primary.main : palette.text.secondary,
+          color: isCurrentFragment
+            ? palette.primary.main
+            : palette.text.secondary,
           fontSize: level === 2 ? 18 : 16,
-          fontWeight: isCurrentHash ? 700 : 400,
+          fontWeight: isCurrentFragment ? 700 : 400,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',

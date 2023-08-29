@@ -17,8 +17,25 @@ const asVariant = (level: number) => {
   }
 };
 
+const asFontSize = (level: number) =>
+  level === 1
+    ? '44px'
+    : level === 2
+    ? '24px'
+    : level === 3
+    ? '18px'
+    : level === 4
+    ? '16px'
+    : level === 5
+    ? '14px'
+    : '12px';
+
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
-  <Typography id={id} variant={asVariant(level)} sx={{ py: 3 }}>
+  <Typography
+    id={id}
+    variant={asVariant(level)}
+    sx={{ py: 3, fontSize: { xs: asFontSize(level) } }}
+  >
     {children}
   </Typography>
 );

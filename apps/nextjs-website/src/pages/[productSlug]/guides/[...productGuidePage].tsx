@@ -92,7 +92,7 @@ const Page = (props: ProductGuidePageProps) => {
               display: 'flex',
               flexDirection: 'column',
               padding: '80px 0',
-              flexBasis: { lg: '354px' },
+              width: { lg: '347px' },
               flexGrow: { lg: 0 },
               flexShrink: { lg: 0 },
             }}
@@ -121,8 +121,8 @@ const Page = (props: ProductGuidePageProps) => {
               }}
               menuStyle={{
                 style: {
-                  width: '354px',
-                  maxWidth: '354px',
+                  width: '347px',
+                  maxWidth: '347px',
                   left: 0,
                   right: 0,
                 },
@@ -149,7 +149,7 @@ const Page = (props: ProductGuidePageProps) => {
             sx={{
               margin: '0 auto',
               maxWidth: '1008px',
-              padding: '0 32px',
+              padding: '56px 40px',
               flexGrow: { lg: 1 },
             }}
           >
@@ -164,14 +164,14 @@ const Page = (props: ProductGuidePageProps) => {
             sx={{
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
-              minWidth: '240px',
+              padding: { lg: '80px 64px' },
+              width: { lg: '270px' },
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
-                maxWidth: '300px',
-                paddingRight: '16px',
+                maxWidth: '270px',
                 top: 20,
               }}
             >
