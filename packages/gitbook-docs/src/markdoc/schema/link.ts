@@ -13,16 +13,16 @@ export const link: Schema = {
     title: { type: String },
   },
   transform: (node, config) => {
-    const gitBookPages = [
+    const gitBookPagesWithTitle = [
       // eslint-disable-next-line no-unsafe-optional-chaining
-      ...config.variables?.gitBookPages,
+      ...config.variables?.gitBookPagesWithTitle,
     ];
     // Find a page with same path, if any get its title. If not, use an empty string.
-    const title = gitBookPages.find(
-      ({ page }) => page.path === config.variables?.pagePath
-    )?.page.title;
+    const page = gitBookPagesWithTitle.find(
+      ({ path }) => path === config.variables?.pagePath
+    );
     const attrs = node.transformAttributes(config);
-    const attributes = title ? { ...attrs, title } : attrs;
+    const attributes = page ? { ...attrs, title: page.title } : attrs;
     return new Tag('Link', attributes, node.transformChildren(config));
   },
 };

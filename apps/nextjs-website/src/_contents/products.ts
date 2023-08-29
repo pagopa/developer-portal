@@ -74,6 +74,10 @@ export const guides = [
   ...sendGuides,
 ];
 
-export const gitBookContents = [...tutorials, ...guides];
+const gitBookContents = [...tutorials, ...guides];
+export const gitBookPagesWithTitle = gitBookContents.map((content) => ({
+  title: content.page.title,
+  path: content.page.path,
+}));
 
 export const products = [appIo, ioSign, send, pagoPa];

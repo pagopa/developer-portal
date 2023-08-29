@@ -6,24 +6,14 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
-  gitBookPages: [
+  gitBookPagesWithTitle: [
     {
-      page: {
-        path: '/path/to/page/1',
-        title: 'Who am I',
-        menu: '',
-        body: '# Who am I\n hello',
-        isIndex: false,
-      },
+      path: '/path/to/page/1',
+      title: 'Who am I',
     },
     {
-      page: {
-        path: '/path/page',
-        title: 'Page',
-        menu: '',
-        body: '# Page',
-        isIndex: false,
-      },
+      path: '/path/page',
+      title: 'Page',
     },
   ],
 };

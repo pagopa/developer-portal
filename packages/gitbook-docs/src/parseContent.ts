@@ -24,7 +24,9 @@ export type ParseContentConfig = {
   readonly assetsPrefix: string;
   readonly pagePath: string;
   readonly isPageIndex: boolean;
-  readonly gitBookPages: ReadonlyArray<Pick<DocPage<unknown>, 'page'>>;
+  readonly gitBookPagesWithTitle: ReadonlyArray<
+    Pick<DocPage<unknown>['page'], 'title' | 'path'>
+  >;
 };
 
 const pairedHtmlTag = (tag: string) => ({
