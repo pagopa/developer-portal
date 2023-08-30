@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { ImageProps } from 'gitbook-docs/markdoc/schema/image';
 
 const Image = ({ src, alt, caption }: ImageProps) => (
-  <Container sx={{ textAlign: 'center' }}>
+  <Container sx={{ textAlign: 'center', padding: { xs: 0, lg: 0 } }}>
     <Box
       component='img'
       src={src}
@@ -12,9 +12,11 @@ const Image = ({ src, alt, caption }: ImageProps) => (
       width='auto'
       maxWidth='100%'
     />
-    <Typography variant='caption' align='center' component='div'>
-      {caption}
-    </Typography>
+    {caption && (
+      <Typography variant='caption' align='center' component='div'>
+        {caption}
+      </Typography>
+    )}
   </Container>
 );
 
