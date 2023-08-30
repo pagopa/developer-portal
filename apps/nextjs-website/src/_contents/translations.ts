@@ -24,6 +24,9 @@ export const translations = {
     title: 'Pagina non trovata',
     description: 'La pagina che stai cercando non esiste',
   },
+  productGuidePage: {
+    onThisPage: 'In questa pagina',
+  },
   homepage: {
     news: {
       title: 'In evidenza',

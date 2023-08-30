@@ -4,6 +4,7 @@ import { sanitizedText } from './sanitizedText';
 export type HeadingProps<A> = {
   readonly level: number;
   readonly children: A;
+  readonly id: string;
 };
 
 export const heading: Schema = {
@@ -12,10 +13,27 @@ export const heading: Schema = {
     level: { type: Number, required: true },
   },
   transform(node, config) {
-    return new Markdoc.Tag(
-      `Heading`,
-      node.transformAttributes(config),
-      node.transformChildren({ ...config, nodes: { text: sanitizedText } })
-    );
+    const nodes = { text: sanitizedText };
+    const children = node.transformChildren({
+      ...config,
+      nodes,
+    });
+    const attributes = node.transformAttributes(config);
+
+    const id: string = children
+      .map((child) => (typeof child === 'string' ? child : ''))
+      .filter((child) => !!child)
+      .map(
+        (child) =>
+          child
+            .trim()
+            .toLowerCase()
+            .normalize('NFD') // Split an accented letter in the base letter and the accent
+            .replace(/[\u0300-\u036f]/g, '') // Remove all accents
+            .replace(/ /g, '-') // Replace spaces with -
+      )
+      .join('-');
+
+    return new Markdoc.Tag(`Heading`, { ...attributes, id }, children);
   },
 };

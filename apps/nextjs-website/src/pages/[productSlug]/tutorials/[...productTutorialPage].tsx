@@ -63,7 +63,7 @@ const Page = (props: ProductTutorialPageProps) => {
       showBreadcrumbs={false}
     >
       <EContainer>
-        <Box>
+        <Box sx={{ padding: '56px 0' }}>
           <GitBookContent
             assetsPrefix={props.assetsPrefix}
             pagePath={props.path}
