@@ -7,7 +7,6 @@ import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 export const ioSignTutorials: readonly Tutorial[] = [
   {
     title: 'Come creare e preparare il documento da firmare digitalmente',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${ioSignTutorialListsPath.path}/come-creare-e-preparare-il-documento-da-firmare-digitalmente-con-firma-con-io`,
     name: 'Come creare e preparare il documento da firmare digitalmente',
     image: {
@@ -17,7 +16,6 @@ export const ioSignTutorials: readonly Tutorial[] = [
   },
   {
     title: 'Come creare il Dossier per la richiesta di firma',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${ioSignTutorialListsPath.path}/come-creare-il-dossier-per-la-richiesta-di-firma`,
     name: 'Come creare il Dossier per la richiesta di firma',
     image: {
@@ -27,7 +25,6 @@ export const ioSignTutorials: readonly Tutorial[] = [
   },
   {
     title: 'Come effettuare l’upload dei documenti',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${ioSignTutorialListsPath.path}/upload-dei-documenti`,
     name: 'Come effettuare l’upload dei documenti',
     image: {

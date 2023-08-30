@@ -7,7 +7,6 @@ import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 export const appIoTutorials: readonly Tutorial[] = [
   {
     title: 'Quali sono i possibili accordi di adesione all’app IO',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere`,
     name: 'Quale accordo di adesione scegliere',
   },
@@ -20,7 +19,6 @@ export const appIoTutorials: readonly Tutorial[] = [
   // },
   {
     title: 'Come allegare documenti a un messaggio',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${appIoTutorialListsPath.path}/come-allegare-documenti-a-un-messaggio`,
     name: 'Come allegare documenti a un messaggio',
     image: {
@@ -30,7 +28,6 @@ export const appIoTutorials: readonly Tutorial[] = [
   },
   {
     title: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${appIoTutorialListsPath.path}/come-sapere-se-un-cittadino-ha-abilitata-la-ricezione-dei-messaggi-per-un-servizio`,
     name: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
     image: {

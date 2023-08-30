@@ -78,7 +78,9 @@ const TutorialsPage = ({
                 : shared.coomingSoon,
               title: tutorial.title,
               date: {
-                date: new Date(tutorial.dateString),
+                date: tutorial.dateString
+                  ? new Date(tutorial.dateString)
+                  : undefined,
               },
               href: {
                 label: shared.readTutorial,
