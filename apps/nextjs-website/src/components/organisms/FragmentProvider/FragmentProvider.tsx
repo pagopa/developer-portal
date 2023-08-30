@@ -8,7 +8,6 @@ import React, {
 
 type FragmentContextType = {
   fragment: string | null;
-  setFragment: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const FragmentContext = React.createContext<FragmentContextType | null>(null);
@@ -37,7 +36,6 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
     <FragmentContext.Provider
       value={{
         fragment,
-        setFragment,
       }}
     >
       {children}
