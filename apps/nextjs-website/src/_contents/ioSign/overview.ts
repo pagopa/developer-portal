@@ -3,6 +3,7 @@ import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
 import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
+import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -43,8 +44,8 @@ export const ioSignOverview: OverviewData = {
     cards: [
       {
         title: 'Quick Start',
-        coomingSoon: true,
         text: 'Sei semplici passi per inviare e ricevere un documento firmato digitalmente',
+        href: `${ioSignQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
       },
       {

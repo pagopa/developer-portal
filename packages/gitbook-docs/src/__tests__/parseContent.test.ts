@@ -6,6 +6,16 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
+  gitBookPagesWithTitle: [
+    {
+      path: '/path/to/page/1',
+      title: 'Who am I',
+    },
+    {
+      path: '/path/page',
+      title: 'Page',
+    },
+  ],
 };
 
 describe('parseContent', () => {
@@ -16,15 +26,38 @@ describe('parseContent', () => {
   });
   it('should parse heading', () => {
     expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
-      new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
+      new Markdoc.Tag('Heading', { level: 1, id: 'h1' }, ['h1']),
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2' }, ['h2']),
+    ]);
+    expect(
+      parseContent('## h2 Title with accents like èàò', config)
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Heading',
+        { level: 2, id: 'h2-title-with-accents-like-eao' },
+        ['h2 Title with accents like èàò']
+      ),
+    ]);
+    expect(parseContent('## **h2 title**', config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, ['h2 title']),
+    ]);
+    expect(
+      parseContent('## h2 title <a href="#code" id="code"></a>', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
+        'h2 title ',
+        new Markdoc.Tag('Link', { id: 'code', href: '/path/to/#code' }, []),
+      ]),
+    ]);
+    expect(parseContent('## [link](target-link)', config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'link' }, ['link']),
     ]);
   });
 
   it('should parse the description from frontmatter and put after the title or on beginning', () => {
     const markdown = '---\ndescription: >-\n  This is\n  a description\n---\n';
     expect(parseContent(`${markdown}# A Title`, config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 1 }, ['A Title']),
+      new Markdoc.Tag('Heading', { level: 1, id: 'a-title' }, ['A Title']),
       new Markdoc.Tag('Paragraph', {}, ['This is a description']),
     ]);
     expect(parseContent(`${markdown}A paragraph`, config)).toStrictEqual([
@@ -96,6 +129,22 @@ describe('parseContent', () => {
     expect(parseContent('* [x] Item', config)).toStrictEqual([
       new Markdoc.Tag('List', { ordered: false }, [
         new Markdoc.Tag('Item', { checked: true }, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse html unordered list', () => {
+    expect(parseContent('<ul><li>Item</li></ul>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: false }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
+      ]),
+    ]);
+  });
+
+  it('should parse html ordered list', () => {
+    expect(parseContent('<ol><li>Item</li></ol>', config)).toStrictEqual([
+      new Markdoc.Tag('List', { ordered: true }, [
+        new Markdoc.Tag('Item', {}, ['Item']),
       ]),
     ]);
   });
@@ -354,7 +403,7 @@ describe('parseContent', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| 1 - A     | 1 - B     |\n| 2 - A     | 2 - B     |';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', {}, [
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableH', {}, ['col A']),
@@ -377,9 +426,16 @@ describe('parseContent', () => {
 
   it('should parse html table', () => {
     const table =
-      '<table data-header-hidden><thead><tr><th width="165">col A</th><th width="518">col B</th></tr></thead><tbody><tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr></tbody></table>';
+      '<table data-header-hidden>' +
+      '<thead><tr>' +
+      '<th width="165">col A</th>' +
+      '<th width="518">col B</th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td>1 - A</td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr>' +
+      '</tbody></table>';
     expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Table', {}, [
+      new Markdoc.Tag('Table', { headerIsHidden: true }, [
         new Markdoc.Tag('TableHead', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableH', {}, ['col A']),
@@ -397,6 +453,46 @@ describe('parseContent', () => {
           ]),
         ]),
       ]),
+    ]);
+  });
+
+  it('should parse html table viewed as cards', () => {
+    const table =
+      '<table data-card-size="large" data-view="cards">' +
+      '<thead><tr>' +
+      '<th></th>' +
+      '<th data-hidden data-card-cover data-type="files"></th>' +
+      '<th data-hidden data-card-target data-type="content-ref"></th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td>0 - A</td><td><a href="img-0.jpg">0 - B</a></td><td><a href="ref-0.md">0 - C</a></td></tr>' +
+      '<tr><td>1 - A</td><td><a href="img-1.jpg">1 - B</a></td><td><a href="ref-1.md">1 - C</a></td></tr>' +
+      '</tbody></table>';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag(
+        'Cards',
+        {
+          size: 'large',
+        },
+        [
+          new Markdoc.Tag(
+            'Card',
+            {
+              coverSrc: `${config.assetsPrefix}/img-0.jpg`,
+              href: '/path/to/ref-0',
+            },
+            [new Markdoc.Tag('CardItem', {}, ['0 - A'])]
+          ),
+          new Markdoc.Tag(
+            'Card',
+            {
+              coverSrc: `${config.assetsPrefix}/img-1.jpg`,
+              href: '/path/to/ref-1',
+            },
+            [new Markdoc.Tag('CardItem', {}, ['1 - A'])]
+          ),
+        ]
+      ),
     ]);
   });
 
@@ -447,6 +543,20 @@ describe('parseContent', () => {
         },
         ['b.md']
       ),
+    ]);
+  });
+
+  it('should parse mention', () => {
+    const mention = 'Go to [page.md](../../page.md "mention")';
+    expect(
+      parseContent(mention, { ...config, pagePath: '/path/to/page/1' })
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Go to ',
+        new Markdoc.Tag('Link', { title: 'Who am I', href: '/path/page' }, [
+          'page.md',
+        ]),
+      ]),
     ]);
   });
 });

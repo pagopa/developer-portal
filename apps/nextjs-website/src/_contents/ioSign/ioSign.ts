@@ -3,6 +3,7 @@ import { ioSignGuideListsPath } from '@/_contents/ioSign/guideListsPath';
 import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { Product } from '@/lib/types/product';
+import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
 
 export const ioSign: Product = {
   name: 'Firma con IO',
@@ -12,6 +13,7 @@ export const ioSign: Product = {
   svgPath: '/icons/appIo.svg',
   subpaths: {
     overview: ioSignOverviewPath,
+    quickStart: ioSignQuickStartGuidePath,
     api: ioSignApiPath,
     tutorials: ioSignTutorialListsPath,
     guides: ioSignGuideListsPath,

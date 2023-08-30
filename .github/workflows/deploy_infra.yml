@@ -1,0 +1,70 @@
+name: Deploy Infrastructure
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+        - dev
+        - prod
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .infrastructure
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  deploy:
+    name: Terraform apply (manual)
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Install dependencies
+        run: npm ci --audit=false --fund=false
+
+      - name: Compile Cloudfront Functions
+        run: npm run compile -w cloudfront-functions
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: ${{ env.AWS_REGION || 'eu-south-1' }}
+          role_to_assume: ${{ secrets.IAM_ROLE }}
+
+      - name: Setup Terraform
+        uses: ./.github/actions/setup-terraform
+        with:
+          environment: ${{ inputs.environment }}
+
+      - name: Terraform Apply
+        env:
+          # publish the cloudfront functions
+          TF_VAR_publish_cloudfront_functions: true
+        run: |
+          ./terraform.sh apply ${{ inputs.environment }} -auto-approve
