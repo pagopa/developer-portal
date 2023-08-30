@@ -30,7 +30,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Per altre info sul certificato, <a href="https://docs.pagopa.it/sanp/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
+          html: `<p>Per altre info sul certificato, <a href="/pago-pa/guides/sanp/3.4.1/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
         },
       ],
     },
@@ -40,7 +40,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Accedi alla <a href="https://FQDN/nomeservizio" target="_blank">piattaforma Self Care</a> e seleziona Piattaforma PagoPA per generare le API Key. In questo video interattivo troverai tutti i passaggi utili per la sua creazione.</p>`,
+          html: `<p>Accedi alla <a href="https://selfcare.pagopa.it/auth/login" target="_blank">piattaforma Self Care</a> e seleziona Piattaforma PagoPA per generare le API Key. In questo video interattivo troverai tutti i passaggi utili per la sua creazione.</p>`,
         },
         {
           component: 'innerHTMLLazyLoaded',
@@ -94,7 +94,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Scarica il certificato pubblico messo a disposizione da PagoPA e abilita la mutua autenticazione. I certificati sono pubblicati e quindi scaricabili sul repository <a href="https://github.com/pagopa/pagopa-node-forwarder" target="_blank">GitHub - pagopa/pagopa-node-forwarder: ⏩ Forwarder for requests coming from 🪢 'nodo-dei-pagamenti'</a>.</p>`,
+          html: `<p>Scarica il certificato pubblico messo a disposizione da PagoPA e abilita la mutua autenticazione. I certificati sono pubblicati e quindi scaricabili sul repository <a href="https://github.com/pagopa/pagopa-node-forwarder" target="_blank">https://github.com/pagopa/pagopa-node-forwarder</a>.</p>`,
         },
         {
           component: 'alert',
@@ -109,7 +109,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Procedi con i processi di pagamento secondo la documentazione che <a href="https://docs.pagopa.it/sanp/casi-duso/pagamento-di-un-avviso-presso-psp" target="_blank">trovi qui</a>.</p>`,
+          html: `<p>Procedi con i processi di pagamento secondo la documentazione che <a href="/pago-pa/guides/sanp/3.4.1/casi-duso/pagamento-di-un-avviso-presso-psp" target="_blank">trovi qui</a>.</p>`,
         },
       ],
     },
