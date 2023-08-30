@@ -24,6 +24,8 @@ export type DocPage<T> = T & {
   };
 };
 
+export type PageTitlePath = Pick<DocPage<unknown>['page'], 'title' | 'path'>;
+
 export type ParseDocEnv = {
   readonly readFile: typeof fs.readFileSync;
   readonly readDir: typeof fs.readdirSync;

@@ -74,4 +74,13 @@ export const guides = [
   ...sendGuides,
 ];
 
+const gitBookContents = [...tutorials, ...guides];
+
+// Create a slim data structure to reduce React page size.
+// This structure is composed of page path and title.
+export const gitBookPagesWithTitle = gitBookContents.map((content) => ({
+  title: content.page.title,
+  path: content.page.path,
+}));
+
 export const products = [appIo, ioSign, send, pagoPa];

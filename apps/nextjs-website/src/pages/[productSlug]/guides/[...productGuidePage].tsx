@@ -12,6 +12,8 @@ import { translations } from '@/_contents/translations';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import { gitBookPagesWithTitle } from '@/_contents/products';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type Params = {
   productSlug: string;
@@ -20,7 +22,7 @@ type Params = {
 
 export const getStaticPaths: GetStaticPaths<Params> = () => {
   return {
-    paths: getGuidePaths() as string[],
+    paths: [...getGuidePaths()],
     fallback: false,
   };
 };
@@ -42,6 +44,7 @@ type ProductGuidePageProps = {
   isIndex: boolean;
   menu: string;
   body: string;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -57,7 +60,8 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       ...props.page,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
-      products: getProducts().concat(),
+      products: [...getProducts()],
+      gitBookPagesWithTitle,
     };
     return { props: page };
   } else {
@@ -158,6 +162,7 @@ const Page = (props: ProductGuidePageProps) => {
               pagePath={props.path}
               isPageIndex={props.isIndex}
               content={props.body}
+              gitBookPagesWithTitle={props.gitBookPagesWithTitle}
             />
           </Box>
           <Box
