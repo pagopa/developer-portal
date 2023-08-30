@@ -10,7 +10,7 @@ interface INewsroomItem {
   };
   title: string;
   date: {
-    date: Date;
+    date?: Date;
     locale?: string;
     options?: Intl.DateTimeFormatOptions;
   };
@@ -43,6 +43,7 @@ const Item = (props: INewsroomItem) => {
     title,
     href,
   } = props;
+
   return (
     <Grid item md={4} mb={8}>
       <Box
@@ -75,9 +76,16 @@ const Item = (props: INewsroomItem) => {
           />
         )}
       </Box>
-      <Typography color='text.secondary' fontSize={16} fontWeight={400} my={2}>
-        {new Intl.DateTimeFormat(locale, options).format(date)}
-      </Typography>
+      {date && (
+        <Typography
+          color='text.secondary'
+          fontSize={16}
+          fontWeight={400}
+          my={2}
+        >
+          {new Intl.DateTimeFormat(locale, options).format(date)}
+        </Typography>
+      )}
       <Typography variant='h6'>{title}</Typography>
       <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
         <LinkButton
