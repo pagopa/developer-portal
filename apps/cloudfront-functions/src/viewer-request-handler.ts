@@ -13,8 +13,11 @@ const handler = (
     const { request } = event;
     const uri = request.uri;
 
+    // Check if the uri refers to a gitbook assets
+    const isGitbookAssets = uri.startsWith('/gitbook/docs');
+
     // Add the .html extension if missing
-    if (!uri.endsWith('/') && !/\.[a-zA-Z]+$/.test(uri)) {
+    if (!uri.endsWith('/') && !isGitbookAssets && !/\.[a-zA-Z]+$/.test(uri)) {
       request.uri += '.html';
     }
 

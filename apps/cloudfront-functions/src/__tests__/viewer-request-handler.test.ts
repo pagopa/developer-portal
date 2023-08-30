@@ -37,4 +37,9 @@ describe('handler', () => {
     const example1 = '/i-s/g/mo/v1.0';
     expect(handler(makeEvent(example1)).uri).toBe(`${example1}.html`);
   });
+  it('should not add the html suffix to gitbook assets', () => {
+    expect(handler(makeEvent('/gitbook/docs/n/.gitbook/assets/0')).uri).toBe(
+      '/gitbook/docs/n/.gitbook/assets/0'
+    );
+  });
 });
