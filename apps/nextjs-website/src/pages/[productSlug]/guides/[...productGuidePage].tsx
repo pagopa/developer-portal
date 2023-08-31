@@ -11,7 +11,10 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
+import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import { gitBookPagesWithTitle } from '@/_contents/products';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type Params = {
   productSlug: string;
@@ -20,7 +23,7 @@ type Params = {
 
 export const getStaticPaths: GetStaticPaths<Params> = () => {
   return {
-    paths: getGuidePaths() as string[],
+    paths: [...getGuidePaths()],
     fallback: false,
   };
 };
@@ -42,6 +45,7 @@ type ProductGuidePageProps = {
   isIndex: boolean;
   menu: string;
   body: string;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -57,7 +61,8 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       ...props.page,
       pathPrefix: props.source.pathPrefix,
       assetsPrefix: props.source.assetsPrefix,
-      products: getProducts().concat(),
+      products: [...getProducts()],
+      gitBookPagesWithTitle,
     };
     return { props: page };
   } else {
@@ -67,7 +72,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
 
 const Page = (props: ProductGuidePageProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
+  const { productGuidePage, shared } = translations;
 
   return (
     <Layout
@@ -77,81 +82,115 @@ const Page = (props: ProductGuidePageProps) => {
       bannerLinks={props.bannerLinks}
       showBreadcrumbs={false}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column-reverse', lg: 'row' },
-        }}
-      >
+      <FragmentProvider>
         <Box
-          bgcolor={palette.grey[50]}
           sx={{
             display: 'flex',
-            flexDirection: 'column',
-            padding: '80px 0',
-            flexBasis: { lg: '354px' },
-            flexGrow: { lg: 0 },
-            flexShrink: { lg: 0 },
+            flexDirection: { xs: 'column-reverse', lg: 'row' },
+            margin: '0 auto',
+            maxWidth: '1900px',
           }}
         >
-          <Typography
-            variant='h6'
+          <Box
+            bgcolor={palette.grey[50]}
             sx={{
-              padding: '16px 32px',
-              verticalAlign: 'middle',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '80px 0',
+              width: { lg: '347px' },
+              flexGrow: { lg: 0 },
+              flexShrink: { lg: 0 },
             }}
           >
-            {props.guide.name}
-          </Typography>
-          <Dropdown
-            label={`${shared.version} ${props.version.name}`}
-            items={props.versions.map((version) => ({
-              href: version.path,
-              label: version.name,
-            }))}
-            icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
-            buttonStyle={{
-              color: palette.action.active,
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '16px 32px',
-            }}
-            menuStyle={{
-              style: {
-                width: '354px',
-                maxWidth: '354px',
-                left: 0,
-                right: 0,
-              },
-            }}
-            menuAnchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          />
+            <Typography
+              variant='h6'
+              sx={{
+                padding: '16px 32px',
+                verticalAlign: 'middle',
+              }}
+            >
+              {props.guide.name}
+            </Typography>
+            <Dropdown
+              label={`${shared.version} ${props.version.name}`}
+              items={props.versions.map((version) => ({
+                href: version.path,
+                label: version.name,
+              }))}
+              icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
+              buttonStyle={{
+                color: palette.action.active,
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '16px 32px',
+              }}
+              menuStyle={{
+                style: {
+                  width: '347px',
+                  maxWidth: '347px',
+                  left: 0,
+                  right: 0,
+                },
+              }}
+              menuAnchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+            />
+            <Box
+              sx={{
+                margin: '32px 0 0 0',
+              }}
+            >
+              {renderGitBookMarkdown(
+                props.menu,
+                props.pathPrefix,
+                props.assetsPrefix,
+                true
+              )}
+            </Box>
+          </Box>
           <Box
             sx={{
-              margin: '32px 0 0 0',
+              margin: '0 auto',
+              maxWidth: '1008px',
+              padding: '56px 40px',
+              flexGrow: { lg: 1 },
             }}
           >
-            <GuideMenu
-              menu={props.menu}
-              assetsPrefix={props.assetsPrefix}
-              linkPrefix={props.pathPrefix}
-            />
-          </Box>
-        </Box>
-        <EContainer>
-          <Box>
             <GitBookContent
               assetsPrefix={props.assetsPrefix}
               pagePath={props.path}
               isPageIndex={props.isIndex}
               content={props.body}
+              gitBookPagesWithTitle={props.gitBookPagesWithTitle}
             />
           </Box>
-        </EContainer>
-      </Box>
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              padding: { lg: '80px 64px' },
+              width: { lg: '270px' },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '270px',
+                top: 20,
+              }}
+            >
+              <GuideInPageMenu
+                assetsPrefix={props.assetsPrefix}
+                pagePath={props.path}
+                inPageMenu={props.body}
+                title={productGuidePage.onThisPage}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </FragmentProvider>
     </Layout>
   );
 };

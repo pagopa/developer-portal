@@ -27,7 +27,6 @@ const SummaryLink = (prefix: string) => {
             borderRight: isActive ? '2px solid #0062C3' : 'none',
             textDecoration: 'none',
             padding: '16px 32px',
-            width: '354px',
             flexGrow: 1,
             display: 'flex',
             verticalAlign: 'middle',

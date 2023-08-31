@@ -6,6 +6,16 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
+  gitBookPagesWithTitle: [
+    {
+      path: '/path/to/page/1',
+      title: 'Who am I',
+    },
+    {
+      path: '/path/page',
+      title: 'Page',
+    },
+  ],
 };
 
 describe('parseContent', () => {
@@ -16,15 +26,38 @@ describe('parseContent', () => {
   });
   it('should parse heading', () => {
     expect(parseContent('# 🏠 h1🏠\n## h2', config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 1 }, ['h1']),
-      new Markdoc.Tag('Heading', { level: 2 }, ['h2']),
+      new Markdoc.Tag('Heading', { level: 1, id: 'h1' }, ['h1']),
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2' }, ['h2']),
+    ]);
+    expect(
+      parseContent('## h2 Title with accents like èàò', config)
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Heading',
+        { level: 2, id: 'h2-title-with-accents-like-eao' },
+        ['h2 Title with accents like èàò']
+      ),
+    ]);
+    expect(parseContent('## **h2 title**', config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, ['h2 title']),
+    ]);
+    expect(
+      parseContent('## h2 title <a href="#code" id="code"></a>', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
+        'h2 title ',
+        new Markdoc.Tag('Link', { id: 'code', href: '/path/to/#code' }, []),
+      ]),
+    ]);
+    expect(parseContent('## [link](target-link)', config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 2, id: 'link' }, ['link']),
     ]);
   });
 
   it('should parse the description from frontmatter and put after the title or on beginning', () => {
     const markdown = '---\ndescription: >-\n  This is\n  a description\n---\n';
     expect(parseContent(`${markdown}# A Title`, config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 1 }, ['A Title']),
+      new Markdoc.Tag('Heading', { level: 1, id: 'a-title' }, ['A Title']),
       new Markdoc.Tag('Paragraph', {}, ['This is a description']),
     ]);
     expect(parseContent(`${markdown}A paragraph`, config)).toStrictEqual([
@@ -510,6 +543,20 @@ describe('parseContent', () => {
         },
         ['b.md']
       ),
+    ]);
+  });
+
+  it('should parse mention', () => {
+    const mention = 'Go to [page.md](../../page.md "mention")';
+    expect(
+      parseContent(mention, { ...config, pagePath: '/path/to/page/1' })
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Go to ',
+        new Markdoc.Tag('Link', { title: 'Who am I', href: '/path/page' }, [
+          'page.md',
+        ]),
+      ]),
     ]);
   });
 });

@@ -18,11 +18,13 @@ import { embed } from './markdoc/schema/embed';
 import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
+import { PageTitlePath } from './parseDoc';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
   readonly pagePath: string;
   readonly isPageIndex: boolean;
+  readonly gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 };
 
 const pairedHtmlTag = (tag: string) => ({
@@ -79,10 +81,7 @@ const schema: ConfigType = {
   },
 };
 
-export const parseContent = (
-  markdown: string,
-  config: ParseContentConfig
-): RenderableTreeNode => {
+export const parseAst = (markdown: string) => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
@@ -103,6 +102,13 @@ export const parseContent = (
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
   const tokens = processHtmlTokens(tokenizer.tokenize(markdoc));
-  const ast = Markdoc.parse([...tokens]);
-  return Markdoc.transform(ast, { ...schema, variables: config });
+  return Markdoc.parse([...tokens]);
+};
+
+export const parseContent = (
+  markdown: string,
+  config: ParseContentConfig
+): ReadonlyArray<RenderableTreeNode> => {
+  const ast = parseAst(markdown);
+  return Markdoc.transform([ast], { ...schema, variables: config });
 };

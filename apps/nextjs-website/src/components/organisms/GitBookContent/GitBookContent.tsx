@@ -28,12 +28,14 @@ import CodeBlock from './components/CodeBlock';
 import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 import Cards, { Card, CardItem } from './components/Cards';
+import { PageTitlePath } from 'gitbook-docs/parseDoc';
 
 type GitBookContentProps = {
   assetsPrefix: string;
   pagePath: string;
   isPageIndex: boolean;
   content: string;
+  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -71,9 +73,15 @@ const GitBookContent = ({
   assetsPrefix,
   pagePath,
   isPageIndex,
+  gitBookPagesWithTitle,
 }: GitBookContentProps) =>
   renderContent(
-    parseContent(content, { assetsPrefix, pagePath, isPageIndex }),
+    parseContent(content, {
+      assetsPrefix,
+      pagePath,
+      isPageIndex,
+      gitBookPagesWithTitle,
+    }),
     React,
     components
   );

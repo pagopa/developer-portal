@@ -7,5 +7,5 @@ export type Tutorial = {
     readonly alt: string;
   };
   readonly title: string;
-  readonly dateString: string;
+  readonly dateString?: string;
 } & Path;

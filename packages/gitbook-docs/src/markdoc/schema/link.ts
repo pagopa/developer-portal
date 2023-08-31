@@ -1,5 +1,6 @@
-import { Schema } from '@markdoc/markdoc';
-import { LinkAttr } from '../attributes';
+import { Schema, Tag } from '@markdoc/markdoc';
+import { LinkAttr, PrefixLinkAttr } from '../attributes';
+import { PageTitlePath } from '../../parseDoc';
 
 export type LinkProps<A> = {
   readonly href: string;
@@ -8,9 +9,19 @@ export type LinkProps<A> = {
 };
 
 export const link: Schema = {
-  render: 'Link',
   attributes: {
     href: { type: LinkAttr, required: true },
     title: { type: String },
+  },
+  transform: (node, config) => {
+    const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
+      ? [...config.variables.gitBookPagesWithTitle]
+      : [];
+    const page = gitBookPagesWithTitle.find(
+      ({ path }) => path === config.variables?.pagePath
+    );
+    const attrs = node.transformAttributes(config);
+    const attributes = page ? { ...attrs, title: page.title } : attrs;
+    return new Tag('Link', attributes, node.transformChildren(config));
   },
 };
