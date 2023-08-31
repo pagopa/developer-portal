@@ -1,9 +1,8 @@
 'use client';
 import React from 'react';
-import * as Icons from '@mui/icons-material';
-import { EIcon } from '@pagopa/pagopa-editorial-components/dist/components/EIcon';
-import { Icon } from '@mui/material';
+import { Icon, Typography } from '@mui/material';
 import Image from 'next/image';
+import { ICON_MAP } from './IconMap';
 
 type IconWrapperProps = {
   icon: string;
@@ -12,7 +11,7 @@ type IconWrapperProps = {
   size?: number;
 };
 
-type IconName = keyof typeof Icons;
+type IconName = keyof typeof ICON_MAP;
 
 const IconWrapper = ({
   icon,
@@ -31,7 +30,12 @@ const IconWrapper = ({
       color,
       sx: { width: size, height: size },
     };
-    return <EIcon icon={icon as IconName} {...props} />;
+    const Icon = icon && ICON_MAP[icon as IconName];
+    return Icon ? (
+      <Typography color={props?.color ?? 'inherit'}>
+        <Icon {...props} color='inherit' />
+      </Typography>
+    ) : null;
   }
 };
 
