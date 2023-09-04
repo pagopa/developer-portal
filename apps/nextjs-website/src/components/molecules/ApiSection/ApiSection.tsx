@@ -74,9 +74,6 @@ const ApiSection = ({
     setSelectedItemURL(event.target.value);
 
     const spec = specURLs.find((item) => item?.url === event.target.value);
-    if (spec) {
-      console.log('spec', spec);
-    }
 
     if (specURLsName) {
       // update the url with the spec query param
