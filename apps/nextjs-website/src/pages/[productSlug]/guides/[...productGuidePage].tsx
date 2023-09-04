@@ -1,7 +1,6 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { getGuide, getGuidePaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -9,6 +8,7 @@ import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import React from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { translations } from '@/_contents/translations';
+import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
@@ -136,18 +136,11 @@ const Page = (props: ProductGuidePageProps) => {
                 horizontal: 'center',
               }}
             />
-            <Box
-              sx={{
-                margin: '32px 0 0 0',
-              }}
-            >
-              {renderGitBookMarkdown(
-                props.menu,
-                props.pathPrefix,
-                props.assetsPrefix,
-                true
-              )}
-            </Box>
+            <GuideMenu
+              menu={props.menu}
+              assetsPrefix={props.assetsPrefix}
+              linkPrefix={props.pathPrefix}
+            />
           </Box>
           <Box
             sx={{

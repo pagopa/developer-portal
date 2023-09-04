@@ -25,11 +25,3 @@ export const link: Schema = {
     return new Tag('Link', attributes, node.transformChildren(config));
   },
 };
-
-export const menuLink: Schema = {
-  render: 'Link',
-  attributes: {
-    href: { type: PrefixLinkAttr, required: true },
-    title: { type: String },
-  },
-};
