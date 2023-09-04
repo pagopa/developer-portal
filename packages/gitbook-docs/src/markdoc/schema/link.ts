@@ -5,11 +5,13 @@ import { PageTitlePath } from '../../parseDoc';
 export type LinkProps<A> = {
   readonly href: string;
   readonly children: A;
+  readonly title?: string;
 };
 
 export const link: Schema = {
   attributes: {
     href: { type: LinkAttr, required: true },
+    title: { type: String },
   },
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
