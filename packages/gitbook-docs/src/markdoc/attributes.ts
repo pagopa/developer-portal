@@ -30,7 +30,7 @@ export class LinkAttr {
         'g'
       );
       const [spaceId, ...rest] = value
-        ?.replace(regex, '')
+        .replace(regex, '')
         .split('/')
         .filter(Boolean);
 
@@ -49,7 +49,6 @@ export class LinkAttr {
       } else {
         return value;
       }
-
     } else return value;
   };
 }
