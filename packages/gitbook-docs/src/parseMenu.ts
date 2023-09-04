@@ -2,6 +2,7 @@ import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { ParseConfig } from './ParseConfig';
 import { title } from './markdoc/schema/title';
 import * as menu from './markdoc/schema/menu';
+import { sanitizedText } from './markdoc/schema/sanitizedText';
 
 const schema: ConfigType = {
   nodes: {
@@ -12,6 +13,7 @@ const schema: ConfigType = {
     list: menu.list,
     item: menu.item,
     link: menu.link,
+    text: sanitizedText,
   },
 };
 
