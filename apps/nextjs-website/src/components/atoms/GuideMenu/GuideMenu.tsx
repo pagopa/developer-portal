@@ -18,26 +18,40 @@ type GuideMenuProps = {
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.content}`]: {
+    boxSizing: 'border-box',
     flexDirection: 'row-reverse',
-    padding: 8,
-    width: 'calc(100% - 26px)',
+    width: '100%',
     paddingTop: 16,
     paddingBottom: 16,
-    paddingLeft: 64,
-    marginLeft: -48,
+    paddingLeft: 32,
   },
+  [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
+    paddingLeft: 0,
+  },
+  [`& .${treeItemClasses.group}`]: {
+    marginLeft: 0,
+  },
+  [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
+    paddingLeft: 48,
+    paddingRight: 24,
+  },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 80,
+    },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
+    paddingLeft: 16,
   },
   [`& .${treeItemClasses.root}`]: {
     margin: 0,
-    paddingLeft: 2,
-  },
-  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
-    color: theme.palette.primary.dark,
+    paddingLeft: 0,
   },
   [`& .${treeItemClasses.selected}`]: {
     borderRight: `2px solid ${theme.palette.primary.dark}`,
+  },
+  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
+    color: theme.palette.primary.dark,
   },
 }));
 
@@ -70,9 +84,11 @@ const components: RenderingComponents<ReactNode> = {
     <Typography
       color='text.secondary'
       style={{
-        padding: 16,
+        paddingLeft: 32,
+        paddingTop: 24,
+        paddingBottom: 0,
         textDecoration: 'none',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 700,
       }}
       textTransform='uppercase'

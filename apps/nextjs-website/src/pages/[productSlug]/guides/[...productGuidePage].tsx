@@ -1,7 +1,6 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { getGuide, getGuidePaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { renderGitBookMarkdown } from '@/markdoc';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -137,7 +136,6 @@ const Page = (props: ProductGuidePageProps) => {
                 horizontal: 'center',
               }}
             />
-
             <GuideMenu
               menu={props.menu}
               assetsPrefix={props.assetsPrefix}
