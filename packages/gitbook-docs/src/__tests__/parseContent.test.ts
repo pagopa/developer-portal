@@ -114,7 +114,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it.only('should convert href to other gitbook space', () => {
+  it('should convert href to other gitbook space', () => {
     expect(
       parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
     ).toStrictEqual([
@@ -587,9 +587,7 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         'Go to ',
-        new Markdoc.Tag('Link', { title: 'Who am I', href: '/path/page' }, [
-          'page.md',
-        ]),
+        new Markdoc.Tag('Link', { href: '/path/page' }, ['Who am I']),
       ]),
     ]);
   });
