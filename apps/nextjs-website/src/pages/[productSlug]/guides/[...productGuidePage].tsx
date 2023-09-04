@@ -12,7 +12,7 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { gitBookPagesWithTitle } from '@/_contents/products';
+import { gitBookPagesWithTitle, spaceToPrefix } from '@/_contents/products';
 import { PageTitlePath } from 'gitbook-docs/parseDoc';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       assetsPrefix: props.source.assetsPrefix,
       products: [...getProducts()],
       gitBookPagesWithTitle,
-      spaceToPrefix: [],
+      spaceToPrefix,
     };
     return { props: page };
   } else {

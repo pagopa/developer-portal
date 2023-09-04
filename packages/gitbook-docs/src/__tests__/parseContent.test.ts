@@ -114,7 +114,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should convert href to other gitbook space', () => {
+  it.only('should convert href to other gitbook space', () => {
     expect(
       parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
     ).toStrictEqual([

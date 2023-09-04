@@ -5,7 +5,7 @@ import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
-import { gitBookPagesWithTitle } from '@/_contents/products';
+import { gitBookPagesWithTitle, spaceToPrefix } from '@/_contents/products';
 import { PageTitlePath } from 'gitbook-docs/parseDoc';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps<
       products: [...getProducts()],
       bannerLinks: props.bannerLinks,
       gitBookPagesWithTitle,
-      spaceToPrefix: [],
+      spaceToPrefix,
     };
     return { props: page };
   } else {

@@ -1,5 +1,6 @@
 import { Config } from '@markdoc/markdoc';
 import path from 'path';
+import { ParseContentConfig } from '../parseContent';
 
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
@@ -19,6 +20,36 @@ export class LinkAttr {
         : path.parse(variables?.pagePath).dir;
       const href = path.join(pagePath, value);
       return convertLink(href);
+    } else if (value?.startsWith('http://localhost:5000')) {
+      // Link to other spaces starts with http://localhost:5000
+      // http://localhost:5000/o/KxY/s/s1/
+      // http://localhost:5000/s/s0/1
+
+      const regex = new RegExp(
+        '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/',
+        'g'
+      );
+      const [spaceId, ...rest] = value
+        ?.replace(regex, '')
+        .split('/')
+        .filter(Boolean);
+
+      const spaceToPrefix: ParseContentConfig['spaceToPrefix'] =
+        variables?.spaceToPrefix;
+      const spacePrefix = spaceToPrefix.find(
+        (elem) => spaceId === elem.spaceId
+      );
+
+      if (spacePrefix) {
+        if (rest.length === 0) {
+          return spacePrefix.pathPrefix;
+        } else {
+          return `${spacePrefix.pathPrefix}/${rest.join('/')}`;
+        }
+      } else {
+        return value;
+      }
+
     } else return value;
   };
 }
