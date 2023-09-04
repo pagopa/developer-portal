@@ -137,18 +137,12 @@ const Page = (props: ProductGuidePageProps) => {
                 horizontal: 'center',
               }}
             />
-            <Box
-              sx={{
-                margin: '32px 0 0 0',
-              }}
-            >
-              {renderGitBookMarkdown(
-                props.menu,
-                props.pathPrefix,
-                props.assetsPrefix,
-                true
-              )}
-            </Box>
+
+            <GuideMenu
+              menu={props.menu}
+              assetsPrefix={props.assetsPrefix}
+              linkPrefix={props.pathPrefix}
+            />
           </Box>
           <Box
             sx={{
