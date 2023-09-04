@@ -6,6 +6,16 @@ const config = {
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
   isPageIndex: false,
+  spaceToPrefix: [
+    {
+      spaceId: 's0',
+      pathPrefix: '/path/to/page',
+    },
+    {
+      spaceId: 's1',
+      pathPrefix: '/path/page',
+    },
+  ],
   gitBookPagesWithTitle: [
     {
       path: '/path/to/page/1',
@@ -100,6 +110,30 @@ describe('parseContent', () => {
     expect(parseContent('[Guida](../a/b.md)', customConfig)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('Link', { href: '/path/to/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should convert href to other gitbook space', () => {
+    expect(
+      parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/page' }, ['Page']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://localhost:5000/s/s0/1)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/to/page/1' }, ['Who am I']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://localhost:5000/o/xY/s/s1/ "mention")', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/path/page' }, ['Page']),
       ]),
     ]);
   });
