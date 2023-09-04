@@ -14,6 +14,7 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { gitBookPagesWithTitle } from '@/_contents/products';
 import { PageTitlePath } from 'gitbook-docs/parseDoc';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
   productSlug: string;
@@ -45,6 +46,7 @@ type ProductGuidePageProps = {
   menu: string;
   body: string;
   gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
+  spaceToPrefix: ParseContentConfig['spaceToPrefix']; // TODO: Refactor on props. Pass ParseContentConfig directly
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -62,6 +64,7 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
       assetsPrefix: props.source.assetsPrefix,
       products: [...getProducts()],
       gitBookPagesWithTitle,
+      spaceToPrefix: [],
     };
     return { props: page };
   } else {
@@ -156,6 +159,7 @@ const Page = (props: ProductGuidePageProps) => {
               isPageIndex={props.isIndex}
               content={props.body}
               gitBookPagesWithTitle={props.gitBookPagesWithTitle}
+              spaceToPrefix={props.spaceToPrefix}
             />
           </Box>
           <Box

@@ -25,6 +25,10 @@ export type ParseContentConfig = {
   readonly pagePath: string;
   readonly isPageIndex: boolean;
   readonly gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
+  readonly spaceToPrefix: ReadonlyArray<{
+    readonly spaceId: string;
+    readonly pathPrefix: string;
+  }>;
 };
 
 const pairedHtmlTag = (tag: string) => ({

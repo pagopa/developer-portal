@@ -7,6 +7,7 @@ import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
 import { gitBookPagesWithTitle } from '@/_contents/products';
 import { PageTitlePath } from 'gitbook-docs/parseDoc';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
   productSlug: string;
@@ -27,6 +28,7 @@ type ProductTutorialPageProps = {
   assetsPrefix: string;
   body: string;
   gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
+  spaceToPrefix: ParseContentConfig['spaceToPrefix']; // TODO: Refactor on props. Pass ParseContentConfig directly
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<
@@ -46,6 +48,7 @@ export const getStaticProps: GetStaticProps<
       products: [...getProducts()],
       bannerLinks: props.bannerLinks,
       gitBookPagesWithTitle,
+      spaceToPrefix: [],
     };
     return { props: page };
   } else {
@@ -70,6 +73,7 @@ const Page = (props: ProductTutorialPageProps) => {
             isPageIndex={false}
             content={props.body}
             gitBookPagesWithTitle={props.gitBookPagesWithTitle}
+            spaceToPrefix={props.spaceToPrefix}
           />
         </Box>
       </EContainer>

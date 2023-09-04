@@ -29,6 +29,7 @@ import Swagger from './components/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 import Cards, { Card, CardItem } from './components/Cards';
 import { PageTitlePath } from 'gitbook-docs/parseDoc';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type GitBookContentProps = {
   assetsPrefix: string;
@@ -36,6 +37,7 @@ type GitBookContentProps = {
   isPageIndex: boolean;
   content: string;
   gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
+  spaceToPrefix: ParseContentConfig['spaceToPrefix']; // TODO: Refactor on props. Pass ParseContentConfig directly
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -74,6 +76,7 @@ const GitBookContent = ({
   pagePath,
   isPageIndex,
   gitBookPagesWithTitle,
+  spaceToPrefix,
 }: GitBookContentProps) =>
   renderContent(
     parseContent(content, {
@@ -81,6 +84,7 @@ const GitBookContent = ({
       pagePath,
       isPageIndex,
       gitBookPagesWithTitle,
+      spaceToPrefix,
     }),
     React,
     components
