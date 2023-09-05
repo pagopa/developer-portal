@@ -1,5 +1,5 @@
 import { Schema, Tag } from '@markdoc/markdoc';
-import { LinkAttr, PrefixLinkAttr } from '../attributes';
+import { LinkAttr } from '../attributes';
 import { PageTitlePath } from '../../parseDoc';
 
 export type LinkProps<A> = {
