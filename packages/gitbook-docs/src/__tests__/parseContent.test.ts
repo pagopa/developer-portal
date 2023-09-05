@@ -22,6 +22,10 @@ const config = {
       title: 'S0 Page 1',
     },
     {
+      path: '/to/s0/page/setup-iniziale',
+      title: 'Setup iniziale',
+    },
+    {
       path: '/to/s0/home',
       title: 'S0 Home',
     },
@@ -585,16 +589,16 @@ describe('parseContent', () => {
 
   it('should parse content-ref', () => {
     const contentRef =
-      '{% content-ref url="a/b.md" %}\n' +
-      '[b.md](a/b.md)\n' +
+      '{% content-ref url="setup-iniziale/" %}\n' +
+      '[setup-iniziale.md](setup-iniziale/)\n' +
       '{% endcontent-ref %}';
     expect(parseContent(contentRef, config)).toStrictEqual([
       new Markdoc.Tag(
         'PageLink',
         {
-          url: '/to/s0/page/a/b',
+          url: '/to/s0/page/setup-iniziale',
         },
-        ['b.md']
+        ['Setup iniziale']
       ),
     ]);
   });

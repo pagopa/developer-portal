@@ -8,7 +8,11 @@ export class BooleanAttr {
 }
 
 const convertLink = (link: string): string =>
-  link.replace('/README.md', '').replace('README.md', '').replace('.md', '');
+  link
+    .replace('/README.md', '')
+    .replace('README.md', '')
+    .replace('.md', '')
+    .replace(new RegExp('^(.*?)\\/?$'), '$1');
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
