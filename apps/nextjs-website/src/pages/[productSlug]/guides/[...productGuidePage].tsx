@@ -13,7 +13,6 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { gitBookPagesWithTitle, spaceToPrefix } from '@/_contents/products';
-import { PageTitlePath } from 'gitbook-docs/parseDoc';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
@@ -39,14 +38,10 @@ type ProductGuidePageProps = {
     name: string;
     path: string;
   }[];
-  path: string;
-  pathPrefix: string;
-  assetsPrefix: string;
-  isIndex: boolean;
+  // path: string;
   menu: string;
   body: string;
-  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
-  spaceToPrefix: ParseContentConfig['spaceToPrefix']; // TODO: Refactor on props. Pass ParseContentConfig directly
+  parseContentConfig: ParseContentConfig;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -60,11 +55,14 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
     const page = {
       ...props,
       ...props.page,
-      pathPrefix: props.source.pathPrefix,
-      assetsPrefix: props.source.assetsPrefix,
       products: [...getProducts()],
-      gitBookPagesWithTitle,
-      spaceToPrefix,
+      parseContentConfig: {
+        isPageIndex: props.page.isIndex,
+        pagePath: props.page.path,
+        assetsPrefix: props.source.assetsPrefix,
+        gitBookPagesWithTitle,
+        spaceToPrefix,
+      },
     };
     return { props: page };
   } else {
@@ -141,8 +139,8 @@ const Page = (props: ProductGuidePageProps) => {
             />
             <GuideMenu
               menu={props.menu}
-              assetsPrefix={props.assetsPrefix}
-              linkPrefix={props.pathPrefix}
+              assetsPrefix={props.parseContentConfig.assetsPrefix}
+              linkPrefix={props.parseContentConfig.pagePath} // FIXME: Check if it is correct
             />
           </Box>
           <Box
@@ -154,12 +152,8 @@ const Page = (props: ProductGuidePageProps) => {
             }}
           >
             <GitBookContent
-              assetsPrefix={props.assetsPrefix}
-              pagePath={props.path}
-              isPageIndex={props.isIndex}
               content={props.body}
-              gitBookPagesWithTitle={props.gitBookPagesWithTitle}
-              spaceToPrefix={props.spaceToPrefix}
+              parseContentConfig={props.parseContentConfig}
             />
           </Box>
           <Box
@@ -178,8 +172,8 @@ const Page = (props: ProductGuidePageProps) => {
               }}
             >
               <GuideInPageMenu
-                assetsPrefix={props.assetsPrefix}
-                pagePath={props.path}
+                assetsPrefix={props.parseContentConfig.assetsPrefix}
+                pagePath={props.parseContentConfig.pagePath}
                 inPageMenu={props.body}
                 title={productGuidePage.onThisPage}
               />

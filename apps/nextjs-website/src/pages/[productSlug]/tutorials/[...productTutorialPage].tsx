@@ -6,7 +6,6 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
 import { gitBookPagesWithTitle, spaceToPrefix } from '@/_contents/products';
-import { PageTitlePath } from 'gitbook-docs/parseDoc';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
@@ -23,12 +22,9 @@ export const getStaticPaths: GetStaticPaths<Params> = () => {
 
 type ProductTutorialPageProps = {
   product: Product;
-  path: string;
-  pathPrefix: string;
-  assetsPrefix: string;
+  // path: string;
   body: string;
-  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
-  spaceToPrefix: ParseContentConfig['spaceToPrefix']; // TODO: Refactor on props. Pass ParseContentConfig directly
+  parseContentConfig: ParseContentConfig;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<
@@ -43,12 +39,15 @@ export const getStaticProps: GetStaticProps<
     const page = {
       ...props.page,
       product: props.product,
-      pathPrefix: props.source.pathPrefix,
-      assetsPrefix: props.source.assetsPrefix,
       products: [...getProducts()],
       bannerLinks: props.bannerLinks,
-      gitBookPagesWithTitle,
-      spaceToPrefix,
+      parseContentConfig: {
+        isPageIndex: props.page.isIndex,
+        pagePath: props.page.path,
+        assetsPrefix: props.source.assetsPrefix,
+        gitBookPagesWithTitle,
+        spaceToPrefix,
+      },
     };
     return { props: page };
   } else {
@@ -68,12 +67,8 @@ const Page = (props: ProductTutorialPageProps) => {
       <EContainer>
         <Box sx={{ padding: '56px 0' }}>
           <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={false}
             content={props.body}
-            gitBookPagesWithTitle={props.gitBookPagesWithTitle}
-            spaceToPrefix={props.spaceToPrefix}
+            parseContentConfig={props.parseContentConfig}
           />
         </Box>
       </EContainer>
