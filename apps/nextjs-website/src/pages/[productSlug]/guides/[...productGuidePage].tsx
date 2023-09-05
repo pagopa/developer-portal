@@ -108,6 +108,12 @@ const Page = (props: ProductGuidePageProps) => {
               width: { lg: '347px' },
               flexGrow: { lg: 0 },
               flexShrink: { lg: 0 },
+              position: 'sticky',
+              height: '100vh',
+              overflowY: 'auto',
+              top: -74,
+              scrollbarColor: 'red orange',
+              scrollbarWidth: 'thin',
             }}
           >
             <Typography
