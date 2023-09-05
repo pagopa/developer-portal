@@ -28,6 +28,8 @@ import { sendOverview } from '@/_contents/send/overview';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
 import { sendTutorials } from '@/_contents/send/tutorials';
 import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
+import { ioSignQuickStartGuide } from '@/_contents/ioSign/quickStartGuide';
+import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
 
 export const overviews = [
   appIoOverview,
@@ -36,7 +38,12 @@ export const overviews = [
   sendOverview,
 ];
 
-export const quickStartGuides = [appIoQuickStartGuide, sendQuickStartGuide];
+export const quickStartGuides = [
+  appIoQuickStartGuide,
+  sendQuickStartGuide,
+  ioSignQuickStartGuide,
+  pagoPaQuickStartGuide,
+];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
 
@@ -46,6 +53,7 @@ export const tutorialLists = [
   pagoPaTutorialLists,
   sendTutorialLists,
 ];
+
 export const tutorials = [
   ...appIoTutorials,
   ...ioSignTutorials,
@@ -67,5 +75,14 @@ export const guides = [
   ...pagoPaGuides,
   ...sendGuides,
 ];
+
+const gitBookContents = [...tutorials, ...guides];
+
+// Create a slim data structure to reduce React page size.
+// This structure is composed of page path and title.
+export const gitBookPagesWithTitle = gitBookContents.map((content) => ({
+  title: content.page.title,
+  path: content.page.path,
+}));
 
 export const products = [appIo, ioSign, send, pagoPa];

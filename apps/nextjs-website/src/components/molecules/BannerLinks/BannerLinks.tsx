@@ -9,7 +9,7 @@ type BannerLinksProps = {
 
 const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
   <Stack
-    direction='row'
+    direction={{ xs: 'column', md: 'row' }}
     justifyContent='space-between'
     alignItems='stretch'
     sx={{

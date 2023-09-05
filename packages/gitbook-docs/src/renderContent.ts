@@ -21,6 +21,9 @@ import {
   ExpandableSummaryProps,
 } from './markdoc/schema/details';
 import {
+  CardItemProps,
+  CardProps,
+  CardsProps,
   TableBodyProps,
   TableDProps,
   TableHProps,
@@ -49,7 +52,9 @@ export type RenderingComponents<A> = {
   readonly TableH: (props: TableHProps<A>) => A;
   readonly TableR: (props: TableRProps<A>) => A;
   readonly TableD: (props: TableDProps<A>) => A;
-  // readonly Cards: (props: CardsProps<A>) => A;
+  readonly Cards: (props: CardsProps<A>) => A;
+  readonly Card: (props: CardProps<A>) => A;
+  readonly CardItem: (props: CardItemProps<A>) => A;
   readonly Tabs: (props: TabsProps<A>) => A;
   readonly Expandable: (props: ExpandableProps<A>) => A;
   readonly ExpandableSummary: (props: ExpandableSummaryProps<A>) => A;
@@ -59,7 +64,7 @@ export type RenderingComponents<A> = {
 };
 
 export const renderContent = (
-  node: RenderableTreeNode,
+  node: ReadonlyArray<RenderableTreeNode>,
   React: ReactShape,
   components: RenderingComponents<ReactNode>
-): ReactNode => Markdoc.renderers.react(node, React, { components });
+): ReactNode => Markdoc.renderers.react([...node], React, { components });
