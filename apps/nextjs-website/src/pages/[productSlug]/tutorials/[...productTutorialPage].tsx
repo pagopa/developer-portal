@@ -5,8 +5,8 @@ import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { GetStaticPaths, GetStaticProps } from 'next/types';
 import { Box } from '@mui/material';
-import { gitBookPagesWithTitle } from '@/_contents/products';
-import { PageTitlePath } from 'gitbook-docs/parseDoc';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
   productSlug: string;
@@ -23,10 +23,8 @@ export const getStaticPaths: GetStaticPaths<Params> = () => {
 type ProductTutorialPageProps = {
   product: Product;
   path: string;
-  pathPrefix: string;
-  assetsPrefix: string;
   body: string;
-  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
+  bodyConfig: ParseContentConfig;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<
@@ -36,18 +34,23 @@ export const getStaticProps: GetStaticProps<
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage.join('/');
   const path = `/${productSlug}/tutorials/${tutorialPath}`;
-  const props = getTutorial(path);
-  if (props) {
-    const page = {
-      ...props.page,
-      product: props.product,
-      pathPrefix: props.source.pathPrefix,
-      assetsPrefix: props.source.assetsPrefix,
+  const tutorialProps = getTutorial(path);
+  if (tutorialProps) {
+    const { product, page, bannerLinks, source } = tutorialProps;
+    const props = {
+      ...page,
+      product,
       products: [...getProducts()],
-      bannerLinks: props.bannerLinks,
-      gitBookPagesWithTitle,
+      bannerLinks,
+      bodyConfig: {
+        isPageIndex: false,
+        pagePath: page.path,
+        assetsPrefix: source.assetsPrefix,
+        gitBookPagesWithTitle,
+        spaceToPrefix: spaceToPrefixMap,
+      },
     };
-    return { props: page };
+    return { props };
   } else {
     return { notFound: true as const };
   }
@@ -64,13 +67,7 @@ const Page = (props: ProductTutorialPageProps) => {
     >
       <EContainer>
         <Box sx={{ padding: '56px 0' }}>
-          <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={false}
-            content={props.body}
-            gitBookPagesWithTitle={props.gitBookPagesWithTitle}
-          />
+          <GitBookContent content={props.body} config={props.bodyConfig} />
         </Box>
       </EContainer>
     </Layout>

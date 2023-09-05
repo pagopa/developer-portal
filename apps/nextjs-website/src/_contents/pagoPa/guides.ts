@@ -1,8 +1,8 @@
 import { pagoPa } from './pagoPa';
-import { makeGuide } from '../makeDocs';
+import { GuideDefinition } from '../makeDocs';
 import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
-const saci = makeGuide({
+const saci: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'SACI',
@@ -27,9 +27,9 @@ const saci = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const sanp = makeGuide({
+const sanp: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'SANP',
@@ -78,9 +78,9 @@ const sanp = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const avvisi = makeGuide({
+const avvisi: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Avvisi di Pagamento',
@@ -98,9 +98,9 @@ const avvisi = makeGuide({
     // },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const brand = makeGuide({
+const brand: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Linee Guida Brand pagoPA',
@@ -114,9 +114,9 @@ const brand = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const pda = makeGuide({
+const pda: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Portale delle Adesioni',
@@ -137,6 +137,6 @@ const pda = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-export const pagoPaGuides = [...saci, ...sanp, ...avvisi, ...brand, ...pda];
+export const pagoPaGuides = [saci, sanp, avvisi, brand, pda];

@@ -1,8 +1,8 @@
 import { ioSign } from './ioSign';
-import { makeGuide } from '../makeDocs';
+import { GuideDefinition } from '../makeDocs';
 import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 
-const manualeOperativo = makeGuide({
+const manualeOperativo: GuideDefinition = {
   product: ioSign,
   guide: {
     name: 'Manuale Operativo',
@@ -15,6 +15,6 @@ const manualeOperativo = makeGuide({
     },
   ],
   bannerLinks: ioSignBannerLinks,
-});
+};
 
-export const ioSignGuides = manualeOperativo;
+export const ioSignGuides = [manualeOperativo];
