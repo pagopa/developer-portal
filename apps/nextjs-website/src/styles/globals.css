@@ -1,5 +1,23 @@
+* {
+  scrollbar-color: initial;
+  scrollbar-width: initial;
+}
+
 body {
   margin: 0;
+  --scrollbar-foreground: #dfe2e5;
+  --scrollbar-background: transparent;
+  scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-foreground);
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .swiper-pagination-bullet {

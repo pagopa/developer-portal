@@ -12,8 +12,8 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { gitBookPagesWithTitle } from '@/_contents/products';
-import { PageTitlePath } from 'gitbook-docs/parseDoc';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
   productSlug: string;
@@ -29,6 +29,10 @@ export const getStaticPaths: GetStaticPaths<Params> = () => {
 
 type ProductGuidePageProps = {
   product: Product;
+  path: string;
+  menu: string;
+  body: string;
+  bodyConfig: ParseContentConfig;
   guide: { name: string; path: string };
   version: {
     name: string;
@@ -38,13 +42,7 @@ type ProductGuidePageProps = {
     name: string;
     path: string;
   }[];
-  path: string;
   pathPrefix: string;
-  assetsPrefix: string;
-  isIndex: boolean;
-  menu: string;
-  body: string;
-  gitBookPagesWithTitle: ReadonlyArray<PageTitlePath>;
 } & LayoutProps;
 
 export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
@@ -53,17 +51,28 @@ export const getStaticProps: GetStaticProps<ProductGuidePageProps, Params> = ({
   const productSlug = params?.productSlug;
   const guidePath = params?.productGuidePage.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
-  const props = getGuide(path);
-  if (props) {
-    const page = {
-      ...props,
-      ...props.page,
-      pathPrefix: props.source.pathPrefix,
-      assetsPrefix: props.source.assetsPrefix,
+  const guideProps = getGuide(path);
+  if (guideProps) {
+    const { product, page, guide, version, versions, source, bannerLinks } =
+      guideProps;
+    const props = {
+      ...page,
+      product,
       products: [...getProducts()],
-      gitBookPagesWithTitle,
+      guide,
+      version,
+      versions,
+      bannerLinks,
+      pathPrefix: source.pathPrefix,
+      bodyConfig: {
+        isPageIndex: page.isIndex,
+        pagePath: page.path,
+        assetsPrefix: source.assetsPrefix,
+        gitBookPagesWithTitle,
+        spaceToPrefix: spaceToPrefixMap,
+      },
     };
-    return { props: page };
+    return { props };
   } else {
     return { notFound: true as const };
   }
@@ -99,6 +108,12 @@ const Page = (props: ProductGuidePageProps) => {
               width: { lg: '347px' },
               flexGrow: { lg: 0 },
               flexShrink: { lg: 0 },
+              position: 'sticky',
+              height: '100vh',
+              overflowY: 'auto',
+              top: -74,
+              scrollbarColor: 'red orange',
+              scrollbarWidth: 'thin',
             }}
           >
             <Typography
@@ -138,7 +153,7 @@ const Page = (props: ProductGuidePageProps) => {
             />
             <GuideMenu
               menu={props.menu}
-              assetsPrefix={props.assetsPrefix}
+              assetsPrefix={props.bodyConfig.assetsPrefix}
               linkPrefix={props.pathPrefix}
             />
           </Box>
@@ -150,13 +165,7 @@ const Page = (props: ProductGuidePageProps) => {
               flexGrow: { lg: 1 },
             }}
           >
-            <GitBookContent
-              assetsPrefix={props.assetsPrefix}
-              pagePath={props.path}
-              isPageIndex={props.isIndex}
-              content={props.body}
-              gitBookPagesWithTitle={props.gitBookPagesWithTitle}
-            />
+            <GitBookContent content={props.body} config={props.bodyConfig} />
           </Box>
           <Box
             sx={{
@@ -174,7 +183,7 @@ const Page = (props: ProductGuidePageProps) => {
               }}
             >
               <GuideInPageMenu
-                assetsPrefix={props.assetsPrefix}
+                assetsPrefix={props.bodyConfig.assetsPrefix}
                 pagePath={props.path}
                 inPageMenu={props.body}
                 title={productGuidePage.onThisPage}
