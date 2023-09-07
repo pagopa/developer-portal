@@ -4,7 +4,7 @@ import { Product } from '@/lib/types/product';
 import { Box } from '@mui/material';
 import React from 'react';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import GitbookLeftMenu from '@/components/molecules/GitbookLeftMenu/GitbookLeftMenu';
 
 type GuideParams = {

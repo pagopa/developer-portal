@@ -1,5 +1,5 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';

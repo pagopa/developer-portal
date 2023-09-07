@@ -1,5 +1,5 @@
 import { getOverview, getProductsSlugs } from '@/lib/api';
-import Hero from '@pagopa/pagopa-editorial-components/dist/components/Hero';
+import Hero from '@/editorialComponents/Hero/Hero';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
@@ -100,6 +100,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
         size='small'
         useHoverlay={false}
         altText={hero.altText}
+        theme='light'
       />
       <Feature
         items={feature.items}

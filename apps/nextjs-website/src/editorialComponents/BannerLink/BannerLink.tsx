@@ -1,6 +1,15 @@
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
-import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
+import { type CommonProps } from '@/editorialComponents/types/components';
+import { CtaProps } from '@/editorialComponents/Ctas/Ctas';
+import { BannerLinkContentProps } from '@/editorialComponents/BannerLink/Content';
+
+export interface BannerLinkProps
+  extends CommonProps,
+    BannerLinkContentProps,
+    CtaProps {
+  decoration: string;
+}
 
 export const BannerLink = (props: BannerLinkProps) => {
   const { theme, body, title, decoration } = props;

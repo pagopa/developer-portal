@@ -1,10 +1,8 @@
 'use client';
-
-// TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
 import React from 'react';
 import { Grid, Typography, useTheme } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export interface FeatureProps {
   title: string;

@@ -4,10 +4,10 @@ import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
 import React, { ReactNode, FC } from 'react';
-import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 
 export type LayoutProps = {
   readonly products: Product[];

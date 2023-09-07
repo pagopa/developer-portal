@@ -1,4 +1,4 @@
-import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
+import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 
 export const ioSignBannerLinks: readonly BannerLinkProps[] = [
   {

@@ -1,6 +1,6 @@
 'use client';
 import { Box, Divider, Typography, Link as LinkMUI } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Link from 'next/link';
 
 interface ListingItem {

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Box, Grid, GridSize } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { translations } from '@/_contents/translations';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
