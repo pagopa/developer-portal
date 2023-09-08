@@ -1,7 +1,10 @@
 'use client';
 import React, { FC } from 'react';
 import { Stack } from '@mui/material';
-import { BannerLink, BannerLinkProps } from '@/editorialComponents/BannerLink/BannerLink';
+import {
+  BannerLink,
+  BannerLinkProps,
+} from '@/editorialComponents/BannerLink/BannerLink';
 
 type BannerLinksProps = {
   banners?: readonly BannerLinkProps[];

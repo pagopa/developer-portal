@@ -5,7 +5,7 @@ export type LinkType = 'internal' | 'external';
 
 export interface FooterLinksType {
   readonly label: string;
-  /** the url to witch the user will be redirect */
+  /** the url to witch the user will be redirected */
   readonly href?: string;
   readonly ariaLabel: string;
   readonly linkType: LinkType;
@@ -25,13 +25,15 @@ export interface PreLoginFooterLinksType {
   readonly resources: PreLoginFooterSingleSectionType;
   readonly followUs: {
     readonly title: string;
-    readonly socialLinks: readonly (IconWrapperProps & { readonly href: string })[];
+    readonly socialLinks: readonly (IconWrapperProps & {
+      readonly href: string;
+    })[];
     readonly links: readonly FooterLinksType[];
   };
 }
 
 export interface CompanyLinkType {
-  /** the url to witch the user will be redirect */
+  /** the url to witch the user will be redirected */
   readonly href?: string;
   readonly ariaLabel: string;
   /** if defined it will override the href behavior */

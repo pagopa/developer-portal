@@ -50,7 +50,7 @@ export const FooterColumn = ({
             icon && (
               <li key={i}>
                 <LinkMui href={href}>
-                  <IconWrapper icon={icon} />
+                  <IconWrapper icon={icon} {...rest} />
                 </LinkMui>
               </li>
             )

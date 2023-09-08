@@ -10,8 +10,8 @@ export const Navigation = ({ menu, theme }: NavigationProps) => (
   <Stack
     gap={{ md: 4, xs: 2 }}
     direction={{ md: 'row', xs: 'column' }}
-    component="nav"
-    aria-label="main"
+    component='nav'
+    aria-label='main'
   >
     {menu.map((menu, index) => (
       <MenuDropdown key={index} {...menu} theme={theme} />
