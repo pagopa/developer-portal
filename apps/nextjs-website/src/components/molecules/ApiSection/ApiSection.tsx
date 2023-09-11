@@ -63,7 +63,8 @@ const ApiSection = ({
   useEffect(() => {
     const specName = router.query?.spec;
     if (specName) {
-      const spec = specURLs.find((item) => item?.name === specName);
+      const decodedSpecName = decodeURIComponent(specName as string);
+      const spec = specURLs.find((item) => item?.name === decodedSpecName);
       if (spec) {
         setSelectedItemURL(spec.url);
       }
@@ -77,7 +78,9 @@ const ApiSection = ({
 
     if (specURLsName && spec) {
       // update the url with the spec query param
-      router.replace(`${product.subpaths.api?.path}?spec=${spec.name}`);
+      router.replace(
+        encodeURIComponent(`${product.subpaths.api?.path}?spec=${spec.name}`)
+      );
     }
   };
 
