@@ -1,0 +1,22 @@
+name: Check PR branch up to date
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+jobs:
+
+  check_branch_up_to_date:
+    name: Verify branch is up to date
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          fetch-depth: '0'
+
+      - name: Check PR branch is updated
+        uses: ./.github/actions/branch-up-to-date
