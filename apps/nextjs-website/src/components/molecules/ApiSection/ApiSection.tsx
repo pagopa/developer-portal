@@ -75,10 +75,9 @@ const ApiSection = ({
 
     const spec = specURLs.find((item) => item?.url === event.target.value);
 
-    if (specURLsName) {
+    if (specURLsName && spec) {
       // update the url with the spec query param
-      const currentUrl = router.asPath.split('?')[0];
-      router.replace(`${currentUrl}?spec=${spec?.name}`);
+      router.replace(`${product.subpaths.api?.path}?spec=${spec.name}`);
     }
   };
 
