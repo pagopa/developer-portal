@@ -39,7 +39,6 @@ export async function getGuide(
 
   return {
     ...props,
-    ...props.page,
     pathPrefix: props.source.pathPrefix,
     assetsPrefix: props.source.assetsPrefix,
     products: getProducts().concat(),
@@ -100,7 +99,7 @@ export async function getTutorial(
   );
 
   return {
-    ...props.page,
+    ...props,
     product: props.product,
     pathPrefix: props.source.pathPrefix,
     assetsPrefix: props.source.assetsPrefix,
