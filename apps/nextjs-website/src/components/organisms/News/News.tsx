@@ -16,7 +16,7 @@ type NewsProps = {
   cards: {
     coomingSoon?: boolean;
     title: string;
-    dateString: string;
+    dateString?: string;
     image?: {
       url: string;
       alt: string;
@@ -42,7 +42,7 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
               : shared.coomingSoon,
             title: card.title,
             date: {
-              date: new Date(card.dateString),
+              date: card.dateString ? new Date(card.dateString) : undefined,
             },
             href: card.href,
             img: {
