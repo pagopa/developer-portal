@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -17,6 +17,7 @@ import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { useRouter } from 'next/router';
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -55,8 +56,32 @@ const ApiSection = ({
   const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
+
+  const router = useRouter();
+
+  // if a spec query param is present, try to match it with the specURLs, if found, set it as selectedItemURL
+  useEffect(() => {
+    const specName = router.query?.spec;
+    if (specName) {
+      const decodedSpecName = decodeURIComponent(specName as string);
+      const spec = specURLs.find((item) => item?.name === decodedSpecName);
+      if (spec) {
+        setSelectedItemURL(spec.url);
+      }
+    }
+  }, [router.query, specURLs]);
+
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
+
+    const spec = specURLs.find((item) => item?.url === event.target.value);
+
+    if (specURLsName && spec?.name) {
+      // update the url with the spec query param
+      router.replace(
+        `${product.subpaths.api?.path}?spec=${encodeURIComponent(spec.name)}`
+      );
+    }
   };
 
   const selectedApi = useMemo(
