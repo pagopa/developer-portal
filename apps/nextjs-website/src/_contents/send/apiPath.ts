@@ -5,12 +5,16 @@ export const sendApiPath: Path = {
   path: '/send/api',
 };
 
+const sendB2BApiPathName = 'API B2B per le Pubbliche Amministrazioni';
 export const sendB2BApiPath: Path = {
-  name: 'B2B API',
-  path: `${sendApiPath.path}?spec=API%20B2B%20per%20le%20Pubbliche%20Amministrazioni`,
+  name: sendB2BApiPathName,
+  path: `${sendApiPath.path}?spec=${encodeURIComponent(sendB2BApiPathName)}`,
 };
 
+const sendNotificationsApiPathName = 'API B2B avanzamento notifiche';
 export const sendNotificationsApiPath: Path = {
-  name: 'Notification API',
-  path: `${sendApiPath.path}?spec=API%20B2B%20avanzamento%20notifiche`,
+  name: sendNotificationsApiPathName,
+  path: `${sendApiPath.path}?spec=${encodeURIComponent(
+    sendNotificationsApiPathName
+  )}`,
 };
