@@ -14,7 +14,7 @@ type Params = {
 
 export async function generateStaticParams() {
   return [...getTutorialPaths()].map(({ slug, guidePaths }) => ({
-    prductSlug: slug,
+    productSlug: slug,
     productTutorialPage: guidePaths,
   }));
 }
@@ -29,6 +29,11 @@ type ProductTutorialPageProps = {
 const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
+
+  // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
+  if (/\.\w+$/.test(tutorialPath)) {
+    return null;
+  }
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source } = tutorialProps;
   const props: ProductTutorialPageProps = {

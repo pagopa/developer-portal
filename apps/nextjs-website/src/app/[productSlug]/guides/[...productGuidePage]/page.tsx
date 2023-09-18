@@ -18,7 +18,7 @@ type Params = {
 
 export async function generateStaticParams() {
   return [...getGuidePaths()].map(({ slug, guidePaths }) => ({
-    prductSlug: slug,
+    productSlug: slug,
     productGuidePage: guidePaths,
   }));
 }
@@ -43,13 +43,13 @@ type ProductGuidePageProps = {
 } & LayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
-  const { productGuidePage } = translations;
-
-  const productSlug = params?.productSlug;
-  const guidePath = params?.productGuidePage.join('/');
+  // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
+  if (/\.\w+$/.test(params?.productGuidePage.join('/'))) {
+    return null;
+  }
   const guideProps = await getGuide(
-    productSlug,
-    params?.productGuidePage ?? ''
+    params?.productSlug,
+    params?.productGuidePage ?? ['']
   );
   const { product, page, guide, version, versions, source, bannerLinks } =
     guideProps;
@@ -125,7 +125,7 @@ const Page = async ({ params }: { params: Params }) => {
                 assetsPrefix={props.bodyConfig.assetsPrefix}
                 pagePath={props.path}
                 inPageMenu={props.body}
-                title={productGuidePage.onThisPage}
+                title={translations.productGuidePage.onThisPage}
               />
             </Box>
           </Box>
