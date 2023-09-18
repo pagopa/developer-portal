@@ -28,7 +28,7 @@ type ProductTutorialPageProps = {
 
 const Page = async (params: Params) => {
   const productSlug = params?.productSlug;
-  const tutorialPath = params?.productTutorialPage.join('/');
+  const tutorialPath = params?.productTutorialPage?.join('/');
   const path = `/${productSlug}/tutorials/${tutorialPath}`;
   const tutorialProps = await getTutorial(path);
   const { product, page, bannerLinks, source } = tutorialProps;
