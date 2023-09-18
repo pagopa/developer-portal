@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 import { parseMenu } from 'gitbook-docs/parseMenu';
@@ -117,7 +117,7 @@ const GuideMenu = ({
   const { palette } = useTheme();
   const { shared } = translations;
 
-  const currentPath = useRouter().asPath;
+  const currentPath = usePathname();
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
   return (

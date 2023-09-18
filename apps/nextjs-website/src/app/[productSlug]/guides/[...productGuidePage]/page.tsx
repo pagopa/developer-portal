@@ -42,13 +42,15 @@ type ProductGuidePageProps = {
   bodyConfig: ParseContentConfig;
 } & LayoutProps;
 
-const Page = async (params: Params) => {
+const Page = async ({ params }: { params: Params }) => {
   const { productGuidePage } = translations;
 
   const productSlug = params?.productSlug;
   const guidePath = params?.productGuidePage.join('/');
-  const path = `/${productSlug}/guides/${guidePath}`;
-  const guideProps = await getGuide(path);
+  const guideProps = await getGuide(
+    productSlug,
+    params?.productGuidePage ?? ''
+  );
   const { product, page, guide, version, versions, source, bannerLinks } =
     guideProps;
   const props: ProductGuidePageProps = {
