@@ -21,7 +21,7 @@ npm run download-docs -w nextjs-website
 
 Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
-- in the `strapi-cms` app (`apps/strapi-cmss`), create a `.env` starting from `.env.default` and fill all the environment variables.
+- in the `strapi-cms` app (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
 ### Run the developer portal locally
 
