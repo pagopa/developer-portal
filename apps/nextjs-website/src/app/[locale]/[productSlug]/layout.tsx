@@ -51,7 +51,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const messages = (await import(`../../messages/${locale}.json`)).default;
+  const messages = (await import(`../../../messages/${locale}.json`)).default;
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
     <html lang={locale}>
