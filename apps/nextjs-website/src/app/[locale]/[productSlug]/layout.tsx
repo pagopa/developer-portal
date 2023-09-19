@@ -3,6 +3,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
+import { NextIntlClientProvider } from 'next-intl';
+import { notFound } from 'next/navigation';
 // import { createTheme, ThemeProvider } from '@mui/material';
 // import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
 import ThemeRegistry from './ThemeRegistry';
@@ -36,16 +38,23 @@ function makeCookieScript(dataDomainScript?: string) {
   <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->`;
 }
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'it' }];
+}
+
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
+  const messages = (await import(`../../messages/${locale}.json`)).default;
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
-    <html lang='it'>
+    <html lang={locale}>
       <head>
         <meta name='robots' content='noindex,nofollow' />
         {environment === 'prod' && (
@@ -63,7 +72,11 @@ export default function RootLayout({
         <link rel='icon' href='favicon.svg' />
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>{children}</body>
+        <body>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </body>
       </ThemeRegistry>
     </html>
   );
