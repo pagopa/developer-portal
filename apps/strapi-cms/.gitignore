@@ -1,6 +1,17 @@
+# Created by https://www.toptal.com/developers/gitignore/api/strapi
+# Edit at https://www.toptal.com/developers/gitignore?templates=strapi
+
+### Strapi ###
+
+.env
+license.txt
+exports
+*.cache
+build
+.strapi-updater.json
+
 ############################
 # OS X
-############################
 
 .DS_Store
 .AppleDouble
@@ -10,17 +21,12 @@ Icon
 .Trashes
 ._*
 
-
-############################
 # Linux
-############################
 
 *~
 
 
-############################
 # Windows
-############################
 
 Thumbs.db
 ehthumbs.db
@@ -32,9 +38,7 @@ $RECYCLE.BIN/
 *.msp
 
 
-############################
 # Packages
-############################
 
 *.7z
 *.csv
@@ -60,10 +64,7 @@ $RECYCLE.BIN/
 *.out
 *.pid
 
-
-############################
 # Logs and databases
-############################
 
 .tmp
 *.log
@@ -72,9 +73,7 @@ $RECYCLE.BIN/
 *.sqlite3
 
 
-############################
 # Misc.
-############################
 
 *#
 ssl
@@ -83,9 +82,7 @@ nbproject
 public/uploads/*
 !public/uploads/.gitkeep
 
-############################
 # Node.js
-############################
 
 lib-cov
 lcov.info
@@ -95,20 +92,7 @@ results
 node_modules
 .node_history
 
-############################
 # Tests
-############################
-
 coverage
 
-############################
-# Strapi
-############################
-
-.env
-license.txt
-exports
-*.cache
-dist
-build
-.strapi-updater.json
+# End of https://www.toptal.com/developers/gitignore/api/strapi
