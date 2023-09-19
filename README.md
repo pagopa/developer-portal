@@ -19,7 +19,9 @@ npm i
 npm run download-docs -w nextjs-website
 ```
 
-Finally in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
+Finally:
+- in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
+- in the `strapi-cms` app (`apps/strapi-cmss`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
 ### Run the developer portal locally
 
@@ -30,6 +32,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
+
+Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS website.
 
 ## Commands Cheat Sheet
 
@@ -64,5 +68,3 @@ Add to the package `<package>` the dependency `<dependency>` as `devDependencies
 ``` bash
 npm -w <package> install <dependency> -D
 ```
-
-
