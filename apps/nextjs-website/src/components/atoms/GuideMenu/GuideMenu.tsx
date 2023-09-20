@@ -122,69 +122,75 @@ const GuideMenu = ({
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
   return (
     <Box
-      bgcolor={palette.grey[50]}
       sx={{
+        backgroundColor: palette.grey[50],
         display: 'flex',
         flexDirection: 'column',
-        padding: '80px 0',
-        width: { lg: '347px' },
-        flexGrow: { lg: 0 },
-        flexShrink: { lg: 0 },
-        position: 'sticky',
-        height: '100vh',
-        overflowY: 'auto',
-        top: -74,
-        scrollbarColor: 'red orange',
-        scrollbarWidth: 'thin',
+        position: 'relative',
       }}
     >
-      <Typography
-        variant='h6'
+      <Box
         sx={{
-          padding: '16px 32px',
-          verticalAlign: 'middle',
-        }}
-      >
-        {guideName}
-      </Typography>
-      <Dropdown
-        label={`${shared.version} ${versionName}`}
-        items={versions.map((version) => ({
-          href: version.path,
-          label: version.name,
-        }))}
-        icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
-        buttonStyle={{
-          color: palette.action.active,
           display: 'flex',
-          justifyContent: 'space-between',
-          padding: '16px 32px',
+          flexDirection: 'column',
+          padding: '80px 0',
+          width: { lg: '347px' },
+          flexGrow: { lg: 0 },
+          flexShrink: { lg: 0 },
+          position: 'sticky',
+          overflowY: 'auto',
+          top: -74,
+          scrollbarWidth: 'thin',
         }}
-        menuStyle={{
-          style: {
-            width: '347px',
-            maxWidth: '347px',
-            left: 0,
-            right: 0,
-          },
-        }}
-        menuAnchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-      />
-      <TreeView
-        defaultCollapseIcon={<ExpandLessIcon />}
-        defaultExpanded={expanded}
-        selected={currentPath}
-        defaultExpandIcon={<ExpandMoreIcon />}
       >
-        {renderMenu(
-          parseMenu(menu, { assetsPrefix, linkPrefix }),
-          React,
-          components
-        )}
-      </TreeView>
+        <Typography
+          variant='h6'
+          sx={{
+            padding: '16px 32px',
+            verticalAlign: 'middle',
+          }}
+        >
+          {guideName}
+        </Typography>
+        <Dropdown
+          label={`${shared.version} ${versionName}`}
+          items={versions.map((version) => ({
+            href: version.path,
+            label: version.name,
+          }))}
+          icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
+          buttonStyle={{
+            color: palette.action.active,
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '16px 32px',
+          }}
+          menuStyle={{
+            style: {
+              width: '347px',
+              maxWidth: '347px',
+              left: 0,
+              right: 0,
+            },
+          }}
+          menuAnchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+        />
+        <TreeView
+          defaultCollapseIcon={<ExpandLessIcon />}
+          defaultExpanded={expanded}
+          selected={currentPath}
+          defaultExpandIcon={<ExpandMoreIcon />}
+        >
+          {renderMenu(
+            parseMenu(menu, { assetsPrefix, linkPrefix }),
+            React,
+            components
+          )}
+        </TreeView>
+      </Box>
     </Box>
   );
 };
