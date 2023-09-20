@@ -1,4 +1,10 @@
 
+resource "aws_cognito_user_pool_domain" "devportal" {
+  domain          = "auth"
+  certificate_arn = aws_acm_certificate.auth.arn
+  user_pool_id    = aws_cognito_user_pool.devportal.id
+}
+
 resource "aws_cognito_user_pool" "devportal" {
   name = "devportalpool"
 
@@ -38,10 +44,4 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
-}
-
-resource "aws_cognito_user_pool_domain" "devportal" {
-  domain          = "auth"
-  certificate_arn = aws_acm_certificate.auth.arn
-  user_pool_id    = aws_cognito_user_pool.devportal.id
 }
