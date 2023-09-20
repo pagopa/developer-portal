@@ -1,10 +1,7 @@
 'use client';
 // TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
 import { Box, Stack, SxProps, Typography, useTheme } from '@mui/material';
-import {
-  Theme,
-  Generic,
-} from '@pagopa/pagopa-editorial-components/dist/types/components';
+import { Generic } from '@pagopa/pagopa-editorial-components/dist/types/components';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
 
 export interface AbstractProps {

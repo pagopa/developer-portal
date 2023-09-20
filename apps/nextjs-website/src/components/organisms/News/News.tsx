@@ -37,9 +37,7 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
       <Box mt={2}>
         <Newsroom
           items={cards.map((card) => ({
-            comingSoonLabel: !card.comingSoon
-              ? undefined
-              : shared.comingSoon,
+            comingSoonLabel: !card.comingSoon ? undefined : shared.comingSoon,
             title: card.title,
             date: {
               date: card.dateString ? new Date(card.dateString) : undefined,
