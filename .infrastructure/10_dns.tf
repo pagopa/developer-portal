@@ -61,7 +61,7 @@ resource "aws_route53_record" "website" {
 resource "aws_route53_record" "devportal_cognito_A" {
   name    = aws_cognito_user_pool_domain.devportal.domain
   type    = "A"
-  zone_id = data.aws_route53_zone.dev_portal.zone_id
+  zone_id = aws_route53_zone.dev_portal.zone_id
   alias {
     evaluate_target_health = false
 
