@@ -42,7 +42,7 @@ export type OverviewPageProps = {
       readonly iconName?: string;
     };
     readonly cards: {
-      readonly coomingSoon?: boolean;
+      readonly comingSoon?: boolean;
       readonly title: string;
       readonly text: string;
       readonly href?: string;

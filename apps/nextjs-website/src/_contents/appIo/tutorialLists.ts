@@ -15,7 +15,7 @@ export const appIoTutorials: readonly Tutorial[] = [
   //   dateString: '2023-06-29T22:15:53.780Z',
   //   path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
   //   name: 'Come spedire un avviso di pagamento in un messaggio',
-  //   coomingSoon: true,
+  //   comingSoon: true,
   // },
   {
     title: 'Come allegare documenti a un messaggio',

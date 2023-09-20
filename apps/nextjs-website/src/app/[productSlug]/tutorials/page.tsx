@@ -49,9 +49,9 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
-              coomingSoonLabel: !tutorial.coomingSoon
+              comingSoonLabel: !tutorial.comingSoon
                 ? undefined
-                : shared.coomingSoon,
+                : shared.comingSoon,
               title: tutorial.title,
               date: {
                 date: tutorial.dateString

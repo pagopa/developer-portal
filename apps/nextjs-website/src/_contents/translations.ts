@@ -12,7 +12,7 @@ export const translations = {
     title: 'DevPortal',
   },
   shared: {
-    coomingSoon: 'In Arrivo',
+    comingSoon: 'In Arrivo',
     readTutorial: 'Leggi il tutorial',
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
@@ -64,7 +64,7 @@ export const translations = {
             link: '#news-3',
             title: 'Vai alla guida',
           },
-          coomingSoon: true,
+          comingSoon: true,
           image: {
             url: '/images/homepage-pago-pa.png',
             alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
