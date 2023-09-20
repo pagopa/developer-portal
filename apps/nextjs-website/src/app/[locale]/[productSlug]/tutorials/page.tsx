@@ -5,9 +5,10 @@ import { Box } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
-import React from 'react';
+import React, { use } from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
+import { useTranslations } from 'next-intl';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -26,6 +27,7 @@ export type TutorialsPageProps = {
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
+  const t = useTranslations('TutorialPage');
   const { abstract, bannerLinks, path, product, tutorials, products } =
     await getTutorialLists(productSlug);
   const { shared } = translations;
@@ -40,9 +42,9 @@ const TutorialsPage = async ({ params }: ProductParams) => {
     >
       {abstract && (
         <Abstract
-          description={abstract?.description}
+          description={t(abstract?.description)}
           overline=''
-          title={abstract?.title}
+          title={t(abstract?.title)}
         />
       )}
       {product.subpaths.tutorials && tutorials && (
@@ -51,17 +53,17 @@ const TutorialsPage = async ({ params }: ProductParams) => {
             items={tutorials.map((tutorial) => ({
               coomingSoonLabel: !tutorial.coomingSoon
                 ? undefined
-                : shared.coomingSoon,
-              title: tutorial.title,
+                : t(shared.coomingSoon),
+              title: t(tutorial.title),
               date: {
                 date: tutorial.dateString
                   ? new Date(tutorial.dateString)
                   : undefined,
               },
               href: {
-                label: shared.readTutorial,
+                label: t(shared.readTutorial),
                 link: tutorial.path,
-                title: shared.readTutorial,
+                title: t(shared.readTutorial),
               },
               img: {
                 alt: tutorial.image?.alt || '',

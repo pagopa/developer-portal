@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 
 /* TODO: Workaround due to error in SSR of elements package:
  * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
@@ -89,6 +90,8 @@ const ApiSection = ({
   const textColor = palette.primary.contrastText;
   const styles = getStyles(palette);
 
+  const t = useTranslations('ApiSection');
+
   return (
     <>
       {specURLs.length > 1 && specURLsName && (
@@ -99,7 +102,7 @@ const ApiSection = ({
           alignContent='center'
         >
           <StyledFormControl size='medium'>
-            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
+            <InputLabel id='select-api-label'>{t(specURLsName)}</InputLabel>
             <Select
               labelId='select-api-label'
               value={selectedItemURL}
@@ -108,11 +111,11 @@ const ApiSection = ({
               sx={styles.select}
               id='select-api'
               variant='outlined'
-              label={specURLsName}
+              label={t(specURLsName)}
             >
               {specURLs.map((item, index) => (
                 <MenuItem value={item.url} key={index}>
-                  {item.name}
+                  {t(item.name)}
                 </MenuItem>
               ))}
             </Select>
@@ -129,7 +132,7 @@ const ApiSection = ({
           gap={spacing(2)}
         >
           <Typography variant='body2' color={textColor}>
-            {soapDocumentation.title}
+            {t(soapDocumentation.title)}
           </Typography>
           <Stack
             alignItems='center'
@@ -144,12 +147,12 @@ const ApiSection = ({
               component={Link}
               aria-label={soapDocumentation.buttonLabel}
               href={soapDocumentation.url}
-              title={soapDocumentation.buttonLabel}
+              title={t(soapDocumentation.buttonLabel)}
               endIcon={
                 <IconWrapper icon={soapDocumentation.icon} color={textColor} />
               }
             >
-              {soapDocumentation.buttonLabel}
+              {t(soapDocumentation.buttonLabel)}
             </ButtonNaked>
           </Stack>
         </Stack>

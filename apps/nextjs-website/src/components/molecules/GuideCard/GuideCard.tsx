@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import { useTranslations } from 'next-intl';
 
 type Description = {
   readonly listItems: ReadonlyArray<string>;
@@ -37,6 +38,7 @@ export const GuideCard: FC<GuideCardProps> = ({
   mobileImagePath,
   title,
 }: GuideCardProps) => {
+  const t = useTranslations('GuidesPage');
   const { spacing } = useTheme();
 
   const flexLayoutMap = {
@@ -83,15 +85,15 @@ export const GuideCard: FC<GuideCardProps> = ({
           >
             <Box>
               <Typography variant='h6' mb={spacing(1.75)}>
-                {title}
+                {t(title)}
               </Typography>
               <Typography variant='subtitle2' color='text.primary'>
-                {description.title}
+                {t(description.title)}
               </Typography>
               <UnorderedList listItems={description?.listItems} />
             </Box>
             <LinkButton
-              label={link.label}
+              label={t(link.label)}
               href={link.href}
               size={14}
             ></LinkButton>
@@ -104,7 +106,7 @@ export const GuideCard: FC<GuideCardProps> = ({
           }}
           component='img'
           image={mobileImagePath}
-          alt={title}
+          alt={t(title)}
         />
         <CardMedia
           sx={{
@@ -113,7 +115,7 @@ export const GuideCard: FC<GuideCardProps> = ({
           }}
           component='img'
           image={imagePath}
-          alt={title}
+          alt={t(title)}
         />
       </Card>
     </Stack>

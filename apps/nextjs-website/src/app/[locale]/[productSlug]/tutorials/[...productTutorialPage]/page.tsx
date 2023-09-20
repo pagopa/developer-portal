@@ -6,6 +6,7 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import { Box } from '@mui/material';
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { useTranslations } from 'next-intl';
 
 type Params = {
   productSlug: string;
@@ -27,6 +28,7 @@ type ProductTutorialPageProps = {
 } & LayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
+  const t = useTranslations('TutorialPage');
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
@@ -60,7 +62,7 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <EContainer>
         <Box sx={{ padding: '56px 0' }}>
-          <GitBookContent content={props.body} config={props.bodyConfig} />
+          <GitBookContent content={t(props.body)} config={props.bodyConfig} />
         </Box>
       </EContainer>
     </Layout>

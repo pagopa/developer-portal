@@ -13,6 +13,7 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
+import { useTranslations } from 'next-intl';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
@@ -85,6 +86,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     bannerLinks,
   } = await getOverview(params.productSlug);
   const { overview } = translations;
+  const t = useTranslations('OverviewPage');
 
   return (
     <Layout
@@ -95,47 +97,47 @@ const OverviewPage = async ({ params }: ProductParams) => {
     >
       <Hero
         background={hero.backgroundImage}
-        title={hero.title}
-        subtitle={hero.subtitle}
+        title={t(hero.title)}
+        subtitle={t(hero.subtitle)}
         size='small'
         useHoverlay={false}
-        altText={hero.altText}
+        altText={t(hero.altText)}
       />
       <Feature
         items={feature.items}
-        title={feature.title}
-        subtitle={feature.subtitle}
+        title={t(feature.title)}
+        subtitle={t(feature.subtitle)}
       />
       {startInfo && (
         <StartInfo
-          title={overview.startInfo.title}
+          title={t(overview.startInfo.title)}
           cta={startInfo.cta}
           cards={startInfo.cards}
         />
       )}
       {product.subpaths.tutorials && tutorials && (
         <TutorialsOverview
-          title={overview.tutorial.title}
-          subtitle={tutorials.subtitle}
-          ctaLabel={overview.tutorial.ctaLabel}
+          title={t(overview.tutorial.title)}
+          subtitle={t(tutorials.subtitle)}
+          ctaLabel={t(overview.tutorial.ctaLabel)}
           tutorialPath={product.subpaths.tutorials}
           tutorials={[...(tutorials.list || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (
         <PostIntegration
-          title={overview.postIntegration.title}
-          subtitle={postIntegration.subtitle}
+          title={t(overview.postIntegration.title)}
+          subtitle={t(postIntegration.subtitle)}
           cta={
             postIntegration.cta && {
-              label: postIntegration.cta.label,
+              label: t(postIntegration.cta.label),
               href: postIntegration.cta.href,
             }
           }
-          listTitle={postIntegration.listTitle}
+          listTitle={t(postIntegration.listTitle)}
           cards={postIntegration.list?.map((guide) => ({
-            title: guide.title,
-            text: guide.description,
+            title: t(guide.title),
+            text: t(guide.description),
             href: guide.path,
           }))}
           guides={postIntegration.guides}
@@ -143,10 +145,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
       )}
       {relatedLinks && (
         <RelatedLinks
-          title={overview.relatedLinks.title}
+          title={t(overview.relatedLinks.title)}
           links={relatedLinks.map(({ path, name }) => ({
-            text: name,
-            href: path,
+            text: t(name),
+            href: t(path),
           }))}
         />
       )}

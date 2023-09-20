@@ -8,6 +8,7 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { ProductParams } from '@/lib/types/productParams';
+import { useTranslations } from 'next-intl';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -25,6 +26,8 @@ export type GuidesPageProps = {
 } & LayoutProps;
 
 const GuidesPage = async ({ params }: ProductParams) => {
+  const t = useTranslations('GuidesPage');
+
   const { abstract, bannerLinks, guidesSections, path, product, products } =
     await getGuideLists(params?.productSlug);
 
@@ -38,9 +41,9 @@ const GuidesPage = async ({ params }: ProductParams) => {
     >
       {abstract && (
         <Abstract
-          description={abstract?.description}
+          description={t(abstract?.description)}
           overline=''
-          title={abstract?.title}
+          title={t(abstract?.title)}
         />
       )}
       <Box>

@@ -6,6 +6,7 @@ import {
 } from '@/components/molecules/GuideCard/GuideCard';
 import { Typography, useTheme } from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import { useTranslations } from 'next-intl';
 
 export type GuidesSectionProps = {
   title: string;
@@ -16,6 +17,7 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
   title,
   guides,
 }: GuidesSectionProps) => {
+  const t = useTranslations('GuidesPage');
   const { typography } = useTheme();
 
   return (
@@ -31,7 +33,7 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
           textTransform: 'uppercase',
         }}
       >
-        {title}
+        {t(title)}
       </Typography>
       {guides &&
         guides.map((props, index) => <GuideCard key={index} {...props} />)}

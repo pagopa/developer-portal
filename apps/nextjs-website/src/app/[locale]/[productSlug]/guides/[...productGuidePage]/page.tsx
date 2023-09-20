@@ -10,6 +10,7 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { useTranslations } from 'next-intl';
 
 type Params = {
   productSlug: string;
@@ -43,6 +44,7 @@ type ProductGuidePageProps = {
 } & LayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
+  const t = useTranslations('GuidesPage');
   // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
   if (/\.(svg|png|jpg|pdf)$/.test(params?.productGuidePage.join('/'))) {
     return null;
@@ -92,7 +94,7 @@ const Page = async ({ params }: { params: Params }) => {
             menu={props.menu}
             assetsPrefix={props.bodyConfig.assetsPrefix}
             linkPrefix={props.pathPrefix}
-            guideName={props.guide.name}
+            guideName={t(props.guide.name)}
             versionName={props.version.name}
             versions={props.versions}
           />
@@ -104,7 +106,7 @@ const Page = async ({ params }: { params: Params }) => {
               flexGrow: { lg: 1 },
             }}
           >
-            <GitBookContent content={props.body} config={props.bodyConfig} />
+            <GitBookContent content={t(props.body)} config={props.bodyConfig} />
           </Box>
           <Box
             sx={{
@@ -125,7 +127,7 @@ const Page = async ({ params }: { params: Params }) => {
                 assetsPrefix={props.bodyConfig.assetsPrefix}
                 pagePath={props.path}
                 inPageMenu={props.body}
-                title={translations.productGuidePage.onThisPage}
+                title={t(translations.productGuidePage.onThisPage)}
               />
             </Box>
           </Box>

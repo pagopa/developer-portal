@@ -6,6 +6,7 @@ import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
+import { useTranslations } from 'next-intl';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -23,6 +24,7 @@ export type QuickStartGuidePageProps = {
 } & LayoutProps;
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
+  const t = useTranslations('GuidesPage');
   const {
     abstract,
     bannerLinks,
@@ -43,9 +45,9 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     >
       {abstract && (
         <Abstract
-          description={abstract?.description}
+          description={t(abstract?.description)}
           overline=''
-          title={abstract?.title}
+          title={t(abstract?.title)}
         />
       )}
       <QuickStartGuideStepper
