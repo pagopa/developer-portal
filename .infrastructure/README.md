@@ -5,7 +5,7 @@ The following tools are required to setup and manage a new environment.
 1. [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed.
 2. [tfenv](https://github.com/tfutils/tfenv) to mange terraform versions.
 
-## How setup a new environment
+## How set up a new environment
 
 Make sure you don't have a `*.tfstate` file within the `.infrastructure/.terraform` folder. If you have any, delete them.
 
@@ -15,7 +15,7 @@ Comment the `backend "s3" {}` line from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.2.8"
+  required_version = "x.y.z"
 
   # v------- this line!
   # backend "s3" {}
@@ -66,7 +66,7 @@ Remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.2.8"
+  required_version = "x.y.z"
 
   # v------- this line!
   backend "s3" {}
