@@ -9,6 +9,7 @@ interface ListingItem {
   htmlTitle?: string;
   linkColor?: string;
   isLast?: boolean;
+  target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
 export interface ListingsProps {
@@ -31,6 +32,7 @@ const ListingItem = (props: ListingItem) => {
     href,
     isLast = false,
     linkColor = 'InfoText',
+    target = '_self',
   } = props;
   return (
     <Box mb={isLast ? 0 : 2}>
@@ -38,6 +40,7 @@ const ListingItem = (props: ListingItem) => {
         <LinkMUI
           component={Link}
           href={href}
+          target={target}
           underline='none'
           mb={2}
           variant='body2'
