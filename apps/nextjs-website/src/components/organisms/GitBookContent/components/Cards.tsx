@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export const CardItem = ({ children }: CardItemProps<ReactNode>) => (
   <Typography component='div'>{children}</Typography>
