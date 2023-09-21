@@ -15,7 +15,7 @@ Comment the `backend "s3" {}` line from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.5.7"
+  required_version = "x.y.z"
 
   # v------- this line!
   # backend "s3" {}
