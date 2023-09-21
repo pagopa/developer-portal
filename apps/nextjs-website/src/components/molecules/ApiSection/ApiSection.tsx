@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   CircularProgress,
   FormControl,
@@ -19,6 +19,8 @@ import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 /* TODO: Workaround due to error in SSR of elements package:
  * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
@@ -78,8 +80,33 @@ const ApiSection = ({
   const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // if a spec query param is present, try to match it with the specURLs, if found, set it as selectedItemURL
+  useEffect(() => {
+    const specName = searchParams.get('spec');
+    if (specName) {
+      const decodedSpecName = decodeURIComponent(specName as string);
+      const spec = specURLs.find((item) => item?.name === decodedSpecName);
+      if (spec) {
+        setSelectedItemURL(spec.url);
+      }
+    }
+  }, [searchParams, specURLs]);
+
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
+
+    const spec = specURLs.find((item) => item?.url === event.target.value);
+
+    if (specURLsName && spec?.name) {
+      // update the url with the spec query param
+      router.replace(
+        `${product.subpaths.api?.path}?spec=${encodeURIComponent(spec.name)}`
+      );
+    }
   };
 
   const selectedApi = useMemo(
@@ -140,6 +167,9 @@ const ApiSection = ({
             <ButtonNaked
               sx={{
                 color: textColor,
+                '&:hover': {
+                  color: textColor,
+                },
               }}
               component={Link}
               aria-label={soapDocumentation.buttonLabel}
