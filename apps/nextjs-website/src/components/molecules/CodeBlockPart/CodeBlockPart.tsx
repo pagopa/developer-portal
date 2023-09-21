@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCustomStyle';
-import styles from './styles.module.css';
 import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustomStyle';
 import { translations } from '@/_contents/translations';
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
@@ -47,7 +46,7 @@ const CodeBlockPart = ({
       flexGrow={1}
     >
       <SyntaxHighlighter
-        className={styles.SyntaxHighlighter}
+        className={'syntax-highlighter-container'}
         language={language}
         lineNumberStyle={{ fontWeight: 700 }}
         showLineNumbers={showLineNumbers}

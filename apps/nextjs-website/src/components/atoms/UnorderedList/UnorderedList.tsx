@@ -1,6 +1,5 @@
 'use client';
 import { FC } from 'react';
-import styles from './styles.module.css';
 import { Typography } from '@mui/material';
 
 export type UnorderedListProps = {
@@ -12,7 +11,14 @@ export const UnorderedList: FC<UnorderedListProps> = ({
 }: UnorderedListProps) => {
   return (
     listItems?.length && (
-      <ul className={styles.UnorderedList}>
+      <ul
+        style={{
+          listStyleType: 'square',
+          lineHeight: '28px',
+          margin: '8px 0 0 0',
+          paddingLeft: '26px',
+        }}
+      >
         {listItems.map((item, index) => (
           <li key={index}>
             <Typography variant={'body2'}>{item}</Typography>

@@ -1,9 +1,0 @@
-.SyntaxHighlighter {
-  border-radius: 0 0 0.375rem 0.375rem;
-}
-
-@media (min-width: 900px){
-  .SyntaxHighlighter {
-    border-radius: 0 0.375rem 0.375rem 0;
-  }
-}
