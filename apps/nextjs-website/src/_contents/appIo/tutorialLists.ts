@@ -10,13 +10,6 @@ export const appIoTutorials: readonly Tutorial[] = [
     path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere`,
     name: 'Quale accordo di adesione scegliere',
   },
-  // {
-  //   title: 'Come inviare un messaggio con un avviso di pagamento',
-  //   dateString: '2023-06-29T22:15:53.780Z',
-  //   path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
-  //   name: 'Come spedire un avviso di pagamento in un messaggio',
-  //   comingSoon: true,
-  // },
   {
     title: 'Come allegare documenti a un messaggio',
     path: `${appIoTutorialListsPath.path}/come-allegare-documenti-a-un-messaggio`,
