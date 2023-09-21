@@ -66,7 +66,7 @@ Remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.5.7"
+  required_version = "x.y.z"
 
   # v------- this line!
   backend "s3" {}
