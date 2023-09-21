@@ -5,7 +5,7 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
     theme: 'dark',
     title: 'Serve aiuto?',
     decoration: 'HeadsetMic',
-    body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua area riservata di <a href="https://selfcare.pagopa.it/auth/login?onSuccess=%2F">Self Care</a>',
+    body: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua <a href="https://selfcare.pagopa.it/auth/login?onSuccess=%2F">Area Riservata</a>',
   },
   {
     theme: 'light',

@@ -1,1 +1,8 @@
+# Default owners
 * @datalek @kin0992
+
+# Frontend codeowners
+apps/nextjs-website/src/components/ @MarcoPonchia @marcobottaro @tommaso1
+apps/nextjs-website/src/editorialComponents/ @MarcoPonchia @marcobottaro @tommaso1
+apps/nextjs-website/src/pages/ @MarcoPonchia @marcobottaro @tommaso1
+apps/nextjs-website/src/styles/ @MarcoPonchia @marcobottaro @tommaso1
