@@ -142,6 +142,9 @@ const ApiSection = ({
             <ButtonNaked
               sx={{
                 color: textColor,
+                '&:hover': {
+                  color: textColor,
+                },
               }}
               component={Link}
               aria-label={soapDocumentation.buttonLabel}
