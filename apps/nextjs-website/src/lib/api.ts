@@ -109,17 +109,12 @@ export async function getTutorial(
 }
 
 export function getTutorialPaths() {
-  return tutorials.map((tutorial) => {
-    const t = tutorial.page.path.split('/').filter((p, index) => index > 2);
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log('getTutorialPaths', t);
-    return {
-      slug: tutorial.product.slug,
-      tutorialPaths: tutorial.page.path
-        .split('/')
-        .filter((p, index) => index > 2),
-    };
-  });
+  return tutorials.map((tutorial) => ({
+    slug: tutorial.product.slug,
+    tutorialPaths: tutorial.page.path
+      .split('/')
+      .filter((p, index) => index > 2),
+  }));
 }
 
 export async function getTutorialLists(productSlug?: string) {
