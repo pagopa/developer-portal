@@ -1,6 +1,6 @@
 'use client';
 import { FC } from 'react';
-import styles from './UnorderedList.module.css';
+import styles from './styles.module.css';
 import { Typography } from '@mui/material';
 
 export type UnorderedListProps = {
