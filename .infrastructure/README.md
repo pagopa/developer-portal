@@ -5,7 +5,7 @@ The following tools are required to setup and manage a new environment.
 1. [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed.
 2. [tfenv](https://github.com/tfutils/tfenv) to mange terraform versions.
 
-## How setup a new environment
+## How set up a new environment
 
 Make sure you don't have a `*.tfstate` file within the `.infrastructure/.terraform` folder. If you have any, delete them.
 
