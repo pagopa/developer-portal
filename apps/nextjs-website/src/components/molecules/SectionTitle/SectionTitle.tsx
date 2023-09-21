@@ -32,12 +32,20 @@ const SectionTitle = ({
         alignItems='flex-start'
       >
         {title && (
-          <Typography variant='h4' mb={2} width='100%'>
+          <Typography
+            variant='h4'
+            style={{ marginBottom: '24px', width: '100%' }}
+          >
             {title}
           </Typography>
         )}
         {subtitle && (
-          <Typography variant='body1' mb={2} width={{ xs: '100%', md: '60%' }}>
+          <Typography
+            variant='body1'
+            style={{ marginTop: 0 }}
+            marginBottom={2}
+            width={{ xs: '100%', md: '60%' }}
+          >
             {subtitle}
           </Typography>
         )}

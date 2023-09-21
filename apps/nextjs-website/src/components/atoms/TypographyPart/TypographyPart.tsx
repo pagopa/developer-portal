@@ -24,7 +24,13 @@ const TypographyPart = (props: TypographyPartProps) => {
       fontWeight={props.fontWeight || 'inherit'}
       color={props.color || 'inherit'}
       style={props.style}
-      sx={{ wordBreak: 'break-all', marginBottom: spacing(5), ...props.sx }}
+      sx={{
+        wordBreak: 'break-word',
+        textAlign: 'justify',
+        textAlignLast: 'left',
+        marginBottom: spacing(5),
+        ...props.sx,
+      }}
     >
       {props.asHtml === true ? (
         <div dangerouslySetInnerHTML={{ __html: props.text }} />

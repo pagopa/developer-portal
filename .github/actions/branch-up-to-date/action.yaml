@@ -1,0 +1,40 @@
+name: "Check branch is up to date"
+description: "Verify PR's branch is up to date with base branch"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Check with base branch
+      shell: bash
+      env:
+        TARGET_BRANCH: origin/${{ github.base_ref }}
+        HEAD_BRANCH: origin/${{ github.head_ref }}
+      run: |
+        if git merge-base --is-ancestor ${{ env.TARGET_BRANCH }} ${{ env.HEAD_BRANCH }}
+        then
+          echo "Your branch is up to date."
+          BRANCH_UP_TO_DATE='true'
+        else
+          echo "You need to merge / rebase."
+          BRANCH_UP_TO_DATE='false'
+        fi
+        echo "BRANCH_UP_TO_DATE=$BRANCH_UP_TO_DATE" >> $GITHUB_ENV
+
+    - name: Print message to update branch (if necessary)
+      if: ${{ env.BRANCH_UP_TO_DATE == 'false' }}
+      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+      with:
+        header: branch-update
+        recreate: true
+        message: |
+          ## Branch is not up to date with base branch ##
+          @${{ github.actor}} it seems this Pull Request is not updated with base branch.
+          Please proceed with a merge or rebase to solve this.
+
+    - name: Failure message
+      if: ${{ env.BRANCH_UP_TO_DATE == 'false' }}
+      shell: bash
+      run: |
+        echo "Branch is not up to date with base branch"
+        exit 1

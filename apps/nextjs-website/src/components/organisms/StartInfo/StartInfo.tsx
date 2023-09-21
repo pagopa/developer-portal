@@ -9,7 +9,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 type StartInfoProps = {
   title: string;
   cards: {
-    coomingSoon?: boolean;
+    comingSoon?: boolean;
     title: string;
     text: string;
     href?: string;
@@ -35,7 +35,7 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
             md: 12 / cards.length,
           }}
           cards={cards.map((card) => ({
-            coomingSoon: card.coomingSoon,
+            comingSoon: card.comingSoon,
             title: card.title,
             text: card.text,
             href: card.href,

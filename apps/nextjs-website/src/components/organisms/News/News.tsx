@@ -14,9 +14,9 @@ type NewsProps = {
   };
   marginTop?: number;
   cards: {
-    coomingSoon?: boolean;
+    comingSoon?: boolean;
     title: string;
-    dateString: string;
+    dateString?: string;
     image?: {
       url: string;
       alt: string;
@@ -37,12 +37,10 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
       <Box mt={2}>
         <Newsroom
           items={cards.map((card) => ({
-            coomingSoonLabel: !card.coomingSoon
-              ? undefined
-              : shared.coomingSoon,
+            comingSoonLabel: !card.comingSoon ? undefined : shared.comingSoon,
             title: card.title,
             date: {
-              date: new Date(card.dateString),
+              date: card.dateString ? new Date(card.dateString) : undefined,
             },
             href: card.href,
             img: {

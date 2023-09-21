@@ -7,7 +7,6 @@ import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 export const pagoPaTutorials: readonly Tutorial[] = [
   {
     title: 'Come richiedere pagamenti che contengono marca da bollo digitale',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-richiedere-pagamenti-che-contengono-marca-da-bollo-digitale`,
     name: 'Come richiedere pagamenti che contengono marca da bollo digitale',
     image: {
@@ -17,7 +16,6 @@ export const pagoPaTutorials: readonly Tutorial[] = [
   },
   {
     title: 'Come avviare un esercizio come Ente Creditore su pagoPA',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-avviare-un-esercizio-come-ente-creditore-su-pagopa`,
     name: 'Come avviare un esercizio come Ente Creditore su pagoPA',
     image: {
@@ -27,7 +25,6 @@ export const pagoPaTutorials: readonly Tutorial[] = [
   },
   {
     title: 'Come stampare un avviso di pagamento in formato PDF',
-    dateString: '2023-06-29T22:15:53.780Z',
     path: `${pagoPaTutorialListsPath.path}/come-stampare-un-avviso-di-pagamento-in-formato-pdf`,
     name: 'Come stampare un avviso di pagamento in formato PDF',
     image: {

@@ -1,0 +1,67 @@
+name: "Lint and Link PR title"
+description: "Validate the PR title and link it to a Jira activity"
+
+inputs:
+  JIRA_COMMENT_REGEX:
+    description: "Pattern to Jira comment"
+    required: false
+    default: "^.*Jira.*"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: Slashgear/action-check-pr-title@860e8dc639f8e60335a6f5e8936ba67ed2536890 # v4.3.0
+      id: lint
+      with:
+        regexp: "\\[([A-Z0-9]*-[0-9]*( |, )?){1,}\\]" # Regex the title should match.
+      continue-on-error: true
+
+    - name: Extract Jira Issue to Link
+      if: steps.lint.outcome == 'success'
+      shell: bash
+      run: |
+        PR_TITLE=$(echo "${{ github.event.pull_request.title }}")
+        ISSUES_STR=$(awk -F'\\[|\\]' '{print $2}' <<< "$PR_TITLE" | sed "s/#//g" | sed "s/,//g")
+        ISSUES=($ISSUES_STR)
+        MARKDOWN_CARRIAGE_RETURN="<br>"
+        MARKDOWN_PREFIX="- Link to"
+        JIRA_COMMENT_MARKDOWN="This Pull Request refers to Jira issues:<br>"
+        if [[ ${#ISSUES[@]} -eq 1 ]]
+        then
+          JIRA_COMMENT_MARKDOWN="This Pull Request refers to the following Jira issue"
+          MARKDOWN_PREFIX=""
+        fi
+        for ISSUE in "${ISSUES[@]}"
+        do
+          JIRA_COMMENT_MARKDOWN+="$MARKDOWN_PREFIX [$ISSUE](https://pagopa.atlassian.net/browse/$ISSUE) $MARKDOWN_CARRIAGE_RETURN"
+        done
+        echo "JIRA_COMMENT_MARKDOWN=$JIRA_COMMENT_MARKDOWN" >> $GITHUB_ENV
+
+    - name: Create Jira Link comment
+      if: steps.lint.outcome == 'success'
+      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+      with:
+        header: pr-title
+        recreate: true
+        message: |
+          ## Jira Pull Request Link ##
+          ${{ env.JIRA_COMMENT_MARKDOWN }}
+
+    - name: Create Empty Jira Link comment
+      if: steps.lint.outcome != 'success'
+      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+      with:
+        header: pr-title
+        recreate: true
+        message: |
+          ## Jira Pull request Link ##
+          @${{ github.actor}} it seems this Pull Request has no issues that refers to Jira!
+          Please check it out.
+          PR's title should be something like: `[B2B-1] Title` where `B2B-1` is the activity's id on Jira.
+
+    - name: Failure message
+      if: steps.lint.outcome != 'success'
+      shell: bash
+      run: |
+        echo "Pull request title (${{ github.event.pull_request.title }}) is not properly formatted or it is not related to any Jira issue"
+        exit 1

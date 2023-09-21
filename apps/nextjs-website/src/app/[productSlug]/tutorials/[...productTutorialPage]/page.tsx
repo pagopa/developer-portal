@@ -1,37 +1,54 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { getTutorial, getTutorialPaths } from '@/lib/api';
+import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
-type TutorialParams = {
-  params: {
-    productSlug: string;
-    productTutorialPage: Array<string>;
-  };
+type Params = {
+  productSlug: string;
+  productTutorialPage: Array<string>;
 };
 
 export async function generateStaticParams() {
-  return [...getTutorialPaths()].map(({ slug, guidePaths }) => ({
-    prductSlug: slug,
-    productTutorialPage: guidePaths,
+  return [...getTutorialPaths()].map(({ slug, tutorialPaths }) => ({
+    productSlug: slug,
+    productTutorialPage: tutorialPaths,
   }));
 }
 
 type ProductTutorialPageProps = {
   product: Product;
   path: string;
-  pathPrefix: string;
-  assetsPrefix: string;
   body: string;
+  bodyConfig: ParseContentConfig;
 } & LayoutProps;
 
-const Page = async ({ params }: TutorialParams) => {
-  const props: ProductTutorialPageProps = await getTutorial(
-    params.productSlug,
-    params.productTutorialPage
-  );
+const Page = async ({ params }: { params: Params }) => {
+  const productSlug = params?.productSlug;
+  const tutorialPath = params?.productTutorialPage?.join('/');
+
+  // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
+  if (/\.(svg|png|jpg|pdf )$/.test(tutorialPath)) {
+    return null;
+  }
+  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const { product, page, bannerLinks, source } = tutorialProps;
+  const props: ProductTutorialPageProps = {
+    ...page,
+    product,
+    products: [...getProducts()],
+    bannerLinks,
+    bodyConfig: {
+      isPageIndex: false,
+      pagePath: page.path,
+      assetsPrefix: source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix: spaceToPrefixMap,
+    },
+  };
 
   return (
     <Layout
@@ -42,13 +59,8 @@ const Page = async ({ params }: TutorialParams) => {
       showBreadcrumbs={false}
     >
       <EContainer>
-        <Box>
-          <GitBookContent
-            assetsPrefix={props.assetsPrefix}
-            pagePath={props.path}
-            isPageIndex={false}
-            content={props.body}
-          />
+        <Box sx={{ padding: '56px 0' }}>
+          <GitBookContent content={props.body} config={props.bodyConfig} />
         </Box>
       </EContainer>
     </Layout>

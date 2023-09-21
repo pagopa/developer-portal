@@ -43,7 +43,7 @@ const PostIntegration = ({
         {listTitle && (
           <Typography
             content='div'
-            mb={3}
+            mb={0}
             mt={6}
             color={theme.palette.grey[500]}
             fontSize={14}
@@ -57,7 +57,7 @@ const PostIntegration = ({
         )}
       </SectionTitle>
       {cards && (
-        <EContainer>
+        <EContainer sx={{ margin: 0 }}>
           <LinkCards
             cards={cards.map((card) => ({ ...card, label: shared.goToModel }))}
           />

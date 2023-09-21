@@ -39,7 +39,6 @@ export async function getGuide(
 
   return {
     ...props,
-    ...props.page,
     pathPrefix: props.source.pathPrefix,
     assetsPrefix: props.source.assetsPrefix,
     products: getProducts().concat(),
@@ -49,7 +48,7 @@ export async function getGuide(
 export function getGuidePaths() {
   return guides.map((guide) => ({
     slug: guide.product.slug,
-    guidePaths: guide.page.path.split('/').filter((p, index) => index < 2),
+    guidePaths: guide.page.path.split('/').filter((p, index) => index > 2),
   }));
 }
 
@@ -100,7 +99,7 @@ export async function getTutorial(
   );
 
   return {
-    ...props.page,
+    ...props,
     product: props.product,
     pathPrefix: props.source.pathPrefix,
     assetsPrefix: props.source.assetsPrefix,
@@ -110,9 +109,11 @@ export async function getTutorial(
 }
 
 export function getTutorialPaths() {
-  return tutorials.map((guide) => ({
-    slug: guide.product.slug,
-    guidePaths: guide.page.path.split('/').filter((p, index) => index < 2),
+  return tutorials.map((tutorial) => ({
+    slug: tutorial.product.slug,
+    tutorialPaths: tutorial.page.path
+      .split('/')
+      .filter((p, index) => index > 2),
   }));
 }
 

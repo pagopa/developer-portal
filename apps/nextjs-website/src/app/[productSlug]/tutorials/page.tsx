@@ -49,12 +49,14 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
-              coomingSoonLabel: !tutorial.coomingSoon
+              comingSoonLabel: !tutorial.comingSoon
                 ? undefined
-                : shared.coomingSoon,
+                : shared.comingSoon,
               title: tutorial.title,
               date: {
-                date: new Date(tutorial.dateString),
+                date: tutorial.dateString
+                  ? new Date(tutorial.dateString)
+                  : undefined,
               },
               href: {
                 label: shared.readTutorial,

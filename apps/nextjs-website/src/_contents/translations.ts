@@ -12,7 +12,7 @@ export const translations = {
     title: 'DevPortal',
   },
   shared: {
-    coomingSoon: 'In Arrivo',
+    comingSoon: 'In Arrivo',
     readTutorial: 'Leggi il tutorial',
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
@@ -24,6 +24,9 @@ export const translations = {
     title: 'Pagina non trovata',
     description: 'La pagina che stai cercando non esiste',
   },
+  productGuidePage: {
+    onThisPage: 'In questa pagina',
+  },
   homepage: {
     news: {
       title: 'In evidenza',
@@ -31,7 +34,6 @@ export const translations = {
         {
           title:
             'Usa il validatore di SEND per fare una verifica sull’integrazione',
-          dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai al validatore',
             link: `${sendGuideListsPath.path}/validatore/v1.0`,
@@ -44,7 +46,6 @@ export const translations = {
         },
         {
           title: 'Scopri i nuovi tutorial di Firma con IO',
-          dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai ai tutorial',
             link: `${ioSignTutorialListsPath.path}`,
@@ -58,13 +59,12 @@ export const translations = {
         {
           title:
             'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
-          dateString: '2023-06-29T22:15:53.780Z',
           href: {
             label: 'Vai alla guida',
             link: '#news-3',
             title: 'Vai alla guida',
           },
-          coomingSoon: true,
+          comingSoon: true,
           image: {
             url: '/images/homepage-pago-pa.png',
             alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',

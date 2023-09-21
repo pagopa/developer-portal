@@ -1,9 +1,7 @@
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
-import { menuLink } from './markdoc/schema/link';
 import { ParseConfig } from './ParseConfig';
 import { title } from './markdoc/schema/title';
-import { menuList } from './markdoc/schema/menuList';
-import { menuItem } from './markdoc/schema/menuItem';
+import * as menu from './markdoc/schema/menu';
 import { sanitizedText } from './markdoc/schema/sanitizedText';
 
 const schema: ConfigType = {
@@ -12,9 +10,9 @@ const schema: ConfigType = {
     paragraph: {},
     hr: {},
     heading: title,
-    list: menuList,
-    item: menuItem,
-    link: menuLink,
+    list: menu.list,
+    item: menu.item,
+    link: menu.link,
     text: sanitizedText,
   },
 };

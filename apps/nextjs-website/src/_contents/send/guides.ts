@@ -1,8 +1,8 @@
 import { send } from './send';
-import { makeGuide } from '../makeDocs';
+import { GuideDefinition } from '../makeDocs';
 import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 
-const validatore = makeGuide({
+const validatore: GuideDefinition = {
   product: send,
   guide: {
     name: 'Validatore',
@@ -15,9 +15,9 @@ const validatore = makeGuide({
     },
   ],
   bannerLinks: sendBannerLinks,
-});
+};
 
-const manualeOperativo = makeGuide({
+const manualeOperativo: GuideDefinition = {
   product: send,
   guide: {
     name: 'Manuale Operativo',
@@ -34,9 +34,9 @@ const manualeOperativo = makeGuide({
     },
   ],
   bannerLinks: sendBannerLinks,
-});
+};
 
-const knowledgeBase = makeGuide({
+const knowledgeBase: GuideDefinition = {
   product: send,
   guide: {
     name: 'Knowledge-base di SEND',
@@ -49,9 +49,9 @@ const knowledgeBase = makeGuide({
     },
   ],
   bannerLinks: sendBannerLinks,
-});
+};
 
-const modelloDiIntegrazione = makeGuide({
+const modelloDiIntegrazione: GuideDefinition = {
   product: send,
   guide: {
     name: 'Modello di integrazione',
@@ -68,11 +68,11 @@ const modelloDiIntegrazione = makeGuide({
     },
   ],
   bannerLinks: sendBannerLinks,
-});
+};
 
 export const sendGuides = [
-  ...validatore,
-  ...manualeOperativo,
-  ...knowledgeBase,
-  ...modelloDiIntegrazione,
+  validatore,
+  manualeOperativo,
+  knowledgeBase,
+  modelloDiIntegrazione,
 ];

@@ -28,7 +28,13 @@ import { sendOverview } from '@/_contents/send/overview';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
 import { sendTutorials } from '@/_contents/send/tutorials';
 import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
-import { ioSignQuickStartGuide } from './ioSign/quickStartGuide';
+import { ioSignQuickStartGuide } from '@/_contents/ioSign/quickStartGuide';
+import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
+import { makeGuide, makeTutorials } from './makeDocs';
+import { pipe } from 'fp-ts/lib/function';
+import * as s from 'fp-ts/lib/string';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
+import * as Eq from 'fp-ts/lib/Eq';
 
 export const overviews = [
   appIoOverview,
@@ -41,6 +47,7 @@ export const quickStartGuides = [
   appIoQuickStartGuide,
   sendQuickStartGuide,
   ioSignQuickStartGuide,
+  pagoPaQuickStartGuide,
 ];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
@@ -52,14 +59,13 @@ export const tutorialLists = [
   sendTutorialLists,
 ];
 
-export const tutorials = [
-  ...appIoTutorials,
-  ...ioSignTutorials,
-  ...pagoPaTutorials,
-  ...sendTutorials,
+const tutorialsDefinitions = [
+  appIoTutorials,
+  ioSignTutorials,
+  pagoPaTutorials,
+  sendTutorials,
 ];
-
-export const tools = [];
+export const tutorials = tutorialsDefinitions.flatMap(makeTutorials);
 
 export const guideLists = [
   appIoGuideLists,
@@ -67,11 +73,30 @@ export const guideLists = [
   pagoPaGuideLists,
   sendGuideLists,
 ];
-export const guides = [
+const guidesDefinitions = [
   ...appIoGuides,
   ...ioSignGuides,
   ...pagoPaGuides,
   ...sendGuides,
 ];
+export const guides = guidesDefinitions.flatMap(makeGuide);
+
+// Create a slim data structure to reduce React page size.
+// This structure is composed of page path and title.
+export const gitBookPagesWithTitle = [...tutorials, ...guides].map(
+  (content) => ({
+    title: content.page.title,
+    path: content.page.path,
+  })
+);
+
+export const spaceToPrefixMap = pipe(
+  [...tutorials, ...guides],
+  RA.map((content) => ({
+    spaceId: content.source.spaceId,
+    pathPrefix: content.source.pathPrefix,
+  })),
+  RA.uniq(Eq.struct({ spaceId: s.Eq, pathPrefix: s.Eq }))
+);
 
 export const products = [appIo, ioSign, send, pagoPa];

@@ -18,6 +18,10 @@ const LinkCard = ({ title, text, minHeight, link }: LinkCardProps) => {
     <Card
       style={{
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
       }}
     >
       <CardContent sx={{ minHeight: minHeight || 'auto', pb: 0 }}>
