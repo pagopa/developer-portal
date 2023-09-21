@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { usePathname } from 'next/navigation';
-import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
+import { TreeItem, TreeView, treeItemClasses } from '@mui/x-tree-view';
 import { styled } from '@mui/material/styles';
 import { parseMenu } from 'gitbook-docs/parseMenu';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
