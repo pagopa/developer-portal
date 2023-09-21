@@ -15,7 +15,7 @@ Comment the `backend "s3" {}` line from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.2.8"
+  required_version = "1.5.7"
 
   # v------- this line!
   # backend "s3" {}
@@ -66,7 +66,7 @@ Remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
 
 ``` sh
 terraform {
-  required_version = "1.2.8"
+  required_version = "1.5.7"
 
   # v------- this line!
   backend "s3" {}
