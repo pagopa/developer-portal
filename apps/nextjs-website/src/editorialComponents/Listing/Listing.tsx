@@ -38,7 +38,6 @@ const ListingItem = (props: ListingItem) => {
         <LinkMUI
           component={Link}
           href={href}
-          target='_blank'
           underline='none'
           mb={2}
           variant='body2'
