@@ -31,6 +31,43 @@ resource "aws_cognito_user_pool" "devportal" {
     minimum_length = 8
   }
 
+  schema {
+    name                     = "email"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = true
+
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 256
+    }
+  }
+
+  schema {
+    name                     = "given_name"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = true
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 256
+    }
+  }
+
+  schema {
+    name                     = "family_name"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = true
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 256
+    }
+  }
+
 }
 
 resource "aws_cognito_user_pool_client" "devportal_website" {
@@ -44,6 +81,6 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
-  explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
+  explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
 
 }
