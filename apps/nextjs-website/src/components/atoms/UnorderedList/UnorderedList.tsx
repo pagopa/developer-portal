@@ -1,7 +1,7 @@
 'use client';
 import { FC } from 'react';
-import { Typography } from '@mui/material';
 import styles from './UnorderedList.module.css';
+import { Typography } from '@mui/material';
 
 export type UnorderedListProps = {
   readonly listItems: ReadonlyArray<string>;
