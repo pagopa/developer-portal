@@ -10,4 +10,5 @@ export default ({ env }) => ({
       salt: env('TRANSFER_TOKEN_SALT'),
     },
   },
+  autoOpen: false,
 });
