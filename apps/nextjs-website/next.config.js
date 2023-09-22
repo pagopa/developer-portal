@@ -8,15 +8,29 @@
  */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',
+  // TODO: Remove output: 'export' see the doc:
+  // https://nextjs.org/docs/messages/export-no-custom-routes
+  // output: 'export',
   trailingSlash: false,
   images: {
     unoptimized: true,
   },
-	modularizeImports: {
+  modularizeImports: {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/:product/tutorial/:slug*',
+        destination: '/:product/tutorials/:slug*',
+      },
+      {
+        source: '/:product/manuali/:slug*',
+        destination: '/:product/guides/:slug*',
+      },
+    ];
   },
 };
 

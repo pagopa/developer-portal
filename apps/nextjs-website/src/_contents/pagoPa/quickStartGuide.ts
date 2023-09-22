@@ -30,7 +30,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Per altre info sul certificato, <a href="/pago-pa/guides/sanp/3.4.1/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
+          html: `<p>Per altre info sul certificato, <a href="/pagopa/guides/sanp/3.4.1/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
         },
       ],
     },
@@ -109,7 +109,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Procedi con i processi di pagamento secondo la documentazione che <a href="/pago-pa/guides/sanp/3.4.1/casi-duso/pagamento-di-un-avviso-presso-psp" target="_blank">trovi qui</a>.</p>`,
+          html: `<p>Procedi con i processi di pagamento secondo la documentazione che <a href="/pagopa/guides/sanp/3.4.1/casi-duso/pagamento-di-un-avviso-presso-psp" target="_blank">trovi qui</a>.</p>`,
         },
       ],
     },

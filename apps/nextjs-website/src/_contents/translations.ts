@@ -66,7 +66,7 @@ export const translations = {
             title: 'Vai alla guida',
           },
           image: {
-            url: '/images/homepage-pago-pa.png',
+            url: '/images/homepage-pagopa.png',
             alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
           },
         },
