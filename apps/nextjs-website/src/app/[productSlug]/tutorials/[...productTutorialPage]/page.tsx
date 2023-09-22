@@ -39,7 +39,6 @@ const Page = async ({ params }: { params: Params }) => {
   const props: ProductTutorialPageProps = {
     ...page,
     product,
-    products: [...getProducts()],
     bannerLinks,
     bodyConfig: {
       isPageIndex: false,
@@ -52,7 +51,6 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <Layout
-      products={props.products}
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}

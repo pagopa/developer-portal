@@ -23,19 +23,11 @@ export type QuickStartGuidePageProps = {
 } & LayoutProps;
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const {
-    abstract,
-    bannerLinks,
-    defaultStepAnchor,
-    path,
-    product,
-    steps,
-    products,
-  } = await getQuickStartGuide(params?.productSlug);
+  const { abstract, bannerLinks, defaultStepAnchor, path, product, steps } =
+    await getQuickStartGuide(params?.productSlug);
 
   return (
     <Layout
-      products={products}
       product={product}
       path={path}
       showBreadcrumbs={false}

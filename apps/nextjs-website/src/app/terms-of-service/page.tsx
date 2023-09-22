@@ -1,5 +1,3 @@
-import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import { getProducts } from '@/lib/api';
 import { Box } from '@mui/material';
 
 const TermsOfServiceScript = `
@@ -22,19 +20,15 @@ const TermsOfServiceScript = `
 `;
 
 const TermsOfService = () => {
-  const products = [...getProducts()];
   return (
-    <>
-      <SiteHeader products={products} />
-      <Box mt={5}>
-        <div
-          id='terms-of-service-script'
-          dangerouslySetInnerHTML={{
-            __html: TermsOfServiceScript,
-          }}
-        />
-      </Box>
-    </>
+    <Box mt={5}>
+      <div
+        id='terms-of-service-script'
+        dangerouslySetInnerHTML={{
+          __html: TermsOfServiceScript,
+        }}
+      />
+    </Box>
   );
 };
 

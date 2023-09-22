@@ -1,5 +1,3 @@
-import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import { getProducts } from '@/lib/api';
 import { Box } from '@mui/material';
 
 const privacyPolicyScript = `
@@ -22,20 +20,15 @@ const privacyPolicyScript = `
 `;
 
 const PrivacyPolicy = () => {
-  const products = [...getProducts()];
-
   return (
-    <>
-      <SiteHeader products={products} />
-      <Box mt={5}>
-        <div
-          id='privacy-policy-script'
-          dangerouslySetInnerHTML={{
-            __html: privacyPolicyScript,
-          }}
-        />
-      </Box>
-    </>
+    <Box mt={5}>
+      <div
+        id='privacy-policy-script'
+        dangerouslySetInnerHTML={{
+          __html: privacyPolicyScript,
+        }}
+      />
+    </Box>
   );
 };
 

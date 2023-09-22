@@ -26,13 +26,12 @@ export type TutorialsPageProps = {
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials, products } =
+  const { abstract, bannerLinks, path, product, tutorials } =
     await getTutorialLists(productSlug);
   const { shared } = translations;
 
   return (
     <Layout
-      products={products}
       product={product}
       path={path}
       showBreadcrumbs={false}

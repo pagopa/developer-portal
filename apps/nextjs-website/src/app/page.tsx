@@ -2,7 +2,6 @@ import { translations } from '@/_contents/translations';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import Layout from '@/components/organisms/Layout/Layout';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
@@ -12,7 +11,7 @@ const Home = () => {
   const { homepage, header } = translations;
 
   return (
-    <Layout products={products}>
+    <>
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
           ...itemProp,
@@ -44,7 +43,7 @@ const Home = () => {
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
       />
-    </Layout>
+    </>
   );
 };
 

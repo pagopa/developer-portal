@@ -28,7 +28,6 @@ export type ApiPageProps = {
 
 const ApisPage = async ({ params }: ProductParams) => {
   const {
-    products,
     path,
     product,
     specURLs,
@@ -39,7 +38,6 @@ const ApisPage = async ({ params }: ProductParams) => {
 
   return (
     <Layout
-      products={products}
       product={product}
       path={path}
       bannerLinks={bannerLinks}

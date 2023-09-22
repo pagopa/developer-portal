@@ -30,7 +30,6 @@ const GuidesPage = async ({ params }: ProductParams) => {
 
   return (
     <Layout
-      products={products}
       product={product}
       path={path}
       showBreadcrumbs={false}

@@ -77,7 +77,6 @@ const OverviewPage = async ({ params }: ProductParams) => {
     startInfo,
     feature,
     product,
-    products,
     path,
     tutorials,
     postIntegration,
@@ -87,12 +86,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
   const { overview } = translations;
 
   return (
-    <Layout
-      products={products}
-      product={product}
-      path={path}
-      bannerLinks={bannerLinks}
-    >
+    <Layout product={product} path={path} bannerLinks={bannerLinks}>
       <Hero
         background={hero.backgroundImage}
         title={hero.title}

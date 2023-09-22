@@ -1,5 +1,5 @@
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import { getGuide, getGuidePaths, getProducts } from '@/lib/api';
+import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import { Box } from '@mui/material';
 import React from 'react';
@@ -56,7 +56,6 @@ const Page = async ({ params }: { params: Params }) => {
   const props: ProductGuidePageProps = {
     ...page,
     product,
-    products: [...getProducts()],
     guide,
     version,
     versions,
@@ -73,7 +72,6 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <Layout
-      products={props.products}
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
