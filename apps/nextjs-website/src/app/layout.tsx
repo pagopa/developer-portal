@@ -3,11 +3,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
-// import { createTheme, ThemeProvider } from '@mui/material';
-// import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
 import ThemeRegistry from './ThemeRegistry';
-
-// export const theme = createTheme(muiItaliaTheme);
+import { getProducts } from '@/lib/api';
+import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
+import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -43,6 +42,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const products = [...getProducts()];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
     <html lang='it'>
@@ -63,7 +63,11 @@ export default function RootLayout({
         <link rel='icon' href='favicon.svg' />
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>{children}</body>
+        <body>
+          <SiteHeader products={products} />
+          {children}
+          <SiteFooter />
+        </body>
       </ThemeRegistry>
     </html>
   );
