@@ -24,6 +24,4 @@ We are going for [Option 2](#option-2), because the **App Router**:
 3. it guarantees better performances than Pages Router
 4. it is more flexible with routes management
 
-[^1]: https://nextjs.org/docs/migrating/from-pages
-
 [^1]: https://nextjs.org/docs/app
