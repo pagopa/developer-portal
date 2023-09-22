@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { Product } from '@/lib/types/product';
@@ -9,12 +9,16 @@ type SiteHeaderProps = {
   products: Product[];
 };
 
-const SiteHeader = ({ products }: SiteHeaderProps) => {
+const SiteHeader = (
+  { products }: SiteHeaderProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const { header } = translations;
   return (
     <>
       <Stack
-        sx={{ m: 2 }}
+        ref={ref}
+        sx={{ p: 2 }}
         spacing={2}
         direction='row'
         justifyContent={{ sm: 'space-between', md: 'start' }}
@@ -34,4 +38,4 @@ const SiteHeader = ({ products }: SiteHeaderProps) => {
   );
 };
 
-export default SiteHeader;
+export default forwardRef(SiteHeader);
