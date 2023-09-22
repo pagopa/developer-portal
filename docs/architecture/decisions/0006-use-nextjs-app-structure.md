@@ -21,7 +21,7 @@ Migrate to the **App Router**.
 We are going for [Option 2](#option-2), because the **App Router**:
 1. is recommended since version `13.4` by the Next.js team [^1] 
 2. it will be better maintained in the future
-3. it guarantees better performances than Pages Router
-4. it is more flexible with routes management
+3. it guarantees better performance than Pages Router
+4. it is more flexible with route management
 
 [^1]: https://nextjs.org/docs/app
