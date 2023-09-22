@@ -7,7 +7,7 @@ import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/compon
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { useScrollUp } from './useScrollUp';
 
 export type LayoutProps = {
@@ -32,21 +32,21 @@ const Layout: FC<LayoutPropsWithChildren> = ({
 }) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollUp = useScrollUp();
-  const { palette } = useTheme();
 
   const paddingTop = headerRef.current?.offsetHeight ?? 0;
-  const value = scrollUp ? 0 : -paddingTop;
+  const transformYPosition = scrollUp ? 0 : -paddingTop;
+
   return (
     <>
       <Box
         component='header'
         sx={{
           transition: 'all 0.5s linear',
-          transform: `translateY(${value}px)`,
+          transform: `translateY(${transformYPosition}px)`,
         }}
         position='sticky'
         width='100%'
-        bgcolor={palette.common.white}
+        bgcolor='#fff'
         top='0'
         zIndex={10}
       >
