@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { Product } from '@/lib/types/product';
@@ -10,12 +10,16 @@ type SiteHeaderProps = {
   products: Product[];
 };
 
-const SiteHeader = ({ products }: SiteHeaderProps) => {
+const SiteHeader = (
+  { products }: SiteHeaderProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const { header } = translations;
   const { palette } = useTheme();
   return (
     <>
       <Stack
+        ref={ref}
         sx={{ py: 2, px: 3, backgroundColor: palette.common.white }}
         spacing={2}
         direction='row'
@@ -36,4 +40,4 @@ const SiteHeader = ({ products }: SiteHeaderProps) => {
   );
 };
 
-export default SiteHeader;
+export default forwardRef(SiteHeader);
