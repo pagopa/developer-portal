@@ -3,12 +3,14 @@ import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
-import React, { ReactNode, FC } from 'react';
+import React, { ReactNode, FC, useRef } from 'react';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 import { useTheme } from '@mui/material';
+import { Box } from '@mui/material';
+import { useScrollUp } from './useScrollUp';
 
 export type LayoutProps = {
   readonly products: Product[];
@@ -31,18 +33,34 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   showBreadcrumbs = false,
 }) => {
   const { palette } = useTheme();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const scrollUp = useScrollUp();
+
+  const paddingTop = headerRef.current?.offsetHeight ?? 0;
+  const transformYPosition = scrollUp ? 0 : -paddingTop;
 
   return (
     <>
-      <header>
-        <SiteHeader products={products} />
+      <Box
+        component='header'
+        sx={{
+          transition: 'all 0.5s linear',
+          transform: `translateY(${transformYPosition}px)`,
+        }}
+        position='sticky'
+        width='100%'
+        bgcolor='#fff'
+        top='0'
+        zIndex={10}
+      >
+        <SiteHeader ref={headerRef} products={products} />
         {product && path && <ProductHeader product={product} path={path} />}
         {product && showBreadcrumbs && (
           <ProductBreadcrumbs
             breadcrumbs={[...productPageToBreadcrumbs(product, path)]}
           />
         )}
-      </header>
+      </Box>
       <main
         style={{
           backgroundColor: palette.background.paper,
