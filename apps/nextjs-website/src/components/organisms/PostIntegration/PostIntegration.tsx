@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { translations } from '@/_contents/translations';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import {

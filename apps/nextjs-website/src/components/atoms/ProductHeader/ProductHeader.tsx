@@ -2,7 +2,7 @@
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
 import { useTheme } from '@mui/material';
-import { Header } from '@pagopa/pagopa-editorial-components/dist/components/Header';
+import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 
 type ProductHeaderProps = {

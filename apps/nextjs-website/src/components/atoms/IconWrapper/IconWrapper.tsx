@@ -4,7 +4,7 @@ import { Icon, Typography } from '@mui/material';
 import Image from 'next/image';
 import { ICON_MAP } from './IconMap';
 
-type IconWrapperProps = {
+export type IconWrapperProps = {
   icon: string;
   isSvg?: boolean;
   color?: string;

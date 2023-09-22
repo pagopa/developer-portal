@@ -1,6 +1,6 @@
 'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Stack, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 
