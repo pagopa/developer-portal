@@ -25,12 +25,7 @@ const manualeDeiServizi: GuideDefinition = {
     name: "Manuale dei servizi dell'app IO",
     slug: 'manuale-servizi',
   },
-  versions: [
-    {
-      version: 'v1.0',
-      dirName: 'zcLztiq5qDSVw9rRjW7p',
-    },
-  ],
+  versions: [{ version: 'v1.0', dirName: 'zcLztiq5qDSVw9rRjW7p' }],
   bannerLinks: appIoBannerLinks,
 };
 
