@@ -9,12 +9,30 @@ const guidaTecnica: GuideDefinition = {
     slug: `io-guida-tecnica`,
   },
   versions: [
-    { version: 'v3.0', dirName: 'KaAXw9uMBC5zBbJ5o8a6' },
-    { version: 'v2.4', dirName: 'r65fve0XPThNw1ljBi57' },
-    { version: 'v2.3', dirName: 'mzwjFv2XaE1mjbz7I8gt' },
-    { version: 'v2.2', dirName: 'coSKRte21UjDBRWKLtEs' },
-    { version: 'v1.3', dirName: 'OoU8rMn4ZUWvfkSueJIl' },
-    { version: 'v1.2', dirName: 'DOaGsRYKzkZYmIAbjNII' },
+    {
+      version: 'v3.0',
+      dirName: 'KaAXw9uMBC5zBbJ5o8a6',
+    },
+    {
+      version: 'v2.4',
+      dirName: 'r65fve0XPThNw1ljBi57',
+    },
+    {
+      version: 'v2.3',
+      dirName: 'mzwjFv2XaE1mjbz7I8gt',
+    },
+    {
+      version: 'v2.2',
+      dirName: 'coSKRte21UjDBRWKLtEs',
+    },
+    {
+      version: 'v1.3',
+      dirName: 'OoU8rMn4ZUWvfkSueJIl',
+    },
+    {
+      version: 'v1.2',
+      dirName: 'DOaGsRYKzkZYmIAbjNII',
+    },
   ],
   bannerLinks: appIoBannerLinks,
 };
@@ -25,7 +43,16 @@ const manualeDeiServizi: GuideDefinition = {
     name: "Manuale dei servizi dell'app IO",
     slug: 'manuale-servizi',
   },
-  versions: [{ version: 'v1.0', dirName: 'zcLztiq5qDSVw9rRjW7p' }],
+  versions: [
+    {
+      version: 'v1.1',
+      dirName: 'VjpCR0JtTGTN9pAUoAg3',
+    },
+    {
+      version: 'v1.0',
+      dirName: 'zcLztiq5qDSVw9rRjW7p',
+    },
+  ],
   bannerLinks: appIoBannerLinks,
 };
 
