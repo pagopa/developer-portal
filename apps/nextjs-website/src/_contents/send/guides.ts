@@ -25,6 +25,14 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
+      version:'v1.1',
+      dirName:'fJIYTgeiXFHm8gUu4gAD',
+    },
+    {
+      version:'v1.1.1',
+      dirName:'XbcyIfLqbQFM4OsEpBQY',
+    },
+    {
       version: 'v1.0.1',
       dirName: 'E1H8qAvYcaMYhDZ2iIp5',
     },
