@@ -37,6 +37,10 @@ const sanp: GuideDefinition = {
   },
   versions: [
     {
+      verision:'3.5.0',
+        dirName:'PJuzswk8l2kp9Wm5PwAW',
+    },
+    {
       version: '3.4.1',
       dirName: '9E4vGfV6bOPGpOwZoKIm',
     },
@@ -88,14 +92,17 @@ const avvisi: GuideDefinition = {
   },
   versions: [
     {
+      version:'3.2.0',
+      dirName:'WNT7oSWxH3PFe3AGG2zK',
+    },
+    {
       version: '3.1.0',
       dirName: 'E9RM3F60OM97FbTVrCW8',
     },
-    // TODO: Uncomment once in sync
-    // {
-    //   version: '3.0.0',
-    //   dirName: 'lph4boTulr49pD0pPBVM',
-    // },
+    {
+       version: '3.0.0',
+       dirName: 'lph4boTulr49pD0pPBVM',
+     },
   ],
   bannerLinks: pagoPaBannerLinks,
 };
