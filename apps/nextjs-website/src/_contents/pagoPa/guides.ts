@@ -37,7 +37,7 @@ const sanp: GuideDefinition = {
   },
   versions: [
     {
-      verision:'3.5.0',
+      version:'3.5.0',
         dirName:'PJuzswk8l2kp9Wm5PwAW',
     },
     {
