@@ -40,7 +40,8 @@ resource "aws_cognito_user_pool" "devportal" {
 
     string_attribute_constraints {
       min_length = 1
-      max_length = 256
+      # https://www.rfc-editor.org/rfc/rfc2821#section-4.5.3.1
+      max_length = 512
     }
   }
 
@@ -66,6 +67,22 @@ resource "aws_cognito_user_pool" "devportal" {
       min_length = 1
       max_length = 256
     }
+  }
+
+  schema {
+    name                     = "privacy_policy_check_accepted"
+    attribute_data_type      = "Boolean"
+    developer_only_attribute = false
+    mutable                  = false
+    required                 = true
+  }
+
+  schema {
+    name                     = "email_updates_check_accepted"
+    attribute_data_type      = "Boolean"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = true
   }
 
 }
