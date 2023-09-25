@@ -27,7 +27,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/manuale-operativo/v1.0.1`,
+            href: `${sendGuideListsPath.path}/manuale-operativo/v1.1.1`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
