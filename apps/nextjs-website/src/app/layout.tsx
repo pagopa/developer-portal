@@ -7,6 +7,7 @@ import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
+import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -64,7 +65,7 @@ export default async function RootLayout({
       <ThemeRegistry options={{ key: 'mui' }}>
         <body>
           <SiteHeader products={products} />
-          {children}
+          <MainWrapper>{children}</MainWrapper>
           <SiteFooter />
         </body>
       </ThemeRegistry>

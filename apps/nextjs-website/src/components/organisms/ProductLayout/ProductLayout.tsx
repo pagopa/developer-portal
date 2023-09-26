@@ -6,7 +6,6 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
-import { useTheme } from '@mui/material';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
@@ -26,7 +25,6 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   children,
   showBreadcrumbs = false,
 }) => {
-  const { palette } = useTheme();
   return (
     <>
       {product && path && <ProductHeader product={product} path={path} />}
@@ -35,13 +33,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
           breadcrumbs={[...productPageToBreadcrumbs(product, path)]}
         />
       )}
-      <main
-        style={{
-          backgroundColor: palette.background.paper,
-        }}
-      >
-        {children}
-      </main>
+      {children}
       {bannerLinks && <BannerLinks banners={bannerLinks} />}
     </>
   );
