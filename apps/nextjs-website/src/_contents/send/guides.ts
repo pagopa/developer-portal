@@ -25,6 +25,14 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
+      version: 'v1.1',
+      dirName: 'fJIYTgeiXFHm8gUu4gAD',
+    },
+    {
+      version: 'v1.1.1',
+      dirName: 'XbcyIfLqbQFM4OsEpBQY',
+    },
+    {
       version: 'v1.0.1',
       dirName: 'E1H8qAvYcaMYhDZ2iIp5',
     },
@@ -59,12 +67,16 @@ const modelloDiIntegrazione: GuideDefinition = {
   },
   versions: [
     {
-      version: 'v1.0',
-      dirName: '4QKqt9mkQAzNdmxbW9Ab',
+      version: 'v2.1',
+      dirName: 'cQbgjUoB6uPKpsuCW3ZW',
     },
     {
       version: 'v2.0',
       dirName: 'TmWy4VGVx84G3qBQqH89',
+    },
+    {
+      version: 'v1.0',
+      dirName: '4QKqt9mkQAzNdmxbW9Ab',
     },
   ],
   bannerLinks: sendBannerLinks,

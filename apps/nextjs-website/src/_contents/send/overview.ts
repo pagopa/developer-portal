@@ -74,7 +74,7 @@ export const sendOverview: OverviewData = {
     cta: {
       label: 'Leggi il manuale operativo',
       text: "Scopri i dettagli dell'integrazione",
-      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0.1`,
+      href: `${sendGuideListsPath.path}/manuale-operativo/v1.1.1`,
     },
     cards: [
       {
@@ -108,7 +108,7 @@ export const sendOverview: OverviewData = {
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.0`,
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {

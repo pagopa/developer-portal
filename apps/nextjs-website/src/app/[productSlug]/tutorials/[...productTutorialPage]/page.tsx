@@ -32,10 +32,6 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
-  // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
-  if (/\.(svg|png|jpg|pdf )$/.test(tutorialPath)) {
-    return null;
-  }
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source } = tutorialProps;
   const props: ProductTutorialPageProps = {

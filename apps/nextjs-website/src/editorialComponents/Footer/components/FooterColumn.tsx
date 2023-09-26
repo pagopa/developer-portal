@@ -68,7 +68,7 @@ export const FooterColumn = ({
         <li key={i}>
           <LinkMui
             aria-label={ariaLabel}
-            component={Link}
+            component={'a'}
             href={href}
             onClick={onClick}
             underline='none'

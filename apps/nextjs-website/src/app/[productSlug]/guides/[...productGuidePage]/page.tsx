@@ -45,10 +45,6 @@ type ProductGuidePageProps = {
 } & ProductLayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
-  // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
-  if (/\.(svg|png|jpg|pdf)$/.test(params?.productGuidePage.join('/'))) {
-    return null;
-  }
   const guideProps = await getGuide(
     params?.productSlug,
     params?.productGuidePage ?? ['']

@@ -34,7 +34,7 @@ export const pagoPaGuideLists: GuideListsData = {
           mobileImagePath: '/images/saci-mobile.png',
         },
         {
-          title: 'SANP 3.4.1',
+          title: 'SANP 3.5.0',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -45,7 +45,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/sanp/3.4.1`,
+            href: `${pagoPaGuideListsPath.path}/sanp/3.5.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
@@ -68,7 +68,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',

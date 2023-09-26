@@ -50,7 +50,7 @@ export const pagoPaOverview: OverviewData = {
     cta: {
       label: 'Leggi la guida tecnica',
       text: 'Scopri tutti i dettagli dell’integrazione',
-      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
     },
     cards: [
       {
@@ -125,7 +125,7 @@ export const pagoPaOverview: OverviewData = {
           ],
         },
         link: {
-          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.1.0`,
+          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
           label: 'Scopri di più',
         },
         imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',

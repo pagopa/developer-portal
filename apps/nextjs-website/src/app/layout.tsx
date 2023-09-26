@@ -60,7 +60,6 @@ export default async function RootLayout({
             dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
           />
         )}
-        <link rel='icon' href='favicon.svg' />
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <body>
