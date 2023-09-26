@@ -31,6 +31,12 @@ resource "aws_cognito_user_pool" "devportal" {
     minimum_length = 8
   }
 
+  email_configuration {
+    email_sending_account = "DEVELOPER"
+    from_email_address = format("PagoPA - Developer Portal <%s>", aws_ses_email_identity.noreply_email.email)
+    source_arn = aws_ses_email_identity.noreply_email.arn
+  }
+
   schema {
     name                     = "email"
     attribute_data_type      = "String"

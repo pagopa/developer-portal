@@ -75,3 +75,12 @@ resource "aws_route53_record" "devportal_cognito_A" {
     zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
   }
 }
+
+// This Route53 record authorise SES to use the domain
+resource "aws_route53_record" "amazonses_verification_record" {
+  name    = format("_amazonses.%s", var.dns_domain_name)
+  type    = "TXT"
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  ttl     = "600"
+  records = [aws_ses_domain_identity.devportal.verification_token]
+}
