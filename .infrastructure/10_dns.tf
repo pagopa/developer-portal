@@ -75,15 +75,3 @@ resource "aws_route53_record" "devportal_cognito_A" {
     zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
   }
 }
-
-// This Route53 record authorise SES to use the domain
-resource "aws_route53_record" "email_dkim_records" {
-  count   = 3
-  zone_id = aws_route53_zone.dev_portal.zone_id
-  name    = "${element(aws_ses_domain_dkim.devportal.dkim_tokens, count.index)}._domainkey.${var.dns_domain_name}"
-  type    = "CNAME"
-  ttl     = "600"
-  records = [
-    "${element(aws_ses_domain_dkim.devportal.dkim_tokens, count.index)}.dkim.amazonses.com",
-  ]
-}

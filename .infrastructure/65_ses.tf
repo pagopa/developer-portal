@@ -1,4 +1,3 @@
-
 resource "aws_ses_domain_identity" "devportal" {
   domain = var.dns_domain_name
 }
