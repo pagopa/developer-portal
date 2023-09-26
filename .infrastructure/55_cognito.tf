@@ -70,15 +70,15 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   schema {
-    name                     = "privacy_policy_check_accepted"
+    name                     = "privacy_accepted"
     attribute_data_type      = "Boolean"
     developer_only_attribute = false
-    mutable                  = false
+    mutable                  = true
     required                 = true
   }
 
   schema {
-    name                     = "email_updates_check_accepted"
+    name                     = "mailinglist_accepted"
     attribute_data_type      = "Boolean"
     developer_only_attribute = false
     mutable                  = true
