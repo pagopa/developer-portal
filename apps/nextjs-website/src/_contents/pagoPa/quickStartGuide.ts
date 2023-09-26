@@ -30,7 +30,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Per altre info sul certificato, <a href="/pago-pa/guides/sanp/3.4.1/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
+          html: `<p>Per altre info sul certificato, <a href="/pago-pa/guides/sanp/3.5.0/appendici/connettivita" target="_blank">visita questa pagina</a>.</p>`,
         },
       ],
     },
