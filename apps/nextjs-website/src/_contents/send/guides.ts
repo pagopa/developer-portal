@@ -67,12 +67,16 @@ const modelloDiIntegrazione: GuideDefinition = {
   },
   versions: [
     {
-      version: 'v1.0',
-      dirName: '4QKqt9mkQAzNdmxbW9Ab',
+      version: 'v2.1',
+      dirName: 'cQbgjUoB6uPKpsuCW3ZW',
     },
     {
       version: 'v2.0',
       dirName: 'TmWy4VGVx84G3qBQqH89',
+    },
+    {
+      version: 'v1.0',
+      dirName: '4QKqt9mkQAzNdmxbW9Ab',
     },
   ],
   bannerLinks: sendBannerLinks,
