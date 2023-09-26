@@ -6,8 +6,8 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
 
-const Home = () => {
-  const products = [...getProducts()];
+const Home = async () => {
+  const products = [...(await getProducts())];
   const { homepage, header } = translations;
 
   return (

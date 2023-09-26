@@ -1,4 +1,6 @@
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import { Box } from '@mui/material';
@@ -40,7 +42,7 @@ type ProductGuidePageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
   // This exit guard is necessary to avoid loading this page for favicon.svg caused by GitBookContent component
@@ -71,7 +73,7 @@ const Page = async ({ params }: { params: Params }) => {
   };
 
   return (
-    <Layout
+    <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
@@ -129,7 +131,7 @@ const Page = async ({ params }: { params: Params }) => {
           </Box>
         </Box>
       </FragmentProvider>
-    </Layout>
+    </ProductLayout>
   );
 };
 

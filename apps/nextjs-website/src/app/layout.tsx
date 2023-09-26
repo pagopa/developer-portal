@@ -35,14 +35,14 @@ function makeCookieScript(dataDomainScript?: string) {
   <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->`;
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const products = [...getProducts()];
+  const products = [...(await getProducts())];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
     <html lang='it'>

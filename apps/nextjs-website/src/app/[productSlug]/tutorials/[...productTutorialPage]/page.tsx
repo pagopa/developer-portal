@@ -1,6 +1,8 @@
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { getTutorial, getTutorialPaths, getProducts } from '@/lib/api';
+import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
@@ -24,7 +26,7 @@ type ProductTutorialPageProps = {
   path: string;
   body: string;
   bodyConfig: ParseContentConfig;
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
@@ -50,7 +52,7 @@ const Page = async ({ params }: { params: Params }) => {
   };
 
   return (
-    <Layout
+    <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
@@ -61,7 +63,7 @@ const Page = async ({ params }: { params: Params }) => {
           <GitBookContent content={props.body} config={props.bodyConfig} />
         </Box>
       </EContainer>
-    </Layout>
+    </ProductLayout>
   );
 };
 

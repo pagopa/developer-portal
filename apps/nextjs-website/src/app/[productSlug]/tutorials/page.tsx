@@ -2,7 +2,9 @@ import { Product } from '@/lib/types/product';
 import { getTutorialLists, getProductsSlugs } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
@@ -22,7 +24,7 @@ export type TutorialsPageProps = {
     readonly description: string;
   };
   readonly tutorials: readonly Tutorial[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
@@ -31,7 +33,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
   const { shared } = translations;
 
   return (
-    <Layout
+    <ProductLayout
       product={product}
       path={path}
       showBreadcrumbs={false}
@@ -70,7 +72,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
           />
         </Box>
       )}
-    </Layout>
+    </ProductLayout>
   );
 };
 

@@ -1,6 +1,8 @@
 import { getOverview, getProductsSlugs } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
@@ -69,7 +71,7 @@ export type OverviewPageProps = {
     }[];
   };
   readonly relatedLinks?: Path[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const OverviewPage = async ({ params }: ProductParams) => {
   const {
@@ -86,7 +88,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
   const { overview } = translations;
 
   return (
-    <Layout product={product} path={path} bannerLinks={bannerLinks}>
+    <ProductLayout product={product} path={path} bannerLinks={bannerLinks}>
       <Hero
         background={hero.backgroundImage}
         title={hero.title}
@@ -145,7 +147,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           }))}
         />
       )}
-    </Layout>
+    </ProductLayout>
   );
 };
 

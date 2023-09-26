@@ -8,7 +8,7 @@ import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 import { useTheme } from '@mui/material';
 
-export type LayoutProps = {
+export type ProductLayoutProps = {
   readonly product?: Product;
   readonly path?: string;
   readonly bannerLinks?: readonly BannerLinkProps[];
@@ -17,9 +17,9 @@ export type LayoutProps = {
 
 type LayoutPropsWithChildren = {
   children: ReactNode | ReactNode[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
-const Layout: FC<LayoutPropsWithChildren> = ({
+const ProductLayout: FC<LayoutPropsWithChildren> = ({
   path,
   product,
   bannerLinks,
@@ -47,4 +47,4 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   );
 };
 
-export default Layout;
+export default ProductLayout;
