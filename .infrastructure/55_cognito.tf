@@ -80,7 +80,7 @@ resource "aws_cognito_user_pool" "devportal" {
     attribute_data_type      = "Boolean"
     developer_only_attribute = false
     mutable                  = true
-    required                 = true
+    required                 = false
   }
 
   schema {
@@ -88,7 +88,7 @@ resource "aws_cognito_user_pool" "devportal" {
     attribute_data_type      = "Boolean"
     developer_only_attribute = false
     mutable                  = true
-    required                 = true
+    required                 = false
   }
 
 }
