@@ -21,7 +21,7 @@ const privacyPolicyScript = `
 
 const PrivacyPolicy = () => {
   return (
-    <Box mt={5}>
+    <Box py={6}>
       <div
         id='privacy-policy-script'
         dangerouslySetInnerHTML={{

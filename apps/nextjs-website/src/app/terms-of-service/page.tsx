@@ -21,7 +21,7 @@ const TermsOfServiceScript = `
 
 const TermsOfService = () => {
   return (
-    <Box mt={5}>
+    <Box py={6}>
       <div
         id='terms-of-service-script'
         dangerouslySetInnerHTML={{
