@@ -77,11 +77,13 @@ resource "aws_route53_record" "devportal_cognito_A" {
 }
 
 // This Route53 record authorise SES to use the domain
-resource "aws_route53_record" "amazonses_dkim_record" {
+resource "aws_route53_record" "email_dkim_records" {
   count   = 3
   zone_id = aws_route53_zone.dev_portal.zone_id
+  name    = "${element(aws_ses_domain_dkim.devportal.dkim_tokens, count.index)}._domainkey.${var.dns_domain_name}"
   type    = "CNAME"
-  ttl     = 600
-  name    = format("%s._domainkey", aws_ses_domain_dkim.devportal.dkim_tokens[count.index])
-  records = [format("%s.dkim.amazonses.com", aws_ses_domain_dkim.devportal.dkim_tokens[count.index])]
+  ttl     = "600"
+  records = [
+    "${element(aws_ses_domain_dkim.devportal.dkim_tokens, count.index)}.dkim.amazonses.com",
+  ]
 }
