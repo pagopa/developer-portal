@@ -108,7 +108,7 @@ export const sendOverview: OverviewData = {
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.0`,
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
