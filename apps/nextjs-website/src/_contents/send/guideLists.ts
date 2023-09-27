@@ -64,7 +64,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/modello-di-integrazione/v1.0`,
+            href: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
             label: 'Vai al documento',
           },
           imagePath: '/images/modello-di-integrazione.png',
