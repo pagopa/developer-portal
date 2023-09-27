@@ -1,30 +1,36 @@
-/* eslint-disable functional/immutable-data */
 'use client';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import createCache from '@emotion/cache';
 import { useServerInsertedHTML } from 'next/navigation';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { Options } from '@emotion/cache/dist/declarations/types';
 
 export const theme = createTheme(muiItaliaTheme);
 
 // This implementation is from emotion-js
 // https://github.com/emotion-js/emotion/issues/2928#issuecomment-1319747902
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ThemeRegistry(props: any) {
-  const { options, children } = props;
-
+export default function ThemeRegistry({
+  options,
+  children,
+}: {
+  options: Options;
+  children: ReactNode;
+}) {
   const [{ cache, flush }] = useState(() => {
     const cache = createCache(options);
+    /* eslint-disable-next-line functional/immutable-data */
     cache.compat = true;
     const prevInsert = cache.insert;
     // eslint-disable-next-line functional/no-let
     let inserted: string[] = [];
+    /* eslint-disable-next-line functional/immutable-data */
     cache.insert = (...args) => {
       const serialized = args[1];
       if (cache.inserted[serialized.name] === undefined) {
+        /* eslint-disable-next-line functional/immutable-data */
         inserted.push(serialized.name);
       }
       return prevInsert(...args);

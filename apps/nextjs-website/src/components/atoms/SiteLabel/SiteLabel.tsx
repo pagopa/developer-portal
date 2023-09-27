@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
 type SiteLabelProps = {
@@ -9,8 +9,10 @@ type SiteLabelProps = {
 };
 
 const SiteLabel = ({ title, boldTitle, color }: SiteLabelProps) => {
+  const { palette } = useTheme();
+
   return (
-    <Typography color={color} component={'p'}>
+    <Typography color={color || palette.common.white} component={'p'}>
       {title}
       <Box component={'span'} fontWeight={'bold'} sx={{ pl: 0.8, pr: 1.6 }}>
         {boldTitle}

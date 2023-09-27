@@ -7,7 +7,7 @@ import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('api')].map((productSlug) => ({
+  return getProductsSlugs('api').map((productSlug) => ({
     productSlug,
   }));
 }

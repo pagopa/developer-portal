@@ -25,7 +25,7 @@ const HomepageButton = ({
       href={href}
       title={completeTitle}
     >
-      <SiteLabel title={title} boldTitle={boldTitle} />
+      <SiteLabel title={title} color={'inherit'} boldTitle={boldTitle} />
     </ButtonNaked>
   );
 };
