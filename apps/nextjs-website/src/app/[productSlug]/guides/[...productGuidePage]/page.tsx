@@ -17,7 +17,7 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return [...getGuidePaths()].map(({ slug, guidePaths }) => ({
+  return getGuidePaths().map(({ slug, guidePaths }) => ({
     productSlug: slug,
     productGuidePage: guidePaths,
   }));
