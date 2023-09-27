@@ -1,11 +1,11 @@
 import { Schema, Tag } from '@markdoc/markdoc';
-import { LinkAttr, PrefixLinkAttr } from '../attributes';
+import { LinkAttr } from '../attributes';
 import { PageTitlePath } from '../../parseDoc';
 
 export type LinkProps<A> = {
   readonly href: string;
-  readonly title?: string;
   readonly children: A;
+  readonly title?: string;
 };
 
 export const link: Schema = {
@@ -14,22 +14,13 @@ export const link: Schema = {
     title: { type: String },
   },
   transform: (node, config) => {
+    const attrs = node.transformAttributes(config);
     const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
       ? [...config.variables.gitBookPagesWithTitle]
       : [];
-    const page = gitBookPagesWithTitle.find(
-      ({ path }) => path === config.variables?.pagePath
-    );
-    const attrs = node.transformAttributes(config);
-    const attributes = page ? { ...attrs, title: page.title } : attrs;
-    return new Tag('Link', attributes, node.transformChildren(config));
-  },
-};
-
-export const menuLink: Schema = {
-  render: 'Link',
-  attributes: {
-    href: { type: PrefixLinkAttr, required: true },
-    title: { type: String },
+    const page = gitBookPagesWithTitle.find(({ path }) => path === attrs.href);
+    const childrenTreeNode = node.transformChildren(config);
+    const children = page ? [page.title] : childrenTreeNode;
+    return new Tag('Link', attrs, children);
   },
 };

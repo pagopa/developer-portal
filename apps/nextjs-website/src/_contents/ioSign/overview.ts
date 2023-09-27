@@ -18,7 +18,7 @@ export const ioSignOverview: OverviewData = {
   feature: {
     title: 'Perché Firma con IO',
     subtitle:
-      'Che tu sia un ente pubblico, privato, centrale o locale, tramite Firma con IO potrai:',
+      'Che tu sia un ente pubblico, centrale o locale, tramite Firma con IO potrai:',
     items: [
       {
         iconName: 'MessageRounded',

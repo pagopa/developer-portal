@@ -1,8 +1,8 @@
 import { pagoPa } from './pagoPa';
-import { makeGuide } from '../makeDocs';
+import { GuideDefinition } from '../makeDocs';
 import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
-const saci = makeGuide({
+const saci: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'SACI',
@@ -27,15 +27,19 @@ const saci = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const sanp = makeGuide({
+const sanp: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'SANP',
     slug: 'sanp',
   },
   versions: [
+    {
+      version: '3.5.0',
+      dirName: 'PJuzswk8l2kp9Wm5PwAW',
+    },
     {
       version: '3.4.1',
       dirName: '9E4vGfV6bOPGpOwZoKIm',
@@ -78,9 +82,9 @@ const sanp = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const avvisi = makeGuide({
+const avvisi: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Avvisi di Pagamento',
@@ -88,19 +92,22 @@ const avvisi = makeGuide({
   },
   versions: [
     {
+      version: '3.2.0',
+      dirName: 'WNT7oSWxH3PFe3AGG2zK',
+    },
+    {
       version: '3.1.0',
       dirName: 'E9RM3F60OM97FbTVrCW8',
     },
-    // TODO: Uncomment once in sync
-    // {
-    //   version: '3.0.0',
-    //   dirName: 'lph4boTulr49pD0pPBVM',
-    // },
+    {
+      version: '3.0.0',
+      dirName: 'lph4boTulr49pD0pPBVM',
+    },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const brand = makeGuide({
+const brand: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Linee Guida Brand pagoPA',
@@ -114,9 +121,9 @@ const brand = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-const pda = makeGuide({
+const pda: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Portale delle Adesioni',
@@ -137,6 +144,6 @@ const pda = makeGuide({
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-});
+};
 
-export const pagoPaGuides = [...saci, ...sanp, ...avvisi, ...brand, ...pda];
+export const pagoPaGuides = [saci, sanp, avvisi, brand, pda];

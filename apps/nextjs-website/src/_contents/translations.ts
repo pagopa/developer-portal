@@ -1,6 +1,7 @@
 // TODO: move to proper localization system
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
+import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
 
 export const translations = {
   header: {
@@ -61,10 +62,9 @@ export const translations = {
             'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
           href: {
             label: 'Vai alla guida',
-            link: '#news-3',
+            link: `${pagoPaQuickStartGuidePath.path}`,
             title: 'Vai alla guida',
           },
-          coomingSoon: true,
           image: {
             url: '/images/homepage-pago-pa.png',
             alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',

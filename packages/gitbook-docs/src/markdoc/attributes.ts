@@ -1,5 +1,6 @@
 import { Config } from '@markdoc/markdoc';
 import path from 'path';
+import { ParseContentConfig } from '../parseContent';
 
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
@@ -7,11 +8,22 @@ export class BooleanAttr {
 }
 
 const convertLink = (link: string): string =>
-  link.replace('/README.md', '').replace('README.md', '').replace('.md', '');
+  link
+    .replace('/README.md', '')
+    .replace('README.md', '')
+    .replace('.md', '')
+    .replace(new RegExp('^(.*?)\\/?$'), '$1');
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
+    // TODO: this cast will be removed when we can pass a custom type instead of Config
+    const parseContentConfig = variables as ParseContentConfig;
+    // Link to other spaces start with http://localhost:5000
+    const linkToSpacesRegex = new RegExp(
+      '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
+      'g'
+    );
     if (value && !value.startsWith('http')) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
@@ -19,6 +31,18 @@ export class LinkAttr {
         : path.parse(variables?.pagePath).dir;
       const href = path.join(pagePath, value);
       return convertLink(href);
+    } else if (value?.match(linkToSpacesRegex)) {
+      // Normalize URL to <spaceId>/<pagePath>
+      const sanitizedSpacePagePath = value.replace(linkToSpacesRegex, '$2');
+      const spacePrefix = parseContentConfig.spaceToPrefix.find((elem) =>
+        sanitizedSpacePagePath.startsWith(elem.spaceId)
+      );
+      return spacePrefix
+        ? sanitizedSpacePagePath.replace(
+            spacePrefix.spaceId,
+            spacePrefix.pathPrefix
+          )
+        : value;
     } else return value;
   };
 }

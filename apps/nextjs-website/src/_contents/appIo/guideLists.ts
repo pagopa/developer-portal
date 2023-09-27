@@ -50,7 +50,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.0`,
+            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.1`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',

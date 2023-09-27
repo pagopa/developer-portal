@@ -5,6 +5,7 @@ import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
+import { sendB2BApiPath, sendNotificationsApiPath } from './apiPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -73,7 +74,7 @@ export const sendOverview: OverviewData = {
     cta: {
       label: 'Leggi il manuale operativo',
       text: "Scopri i dettagli dell'integrazione",
-      href: `${sendGuideListsPath.path}/manuale-operativo/v1.0.1`,
+      href: `${sendGuideListsPath.path}/manuale-operativo/v1.1.1`,
     },
     cards: [
       {
@@ -85,13 +86,13 @@ export const sendOverview: OverviewData = {
       {
         title: 'API B2B per le PA',
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
-        href: send.subpaths.api?.path ?? '#',
+        href: sendB2BApiPath.path ?? '#',
         iconName: 'FolderOutlined',
       },
       {
         title: 'API per avanzamento notifiche',
         text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
-        href: send.subpaths.api?.path ?? '#',
+        href: sendNotificationsApiPath.path ?? '#',
         iconName: 'FolderOutlined',
       },
     ],
@@ -107,7 +108,7 @@ export const sendOverview: OverviewData = {
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.0`,
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {

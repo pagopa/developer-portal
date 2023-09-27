@@ -13,7 +13,13 @@ const TypographyPart = (props: TypographyPartProps) => {
   return (
     <Typography
       {...props}
-      sx={{ wordBreak: 'break-all', marginBottom: spacing(5), ...props.sx }}
+      sx={{
+        wordBreak: 'break-word',
+        textAlign: 'justify',
+        textAlignLast: 'left',
+        marginBottom: spacing(5),
+        ...props.sx,
+      }}
     >
       {props.asHtml === true ? (
         <div dangerouslySetInnerHTML={{ __html: props.text }} />

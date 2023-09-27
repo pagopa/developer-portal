@@ -18,54 +18,70 @@ describe('parseMenu', () => {
   });
 
   it('should fill the isLeaf attribute without error', () => {
-    expect(parseMenu('* Page', config)).toStrictEqual([
-      new Markdoc.Tag('List', {}, [
-        new Markdoc.Tag('Item', { isLeaf: true }, ['Page']),
-      ]),
+    expect(parseMenu('* [Page](page.md)', config)).toStrictEqual([
+      new Markdoc.Tag('Item', {
+        isLeaf: true,
+        href: `${config.linkPrefix}/page`,
+        title: 'Page',
+      }),
     ]);
-    expect(parseMenu('* Page\n    * Child', config)).toStrictEqual([
-      new Markdoc.Tag('List', {}, [
-        new Markdoc.Tag('Item', { isLeaf: false }, [
-          'Page',
-          new Markdoc.Tag('List', {}, [
-            new Markdoc.Tag('Item', { isLeaf: true }, ['Child']),
-          ]),
-        ]),
-      ]),
+    expect(
+      parseMenu('* [Page](page.md)\n    * [Child](page/child.md)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Item',
+        {
+          isLeaf: false,
+          href: `${config.linkPrefix}/page`,
+          title: 'Page',
+        },
+        [
+          new Markdoc.Tag('Item', {
+            isLeaf: true,
+            href: `${config.linkPrefix}/page/child`,
+            title: 'Child',
+          }),
+        ]
+      ),
     ]);
   });
 
   it('should remove invalid characters from the text of the link', () => {
     expect(parseMenu('[🏠  G e C](README.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}` }, ['G e C']),
+      new Markdoc.Tag('Item', { href: `${config.linkPrefix}`, title: 'G e C' }),
     ]);
   });
 
   it('should convert href as expected', () => {
     expect(parseMenu('[Guida](README.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}` }, ['Guida']),
+      new Markdoc.Tag('Item', { href: `${config.linkPrefix}`, title: 'Guida' }),
     ]);
     expect(parseMenu('[Changelog](changelog.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/changelog` }, [
-        'Changelog',
-      ]),
+      new Markdoc.Tag('Item', {
+        href: `${config.linkPrefix}/changelog`,
+        title: 'Changelog',
+      }),
     ]);
     expect(parseMenu('[Setup](p-e/README.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/p-e` }, ['Setup']),
+      new Markdoc.Tag('Item', {
+        href: `${config.linkPrefix}/p-e`,
+        title: 'Setup',
+      }),
     ]);
     expect(parseMenu('[Adesione](s-i/a-t.md)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: `${config.linkPrefix}/s-i/a-t` }, [
-        'Adesione',
-      ]),
+      new Markdoc.Tag('Item', {
+        href: `${config.linkPrefix}/s-i/a-t`,
+        title: 'Adesione',
+      }),
     ]);
   });
 
   it('should not convert external href', () => {
     expect(parseMenu('[Ext](http://pagopa.it)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: 'http://pagopa.it' }, ['Ext']),
+      new Markdoc.Tag('Item', { href: 'http://pagopa.it', title: 'Ext' }),
     ]);
     expect(parseMenu('[Ext](https://pagopa.it)', config)).toStrictEqual([
-      new Markdoc.Tag('Link', { href: 'https://pagopa.it' }, ['Ext']),
+      new Markdoc.Tag('Item', { href: 'https://pagopa.it', title: 'Ext' }),
     ]);
   });
 });

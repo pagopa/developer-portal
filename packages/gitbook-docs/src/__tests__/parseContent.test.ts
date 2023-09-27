@@ -3,17 +3,31 @@ import { parseContent } from '../parseContent';
 
 const config = {
   assetsPrefix: '/assets/prefix',
-  linkPrefix: '/link/prefix',
-  pagePath: '/path/to/page',
+  linkPrefix: '/to/s0',
+  pagePath: '/to/s0/page/1',
   isPageIndex: false,
-  gitBookPagesWithTitle: [
+  spaceToPrefix: [
     {
-      path: '/path/to/page/1',
-      title: 'Who am I',
+      spaceId: 's0',
+      pathPrefix: '/to/s0',
     },
     {
-      path: '/path/page',
-      title: 'Page',
+      spaceId: 's1',
+      pathPrefix: '/to/s1',
+    },
+  ],
+  gitBookPagesWithTitle: [
+    {
+      path: '/to/s0/page/1',
+      title: 'S0 Page 1',
+    },
+    {
+      path: '/to/s0/home',
+      title: 'S0 Home',
+    },
+    {
+      path: '/to/s1',
+      title: 'S1 Home',
     },
   ],
 };
@@ -46,7 +60,7 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
         'h2 title ',
-        new Markdoc.Tag('Link', { id: 'code', href: '/path/to/#code' }, []),
+        new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page/#code' }, []),
       ]),
     ]);
     expect(parseContent('## [link](target-link)', config)).toStrictEqual([
@@ -75,17 +89,17 @@ describe('parseContent', () => {
   it('should convert href as expected', () => {
     expect(parseContent('[Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/path/to' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page' }, ['Guida']),
       ]),
     ]);
     expect(parseContent('[Guida](b.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/path/to/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page/b' }, ['Guida']),
       ]),
     ]);
     expect(parseContent('[Guida](../a/b.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/path/a/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/to/s0/a/b' }, ['Guida']),
       ]),
     ]);
   });
@@ -94,12 +108,51 @@ describe('parseContent', () => {
     const customConfig = { ...config, isPageIndex: true };
     expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/path/to/page/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1/b' }, ['Guida']),
       ]),
     ]);
     expect(parseContent('[Guida](../a/b.md)', customConfig)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/path/to/a/b' }, ['Guida']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should replace the title of link', () => {
+    expect(
+      parseContent('Go to [page.md](../home.md "mention")', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Go to ',
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s0/home' }, [
+          'S0 Home',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should convert href to other gitbook space', () => {
+    expect(
+      parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://localhost:5000/s/s0/page/1)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://localhost:5000/o/xY/s/s1/ "mention")', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, [
+          'S1 Home',
+        ]),
       ]),
     ]);
   });
@@ -479,7 +532,7 @@ describe('parseContent', () => {
             'Card',
             {
               coverSrc: `${config.assetsPrefix}/img-0.jpg`,
-              href: '/path/to/ref-0',
+              href: '/to/s0/page/ref-0',
             },
             [new Markdoc.Tag('CardItem', {}, ['0 - A'])]
           ),
@@ -487,7 +540,7 @@ describe('parseContent', () => {
             'Card',
             {
               coverSrc: `${config.assetsPrefix}/img-1.jpg`,
-              href: '/path/to/ref-1',
+              href: '/to/s0/page/ref-1',
             },
             [new Markdoc.Tag('CardItem', {}, ['1 - A'])]
           ),
@@ -532,31 +585,15 @@ describe('parseContent', () => {
 
   it('should parse content-ref', () => {
     const contentRef =
-      '{% content-ref url="a/b.md" %}\n' +
-      '[b.md](a/b.md)\n' +
-      '{% endcontent-ref %}';
+      '{% content-ref url="1/" %}\n' + '[1.md](1/)\n' + '{% endcontent-ref %}';
     expect(parseContent(contentRef, config)).toStrictEqual([
       new Markdoc.Tag(
         'PageLink',
         {
-          url: '/path/to/a/b',
+          url: '/to/s0/page/1',
         },
-        ['b.md']
+        ['S0 Page 1']
       ),
-    ]);
-  });
-
-  it('should parse mention', () => {
-    const mention = 'Go to [page.md](../../page.md "mention")';
-    expect(
-      parseContent(mention, { ...config, pagePath: '/path/to/page/1' })
-    ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, [
-        'Go to ',
-        new Markdoc.Tag('Link', { title: 'Who am I', href: '/path/page' }, [
-          'page.md',
-        ]),
-      ]),
     ]);
   });
 });
