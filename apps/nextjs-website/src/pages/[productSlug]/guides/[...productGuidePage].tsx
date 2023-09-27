@@ -111,7 +111,7 @@ const Page = (props: ProductGuidePageProps) => {
               position: 'sticky',
               height: '100vh',
               overflowY: 'auto',
-              top: -74,
+              top: 59,
               scrollbarColor: 'red orange',
               scrollbarWidth: 'thin',
             }}
@@ -179,7 +179,7 @@ const Page = (props: ProductGuidePageProps) => {
               sx={{
                 position: 'sticky',
                 maxWidth: '270px',
-                top: 20,
+                top: 150,
               }}
             >
               <GuideInPageMenu
