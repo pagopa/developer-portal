@@ -26,7 +26,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           ignored_files: 'package-lock.json, docs/'
           min_size: 200
-          max_size: 400
+          max_size: 800
 
   add_assignee:
     name: Add assignee
