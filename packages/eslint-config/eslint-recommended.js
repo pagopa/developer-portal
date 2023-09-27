@@ -4,6 +4,6 @@ module.exports = {
     // Load common config
     "./eslint-config.js",
     // Load pagopa eslint config
-    "@pagopa/eslint-config/strict",
+    "@pagopa/eslint-config/recommended",
   ],
 }
