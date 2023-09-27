@@ -3,11 +3,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
-// import { createTheme, ThemeProvider } from '@mui/material';
-// import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
 import ThemeRegistry from './ThemeRegistry';
-
-// export const theme = createTheme(muiItaliaTheme);
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
