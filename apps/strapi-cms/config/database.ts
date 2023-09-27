@@ -1,5 +1,6 @@
 import path from 'path';
 
+// @ts-expect-error
 export default ({ env }) => {
   return {
     connection: {

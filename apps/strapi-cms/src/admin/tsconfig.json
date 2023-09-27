@@ -1,5 +1,8 @@
 {
-  "extends": "@strapi/typescript-utils/tsconfigs/admin",
+  "extends": [
+    "@strapi/typescript-utils/tsconfigs/admin",
+    "../../../../tsconfig.json"
+  ],
   "include": [
     "../plugins/**/admin/src/**/*",
     "./"
