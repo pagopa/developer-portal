@@ -46,6 +46,7 @@ const transformPath = (
   path
     .replace(dirPath, `${pathPrefix}`)
     .replace('/README.md', '')
+    .replace(' ', '')
     .replace('.md', '');
 
 export const parseDoc = <T>(

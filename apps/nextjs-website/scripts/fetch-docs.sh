@@ -18,9 +18,6 @@ rm -r ./docs
 # move files
 mv ./.tmp/devportal-docs-$hash*/docs .
 
-# Recursively find files named "README (1)" and rename them to "README_1"
-find ./docs -type f -name "README (1).md" -exec ./scripts/rename.sh {} + 
-
 # cleanup
 rm -r ./tmp
 
