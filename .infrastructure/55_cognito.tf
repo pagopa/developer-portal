@@ -97,7 +97,12 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   user_pool_id                         = aws_cognito_user_pool.devportal.id
   generate_secret                      = false
   prevent_user_existence_errors        = "ENABLED"
-  callback_urls                        = [format("https://%s", var.dns_domain_name)]
+  callback_urls                        = [
+    # TODO: Remove the localhost callbacks before merge into main
+    "http://localhost:3000/auth/callback/cognito",
+    "http://localhost:3000/api/auth/callback/cognito",
+    format("https://%s", var.dns_domain_name),
+  ]
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid"]
