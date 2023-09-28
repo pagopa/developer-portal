@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "clean": "shx rm -rf dist/",
+    "compile": "npm run clean && tsc --noEmit",
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
