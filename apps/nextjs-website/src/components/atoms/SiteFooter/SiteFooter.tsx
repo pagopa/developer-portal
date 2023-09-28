@@ -1,10 +1,11 @@
+'use client';
 import { translations } from '@/_contents/translations';
 import {
   linkToFooterLinkTypeArray,
   linkToIconProps,
 } from '@/helpers/siteFooter.helper';
 import { Divider } from '@mui/material';
-import { Footer } from '@pagopa/pagopa-editorial-components/dist/components/Footer';
+import { Footer } from '@/editorialComponents/Footer';
 import React from 'react';
 
 type SiteFooterProps = {

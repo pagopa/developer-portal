@@ -1,7 +1,9 @@
+'use client';
 import React, { createElement } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, useTheme } from '@mui/material';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { translations } from '@/_contents/translations';
 
 type GoToStepProps = {

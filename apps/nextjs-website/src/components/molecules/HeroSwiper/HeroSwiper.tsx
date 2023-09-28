@@ -1,3 +1,4 @@
+'use client';
 import React, { useCallback, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -14,12 +15,12 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
   const [swiperIndex, setSwiperIndex] = useState(0);
 
   const nextSlide = useCallback(() => {
-    swiperCore?.slideTo(swiperIndex + 1);
-  }, [swiperCore, swiperIndex]);
+    swiperCore?.slideNext();
+  }, [swiperCore]);
 
-  const previusSlide = useCallback(() => {
-    swiperCore?.slideTo(swiperIndex - 1);
-  }, [swiperCore, swiperIndex]);
+  const previousSlide = useCallback(() => {
+    swiperCore?.slidePrev();
+  }, [swiperCore]);
 
   return (
     <Swiper
@@ -31,16 +32,14 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
         setSwiperIndex(swiperCore.activeIndex);
       }}
       pagination={{ clickable: true }}
+      loop={true}
       modules={[Navigation, Pagination]}
     >
-      <div onClick={() => previusSlide()}>
-        <NavigationArrow direction={'left'} hidden={swiperIndex === 0} />
+      <div onClick={() => previousSlide()}>
+        <NavigationArrow direction={'left'} hidden={false} />
       </div>
       <div onClick={() => nextSlide()}>
-        <NavigationArrow
-          direction={'right'}
-          hidden={swiperIndex === cards.length - 1}
-        />
+        <NavigationArrow direction={'right'} hidden={false} />
       </div>
       {cards.map((props, index) => (
         <SwiperSlide key={index}>

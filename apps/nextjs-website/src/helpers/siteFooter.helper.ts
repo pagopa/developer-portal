@@ -1,8 +1,5 @@
-import { EIconProps } from '@pagopa/pagopa-editorial-components/dist/components/EIcon';
-import {
-  FooterLinksType,
-  LinkType,
-} from '@pagopa/pagopa-editorial-components/dist/components/Footer/types';
+import { FooterLinksType, LinkType } from '@/editorialComponents/Footer/types';
+import { IconWrapperProps } from '@/components/atoms/IconWrapper/IconWrapper';
 
 export function linkToFooterLinkTypeArray(
   links: readonly {
@@ -30,12 +27,15 @@ export function linkToIconProps(
     readonly href: string;
     readonly icon: string;
   }[]
-): readonly EIconProps[] {
+): readonly (IconWrapperProps & {
+  readonly href: string;
+  readonly 'aria-label': string;
+})[] {
   return links.map((link) => {
     return {
       'aria-label': link.ariaLabel,
       href: link.href,
-      icon: link.icon as SocialIcon,
+      icon: (link.icon as SocialIcon) || '',
     };
   });
 }

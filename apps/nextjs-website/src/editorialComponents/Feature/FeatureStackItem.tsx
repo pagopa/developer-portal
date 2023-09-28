@@ -24,7 +24,6 @@ export const FeatureStackItem = ({ item, theme }: FeatureStackItemProps) => {
   return (
     <Stack
       component='article'
-      alignContent='center'
       justifyContent='flex-start'
       spacing={{ xs: 1, md: 3 }}
       sx={{
@@ -35,6 +34,7 @@ export const FeatureStackItem = ({ item, theme }: FeatureStackItemProps) => {
     >
       <Box
         mx='auto'
+        alignSelf='center'
         sx={{
           svg: {
             height: '64px',

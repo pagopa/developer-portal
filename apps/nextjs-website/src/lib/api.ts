@@ -8,72 +8,123 @@ import {
   tutorialLists,
   quickStartGuides,
 } from '@/_contents/products';
-import { Product } from './types/product';
+import { Product, ProductSubpathsKeys } from './types/product';
 
-export function getApi(productSlug?: string) {
-  return apis.find((apiData) => apiData.product.path === `/${productSlug}`);
+function manageUndefined<T>(props: undefined | null | T) {
+  if (!props) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  return props;
 }
 
-export function getApiPaths(): readonly string[] {
-  return apis.map((api) => api.path);
+function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
+  return { ...manageUndefined(props), products: [...getProducts()] };
 }
 
-export function getGuide(path?: string) {
-  return guides.find(({ page }) => page.path === path);
+export async function getApi(productSlug?: string) {
+  const props =
+    apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
+
+  return manageUndefinedAndAddProduct(props);
+}
+
+export async function getGuide(
+  productSlug?: string,
+  productGuidePage?: ReadonlyArray<string>
+) {
+  const guidePath = productGuidePage?.join('/');
+  const path = `/${productSlug}/guides/${guidePath}`;
+  const props = manageUndefined(guides.find(({ page }) => page.path === path));
+
+  return {
+    ...props,
+    pathPrefix: props.source.pathPrefix,
+    assetsPrefix: props.source.assetsPrefix,
+    products: getProducts().concat(),
+  };
 }
 
 export function getGuidePaths() {
-  return guides.map(({ page: { path } }) => path);
+  return guides.map((guide) => ({
+    slug: guide.product.slug,
+    // the filter is to remove the first 3 elements of the path which are
+    // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
+    guidePaths: guide.page.path.split('/').filter((p, index) => index > 2),
+  }));
 }
 
-export function getGuideLists(productSlug?: string) {
-  return guideLists.find(
-    (guideList) => guideList.product.path === `/${productSlug}`
-  );
+export async function getGuideLists(productSlug?: string) {
+  const props =
+    guideLists.find(
+      (guideList) => guideList.product.path === `/${productSlug}`
+    ) || null;
+  return manageUndefinedAndAddProduct(props);
 }
 
-export function getGuideListsPaths(): readonly string[] {
-  return guideLists.map((guideList) => guideList.path);
+export async function getOverview(productSlug?: string) {
+  const props =
+    overviews.find(
+      (overviewData) => overviewData.product.path === `/${productSlug}`
+    ) || null;
+  return manageUndefinedAndAddProduct(props);
 }
 
-export function getOverview(productSlug?: string) {
-  return overviews.find(
-    (overviewData) => overviewData.product.path === `/${productSlug}`
-  );
-}
-
-export function getOverviewPaths(): readonly string[] {
-  return overviews.map((overview) => overview.path);
+export function getProductsSlugs(
+  page?: ProductSubpathsKeys
+): readonly string[] {
+  return products
+    .filter((p) => !page || Object.keys(p.subpaths).includes(page))
+    .map(({ slug }) => slug);
 }
 
 export function getProducts(): readonly Product[] {
   return products;
 }
 
-export function getQuickStartGuide(productSlug?: string) {
-  return quickStartGuides.find(
-    (overviewData) => overviewData.product.path === `/${productSlug}`
+export async function getQuickStartGuide(productSlug?: string) {
+  const props =
+    quickStartGuides.find(
+      (overviewData) => overviewData.product.path === `/${productSlug}`
+    ) || null;
+  return manageUndefinedAndAddProduct(props);
+}
+
+export async function getTutorial(
+  productSlug?: string,
+  productTutorialPage?: ReadonlyArray<string>
+) {
+  const tutorialPath = productTutorialPage?.join('/');
+  const path = `/${productSlug}/tutorials/${tutorialPath}`;
+  const props = manageUndefined(
+    tutorials.find(({ page }) => page.path === path)
   );
-}
 
-export function getQuickStartGuidePaths(): readonly string[] {
-  return quickStartGuides.map((overview) => overview.path);
-}
-
-export function getTutorial(path?: string) {
-  return tutorials.find(({ page }) => page.path === path);
+  return {
+    ...props,
+    product: props.product,
+    pathPrefix: props.source.pathPrefix,
+    assetsPrefix: props.source.assetsPrefix,
+    products: getProducts().concat(),
+    bannerLinks: props.bannerLinks,
+  };
 }
 
 export function getTutorialPaths() {
-  return tutorials.map(({ page: { path } }) => path);
+  return tutorials.map((tutorial) => ({
+    slug: tutorial.product.slug,
+    tutorialPaths: tutorial.page.path
+      .split('/')
+      // the filter is to remove the first 3 elements of the path which are
+      // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
+      .filter((p, index) => index > 2),
+  }));
 }
 
-export function getTutorialLists(productSlug?: string) {
-  return tutorialLists.find(
-    (tutorialList) => tutorialList.product.path === `/${productSlug}`
-  );
-}
-
-export function getTutorialListsPaths(): readonly string[] {
-  return tutorialLists.map((tutorialList) => tutorialList.path);
+export async function getTutorialLists(productSlug?: string) {
+  const props =
+    tutorialLists.find(
+      (tutorialList) => tutorialList.product.path === `/${productSlug}`
+    ) || null;
+  return manageUndefinedAndAddProduct(props);
 }

@@ -1,3 +1,4 @@
+'use client';
 import { FC } from 'react';
 import { API } from '@stoplight/elements';
 import '@stoplight/elements/styles.min.css';
@@ -8,7 +9,7 @@ type ApiViewerProps = {
   product: Product;
   hideTryIt?: boolean;
 };
-export const ApiViewer: FC<ApiViewerProps> = ({
+const ApiViewer: FC<ApiViewerProps> = ({
   hideTryIt = true,
   specURL,
   product: {
@@ -26,3 +27,5 @@ export const ApiViewer: FC<ApiViewerProps> = ({
     />
   );
 };
+
+export default ApiViewer;
