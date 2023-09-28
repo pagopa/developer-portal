@@ -94,10 +94,10 @@ resource "aws_cognito_user_pool" "devportal" {
 resource "aws_cognito_user_pool_client" "devportal_website" {
   name = "devportal-website-client"
 
-  user_pool_id                         = aws_cognito_user_pool.devportal.id
-  generate_secret                      = false
-  prevent_user_existence_errors        = "ENABLED"
-  callback_urls                        = [
+  user_pool_id                  = aws_cognito_user_pool.devportal.id
+  generate_secret               = false
+  prevent_user_existence_errors = "ENABLED"
+  callback_urls = [
     # TODO: Remove the localhost callbacks before merge into main
     "http://localhost:3000/auth/callback/cognito",
     "http://localhost:3000/api/auth/callback/cognito",
