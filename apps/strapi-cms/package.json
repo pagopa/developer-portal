@@ -6,7 +6,7 @@
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "lint": "eslint src",
+    "lint": "eslint --ignore-path .gitignore src",
     "strapi": "strapi"
   },
   "dependencies": {
