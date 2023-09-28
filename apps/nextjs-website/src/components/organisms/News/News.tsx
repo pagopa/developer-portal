@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box } from '@mui/material';
@@ -13,7 +14,7 @@ type NewsProps = {
   };
   marginTop?: number;
   cards: {
-    coomingSoon?: boolean;
+    comingSoon?: boolean;
     title: string;
     dateString?: string;
     image?: {
@@ -36,9 +37,7 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
       <Box mt={2}>
         <Newsroom
           items={cards.map((card) => ({
-            coomingSoonLabel: !card.coomingSoon
-              ? undefined
-              : shared.coomingSoon,
+            comingSoonLabel: !card.comingSoon ? undefined : shared.comingSoon,
             title: card.title,
             date: {
               date: card.dateString ? new Date(card.dateString) : undefined,

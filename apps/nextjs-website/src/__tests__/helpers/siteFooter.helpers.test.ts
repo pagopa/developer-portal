@@ -2,7 +2,7 @@ import {
   linkToFooterLinkTypeArray,
   linkToIconProps,
 } from '../../helpers/siteFooter.helper';
-import { LinkType } from '@pagopa/pagopa-editorial-components/dist/components/Footer/types';
+import { LinkType } from '@/editorialComponents/Footer/types';
 
 const links = [
   {

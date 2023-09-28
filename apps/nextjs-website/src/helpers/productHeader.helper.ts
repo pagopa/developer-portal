@@ -1,6 +1,6 @@
 import { Product } from '@/lib/types/product';
-import { MenuDropdownProp } from '@pagopa/pagopa-editorial-components/dist/components/Header/components/MenuDropdown';
-import { Theme } from '@pagopa/pagopa-editorial-components/dist/types/components';
+import { MenuDropdownProp } from '@/editorialComponents/Header/components/MenuDropdown';
+import { Theme } from '@/editorialComponents/types/components';
 
 export function productToMenuItems(
   product: Product,

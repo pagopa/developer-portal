@@ -6,6 +6,7 @@ const product: Product = {
   description: 'test',
   svgPath: 'test',
   path: '/path',
+  slug: 'path',
   subpaths: {
     overview: {
       name: 'overview',

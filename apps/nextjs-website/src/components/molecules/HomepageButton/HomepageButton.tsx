@@ -1,3 +1,4 @@
+'use client';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ const HomepageButton = ({
       href={href}
       title={completeTitle}
     >
-      <SiteLabel title={title} boldTitle={boldTitle} />
+      <SiteLabel title={title} color={'inherit'} boldTitle={boldTitle} />
     </ButtonNaked>
   );
 };
