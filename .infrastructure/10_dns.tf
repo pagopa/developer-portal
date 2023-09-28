@@ -75,3 +75,12 @@ resource "aws_route53_record" "devportal_cognito_A" {
     zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
   }
 }
+
+// TXT Record for SES email validation
+resource "aws_route53_record" "devportal_ses_txt" {
+  name    = module.ses_developer_pagopa_it.verification_token.name
+  type    = "TXT"
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  records = [module.ses_developer_pagopa_it.verification_token.value]
+  ttl     = 3600
+}
