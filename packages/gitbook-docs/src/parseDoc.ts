@@ -46,7 +46,7 @@ const transformPath = (
   path
     .replace(dirPath, `${pathPrefix}`)
     .replace('/README.md', '')
-    // remove spaces because in some systems (e.g. NextJS) 
+    // remove spaces because in some systems (e.g. NextJS)
     // they cause errors when used in paths
     .replace(' ', '')
     .replace('.md', '');
