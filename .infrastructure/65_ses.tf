@@ -1,5 +1,5 @@
 module "ses_developer_pagopa_it" {
-  source     = "github.com/pagopa/terraform-aws-ses.git?ref=aaa7462dca50e83809ca614314a3c0da7a6174c4" # v1.2.0
+  source     = "github.com/pagopa/terraform-aws-ses.git?ref=58c1263afa441692e67d1be5dca809e65d6852df" # v1.2.1
   aws_region = var.aws_region
   domain     = var.dns_domain_name
 
