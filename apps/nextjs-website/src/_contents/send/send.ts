@@ -8,6 +8,7 @@ import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
 export const send: Product = {
   name: 'SEND - Servizio Notifiche Digitali',
   path: '/send',
+  slug: 'send',
   description:
     'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
   svgPath: '/icons/send.svg',

@@ -1,3 +1,4 @@
+'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import {
   Typography,
@@ -8,11 +9,11 @@ import {
   useMediaQuery,
   Theme,
 } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Image from 'next/image';
 
 interface INewsroomItem {
-  coomingSoonLabel?: string;
+  comingSoonLabel?: string;
   img: {
     src: string;
     alt: string;
@@ -39,7 +40,7 @@ const Item = (props: INewsroomItem) => {
   const theme = useTheme();
   const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const {
-    coomingSoonLabel,
+    comingSoonLabel,
     img,
     date: {
       date,
@@ -66,7 +67,7 @@ const Item = (props: INewsroomItem) => {
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
       >
-        {coomingSoonLabel && (
+        {comingSoonLabel && (
           <Box
             py={0.5}
             px={2}
@@ -79,7 +80,7 @@ const Item = (props: INewsroomItem) => {
             }}
           >
             <Typography fontSize={14} fontWeight={600}>
-              {coomingSoonLabel}
+              {comingSoonLabel}
             </Typography>
           </Box>
         )}
@@ -107,7 +108,7 @@ const Item = (props: INewsroomItem) => {
       <Typography variant='h6'>{title}</Typography>
       <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
         <LinkButton
-          disabled={!!coomingSoonLabel}
+          disabled={!!comingSoonLabel}
           href={href.link}
           label={href.label}
         />

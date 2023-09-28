@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import LinkCard from '@/components/molecules/LinkCard/LinkCard';
@@ -13,7 +14,7 @@ type LinkCardsProps = {
 
 const LinkCards = ({ cards }: LinkCardsProps) => {
   return (
-    <Box py={4}>
+    <Box pt={3} pb={4}>
       <Grid container spacing={2}>
         {cards.map(({ title, text, href, label }, index) => {
           return (

@@ -4,6 +4,7 @@
 }
 
 body {
+  background-color: white;
   margin: 0;
   --scrollbar-foreground: #dfe2e5;
   --scrollbar-background: transparent;
@@ -23,6 +24,17 @@ body {
   height: 8px;
 }
 
+.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
+  top: unset;
+  bottom: 57px;
+}
+
+@media (min-width: 900px) {
+  .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 73px;
+  }
+}
+
 .swiper-pagination-bullet {
   width: 40px;
   height: 4px;
@@ -34,4 +46,14 @@ body {
 
 .swiper-pagination-bullet-active {
   opacity: 1;
+}
+
+.syntax-highlighter-container {
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
+@media (min-width: 900px){
+  .syntax-highlighter-container {
+    border-radius: 0 0.375rem 0.375rem 0;
+  }
 }

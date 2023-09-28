@@ -11,6 +11,7 @@ export const appIo: Product = {
     'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
   svgPath: '/icons/appIo.svg',
   path: '/app-io',
+  slug: 'app-io',
   subpaths: {
     overview: appIoOverviewPath,
     quickStart: appIoQuickStartGuidePath,

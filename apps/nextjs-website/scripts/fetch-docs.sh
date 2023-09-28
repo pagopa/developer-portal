@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # The commit hash
 hash=${1}
 

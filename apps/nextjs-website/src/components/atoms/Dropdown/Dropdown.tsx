@@ -1,9 +1,11 @@
+'use client';
 import React, { ReactNode, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { PaperProps, PopoverOrigin, SxProps } from '@mui/material';
 
