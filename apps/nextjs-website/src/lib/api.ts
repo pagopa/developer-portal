@@ -48,6 +48,8 @@ export async function getGuide(
 export function getGuidePaths() {
   return guides.map((guide) => ({
     slug: guide.product.slug,
+    // the filter is to remove the first 3 elements of the path which are
+    // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
     guidePaths: guide.page.path.split('/').filter((p, index) => index > 2),
   }));
 }
@@ -113,6 +115,8 @@ export function getTutorialPaths() {
     slug: tutorial.product.slug,
     tutorialPaths: tutorial.page.path
       .split('/')
+      // the filter is to remove the first 3 elements of the path which are
+      // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
       .filter((p, index) => index > 2),
   }));
 }
