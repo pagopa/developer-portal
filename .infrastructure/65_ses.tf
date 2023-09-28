@@ -1,6 +1,6 @@
 module "ses_developer_pagopa_it" {
   source     = "github.com/pagopa/terraform-aws-ses.git?ref=v1.2.0"
-  aws_region = aws_route53_zone.dev_portal.zone_id
+  aws_region = var.aws_region
   domain     = var.dns_domain_name
 
   iam_permissions = [
