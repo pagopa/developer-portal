@@ -7,6 +7,7 @@ import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
 
 export const ioSign: Product = {
   name: 'Firma con IO',
+  slug: 'io-sign',
   path: '/io-sign',
   description:
     'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',

@@ -1,5 +1,7 @@
+'use client';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -11,13 +13,35 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import { ApiViewer } from '@/components/atoms/ApiViewer';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
 import Link from 'next/link';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+
+/* TODO: Workaround due to error in SSR of elements package:
+ * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
+ * Error: Cannot find module './impl/format'
+ */
+const NotSsrApiViewer = dynamic(
+  () => import('@/components/atoms/ApiViewer/ApiViewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <Stack
+        justifyContent={'center'}
+        height={500}
+        padding={2}
+        alignItems='center'
+      >
+        <CircularProgress />
+      </Stack>
+    ),
+  }
+);
 
 export type ApiPageProps = {
   readonly product: Product;
@@ -58,10 +82,11 @@ const ApiSection = ({
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // if a spec query param is present, try to match it with the specURLs, if found, set it as selectedItemURL
   useEffect(() => {
-    const specName = router.query?.spec;
+    const specName = searchParams.get('spec');
     if (specName) {
       const decodedSpecName = decodeURIComponent(specName as string);
       const spec = specURLs.find((item) => item?.name === decodedSpecName);
@@ -69,7 +94,7 @@ const ApiSection = ({
         setSelectedItemURL(spec.url);
       }
     }
-  }, [router.query, specURLs]);
+  }, [searchParams, specURLs]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
@@ -159,7 +184,7 @@ const ApiSection = ({
           </Stack>
         </Stack>
       )}
-      <ApiViewer
+      <NotSsrApiViewer
         product={product}
         specURL={selectedApi.url}
         hideTryIt={selectedApi.hideTryIt}

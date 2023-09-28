@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { AlertTitle, SxProps, useTheme } from '@mui/material';
 import Alert, { AlertColor } from '@mui/material/Alert';

@@ -72,7 +72,8 @@ export const pagoPaGuideLists: GuideListsData = {
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
-          mobileImagePath: '/images/avvisi-mobile.png',
+          mobileImagePath:
+            '/images/guida-tecnica-sugli-avvisi-di-pagamento-mobile.png',
         },
         {
           title: 'Linee Guida Brand pagoPA',

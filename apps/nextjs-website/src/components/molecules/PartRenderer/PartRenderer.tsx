@@ -1,3 +1,4 @@
+'use client';
 import { Part } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';

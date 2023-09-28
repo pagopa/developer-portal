@@ -1,10 +1,7 @@
-// TODO: Remove when @pagopa/pagopa-editorial-components Abstract component will be ready
+'use client';
 import { Box, Stack, SxProps, Typography, useTheme } from '@mui/material';
-import {
-  Theme,
-  Generic,
-} from '@pagopa/pagopa-editorial-components/dist/types/components';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Generic } from '@/editorialComponents/types/components';
 
 export interface AbstractProps {
   overline: string;
@@ -12,7 +9,6 @@ export interface AbstractProps {
   description: string | Generic;
   background?: string | Generic;
   layout?: 'left' | 'center' | 'right';
-  theme: Theme;
   containerStyle?: SxProps;
   stackStyle?: SxProps;
 }
@@ -21,12 +17,13 @@ export const Abstract: React.FC<AbstractProps> = ({
   overline,
   title,
   description,
-  theme,
   background,
   layout = 'left',
   containerStyle,
   stackStyle,
 }) => {
+  const { palette } = useTheme();
+  const theme = palette.mode;
   const textColor = theme === 'dark' ? 'background.paper' : 'text.primary';
 
   const overlay =

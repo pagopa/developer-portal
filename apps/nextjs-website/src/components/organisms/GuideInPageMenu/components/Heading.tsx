@@ -1,3 +1,4 @@
+'use client';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import React, { ReactNode, useEffect, useState } from 'react';
 import MUILink from '@mui/material/Link';

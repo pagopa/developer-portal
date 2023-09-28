@@ -1,12 +1,14 @@
+'use client';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { Product } from '@/lib/types/product';
 import React, { ReactNode, FC, useRef } from 'react';
-import { BannerLinkProps } from '@pagopa/pagopa-editorial-components/dist/components/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { useTheme } from '@mui/material';
 import { Box } from '@mui/material';
 import { useScrollUp } from './useScrollUp';
 
@@ -30,6 +32,7 @@ const Layout: FC<LayoutPropsWithChildren> = ({
   children,
   showBreadcrumbs = false,
 }) => {
+  const { palette } = useTheme();
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollUp = useScrollUp();
 
@@ -58,7 +61,13 @@ const Layout: FC<LayoutPropsWithChildren> = ({
           />
         )}
       </Box>
-      <main>{children}</main>
+      <main
+        style={{
+          backgroundColor: palette.background.paper,
+        }}
+      >
+        {children}
+      </main>
       {bannerLinks && <BannerLinks banners={bannerLinks} />}
       <SiteFooter />
     </>

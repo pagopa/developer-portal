@@ -1,8 +1,9 @@
+'use client';
 import React, { ForwardedRef, forwardRef } from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { Product } from '@/lib/types/product';
-import { Divider, Stack } from '@mui/material';
+import { Divider, Stack, useTheme } from '@mui/material';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 
 type SiteHeaderProps = {
@@ -14,11 +15,12 @@ const SiteHeader = (
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { header } = translations;
+  const { palette } = useTheme();
   return (
     <>
       <Stack
         ref={ref}
-        sx={{ p: 2 }}
+        sx={{ py: 2, px: 3, backgroundColor: palette.common.white }}
         spacing={2}
         direction='row'
         justifyContent={{ sm: 'space-between', md: 'start' }}
