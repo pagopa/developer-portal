@@ -1,3 +1,4 @@
+'use client';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Image from 'next/image';
@@ -52,8 +53,8 @@ const CtaSlide = ({
             <ButtonNaked
               component={Link}
               href={cta.href}
-              variant={cta.variant || 'contained'}
               color={'negative'}
+              variant={cta.variant || 'contained'}
             >
               {cta.label}
             </ButtonNaked>

@@ -1,4 +1,5 @@
-import { ArrowForward } from '@mui/icons-material';
+'use client';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { Link as LinkMui, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
@@ -48,7 +49,7 @@ const LinkButton = ({
           component={Link}
           color='primary.main'
           underline='none'
-          href={href}
+          href={href || '#'}
           aria-label={label}
           title={label}
         >

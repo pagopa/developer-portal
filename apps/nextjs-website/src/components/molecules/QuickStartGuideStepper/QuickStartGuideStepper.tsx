@@ -1,10 +1,11 @@
+'use client';
 import React, { ReactNode } from 'react';
 import { Step } from '@/lib/types/step';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import TabSwitcherProvider, {
   Tab,
   TabPanel,

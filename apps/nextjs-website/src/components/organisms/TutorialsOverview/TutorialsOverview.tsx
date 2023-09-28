@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { Tutorial } from '@/lib/types/tutorialData';

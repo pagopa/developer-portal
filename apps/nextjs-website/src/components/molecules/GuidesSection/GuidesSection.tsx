@@ -1,10 +1,11 @@
+'use client';
 import { FC } from 'react';
 import {
   GuideCard,
   GuideCardProps,
 } from '@/components/molecules/GuideCard/GuideCard';
 import { Typography, useTheme } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type GuidesSectionProps = {
   title: string;

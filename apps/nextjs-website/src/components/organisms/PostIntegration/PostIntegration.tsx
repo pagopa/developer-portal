@@ -1,6 +1,7 @@
+'use client';
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { translations } from '@/_contents/translations';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import {
@@ -42,7 +43,7 @@ const PostIntegration = ({
         {listTitle && (
           <Typography
             content='div'
-            mb={3}
+            mb={0}
             mt={6}
             color={theme.palette.grey[500]}
             fontSize={14}
@@ -56,7 +57,7 @@ const PostIntegration = ({
         )}
       </SectionTitle>
       {cards && (
-        <EContainer>
+        <EContainer sx={{ margin: 0 }}>
           <LinkCards
             cards={cards.map((card) => ({ ...card, label: shared.goToModel }))}
           />

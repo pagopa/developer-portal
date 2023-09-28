@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';

@@ -1,3 +1,4 @@
+'use client';
 import {
   Button,
   Card,
@@ -18,7 +19,7 @@ export type CtaCardProps = {
     readonly href?: string;
     readonly variant?: 'text' | 'contained' | 'outlined';
   };
-  readonly coomingSoon?: boolean;
+  readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
 };
@@ -28,7 +29,7 @@ const CtaCard = ({
   text,
   minHeight,
   cta,
-  coomingSoon = false,
+  comingSoon = false,
   icon,
   children,
 }: CtaCardProps) => {
@@ -42,7 +43,7 @@ const CtaCard = ({
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
       }}
     >
-      <div style={{ opacity: coomingSoon ? 0.5 : 1 }}>
+      <div style={{ opacity: comingSoon ? 0.5 : 1 }}>
         {children && <CardMedia>{children}</CardMedia>}
         <CardContent sx={{ minHeight: minHeight || 'auto' }}>
           {icon}
@@ -55,7 +56,7 @@ const CtaCard = ({
       <CardActions style={{ bottom: 0 }}>
         {cta && (
           <Button
-            disabled={coomingSoon}
+            disabled={comingSoon}
             href={cta.href}
             variant={cta.variant || 'contained'}
             LinkComponent={Link}

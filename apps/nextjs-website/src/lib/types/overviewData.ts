@@ -1,4 +1,4 @@
+import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 import { Page } from '@/lib/types/page';
-import { OverviewPageProps } from '@/pages/[productSlug]/overview';
 
 export type OverviewData = Page<Omit<OverviewPageProps, 'products'>>;

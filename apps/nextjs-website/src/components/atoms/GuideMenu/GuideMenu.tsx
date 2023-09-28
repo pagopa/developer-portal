@@ -1,19 +1,27 @@
+'use client';
 import React, { ReactNode } from 'react';
 import NextLink from 'next/link';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 import { parseMenu } from 'gitbook-docs/parseMenu';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
+import Dropdown from '@/components/atoms/Dropdown/Dropdown';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Box, useTheme } from '@mui/material';
+import { translations } from '@/_contents/translations';
 
 type GuideMenuProps = {
   linkPrefix: string;
   assetsPrefix: string;
   menu: string;
+  guideName: string;
+  versionName: string;
+  versions: { name: string; path: string }[];
 };
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
@@ -98,23 +106,92 @@ const components: RenderingComponents<ReactNode> = {
   ),
 };
 
-const GuideMenu = ({ menu, assetsPrefix, linkPrefix }: GuideMenuProps) => {
-  const currentPath = useRouter().asPath;
+const GuideMenu = ({
+  menu,
+  assetsPrefix,
+  linkPrefix,
+  guideName,
+  versionName,
+  versions,
+}: GuideMenuProps) => {
+  const { palette } = useTheme();
+  const { shared } = translations;
+
+  const currentPath = usePathname();
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
   return (
-    <TreeView
-      defaultCollapseIcon={<ExpandLessIcon />}
-      defaultExpanded={expanded}
-      selected={currentPath}
-      defaultExpandIcon={<ExpandMoreIcon />}
+    <Box
+      sx={{
+        backgroundColor: palette.grey[50],
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+      }}
     >
-      {renderMenu(
-        parseMenu(menu, { assetsPrefix, linkPrefix }),
-        React,
-        components
-      )}
-    </TreeView>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '80px 0',
+          width: { lg: '347px' },
+          flexGrow: { lg: 0 },
+          flexShrink: { lg: 0 },
+          position: 'sticky',
+          overflowY: 'auto',
+          top: -74,
+          scrollbarWidth: 'thin',
+        }}
+      >
+        <Typography
+          variant='h6'
+          sx={{
+            padding: '16px 32px',
+            verticalAlign: 'middle',
+          }}
+        >
+          {guideName}
+        </Typography>
+        <Dropdown
+          label={`${shared.version} ${versionName}`}
+          items={versions.map((version) => ({
+            href: version.path,
+            label: version.name,
+          }))}
+          icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
+          buttonStyle={{
+            color: palette.action.active,
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '16px 32px',
+          }}
+          menuStyle={{
+            style: {
+              width: '347px',
+              maxWidth: '347px',
+              left: 0,
+              right: 0,
+            },
+          }}
+          menuAnchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+        />
+        <TreeView
+          defaultCollapseIcon={<ExpandLessIcon />}
+          defaultExpanded={expanded}
+          selected={currentPath}
+          defaultExpandIcon={<ExpandMoreIcon />}
+        >
+          {renderMenu(
+            parseMenu(menu, { assetsPrefix, linkPrefix }),
+            React,
+            components
+          )}
+        </TreeView>
+      </Box>
+    </Box>
   );
 };
 

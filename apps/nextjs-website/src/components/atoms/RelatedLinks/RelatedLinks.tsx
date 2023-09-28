@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box } from '@mui/material';
 import Listing from '@/editorialComponents/Listing/Listing';
@@ -7,6 +8,7 @@ type RelatedLinksProps = {
   links: {
     text: string;
     href: string;
+    target?: '_self' | '_blank' | '_parent' | '_top';
   }[];
 };
 
