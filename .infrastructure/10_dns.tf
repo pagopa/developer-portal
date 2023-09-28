@@ -77,10 +77,21 @@ resource "aws_route53_record" "devportal_cognito_A" {
 }
 
 // TXT Record for SES email validation
-resource "aws_route53_record" "devportal_ses_txt" {
+resource "aws_route53_record" "devportal_ses_TXT" {
   name    = module.ses_developer_pagopa_it.verification_token.name
   type    = "TXT"
   zone_id = aws_route53_zone.dev_portal.zone_id
   records = [module.ses_developer_pagopa_it.verification_token.value]
   ttl     = 3600
+}
+
+// CNAME Record for SES email validation
+resource "aws_route53_record" "devportal_ses_dkim" {
+  count = length(module.ses_developer_pagopa_it.dkim_tokens)
+
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  name    = module.ses_developer_pagopa_it.dkim_tokens[count.index].name
+  type    = "CNAME"
+  ttl     = 3600
+  records = [module.ses_developer_pagopa_it.dkim_tokens[count.index].value]
 }
