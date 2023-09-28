@@ -122,17 +122,7 @@ const Newsroom = (props: INewsroom) => {
   const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const { palette } = useTheme();
 
-  return !matches ? (
-    <EContainer background={palette.background.paper} py={py}>
-      <Grid item md={12}>
-        <Grid container spacing={3}>
-          {items.map((item, i) => (
-            <Item key={i} {...item} />
-          ))}
-        </Grid>
-      </Grid>
-    </EContainer>
-  ) : (
+  return matches ? (
     <Box ml={4}>
       <Grid
         container
@@ -155,6 +145,16 @@ const Newsroom = (props: INewsroom) => {
         ))}
       </Grid>
     </Box>
+  ) : (
+    <EContainer background={palette.background.paper} py={py}>
+      <Grid item md={12}>
+        <Grid container spacing={3}>
+          {items.map((item, i) => (
+            <Item key={i} {...item} />
+          ))}
+        </Grid>
+      </Grid>
+    </EContainer>
   );
 };
 
