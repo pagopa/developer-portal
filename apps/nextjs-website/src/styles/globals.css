@@ -20,6 +20,9 @@ body {
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
 
 .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
   top: unset;
