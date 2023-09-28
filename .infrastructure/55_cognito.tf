@@ -32,7 +32,7 @@ resource "aws_cognito_user_pool" "devportal" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    source_arn = module.ses_developer_pagopa_it.ses_domain_identity_arn
+    source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
 
     from_email_address = format("PagoPA - Developer Portal <no-reply@%s>", var.dns_domain_name)
   }
