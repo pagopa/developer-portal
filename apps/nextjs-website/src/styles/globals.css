@@ -32,3 +32,34 @@ body {
 .swiper-pagination-bullet-active {
   opacity: 1;
 }
+
+#onetrust-banner-sdk:focus {
+  outline: none;
+}
+
+.ot-sdk-container {
+  font-family: "Titillium Web", sans-serif !important;
+}
+
+@media only screen and (min-width: 1024px) {
+  #onetrust-banner-sdk #onetrust-button-group {
+    margin-right: 30%;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  #onetrust-banner-sdk #onetrust-button-group {
+    margin-right: auto;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #onetrust-banner-sdk #onetrust-accept-btn-handler, #onetrust-banner-sdk #onetrust-reject-all-handler, #onetrust-banner-sdk #onetrust-pc-btn-handler {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  #onetrust-banner-sdk #onetrust-accept-btn-handler, #onetrust-banner-sdk #onetrust-reject-all-handler, #onetrust-banner-sdk #onetrust-pc-btn-handler {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+}
