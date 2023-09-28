@@ -24,12 +24,14 @@ _paq.push(["enableLinkTracking"]);
 `;
 
 function makeCookieScript(dataDomainScript?: string) {
-  return `<!-- Inizio informativa di consenso dei cookie OneTrust per developer.pagopa.it -->
-  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="${dataDomainScript}" ></script>
-  <script type="text/javascript">
-  function OptanonWrapper() { }
-  </script>
-  <!-- Fine informativa di consenso dei cookie OneTrust per developer.pagopa.it -->`;
+  return `
+    <script
+      src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+      type="text/javascript"
+      charset="UTF-8"
+      data-domain-script="${dataDomainScript}"></script>
+    <script type="text/javascript"> function OptanonWrapper() { } </script>
+  `;
 }
 
 export default function RootLayout({
@@ -44,21 +46,24 @@ export default function RootLayout({
     <html lang='it'>
       <head>
         <meta name='robots' content='noindex,nofollow' />
+        <title>PagoPA DevPortal</title>
         {environment === 'prod' && (
           <script
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
-        {environment === 'prod' && (
-          <script
-            key='script-cookie'
-            dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-          />
-        )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>{children}</body>
+        <body>
+          {environment === 'prod' && (
+            <div
+              key='script-cookie'
+              dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+            ></div>
+          )}
+          {children}
+        </body>
       </ThemeRegistry>
     </html>
   );
