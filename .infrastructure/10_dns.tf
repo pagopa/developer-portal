@@ -87,7 +87,7 @@ resource "aws_route53_record" "devportal_ses_TXT" {
 
 // CNAME Record for SES email validation
 resource "aws_route53_record" "devportal_ses_dkim" {
-  count = length(module.ses_developer_pagopa_it.dkim_tokens)
+  count = 3
 
   zone_id = aws_route53_zone.dev_portal.zone_id
   name    = module.ses_developer_pagopa_it.dkim_tokens[count.index].name
