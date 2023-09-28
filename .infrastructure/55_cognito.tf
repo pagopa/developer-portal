@@ -31,7 +31,8 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   email_configuration {
-    email_sending_account = "COGNITO_DEFAULT"
+    email_sending_account = "DEVELOPER"
+    source_arn = module.ses_developer_pagopa_it.ses_domain_identity_arn
   }
 
   schema {
