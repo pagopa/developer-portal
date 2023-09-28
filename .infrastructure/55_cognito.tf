@@ -1,4 +1,3 @@
-
 resource "aws_cognito_user_pool_domain" "devportal" {
   domain          = aws_acm_certificate.auth.domain_name
   certificate_arn = aws_acm_certificate.auth.arn
