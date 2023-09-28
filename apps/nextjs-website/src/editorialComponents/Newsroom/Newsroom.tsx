@@ -1,6 +1,15 @@
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
+import {
+  Typography,
+  Grid,
+  Stack,
+  Box,
+  useTheme,
+  useMediaQuery,
+  Theme,
+} from '@mui/material';
 import EContainer from '@pagopa/pagopa-editorial-components/dist/components/EContainer';
+import Image from 'next/image';
 
 interface INewsroomItem {
   coomingSoonLabel?: string;
@@ -28,6 +37,7 @@ export interface INewsroom {
 
 const Item = (props: INewsroomItem) => {
   const theme = useTheme();
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const {
     coomingSoonLabel,
     img,
@@ -45,7 +55,13 @@ const Item = (props: INewsroomItem) => {
   } = props;
 
   return (
-    <Grid item md={4} mb={8}>
+    <Grid
+      item
+      sm={12}
+      md={4}
+      mb={8}
+      style={matches ? { minWidth: '80vw' } : {}}
+    >
       <Box
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
@@ -68,11 +84,13 @@ const Item = (props: INewsroomItem) => {
           </Box>
         )}
         {img && (
-          <img
+          <Image
             src={img.src}
             alt={img.alt}
-            width='100%'
-            style={{ borderRadius: 16 }}
+            width={0}
+            height={0}
+            sizes='100vw'
+            style={{ borderRadius: 16, width: '100%', height: 'auto' }}
           />
         )}
       </Box>
@@ -100,8 +118,11 @@ const Item = (props: INewsroomItem) => {
 
 const Newsroom = (props: INewsroom) => {
   const { items, py = 2 } = props;
-  return (
-    <EContainer background='background.paper' py={py}>
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const { palette } = useTheme();
+
+  return !matches ? (
+    <EContainer background={palette.background.paper} py={py}>
       <Grid item md={12}>
         <Grid container spacing={3}>
           {items.map((item, i) => (
@@ -110,6 +131,29 @@ const Newsroom = (props: INewsroom) => {
         </Grid>
       </Grid>
     </EContainer>
+  ) : (
+    <Box ml={4}>
+      <Grid
+        container
+        spacing={2}
+        wrap='nowrap'
+        sx={{
+          overflowX: 'scroll',
+          width: 'calc(100% + 32px)',
+          marginLeft: '-32px',
+          'div.MuiGrid-item:first-of-type': {
+            marginLeft: '16px',
+          },
+          'div.MuiGrid-item:last-of-type': {
+            marginRight: '32px',
+          },
+        }}
+      >
+        {items.map((item, i) => (
+          <Item key={i} {...item} />
+        ))}
+      </Grid>
+    </Box>
   );
 };
 

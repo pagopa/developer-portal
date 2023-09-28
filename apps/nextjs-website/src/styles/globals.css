@@ -19,6 +19,9 @@ body {
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
 
 .swiper-pagination-bullet {
   width: 40px;
