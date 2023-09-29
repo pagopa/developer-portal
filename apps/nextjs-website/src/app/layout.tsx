@@ -4,6 +4,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from './ThemeRegistry';
+import { NextIntlClientProvider } from 'next-intl';
+import { notFound } from 'next/navigation';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -34,7 +36,11 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'it' }];
+}
+
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
@@ -42,6 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
+
   return (
     <html lang='it'>
       <head>
