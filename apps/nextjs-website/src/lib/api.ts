@@ -18,8 +18,8 @@ function manageUndefined<T>(props: undefined | null | T) {
   return props;
 }
 
-function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
-  return { ...manageUndefined(props), products: [...getProducts()] };
+async function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
+  return { ...manageUndefined(props), products: [...(await getProducts())] };
 }
 
 export async function getApi(productSlug?: string) {
@@ -79,7 +79,7 @@ export function getProductsSlugs(
 }
 
 export async function getProducts(): Promise<readonly Product[]> {
-  return products;
+  return [...products];
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
@@ -105,7 +105,7 @@ export async function getTutorial(
     product: props.product,
     pathPrefix: props.source.pathPrefix,
     assetsPrefix: props.source.assetsPrefix,
-    products: getProducts().concat(),
+    products: [...(await getProducts())],
     bannerLinks: props.bannerLinks,
   };
 }

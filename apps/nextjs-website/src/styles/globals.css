@@ -61,8 +61,10 @@ body {
   }
 }
 
-.otnotice-content {
-  margin: -750px auto 0 auto !important;
+@media only screen and (min-width: 768px) {
+  .otnotice-content {
+    margin: -750px auto 0 auto !important;
+  }
 }
 
 .otnotice-menu {
