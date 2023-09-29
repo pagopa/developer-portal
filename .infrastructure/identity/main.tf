@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "terraform_states" {
   }
 
   tags = {
-    name = "S3 Remote Terraform State Store",
+    name  = "S3 Remote Terraform State Store",
     Scope = "tfstate"
   }
 }
@@ -53,9 +53,9 @@ resource "aws_s3_bucket_versioning" "terraform_states" {
 
 ## Define DynamoDB table where store the lock file ############################
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name           = "terraform-lock"
-  hash_key       = "LockID"
-  billing_mode    = "PAY_PER_REQUEST"
+  name         = "terraform-lock"
+  hash_key     = "LockID"
+  billing_mode = "PAY_PER_REQUEST"
 
   attribute {
     name = "LockID"
@@ -63,7 +63,7 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   }
 
   tags = {
-    name = "DynamoDB Terraform State Lock Table",
+    name  = "DynamoDB Terraform State Lock Table",
     Scope = "tflock"
   }
 

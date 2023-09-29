@@ -1,5 +1,5 @@
-aws_region  = "eu-south-1"
-environment = "dev"
+aws_region        = "eu-south-1"
+environment       = "dev"
 github_repository = "pagopa/developer-portal"
 
 tags = {
