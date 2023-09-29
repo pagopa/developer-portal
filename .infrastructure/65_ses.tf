@@ -10,7 +10,6 @@ module "ses_developer_pagopa_it" {
     "ses:SendTemplatedEmail"
   ]
 
-  mail_from_subdomain = "email"
   ses_group_name      = "DevPortalSES"
   user_name           = "DevPortal"
 }
