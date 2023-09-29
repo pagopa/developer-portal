@@ -4,7 +4,7 @@ Date: 2023-04-04
 
 ## Status
 
-Accepted
+Superseded by [007](007-retrieve-gitbook-content-from-github-repository.md)
 
 ## Context
 
