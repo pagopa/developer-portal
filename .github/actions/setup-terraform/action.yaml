@@ -21,7 +21,8 @@ runs:
 
     - name: Check Terraform format
       shell: bash
-      run: terraform fmt -check
+      working-directory: .infrastructure
+      run: terraform fmt -check -recursive
 
     - name: Terraform Init
       shell: bash
