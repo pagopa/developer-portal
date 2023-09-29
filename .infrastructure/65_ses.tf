@@ -10,8 +10,8 @@ module "ses_developer_pagopa_it" {
     "ses:SendTemplatedEmail"
   ]
 
-  ses_group_name      = "DevPortalSES"
-  user_name           = "DevPortal"
+  ses_group_name = "DevPortalSES"
+  user_name      = "DevPortal"
 }
 
 # These are just email addresses used during test
