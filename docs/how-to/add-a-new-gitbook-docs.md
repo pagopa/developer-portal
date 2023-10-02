@@ -10,7 +10,7 @@ The GitBook space is synchronized on [devportal-docs](https://github.com/pagopa/
 
 1. Open `/apps/nextjs-website/src/_contents/appIo/guides.ts`
 2. Identify the guide to update (in this example `manualeDeiServizi`)
-3. Add the a new element on `versions` array:
+3. Add a new element on `versions` array:
 ``` typescript
 // ... other stuff ...
 
