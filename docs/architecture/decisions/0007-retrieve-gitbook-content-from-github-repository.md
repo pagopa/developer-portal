@@ -16,7 +16,7 @@ Use GitBook APIs to retrieve the contents. Render them with a custom parser.
 
 ### Option 2
 
-Use the GitBook Sync feature to sync on (pagopa/devportal-docs)[https://github.com/pagopa/devportal-docs/tree/docs/from-gitbook]. Download them before building the site, parse them, and render them using (Markdoc)[https://markdoc.dev/].
+Use the GitBook Sync feature to sync on [pagopa/devportal-docs](https://github.com/pagopa/devportal-docs/tree/docs/from-gitbook). Download them before building the site, parse them, and render them using [Markdoc](https://markdoc.dev/).
 
 ## Decision
 
