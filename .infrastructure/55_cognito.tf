@@ -30,6 +30,10 @@ resource "aws_cognito_user_pool" "devportal" {
     email_sending_account = "COGNITO_DEFAULT"
   }
 
+  # Custom attributes cannot be required.
+  # Terraform cannot update or delete an attribute.
+  # Terraform can add a new attribute as update in-place.
+  # https://github.com/hashicorp/terraform-provider-aws/issues/24844
   schema {
     name                     = "email"
     attribute_data_type      = "String"
