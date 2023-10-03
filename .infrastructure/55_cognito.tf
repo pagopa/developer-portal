@@ -108,7 +108,6 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
   explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
-
 }
 
 resource "aws_cognito_user_pool_domain" "devportal" {
