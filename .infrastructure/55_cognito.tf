@@ -1,5 +1,7 @@
 resource "aws_cognito_user_pool" "devportal" {
-  name = "devportalpool"
+  name                = "devportalpool"
+  deletion_protection = "ACTIVE"
+
 
   user_pool_add_ons {
     advanced_security_mode = "OFF"
