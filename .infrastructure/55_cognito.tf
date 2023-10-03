@@ -22,7 +22,8 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   password_policy {
-    minimum_length = 8
+    minimum_length                   = 8
+    temporary_password_validity_days = 7
   }
 
   email_configuration {
