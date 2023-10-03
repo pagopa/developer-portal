@@ -109,3 +109,9 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   supported_identity_providers         = ["COGNITO"]
   explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
 }
+
+resource "aws_cognito_user_pool_domain" "devportal" {
+  domain          = aws_acm_certificate.auth.domain_name
+  certificate_arn = aws_acm_certificate.auth.arn
+  user_pool_id    = aws_cognito_user_pool.devportal.id
+}
