@@ -1,15 +1,19 @@
-import { Typography } from '@mui/material';
 import { CodeBlockProps } from 'gitbook-docs/markdoc/schema/code';
 import { ReactNode } from 'react';
+import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 
-const CodeBlock = ({ children }: CodeBlockProps<ReactNode>) => (
-  <Typography
-    variant='monospaced'
-    component='div'
-    style={{ wordBreak: 'break-word' }}
-  >
-    {children}
-  </Typography>
+const CodeBlock = ({
+  language,
+  lineNumbers,
+  overflow,
+  children,
+}: CodeBlockProps<ReactNode>) => (
+  <CodeBlockPart
+    code={children as string}
+    language={language || ''}
+    showLineNumbers={lineNumbers}
+    wrapLines={overflow === 'wrap'}
+  />
 );
 
 export default CodeBlock;

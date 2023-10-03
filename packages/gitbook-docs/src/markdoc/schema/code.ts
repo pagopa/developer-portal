@@ -2,6 +2,7 @@ import Markdoc, { Schema } from '@markdoc/markdoc';
 import { BooleanAttr } from '../attributes';
 
 export type CodeBlockProps<A> = {
+  readonly language?: string;
   readonly title?: string;
   readonly overflow?: string;
   readonly lineNumbers: boolean;
