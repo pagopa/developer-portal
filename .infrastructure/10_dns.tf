@@ -56,3 +56,16 @@ resource "aws_route53_record" "website" {
     evaluate_target_health = false
   }
 }
+
+// This Route53 record point to Cognito UI.
+resource "aws_route53_record" "devportal_cognito_A" {
+  name    = aws_cognito_user_pool_domain.devportal.domain
+  type    = "A"
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  alias {
+    evaluate_target_health = false
+
+    name    = aws_cognito_user_pool_domain.devportal.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
+  }
+}
