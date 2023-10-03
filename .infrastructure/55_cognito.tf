@@ -1,5 +1,6 @@
 resource "aws_cognito_user_pool" "devportal" {
-  name = "devportalpool"
+  name                = "devportalpool"
+  deletion_protection = "ACTIVE"
 
   user_pool_add_ons {
     advanced_security_mode = "OFF"
@@ -101,7 +102,6 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
       format("https://%s", var.dns_domain_name)
     ]
   )
-
 
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"]
