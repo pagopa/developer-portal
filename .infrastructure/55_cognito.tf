@@ -83,3 +83,29 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
 }
+
+resource "aws_cognito_user_pool_client" "devportal_website" {
+  name = "devportal-website-client"
+
+  user_pool_id                  = aws_cognito_user_pool.devportal.id
+  generate_secret               = false
+  prevent_user_existence_errors = "ENABLED"
+
+  callback_urls = (var.environment == "dev" ?
+    [
+      "http://localhost:3000/auth/callback/cognito",
+      "http://localhost:3000/api/auth/callback/cognito",
+      format("https://%s", var.dns_domain_name)
+    ] :
+    [
+      format("https://%s", var.dns_domain_name)
+    ]
+  )
+
+
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_scopes                 = ["openid"]
+  supported_identity_providers         = ["COGNITO"]
+  explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
+}
