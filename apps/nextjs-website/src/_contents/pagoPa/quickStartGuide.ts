@@ -64,7 +64,7 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
           component: 'codeBlock',
           code:
             `curl --location --request POST \n` +
-            ` 'https://<developer_path>/nodo-auth/node-for-psp/v1' \\ \n` +
+            `'https://<developer_path>/nodo-auth/node-for-psp/v1' \\ \n` +
             `--header 'SOAPAction: verifyPaymentNotice' \\ \n` +
             `--header 'Content-Type: application/xml' \\ \n` +
             `--header 'Ocp-Apim-Subscription-Key: ocpapimsubscriptionstring..' \\ \n` +
