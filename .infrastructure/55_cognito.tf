@@ -2,7 +2,6 @@ resource "aws_cognito_user_pool" "devportal" {
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
 
-
   user_pool_add_ons {
     advanced_security_mode = "OFF"
   }
@@ -84,4 +83,10 @@ resource "aws_cognito_user_pool" "devportal" {
     required                 = false
   }
 
+}
+
+resource "aws_cognito_user_pool_domain" "devportal" {
+  domain          = aws_acm_certificate.auth.domain_name
+  certificate_arn = aws_acm_certificate.auth.arn
+  user_pool_id    = aws_cognito_user_pool.devportal.id
 }
