@@ -254,8 +254,8 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           component: 'apiTester',
           apiRequest: {
             code:
-              `curl --location --request \n` +
-              `GET 'https://api.io.pagopa.it/api/v1/messages/SPNDNL80R13C555X/01EM6X4JB9VSZTQ8H16KMQFCEJ' \\ \n` +
+              `curl --location --request GET \\ \n` +
+              `'https://api.io.pagopa.it/api/v1/messages/SPNDNL80R13C555X/01EM6X4JB9VSZTQ8H16KMQFCEJ' \\ \n` +
               `--header 'Ocp-Apim-Subscription-Key: __YOUR_API_KEY__'\n`,
             language: 'json',
             parts: [
