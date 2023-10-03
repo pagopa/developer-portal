@@ -32,7 +32,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Crea una richiesta di firma',
+      title: 'Crea un Dossier',
       anchor: '02',
       parts: [
         {
@@ -270,17 +270,17 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Invia la richiesta di firma',
+      title: 'Crea la richiesta di firma',
       anchor: '04',
       parts: [
         {
           component: 'typography',
-          text: "Ora hai tutto ciò che occorre per inviare la richiesta di firma effettuando una chiamata all'endpoint",
+          text: "Ora hai tutto ciò che occorre per creare la richiesta di firma effettuando una chiamata all'endpoint",
           variant: 'body2',
         },
         {
           component: 'codeBlock',
-          code: `POST /api/v1/signature_request`,
+          code: `POST /api/v1/sign/signature_request`,
           language: 'txt',
         },
         {
@@ -400,12 +400,12 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'typography',
-          text: 'Attendi che lo stato del documento passi dallo stato READY allo stato WAIT_FOR_SIGNATURE effettuando una richiesta di verifica dello stato a questo endpoint',
+          text: 'Per pubblicare la richiesta di firma, utilizza questo endpoint specificando READY nel corpo della richiesta',
           variant: 'body2',
         },
         {
           component: 'codeBlock',
-          code: `PUT /api/v1/sign/signature-requests/{signature_request_id};`,
+          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/status;`,
           language: 'txt',
         },
         {
@@ -459,7 +459,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'typography',
-          text: 'Ricevi i documenti firmati effettuando una chiamata a questo endpoint:',
+          text: 'Verifica e ottieni i documenti firmati effettuando una chiamata a questo endpoint',
           variant: 'body2',
         },
         {
