@@ -14,11 +14,11 @@ export const sendApi: ApiData = {
   specURLs: [
     {
       name: sendB2BApiPathName,
-      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/develop/docs/openapi/api-external-b2b-pa.yaml',
+      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/main/docs/openapi/api-external-b2b-pa.yaml',
     },
     {
       name: sendNotificationsApiPathName,
-      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery-push/develop/docs/openapi/api-external-b2b-webhook.yaml',
+      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery-push/main/docs/openapi/api-external-b2b-webhook.yaml',
     },
   ],
   bannerLinks: sendBannerLinks,
