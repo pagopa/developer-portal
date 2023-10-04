@@ -4,6 +4,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from './ThemeRegistry';
+import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -62,7 +63,7 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
             ></div>
           )}
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </body>
       </ThemeRegistry>
     </html>

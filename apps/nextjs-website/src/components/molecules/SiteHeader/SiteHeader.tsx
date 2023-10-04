@@ -1,10 +1,11 @@
 'use client';
-import React, { ForwardedRef, forwardRef } from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
+import UserInfo from '@/components/atoms/UserInfo/UserInfo';
+import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 import { Product } from '@/lib/types/product';
 import { Divider, Stack, useTheme } from '@mui/material';
-import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
+import { ForwardedRef, forwardRef } from 'react';
 
 type SiteHeaderProps = {
   products: Product[];
@@ -16,6 +17,7 @@ const SiteHeader = (
 ) => {
   const { header } = translations;
   const { palette } = useTheme();
+
   return (
     <>
       <Stack
@@ -34,6 +36,7 @@ const SiteHeader = (
             label: product.name,
           }))}
         />
+        <UserInfo />
       </Stack>
       <Divider />
     </>
