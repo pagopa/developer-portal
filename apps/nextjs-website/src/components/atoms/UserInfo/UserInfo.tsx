@@ -9,19 +9,17 @@ const UserInfo: FC = () => {
     context.authStatus,
   ]);
 
-  const showUserInfo = authStatus === 'authenticated';
-
-  if (!showUserInfo) {
+  if (authStatus !== 'authenticated') {
     return null;
   }
 
   return (
     <Stack
       flexGrow={1}
-      spacing={2}
-      direction='row'
-      justifyContent={{ sm: 'space-between', md: 'end' }}
       alignItems='center'
+      direction='row'
+      gap={2}
+      justifyContent='flex-end'
     >
       <Hidden smDown>
         <Typography variant='body2'>Hello {user?.attributes?.email}</Typography>
