@@ -48,6 +48,7 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
             key={index}
             sx={{
               backgroundColor: palette.background.default,
+              borderBottom: `1px solid ${palette.divider}`,
               '&.Mui-selected': {
                 backgroundColor: palette.common.white,
                 borderBottom: 0,
