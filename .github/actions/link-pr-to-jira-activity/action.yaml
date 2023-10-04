@@ -1,12 +1,6 @@
 name: "Lint and Link PR title"
 description: "Validate the PR title and link it to a Jira activity"
 
-inputs:
-  JIRA_COMMENT_REGEX:
-    description: "Pattern to Jira comment"
-    required: false
-    default: "^.*Jira.*"
-
 runs:
   using: "composite"
   steps:
