@@ -19,8 +19,9 @@ runs:
     - name: Extract Jira Issue to Link
       if: steps.lint.outcome == 'success'
       shell: bash
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
       run: |
-        PR_TITLE=$(echo "${{ github.event.pull_request.title }}")
         ISSUES_STR=$(awk -F'\\[|\\]' '{print $2}' <<< "$PR_TITLE" | sed "s/#//g" | sed "s/,//g")
         ISSUES=($ISSUES_STR)
         MARKDOWN_CARRIAGE_RETURN="<br>"
@@ -55,13 +56,15 @@ runs:
         recreate: true
         message: |
           ## Jira Pull request Link ##
-          @${{ github.actor}} it seems this Pull Request has no issues that refers to Jira!
+          @${{ github.actor }} it seems this Pull Request has no issues that refers to Jira!
           Please check it out.
           PR's title should be something like: `[B2B-1] Title` where `B2B-1` is the activity's id on Jira.
 
     - name: Failure message
       if: steps.lint.outcome != 'success'
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
       shell: bash
       run: |
-        echo "Pull request title (${{ github.event.pull_request.title }}) is not properly formatted or it is not related to any Jira issue"
+        echo "Pull request title ($PR_TITLE) is not properly formatted or it is not related to any Jira issue"
         exit 1
