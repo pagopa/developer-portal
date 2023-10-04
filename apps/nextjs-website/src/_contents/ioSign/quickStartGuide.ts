@@ -389,7 +389,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'codeBlock',
-          code: `GET /api/v1/sign/signature-requests/{signature_request_id}/documents/{document_id}/upload_url;`,
+          code: `GET /api/v1/sign/signature-requests/{signature_request_id}/documents/{document_id}/upload_url`,
           language: 'txt',
         },
       ],
@@ -405,7 +405,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'codeBlock',
-          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/status;`,
+          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/status`,
           language: 'txt',
         },
         {
@@ -415,7 +415,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'codeBlock',
-          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/notification;`,
+          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/notification`,
           language: 'txt',
         },
         {
