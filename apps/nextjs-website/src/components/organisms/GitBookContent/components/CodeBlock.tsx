@@ -8,16 +8,18 @@ const CodeBlock = ({
   overflow,
   children,
 }: CodeBlockProps<ReactNode>) => {
-  const isString = typeof children === 'string';
-
-  return (
-    <CodeBlockPart
-      code={isString ? children : ''}
-      language={language || ''}
-      showLineNumbers={lineNumbers}
-      wrapLines={overflow === 'wrap'}
-    />
-  );
+  if (typeof children === 'string') {
+    return (
+      <CodeBlockPart
+        code={children}
+        language={language || ''}
+        showLineNumbers={lineNumbers}
+        wrapLines={overflow === 'wrap'}
+      />
+    );
+  } else {
+    return children;
+  }
 };
 
 export default CodeBlock;
