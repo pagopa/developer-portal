@@ -7,13 +7,17 @@ const CodeBlock = ({
   lineNumbers,
   overflow,
   children,
-}: CodeBlockProps<ReactNode>) => (
-  <CodeBlockPart
-    code={children as string}
-    language={language || ''}
-    showLineNumbers={lineNumbers}
-    wrapLines={overflow === 'wrap'}
-  />
-);
+}: CodeBlockProps<ReactNode>) => {
+  const isString = typeof children === 'string';
+
+  return (
+    <CodeBlockPart
+      code={isString ? children : ''}
+      language={language || ''}
+      showLineNumbers={lineNumbers}
+      wrapLines={overflow === 'wrap'}
+    />
+  );
+};
 
 export default CodeBlock;

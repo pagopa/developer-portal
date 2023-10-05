@@ -1,7 +1,9 @@
 import { Schema } from '@markdoc/markdoc';
 
+export type HintStyle = 'info' | 'success' | 'warning' | 'danger';
+
 export type HintProps<A> = {
-  readonly style: 'info' | 'success' | 'warning' | 'danger';
+  readonly style: HintStyle;
   readonly children: A;
 };
 
