@@ -15,9 +15,16 @@ resource "aws_route53_record" "devportal_delegate" {
   records = each.value
 }
 
+locals {
+  domain_validations_options = setunion(
+    aws_acm_certificate.website.domain_validation_options,
+    aws_acm_certificate.auth.domain_validation_options
+  )
+}
+
 resource "aws_route53_record" "certificate" {
   for_each = {
-    for dvo in aws_acm_certificate.website.domain_validation_options : dvo.domain_name => {
+    for dvo in local.domain_validations_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
@@ -54,5 +61,18 @@ resource "aws_route53_record" "website" {
     name                   = aws_route53_record.www_website.name
     zone_id                = aws_route53_record.www_website.zone_id
     evaluate_target_health = false
+  }
+}
+
+// This Route53 record point to Cognito UI.
+resource "aws_route53_record" "devportal_cognito_A" {
+  name    = aws_cognito_user_pool_domain.devportal.domain
+  type    = "A"
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  alias {
+    evaluate_target_health = false
+
+    name    = aws_cognito_user_pool_domain.devportal.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
   }
 }

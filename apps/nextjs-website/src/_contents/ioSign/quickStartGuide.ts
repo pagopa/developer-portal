@@ -32,7 +32,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Crea una richiesta di firma',
+      title: 'Crea un Dossier',
       anchor: '02',
       parts: [
         {
@@ -270,17 +270,17 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Invia la richiesta di firma',
+      title: 'Crea la richiesta di firma',
       anchor: '04',
       parts: [
         {
           component: 'typography',
-          text: "Ora hai tutto ciò che occorre per inviare la richiesta di firma effettuando una chiamata all'endpoint",
+          text: "Ora hai tutto ciò che occorre per creare la richiesta di firma effettuando una chiamata all'endpoint",
           variant: 'body2',
         },
         {
           component: 'codeBlock',
-          code: `POST /api/v1/signature_request`,
+          code: `POST /api/v1/sign/signature-requests`,
           language: 'txt',
         },
         {
@@ -389,7 +389,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'codeBlock',
-          code: `GET /api/v1/sign/signature-requests/{signature_request_id}/documents/{document_id}/upload_url;`,
+          code: `GET /api/v1/sign/signature-requests/{signature_request_id}/documents/{document_id}/upload_url`,
           language: 'txt',
         },
       ],
@@ -400,22 +400,37 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'typography',
-          text: 'Attendi che lo stato del documento passi dallo stato READY allo stato WAIT_FOR_SIGNATURE effettuando una richiesta di verifica dello stato a questo endpoint',
+          text: 'Per pubblicare la richiesta di firma, utilizza questo endpoint specificando READY nel corpo della richiesta',
           variant: 'body2',
         },
         {
           component: 'codeBlock',
-          code: `PUT /api/v1/sign/signature-requests/{signature_request_id};`,
+          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/status`,
           language: 'txt',
         },
         {
           component: 'typography',
-          text: 'Invia i documenti sull’app IO effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint',
+          text: 'Attendi alcuni secondi che lo stato passi da READY a WAIT_FOR_SIGNATURE e poi verifica lo stato con questo endpoint',
           variant: 'body2',
         },
         {
           component: 'codeBlock',
-          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/notification;`,
+          code: `GET /api/v1/sign/signature-requests/{signature_request_id}`,
+          language: 'txt',
+        },
+        {
+          component: 'innerHTMLLazyLoaded',
+          html:
+            `Invia i documenti sull’app IO effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint` +
+            `</br>` +
+            `<ul>` +
+            ` <li>Tramite <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">QR Code</a> (anche con il supporto del <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">pulsante Firma con IO</a>)</li>` +
+            ` <li>Sull’app IO, effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint</li>` +
+            `</ul>`,
+        },
+        {
+          component: 'codeBlock',
+          code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/notification`,
           language: 'txt',
         },
         {
@@ -459,7 +474,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'typography',
-          text: 'Ricevi i documenti firmati effettuando una chiamata a questo endpoint:',
+          text: 'Verifica lo stato della firma e ottieni i documenti firmati effettuando una chiamata a questo endpoint:',
           variant: 'body2',
         },
         {
