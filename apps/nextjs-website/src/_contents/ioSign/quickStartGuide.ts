@@ -280,7 +280,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'codeBlock',
-          code: `POST /api/v1/sign/signature_request`,
+          code: `POST /api/v1/sign/signature-requests`,
           language: 'txt',
         },
         {
@@ -410,8 +410,23 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'typography',
-          text: 'Invia i documenti sull’app IO effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint',
+          text: 'Attendi alcuni secondi che lo stato passi da READY a WAIT_FOR_SIGNATURE e poi verifica lo stato con questo endpoint',
           variant: 'body2',
+        },
+        {
+          component: 'codeBlock',
+          code: `GET /api/v1/sign/signature-requests/{signature_request_id}`,
+          language: 'txt',
+        },
+        {
+          component: 'innerHTMLLazyLoaded',
+          html:
+            `Invia i documenti nelle due modalità previste:` +
+            `</br>` +
+            `<ul>` +
+            ` <li>Tramite <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">QR Code</a> (anche con il supporto del <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">pulsante Firma con IO</a>)</li>` +
+            ` <li>Sull’app IO, effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint</li>` +
+            `</ul>`,
         },
         {
           component: 'codeBlock',
@@ -459,7 +474,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'typography',
-          text: 'Verifica e ottieni i documenti firmati effettuando una chiamata a questo endpoint',
+          text: 'Verifica lo stato della firma e ottieni i documenti firmati effettuando una chiamata a questo endpoint:',
           variant: 'body2',
         },
         {
