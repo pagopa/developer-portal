@@ -3,6 +3,8 @@ import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { Metadata, ResolvingMetadata } from 'next';
+import { translations } from '@/_contents/translations';
 
 export async function generateStaticParams() {
   return getProductsSlugs('api').map((productSlug) => ({
@@ -25,6 +27,25 @@ export type ApiPageProps = {
     hideTryIt?: boolean;
   }[];
 } & LayoutProps;
+
+export const generateMetadata = async (
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
+  const { shared } = translations;
+  const previousTitle = (await parent).title || shared.siteTitle;
+  const { product } = await getApi(params.productSlug);
+  const title = `${previousTitle} - ${product.name}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      description: product.description,
+      url: product.path,
+    },
+  };
+};
 
 const ApisPage = async ({ params }: ProductParams) => {
   const {

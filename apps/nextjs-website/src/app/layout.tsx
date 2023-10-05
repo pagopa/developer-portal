@@ -1,4 +1,5 @@
 import { cookieDomainScript, environment } from '@/config';
+import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -34,6 +35,10 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
+export const metadata: Metadata = {
+  metadataBase: new URL('https://developer.pagopa.it'),
+};
+
 export default function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
@@ -46,7 +51,6 @@ export default function RootLayout({
     <html lang='it'>
       <head>
         <meta name='robots' content='noindex,nofollow' />
-        <title>PagoPA DevPortal</title>
         {environment === 'prod' && (
           <script
             key='script-matomo'

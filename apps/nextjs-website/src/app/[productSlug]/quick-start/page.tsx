@@ -6,6 +6,8 @@ import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
+import { Metadata, ResolvingMetadata } from 'next';
+import { translations } from '@/_contents/translations';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -21,6 +23,28 @@ export type QuickStartGuidePageProps = {
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
 } & LayoutProps;
+
+export async function generateMetadata(
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { shared } = translations;
+  const previousTitle = (await parent).title || shared.siteTitle;
+  const { abstract, path, product } = await getQuickStartGuide(
+    params?.productSlug
+  );
+  const title = `${previousTitle} - ${abstract?.title}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      description: abstract?.description,
+      url: path,
+      images: product.svgPath,
+    },
+  };
+}
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
   const {

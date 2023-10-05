@@ -6,6 +6,25 @@ import Layout from '@/components/organisms/Layout/Layout';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { homepage, shared } = translations;
+
+  return {
+    title: shared.siteTitle,
+    description: homepage.productsShowcaseTitle,
+    openGraph: {
+      title: shared.siteTitle,
+      description: homepage.productsShowcaseTitle,
+      url: '/',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: shared.siteTitle,
+    },
+  };
+}
 
 const Home = () => {
   const products = [...getProducts()];

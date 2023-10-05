@@ -10,6 +10,7 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { Metadata } from 'next';
 
 type Params = {
   productSlug: string;
@@ -41,6 +42,36 @@ type ProductGuidePageProps = {
   body: string;
   bodyConfig: ParseContentConfig;
 } & LayoutProps;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const guideProps = await getGuide(
+    params?.productSlug,
+    params?.productGuidePage ?? ['']
+  );
+
+  const { page } = guideProps;
+
+  const body = page.body;
+  const lines = body.split('\n').filter((line) => line !== '');
+  const title = lines[0].replace('# ', '');
+
+  return {
+    title,
+    openGraph: {
+      title,
+      url: page.path,
+    },
+    twitter: {
+      site: title,
+      card: 'summary',
+      creator: '@pagopa',
+    },
+  };
+}
 
 const Page = async ({ params }: { params: Params }) => {
   const guideProps = await getGuide(

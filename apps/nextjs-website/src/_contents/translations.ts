@@ -19,6 +19,7 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Elemento copiato',
+    siteTitle: 'PagoPA DevPortal',
   },
   pageNotFound: {
     overline: '404',

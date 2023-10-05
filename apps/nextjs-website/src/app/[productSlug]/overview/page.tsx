@@ -1,5 +1,6 @@
 import { getOverview, getProductsSlugs } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
+import { Metadata, ResolvingMetadata } from 'next';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
@@ -70,6 +71,26 @@ export type OverviewPageProps = {
   };
   readonly relatedLinks?: Path[];
 } & LayoutProps;
+
+export async function generateMetadata(
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { shared } = translations;
+  const previousTitle = (await parent).title || shared.siteTitle;
+  const { product, path } = await getOverview(params.productSlug);
+  const title = `${previousTitle} - ${product.name}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      description: product.description,
+      url: path,
+      images: product.svgPath,
+    },
+  };
+}
 
 const OverviewPage = async ({ params }: ProductParams) => {
   const {

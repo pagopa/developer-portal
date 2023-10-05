@@ -8,6 +8,8 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { ProductParams } from '@/lib/types/productParams';
+import { Metadata, ResolvingMetadata } from 'next';
+import { translations } from '@/_contents/translations';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -23,6 +25,26 @@ export type GuidesPageProps = {
   };
   readonly guidesSections?: GuidesSectionProps[];
 } & LayoutProps;
+
+export const generateMetadata = async (
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
+  const { shared } = translations;
+  const previousTitle = (await parent).title || shared.siteTitle;
+  const { name, path, abstract } = await getGuideLists(params?.productSlug);
+
+  const title = `${previousTitle} - ${name}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      description: abstract?.description,
+      url: path,
+    },
+  };
+};
 
 const GuidesPage = async ({ params }: ProductParams) => {
   const { abstract, bannerLinks, guidesSections, path, product, products } =

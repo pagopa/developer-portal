@@ -1,4 +1,5 @@
 import { Product } from '@/lib/types/product';
+import { Metadata, ResolvingMetadata } from 'next';
 import { getTutorialLists, getProductsSlugs } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
@@ -23,6 +24,28 @@ export type TutorialsPageProps = {
   };
   readonly tutorials: readonly Tutorial[];
 } & LayoutProps;
+
+export async function generateMetadata(
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { shared } = translations;
+  const previousTitle = (await parent).title || shared.siteTitle;
+  const { product, abstract, path } = await getTutorialLists(
+    params.productSlug
+  );
+  const title = `${previousTitle} - ${product.name}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      description: abstract?.description,
+      url: path,
+      images: product.svgPath,
+    },
+  };
+}
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
