@@ -48,6 +48,7 @@ export const Header = (props: HeaderProps) => {
       paddingX={{ xs: 1, sm: 3 }}
       component='header'
       role='banner'
+      sx={{ position: 'sticky', top: 0, zIndex: 1 }}
     >
       <Stack
         direction={{ md: 'row' }}

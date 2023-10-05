@@ -139,7 +139,7 @@ const GuideMenu = ({
           flexShrink: { lg: 0 },
           position: 'sticky',
           overflowY: 'auto',
-          top: -74,
+          top: 0,
           scrollbarWidth: 'thin',
         }}
       >
