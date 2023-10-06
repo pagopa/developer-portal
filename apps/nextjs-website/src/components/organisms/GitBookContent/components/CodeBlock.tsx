@@ -5,7 +5,6 @@ import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 const CodeBlock = ({
   language,
   lineNumbers,
-  overflow,
   children,
 }: CodeBlockProps<ReactNode>) => {
   if (typeof children === 'string') {
@@ -14,7 +13,7 @@ const CodeBlock = ({
         code={children}
         language={language || ''}
         showLineNumbers={lineNumbers}
-        wrapLines={overflow === 'wrap'}
+        wrapLines={true}
       />
     );
   } else {
