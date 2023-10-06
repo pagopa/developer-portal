@@ -114,7 +114,7 @@ const Page = async ({ params }: { params: Params }) => {
               sx={{
                 position: 'sticky',
                 maxWidth: '270px',
-                top: 20,
+                top: 144,
               }}
             >
               <GuideInPageMenu
