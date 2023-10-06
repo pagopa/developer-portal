@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import {
-  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -21,6 +20,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
+import ApiViewerLoader from '@/components/atoms/ApiVieweLoader/ApiViewerLoader';
 
 /* TODO: Workaround due to error in SSR of elements package:
  * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
@@ -30,16 +30,7 @@ const NotSsrApiViewer = dynamic(
   () => import('@/components/atoms/ApiViewer/ApiViewer'),
   {
     ssr: false,
-    loading: () => (
-      <Stack
-        justifyContent={'center'}
-        height={500}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress />
-      </Stack>
-    ),
+    loading: () => <ApiViewerLoader />,
   }
 );
 
