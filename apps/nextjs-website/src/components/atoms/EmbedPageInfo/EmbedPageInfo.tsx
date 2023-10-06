@@ -12,9 +12,10 @@ import Image from 'next/image';
 
 export type EmbedPageInfoProps = {
   url: string;
+  children?: React.ReactNode;
 };
 
-const EmbedPageInfo = ({ url }: EmbedPageInfoProps) => {
+const EmbedPageInfo = ({ url, children }: EmbedPageInfoProps) => {
   const [pageTitle, setPageTitle] = useState<string>('');
   const [siteName, setSiteName] = useState<string>('');
   const [favicon, setFavicon] = useState<string>('');
@@ -55,34 +56,39 @@ const EmbedPageInfo = ({ url }: EmbedPageInfoProps) => {
   }, [url]);
 
   return (
-    <Card variant='outlined'>
-      <CardActionArea>
-        <CardContent>
-          <ButtonNaked color='text' size='medium' href={url} component={Link}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 2,
-              }}
-            >
-              {favicon && (
+    <>
+      <Card variant='outlined'>
+        <CardActionArea>
+          <CardContent>
+            <ButtonNaked color='text' size='medium' href={url} component={Link}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
+                {favicon && (
+                  <Box>
+                    <Image src={favicon} alt='Favicon' width='32' height='32' />
+                  </Box>
+                )}
                 <Box>
-                  <Image src={favicon} alt='Favicon' width='32' height='32' />
+                  <Typography variant='body1' fontWeight={700} gutterBottom>
+                    {pageTitle}
+                  </Typography>
+                  <Typography variant='body2'>{siteName}</Typography>
                 </Box>
-              )}
-              <Box>
-                <Typography variant='body1' fontWeight={700} gutterBottom>
-                  {pageTitle}
-                </Typography>
-                <Typography variant='body2'>{siteName}</Typography>
               </Box>
-            </Box>
-          </ButtonNaked>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+            </ButtonNaked>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <Typography variant='caption' color='text.secondary'>
+        {children}
+      </Typography>
+    </>
   );
 };
 
