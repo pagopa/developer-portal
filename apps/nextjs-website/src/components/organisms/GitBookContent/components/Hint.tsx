@@ -1,8 +1,8 @@
 import Alert, { AlertColor } from '@mui/material/Alert';
-import { HintProps, HintStyle } from 'gitbook-docs/markdoc/schema/hint';
+import { HintProps } from 'gitbook-docs/markdoc/schema/hint';
 import { ReactNode } from 'react';
 
-const asSeverity = (style: HintStyle): AlertColor =>
+const asSeverity = (style: HintProps<unknown>['style']): AlertColor =>
   style === 'danger' ? 'error' : style;
 
 const Hint = ({ style, children }: HintProps<ReactNode>) => (
