@@ -24,10 +24,7 @@ const ApiViewerLoader: FC = () => {
       >
         <Skeleton variant='rectangular' width={'95%'} height={40} />
         <Box mt={4}>
-          <Skeleton variant='rectangular' width={'70%'} height={20} />
-        </Box>
-        <Box mt={3}>
-          {Array.from(new Array(5)).map((_, index) => (
+          {Array.from(new Array(3)).map((_, index) => (
             <Skeleton
               sx={{ marginTop: 2 }}
               key={index}
