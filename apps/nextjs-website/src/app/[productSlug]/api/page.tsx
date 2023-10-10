@@ -4,7 +4,10 @@ import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
-import { translations } from '@/_contents/translations';
+import {
+  getPreviousTitle,
+  getTwitterMetadata,
+} from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return getProductsSlugs('api').map((productSlug) => ({
@@ -32,8 +35,8 @@ export const generateMetadata = async (
   { params }: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
-  const { shared } = translations;
-  const previousTitle = (await parent).title || shared.siteTitle;
+  const resolvedParent = await parent;
+  const previousTitle = getPreviousTitle(resolvedParent);
   const { product } = await getApi(params.productSlug);
   const title = `${previousTitle} - ${product.name}`;
 
@@ -44,6 +47,7 @@ export const generateMetadata = async (
       description: product.description,
       url: product.path,
     },
+    twitter: getTwitterMetadata(title),
   };
 };
 

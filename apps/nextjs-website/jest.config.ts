@@ -8,6 +8,9 @@ const jestConfig: JestConfigWithTsJest = {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
+  moduleNameMapper: {
+    '@/(.*)': '<rootDir>/src/$1',
+  },
 };
 
 export default jestConfig;

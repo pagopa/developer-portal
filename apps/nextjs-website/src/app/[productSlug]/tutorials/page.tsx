@@ -9,6 +9,7 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
+import { getPreviousTitle } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -29,8 +30,8 @@ export async function generateMetadata(
   { params }: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { shared } = translations;
-  const previousTitle = (await parent).title || shared.siteTitle;
+  const resolvedParent = await parent;
+  const previousTitle = getPreviousTitle(resolvedParent);
   const { product, abstract, path } = await getTutorialLists(
     params.productSlug
   );

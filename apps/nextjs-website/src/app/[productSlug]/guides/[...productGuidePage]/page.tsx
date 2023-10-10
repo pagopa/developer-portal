@@ -11,6 +11,10 @@ import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
+import {
+  getTitleFromMarkdown,
+  getTwitterMetadata,
+} from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -55,9 +59,7 @@ export async function generateMetadata({
 
   const { page } = guideProps;
 
-  const body = page.body;
-  const lines = body.split('\n').filter((line) => line !== '');
-  const title = lines[0].replace('# ', '');
+  const title = getTitleFromMarkdown(page.body);
 
   return {
     title,
@@ -65,11 +67,7 @@ export async function generateMetadata({
       title,
       url: page.path,
     },
-    twitter: {
-      site: title,
-      card: 'summary',
-      creator: '@pagopa',
-    },
+    twitter: getTwitterMetadata(title),
   };
 }
 

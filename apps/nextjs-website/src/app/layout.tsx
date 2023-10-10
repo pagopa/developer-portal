@@ -35,8 +35,13 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
+const baseUrl =
+  environment === 'prod'
+    ? 'https://developer.pagopa.it'
+    : 'https://dev.developer.pagopa.it';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://developer.pagopa.it'),
+  metadataBase: new URL(baseUrl),
 };
 
 export default function RootLayout({

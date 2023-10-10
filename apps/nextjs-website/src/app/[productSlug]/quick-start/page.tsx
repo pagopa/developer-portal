@@ -7,7 +7,7 @@ import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideSteppe
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import { translations } from '@/_contents/translations';
+import { getPreviousTitle } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -28,8 +28,8 @@ export async function generateMetadata(
   { params }: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { shared } = translations;
-  const previousTitle = (await parent).title || shared.siteTitle;
+  const resolvedParent = await parent;
+  const previousTitle = getPreviousTitle(resolvedParent);
   const { abstract, path, product } = await getQuickStartGuide(
     params?.productSlug
   );

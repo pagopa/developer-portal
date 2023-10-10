@@ -10,6 +10,7 @@ import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import { translations } from '@/_contents/translations';
+import { getPreviousTitle } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -30,8 +31,8 @@ export const generateMetadata = async (
   { params }: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
-  const { shared } = translations;
-  const previousTitle = (await parent).title || shared.siteTitle;
+  const resolvedParent = await parent;
+  const previousTitle = getPreviousTitle(resolvedParent);
   const { name, path, abstract } = await getGuideLists(params?.productSlug);
 
   const title = `${previousTitle} - ${name}`;
