@@ -33,7 +33,7 @@ export async function generateMetadata(
   const { abstract, path, product } = await getQuickStartGuide(
     params?.productSlug
   );
-  const title = `${previousTitle} - ${abstract?.title}`;
+  const title = `${previousTitle}${abstract ? ` - ${abstract.title}` : ''}`;
 
   return {
     title,
