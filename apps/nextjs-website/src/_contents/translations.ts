@@ -242,9 +242,9 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: Modello 321',
+            ariaLabel: 'Vai al link: Modello 231',
             href: 'https://pagopa.portaleamministrazionetrasparente.it/pagina746_altri-contenuti.html',
-            label: 'Modello 321',
+            label: 'Modello 231',
             linkType: 'external',
           },
         ],
