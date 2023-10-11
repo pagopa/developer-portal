@@ -7,10 +7,7 @@ import { Box } from '@mui/material';
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import {
-  getTitleFromMarkdown,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -39,15 +36,15 @@ export async function generateMetadata({
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  const { page } = tutorialProps;
-
-  const title = getTitleFromMarkdown(page.body);
+  const {
+    page: { path, title },
+  } = tutorialProps;
 
   return {
     title,
     openGraph: {
       title,
-      url: page.path,
+      url: path,
     },
     twitter: getTwitterMetadata(title),
   };

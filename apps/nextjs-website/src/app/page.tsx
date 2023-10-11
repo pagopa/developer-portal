@@ -7,6 +7,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
 import { Metadata } from 'next';
+import { getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { homepage, shared } = translations;
@@ -20,8 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
       url: '/',
     },
     twitter: {
+      ...getTwitterMetadata(shared.siteTitle),
       card: 'summary_large_image',
-      site: shared.siteTitle,
     },
   };
 }

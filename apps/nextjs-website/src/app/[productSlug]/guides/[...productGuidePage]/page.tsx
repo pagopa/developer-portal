@@ -11,10 +11,7 @@ import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import {
-  getTitleFromMarkdown,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -57,15 +54,15 @@ export async function generateMetadata({
     params?.productGuidePage ?? ['']
   );
 
-  const { page } = guideProps;
-
-  const title = getTitleFromMarkdown(page.body);
+  const {
+    page: { path, title },
+  } = guideProps;
 
   return {
     title,
     openGraph: {
       title,
-      url: page.path,
+      url: path,
     },
     twitter: getTwitterMetadata(title),
   };
