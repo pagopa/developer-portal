@@ -8,11 +8,10 @@ import {
 import { EmbedProps } from 'gitbook-docs/markdoc/schema/embed';
 import React, { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
-import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
-import Link from 'next/link';
 import EmbedCodePen from '@/components/molecules/EmbedCodePen/EmbedCodePen';
 import EmbedFigma from '@/components/molecules/EmbedFigma/EmbedFigma';
 import EmbedYouTube from '@/components/molecules/EmbedYouTube/EmbedYouTube';
+import EmbedLink from '@/components/atoms/EmbedLink/EmbedLink';
 
 const NotSsrEmbedPageInfo = dynamic(
   () => import('@/components/atoms/EmbedPageInfo/EmbedPageInfo'),
@@ -57,22 +56,7 @@ const Embed = ({ url, children }: EmbedProps<ReactNode>) => {
     case url.includes('raw.githubusercontent.com'):
       return <NotSsrEmbedPageInfo url={url} />;
     default:
-      return (
-        <Card variant='outlined'>
-          <CardActionArea>
-            <CardContent>
-              <ButtonNaked
-                color='text'
-                size='medium'
-                href={url}
-                component={Link}
-              >
-                {url}
-              </ButtonNaked>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      );
+      return <EmbedLink url={url} />;
   }
 };
 
