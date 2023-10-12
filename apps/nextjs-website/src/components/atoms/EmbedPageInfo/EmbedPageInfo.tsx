@@ -10,6 +10,17 @@ import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked
 import Link from 'next/link';
 import Image from 'next/image';
 
+const getProtocolAndHostFormUrl = (url: string): string => {
+  const urlObject = new URL(url);
+  return `${urlObject.protocol}//${urlObject.host}`;
+};
+
+const getFaviconUrl = (url: string, path: string): string => {
+  return `${getProtocolAndHostFormUrl(url)}${
+    path.startsWith('/') ? path : `/${path}`
+  }`;
+};
+
 export type EmbedPageInfoProps = {
   url: string;
   children?: React.ReactNode;
@@ -46,7 +57,7 @@ const EmbedPageInfo = ({ url, children }: EmbedPageInfoProps) => {
         /<link.*?rel="icon".*?href="(.*?)".*?>/i
       );
       if (faviconMatch) {
-        setFavicon(faviconMatch[1]);
+        setFavicon(getFaviconUrl(url, faviconMatch[1]));
       }
     }
 
