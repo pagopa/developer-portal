@@ -1,10 +1,10 @@
 # How To: Add a new GitBook docs
 
-## Add a new version to manuale dei servizi of AppIO
-
-### Assumptions
+## Assumptions
 
 The GitBook space is synchronized on [devportal-docs](https://github.com/pagopa/devportal-docs/tree/docs/from-gitbook) repository and the steps of [How To: Update GitBook docs](update-gitbook-docs.md) are completed.
+
+## Add a new version to manuale dei servizi of AppIO
 
 ### Steps
 
@@ -42,4 +42,46 @@ const manualeDeiServizi: GuideDefinition = {
 };
 
 // ... other stuff ...
+```
+
+## Add a new guide named "Nuova guida per gli enti" to AppIO
+
+### Steps
+
+1. Open `/apps/nextjs-website/src/_contents/appIo/guides.ts`
+2. Add a new `const` which defines the new `guide`:
+```typescript
+// ... other stuff ...
+
+// this is the new guide!
+const nuovaGuidaPerGliEnti: GuideDefinition = {
+  product: appIo,
+  guide: {
+    name: "Nuova guida per gli enti",
+    slug: 'nuova-guida-per-gli-enti',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: 'zcLltia5qDSVw1rRjw7o',
+    },
+  ],
+  bannerLinks: appIoBannerLinks,
+};
+
+// ... other stuff ...
+```
+3. In the same file `/apps/nextjs-website/src/_contents/appIo/guides.ts` add the new guide to `appIoGuides` array:
+```typescript
+// ... other stuff ...
+
+export const appIoGuides = [
+  guidaTecnica,
+  manualeDeiServizi,
+  supportoAgliEnti,
+  kitDiComunicazione,
+  cartaGiovani,
+  // the new guide ---v
+  nuovaGuidaPerGliEnti,
+];
 ```
