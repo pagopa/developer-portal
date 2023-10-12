@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Typography from '@mui/material/Typography';
+import EmbedCaption from '@/components/atoms/EmbedCaption/EmbedCaption';
 
 export type EmbedFigmaProps = {
   url: string;
@@ -15,9 +15,7 @@ const EmbedFigma = ({ url, children }: EmbedFigmaProps) => {
         src={`https://www.figma.com/embed?embed_host=devportal&url=${url}`}
         allowFullScreen
       />
-      <Typography variant='caption' color='text.secondary'>
-        {children}
-      </Typography>
+      <EmbedCaption>{children}</EmbedCaption>
     </>
   );
 };

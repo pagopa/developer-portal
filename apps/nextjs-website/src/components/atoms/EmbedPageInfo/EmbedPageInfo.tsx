@@ -9,6 +9,7 @@ import {
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import Link from 'next/link';
 import Image from 'next/image';
+import EmbedCaption from '@/components/atoms/EmbedCaption/EmbedCaption';
 
 const getProtocolAndHostFormUrl = (url: string): string => {
   const urlObject = new URL(url);
@@ -97,9 +98,7 @@ const EmbedPageInfo = ({ url, children }: EmbedPageInfoProps) => {
           </CardContent>
         </CardActionArea>
       </Card>
-      <Typography variant='caption' color='text.secondary'>
-        {children}
-      </Typography>
+      <EmbedCaption>{children}</EmbedCaption>
     </>
   );
 };

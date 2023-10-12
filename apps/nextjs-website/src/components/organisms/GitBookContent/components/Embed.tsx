@@ -10,8 +10,9 @@ import React, { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import Link from 'next/link';
-import EmbedCodePen from '@/components/atoms/EmbedCodePen/EmbedCodePen';
-import EmbedFigma from '@/components/atoms/EmbedFigma/EmbedFigma';
+import EmbedCodePen from '@/components/molecules/EmbedCodePen/EmbedCodePen';
+import EmbedFigma from '@/components/molecules/EmbedFigma/EmbedFigma';
+import EmbedYouTube from '@/components/molecules/EmbedYouTube/EmbedYouTube';
 
 const NotSsrEmbedPageInfo = dynamic(
   () => import('@/components/atoms/EmbedPageInfo/EmbedPageInfo'),
@@ -48,11 +49,12 @@ const Embed = ({ url, children }: EmbedProps<ReactNode>) => {
       /https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/.*)?$/
     ):
       return <EmbedFigma url={url}>{children}</EmbedFigma>;
+    case url.includes('youtube.com'):
+      return <EmbedYouTube url={url}>{children}</EmbedYouTube>;
     case url.includes('checkout.pagopa.it'):
     case url.includes('docs.italia.it'):
     case url.includes('io.italia.it'):
     case url.includes('raw.githubusercontent.com'):
-    case url.includes('youtube.com'):
       return <NotSsrEmbedPageInfo url={url} />;
     default:
       return (

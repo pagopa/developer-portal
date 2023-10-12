@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
+import EmbedCaption from '@/components/atoms/EmbedCaption/EmbedCaption';
 
 export type EmbedCodePenProps = {
   url: string;
@@ -19,9 +19,7 @@ const EmbedCodePen = ({ url, children }: EmbedCodePenProps) => {
         loading='lazy'
         allowFullScreen={true}
       ></iframe>
-      <Typography variant='caption' color='text.secondary'>
-        {children}
-      </Typography>
+      <EmbedCaption>{children}</EmbedCaption>
     </>
   );
 };
