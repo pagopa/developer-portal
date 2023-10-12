@@ -11,7 +11,7 @@ runs:
         TARGET_BRANCH: origin/${{ github.base_ref }}
         HEAD_BRANCH: origin/${{ github.head_ref }}
       run: |
-        if git merge-base --is-ancestor ${{ env.TARGET_BRANCH }} ${{ env.HEAD_BRANCH }}
+        if git merge-base --is-ancestor $TARGET_BRANCH $HEAD_BRANCH
         then
           echo "Your branch is up to date."
           BRANCH_UP_TO_DATE='true'
@@ -29,7 +29,7 @@ runs:
         recreate: true
         message: |
           ## Branch is not up to date with base branch ##
-          @${{ github.actor}} it seems this Pull Request is not updated with base branch.
+          @${{ github.actor }} it seems this Pull Request is not updated with base branch.
           Please proceed with a merge or rebase to solve this.
 
     - name: Failure message

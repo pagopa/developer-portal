@@ -23,7 +23,7 @@ const ApiViewer: FC<ApiViewerProps> = ({
       hideTryIt={hideTryIt}
       hideExport
       basePath={`${api?.path}` ?? `${path}/api`}
-      router={typeof window === 'undefined' ? 'memory' : 'history'}
+      router={typeof window === 'undefined' ? 'memory' : 'hash'}
     />
   );
 };
