@@ -6,7 +6,11 @@ const asSeverity = (style: HintProps<unknown>['style']): AlertColor =>
   style === 'danger' ? 'error' : style;
 
 const Hint = ({ style, children }: HintProps<ReactNode>) => (
-  <Alert severity={asSeverity(style)} variant={'outlined'}>
+  <Alert
+    severity={asSeverity(style)}
+    variant={'outlined'}
+    sx={{ marginBottom: 2 }}
+  >
     {children}
   </Alert>
 );
