@@ -16,6 +16,7 @@ const getProtocolAndHostFormUrl = (url: string): string => {
 };
 
 const getFaviconUrl = (url: string, path: string): string => {
+  if (path.startsWith('http')) return path;
   return `${getProtocolAndHostFormUrl(url)}${
     path.startsWith('/') ? path : `/${path}`
   }`;
