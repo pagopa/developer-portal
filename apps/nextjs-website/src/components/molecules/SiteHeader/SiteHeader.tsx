@@ -6,6 +6,9 @@ import { Product } from '@/lib/types/product';
 import { Box, Divider, Stack, useTheme } from '@mui/material';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 
+// Used in ProductHeader.tsx to manage scroll-up animation
+export const SITE_HEADER_HEIGHT = 60;
+
 type SiteHeaderProps = {
   products: Product[];
 };
@@ -21,6 +24,7 @@ const SiteHeader = (
       sx={{
         position: 'sticky',
         top: 0,
+        height: SITE_HEADER_HEIGHT,
         zIndex: 100,
       }}
     >

@@ -5,14 +5,12 @@ import { Box, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 
 type ProductHeaderProps = {
   product: Product;
   path: string;
 };
-
-// Top should always be equal to SiteHeader.tsx height
-const SITE_HEADER_HEIGHT = 60;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();
