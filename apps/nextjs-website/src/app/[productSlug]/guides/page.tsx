@@ -6,7 +6,9 @@ import {
 } from '@/components/molecules/GuidesSection/GuidesSection';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
 
 export async function generateStaticParams() {
@@ -22,15 +24,14 @@ export type GuidesPageProps = {
     readonly description: string;
   };
   readonly guidesSections?: GuidesSectionProps[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const GuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, guidesSections, path, product, products } =
+  const { abstract, bannerLinks, guidesSections, path, product } =
     await getGuideLists(params?.productSlug);
 
   return (
-    <Layout
-      products={products}
+    <ProductLayout
       product={product}
       path={path}
       showBreadcrumbs={false}
@@ -49,7 +50,7 @@ const GuidesPage = async ({ params }: ProductParams) => {
             <GuidesSection key={index} {...props}></GuidesSection>
           ))}
       </Box>
-    </Layout>
+    </ProductLayout>
   );
 };
 
