@@ -11,7 +11,7 @@ type ProductHeaderProps = {
   path: string;
 };
 
-// Top should allways be equal to SiteHeader.tsx height
+// Top should always be equal to SiteHeader.tsx height
 const SITE_HEADER_HEIGHT = 60;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {

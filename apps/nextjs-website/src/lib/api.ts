@@ -19,7 +19,7 @@ function manageUndefined<T>(props: undefined | null | T) {
 }
 
 async function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
-  return { ...manageUndefined(props), products: [...(await getProducts())] };
+  return { ...manageUndefined(props), products: await getProducts() };
 }
 
 export async function getApi(productSlug?: string) {

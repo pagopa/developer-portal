@@ -7,7 +7,7 @@ import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsSh
 import { getProducts } from '@/lib/api';
 
 const Home = async () => {
-  const products = [...(await getProducts())];
+  const products = await getProducts();
   const { homepage, header } = translations;
 
   return (
