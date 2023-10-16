@@ -8,6 +8,8 @@ import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -38,6 +40,10 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'it' }];
+}
+
 export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
@@ -47,6 +53,17 @@ export default async function RootLayout({
 }) {
   const products = [...(await getProducts())];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
+
+  // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
+  // eslint-disable-next-line functional/no-let
+  let messages;
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    messages = (await import('../messages/it.json')).default;
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <html lang='it'>
       <head>
@@ -60,17 +77,19 @@ export default async function RootLayout({
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>
-          {environment === 'prod' && (
-            <div
-              key='script-cookie'
-              dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-            ></div>
-          )}
-          <SiteHeader products={products} />
-          <MainWrapper>{children}</MainWrapper>
-          <SiteFooter />
-        </body>
+        <NextIntlClientProvider locale={'it'} messages={messages}>
+          <body>
+            {environment === 'prod' && (
+              <div
+                key='script-cookie'
+                dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+              ></div>
+            )}
+            <SiteHeader products={products} />
+            <MainWrapper>{children}</MainWrapper>
+            <SiteFooter />
+          </body>
+        </NextIntlClientProvider>
       </ThemeRegistry>
     </html>
   );
