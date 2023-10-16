@@ -45,7 +45,7 @@ const Embed = ({ url, children }: EmbedProps<ReactNode>) => {
     case url.includes('codepen.io'):
       return <EmbedCodePen url={url} />;
     case !!url.match(
-      /https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/.*)?$/
+      /https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})/
     ):
       return <EmbedFigma url={url}>{children}</EmbedFigma>;
     case url.includes('youtube.com'):

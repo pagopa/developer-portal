@@ -56,6 +56,7 @@ const schema: ConfigType = {
     swagger,
     code,
     embed,
+    'figma-embed': embed,
     file,
     tabs,
     details,
@@ -98,7 +99,8 @@ export const parseAst = (markdown: string) => {
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(pR.regex, pR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
-    .replaceAll(summaryR.regex, summaryR.replace);
+    .replaceAll(summaryR.regex, summaryR.replace)
+    .replaceAll('{% @figma/embed', '{% figma-embed');
 
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
