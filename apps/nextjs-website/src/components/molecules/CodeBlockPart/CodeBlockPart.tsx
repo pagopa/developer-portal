@@ -21,7 +21,7 @@ const CodeBlockPart = ({
   code,
   language,
   mode = 'light',
-  showLineNumbers = false,
+  showLineNumbers = true,
   title,
   maxWidth = 'auto',
   wrapLines = true,
