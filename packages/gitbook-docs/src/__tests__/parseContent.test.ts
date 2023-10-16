@@ -131,6 +131,25 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should replace the title of link to an anchor with a human readable text', () => {
+    expect(
+      parseContent(
+        'Fixed [#text-strings](#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page/#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
+      ]),
+    ]);
+  });
+
   it('should convert href to other gitbook space', () => {
     expect(
       parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
