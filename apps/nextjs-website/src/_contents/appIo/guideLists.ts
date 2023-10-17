@@ -27,7 +27,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v3.0`,
+            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',
@@ -50,7 +50,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/manuale-servizi/v1.1`,
+            href: `${appIOGuideListsPath.path}/manuale-servizi/v2.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
