@@ -35,5 +35,8 @@ runs:
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         NEXT_TELEMETRY_DISABLED: '1'
+        NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ vars.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+        NEXT_PUBLIC_COGNITO_REGION: eu-south-1
+        NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ vars.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
       shell: bash
       run: npm run build -w nextjs-website
