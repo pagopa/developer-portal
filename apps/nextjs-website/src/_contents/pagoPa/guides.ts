@@ -146,7 +146,7 @@ const pda: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-const bo_ec: GuideDefinition = {
+const boEc: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Manuale Back Office - EC',
@@ -161,7 +161,7 @@ const bo_ec: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-const bo_psp: GuideDefinition = {
+const boPsp: GuideDefinition = {
   product: pagoPa,
   guide: {
     name: 'Manuale Back Office - PSP',
@@ -176,4 +176,4 @@ const bo_psp: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, bo_ec, bo_psp];
+export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, boEc, boPsp];
