@@ -72,7 +72,7 @@ export default async function RootLayout({
             <SiteHeader products={products} />
             <MainWrapper>{children}</MainWrapper>
             <SiteFooter />
-		  </AuthProvider>
+          </AuthProvider>
         </body>
       </ThemeRegistry>
     </html>
