@@ -5,7 +5,7 @@ import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
-import { sendB2BApiPath, sendNotificationsApiPath } from './apiPath';
+import { sendB2BApiPath } from './apiPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -88,7 +88,7 @@ export const sendOverview: OverviewData = {
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
         href: sendB2BApiPath.path ?? '#',
         iconName: 'FolderOutlined',
-      }
+      },
     ],
   },
   tutorials: {
