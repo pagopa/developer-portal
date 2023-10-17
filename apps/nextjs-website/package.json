@@ -28,7 +28,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "swiper": "^10.0.3"
+    "swiper": "^10.0.3",
+    "next-intl": "^2.20.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
