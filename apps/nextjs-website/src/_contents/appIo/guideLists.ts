@@ -109,7 +109,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: 'https://docs.pagopa.it/carta-giovani-nazionale/',
+            href: `${appIOGuideListsPath.path}/carta-giovani-nazionale/v1.0`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-di-carta-giovani-nazionale.png',
