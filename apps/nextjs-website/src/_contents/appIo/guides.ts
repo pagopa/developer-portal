@@ -101,10 +101,10 @@ const cartaGiovani: GuideDefinition = {
     slug: 'carta-giovani-nazionale',
   },
   versions: [
-     {
-       version: 'v1.0',
-        dirName: 'Vgh5yq561A3SOPVQrWes',
-     },
+    {
+      version: 'v1.0',
+      dirName: 'Vgh5yq561A3SOPVQrWes',
+    },
   ],
   bannerLinks: appIoBannerLinks,
 };
