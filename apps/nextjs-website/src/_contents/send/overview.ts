@@ -88,13 +88,7 @@ export const sendOverview: OverviewData = {
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
         href: sendB2BApiPath.path ?? '#',
         iconName: 'FolderOutlined',
-      },
-      {
-        title: 'API per avanzamento notifiche',
-        text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
-        href: sendNotificationsApiPath.path ?? '#',
-        iconName: 'FolderOutlined',
-      },
+      }
     ],
   },
   tutorials: {
