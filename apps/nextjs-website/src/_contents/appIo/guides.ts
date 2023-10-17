@@ -94,9 +94,9 @@ const cartaGiovani: GuideDefinition = {
   },
   versions: [
     {
-       version: '1.1.0',
-       dirName: 'Vgh5yq561A3SOPVQrWes',
-     },
+      version: '1.1.0',
+      dirName: 'Vgh5yq561A3SOPVQrWes',
+    },
   ],
   bannerLinks: appIoBannerLinks,
 };
