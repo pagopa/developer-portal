@@ -1,11 +1,11 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
-import { BooleanAttr } from '../attributes';
+import { BooleanOrNullAttr } from '../attributes';
 
 export type CodeBlockProps<A> = {
   readonly language?: string;
   readonly title?: string;
   readonly overflow?: string;
-  readonly lineNumbers: boolean;
+  readonly lineNumbers?: boolean;
   readonly children: A;
 };
 
@@ -28,7 +28,7 @@ export const code: Schema = {
   attributes: {
     title: { type: String },
     overflow: { type: String },
-    lineNumbers: { type: BooleanAttr },
+    lineNumbers: { type: BooleanOrNullAttr },
   },
   transform: (node, config) => {
     const fenceAttr = node.children
@@ -38,6 +38,16 @@ export const code: Schema = {
     const children = node.children
       .find(({ type }) => type === 'fence')
       ?.transformChildren(config);
-    return new Markdoc.Tag('CodeBlock', { ...attrs, ...fenceAttr }, children);
+
+    return new Markdoc.Tag(
+      'CodeBlock',
+      {
+        ...Object.fromEntries(
+          Object.entries(attrs).filter(([_, value]) => value !== null)
+        ),
+        ...fenceAttr,
+      },
+      children
+    );
   },
 };

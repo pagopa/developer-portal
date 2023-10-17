@@ -1,4 +1,4 @@
-import Markdoc, { Schema } from '@markdoc/markdoc';
+import Markdoc, { Node, Schema } from '@markdoc/markdoc';
 import { sanitizedText } from './sanitizedText';
 
 export type HeadingProps<A> = {
@@ -12,22 +12,23 @@ export const heading: Schema = {
   attributes: {
     level: { type: Number, required: true },
   },
-  transform(node, config) {
-    const nodes = { text: sanitizedText };
+  transform(node: Node, config) {
     const children = node.transformChildren({
       ...config,
-      nodes,
+      nodes: { ...config.nodes, text: sanitizedText },
     });
     const attributes = node.transformAttributes(config);
 
-    const id: string = children
-      .map((child) => (typeof child === 'string' ? child : ''))
-      .filter((child) => !!child)
+    const id: string = Array.from(node.walk())
+      .filter((node: Node) => node.type === 'text' || node.type === 'code')
+      .filter((node: Node) => !!node.attributes.content.trim())
       .map(
-        (child) =>
-          child
+        (node: Node) =>
+          node.attributes.content
             .trim()
             .toLowerCase()
+            .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
+            .replace(/^\s*/, '')
             .normalize('NFD') // Split an accented letter in the base letter and the accent
             .replace(/[\u0300-\u036f]/g, '') // Remove all accents
             .replace(/ /g, '-') // Replace spaces with -

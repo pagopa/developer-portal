@@ -11,7 +11,7 @@ const CodeBlock = ({
     return (
       <CodeBlockPart
         code={children}
-        language={language || ''}
+        language={language}
         showLineNumbers={lineNumbers}
         wrapLines={true}
       />

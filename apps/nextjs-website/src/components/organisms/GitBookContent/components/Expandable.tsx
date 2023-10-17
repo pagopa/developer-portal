@@ -30,7 +30,7 @@ const Accordion = styled((props: AccordionProps) => (
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
-    expandIcon={<KeyboardArrowRight sx={{ fontSize: '0.9rem' }} />}
+    expandIcon={<KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -42,12 +42,18 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     transform: 'rotate(90deg)',
   },
   '& .MuiAccordionSummary-content': {
+    marginTop: 0,
     marginLeft: theme.spacing(1),
+    marginBottom: 0,
+    marginRight: theme.spacing(1),
   },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
+  paddingTop: 0,
+  paddingLeft: '42px',
+  paddingBottom: theme.spacing(2),
+  paddingRight: theme.spacing(2),
 }));
 
 const Expandable = ({ children }: ExpandableProps<ReactNode>) =>

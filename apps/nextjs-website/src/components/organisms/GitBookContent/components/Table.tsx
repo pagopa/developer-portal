@@ -27,6 +27,9 @@ export const TableHead = styled(MUITableHead)(({ theme }) => ({
 }));
 export const TableBody = styled(MUITableBody)(() => ({
   fontSize: 16,
+  'span.MuiTypography-body1': {
+    fontSize: '1rem !important',
+  },
 }));
 export const TableR = MUITableRow;
 
