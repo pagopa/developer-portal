@@ -57,6 +57,42 @@ export const pagoPaGuideLists: GuideListsData = {
       title: "Per l'utilizzo",
       guides: [
         {
+          title: 'Manuale Back Office - EC',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Come accedere alla tua area riservata',
+              'Come selezionare l\'ambiente',
+              'Cosa trovi nella tua nella dashboard',
+              'Come utilizzare le funzionalità messe a disposizione',
+            ],
+          },
+          link: {
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/v1.0`,
+            label: 'Vai al documento',
+          },
+          imagePath: '/images/pago-pa-manuale-bo-ec.png',
+          mobileImagePath: '/images/pago-pa-manuale-bo-ec-mobile.png',
+        },
+        {
+          title: 'Manuale Back Office - PSP',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Come accedere alla tua area riservata',
+              'Come selezionare l\'ambiente',
+              'Cosa trovi nella tua dashboard',
+              'Come utilizzare le funzionalità messe a disposizione',
+            ],
+          },
+          link: {
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/v1.0`,
+            label: 'Vai al documento',
+          },
+          imagePath: '/images/pago-pa-manuale-bo-psp.png',
+          mobileImagePath: '/images/pago-pa-manuale-bo-psp-mobile.png',
+        },
+        {
           title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
           description: {
             title: 'Argomenti trattati',
