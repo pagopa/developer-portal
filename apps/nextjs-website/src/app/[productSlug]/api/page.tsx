@@ -1,5 +1,7 @@
 import { getApi, getProductsSlugs } from '@/lib/api';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
@@ -24,11 +26,10 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const ApisPage = async ({ params }: ProductParams) => {
   const {
-    products,
     path,
     product,
     specURLs,
@@ -38,8 +39,7 @@ const ApisPage = async ({ params }: ProductParams) => {
   } = await getApi(params.productSlug);
 
   return (
-    <Layout
-      products={products}
+    <ProductLayout
       product={product}
       path={path}
       bannerLinks={bannerLinks}
@@ -51,7 +51,7 @@ const ApisPage = async ({ params }: ProductParams) => {
         specURLsName={specURLsName}
         soapDocumentation={soapDocumentation}
       />
-    </Layout>
+    </ProductLayout>
   );
 };
 

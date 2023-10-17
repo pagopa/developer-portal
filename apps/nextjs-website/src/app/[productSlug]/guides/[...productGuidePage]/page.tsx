@@ -1,5 +1,7 @@
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
-import { getGuide, getGuidePaths, getProducts } from '@/lib/api';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
+import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import { Box } from '@mui/material';
 import React from 'react';
@@ -40,7 +42,7 @@ type ProductGuidePageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
-} & LayoutProps;
+} & ProductLayoutProps;
 
 const Page = async ({ params }: { params: Params }) => {
   const guideProps = await getGuide(
@@ -52,7 +54,6 @@ const Page = async ({ params }: { params: Params }) => {
   const props: ProductGuidePageProps = {
     ...page,
     product,
-    products: [...getProducts()],
     guide,
     version,
     versions,
@@ -68,8 +69,7 @@ const Page = async ({ params }: { params: Params }) => {
   };
 
   return (
-    <Layout
-      products={props.products}
+    <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
@@ -114,7 +114,7 @@ const Page = async ({ params }: { params: Params }) => {
               sx={{
                 position: 'sticky',
                 maxWidth: '270px',
-                top: 20,
+                top: 144,
               }}
             >
               <GuideInPageMenu
@@ -127,7 +127,7 @@ const Page = async ({ params }: { params: Params }) => {
           </Box>
         </Box>
       </FragmentProvider>
-    </Layout>
+    </ProductLayout>
   );
 };
 
