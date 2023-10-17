@@ -373,6 +373,22 @@ describe('parseContent', () => {
         ["console.log('Hello')\nconsole.log('there')\n"]
       ),
     ]);
+    expect(
+      parseContent(
+        '{% code title="i.js" overflow="wrap" %}\n' + code + '{% endcode %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          title: 'i.js',
+          overflow: 'wrap',
+          language: 'javascript',
+        },
+        ["console.log('Hello')\nconsole.log('there')\n"]
+      ),
+    ]);
   });
 
   it('should parse file', () => {
