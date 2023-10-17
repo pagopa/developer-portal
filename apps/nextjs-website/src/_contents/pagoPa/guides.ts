@@ -156,7 +156,7 @@ const bo_ec: GuideDefinition = {
     {
       version: 'v1.0',
       dirName: 'TbHElktP96kviaIsxPFs',
-    }
+    },
   ],
   bannerLinks: pagoPaBannerLinks,
 };
@@ -171,10 +171,9 @@ const bo_psp: GuideDefinition = {
     {
       version: 'v1.0',
       dirName: '46oWOwuxwu0HEYnJPQ4h',
-    }
+    },
   ],
   bannerLinks: pagoPaBannerLinks,
 };
 
 export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, bo_ec, bo_psp];
-
