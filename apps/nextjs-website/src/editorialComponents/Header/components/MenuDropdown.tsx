@@ -140,7 +140,7 @@ const useStyles = (props: MenuDropdownProp, mui: Theme) => {
   const textColor =
     props.theme === 'dark'
       ? mui.palette.primary.contrastText
-      : mui.palette.primary.dark;
+      : mui.palette.primary.main;
 
   return {
     menu: {

@@ -13,7 +13,7 @@ export function productToMenuItems(
       return {
         label: subpath.name,
         href: subpath.path,
-        active: path === subpath.path,
+        active: path.startsWith(subpath.path),
         theme,
       };
     });
