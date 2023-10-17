@@ -62,7 +62,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Argomenti trattati',
             listItems: [
               'Come accedere alla tua area riservata',
-              'Come selezionare l'ambiente',
+              "Come selezionare l'ambiente",
               'Cosa trovi nella tua nella dashboard',
               'Come utilizzare le funzionalità messe a disposizione',
             ],
@@ -80,7 +80,7 @@ export const pagoPaGuideLists: GuideListsData = {
             title: 'Argomenti trattati',
             listItems: [
               'Come accedere alla tua area riservata',
-              'Come selezionare l'ambiente',
+              "Come selezionare l'ambiente",
               'Cosa trovi nella tua dashboard',
               'Come utilizzare le funzionalità messe a disposizione',
             ],
