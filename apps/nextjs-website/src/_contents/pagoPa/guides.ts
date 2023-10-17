@@ -146,4 +146,35 @@ const pda: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-export const pagoPaGuides = [saci, sanp, avvisi, brand, pda];
+const bo_ec: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Manuale Back Office - EC',
+    slug: 'manuale-bo-ec',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: 'TbHElktP96kviaIsxPFs',
+    }
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
+const bo_psp: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Manuale Back Office - PSP',
+    slug: 'manuale-bo-psp',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: '46oWOwuxwu0HEYnJPQ4h',
+    }
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
+export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, bo_ec, bo_psp];
+
