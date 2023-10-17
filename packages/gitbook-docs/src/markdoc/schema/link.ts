@@ -24,7 +24,7 @@ export const link: Schema = {
     const page = gitBookPagesWithTitle.find(({ path }) => path === attrs.href);
     const childrenTreeNode = node.transformChildren(config);
 
-    const linkFromHash =
+    const titleFromAnchor =
       childrenTreeNode &&
       typeof childrenTreeNode[0] === 'string' &&
       childrenTreeNode[0].startsWith('#')
@@ -35,8 +35,8 @@ export const link: Schema = {
 
     const children = page
       ? [page.title]
-      : linkFromHash
-      ? [linkFromHash]
+      : titleFromAnchor
+      ? [titleFromAnchor]
       : childrenTreeNode;
     return new Tag('Link', attrs, children);
   },
