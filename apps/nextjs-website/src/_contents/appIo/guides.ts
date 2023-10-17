@@ -48,7 +48,7 @@ const manualeDeiServizi: GuideDefinition = {
     slug: 'manuale-servizi',
   },
   versions: [
-     {
+    {
       version: 'v2.0',
       dirName: 'xWONfJmawghGo2ekuaKh',
     },
