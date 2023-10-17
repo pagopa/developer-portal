@@ -10,8 +10,8 @@ const guidaTecnica: GuideDefinition = {
   },
   versions: [
     {
-      version:'v4.0',
-      dirName:'mzXDeCSRezM6r2ocy8gb'
+      version: 'v4.0',
+      dirName: 'mzXDeCSRezM6r2ocy8gb'
     },
     {
       version: 'v3.0',
