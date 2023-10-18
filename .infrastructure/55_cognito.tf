@@ -28,7 +28,7 @@ resource "aws_cognito_user_pool" "devportal" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    from_email_address    = format("noreply@%s", var.dns_domain_name)
+    from_email_address    = format("Developer Portal <noreply@%s>", var.dns_domain_name)
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
   }
 
