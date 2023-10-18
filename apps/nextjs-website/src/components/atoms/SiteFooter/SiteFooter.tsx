@@ -54,6 +54,7 @@ const SiteFooter = ({
                 linkType: 'internal',
                 href: '#',
                 onClick: () => {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore, OneTrust is a global variable
                   window?.OneTrust?.ToggleInfoDisplay();
                 },
