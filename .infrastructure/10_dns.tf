@@ -78,7 +78,7 @@ resource "aws_route53_record" "devportal_cognito_A" {
 }
 
 // TXT Record SES will use to validate that a message was not forged or altered in transit
-resource "aws_route53_record" "devportal_ses_txt" {
+resource "aws_route53_record" "devportal_ses_dkim_txt" {
   name    = module.ses_developer_pagopa_it.verification_token.name
   type    = "TXT"
   zone_id = aws_route53_zone.dev_portal.zone_id
@@ -87,7 +87,7 @@ resource "aws_route53_record" "devportal_ses_txt" {
 }
 
 // CNAME Record SES will use to validate that a message was not forged or altered in transit
-resource "aws_route53_record" "devportal_ses_dkim" {
+resource "aws_route53_record" "devportal_ses_dkim_cname" {
   count = 3
 
   zone_id = aws_route53_zone.dev_portal.zone_id
