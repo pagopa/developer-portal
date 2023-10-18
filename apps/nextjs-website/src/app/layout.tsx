@@ -5,6 +5,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from './ThemeRegistry';
+import { getProducts } from '@/lib/api';
+import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
+import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
+import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -51,6 +55,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const products = [...(await getProducts())];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
   return (
     <html lang='it'>
@@ -71,7 +76,9 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
             ></div>
           )}
-          {children}
+          <SiteHeader products={products} />
+          <MainWrapper>{children}</MainWrapper>
+          <SiteFooter />
         </body>
       </ThemeRegistry>
     </html>

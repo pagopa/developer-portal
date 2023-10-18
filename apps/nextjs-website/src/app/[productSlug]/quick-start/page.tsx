@@ -1,6 +1,8 @@
 import { Product } from '@/lib/types/product';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { getProductsSlugs, getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
@@ -22,7 +24,7 @@ export type QuickStartGuidePageProps = {
   };
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
-} & LayoutProps;
+} & ProductLayoutProps;
 
 export async function generateMetadata(
   { params }: ProductParams,
@@ -47,19 +49,11 @@ export async function generateMetadata(
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const {
-    abstract,
-    bannerLinks,
-    defaultStepAnchor,
-    path,
-    product,
-    steps,
-    products,
-  } = await getQuickStartGuide(params?.productSlug);
+  const { abstract, bannerLinks, defaultStepAnchor, path, product, steps } =
+    await getQuickStartGuide(params?.productSlug);
 
   return (
-    <Layout
-      products={products}
+    <ProductLayout
       product={product}
       path={path}
       showBreadcrumbs={false}
@@ -76,7 +70,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
         defaultStepAnchor={defaultStepAnchor}
         steps={steps}
       />
-    </Layout>
+    </ProductLayout>
   );
 };
 

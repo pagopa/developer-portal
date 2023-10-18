@@ -3,7 +3,9 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { getTutorialLists, getProductsSlugs } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
-import Layout, { LayoutProps } from '@/components/organisms/Layout/Layout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
@@ -24,7 +26,7 @@ export type TutorialsPageProps = {
     readonly description: string;
   };
   readonly tutorials: readonly Tutorial[];
-} & LayoutProps;
+} & ProductLayoutProps;
 
 export async function generateMetadata(
   { params }: ProductParams,
@@ -50,13 +52,12 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials, products } =
+  const { abstract, bannerLinks, path, product, tutorials } =
     await getTutorialLists(productSlug);
   const { shared } = translations;
 
   return (
-    <Layout
-      products={products}
+    <ProductLayout
       product={product}
       path={path}
       showBreadcrumbs={false}
@@ -95,7 +96,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
           />
         </Box>
       )}
-    </Layout>
+    </ProductLayout>
   );
 };
 

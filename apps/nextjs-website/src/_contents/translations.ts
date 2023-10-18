@@ -18,7 +18,7 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
     version: 'Versione',
-    copiedTooltip: 'Elemento copiato',
+    copiedTooltip: 'Copiato',
     siteTitle: 'PagoPA DevPortal',
   },
   pageNotFound: {
