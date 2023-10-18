@@ -77,7 +77,7 @@ resource "aws_route53_record" "devportal_cognito_A" {
   }
 }
 
-// TXT Record SES will use to authenticate messages
+// TXT Record SES will use to validate that a message was not forged or altered in transit
 resource "aws_route53_record" "devportal_ses_TXT" {
   name    = module.ses_developer_pagopa_it.verification_token.name
   type    = "TXT"
@@ -86,7 +86,7 @@ resource "aws_route53_record" "devportal_ses_TXT" {
   ttl     = 3600
 }
 
-// CNAME Record SES will use to authenticate messages
+// CNAME Record SES will use to validate that a message was not forged or altered in transit
 resource "aws_route53_record" "devportal_ses_dkim" {
   count = 3
 
