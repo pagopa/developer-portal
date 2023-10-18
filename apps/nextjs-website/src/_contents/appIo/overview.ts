@@ -78,7 +78,7 @@ export const appIoOverview: OverviewData = {
         title: 'Multe per violazioni codice della strada',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda le violazioni al Codice della Strada',
-        path: `${appIOGuideListsPath.path}/manuale-servizi//v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
         name: 'Violazioni codice della strada',
       },
     ],
