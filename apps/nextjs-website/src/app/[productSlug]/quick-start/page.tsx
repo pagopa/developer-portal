@@ -9,7 +9,7 @@ import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideSteppe
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getPreviousTitle } from '@/helpers/metadata.helpers';
+import { getPreviousTitle, getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -45,6 +45,7 @@ export async function generateMetadata(
       url: path,
       images: product.svgPath,
     },
+    twitter: getTwitterMetadata(title)
   };
 }
 

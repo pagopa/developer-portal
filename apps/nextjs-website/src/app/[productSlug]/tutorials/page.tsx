@@ -11,7 +11,7 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
-import { getPreviousTitle } from '@/helpers/metadata.helpers';
+import { getPreviousTitle, getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -47,6 +47,7 @@ export async function generateMetadata(
       url: path,
       images: product.svgPath,
     },
+    twitter: getTwitterMetadata(title)
   };
 }
 

@@ -12,7 +12,7 @@ import ProductLayout, {
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import { translations } from '@/_contents/translations';
-import { getPreviousTitle } from '@/helpers/metadata.helpers';
+import { getPreviousTitle, getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -46,6 +46,7 @@ export const generateMetadata = async (
       description: abstract?.description ?? '',
       url: path,
     },
+    twitter: getTwitterMetadata(title)
   };
 };
 

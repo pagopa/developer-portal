@@ -16,7 +16,7 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
-import { getPreviousTitle } from '@/helpers/metadata.helpers';
+import { getPreviousTitle, getTwitterMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
@@ -92,6 +92,7 @@ export async function generateMetadata(
       url: path,
       images: product.svgPath,
     },
+    twitter: getTwitterMetadata(title)
   };
 }
 
