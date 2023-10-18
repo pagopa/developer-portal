@@ -46,7 +46,19 @@ const SiteFooter = ({
           },
           resources: {
             title: resources.title,
-            links: [...linkToFooterLinkTypeArray(resources.links)],
+            links: [
+              ...linkToFooterLinkTypeArray(resources.links),
+              {
+                label: footer.links.cookiePreferences.label,
+                ariaLabel: footer.links.cookiePreferences.ariaLabel,
+                linkType: 'internal',
+                href: '#',
+                onClick: () => {
+                  // @ts-ignore, OneTrust is a global variable
+                  window?.OneTrust?.ToggleInfoDisplay();
+                },
+              },
+            ],
           },
           services: {
             title: services.title,
