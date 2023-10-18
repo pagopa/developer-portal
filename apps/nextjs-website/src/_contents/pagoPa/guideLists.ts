@@ -86,7 +86,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-psp/v1.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/pago-pa-manuale-bo-psp.png',
