@@ -48,6 +48,8 @@ jobs:
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
 
   manual_deploy:
     name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
@@ -68,3 +70,5 @@ jobs:
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
