@@ -12,6 +12,16 @@ inputs:
   cookie_domain_script:
     description: 'The data-domain-script code needed by cookie script from One Trust'
     required: false
+  cognito_user_pool_id:
+    description: 'The id of the User Pool on Cognito, needed for the authentication'
+    required: true
+  cognito_app_client_id:
+    description: 'The App Client registered on Cognito'
+    required: true
+  cognito_aws_region:
+    description: 'The region where Cognito has been deployed. Default set to Milan region'
+    required: false
+    default: 'eu-south-1'
 
 runs:
   using: "composite"
@@ -35,8 +45,8 @@ runs:
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         NEXT_TELEMETRY_DISABLED: '1'
-        NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ vars.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-        NEXT_PUBLIC_COGNITO_REGION: eu-south-1
-        NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ vars.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+        NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
+        NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.cognito_aws_region }}
+        NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
       shell: bash
       run: npm run build -w nextjs-website
