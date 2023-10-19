@@ -47,7 +47,7 @@ export const appIoOverview: OverviewData = {
   postIntegration: {
     cta: {
       label: 'Vai al manuale dei servizi',
-      href: `${appIOGuideListsPath.path}/manuale-servizi/v1.1`,
+      href: `${appIOGuideListsPath.path}/manuale-servizi/v2.0`,
     },
     subtitle:
       'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
@@ -57,28 +57,28 @@ export const appIoOverview: OverviewData = {
         title: 'Tassa sui rifiuti (TARI)',
         description:
           'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI)',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/v1.1/modelli/i-modelli-dei-servizi-piu-comuni/tassa-sui-rifiuti-tari`,
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/tassa-sui-rifiuti-tari`,
         name: 'Tassa sui rifiuti',
       },
       {
         title: "Carta d'Identità Elettronica",
         description:
           "Scheda e modelli di messaggi del servizio che riguarda la richiesta e l'emissione della Carta d'Identità Elettronica",
-        path: `${appIOGuideListsPath.path}/manuale-servizi/v1.1/modelli/i-modelli-dei-servizi-piu-comuni/carta-didentita-elettronica`,
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/carta-didentita-elettronica`,
         name: 'CIE',
       },
       {
         title: 'Rimozione veicoli',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda la rimozione, il deposito e il ritorno alla circolazione dei veicoli',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/v1.1/modelli/i-modelli-dei-servizi-piu-comuni/rimozione-veicoli`,
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/rimozione-veicoli`,
         name: 'Rimozione veicoli',
       },
       {
         title: 'Multe per violazioni codice della strada',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda le violazioni al Codice della Strada',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/v1.1/modelli/i-modelli-dei-servizi-piu-comuni/multe-per-violazione-codice-della-strada`,
+        path: `${appIOGuideListsPath.path}/manuale-servizi/v2.0/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
         name: 'Violazioni codice della strada',
       },
     ],

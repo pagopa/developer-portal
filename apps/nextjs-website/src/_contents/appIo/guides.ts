@@ -10,6 +10,10 @@ const guidaTecnica: GuideDefinition = {
   },
   versions: [
     {
+      version: 'v4.0',
+      dirName: 'mzXDeCSRezM6r2ocy8gb',
+    },
+    {
       version: 'v3.0',
       dirName: 'KaAXw9uMBC5zBbJ5o8a6',
     },
@@ -44,6 +48,10 @@ const manualeDeiServizi: GuideDefinition = {
     slug: 'manuale-servizi',
   },
   versions: [
+    {
+      version: 'v2.0',
+      dirName: 'xWONfJmawghGo2ekuaKh',
+    },
     {
       version: 'v1.1',
       dirName: 'VjpCR0JtTGTN9pAUoAg3',
@@ -93,11 +101,10 @@ const cartaGiovani: GuideDefinition = {
     slug: 'carta-giovani-nazionale',
   },
   versions: [
-    // TODO: Uncomment once in sync
-    // {
-    //   version: '1.1.0',
-    //   dirName: 'Vgh5yq561A3SOPVQrWes',
-    // },
+    {
+      version: 'v1.0',
+      dirName: 'Vgh5yq561A3SOPVQrWes',
+    },
   ],
   bannerLinks: appIoBannerLinks,
 };
