@@ -4,16 +4,17 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
-import { getProducts } from '@/lib/api';
+import { getHomepage, getProducts } from '@/lib/api';
 
 const Home = async () => {
   const products = await getProducts();
+  const homepageApi = await getHomepage();
   const { homepage, header } = translations;
 
   return (
     <>
       <HeroSwiper
-        cards={homepage.heroItems.map((itemProp, index) => ({
+        cards={homepageApi.cards.map((itemProp, index) => ({
           ...itemProp,
           child:
             index === 0 ? (
@@ -36,8 +37,8 @@ const Home = async () => {
         }))}
       />
       <RelatedLinks
-        title={homepage.comingsoonDocumentation.title}
-        links={homepage.comingsoonDocumentation.links}
+        title={homepageApi.comingsoonDocumentation.title}
+        links={[...homepageApi.comingsoonDocumentation.links]}
       />
     </>
   );
