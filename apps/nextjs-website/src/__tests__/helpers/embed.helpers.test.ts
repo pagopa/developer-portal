@@ -31,6 +31,13 @@ describe('selectEmbedType', () => {
     expect(embedType).toBe('youtube');
   });
 
+  it('returns "link" for a URL containing codepen.io or youtube.com outside of the host part', () => {
+    const url = 'https://example.com/?qp=codepen.io&other_qp=youtube.com';
+    const embedType = selectEmbedType(url);
+
+    expect(embedType).toBe('link');
+  });
+
   it('returns "link" for an unknown URL', () => {
     const url = 'https://example.com';
     const embedType = selectEmbedType(url);

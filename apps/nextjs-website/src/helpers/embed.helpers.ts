@@ -1,7 +1,7 @@
 export function selectEmbedType(
   url: string
 ): 'codepen' | 'figma' | 'youtube' | 'link' {
-  if (url.includes('codepen.io')) {
+  if (url.match(/^(https?:\/\/)?([\w.-]+\.)?codepen\.io/)) {
     return 'codepen';
   }
   if (
@@ -11,7 +11,7 @@ export function selectEmbedType(
   ) {
     return 'figma';
   }
-  if (url.includes('youtube.com')) {
+  if (url.match(/^(https?:\/\/)?([\w.-]+\.)?youtube\.com/)) {
     return 'youtube';
   }
   return 'link';
