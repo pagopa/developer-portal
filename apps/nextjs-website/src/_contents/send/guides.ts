@@ -52,6 +52,10 @@ const knowledgeBase: GuideDefinition = {
   },
   versions: [
     {
+      version: 'v2.0',
+      dirName: 'LkozJ77TMlb5XupVDO7J',
+    },
+    {
       version: 'v1.0',
       dirName: '8hvzBYw259fYwQSqzmf6',
     },
