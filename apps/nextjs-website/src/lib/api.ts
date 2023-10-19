@@ -9,6 +9,23 @@ import {
   quickStartGuides,
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
+import { cmsBasePath } from '@/config';
+import { ResponseData } from './types/responseData';
+import { HomepageApi, HomepageProps } from './types/homepage';
+
+async function cmsRequest<T>(enpoint: string, populate?: string): Promise<T> {
+  const res = await fetch(
+    `${cmsBasePath}/${enpoint}?${populate || 'populate=*'}`
+  );
+
+  if (res.status !== 200) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data from CMS');
+  }
+
+  const json = (await res.json()) as ResponseData<T>;
+  return json.data.attributes;
+}
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -80,6 +97,29 @@ export function getProductsSlugs(
 
 export async function getProducts(): Promise<readonly Product[]> {
   return [...products];
+}
+
+export async function getHomepage(): Promise<HomepageProps> {
+  const homepageApi = await cmsRequest<HomepageApi>('homepage');
+  return {
+    cards: homepageApi.hero.map((item) => ({
+      title: item.title,
+      cta:
+        !!item.ctaLabel && !!item.ctaLink
+          ? {
+              label: item.ctaLabel,
+              href: item.ctaLink,
+            }
+          : undefined,
+    })),
+    comingsoonDocumentation: {
+      title: homepageApi.comingsoonDocumentationTitle,
+      links: homepageApi.comingsoonDocumentation.map((item) => ({
+        text: item.label,
+        href: item.url,
+      })),
+    },
+  };
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
