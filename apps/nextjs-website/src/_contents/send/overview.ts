@@ -5,7 +5,7 @@ import { sendTutorials } from '@/_contents/send/tutorialLists';
 import { sendGuideListsPath } from './guideListsPath';
 import { sendBannerLinks } from '@/_contents/send/bannerLinks';
 import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
-import { sendB2BApiPath, sendNotificationsApiPath } from './apiPath';
+import { sendApiPath } from './apiPath';
 
 export const sendOverview: OverviewData = {
   ...sendOverviewPath,
@@ -86,13 +86,7 @@ export const sendOverview: OverviewData = {
       {
         title: 'API B2B per le PA',
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
-        href: sendB2BApiPath.path ?? '#',
-        iconName: 'FolderOutlined',
-      },
-      {
-        title: 'API per avanzamento notifiche',
-        text: 'Esplora le API per seguire il flusso di avanzamento delle notifiche',
-        href: sendNotificationsApiPath.path ?? '#',
+        href: sendApiPath.path ?? '#',
         iconName: 'FolderOutlined',
       },
     ],
@@ -104,7 +98,7 @@ export const sendOverview: OverviewData = {
   },
   relatedLinks: [
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
@@ -112,7 +106,7 @@ export const sendOverview: OverviewData = {
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v1.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],
