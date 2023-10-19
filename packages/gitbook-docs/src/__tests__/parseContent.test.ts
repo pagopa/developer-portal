@@ -53,7 +53,9 @@ describe('parseContent', () => {
       ),
     ]);
     expect(parseContent('## **h2 title**', config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, ['h2 title']),
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['h2 title']),
+      ]),
     ]);
     expect(
       parseContent('## h2 title <a href="#code" id="code"></a>', config)
@@ -63,8 +65,32 @@ describe('parseContent', () => {
         new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page/#code' }, []),
       ]),
     ]);
+    expect(
+      parseContent(
+        '## `h2 title within backticks` <a href="#code" id="code"></a>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'Heading',
+        { level: 2, id: 'h2-title-within-backticks' },
+        [
+          new Markdoc.Tag('StyledText', { style: 'code' }, [
+            'h2 title within backticks',
+          ]),
+          '',
+          new Markdoc.Tag(
+            'Link',
+            { id: 'code', href: '/to/s0/page/#code' },
+            []
+          ),
+        ]
+      ),
+    ]);
     expect(parseContent('## [link](target-link)', config)).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 2, id: 'link' }, ['link']),
+      new Markdoc.Tag('Heading', { level: 2, id: 'link' }, [
+        new Markdoc.Tag('Link', { href: '/to/s0/page/target-link' }, ['link']),
+      ]),
     ]);
   });
 
@@ -127,6 +153,25 @@ describe('parseContent', () => {
         new Markdoc.Tag('Link', { title: 'mention', href: '/to/s0/home' }, [
           'S0 Home',
         ]),
+      ]),
+    ]);
+  });
+
+  it('should replace the title of link to an anchor with a human readable text', () => {
+    expect(
+      parseContent(
+        'Fixed [#text-strings](#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page/#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
       ]),
     ]);
   });
@@ -323,6 +368,22 @@ describe('parseContent', () => {
           title: 'i.js',
           overflow: 'wrap',
           lineNumbers: true,
+          language: 'javascript',
+        },
+        ["console.log('Hello')\nconsole.log('there')\n"]
+      ),
+    ]);
+    expect(
+      parseContent(
+        '{% code title="i.js" overflow="wrap" %}\n' + code + '{% endcode %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          title: 'i.js',
+          overflow: 'wrap',
           language: 'javascript',
         },
         ["console.log('Hello')\nconsole.log('there')\n"]
