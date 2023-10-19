@@ -38,7 +38,9 @@ export interface INewsroom {
 
 const Item = (props: INewsroomItem) => {
   const theme = useTheme();
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const isScreenLargerThenMd = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('md')
+  );
   const {
     comingSoonLabel,
     img,
@@ -56,13 +58,7 @@ const Item = (props: INewsroomItem) => {
   } = props;
 
   return (
-    <Grid
-      item
-      sm={12}
-      md={4}
-      mb={8}
-      style={matches ? { minWidth: '80vw' } : {}}
-    >
+    <Grid item sm={12} md={4} mb={8} minWidth={{ xs: '80vw', md: 'auto' }}>
       <Box
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
@@ -119,10 +115,22 @@ const Item = (props: INewsroomItem) => {
 
 const Newsroom = (props: INewsroom) => {
   const { items, py = 2 } = props;
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const isScreenLargerThenMd = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('md')
+  );
   const { palette } = useTheme();
 
-  return matches ? (
+  return isScreenLargerThenMd ? (
+    <EContainer background={palette.background.paper} py={py}>
+      <Grid item md={12}>
+        <Grid container spacing={3}>
+          {items.map((item, i) => (
+            <Item key={i} {...item} />
+          ))}
+        </Grid>
+      </Grid>
+    </EContainer>
+  ) : (
     <Box ml={4}>
       <Grid
         container
@@ -145,16 +153,6 @@ const Newsroom = (props: INewsroom) => {
         ))}
       </Grid>
     </Box>
-  ) : (
-    <EContainer background={palette.background.paper} py={py}>
-      <Grid item md={12}>
-        <Grid container spacing={3}>
-          {items.map((item, i) => (
-            <Item key={i} {...item} />
-          ))}
-        </Grid>
-      </Grid>
-    </EContainer>
   );
 };
 

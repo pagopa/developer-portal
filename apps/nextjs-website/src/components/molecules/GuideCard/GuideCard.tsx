@@ -90,11 +90,7 @@ export const GuideCard: FC<GuideCardProps> = ({
               </Typography>
               <UnorderedList listItems={description?.listItems} />
             </Box>
-            <LinkButton
-              label={link.label}
-              href={link.href}
-              size={14}
-            ></LinkButton>
+            <LinkButton label={link.label} href={link.href}></LinkButton>
           </CardContent>
         </Box>
         <CardMedia
