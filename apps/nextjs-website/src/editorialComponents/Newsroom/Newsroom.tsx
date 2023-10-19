@@ -58,13 +58,7 @@ const Item = (props: INewsroomItem) => {
   } = props;
 
   return (
-    <Grid
-      item
-      sm={12}
-      md={4}
-      mb={8}
-      style={isScreenLargerThenMd ? {} : { minWidth: '80vw' }}
-    >
+    <Grid item sm={12} md={4} mb={8} minWidth={{ xs: '80vw', md: 'auto' }}>
       <Box
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
