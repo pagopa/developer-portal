@@ -37,9 +37,8 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               {confirmSignUp.description(email)}
             </Typography>
             <Typography variant='body1' mb={2}>
-              <Button variant='text'>
-                {confirmSignUp.didntReceiveEmail} {confirmSignUp.resendEmail}
-              </Button>
+              {confirmSignUp.didntReceiveEmail}
+              <Button variant='text'>{confirmSignUp.resendEmail}</Button>
             </Typography>
             <Divider />
             <Stack

@@ -334,13 +334,13 @@ export const translations = {
     activatedAccount: {
       accountActivated: 'Il tuo account è attivo',
       description:
-        'Ti diamo il benvenuto su PagoPA DevPortal.nì\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
+        'Ti diamo il benvenuto su PagoPA DevPortal.\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
       goToProfile: 'Vai al tuo profilo',
     },
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
       description: (email: string) =>
-        `Abbiamo inviato una e-mail a <strong>${email}</strong> Clicca sul bottone contenuto al suo interno per verificarla.`,
+        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
