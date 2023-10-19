@@ -379,19 +379,19 @@ export interface ApiHomepageHomepage extends Schema.SingleType {
     };
   };
   attributes: {
-    ComingsoonDocumentationTitle: Attribute.String &
+    comingsoonDocumentationTitle: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    ComingsoonDocumentation: Attribute.Component<'links.links-list', true> &
+    comingsoonDocumentation: Attribute.Component<'links.links-list', true> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    Hero: Attribute.Component<'hero.hero-swiper', true> &
+    hero: Attribute.Component<'hero.hero-swiper', true> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {

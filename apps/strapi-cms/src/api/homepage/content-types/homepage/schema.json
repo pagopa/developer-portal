@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "ComingsoonDocumentationTitle": {
+    "comingsoonDocumentationTitle": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -24,7 +24,7 @@
       },
       "type": "string"
     },
-    "ComingsoonDocumentation": {
+    "comingsoonDocumentation": {
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
@@ -34,7 +34,7 @@
       },
       "component": "links.links-list"
     },
-    "Hero": {
+    "hero": {
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
