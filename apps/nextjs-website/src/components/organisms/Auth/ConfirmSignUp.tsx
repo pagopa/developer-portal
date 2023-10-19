@@ -1,4 +1,5 @@
 'use client';
+import { translations } from '@/_contents/translations';
 import IconInbox from '@/components/atoms/IconInbox/IconInbox';
 import {
   Box,
@@ -12,10 +13,15 @@ import {
 
 interface ConfirmSignUpProps {
   email: string;
-  onBack: () => void;
+  onBack: () => null;
 }
 
 const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
+  const {
+    auth: { confirmSignUp },
+    shared,
+  } = translations;
+
   return (
     <Box component='section'>
       <Card variant='outlined'>
@@ -25,15 +31,15 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               <IconInbox />
             </Stack>
             <Typography variant='h3' pt={5} mb={4} textAlign='center'>
-              Confermaci che sei tu
+              {confirmSignUp.confirmSignUp}
             </Typography>
             <Typography variant='body1' mb={2}>
-              Abbiamo inviato una e-mail a <strong>{email}</strong> Clicca sul
-              bottone contenuto al suo interno per verificarla.
+              {confirmSignUp.description(email)}
             </Typography>
             <Typography variant='body1' mb={2}>
-              Non hai ricevuto l&apos;e-mail? Controlla se nella posta
-              indesiderata oppure <Button variant='text'>Reinvia e-mail</Button>
+              <Button variant='text'>
+                {confirmSignUp.didntReceiveEmail} {confirmSignUp.resendEmail}
+              </Button>
             </Typography>
             <Divider />
             <Stack
@@ -45,10 +51,10 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                L&apos;indirizzo email è errato?
+                {confirmSignUp.wrongEmail}
               </Typography>
               <Button variant='text' onClick={onBack}>
-                Torna indietro
+                {shared.goBack}
               </Button>
             </Stack>
           </Grid>

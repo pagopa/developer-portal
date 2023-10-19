@@ -1,4 +1,5 @@
 'use client';
+import { translations } from '@/_contents/translations';
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
@@ -9,33 +10,37 @@ import { Auth } from 'aws-amplify';
 import { useCallback, useState } from 'react';
 
 const SignUp = () => {
+  const {
+    auth: { signUp },
+  } = translations;
+
   const [accountEmail, setAccountEmail] = useState<string>('');
   const [signUpStep, setSignUpStep] = useState(SignUpSteps.SIGN_UP);
 
   const onSignUp: SignUpFunction = useCallback(
     async ({ username, password, firstName, lastName, company, role }) => {
-      // const result = await Auth.signUp({
-      //   username,
-      //   password,
-      //   attributes: {
-      //     firstName,
-      //     lastName,
-      //     company,
-      //     role,
-      //   },
-      // });
+      const result = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          firstName,
+          lastName,
+          company,
+          role,
+        },
+      });
 
       setAccountEmail(username);
       setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
 
-      // return !!result.user;
-      return true;
+      return !!result.user;
     },
     []
   );
 
   const onBackStep = useCallback(() => {
     setSignUpStep(SignUpSteps.SIGN_UP);
+    return null;
   }, []);
 
   return (
@@ -59,14 +64,14 @@ const SignUp = () => {
       >
         <Grid item xs={5}>
           <Typography variant='h4' mb={4}>
-            Perché iscriversi a PagoPA DevPortal
+            {signUp.whyCreateAccount}
           </Typography>
-          {[1, 2, 3].map((item, index) => {
+          {signUp.advantages.map((advantage, index) => {
             return (
               <CheckItem
                 key={index}
-                title={`Vantaggio ${item}`}
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
+                title={`Vantaggio ${index}`}
+                description={advantage}
               />
             );
           })}

@@ -22,6 +22,15 @@ export const translations = {
     login: 'Accedi',
     signUp: 'Registrati',
     logout: 'Esci',
+    emailAddress: 'Indirizzo email',
+    password: 'Password',
+    goBack: 'Torna indietro',
+    requiredFields: '* Campi obbligatori',
+    firstName: 'Nome',
+    lastName: 'Cognome',
+    confirmPassword: 'Conferma password',
+    company: 'Tipologia Ente o Azienda',
+    role: 'Ruolo',
   },
   pageNotFound: {
     overline: '404',
@@ -293,6 +302,49 @@ export const translations = {
           },
         ],
       },
+    },
+  },
+  auth: {
+    login: {
+      loginToYourAccount: 'Accedi al tuo account',
+      rememberMe: 'Ricordami',
+      forgotPassword: 'Hai dimenticato la password?',
+      noAccount: 'Non hai un account?',
+    },
+    signUp: {
+      createYourAccount: 'Crea il tuo account',
+      confirmComunications:
+        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+      acceptPolicy:
+        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      alreadyHaveAnAccount: 'Hai già un account?',
+      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
+      advantages: [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      ],
+    },
+    resetPassword: {
+      resetPassword: 'Recupera password',
+      resetPasswordDescription:
+        'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      backToLogin: 'Torna al login',
+    },
+    activatedAccount: {
+      accountActivated: 'Il tuo account è attivo',
+      description:
+        'Ti diamo il benvenuto su PagoPA DevPortal.nì\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
+      goToProfile: 'Vai al tuo profilo',
+    },
+    confirmSignUp: {
+      confirmSignUp: 'Conferma che sei tu',
+      description: (email: string) =>
+        `Abbiamo inviato una e-mail a <strong>${email}</strong> Clicca sul bottone contenuto al suo interno per verificarla.`,
+      didntReceiveEmail:
+        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo email è errato?",
     },
   },
 };

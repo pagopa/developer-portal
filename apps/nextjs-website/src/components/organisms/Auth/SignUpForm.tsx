@@ -1,4 +1,5 @@
 'use client';
+import { translations } from '@/_contents/translations';
 import { SignUpFunction } from '@/lib/types/signUpFunction';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -30,6 +31,11 @@ interface SignUpFormProps {
 }
 
 const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
+  const {
+    auth: { signUp },
+    shared,
+  } = translations;
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -91,16 +97,16 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Typography variant='h3' pt={8} mb={4} textAlign='center'>
-              Crea il tuo account
+              {signUp.createYourAccount}
             </Typography>
             <Typography variant='body1' mb={2}>
-              * Campi obbligatori
+              {shared.requiredFields}
             </Typography>
             <form>
               <Grid container spacing={2} mb={2}>
                 <Grid item xs={6}>
                   <TextField
-                    placeholder='Nome'
+                    placeholder={shared.firstName}
                     variant='outlined'
                     size='small'
                     required
@@ -113,7 +119,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    placeholder='Cognome'
+                    placeholder={shared.lastName}
                     variant='outlined'
                     size='small'
                     required
@@ -127,7 +133,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               </Grid>
               <Stack spacing={2} mb={2}>
                 <TextField
-                  placeholder='Email'
+                  placeholder={shared.emailAddress}
                   variant='outlined'
                   size='small'
                   type='email'
@@ -141,7 +147,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               <Stack spacing={2} mb={2}>
                 <FormControl variant='outlined'>
                   <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                    Password
+                    {shared.password}
                   </InputLabel>
                   <OutlinedInput
                     id='password-input'
@@ -159,7 +165,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label='Password'
+                    label={shared.password}
                     inputProps={{
                       sx: {
                         padding: '8.5px 14px',
@@ -174,7 +180,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                     htmlFor='confirm-password-input'
                     sx={{ top: '-8px' }}
                   >
-                    Confirm Password
+                    {shared.confirmPassword}
                   </InputLabel>
                   <OutlinedInput
                     id='confirm-password-input'
@@ -196,7 +202,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label='Confirm Password'
+                    label={shared.confirmPassword}
                     error={password !== confirmPassword}
                     inputProps={{
                       sx: {
@@ -209,13 +215,13 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               <Stack spacing={2} mb={2}>
                 <FormControl fullWidth>
                   <InputLabel id='company-field' sx={{ top: '-8px' }}>
-                    Tipologia Ente o Azienda
+                    {shared.company}
                   </InputLabel>
                   <Select
                     labelId='company-field'
                     id='company-field-select'
                     value={company}
-                    label='Tipologia Ente o Azienda'
+                    label={shared.company}
                     onChange={(e) => setCompany(e.target.value)}
                     sx={{ padding: '8.5px 14px' }}
                     inputProps={{
@@ -232,7 +238,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               </Stack>
               <Stack spacing={2} mb={2}>
                 <TextField
-                  placeholder='Ruolo'
+                  placeholder={shared.role}
                   variant='outlined'
                   size='small'
                   required
@@ -245,23 +251,20 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               <Grid container mb={1}>
                 <FormControlLabel
                   control={<Checkbox sx={{ paddingTop: '4px' }} />}
-                  label="Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento."
+                  label={signUp.confirmComunications}
                   sx={{ alignItems: 'flex-start' }}
                 />
               </Grid>
               <Stack spacing={4} pt={4} pb={2}>
                 <Stack direction='row' justifyContent='center'>
                   <Button variant='contained' onClick={onSignUpClick}>
-                    Iscriviti
+                    {shared.signUp}
                   </Button>
                 </Stack>
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body1'>
-                    Cliccando su “Iscriviti” accetti la nostra informativa sul
-                    trattamento dei dati personali per la Privacy Policy.
-                  </Typography>
+                  <Typography variant='body1'>{signUp.acceptPolicy}</Typography>
                 </Stack>
               </Stack>
             </form>
@@ -275,9 +278,9 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                Hai già un account?
+                {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>Accedi</Link>
+              <Link href='/auth/login'>{shared.login}</Link>
             </Stack>
           </Grid>
         </Grid>
