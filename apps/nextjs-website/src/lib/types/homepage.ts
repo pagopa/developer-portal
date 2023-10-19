@@ -14,3 +14,17 @@ export type HomepageApi = {
   readonly comingsoonDocumentationTitle: string;
   readonly comingsoonDocumentation: readonly LinkApi[];
 };
+
+export type HomepageProps = {
+  readonly cards: readonly {
+    readonly title: string;
+    readonly cta?: { readonly label: string; readonly href: string };
+  }[];
+  readonly comingsoonDocumentation: {
+    readonly title: string;
+    readonly links: readonly {
+      readonly text: string;
+      readonly href: string;
+    }[];
+  };
+};
