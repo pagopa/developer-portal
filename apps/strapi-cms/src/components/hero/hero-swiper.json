@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_hero_hero_swipers",
+  "info": {
+    "displayName": "HeroSwiper",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "ctaLabel": {
+      "type": "string",
+      "required": false
+    },
+    "ctaLink": {
+      "type": "string"
+    }
+  }
+}

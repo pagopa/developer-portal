@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_links_links_lists",
+  "info": {
+    "displayName": "LinksList",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "regex": "^(http|https)://",
+      "required": true
+    }
+  }
+}
