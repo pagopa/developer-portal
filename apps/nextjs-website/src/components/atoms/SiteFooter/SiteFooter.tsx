@@ -7,6 +7,8 @@ import {
 import { Divider } from '@mui/material';
 import { Footer } from '@/editorialComponents/Footer';
 import React from 'react';
+import { showCookieBanner } from '@/config';
+import { FooterLinksType } from '@/editorialComponents/Footer/types';
 
 type SiteFooterProps = {
   readonly activeLanguage?: { id: string; value: string };
@@ -22,6 +24,21 @@ const SiteFooter = ({
 }: SiteFooterProps) => {
   const { footer } = translations;
   const { followUs, aboutUs, resources, services } = footer.links;
+  const cookiePreferenceLink: FooterLinksType = {
+    label: footer.links.cookiePreferences.label,
+    ariaLabel: footer.links.cookiePreferences.ariaLabel,
+    linkType: 'internal',
+    href: '#',
+    onClick: () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore, OneTrust is a global variable
+      window?.OneTrust?.ToggleInfoDisplay();
+    },
+  };
+  const resourcesLinks = [
+    ...linkToFooterLinkTypeArray(resources.links),
+    ...(showCookieBanner ? [cookiePreferenceLink] : []),
+  ];
 
   return (
     <>
@@ -46,20 +63,7 @@ const SiteFooter = ({
           },
           resources: {
             title: resources.title,
-            links: [
-              ...linkToFooterLinkTypeArray(resources.links),
-              {
-                label: footer.links.cookiePreferences.label,
-                ariaLabel: footer.links.cookiePreferences.ariaLabel,
-                linkType: 'internal',
-                href: '#',
-                onClick: () => {
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore, OneTrust is a global variable
-                  window?.OneTrust?.ToggleInfoDisplay();
-                },
-              },
-            ],
+            links: resourcesLinks,
           },
           services: {
             title: services.title,

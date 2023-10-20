@@ -1,4 +1,4 @@
-import { cookieDomainScript, environment } from '@/config';
+import { cookieDomainScript, environment, showCookieBanner } from '@/config';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -62,7 +62,7 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <body>
-          {environment === 'prod' && (
+          {showCookieBanner && (
             <div
               key='script-cookie'
               dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
