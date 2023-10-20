@@ -20,7 +20,7 @@ const ProductsShowcase = ({ title, cards }: ProductsShowcaseProps) => {
     <Box py={5} sx={{ backgroundColor: theme.palette.background.default }}>
       <SectionTitle title={title} />
       <CardsGrid
-        cardVariant={'contained'}
+        cardVariant={'outlined'}
         cardSvg={true}
         cards={cards.map((card) => ({
           title: card.title,
