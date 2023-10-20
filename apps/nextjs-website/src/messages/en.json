@@ -1,5 +1,5 @@
 {
-    "Index": {
-        "title": "Hello world!"
+    "shared": {
+        "goToModel": "Go to model"
     }
 }
