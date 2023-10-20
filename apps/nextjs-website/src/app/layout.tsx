@@ -8,6 +8,7 @@ import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
+import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -67,9 +68,11 @@ export default async function RootLayout({
               dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
             ></div>
           )}
-          <SiteHeader products={products} />
-          <MainWrapper>{children}</MainWrapper>
-          <SiteFooter />
+          <AuthProvider>
+            <SiteHeader products={products} />
+            <MainWrapper>{children}</MainWrapper>
+            <SiteFooter />
+          </AuthProvider>
         </body>
       </ThemeRegistry>
     </html>

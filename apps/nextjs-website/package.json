@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh 6f8fe27",
+    "download-docs": "./scripts/fetch-docs.sh f3dd4ec",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
@@ -12,6 +12,7 @@
     "test": "jest -i"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^5.3.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@markdoc/markdoc": "0.3.0",
@@ -21,6 +22,7 @@
     "@mui/utils": "^5.14.5",
     "@pagopa/mui-italia": "1.0.1",
     "@stoplight/elements": "^7.9.0",
+    "aws-amplify": "^5.3.11",
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
     "io-ts": "^2.2.20",
