@@ -635,6 +635,17 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse @figma/embed', () => {
+    const embed =
+      '{% @figma/embed fileId="K9NAcE1wiZJvRiGh1FLAMC" nodeId="38:245" url="https://www.figma.com/file/K9NAcE1wiZJvRiGh1FLAMC?node-id=38%3A245" %}';
+
+    expect(parseContent(embed, config)).toStrictEqual([
+      new Markdoc.Tag('Embed', {
+        url: 'https://www.figma.com/file/K9NAcE1wiZJvRiGh1FLAMC?node-id=38%3A245',
+      }),
+    ]);
+  });
+
   it('should parse strong html tag', () => {
     const strongText = '<strong>Text</strong>';
     expect(parseContent(strongText, config)).toStrictEqual([
