@@ -5,7 +5,6 @@ import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { environment } from '@/config';
-import { SignUpFunction } from '@/lib/types/signUpFunction';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
 import { Box, Grid, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
@@ -16,29 +15,31 @@ const SignUp = () => {
     auth: { signUp },
   } = translations;
 
-  const [accountEmail, setAccountEmail] = useState<string>('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [company, setCompany] = useState('');
+  const [role, setRole] = useState('');
   const [signUpStep, setSignUpStep] = useState(SignUpSteps.SIGN_UP);
 
-  const onSignUp: SignUpFunction = useCallback(
-    async ({ username, password, firstName, lastName, company, role }) => {
-      const result = await Auth.signUp({
-        username,
-        password,
-        attributes: {
-          firstName,
-          lastName,
-          company,
-          role,
-        },
-      });
+  const onSignUp = useCallback(async () => {
+    const result = await Auth.signUp({
+      username,
+      password,
+      attributes: {
+        firstName,
+        lastName,
+        company,
+        role,
+      },
+    });
 
-      setAccountEmail(username);
-      setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
 
-      return !!result.user;
-    },
-    []
-  );
+    return !!result.user;
+  }, [company, firstName, lastName, password, role, username]);
 
   const onBackStep = useCallback(() => {
     setSignUpStep(SignUpSteps.SIGN_UP);
@@ -84,10 +85,26 @@ const SignUp = () => {
         </Grid>
         <Grid item xs={5}>
           {signUpStep === SignUpSteps.SIGN_UP && (
-            <SignUpForm onSignUp={onSignUp} />
+            <SignUpForm
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              onSignUp={onSignUp}
+            />
           )}
           {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
-            <ConfirmSignUp email={accountEmail} onBack={onBackStep} />
+            <ConfirmSignUp email={username} onBack={onBackStep} />
           )}
         </Grid>
       </Grid>

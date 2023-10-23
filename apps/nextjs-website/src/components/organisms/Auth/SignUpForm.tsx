@@ -1,6 +1,6 @@
 'use client';
 import { translations } from '@/_contents/translations';
-import { SignUpFunction } from '@/lib/types/signUpFunction';
+import { passwordMatcher } from '@/helpers/auth.helpers';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -21,30 +21,66 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from '@mui/material';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useState } from 'react';
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 interface SignUpFormProps {
-  onSignUp: SignUpFunction;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  company: string;
+  role: string;
+
+  setUsername: Dispatch<SetStateAction<string>>;
+  setPassword: Dispatch<SetStateAction<string>>;
+  setConfirmPassword: Dispatch<SetStateAction<string>>;
+  setFirstName: Dispatch<SetStateAction<string>>;
+  setLastName: Dispatch<SetStateAction<string>>;
+  setCompany: Dispatch<SetStateAction<string>>;
+  setRole: Dispatch<SetStateAction<string>>;
+
+  onSignUp: () => Promise<boolean>;
 }
 
-const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
+const SignUpForm = ({
+  username,
+  password,
+  confirmPassword,
+  firstName,
+  lastName,
+  company,
+  role,
+  setUsername,
+  setPassword,
+  setConfirmPassword,
+  setFirstName,
+  setLastName,
+  setCompany,
+  setRole,
+
+  onSignUp,
+}: SignUpFormProps) => {
   const {
     auth: { signUp },
     shared,
   } = translations;
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [company, setCompany] = useState('');
-  const [role, setRole] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordDirty, setIsPasswordDirty] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -63,29 +99,21 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
     event.preventDefault();
   };
 
+  const validatePassword = useCallback(() => {
+    setIsPasswordValid(passwordMatcher.test(password));
+  }, [password]);
+
+  useEffect(() => {
+    validatePassword();
+  }, [password, validatePassword]);
+
   const onSignUpClick = useCallback(() => {
     if (password !== confirmPassword) {
       return;
     }
 
-    onSignUp({
-      username,
-      password,
-      firstName,
-      lastName,
-      company,
-      role,
-    });
-  }, [
-    company,
-    confirmPassword,
-    firstName,
-    lastName,
-    onSignUp,
-    password,
-    role,
-    username,
-  ]);
+    onSignUp();
+  }, [confirmPassword, onSignUp, password]);
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -106,10 +134,11 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               <Grid container spacing={2} mb={2}>
                 <Grid item xs={6}>
                   <TextField
-                    placeholder={shared.firstName}
+                    label={shared.firstName}
                     variant='outlined'
                     size='small'
                     required
+                    value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     sx={{
                       backgroundColor: 'white',
@@ -119,10 +148,11 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    placeholder={shared.lastName}
+                    label={shared.lastName}
                     variant='outlined'
                     size='small'
                     required
+                    value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     sx={{
                       backgroundColor: 'white',
@@ -133,11 +163,12 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               </Grid>
               <Stack spacing={2} mb={2}>
                 <TextField
-                  placeholder={shared.emailAddress}
+                  label={shared.emailAddress}
                   variant='outlined'
                   size='small'
                   type='email'
                   required
+                  value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   sx={{
                     backgroundColor: 'white',
@@ -151,8 +182,11 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                   </InputLabel>
                   <OutlinedInput
                     id='password-input'
+                    required
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
+                    onBlur={() => setIsPasswordDirty(true)}
+                    error={isPasswordDirty && !isPasswordValid}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -165,6 +199,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
+                    value={password}
                     label={shared.password}
                     inputProps={{
                       sx: {
@@ -172,6 +207,9 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                       },
                     }}
                   />
+                  <FormHelperText error={isPasswordDirty && !isPasswordValid}>
+                    {signUp.passwordPolicy}
+                  </FormHelperText>
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -185,6 +223,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                   <OutlinedInput
                     id='confirm-password-input'
                     type={showPassword ? 'text' : 'password'}
+                    required
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     endAdornment={
                       <InputAdornment position='end'>
@@ -202,8 +241,9 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
+                    value={confirmPassword}
                     label={shared.confirmPassword}
-                    error={password !== confirmPassword}
+                    error={isPasswordDirty && password !== confirmPassword}
                     inputProps={{
                       sx: {
                         padding: '8.5px 14px',
@@ -238,11 +278,11 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               </Stack>
               <Stack spacing={2} mb={2}>
                 <TextField
-                  placeholder={shared.role}
+                  label={shared.role}
                   variant='outlined'
                   size='small'
-                  required
                   onChange={(e) => setRole(e.target.value)}
+                  value={role}
                   sx={{
                     backgroundColor: 'white',
                   }}
@@ -250,7 +290,7 @@ const SignUpForm = ({ onSignUp }: SignUpFormProps) => {
               </Stack>
               <Grid container mb={1}>
                 <FormControlLabel
-                  control={<Checkbox sx={{ paddingTop: '4px' }} />}
+                  control={<Checkbox sx={{ marginTop: '-4px' }} />}
                   label={signUp.confirmComunications}
                   sx={{ alignItems: 'flex-start' }}
                 />

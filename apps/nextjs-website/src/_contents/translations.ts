@@ -313,6 +313,8 @@ export const translations = {
         'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
       alreadyHaveAnAccount: 'Hai già un account?',
       whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
+      passwordPolicy:
+        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
       advantages: [
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
