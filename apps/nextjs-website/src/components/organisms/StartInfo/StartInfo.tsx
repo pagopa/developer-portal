@@ -27,7 +27,7 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
   const { palette } = useTheme();
   return (
     <>
-      <Box py={11} sx={{ backgroundColor: palette.background.default }}>
+      <Box pt={10} pb={6} sx={{ backgroundColor: palette.background.default }}>
         <SectionTitle title={title} />
         <CardsGrid
           cardSize={{
@@ -44,12 +44,13 @@ const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
         />
       </Box>
       {cta && (
-        <Box py={4} sx={{ backgroundColor: palette.background.default }}>
+        <Box py={2} sx={{ backgroundColor: palette.background.default }}>
           <Stack
             spacing={2}
             direction={{ md: 'row', xs: 'column' }}
             justifyContent='center'
             alignItems='center'
+            paddingY={0.5}
           >
             <Box pt={0.5}>
               <IconWrapper

@@ -27,6 +27,12 @@ inputs:
     description: 'The AWS region selected'
     required: false
     default: 'eu-south-1'
+  cognito_user_pool_id:
+    description: 'The id of the User Pool on Cognito, needed for the authentication'
+    required: true
+  cognito_app_client_id:
+    description: 'The App Client registered on Cognito'
+    required: true
 
 runs:
   using: "composite"
@@ -64,6 +70,9 @@ runs:
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
         NEXT_TELEMETRY_DISABLED: "1"
+        NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.aws_region }}
+        NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
+        NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
       shell: bash
       run: npm run build -w nextjs-website
 

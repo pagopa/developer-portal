@@ -7,6 +7,7 @@ import FlagOutlined from '@mui/icons-material/FlagOutlined';
 import FolderOutlined from '@mui/icons-material/FolderOutlined';
 import HeadsetMic from '@mui/icons-material/HeadsetMic';
 import Instagram from '@mui/icons-material/Instagram';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import LinkedIn from '@mui/icons-material/LinkedIn';
 import LiveHelp from '@mui/icons-material/LiveHelp';
 import MarkEmailRead from '@mui/icons-material/MarkEmailRead';
@@ -31,6 +32,7 @@ export const ICON_MAP = {
   FolderOutlined: FolderOutlined,
   HeadsetMic: HeadsetMic,
   Instagram: Instagram,
+  KeyboardArrowRightIcon: KeyboardArrowRightIcon,
   LinkedIn: LinkedIn,
   LiveHelp: LiveHelp,
   MarkEmailRead: MarkEmailRead,

@@ -7,6 +7,15 @@ export class BooleanAttr {
   readonly transform = (value: string) => value === '' || value === 'true';
 }
 
+// eslint-disable-next-line functional/no-classes
+export class BooleanOrNullAttr {
+  readonly transform = (value: string) => {
+    if (value === 'true') return true;
+    else if (value === 'false') return false;
+    else return null;
+  };
+}
+
 const convertLink = (link: string): string =>
   link
     .replace('/README.md', '')

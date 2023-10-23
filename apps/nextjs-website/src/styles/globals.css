@@ -14,12 +14,15 @@ body {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-foreground);
 }
+
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
 ::-webkit-scrollbar:horizontal {
   height: 8px;
 }
@@ -46,6 +49,27 @@ body {
 
 .swiper-pagination-bullet-active {
   opacity: 1;
+}
+
+.syntax-highlighter-container {
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
+@media (min-width: 900px) {
+  .syntax-highlighter-container {
+    border-radius: 0 0.375rem 0.375rem 0;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .otnotice-content {
+    margin: -750px auto 0 auto !important;
+  }
+}
+
+.otnotice-menu {
+  position: sticky !important;
+  top: 130px !important;
 }
 
 #onetrust-consent-sdk #onetrust-banner-sdk *:focus, #onetrust-consent-sdk #onetrust-banner-sdk:focus {
@@ -82,12 +106,6 @@ body {
   }
 }
 
-.syntax-highlighter-container {
-  border-radius: 0 0 0.375rem 0.375rem;
-}
-
-@media (min-width: 900px){
-  .syntax-highlighter-container {
-    border-radius: 0 0.375rem 0.375rem 0;
-  }
+iframe {
+  border: none;
 }

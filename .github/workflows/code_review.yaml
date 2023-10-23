@@ -79,6 +79,9 @@ jobs:
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           allow_crawler: ${{ secrets.ALLOW_CRAWLER }}
+          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          cognito_aws_region: 'eu-south-1'
 
       - name: Check NextJS bundle size
         uses: ./.github/actions/check-nextjs-bundle-size

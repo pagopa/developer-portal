@@ -9,7 +9,7 @@ import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard'
 
 export type CodeBlockPartProps = {
   code: string;
-  language: string;
+  language?: string;
   mode?: 'light' | 'dark';
   showLineNumbers?: boolean;
   title?: string;
@@ -21,7 +21,7 @@ const CodeBlockPart = ({
   code,
   language,
   mode = 'light',
-  showLineNumbers = false,
+  showLineNumbers = true,
   title,
   maxWidth = 'auto',
   wrapLines = true,

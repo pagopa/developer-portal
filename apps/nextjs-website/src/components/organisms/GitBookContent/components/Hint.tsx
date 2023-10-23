@@ -1,9 +1,18 @@
-import Alert from '@mui/material/Alert';
+import Alert, { AlertColor } from '@mui/material/Alert';
 import { HintProps } from 'gitbook-docs/markdoc/schema/hint';
 import { ReactNode } from 'react';
 
+const asSeverity = (style: HintProps<unknown>['style']): AlertColor =>
+  style === 'danger' ? 'error' : style;
+
 const Hint = ({ style, children }: HintProps<ReactNode>) => (
-  <Alert severity={style === 'danger' ? 'warning' : style}>{children}</Alert>
+  <Alert
+    severity={asSeverity(style)}
+    variant={'outlined'}
+    sx={{ marginBottom: 2 }}
+  >
+    {children}
+  </Alert>
 );
 
 export default Hint;

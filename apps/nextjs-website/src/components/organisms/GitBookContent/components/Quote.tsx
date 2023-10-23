@@ -6,10 +6,13 @@ const Quote = ({ children }: QuoteProps<ReactNode>) => (
   <Typography
     component='blockquote'
     sx={{
-      p: 1,
-      borderLeftWidth: 3,
+      paddingY: 0,
+      paddingX: 2,
+      marginY: 2,
+      borderLeftWidth: 4,
       borderLeftStyle: 'solid',
       borderLeftColor: ({ palette }) => palette.divider,
+      '& > div.MuiTypography-body1': { margin: 0 },
     }}
   >
     {children}

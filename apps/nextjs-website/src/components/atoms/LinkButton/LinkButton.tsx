@@ -15,7 +15,7 @@ type LinkButtonProps = {
 const LinkButton = ({
   label,
   href,
-  size = 18,
+  size = 14,
   width,
   disabled = false,
 }: LinkButtonProps) => {
@@ -59,8 +59,9 @@ const LinkButton = ({
       <ArrowForward
         sx={{
           color: disabled ? 'lightgray' : 'primary.main',
-          height: 25,
-          width: 25,
+          marginLeft: 0.5,
+          height: 24,
+          width: 24,
         }}
       />
     </Stack>
