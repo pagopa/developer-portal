@@ -63,7 +63,7 @@ const ProfileMenu = ({ name }: ProfileMenuProps) => {
             backgroundOpacity: 0.08,
             padding: '10px 32px',
             marginTop: '32px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           I tuoi dati
@@ -72,14 +72,16 @@ const ProfileMenu = ({ name }: ProfileMenuProps) => {
           onClick={() => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            window.OneTrust.ToggleInfoDisplay()
+            window.OneTrust.ToggleInfoDisplay();
           }}
           sx={{
             marginTop: '12px',
             padding: '10px 32px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
-        >Consensi e privacy</Box>
+        >
+          Consensi e privacy
+        </Box>
       </Box>
     </Box>
   );
