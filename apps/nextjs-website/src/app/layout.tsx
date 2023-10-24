@@ -62,12 +62,12 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <body>
-          {environment === 'prod' && (
+          {
             <div
               key='script-cookie'
               dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
             ></div>
-          )}
+          }
           <AuthProvider>
             <SiteHeader products={products} />
             <MainWrapper>{children}</MainWrapper>
