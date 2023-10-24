@@ -13,7 +13,7 @@ import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { getTwitterMetadata } from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -51,23 +51,14 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const guideProps = await getGuide(
-    params?.productSlug,
-    params?.productGuidePage ?? ['']
-  );
-
   const {
     page: { path, title },
-  } = guideProps;
+  } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
 
-  return {
+  return makeMetadata({
     title,
-    openGraph: {
-      title,
-      url: path,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+    url: path,
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {

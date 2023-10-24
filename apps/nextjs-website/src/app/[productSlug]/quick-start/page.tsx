@@ -9,10 +9,7 @@ import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideSteppe
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getPreviousTitle,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -34,22 +31,17 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const previousTitle = getPreviousTitle(resolvedParent);
   const { abstract, path, product } = await getQuickStartGuide(
     params?.productSlug
   );
-  const title = `${previousTitle}${abstract ? ` - ${abstract.title}` : ''}`;
 
-  return {
-    title,
-    openGraph: {
-      title,
-      description: abstract?.description,
-      url: path,
-      images: product.svgPath,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+  return makeMetadata({
+    parent: resolvedParent,
+    title: abstract?.title,
+    description: abstract?.description,
+    url: path,
+    image: product.svgPath,
+  });
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {

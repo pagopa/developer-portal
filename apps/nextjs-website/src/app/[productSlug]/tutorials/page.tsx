@@ -11,10 +11,7 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
-import {
-  getPreviousTitle,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -36,22 +33,17 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const previousTitle = getPreviousTitle(resolvedParent);
   const { product, abstract, path } = await getTutorialLists(
     params.productSlug
   );
-  const title = `${previousTitle} - ${product.name}`;
 
-  return {
-    title,
-    openGraph: {
-      title,
-      description: abstract?.description ?? '',
-      url: path,
-      images: product.svgPath,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+  return makeMetadata({
+    parent: resolvedParent,
+    title: product.name,
+    description: abstract?.description,
+    url: path,
+    image: product.svgPath,
+  });
 }
 
 const TutorialsPage = async ({ params }: ProductParams) => {

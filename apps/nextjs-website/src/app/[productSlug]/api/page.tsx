@@ -6,10 +6,7 @@ import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getPreviousTitle,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return getProductsSlugs('api').map((productSlug) => ({
@@ -38,19 +35,14 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const previousTitle = getPreviousTitle(resolvedParent);
   const { product } = await getApi(params.productSlug);
-  const title = `${previousTitle} - ${product.name}`;
 
-  return {
-    title,
-    openGraph: {
-      title,
-      description: product.description,
-      url: product.path,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+  return makeMetadata({
+    title: product.name,
+    description: product.description,
+    url: product.path,
+    parent: resolvedParent,
+  });
 };
 
 const ApisPage = async ({ params }: ProductParams) => {

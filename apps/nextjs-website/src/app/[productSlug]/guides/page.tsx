@@ -11,10 +11,7 @@ import ProductLayout, {
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getPreviousTitle,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -36,20 +33,14 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const previousTitle = getPreviousTitle(resolvedParent);
   const { name, path, abstract } = await getGuideLists(params?.productSlug);
 
-  const title = `${previousTitle} - ${name}`;
-
-  return {
-    title,
-    openGraph: {
-      title,
-      description: abstract?.description ?? '',
-      url: path,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+  return makeMetadata({
+    title: name,
+    description: abstract?.description,
+    url: path,
+    parent: resolvedParent,
+  });
 };
 
 const GuidesPage = async ({ params }: ProductParams) => {

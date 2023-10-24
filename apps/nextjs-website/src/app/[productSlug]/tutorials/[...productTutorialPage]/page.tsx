@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { getTwitterMetadata } from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -37,19 +37,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   const {
     page: { path, title },
-  } = tutorialProps;
+  } = await getTutorial(productSlug, [tutorialPath]);
 
-  return {
+  return makeMetadata({
     title,
-    openGraph: {
-      title,
-      url: path,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+    url: path,
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {

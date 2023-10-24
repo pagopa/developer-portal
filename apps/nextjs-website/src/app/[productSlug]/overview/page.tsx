@@ -16,10 +16,7 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
-import {
-  getPreviousTitle,
-  getTwitterMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
@@ -83,20 +80,15 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const previousTitle = getPreviousTitle(resolvedParent);
   const { product, path } = await getOverview(params.productSlug);
-  const title = `${previousTitle} - ${product.name}`;
 
-  return {
-    title,
-    openGraph: {
-      title,
-      description: product.description,
-      url: path,
-      images: product.svgPath,
-    },
-    twitter: getTwitterMetadata(title),
-  };
+  return makeMetadata({
+    parent: resolvedParent,
+    title: product.name,
+    description: product.description,
+    url: path,
+    image: product.svgPath,
+  });
 }
 
 const OverviewPage = async ({ params }: ProductParams) => {
