@@ -32,6 +32,10 @@ resource "aws_cognito_user_pool" "devportal" {
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
   }
 
+  verification_message_template {
+    default_email_option = "CONFIRM_WITH_LINK"
+  }
+
   # Custom attributes cannot be required.
   # Terraform cannot update or delete an attribute.
   # Terraform can add a new attribute as update in-place.
