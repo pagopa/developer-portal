@@ -19,6 +19,18 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
+    login: 'Accedi',
+    signUp: 'Registrati',
+    logout: 'Esci',
+    emailAddress: 'Indirizzo email',
+    password: 'Password',
+    goBack: 'Torna indietro',
+    requiredFields: '* Campi obbligatori',
+    firstName: 'Nome',
+    lastName: 'Cognome',
+    confirmPassword: 'Conferma password',
+    company: 'Tipologia Ente o Azienda',
+    role: 'Ruolo',
   },
   pageNotFound: {
     overline: '404',
@@ -290,6 +302,14 @@ export const translations = {
           },
         ],
       },
+    },
+  },
+  auth: {
+    login: {
+      loginToYourAccount: 'Accedi al tuo account',
+      rememberMe: 'Ricordami',
+      forgotPassword: 'Hai dimenticato la password?',
+      noAccount: 'Non hai un account?',
     },
   },
 };

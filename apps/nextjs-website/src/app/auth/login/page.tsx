@@ -1,5 +1,5 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { environment } from '@/config';
 import PageNotFound from '@/app/not-found';
 
@@ -14,9 +14,15 @@ const Login = () => {
         justifyContent: 'center',
         height: '100vh',
         width: '100vw',
+        backgroundImage: 'url(/images/hero.jpg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'bottom right',
       }}
     >
-      <LoginForm />
+      <Grid container justifyContent='center' my={16} spacing={6}>
+        <LoginForm />
+      </Grid>
     </Box>
   );
 };
