@@ -70,7 +70,7 @@ const LoginForm = () => {
               </Typography>
               <Stack spacing={2} mb={4}>
                 <TextField
-                  placeholder={shared.emailAddress}
+                  label={shared.emailAddress}
                   variant='outlined'
                   size='small'
                   onChange={(e) => setUsername(e.target.value)}
