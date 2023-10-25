@@ -26,7 +26,7 @@
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
     "io-ts": "^2.2.20",
-    "next": "^13.4.19",
+    "next": "^13.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
