@@ -6,6 +6,11 @@ resource "aws_cognito_user_pool" "devportal" {
     advanced_security_mode = "OFF"
   }
 
+  mfa_configuration = "ON"
+  software_token_mfa_configuration {
+    enabled = true
+  }
+
   username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
 
