@@ -28,18 +28,11 @@ const makeHtmlParser = () => {
       // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
       result.push(token);
     },
-    ontext: (content) => {
-      if (typeof content !== 'string') return;
-      if (content.trim().length > 0) {
+    ontext: (content: string) => {
+      if (content.trim().length > 0 || content === ' ') {
         const token = new Token('text', 'text', 0);
         // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
         token.content = content;
-        // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
-        result.push(token);
-      } else if (content.replaceAll('  ', ' ') === ' ') {
-        const token = new Token('text', 'text', 0);
-        // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
-        token.content = ' ';
         // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
         result.push(token);
       }
