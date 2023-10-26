@@ -9,10 +9,9 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { homepage, shared } = translations;
+  const { homepage } = translations;
 
   return makeMetadata({
-    title: shared.siteTitle,
     description: homepage.productsShowcaseTitle,
     url: '/',
   });
