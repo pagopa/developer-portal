@@ -66,10 +66,12 @@ export const Operation = ({
             color={chipColor}
             size='small'
           />
-          <Typography variant='caption'>{baseUrl}</Typography>
+          <Typography variant='caption' color='GrayText'>
+            {baseUrl}
+          </Typography>
           <Typography variant='caption-semibold'>{path}</Typography>
         </Box>
-        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
+        <Typography sx={{ fontWeight: 'bold', mt: 2 }} variant='body1'>
           {summary}
         </Typography>
       </ExpandableSummary>
