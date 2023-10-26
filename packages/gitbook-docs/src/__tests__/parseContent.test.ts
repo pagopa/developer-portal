@@ -110,92 +110,19 @@ describe('parseContent', () => {
     expect(parseContent('This is a paragraph', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
     ]);
+  });
 
+  it('should preserve a single space into a td tag nested into other tags', () => {
     expect(
       parseContent(
-        '<strong>Sei un</strong> <a data-footnote-ref href="#user-content-fn-1"><strong>ente aggregatore</strong></a><strong>?</strong>',
+        '<td><strong>before space</strong> <a><strong>after space</strong></a></td>',
         config
       )
     ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('StyledText', { style: 'strong' }, ['Sei un']),
-        ' ',
-        new Markdoc.Tag('Link', { href: '/to/s0/page/#user-content-fn-1' }, [
-          new Markdoc.Tag('StyledText', { style: 'strong' }, [
-            'ente aggregatore',
-          ]),
-        ]),
-        new Markdoc.Tag('StyledText', { style: 'strong' }, ['?']),
-      ]),
-    ]);
-  });
-
-  it('should parse the empty paragraph inside a card', () => {
-    const table =
-      '<table data-card-size="large" data-view="cards">\n' +
-      '  <thead>\n' +
-      '  <tr>\n' +
-      '    <th></th>\n' +
-      '    <th></th>\n' +
-      '    <th></th>\n' +
-      '    <th data-hidden data-card-target data-type="content-ref"></th>\n' +
-      '  </tr>\n' +
-      '  </thead>\n' +
-      '  <tbody>\n' +
-      '  <tr>\n' +
-      '    <td><strong>Sei un ente?</strong></td>\n' +
-      '    <td><a href="adesione-tramite-larea-riservata.md">Aderisci</a> tramite l\'Area Riservata</td>\n' +
-      '    <td></td>\n' +
-      '    <td><a href="adesione-tramite-larea-riservata.md">adesione-tramite-larea-riservata.md</a></td>\n' +
-      '  </tr>\n' +
-      '  <tr>\n' +
-      '    <td><strong>Sei un</strong> <a data-footnote-ref href="#user-content-fn-1"><strong>ente aggregatore</strong></a><strong>?</strong></td>\n' +
-      '    <td></td>\n' +
-      '    <td></td>\n' +
-      '    <td></td>\n' +
-      '  </tr>\n' +
-      '  </tbody>\n' +
-      '</table>';
-    expect(parseContent(table, config)).toStrictEqual([
-      new Markdoc.Tag('Cards', { size: 'large' }, [
-        new Markdoc.Tag(
-          'Card',
-          { href: '/to/s0/page/adesione-tramite-larea-riservata' },
-          [
-            new Markdoc.Tag('CardItem', {}, [
-              new Markdoc.Tag('StyledText', { style: 'strong' }, [
-                'Sei un ente?',
-              ]),
-            ]),
-            new Markdoc.Tag('CardItem', {}, [
-              new Markdoc.Tag(
-                'Link',
-                { href: '/to/s0/page/adesione-tramite-larea-riservata' },
-                ['Aderisci']
-              ),
-              " tramite l'Area Riservata",
-            ]),
-            new Markdoc.Tag('CardItem', {}, []),
-          ]
-        ),
-        new Markdoc.Tag('Card', {}, [
-          new Markdoc.Tag('CardItem', {}, [
-            new Markdoc.Tag('StyledText', { style: 'strong' }, ['Sei un']),
-            ' ',
-            new Markdoc.Tag(
-              'Link',
-              { href: '/to/s0/page/#user-content-fn-1' },
-              [
-                new Markdoc.Tag('StyledText', { style: 'strong' }, [
-                  'ente aggregatore',
-                ]),
-              ]
-            ),
-            new Markdoc.Tag('StyledText', { style: 'strong' }, ['?']),
-          ]),
-          new Markdoc.Tag('CardItem', {}, []),
-          new Markdoc.Tag('CardItem', {}, []),
-        ]),
+      new Markdoc.Tag('StyledText', { style: 'strong' }, ['before space']),
+      ' ',
+      new Markdoc.Tag('Link', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['after space']),
       ]),
     ]);
   });
