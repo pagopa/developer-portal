@@ -112,6 +112,21 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should preserve a single space into a td tag nested into other tags', () => {
+    expect(
+      parseContent(
+        '<td><strong>before space</strong> <a><strong>after space</strong></a></td>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('StyledText', { style: 'strong' }, ['before space']),
+      ' ',
+      new Markdoc.Tag('Link', {}, [
+        new Markdoc.Tag('StyledText', { style: 'strong' }, ['after space']),
+      ]),
+    ]);
+  });
+
   it('should convert href as expected', () => {
     expect(parseContent('[Guida](README.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
