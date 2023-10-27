@@ -66,7 +66,7 @@ const LoginForm = () => {
         },
       }}
     >
-      <Card variant='outlined'>
+      <Card variant='elevation' elevation={8} sx={{ borderRadius: '16px' }}>
         <Grid container justifyContent='center'>
           <Grid item xs={10}>
             <form>
