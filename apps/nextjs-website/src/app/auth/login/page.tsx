@@ -10,9 +10,9 @@ const Login = () => {
     <Box
       sx={{
         display: 'flex',
+        minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
         width: '100vw',
         backgroundImage: 'url(/images/hero.jpg)',
         backgroundRepeat: 'no-repeat',
@@ -20,7 +20,13 @@ const Login = () => {
         backgroundPosition: 'bottom right',
       }}
     >
-      <Grid container justifyContent='center' my={16} spacing={6}>
+      <Grid
+        container
+        justifyContent='center'
+        sx={{ mx: 'auto' }}
+        my={6}
+        spacing={6}
+      >
         <LoginForm />
       </Grid>
     </Box>

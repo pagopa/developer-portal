@@ -57,7 +57,15 @@ const LoginForm = () => {
   }, [password, username]);
 
   return (
-    <Box component='section' width='35vw'>
+    <Box
+      component='section'
+      sx={{
+        width: '90vw',
+        '@media (min-width: 1200px)': {
+          width: '35vw',
+        },
+      }}
+    >
       <Card variant='outlined'>
         <Grid container justifyContent='center'>
           <Grid item xs={10}>
