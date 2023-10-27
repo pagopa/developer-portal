@@ -6,6 +6,7 @@ export type MakeMetadataParams = {
   readonly description?: string;
   readonly url?: string;
   readonly image?: string;
+  readonly locale?: string;
 };
 
 export type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;

@@ -8,6 +8,7 @@ export const makeMetadata: MakeMetadataFunction = ({
   description,
   url,
   image,
+  locale,
 }) => {
   const { shared } = translations;
   const previousTitle = parent?.title?.absolute || shared.siteTitle;
@@ -17,7 +18,7 @@ export const makeMetadata: MakeMetadataFunction = ({
     title: metadataTitle,
     description: description || '',
     url: url || '',
-    openGraph: getOpenGraphMetadata(metadataTitle, description, image),
+    openGraph: getOpenGraphMetadata(metadataTitle, description, image, locale),
     twitter: getTwitterMetadata(metadataTitle, description, image),
   };
 };
@@ -25,11 +26,12 @@ export const makeMetadata: MakeMetadataFunction = ({
 const getOpenGraphMetadata = (
   title: string,
   description?: string,
-  image?: string
+  image?: string,
+  locale = 'it_IT'
 ): Metadata['openGraph'] => ({
   title,
   type: 'website',
-  locale: 'it_IT',
+  locale,
   description: description || '',
   images: image,
 });
