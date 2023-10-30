@@ -305,6 +305,21 @@ export const translations = {
     },
   },
   auth: {
+    accountActivated: {
+      goToDashboard: 'Vai alla tua Dashboard',
+      welcomeMessage:
+        'Ti diamo il benvenuto su PagoPA DevPortal.\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
+    confirmSignUp: {
+      confirmSignUp: 'Conferma che sei tu',
+      description: (email: string) =>
+        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+      didntReceiveEmail:
+        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo email è errato?",
+    },
     signUp: {
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
@@ -320,15 +335,6 @@ export const translations = {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       ],
-    },
-    confirmSignUp: {
-      confirmSignUp: 'Conferma che sei tu',
-      description: (email: string) =>
-        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
-      didntReceiveEmail:
-        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
-      resendEmail: 'Reinvia e-mail',
-      wrongEmail: "L'indirizzo email è errato?",
     },
   },
 };
