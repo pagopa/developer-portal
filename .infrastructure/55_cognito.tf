@@ -1,31 +1,22 @@
-# data "archive_file" "cognito_lambda" {
-#   type        = "zip"
-#   source_dir = "apps/cognito_functions/.out"
-#   output_path = "apps/cognito_functions/.out/cognito_lambda.zip"
-# }
-
-# resource "aws_lambda_function" "cognito_custom_message_lambda" {
-#   # If the file is not in the current working directory you will need to include a
-#   # path.module in the filename.
-#   filename      = data.archive_file.cognito_lambda.output_path
-#   function_name = "cognito_custom_message"
-#   handler       = "handler"
-
-#   source_code_hash = data.archive_file.cognito_lambda.output_base64sha256
-
-#   runtime = "nodejs18.x"
-# }
 
 module "cognito_custom_message_function" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "cognito_custom_message"
   description   = "Cognito custom message"
-  handler       = "handler"
+  handler       = "index.handler"
   runtime       = "nodejs18.x"
 
   create_package         = false
   local_existing_package = "../apps/cognito-functions/.out/index.zip"
+  create_current_version_allowed_triggers = false
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
 }
 
 resource "aws_cognito_user_pool" "devportal" {
@@ -63,7 +54,7 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   verification_message_template {
-    default_email_option = "CONFIRM_WITH_LINK"
+    default_email_option = "CONFIRM_WITH_CODE"
   }
 
   lambda_config {
