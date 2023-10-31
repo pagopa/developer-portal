@@ -10,13 +10,15 @@ export const webinars: readonly Webinar[] = [
       {
         name: 'Anna Bianchi',
         jobTitle: 'Product Owner SEND',
-        description: 'Lorem ipsum',
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
         imagePath: '/images/speaker-00.png',
       },
       {
         name: 'Mario Rossi',
         jobTitle: 'Software Engineer',
-        description: 'Lorem ipsum',
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
         imagePath: '/images/speaker-01.png',
       },
     ],

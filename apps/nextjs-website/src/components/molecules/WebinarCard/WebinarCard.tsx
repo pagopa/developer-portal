@@ -83,6 +83,7 @@ const WebinarCard = ({
                 <SpeakerPreview
                   key={index}
                   name={speaker.name}
+                  description={speaker.description}
                   jobTitle={speaker.jobTitle}
                   imagePath={speaker.imagePath}
                 />

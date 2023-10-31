@@ -1,11 +1,20 @@
+'use client';
 import { Speaker } from '@/lib/types/speaker';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 
-type SpeakerPreviewProps = Speaker;
+type SpeakerPreviewProps = { compactMode?: boolean } & Speaker;
 
-const SpeakerPreview = ({ name, jobTitle, imagePath }: SpeakerPreviewProps) => {
+const SpeakerPreview = ({
+  name,
+  jobTitle,
+  description,
+  imagePath,
+  compactMode = true,
+}: SpeakerPreviewProps) => {
+  const { palette } = useTheme();
+
   return (
     <Box
       sx={{
@@ -24,7 +33,7 @@ const SpeakerPreview = ({ name, jobTitle, imagePath }: SpeakerPreviewProps) => {
           sizes='100vw'
           style={{
             borderRadius: '100%',
-            width: '64px',
+            width: compactMode ? '64px' : '145px',
             height: 'auto',
           }}
         />
@@ -36,10 +45,30 @@ const SpeakerPreview = ({ name, jobTitle, imagePath }: SpeakerPreviewProps) => {
           justifyContent: 'center',
         }}
       >
-        <Typography variant='body2' fontWeight={600}>
-          {name}
-        </Typography>
-        <Typography variant='body2'>{jobTitle}</Typography>
+        {compactMode ? (
+          <>
+            <Typography variant='body2' fontWeight={600}>
+              {name}
+            </Typography>
+            <Typography variant='body2'>{jobTitle}</Typography>
+          </>
+        ) : (
+          <>
+            <Typography variant='h5' fontWeight={700}>
+              {name}
+            </Typography>
+            <Typography
+              fontSize={18}
+              fontWeight={400}
+              color={palette.text.secondary}
+            >
+              {jobTitle}
+            </Typography>
+            <Typography variant='body2' mt={2}>
+              {description}
+            </Typography>
+          </>
+        )}
       </Box>
     </Box>
   );
