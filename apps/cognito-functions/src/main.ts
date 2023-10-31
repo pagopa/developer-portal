@@ -2,6 +2,8 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as PR from 'io-ts/PathReporter';
 import * as customMessage from './custom-message-handler';
+import { SES } from '@aws-sdk/client-ses';
+import * as sendEmail from './send-email-handler';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
@@ -13,3 +15,5 @@ export const customMessageHandler = pipe(
     throw new Error();
   }, customMessage.makeHandler)
 );
+
+export const sensEmailHandler = pipe(new SES(), sendEmail.makeHandler);
