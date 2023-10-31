@@ -1,5 +1,5 @@
 import { CustomMessageTriggerEvent } from 'aws-lambda';
-import { emailTemplate, handler } from '../custom-message-handler';
+import { emailTemplate, makeHandler } from '../custom-message-handler';
 
 const event: CustomMessageTriggerEvent = {
   version: 'aVersion',
