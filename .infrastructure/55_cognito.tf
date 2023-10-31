@@ -7,7 +7,7 @@ module "cognito_custom_message_function" {
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = "../apps/cognito-functions/.out/index.zip"
+  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
   create_current_version_allowed_triggers = false
 
   allowed_triggers = {

@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "clean": "shx rm -rf dist/",
+    "clean": "shx rm -rf dist/ out/",
     "compile": "npm run clean && tsc",
-    "build": "esbuild dist/main.js --bundle --platform=node --outfile=.out/main.js",
-    "postbuild": "cd .out && zip -r index.zip .",
+    "build": "esbuild dist/main.js --bundle --platform=node --outfile=out/main.js",
+    "postbuild": "cd out && zip -r congnito-functions.zip .",
     "lint": "eslint src",
     "test": "npm run compile && jest -i"
   },
