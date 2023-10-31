@@ -22,6 +22,39 @@ module "cognito_custom_message_function" {
   }
 }
 
+module "cognito_post_confirmation_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_post_confirmation"
+  description   = "The Lambda function executed after post confirmation of email address"
+  handler       = "main.sensEmailHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
+  create_current_version_allowed_triggers = false
+
+  environment_variables = {
+    DOMAIN = var.dns_domain_name
+  }
+
+  attach_policy_statements = true
+  policy_statements = {
+    ses = {
+      effect    = "Allow",
+      actions   = ["ses:SendEmail", "ses:SendRawEmail"],
+      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+    },
+  }
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
 resource "aws_cognito_user_pool" "devportal" {
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
@@ -65,7 +98,8 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   lambda_config {
-    custom_message = module.cognito_custom_message_function.lambda_function_arn
+    custom_message    = module.cognito_custom_message_function.lambda_function_arn
+    post_confirmation = module.cognito_post_confirmation_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.
