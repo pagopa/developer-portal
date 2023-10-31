@@ -6,7 +6,7 @@
     "clean": "shx rm -rf dist/ out/",
     "compile": "npm run clean && tsc",
     "build": "esbuild dist/main.js --bundle --platform=node --outfile=out/main.js",
-    "postbuild": "cd out && zip -r congnito-functions.zip .",
+    "postbuild": "cd out && zip -r cognito-functions.zip .",
     "lint": "eslint src",
     "test": "npm run compile && jest -i"
   },
@@ -23,5 +23,9 @@
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "fp-ts": "^2.16.1",
+    "io-ts": "^2.2.20"
   }
 }

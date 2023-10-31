@@ -10,6 +10,10 @@ module "cognito_custom_message_function" {
   local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
   create_current_version_allowed_triggers = false
 
+  environment_variables = {
+    DOMAIN = var.dns_domain_name
+  }
+
   allowed_triggers = {
     cognito_devportal = {
       principal  = "cognito-idp.amazonaws.com"
