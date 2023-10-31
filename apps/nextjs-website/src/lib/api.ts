@@ -134,3 +134,7 @@ export async function getTutorialLists(productSlug?: string) {
 export async function getWebinars(): Promise<readonly Webinar[]> {
   return [...webinars];
 }
+
+export async function getFirstWebinar(): Promise<Webinar> {
+  return webinars[0];
+}

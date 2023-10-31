@@ -60,17 +60,19 @@ const WebinarsSection = ({
               />
             )}
           </Box>
-          {webinars.map((webinar, index) => (
-            <WebinarCard
-              key={index}
-              title={webinar.title}
-              description={webinar.description}
-              path={webinar.path}
-              speakers={webinar.speakers}
-              startDateTime={webinar.startDateTime}
-              endDateTime={webinar.endDateTime}
-            />
-          ))}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+            {webinars.map((webinar, index) => (
+              <WebinarCard
+                key={index}
+                title={webinar.title}
+                description={webinar.description}
+                path={webinar.path}
+                speakers={webinar.speakers}
+                startDateTime={webinar.startDateTime}
+                endDateTime={webinar.endDateTime}
+              />
+            ))}
+          </Box>
         </Box>
       </EContainer>
     </Box>

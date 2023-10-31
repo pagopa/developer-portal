@@ -4,10 +4,10 @@ import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
-import { format } from 'date-fns';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
+import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
 
 type WebinarCardProps = Webinar;
 
@@ -22,13 +22,6 @@ const WebinarCard = ({
   const theme = useTheme();
   const { webinar } = translations;
 
-  const timeSlot: string =
-    (startDateTime
-      ? format(new Date(startDateTime), 'd MMMM yyyy, HH:mm')
-      : '') +
-    ' - ' +
-    (endDateTime ? format(new Date(endDateTime), 'HH:mm') : '');
-
   return (
     <Card
       style={{
@@ -36,6 +29,7 @@ const WebinarCard = ({
         display: 'flex',
         justifyContent: 'space-between',
         height: '100%',
+        overflow: 'visible',
       }}
     >
       <CardContent
@@ -46,9 +40,9 @@ const WebinarCard = ({
           gap: '56px',
         }}
       >
-        <Box width='55%'>
+        <Box width={{ md: '55%' }}>
           <Typography fontSize={18} fontWeight={600}>
-            {timeSlot}
+            <TimeSlot start={startDateTime} end={endDateTime} />
           </Typography>
           <Typography variant='h6' mt={2} gutterBottom>
             {title}

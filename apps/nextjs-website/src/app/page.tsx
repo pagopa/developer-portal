@@ -4,12 +4,13 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
-import { getProducts, getWebinars } from '@/lib/api';
+import { getFirstWebinar, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import { Webinar } from '@/lib/types/webinar';
 
 const Home = async () => {
   const products = await getProducts();
-  const webinars = await getWebinars();
+  const firstWebinar: Webinar = await getFirstWebinar();
   const { homepage, header } = translations;
 
   return (
@@ -41,7 +42,7 @@ const Home = async () => {
         title={homepage.webinarsSection.title}
         description={homepage.webinarsSection.description}
         link={homepage.webinarsSection.link}
-        webinars={[...webinars]}
+        webinars={[firstWebinar]}
       />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
