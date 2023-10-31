@@ -1,4 +1,4 @@
-import { cookieDomainScript, environment } from '@/config';
+import { cookieDomainScript, isProduction } from '@/config';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -70,7 +70,7 @@ export default async function RootLayout({
       <head>
         <meta name='robots' content='noindex,nofollow' />
         <title>PagoPA DevPortal</title>
-        {environment === 'prod' && (
+        {isProduction && (
           <script
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
@@ -80,7 +80,7 @@ export default async function RootLayout({
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
           <body>
-            {environment === 'prod' && (
+            {isProduction && (
               <div
                 key='script-cookie'
                 dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
