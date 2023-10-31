@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "shx rm -rf dist/",
     "compile": "npm run clean && tsc",
-    "build": "esbuild dist/custom-message-handler.js* --bundle --platform=node --outfile=.out/index.js",
-    "postbuild": "cd .out && zip -r index.zip index.js*",
+    "build": "esbuild dist/main.js --bundle --platform=node --outfile=.out/main.js",
+    "postbuild": "cd .out && zip -r index.zip .",
     "lint": "eslint src",
     "test": "npm run compile && jest -i"
   },
