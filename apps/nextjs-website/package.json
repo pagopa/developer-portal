@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh f3dd4ec",
+    "download-docs": "./scripts/fetch-docs.sh b681e96",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
