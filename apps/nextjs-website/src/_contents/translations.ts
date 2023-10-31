@@ -306,7 +306,7 @@ export const translations = {
   },
   auth: {
     accountActivated: {
-      goToDashboard: 'Vai alla tua Dashboard',
+      goToDashboard: 'Inizia',
       welcomeMessage:
         'Ti diamo il benvenuto su PagoPA DevPortal.\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
       yourAccountIsActive: 'Il tuo account è attivo',
