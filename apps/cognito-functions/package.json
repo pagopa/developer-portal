@@ -12,13 +12,10 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.125",
-    "@types/rewire": "^2.5.28",
-    "babel-plugin-rewire": "^1.2.0",
     "esbuild": "^0.19.5",
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
-    "rewire": "^6.0.0",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
