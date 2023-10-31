@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "shx rm -rf dist/ out/",
     "compile": "npm run clean && tsc",
-    "build": "esbuild dist/main.js --bundle --platform=node --outfile=out/main.js",
+    "build": "npm run compile && esbuild dist/main.js --bundle --platform=node --outfile=out/main.js",
     "postbuild": "cd out && zip -r cognito-functions.zip .",
     "lint": "eslint src",
     "test": "npm run compile && jest -i"
