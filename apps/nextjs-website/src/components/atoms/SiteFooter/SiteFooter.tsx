@@ -7,7 +7,7 @@ import {
 import { Divider } from '@mui/material';
 import { Footer } from '@/editorialComponents/Footer';
 import React from 'react';
-import { showCookieBanner } from '@/config';
+import { isProduction } from '@/config';
 import { FooterLinksType } from '@/editorialComponents/Footer/types';
 
 type SiteFooterProps = {
@@ -36,7 +36,7 @@ const SiteFooter = ({
   };
   const resourcesLinks = [
     ...linkToFooterLinkTypeArray(resources.links),
-    ...(showCookieBanner ? [cookiePreferenceLink] : []),
+    ...(isProduction ? [cookiePreferenceLink] : []),
   ];
 
   return (
