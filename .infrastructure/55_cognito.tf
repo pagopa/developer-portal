@@ -1,10 +1,9 @@
-
 module "cognito_custom_message_function" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "cognito_custom_message"
   description   = "Cognito custom message"
-  handler       = "index.handler"
+  handler       = "main.customMessageHandler"
   runtime       = "nodejs18.x"
 
   create_package         = false
