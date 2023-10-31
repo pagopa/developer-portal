@@ -5,11 +5,7 @@ import React from 'react';
 
 type SpeakerPreviewProps = Speaker;
 
-const SpeakerPreview = ({
-  name,
-  jobTitle,
-  imagePath,
-}: SpeakerPreviewProps) => {
+const SpeakerPreview = ({ name, jobTitle, imagePath }: SpeakerPreviewProps) => {
   return (
     <Box
       sx={{
