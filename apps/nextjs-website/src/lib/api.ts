@@ -9,6 +9,8 @@ import {
   quickStartGuides,
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
+import { Webinar } from '@/lib/types/webinar';
+import { webinars } from '@/_contents/webinars';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -127,4 +129,8 @@ export async function getTutorialLists(productSlug?: string) {
       (tutorialList) => tutorialList.product.path === `/${productSlug}`
     ) || null;
   return manageUndefinedAndAddProduct(props);
+}
+
+export async function getWebinars(): Promise<readonly Webinar[]> {
+  return [...webinars];
 }
