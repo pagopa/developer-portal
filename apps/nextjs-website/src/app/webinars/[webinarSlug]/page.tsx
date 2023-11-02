@@ -16,7 +16,6 @@ export async function generateStaticParams() {
 
 const Page = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
-  console.log(webinar);
   const { webinar: webinarLabels } = translations;
 
   return (
