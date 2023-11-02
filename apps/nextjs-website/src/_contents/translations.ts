@@ -305,5 +305,6 @@ export const translations = {
     whyParticipate: 'Perché partecipare?',
     speakers: 'Speaker',
     subscribe: 'Iscriviti',
+    relatedLinksTitle: 'Link utili',
   },
 };

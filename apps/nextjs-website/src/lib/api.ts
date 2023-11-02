@@ -135,6 +135,13 @@ export async function getWebinars(): Promise<readonly Webinar[]> {
   return [...webinars];
 }
 
+export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
+  const props = manageUndefined(
+    webinars.find(({ slug }) => slug === webinarSlug)
+  );
+  return props;
+}
+
 export async function getFirstWebinar(): Promise<Webinar> {
   return webinars[0];
 }
