@@ -1,6 +1,16 @@
 import { translations } from '@/_contents/translations';
-import { MakeMetadataFunction } from '@/lib/types/makeMetadataFunction';
-import { Metadata } from 'next';
+import { Metadata, ResolvedMetadata } from 'next';
+
+type MakeMetadataParams = {
+  readonly parent?: ResolvedMetadata;
+  readonly title?: string;
+  readonly description?: string;
+  readonly url?: string;
+  readonly image?: string;
+  readonly locale?: string;
+};
+
+type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
 
 export const makeMetadata: MakeMetadataFunction = ({
   parent,
