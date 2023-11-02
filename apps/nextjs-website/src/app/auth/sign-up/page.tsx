@@ -83,7 +83,7 @@ const SignUp = () => {
         my={isSmallScreen ? 3 : 15}
       >
         <Grid item xs={isSmallScreen ? 1 : 5}>
-          <Typography variant='h4' mb={4} mt={4}>
+          <Typography variant='h4' mb={4} mt={isSmallScreen ? 10 : 0}>
             {signUp.whyCreateAccount}
           </Typography>
           {signUp.advantages.map((advantage, index) => {

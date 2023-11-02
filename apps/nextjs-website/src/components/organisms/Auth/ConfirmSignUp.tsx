@@ -9,6 +9,7 @@ import {
   Divider,
   Card,
   Button,
+  Link,
 } from '@mui/material';
 
 interface ConfirmSignUpProps {
@@ -38,14 +39,19 @@ const ConfirmSignUp = ({
             <Typography variant='h3' pt={5} mb={4} textAlign='center'>
               {confirmSignUp.confirmSignUp}
             </Typography>
-            <Typography variant='body1' mb={2}>
+            <Typography variant='body2' mb={2}>
               {confirmSignUp.description(email)}
             </Typography>
-            <Typography variant='body1' mb={2}>
-              {confirmSignUp.didntReceiveEmail}
-              <Button variant='text' onClick={onResendEmail}>
+            <Typography component='p' variant='caption' mb={4}>
+              {confirmSignUp.didntReceiveEmail}{' '}
+              <Link
+                href=''
+                onClick={onResendEmail}
+                underline='none'
+                variant='caption-semibold'
+              >
                 {confirmSignUp.resendEmail}
-              </Button>
+              </Link>
             </Typography>
             <Divider />
             <Stack
@@ -59,9 +65,14 @@ const ConfirmSignUp = ({
               <Typography variant='body1' mr={1}>
                 {confirmSignUp.wrongEmail}
               </Typography>
-              <Button variant='text' onClick={onBack}>
+              <Link
+                href=''
+                variant='body2'
+                onClick={onBack}
+                sx={{ fontWeight: 600 }}
+              >
                 {shared.goBack}
-              </Button>
+              </Link>
             </Stack>
           </Grid>
         </Grid>
