@@ -1,5 +1,8 @@
 'use client';
 import { translations } from '@/_contents/translations';
+import RequiredTextField, {
+  ValidatorFunction,
+} from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { emailMatcher, passwordMatcher } from '@/helpers/auth.helpers';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -80,13 +83,7 @@ const SignUpForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
-  const [isEmailDirty, setIsEmailDirty] = useState(false);
-  const [emptyFields, setEmptyFields] = useState({
-    firstName: false,
-    lastName: false,
-  });
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -105,43 +102,43 @@ const SignUpForm = ({
     event.preventDefault();
   };
 
+  const emailValidators: ValidatorFunction[] = [
+    (value: string) => ({
+      valid: emailMatcher.test(value),
+      error: shared.emailFieldError,
+    }),
+  ];
+
   const validatePassword = useCallback(() => {
     setIsPasswordValid(passwordMatcher.test(password));
   }, [password]);
-
-  const validateEmail = useCallback(() => {
-    setIsEmailValid(emailMatcher.test(username));
-  }, [username]);
 
   useEffect(() => {
     validatePassword();
   }, [password, validatePassword]);
 
-  useEffect(() => {
-    validateEmail();
-  }, [username, validateEmail]);
-
-  const handleEmptyField = (fieldName: string, value: string) => {
-    if (value.trim() === '') {
-      setEmptyFields((prevEmptyFields) => ({
-        ...prevEmptyFields,
-        [fieldName]: true,
-      }));
-    } else {
-      setEmptyFields((prevEmptyFields) => ({
-        ...prevEmptyFields,
-        [fieldName]: false,
-      }));
-    }
-  };
-
   const onSignUpClick = useCallback(() => {
+    if (
+      !firstName ||
+      firstName?.trim().length === 0 ||
+      !lastName ||
+      lastName?.trim().length === 0 ||
+      !username ||
+      username?.trim().length === 0 ||
+      !password ||
+      password?.trim().length === 0 ||
+      !confirmPassword ||
+      confirmPassword?.trim().length === 0
+    ) {
+      return;
+    }
+
     if (password !== confirmPassword) {
       return;
     }
 
     onSignUp();
-  }, [confirmPassword, onSignUp, password]);
+  }, [confirmPassword, firstName, lastName, onSignUp, password, username]);
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -161,69 +158,31 @@ const SignUpForm = ({
             <form>
               <Grid container spacing={2} mb={2}>
                 <Grid item xs={6}>
-                  <TextField
+                  <RequiredTextField
                     label={shared.firstName}
-                    variant='outlined'
-                    size='small'
-                    required
                     value={firstName}
-                    onChange={({ target: { value } }) => {
-                      handleEmptyField('firstName', value);
-                      setFirstName(value);
-                    }}
-                    sx={{
-                      backgroundColor: 'white',
-                      width: '100%',
-                    }}
-                    error={emptyFields.firstName}
-                    helperText={
-                      emptyFields.firstName && shared.requiredFieldError
-                    }
+                    onChange={({ target: { value } }) => setFirstName(value)}
+                    helperText={shared.requiredFieldError}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
+                  <RequiredTextField
                     label={shared.lastName}
-                    variant='outlined'
-                    size='small'
-                    required
                     value={lastName}
-                    onChange={({ target: { value } }) => {
-                      handleEmptyField('lastName', value);
-                      setLastName(value);
-                    }}
-                    sx={{
-                      backgroundColor: 'white',
-                      width: '100%',
-                    }}
-                    error={emptyFields.lastName}
-                    helperText={
-                      emptyFields.lastName && shared.requiredFieldError
-                    }
+                    onChange={({ target: { value } }) => setLastName(value)}
+                    helperText={shared.requiredFieldError}
                   />
                 </Grid>
               </Grid>
               <Stack spacing={2} mb={2}>
-                <TextField
+                <RequiredTextField
                   label={shared.emailAddress}
-                  variant='outlined'
-                  size='small'
-                  type='email'
-                  required
                   value={username}
                   onChange={({ target: { value } }) => {
-                    handleEmptyField('username', value);
                     setUsername(value);
                   }}
-                  onBlur={() => setIsEmailDirty(true)}
-                  sx={{
-                    backgroundColor: 'white',
-                    width: '100%',
-                  }}
-                  error={isEmailDirty && !isEmailValid}
-                  helperText={
-                    isEmailDirty && !isEmailValid && shared.emailFieldError
-                  }
+                  helperText={shared.emailFieldError}
+                  customValidators={emailValidators}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
