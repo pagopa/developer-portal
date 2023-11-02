@@ -1,3 +1,27 @@
+module "cognito_custom_message_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_custom_message"
+  description   = "Cognito custom message"
+  handler       = "main.customMessageHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
+  create_current_version_allowed_triggers = false
+
+  environment_variables = {
+    DOMAIN = var.dns_domain_name
+  }
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
 resource "aws_cognito_user_pool" "devportal" {
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
@@ -34,6 +58,14 @@ resource "aws_cognito_user_pool" "devportal" {
     email_sending_account = "DEVELOPER"
     from_email_address    = format("Developer Portal <noreply@%s>", var.dns_domain_name)
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
+  }
+
+  verification_message_template {
+    default_email_option = "CONFIRM_WITH_CODE"
+  }
+
+  lambda_config {
+    custom_message = module.cognito_custom_message_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.

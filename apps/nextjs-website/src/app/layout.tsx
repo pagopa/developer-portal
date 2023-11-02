@@ -1,4 +1,4 @@
-import { cookieDomainScript, environment } from '@/config';
+import { cookieDomainScript, isProduction } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -9,6 +9,8 @@ import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 
 const MATOMO_SCRIPT = `
@@ -40,14 +42,17 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
-const baseUrl =
-  environment === 'prod'
-    ? 'https://developer.pagopa.it'
-    : 'https://dev.developer.pagopa.it';
+const baseUrl = isProduction
+  ? 'https://developer.pagopa.it'
+  : 'https://dev.developer.pagopa.it';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
 };
+
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'it' }];
+}
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -58,11 +63,22 @@ export default async function RootLayout({
 }) {
   const products = [...(await getProducts())];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
+
+  // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
+  // eslint-disable-next-line functional/no-let
+  let messages;
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    messages = (await import('../messages/it.json')).default;
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <html lang='it'>
       <head>
         <meta name='robots' content='noindex,nofollow' />
-        {environment === 'prod' && (
+        {isProduction && (
           <script
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
@@ -70,19 +86,21 @@ export default async function RootLayout({
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>
-          {environment === 'prod' && (
-            <div
-              key='script-cookie'
-              dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-            ></div>
-          )}
-          <AuthProvider>
-            <SiteHeader products={products} />
-            <MainWrapper>{children}</MainWrapper>
-            <SiteFooter />
-          </AuthProvider>
-        </body>
+        <NextIntlClientProvider locale={'it'} messages={messages}>
+          <body>
+            {isProduction && (
+              <div
+                key='script-cookie'
+                dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+              ></div>
+            )}
+            <AuthProvider>
+              <SiteHeader products={products} />
+              <MainWrapper>{children}</MainWrapper>
+              <SiteFooter />
+            </AuthProvider>
+          </body>
+        </NextIntlClientProvider>
       </ThemeRegistry>
     </html>
   );
