@@ -6,7 +6,7 @@ import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { environment } from '@/config';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useCallback, useState } from 'react';
 
@@ -15,6 +15,7 @@ const SignUp = () => {
     auth: { signUp },
   } = translations;
 
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -25,26 +26,36 @@ const SignUp = () => {
   const [signUpStep, setSignUpStep] = useState(SignUpSteps.SIGN_UP);
 
   const onSignUp = useCallback(async () => {
+    // TODO: Add company and role to user attributes
     const result = await Auth.signUp({
       username,
       password,
       attributes: {
-        firstName,
-        lastName,
-        company,
-        role,
+        given_name: firstName,
+        family_name: lastName,
       },
+    }).catch(() => {
+      return false;
     });
 
-    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+    if (typeof result === 'boolean') {
+      return result;
+    } else {
+      setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
 
-    return !!result.user;
-  }, [company, firstName, lastName, password, role, username]);
+      return !!result.user;
+    }
+  }, [firstName, lastName, password, username]);
 
   const onBackStep = useCallback(() => {
     setSignUpStep(SignUpSteps.SIGN_UP);
     return null;
   }, []);
+
+  const onResendEmail = useCallback(async () => {
+    await Auth.resendSignUp(username);
+    return null;
+  }, [username]);
 
   if (environment === 'prod') {
     return <PageNotFound />;
@@ -64,13 +75,15 @@ const SignUp = () => {
     >
       <Grid
         container
-        spacing={6}
-        alignItems='flex-start'
+        spacing={isSmallScreen ? 0 : 1}
+        alignItems={isSmallScreen ? 'center' : 'flex-start'}
         justifyContent='center'
-        my={16}
+        direction={isSmallScreen ? 'column-reverse' : 'row'}
+        mx={isSmallScreen ? 3 : 20}
+        my={isSmallScreen ? 3 : 15}
       >
-        <Grid item xs={5}>
-          <Typography variant='h4' mb={4}>
+        <Grid item xs={isSmallScreen ? 1 : 5}>
+          <Typography variant='h4' mb={4} mt={4}>
             {signUp.whyCreateAccount}
           </Typography>
           {signUp.advantages.map((advantage, index) => {
@@ -83,7 +96,7 @@ const SignUp = () => {
             );
           })}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={isSmallScreen ? 1 : 5}>
           {signUpStep === SignUpSteps.SIGN_UP && (
             <SignUpForm
               username={username}
@@ -104,7 +117,11 @@ const SignUp = () => {
             />
           )}
           {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
-            <ConfirmSignUp email={username} onBack={onBackStep} />
+            <ConfirmSignUp
+              email={username}
+              onBack={onBackStep}
+              onResendEmail={onResendEmail}
+            />
           )}
         </Grid>
       </Grid>

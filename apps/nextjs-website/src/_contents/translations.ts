@@ -31,6 +31,8 @@ export const translations = {
     confirmPassword: 'Conferma password',
     company: 'Tipologia Ente o Azienda',
     role: 'Ruolo',
+    requiredFieldError: 'Questo campo non può essere vuoto',
+    emailFieldError: 'Inserisci un indirizzo email valido',
   },
   pageNotFound: {
     overline: '404',

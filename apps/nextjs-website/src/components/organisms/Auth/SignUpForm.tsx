@@ -1,6 +1,6 @@
 'use client';
 import { translations } from '@/_contents/translations';
-import { passwordMatcher } from '@/helpers/auth.helpers';
+import { emailMatcher, passwordMatcher } from '@/helpers/auth.helpers';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -80,7 +80,13 @@ const SignUpForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
+  const [isEmailDirty, setIsEmailDirty] = useState(false);
+  const [emptyFields, setEmptyFields] = useState({
+    firstName: false,
+    lastName: false,
+  });
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -103,9 +109,31 @@ const SignUpForm = ({
     setIsPasswordValid(passwordMatcher.test(password));
   }, [password]);
 
+  const validateEmail = useCallback(() => {
+    setIsEmailValid(emailMatcher.test(username));
+  }, [username]);
+
   useEffect(() => {
     validatePassword();
   }, [password, validatePassword]);
+
+  useEffect(() => {
+    validateEmail();
+  }, [username, validateEmail]);
+
+  const handleEmptyField = (fieldName: string, value: string) => {
+    if (value.trim() === '') {
+      setEmptyFields((prevEmptyFields) => ({
+        ...prevEmptyFields,
+        [fieldName]: true,
+      }));
+    } else {
+      setEmptyFields((prevEmptyFields) => ({
+        ...prevEmptyFields,
+        [fieldName]: false,
+      }));
+    }
+  };
 
   const onSignUpClick = useCallback(() => {
     if (password !== confirmPassword) {
@@ -121,7 +149,7 @@ const SignUpForm = ({
 
   return (
     <Box component='section'>
-      <Card variant='outlined'>
+      <Card variant='outlined' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Typography variant='h3' pt={8} mb={4} textAlign='center'>
@@ -139,11 +167,18 @@ const SignUpForm = ({
                     size='small'
                     required
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={({ target: { value } }) => {
+                      handleEmptyField('firstName', value);
+                      setFirstName(value);
+                    }}
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
                     }}
+                    error={emptyFields.firstName}
+                    helperText={
+                      emptyFields.firstName && shared.requiredFieldError
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -153,11 +188,18 @@ const SignUpForm = ({
                     size='small'
                     required
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={({ target: { value } }) => {
+                      handleEmptyField('lastName', value);
+                      setLastName(value);
+                    }}
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
                     }}
+                    error={emptyFields.lastName}
+                    helperText={
+                      emptyFields.lastName && shared.requiredFieldError
+                    }
                   />
                 </Grid>
               </Grid>
@@ -169,10 +211,19 @@ const SignUpForm = ({
                   type='email'
                   required
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={({ target: { value } }) => {
+                    handleEmptyField('username', value);
+                    setUsername(value);
+                  }}
+                  onBlur={() => setIsEmailDirty(true)}
                   sx={{
                     backgroundColor: 'white',
+                    width: '100%',
                   }}
+                  error={isEmailDirty && !isEmailValid}
+                  helperText={
+                    isEmailDirty && !isEmailValid && shared.emailFieldError
+                  }
                 />
               </Stack>
               <Stack spacing={2} mb={2}>

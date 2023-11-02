@@ -13,10 +13,15 @@ import {
 
 interface ConfirmSignUpProps {
   email: string;
+  onResendEmail: () => Promise<null>;
   onBack: () => null;
 }
 
-const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
+const ConfirmSignUp = ({
+  email,
+  onBack,
+  onResendEmail,
+}: ConfirmSignUpProps) => {
   const {
     auth: { confirmSignUp },
     shared,
@@ -24,7 +29,7 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
 
   return (
     <Box component='section'>
-      <Card variant='outlined'>
+      <Card variant='outlined' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Stack pt={4} display='flex' alignItems='center'>
@@ -38,7 +43,9 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
             </Typography>
             <Typography variant='body1' mb={2}>
               {confirmSignUp.didntReceiveEmail}
-              <Button variant='text'>{confirmSignUp.resendEmail}</Button>
+              <Button variant='text' onClick={onResendEmail}>
+                {confirmSignUp.resendEmail}
+              </Button>
             </Typography>
             <Divider />
             <Stack
@@ -49,7 +56,7 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               justifyContent='center'
               flexDirection='row'
             >
-              <Typography variant='caption-semibold' mr={1}>
+              <Typography variant='body1' mr={1}>
                 {confirmSignUp.wrongEmail}
               </Typography>
               <Button variant='text' onClick={onBack}>
