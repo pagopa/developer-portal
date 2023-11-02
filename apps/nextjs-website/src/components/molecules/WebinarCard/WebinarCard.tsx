@@ -14,7 +14,7 @@ type WebinarCardProps = Webinar;
 const WebinarCard = ({
   title,
   description,
-  path,
+  slug,
   speakers,
   startDateTime,
   endDateTime,
@@ -59,7 +59,7 @@ const WebinarCard = ({
           <Box mt={4}>
             <ButtonNaked
               component={Link}
-              href={path}
+              href={`/webinars/${slug}`}
               color={'primary'}
               variant={'contained'}
             >
