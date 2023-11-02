@@ -8,6 +8,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 type StartInfoProps = {
   title: string;
+  cardVariant?: 'text' | 'contained' | 'outlined';
   cards: {
     comingSoon?: boolean;
     title: string;
@@ -23,13 +24,19 @@ type StartInfoProps = {
   };
 };
 
-const StartInfo = ({ title, cards, cta }: StartInfoProps) => {
+const StartInfo = ({
+  title,
+  cards,
+  cta,
+  cardVariant = 'contained',
+}: StartInfoProps) => {
   const { palette } = useTheme();
   return (
     <>
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.background.default }}>
         <SectionTitle title={title} />
         <CardsGrid
+          cardVariant={cardVariant}
           cardSize={{
             xs: 12,
             md: 12 / cards.length,
