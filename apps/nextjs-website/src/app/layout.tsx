@@ -9,6 +9,7 @@ import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
+import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -70,6 +71,7 @@ export default async function RootLayout({
           )}
           <AuthProvider>
             <SiteHeader products={products} />
+            <WebinarHeaderBanner slug={products[0].slug}></WebinarHeaderBanner>
             <MainWrapper>{children}</MainWrapper>
             <SiteFooter />
           </AuthProvider>
