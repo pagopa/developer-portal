@@ -304,6 +304,10 @@ export const translations = {
           },
         ],
       },
+      cookiePreferences: {
+        ariaLabel: 'Preferenza Cookie',
+        label: 'Preferenza Cookie',
+      },
     },
   },
   auth: {
