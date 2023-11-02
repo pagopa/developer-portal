@@ -1,15 +1,29 @@
 'use client';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { PersonOutline } from '@mui/icons-material';
 import { Button, Stack, Hidden, Typography } from '@mui/material';
-import { FC } from 'react';
+import { Auth } from 'aws-amplify';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 const UserInfo: FC = () => {
-  const { signOut, user, authStatus } = useAuthenticator((context) => [
-    context.user,
-    context.authStatus,
-  ]);
+  const [user, setUser] = useState<any>(null);
 
-  if (authStatus !== 'authenticated') {
+  const checkUser = useCallback(async () => {
+    const user = await Auth.currentAuthenticatedUser().catch(() => null);
+
+    setUser(user);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(checkUser, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await Auth.signOut();
+    checkUser();
+  }, [checkUser]);
+
+  if (!user) {
     return null;
   }
 
@@ -22,7 +36,10 @@ const UserInfo: FC = () => {
       justifyContent='flex-end'
     >
       <Hidden smDown>
-        <Typography variant='body2'>Hello {user?.attributes?.email}</Typography>
+        <PersonOutline />
+        <Typography variant='body2'>
+          {user?.attributes?.given_name} {user?.attributes?.family_name}
+        </Typography>
       </Hidden>
       <Button size='small' variant='contained' onClick={signOut}>
         Sign out
