@@ -1,7 +1,9 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { getWebinar, getWebinars } from '@/lib/api';
+import { Button } from '@mui/material';
 
 type Params = {
   webinarSlug: string;
@@ -20,6 +22,9 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
+      {webinar.subscribeCtaLabel && (
+        <SubscribeCta label={webinar.subscribeCtaLabel}></SubscribeCta>
+      )}
       {webinar.startInfo && (
         <StartInfo
           cardVariant='outlined'
