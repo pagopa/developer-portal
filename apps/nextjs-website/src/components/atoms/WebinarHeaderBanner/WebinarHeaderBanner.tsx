@@ -23,6 +23,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug }) => {
     <Box
       sx={{
         display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
         background: palette.text.primary,
