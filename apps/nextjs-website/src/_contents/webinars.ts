@@ -26,6 +26,8 @@ export const webinars: readonly Webinar[] = [
     ],
     startDateTime: new Date('2023-10-31T11:00:00'),
     endDateTime: new Date('2023-10-31T13:00:00'),
+    subscribeCtaLabel:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore',
     startInfo: {
       title: 'Risorse correlate',
       cards: [
