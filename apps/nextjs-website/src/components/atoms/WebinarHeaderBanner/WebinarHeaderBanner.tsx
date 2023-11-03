@@ -1,13 +1,5 @@
 'use client';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import {
-  Button,
-  Stack,
-  Hidden,
-  Typography,
-  Box,
-  useTheme,
-} from '@mui/material';
+import { Button, Typography, Box, useTheme, IconButton } from '@mui/material';
 import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
