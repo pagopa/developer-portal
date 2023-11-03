@@ -1,7 +1,9 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getWebinar, getWebinars } from '@/lib/api';
+import { Box } from '@mui/material';
 
 type Params = {
   webinarSlug: string;
@@ -20,6 +22,11 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
+      {webinar.html && (
+        <EContainer>
+          <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
+        </EContainer>
+      )}
       {webinar.startInfo && (
         <StartInfo
           cardVariant='outlined'
