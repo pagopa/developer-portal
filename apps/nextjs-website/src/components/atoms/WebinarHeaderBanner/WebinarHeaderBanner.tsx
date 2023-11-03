@@ -4,7 +4,6 @@ import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
-import { nullType } from 'io-ts';
 import { useRouter } from 'next/navigation';
 
 export type WebinarHeaderBannerProps = {
