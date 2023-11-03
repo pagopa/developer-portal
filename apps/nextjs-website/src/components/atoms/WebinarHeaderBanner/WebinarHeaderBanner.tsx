@@ -47,12 +47,13 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug }) => {
           Scopri
         </Button>
       </Box>
-      <CloseIcon
-        sx={{ color: 'white' }}
+      <IconButton
         onClick={() => {
           setVisible(false);
         }}
-      ></CloseIcon>
+      >
+        <CloseIcon sx={{ color: 'white' }}></CloseIcon>
+      </IconButton>
     </Box>
   );
 };
