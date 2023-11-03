@@ -5,13 +5,15 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
 import { useRouter } from 'next/navigation';
+import { translations } from '@/_contents/translations';
 
 export type WebinarHeaderBannerProps = {
   readonly slug: string;
+  readonly text: string;
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug }) => {
-  const [visible, setVisible] = useState(true);
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug, text }) => {
+  const [visible, setVisible] = useState(!window.localStorage.getItem(slug));
   const router = useRouter();
 
   const { palette } = useTheme();
@@ -33,7 +35,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug }) => {
       <Box sx={{ display: 'flex' }}>
         <VideoLibraryIcon sx={{ color: 'white' }} />
         <Typography sx={{ color: 'white', marginLeft: '10px' }}>
-          Comunicazioni a valore legale. Ti aspettiamo al webinar!
+          {text}
         </Typography>
         <Button
           variant='text'
@@ -44,12 +46,13 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug }) => {
             router.push('/webinars/' + slug);
           }}
         >
-          Scopri
+          {translations.homepage.webinarBannerButtonContent}
         </Button>
       </Box>
       <IconButton
         onClick={() => {
           setVisible(false);
+          window.localStorage.setItem(slug, 'true');
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>

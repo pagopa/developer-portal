@@ -5,6 +5,7 @@ import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { getProducts } from '@/lib/api';
+import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 
 const Home = async () => {
   const products = await getProducts();
@@ -12,6 +13,11 @@ const Home = async () => {
 
   return (
     <>
+      <WebinarHeaderBanner
+        slug={products[0].slug}
+        text={'Comunicazioni a valore legale. Ti aspettiamo al webinar!'}
+      />
+
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
           ...itemProp,
