@@ -3,7 +3,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as PR from 'io-ts/PathReporter';
 import * as customMessage from './custom-message-handler';
 import { SES } from '@aws-sdk/client-ses';
-import * as sendEmail from './send-email-handler';
+import * as sendEmail from './post-confirmation-confirm-sign-up-handler';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
@@ -18,7 +18,7 @@ export const customMessageHandler = pipe(
 
 export const sensEmailHandler = pipe(
   { fromEmailAddress: process.env.FROM_EMAIL_ADDRESS },
-  sendEmail.SendEmailConfig.decode,
+  sendEmail.PostConfirmationConfig.decode,
   E.fold(
     (errors) => {
       // eslint-disable-next-line functional/no-expression-statements

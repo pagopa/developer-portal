@@ -43,18 +43,18 @@ const makeSesEmailParameters = (
   Source: from,
 });
 
-export const SendEmailConfig = t.type({
+export const PostConfirmationConfig = t.type({
   fromEmailAddress: t.string,
 });
-type SendEmailConfig = t.TypeOf<typeof SendEmailConfig>;
+type SendEmailConfig = t.TypeOf<typeof PostConfirmationConfig>;
 
-export type SendEmailEnv = {
+export type PostConfirmationEnv = {
   readonly config: SendEmailConfig;
   readonly ses: SES;
 };
 
 export const makeHandler =
-  ({ ses, config }: SendEmailEnv) =>
+  ({ ses, config }: PostConfirmationEnv) =>
   async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
     const { email, given_name } = event.request.userAttributes;
     if (email) {
