@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/client-ses';
 import * as t from 'io-ts';
 
-const emailBody = (firstName: string) => `
+const emailTemplate = (firstName: string) => `
 <h4>Finalmente sei dei nostri</h4>
 
 Ciao ${firstName}, <br />
@@ -64,7 +64,7 @@ export const makeHandler =
         email,
         fromEmail,
         subject,
-        emailBody(given_name)
+        emailTemplate(given_name)
       );
       // eslint-disable-next-line functional/no-try-statements
       try {
