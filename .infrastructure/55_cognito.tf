@@ -11,7 +11,8 @@ module "cognito_custom_message_function" {
   create_current_version_allowed_triggers = false
 
   environment_variables = {
-    DOMAIN = var.dns_domain_name
+    DOMAIN             = var.dns_domain_name
+    FROM_EMAIL_ADDRESS = local.from_email_address
   }
 
   allowed_triggers = {
@@ -35,7 +36,7 @@ module "cognito_post_confirmation_function" {
   create_current_version_allowed_triggers = false
 
   environment_variables = {
-    DOMAIN = var.dns_domain_name
+    DOMAIN             = var.dns_domain_name
     FROM_EMAIL_ADDRESS = local.from_email_address
   }
 
