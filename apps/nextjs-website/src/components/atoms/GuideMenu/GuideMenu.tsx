@@ -40,12 +40,32 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     marginLeft: 0,
   },
   [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
-    paddingLeft: 48,
+    paddingLeft: 24,
     paddingRight: 24,
   },
   [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
     {
-      paddingLeft: 80,
+      paddingLeft: 48,
+    },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 72,
+    },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 96,
+    },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 120,
+    },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 144,
+    },
+  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group}.${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
+    {
+      paddingLeft: 168,
     },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
