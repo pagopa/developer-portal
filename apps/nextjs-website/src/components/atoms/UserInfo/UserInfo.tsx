@@ -1,10 +1,12 @@
 'use client';
+import { translations } from '@/_contents/translations';
 import { PersonOutline } from '@mui/icons-material';
 import { Button, Stack, Hidden, Typography } from '@mui/material';
 import { Auth, Hub } from 'aws-amplify';
 import { FC, useCallback, useEffect, useState } from 'react';
 
 const UserInfo: FC = () => {
+  const { shared } = translations;
   const [user, setUser] = useState<any>(null);
 
   const checkUser = useCallback(() => {
@@ -63,7 +65,7 @@ const UserInfo: FC = () => {
         </Typography>
       </Hidden>
       <Button size='small' variant='contained' onClick={signOut}>
-        Sign out
+        {shared.signOut}
       </Button>
     </Stack>
   );
