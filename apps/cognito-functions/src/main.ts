@@ -16,4 +16,20 @@ export const customMessageHandler = pipe(
   }, customMessage.makeHandler)
 );
 
-export const sensEmailHandler = pipe(new SES(), sendEmail.makeHandler);
+export const sensEmailHandler = pipe(
+  { fromEmailAddress: process.env.FROM_EMAIL_ADDRESS },
+  sendEmail.SendEmailConfig.decode,
+  E.fold(
+    (errors) => {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.log(PR.failure(errors).join('\n'));
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error();
+    },
+    (config) =>
+      sendEmail.makeHandler({
+        ses: new SES(),
+        config,
+      })
+  )
+);

@@ -4,6 +4,7 @@ import {
   SendEmailCommand,
   SendEmailCommandInput,
 } from '@aws-sdk/client-ses';
+import * as t from 'io-ts';
 
 const emailBody = (firstName: string) => `
 <h4>Finalmente sei dei nostri</h4>
@@ -42,11 +43,22 @@ const makeSesEmailParameters = (
   Source: from,
 });
 
+export const SendEmailConfig = t.type({
+  fromEmailAddress: t.string,
+});
+type SendEmailConfig = t.TypeOf<typeof SendEmailConfig>;
+
+export type SendEmailEnv = {
+  readonly config: SendEmailConfig;
+  readonly ses: SES;
+};
+
 export const makeHandler =
-  (ses: SES) => async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
+  ({ ses, config }: SendEmailEnv) =>
+  async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
     const { email, given_name } = event.request.userAttributes;
     if (email) {
-      const fromEmail = 'Developer Portal <noreply@dev.developer.pagopa.it>'; // FIXME
+      const fromEmail = config.fromEmailAddress;
       const subject = 'Il tuo account è attivo';
       const params = makeSesEmailParameters(
         email,
