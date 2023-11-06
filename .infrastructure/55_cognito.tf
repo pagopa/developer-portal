@@ -36,6 +36,7 @@ module "cognito_post_confirmation_function" {
 
   environment_variables = {
     DOMAIN = var.dns_domain_name
+    FROM_EMAIL_ADDRESS = local.from_email_address
   }
 
   attach_policy_statements = true
@@ -53,6 +54,10 @@ module "cognito_post_confirmation_function" {
       source_arn = aws_cognito_user_pool.devportal.arn
     }
   }
+}
+
+locals {
+  from_email_address = format("Developer Portal <noreply@%s>", var.dns_domain_name)
 }
 
 resource "aws_cognito_user_pool" "devportal" {
@@ -89,7 +94,7 @@ resource "aws_cognito_user_pool" "devportal" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    from_email_address    = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+    from_email_address    = local.from_email_address
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
   }
 
