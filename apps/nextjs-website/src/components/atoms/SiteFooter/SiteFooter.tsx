@@ -7,6 +7,8 @@ import {
 import { Divider } from '@mui/material';
 import { Footer } from '@/editorialComponents/Footer';
 import React from 'react';
+import { isProduction } from '@/config';
+import { FooterLinksType } from '@/editorialComponents/Footer/types';
 
 type SiteFooterProps = {
   readonly activeLanguage?: { id: string; value: string };
@@ -22,6 +24,20 @@ const SiteFooter = ({
 }: SiteFooterProps) => {
   const { footer } = translations;
   const { followUs, aboutUs, resources, services } = footer.links;
+  const cookiePreferenceLink: FooterLinksType = {
+    label: footer.links.cookiePreferences.label,
+    ariaLabel: footer.links.cookiePreferences.ariaLabel,
+    linkType: 'internal',
+    href: '#',
+    onClick: () => {
+      // @ts-expect-error: The system assumes OneTrust is loaded
+      window?.OneTrust?.ToggleInfoDisplay();
+    },
+  };
+  const resourcesLinks = [
+    ...linkToFooterLinkTypeArray(resources.links),
+    ...(isProduction ? [cookiePreferenceLink] : []),
+  ];
 
   return (
     <>
@@ -46,7 +62,7 @@ const SiteFooter = ({
           },
           resources: {
             title: resources.title,
-            links: [...linkToFooterLinkTypeArray(resources.links)],
+            links: resourcesLinks,
           },
           services: {
             title: services.title,
