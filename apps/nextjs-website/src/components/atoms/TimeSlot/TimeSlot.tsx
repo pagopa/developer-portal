@@ -42,7 +42,7 @@ type TimeSlotProps = {
 const TimeSlot = ({ start, end }: TimeSlotProps) => {
   return [
     start && formattedDateTime(start),
-    end && conditionallyFormattedEndDate(start, end),
+    conditionallyFormattedEndDate(start, end),
   ]
     .filter(Boolean)
     .join(' - ');
