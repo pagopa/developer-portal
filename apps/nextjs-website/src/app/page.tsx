@@ -41,7 +41,6 @@ const Home = async () => {
       <WebinarsSection
         title={homepage.webinarsSection.title}
         description={homepage.webinarsSection.description}
-        link={homepage.webinarsSection.link}
         webinars={[firstWebinar]}
       />
       <RelatedLinks
