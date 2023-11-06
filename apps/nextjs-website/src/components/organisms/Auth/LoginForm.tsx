@@ -1,6 +1,5 @@
 'use client';
 import { translations } from '@/_contents/translations';
-import IconLogin from '@/components/atoms/IconLogin/IconLogin';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -20,6 +19,7 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material';
+import { IllusLogin } from '@pagopa/mui-italia';
 import { Auth } from 'aws-amplify';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -71,7 +71,7 @@ const LoginForm = () => {
           <Grid item xs={10}>
             <form>
               <Stack pt={4} display='flex' alignItems='center'>
-                <IconLogin />
+                <IllusLogin />
               </Stack>
               <Typography variant='h3' pt={8} mb={4} textAlign='center'>
                 {login.loginToYourAccount}
