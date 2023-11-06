@@ -39,9 +39,9 @@ type ResponseProps = OpenAPIV3.ResponseObject & {
 };
 
 export const Response = ({ code, content, description }: ResponseProps) => {
-  const schema = content?.['application/json'];
+  const response = content?.['application/json'];
   const codeColor = getResponseCodeColor(code);
-  const hasDetails = !!schema;
+  const hasDetails = !!response;
   const expandIcon = hasDetails ? (
     <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />
   ) : undefined;
@@ -57,7 +57,7 @@ export const Response = ({ code, content, description }: ResponseProps) => {
       </AccordionSummary>
       {hasDetails && (
         <AccordionDetails>
-          <SchemaWithExample {...(schema as OpenAPIV3.SchemaObject)} />
+          <SchemaWithExample {...(response as OpenAPIV3.MediaTypeObject)} />
         </AccordionDetails>
       )}
     </Accordion>

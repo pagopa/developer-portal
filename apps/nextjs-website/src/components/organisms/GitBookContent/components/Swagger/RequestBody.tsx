@@ -23,7 +23,7 @@ export const RequestBody = ({ content }: OpenAPIV3.RequestBodyObject) => {
         Body
       </Typography>
       <div>
-        <SchemaWithExample {...(body as OpenAPIV3.SchemaObject)} />
+        <SchemaWithExample {...(body as OpenAPIV3.MediaTypeObject)} />
       </div>
     </Stack>
   );

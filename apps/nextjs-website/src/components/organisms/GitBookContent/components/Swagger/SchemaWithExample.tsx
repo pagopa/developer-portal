@@ -1,29 +1,32 @@
 import { OpenAPIV3 } from 'openapi-types';
 import CodeBlock from '../CodeBlock';
-import Expandable, {
-  ExpandableDetails,
-  ExpandableSummary,
-} from '../Expandable';
 import Tabs from '../Tabs';
 
-type SchemaWithExampleProps = {
-  schema?: OpenAPIV3.SchemaObject;
-  example?: OpenAPIV3.ExampleObject;
-};
+import { Model } from './Model';
+import { system } from '@/helpers/swagger';
 
-export const SchemaWithExample = ({ schema = {} }: SchemaWithExampleProps) => {
+type SchemaWithExampleProps = OpenAPIV3.MediaTypeObject;
+
+export const SchemaWithExample = ({
+  schema = {},
+  example,
+  examples,
+}: SchemaWithExampleProps) => {
   const titles = ['Example', 'Schema'];
+  const mediaTypeExample =
+    (examples?.response as OpenAPIV3.ExampleObject).value || example.value;
+
+  const exampleAsJson = system.fn.jsonSchema5.getSampleSchema(
+    schema,
+    undefined,
+    { includeReadOnly: true },
+    mediaTypeExample
+  );
+
   return (
     <Tabs titles={titles}>
-      {/* TODO: Build example json object */}
-      <CodeBlock language='json'>{JSON.stringify(schema, null, 3)}</CodeBlock>
-      <Expandable>
-        <ExpandableSummary>{schema?.type}</ExpandableSummary>
-        <ExpandableDetails>
-          {/* TODO: Build schema component */}
-          <CodeBlock language='js'>{JSON.stringify(schema, null, 3)}</CodeBlock>
-        </ExpandableDetails>
-      </Expandable>
+      <CodeBlock language='json'>{exampleAsJson}</CodeBlock>
+      <Model model={schema as OpenAPIV3.SchemaObject} />
     </Tabs>
   );
 };
