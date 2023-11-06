@@ -72,7 +72,9 @@ const WebinarsSection = ({
                 speakers={webinar.speakers}
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
-              >{children}</WebinarCard>
+              >
+                {children}
+              </WebinarCard>
             ))}
           </Box>
         </Box>
