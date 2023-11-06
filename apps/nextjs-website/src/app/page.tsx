@@ -37,11 +37,13 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      <WebinarsSection
-        title={homepage.webinarsSection.title}
-        description={homepage.webinarsSection.description}
-        webinars={[...nextWebinars]}
-      />
+      {nextWebinars.length && (
+        <WebinarsSection
+          title={homepage.webinarsSection.title}
+          description={homepage.webinarsSection.description}
+          webinars={[...nextWebinars]}
+        />
+      )}
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
