@@ -48,7 +48,7 @@ export const PostConfirmationConfig = t.type({
 });
 type SendEmailConfig = t.TypeOf<typeof PostConfirmationConfig>;
 
-export type PostConfirmationEnv = {
+type PostConfirmationEnv = {
   readonly config: SendEmailConfig;
   readonly ses: SES;
 };
