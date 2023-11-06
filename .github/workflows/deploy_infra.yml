@@ -51,6 +51,9 @@ jobs:
       - name: Compile Cloudfront Functions
         run: npm run compile -w cloudfront-functions
 
+      - name: Build Cognito Functions
+        run: npm run build -w cognito-functions
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { translations } from '@/_contents/translations';
+import { useTranslations } from 'next-intl';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import {
   GuideCard,
@@ -35,7 +35,7 @@ const PostIntegration = ({
   guides,
 }: PostIntegrationProps) => {
   const theme = useTheme();
-  const { shared } = translations;
+  const t = useTranslations('shared');
 
   return (
     <Box py={8} sx={{ backgroundColor: theme.palette.background.default }}>
@@ -59,7 +59,7 @@ const PostIntegration = ({
       {cards && (
         <EContainer sx={{ margin: 0 }}>
           <LinkCards
-            cards={cards.map((card) => ({ ...card, label: shared.goToModel }))}
+            cards={cards.map((card) => ({ ...card, label: t('goToModel') }))}
           />
         </EContainer>
       )}
