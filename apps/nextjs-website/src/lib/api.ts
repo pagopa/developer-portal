@@ -1,16 +1,17 @@
 import {
   apis,
-  overviews,
-  products,
   guideLists,
   guides,
-  tutorials,
-  tutorialLists,
+  overviews,
+  products,
   quickStartGuides,
+  tutorialLists,
+  tutorials,
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { isProduction } from '@/config';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -132,13 +133,12 @@ export async function getTutorialLists(productSlug?: string) {
 }
 
 export async function getWebinars(): Promise<readonly Webinar[]> {
-  return [...webinars];
+  // TODO: Remove this condition when the webinar content is ready
+  return isProduction ? [] : [...webinars];
 }
 
 export async function getNextWebinars(): Promise<readonly Webinar[]> {
-  return [
-    ...webinars.filter(
-      ({ startDateTime }) => startDateTime && startDateTime > new Date()
-    ),
-  ];
+  return (await getWebinars()).filter(
+    ({ startDateTime }) => startDateTime && startDateTime > new Date()
+  );
 }
