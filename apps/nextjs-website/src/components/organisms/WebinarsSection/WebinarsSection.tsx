@@ -9,7 +9,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 export type webinarsSectionProps = {
   title: string;
   description: string;
-  link: { href?: string; label: string };
+  link?: { href?: string; label: string };
   webinars: Webinar[];
 };
 
