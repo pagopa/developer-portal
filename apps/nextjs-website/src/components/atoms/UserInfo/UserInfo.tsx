@@ -1,27 +1,48 @@
 'use client';
 import { PersonOutline } from '@mui/icons-material';
 import { Button, Stack, Hidden, Typography } from '@mui/material';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { FC, useCallback, useEffect, useState } from 'react';
 
 const UserInfo: FC = () => {
   const [user, setUser] = useState<any>(null);
 
-  const checkUser = useCallback(async () => {
-    const user = await Auth.currentAuthenticatedUser().catch(() => null);
-
-    setUser(user);
+  const checkUser = useCallback(() => {
+    Auth.currentAuthenticatedUser()
+      .then((user) => setUser(user))
+      .catch(() => setUser(null));
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(checkUser, 1000);
-    return () => clearInterval(interval);
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    const cancel = Hub.listen('auth', (event) => {
+      console.log(event.payload.event);
+      switch (event.payload.event) {
+        case 'signIn': {
+          const { data: user } = event.payload;
+          setUser(user);
+          break;
+        }
+        case 'autoSignIn': {
+          const { data: user } = event.payload;
+          setUser(user);
+          break;
+        }
+        case 'signOut':
+          setUser(null);
+          break;
+      }
+    });
+
+    return () => cancel();
   }, []);
 
   const signOut = useCallback(async () => {
     await Auth.signOut();
-    checkUser();
-  }, [checkUser]);
+  }, []);
 
   if (!user) {
     return null;
