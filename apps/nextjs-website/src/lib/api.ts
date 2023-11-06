@@ -135,6 +135,10 @@ export async function getWebinars(): Promise<readonly Webinar[]> {
   return [...webinars];
 }
 
-export async function getFirstWebinar(): Promise<Webinar> {
-  return webinars[0];
+export async function getNextWebinars(): Promise<readonly Webinar[]> {
+  return [
+    ...webinars.filter(
+      ({ startDateTime }) => startDateTime && startDateTime > new Date()
+    ),
+  ];
 }

@@ -11,6 +11,7 @@ export type webinarsSectionProps = {
   description: string;
   link?: { href?: string; label: string };
   webinars: Webinar[];
+  children?: React.ReactNode;
 };
 
 const WebinarsSection = ({
@@ -18,6 +19,7 @@ const WebinarsSection = ({
   description,
   link,
   webinars,
+  children,
 }: webinarsSectionProps) => {
   const theme = useTheme();
 
@@ -70,7 +72,7 @@ const WebinarsSection = ({
                 speakers={webinar.speakers}
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
-              />
+              >{children}</WebinarCard>
             ))}
           </Box>
         </Box>
