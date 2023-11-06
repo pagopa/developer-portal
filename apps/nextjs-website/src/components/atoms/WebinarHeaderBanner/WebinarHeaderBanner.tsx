@@ -17,7 +17,6 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug, text }) => {
   const router = useRouter();
 
   const { palette } = useTheme();
-  console.log(palette);
 
   if (!visible) return null;
 
