@@ -34,7 +34,7 @@ const SectionTitle = ({
         {title && (
           <Typography
             variant='h4'
-            style={{ marginBottom: '24px', width: '100%' }}
+            style={{ marginBottom: '16px', width: '100%' }}
           >
             {title}
           </Typography>

@@ -18,7 +18,7 @@ export const translations = {
     moreInfo: 'Scopri di più',
     goToModel: 'Vai al modello',
     version: 'Versione',
-    copiedTooltip: 'Elemento copiato',
+    copiedTooltip: 'Copiato',
   },
   pageNotFound: {
     overline: '404',
@@ -289,6 +289,10 @@ export const translations = {
             linkType: 'external',
           },
         ],
+      },
+      cookiePreferences: {
+        ariaLabel: 'Preferenza Cookie',
+        label: 'Preferenza Cookie',
       },
     },
   },

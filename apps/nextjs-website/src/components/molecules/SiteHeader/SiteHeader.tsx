@@ -1,10 +1,14 @@
 'use client';
-import React, { ForwardedRef, forwardRef } from 'react';
 import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
-import { Product } from '@/lib/types/product';
-import { Divider, Stack, useTheme } from '@mui/material';
+import UserInfo from '@/components/atoms/UserInfo/UserInfo';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
+import { Product } from '@/lib/types/product';
+import { Box, Divider, Stack, useTheme } from '@mui/material';
+import { ForwardedRef, forwardRef } from 'react';
+
+// Used in ProductHeader.tsx to manage scroll-up animation
+export const SITE_HEADER_HEIGHT = 60;
 
 type SiteHeaderProps = {
   products: Product[];
@@ -16,11 +20,23 @@ const SiteHeader = (
 ) => {
   const { header } = translations;
   const { palette } = useTheme();
+
   return (
-    <>
+    <Box
+      sx={{
+        position: 'sticky',
+        top: 0,
+        height: SITE_HEADER_HEIGHT,
+        zIndex: 100,
+      }}
+    >
       <Stack
         ref={ref}
-        sx={{ py: 2, px: 3, backgroundColor: palette.common.white }}
+        sx={{
+          py: 2,
+          px: 3,
+          backgroundColor: palette.common.white,
+        }}
         spacing={2}
         direction='row'
         justifyContent={{ sm: 'space-between', md: 'start' }}
@@ -34,9 +50,10 @@ const SiteHeader = (
             label: product.name,
           }))}
         />
+        <UserInfo />
       </Stack>
       <Divider />
-    </>
+    </Box>
   );
 };
 

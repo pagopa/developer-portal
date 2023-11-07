@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh 6f8fe27",
+    "download-docs": "./scripts/fetch-docs.sh b681e96",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
@@ -12,6 +12,7 @@
     "test": "jest -i"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^5.3.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@markdoc/markdoc": "0.3.0",
@@ -21,6 +22,7 @@
     "@mui/utils": "^5.14.5",
     "@pagopa/mui-italia": "1.0.1",
     "@stoplight/elements": "^7.9.0",
+    "aws-amplify": "^5.3.11",
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
     "io-ts": "^2.2.20",
@@ -28,7 +30,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "swiper": "^10.0.3"
+    "swiper": "^10.0.3",
+    "next-intl": "^2.20.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

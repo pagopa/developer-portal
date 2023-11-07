@@ -1,9 +1,11 @@
 'use client';
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
+import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 
 type ProductHeaderProps = {
   product: Product;
@@ -12,16 +14,27 @@ type ProductHeaderProps = {
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();
+  const scrollUp = useScrollUp();
+
   const themeVariant = palette.mode;
   return (
-    <Header
-      menu={[...productToMenuItems(product, path, themeVariant)]}
-      product={{
-        href: product.subpaths.overview.path,
-        name: product.name,
+    <Box
+      sx={{
+        position: 'sticky',
+        top: scrollUp ? SITE_HEADER_HEIGHT : 0,
+        zIndex: 101,
+        transition: 'all 0.5s linear',
       }}
-      theme={themeVariant}
-    />
+    >
+      <Header
+        menu={[...productToMenuItems(product, path, themeVariant)]}
+        product={{
+          href: product.subpaths.overview.path,
+          name: product.name,
+        }}
+        theme={themeVariant}
+      />
+    </Box>
   );
 };
 

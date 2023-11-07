@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { useRef, useState, useEffect } from 'react';
 
-const SCROLL_UP_TRESHOLD = 100;
+const SCROLL_UP_TRESHOLD = 50;
 
 export const useScrollUp = () => {
   const prevScrollY = useRef(0);

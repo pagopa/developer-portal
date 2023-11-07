@@ -1,9 +1,16 @@
-import { cookieDomainScript, environment } from '@/config';
+import { cookieDomainScript, isProduction } from '@/config';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from './ThemeRegistry';
+import { getProducts } from '@/lib/api';
+import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
+import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
+import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
+import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -34,20 +41,36 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'it' }];
+}
+
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const products = [...(await getProducts())];
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
+
+  // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
+  // eslint-disable-next-line functional/no-let
+  let messages;
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    messages = (await import('../messages/it.json')).default;
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <html lang='it'>
       <head>
         <meta name='robots' content='noindex,nofollow' />
         <title>PagoPA DevPortal</title>
-        {environment === 'prod' && (
+        {isProduction && (
           <script
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
@@ -55,15 +78,21 @@ export default function RootLayout({
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body>
-          {environment === 'prod' && (
-            <div
-              key='script-cookie'
-              dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-            ></div>
-          )}
-          {children}
-        </body>
+        <NextIntlClientProvider locale={'it'} messages={messages}>
+          <body>
+            {isProduction && (
+              <div
+                key='script-cookie'
+                dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+              ></div>
+            )}
+            <AuthProvider>
+              <SiteHeader products={products} />
+              <MainWrapper>{children}</MainWrapper>
+              <SiteFooter />
+            </AuthProvider>
+          </body>
+        </NextIntlClientProvider>
       </ThemeRegistry>
     </html>
   );
