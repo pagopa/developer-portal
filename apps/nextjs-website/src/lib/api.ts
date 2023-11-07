@@ -132,13 +132,14 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-export async function getWebinars(): Promise<readonly Webinar[]> {
+async function getWebinars(): Promise<readonly Webinar[]> {
   // TODO: Remove this condition when the webinar content is ready
-  return isProduction ? [] : [...webinars];
+  return isProduction ? [] : webinars;
 }
 
 export async function getNextWebinars(): Promise<readonly Webinar[]> {
   return (await getWebinars()).filter(
-    ({ startDateTime }) => startDateTime && startDateTime > new Date()
+    ({ startDateTime }) =>
+      startDateTime && startDateTime.getTime() > new Date().getTime()
   );
 }
