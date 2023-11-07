@@ -1,10 +1,10 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
 import { Box, Grid } from '@mui/material';
-import { environment } from '@/config';
+import { isProduction } from '@/config';
 import PageNotFound from '@/app/not-found';
 
 const Login = () => {
-  return environment === 'prod' ? (
+  return isProduction ? (
     <PageNotFound />
   ) : (
     <Box
