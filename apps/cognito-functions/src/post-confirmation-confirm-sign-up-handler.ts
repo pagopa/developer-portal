@@ -5,6 +5,9 @@ import {
   SendEmailCommandInput,
 } from '@aws-sdk/client-ses';
 import * as t from 'io-ts';
+import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 
 const emailTemplate = (firstName: string) => `
 <h4>Finalmente sei dei nostri</h4>
@@ -58,22 +61,27 @@ export const makeHandler =
   async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
     const { email, given_name } = event.request.userAttributes;
     if (email) {
-      const fromEmail = config.fromEmailAddress;
       const subject = 'Il tuo account è attivo';
-      const params = makeSesEmailParameters(
-        email,
-        fromEmail,
-        subject,
-        emailTemplate(given_name)
+
+      const sendEmail = pipe(
+        makeSesEmailParameters(
+          email,
+          config.fromEmailAddress,
+          subject,
+          emailTemplate(given_name)
+        ),
+        (sendEmailCommandInput) => new SendEmailCommand(sendEmailCommandInput),
+        (sendEmailCommand) =>
+          TE.tryCatch(() => ses.send(sendEmailCommand), E.toError),
+        TE.bimap(
+          ({ message }) => `Error when sending the email: ${message}`,
+          ({ MessageId }) => MessageId
+        ),
+        TE.toUnion
       );
-      // eslint-disable-next-line functional/no-try-statements
-      try {
-        // eslint-disable-next-line functional/no-expression-statements
-        await ses.send(new SendEmailCommand(params));
-      } catch (err) {
-        // eslint-disable-next-line functional/no-expression-statements
-        console.log(err);
-      }
+
+      // eslint-disable-next-line functional/no-expression-statements
+      await sendEmail();
     }
     return event;
   };
