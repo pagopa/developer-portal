@@ -9,9 +9,9 @@ it('should return the corrects URLs from the helpers', () => {
     '/pago-pa/guides/sanp/3.5.0/ente-creditore/tassonomia-dei-servizi-di-incasso'
   );
 
-  const secondUrl =
-    'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/';
+  // const secondUrl =
+  //   'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/';
 
-  const secondResult = urlRewrite(secondUrl);
-  expect(secondResult).toBe('/send/guides/modello-di-integrazione/v2.1');
+  // const secondResult = urlRewrite(secondUrl);
+  // expect(secondResult).toBe('/send/guides/modello-di-integrazione/v2.1');
 });

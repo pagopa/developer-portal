@@ -1,13 +1,14 @@
 import { getGuidePaths } from '@/lib/api';
 
 export const urlRewrite = (url: string): string => {
-  const isDocsUrl = url.startsWith('https://docs.pagopa.it');
+  const DOCS_URL = 'https://docs.pagopa.it';
+  const isDocsUrl = url.startsWith(DOCS_URL);
 
   if (!isDocsUrl) {
     return url;
   }
 
-  const cleanUrl = url.replace('https://docs.pagopa.it', '');
+  const cleanUrl = url.replace(DOCS_URL, '');
 
   const [urlGuide, ...rest] = cleanUrl.split('/').filter((p) => p !== '');
 
@@ -23,5 +24,5 @@ export const urlRewrite = (url: string): string => {
     return finalUrl;
   }
 
-  return '/not-found';
+  return url;
 };
