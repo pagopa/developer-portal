@@ -1,6 +1,14 @@
 locals {
   from_email_address       = format("Developer Portal <noreply@%s>", var.dns_domain_name)
   cognito_lambda_functions = "../apps/cognito-functions/out/cognito-functions.zip"
+  /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
+   * because of a runtime error.
+   * We should find a way to add only the variables required to the Lambda.
+  */
+  lambda_env_variables = {
+    DOMAIN             = var.dns_domain_name
+    FROM_EMAIL_ADDRESS = local.from_email_address
+  }
 }
 
 module "cognito_custom_message_function" {
@@ -15,10 +23,7 @@ module "cognito_custom_message_function" {
   local_existing_package                  = local.cognito_lambda_functions
   create_current_version_allowed_triggers = false
 
-  environment_variables = {
-    DOMAIN             = var.dns_domain_name
-    FROM_EMAIL_ADDRESS = local.from_email_address
-  }
+  environment_variables = local.lambda_env_variables
 
   allowed_triggers = {
     cognito_devportal = {
@@ -40,10 +45,7 @@ module "cognito_post_confirmation_function" {
   local_existing_package                  = local.cognito_lambda_functions
   create_current_version_allowed_triggers = false
 
-  environment_variables = {
-    DOMAIN             = var.dns_domain_name
-    FROM_EMAIL_ADDRESS = local.from_email_address
-  }
+  environment_variables = local.lambda_env_variables
 
   attach_policy_statements = true
   policy_statements = {
