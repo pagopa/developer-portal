@@ -1,24 +1,44 @@
+import { KeyboardArrowRight } from '@mui/icons-material';
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
   Box,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  Typography,
 } from '@mui/material';
 import { OpenAPIV3 } from 'openapi-types';
+import { MouseEventHandler, PropsWithChildren, useState } from 'react';
+import { useModelProps } from './hooks/use-model';
 
-type ModelPrimitiveProps = {
-  label?: string;
-  model: OpenAPIV3.SchemaObject;
+type ModelEntryProps = {
+  title?: string;
+  required?: boolean;
+  schemaType?: string;
 };
 
-export const ModelPrimitive = ({ model, label }: ModelPrimitiveProps) => {
-  const title = model?.title || label;
-  const required = model?.required ?? false;
-  const schemaType = model?.type ?? '';
+type ModelItemProps = ModelEntryProps & {
+  description?: string;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+};
 
+const ModelItem = ({
+  description,
+  title,
+  required,
+  schemaType,
+  onClick,
+}: ModelItemProps) => {
+  const showIcon = typeof onClick === 'function';
   return (
-    <>
+    <ListItemButton
+      sx={{ background: 'transparent!important' }}
+      disableGutters
+      onClick={onClick}
+    >
+      <ListItemIcon>
+        {showIcon && <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />}
+      </ListItemIcon>
       <Box sx={{ display: 'flex', width: '100%', gap: 2 }}>
         {title && (
           <Typography sx={{ fontWeight: 'bold' }}>
@@ -32,96 +52,83 @@ export const ModelPrimitive = ({ model, label }: ModelPrimitiveProps) => {
         )}
         <Typography color='blue'>{schemaType}</Typography>
       </Box>
-      <Typography>{model?.description}</Typography>
-    </>
+      <Typography>{description}</Typography>
+    </ListItemButton>
   );
 };
 
-type ModelArrayProps = {
-  label?: string;
-  model: OpenAPIV3.ArraySchemaObject;
-};
-
-export const ModelArray = ({ model, label }: ModelArrayProps) => {
-  const title = model?.title || label;
-  const required = model?.required ?? false;
-  const schemaType = model?.type ?? '';
-  const items = (model?.items ?? {}) as OpenAPIV3.SchemaObject;
+const ModelListEntry = ({
+  title,
+  required,
+  schemaType,
+  children,
+}: PropsWithChildren<ModelEntryProps>) => {
+  const [open, setOpen] = useState(false);
 
   return (
-    <Accordion>
-      <AccordionSummary>
-        <Box sx={{ display: 'flex', width: '100%', gap: 2 }}>
-          {title && (
-            <Typography sx={{ fontWeight: 'bold' }}>
-              {title}
-              {required && (
-                <Typography component='span' color='red'>
-                  *
-                </Typography>
-              )}
-            </Typography>
-          )}
-          <Typography color='blue'>{schemaType}</Typography>
-        </Box>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Model model={items} />
-      </AccordionDetails>
-    </Accordion>
-  );
-};
-
-type ModelObjectProps = {
-  label?: string;
-  model: OpenAPIV3.SchemaObject;
-};
-
-export const ModelObject = ({ model, label }: ModelObjectProps) => {
-  const title = model?.title || label;
-  const required = model?.required ?? false;
-  const schemaType = model?.type ?? '';
-  const properties = (model?.properties || {}) as OpenAPIV3.SchemaObject;
-
-  return (
-    <Accordion>
-      <AccordionSummary>
-        <Box sx={{ display: 'flex', width: '100%', gap: 2 }}>
-          {title && (
-            <Typography sx={{ fontWeight: 'bold' }}>
-              {title}
-              {required && (
-                <Typography component='span' color='red'>
-                  *
-                </Typography>
-              )}
-            </Typography>
-          )}
-          <Typography color='blue'>{schemaType}</Typography>
-        </Box>
-      </AccordionSummary>
-      <AccordionDetails>
-        {Object.entries(properties).map(([key, property]) => (
-          <Model key={key} label={key} model={property} />
-        ))}
-      </AccordionDetails>
-    </Accordion>
+    <List disablePadding>
+      <ModelItem
+        title={title}
+        required={required}
+        schemaType={schemaType}
+        onClick={() => setOpen(!open)}
+      />
+      <Collapse
+        sx={{ borderLeft: 1, borderColor: 'divider', ml: 1, pl: 2 }}
+        in={open}
+        timeout='auto'
+        unmountOnExit
+      >
+        {children}
+      </Collapse>
+    </List>
   );
 };
 
 type ModelProps = {
   label?: string;
   model: OpenAPIV3.SchemaObject;
+  requiredAttrs?: ReadonlyArray<string>;
 };
 
-export const Model = ({ model, label }: ModelProps) => {
-  const schemaType = model?.type;
+export const Model = (props: ModelProps) => {
+  const {
+    description,
+    items,
+    properties,
+    required,
+    requiredAttrs,
+    schemaType,
+    title,
+  } = useModelProps(props);
 
   if (schemaType === 'object') {
-    return <ModelObject model={model} label={label} />;
+    return (
+      <ModelListEntry title={title} required={required} schemaType={schemaType}>
+        {Object.entries(properties).map(([key, property]) => (
+          <Model
+            key={key}
+            label={key}
+            model={property}
+            requiredAttrs={requiredAttrs}
+          />
+        ))}
+      </ModelListEntry>
+    );
   } else if (schemaType === 'array') {
-    return <ModelArray model={model} label={label} />;
+    return (
+      <ModelListEntry title={title} required={required} schemaType={schemaType}>
+        <Model model={items} requiredAttrs={requiredAttrs} />
+      </ModelListEntry>
+    );
   } else {
-    return <ModelPrimitive model={model} label={label} />;
+    return (
+      <ModelItem
+        title={title}
+        required={required}
+        schemaType={schemaType}
+        description={description}
+      />
+    );
   }
 };
