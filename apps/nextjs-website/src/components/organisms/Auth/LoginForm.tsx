@@ -73,7 +73,7 @@ const LoginForm = () => {
               <Stack pt={4} display='flex' alignItems='center'>
                 <IllusLogin />
               </Stack>
-              <Typography variant='h3' pt={8} mb={4} textAlign='center'>
+              <Typography variant='h4' pt={8} mb={4} textAlign='center'>
                 {login.loginToYourAccount}
               </Typography>
               <Stack spacing={2} mb={4}>
