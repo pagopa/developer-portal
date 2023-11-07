@@ -25,6 +25,9 @@ type GuideMenuProps = {
 };
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
+  [`&`]: {
+    '--x': 32,
+  },
   [`& .${treeItemClasses.content}`]: {
     boxSizing: 'border-box',
     flexDirection: 'row-reverse',
@@ -57,8 +60,17 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     paddingTop: 16,
     paddingBottom: 16,
-    paddingLeft: 30,
     paddingRight: 32,
+  },
+  [`& ul`]: {
+    paddingLeft: 0,
+    '--y': 'calc(var(--x) + 0)',
+  },
+  [`& li`]: {
+    '--x': 'calc(var(--y) + 24)',
+  },
+  ['& a']: {
+    paddingLeft: 'calc(1px * var(--x))',
   },
   [`& .${treeItemClasses.group}`]: {
     marginLeft: 0,
@@ -68,30 +80,6 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingLeft: 0,
     paddingRight: 0,
   },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 48,
-    },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 72,
-    },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 96,
-    },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 120,
-    },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 144,
-    },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.group}.${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label} > a`]:
-    {
-      paddingLeft: 168,
-    },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
     paddingLeft: 0,
