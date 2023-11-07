@@ -181,6 +181,18 @@ resource "aws_cognito_user_pool" "devportal" {
     }
   }
 
+  schema {
+    name                     = "company_type"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints = {
+      min_length = 1
+      max_length = 256
+    }
+  }
+
 }
 
 resource "aws_cognito_user_pool_client" "devportal_website" {
