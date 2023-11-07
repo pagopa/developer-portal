@@ -2,6 +2,14 @@ import { getGuidePaths } from '@/lib/api';
 
 export const urlRewrite = (url: string): string => {
   const DOCS_URL = 'https://docs.pagopa.it';
+  const allowedHosts = [new URL(DOCS_URL).host];
+  const host = new URL(url).host;
+
+  if (!allowedHosts.includes(host)) {
+    // In case the host has been manipulated we delete it
+    return '';
+  }
+
   const isDocsUrl = url.startsWith(DOCS_URL);
 
   if (!isDocsUrl) {

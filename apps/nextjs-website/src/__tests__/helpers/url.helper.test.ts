@@ -15,3 +15,11 @@ it('should return the corrects URLs from the helpers', () => {
   // const secondResult = urlRewrite(secondUrl);
   // expect(secondResult).toBe('/send/guides/modello-di-integrazione/v2.1');
 });
+
+it('should return an empty string if the host is not allowed', () => {
+  const url =
+    'https://docss.pagopa.it/sanp/ente-creditore/tassonomia-dei-servizi-di-incasso';
+
+  const result = urlRewrite(url);
+  expect(result).toBe('');
+});
