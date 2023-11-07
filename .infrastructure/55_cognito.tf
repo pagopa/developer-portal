@@ -1,8 +1,8 @@
 locals {
-  from_email_address       = format("Developer Portal <noreply@%s>", var.dns_domain_name)
-  cognito_lambda_functions = "../apps/cognito-functions/out/cognito-functions.zip"
+  from_email_address                     = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+  cognito_lambda_functions_artifact_path = "../apps/cognito-functions/out/cognito-functions.zip"
   /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
-   * because of a runtime error.
+   * because of a runtime error during the env parsing.
    * We should find a way to add only the variables required to the Lambda.
   */
   lambda_env_variables = {
@@ -20,7 +20,7 @@ module "cognito_custom_message_function" {
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = local.cognito_lambda_functions
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
 
   environment_variables = local.lambda_env_variables
@@ -42,7 +42,7 @@ module "cognito_post_confirmation_function" {
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = local.cognito_lambda_functions
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
 
   environment_variables = local.lambda_env_variables
