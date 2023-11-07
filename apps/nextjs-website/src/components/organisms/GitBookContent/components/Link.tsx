@@ -14,6 +14,4 @@ export const Link = ({ title, href, children }: LinkProps<ReactNode>) => (
   </MUILink>
 );
 
-
-
 export default Link;
