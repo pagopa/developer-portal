@@ -2,7 +2,7 @@ module "cognito_custom_message_function" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "cognito_custom_message"
-  description   = "Cognito custom message"
+  description   = "The Lambda function executed to customize the email address verification message"
   handler       = "main.customMessageHandler"
   runtime       = "nodejs18.x"
 
