@@ -35,15 +35,24 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingRight: 32,
     alignItems: 'space-between',
   },
+  [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
+    {
+      paddingRight: 0,
+    },
   [`& .${treeItemClasses.iconContainer}`]: {
     justifyContent: 'flex-end',
     marginRight: 0,
     paddingRight: 0,
+    paddingLeft: 0,
+  },
+  [`& .${treeItemClasses.iconContainer}:empty`]: {
+    display: 'none',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
+    position: 'relative',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     paddingTop: 16,
