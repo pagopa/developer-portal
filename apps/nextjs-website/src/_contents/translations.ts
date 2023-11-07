@@ -20,7 +20,7 @@ export const translations = {
     version: 'Versione',
     copiedTooltip: 'Copiato',
     login: 'Accedi',
-    signUp: 'Registrati',
+    signUp: 'Iscriviti',
     logout: 'Esci',
     emailAddress: 'Indirizzo email',
     password: 'Password',
