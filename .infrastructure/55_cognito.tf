@@ -175,7 +175,7 @@ resource "aws_cognito_user_pool" "devportal" {
     developer_only_attribute = false
     mutable                  = true
     required                 = false
-    string_attribute_constraints = {
+    string_attribute_constraints {
       min_length = 1
       max_length = 256
     }
@@ -187,7 +187,7 @@ resource "aws_cognito_user_pool" "devportal" {
     developer_only_attribute = false
     mutable                  = true
     required                 = false
-    string_attribute_constraints = {
+    string_attribute_constraints {
       min_length = 1
       max_length = 256
     }
