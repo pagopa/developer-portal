@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh f3dd4ec",
+    "download-docs": "./scripts/fetch-docs.sh b681e96",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
@@ -31,8 +31,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "swagger-ui": "^5.9.1",
-    "swiper": "^10.0.3"
+    "swiper": "^10.0.3",
+    "next-intl": "^2.20.2",
+    "swagger-ui": "^5.9.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

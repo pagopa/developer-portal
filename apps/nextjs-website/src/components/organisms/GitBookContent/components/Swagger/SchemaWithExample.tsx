@@ -14,7 +14,7 @@ export const SchemaWithExample = ({
 }: SchemaWithExampleProps) => {
   const titles = ['Example', 'Schema'];
   const mediaTypeExample =
-    (examples?.response as OpenAPIV3.ExampleObject).value || example.value;
+    (examples?.response as OpenAPIV3.ExampleObject)?.value || example?.value;
 
   const exampleAsJson = system.fn.jsonSchema5.getSampleSchema(
     schema,
@@ -23,6 +23,7 @@ export const SchemaWithExample = ({
     mediaTypeExample
   );
 
+  // TODO: Add support for schema
   return (
     <Tabs titles={titles}>
       <CodeBlock language='json'>{exampleAsJson}</CodeBlock>
