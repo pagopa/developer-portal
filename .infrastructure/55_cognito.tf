@@ -1,3 +1,8 @@
+locals {
+  from_email_address       = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+  cognito_lambda_functions = "../apps/cognito-functions/out/cognito-functions.zip"
+}
+
 module "cognito_custom_message_function" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -7,7 +12,7 @@ module "cognito_custom_message_function" {
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
+  local_existing_package                  = local.cognito_lambda_functions
   create_current_version_allowed_triggers = false
 
   environment_variables = {
@@ -32,7 +37,7 @@ module "cognito_post_confirmation_function" {
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
+  local_existing_package                  = local.cognito_lambda_functions
   create_current_version_allowed_triggers = false
 
   environment_variables = {
@@ -55,10 +60,6 @@ module "cognito_post_confirmation_function" {
       source_arn = aws_cognito_user_pool.devportal.arn
     }
   }
-}
-
-locals {
-  from_email_address = format("Developer Portal <noreply@%s>", var.dns_domain_name)
 }
 
 resource "aws_cognito_user_pool" "devportal" {
