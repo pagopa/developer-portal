@@ -18,6 +18,9 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  Snackbar,
+  Alert,
+  useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { Auth } from 'aws-amplify';
@@ -30,9 +33,14 @@ const LoginForm = () => {
     auth: { login },
     shared,
   } = translations;
+  const {
+    palette: { primary },
+  } = useTheme();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -53,8 +61,8 @@ const LoginForm = () => {
   );
 
   const onLogin = useCallback(() => {
-    Auth.signIn(username, password);
-  }, [password, username]);
+    Auth.signIn(username, password).catch((e) => setError(e.message));
+  }, [username, password]);
 
   return (
     <Box
@@ -131,18 +139,29 @@ const LoginForm = () => {
                 </Stack>
               </Stack>
               <Divider />
-              <Stack spacing={4} pt={4} pb={8}>
-                <Typography variant='body2' textAlign='center'>
+              <Box
+                pt={4}
+                pb={8}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+              >
+                <Typography variant='body2' textAlign='center' mr={1}>
                   {login.noAccount}{' '}
-                  <Link href='/auth/sign-up'>
-                    <Button variant='text'>{shared.signUp}</Button>
-                  </Link>
                 </Typography>
-              </Stack>
+                <Link href='/auth/sign-up'>{shared.signUp}</Link>
+              </Box>
             </form>
           </Grid>
         </Grid>
       </Card>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={2000}
+        onClose={() => setError(null)}
+      >
+        <Alert severity='error'>{error}</Alert>
+      </Snackbar>
     </Box>
   );
 };
