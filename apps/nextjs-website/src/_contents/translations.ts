@@ -296,4 +296,11 @@ export const translations = {
       },
     },
   },
+  auth: {
+    accountActivated: {
+      goToDashboard: 'Inizia',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
+  },
 };
