@@ -32,14 +32,25 @@ const ModelItem = ({
   const showIcon = typeof onClick === 'function';
   return (
     <ListItemButton
-      sx={{ background: 'transparent!important' }}
+      sx={{
+        display: 'block',
+        background: 'transparent!important',
+      }}
       disableGutters
       onClick={onClick}
     >
-      <ListItemIcon>
-        {showIcon && <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />}
-      </ListItemIcon>
-      <Box sx={{ display: 'flex', width: '100%', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          flexGrow: 1,
+          width: '100%',
+          gap: 2,
+        }}
+      >
+        <ListItemIcon>
+          {showIcon && <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />}
+        </ListItemIcon>
         {title && (
           <Typography sx={{ fontWeight: 'bold' }}>
             {title}
@@ -52,7 +63,7 @@ const ModelItem = ({
         )}
         <Typography color='blue'>{schemaType}</Typography>
       </Box>
-      <Typography>{description}</Typography>
+      <Typography sx={{ ml: 2 }}>{description}</Typography>
     </ListItemButton>
   );
 };
