@@ -38,9 +38,7 @@ export interface INewsroom {
 
 const Item = (props: INewsroomItem) => {
   const theme = useTheme();
-  const isScreenLargerThenMd = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.up('md')
-  );
+
   const {
     comingSoonLabel,
     img,
