@@ -24,6 +24,8 @@ export const SchemaWithExample = ({
   );
 
   // TODO: Add support for undefined schema but with example
+  // For responses, the schema can be undefined but the example can be defined.
+  // The old code supported this, generating a schema from the example.
   return (
     <Tabs titles={titles}>
       <CodeBlock language='json'>{exampleAsJson}</CodeBlock>
