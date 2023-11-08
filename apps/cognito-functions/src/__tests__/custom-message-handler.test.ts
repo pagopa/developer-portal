@@ -27,10 +27,10 @@ const event: CustomMessageTriggerEvent = {
 };
 
 describe('Handler', () => {
+  const env = {
+    domain: 'thedomain.org',
+  };
   it('should reply with verification link', async () => {
-    const env = {
-      domain: 'thedomain.org',
-    };
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
     const expected = emailTemplate(
@@ -40,9 +40,6 @@ describe('Handler', () => {
   });
 
   it('should reply with verification link on resend code request', async () => {
-    const env = {
-      domain: 'thedomain.org',
-    };
     const resendCodeEvent: CustomMessageTriggerEvent = {
       ...event,
       triggerSource: 'CustomMessage_ResendCode',
