@@ -56,6 +56,10 @@ const knowledgeBase: GuideDefinition = {
       dirName: 'LkozJ77TMlb5XupVDO7J',
     },
     {
+      version: 'v2.1',
+      dirName: 'LjuHmRnHyge98hRa4Ao4',
+    },
+    {
       version: 'v1.0',
       dirName: '8hvzBYw259fYwQSqzmf6',
     },
