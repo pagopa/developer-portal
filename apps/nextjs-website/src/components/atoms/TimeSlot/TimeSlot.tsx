@@ -13,24 +13,31 @@ const TIME_OPTIONS: Intl.DateTimeFormatOptions = {
   minute: '2-digit',
 };
 
+/**
+ * this function is used to format the date and time
+ * in the format defined with DATE_OPTIONS and TIME_OPTIONS
+ */
 function formattedDateTime(date: Date): string {
-  return `${new Date(date).toLocaleDateString(
+  return `${date.toLocaleDateString(
     DEFAULT_LOCALE,
     DATE_OPTIONS
-  )}, ${new Date(date).toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)}`;
+  )}, ${date.toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)}`;
 }
 
+/**
+ * this function is used to return a formatted end date of the slot
+ * it always shows time, but it shows the date only if end is different from start date
+ */
 function conditionallyFormattedEndDate(
   start?: Date,
   end?: Date
 ): string | undefined {
   if (!end) return;
 
-  if (!start)
-    return new Date(end).toLocaleDateString(DEFAULT_LOCALE, DATE_OPTIONS);
+  if (!start) return end.toLocaleDateString(DEFAULT_LOCALE, DATE_OPTIONS);
 
   return isSameDay(start, end)
-    ? new Date(end).toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)
+    ? end.toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)
     : formattedDateTime(end);
 }
 
@@ -42,7 +49,7 @@ type TimeSlotProps = {
 const TimeSlot = ({ start, end }: TimeSlotProps) => {
   return [
     start && formattedDateTime(start),
-    end && conditionallyFormattedEndDate(start, end),
+    conditionallyFormattedEndDate(start, end),
   ]
     .filter(Boolean)
     .join(' - ');

@@ -1,3 +1,69 @@
+locals {
+  from_email_address                     = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+  cognito_lambda_functions_artifact_path = "../apps/cognito-functions/out/cognito-functions.zip"
+  /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
+   * because of a runtime error during the env parsing.
+   * We should find a way to add only the variables required to the Lambda.
+  */
+  lambda_env_variables = {
+    DOMAIN             = var.dns_domain_name
+    FROM_EMAIL_ADDRESS = local.from_email_address
+  }
+}
+
+module "cognito_custom_message_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_custom_message"
+  description   = "The Lambda function executed to customize the email address verification message"
+  handler       = "main.customMessageHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
+module "cognito_post_confirmation_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_post_confirmation"
+  description   = "The Lambda function executed after post confirmation of email address"
+  handler       = "main.sensEmailHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  attach_policy_statements = true
+  policy_statements = {
+    ses = {
+      effect    = "Allow",
+      actions   = ["ses:SendEmail", "ses:SendRawEmail"],
+      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+    },
+  }
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
 resource "aws_cognito_user_pool" "devportal" {
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
@@ -32,8 +98,17 @@ resource "aws_cognito_user_pool" "devportal" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    from_email_address    = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+    from_email_address    = local.from_email_address
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
+  }
+
+  verification_message_template {
+    default_email_option = "CONFIRM_WITH_CODE"
+  }
+
+  lambda_config {
+    custom_message    = module.cognito_custom_message_function.lambda_function_arn
+    post_confirmation = module.cognito_post_confirmation_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.
@@ -92,6 +167,30 @@ resource "aws_cognito_user_pool" "devportal" {
     developer_only_attribute = false
     mutable                  = true
     required                 = false
+  }
+
+  schema {
+    name                     = "job_role"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
+  }
+
+  schema {
+    name                     = "company_type"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
   }
 
 }
