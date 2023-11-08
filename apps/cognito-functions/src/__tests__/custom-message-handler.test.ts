@@ -38,4 +38,19 @@ describe('Handler', () => {
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
+
+  it('should reply with verification link on resend email request', async () => {
+    const env = {
+      domain: 'thedomain.org',
+    };
+    const { response } = await makeHandler(env)({
+      ...event,
+      triggerSource: 'CustomMessage_ResendCode',
+    });
+    const { userAttributes, codeParameter } = event.request;
+    const expected = emailTemplate(
+      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
+    );
+    expect(response.emailMessage).toStrictEqual(expected);
+  });
 });
