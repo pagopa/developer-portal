@@ -8,7 +8,6 @@ import {
   Grid,
   Divider,
   Card,
-  Button,
   Link,
 } from '@mui/material';
 
@@ -30,7 +29,7 @@ const ConfirmSignUp = ({
 
   return (
     <Box component='section'>
-      <Card variant='outlined' elevation={8}>
+      <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Stack pt={4} display='flex' alignItems='center'>
@@ -45,10 +44,10 @@ const ConfirmSignUp = ({
             <Typography component='p' variant='caption' mb={4}>
               {confirmSignUp.didntReceiveEmail}{' '}
               <Link
-                href=''
                 onClick={onResendEmail}
                 underline='none'
                 variant='caption-semibold'
+                sx={{ cursor: 'pointer' }}
               >
                 {confirmSignUp.resendEmail}
               </Link>
@@ -66,10 +65,9 @@ const ConfirmSignUp = ({
                 {confirmSignUp.wrongEmail}
               </Typography>
               <Link
-                href=''
                 variant='body2'
                 onClick={onBack}
-                sx={{ fontWeight: 600 }}
+                sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
                 {shared.goBack}
               </Link>
