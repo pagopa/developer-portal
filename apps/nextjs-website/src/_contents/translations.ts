@@ -106,6 +106,15 @@ export const translations = {
         },
       },
     ],
+    webinarsSection: {
+      description:
+        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      title: 'Partecipa ai nostri webinar',
+      link: {
+        href: '#',
+        label: 'Vedi tutti i webinar',
+      },
+    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
@@ -311,6 +320,11 @@ export const translations = {
     },
   },
   auth: {
+    accountActivated: {
+      goToDashboard: 'Inizia',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
     signUp: {
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
@@ -336,5 +350,10 @@ export const translations = {
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
     },
+  },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
   },
 };
