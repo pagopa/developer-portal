@@ -30,17 +30,21 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
+  const [mailinglistAccepted, setMailinglistAccepted] = useState(false);
   const [signUpStep, setSignUpStep] = useState(SignUpSteps.SIGN_UP);
   const [error, setError] = useState<string | null>(null);
 
   const onSignUp = useCallback(async () => {
-    // TODO: Add company and role to user attributes
     const result = await Auth.signUp({
       username,
       password,
       attributes: {
         given_name: firstName,
         family_name: lastName,
+        'custom:privacy_accepted': 'true',
+        'custom:mailinglist_accepted': mailinglistAccepted ? 'true' : 'false',
+        'custom:job_role': role,
+        'custom:company_type': company,
       },
     }).catch((error) => {
       setError(error.message);
@@ -53,7 +57,15 @@ const SignUp = () => {
       setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
       return !!result.user;
     }
-  }, [firstName, lastName, password, username]);
+  }, [
+    company,
+    firstName,
+    lastName,
+    mailinglistAccepted,
+    password,
+    role,
+    username,
+  ]);
 
   const onBackStep = useCallback(() => {
     setSignUpStep(SignUpSteps.SIGN_UP);
@@ -122,6 +134,8 @@ const SignUp = () => {
                 setCompany={setCompany}
                 role={role}
                 setRole={setRole}
+                mailinglistAccepted={mailinglistAccepted}
+                setMailinglistAccepted={setMailinglistAccepted}
                 onSignUp={onSignUp}
               />
             )}

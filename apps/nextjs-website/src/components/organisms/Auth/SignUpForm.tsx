@@ -45,6 +45,7 @@ interface SignUpFormProps {
   lastName: string;
   company: string;
   role: string;
+  mailinglistAccepted: boolean;
 
   setUsername: Dispatch<SetStateAction<string>>;
   setPassword: Dispatch<SetStateAction<string>>;
@@ -53,6 +54,7 @@ interface SignUpFormProps {
   setLastName: Dispatch<SetStateAction<string>>;
   setCompany: Dispatch<SetStateAction<string>>;
   setRole: Dispatch<SetStateAction<string>>;
+  setMailinglistAccepted: Dispatch<SetStateAction<boolean>>;
 
   onSignUp: () => Promise<boolean>;
 }
@@ -65,6 +67,7 @@ const SignUpForm = ({
   lastName,
   company,
   role,
+  mailinglistAccepted,
   setUsername,
   setPassword,
   setConfirmPassword,
@@ -72,6 +75,7 @@ const SignUpForm = ({
   setLastName,
   setCompany,
   setRole,
+  setMailinglistAccepted,
 
   onSignUp,
 }: SignUpFormProps) => {
@@ -300,7 +304,15 @@ const SignUpForm = ({
               </Stack>
               <Grid container mb={1}>
                 <FormControlLabel
-                  control={<Checkbox sx={{ marginTop: '-4px' }} />}
+                  control={
+                    <Checkbox
+                      checked={mailinglistAccepted}
+                      onChange={({ target: { checked } }) =>
+                        setMailinglistAccepted(checked)
+                      }
+                      sx={{ marginTop: '-4px' }}
+                    />
+                  }
                   label={signUp.confirmComunications}
                   sx={{ alignItems: 'flex-start' }}
                 />
