@@ -19,7 +19,7 @@ export const appIoOverview: OverviewData = {
   feature: {
     title: 'Perché l’app IO',
     subtitle:
-      'Che tu sia un ente pubblico, privato, centrale o locale, tramite IO potrai:',
+      'Che tu sia un ente pubblico, centrale o locale, tramite IO potrai:',
     items: [
       {
         iconName: 'MessageRounded',
