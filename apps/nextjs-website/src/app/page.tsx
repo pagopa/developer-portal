@@ -37,7 +37,7 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      {nextWebinars.length && (
+      {nextWebinars.length !== 0 && (
         <WebinarsSection
           title={homepage.webinarsSection.title}
           description={homepage.webinarsSection.description}
