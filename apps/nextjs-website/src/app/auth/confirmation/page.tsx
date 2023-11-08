@@ -1,6 +1,6 @@
 'use client';
 import { Box, CircularProgress, Stack } from '@mui/material';
-import { environment } from '@/config';
+import { isProduction } from '@/config';
 import PageNotFound from '@/app/not-found';
 import { Auth } from 'aws-amplify';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ const Confirmation = () => {
   const username = searchParams.get('username');
   const code = searchParams.get('code');
 
-  const [renderNotFound, setRenderNotFound] = useState(environment === 'prod');
+  const [renderNotFound, setRenderNotFound] = useState(isProduction);
 
   useEffect(() => {
     if (username && code) {
