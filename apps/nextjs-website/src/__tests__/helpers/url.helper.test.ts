@@ -8,18 +8,12 @@ it('should return the corrects URLs from the helpers', () => {
   expect(firstResult).toBe(
     '/pago-pa/guides/sanp/3.5.0/ente-creditore/tassonomia-dei-servizi-di-incasso'
   );
-
-  // const secondUrl =
-  //   'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/';
-
-  // const secondResult = urlRewrite(secondUrl);
-  // expect(secondResult).toBe('/send/guides/modello-di-integrazione/v2.1');
 });
 
-it('should return an empty string if the host is not allowed', () => {
+it('should return the base URL if the URL is not rewritable', () => {
   const url =
-    'https://docss.pagopa.it/sanp/ente-creditore/tassonomia-dei-servizi-di-incasso';
+    'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/';
 
   const result = urlRewrite(url);
-  expect(result).toBe('');
+  expect(result).toBe(url);
 });
