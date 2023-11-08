@@ -7,7 +7,7 @@
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx serve@latest out",
     "lint": "next lint",
     "test": "jest -i"
   },
