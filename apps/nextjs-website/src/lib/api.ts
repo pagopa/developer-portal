@@ -132,14 +132,14 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-async function getWebinars(): Promise<readonly Webinar[]> {
+export async function getWebinars(): Promise<readonly Webinar[]> {
   // TODO: Remove this condition when the webinar content is ready
   return isProduction ? [] : webinars;
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
-    webinars.find(({ slug }) => slug === webinarSlug)
+    (await getWebinars()).find(({ slug }) => slug === webinarSlug)
   );
   return props;
 }
