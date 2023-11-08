@@ -10,6 +10,7 @@ import {
 import { OpenAPIV3 } from 'openapi-types';
 
 import { SchemaWithExample } from './SchemaWithExample';
+import { useState } from 'react';
 
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
@@ -39,6 +40,7 @@ type ResponseProps = OpenAPIV3.ResponseObject & {
 };
 
 export const Response = ({ code, content, description }: ResponseProps) => {
+  const [open, setOpen] = useState(false);
   const response = content?.['application/json'];
   const codeColor = getResponseCodeColor(code);
   const hasDetails = !!response;
@@ -46,8 +48,12 @@ export const Response = ({ code, content, description }: ResponseProps) => {
     <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />
   ) : undefined;
 
+  const handleToggle = () => {
+    hasDetails && setOpen(!open);
+  };
+
   return (
-    <Accordion>
+    <Accordion expanded={open} onChange={handleToggle}>
       <AccordionSummary expandIcon={expandIcon}>
         <Box sx={{ display: 'flex', alignItems: 'center', width: 200 }}>
           <Circle sx={{ fontSize: 14, mr: 2 }} color={codeColor} />
