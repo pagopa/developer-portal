@@ -1,6 +1,7 @@
 import { Schema, Tag } from '@markdoc/markdoc';
 import { LinkAttr } from '../attributes';
 import { PageTitlePath } from '../../parseDoc';
+import { pipe } from 'fp-ts/lib/function';
 
 const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
@@ -18,19 +19,14 @@ export const link: Schema = {
   },
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
-
-    const attrs = pipe(node.transformAttributes(config), (attributes) =>
-      pipe(
-        attributes.href && attributes.href.includes('mailto:'),
-        b.fold(
-          () => attributes,
-          () => ({
-            ...attributes,
-            href: attributes.href.replace(/.*mailto:/, 'mailto:'),
-          })
-        )
-      )
-    );
+    /* eslint-disable functional/no-expression-statements */
+    /* eslint-disable functional/immutable-data */
+    if (attrs.href && attrs.href.includes('mailto:')) {
+      // delete everything before the 'mailto:'
+      attrs.href = attrs.href.replace(/.*mailto:/, 'mailto:');
+    }
+    /* eslint-enable functional/no-expression-statements */
+    /* eslint-enable functional/immutable-data */
 
     const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
       ? [...config.variables.gitBookPagesWithTitle]
