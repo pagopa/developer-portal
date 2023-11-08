@@ -29,11 +29,9 @@ const AccountActivatedCard = () => {
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
-                <Link href='/'>
-                  <Button variant='contained'>
-                    {accountActivated.goToDashboard}
-                  </Button>
-                </Link>
+                <Button variant='contained' component={Link} href='/'>
+                  {accountActivated.goToDashboard}
+                </Button>
               </Stack>
             </Stack>
           </Grid>

@@ -299,8 +299,7 @@ export const translations = {
   auth: {
     accountActivated: {
       goToDashboard: 'Inizia',
-      welcomeMessage:
-        'Ti diamo il benvenuto su PagoPA DevPortal.\nPuoi iniziare da subito a personalizzare la tua Dashboard.',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
   },
