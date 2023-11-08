@@ -177,7 +177,7 @@ resource "aws_cognito_user_pool" "devportal" {
     required                 = false
     string_attribute_constraints {
       min_length = 1
-      max_length = 256
+      max_length = 2048
     }
   }
 
@@ -189,7 +189,7 @@ resource "aws_cognito_user_pool" "devportal" {
     required                 = false
     string_attribute_constraints {
       min_length = 1
-      max_length = 256
+      max_length = 2048
     }
   }
 
