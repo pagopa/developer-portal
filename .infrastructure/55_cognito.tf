@@ -170,7 +170,7 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   schema {
-    name                     = "role"
+    name                     = "job_role"
     attribute_data_type      = "String"
     developer_only_attribute = false
     mutable                  = true
