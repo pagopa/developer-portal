@@ -92,6 +92,15 @@ export const translations = {
         },
       },
     ],
+    webinarsSection: {
+      description:
+        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      title: 'Partecipa ai nostri webinar',
+      link: {
+        href: '#',
+        label: 'Vedi tutti i webinar',
+      },
+    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
@@ -295,6 +304,11 @@ export const translations = {
         label: 'Preferenza Cookie',
       },
     },
+  },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
   },
   auth: {
     accountActivated: {
