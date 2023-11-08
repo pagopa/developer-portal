@@ -22,7 +22,7 @@ export const webinars: readonly Webinar[] = [
         imagePath: '/images/speaker-01.png',
       },
     ],
-    startDateTime: new Date('2023-10-31T11:00:00'),
-    endDateTime: new Date('2023-10-31T13:00:00'),
+    startDateTime: new Date('2024-12-31T11:00:00'),
+    endDateTime: new Date('2024-12-31T13:00:00'),
   },
 ];
