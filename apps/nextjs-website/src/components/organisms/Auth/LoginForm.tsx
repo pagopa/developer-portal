@@ -20,7 +20,6 @@ import {
   IconButton,
   Snackbar,
   Alert,
-  useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { Auth } from 'aws-amplify';
@@ -33,9 +32,6 @@ const LoginForm = () => {
     auth: { login },
     shared,
   } = translations;
-  const {
-    palette: { primary },
-  } = useTheme();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
