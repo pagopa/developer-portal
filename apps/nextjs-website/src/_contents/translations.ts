@@ -362,9 +362,4 @@ export const translations = {
     speakers: 'Speaker',
     subscribe: 'Iscriviti',
   },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
-  },
 };
