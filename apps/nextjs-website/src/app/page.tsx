@@ -13,10 +13,11 @@ const Home = async () => {
 
   return (
     <>
-      <WebinarHeaderBanner
-        slug={products[0].slug}
-        text={'Comunicazioni a valore legale. Ti aspettiamo al webinar!'}
+      {nextWebinars.length !== 0 && (<WebinarHeaderBanner
+        slug={nextWebinars[0].path}
+        text={nextWebinars[0].title}
       />
+      })
 
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
