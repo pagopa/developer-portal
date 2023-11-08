@@ -4,10 +4,12 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
-import { getProducts } from '@/lib/api';
+import { getNextWebinars, getProducts } from '@/lib/api';
+import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 
 const Home = async () => {
   const products = await getProducts();
+  const nextWebinars = await getNextWebinars();
   const { homepage, header } = translations;
 
   return (
@@ -35,6 +37,13 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
+      {nextWebinars.length !== 0 && (
+        <WebinarsSection
+          title={homepage.webinarsSection.title}
+          description={homepage.webinarsSection.description}
+          webinars={[...nextWebinars]}
+        />
+      )}
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
