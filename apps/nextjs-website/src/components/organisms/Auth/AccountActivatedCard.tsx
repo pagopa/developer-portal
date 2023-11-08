@@ -24,7 +24,7 @@ const AccountActivatedCard = () => {
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {accountActivated.yourAccountIsActive}
             </Typography>
-            <Typography variant='body1' mb={2} textAlign='center'>
+            <Typography variant='body2' mb={2} textAlign='center'>
               {accountActivated.welcomeMessage}
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
