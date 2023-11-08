@@ -20,7 +20,7 @@ export const translations = {
     version: 'Versione',
     copiedTooltip: 'Copiato',
     login: 'Accedi',
-    signUp: 'Registrati',
+    signUp: 'Iscriviti',
     logout: 'Esci',
     emailAddress: 'Indirizzo email',
     password: 'Password',
@@ -320,6 +320,12 @@ export const translations = {
     },
   },
   auth: {
+    login: {
+      loginToYourAccount: 'Accedi al tuo account',
+      rememberMe: 'Ricordami',
+      forgotPassword: 'Hai dimenticato la password?',
+      noAccount: 'Non hai un account?',
+    },
     accountActivated: {
       goToDashboard: 'Inizia',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
@@ -350,6 +356,11 @@ export const translations = {
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
     },
+  },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
   },
   webinar: {
     whyParticipate: 'Perché partecipare?',
