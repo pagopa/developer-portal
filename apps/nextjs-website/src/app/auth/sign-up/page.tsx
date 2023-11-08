@@ -6,7 +6,14 @@ import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { environment } from '@/config';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
-import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Grid,
+  Snackbar,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useCallback, useState } from 'react';
 
@@ -24,6 +31,7 @@ const SignUp = () => {
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
   const [signUpStep, setSignUpStep] = useState(SignUpSteps.SIGN_UP);
+  const [error, setError] = useState<string | null>(null);
 
   const onSignUp = useCallback(async () => {
     // TODO: Add company and role to user attributes
@@ -34,7 +42,8 @@ const SignUp = () => {
         given_name: firstName,
         family_name: lastName,
       },
-    }).catch(() => {
+    }).catch((error) => {
+      setError(error.message);
       return false;
     });
 
@@ -42,7 +51,6 @@ const SignUp = () => {
       return result;
     } else {
       setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
-
       return !!result.user;
     }
   }, [firstName, lastName, password, username]);
@@ -62,70 +70,79 @@ const SignUp = () => {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundImage: 'url(/images/hero.jpg)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'bottom right',
-      }}
-    >
-      <Grid
-        container
-        spacing={isSmallScreen ? 0 : 1}
-        alignItems={isSmallScreen ? 'center' : 'flex-start'}
-        justifyContent='center'
-        direction={isSmallScreen ? 'column-reverse' : 'row'}
-        mx={isSmallScreen ? 3 : 20}
-        my={isSmallScreen ? 3 : 15}
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundImage: 'url(/images/hero.jpg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom right',
+        }}
       >
-        <Grid item xs={isSmallScreen ? 1 : 5}>
-          <Typography variant='h4' mb={4} mt={isSmallScreen ? 10 : 0}>
-            {signUp.whyCreateAccount}
-          </Typography>
-          {signUp.advantages.map((advantage, index) => {
-            return (
-              <CheckItem
-                key={index}
-                title={`Vantaggio ${index}`}
-                description={advantage}
+        <Grid
+          container
+          spacing={isSmallScreen ? 0 : 1}
+          alignItems={isSmallScreen ? 'center' : 'flex-start'}
+          justifyContent='center'
+          direction={isSmallScreen ? 'column-reverse' : 'row'}
+          mx={isSmallScreen ? 3 : 20}
+          my={isSmallScreen ? 3 : 15}
+        >
+          <Grid item xs={isSmallScreen ? 1 : 5}>
+            <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
+              {signUp.whyCreateAccount}
+            </Typography>
+            {signUp.advantages.map((advantage, index) => {
+              return (
+                <CheckItem
+                  key={index}
+                  title={`Vantaggio ${index}`}
+                  description={advantage}
+                />
+              );
+            })}
+          </Grid>
+          <Grid item xs={isSmallScreen ? 1 : 5}>
+            {signUpStep === SignUpSteps.SIGN_UP && (
+              <SignUpForm
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
+                company={company}
+                setCompany={setCompany}
+                role={role}
+                setRole={setRole}
+                onSignUp={onSignUp}
               />
-            );
-          })}
+            )}
+            {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
+              <ConfirmSignUp
+                email={username}
+                onBack={onBackStep}
+                onResendEmail={onResendEmail}
+              />
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={isSmallScreen ? 1 : 5}>
-          {signUpStep === SignUpSteps.SIGN_UP && (
-            <SignUpForm
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-              firstName={firstName}
-              setFirstName={setFirstName}
-              lastName={lastName}
-              setLastName={setLastName}
-              company={company}
-              setCompany={setCompany}
-              role={role}
-              setRole={setRole}
-              onSignUp={onSignUp}
-            />
-          )}
-          {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
-            <ConfirmSignUp
-              email={username}
-              onBack={onBackStep}
-              onResendEmail={onResendEmail}
-            />
-          )}
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={2000}
+        onClose={() => setError(null)}
+      >
+        <Alert severity='error'>{error}</Alert>
+      </Snackbar>
+    </>
   );
 };
 

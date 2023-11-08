@@ -8,7 +8,7 @@ interface CheckItemProps {
 }
 
 const CheckItem = ({ title, description }: CheckItemProps) => {
-  const { typography, palette } = useTheme();
+  const { palette } = useTheme();
 
   return (
     <Grid container alignItems='flex-start' mb={4}>
@@ -17,14 +17,11 @@ const CheckItem = ({ title, description }: CheckItemProps) => {
       </Grid>
       <Grid item xs={10}>
         <Typography
+          variant='overline'
           content='div'
           mb={2}
           color={palette.text.secondary}
           fontSize={14}
-          sx={{
-            fontWeight: typography.fontWeightBold,
-            textTransform: 'uppercase',
-          }}
         >
           {title}
         </Typography>

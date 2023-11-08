@@ -17,6 +17,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
   onChange,
   helperText,
   customValidators,
+  type = 'text',
   ...rest
 }) => {
   const [isDirty, setIsDirty] = useState(false);
@@ -53,8 +54,8 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
       label={label}
       variant='outlined'
       size='small'
-      type='email'
       required
+      type={type}
       value={value}
       onChange={onChange}
       onBlur={() => setIsDirty(true)}

@@ -149,10 +149,10 @@ const SignUpForm = ({
       <Card variant='outlined' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
-            <Typography variant='h3' pt={8} mb={4} textAlign='center'>
+            <Typography variant='h4' pt={8} mb={4} textAlign='center'>
               {signUp.createYourAccount}
             </Typography>
-            <Typography variant='body1' mb={2}>
+            <Typography variant='body2' mb={2}>
               {shared.requiredFields}
             </Typography>
             <form>
@@ -314,7 +314,7 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body1'>{signUp.acceptPolicy}</Typography>
+                  <Typography variant='body2'>{signUp.acceptPolicy}</Typography>
                 </Stack>
               </Stack>
             </form>

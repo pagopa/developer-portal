@@ -36,7 +36,7 @@ const ConfirmSignUp = ({
             <Stack pt={4} display='flex' alignItems='center'>
               <IconInbox />
             </Stack>
-            <Typography variant='h3' pt={5} mb={4} textAlign='center'>
+            <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {confirmSignUp.confirmSignUp}
             </Typography>
             <Typography variant='body2' mb={2}>
