@@ -39,7 +39,7 @@ describe('Handler', () => {
     expect(response.emailMessage).toStrictEqual(expected);
   });
 
-  it('should reply with verification link on resend email request', async () => {
+  it('should reply with verification link on resend code request', async () => {
     const env = {
       domain: 'thedomain.org',
     };
