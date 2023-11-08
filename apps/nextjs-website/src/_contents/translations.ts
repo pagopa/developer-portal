@@ -299,6 +299,10 @@ export const translations = {
           },
         ],
       },
+      cookiePreferences: {
+        ariaLabel: 'Preferenza Cookie',
+        label: 'Preferenza Cookie',
+      },
     },
   },
   webinar: {
@@ -306,5 +310,12 @@ export const translations = {
     speakers: 'Speaker',
     subscribe: 'Iscriviti',
     relatedLinksTitle: 'Link utili',
+  },
+  auth: {
+    accountActivated: {
+      goToDashboard: 'Inizia',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
   },
 };
