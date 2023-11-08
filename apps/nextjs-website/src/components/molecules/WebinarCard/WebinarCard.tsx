@@ -4,12 +4,10 @@ import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
-import { ButtonNaked } from '@pagopa/mui-italia';
-import Link from 'next/link';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
 
-type WebinarCardProps = Webinar;
+type WebinarCardProps = { children?: React.ReactNode } & Webinar;
 
 const WebinarCard = ({
   title,
@@ -18,6 +16,7 @@ const WebinarCard = ({
   speakers,
   startDateTime,
   endDateTime,
+  children,
 }: WebinarCardProps) => {
   const theme = useTheme();
   const { webinar } = translations;
@@ -52,20 +51,11 @@ const WebinarCard = ({
           </Typography>
           <LinkButton
             disabled={false}
-            href={'#'}
+            href={`/webinars/${slug}`}
             label={webinar.whyParticipate}
             color={theme.palette.primary.main}
           />
-          <Box mt={4}>
-            <ButtonNaked
-              component={Link}
-              href={`/webinars/${slug}`}
-              color={'primary'}
-              variant={'contained'}
-            >
-              {webinar.subscribe}
-            </ButtonNaked>
-          </Box>
+          <Box mt={4}>{children}</Box>
         </Box>
         {speakers && (
           <Box>

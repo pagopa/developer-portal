@@ -4,13 +4,12 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
-import { getFirstWebinar, getProducts } from '@/lib/api';
+import { getNextWebinars, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
-import { Webinar } from '@/lib/types/webinar';
 
 const Home = async () => {
   const products = await getProducts();
-  const firstWebinar: Webinar = await getFirstWebinar();
+  const nextWebinars = await getNextWebinars();
   const { homepage, header } = translations;
 
   return (
@@ -38,12 +37,13 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      <WebinarsSection
-        title={homepage.webinarsSection.title}
-        description={homepage.webinarsSection.description}
-        link={homepage.webinarsSection.link}
-        webinars={[firstWebinar]}
-      />
+      {nextWebinars.length && (
+        <WebinarsSection
+          title={homepage.webinarsSection.title}
+          description={homepage.webinarsSection.description}
+          webinars={[...nextWebinars]}
+        />
+      )}
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
