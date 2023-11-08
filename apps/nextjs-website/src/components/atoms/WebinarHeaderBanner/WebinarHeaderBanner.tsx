@@ -10,10 +10,11 @@ import { translations } from '@/_contents/translations';
 export type WebinarHeaderBannerProps = {
   readonly slug: string;
   readonly text: string;
+  readonly endDateTime: Date;
 };
 
 const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug, text }) => {
-  const [visible, setVisible] = useState(!window.localStorage.getItem(slug));
+  const [visible, setVisible] = useState(!window.localStorage.getItem('slug') || new Date(window.localStorage.getItem('slug') || new Date().toISOString()) < new Date());
   const router = useRouter();
 
   const { palette } = useTheme();
