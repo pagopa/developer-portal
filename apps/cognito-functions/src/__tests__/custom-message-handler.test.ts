@@ -43,11 +43,12 @@ describe('Handler', () => {
     const env = {
       domain: 'thedomain.org',
     };
-    const { response } = await makeHandler(env)({
+    const resendCodeEvent: CustomMessageTriggerEvent = {
       ...event,
       triggerSource: 'CustomMessage_ResendCode',
-    });
-    const { userAttributes, codeParameter } = event.request;
+    };
+    const { response } = await makeHandler(env)(resendCodeEvent);
+    const { userAttributes, codeParameter } = resendCodeEvent.request;
     const expected = emailTemplate(
       `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
     );
