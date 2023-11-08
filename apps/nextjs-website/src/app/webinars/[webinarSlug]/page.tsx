@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { getWebinar, getWebinars } from '@/lib/api';
 
@@ -20,6 +21,13 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
+      {webinar.startDateTime && (
+        <SummaryInformation
+          title={webinar.title}
+          description={webinar.description}
+          date={webinar.startDateTime}
+        />
+      )}
       {webinar.startInfo && (
         <StartInfo
           cardVariant='outlined'
