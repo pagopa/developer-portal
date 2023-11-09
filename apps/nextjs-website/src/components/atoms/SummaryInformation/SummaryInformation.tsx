@@ -5,14 +5,16 @@ import { Variant } from '@mui/material/styles/createTypography';
 import TimeSlot from '../TimeSlot/TimeSlot';
 
 export type SummaryInformationProps = {
-  date: Date;
+  startDateTime?: Date;
+  endDateTime?: Date;
   title: string;
   description: string;
   ctaComponent?: React.ReactNode;
 };
 
 const SummaryInformation: FC<SummaryInformationProps> = ({
-  date,
+  startDateTime,
+  endDateTime,
   title,
   description,
   ctaComponent,
