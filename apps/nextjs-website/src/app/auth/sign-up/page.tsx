@@ -4,7 +4,6 @@ import PageNotFound from '@/app/not-found';
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
-import { environment } from '@/config';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
 import {
   Alert,
@@ -17,6 +16,12 @@ import {
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { isProduction } from '@/config';
+
+interface Info {
+  message: string;
+  isError: boolean;
+}
 
 const SignUp = () => {
   const {
@@ -37,7 +42,8 @@ const SignUp = () => {
   const [signUpStep, setSignUpStep] = useState(
     params.get('step') || SignUpSteps.SIGN_UP
   );
-  const [error, setError] = useState<string | null>(null);
+
+  const [info, setInfo] = useState<Info | null>(null);
 
   const onSignUp = useCallback(async () => {
     const result = await Auth.signUp({
@@ -52,7 +58,7 @@ const SignUp = () => {
         'custom:company_type': company,
       },
     }).catch((error) => {
-      setError(error.message);
+      setInfo({ message: error.message, isError: true });
       return false;
     });
 
@@ -86,10 +92,14 @@ const SignUp = () => {
 
   const onResendEmail = useCallback(async () => {
     await Auth.resendSignUp(username);
+    setInfo({
+      message: signUp.emailSent(username),
+      isError: false,
+    });
     return null;
-  }, [username]);
+  }, [signUp, username]);
 
-  if (environment === 'prod') {
+  if (isProduction) {
     return <PageNotFound />;
   }
 
@@ -123,8 +133,8 @@ const SignUp = () => {
               return (
                 <CheckItem
                   key={index}
-                  title={`Vantaggio ${index}`}
-                  description={advantage}
+                  title={advantage.title}
+                  description={advantage.text}
                 />
               );
             })}
@@ -162,11 +172,13 @@ const SignUp = () => {
         </Grid>
       </Box>
       <Snackbar
-        open={!!error}
-        autoHideDuration={2000}
-        onClose={() => setError(null)}
+        open={!!info}
+        autoHideDuration={4000}
+        onClose={() => setInfo(null)}
       >
-        <Alert severity='error'>{error}</Alert>
+        <Alert severity={info?.isError ? 'error' : 'success'}>
+          {info?.message}
+        </Alert>
       </Snackbar>
     </>
   );

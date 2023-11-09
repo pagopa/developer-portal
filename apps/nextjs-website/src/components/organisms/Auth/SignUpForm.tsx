@@ -85,9 +85,9 @@ const SignUpForm = ({
   } = translations;
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -96,9 +96,6 @@ const SignUpForm = ({
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-
-  const handleClickShowConfirmPassword = () =>
-    setShowConfirmPassword((show) => !show);
 
   const handleMouseDownConfirmPassword = (
     event: MouseEvent<HTMLButtonElement>
@@ -123,16 +120,9 @@ const SignUpForm = ({
 
   const onSignUpClick = useCallback(() => {
     if (
-      !firstName ||
-      firstName?.trim().length === 0 ||
-      !lastName ||
-      lastName?.trim().length === 0 ||
-      !username ||
-      username?.trim().length === 0 ||
-      !password ||
-      password?.trim().length === 0 ||
-      !confirmPassword ||
-      confirmPassword?.trim().length === 0
+      [firstName, lastName, username, password, confirmPassword].some(
+        (value) => !value || value.trim().length === 0
+      )
     ) {
       return;
     }
@@ -143,6 +133,38 @@ const SignUpForm = ({
 
     onSignUp();
   }, [confirmPassword, firstName, lastName, onSignUp, password, username]);
+
+  const validateForm = useCallback(() => {
+    const areFieldsValid = [
+      firstName,
+      lastName,
+      username,
+      password,
+      confirmPassword,
+    ].every((value) => value && value.trim().length > 0);
+    const isPasswordEqual = password === confirmPassword;
+
+    setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
+  }, [
+    confirmPassword,
+    firstName,
+    isPasswordValid,
+    lastName,
+    password,
+    username,
+  ]);
+
+  useEffect(() => {
+    validateForm();
+  }, [
+    validateForm,
+    confirmPassword,
+    firstName,
+    isPasswordValid,
+    lastName,
+    password,
+    username,
+  ]);
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -243,15 +265,11 @@ const SignUpForm = ({
                       <InputAdornment position='end'>
                         <IconButton
                           aria-label='toggle confirm password visibility'
-                          onClick={handleClickShowConfirmPassword}
+                          onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownConfirmPassword}
                           edge='end'
                         >
-                          {showConfirmPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -267,7 +285,7 @@ const SignUpForm = ({
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl fullWidth>
+                <FormControl fullWidth disabled>
                   <InputLabel id='company-field' sx={{ top: '-8px' }}>
                     {shared.company}
                   </InputLabel>
@@ -319,7 +337,11 @@ const SignUpForm = ({
               </Grid>
               <Stack spacing={4} pt={4} pb={2}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onSignUpClick}>
+                  <Button
+                    variant='contained'
+                    onClick={onSignUpClick}
+                    disabled={!isFormValid}
+                  >
                     {shared.signUp}
                   </Button>
                 </Stack>
