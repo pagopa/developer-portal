@@ -223,15 +223,15 @@ const redirect: GuideDefinition = {
 
 
 export const pagoPaGuides = [
-  saci, 
+  saci,
   sanp, 
-  avvisi, 
-  brand, 
-  pda, 
-  boEc, 
-  boPsp, 
-  errori, 
+  avvisi,
+  brand,
+  pda,
+  boEc,
+  boPsp,
+  errori,
   metadata, 
-  redirect
+  redirect,
 ];
 
