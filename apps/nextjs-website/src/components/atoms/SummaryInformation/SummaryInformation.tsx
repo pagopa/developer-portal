@@ -1,7 +1,6 @@
 'use client';
 import React, { FC } from 'react';
-import { SxProps, Theme, Typography, useTheme, Stack } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import { Typography, useTheme, Stack } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 
 export type SummaryInformationProps = {
