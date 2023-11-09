@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { SxProps, Theme, Typography, useTheme, Stack } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 import TimeSlot from '../TimeSlot/TimeSlot';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type SummaryInformationProps = {
   date: Date;
