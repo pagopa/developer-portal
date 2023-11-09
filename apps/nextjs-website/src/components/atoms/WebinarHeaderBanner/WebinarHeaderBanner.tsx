@@ -13,8 +13,17 @@ export type WebinarHeaderBannerProps = {
   readonly endDateTime: Date;
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug, text }) => {
-  const [visible, setVisible] = useState(!window.localStorage.getItem('slug') || new Date(window.localStorage.getItem('slug') || new Date().toISOString()) < new Date());
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
+  slug,
+  text,
+  endDateTime,
+}) => {
+  const [visible, setVisible] = useState(
+    !window.localStorage.getItem('slug') ||
+      new Date(
+        window.localStorage.getItem('slug') || new Date().toISOString()
+      ) < new Date()
+  );
   const router = useRouter();
 
   const { palette } = useTheme();
@@ -52,7 +61,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ slug, text }) => {
       <IconButton
         onClick={() => {
           setVisible(false);
-          window.localStorage.setItem(slug, endDateTime);
+          window.localStorage.setItem(slug, endDateTime.toISOString());
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>

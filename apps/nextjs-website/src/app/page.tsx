@@ -8,7 +8,6 @@ import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarH
 import { getNextWebinars, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 
-
 const Home = async () => {
   const products = await getProducts();
   const nextWebinars = await getNextWebinars();
@@ -16,11 +15,13 @@ const Home = async () => {
 
   return (
     <>
-      {nextWebinars.length !== 0 && (<WebinarHeaderBanner
-        slug={nextWebinars[0].path}
-        text={nextWebinars[0].title}
-      />
-      })
+      {nextWebinars.length !== 0 && nextWebinars[0].endDateTime && (
+        <WebinarHeaderBanner
+          slug={nextWebinars[0].path}
+          text={nextWebinars[0].title}
+          endDateTime={nextWebinars[0].endDateTime}
+        />
+      )}
 
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
