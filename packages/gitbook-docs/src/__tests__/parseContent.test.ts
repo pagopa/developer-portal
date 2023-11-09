@@ -372,8 +372,8 @@ describe('parseContent', () => {
     expect(
       parseContent(
         '{% code title="i.js" overflow="wrap" lineNumbers="true" %}\n' +
-          code +
-          '{% endcode %}',
+        code +
+        '{% endcode %}',
         config
       )
     ).toStrictEqual([
@@ -507,6 +507,22 @@ describe('parseContent', () => {
         '',
       ]),
     ]);
+
+    const tabsWithHints = `
+    {% tabs %}
+    {% tab title="Dimensioni" %}
+    Massimo 90 caratteri, spazi compresi.
+
+    {% hint style="info" %}
+    Puoi contare i caratteri con un [qualsiasi strumento online](https://www.charactercountonline.com/).
+    {% endhint %}
+    {% endtab %}
+    {% endtabs %}
+    `;
+
+    // This yould have only one child
+    const parsed: any = parseContent(tabsWithHints, config);
+    expect(parsed[0]['children'].length).toBe(1);
   });
 
   it('should parse expandable', () => {

@@ -21,6 +21,10 @@ export const tabs: Schema = {
     const titles = node.children
       .filter((child) => typeof child.attributes.title === 'string')
       .map((child) => child.attributes.title);
+
+    console.log('titles', titles);
+    console.log('children', children);
+
     return new Markdoc.Tag('Tabs', { titles }, children);
   },
 };
