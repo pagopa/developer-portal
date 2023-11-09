@@ -4,10 +4,11 @@ import { PersonOutline } from '@mui/icons-material';
 import { Button, Stack, Hidden, Typography } from '@mui/material';
 import { Auth, Hub } from 'aws-amplify';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { DevPortalUser } from '@/lib/types/auth';
 
 const UserInfo: FC = () => {
   const { shared } = translations;
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<DevPortalUser | null>(null);
 
   const checkUser = useCallback(() => {
     Auth.currentAuthenticatedUser()
@@ -60,11 +61,11 @@ const UserInfo: FC = () => {
       <Hidden smDown>
         <PersonOutline />
         <Typography variant='body2'>
-          {user?.attributes?.given_name} {user?.attributes?.family_name}
+          {user.attributes.given_name} {user.attributes.family_name}
         </Typography>
       </Hidden>
       <Button size='small' variant='contained' onClick={signOut}>
-        {shared.signOut}
+        {shared.logout}
       </Button>
     </Stack>
   );
