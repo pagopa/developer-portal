@@ -19,7 +19,18 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
-    signOut: 'Sign out',
+    login: 'Accedi',
+    signUp: 'Iscriviti',
+    logout: 'Esci',
+    emailAddress: 'Indirizzo email',
+    password: 'Password',
+    goBack: 'Torna indietro',
+    requiredFields: '* Campi obbligatori',
+    firstName: 'Nome',
+    lastName: 'Cognome',
+    confirmPassword: 'Conferma password',
+    company: 'Tipologia Ente o Azienda',
+    role: 'Ruolo',
   },
   pageNotFound: {
     overline: '404',
@@ -93,6 +104,15 @@ export const translations = {
         },
       },
     ],
+    webinarsSection: {
+      description:
+        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      title: 'Partecipa ai nostri webinar',
+      link: {
+        href: '#',
+        label: 'Vedi tutti i webinar',
+      },
+    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
@@ -296,5 +316,23 @@ export const translations = {
         label: 'Preferenza Cookie',
       },
     },
+  },
+  auth: {
+    login: {
+      loginToYourAccount: 'Accedi al tuo account',
+      rememberMe: 'Ricordami',
+      forgotPassword: 'Hai dimenticato la password?',
+      noAccount: 'Non hai un account?',
+    },
+    accountActivated: {
+      goToDashboard: 'Inizia',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
+  },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
   },
 };
