@@ -1,24 +1,13 @@
 import * as t from 'io-ts';
 import { CustomMessageTriggerEvent } from 'aws-lambda';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
-import customMessage from './templates/custom-message';
+import { makeConfirmationEmail } from './templates/confirmation-message';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
 });
 export type CustomMessageEnv = t.TypeOf<typeof CustomMessageEnv>;
 
-export const emailTemplate = (href: string) => {
-  const emailMessage = mjml2html(customMessage(href)).html;
-
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
+export const emailTemplate = (href: string) => makeConfirmationEmail(href);
 
 export const makeHandler =
   (env: CustomMessageEnv) => async (event: CustomMessageTriggerEvent) => {
