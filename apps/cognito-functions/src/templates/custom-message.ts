@@ -12,7 +12,7 @@ const TRANSLATIONS: { readonly [k: string]: string } = {
   buttonFallbackText: 'Il bottone non funziona? Puoi usare il seguente link:',
 };
 
-const confirmationMessage = (confirmationLink: string): string => `
+const customMessage = (confirmationLink: string): string => `
 <mjml>
   <mj-head>
     <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
@@ -77,4 +77,4 @@ const confirmationMessage = (confirmationLink: string): string => `
 </mjml>
 `;
 
-export default confirmationMessage;
+export default customMessage;
