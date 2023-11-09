@@ -17,6 +17,7 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { isProduction } from '@/config';
+import { SignUpUserData } from '@/lib/types/sign-up';
 
 interface Info {
   message: string;
@@ -29,16 +30,19 @@ const SignUp = () => {
   } = translations;
   const params = useSearchParams();
   const router = useRouter();
-
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState(params.get('email') || '');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [company, setCompany] = useState('');
-  const [role, setRole] = useState('');
-  const [mailinglistAccepted, setMailinglistAccepted] = useState(false);
+
+  const [userData, setUserData] = useState<SignUpUserData>({
+    username: params.get('email') || '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    mailinglistAccepted: false,
+    role: '',
+    company: '',
+    confirmPassword: '',
+  });
+
   const [signUpStep, setSignUpStep] = useState(
     params.get('step') || SignUpSteps.SIGN_UP
   );
@@ -46,9 +50,19 @@ const SignUp = () => {
   const [info, setInfo] = useState<Info | null>(null);
 
   const onSignUp = useCallback(async () => {
-    const result = await Auth.signUp({
-      username,
+    const {
+      company,
+      firstName,
+      lastName,
       password,
+      role,
+      username,
+      mailinglistAccepted,
+    } = userData;
+
+    const result = await Auth.signUp({
+      username: username,
+      password: password,
       attributes: {
         given_name: firstName,
         family_name: lastName,
@@ -66,38 +80,29 @@ const SignUp = () => {
       return result;
     } else {
       router.replace(
-        `/auth/sign-up?email=${username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
+        `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
       );
       setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
       return !!result.user;
     }
-  }, [
-    company,
-    firstName,
-    lastName,
-    mailinglistAccepted,
-    password,
-    role,
-    router,
-    username,
-  ]);
+  }, [userData, router]);
 
   const onBackStep = useCallback(() => {
     router.replace(
-      `/auth/sign-up?email=${username}&step=${SignUpSteps.SIGN_UP}`
+      `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.SIGN_UP}`
     );
     setSignUpStep(SignUpSteps.SIGN_UP);
     return null;
-  }, [router, username]);
+  }, [router, userData.username]);
 
   const onResendEmail = useCallback(async () => {
-    await Auth.resendSignUp(username);
+    await Auth.resendSignUp(userData.username);
     setInfo({
-      message: signUp.emailSent(username),
+      message: signUp.emailSent(userData.username),
       isError: false,
     });
     return null;
-  }, [signUp, username]);
+  }, [signUp, userData.username]);
 
   if (isProduction) {
     return <PageNotFound />;
@@ -142,28 +147,14 @@ const SignUp = () => {
           <Grid item xs={isSmallScreen ? 1 : 5}>
             {signUpStep === SignUpSteps.SIGN_UP && (
               <SignUpForm
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                firstName={firstName}
-                setFirstName={setFirstName}
-                lastName={lastName}
-                setLastName={setLastName}
-                company={company}
-                setCompany={setCompany}
-                role={role}
-                setRole={setRole}
-                mailinglistAccepted={mailinglistAccepted}
-                setMailinglistAccepted={setMailinglistAccepted}
+                userData={userData}
+                setUserData={setUserData}
                 onSignUp={onSignUp}
               />
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
               <ConfirmSignUp
-                email={username}
+                email={userData.username}
                 onBack={onBackStep}
                 onResendEmail={onResendEmail}
               />

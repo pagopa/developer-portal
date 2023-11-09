@@ -4,6 +4,7 @@ import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { emailMatcher, passwordMatcher } from '@/helpers/auth.helpers';
+import { SignUpUserData } from '@/lib/types/sign-up';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -38,44 +39,16 @@ import {
 } from 'react';
 
 interface SignUpFormProps {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  company: string;
-  role: string;
-  mailinglistAccepted: boolean;
+  userData: SignUpUserData;
 
-  setUsername: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setConfirmPassword: Dispatch<SetStateAction<string>>;
-  setFirstName: Dispatch<SetStateAction<string>>;
-  setLastName: Dispatch<SetStateAction<string>>;
-  setCompany: Dispatch<SetStateAction<string>>;
-  setRole: Dispatch<SetStateAction<string>>;
-  setMailinglistAccepted: Dispatch<SetStateAction<boolean>>;
+  setUserData: Dispatch<SetStateAction<SignUpUserData>>;
 
   onSignUp: () => Promise<boolean>;
 }
 
 const SignUpForm = ({
-  username,
-  password,
-  confirmPassword,
-  firstName,
-  lastName,
-  company,
-  role,
-  mailinglistAccepted,
-  setUsername,
-  setPassword,
-  setConfirmPassword,
-  setFirstName,
-  setLastName,
-  setCompany,
-  setRole,
-  setMailinglistAccepted,
+  userData,
+  setUserData,
 
   onSignUp,
 }: SignUpFormProps) => {
@@ -83,6 +56,17 @@ const SignUpForm = ({
     auth: { signUp },
     shared,
   } = translations;
+
+  const {
+    company,
+    confirmPassword,
+    firstName,
+    lastName,
+    password,
+    role,
+    username,
+    mailinglistAccepted,
+  } = userData;
 
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -119,6 +103,9 @@ const SignUpForm = ({
   }, [password, validatePassword]);
 
   const onSignUpClick = useCallback(() => {
+    const { username, confirmPassword, firstName, lastName, password } =
+      userData;
+
     if (
       [firstName, lastName, username, password, confirmPassword].some(
         (value) => !value || value.trim().length === 0
@@ -132,9 +119,12 @@ const SignUpForm = ({
     }
 
     onSignUp();
-  }, [confirmPassword, firstName, lastName, onSignUp, password, username]);
+  }, [onSignUp, userData]);
 
   const validateForm = useCallback(() => {
+    const { username, confirmPassword, firstName, lastName, password } =
+      userData;
+
     const areFieldsValid = [
       firstName,
       lastName,
@@ -145,26 +135,11 @@ const SignUpForm = ({
     const isPasswordEqual = password === confirmPassword;
 
     setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-  }, [
-    confirmPassword,
-    firstName,
-    isPasswordValid,
-    lastName,
-    password,
-    username,
-  ]);
+  }, [isPasswordValid, userData]);
 
   useEffect(() => {
     validateForm();
-  }, [
-    validateForm,
-    confirmPassword,
-    firstName,
-    isPasswordValid,
-    lastName,
-    password,
-    username,
-  ]);
+  }, [validateForm, isPasswordValid, userData]);
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -187,7 +162,12 @@ const SignUpForm = ({
                   <RequiredTextField
                     label={shared.firstName}
                     value={firstName}
-                    onChange={({ target: { value } }) => setFirstName(value)}
+                    onChange={({ target: { value } }) =>
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        firstName: value,
+                      }))
+                    }
                     helperText={shared.requiredFieldError}
                   />
                 </Grid>
@@ -195,7 +175,12 @@ const SignUpForm = ({
                   <RequiredTextField
                     label={shared.lastName}
                     value={lastName}
-                    onChange={({ target: { value } }) => setLastName(value)}
+                    onChange={({ target: { value } }) =>
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        lastName: value,
+                      }))
+                    }
                     helperText={shared.requiredFieldError}
                   />
                 </Grid>
@@ -204,9 +189,12 @@ const SignUpForm = ({
                 <RequiredTextField
                   label={shared.emailAddress}
                   value={username}
-                  onChange={({ target: { value } }) => {
-                    setUsername(value);
-                  }}
+                  onChange={({ target: { value } }) =>
+                    setUserData((prevData) => ({
+                      ...prevData,
+                      username: value,
+                    }))
+                  }
                   helperText={shared.emailFieldError}
                   customValidators={emailValidators}
                 />
@@ -220,7 +208,12 @@ const SignUpForm = ({
                     id='password-input'
                     required
                     type={showPassword ? 'text' : 'password'}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={({ target: { value } }) =>
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        password: value,
+                      }))
+                    }
                     onBlur={() => setIsPasswordDirty(true)}
                     error={isPasswordDirty && !isPasswordValid}
                     endAdornment={
@@ -260,7 +253,12 @@ const SignUpForm = ({
                     id='confirm-password-input'
                     type={showPassword ? 'text' : 'password'}
                     required
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={({ target: { value } }) =>
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        confirmPassword: value,
+                      }))
+                    }
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -294,7 +292,12 @@ const SignUpForm = ({
                     id='company-field-select'
                     value={company}
                     label={shared.company}
-                    onChange={(e) => setCompany(e.target.value)}
+                    onChange={({ target: { value } }) =>
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        company: value,
+                      }))
+                    }
                     sx={{ padding: '8.5px 14px' }}
                     inputProps={{
                       sx: {
@@ -313,7 +316,12 @@ const SignUpForm = ({
                   label={shared.role}
                   variant='outlined'
                   size='small'
-                  onChange={(e) => setRole(e.target.value)}
+                  onChange={({ target: { value } }) =>
+                    setUserData((prevData) => ({
+                      ...prevData,
+                      role: value,
+                    }))
+                  }
                   value={role}
                   sx={{
                     backgroundColor: 'white',
@@ -326,7 +334,10 @@ const SignUpForm = ({
                     <Checkbox
                       checked={mailinglistAccepted}
                       onChange={({ target: { checked } }) =>
-                        setMailinglistAccepted(checked)
+                        setUserData((prevData) => ({
+                          ...prevData,
+                          mailinglistAccepted: checked,
+                        }))
                       }
                       sx={{ marginTop: '-4px' }}
                     />
