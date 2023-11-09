@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const SignUp = () => {
   const {
@@ -24,24 +24,16 @@ const SignUp = () => {
   } = translations;
   const params = useSearchParams();
   const router = useRouter();
-  const userInfo =
-    typeof window !== 'undefined'
-      ? JSON.parse(localStorage.getItem('userInfo') || '{}')
-      : {};
 
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const [firstName, setFirstName] = useState(userInfo?.firstName || '');
-  const [lastName, setLastName] = useState(userInfo?.lastName || '');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState(params.get('email') || '');
-  const [password, setPassword] = useState(userInfo?.password || '');
-  const [confirmPassword, setConfirmPassword] = useState(
-    userInfo?.password || ''
-  );
-  const [company, setCompany] = useState(userInfo?.company || '');
-  const [role, setRole] = useState(userInfo?.role || '');
-  const [mailinglistAccepted, setMailinglistAccepted] = useState(
-    userInfo?.mailinglistAccepted || false
-  );
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [company, setCompany] = useState('');
+  const [role, setRole] = useState('');
+  const [mailinglistAccepted, setMailinglistAccepted] = useState(false);
   const [signUpStep, setSignUpStep] = useState(
     params.get('step') || SignUpSteps.SIGN_UP
   );
@@ -67,18 +59,6 @@ const SignUp = () => {
     if (typeof result === 'boolean') {
       return result;
     } else {
-      localStorage.setItem(
-        'userInfo',
-        JSON.stringify({
-          username,
-          password,
-          firstName,
-          lastName,
-          company,
-          role,
-          mailinglistAccepted,
-        })
-      );
       router.replace(
         `/auth/sign-up?email=${username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
       );
@@ -108,10 +88,6 @@ const SignUp = () => {
     await Auth.resendSignUp(username);
     return null;
   }, [username]);
-
-  useEffect(() => {
-    localStorage.removeItem('userInfo');
-  }, []);
 
   if (environment === 'prod') {
     return <PageNotFound />;
