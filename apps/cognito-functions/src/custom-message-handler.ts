@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { CustomMessageTriggerEvent } from 'aws-lambda';
 import mjml2html from 'mjml';
 import { minify } from 'html-minifier';
-import confirmationMessage from './templates/confirmation-message';
+import customMessage from './templates/custom-message';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -10,7 +10,7 @@ export const CustomMessageEnv = t.type({
 export type CustomMessageEnv = t.TypeOf<typeof CustomMessageEnv>;
 
 export const emailTemplate = (href: string) => {
-  const emailMessage = mjml2html(confirmationMessage(href)).html;
+  const emailMessage = mjml2html(customMessage(href)).html;
 
   return minify(emailMessage, {
     collapseWhitespace: true,
