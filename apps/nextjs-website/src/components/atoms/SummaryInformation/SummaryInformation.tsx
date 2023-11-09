@@ -1,19 +1,20 @@
 'use client';
 import React, { FC } from 'react';
-import { SxProps, Theme, Typography, useTheme, Stack } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import { Typography, useTheme, Stack } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type SummaryInformationProps = {
-  date: Date;
+  startDateTime?: Date;
+  endDateTime?: Date;
   title: string;
   description: string;
   ctaComponent?: React.ReactNode;
 };
 
 const SummaryInformation: FC<SummaryInformationProps> = ({
-  date,
+  startDateTime,
+  endDateTime,
   title,
   description,
   ctaComponent,
@@ -21,30 +22,30 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   const { palette } = useTheme();
 
   return (
-    <Stack
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'start',
-        alignContent: 'flex-start',
-        paddingLeft: 8,
-        paddingRight: 8,
-        paddingTop: 4,
-        paddingBottom: 4,
-      }}
-    >
-      <Typography
-        variant='caption'
-        style={{ fontWeight: 900, color: palette.grey[600] }}
+    <EContainer>
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'start',
+          alignContent: 'flex-start',
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}
       >
-        <TimeSlot start={date}></TimeSlot>
-      </Typography>
-      <Typography variant='h5' style={{ marginBottom: 16 }}>
-        {title}
-      </Typography>
-      <Typography variant='body1'>{description}</Typography>
-      {ctaComponent}
-    </Stack>
+        <Typography
+          variant='caption'
+          style={{ fontWeight: 900, color: palette.grey[600] }}
+        >
+          <TimeSlot start={startDateTime} end={endDateTime} />
+        </Typography>
+        <Typography variant='h5' style={{ marginTop: 16, marginBottom: 32 }}>
+          {title}
+        </Typography>
+        <Typography variant='body1'>{description}</Typography>
+        {ctaComponent}
+      </Stack>
+    </EContainer>
   );
 };
 

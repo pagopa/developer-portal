@@ -21,13 +21,12 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
-      {webinar.startDateTime && (
-        <SummaryInformation
-          title={webinar.title}
-          description={webinar.description}
-          date={webinar.startDateTime}
-        />
-      )}
+      <SummaryInformation
+        title={webinar.title}
+        description={webinar.description}
+        startDateTime={webinar.startDateTime}
+        endDateTime={webinar.endDateTime}
+      />
       {webinar.startInfo && (
         <StartInfo
           cardVariant='outlined'
