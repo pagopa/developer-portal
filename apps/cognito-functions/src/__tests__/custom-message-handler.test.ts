@@ -27,12 +27,25 @@ const event: CustomMessageTriggerEvent = {
 };
 
 describe('Handler', () => {
+  const env = {
+    domain: 'thedomain.org',
+  };
   it('should reply with verification link', async () => {
-    const env = {
-      domain: 'thedomain.org',
-    };
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
+    const expected = emailTemplate(
+      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
+    );
+    expect(response.emailMessage).toStrictEqual(expected);
+  });
+
+  it('should reply with verification link on resend code request', async () => {
+    const resendCodeEvent: CustomMessageTriggerEvent = {
+      ...event,
+      triggerSource: 'CustomMessage_ResendCode',
+    };
+    const { response } = await makeHandler(env)(resendCodeEvent);
+    const { userAttributes, codeParameter } = resendCodeEvent.request;
     const expected = emailTemplate(
       `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
     );
