@@ -1,5 +1,11 @@
 {
     "shared": {
         "goToModel": "Go to model"
+    },
+    "swagger": {
+        "errorCard": {
+            "header": "Oops, manca qualcosa.",
+            "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
+        }
     }
 }
