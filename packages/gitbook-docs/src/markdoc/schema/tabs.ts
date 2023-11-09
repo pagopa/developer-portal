@@ -9,7 +9,9 @@ const tab: Schema = {
   transform: (node, config) => {
     const children = node.transformChildren(config);
     // Empty tab is not allowed. Fallback to an empty string
-    return children.length === 0 ? [''] : children;
+    return children.length === 0
+      ? ['']
+      : new Markdoc.Tag('Paragraph', {}, children);
   },
 };
 
@@ -21,9 +23,6 @@ export const tabs: Schema = {
     const titles = node.children
       .filter((child) => typeof child.attributes.title === 'string')
       .map((child) => child.attributes.title);
-
-    console.log('titles', titles);
-    console.log('children', children);
 
     return new Markdoc.Tag('Tabs', { titles }, children);
   },
