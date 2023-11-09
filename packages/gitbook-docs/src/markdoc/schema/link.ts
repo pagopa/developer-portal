@@ -19,14 +19,6 @@ export const link: Schema = {
   },
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
-    /* eslint-disable functional/no-expression-statements */
-    /* eslint-disable functional/immutable-data */
-    if (attrs.href && attrs.href.includes('mailto:')) {
-      // delete everything before the 'mailto:'
-      attrs.href = attrs.href.replace(/.*mailto:/, 'mailto:');
-    }
-    /* eslint-enable functional/no-expression-statements */
-    /* eslint-enable functional/immutable-data */
 
     const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
       ? [...config.variables.gitBookPagesWithTitle]

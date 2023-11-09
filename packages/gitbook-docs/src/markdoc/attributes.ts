@@ -26,6 +26,11 @@ const convertLink = (link: string): string =>
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
+    if (value && value.includes('mailto:')) {
+      // delete everything before the 'mailto:'
+      return value.replace(/.*mailto:/, 'mailto:');
+    }
+
     // TODO: this cast will be removed when we can pass a custom type instead of Config
     const parseContentConfig = variables as ParseContentConfig;
     // Link to other spaces start with http://localhost:5000
