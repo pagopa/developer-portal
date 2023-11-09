@@ -26,10 +26,6 @@ const convertLink = (link: string): string =>
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
-    if (value && value.includes('mailto:')) {
-      // delete everything before the 'mailto:'
-      return value.replace(/.*mailto:/, 'mailto:');
-    }
 
     // TODO: this cast will be removed when we can pass a custom type instead of Config
     const parseContentConfig = variables as ParseContentConfig;
@@ -38,7 +34,11 @@ export class LinkAttr {
       '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
-    if (value && !value.startsWith('http')) {
+    
+    if (value && value.includes('mailto:')) {
+      // delete everything before the 'mailto:'
+      return value.replace(/.*mailto:/, 'mailto:');
+    } else if (value && !value.startsWith('http')) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
         ? variables.pagePath
@@ -53,9 +53,9 @@ export class LinkAttr {
       );
       return spacePrefix
         ? sanitizedSpacePagePath.replace(
-            spacePrefix.spaceId,
-            spacePrefix.pathPrefix
-          )
+          spacePrefix.spaceId,
+          spacePrefix.pathPrefix
+        )
         : value;
     } else return value;
   };
