@@ -23,7 +23,7 @@ export const makeConfirmationEmail = (confirmationLink: string): string => {
     caseSensitive: true,
     removeEmptyAttributes: true,
   });
-}
+};
 
 const confirmationMessage = (confirmationLink: string): string => `
 <mjml>
