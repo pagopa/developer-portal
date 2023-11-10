@@ -34,10 +34,7 @@ export class LinkAttr {
       'g'
     );
 
-    if (value && value.includes('mailto:')) {
-      // delete everything before the 'mailto:'
-      return value.replace(/.*mailto:/, 'mailto:');
-    } else if (value && !value.startsWith('http')) {
+    if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
         ? variables.pagePath
