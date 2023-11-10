@@ -35,6 +35,7 @@ const ModelItem = ({
       sx={{
         display: 'block',
         background: 'transparent!important',
+        py: 1,
       }}
       disableGutters
       onClick={onClick}

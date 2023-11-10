@@ -6,6 +6,8 @@ type ModelObjectProps = {
   readonly requiredAttrs?: ReadonlyArray<string>;
 };
 
+// TODO: Add tests
+
 export const useModelProps = ({
   model = {},
   label = '',
