@@ -1,7 +1,6 @@
 import { Schema, Tag } from '@markdoc/markdoc';
 import { LinkAttr } from '../attributes';
 import { PageTitlePath } from '../../parseDoc';
-import { pipe } from 'fp-ts/lib/function';
 
 const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
@@ -19,7 +18,6 @@ export const link: Schema = {
   },
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
-
     const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
       ? [...config.variables.gitBookPagesWithTitle]
       : [];
