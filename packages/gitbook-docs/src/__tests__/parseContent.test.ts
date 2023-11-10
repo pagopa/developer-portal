@@ -705,4 +705,21 @@ describe('parseContent', () => {
       ),
     ]);
   });
+
+  it('should parse mailto inside links', () => {
+    expect(
+      parseContent(
+        '[pagamenti@assistenza.pagopa.it](mailto:pagamenti@assistenza.pagopa.it)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          { href: 'mailto:pagamenti@assistenza.pagopa.it' },
+          ['pagamenti@assistenza.pagopa.it']
+        ),
+      ]),
+    ]);
+  });
 });
