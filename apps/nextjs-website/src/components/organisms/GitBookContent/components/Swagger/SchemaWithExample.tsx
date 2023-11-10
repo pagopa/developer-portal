@@ -1,9 +1,10 @@
 import { OpenAPIV3 } from 'openapi-types';
+import { useTranslations } from 'next-intl';
+
+import { system } from '@/helpers/swagger';
 import CodeBlock from '../CodeBlock';
 import Tabs from '../Tabs';
-
 import { Model } from './Model';
-import { system } from '@/helpers/swagger';
 
 type SchemaWithExampleProps = OpenAPIV3.MediaTypeObject;
 
@@ -12,7 +13,10 @@ export const SchemaWithExample = ({
   example,
   examples,
 }: SchemaWithExampleProps) => {
-  const titles = schema ? ['Example', 'Schema'] : ['Example'];
+  const t = useTranslations('swagger');
+  const exampleLabel = t('example');
+  const schemaLabel = t('schema');
+  const titles = schema ? [exampleLabel, schemaLabel] : [exampleLabel];
   const mediaTypeExample =
     (examples?.response as OpenAPIV3.ExampleObject)?.value || example?.value;
 

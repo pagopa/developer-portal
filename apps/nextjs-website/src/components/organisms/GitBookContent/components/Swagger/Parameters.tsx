@@ -1,4 +1,5 @@
 import { Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { OpenAPIV3 } from 'openapi-types';
 import { useMemo } from 'react';
 
@@ -22,6 +23,7 @@ type ParametersProps = {
 
 // Parameters are grouped into Path, Query, Header, Cookie and Body
 export const Parameters = ({ parameters = [] }: ParametersProps) => {
+  const t = useTranslations('swagger');
   const [hasParameters, groups] = useMemo(() => {
     if (parameters.length === 0) return [false, []];
 
@@ -40,9 +42,11 @@ export const Parameters = ({ parameters = [] }: ParametersProps) => {
         sx={{ fontWeight: 'bold', pb: '16px!important' }}
         variant='body1'
       >
-        Parameters
+        {t('parameters.header')}
       </Typography>
-      {isEmpty && <Typography variant='body2'>No parameters</Typography>}
+      {isEmpty && (
+        <Typography variant='body2'>{t('parameters.empty')}</Typography>
+      )}
       {hasParameters &&
         groups.map(([groupKey, parameters]) => (
           <ParameterRow

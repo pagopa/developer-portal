@@ -1,8 +1,11 @@
 import { Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { OpenAPIV3 } from 'openapi-types';
+
 import { SchemaWithExample } from './SchemaWithExample';
 
 export const RequestBody = ({ content }: OpenAPIV3.RequestBodyObject) => {
+  const t = useTranslations('swagger');
   const body = content?.['application/json'];
   const hasDetails = !!body;
 
@@ -20,7 +23,7 @@ export const RequestBody = ({ content }: OpenAPIV3.RequestBodyObject) => {
         }}
         variant='caption-semibold'
       >
-        Body
+        {t('requestBody.header')}
       </Typography>
       <div>
         <SchemaWithExample {...(body as OpenAPIV3.MediaTypeObject)} />

@@ -6,6 +6,18 @@
         "errorCard": {
             "header": "Oops, manca qualcosa.",
             "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
-        }
+        },
+        "parameters": {
+            "header": "Parameters",
+            "empty": "No parameters"
+        },
+        "requestBody": {
+            "header": "Body"
+        },
+        "responses": {
+            "header": "Responses"
+        },
+        "example": "Example",
+        "schema": "Schema"
     }
 }
