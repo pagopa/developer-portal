@@ -1,5 +1,6 @@
 import { CustomMessageTriggerEvent } from 'aws-lambda';
-import { emailTemplate, makeHandler } from '../custom-message-handler';
+import { makeHandler } from '../custom-message-handler';
+import { makeConfirmationEmail } from '../templates/confirmation-message';
 
 const event: CustomMessageTriggerEvent = {
   version: 'aVersion',
@@ -33,7 +34,7 @@ describe('Handler', () => {
   it('should reply with verification link', async () => {
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
-    const expected = emailTemplate(
+    const expected = makeConfirmationEmail(
       `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
     );
     expect(response.emailMessage).toStrictEqual(expected);
@@ -46,7 +47,7 @@ describe('Handler', () => {
     };
     const { response } = await makeHandler(env)(resendCodeEvent);
     const { userAttributes, codeParameter } = resendCodeEvent.request;
-    const expected = emailTemplate(
+    const expected = makeConfirmationEmail(
       `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
     );
     expect(response.emailMessage).toStrictEqual(expected);
