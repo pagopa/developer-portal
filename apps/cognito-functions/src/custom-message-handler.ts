@@ -7,8 +7,6 @@ export const CustomMessageEnv = t.type({
 });
 export type CustomMessageEnv = t.TypeOf<typeof CustomMessageEnv>;
 
-export const emailTemplate = (href: string) => makeConfirmationEmail(href);
-
 export const makeHandler =
   (env: CustomMessageEnv) => async (event: CustomMessageTriggerEvent) => {
     const username = event.request.userAttributes['sub'];
@@ -19,7 +17,7 @@ export const makeHandler =
     ) {
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
-      const emailMessage = emailTemplate(href);
+      const emailMessage = makeConfirmationEmail(href);
       const emailSubject = 'Verifica la tua e-mail per PagoPA DevPortal';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };

@@ -2,7 +2,7 @@ import { COMPANY_LOGO } from './company-logo';
 import mjml2html from 'mjml';
 import { minify } from 'html-minifier';
 
-const TRANSLATIONS: { readonly [k: string]: string } = {
+const TRANSLATIONS = {
   previewText: 'Confermarci la validità di questa e-mail',
   title: 'L’ultimo passo per attivare la tua utenza su PagoPA DevPortal',
   text: 'Ciao,<br><br><br>Grazie per aver creato un account sul nostro DevPortal!<br><br>Non ti resta che confermarci la validità di questa e-mail.',
@@ -89,5 +89,3 @@ const confirmationMessage = (confirmationLink: string): string => `
   </mj-body>
 </mjml>
 `;
-
-export default confirmationMessage;
