@@ -108,7 +108,9 @@ const SignUp = () => {
     return <PageNotFound />;
   }
 
-  return (
+  return isProduction ? (
+    <PageNotFound />
+  ) : (
     <>
       <Box
         sx={{
