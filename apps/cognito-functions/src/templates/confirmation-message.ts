@@ -77,7 +77,9 @@ const confirmationMessage = (confirmationLink: string): string => `
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
         <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
-        <mj-button align="left" background-color="#0073E6" href="${confirmationLink}">${TRANSLATIONS.emailVerification}</mj-button>
+        <mj-button align="left" background-color="#0073E6" href="${confirmationLink}" font-size="16px" font-weight="700">
+          ${TRANSLATIONS.emailVerification}
+        </mj-button>
         <mj-text mj-class="text link" font-size="14px">${TRANSLATIONS.buttonFallbackText}<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
