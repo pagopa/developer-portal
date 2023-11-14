@@ -9,7 +9,7 @@ export type SummaryInformationProps = {
   endDateTime?: Date;
   title: string;
   description: string;
-  ctaComponent?: React.ReactNode;
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 const SummaryInformation: FC<SummaryInformationProps> = ({
@@ -17,7 +17,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   endDateTime,
   title,
   description,
-  ctaComponent,
+  children,
 }) => {
   const { palette } = useTheme();
 
@@ -43,7 +43,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
           {title}
         </Typography>
         <Typography variant='body1'>{description}</Typography>
-        {ctaComponent}
+        {children}
       </Stack>
     </EContainer>
   );
