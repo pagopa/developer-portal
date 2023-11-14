@@ -7,7 +7,9 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 
 const UserInfo: FC = () => {
-  const { shared } = translations;
+  const {
+    auth: { logout },
+  } = translations;
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
   const checkUser = useCallback(() => {
@@ -65,7 +67,7 @@ const UserInfo: FC = () => {
         </Typography>
       </Hidden>
       <Button size='small' variant='contained' onClick={signOut}>
-        {shared.logout}
+        {logout}
       </Button>
     </Stack>
   );

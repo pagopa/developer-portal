@@ -53,7 +53,7 @@ const SignUpForm = ({
   onSignUp,
 }: SignUpFormProps) => {
   const {
-    auth: { signUp },
+    auth: { login, signUp },
     shared,
   } = translations;
 
@@ -353,7 +353,7 @@ const SignUpForm = ({
                     onClick={onSignUpClick}
                     disabled={!isFormValid}
                   >
-                    {shared.signUp}
+                    {signUp.signUp}
                   </Button>
                 </Stack>
               </Stack>
@@ -375,7 +375,7 @@ const SignUpForm = ({
               <Typography variant='caption-semibold' mr={1}>
                 {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>{shared.login}</Link>
+              <Link href='/auth/login'>{login.login}</Link>
             </Stack>
           </Grid>
         </Grid>
