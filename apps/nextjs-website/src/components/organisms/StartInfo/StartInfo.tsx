@@ -34,7 +34,9 @@ const StartInfo = ({
   return (
     <>
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
-        <SectionTitle title={title} />
+        <Box mb={2}>
+          <SectionTitle title={title} />
+        </Box>
         <CardsGrid
           cardVariant={cardVariant}
           cardSize={{

@@ -18,6 +18,8 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
       <Box mt={5} mb={10}>
         <Typography
           variant='subtitle1'
+          fontWeight={600}
+          fontSize={{ xs: 20, md: 24 }}
           style={{ marginTop: 0, marginBottom: 32 }}
           marginBottom={2}
           width={{ xs: '100%', md: '60%' }}
