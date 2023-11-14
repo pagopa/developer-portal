@@ -28,9 +28,14 @@ export class LinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
     // TODO: this cast will be removed when we can pass a custom type instead of Config
     const parseContentConfig = variables as ParseContentConfig;
-    // Link to other spaces start with http://localhost:5000
+    // Link to other spaces when start with http://localhost:5000
     const linkToSpacesRegex = new RegExp(
       '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
+      'g'
+    );
+     // Link to other spaces when start with http://127.0.0.1:5000
+    const linkToSpacesRegex_1 = new RegExp(
+      '^http:\\/\\/127.0.0.1:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
 
@@ -44,6 +49,18 @@ export class LinkAttr {
     } else if (value?.match(linkToSpacesRegex)) {
       // Normalize URL to <spaceId>/<pagePath>
       const sanitizedSpacePagePath = value.replace(linkToSpacesRegex, '$2');
+      const spacePrefix = parseContentConfig.spaceToPrefix.find((elem) =>
+        sanitizedSpacePagePath.startsWith(elem.spaceId)
+      );
+      return spacePrefix
+        ? sanitizedSpacePagePath.replace(
+            spacePrefix.spaceId,
+            spacePrefix.pathPrefix
+          )
+        : value;
+    } else if (value?.match(linkToSpacesRegex_1)) {
+      // Normalize URL to <spaceId>/<pagePath>
+      const sanitizedSpacePagePath = value.replace(linkToSpacesRegex_1, '$2');
       const spacePrefix = parseContentConfig.spaceToPrefix.find((elem) =>
         sanitizedSpacePagePath.startsWith(elem.spaceId)
       );
