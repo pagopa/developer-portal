@@ -173,7 +173,7 @@ const GuideMenu = ({
         overflowY: 'auto',
         transition: 'all 0.5s linear',
         scrollbarWidth: 'thin',
-        scrollbarGutter: 'stable',
+        scrollbarGutter: { lg: 'stable' },
       }}
     >
       <Box
