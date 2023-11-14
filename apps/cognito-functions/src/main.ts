@@ -4,6 +4,7 @@ import * as PR from 'io-ts/PathReporter';
 import * as customMessage from './custom-message-handler';
 import { SES } from '@aws-sdk/client-ses';
 import * as sendEmail from './post-confirmation-confirm-sign-up-handler';
+import * as customMessageForgotPassword from './custom-message-forgot-password-handler';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
@@ -32,4 +33,15 @@ export const sensEmailHandler = pipe(
         config,
       })
   )
+);
+
+export const forgotPasswordMessageHandler = pipe(
+  { domain: process.env.DOMAIN },
+  customMessageForgotPassword.CustomMessageForgotPasswordEnv.decode,
+  E.fold((errors) => {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.log(PR.failure(errors).join('\n'));
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error();
+  }, customMessageForgotPassword.makeHandler)
 );
