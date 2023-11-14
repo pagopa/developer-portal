@@ -173,7 +173,7 @@ const GuideMenu = ({
         overflowY: 'auto',
         transition: 'all 0.5s linear',
         scrollbarWidth: 'thin',
-        scrollbarGutter: { lg: 'stable' },
+        width: { lg: '347px' },
       }}
     >
       <Box
@@ -181,7 +181,6 @@ const GuideMenu = ({
           display: 'flex',
           flexDirection: 'column',
           padding: '80px 0',
-          width: { lg: '347px' },
           flexGrow: { lg: 0 },
           flexShrink: { lg: 0 },
         }}
