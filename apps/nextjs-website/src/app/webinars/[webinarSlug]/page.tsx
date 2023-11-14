@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
 import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
@@ -23,6 +24,9 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
+      {webinar.subscribeCtaLabel && (
+        <SubscribeCta label={webinar.subscribeCtaLabel}></SubscribeCta>
+      )}
       {webinar.html && (
         <EContainer>
           <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />

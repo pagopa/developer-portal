@@ -10,6 +10,7 @@ export type Webinar = {
   readonly title: string;
   readonly slug: string;
   readonly relatedLinks?: readonly Path[];
+  readonly subscribeCtaLabel?: string;
   readonly startInfo?: {
     readonly title: string;
     readonly cards: readonly {
