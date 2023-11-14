@@ -7,6 +7,14 @@ export const webinars: readonly Webinar[] = [
     title: 'Comunicazioni a valore legale: presente e futuro',
     description:
       'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini. Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma.',
+    html:
+      `<h4>Sottotitolo</h4> \n` +
+      `<br /> \n` +
+      `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p> \n` +
+      `<br /> \n` +
+      `<img src='/images/webinar-image.png' /> \n` +
+      `<br /> \n` +
+      `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p> \n`,
     slug: 'comunicazioni-a-valore-legale',
     speakers: [
       {
@@ -26,6 +34,8 @@ export const webinars: readonly Webinar[] = [
     ],
     startDateTime: new Date('2024-12-31T11:00:00'),
     endDateTime: new Date('2024-12-31T13:00:00'),
+    subscribeCtaLabel:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore',
     startInfo: {
       title: 'Risorse correlate',
       cards: [

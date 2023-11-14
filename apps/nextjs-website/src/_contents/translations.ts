@@ -310,6 +310,7 @@ export const translations = {
     speakers: 'Speaker',
     subscribe: 'Iscriviti',
     relatedLinksTitle: 'Link utili',
+    speakersTitle: 'Chi Parla',
   },
   auth: {
     accountActivated: {
