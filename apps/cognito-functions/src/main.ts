@@ -17,7 +17,10 @@ export const customMessageHandler = pipe(
 );
 
 export const sensEmailHandler = pipe(
-  { fromEmailAddress: process.env.FROM_EMAIL_ADDRESS },
+  {
+    domain: process.env.DOMAIN,
+    fromEmailAddress: process.env.FROM_EMAIL_ADDRESS,
+  },
   sendEmail.PostConfirmationConfig.decode,
   E.fold(
     (errors) => {
