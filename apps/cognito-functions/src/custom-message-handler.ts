@@ -21,7 +21,10 @@ export const makeHandler =
   (env: CustomMessageEnv) => async (event: CustomMessageTriggerEvent) => {
     const username = event.request.userAttributes['sub'];
 
-    if (event.triggerSource === 'CustomMessage_SignUp') {
+    if (
+      event.triggerSource === 'CustomMessage_SignUp' ||
+      event.triggerSource === 'CustomMessage_ResendCode'
+    ) {
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
       const emailMessage = emailTemplate(href);

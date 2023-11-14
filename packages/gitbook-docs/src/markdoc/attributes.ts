@@ -33,7 +33,8 @@ export class LinkAttr {
       '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
-    if (value && !value.startsWith('http')) {
+
+    if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
         ? variables.pagePath
