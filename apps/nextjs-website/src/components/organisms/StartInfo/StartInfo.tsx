@@ -33,7 +33,7 @@ const StartInfo = ({
   const { palette } = useTheme();
   return (
     <>
-      <Box pt={10} pb={6} sx={{ backgroundColor: palette.background.default }}>
+      <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
         <SectionTitle title={title} />
         <CardsGrid
           cardVariant={cardVariant}
@@ -51,7 +51,7 @@ const StartInfo = ({
         />
       </Box>
       {cta && (
-        <Box py={2} sx={{ backgroundColor: palette.background.default }}>
+        <Box py={2} sx={{ backgroundColor: palette.grey[50] }}>
           <Stack
             spacing={2}
             direction={{ md: 'row', xs: 'column' }}
