@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
 import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
 import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
@@ -24,6 +25,12 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <>
+      <SummaryInformation
+        title={webinar.title}
+        description={webinar.description}
+        startDateTime={webinar.startDateTime}
+        endDateTime={webinar.endDateTime}
+      />
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}></SubscribeCta>
       )}
