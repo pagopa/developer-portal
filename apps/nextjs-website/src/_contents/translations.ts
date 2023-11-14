@@ -31,6 +31,8 @@ export const translations = {
     confirmPassword: 'Conferma password',
     company: 'Tipologia Ente o Azienda',
     role: 'Ruolo',
+    requiredFieldError: 'Questo campo non può essere vuoto',
+    emailFieldError: 'Inserisci un indirizzo email valido',
   },
   pageNotFound: {
     overline: '404',
@@ -328,6 +330,41 @@ export const translations = {
       goToDashboard: 'Inizia',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
+    },
+    signUp: {
+      createYourAccount: 'Crea il tuo account',
+      confirmComunications:
+        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+      acceptPolicy:
+        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      alreadyHaveAnAccount: 'Hai già un account?',
+      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
+      passwordPolicy:
+        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
+      emailSent: (email: string) => `Email inviata a ${email}`,
+      advantages: [
+        {
+          title: 'vantaggio 1',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+        {
+          title: 'vantaggio 2',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+        {
+          title: 'vantaggio 3',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+      ],
+    },
+    confirmSignUp: {
+      confirmSignUp: 'Conferma che sei tu',
+      description: (email: string) =>
+        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+      didntReceiveEmail:
+        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo email è errato?",
     },
   },
   webinar: {
