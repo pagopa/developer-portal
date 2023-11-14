@@ -353,7 +353,7 @@ const SignUpForm = ({
                     onClick={onSignUpClick}
                     disabled={!isFormValid}
                   >
-                    {signUp.signUp}
+                    {signUp.action}
                   </Button>
                 </Stack>
               </Stack>
@@ -375,7 +375,7 @@ const SignUpForm = ({
               <Typography variant='caption-semibold' mr={1}>
                 {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>{login.login}</Link>
+              <Link href='/auth/login'>{login.action}</Link>
             </Stack>
           </Grid>
         </Grid>

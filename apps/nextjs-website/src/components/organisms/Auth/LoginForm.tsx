@@ -130,7 +130,7 @@ const LoginForm = () => {
               <Stack spacing={4} pt={4} pb={8}>
                 <Stack direction='row' justifyContent='center'>
                   <Button variant='contained' onClick={onLogin}>
-                    {login.login}
+                    {login.action}
                   </Button>
                 </Stack>
               </Stack>
@@ -145,7 +145,7 @@ const LoginForm = () => {
                 <Typography variant='body2' textAlign='center' mr={1}>
                   {login.noAccount}{' '}
                 </Typography>
-                <Link href='/auth/sign-up'>{signUp.signUp}</Link>
+                <Link href='/auth/sign-up'>{signUp.action}</Link>
               </Box>
             </form>
           </Grid>

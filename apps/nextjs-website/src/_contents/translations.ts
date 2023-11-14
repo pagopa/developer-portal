@@ -319,7 +319,7 @@ export const translations = {
   auth: {
     logout: 'Esci',
     login: {
-      login: 'Accedi',
+      action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
@@ -331,7 +331,7 @@ export const translations = {
       yourAccountIsActive: 'Il tuo account è attivo',
     },
     signUp: {
-      signUp: 'Iscriviti',
+      action: 'Iscriviti',
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
         "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",

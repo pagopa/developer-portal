@@ -57,12 +57,12 @@ const UserInfo: FC = () => {
       flexGrow={1}
       alignItems='center'
       direction='row'
-      gap={2}
+      gap={1}
       justifyContent='flex-end'
     >
       <Hidden smDown>
         <PersonOutline />
-        <Typography variant='body2'>
+        <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '14px' }}>
           {user.attributes.given_name} {user.attributes.family_name}
         </Typography>
       </Hidden>
