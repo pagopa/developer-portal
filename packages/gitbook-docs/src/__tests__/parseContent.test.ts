@@ -526,7 +526,7 @@ describe('parseContent', () => {
     {% endtabs %}
     `;
 
-    // This yould have only one child
+    // This should have only one child
     const parsed: any = parseContent(tabsWithHints, config);
     expect(parsed[0]['children'].length).toBe(1);
   });
