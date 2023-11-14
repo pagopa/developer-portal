@@ -5,6 +5,7 @@ import * as customMessage from './custom-message-handler';
 import { SES } from '@aws-sdk/client-ses';
 import * as sendEmail from './post-confirmation-confirm-sign-up-handler';
 import * as defineAuthChallenge from './define-auth-challenge-handler';
+import * as verifyAuthChallenge from './verify-auth-challenge-handler';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
@@ -36,3 +37,5 @@ export const sensEmailHandler = pipe(
 );
 
 export const defineAuthChallengeHandler = defineAuthChallenge.makeHandler();
+
+export const verifyAuthChallengeHandler = verifyAuthChallenge.makeHandler();
