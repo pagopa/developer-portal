@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getWebinar, getWebinars } from '@/lib/api';
@@ -27,6 +28,7 @@ const Page = async ({ params }: { params: Params }) => {
           <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
         </EContainer>
       )}
+      {webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />}
       {webinar.startInfo && (
         <StartInfo
           cardVariant='outlined'
