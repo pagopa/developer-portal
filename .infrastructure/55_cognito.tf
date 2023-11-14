@@ -68,7 +68,7 @@ module "cognito_define_auth_challenge_function" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "cognito_define_auth_challenge"
-  description   = "This Lambda function is invoked to create a challenge to present to the user."
+  description   = "This Lambda function is invoked to initiate the custom authentication flow."
   handler       = "main.defineAuthChallengeHandler"
   runtime       = "nodejs18.x"
 
