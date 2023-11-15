@@ -12,7 +12,7 @@ type WebinarCardProps = { children?: React.ReactNode } & Webinar;
 const WebinarCard = ({
   title,
   description,
-  path,
+  slug,
   speakers,
   startDateTime,
   endDateTime,
@@ -51,7 +51,7 @@ const WebinarCard = ({
           </Typography>
           <LinkButton
             disabled={false}
-            href={path}
+            href={`/webinars/${slug}`}
             label={webinar.whyParticipate}
             color={theme.palette.primary.main}
           />
