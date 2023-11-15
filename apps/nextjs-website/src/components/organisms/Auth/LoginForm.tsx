@@ -29,7 +29,7 @@ import { MouseEvent, useCallback, useState } from 'react';
 
 const LoginForm = () => {
   const {
-    auth: { login },
+    auth: { login, resetPassword },
     shared,
   } = translations;
 
@@ -146,6 +146,18 @@ const LoginForm = () => {
                   {login.noAccount}{' '}
                 </Typography>
                 <Link href='/auth/sign-up'>{shared.signUp}</Link>
+              </Box>
+              <Box
+                pt={4}
+                pb={8}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+              >
+                <Typography variant='body2' textAlign='center' mr={1}>
+                  {login.forgotPassword}{' '}
+                </Typography>
+                <Link href='/auth/password-reset'>{resetPassword.title}</Link>
               </Box>
             </form>
           </Grid>

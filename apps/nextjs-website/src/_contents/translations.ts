@@ -330,7 +330,7 @@ export const translations = {
     login: {
       loginToYourAccount: 'Accedi al tuo account',
       rememberMe: 'Ricordami',
-      forgotPassword: 'Hai dimenticato la password?',
+      forgotPassword: 'Ti sei dimenticato le credenziali?',
       noAccount: 'Non hai un account?',
     },
     accountActivated: {
@@ -372,6 +372,20 @@ export const translations = {
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
+    },
+    resetPassword: {
+      title: 'Recupera password',
+      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      goBackToLogin: 'Torna al login',
+      send: 'Invia',
+      checkEmailTitle: "Controlla l'email",
+      checkEmail: (email: string) =>
+        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
+      resendEmailPrompt:
+        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo e-mail è errato?",
+      passwordSet: 'Password impostata correttamente',
     },
   },
 };
