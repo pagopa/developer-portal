@@ -319,6 +319,13 @@ export const translations = {
       },
     },
   },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
+    relatedLinksTitle: 'Link utili',
+    speakersTitle: 'Chi Parla',
+  },
   auth: {
     login: {
       loginToYourAccount: 'Accedi al tuo account',
@@ -366,10 +373,5 @@ export const translations = {
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
     },
-  },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
   },
 };
