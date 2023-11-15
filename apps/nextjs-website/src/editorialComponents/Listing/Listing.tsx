@@ -63,7 +63,7 @@ const ListingItem = (props: ListingItem) => {
 const Listing = (props: ListingsProps) => {
   const { title, date, name = '', items, linksColor } = props;
   return (
-    <EContainer py={4} background='background.paper' direction='column'>
+    <EContainer py={8} background='background.paper' direction='column'>
       {title && (
         <Typography variant='h5' mb={2}>
           {title}

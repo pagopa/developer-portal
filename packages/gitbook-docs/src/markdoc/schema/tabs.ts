@@ -8,8 +8,12 @@ export type TabsProps<A> = {
 const tab: Schema = {
   transform: (node, config) => {
     const children = node.transformChildren(config);
-    // Empty tab is not allowed. Fallback to an empty string
-    return children.length === 0 ? [''] : children;
+    // empty tab is not allowed. Fallback to an empty string
+    if (children.length === 0) return [''];
+    else if (children.length === 1) return children;
+    // given more than 1 children, group them into a Paragraph
+    // otherwise the system renders only the first one
+    else return new Markdoc.Tag('Paragraph', {}, children);
   },
 };
 
@@ -21,6 +25,7 @@ export const tabs: Schema = {
     const titles = node.children
       .filter((child) => typeof child.attributes.title === 'string')
       .map((child) => child.attributes.title);
+
     return new Markdoc.Tag('Tabs', { titles }, children);
   },
 };
