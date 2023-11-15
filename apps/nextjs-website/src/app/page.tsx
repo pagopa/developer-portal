@@ -17,7 +17,7 @@ const Home = async () => {
     <>
       {nextWebinars.length !== 0 && nextWebinars[0].endDateTime && (
         <WebinarHeaderBanner
-          slug={nextWebinars[0].path}
+          slug={nextWebinars[0].slug}
           text={nextWebinars[0].title}
           endDateTime={nextWebinars[0].endDateTime}
         />
