@@ -507,6 +507,33 @@ describe('parseContent', () => {
         '',
       ]),
     ]);
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, [
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+        ]),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
   });
 
   it('should parse expandable', () => {
@@ -681,6 +708,23 @@ describe('parseContent', () => {
         },
         ['S0 Page 1']
       ),
+    ]);
+  });
+
+  it('should parse mailto inside links', () => {
+    expect(
+      parseContent(
+        '[pagamenti@assistenza.pagopa.it](mailto:pagamenti@assistenza.pagopa.it)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          { href: 'mailto:pagamenti@assistenza.pagopa.it' },
+          ['pagamenti@assistenza.pagopa.it']
+        ),
+      ]),
     ]);
   });
 });
