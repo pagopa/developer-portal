@@ -78,8 +78,6 @@ module "cognito_define_auth_challenge_function" {
 
   environment_variables = local.lambda_env_variables
 
-  attach_policy_statements = true
-
   allowed_triggers = {
     cognito_devportal = {
       principal  = "cognito-idp.amazonaws.com"
@@ -132,8 +130,6 @@ module "cognito_verify_auth_challenge_function" {
   create_current_version_allowed_triggers = false
 
   environment_variables = local.lambda_env_variables
-
-  attach_policy_statements = true
 
   allowed_triggers = {
     cognito_devportal = {
