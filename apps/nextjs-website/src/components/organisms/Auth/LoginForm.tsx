@@ -1,5 +1,6 @@
 'use client';
 import { translations } from '@/_contents/translations';
+import { LoginFunction } from '@/lib/types/loginFunction';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -27,7 +28,11 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onLogin: LoginFunction;
+}
+
+const LoginForm = ({ onLogin }: LoginFormProps) => {
   const {
     auth: { login },
     shared,
@@ -56,9 +61,9 @@ const LoginForm = () => {
     []
   );
 
-  const onLogin = useCallback(() => {
-    Auth.signIn(username, password).catch((e) => setError(e.message));
-  }, [username, password]);
+  const onLoginHandler = useCallback(() => {
+    onLogin({ username, password }).catch((e) => setError(e.message));
+  }, [onLogin, username, password]);
 
   return (
     <Box
@@ -129,7 +134,7 @@ const LoginForm = () => {
               </Grid>
               <Stack spacing={4} pt={4} pb={8}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onLogin}>
+                  <Button variant='contained' onClick={onLoginHandler}>
                     {shared.login}
                   </Button>
                 </Stack>
