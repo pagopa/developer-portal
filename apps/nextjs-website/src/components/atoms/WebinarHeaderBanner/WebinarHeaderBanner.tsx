@@ -25,8 +25,8 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
   endDateTime,
 }) => {
   const [visible, setVisible] = useState(
-    !window.localStorage.getItem(slug) ||
-      new Date(window.localStorage.getItem(slug) || new Date().toISOString()) <
+    !window?.localStorage.getItem(slug) ||
+      new Date(window?.localStorage.getItem(slug) || new Date().toISOString()) <
         new Date()
   );
 
@@ -69,7 +69,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
       <IconButton
         onClick={() => {
           setVisible(false);
-          window.localStorage.setItem(slug, endDateTime.toISOString());
+          window?.localStorage.setItem(slug, endDateTime.toISOString());
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>
