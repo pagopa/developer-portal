@@ -101,7 +101,7 @@ export const appIoOverview: OverviewData = {
     cta: {
       text: 'Scopri tutti i dettagli dell’integrazione',
       label: 'Leggi la guida tecnica',
-      href: `${appIOGuideListsPath.path}/io-guida-tecnica/v3.0`,
+      href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
     },
     cards: [
       {
