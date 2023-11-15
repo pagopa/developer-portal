@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as PR from 'io-ts/PathReporter';
@@ -56,7 +55,7 @@ export const createAuthChallengeHandler = pipe(
       createAuthChallenge.makeHandler({
         config,
         ses: new SES(),
-        generateVerificationCode: () => crypto.randomBytes(3).toString('hex'),
+        generateVerificationCode: createAuthChallenge.generateVerificationCode,
       })
   )
 );

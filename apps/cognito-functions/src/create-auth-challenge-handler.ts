@@ -1,4 +1,5 @@
 import * as t from 'io-ts';
+import crypto from 'crypto';
 import { CreateAuthChallengeTriggerEvent } from 'aws-lambda';
 import {
   SES,
@@ -9,6 +10,9 @@ import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
+
+export const generateVerificationCode = (): string =>
+  Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
 
 export const emailTemplate = (verificationCode: string) => `
 Il tuo codice di verifica per la login è <strong>${verificationCode}</strong>

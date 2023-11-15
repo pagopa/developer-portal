@@ -1,5 +1,9 @@
 import { CreateAuthChallengeTriggerEvent } from 'aws-lambda';
-import { emailTemplate, makeHandler } from '../create-auth-challenge-handler';
+import {
+  emailTemplate,
+  generateVerificationCode,
+  makeHandler,
+} from '../create-auth-challenge-handler';
 import { SES } from '@aws-sdk/client-ses';
 import { mock } from 'jest-mock-extended';
 
@@ -83,5 +87,20 @@ describe('Handler', () => {
         },
       })
     );
+  });
+});
+
+describe('generateVerificationCode', () => {
+  it('generate 6 digit code', () => {
+    const actual = generateVerificationCode();
+    const codeFormatRegExp = new RegExp(/^\d{6}$/);
+    expect(codeFormatRegExp.test(actual)).toBeTruthy();
+  });
+
+  it('generate different values', () => {
+    const code0 = generateVerificationCode();
+    const code1 = generateVerificationCode();
+
+    expect(code0).not.toEqual(code1);
   });
 });
