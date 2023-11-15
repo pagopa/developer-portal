@@ -19,7 +19,7 @@ export const makeHandler =
     } else if (
       session.length === 2 &&
       session[1].challengeName === 'PASSWORD_VERIFIER' &&
-      session[1].challengeResult == true
+      session[1].challengeResult === true
     ) {
       // if password verification is successful then set next challenge as
       // CUSTOM_CHALLENGE.
