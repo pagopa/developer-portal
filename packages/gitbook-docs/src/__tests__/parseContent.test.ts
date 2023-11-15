@@ -491,12 +491,8 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
-        new Markdoc.Tag('Paragraph', {}, [
-          new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
-        ]),
-        new Markdoc.Tag('Paragraph', {}, [
-          new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
-        ]),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
       ]),
     ]);
 
@@ -507,28 +503,37 @@ describe('parseContent', () => {
       )
     ).toStrictEqual([
       new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
-        new Markdoc.Tag('Paragraph', {}, [
-          new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
-        ]),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
         '',
       ]),
     ]);
 
-    const tabsWithHints = `
-    {% tabs %}
-    {% tab title="Dimensioni" %}
-    Massimo 90 caratteri, spazi compresi.
-
-    {% hint style="info" %}
-    Puoi contare i caratteri con un [qualsiasi strumento online](https://www.charactercountonline.com/).
-    {% endhint %}
-    {% endtab %}
-    {% endtabs %}
-    `;
-
-    // This should have only one child
-    const parsed: any = parseContent(tabsWithHints, config);
-    expect(parsed[0]['children'].length).toBe(1);
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, [
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+        ]),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
   });
 
   it('should parse expandable', () => {
