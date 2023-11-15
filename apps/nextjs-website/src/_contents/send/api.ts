@@ -8,7 +8,7 @@ export const sendApi: ApiData = {
   product: send,
   specURLs: [
     {
-      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/release/2.1.0/docs/openapi/api-external-b2b-pa-bundle.yaml',
+      url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/pn-openapi-devportal/docs/openapi/api-external-b2b-pa-bundle.yaml',
     },
   ],
   bannerLinks: sendBannerLinks,

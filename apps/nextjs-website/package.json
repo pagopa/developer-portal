@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh f3dd4ec",
+    "download-docs": "./scripts/fetch-docs.sh 4b3e3bb1f36034641ac5e4966e76b220ef5d46db",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx serve@latest out",
     "lint": "next lint",
     "test": "jest -i"
   },
@@ -30,7 +30,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "swiper": "^10.0.3"
+    "swiper": "^10.0.3",
+    "next-intl": "^2.20.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
