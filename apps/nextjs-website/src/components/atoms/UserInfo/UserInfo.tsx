@@ -66,7 +66,12 @@ const UserInfo: FC = () => {
           {user.attributes.given_name} {user.attributes.family_name}
         </Typography>
       </Hidden>
-      <Button size='small' variant='contained' onClick={signOut}>
+      <Button
+        size='small'
+        variant='contained'
+        onClick={signOut}
+        sx={{ height: '30px' }}
+      >
         {logout}
       </Button>
     </Stack>
