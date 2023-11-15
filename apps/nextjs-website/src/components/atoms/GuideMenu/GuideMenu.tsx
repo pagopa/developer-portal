@@ -14,6 +14,8 @@ import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
 import { translations } from '@/_contents/translations';
+import { useScrollUp } from '../ProductHeader/useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -23,6 +25,8 @@ type GuideMenuProps = {
   versionName: string;
   versions: { name: string; path: string }[];
 };
+
+export const PRODUCT_HEADER_HEIGHT = 80;
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -149,17 +153,27 @@ const GuideMenu = ({
 }: GuideMenuProps) => {
   const { palette } = useTheme();
   const { shared } = translations;
-
+  const scrollUp = useScrollUp();
   const currentPath = usePathname();
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
+  const top = scrollUp
+    ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+    : PRODUCT_HEADER_HEIGHT;
   return (
     <Box
       sx={{
         backgroundColor: palette.grey[50],
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative',
+        flexShrink: 0,
+        position: { lg: 'sticky' },
+        top: { lg: top },
+        height: { lg: `calc(100vh - ${top}px)` },
+        overflowY: 'auto',
+        transition: 'all 0.5s linear',
+        scrollbarWidth: 'thin',
+        width: { lg: '347px' },
       }}
     >
       <Box
@@ -167,13 +181,8 @@ const GuideMenu = ({
           display: 'flex',
           flexDirection: 'column',
           padding: '80px 0',
-          width: { lg: '347px' },
           flexGrow: { lg: 0 },
           flexShrink: { lg: 0 },
-          position: 'sticky',
-          overflowY: 'auto',
-          top: 50,
-          scrollbarWidth: 'thin',
         }}
       >
         <Typography
