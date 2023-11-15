@@ -182,8 +182,11 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   lambda_config {
-    custom_message    = module.cognito_custom_message_function.lambda_function_arn
-    post_confirmation = module.cognito_post_confirmation_function.lambda_function_arn
+    custom_message                 = module.cognito_custom_message_function.lambda_function_arn
+    post_confirmation              = module.cognito_post_confirmation_function.lambda_function_arn
+    create_auth_challenge          = module.cognito_create_auth_challenge_function.lambda_function_arn
+    define_auth_challenge          = module.cognito_define_auth_challenge_function.lambda_function_arn
+    verify_auth_challenge_response = module.cognito_verify_auth_challenge_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.
