@@ -58,7 +58,7 @@ export const makeHandler =
     // session.length == 2
     if (session.length === 2) {
       const { email } = event.request.userAttributes;
-      const verificationCode = env.generateVerificationCode(); // env.crypto.randomBytes(3).toString('hex');
+      const verificationCode = env.generateVerificationCode();
       const subject = 'Ecco il tuo OTP per la login';
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
