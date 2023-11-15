@@ -25,10 +25,9 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
   endDateTime,
 }) => {
   const [visible, setVisible] = useState(
-    !window.localStorage.getItem('slug') ||
-      new Date(
-        window.localStorage.getItem('slug') || new Date().toISOString()
-      ) < new Date()
+    !window.localStorage.getItem(slug) ||
+      new Date(window.localStorage.getItem(slug) || new Date().toISOString()) <
+        new Date()
   );
 
   const { palette } = useTheme();
