@@ -17,7 +17,7 @@ type ProductsShowcaseProps = {
 const ProductsShowcase = ({ title, cards }: ProductsShowcaseProps) => {
   const theme = useTheme();
   return (
-    <Box py={5} sx={{ backgroundColor: theme.palette.background.default }}>
+    <Box py={5} sx={{ backgroundColor: theme.palette.grey[50] }}>
       <SectionTitle title={title} />
       <CardsGrid
         cardVariant={'outlined'}
