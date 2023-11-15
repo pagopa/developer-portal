@@ -17,9 +17,9 @@ const SpeakerPreview = ({
 
   return (
     <Box
+      flexDirection={compactMode ? 'row' : { xs: 'column', md: 'row' }}
       sx={{
         display: 'flex',
-        flexDirection: 'row',
         gap: 3,
         alignContent: 'center',
       }}
