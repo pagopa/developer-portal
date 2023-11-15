@@ -1,11 +1,17 @@
 'use client';
-import { Button, Typography, Box, useTheme, IconButton } from '@mui/material';
+import {
+  Typography,
+  Box,
+  useTheme,
+  IconButton,
+  Link as MuiLink,
+} from '@mui/material';
 import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
-import { useRouter } from 'next/navigation';
 import { translations } from '@/_contents/translations';
+import Link from 'next/link';
 
 export type WebinarHeaderBannerProps = {
   readonly slug: string;
@@ -24,7 +30,6 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
         window.localStorage.getItem('slug') || new Date().toISOString()
       ) < new Date()
   );
-  const router = useRouter();
 
   const { palette } = useTheme();
 
@@ -46,17 +51,21 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
         <Typography sx={{ color: 'white', marginLeft: '10px' }}>
           {text}
         </Typography>
-        <Button
-          variant='text'
-          endIcon={<EastIcon sx={{ height: 30 }} />}
-          style={{ color: 'white', padding: 0, height: 28, marginLeft: '16px' }}
-          onClick={() => {
-            // eslint-disable-next-line functional/immutable-data
-            router.push('/webinars/' + slug);
+        <MuiLink
+          underline={'none'}
+          component={Link}
+          sx={{
+            display: 'flex',
+            color: 'white',
+            fontWeight: 600,
+            height: 28,
+            marginLeft: '16px',
           }}
+          href={'/webinars/' + slug}
         >
           {translations.homepage.webinarBannerButtonContent}
-        </Button>
+          <EastIcon sx={{ height: 30, ml: 1 }} />
+        </MuiLink>
       </Box>
       <IconButton
         onClick={() => {
