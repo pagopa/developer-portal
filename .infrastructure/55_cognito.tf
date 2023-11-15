@@ -64,6 +64,30 @@ module "cognito_post_confirmation_function" {
   }
 }
 
+module "cognito_define_auth_challenge_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_define_auth_challenge"
+  description   = "This Lambda function is invoked to initiate the custom authentication flow."
+  handler       = "main.defineAuthChallengeHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  attach_policy_statements = true
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
 resource "aws_cognito_user_pool" "devportal" {
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
