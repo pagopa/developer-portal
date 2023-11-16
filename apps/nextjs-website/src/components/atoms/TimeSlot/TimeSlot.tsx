@@ -1,5 +1,3 @@
-import { isSameDay } from 'date-fns';
-
 const DEFAULT_LOCALE = 'it-IT';
 
 const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
@@ -12,6 +10,14 @@ const TIME_OPTIONS: Intl.DateTimeFormatOptions = {
   hour: '2-digit',
   minute: '2-digit',
 };
+
+function isSameDay(start: Date, end: Date): boolean {
+  return (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate()
+  );
+}
 
 /**
  * this function is used to format the date and time
