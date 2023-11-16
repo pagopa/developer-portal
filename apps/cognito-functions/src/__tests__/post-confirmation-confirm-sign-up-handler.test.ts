@@ -33,6 +33,7 @@ const eventMock: PostConfirmationConfirmSignUpTriggerEvent = {
 describe('Post Confirmation Confirm Sign Up', () => {
   const env = {
     config: {
+      domain: 'thedomain.org',
       fromEmailAddress: 'from@email.com',
     },
     ses: mock<SES>(),
