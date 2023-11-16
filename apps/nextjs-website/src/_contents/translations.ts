@@ -388,6 +388,7 @@ export const translations = {
       passwordSet: 'Password impostata correttamente',
       newPassword: 'Imposta una nuova password',
       rememberPassword: 'Ricordi la tua password?',
+      invalidLinkError: 'Il link non è valido',
     },
   },
 };
