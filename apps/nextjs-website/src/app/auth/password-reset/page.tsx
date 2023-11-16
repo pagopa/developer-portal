@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Box, Card, Grid, Snackbar } from '@mui/material';
+import { Alert, Box, Grid, Snackbar } from '@mui/material';
 import { isProduction } from '@/config';
 import { useCallback, useState } from 'react';
 import { translations } from '@/_contents/translations';
@@ -79,31 +79,22 @@ const PasswordReset = () => {
           my={6}
           spacing={6}
         >
-          <Box component='section'>
-            <Card variant='elevation' elevation={8}>
-              <Grid container justifyContent='center'>
-                <Grid item xs={11}>
-                  {sendResetPasswordSteps ===
-                    SendResetPasswordSteps.SEND_EMAIL && (
-                    <ResetPasswordForm
-                      email={email}
-                      setEmail={setEmail}
-                      handleResetPassword={handleResetPassword}
-                      emailValidators={emailValidators}
-                    />
-                  )}
-                  {sendResetPasswordSteps ===
-                    SendResetPasswordSteps.EMAIL_SEND_CONFIRM && (
-                    <ResetPasswordSuccess
-                      email={email}
-                      onBack={onBackStep}
-                      resendEmail={handleResetPassword}
-                    />
-                  )}
-                </Grid>
-              </Grid>
-            </Card>
-          </Box>
+          {sendResetPasswordSteps === SendResetPasswordSteps.SEND_EMAIL && (
+            <ResetPasswordForm
+              email={email}
+              setEmail={setEmail}
+              handleResetPassword={handleResetPassword}
+              emailValidators={emailValidators}
+            />
+          )}
+          {sendResetPasswordSteps ===
+            SendResetPasswordSteps.EMAIL_SEND_CONFIRM && (
+            <ResetPasswordSuccess
+              email={email}
+              onBack={onBackStep}
+              resendEmail={handleResetPassword}
+            />
+          )}
         </Grid>
       </Box>
       <Snackbar

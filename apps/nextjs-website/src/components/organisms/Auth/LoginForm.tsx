@@ -127,13 +127,22 @@ const LoginForm = () => {
                   label={login.rememberMe}
                 />
               </Grid>
-              <Stack spacing={4} pt={4} pb={8}>
+              <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
                   <Button variant='contained' onClick={onLogin}>
                     {shared.login}
                   </Button>
                 </Stack>
               </Stack>
+              <Box
+                pt={4}
+                pb={3}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+              >
+                <Link href='/auth/password-reset'>{login.forgotPassword}</Link>
+              </Box>
               <Divider />
               <Box
                 pt={4}
@@ -146,18 +155,6 @@ const LoginForm = () => {
                   {login.noAccount}{' '}
                 </Typography>
                 <Link href='/auth/sign-up'>{shared.signUp}</Link>
-              </Box>
-              <Box
-                pt={4}
-                pb={8}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-              >
-                <Typography variant='body2' textAlign='center' mr={1}>
-                  {login.forgotPassword}{' '}
-                </Typography>
-                <Link href='/auth/password-reset'>{resetPassword.title}</Link>
               </Box>
             </form>
           </Grid>

@@ -330,7 +330,7 @@ export const translations = {
     login: {
       loginToYourAccount: 'Accedi al tuo account',
       rememberMe: 'Ricordami',
-      forgotPassword: 'Ti sei dimenticato le credenziali?',
+      forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
     accountActivated: {
@@ -386,6 +386,8 @@ export const translations = {
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo e-mail è errato?",
       passwordSet: 'Password impostata correttamente',
+      newPassword: 'Imposta una nuova password',
+      rememberPassword: 'Ricordi la tua password?',
     },
   },
 };
