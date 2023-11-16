@@ -28,9 +28,9 @@ export class LinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
     // TODO: this cast will be removed when we can pass a custom type instead of Config
     const parseContentConfig = variables as ParseContentConfig;
-    // Link to other spaces start with http://localhost:5000
+    // Link to other spaces when start with http://localhost:5000 or http://127.0.0.1:5000
     const linkToSpacesRegex = new RegExp(
-      '^http:\\/\\/localhost:5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
+      '^http:\\/\\/(?:localhost|127.0.0.1):5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
 
