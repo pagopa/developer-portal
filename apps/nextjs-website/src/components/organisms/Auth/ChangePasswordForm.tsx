@@ -48,6 +48,7 @@ const ChangePasswordForm = ({
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
 
   const [password_confirm, setPasswordConfirm] = useState('');
 
@@ -77,7 +78,8 @@ const ChangePasswordForm = ({
     const isPasswordEqual = password === password_confirm;
 
     setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-  }, [isPasswordValid, password, password_confirm]);
+    setSubmitDisabled(!isFormValid);
+  }, [isFormValid, isPasswordValid, password, password_confirm]);
 
   useEffect(() => {
     validateForm();
@@ -181,8 +183,11 @@ const ChangePasswordForm = ({
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
-                  onClick={onChangePassword}
-                  disabled={!isFormValid}
+                  onClick={() => {
+                    setSubmitDisabled(true);
+                    onChangePassword();
+                  }}
+                  disabled={isSubmitDisabled}
                 >
                   {resetPassword.send}
                 </Button>

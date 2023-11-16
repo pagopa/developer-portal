@@ -15,7 +15,7 @@ import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 const {
   auth: { resetPassword },
@@ -35,6 +35,12 @@ const ResetPasswordForm = ({
   handleResetPassword,
   emailValidators,
 }: ResetPasswordFormProps) => {
+  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
+
+  useEffect(() => {
+    setSubmitDisabled(!emailMatcher.test(email));
+  }, [email]);
+
   return (
     <Box
       component='section'
@@ -68,8 +74,11 @@ const ResetPasswordForm = ({
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
-                  onClick={handleResetPassword}
-                  disabled={!emailMatcher.test(email)}
+                  onClick={() => {
+                    setSubmitDisabled(true);
+                    handleResetPassword();
+                  }}
+                  disabled={isSubmitDisabled}
                 >
                   {resetPassword.send}
                 </Button>
