@@ -21,6 +21,24 @@
         }
     },
     "shared": {
-        "goToModel": "Vai al modello"
+        "goToModel": "Vai al modello",
+        "edit": "Modifica"
+    },
+    "profile": {
+        "personalData": {
+            "title": "I tuoi dati",
+            "dataSection": "Profilo",
+            "accountSection": "Profilo",
+            "fields": {
+                "name": "Nome",
+                "surname": "Cognome",
+                "role": "Ruolo",
+                "company": "Tipologia di ente o azienda",
+                "sector": "Settore",
+                "products": "Prodotti di interesse",
+                "email": "Indirizzo e-mail",
+                "password": "password"
+            }
+        }
     }
 }
