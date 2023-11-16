@@ -4,6 +4,7 @@ import {
   InfoCardItem,
   InfoCardItemProps,
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
+import { isProduction } from '@/config';
 import { Box, Card, Divider, Typography } from '@mui/material';
 
 export type InfoCardProps = {
@@ -12,7 +13,7 @@ export type InfoCardProps = {
 };
 
 export const InfoCard = ({ cardTitle, items }: InfoCardProps) => {
-  const editButton = <InfoCardEditButton />;
+  const editButton = !isProduction ? <InfoCardEditButton /> : null;
   return (
     <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

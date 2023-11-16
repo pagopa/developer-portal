@@ -5,10 +5,11 @@ import { useTranslations } from 'next-intl';
 import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
+import PageNotFound from '@/app/not-found';
 
 const TermsOfService = () => {
   const t = useTranslations('profile');
-  const user = useUser();
+  const { user, loading } = useUser();
 
   const dataSectionItems: InfoCardItemProps[] = [
     {
@@ -47,6 +48,11 @@ const TermsOfService = () => {
       value: '••••••••••••',
     },
   ];
+
+  // TODO: add dedicated loading and unauthorized pages
+  if (!loading && !user) {
+    return <PageNotFound />;
+  }
 
   return (
     <Stack gap={5} sx={{ padding: 5, width: '100%' }}>
