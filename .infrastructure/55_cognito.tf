@@ -38,7 +38,7 @@ module "cognito_post_confirmation_function" {
 
   function_name = "cognito_post_confirmation"
   description   = "The Lambda function executed after post confirmation of email address"
-  handler       = "main.sendEmailHandler"
+  handler       = "main.postConfirmationHandler"
   runtime       = "nodejs18.x"
 
   create_package                          = false

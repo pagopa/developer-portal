@@ -19,7 +19,7 @@ export const customMessageHandler = pipe(
   }, customMessage.makeHandler)
 );
 
-export const sendEmailHandler = pipe(
+export const postConfirmationHandler = pipe(
   {
     domain: process.env.DOMAIN,
     fromEmailAddress: process.env.FROM_EMAIL_ADDRESS,
