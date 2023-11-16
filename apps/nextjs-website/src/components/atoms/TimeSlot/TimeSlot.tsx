@@ -48,14 +48,16 @@ function conditionallyFormattedEndDate(
 }
 
 type TimeSlotProps = {
-  start?: Date;
-  end?: Date;
+  start?: string;
+  end?: string;
 };
 
 const TimeSlot = ({ start, end }: TimeSlotProps) => {
+  const startDate = start ? new Date(start) : undefined;
+  const endDate = end ? new Date(end) : undefined;
   return [
-    start && formattedDateTime(start),
-    conditionallyFormattedEndDate(start, end),
+    start && formattedDateTime(startDate as Date),
+    conditionallyFormattedEndDate(startDate, endDate),
   ]
     .filter(Boolean)
     .join(' - ');
