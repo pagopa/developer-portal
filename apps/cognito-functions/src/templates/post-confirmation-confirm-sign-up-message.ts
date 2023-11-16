@@ -2,7 +2,7 @@ import { COMPANY_LOGO } from './company-logo';
 import mjml2html from 'mjml';
 import { minify } from 'html-minifier';
 
-const TRANSLATIONS: { readonly [k: string]: string | readonly string[] } = {
+const TRANSLATIONS = {
   previewText: 'Finalmente sei dei nostri',
   title: 'Finalmente sei dei nostri',
   hello: 'Ciao',
