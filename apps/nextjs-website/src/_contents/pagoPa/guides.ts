@@ -176,4 +176,49 @@ const boPsp: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, boEc, boPsp];
+const errori: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Gestione degli errori',
+    slug: 'errori',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: 'mU2qgiLV1G3m9z1VjAOc',
+    },
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
+const metadata: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Dizionario dei metadata',
+    slug: 'metadata',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: 'u6YdY319vyFX9MIvnKBa',
+    },
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
+const redirect: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Integrazione con Redirect',
+    slug: 'redirect',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: '6zB9GJvZkc3ChlAsMjql',
+    },
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
+export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, boEc, boPsp, errori, metadata, redirect];
