@@ -25,11 +25,7 @@ const UserInfo: FC = () => {
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
       switch (event.payload.event) {
-        case 'signIn': {
-          const { data: user } = event.payload;
-          setUser(user);
-          break;
-        }
+        case 'signIn':
         case 'autoSignIn': {
           const { data: user } = event.payload;
           setUser(user);
