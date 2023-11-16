@@ -10,7 +10,7 @@ const UserInfo: FC = () => {
   const {
     auth: { logout },
   } = translations;
-  const user = useUser();
+  const { user } = useUser();
 
   const signOut = useCallback(async () => {
     await Auth.signOut();

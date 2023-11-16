@@ -4,12 +4,19 @@ import { Auth, Hub } from 'aws-amplify';
 import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
   const checkUser = useCallback(() => {
     Auth.currentAuthenticatedUser()
-      .then((user) => setUser(user))
-      .catch(() => setUser(null));
+      .then((user) => {
+        setLoading(false);
+        setUser(user);
+      })
+      .catch(() => {
+        setLoading(false);
+        setUser(null);
+      });
   }, []);
 
   useEffect(() => {
@@ -34,5 +41,5 @@ export const useUser = () => {
     return () => cancel();
   }, []);
 
-  return user;
+  return { user, loading };
 };
