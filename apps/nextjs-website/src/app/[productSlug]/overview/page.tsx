@@ -16,6 +16,8 @@ import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
 
+const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
+
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
     productSlug,
@@ -87,6 +89,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
   } = await getOverview(params.productSlug);
   const { overview } = translations;
 
+  const tutorialsListToShow = tutorials.list
+    ?.filter((tutorial) => tutorial.showInOverview)
+    .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
+
   return (
     <ProductLayout product={product} path={path} bannerLinks={bannerLinks}>
       <Hero
@@ -116,7 +122,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorials}
-          tutorials={[...(tutorials.list || [])]}
+          tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (
