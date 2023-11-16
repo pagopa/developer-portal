@@ -227,21 +227,21 @@ describe('parseContent', () => {
         ]),
       ]),
     ]);
-  expect(
-    parseContent('[Page](http://127.0.0.1:5000/o/KXY/s/s1/)', config)
-  ).toStrictEqual([
-    new Markdoc.Tag('Paragraph', {}, [
-      new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
-    ]),
-  ]);
-  expect(
-    parseContent('[Page](http://127.0.0.1:5000/s/s0/page/1)', config)
-  ).toStrictEqual([
-    new Markdoc.Tag('Paragraph', {}, [
-      new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
-    ]),
-  ]);
-});
+    expect(
+      parseContent('[Page](http://127.0.0.1:5000/o/KXY/s/s1/)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://127.0.0.1:5000/s/s0/page/1)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+      ]),
+    ]);
+  });
 
   it('should parse unordered list', () => {
     expect(parseContent('* Item', config)).toStrictEqual([
