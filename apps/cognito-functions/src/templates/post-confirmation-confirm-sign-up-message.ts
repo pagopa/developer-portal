@@ -1,6 +1,5 @@
 import { COMPANY_LOGO } from './company-logo';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
+import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Finalmente sei dei nostri',
@@ -25,18 +24,8 @@ const TRANSLATIONS = {
 export const makePostConfirmationConfirmSignUpEmail = (
   firstName: string,
   domain: string
-): string => {
-  const emailMessage = mjml2html(
-    postConfirmationConfirmSignUpMessage(firstName, domain)
-  ).html;
-
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
+): string =>
+  parseMjmlToHtml(postConfirmationConfirmSignUpMessage(firstName, domain));
 
 const postConfirmationConfirmSignUpMessage = (
   firstName: string,
