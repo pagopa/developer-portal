@@ -1,6 +1,7 @@
 import { CustomMessageTriggerEvent } from 'aws-lambda';
 import { makeHandler } from '../custom-message-handler';
 import { makeConfirmationEmail } from '../templates/confirmation-message';
+import { makeConfirmationForgotPasswordEmail } from '../templates/confirmation-forgot-password';
 
 const event: CustomMessageTriggerEvent = {
   version: 'aVersion',
@@ -49,6 +50,19 @@ describe('Handler', () => {
     const { userAttributes, codeParameter } = resendCodeEvent.request;
     const expected = makeConfirmationEmail(
       `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
+    );
+    expect(response.emailMessage).toStrictEqual(expected);
+  });
+
+  it('should reply with link to reset the password', async () => {
+    const forgotPasswordEvent: CustomMessageTriggerEvent = {
+      ...event,
+      triggerSource: 'CustomMessage_ForgotPassword',
+    };
+    const { response } = await makeHandler(env)(forgotPasswordEvent);
+    const { userAttributes, codeParameter } = forgotPasswordEvent.request;
+    const expected = makeConfirmationForgotPasswordEmail(
+      `https://${env.domain}/auth/change-password?username=${userAttributes['sub']}&code=${codeParameter}`
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
