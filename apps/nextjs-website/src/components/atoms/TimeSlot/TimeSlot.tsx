@@ -56,7 +56,7 @@ const TimeSlot = ({ start, end }: TimeSlotProps) => {
   const startDate = start ? new Date(start) : undefined;
   const endDate = end ? new Date(end) : undefined;
   return [
-    start && formattedDateTime(startDate as Date),
+    startDate && formattedDateTime(startDate),
     conditionallyFormattedEndDate(startDate, endDate),
   ]
     .filter(Boolean)
