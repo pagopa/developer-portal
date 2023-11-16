@@ -1,4 +1,3 @@
-import { COMPANY_LOGO } from './company-logo';
 import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
@@ -51,6 +50,7 @@ const postConfirmationConfirmSignUpMessage = (
         }
       }
       .box-shadow {
+        border: 1px solid #fefefe;
         box-shadow: 0px 0px 45px 0px #0000001A;
       }
       .link a:link, .link a:visited, .link a:focus, .link a:hover, .link a:active {
@@ -73,7 +73,7 @@ const postConfirmationConfirmSignUpMessage = (
     <mj-section css-class="section box-shadow" background-color="#fff">
       <mj-column width="100%" padding-bottom="24px">
         <mj-text>
-          ${COMPANY_LOGO}
+          <img src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
         </mj-text>
       </mj-column>
       <mj-column width="100%">
