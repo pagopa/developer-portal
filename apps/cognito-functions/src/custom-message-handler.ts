@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import { CustomMessageTriggerEvent } from 'aws-lambda';
 import { makeConfirmationEmail } from './templates/confirmation-message';
+import { makeConfirmationForgotPasswordEmail } from './templates/confirmation-forgot-password';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -19,6 +20,15 @@ export const makeHandler =
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
       const emailMessage = makeConfirmationEmail(href);
       const emailSubject = 'Verifica la tua e-mail per PagoPA DevPortal';
+      const response = { ...event.response, emailMessage, emailSubject };
+      return { ...event, response };
+    } else if (event.triggerSource === 'CustomMessage_ForgotPassword') {
+      const { codeParameter } = event.request;
+      const href = encodeURI(
+        `https://${env.domain}/auth/change-password?username=${username}&code=${codeParameter}`
+      );
+      const emailMessage = makeConfirmationForgotPasswordEmail(href);
+      const emailSubject = 'Password dimenticata';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
     } else {
