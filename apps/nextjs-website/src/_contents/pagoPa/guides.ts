@@ -221,4 +221,15 @@ const redirect: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
-export const pagoPaGuides = [saci, sanp, avvisi, brand, pda, boEc, boPsp, errori, metadata, redirect];
+export const pagoPaGuides = [
+  saci,
+  sanp,
+  avvisi,
+  brand,
+  pda,
+  boEc,
+  boPsp,
+  errori,
+  metadata,
+  redirect,
+];
