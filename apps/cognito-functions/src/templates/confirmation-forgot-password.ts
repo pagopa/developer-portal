@@ -1,6 +1,5 @@
 import { COMPANY_LOGO } from './company-logo';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
+import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Password dimenticata',
@@ -16,16 +15,7 @@ const TRANSLATIONS = {
 
 export const makeConfirmationForgotPasswordEmail = (
   confirmationLink: string
-): string => {
-  const emailMessage = mjml2html(confirmationMessage(confirmationLink)).html;
-
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
+): string => parseMjmlToHtml(confirmationMessage(confirmationLink));
 
 const confirmationMessage = (newPasswordLink: string): string => `
 <mjml>

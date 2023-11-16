@@ -1,6 +1,5 @@
 import { COMPANY_LOGO } from './company-logo';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
+import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Confermarci la validità di questa e-mail',
@@ -14,16 +13,8 @@ const TRANSLATIONS = {
   buttonFallbackText: 'Il bottone non funziona? Puoi usare il seguente link:',
 };
 
-export const makeConfirmationEmail = (confirmationLink: string): string => {
-  const emailMessage = mjml2html(confirmationMessage(confirmationLink)).html;
-
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
+export const makeConfirmationEmail = (confirmationLink: string) =>
+  parseMjmlToHtml(confirmationMessage(confirmationLink));
 
 const confirmationMessage = (confirmationLink: string): string => `
 <mjml>
