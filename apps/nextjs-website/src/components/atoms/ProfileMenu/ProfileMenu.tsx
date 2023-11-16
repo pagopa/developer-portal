@@ -1,9 +1,6 @@
 'use client';
-import React, { ReactNode } from 'react';
-import Typography from '@mui/material/Typography';
-import { usePathname } from 'next/navigation';
+import React from 'react';
 import { Box, useTheme } from '@mui/material';
-import { translations } from '@/_contents/translations';
 
 type ProfileMenuProps = {
   name: string;
@@ -11,7 +8,6 @@ type ProfileMenuProps = {
 
 const ProfileMenu = ({ name }: ProfileMenuProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
 
   return (
     <Box
@@ -35,54 +31,7 @@ const ProfileMenu = ({ name }: ProfileMenuProps) => {
           top: 50,
           scrollbarWidth: 'thin',
         }}
-      >
-        <Typography
-          variant='h6'
-          sx={{
-            padding: '0px 32px',
-            verticalAlign: 'middle',
-            fontWeight: 'regular',
-          }}
-        >
-          Ciao,
-        </Typography>
-        <Typography
-          variant='h5'
-          sx={{
-            padding: '0px 32px',
-            verticalAlign: 'middle',
-          }}
-        >
-          {name}
-        </Typography>
-
-        <Box
-          sx={{
-            borderRight: '3px solid ' + palette.primary.main,
-            backgroundColor: palette.primary.main + '14',
-            backgroundOpacity: 0.08,
-            padding: '10px 32px',
-            marginTop: '32px',
-            cursor: 'pointer',
-          }}
-        >
-          I tuoi dati
-        </Box>
-        <Box
-          onClick={() => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.OneTrust.ToggleInfoDisplay();
-          }}
-          sx={{
-            marginTop: '12px',
-            padding: '10px 32px',
-            cursor: 'pointer',
-          }}
-        >
-          Consensi e privacy
-        </Box>
-      </Box>
+      ></Box>
     </Box>
   );
 };
