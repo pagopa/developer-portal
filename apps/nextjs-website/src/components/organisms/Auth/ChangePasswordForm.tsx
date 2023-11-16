@@ -41,7 +41,7 @@ const ChangePasswordForm = ({
 }: ChangePasswordFormProps) => {
   const {
     shared,
-    auth: { signUp, resetPassword },
+    auth: { login, signUp, resetPassword },
   } = translations;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -200,7 +200,7 @@ const ChangePasswordForm = ({
               <Typography variant='caption-semibold' mr={1}>
                 {resetPassword.rememberPassword}
               </Typography>
-              <Link href='/auth/login'>{shared.login}</Link>
+              <Link href='/auth/login'>{login.action}</Link>
             </Stack>
           </Grid>
         </Grid>
