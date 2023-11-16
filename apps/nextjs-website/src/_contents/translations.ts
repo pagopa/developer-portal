@@ -19,9 +19,6 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
-    login: 'Accedi',
-    signUp: 'Iscriviti',
-    logout: 'Esci',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
@@ -327,7 +324,9 @@ export const translations = {
     speakersTitle: 'Chi Parla',
   },
   auth: {
+    logout: 'Esci',
     login: {
+      action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
@@ -339,6 +338,7 @@ export const translations = {
       yourAccountIsActive: 'Il tuo account è attivo',
     },
     signUp: {
+      action: 'Iscriviti',
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
         "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
