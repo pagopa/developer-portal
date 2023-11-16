@@ -2,43 +2,15 @@
 import { translations } from '@/_contents/translations';
 import { PersonOutline } from '@mui/icons-material';
 import { Button, Stack, Hidden, Typography } from '@mui/material';
-import { Auth, Hub } from 'aws-amplify';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { DevPortalUser } from '@/lib/types/auth';
+import { Auth } from 'aws-amplify';
+import { FC, useCallback } from 'react';
+import { useUser } from '@/helpers/user.helper';
 
 const UserInfo: FC = () => {
   const {
     auth: { logout },
   } = translations;
-  const [user, setUser] = useState<DevPortalUser | null>(null);
-
-  const checkUser = useCallback(() => {
-    Auth.currentAuthenticatedUser()
-      .then((user) => setUser(user))
-      .catch(() => setUser(null));
-  }, []);
-
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  useEffect(() => {
-    const cancel = Hub.listen('auth', (event) => {
-      switch (event.payload.event) {
-        case 'signIn':
-        case 'autoSignIn': {
-          const { data: user } = event.payload;
-          setUser(user);
-          break;
-        }
-        case 'signOut':
-          setUser(null);
-          break;
-      }
-    });
-
-    return () => cancel();
-  }, []);
+  const user = useUser();
 
   const signOut = useCallback(async () => {
     await Auth.signOut();
