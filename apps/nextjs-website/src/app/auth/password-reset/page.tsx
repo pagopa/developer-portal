@@ -55,9 +55,12 @@ const PasswordReset = () => {
     return null;
   }, [router, email]);
 
-  return isProduction ? (
-    <PageNotFound />
-  ) : (
+  // TODO: remove this when resgistration flow is ready
+  if (isProduction) {
+    return <PageNotFound />;
+  }
+
+  return (
     <>
       <Box
         sx={{
