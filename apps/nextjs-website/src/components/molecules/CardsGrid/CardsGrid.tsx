@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Box, Grid, GridSize } from '@mui/material';
+import { Box, Grid, GridSize, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { translations } from '@/_contents/translations';
@@ -28,6 +28,7 @@ const CardsGrid = ({
   cardSvg,
   cardSize,
 }: CardsGridProps) => {
+  const { palette } = useTheme();
   const { shared } = translations;
 
   return (
@@ -51,7 +52,13 @@ const CardsGrid = ({
                     href,
                     variant: cardVariant,
                   }}
-                  icon={<IconWrapper icon={icon} isSvg={cardSvg} />}
+                  icon={
+                    <IconWrapper
+                      color={palette.text.primary}
+                      icon={icon}
+                      isSvg={cardSvg}
+                    />
+                  }
                 />
               </Grid>
             );
