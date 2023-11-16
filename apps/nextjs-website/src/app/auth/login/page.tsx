@@ -1,5 +1,6 @@
 'use client';
 import LoginForm from '@/components/organisms/Auth/LoginForm';
+import ConfirmLogIn from '@/components/organisms/Auth/ConfirmLogin';
 import { Box, Grid } from '@mui/material';
 import { isProduction } from '@/config';
 import PageNotFound from '@/app/not-found';
@@ -7,8 +8,10 @@ import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
 
@@ -23,10 +26,12 @@ const Login = () => {
   }, []);
 
   const confirmLogin = useCallback(
-    async ({ code }: { code: string }) => {
+    async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
+
+      router.replace('/');
     },
-    [user]
+    [router, user]
   );
 
   const onBackStep = useCallback(() => {
@@ -60,8 +65,7 @@ const Login = () => {
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           // TODO: Create this component
-          //<ConfirmLogIn email={accountEmail} onBack={onBackStep} />
-          <div>CONFERMA MFA</div>
+          <ConfirmLogIn onBackStep={onBackStep} confirmLogin={confirmLogin} />
         )}
       </Grid>
     </Box>
