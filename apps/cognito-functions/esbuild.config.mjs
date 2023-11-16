@@ -20,7 +20,7 @@ const emptyUglifyPlugin = {
 };
 
 await esbuild.build({
-  entryPoints: ['dist/main.js'],
+  entryPoints: ['src/main.ts'],
   bundle: true,
   outfile: 'out/main.js',
   platform: 'node',
