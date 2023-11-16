@@ -19,7 +19,7 @@ export const customMessageHandler = pipe(
   }, customMessage.makeHandler)
 );
 
-export const sensEmailHandler = pipe(
+export const sendEmailHandler = pipe(
   {
     domain: process.env.DOMAIN,
     fromEmailAddress: process.env.FROM_EMAIL_ADDRESS,
