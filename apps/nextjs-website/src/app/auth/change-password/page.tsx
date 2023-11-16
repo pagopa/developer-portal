@@ -27,7 +27,7 @@ const ChangePassword = () => {
 
   const OnChangePassword = useCallback(async () => {
     const success = await Auth.forgotPasswordSubmit(
-      username.replace(' ', '+'),
+      username,
       code,
       password
     ).catch((err) => {
