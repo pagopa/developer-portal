@@ -19,7 +19,6 @@ export const makeHandler =
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
       const emailMessage = makeConfirmationEmail(href, env.domain);
-      console.log(emailMessage);
       const emailSubject = 'Verifica la tua e-mail per PagoPA DevPortal';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
@@ -32,7 +31,6 @@ export const makeHandler =
         href,
         env.domain
       );
-      console.log(emailMessage);
       const emailSubject = 'Password dimenticata';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
