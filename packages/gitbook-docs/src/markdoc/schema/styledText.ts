@@ -30,7 +30,7 @@ export const strikethrough: Schema = {
 
 export const code: Schema = {
   transform: (node) => {
-    const children = [node.attributes.content];
+    const children = [node.attributes.content.replace('``', '')];
     return new Markdoc.Tag(tagName, { style: 'code' }, children);
   },
 };
