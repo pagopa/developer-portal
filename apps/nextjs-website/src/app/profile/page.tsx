@@ -1,6 +1,5 @@
 'use client';
 
-import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import ProfileMenu from '@/components/atoms/ProfileMenu/ProfileMenu';
 import { Box, useTheme, Typography, Stack, Card, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
