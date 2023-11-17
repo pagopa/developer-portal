@@ -14,12 +14,12 @@ export const sendQuickStartGuide: QuickStartGuideData = {
   defaultStepAnchor: '01',
   steps: [
     {
-      title: "Per iniziare",
+      title: 'Per iniziare',
       anchor: '00',
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: "Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.",
+          html: 'Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.',
         },
         {
           component: 'alert',
@@ -29,7 +29,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: "In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>",
+          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>',
         },
       ],
     },
@@ -179,7 +179,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title:'Caricamento dei documenti',
+      title: 'Caricamento dei documenti',
       anchor: '04',
       parts: [
         {
@@ -293,7 +293,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: "Richiesta di creazione della notifica",
+      title: 'Richiesta di creazione della notifica',
       anchor: '05',
       parts: [
         {
