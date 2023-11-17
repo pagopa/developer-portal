@@ -753,4 +753,13 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+
+  it('should parse code blocks', () => {
+    const content = '`DELETE`` `';
+    expect(parseContent(content, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'code' }, ['DELETE ']),
+      ]),
+    ]);
+  });
 });

@@ -109,10 +109,26 @@ const cartaGiovani: GuideDefinition = {
   bannerLinks: appIoBannerLinks,
 };
 
+const accordiAdesione: GuideDefinition = {
+  product: appIo,
+  guide: {
+    name: 'Adesione ad IO',
+    slug: 'accordi-adesione',
+  },
+  versions: [
+    {
+      version: 'v1.0',
+      dirName: 'O7clRJB6pY0VI5sEBF8J',
+    },
+  ],
+  bannerLinks: appIoBannerLinks,
+};
+
 export const appIoGuides = [
   guidaTecnica,
   manualeDeiServizi,
   supportoAgliEnti,
   kitDiComunicazione,
   cartaGiovani,
+  accordiAdesione,
 ];

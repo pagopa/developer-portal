@@ -13,6 +13,7 @@ export const sendTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Inserisci una notifica via curl',
       url: '/images/send-tutorial-1.png',
     },
+    showInOverview: true,
   },
   {
     title: 'Inserisci una notifica via postman',
@@ -22,6 +23,7 @@ export const sendTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Inserisci una notifica via postman',
       url: '/images/send-tutorial-1.png',
     },
+    showInOverview: true,
   },
   {
     title: 'Genera il tuo client',
@@ -31,6 +33,7 @@ export const sendTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Genera il tuo client',
       url: '/images/send-tutorial-0.png',
     },
+    showInOverview: true,
   },
 ];
 
