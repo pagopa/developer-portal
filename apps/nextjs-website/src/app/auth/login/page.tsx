@@ -64,8 +64,7 @@ const Login = () => {
       >
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
-          // TODO: Create this component
-          <ConfirmLogIn onBackStep={onBackStep} confirmLogin={confirmLogin} />
+          <ConfirmLogIn onBackStep={onBackStep} onConfirmLogin={confirmLogin} />
         )}
       </Grid>
     </Box>

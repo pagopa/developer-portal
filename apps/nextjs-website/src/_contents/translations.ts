@@ -332,7 +332,7 @@ export const translations = {
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
-    confirmlogin: {
+    confirmLogin: {
       title: 'Verifica di accesso MFA',
       body: 'Inserisci il codice di verifica inviato nella tua e-mail',
       code: '012345',

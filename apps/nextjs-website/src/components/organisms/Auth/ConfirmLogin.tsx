@@ -16,23 +16,23 @@ import {
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
 
-interface ConfirmLoginProps {
+interface confirmLoginProps {
   onBackStep: () => null;
-  confirmLogin: (code: string) => Promise<void>;
+  onConfirmLogin: (code: string) => Promise<void>;
 }
 
-const ConfirmLogin = ({ onBackStep, confirmLogin }: ConfirmLoginProps) => {
+const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
   const {
-    auth: { confirmlogin },
+    auth: { confirmLogin },
     shared,
   } = translations;
 
   const [error, setError] = useState<string | null>(null);
   const [code, setCode] = useState<string>('');
 
-  const onConfirmLoginHandler = useCallback(() => {
-    confirmLogin(code).catch((e) => setError(e.message));
-  }, [confirmLogin, code]);
+  const onconfirmLoginHandler = useCallback(() => {
+    onConfirmLogin(code).catch((e) => setError(e.message));
+  }, [onConfirmLogin, code]);
 
   return (
     <Box
@@ -51,14 +51,14 @@ const ConfirmLogin = ({ onBackStep, confirmLogin }: ConfirmLoginProps) => {
               <IllusEmailValidation />
             </Stack>
             <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-              {confirmlogin.title}
+              {confirmLogin.title}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {confirmlogin.body}
+              {confirmLogin.body}
             </Typography>
             <Stack spacing={2} mb={4}>
               <TextField
-                label={confirmlogin.code}
+                label={confirmLogin.code}
                 variant='outlined'
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
@@ -69,8 +69,8 @@ const ConfirmLogin = ({ onBackStep, confirmLogin }: ConfirmLoginProps) => {
             </Stack>
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' onClick={onConfirmLoginHandler}>
-                  {confirmlogin.send}
+                <Button variant='contained' onClick={onconfirmLoginHandler}>
+                  {confirmLogin.send}
                 </Button>
               </Stack>
             </Stack>
@@ -84,7 +84,7 @@ const ConfirmLogin = ({ onBackStep, confirmLogin }: ConfirmLoginProps) => {
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                {confirmlogin.wrongaccount}
+                {confirmLogin.wrongaccount}
               </Typography>
               <Link
                 variant='body2'
