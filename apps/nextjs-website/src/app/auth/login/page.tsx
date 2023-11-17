@@ -4,9 +4,12 @@ import { isProduction } from '@/config';
 import PageNotFound from '@/app/not-found';
 
 const Login = () => {
-  return isProduction ? (
-    <PageNotFound />
-  ) : (
+  // TODO: remove this when resgistration flow is ready
+  if (isProduction) {
+    return <PageNotFound />;
+  }
+
+  return (
     <Box
       sx={{
         display: 'flex',
