@@ -332,6 +332,13 @@ export const translations = {
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
+    confirmLogin: {
+      title: 'Verifica di accesso MFA',
+      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
+      code: '012345',
+      wrongAccount: 'Hai sbagliato account? ',
+      send: 'Invia',
+    },
     accountActivated: {
       goToDashboard: 'Inizia',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
