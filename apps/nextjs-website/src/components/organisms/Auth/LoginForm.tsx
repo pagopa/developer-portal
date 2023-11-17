@@ -23,7 +23,6 @@ import {
   Alert,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
-import { Auth } from 'aws-amplify';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
@@ -34,7 +33,7 @@ interface LoginFormProps {
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
   const {
-    auth: { login },
+    auth: { login, signUp },
     shared,
   } = translations;
 
@@ -135,7 +134,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Stack spacing={4} pt={4} pb={8}>
                 <Stack direction='row' justifyContent='center'>
                   <Button variant='contained' onClick={onLoginHandler}>
-                    {shared.login}
+                    {login.action}
                   </Button>
                 </Stack>
               </Stack>
@@ -150,7 +149,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 <Typography variant='body2' textAlign='center' mr={1}>
                   {login.noAccount}{' '}
                 </Typography>
-                <Link href='/auth/sign-up'>{shared.signUp}</Link>
+                <Link href='/auth/sign-up'>{signUp.action}</Link>
               </Box>
             </form>
           </Grid>
