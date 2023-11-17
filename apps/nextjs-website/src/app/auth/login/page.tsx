@@ -39,9 +39,12 @@ const Login = () => {
     return null;
   }, []);
 
-  return isProduction ? (
-    <PageNotFound />
-  ) : (
+  // TODO: remove this when resgistration flow is ready
+  if (isProduction) {
+    return <PageNotFound />;
+  }
+
+  return (
     <Box
       sx={{
         display: 'flex',

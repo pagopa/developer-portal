@@ -131,13 +131,22 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   label={login.rememberMe}
                 />
               </Grid>
-              <Stack spacing={4} pt={4} pb={8}>
+              <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
                   <Button variant='contained' onClick={onLoginHandler}>
                     {login.action}
                   </Button>
                 </Stack>
               </Stack>
+              <Box
+                pt={4}
+                pb={3}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+              >
+                <Link href='/auth/password-reset'>{login.forgotPassword}</Link>
+              </Box>
               <Divider />
               <Box
                 pt={4}
