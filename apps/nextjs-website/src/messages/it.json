@@ -28,7 +28,7 @@
         "personalData": {
             "title": "I tuoi dati",
             "dataSection": "Profilo",
-            "accountSection": "Profilo",
+            "accountSection": "Account",
             "fields": {
                 "name": "Nome",
                 "surname": "Cognome",
@@ -37,7 +37,7 @@
                 "sector": "Settore",
                 "products": "Prodotti di interesse",
                 "email": "Indirizzo e-mail",
-                "password": "password"
+                "password": "Password"
             }
         }
     }

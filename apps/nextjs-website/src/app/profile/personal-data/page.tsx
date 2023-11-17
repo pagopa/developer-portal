@@ -25,16 +25,8 @@ const TermsOfService = () => {
       value: user?.attributes['custom:job_role'],
     },
     {
-      title: t('personalData.fields.company'),
-      // TODO: add company when available
-    },
-    {
       title: t('personalData.fields.sector'),
       value: user?.attributes['custom:company_type'],
-    },
-    {
-      title: t('personalData.fields.products'),
-      // TODO: add products when available
     },
   ];
 
@@ -56,7 +48,7 @@ const TermsOfService = () => {
 
   return (
     <Stack gap={5} sx={{ padding: 5, width: '100%' }}>
-      <Typography variant='h3'>{t('personalData.title')}</Typography>
+      <Typography variant='h4'>{t('personalData.title')}</Typography>
       <InfoCard
         cardTitle={t('personalData.dataSection')}
         items={dataSectionItems}
