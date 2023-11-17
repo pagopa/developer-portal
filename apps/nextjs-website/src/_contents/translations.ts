@@ -336,7 +336,7 @@ export const translations = {
       title: 'Verifica di accesso MFA',
       body: 'Inserisci il codice di verifica inviato nella tua e-mail',
       code: '012345',
-      wrongaccount: 'Hai sbagliato account? ',
+      wrongAccount: 'Hai sbagliato account? ',
       send: 'Invia',
     },
     accountActivated: {
