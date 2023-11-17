@@ -64,9 +64,7 @@ const confirmationMessage = (
     <mj-spacer height="10px" />
     <mj-section css-class="section box-shadow" background-color="#fff">
       <mj-column width="100%" padding-bottom="24px">
-        <mj-text>
-          <img src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
-        </mj-text>
+        <mj-image  src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
         <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${TRANSLATIONS.title}</mj-text>
