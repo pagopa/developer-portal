@@ -6,7 +6,6 @@
     "clean": "shx rm -rf dist/ out/",
     "precompile": "npm run clean",
     "compile": "tsc",
-    "prebuild": "npm run compile",
     "build": "node esbuild.config.mjs",
     "postbuild": "cd out && zip -r cognito-functions.zip .",
     "lint": "eslint src",

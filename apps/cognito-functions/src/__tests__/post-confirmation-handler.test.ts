@@ -1,9 +1,9 @@
-import { PostConfirmationConfirmSignUpTriggerEvent } from 'aws-lambda';
-import { makeHandler } from '../post-confirmation-confirm-sign-up-handler';
+import { PostConfirmationTriggerEvent } from 'aws-lambda';
+import { makeHandler } from '../post-confirmation-handler';
 import { SendEmailCommand, SES } from '@aws-sdk/client-ses';
 import { mock, mockReset, captor } from 'jest-mock-extended';
 
-const eventMock: PostConfirmationConfirmSignUpTriggerEvent = {
+const makeEvent = (): PostConfirmationTriggerEvent => ({
   version: 'aVersion',
   region: 'eu-south-1',
   userPoolId: 'aUserPoolId',
@@ -28,9 +28,9 @@ const eventMock: PostConfirmationConfirmSignUpTriggerEvent = {
     emailSubject: null,
   },
   triggerSource: 'PostConfirmation_ConfirmSignUp',
-};
+});
 
-describe('Post Confirmation Confirm Sign Up', () => {
+describe('Post confirmation handler', () => {
   const env = {
     config: {
       domain: 'thedomain.org',
@@ -48,7 +48,8 @@ describe('Post Confirmation Confirm Sign Up', () => {
 
     const sendEmailCommandCaptor = captor<SendEmailCommand>();
 
-    await makeHandler(env)(eventMock);
+    const event = makeEvent();
+    await makeHandler(env)(event);
     expect(sesMock.send).toHaveBeenCalled();
     expect(sesMock.send).toHaveBeenCalledWith(sendEmailCommandCaptor);
 
@@ -57,20 +58,29 @@ describe('Post Confirmation Confirm Sign Up', () => {
     );
     expect(
       sendEmailCommandCaptor.value.input.Destination?.ToAddresses
-    ).toContainEqual(eventMock.request.userAttributes.email);
+    ).toContainEqual(event.request.userAttributes.email);
   });
 
   it('should not send the email because email address is missing', async () => {
     const { ses: sesMock } = env;
-    const noEmailEvent = {
-      ...eventMock,
-    };
+    const event = makeEvent();
     // Delete email from the event, so we can test that SES is not invoked.
     // Use delete because of StringMap type doesn't allow nullish values
     // eslint-disable-next-line functional/immutable-data
-    delete noEmailEvent['request']['userAttributes']['email'];
+    delete event['request']['userAttributes']['email'];
 
-    await makeHandler(env)(noEmailEvent);
+    await makeHandler(env)(event);
+    expect(sesMock.send).not.toHaveBeenCalled();
+  });
+
+  it('should not send the email on PostConfirmation_ConfirmForgotPassword event', async () => {
+    const { ses: sesMock } = env;
+    const event: PostConfirmationTriggerEvent = {
+      ...makeEvent(),
+      triggerSource: 'PostConfirmation_ConfirmForgotPassword',
+    };
+
+    await makeHandler(env)(event);
     expect(sesMock.send).not.toHaveBeenCalled();
   });
 });
