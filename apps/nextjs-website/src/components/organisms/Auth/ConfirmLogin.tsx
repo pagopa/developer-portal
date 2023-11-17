@@ -84,7 +84,7 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                {confirmLogin.wrongaccount}
+                {confirmLogin.wrongAccount}
               </Typography>
               <Link
                 variant='body2'
