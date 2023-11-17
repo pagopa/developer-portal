@@ -370,6 +370,17 @@ export const translations = {
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         },
       ],
+      companyRoles: [
+        { title: 'Ente pubblico', value: 'ente-pubblico' },
+        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'PSP', value: 'psp' },
+        {
+          title: 'Gestore di pubblico servizio',
+          value: 'gestore-di-pubblico-servizio',
+        },
+        { title: 'Azienda privata', value: 'azienda-privata' },
+        { title: 'Altro', value: 'altro' },
+      ],
     },
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
