@@ -24,9 +24,7 @@ export const makeHandler =
       return { ...event, response };
     } else if (event.triggerSource === 'CustomMessage_ForgotPassword') {
       const { codeParameter } = event.request;
-      const href = encodeURI(
-        `https://${env.domain}/auth/change-password?username=${username}&code=${codeParameter}`
-      );
+      const href = `https://${env.domain}/auth/change-password?username=${username}&code=${codeParameter}`;
       const emailMessage = makeConfirmationForgotPasswordEmail(
         href,
         env.domain

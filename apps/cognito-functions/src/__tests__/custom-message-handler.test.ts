@@ -17,8 +17,8 @@ const event: CustomMessageTriggerEvent = {
     userAttributes: {
       sub: 'user-identity',
     },
-    codeParameter: '####',
-    linkParameter: 'aLinkParameter',
+    codeParameter: '{####}',
+    linkParameter: '{##aLinkParameter##}',
     usernameParameter: null,
   },
   response: {
