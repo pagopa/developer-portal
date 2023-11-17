@@ -14,24 +14,24 @@ export const sendQuickStartGuide: QuickStartGuideData = {
   defaultStepAnchor: '01',
   steps: [
     {
-    title: "Per iniziare",
-    anchor: '00',
-    parts: [
-      {
-      component: 'innerHTMLLazyLoaded',
-      html: "Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.",
-    },
-    {
-      component: 'alert',
-      severity: 'info',
-      title:
-        "Se all’atto è collegato un pagamento tramite uno o più pagamenti pagoPA assicurati di avere generato il bollettino in formato pdf.",
-    },
-    {
-      component: 'innerHTMLLazyLoaded',
-      html: "In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>",
-    },
-    ],
+      title: 'Per iniziare',
+      anchor: '00',
+      parts: [
+        {
+          component: 'innerHTMLLazyLoaded',
+          html: 'Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.',
+        },
+        {
+          component: 'alert',
+          severity: 'info',
+          title:
+            'Se all’atto è collegato un pagamento tramite uno o più pagamenti pagoPA assicurati di avere generato il bollettino in formato pdf.',
+        },
+        {
+          component: 'innerHTMLLazyLoaded',
+          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>',
+        },
+      ],
     },
     {
       title: "Genera l'API Key",
@@ -174,13 +174,12 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           component: 'alert',
           severity: 'info',
           title:
-            "Possono essere richieste un massimo di 15 autorizzazioni di caricamento per ogni richiesta. Le url restituite in risposta hanno una validità di 1h.",
+            'Possono essere richieste un massimo di 15 autorizzazioni di caricamento per ogni richiesta. Le url restituite in risposta hanno una validità di 1h.',
         },
       ],
     },
     {
-      title:
-        'Caricamento dei documenti',
+      title: 'Caricamento dei documenti',
       anchor: '04',
       parts: [
         {
@@ -294,7 +293,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: "Richiesta di creazione della notifica",
+      title: 'Richiesta di creazione della notifica',
       anchor: '05',
       parts: [
         {
@@ -426,7 +425,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
                 asHtml: true,
                 text:
                   `Tipo: PF (persona fisica) \n<br />` +
-                  `ID Fiscale: HVUEQP09U6QMNN5Z \n<br />` +
+                  `Codice Fiscale: HVUEQP09U6QMNN5Z \n<br />` +
                   `Denominazione: Rossi Mario \n<br />` +
                   `Via: Via Larga 10 \n<br />` +
                   `CAP: 00100 \n<br />` +
