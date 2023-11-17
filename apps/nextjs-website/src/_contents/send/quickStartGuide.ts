@@ -65,7 +65,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'typography',
-          text: 'Per poter caricare e inviare i documenti allegati alla notifica attraverso SEND, dovrai prima prima calcolare il loro hash con algoritmo SHA256 convertendolo in base64, ad esempio con i comandi:',
+          text: 'Per poter caricare e inviare i documenti allegati alla notifica attraverso SEND, dovrai calcolare il loro hash con algoritmo SHA256 convertendolo in base64, ad esempio con i comandi:',
           variant: 'body2',
         },
         {
