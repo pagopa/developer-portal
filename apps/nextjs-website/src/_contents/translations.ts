@@ -333,6 +333,13 @@ export const translations = {
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
+    confirmLogin: {
+      title: 'Verifica di accesso MFA',
+      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
+      code: '012345',
+      wrongAccount: 'Hai sbagliato account? ',
+      send: 'Invia',
+    },
     accountActivated: {
       goToDashboard: 'Inizia',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
@@ -373,6 +380,23 @@ export const translations = {
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
+    },
+    resetPassword: {
+      title: 'Recupera password',
+      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      goBackToLogin: 'Torna al login',
+      send: 'Invia',
+      checkEmailTitle: "Controlla l'email",
+      checkEmail: (email: string) =>
+        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
+      resendEmailPrompt:
+        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo e-mail è errato?",
+      passwordSet: 'Password impostata correttamente',
+      newPassword: 'Imposta una nuova password',
+      rememberPassword: 'Ricordi la tua password?',
+      invalidLinkError: 'Il link non è valido',
     },
   },
 };

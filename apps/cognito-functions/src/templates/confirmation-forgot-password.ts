@@ -1,6 +1,4 @@
-import { COMPANY_LOGO } from './company-logo';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
+import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Password dimenticata',
@@ -15,19 +13,14 @@ const TRANSLATIONS = {
 };
 
 export const makeConfirmationForgotPasswordEmail = (
-  confirmationLink: string
-): string => {
-  const emailMessage = mjml2html(confirmationMessage(confirmationLink)).html;
+  confirmationLink: string,
+  domain: string
+): string => parseMjmlToHtml(confirmationMessage(confirmationLink, domain));
 
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
-
-const confirmationMessage = (newPasswordLink: string): string => `
+const confirmationMessage = (
+  confirmationLink: string,
+  domain: string
+): string => `
 <mjml>
   <mj-head>
     <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
@@ -53,6 +46,7 @@ const confirmationMessage = (newPasswordLink: string): string => `
         }
       }
       .box-shadow {
+        border: 1px solid #fefefe;
         box-shadow: 0px 0px 45px 0px #0000001A;
       }
       .link a:link, .link a:visited, .link a:focus, .link a:hover, .link a:active {
@@ -70,19 +64,17 @@ const confirmationMessage = (newPasswordLink: string): string => `
     <mj-spacer height="10px" />
     <mj-section css-class="section box-shadow" background-color="#fff">
       <mj-column width="100%" padding-bottom="24px">
-        <mj-text>
-          ${COMPANY_LOGO}
-        </mj-text>
+        <mj-image align="left" src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
         <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${TRANSLATIONS.title}</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
         <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
-        <mj-button align="left" background-color="#0073E6" href="${newPasswordLink}" font-size="16px" font-weight="700">
+        <mj-button align="left" background-color="#0073E6" href="${confirmationLink}" font-size="16px" font-weight="700">
           ${TRANSLATIONS.setNewPassword}
         </mj-button>
-        <mj-text mj-class="text link" font-size="14px">${TRANSLATIONS.buttonFallbackText}<br><a href="${newPasswordLink}">${newPasswordLink}</a></mj-text>
+        <mj-text mj-class="text link" font-size="14px">${TRANSLATIONS.buttonFallbackText}<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />

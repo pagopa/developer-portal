@@ -1,6 +1,4 @@
-import { COMPANY_LOGO } from './company-logo';
-import mjml2html from 'mjml';
-import { minify } from 'html-minifier';
+import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Finalmente sei dei nostri',
@@ -25,18 +23,8 @@ const TRANSLATIONS = {
 export const makePostConfirmationConfirmSignUpEmail = (
   firstName: string,
   domain: string
-): string => {
-  const emailMessage = mjml2html(
-    postConfirmationConfirmSignUpMessage(firstName, domain)
-  ).html;
-
-  return minify(emailMessage, {
-    collapseWhitespace: true,
-    minifyCSS: true,
-    caseSensitive: true,
-    removeEmptyAttributes: true,
-  });
-};
+): string =>
+  parseMjmlToHtml(postConfirmationConfirmSignUpMessage(firstName, domain));
 
 const postConfirmationConfirmSignUpMessage = (
   firstName: string,
@@ -62,6 +50,7 @@ const postConfirmationConfirmSignUpMessage = (
         }
       }
       .box-shadow {
+        border: 1px solid #fefefe;
         box-shadow: 0px 0px 45px 0px #0000001A;
       }
       .link a:link, .link a:visited, .link a:focus, .link a:hover, .link a:active {
@@ -83,9 +72,7 @@ const postConfirmationConfirmSignUpMessage = (
     <mj-spacer height="10px" />
     <mj-section css-class="section box-shadow" background-color="#fff">
       <mj-column width="100%" padding-bottom="24px">
-        <mj-text>
-          ${COMPANY_LOGO}
-        </mj-text>
+        <mj-image align="left" src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
         <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${

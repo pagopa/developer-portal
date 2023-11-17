@@ -17,8 +17,8 @@ const event: CustomMessageTriggerEvent = {
     userAttributes: {
       sub: 'user-identity',
     },
-    codeParameter: '####',
-    linkParameter: 'aLinkParameter',
+    codeParameter: '{####}',
+    linkParameter: '{##aLinkParameter##}',
     usernameParameter: null,
   },
   response: {
@@ -36,7 +36,8 @@ describe('Handler', () => {
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
     const expected = makeConfirmationEmail(
-      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
+      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
@@ -49,7 +50,8 @@ describe('Handler', () => {
     const { response } = await makeHandler(env)(resendCodeEvent);
     const { userAttributes, codeParameter } = resendCodeEvent.request;
     const expected = makeConfirmationEmail(
-      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`
+      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
@@ -62,7 +64,8 @@ describe('Handler', () => {
     const { response } = await makeHandler(env)(forgotPasswordEvent);
     const { userAttributes, codeParameter } = forgotPasswordEvent.request;
     const expected = makeConfirmationForgotPasswordEmail(
-      `https://${env.domain}/auth/change-password?username=${userAttributes['sub']}&code=${codeParameter}`
+      `https://${env.domain}/auth/change-password?username=${userAttributes['sub']}&code=${codeParameter}`,
+      env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
