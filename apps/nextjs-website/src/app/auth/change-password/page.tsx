@@ -25,7 +25,7 @@ const ChangePassword = () => {
   const [error, setError] = useState<string | null>(null);
   const [isValidLink, setIsValidLink] = useState(false);
 
-  const OnChangePassword = useCallback(async () => {
+  const onChangePassword = useCallback(async () => {
     const success = await Auth.forgotPasswordSubmit(
       username,
       code,
@@ -73,7 +73,7 @@ const ChangePassword = () => {
           >
             {resetPasswordSteps === ResetPasswordSteps.CHANGE_PASSWORD && (
               <ChangePasswordForm
-                onChangePassword={OnChangePassword}
+                onChangePassword={onChangePassword}
                 setPassword={setPassword}
                 password={password}
               />
