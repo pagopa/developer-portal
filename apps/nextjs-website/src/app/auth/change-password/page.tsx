@@ -6,7 +6,6 @@ import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
 import { useCallback, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
-
 import PageNotFound from '@/app/not-found';
 import { translations } from '@/_contents/translations';
 
@@ -50,8 +49,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      {!isValidLink && <PageNotFound />}
-      {isValidLink && (
+      {isValidLink ? (
         <Box
           sx={{
             display: 'flex',
@@ -71,19 +69,19 @@ const ChangePassword = () => {
             sx={{ mx: 'auto', my: '5vh' }}
             spacing={6}
           >
-            {resetPasswordSteps === ResetPasswordSteps.CHANGE_PASSWORD && (
+            {resetPasswordSteps === ResetPasswordSteps.CHANGE_PASSWORD ? (
               <ChangePasswordForm
                 onChangePassword={onChangePassword}
                 setPassword={setPassword}
                 password={password}
               />
-            )}
-            {resetPasswordSteps ===
-              ResetPasswordSteps.CHANGE_PASSWORD_SUCCESS && (
+            ) : (
               <PasswordChangedCard />
             )}
           </Grid>
         </Box>
+      ) : (
+        <PageNotFound />
       )}
       <Snackbar
         open={!!error}

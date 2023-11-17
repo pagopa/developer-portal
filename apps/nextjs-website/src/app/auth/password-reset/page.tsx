@@ -82,16 +82,14 @@ const PasswordReset = () => {
           my={6}
           spacing={6}
         >
-          {sendResetPasswordSteps === SendResetPasswordSteps.SEND_EMAIL && (
+          {sendResetPasswordSteps === SendResetPasswordSteps.SEND_EMAIL ? (
             <ResetPasswordForm
               email={email}
               setEmail={setEmail}
               handleResetPassword={handleResetPassword}
               emailValidators={emailValidators}
             />
-          )}
-          {sendResetPasswordSteps ===
-            SendResetPasswordSteps.EMAIL_SEND_CONFIRM && (
+          ) : (
             <ResetPasswordSuccess
               email={email}
               onBack={onBackStep}
