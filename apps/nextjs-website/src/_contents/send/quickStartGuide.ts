@@ -14,12 +14,32 @@ export const sendQuickStartGuide: QuickStartGuideData = {
   defaultStepAnchor: '01',
   steps: [
     {
+      title: 'Per iniziare',
+      anchor: '00',
+      parts: [
+        {
+          component: 'innerHTMLLazyLoaded',
+          html: 'Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.',
+        },
+        {
+          component: 'alert',
+          severity: 'info',
+          title:
+            'Se all’atto è collegato un pagamento tramite uno o più pagamenti pagoPA assicurati di avere generato il bollettino in formato pdf.',
+        },
+        {
+          component: 'innerHTMLLazyLoaded',
+          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>',
+        },
+      ],
+    },
+    {
       title: "Genera l'API Key",
       anchor: '01',
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: "Accedi alla <a href='https://selfcare.pagopa.it/'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare le API Key, che <b>dovrà essere utilizzata in tutte le chiamate API</b>.",
+          html: "Accedi alla <a href='https://selfcare.notifichedigitali.it'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare la tua API Key. </br> <b>Ricorda di conservare la tua API Key, ti servirà come secret di autenticazione in tutte le chiamate alle API Rest di SEND.</b>",
         },
         {
           component: 'innerHTMLLazyLoaded',
@@ -40,12 +60,12 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Codifica i documenti in base64',
+      title: 'Calcolo del hash dei documenti',
       anchor: '02',
       parts: [
         {
           component: 'typography',
-          text: 'Per poter caricare e inviare i tuoi documenti attraverso SEND, dovrai prima prima calcolare il loro hash seguendo queste indicazioni:',
+          text: 'Per poter caricare e inviare i documenti allegati alla notifica attraverso SEND, dovrai prima prima calcolare il loro hash con algoritmo SHA256 convertendolo in base64, ad esempio con i comandi:',
           variant: 'body2',
         },
         {
@@ -60,12 +80,12 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: 'Richiedi le autorizzazioni e pre-carica i documenti',
+      title: 'Richiedi le autorizzazioni per il caricamento dei documenti',
       anchor: '03',
       parts: [
         {
           component: 'typography',
-          text: 'Richiedi a SEND le informazioni e le autorizzazioni necessarie a pre-caricare uno o più file da allegare a una notifica, effettuando la chiamata a questo endpoint',
+          text: 'Richiedi a SEND le informazioni e le autorizzazioni necessarie per caricare uno o più file da allegare (compresi i bollettini pagoPA) a una notifica, inserisci nell’array del payload un elemento per ogni documento che vuoi caricare ed effettua la chiamata a questo endpoint:',
           variant: 'body2',
         },
         {
@@ -154,13 +174,12 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           component: 'alert',
           severity: 'info',
           title:
-            "Possono essere effettuate un massimo di 15 prenotazioni di caricamento per ogni richiesta. L'url restituito in risposta ha una validità di 1h.",
+            'Possono essere richieste un massimo di 15 autorizzazioni di caricamento per ogni richiesta. Le url restituite in risposta hanno una validità di 1h.',
         },
       ],
     },
     {
-      title:
-        'Effettua l’upload dei documenti Notifica.pdf e Pagamento.pdf su safeStorage',
+      title: 'Caricamento dei documenti',
       anchor: '04',
       parts: [
         {
@@ -175,7 +194,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             `  <li>l’url da inserire è “url“ ricevuto nella riposta dello step 03</li> \n` +
             `  <li><code style="background-color: #F4F5F7; font-size: 0.875em;">x-amz-checksum-sha256</code> sono quelli ricavati dallo step 02</li> \n` +
             `</ul> \n` +
-            `Ecco i comandi per effettuare le chiamate API con cui caricare i due documenti: \n`,
+            `L’esempio che segue mostra come potrebbe essere realizzata la chiamata con il comando curl. Per ciascun documento occorre reiterare la chiamata.\n`,
         },
         {
           component: 'apiTester',
@@ -274,7 +293,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       ],
     },
     {
-      title: "Effettua l'inserimento della notifica",
+      title: 'Richiesta di creazione della notifica',
       anchor: '05',
       parts: [
         {
@@ -292,6 +311,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           apiRequest: {
             code:
               `{ \n` +
+              `  "idempotenceToken":"1ab23c45-6789-1234-d5ef-6a789b12cde3", \n` +
               `  "paProtocolNumber": "Prot_001", \n` +
               `  "subject": "Prova Notifica 001", \n` +
               `  "recipients": [ \n` +
@@ -301,6 +321,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `      "denomination": "Rossi Mario", \n` +
               `      "physicalAddress": { \n` +
               `        "address": "Via Larga 10", \n` +
+              `        "zip": "00100", \n` +
               `        "municipality": "Roma" \n` +
               `      }, \n` +
               `      "payment": { \n` +
@@ -344,7 +365,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             parts: [
               {
                 component: 'typography',
-                text: 'Invia la richiesta per vedere la risposta del server',
+                text: 'Di seguito si riportano, a titolo esemplificativo, una parte dei campi presenti nel payload. Invia la richiesta di esempio per vedere la risposta del server.',
                 variant: 'body2',
               },
               {
@@ -380,6 +401,20 @@ export const sendQuickStartGuide: QuickStartGuideData = {
                 color: '#5C6F82',
                 fontSize: '12px',
                 sx: { marginBottom: '0' },
+                text: 'Token di disambiguazione',
+                variant: 'subtitle1',
+              },
+              {
+                component: 'typography',
+                fontSize: '16px',
+                fontWeight: '600',
+                text: '1ab23c45-6789-1234-d5ef-6a789b12cde3',
+              },
+              {
+                component: 'typography',
+                color: '#5C6F82',
+                fontSize: '12px',
+                sx: { marginBottom: '0' },
                 text: 'Dati del destinatario',
                 variant: 'subtitle1',
               },
@@ -390,9 +425,10 @@ export const sendQuickStartGuide: QuickStartGuideData = {
                 asHtml: true,
                 text:
                   `Tipo: PF (persona fisica) \n<br />` +
-                  `ID Fiscale: HVUEQP09U6QMNN5Z \n<br />` +
+                  `Codice Fiscale: HVUEQP09U6QMNN5Z \n<br />` +
                   `Denominazione: Rossi Mario \n<br />` +
                   `Via: Via Larga 10 \n<br />` +
+                  `CAP: 00100 \n<br />` +
                   `Città: Roma \n<br />`,
               },
               {
@@ -443,6 +479,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           apiResponse: {
             code:
               `{ \n` +
+              `  "idempotenceToken":"1ab23c45-6789-1234-d5ef-6a789b12cde3", \n` +
               `  "notificationRequestId": "Jx3gk+Qfi54Dznl3SP+1kTR5wnxVlAi4QaTp", \n` +
               `  "paProtocolNumber": "Prot_001" \n` +
               `} \n`,
