@@ -3,7 +3,7 @@ import { makeHandler } from '../custom-message-handler';
 import { makeConfirmationEmail } from '../templates/confirmation-message';
 import { makeConfirmationForgotPasswordEmail } from '../templates/confirmation-forgot-password';
 
-const event: CustomMessageTriggerEvent = {
+const makeEvent = (): CustomMessageTriggerEvent => ({
   version: 'aVersion',
   region: 'eu-south-1',
   userPoolId: 'aUserPoolId',
@@ -33,13 +33,14 @@ const event: CustomMessageTriggerEvent = {
     emailMessage: null,
     emailSubject: null,
   },
-};
+});
 
 describe('Handler', () => {
   const env = {
     domain: 'thedomain.org',
   };
   it('should reply with verification link', async () => {
+    const event = makeEvent();
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
     const expected = makeConfirmationEmail(
@@ -51,7 +52,7 @@ describe('Handler', () => {
 
   it('should reply with verification link on resend code request', async () => {
     const resendCodeEvent: CustomMessageTriggerEvent = {
-      ...event,
+      ...makeEvent(),
       triggerSource: 'CustomMessage_ResendCode',
     };
     const { response } = await makeHandler(env)(resendCodeEvent);
@@ -65,7 +66,7 @@ describe('Handler', () => {
 
   it('should reply with link to reset the password', async () => {
     const forgotPasswordEvent: CustomMessageTriggerEvent = {
-      ...event,
+      ...makeEvent(),
       triggerSource: 'CustomMessage_ForgotPassword',
     };
     const { response } = await makeHandler(env)(forgotPasswordEvent);
@@ -78,6 +79,7 @@ describe('Handler', () => {
   });
 
   it('should not send any email and return the incoming event', async () => {
+    const event = makeEvent();
     const userVerifiedEvent = {
       ...event,
       request: {
