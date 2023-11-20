@@ -1,13 +1,19 @@
 'use client';
 
 import { Stack, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 export type InfoCardItemProps = {
   title: string;
   value?: string;
+  valueFallback?: ReactNode;
 };
 
-export const InfoCardItem = ({ title, value }: InfoCardItemProps) => {
+export const InfoCardItem = ({
+  title,
+  value,
+  valueFallback,
+}: InfoCardItemProps) => {
   return (
     <Stack my={{ xs: 1, md: 3 }} flexDirection={{ xs: 'column', md: 'row' }}>
       <Typography
@@ -17,14 +23,18 @@ export const InfoCardItem = ({ title, value }: InfoCardItemProps) => {
       >
         {title}
       </Typography>
-      <Typography
-        minHeight={'24px'}
-        fontSize={16}
-        flexGrow={1}
-        fontWeight={700}
-      >
-        {value}
-      </Typography>
+      {value ? (
+        <Typography
+          minHeight={'24px'}
+          fontSize={16}
+          flexGrow={1}
+          fontWeight={700}
+        >
+          {value}
+        </Typography>
+      ) : (
+        valueFallback
+      )}
     </Stack>
   );
 };

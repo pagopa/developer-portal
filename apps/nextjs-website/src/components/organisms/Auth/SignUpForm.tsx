@@ -283,7 +283,7 @@ const SignUpForm = ({
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl fullWidth disabled>
+                <FormControl fullWidth>
                   <InputLabel id='company-field' sx={{ top: '-8px' }}>
                     {shared.company}
                   </InputLabel>
@@ -305,9 +305,11 @@ const SignUpForm = ({
                       },
                     }}
                   >
-                    <MenuItem value='a'>a</MenuItem>
-                    <MenuItem value='b'>b</MenuItem>
-                    <MenuItem value='c'>c</MenuItem>
+                    {translations.auth.signUp.companyRoles.map((role) => (
+                      <MenuItem key={role.value} value={role.value}>
+                        {role.title}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Stack>
