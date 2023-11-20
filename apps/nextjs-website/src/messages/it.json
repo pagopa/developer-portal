@@ -1,4 +1,25 @@
 {
+    "profile": {
+        "agreements": {
+            "newsletter": {
+                "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
+                "subscribe": "Iscriviti",
+                "title": "Iscrizione alla newsletter"
+            },
+            "privacy": {
+                "basicData": "PagoPA collects Basic Personal Data enabling you to create and use your DevPortal account. You provide this personal data at registration, when updating your profile, or through an Identity Provider. PagoPA uses secured storage and communications, and justified use within PagoPA to protect your data. Your Basic Personal Data will be stored as long as you have an active PagoPA account.",
+                "title": "Privacy",
+                "statement": {
+                    "text": "The $labelOfLinkToReplace$ provides detailed information about your privacy rights.",
+                    "labelOfLinkToReplace": "PagoPA Privacy Statement"
+                }
+            },
+            "title": "Consensi e privacy"
+        },
+        "personalData": {
+            "title": "I tuoi dati"
+        }
+    },
     "shared": {
         "goToModel": "Vai al modello"
     }
