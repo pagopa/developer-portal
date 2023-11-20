@@ -6,6 +6,7 @@ import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import PageNotFound from '@/app/not-found';
+import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
 
 const PersonalData = () => {
   const t = useTranslations('profile');
@@ -57,6 +58,7 @@ const PersonalData = () => {
         cardTitle={t('personalData.accountSection')}
         items={accountSectionItems}
       />
+      <DeleteSection user={user} />
     </Stack>
   );
 };
