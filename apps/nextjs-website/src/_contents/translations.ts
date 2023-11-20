@@ -83,6 +83,7 @@ export const translations = {
         },
       ],
     },
+    webinarBannerButtonContent: 'Scopri',
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
     heroItems: [
       {

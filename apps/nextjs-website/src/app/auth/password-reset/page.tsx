@@ -1,6 +1,5 @@
 'use client';
 import { Alert, Box, Grid, Snackbar } from '@mui/material';
-import { isProduction } from '@/config';
 import { useCallback, useState } from 'react';
 import { translations } from '@/_contents/translations';
 import { ValidatorFunction } from '@/components/molecules/RequiredTextField/RequiredTextField';
@@ -10,7 +9,6 @@ import { emailMatcher } from '@/helpers/auth.helpers';
 import { useRouter } from 'next/navigation';
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
 import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
-import PageNotFound from '@/app/not-found';
 
 interface Info {
   message: string;
@@ -54,11 +52,6 @@ const PasswordReset = () => {
     setSendResetPasswordSteps(SendResetPasswordSteps.SEND_EMAIL);
     return null;
   }, [router, email]);
-
-  // TODO: remove this when resgistration flow is ready
-  if (isProduction) {
-    return <PageNotFound />;
-  }
 
   return (
     <>
