@@ -45,7 +45,10 @@ export const defineAuthChallengeHandler = defineAuthChallenge.makeHandler();
 export const verifyAuthChallengeHandler = verifyAuthChallenge.makeHandler();
 
 export const createAuthChallengeHandler = pipe(
-  { fromEmailAddress: process.env.FROM_EMAIL_ADDRESS },
+  {
+    fromEmailAddress: process.env.FROM_EMAIL_ADDRESS,
+    domain: process.env.DOMAIN,
+  },
   createAuthChallenge.CreateAuthChallengeConfig.decode,
   E.fold(
     (errors) => {
