@@ -15,7 +15,14 @@ const event: CustomMessageTriggerEvent = {
   },
   request: {
     userAttributes: {
-      sub: 'user-identity',
+      'custom:mailinglist_accepted': 'false',
+      sub: 'aUserIdentity',
+      email_verified: 'false',
+      'cognito:user_status': 'UNCONFIRMED',
+      'custom:privacy_accepted': 'true',
+      given_name: 'aGivenName',
+      family_name: 'aFamilyName',
+      email: 'email@email.com',
     },
     codeParameter: '{####}',
     linkParameter: '{##aLinkParameter##}',
@@ -68,5 +75,22 @@ describe('Handler', () => {
       env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
+  });
+
+  it('should not send any email and return the incoming event', async () => {
+    const userVerifiedEvent = {
+      ...event,
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'cognito:user_status': 'CONFIRMED',
+          email_verified: 'true',
+        },
+      },
+    };
+    const actual = await makeHandler(env)(userVerifiedEvent);
+    const expected = { ...userVerifiedEvent };
+    expect(actual).toStrictEqual(expected);
   });
 });
