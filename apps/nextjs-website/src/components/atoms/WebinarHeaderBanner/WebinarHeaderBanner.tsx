@@ -16,7 +16,7 @@ import Link from 'next/link';
 export type WebinarHeaderBannerProps = {
   readonly slug: string;
   readonly text: string;
-  readonly endDateTime: Date;
+  readonly endDateTime: string;
 };
 
 const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
@@ -69,7 +69,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
       <IconButton
         onClick={() => {
           setVisible(false);
-          window?.localStorage.setItem(slug, endDateTime.toISOString());
+          window?.localStorage.setItem(slug, endDateTime);
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>
