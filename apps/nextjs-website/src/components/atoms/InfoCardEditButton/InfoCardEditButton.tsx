@@ -1,20 +1,20 @@
 'use client';
-import { Button } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import EditIcon from '@mui/icons-material/Edit';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
 const InfoCardEditButton = ({ onClick }: { onClick?: () => null }) => {
   const t = useTranslations('shared');
 
   return (
-    <Button
+    <ButtonNaked
       onClick={onClick}
+      color='primary'
       sx={{ paddingLeft: 0, paddingRight: 0 }}
-      variant='text'
       endIcon={<EditIcon sx={{ height: 30 }} />}
     >
       {t('edit')}
-    </Button>
+    </ButtonNaked>
   );
 };
 

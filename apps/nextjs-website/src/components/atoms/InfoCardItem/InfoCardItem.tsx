@@ -10,7 +10,11 @@ export type InfoCardItemProps = {
 export const InfoCardItem = ({ title, value }: InfoCardItemProps) => {
   return (
     <Stack my={{ xs: 1, md: 3 }} flexDirection={{ xs: 'column', md: 'row' }}>
-      <Typography fontSize={16} minWidth={{ xs: 'auto', md: '200px' }}>
+      <Typography
+        variant='body2'
+        fontSize={16}
+        minWidth={{ xs: 'auto', md: '200px' }}
+      >
         {title}
       </Typography>
       <Typography

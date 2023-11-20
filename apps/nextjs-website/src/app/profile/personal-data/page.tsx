@@ -7,7 +7,7 @@ import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem'
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import PageNotFound from '@/app/not-found';
 
-const TermsOfService = () => {
+const PersonalData = () => {
   const t = useTranslations('profile');
   const { user, loading } = useUser();
 
@@ -53,7 +53,6 @@ const TermsOfService = () => {
         cardTitle={t('personalData.dataSection')}
         items={dataSectionItems}
       />
-
       <InfoCard
         cardTitle={t('personalData.accountSection')}
         items={accountSectionItems}
@@ -62,4 +61,4 @@ const TermsOfService = () => {
   );
 };
 
-export default TermsOfService;
+export default PersonalData;
