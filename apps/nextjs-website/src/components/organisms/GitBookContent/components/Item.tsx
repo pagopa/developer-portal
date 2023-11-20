@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { ReactNode } from 'react';
 
 const Item = ({ children }: ItemProps<ReactNode>) => {
-
   return (
     <Typography
       component='li'
