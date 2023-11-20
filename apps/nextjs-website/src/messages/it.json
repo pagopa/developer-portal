@@ -17,10 +17,24 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
-            "title": "I tuoi dati"
+            "title": "I tuoi dati",
+            "dataSection": "Profilo",
+            "accountSection": "Account",
+            "addField": "Inserisci",
+            "fields": {
+                "name": "Nome",
+                "surname": "Cognome",
+                "role": "Ruolo",
+                "company": "Tipologia di ente o azienda",
+                "sector": "Settore",
+                "products": "Prodotti di interesse",
+                "email": "Indirizzo e-mail",
+                "password": "Password"
+            }
         }
     },
     "shared": {
-        "goToModel": "Vai al modello"
+        "goToModel": "Vai al modello",
+        "edit": "Modifica"
     }
 }
