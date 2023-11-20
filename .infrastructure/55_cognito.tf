@@ -279,7 +279,7 @@ resource "aws_cognito_user_pool" "devportal" {
     required                 = false
     string_attribute_constraints {
       min_length = 1
-      max_length = 131072
+      max_length = 2048
     }
   }
 
