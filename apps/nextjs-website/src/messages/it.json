@@ -17,18 +17,10 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
-            "title": "I tuoi dati"
-        }
-    },
-    "shared": {
-        "goToModel": "Vai al modello",
-        "edit": "Modifica"
-    },
-    "profile": {
-        "personalData": {
             "title": "I tuoi dati",
             "dataSection": "Profilo",
             "accountSection": "Account",
+            "addField": "Inserisci",
             "fields": {
                 "name": "Nome",
                 "surname": "Cognome",
@@ -40,5 +32,9 @@
                 "password": "Password"
             }
         }
+    },
+    "shared": {
+        "goToModel": "Vai al modello",
+        "edit": "Modifica"
     }
 }
