@@ -4,14 +4,17 @@
   "private": true,
   "scripts": {
     "clean": "shx rm -rf dist/ out/",
-    "compile": "npm run clean && tsc",
-    "build": "npm run compile && esbuild dist/main.js --bundle --platform=node --outfile=out/main.js",
+    "precompile": "npm run clean",
+    "compile": "tsc",
+    "build": "node esbuild.config.mjs",
     "postbuild": "cd out && zip -r cognito-functions.zip .",
     "lint": "eslint src",
     "test": "npm run compile && jest -i"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.126",
+    "@types/html-minifier": "^4.0.4",
+    "@types/mjml": "^4.7.4",
     "esbuild": "^0.19.5",
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
@@ -25,6 +28,8 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.441.0",
     "fp-ts": "^2.16.1",
-    "io-ts": "^2.2.20"
+    "html-minifier": "^4.0.0",
+    "io-ts": "^2.2.20",
+    "mjml": "^4.14.1"
   }
 }

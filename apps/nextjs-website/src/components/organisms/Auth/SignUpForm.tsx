@@ -53,7 +53,7 @@ const SignUpForm = ({
   onSignUp,
 }: SignUpFormProps) => {
   const {
-    auth: { signUp },
+    auth: { login, signUp },
     shared,
   } = translations;
 
@@ -283,7 +283,7 @@ const SignUpForm = ({
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl fullWidth disabled>
+                <FormControl fullWidth>
                   <InputLabel id='company-field' sx={{ top: '-8px' }}>
                     {shared.company}
                   </InputLabel>
@@ -305,9 +305,11 @@ const SignUpForm = ({
                       },
                     }}
                   >
-                    <MenuItem value='a'>a</MenuItem>
-                    <MenuItem value='b'>b</MenuItem>
-                    <MenuItem value='c'>c</MenuItem>
+                    {translations.auth.signUp.companyRoles.map((role) => (
+                      <MenuItem key={role.value} value={role.value}>
+                        {role.title}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Stack>
@@ -353,7 +355,7 @@ const SignUpForm = ({
                     onClick={onSignUpClick}
                     disabled={!isFormValid}
                   >
-                    {shared.signUp}
+                    {signUp.action}
                   </Button>
                 </Stack>
               </Stack>
@@ -375,7 +377,7 @@ const SignUpForm = ({
               <Typography variant='caption-semibold' mr={1}>
                 {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>{shared.login}</Link>
+              <Link href='/auth/login'>{login.action}</Link>
             </Stack>
           </Grid>
         </Grid>

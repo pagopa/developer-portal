@@ -38,7 +38,7 @@ module "cognito_post_confirmation_function" {
 
   function_name = "cognito_post_confirmation"
   description   = "The Lambda function executed after post confirmation of email address"
-  handler       = "main.sensEmailHandler"
+  handler       = "main.postConfirmationHandler"
   runtime       = "nodejs18.x"
 
   create_package                          = false
@@ -182,8 +182,11 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   lambda_config {
-    custom_message    = module.cognito_custom_message_function.lambda_function_arn
-    post_confirmation = module.cognito_post_confirmation_function.lambda_function_arn
+    custom_message                 = module.cognito_custom_message_function.lambda_function_arn
+    post_confirmation              = module.cognito_post_confirmation_function.lambda_function_arn
+    create_auth_challenge          = module.cognito_create_auth_challenge_function.lambda_function_arn
+    define_auth_challenge          = module.cognito_define_auth_challenge_function.lambda_function_arn
+    verify_auth_challenge_response = module.cognito_verify_auth_challenge_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.
@@ -268,6 +271,18 @@ resource "aws_cognito_user_pool" "devportal" {
     }
   }
 
+  schema {
+    name                     = "user_preferences"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
+  }
+
 }
 
 resource "aws_cognito_user_pool_client" "devportal_website" {
@@ -292,7 +307,7 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
-  explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
+  explicit_auth_flows                  = ["ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
 }
 
 resource "aws_cognito_user_pool_domain" "devportal" {

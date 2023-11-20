@@ -19,9 +19,6 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
-    login: 'Accedi',
-    signUp: 'Iscriviti',
-    logout: 'Esci',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
@@ -327,11 +324,20 @@ export const translations = {
     speakersTitle: 'Chi Parla',
   },
   auth: {
+    logout: 'Esci',
     login: {
+      action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
+    },
+    confirmLogin: {
+      title: 'Verifica di accesso MFA',
+      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
+      code: '012345',
+      wrongAccount: 'Hai sbagliato account? ',
+      send: 'Invia',
     },
     accountActivated: {
       goToDashboard: 'Inizia',
@@ -339,6 +345,7 @@ export const translations = {
       yourAccountIsActive: 'Il tuo account è attivo',
     },
     signUp: {
+      action: 'Iscriviti',
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
         "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
@@ -363,6 +370,17 @@ export const translations = {
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         },
       ],
+      companyRoles: [
+        { title: 'Ente pubblico', value: 'ente-pubblico' },
+        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'PSP', value: 'psp' },
+        {
+          title: 'Gestore di pubblico servizio',
+          value: 'gestore-di-pubblico-servizio',
+        },
+        { title: 'Azienda privata', value: 'azienda-privata' },
+        { title: 'Altro', value: 'altro' },
+      ],
     },
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
@@ -372,6 +390,23 @@ export const translations = {
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
       wrongEmail: "L'indirizzo email è errato?",
+    },
+    resetPassword: {
+      title: 'Recupera password',
+      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      goBackToLogin: 'Torna al login',
+      send: 'Invia',
+      checkEmailTitle: "Controlla l'email",
+      checkEmail: (email: string) =>
+        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
+      resendEmailPrompt:
+        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo e-mail è errato?",
+      passwordSet: 'Password impostata correttamente',
+      newPassword: 'Imposta una nuova password',
+      rememberPassword: 'Ricordi la tua password?',
+      invalidLinkError: 'Il link non è valido',
     },
   },
 };
