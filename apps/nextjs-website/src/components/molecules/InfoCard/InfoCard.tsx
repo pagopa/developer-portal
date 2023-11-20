@@ -17,7 +17,7 @@ export const InfoCard = ({ cardTitle, items }: InfoCardProps) => {
   return (
     <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant='h6' mt={1}>
+        <Typography variant='h6' fontWeight={700} mt={1}>
           {cardTitle}
         </Typography>
         <Box display={{ xs: 'none', md: 'block' }}>{editButton}</Box>
