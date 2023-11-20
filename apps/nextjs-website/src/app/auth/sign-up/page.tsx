@@ -1,6 +1,5 @@
 'use client';
 import { translations } from '@/_contents/translations';
-import PageNotFound from '@/app/not-found';
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
@@ -16,7 +15,6 @@ import {
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { isProduction } from '@/config';
 import { SignUpUserData } from '@/lib/types/sign-up';
 
 interface Info {
@@ -103,10 +101,6 @@ const SignUp = () => {
     });
     return null;
   }, [signUp, userData.username]);
-
-  if (isProduction) {
-    return <PageNotFound />;
-  }
 
   return (
     <>
