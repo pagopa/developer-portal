@@ -1,5 +1,5 @@
 locals {
-  from_email_address                     = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+  from_email_address                     = format("PagoPA DevPortal <noreply@%s>", var.dns_domain_name)
   cognito_lambda_functions_artifact_path = "../apps/cognito-functions/out/cognito-functions.zip"
   /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
    * because of a runtime error during the env parsing.
