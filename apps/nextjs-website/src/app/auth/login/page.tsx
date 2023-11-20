@@ -2,8 +2,6 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
 import ConfirmLogIn from '@/components/organisms/Auth/ConfirmLogin';
 import { Box, Grid } from '@mui/material';
-import { isProduction } from '@/config';
-import PageNotFound from '@/app/not-found';
 import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
@@ -38,11 +36,6 @@ const Login = () => {
     setLogInStep(LoginSteps.LOG_IN);
     return null;
   }, []);
-
-  // TODO: remove this when resgistration flow is ready
-  if (isProduction) {
-    return <PageNotFound />;
-  }
 
   return (
     <Box
