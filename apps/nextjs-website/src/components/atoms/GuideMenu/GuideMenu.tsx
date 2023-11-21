@@ -14,6 +14,8 @@ import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
 import { translations } from '@/_contents/translations';
+import { useScrollUp } from '../ProductHeader/useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -24,32 +26,67 @@ type GuideMenuProps = {
   versions: { name: string; path: string }[];
 };
 
+export const PRODUCT_HEADER_HEIGHT = 80;
+
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
+  [`&`]: {
+    '--x': 32,
+  },
   [`& .${treeItemClasses.content}`]: {
     boxSizing: 'border-box',
     flexDirection: 'row-reverse',
     width: '100%',
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 32,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 32,
+    alignItems: 'space-between',
+  },
+  [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
+    {
+      paddingRight: 0,
+    },
+  [`& .${treeItemClasses.iconContainer}`]: {
+    justifyContent: 'flex-end',
+    marginRight: 0,
+    paddingRight: 0,
+    paddingLeft: 0,
+  },
+  [`& .${treeItemClasses.iconContainer}:empty`]: {
+    display: 'none',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    position: 'relative',
+  },
+  [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingRight: 32,
+  },
+  [`& ul`]: {
     paddingLeft: 0,
+    '--y': 'calc(var(--x) + 0)',
+  },
+  [`& li`]: {
+    '--x': 'calc(var(--y) + 24)',
+  },
+  ['& a']: {
+    paddingLeft: 'calc(1px * var(--x))',
   },
   [`& .${treeItemClasses.group}`]: {
     marginLeft: 0,
+    marginRight: 0,
   },
   [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
-    paddingLeft: 48,
-    paddingRight: 24,
+    paddingLeft: 0,
+    paddingRight: 0,
   },
-  [`& .${treeItemClasses.group} .${treeItemClasses.group} .${treeItemClasses.label}`]:
-    {
-      paddingLeft: 80,
-    },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
-    paddingLeft: 16,
+    paddingLeft: 0,
   },
   [`& .${treeItemClasses.root}`]: {
     margin: 0,
@@ -116,17 +153,27 @@ const GuideMenu = ({
 }: GuideMenuProps) => {
   const { palette } = useTheme();
   const { shared } = translations;
-
+  const scrollUp = useScrollUp();
   const currentPath = usePathname();
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
+  const top = scrollUp
+    ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+    : PRODUCT_HEADER_HEIGHT;
   return (
     <Box
       sx={{
         backgroundColor: palette.grey[50],
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative',
+        flexShrink: 0,
+        position: { lg: 'sticky' },
+        top: { lg: top },
+        height: { lg: `calc(100vh - ${top}px)` },
+        overflowY: 'auto',
+        transition: 'all 0.5s linear',
+        scrollbarWidth: 'thin',
+        width: { lg: '347px' },
       }}
     >
       <Box
@@ -134,13 +181,8 @@ const GuideMenu = ({
           display: 'flex',
           flexDirection: 'column',
           padding: '80px 0',
-          width: { lg: '347px' },
           flexGrow: { lg: 0 },
           flexShrink: { lg: 0 },
-          position: 'sticky',
-          overflowY: 'auto',
-          top: 50,
-          scrollbarWidth: 'thin',
         }}
       >
         <Typography

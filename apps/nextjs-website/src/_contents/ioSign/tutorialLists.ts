@@ -13,6 +13,7 @@ export const ioSignTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Come creare e preparare il documento da firmare digitalmente',
       url: '/images/io-sign-firmare-documento.png',
     },
+    showInOverview: true,
   },
   {
     title: 'Come creare il Dossier per la richiesta di firma',
@@ -22,6 +23,7 @@ export const ioSignTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Come creare il Dossier per la richiesta di firma',
       url: '/images/io-sign-creare-dossier.png',
     },
+    showInOverview: true,
   },
   {
     title: 'Come effettuare l’upload dei documenti',
@@ -31,6 +33,7 @@ export const ioSignTutorials: readonly Tutorial[] = [
       alt: 'Immagine: Come effettuare l’upload dei documenti',
       url: '/images/io-sign-effettuare-upload-documento.png',
     },
+    showInOverview: true,
   },
 ];
 

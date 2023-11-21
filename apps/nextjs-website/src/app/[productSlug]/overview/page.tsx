@@ -18,6 +18,8 @@ import PostIntegration from '@/components/organisms/PostIntegration/PostIntegrat
 import { ProductParams } from '@/lib/types/productParams';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 
+const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
+
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
     productSlug,
@@ -105,6 +107,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
   } = await getOverview(params.productSlug);
   const { overview } = translations;
 
+  const tutorialsListToShow = tutorials.list
+    ?.filter((tutorial) => tutorial.showInOverview)
+    .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
+
   return (
     <ProductLayout product={product} path={path} bannerLinks={bannerLinks}>
       <Hero
@@ -134,7 +140,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorials}
-          tutorials={[...(tutorials.list || [])]}
+          tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (

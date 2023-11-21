@@ -1,18 +1,135 @@
+locals {
+  from_email_address                     = format("PagoPA DevPortal <noreply@%s>", var.dns_domain_name)
+  cognito_lambda_functions_artifact_path = "../apps/cognito-functions/out/cognito-functions.zip"
+  /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
+   * because of a runtime error during the env parsing.
+   * We should find a way to add only the variables required to the Lambda.
+  */
+  lambda_env_variables = {
+    DOMAIN             = var.dns_domain_name
+    FROM_EMAIL_ADDRESS = local.from_email_address
+  }
+}
+
 module "cognito_custom_message_function" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "cognito_custom_message"
-  description   = "Cognito custom message"
+  description   = "The Lambda function executed to customize the email address verification message"
   handler       = "main.customMessageHandler"
   runtime       = "nodejs18.x"
 
   create_package                          = false
-  local_existing_package                  = "../apps/cognito-functions/out/cognito-functions.zip"
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
 
-  environment_variables = {
-    DOMAIN = var.dns_domain_name
+  environment_variables = local.lambda_env_variables
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
   }
+}
+
+module "cognito_post_confirmation_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_post_confirmation"
+  description   = "The Lambda function executed after post confirmation of email address"
+  handler       = "main.postConfirmationHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  attach_policy_statements = true
+  policy_statements = {
+    ses = {
+      effect    = "Allow",
+      actions   = ["ses:SendEmail", "ses:SendRawEmail"],
+      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+    },
+  }
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
+module "cognito_define_auth_challenge_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_define_auth_challenge"
+  description   = "This Lambda function is invoked to initiate the custom authentication flow."
+  handler       = "main.defineAuthChallengeHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
+module "cognito_create_auth_challenge_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_create_auth_challenge"
+  description   = "This Lambda function is invoked to create a challenge to present to the user."
+  handler       = "main.createAuthChallengeHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
+
+  attach_policy_statements = true
+  policy_statements = {
+    ses = {
+      effect    = "Allow",
+      actions   = ["ses:SendEmail", "ses:SendRawEmail"],
+      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+    },
+  }
+
+  allowed_triggers = {
+    cognito_devportal = {
+      principal  = "cognito-idp.amazonaws.com"
+      source_arn = aws_cognito_user_pool.devportal.arn
+    }
+  }
+}
+
+module "cognito_verify_auth_challenge_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "cognito_verify_auth_challenge"
+  description   = "This Lambda function is invoked to verify if the response from the user for a custom Auth Challenge is valid or not."
+  handler       = "main.verifyAuthChallengeHandler"
+  runtime       = "nodejs18.x"
+
+  create_package                          = false
+  local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  create_current_version_allowed_triggers = false
+
+  environment_variables = local.lambda_env_variables
 
   allowed_triggers = {
     cognito_devportal = {
@@ -56,7 +173,7 @@ resource "aws_cognito_user_pool" "devportal" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    from_email_address    = format("Developer Portal <noreply@%s>", var.dns_domain_name)
+    from_email_address    = local.from_email_address
     source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
   }
 
@@ -65,7 +182,11 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   lambda_config {
-    custom_message = module.cognito_custom_message_function.lambda_function_arn
+    custom_message                 = module.cognito_custom_message_function.lambda_function_arn
+    post_confirmation              = module.cognito_post_confirmation_function.lambda_function_arn
+    create_auth_challenge          = module.cognito_create_auth_challenge_function.lambda_function_arn
+    define_auth_challenge          = module.cognito_define_auth_challenge_function.lambda_function_arn
+    verify_auth_challenge_response = module.cognito_verify_auth_challenge_function.lambda_function_arn
   }
 
   # Custom attributes cannot be required.
@@ -126,6 +247,42 @@ resource "aws_cognito_user_pool" "devportal" {
     required                 = false
   }
 
+  schema {
+    name                     = "job_role"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
+  }
+
+  schema {
+    name                     = "company_type"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
+  }
+
+  schema {
+    name                     = "user_preferences"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 2048
+    }
+  }
+
 }
 
 resource "aws_cognito_user_pool_client" "devportal_website" {
@@ -150,7 +307,7 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
-  explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
+  explicit_auth_flows                  = ["ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
 }
 
 resource "aws_cognito_user_pool_domain" "devportal" {

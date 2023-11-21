@@ -20,6 +20,17 @@ export const translations = {
     version: 'Versione',
     copiedTooltip: 'Copiato',
     siteTitle: 'PagoPA DevPortal',
+    emailAddress: 'Indirizzo email',
+    password: 'Password',
+    goBack: 'Torna indietro',
+    requiredFields: '* Campi obbligatori',
+    firstName: 'Nome',
+    lastName: 'Cognome',
+    confirmPassword: 'Conferma password',
+    company: 'Tipologia Ente o Azienda',
+    role: 'Ruolo',
+    requiredFieldError: 'Questo campo non può essere vuoto',
+    emailFieldError: 'Inserisci un indirizzo email valido',
   },
   pageNotFound: {
     overline: '404',
@@ -73,6 +84,7 @@ export const translations = {
         },
       ],
     },
+    webinarBannerButtonContent: 'Scopri',
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
     heroItems: [
       {
@@ -93,6 +105,15 @@ export const translations = {
         },
       },
     ],
+    webinarsSection: {
+      description:
+        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      title: 'Partecipa ai nostri webinar',
+      link: {
+        href: '#',
+        label: 'Vedi tutti i webinar',
+      },
+    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
@@ -295,6 +316,99 @@ export const translations = {
         ariaLabel: 'Preferenza Cookie',
         label: 'Preferenza Cookie',
       },
+    },
+  },
+  webinar: {
+    whyParticipate: 'Perché partecipare?',
+    speakers: 'Speaker',
+    subscribe: 'Iscriviti',
+    relatedLinksTitle: 'Link utili',
+    speakersTitle: 'Chi Parla',
+  },
+  auth: {
+    logout: 'Esci',
+    login: {
+      action: 'Accedi',
+      loginToYourAccount: 'Accedi al tuo account',
+      rememberMe: 'Ricordami',
+      forgotPassword: 'Hai dimenticato la password?',
+      noAccount: 'Non hai un account?',
+    },
+    confirmLogin: {
+      title: 'Verifica di accesso MFA',
+      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
+      code: '012345',
+      wrongAccount: 'Hai sbagliato account? ',
+      send: 'Invia',
+    },
+    accountActivated: {
+      goToDashboard: 'Inizia',
+      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
+      yourAccountIsActive: 'Il tuo account è attivo',
+    },
+    signUp: {
+      action: 'Iscriviti',
+      createYourAccount: 'Crea il tuo account',
+      confirmComunications:
+        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+      acceptPolicy:
+        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      alreadyHaveAnAccount: 'Hai già un account?',
+      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
+      passwordPolicy:
+        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
+      emailSent: (email: string) => `Email inviata a ${email}`,
+      advantages: [
+        {
+          title: 'vantaggio 1',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+        {
+          title: 'vantaggio 2',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+        {
+          title: 'vantaggio 3',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+      ],
+      companyRoles: [
+        { title: 'Ente pubblico', value: 'ente-pubblico' },
+        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'PSP', value: 'psp' },
+        {
+          title: 'Gestore di pubblico servizio',
+          value: 'gestore-di-pubblico-servizio',
+        },
+        { title: 'Azienda privata', value: 'azienda-privata' },
+        { title: 'Altro', value: 'altro' },
+      ],
+    },
+    confirmSignUp: {
+      confirmSignUp: 'Conferma che sei tu',
+      description: (email: string) =>
+        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+      didntReceiveEmail:
+        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo email è errato?",
+    },
+    resetPassword: {
+      title: 'Recupera password',
+      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      goBackToLogin: 'Torna al login',
+      send: 'Invia',
+      checkEmailTitle: "Controlla l'email",
+      checkEmail: (email: string) =>
+        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
+      resendEmailPrompt:
+        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo e-mail è errato?",
+      passwordSet: 'Password impostata correttamente',
+      newPassword: 'Imposta una nuova password',
+      rememberPassword: 'Ricordi la tua password?',
+      invalidLinkError: 'Il link non è valido',
     },
   },
 };

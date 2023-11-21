@@ -13,11 +13,7 @@ type RelatedLinksProps = {
 };
 
 const RelatedLinks = ({ title, links }: RelatedLinksProps) => {
-  return (
-    <Box pb={4}>
-      <Listing items={links} name={title} />
-    </Box>
-  );
+  return <Listing items={links} name={title} />;
 };
 
 export default RelatedLinks;
