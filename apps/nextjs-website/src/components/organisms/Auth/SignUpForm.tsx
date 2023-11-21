@@ -46,12 +46,7 @@ interface SignUpFormProps {
   onSignUp: () => Promise<boolean>;
 }
 
-const SignUpForm = ({
-  userData,
-  setUserData,
-
-  onSignUp,
-}: SignUpFormProps) => {
+const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
   const {
     auth: { login, signUp },
     shared,
@@ -72,6 +67,7 @@ const SignUpForm = ({
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -118,7 +114,11 @@ const SignUpForm = ({
       return;
     }
 
-    onSignUp();
+    setSubmitting(true);
+
+    onSignUp().finally(() => {
+      setSubmitting(false);
+    });
   }, [onSignUp, userData]);
 
   const validateForm = useCallback(() => {
@@ -353,7 +353,7 @@ const SignUpForm = ({
                   <Button
                     variant='contained'
                     onClick={onSignUpClick}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || submitting}
                   >
                     {signUp.action}
                   </Button>
