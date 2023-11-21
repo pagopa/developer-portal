@@ -1,11 +1,11 @@
 import { CreateAuthChallengeTriggerEvent } from 'aws-lambda';
 import {
-  emailTemplate,
   generateVerificationCode,
   makeHandler,
 } from '../create-auth-challenge-handler';
 import { SES } from '@aws-sdk/client-ses';
 import { mock } from 'jest-mock-extended';
+import { makeOtpMessageEmail } from '../templates/otp-message';
 
 const event: CreateAuthChallengeTriggerEvent = {
   version: 'aVersion',
@@ -41,6 +41,7 @@ const makeTestEnv = () => {
   const env = {
     config: {
       fromEmailAddress: 'from@email.com',
+      domain: 'adomain.com',
     },
     generateVerificationCode: () => verificationCode,
     ses: sesMock,
@@ -77,7 +78,7 @@ describe('Handler', () => {
           Message: {
             Body: {
               Html: {
-                Data: emailTemplate(verificationCode),
+                Data: makeOtpMessageEmail(verificationCode, env.config.domain),
               },
             },
             Subject: {

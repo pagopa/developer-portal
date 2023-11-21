@@ -10,13 +10,10 @@ import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
+import { makeOtpMessageEmail } from './templates/otp-message';
 
 export const generateVerificationCode = (): string =>
   Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
-
-export const emailTemplate = (verificationCode: string) => `
-Il tuo codice di verifica per la login è <strong>${verificationCode}</strong>
-`;
 
 export const makeSesEmailParameters = (
   to: string,
@@ -42,6 +39,7 @@ export const makeSesEmailParameters = (
 
 export const CreateAuthChallengeConfig = t.type({
   fromEmailAddress: t.string,
+  domain: t.string,
 });
 type CreateAuthChallengeConfig = t.TypeOf<typeof CreateAuthChallengeConfig>;
 
@@ -69,7 +67,7 @@ export const makeHandler =
           email,
           env.config.fromEmailAddress,
           subject,
-          emailTemplate(verificationCode)
+          makeOtpMessageEmail(verificationCode, env.config.domain)
         )
       );
 
