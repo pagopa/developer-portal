@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { ItemProps } from 'gitbook-docs/markdoc/schema/item';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ReactNode } from 'react';
 
 const Item = ({ children }: ItemProps<ReactNode>) => {
