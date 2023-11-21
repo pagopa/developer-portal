@@ -30,6 +30,7 @@ export const translations = {
     role: 'Ruolo',
     requiredFieldError: 'Questo campo non può essere vuoto',
     emailFieldError: 'Inserisci un indirizzo email valido',
+    yourData: 'I tuoi dati',
   },
   pageNotFound: {
     overline: '404',
