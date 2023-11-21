@@ -27,7 +27,23 @@ const SpeakerAvatar = ({
         height: 'auto',
       }}
     />
-  ) : null;
+  ) : (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderRadius: '100%',
+        borderColor: '#E3E7EB',
+        width: compactMode ? '64px' : '145px',
+        height: compactMode ? '64px' : '145px',
+      }}
+    >
+      <PersonOutline fontSize={compactMode ? 'medium' : 'large'} />
+    </Box>
+  );
 };
 
 type SpeakerInfoProps = SpeakerPreviewProps;
