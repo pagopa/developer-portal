@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { DevPortalUser } from '@/lib/types/auth';
+import { DevPortalUser, DevPortalUserAttributes } from '@/lib/types/auth';
 import { Auth, Hub } from 'aws-amplify';
 import { useCallback, useState, useEffect } from 'react';
 
@@ -18,6 +18,17 @@ export const useUser = () => {
         setUser(null);
       });
   }, []);
+
+  const setUserAttributes = async (attributes: DevPortalUserAttributes) => {
+    return await Auth.updateUserAttributes(user, attributes)
+      .then(() => {
+        checkUser();
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  };
 
   useEffect(() => {
     checkUser();
@@ -41,5 +52,5 @@ export const useUser = () => {
     return () => cancel();
   }, []);
 
-  return { user, loading };
+  return { user, loading, setUserAttributes };
 };
