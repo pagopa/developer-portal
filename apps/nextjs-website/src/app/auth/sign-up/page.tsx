@@ -16,6 +16,7 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
+import { LoaderPhase } from '@/lib/types/loader';
 
 interface Info {
   message: string;
@@ -46,6 +47,7 @@ const SignUp = () => {
   );
 
   const [info, setInfo] = useState<Info | null>(null);
+  const [loader, setLoader] = useState<LoaderPhase | undefined>(undefined);
 
   const onSignUp = useCallback(async () => {
     const {
@@ -94,13 +96,21 @@ const SignUp = () => {
   }, [router, userData.username]);
 
   const onResendEmail = useCallback(async () => {
-    await Auth.resendSignUp(userData.username);
-    setInfo({
-      message: signUp.emailSent(userData.username),
-      isError: false,
+    setLoader(LoaderPhase.LOADING);
+
+    const result = await Auth.resendSignUp(userData.username).catch(() => {
+      setLoader(LoaderPhase.ERROR);
+      return false;
     });
-    return null;
-  }, [signUp, userData.username]);
+
+    if (result) {
+      setLoader(LoaderPhase.SUCCESS);
+    }
+
+    setTimeout(() => {
+      setLoader(undefined);
+    }, 4000);
+  }, [userData.username]);
 
   return (
     <>
@@ -151,6 +161,7 @@ const SignUp = () => {
                 email={userData.username}
                 onBack={onBackStep}
                 onResendEmail={onResendEmail}
+                resendLoader={loader}
               />
             )}
           </Grid>
