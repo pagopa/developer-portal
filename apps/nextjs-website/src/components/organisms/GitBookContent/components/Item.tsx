@@ -12,7 +12,7 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
         wordBreak: 'break-word',
       }}
       sx={{
-        '& .MuiContainer-root': {
+        '& div.MuiContainer-root:has(img)': {
           width: 'initial',
           marginLeft: '1rem',
         },
