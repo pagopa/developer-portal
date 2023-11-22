@@ -341,7 +341,7 @@ export const translations = {
       send: 'Invia',
     },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToDashboard: 'Vai al tuo Profilo',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },

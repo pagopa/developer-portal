@@ -29,7 +29,11 @@ const AccountActivatedCard = () => {
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' component={Link} href='/'>
+                <Button
+                  variant='contained'
+                  component={Link}
+                  href='/profile/personal-data'
+                >
                   {accountActivated.goToDashboard}
                 </Button>
               </Stack>
