@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { DevPortalUser, DevPortalUserAttributes } from '@/lib/types/auth';
+import { DevPortalUser } from '@/lib/types/auth';
 import { Auth, Hub } from 'aws-amplify';
 import { useCallback, useState, useEffect } from 'react';
 
@@ -19,7 +19,7 @@ export const useUser = () => {
       });
   }, []);
 
-  const setUserAttributes = async (attributes: DevPortalUserAttributes) => {
+  const setUserAttributes = async (attributes: DevPortalUser['attributes']) => {
     return await Auth.updateUserAttributes(user, attributes)
       .then(() => {
         checkUser();
