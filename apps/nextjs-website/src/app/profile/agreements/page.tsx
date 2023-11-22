@@ -41,7 +41,13 @@ const Agreements = () => {
     .map((node, index) => <span key={index}>{node}</span>);
 
   return (
-    <Stack sx={{ padding: '30px', width: '100%', maxWidth: '694px' }}>
+    <Stack
+      sx={{
+        padding: { xs: '40px 24px', md: '80px 40px' },
+        width: '100%',
+        maxWidth: '694px',
+      }}
+    >
       <Typography variant='h4' sx={{ marginBottom: '40px' }}>
         {t('title')}
       </Typography>
