@@ -39,7 +39,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: "Accedi alla <a href='https://selfcare.notifichedigitali.it'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare la tua API Key. </br> <b>Ricorda di conservare la tua API Key, ti servirà come secret di autenticazione in tutte le chiamate alle API Rest di SEND.</b>",
+          html: "Accedi all'<a href='https://selfcare.notifichedigitali.it'>Area Riservata - SEND</a>. In questo video interattivo troverai tutti i passaggi per generare la tua API Key. </br> <b>Ricorda di conservare la tua API Key, ti servirà come secret di autenticazione in tutte le chiamate alle API Rest di SEND.</b>",
         },
         {
           component: 'innerHTMLLazyLoaded',
@@ -53,7 +53,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             `    mozallowfullscreen \n` +
             `    allowfullscreen \n` +
             `    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;color-scheme: light;" \n` +
-            `    title="PagoPA Piattaforma Self Care -- SEND" \n` +
+            `    title="Area Riservata -- SEND" \n` +
             `  /> \n` +
             `</div> \n`,
         },
