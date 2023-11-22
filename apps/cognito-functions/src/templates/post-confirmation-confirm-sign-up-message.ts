@@ -17,8 +17,12 @@ const TRANSLATIONS = {
   seeYouSoon: 'A presto,<br><br>il team DevPortal',
   companyLegalDetails:
     'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
-  wrongRecipient:
-    'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal.',
+  wrongRecipient: {
+    beginning:
+      'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal. Se non desideri riceverne altre, puoi modificare il tuo consenso&nbsp;',
+    linkLabel: 'qui',
+    end: '.<br>Non sei tu? Ignora o cancella questa e-mail.',
+  },
 };
 export const makePostConfirmationConfirmSignUpEmail = (
   firstName: string,
@@ -95,9 +99,13 @@ const postConfirmationConfirmSignUpMessage = (
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
-        <mj-text mj-class="text" font-size="14px">${
-          TRANSLATIONS.wrongRecipient
-        }</mj-text>
+        <mj-text mj-class="text link" font-size="14px">
+          ${TRANSLATIONS.wrongRecipient.beginning}
+          <a href="${`https://${domain}/profile/agreements`}">
+            ${TRANSLATIONS.wrongRecipient.linkLabel}
+          </a>
+          ${TRANSLATIONS.wrongRecipient.end}
+        </mj-text>
         <mj-text mj-class="footer-text">${
           TRANSLATIONS.companyLegalDetails
         }</mj-text>

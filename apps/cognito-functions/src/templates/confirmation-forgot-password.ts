@@ -7,8 +7,12 @@ const TRANSLATIONS = {
   setNewPassword: 'Imposta nuova password',
   companyLegalDetails:
     'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
-  wrongRecipient:
-    'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal.<br>Non sei tu? Ignora o cancella questa e-mail.',
+  wrongRecipient: {
+    beginning:
+      'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal. Se non desideri riceverne altre, puoi modificare il tuo consenso&nbsp;',
+    linkLabel: 'qui',
+    end: '.<br>Non sei tu? Ignora o cancella questa e-mail.',
+  },
   buttonFallbackText: 'Il bottone non funziona? Puoi usare il seguente link:',
 };
 
@@ -67,19 +71,31 @@ const confirmationMessage = (
         <mj-image align="left" src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
-        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${TRANSLATIONS.title}</mj-text>
+        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${
+          TRANSLATIONS.title
+        }</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
         <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
         <mj-button align="left" background-color="#0073E6" href="${confirmationLink}" font-size="16px" font-weight="700">
           ${TRANSLATIONS.setNewPassword}
         </mj-button>
-        <mj-text mj-class="text link" font-size="14px">${TRANSLATIONS.buttonFallbackText}<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
+        <mj-text mj-class="text link" font-size="14px">${
+          TRANSLATIONS.buttonFallbackText
+        }<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
-        <mj-text mj-class="text" font-size="14px">${TRANSLATIONS.wrongRecipient}</mj-text>
-        <mj-text mj-class="footer-text">${TRANSLATIONS.companyLegalDetails}</mj-text>
+        <mj-text mj-class="text link" font-size="14px">
+          ${TRANSLATIONS.wrongRecipient.beginning}
+          <a href="${`https://${domain}/profile/agreements`}">
+            ${TRANSLATIONS.wrongRecipient.linkLabel}
+          </a>
+          ${TRANSLATIONS.wrongRecipient.end}
+        </mj-text>
+        <mj-text mj-class="footer-text">${
+          TRANSLATIONS.companyLegalDetails
+        }</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
