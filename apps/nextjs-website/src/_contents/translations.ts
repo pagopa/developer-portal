@@ -359,20 +359,20 @@ export const translations = {
       emailSent: (email: string) => `Email inviata a ${email}`,
       advantages: [
         {
-          title: 'Accedi a contenuti esclusivi',
+          title: 'ACCEDI A CONTENUTI ESCLUSIVI',
           text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
         },
         {
-          title: 'Ricevi aggiornamenti sui nostri prodotti',
+          title: 'RICEVI AGGIORNAMENTI SUI NOSTRI PRODOTTI',
           text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
         },
         {
-          title: 'Genera, gestisci e utilizza api Key',
-          text: 'Eleva il tuo flusso di lavoro e sblocca tutto il potenziale del DevPortal.',
+          title: 'ACCEDI AI TOOL PER VELOCIZZARE I TUOI SVILUPPI',
+          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
         },
         {
-          title: 'Richiedi assistenza tramite un form dedicato',
-          text: 'Un canale diretto per avvicinarti con facilità alle soluzioni di cui hai bisogno.',
+          title: 'RICHIEDI ASSISTENZA SU UN CANALE DEDICATO',
+          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
         },
       ],
       companyRoles: [
