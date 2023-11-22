@@ -35,6 +35,16 @@ export const sendTutorials: readonly Tutorial[] = [
     },
     showInOverview: true,
   },
+  {
+    title: 'Come spedire un avviso di pagamento in un messaggio',
+    path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
+    name: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
+    image: {
+      url: '/images/app-io-come-inviare-avviso-pagamento.png',
+      alt: 'Immagine: Come sapere se un cittadino può ricevere messaggi da un servizio',
+    },
+    showInOverview: false,
+  },
 ];
 
 export const sendTutorialLists: TutorialListsData = {
