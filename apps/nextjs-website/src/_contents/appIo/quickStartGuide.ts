@@ -14,7 +14,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
   defaultStepAnchor: '01',
   steps: [
     {
-      title: 'Aderisci tramite l'Area Riservata',
+      title: "Aderisci tramite l'Area Riservata",
       anchor: '01',
       parts: [
         {
