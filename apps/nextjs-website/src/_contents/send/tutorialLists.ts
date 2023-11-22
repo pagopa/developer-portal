@@ -41,7 +41,7 @@ export const sendTutorials: readonly Tutorial[] = [
     name: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
     image: {
       url: '/images/app-io-come-inviare-avviso-pagamento.png',
-      alt: 'Immagine: Come sapere se un cittadino può ricevere messaggi da un servizio',
+      alt: 'Immagine: Come spedire un avviso di pagamento in un messaggio',
     },
     showInOverview: false,
   },
