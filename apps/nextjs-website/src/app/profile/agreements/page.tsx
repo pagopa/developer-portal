@@ -38,31 +38,48 @@ const Agreements = () => {
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = () => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
-      const setUserAttributesResponse = await setUserAttributes({
-        ...user.attributes,
-        'custom:mailinglist_accepted': 'true',
-      });
-      if (!setUserAttributesResponse) {
-        setInfo({ message: t('newsletter.error.subscribe'), isError: true });
-      }
-      setIsSubscriptionButtonDisabled(false);
+      setUserAttributes(
+        {
+          ...user.attributes,
+          'custom:mailinglist_accepted': 'true',
+        },
+        () => {
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        },
+        () => {
+          setInfo({ message: t('newsletter.error.subscribe'), isError: true });
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        }
+      );
     }
   };
-  const handleUnsubscribe = async () => {
+  const handleUnsubscribe = () => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
-      const setUserAttributesResponse = await setUserAttributes({
-        ...user.attributes,
-        'custom:mailinglist_accepted': 'false',
-      });
-      if (!setUserAttributesResponse) {
-        setInfo({ message: t('newsletter.error.unsubscribe'), isError: true });
-      }
+      setUserAttributes(
+        {
+          ...user.attributes,
+          'custom:mailinglist_accepted': 'false',
+        },
+        () => {
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        },
+        () => {
+          setInfo({
+            message: t('newsletter.error.unsubscribe'),
+            isError: true,
+          });
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        }
+      );
     }
-    setIsSubscriptionButtonDisabled(false);
   };
 
   const privacyStatementLink: ReactNode = (
@@ -161,6 +178,7 @@ const Agreements = () => {
                 disabled={isSubscriptionButtonDisabled}
                 sx={{ whiteSpace: 'nowrap' }}
                 onClick={handleSubscribe}
+                color='primary'
               >
                 {t('newsletter.subscribe')}
               </ButtonNaked>
