@@ -19,14 +19,18 @@ export const useUser = () => {
       });
   }, []);
 
-  const setUserAttributes = async (attributes: DevPortalUser['attributes']) => {
+  const setUserAttributes = async (
+    attributes: DevPortalUser['attributes'],
+    onSuccess?: () => null,
+    onFail?: () => null
+  ) => {
     return await Auth.updateUserAttributes(user, attributes)
       .then(() => {
         checkUser();
-        return true;
+        onSuccess && onSuccess();
       })
       .catch(() => {
-        return false;
+        onFail && onFail();
       });
   };
 
