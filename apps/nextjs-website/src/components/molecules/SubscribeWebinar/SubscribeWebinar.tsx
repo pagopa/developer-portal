@@ -9,6 +9,7 @@ const SubscribeWebinar = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // TODO: manage subscription
   const handleSubscribe = async () => null;
   const handleUnsubscribe = async () => null;
 
