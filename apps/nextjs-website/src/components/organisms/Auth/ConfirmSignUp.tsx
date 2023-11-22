@@ -38,9 +38,13 @@ const ConfirmSignUp = ({
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {confirmSignUp.confirmSignUp}
             </Typography>
-            <Typography variant='body2' mb={2}>
-              {confirmSignUp.description(email)}
-            </Typography>
+            <Typography
+              variant='body2'
+              mb={2}
+              dangerouslySetInnerHTML={{
+                __html: confirmSignUp.description(email),
+              }}
+            />
             <Typography component='p' variant='caption' mb={4}>
               {confirmSignUp.didntReceiveEmail}{' '}
               <Link

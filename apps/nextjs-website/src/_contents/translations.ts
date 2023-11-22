@@ -359,16 +359,20 @@ export const translations = {
       emailSent: (email: string) => `Email inviata a ${email}`,
       advantages: [
         {
-          title: 'vantaggio 1',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Accedi a contenuti esclusivi',
+          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
         },
         {
-          title: 'vantaggio 2',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Ricevi aggiornamenti sui nostri prodotti',
+          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
         },
         {
-          title: 'vantaggio 3',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Genera, gestisci e utilizza api Key',
+          text: 'Eleva il tuo flusso di lavoro e sblocca tutto il potenziale del DevPortal.',
+        },
+        {
+          title: 'Richiedi assistenza tramite un form dedicato',
+          text: 'Un canale diretto per avvicinarti con facilità alle soluzioni di cui hai bisogno.',
         },
       ],
       companyRoles: [
@@ -386,7 +390,7 @@ export const translations = {
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
       description: (email: string) =>
-        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
