@@ -17,6 +17,7 @@ import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
 import PageNotFound from '@/app/not-found';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -88,21 +89,12 @@ const Agreements = () => {
     }, [])
     .map((node, index) => <span key={index}>{node}</span>);
 
-  // TODO: add dedicated loading and unauthorized pages
+  // TODO: add dedicated unauthorized page
   if (!loading && !user) {
     return <PageNotFound />;
   }
   if (loading) {
-    return (
-      <Stack
-        justifyContent={'center'}
-        height={'80vh'}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress size={40} />
-      </Stack>
-    );
+    return <Spinner />;
   }
 
   return (

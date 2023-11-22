@@ -7,6 +7,8 @@ import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem'
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import PageNotFound from '@/app/not-found';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
+import Spinner from '@/components/atoms/Spinner/Spinner';
+import React from 'react';
 
 const PersonalData = () => {
   const t = useTranslations('profile');
@@ -42,9 +44,12 @@ const PersonalData = () => {
     },
   ];
 
-  // TODO: add dedicated loading and unauthorized pages
+  // TODO: add dedicated unauthorized page
   if (!loading && !user) {
     return <PageNotFound />;
+  }
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
