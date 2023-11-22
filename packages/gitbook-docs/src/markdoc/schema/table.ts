@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as A from 'fp-ts/lib/Array';
 import * as O from 'fp-ts/lib/Option';
-import Markdoc, { Schema, Node } from '@markdoc/markdoc';
+import Markdoc, { Schema, Node, RenderableTreeNodes } from '@markdoc/markdoc';
 import { BooleanAttr, LinkAttr, SrcAttr } from '../attributes';
 
 type ChildrenAttr<A> = {
@@ -44,6 +44,10 @@ const th: Schema = {
 
 const td: Schema = {
   render: 'TableD',
+};
+
+const paragraph: Schema = {
+  render: 'Paragraph',
 };
 
 const cards: Schema = {
@@ -152,8 +156,26 @@ export const table: Schema = {
         htmltd: td,
       };
       const attrs = node.transformAttributes({ ...config, nodes, tags });
-      const children = node.transformChildren({ ...config, nodes, tags });
+      const children = sanitizeTableChildren(node).transformChildren({
+        ...config,
+        nodes,
+        tags,
+      });
       return new Markdoc.Tag('Table', attrs, children);
     }
   },
 };
+
+function sanitizeTableChildren(node: Node): Node {
+  if (node.type === 'text') {
+    /* eslint-disable-next-line */
+    node.attributes.content = node.attributes.content
+      .replaceAll('{% p %}', '')
+      .replaceAll('{% /p %}', '');
+  }
+  /* eslint-disable-next-line */
+  node.children = node.children.map((child) => {
+    return sanitizeTableChildren(child);
+  });
+  return node;
+}
