@@ -42,31 +42,25 @@ export const sendOverview: OverviewData = {
   feature: {
     title: 'Perché usare SEND',
     subtitle:
-      'Con SEND diminuisci l’incertezza della reperibilità dei destinatari e riduci i tempi e i costi di gestione. La piattaforma infatti permette al tuo ente di:',
+      'SEND solleva gli enti da tutti gli adempimenti legati alla gestione delle comunicazioni a valore legale e permette di ridurre tempi e costi della notificazione verso cittadini e imprese.',
     items: [
       {
         iconName: 'MarkEmailRead',
         subtitle:
-          'Tu depositi i documenti e SEND li invia, in digitale o cartaceo',
-        title: 'Inviare notifiche con API o manualmente',
+          'Tu crei la richiesta e carichi gli allegati e SEND invia la notifica, digitale o cartacea',
+        title: 'Invia notifiche con API o manualmente',
       },
       {
         iconName: 'QueryStats',
         subtitle:
-          'Visualizza la cronologia degli stati della notifica e le relative attestazioni',
-        title: 'Tracciare i cambi di stato',
+          'Visualizza la cronologia degli stati della notifica e le relative attestazioni generate in automatico dalla piattaforma',
+        title: 'Monitora i cambi di stato',
       },
       {
-        iconName: 'TimerSharp',
+        iconName: 'VpnKey',
         subtitle:
-          'Se il destinatario ha un recapito digitale, i tempi di invio sono minori',
-        title: 'Diminuire i tempi di invio',
-      },
-      {
-        iconName: 'Approval',
-        subtitle:
-          'Il processo di notificazione è normato e c’è maggiore certezza di consegna',
-        title: 'Seguire un processo normato',
+          'Puoi creare le tue API key per le richieste di invio notifiche dalla piattaforma SEND. Puoi assegnarle a gruppi, ruotarle quando necessario e bloccarle se obsolete',
+        title: 'Gestisci le API key',
       },
     ],
   },
