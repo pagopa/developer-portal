@@ -106,8 +106,7 @@ export const translations = {
       },
     ],
     webinarsSection: {
-      description:
-        '',
+      description: '',
       title: 'Partecipa ai nostri webinar',
       link: {
         href: '#',
