@@ -9,6 +9,7 @@ export const appIoTutorials: readonly Tutorial[] = [
     title: 'Quali sono i possibili accordi di adesione all’app IO',
     path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere`,
     name: 'Quale accordo di adesione scegliere',
+    showInOverview: true,
   },
   {
     title: 'Come allegare documenti a un messaggio',
@@ -18,6 +19,7 @@ export const appIoTutorials: readonly Tutorial[] = [
       url: '/images/app-io-come-allegare-documenti.png',
       alt: 'Immagine: Come allegare documenti a un messaggio',
     },
+    showInOverview: true,
   },
   {
     title: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
@@ -27,6 +29,17 @@ export const appIoTutorials: readonly Tutorial[] = [
       url: '/images/app-io-ricevere-messaggi.png',
       alt: 'Immagine: Come sapere se un cittadino può ricevere messaggi da un servizio',
     },
+    showInOverview: true,
+  },
+  {
+    title: 'Come spedire un avviso di pagamento in un messaggio',
+    path: `${appIoTutorialListsPath.path}/come-spedire-un-avviso-di-pagamento-in-un-messaggio`,
+    name: 'Come sapere se un cittadino può ricevere messaggi da un servizio',
+    image: {
+      url: '/images/app-io-come-inviare-avviso-pagamento.png',
+      alt: 'Immagine: Come spedire un avviso di pagamento in un messaggio',
+    },
+    showInOverview: false,
   },
 ];
 

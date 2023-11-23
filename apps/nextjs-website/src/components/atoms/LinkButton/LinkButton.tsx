@@ -5,6 +5,8 @@ import Link from 'next/link';
 import React from 'react';
 
 type LinkButtonProps = {
+  readonly color?: string;
+  readonly disabledColor?: string;
   readonly href?: string;
   readonly label: string;
   readonly size?: number;
@@ -13,6 +15,8 @@ type LinkButtonProps = {
 };
 
 const LinkButton = ({
+  color = 'inherit',
+  disabledColor = 'lightgray',
   label,
   href,
   size = 14,
@@ -23,7 +27,7 @@ const LinkButton = ({
     <Typography
       fontSize={size}
       fontWeight={700}
-      color={disabled ? 'lightgray' : 'inherit'}
+      color={disabled ? disabledColor : color}
       sx={{
         '&::first-letter': {
           textTransform: 'capitalize',
@@ -58,7 +62,7 @@ const LinkButton = ({
       )}
       <ArrowForward
         sx={{
-          color: disabled ? 'lightgray' : 'primary.main',
+          color: disabled ? disabledColor : color,
           marginLeft: 0.5,
           height: 24,
           width: 24,

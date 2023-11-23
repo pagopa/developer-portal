@@ -19,7 +19,7 @@ export const appIoOverview: OverviewData = {
   feature: {
     title: 'Perché l’app IO',
     subtitle:
-      'Che tu sia un ente pubblico, privato, centrale o locale, tramite IO potrai:',
+      'Che tu sia un ente pubblico, centrale o locale, tramite IO potrai:',
     items: [
       {
         iconName: 'MessageRounded',
@@ -101,7 +101,7 @@ export const appIoOverview: OverviewData = {
     cta: {
       text: 'Scopri tutti i dettagli dell’integrazione',
       label: 'Leggi la guida tecnica',
-      href: `${appIOGuideListsPath.path}/io-guida-tecnica/v3.0`,
+      href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
     },
     cards: [
       {
