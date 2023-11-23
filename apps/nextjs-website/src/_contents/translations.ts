@@ -371,7 +371,7 @@ export const translations = {
           text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
         },
         {
-          title: 'Richiedi assistenza su un canale dedicato',
+          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
           text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
         },
       ],
