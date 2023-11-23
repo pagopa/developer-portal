@@ -5,8 +5,8 @@ import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type SummaryInformationProps = {
-  startDateTime?: Date;
-  endDateTime?: Date;
+  startDateTime?: string;
+  endDateTime?: string;
   title: string;
   description: string;
   children?: React.ReactNode | React.ReactNode[];
