@@ -4,7 +4,7 @@ import { useUser } from '@/helpers/user.helper';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 
-const SubscribeWebinar = () => {
+const SubscribeToWebinar = () => {
   const { user, loading: loadingUser } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,4 +42,4 @@ const SubscribeWebinar = () => {
   );
 };
 
-export default SubscribeWebinar;
+export default SubscribeToWebinar;

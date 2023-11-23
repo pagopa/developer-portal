@@ -5,7 +5,7 @@ import React from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import SubscribeWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
+import SubscribeToWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
 
 export type webinarsSectionProps = {
   title: string;
@@ -72,7 +72,7 @@ const WebinarsSection = ({
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
               >
-                <SubscribeWebinar />
+                <SubscribeToWebinar />
               </WebinarCard>
             ))}
           </Box>

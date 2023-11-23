@@ -7,7 +7,7 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getWebinar, getWebinars } from '@/lib/api';
 import { Box } from '@mui/material';
-import SubscribeWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
+import SubscribeToWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
 
 type Params = {
   webinarSlug: string;
@@ -24,7 +24,7 @@ const Page = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
   const { webinar: webinarLabels } = translations;
 
-  const subscribeToWebinarButton = <SubscribeWebinar />;
+  const subscribeToWebinarButton = <SubscribeToWebinar />;
 
   return (
     <>
