@@ -36,7 +36,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           html:
             `<div style="position: relative; padding-bottom: calc(64.41666666666667% + 41px); height: 0; width: 100%"> \n` +
             `  <iframe \n` +
-            `    src="https://demo.arcade.software/vzSmyIz00g6JlozGlG3k?embed" \n` +
+            `    src="https://demo.arcade.software/zdEbTvRdFL58al1yb1f3?embed" \n` +
             `    frameborder="0" \n` +
             `    loading="lazy" \n` +
             `    webkitallowfullscreen \n` +
