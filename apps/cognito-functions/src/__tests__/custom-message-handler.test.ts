@@ -3,7 +3,7 @@ import { makeHandler } from '../custom-message-handler';
 import { makeConfirmationEmail } from '../templates/confirmation-message';
 import { makeConfirmationForgotPasswordEmail } from '../templates/confirmation-forgot-password';
 
-const event: CustomMessageTriggerEvent = {
+const makeEvent = (): CustomMessageTriggerEvent => ({
   version: 'aVersion',
   region: 'eu-south-1',
   userPoolId: 'aUserPoolId',
@@ -15,7 +15,14 @@ const event: CustomMessageTriggerEvent = {
   },
   request: {
     userAttributes: {
-      sub: 'user-identity',
+      'custom:mailinglist_accepted': 'false',
+      sub: 'aUserIdentity',
+      email_verified: 'false',
+      'cognito:user_status': 'UNCONFIRMED',
+      'custom:privacy_accepted': 'true',
+      given_name: 'aGivenName',
+      family_name: 'aFamilyName',
+      email: 'email@email.com',
     },
     codeParameter: '{####}',
     linkParameter: '{##aLinkParameter##}',
@@ -26,13 +33,14 @@ const event: CustomMessageTriggerEvent = {
     emailMessage: null,
     emailSubject: null,
   },
-};
+});
 
 describe('Handler', () => {
   const env = {
     domain: 'thedomain.org',
   };
   it('should reply with verification link', async () => {
+    const event = makeEvent();
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
     const expected = makeConfirmationEmail(
@@ -44,7 +52,7 @@ describe('Handler', () => {
 
   it('should reply with verification link on resend code request', async () => {
     const resendCodeEvent: CustomMessageTriggerEvent = {
-      ...event,
+      ...makeEvent(),
       triggerSource: 'CustomMessage_ResendCode',
     };
     const { response } = await makeHandler(env)(resendCodeEvent);
@@ -57,9 +65,18 @@ describe('Handler', () => {
   });
 
   it('should reply with link to reset the password', async () => {
+    const event = makeEvent();
     const forgotPasswordEvent: CustomMessageTriggerEvent = {
       ...event,
       triggerSource: 'CustomMessage_ForgotPassword',
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'cognito:user_status': 'CONFIRMED',
+          email_verified: 'true',
+        },
+      },
     };
     const { response } = await makeHandler(env)(forgotPasswordEvent);
     const { userAttributes, codeParameter } = forgotPasswordEvent.request;
@@ -68,5 +85,23 @@ describe('Handler', () => {
       env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
+  });
+
+  it('should not send any email and return the incoming event', async () => {
+    const event = makeEvent();
+    const userVerifiedEvent = {
+      ...event,
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'cognito:user_status': 'CONFIRMED',
+          email_verified: 'true',
+        },
+      },
+    };
+    const actual = await makeHandler(env)(userVerifiedEvent);
+    const expected = { ...userVerifiedEvent };
+    expect(actual).toStrictEqual(expected);
   });
 });
