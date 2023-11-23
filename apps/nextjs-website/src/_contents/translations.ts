@@ -367,7 +367,7 @@ export const translations = {
           text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
         },
         {
-          title: 'Accedi ai tool per velocizzare i tuoi sviluppi',
+          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
           text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
         },
         {
