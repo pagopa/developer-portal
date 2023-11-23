@@ -21,6 +21,7 @@ import {
   IconButton,
   Snackbar,
   Alert,
+  useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import Link from 'next/link';
@@ -37,6 +38,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     shared,
   } = translations;
 
+  const { palette } = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -145,7 +147,15 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 justifyContent='center'
                 alignItems='center'
               >
-                <Link href='/auth/password-reset'>{login.forgotPassword}</Link>
+                <Typography
+                  component={Link}
+                  href='/auth/password-reset'
+                  fontSize={16}
+                  variant='caption-semibold'
+                  color={palette.primary.main}
+                >
+                  {login.forgotPassword}
+                </Typography>
               </Box>
               <Divider />
               <Box
@@ -155,10 +165,18 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 justifyContent='center'
                 alignItems='center'
               >
-                <Typography variant='body2' textAlign='center' mr={1}>
-                  {login.noAccount}{' '}
+                <Typography variant='body2' mr={1}>
+                  {login.noAccount}
                 </Typography>
-                <Link href='/auth/sign-up'>{signUp.action}</Link>
+                <Typography
+                  component={Link}
+                  href='/auth/sign-up'
+                  fontSize={16}
+                  variant='caption-semibold'
+                  color={palette.primary.main}
+                >
+                  {signUp.action}
+                </Typography>
               </Box>
             </form>
           </Grid>

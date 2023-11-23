@@ -10,6 +10,8 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
+import { Metadata, ResolvingMetadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -25,6 +27,21 @@ export type GuidesPageProps = {
   };
   readonly guidesSections?: GuidesSectionProps[];
 } & ProductLayoutProps;
+
+export const generateMetadata = async (
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
+  const resolvedParent = await parent;
+  const { name, path, abstract } = await getGuideLists(params?.productSlug);
+
+  return makeMetadata({
+    title: name,
+    description: abstract?.description,
+    url: path,
+    parent: resolvedParent,
+  });
+};
 
 const GuidesPage = async ({ params }: ProductParams) => {
   const { abstract, bannerLinks, guidesSections, path, product } =
