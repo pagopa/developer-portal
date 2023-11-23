@@ -5,9 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
-import PageNotFound from '@/app/not-found';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import Spinner from '@/components/atoms/Spinner/Spinner';
 import React from 'react';
 
 const PersonalData = () => {
@@ -43,14 +41,6 @@ const PersonalData = () => {
       value: '••••••••••••',
     },
   ];
-
-  // TODO: add dedicated unauthorized page
-  if (!loading && !user) {
-    return <PageNotFound />;
-  }
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <Stack gap={5} sx={{ padding: 5, width: '100%' }}>
