@@ -22,6 +22,8 @@ const CheckItem = ({ title, description }: CheckItemProps) => {
           mb={2}
           color={palette.text.primary}
           fontSize={18}
+          fontWeight={600}
+          letterSpacing={'normal'}
           sx={{ textTransform: 'none' }}
         >
           {title}
