@@ -5,6 +5,8 @@ import ProductLayout, {
 import { ProductParams } from '@/lib/types/productParams';
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { Metadata, ResolvingMetadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return getProductsSlugs('api').map((productSlug) => ({
@@ -27,6 +29,21 @@ export type ApiPageProps = {
     hideTryIt?: boolean;
   }[];
 } & ProductLayoutProps;
+
+export const generateMetadata = async (
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
+  const resolvedParent = await parent;
+  const { product } = await getApi(params.productSlug);
+
+  return makeMetadata({
+    title: product.name,
+    description: product.description,
+    url: product.path,
+    parent: resolvedParent,
+  });
+};
 
 const ApisPage = async ({ params }: ProductParams) => {
   const {
