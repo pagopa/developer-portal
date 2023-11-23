@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import {
   Alert,
   Box,
-  CircularProgress,
   Divider,
   Link as LinkMui,
   Snackbar,
@@ -16,7 +15,6 @@ import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
-import PageNotFound from '@/app/not-found';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -104,23 +102,6 @@ const Agreements = () => {
       return [...acc, ` ${curr} `];
     }, [])
     .map((node, index) => <span key={index}>{node}</span>);
-
-  // TODO: add dedicated loading and unauthorized pages
-  if (!loading && !user) {
-    return <PageNotFound />;
-  }
-  if (loading) {
-    return (
-      <Stack
-        justifyContent={'center'}
-        height={'80vh'}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress size={40} />
-      </Stack>
-    );
-  }
 
   return (
     <>
