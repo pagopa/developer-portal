@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import { Logout } from '@mui/icons-material';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import {
@@ -11,17 +10,16 @@ import {
   MenuItem,
   ListItemIcon,
   useTheme,
-  Link,
+  Link as MuiLink,
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { FC, useCallback, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 const UserInfo: FC = () => {
-  const {
-    shared,
-    auth: { logout },
-  } = translations;
+  const t = useTranslations();
   const { user } = useUser();
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const open = Boolean(menu);
@@ -97,16 +95,22 @@ const UserInfo: FC = () => {
           mt: 1.5,
         }}
       >
-        <MenuItem onClick={handleClose} sx={{ p: 2 }}>
-          <Link
-            href='/profile/personal-data'
-            sx={{ textDecoration: 'none', color: palette.text.primary }}
+        <MenuItem onClick={handleClose} sx={{ flexDirection: 'column', p: 0 }}>
+          <MuiLink
+            component={Link}
+            href='profile/personal-data'
+            sx={{
+              alignSelf: 'stretch',
+              textDecoration: 'none',
+              color: palette.text.primary,
+              p: 2,
+            }}
           >
-            {shared.yourData}
-          </Link>
+            {t('shared.yourData')}
+          </MuiLink>
         </MenuItem>
         <MenuItem onClick={signOut} sx={{ p: 2 }}>
-          {logout}
+          {t('auth.logout')}
           <ListItemIcon sx={{ ml: 1 }}>
             <Logout fontSize='small' sx={{ color: palette.text.primary }} />
           </ListItemIcon>

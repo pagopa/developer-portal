@@ -41,9 +41,13 @@
             }
         }
     },
+    "auth": {
+        "logout": "Esci"
+    },
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
-        "cancel": "Annulla"
+        "cancel": "Annulla",
+        "yourData": "I tuoi dati"
     }
 }
