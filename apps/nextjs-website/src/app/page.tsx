@@ -4,9 +4,20 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
+import { Metadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getNextWebinars, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import dynamic from 'next/dynamic';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { homepage } = translations;
+
+  return makeMetadata({
+    description: homepage.productsShowcaseTitle,
+    url: '/',
+  });
+}
 
 const NotSsrWebinarHeaderBanner = dynamic(
   () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),

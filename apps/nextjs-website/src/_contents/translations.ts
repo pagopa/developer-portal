@@ -19,6 +19,7 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
+    siteTitle: 'PagoPA DevPortal',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
