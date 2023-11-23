@@ -5,7 +5,7 @@ import React from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import SubscribeToWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
+import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 
 export type webinarsSectionProps = {
   title: string;
