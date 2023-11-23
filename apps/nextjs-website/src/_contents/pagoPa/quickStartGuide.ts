@@ -40,13 +40,13 @@ export const pagoPaQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: `<p>Accedi alla <a href="https://selfcare.pagopa.it/auth/login" target="_blank">piattaforma Self Care</a> e seleziona Piattaforma PagoPA per generare le API Key. In questo video interattivo troverai tutti i passaggi utili per la sua creazione.</p>`,
+          html: `<p>Accedi all'<a href="https://selfcare.pagopa.it/auth/login" target="_blank">Area Riservata</a> e seleziona Piattaforma PagoPA per generare le API Key. In questo video interattivo troverai tutti i passaggi utili per la sua creazione.</p>`,
         },
         {
           component: 'innerHTMLLazyLoaded',
           html:
             `<div style="position: relative; padding-bottom: calc(64.41666666666667% + 41px); height: 0; width: 100%"> \n` +
-            `  <iframe src="https://demo.arcade.software/nMt9Gd1ulmuLwIDGQC1R?embed" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;color-scheme: light;" title="PagoPA Piattaforma Self Care – pagoPA"> \n` +
+            `  <iframe src="https://demo.arcade.software/nMt9Gd1ulmuLwIDGQC1R?embed" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;color-scheme: light;" title="Area Riservata – pagoPA"> \n` +
             `  </iframe> \n` +
             `</div> \n`,
         },
