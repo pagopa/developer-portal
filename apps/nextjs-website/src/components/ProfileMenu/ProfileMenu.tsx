@@ -7,6 +7,7 @@ import React, { ReactNode } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { usePathname } from 'next/navigation';
 import PageNotFound from '@/app/not-found';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 const ProfileMenu = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useUser();
@@ -25,17 +26,7 @@ const ProfileMenu = ({ children }: { children: ReactNode }) => {
     return <PageNotFound />;
   }
   if (loading) {
-    // TODO: Replace with the Spinner component once merged
-    return (
-      <Stack
-        justifyContent={'center'}
-        height={500}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress />
-      </Stack>
-    );
+    return <Spinner />;
   }
 
   return (
