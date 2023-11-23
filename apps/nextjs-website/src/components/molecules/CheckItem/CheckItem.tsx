@@ -13,15 +13,16 @@ const CheckItem = ({ title, description }: CheckItemProps) => {
   return (
     <Grid container alignItems='flex-start' mb={4}>
       <Grid item xs={1} mr={3}>
-        <CheckCircle sx={{ fontSize: 40 }} color='info' />
+        <CheckCircle sx={{ fontSize: 40, color: palette.info.extraLight }} />
       </Grid>
       <Grid item xs={10}>
         <Typography
           variant='overline'
           content='div'
           mb={2}
-          color={palette.text.secondary}
-          fontSize={14}
+          color={palette.text.primary}
+          fontSize={18}
+          sx={{ textTransform: 'none' }}
         >
           {title}
         </Typography>
