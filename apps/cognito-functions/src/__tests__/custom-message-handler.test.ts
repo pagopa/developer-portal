@@ -65,9 +65,18 @@ describe('Handler', () => {
   });
 
   it('should reply with link to reset the password', async () => {
+    const event = makeEvent();
     const forgotPasswordEvent: CustomMessageTriggerEvent = {
-      ...makeEvent(),
+      ...event,
       triggerSource: 'CustomMessage_ForgotPassword',
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'cognito:user_status': 'CONFIRMED',
+          email_verified: 'true',
+        },
+      },
     };
     const { response } = await makeHandler(env)(forgotPasswordEvent);
     const { userAttributes, codeParameter } = forgotPasswordEvent.request;
