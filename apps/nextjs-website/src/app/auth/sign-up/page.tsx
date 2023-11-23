@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { LoaderPhase } from '@/lib/types/loader';
+import { RESET_AFTER_MS } from '@/lib/constants';
 
 interface Info {
   message: string;
@@ -109,7 +110,7 @@ const SignUp = () => {
 
     setTimeout(() => {
       setLoader(undefined);
-    }, 4000);
+    }, RESET_AFTER_MS);
   }, [userData.username]);
 
   return (
@@ -169,7 +170,7 @@ const SignUp = () => {
       </Box>
       <Snackbar
         open={!!info}
-        autoHideDuration={4000}
+        autoHideDuration={RESET_AFTER_MS}
         onClose={() => setInfo(null)}
       >
         <Alert severity={info?.isError ? 'error' : 'success'}>
