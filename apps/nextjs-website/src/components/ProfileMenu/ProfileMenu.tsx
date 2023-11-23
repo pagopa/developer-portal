@@ -6,6 +6,7 @@ import DesktopProfileMenu from '@/components/molecules/DesktopProfileMenu/Deskto
 import React, { ReactNode } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { usePathname } from 'next/navigation';
+import PageNotFound from '@/app/not-found';
 
 const ProfileMenu = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useUser();
