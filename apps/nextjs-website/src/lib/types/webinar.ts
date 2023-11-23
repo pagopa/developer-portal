@@ -5,8 +5,8 @@ export type Webinar = {
   readonly description: string;
   readonly html?: string;
   readonly speakers: readonly Speaker[];
-  readonly startDateTime?: Date;
-  readonly endDateTime?: Date;
+  readonly startDateTime?: string;
+  readonly endDateTime?: string;
   readonly title: string;
   readonly slug: string;
   readonly relatedLinks?: readonly Path[];
