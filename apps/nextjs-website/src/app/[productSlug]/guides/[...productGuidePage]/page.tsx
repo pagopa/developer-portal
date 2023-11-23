@@ -12,6 +12,8 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { Metadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -43,6 +45,21 @@ type ProductGuidePageProps = {
   body: string;
   bodyConfig: ParseContentConfig;
 } & ProductLayoutProps;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const {
+    page: { path, title },
+  } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+
+  return makeMetadata({
+    title,
+    url: path,
+  });
+}
 
 const Page = async ({ params }: { params: Params }) => {
   const guideProps = await getGuide(

@@ -1,4 +1,5 @@
 import { cookieDomainScript, isProduction } from '@/config';
+import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -41,6 +42,14 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
+const baseUrl = isProduction
+  ? 'https://developer.pagopa.it'
+  : 'https://dev.developer.pagopa.it';
+
+export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
+};
+
 export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'it' }];
 }
@@ -69,7 +78,6 @@ export default async function RootLayout({
     <html lang='it'>
       <head>
         <meta name='robots' content='noindex,nofollow' />
-        <title>PagoPA DevPortal</title>
         {isProduction && (
           <script
             key='script-matomo'
