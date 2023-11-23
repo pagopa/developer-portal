@@ -47,7 +47,10 @@
         }
     },
     "auth": {
-        "logout": "Esci"
+        "logout": "Esci",
+        "login": {
+            "action": "Accedi"
+        }
     },
     "shared": {
         "goToModel": "Vai al modello",
