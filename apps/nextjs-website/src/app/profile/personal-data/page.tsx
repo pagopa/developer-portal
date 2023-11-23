@@ -6,11 +6,10 @@ import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import React from 'react';
 
 const PersonalData = () => {
   const t = useTranslations('profile');
-  const { user, loading } = useUser();
+  const { user } = useUser();
 
   const dataSectionItems: InfoCardItemProps[] = [
     {
