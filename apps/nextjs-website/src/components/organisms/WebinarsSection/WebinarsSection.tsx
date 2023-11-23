@@ -23,7 +23,7 @@ const WebinarsSection = ({
 }: webinarsSectionProps) => {
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);
-  const { user, aligned: userAligned, setUserAttributes } = useUser();
+  const { aligned: userAligned, setUserAttributes } = useUser();
 
   return (
     <Box
@@ -74,12 +74,11 @@ const WebinarsSection = ({
                 speakers={webinar.speakers}
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
-                userAttributes={user?.attributes}
                 userAligned={userAligned}
                 setUserAttributes={async (
                   attributes: DevPortalUser['attributes']
                 ) => {
-                  setUserAttributes(attributes);
+                  await setUserAttributes(attributes);
                   return null;
                 }}
                 handleErrorMessage={(message: string) => {

@@ -9,9 +9,9 @@ import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
 import { webinarSubscriptionPresent } from '@/helpers/userPreferences.helpers';
 import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { DevPortalUser } from '@/lib/types/auth';
+import { useUser } from '@/helpers/user.helper';
 
 type WebinarCardProps = {
-  userAttributes?: DevPortalUser['attributes'];
   userAligned?: boolean;
   setUserAttributes?: (
     attributes: DevPortalUser['attributes']
@@ -26,7 +26,6 @@ const WebinarCard = ({
   speakers,
   startDateTime,
   endDateTime,
-  userAttributes,
   userAligned,
   setUserAttributes,
   handleErrorMessage,
@@ -34,10 +33,11 @@ const WebinarCard = ({
   const theme = useTheme();
   const { webinar } = translations;
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => {
-    if (userAttributes && slug) {
-      setIsSubscribed(webinarSubscriptionPresent(slug, userAttributes));
+    if (user && slug) {
+      setIsSubscribed(webinarSubscriptionPresent(slug, user.attributes));
     }
   }, []);
 
@@ -78,7 +78,7 @@ const WebinarCard = ({
           <Box mt={4}>
             <SubscribeToWebinar
               webinarSlug={slug}
-              userAttributes={userAttributes}
+              userAttributes={user?.attributes}
               userAligned={userAligned}
               setUserAttributes={setUserAttributes}
               isSubscribed={isSubscribed}
