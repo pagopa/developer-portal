@@ -26,6 +26,7 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  useTheme,
 } from '@mui/material';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -63,6 +64,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
     mailinglistAccepted,
   } = userData;
 
+  const { palette } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
@@ -147,10 +149,10 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
 
   return (
     <Box component='section'>
-      <Card variant='outlined' elevation={8}>
+      <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
-            <Typography variant='h4' pt={8} mb={4} textAlign='center'>
+            <Typography variant='h4' pt={4} mb={4} textAlign='center'>
               {signUp.createYourAccount}
             </Typography>
             <Typography variant='body2' mb={2}>
@@ -368,16 +370,24 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
             <Divider />
             <Stack
               pt={4}
-              pb={8}
+              pb={4}
               display='flex'
               alignItems='center'
               justifyContent='center'
               flexDirection='row'
             >
-              <Typography variant='caption-semibold' mr={1}>
+              <Typography variant='body2' mr={1}>
                 {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>{login.action}</Link>
+              <Typography
+                component={Link}
+                fontSize={16}
+                href='/auth/login'
+                variant='caption-semibold'
+                color={palette.primary.main}
+              >
+                {login.action}
+              </Typography>
             </Stack>
           </Grid>
         </Grid>
