@@ -9,6 +9,7 @@ import { emailMatcher } from '@/helpers/auth.helpers';
 import { useRouter } from 'next/navigation';
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
 import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
+import { RESET_AFTER_MS } from '@/lib/constants';
 
 interface Info {
   message: string;
@@ -93,7 +94,7 @@ const PasswordReset = () => {
       </Box>
       <Snackbar
         open={!!info}
-        autoHideDuration={4000}
+        autoHideDuration={RESET_AFTER_MS}
         onClose={() => setInfo(null)}
       >
         <Alert severity={info?.isError ? 'error' : 'success'}>

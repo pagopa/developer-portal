@@ -39,7 +39,7 @@ const WebinarCard = ({
     if (userAttributes && slug) {
       setIsSubscribed(webinarSubscriptionPresent(slug, userAttributes));
     }
-  }, [userAttributes]);
+  }, []);
 
   return (
     <Card

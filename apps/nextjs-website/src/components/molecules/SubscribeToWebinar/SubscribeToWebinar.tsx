@@ -100,7 +100,6 @@ const SubscribeToWebinar = ({
 
   return (
     <SubscribeButton
-      key={webinarSlug + isSubscribed}
       disabled={!userAligned || isLoading}
       isLoading={isLoading}
       isSubscribed={isSubscribed}
