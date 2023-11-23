@@ -7,7 +7,7 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getWebinar, getWebinars } from '@/lib/api';
 import { Box } from '@mui/material';
-import SubscribeToWebinar from '@/components/molecules/SubscribeWebinar/SubscribeWebinar';
+import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 
 type Params = {
   webinarSlug: string;
