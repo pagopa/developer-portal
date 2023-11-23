@@ -1,13 +1,23 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
+import { webinarSubscriptionPresent } from '@/helpers/userPreferences.helpers';
+import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
+import { DevPortalUser } from '@/lib/types/auth';
 
-type WebinarCardProps = { children?: React.ReactNode } & Webinar;
+type WebinarCardProps = {
+  userAttributes?: DevPortalUser['attributes'];
+  userAligned?: boolean;
+  setUserAttributes?: (
+    attributes: DevPortalUser['attributes']
+  ) => Promise<null>;
+  handleErrorMessage?: (message: string) => null;
+} & Webinar;
 
 const WebinarCard = ({
   title,
@@ -16,10 +26,20 @@ const WebinarCard = ({
   speakers,
   startDateTime,
   endDateTime,
-  children,
+  userAttributes,
+  userAligned,
+  setUserAttributes,
+  handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
   const { webinar } = translations;
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    if (userAttributes && slug) {
+      setIsSubscribed(webinarSubscriptionPresent(slug, userAttributes));
+    }
+  }, [userAttributes]);
 
   return (
     <Card
@@ -55,7 +75,20 @@ const WebinarCard = ({
             label={webinar.whyParticipate}
             color={theme.palette.primary.main}
           />
-          <Box mt={4}>{children}</Box>
+          <Box mt={4}>
+            <SubscribeToWebinar
+              webinarSlug={slug}
+              userAttributes={userAttributes}
+              userAligned={userAligned}
+              setUserAttributes={setUserAttributes}
+              isSubscribed={isSubscribed}
+              setIsSubscribed={(bool: boolean) => {
+                setIsSubscribed(bool);
+                return null;
+              }}
+              handleErrorMessage={handleErrorMessage}
+            />
+          </Box>
         </Box>
         {speakers && (
           <Box>
