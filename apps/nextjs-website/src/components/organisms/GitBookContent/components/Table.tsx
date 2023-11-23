@@ -53,7 +53,7 @@ export const TableD = (props: TableCellProps) => {
       sx={{ border: `1px solid ${theme.palette.divider}` }}
       {...props}
     >
-      {props.children == 'true' ? (
+      {props.children === 'true' ? (
         <Checkbox
           disabled
           checked
