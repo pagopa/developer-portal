@@ -151,7 +151,7 @@ const Agreements = () => {
           >
             {hasAcceptedMailingListSubscription ? (
               <ButtonNaked
-                disabled={isSubscriptionButtonDisabled}
+                disabled={loading || isSubscriptionButtonDisabled}
                 sx={{
                   color: palette.error.dark,
                   whiteSpace: 'nowrap',
@@ -162,7 +162,7 @@ const Agreements = () => {
               </ButtonNaked>
             ) : (
               <ButtonNaked
-                disabled={isSubscriptionButtonDisabled}
+                disabled={loading || isSubscriptionButtonDisabled}
                 sx={{ whiteSpace: 'nowrap' }}
                 onClick={handleSubscribe}
                 color='primary'
