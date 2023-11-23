@@ -49,6 +49,11 @@
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
-        "cancel": "Annulla"
+        "cancel": "Annulla",
+        "subscribeButton": {
+            "subscribeLabel": "Iscriviti",
+            "subscribedLabel": "Iscrizione confermata",
+            "unsubscribeLabel": "Annulla iscrizione"
+        }
     }
 }
