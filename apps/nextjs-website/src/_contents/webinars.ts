@@ -31,8 +31,8 @@ export const webinars: readonly Webinar[] = [
         imagePath: '/images/speaker-01.png',
       },
     ],
-    startDateTime: new Date('2024-12-31T11:00:00'),
-    endDateTime: new Date('2024-12-31T13:00:00'),
+    startDateTime: '2024-12-31T11:00:00',
+    endDateTime: '2024-12-31T13:00:00',
     subscribeCtaLabel:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore',
     startInfo: {
