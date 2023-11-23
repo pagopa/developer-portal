@@ -20,6 +20,10 @@ const ProfileMenu = ({ children }: { children: ReactNode }) => {
 
   const pathname = usePathname();
 
+  // TODO: add dedicated unauthorized page
+  if (!loading && !user) {
+    return <PageNotFound />;
+  }
   if (loading) {
     // TODO: Replace with the Spinner component once merged
     return (
