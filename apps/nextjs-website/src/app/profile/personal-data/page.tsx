@@ -1,5 +1,4 @@
 'use client';
-
 import { Stack, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useUser } from '@/helpers/user.helper';
@@ -42,7 +41,10 @@ const PersonalData = () => {
   ];
 
   return (
-    <Stack gap={5} sx={{ padding: 5, width: '100%' }}>
+    <Stack
+      gap={5}
+      sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
+    >
       <Typography variant='h4'>{t('personalData.title')}</Typography>
       <InfoCard
         cardTitle={t('personalData.dataSection')}
