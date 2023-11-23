@@ -92,7 +92,7 @@ export default async function RootLayout({
               <div
                 key='script-cookie'
                 dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-              ></div>
+              />
             )}
             <AuthProvider>
               <SiteHeader products={products} />
