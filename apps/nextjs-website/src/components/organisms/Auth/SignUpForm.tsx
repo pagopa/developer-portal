@@ -72,6 +72,7 @@ const SignUpForm = ({
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [actionDisabled, setActionDisabled] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -119,6 +120,8 @@ const SignUpForm = ({
     }
 
     onSignUp();
+
+    setActionDisabled(true);
   }, [onSignUp, userData]);
 
   const validateForm = useCallback(() => {
@@ -135,6 +138,8 @@ const SignUpForm = ({
     const isPasswordEqual = password === confirmPassword;
 
     setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
+
+    setActionDisabled(false);
   }, [isPasswordValid, userData]);
 
   useEffect(() => {
@@ -353,7 +358,7 @@ const SignUpForm = ({
                   <Button
                     variant='contained'
                     onClick={onSignUpClick}
-                    disabled={!isFormValid}
+                    disabled={actionDisabled || !isFormValid}
                   >
                     {signUp.action}
                   </Button>
