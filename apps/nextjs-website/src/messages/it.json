@@ -46,6 +46,10 @@
             }
         }
     },
+    "webinar": {
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi"
+    },
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
