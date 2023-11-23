@@ -11,10 +11,13 @@ export type CustomMessageEnv = t.TypeOf<typeof CustomMessageEnv>;
 export const makeHandler =
   (env: CustomMessageEnv) => async (event: CustomMessageTriggerEvent) => {
     const username = event.request.userAttributes['sub'];
+    const cognitoUserStatus =
+      event.request.userAttributes['cognito:user_status'];
 
     if (
-      event.triggerSource === 'CustomMessage_SignUp' ||
-      event.triggerSource === 'CustomMessage_ResendCode'
+      (event.triggerSource === 'CustomMessage_SignUp' ||
+        event.triggerSource === 'CustomMessage_ResendCode') &&
+      cognitoUserStatus === 'UNCONFIRMED'
     ) {
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
