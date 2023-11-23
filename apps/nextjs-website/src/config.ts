@@ -14,3 +14,11 @@ export const amplifyConfig = {
   },
   authenticationFlowType: 'CUSTOM_AUTH',
 };
+
+export const profileMenuItems: readonly {
+  readonly label: string;
+  readonly href: string;
+}[] = [
+  { label: 'personalData.title', href: '/profile/personal-data' },
+  { label: 'agreements.title', href: '/profile/agreements' },
+];
