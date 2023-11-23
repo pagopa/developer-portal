@@ -7,6 +7,7 @@ import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getWebinar, getWebinars } from '@/lib/api';
 import { Box } from '@mui/material';
+import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 
 type Params = {
   webinarSlug: string;
@@ -23,6 +24,8 @@ const Page = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
   const { webinar: webinarLabels } = translations;
 
+  const subscribeToWebinarButton = <SubscribeToWebinar />;
+
   return (
     <>
       <SummaryInformation
@@ -30,9 +33,13 @@ const Page = async ({ params }: { params: Params }) => {
         description={webinar.description}
         startDateTime={webinar.startDateTime}
         endDateTime={webinar.endDateTime}
-      />
+      >
+        {subscribeToWebinarButton}
+      </SummaryInformation>
       {webinar.subscribeCtaLabel && (
-        <SubscribeCta label={webinar.subscribeCtaLabel}></SubscribeCta>
+        <SubscribeCta label={webinar.subscribeCtaLabel}>
+          {subscribeToWebinarButton}
+        </SubscribeCta>
       )}
       {webinar.html && (
         <EContainer>
