@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import {
   Alert,
   Box,
-  CircularProgress,
   Divider,
   Link as LinkMui,
   Snackbar,
@@ -16,8 +15,6 @@ import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
-import PageNotFound from '@/app/not-found';
-import Spinner from '@/components/atoms/Spinner/Spinner';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -39,31 +36,48 @@ const Agreements = () => {
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = () => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
-      const setUserAttributesResponse = await setUserAttributes({
-        ...user.attributes,
-        'custom:mailinglist_accepted': 'true',
-      });
-      if (!setUserAttributesResponse) {
-        setInfo({ message: t('newsletter.error.subscribe'), isError: true });
-      }
-      setIsSubscriptionButtonDisabled(false);
+      setUserAttributes(
+        {
+          ...user.attributes,
+          'custom:mailinglist_accepted': 'true',
+        },
+        () => {
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        },
+        () => {
+          setInfo({ message: t('newsletter.error.subscribe'), isError: true });
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        }
+      );
     }
   };
-  const handleUnsubscribe = async () => {
+  const handleUnsubscribe = () => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
-      const setUserAttributesResponse = await setUserAttributes({
-        ...user.attributes,
-        'custom:mailinglist_accepted': 'false',
-      });
-      if (!setUserAttributesResponse) {
-        setInfo({ message: t('newsletter.error.unsubscribe'), isError: true });
-      }
+      setUserAttributes(
+        {
+          ...user.attributes,
+          'custom:mailinglist_accepted': 'false',
+        },
+        () => {
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        },
+        () => {
+          setInfo({
+            message: t('newsletter.error.unsubscribe'),
+            isError: true,
+          });
+          setIsSubscriptionButtonDisabled(false);
+          return null;
+        }
+      );
     }
-    setIsSubscriptionButtonDisabled(false);
   };
 
   const privacyStatementLink: ReactNode = (
@@ -88,14 +102,6 @@ const Agreements = () => {
       return [...acc, ` ${curr} `];
     }, [])
     .map((node, index) => <span key={index}>{node}</span>);
-
-  // TODO: add dedicated unauthorized page
-  if (!loading && !user) {
-    return <PageNotFound />;
-  }
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <>
@@ -153,6 +159,7 @@ const Agreements = () => {
                 disabled={isSubscriptionButtonDisabled}
                 sx={{ whiteSpace: 'nowrap' }}
                 onClick={handleSubscribe}
+                color='primary'
               >
                 {t('newsletter.subscribe')}
               </ButtonNaked>
