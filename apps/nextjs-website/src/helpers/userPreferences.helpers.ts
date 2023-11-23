@@ -20,9 +20,14 @@ export function userPreferencesFromAttributes(
     const userPreferences = userPreferencesString
       ? JSON.parse(userPreferencesString)
       : DEFAULT_USER_PREFERENCES;
-    return isUserPreferences(userPreferences)
+    const userPreferencesParsed = isUserPreferences(userPreferences)
       ? (userPreferences as UserPreferences)
       : DEFAULT_USER_PREFERENCES;
+    return {
+      ...userPreferencesParsed,
+      subscribedWebinarSlugs:
+        userPreferencesParsed.subscribedWebinarSlugs.filter(Boolean),
+    };
   } catch (error) {
     return DEFAULT_USER_PREFERENCES;
   }
@@ -49,17 +54,7 @@ export function addWebinarSubscriptionToAttributes(
   attributes: DevPortalUser['attributes']
 ): DevPortalUser['attributes'] | Error {
   const currentUserPreferences = userPreferencesFromAttributes(attributes);
-  if (!currentUserPreferences.subscribedWebinarSlugs) {
-    return mergeUserPreferencesToAttributes(
-      {
-        subscribedWebinarSlugs: [slug],
-      },
-      attributes
-    );
-  } else if (
-    !!currentUserPreferences.subscribedWebinarSlugs &&
-    !currentUserPreferences.subscribedWebinarSlugs.includes(slug)
-  ) {
+  if (!currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return mergeUserPreferencesToAttributes(
       {
         subscribedWebinarSlugs: [
@@ -79,10 +74,7 @@ export function removeWebinarSubscriptionToAttributes(
   attributes: DevPortalUser['attributes']
 ): DevPortalUser['attributes'] | Error {
   const currentUserPreferences = userPreferencesFromAttributes(attributes);
-  if (
-    !!currentUserPreferences.subscribedWebinarSlugs &&
-    currentUserPreferences.subscribedWebinarSlugs.includes(slug)
-  ) {
+  if (currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return mergeUserPreferencesToAttributes(
       {
         subscribedWebinarSlugs:
@@ -95,4 +87,12 @@ export function removeWebinarSubscriptionToAttributes(
   } else {
     return attributes;
   }
+}
+
+export function webinarSubscriptionPresent(
+  slug: string,
+  attributes: DevPortalUser['attributes']
+): boolean {
+  const currentUserPreferences = userPreferencesFromAttributes(attributes);
+  return currentUserPreferences.subscribedWebinarSlugs.includes(slug);
 }

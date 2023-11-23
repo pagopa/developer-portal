@@ -4,6 +4,7 @@ import {
   mergeUserPreferencesToAttributes,
   removeWebinarSubscriptionToAttributes,
   userPreferencesFromAttributes,
+  webinarSubscriptionPresent,
 } from '../../helpers/userPreferences.helpers';
 import { DevPortalUser, UserPreferences } from '@/lib/types/auth';
 
@@ -54,6 +55,18 @@ it('should extract UserPreference from user with incosistent state', () => {
     userPreferencesFromAttributes({
       ...attributesWithoutUserPreferences,
       'custom:user_preferences': (12345).toString(),
+    })
+  ).toEqual(expectedUserPreferences);
+});
+
+it('should remove null value from UserPreference', () => {
+  const expectedUserPreferences: UserPreferences = {
+    subscribedWebinarSlugs: [],
+  };
+  expect(
+    userPreferencesFromAttributes({
+      ...attributesWithoutUserPreferences,
+      'custom:user_preferences': `{"subscribedWebinarSlugs":[null]}`,
     })
   ).toEqual(expectedUserPreferences);
 });
@@ -129,4 +142,14 @@ it('should remove existing webinar subscription to attributes', () => {
   expect(
     removeWebinarSubscriptionToAttributes(existingSlugs[0], attributes)
   ).toEqual(newAttributes);
+});
+
+it('should return true if webinar subscription exists', () => {
+  expect(webinarSubscriptionPresent(existingSlugs[0], attributes)).toEqual(
+    true
+  );
+});
+
+it('should return false if webinar subscription not exists', () => {
+  expect(webinarSubscriptionPresent('new-slug', attributes)).toEqual(false);
 });
