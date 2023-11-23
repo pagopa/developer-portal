@@ -9,7 +9,7 @@ export const webinars: readonly Webinar[] = [
       ' Il mondo di IO è molto ampio, il primo passo è capire come integrarsi alle nuove API e con questo webinar vedremo le informazioni principali per farlo!',
     html:
       `<h4 style="font-weight: 600; font-size: 24px;">Tutto quello che serve per integrarsi con le nuove API</h4> \n` +
-      `<p>Durante il webinar, approfondiremo la creazione, l'invio di un servizio e la gestione di scenari comuni, come "Ho creato un servizio e lo vedo in stato di bozza. Cosa devo fare?". Partecipate a questo webinar per ottenere una comprensione approfondita e per imparare a gestire in modo efficace il ciclo di vita dei vostri servizi su IO. </p> \n`+
+      `<p>Durante il webinar, approfondiremo la creazione, l'invio di un servizio e la gestione di scenari comuni, come "Ho creato un servizio e lo vedo in stato di bozza. Cosa devo fare?". Partecipate a questo webinar per ottenere una comprensione approfondita e per imparare a gestire in modo efficace il ciclo di vita dei vostri servizi su IO. </p> \n` +
       `<br /> \n` +
       `<img src='/images/webinar-image.png' /> \n` +
       `<br /> \n` +
@@ -41,7 +41,6 @@ export const webinars: readonly Webinar[] = [
     startDateTime: '2023-12-14T11:00:00',
     endDateTime: '2023-12-14T11:40:00',
     subscribeCtaLabel:'',
-      //'questo testo qui non esiste su FIGMA',
     startInfo: {
       title: 'Risorse correlate',
       cards: [
