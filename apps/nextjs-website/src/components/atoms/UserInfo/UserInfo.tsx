@@ -17,9 +17,12 @@ import { FC, useCallback, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
 
 const UserInfo: FC = () => {
   const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
   const { user } = useUser();
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const open = Boolean(menu);
@@ -33,8 +36,13 @@ const UserInfo: FC = () => {
   const signOut = useCallback(async () => {
     await Auth.signOut();
 
+    // Check if the user in an auth only page
+    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+      router.replace('/');
+    }
+
     handleClose();
-  }, []);
+  }, [pathname, router]);
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenu(event.currentTarget);
