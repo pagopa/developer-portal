@@ -1,6 +1,13 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import { Box, Card, CardContent, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import React from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
