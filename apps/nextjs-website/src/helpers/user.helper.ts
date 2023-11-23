@@ -19,6 +19,21 @@ export const useUser = () => {
       });
   }, []);
 
+  const setUserAttributes = async (
+    attributes: DevPortalUser['attributes'],
+    onSuccess?: () => null,
+    onFail?: () => null
+  ) => {
+    return await Auth.updateUserAttributes(user, attributes)
+      .then(() => {
+        checkUser();
+        onSuccess && onSuccess();
+      })
+      .catch(() => {
+        onFail && onFail();
+      });
+  };
+
   useEffect(() => {
     checkUser();
   }, []);
@@ -41,5 +56,5 @@ export const useUser = () => {
     return () => cancel();
   }, []);
 
-  return { user, loading };
+  return { user, loading, setUserAttributes };
 };
