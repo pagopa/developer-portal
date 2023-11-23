@@ -31,6 +31,7 @@ const SpeakerAvatar = ({
     <Box
       sx={{
         display: 'flex',
+        flexShrink: 0,
         alignItems: 'center',
         justifyContent: 'center',
         borderStyle: 'solid',
