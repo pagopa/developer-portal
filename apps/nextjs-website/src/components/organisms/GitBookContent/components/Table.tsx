@@ -55,7 +55,7 @@ export const TableD = (props: TableCellProps) => {
           checked
           style={{ color: theme.palette.primary.main }}
         />
-      ) : props.children == 'false' ? (
+      ) : props.children === 'false' ? (
         <Checkbox disabled />
       ) : (
         props.children || ''
