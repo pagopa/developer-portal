@@ -41,7 +41,6 @@ export const TableH = styled(MUITableCell)(({ theme }) => ({
   padding: '0.5rem 1rem',
 }));
 
-
 export const TableD = (props: TableCellProps) => {
   const theme = useTheme();
   return (
