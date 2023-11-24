@@ -9,6 +9,7 @@ const AccountActivatedCard = () => {
     auth: { accountActivated },
   } = translations;
 
+  // TODO: refactor using SingleCard component
   return (
     <Box
       component='section'
