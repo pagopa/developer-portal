@@ -47,6 +47,10 @@
             }
         }
     },
+    "webinar": {
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi"
+    },
     "auth": {
         "logout": "Esci",
         "login": {
