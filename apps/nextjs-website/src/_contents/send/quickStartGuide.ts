@@ -29,7 +29,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>',
+          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b>, contenente l’atto della notifica, e <b>pagamento.pdf</b>, contenente il bollettino pagoPA.',
         },
       ],
     },
