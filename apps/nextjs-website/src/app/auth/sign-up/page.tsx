@@ -73,6 +73,11 @@ const SignUp = () => {
         'custom:company_type': company,
       },
     }).catch((error) => {
+      if (error.code.includes('UsernameExistsException')) {
+        goToConfirmSignUp();
+        onResendEmail();
+        return true;
+      }
       setInfo({ message: error.message, isError: true });
       return false;
     });
@@ -80,13 +85,17 @@ const SignUp = () => {
     if (typeof result === 'boolean') {
       return result;
     } else {
-      router.replace(
-        `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
-      );
-      setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+      goToConfirmSignUp();
       return !!result.user;
     }
   }, [userData, router]);
+
+  const goToConfirmSignUp = useCallback(() => {
+    router.replace(
+      `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
+    );
+    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+  }, [router, userData.username]);
 
   const onBackStep = useCallback(() => {
     router.replace(
