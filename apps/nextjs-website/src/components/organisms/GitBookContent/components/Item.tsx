@@ -16,17 +16,14 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
           width: 'initial',
           marginLeft: '1rem',
         },
-      }}
-    >
-      <div
-        style={{
+        '& div.list-item-container:has(img)': {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'start',
-        }}
-      >
-        {children}
-      </div>
+        },
+      }}
+    >
+      <div className='list-item-container'>{children}</div>
     </Typography>
   );
 };
