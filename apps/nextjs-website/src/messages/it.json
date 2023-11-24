@@ -55,6 +55,10 @@
         "logout": "Esci",
         "login": {
             "action": "Accedi"
+        },
+        "confirmation": {
+            "title": "Il link non è più valido",
+            "ctaLabel": "Reinvia email"
         }
     },
     "shared": {
