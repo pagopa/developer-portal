@@ -335,7 +335,7 @@ export const translations = {
     confirmLogin: {
       title: 'Verifica la tua identità',
       body: (email: string) =>
-        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 30 minuti.`,
+        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 3 minuti.`,
       code: 'Codice di verifica',
       checkJunkMail:
         'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
