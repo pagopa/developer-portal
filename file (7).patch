@@ -1,0 +1,193 @@
+diff --git a/apps/nextjs-website/.env.default b/apps/nextjs-website/.env.default
+deleted file mode 100644
+index 6597dee..0000000
+--- a/apps/nextjs-website/.env.default
++++ /dev/null
+@@ -1,5 +0,0 @@
+-PATH_TO_GITBOOK_DOCS="/<full-path-to-repository-directory>/apps/nextjs-website/docs"
+-COOKIE_DOMAIN_SCRIPT="a8c87faf-1769-4c95-a2e5-a6fff26eadab-test"
+-NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID=""
+-NEXT_PUBLIC_COGNITO_REGION=""
+-NEXT_PUBLIC_COGNITO_USER_POOL_ID=""
+diff --git a/apps/nextjs-website/src/_contents/translations.ts b/apps/nextjs-website/src/_contents/translations.ts
+index 500caa3..c12e505 100644
+--- a/apps/nextjs-website/src/_contents/translations.ts
++++ b/apps/nextjs-website/src/_contents/translations.ts
+@@ -336,9 +336,11 @@ export const translations = {
+     confirmLogin: {
+       title: 'Verifica di accesso MFA',
+       body: 'Inserisci il codice di verifica inviato nella tua e-mail',
+-      code: '012345',
++      code: 'Inserisci il codice MFA (es. 012345)',
+       wrongAccount: 'Hai sbagliato account? ',
+       send: 'Invia',
++      didntReceiveEmail: "Non hai ricevuto l'e-mail? Controlla se si trova nella posta indesiderata oppure",
++      resendEmail: 'Reinvia e-mail',
+     },
+     accountActivated: {
+       goToDashboard: 'Inizia',
+@@ -388,7 +390,7 @@ export const translations = {
+       description: (email: string) =>
+         `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+       didntReceiveEmail:
+-        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
++        "Non hai ricevuto l'e-mail? Controlla se si trova nella posta indesiderata oppure",
+       resendEmail: 'Reinvia e-mail',
+       wrongEmail: "L'indirizzo email è errato?",
+     },
+diff --git a/apps/nextjs-website/src/app/auth/login/page.tsx b/apps/nextjs-website/src/app/auth/login/page.tsx
+index 79f5b3e..3e6abc1 100644
+--- a/apps/nextjs-website/src/app/auth/login/page.tsx
++++ b/apps/nextjs-website/src/app/auth/login/page.tsx
+@@ -7,26 +7,46 @@ import { Auth } from 'aws-amplify';
+ import { LoginSteps } from '@/lib/types/loginSteps';
+ import { LoginFunction } from '@/lib/types/loginFunction';
+ import { useRouter } from 'next/navigation';
++import { LoaderPhase } from '@/lib/types/loader';
+ 
+ const Login = () => {
+   const router = useRouter();
+   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
+   const [user, setUser] = useState(null);
+ 
++  const [reusername, setREUsername] = useState('');
++  const [reuserpassword, setREUserPassword] = useState('');
++  const [loader, setLoader] = useState<LoaderPhase | undefined>(undefined);
++
+   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
+-    const user = await Auth.signIn({
+-      username,
+-      password,
++    setREUsername(username);
++    setREUserPassword(password);
++    setLoader(LoaderPhase.LOADING);
++
++    const user = await Auth.signIn(
++      username || reusername,
++      password || reuserpassword,
++    ).catch((e) => {
++        setLoader(LoaderPhase.ERROR);
++        console.log(e);
++        return false;
+     });
+ 
++    if (user) {
++      setLoader(LoaderPhase.SUCCESS);
++      setLogInStep(LoginSteps.MFA_CHALLENGE);
++    }
++
++    setTimeout(() => {
++      setLoader(undefined);
++    }, 4000);
++
+     setUser(user);
+-    setLogInStep(LoginSteps.MFA_CHALLENGE);
+-  }, []);
++    },[]);
+ 
+   const confirmLogin = useCallback(
+     async (code: string) => {
+       await Auth.sendCustomChallengeAnswer(user, code);
+-
+       router.replace('/');
+     },
+     [router, user]
+@@ -60,7 +80,14 @@ const Login = () => {
+       >
+         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
+         {logInStep === LoginSteps.MFA_CHALLENGE && (
+-          <ConfirmLogIn onBackStep={onBackStep} onConfirmLogin={confirmLogin} />
++          <ConfirmLogIn 
++            onBackStep={onBackStep} 
++            onReLogin={onLogin} 
++            onConfirmLogin={confirmLogin} 
++            resendLoader={loader}
++            reuser = {reusername}
++            repass = {reuserpassword}
++          />
+         )}
+       </Grid>
+     </Box>
+diff --git a/apps/nextjs-website/src/components/organisms/Auth/ConfirmLogin.tsx b/apps/nextjs-website/src/components/organisms/Auth/ConfirmLogin.tsx
+index 087aac0..32cdcb7 100644
+--- a/apps/nextjs-website/src/components/organisms/Auth/ConfirmLogin.tsx
++++ b/apps/nextjs-website/src/components/organisms/Auth/ConfirmLogin.tsx
+@@ -12,16 +12,32 @@ import {
+   TextField,
+   Divider,
+   Button,
++  CircularProgress,
+ } from '@mui/material';
+ import { IllusEmailValidation } from '@pagopa/mui-italia';
+ import { useCallback, useState } from 'react';
++import DoneIcon from '@mui/icons-material/Done';
++import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
++import { LoginFunction } from '@/lib/types/loginFunction';
++import { LoaderPhase } from '@/lib/types/loader';
+ 
+ interface confirmLoginProps {
+   onBackStep: () => null;
+   onConfirmLogin: (code: string) => Promise<void>;
++  onReLogin: LoginFunction;
++  reuser: string;
++  repass: string;
++  resendLoader?: LoaderPhase;
+ }
+ 
+-const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
++const ConfirmLogin = ({ 
++  onBackStep, 
++  onConfirmLogin, 
++  onReLogin, 
++  resendLoader,
++  reuser,
++  repass,
++}: confirmLoginProps) => {
+   const {
+     auth: { confirmLogin },
+     shared,
+@@ -34,6 +50,25 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
+     onConfirmLogin(code).catch((e) => setError(e.message));
+   }, [onConfirmLogin, code]);
+ 
++  const onReLoginHandler = useCallback(() => {
++    onReLogin({username:reuser,password:repass}).catch((e) => setError(e.message));
++  }, [onReLogin, reuser, repass]);
++
++  const buildLoder = () => {
++    switch (resendLoader) {
++      case LoaderPhase.LOADING:
++        return (
++          <CircularProgress size={14} sx={{ ml: 0.5, fontSize: 'inherit' }} />
++        );
++      case LoaderPhase.SUCCESS:
++        return <DoneIcon sx={{ ml: 0.5, fontSize: 'small' }} />;
++      case LoaderPhase.ERROR:
++        return <ErrorOutlineIcon sx={{ ml: 0.5, fontSize: 'small' }} />;
++      default:
++        return null;
++    }
++  };
++
+   return (
+     <Box
+       component='section'
+@@ -67,6 +102,18 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
+                 }}
+               />
+             </Stack>
++            <Typography component='p' variant='caption' mb={4}>
++              {confirmLogin.didntReceiveEmail}{' '}
++              <Link
++                onClick={onReLoginHandler}
++                underline='none'
++                variant='caption-semibold'
++                sx={{ cursor: 'pointer' }}
++              >
++                {confirmLogin.resendEmail}
++                {buildLoder()}
++              </Link>
++            </Typography>
+             <Stack spacing={4} pt={4} pb={2}>
+               <Stack direction='row' justifyContent='center'>
+                 <Button variant='contained' onClick={onconfirmLoginHandler}>

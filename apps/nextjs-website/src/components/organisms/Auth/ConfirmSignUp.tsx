@@ -2,8 +2,7 @@
 import { translations } from '@/_contents/translations';
 import IconInbox from '@/components/atoms/IconInbox/IconInbox';
 import { LoaderPhase } from '@/lib/types/loader';
-import DoneIcon from '@mui/icons-material/Done';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { Done, ErrorOutline } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -40,9 +39,9 @@ const ConfirmSignUp = ({
           <CircularProgress size={14} sx={{ ml: 0.5, fontSize: 'inherit' }} />
         );
       case LoaderPhase.SUCCESS:
-        return <DoneIcon sx={{ ml: 0.5, fontSize: 'small' }} />;
+        return <Done sx={{ ml: 0.5, fontSize: 'small' }} />;
       case LoaderPhase.ERROR:
-        return <ErrorOutlineIcon sx={{ ml: 0.5, fontSize: 'small' }} />;
+        return <ErrorOutline sx={{ ml: 0.5, fontSize: 'small' }} />;
       default:
         return null;
     }

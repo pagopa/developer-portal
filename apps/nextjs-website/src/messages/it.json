@@ -47,10 +47,22 @@
             }
         }
     },
+    "auth": {
+        "confirmLogin": {
+            "title": "Verifica di accesso MFA",
+            "body": "Inserisci il codice di verifica inviato nella tua e-mail",
+            "code": "Inserisci il codice MFA (es. 012345)",
+            "wrongAccount": "Hai sbagliato account? ",
+            "send": "Invia",
+            "didntReceiveEmail": "Non hai ricevuto l'e-mail? Controlla se si trova nella posta indesiderata oppure",
+            "resendEmail": "Reinvia e-mail"
+          }
+    },
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
+        "goBack": "Torna indietro",
         "subscribeButton": {
             "subscribeLabel": "Iscriviti",
             "subscribedLabel": "Iscrizione confermata",

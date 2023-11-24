@@ -7,21 +7,49 @@ import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import { useRouter } from 'next/navigation';
+import { LoaderPhase } from '@/lib/types/loader';
+import { RESET_AFTER_MS } from '@/lib/constants';
 
 const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [loader, setLoader] = useState<LoaderPhase | undefined>(undefined);
 
-  const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
-    const user = await Auth.signIn({
-      username,
-      password,
-    });
+  const onLogin: LoginFunction = useCallback(
+    async ({ username, password }) => {
+      setLoader(LoaderPhase.LOADING);
 
-    setUser(user);
-    setLogInStep(LoginSteps.MFA_CHALLENGE);
-  }, []);
+      setUsername(username);
+      setPassword(password);
+
+      const user = await Auth.signIn(username, password).catch(() => {
+        setLoader(LoaderPhase.ERROR);
+        return false;
+      });
+
+      if (user) {
+        setUser(user);
+
+        if (logInStep === LoginSteps.MFA_CHALLENGE) {
+          setLoader(LoaderPhase.SUCCESS);
+        }
+
+        setLogInStep(LoginSteps.MFA_CHALLENGE);
+      }
+
+      setTimeout(() => {
+        setLoader(undefined);
+      }, RESET_AFTER_MS);
+    },
+    [logInStep]
+  );
+
+  const resendCode = useCallback(async () => {
+    await onLogin({ username, password });
+  }, [onLogin, password, username]);
 
   const confirmLogin = useCallback(
     async (code: string) => {
@@ -60,7 +88,12 @@ const Login = () => {
       >
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
-          <ConfirmLogIn onBackStep={onBackStep} onConfirmLogin={confirmLogin} />
+          <ConfirmLogIn
+            resendLoader={loader}
+            onBackStep={onBackStep}
+            onResendCode={resendCode}
+            onConfirmLogin={confirmLogin}
+          />
         )}
       </Grid>
     </Box>

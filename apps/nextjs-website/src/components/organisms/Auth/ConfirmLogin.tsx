@@ -1,5 +1,6 @@
 'use client';
-import { translations } from '@/_contents/translations';
+import { LoaderPhase } from '@/lib/types/loader';
+import { Done, ErrorOutline } from '@mui/icons-material';
 import {
   Box,
   Grid,
@@ -12,20 +13,26 @@ import {
   TextField,
   Divider,
   Button,
+  CircularProgress,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
 interface confirmLoginProps {
+  resendLoader?: LoaderPhase;
   onBackStep: () => null;
+  onResendCode: () => Promise<void>;
   onConfirmLogin: (code: string) => Promise<void>;
 }
 
-const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
-  const {
-    auth: { confirmLogin },
-    shared,
-  } = translations;
+const ConfirmLogin = ({
+  resendLoader,
+  onBackStep,
+  onResendCode,
+  onConfirmLogin,
+}: confirmLoginProps) => {
+  const t = useTranslations();
 
   const [error, setError] = useState<string | null>(null);
   const [code, setCode] = useState<string>('');
@@ -33,6 +40,21 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
   const onconfirmLoginHandler = useCallback(() => {
     onConfirmLogin(code).catch((e) => setError(e.message));
   }, [onConfirmLogin, code]);
+
+  const buildLoder = () => {
+    switch (resendLoader) {
+      case LoaderPhase.LOADING:
+        return (
+          <CircularProgress size={14} sx={{ ml: 0.5, fontSize: 'inherit' }} />
+        );
+      case LoaderPhase.SUCCESS:
+        return <Done sx={{ ml: 0.5, fontSize: 'small' }} />;
+      case LoaderPhase.ERROR:
+        return <ErrorOutline sx={{ ml: 0.5, fontSize: 'small' }} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Box
@@ -51,14 +73,14 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
               <IllusEmailValidation />
             </Stack>
             <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-              {confirmLogin.title}
+              {t('auth.confirmLogin.title')}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {confirmLogin.body}
+              {t('auth.confirmLogin.body')}
             </Typography>
             <Stack spacing={2} mb={4}>
               <TextField
-                label={confirmLogin.code}
+                label={t('auth.confirmLogin.code')}
                 variant='outlined'
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
@@ -67,10 +89,24 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
                 }}
               />
             </Stack>
+            <Stack spacing={2} mb={4}>
+              <Typography component='p' variant='caption' mb={4}>
+                {t('auth.confirmLogin.didntReceiveEmail')}{' '}
+                <Link
+                  onClick={onResendCode}
+                  underline='none'
+                  variant='caption-semibold'
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {t('auth.confirmLogin.resendEmail')}
+                  {buildLoder()}
+                </Link>
+              </Typography>
+            </Stack>
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
                 <Button variant='contained' onClick={onconfirmLoginHandler}>
-                  {confirmLogin.send}
+                  {t('auth.confirmLogin.send')}
                 </Button>
               </Stack>
             </Stack>
@@ -84,14 +120,14 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                {confirmLogin.wrongAccount}
+                {t('auth.confirmLogin.wrongAccount')}
               </Typography>
               <Link
                 variant='body2'
                 onClick={onBackStep}
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
-                {shared.goBack}
+                {t('shared.goBack')}
               </Link>
             </Stack>
           </Grid>
