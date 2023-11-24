@@ -325,7 +325,6 @@ export const translations = {
     speakersTitle: 'Chi Parla',
   },
   auth: {
-    logout: 'Esci',
     login: {
       action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
@@ -341,7 +340,7 @@ export const translations = {
       send: 'Invia',
     },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToLogin: 'Vai al login',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
