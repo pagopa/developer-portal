@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
 import PageNotFound from '@/app/not-found';
 import { translations } from '@/_contents/translations';
-import { RESET_AFTER_MS } from '@/lib/constants';
+import { RESET_AFTER_MS } from '@/config';
 
 const ChangePassword = () => {
   const {
