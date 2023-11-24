@@ -150,6 +150,6 @@ it('should return true if webinar subscription exists', () => {
   );
 });
 
-it('should return false if webinar subscription not exists', () => {
+it('should return false if webinar subscription does not exist', () => {
   expect(webinarSubscriptionPresent('new-slug', attributes)).toEqual(false);
 });
