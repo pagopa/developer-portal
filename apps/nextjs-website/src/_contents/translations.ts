@@ -327,7 +327,7 @@ export const translations = {
   auth: {
     login: {
       action: 'Accedi',
-      loginToYourAccount: 'Accedi al tuo account',
+      loginToYourAccount: 'Accedi al tuo account DevPortal',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
