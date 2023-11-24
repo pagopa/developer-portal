@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
   return (
     <Box py={6}>
       <div
-        id='otnotice-119e178b-550d-4327-a0ee-29ff8cf6701c'
+        id='otnotice-17c94d8f-dd0e-4279-9ce0-692bfd774e5d'
         className='otnotice'
       />
 
@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
           if ((window as any).OneTrust) {
             (window as any).OneTrust.NoticeApi.Initialized.then(() => {
               (window as any).OneTrust.NoticeApi.LoadNotices([
-                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/119e178b-550d-4327-a0ee-29ff8cf6701c.json',
+                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/17c94d8f-dd0e-4279-9ce0-692bfd774e5d.json',
               ]);
             });
           }
