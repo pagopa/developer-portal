@@ -133,8 +133,7 @@ export async function getTutorialLists(productSlug?: string) {
 }
 
 export async function getWebinars(): Promise<readonly Webinar[]> {
-  // TODO: Remove this condition when the webinar content is ready
-  return isProduction ? [] : webinars;
+  return webinars;
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
