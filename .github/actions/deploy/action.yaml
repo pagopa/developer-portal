@@ -11,6 +11,9 @@ inputs:
   cookie_domain_script:
     description: 'The data-domain-script code needed by cookie script from One Trust'
     required: false
+  allow_crawler:
+    description: 'Allow crawler to index the website, by default are not allowed'
+    required: false
   iam_role:
     description: 'The IAM Role to use to perform the deploy'
     required: true
@@ -65,6 +68,7 @@ runs:
         ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
         NEXT_TELEMETRY_DISABLED: "1"
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.aws_region }}
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
