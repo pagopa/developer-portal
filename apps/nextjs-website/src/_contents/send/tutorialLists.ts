@@ -16,16 +16,6 @@ export const sendTutorials: readonly Tutorial[] = [
     showInOverview: true,
   },
   {
-    title: 'Inserisci una notifica via postman',
-    path: `${sendTutorialListsPath.path}/come-inserire-una-notifica-con-postman`,
-    name: 'Inserisci una notifica via postman',
-    image: {
-      alt: 'Immagine: Inserisci una notifica via postman',
-      url: '/images/send-tutorial-1.png',
-    },
-    showInOverview: true,
-  },
-  {
     title: 'Genera il tuo client',
     path: `${sendTutorialListsPath.path}/come-generare-il-tuo-api-client-per-le-api-di-send`,
     name: 'Genera il tuo client',
