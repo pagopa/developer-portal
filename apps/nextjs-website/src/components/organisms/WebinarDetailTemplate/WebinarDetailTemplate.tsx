@@ -10,9 +10,8 @@ import { Alert, Box, Snackbar } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
-import { webinarSubscriptionExists } from '@/helpers/userPreferences.helpers';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -23,12 +22,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const [error, setError] = useState<string | null>(null);
   const { user, aligned: userAligned, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
-
-  useEffect(() => {
-    if (user && webinar.slug) {
-      setIsSubscribed(webinarSubscriptionExists(webinar.slug, user.attributes));
-    }
-  }, [user]);
 
   const subscribeToWebinarButton = (
     <SubscribeToWebinar

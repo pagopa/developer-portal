@@ -1,12 +1,11 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
-import { webinarSubscriptionExists } from '@/helpers/userPreferences.helpers';
 import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useUser } from '@/helpers/user.helper';
@@ -34,12 +33,6 @@ const WebinarCard = ({
   const { webinar } = translations;
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { user } = useUser();
-
-  useEffect(() => {
-    if (user && slug) {
-      setIsSubscribed(webinarSubscriptionExists(slug, user.attributes));
-    }
-  }, []);
 
   return (
     <Card

@@ -1,10 +1,11 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 import {
   addWebinarSubscriptionToAttributes,
   removeWebinarSubscriptionToAttributes,
+  webinarSubscriptionExists,
 } from '@/helpers/userPreferences.helpers';
 import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
@@ -34,6 +35,12 @@ const SubscribeToWebinar = ({
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (userAttributes && webinarSlug) {
+      setIsSubscribed(webinarSubscriptionExists(webinarSlug, userAttributes));
+    }
+  }, [userAttributes, webinarSlug, setIsSubscribed]);
 
   if (!webinarSlug) {
     return null;
