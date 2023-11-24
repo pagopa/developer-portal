@@ -1,7 +1,14 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
@@ -95,7 +102,7 @@ const WebinarCard = ({
             >
               {webinar.speakers}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Stack direction='column' gap={2}>
               {speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}
@@ -105,7 +112,7 @@ const WebinarCard = ({
                   imagePath={speaker.imagePath}
                 />
               ))}
-            </Box>
+            </Stack>
           </Box>
         )}
       </CardContent>
