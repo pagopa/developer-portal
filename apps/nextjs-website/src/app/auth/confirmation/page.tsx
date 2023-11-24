@@ -29,7 +29,6 @@ const Confirmation = () => {
 
   useEffect(() => {
     if (username && code) {
-      console.log(username, code);
       Auth.confirmSignUp(username, code)
         .then(() => {
           // eslint-disable-next-line functional/immutable-data
@@ -41,7 +40,6 @@ const Confirmation = () => {
           setState(State.resendCode);
         });
     } else {
-      console.log('username, code not found');
       setState(State.error);
     }
   }, [username, code, router]);
