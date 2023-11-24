@@ -14,7 +14,7 @@ export const webinars: readonly Webinar[] = [
       `<img src='/images/webinar-image.png' /> \n` +
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
-    slug: 'comunicazioni-a-valore-legale',
+    slug: 'nuove-api-io',
     speakers: [
       {
         name: 'Ivan Diana',
