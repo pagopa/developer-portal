@@ -16,8 +16,7 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
-import { LoaderPhase } from '@/lib/types/loader';
-import { RESET_AFTER_MS } from '@/lib/constants';
+import { RESET_AFTER_MS } from '@/config';
 
 interface Info {
   message: string;
@@ -33,7 +32,7 @@ const SignUp = () => {
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
 
   const [userData, setUserData] = useState<SignUpUserData>({
-    username: params.get('email') || '',
+    username: decodeURIComponent(params.get('email') || ''),
     password: '',
     firstName: '',
     lastName: '',
@@ -48,7 +47,6 @@ const SignUp = () => {
   );
 
   const [info, setInfo] = useState<Info | null>(null);
-  const [loader, setLoader] = useState<LoaderPhase | undefined>(undefined);
 
   const onSignUp = useCallback(async () => {
     const {
@@ -81,7 +79,9 @@ const SignUp = () => {
       return result;
     } else {
       router.replace(
-        `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.CONFIRM_SIGN_UP}`
+        `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+          SignUpSteps.CONFIRM_SIGN_UP
+        }`
       );
       setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
       return !!result.user;
@@ -90,28 +90,13 @@ const SignUp = () => {
 
   const onBackStep = useCallback(() => {
     router.replace(
-      `/auth/sign-up?email=${userData.username}&step=${SignUpSteps.SIGN_UP}`
+      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+        SignUpSteps.SIGN_UP
+      }`
     );
     setSignUpStep(SignUpSteps.SIGN_UP);
     return null;
   }, [router, userData.username]);
-
-  const onResendEmail = useCallback(async () => {
-    setLoader(LoaderPhase.LOADING);
-
-    const result = await Auth.resendSignUp(userData.username).catch(() => {
-      setLoader(LoaderPhase.ERROR);
-      return false;
-    });
-
-    if (result) {
-      setLoader(LoaderPhase.SUCCESS);
-    }
-
-    setTimeout(() => {
-      setLoader(undefined);
-    }, RESET_AFTER_MS);
-  }, [userData.username]);
 
   return (
     <>
@@ -158,12 +143,7 @@ const SignUp = () => {
               />
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
-              <ConfirmSignUp
-                email={userData.username}
-                onBack={onBackStep}
-                onResendEmail={onResendEmail}
-                resendLoader={loader}
-              />
+              <ConfirmSignUp email={userData.username} onBack={onBackStep} />
             )}
           </Grid>
         </Grid>

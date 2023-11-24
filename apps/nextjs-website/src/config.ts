@@ -23,3 +23,5 @@ export const profileMenuItems: readonly {
   { label: 'personalData.title', href: '/profile/personal-data' },
   { label: 'agreements.title', href: '/profile/agreements' },
 ];
+
+export const RESET_AFTER_MS = 4_000;
