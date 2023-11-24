@@ -325,7 +325,6 @@ export const translations = {
     speakersTitle: 'Chi Parla',
   },
   auth: {
-    logout: 'Esci',
     login: {
       action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
