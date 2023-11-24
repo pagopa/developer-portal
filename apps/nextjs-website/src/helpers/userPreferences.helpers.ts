@@ -54,19 +54,19 @@ export function addWebinarSubscriptionToAttributes(
   attributes: DevPortalUser['attributes']
 ): DevPortalUser['attributes'] | Error {
   const currentUserPreferences = userPreferencesFromAttributes(attributes);
-  if (!currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
-    return mergeUserPreferencesToAttributes(
-      {
-        subscribedWebinarSlugs: [
-          ...currentUserPreferences.subscribedWebinarSlugs,
-          slug,
-        ],
-      },
-      attributes
-    );
-  } else {
+  if (currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return attributes;
   }
+  
+  return mergeUserPreferencesToAttributes(
+    {
+      subscribedWebinarSlugs: [
+        ...currentUserPreferences.subscribedWebinarSlugs,
+        slug,
+      ],
+    },
+    attributes
+  );
 }
 
 export function removeWebinarSubscriptionToAttributes(
@@ -74,19 +74,19 @@ export function removeWebinarSubscriptionToAttributes(
   attributes: DevPortalUser['attributes']
 ): DevPortalUser['attributes'] | Error {
   const currentUserPreferences = userPreferencesFromAttributes(attributes);
-  if (currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
-    return mergeUserPreferencesToAttributes(
-      {
-        subscribedWebinarSlugs:
-          currentUserPreferences.subscribedWebinarSlugs.filter(
-            (subscriptionSlug) => subscriptionSlug !== slug
-          ),
-      },
-      attributes
-    );
-  } else {
+  if (!currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return attributes;
   }
+  
+return mergeUserPreferencesToAttributes(
+  {
+    subscribedWebinarSlugs:
+      currentUserPreferences.subscribedWebinarSlugs.filter(
+        (subscriptionSlug) => subscriptionSlug !== slug
+      ),
+  },
+  attributes
+);
 }
 
 export function webinarSubscriptionPresent(
