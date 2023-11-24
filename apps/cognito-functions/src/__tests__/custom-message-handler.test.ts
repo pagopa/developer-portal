@@ -87,7 +87,7 @@ describe('Handler', () => {
     expect(response.emailMessage).toStrictEqual(expected);
   });
 
-  it('should not send any email and return the incoming event', async () => {
+  it('should throw an error on user confirmed', async () => {
     const event = makeEvent();
     const userVerifiedEvent = {
       ...event,
@@ -100,8 +100,13 @@ describe('Handler', () => {
         },
       },
     };
-    const actual = await makeHandler(env)(userVerifiedEvent);
-    const expected = { ...userVerifiedEvent };
-    expect(actual).toStrictEqual(expected);
+
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      await makeHandler(env)(userVerifiedEvent);
+      fail('Should not reach this point');
+    } catch (error) {
+      expect(error).toStrictEqual(new Error('Operation not permitted'));
+    }
   });
 });
