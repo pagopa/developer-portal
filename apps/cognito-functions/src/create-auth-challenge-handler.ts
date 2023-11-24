@@ -49,6 +49,10 @@ type CreateAuthChallengeEnv = {
   readonly ses: SES;
 };
 
+// FIXME: we could get this parameter from the app client configuration
+// https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html
+export const OTP_DURATION_MINUTES = 3;
+
 export const makeHandler =
   (env: CreateAuthChallengeEnv) =>
   async (
@@ -61,13 +65,17 @@ export const makeHandler =
     if (session.length === 2) {
       const { email } = event.request.userAttributes;
       const verificationCode = env.generateVerificationCode();
-      const subject = 'Ecco il tuo OTP per la login';
+      const subject = `Codice di verifica PagoPA DevPortal: ${verificationCode}`;
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
           email,
           env.config.fromEmailAddress,
           subject,
-          makeOtpMessageEmail(verificationCode, env.config.domain)
+          makeOtpMessageEmail(
+            verificationCode,
+            env.config.domain,
+            OTP_DURATION_MINUTES
+          )
         )
       );
 

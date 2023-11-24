@@ -12,11 +12,11 @@
                 "unsubscribe": "Annulla iscrizione"
             },
             "privacy": {
-                "basicData": "PagoPA collects Basic Personal Data enabling you to create and use your DevPortal account. You provide this personal data at registration, when updating your profile, or through an Identity Provider. PagoPA uses secured storage and communications, and justified use within PagoPA to protect your data. Your Basic Personal Data will be stored as long as you have an active PagoPA account.",
+                "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
                 "title": "Privacy",
                 "statement": {
-                    "text": "The $labelOfLinkToReplace$ provides detailed information about your privacy rights.",
-                    "labelOfLinkToReplace": "PagoPA Privacy Statement"
+                    "text": "La nostra $labelOfLinkToReplace$ fornisce informazioni dettagliate sui tuoi diritti in materia di privacy.",
+                    "labelOfLinkToReplace": "Informativa Privacy"
                 }
             },
             "title": "Consensi e privacy"
@@ -46,6 +46,10 @@
                 "password": "Password"
             }
         }
+    },
+    "webinar": {
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi"
     },
     "auth": {
         "logout": "Esci",
