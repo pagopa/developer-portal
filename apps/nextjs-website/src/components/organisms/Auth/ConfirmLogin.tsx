@@ -28,10 +28,15 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
   } = translations;
 
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
 
-  const onconfirmLoginHandler = useCallback(() => {
-    onConfirmLogin(code).catch((e) => setError(e.message));
+  const onConfirmLoginHandler = useCallback(() => {
+    setSubmitting(true);
+    onConfirmLogin(code).catch((e) => {
+      setError(e.message);
+      setSubmitting(false);
+    });
   }, [onConfirmLogin, code]);
 
   return (
@@ -69,7 +74,11 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
             </Stack>
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' onClick={onconfirmLoginHandler}>
+                <Button
+                  variant='contained'
+                  disabled={submitting}
+                  onClick={onConfirmLoginHandler}
+                >
                   {confirmLogin.send}
                 </Button>
               </Stack>

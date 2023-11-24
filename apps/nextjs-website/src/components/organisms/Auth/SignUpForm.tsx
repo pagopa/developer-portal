@@ -47,12 +47,7 @@ interface SignUpFormProps {
   onSignUp: () => Promise<boolean>;
 }
 
-const SignUpForm = ({
-  userData,
-  setUserData,
-
-  onSignUp,
-}: SignUpFormProps) => {
+const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
   const {
     auth: { login, signUp },
     shared,
@@ -74,7 +69,7 @@ const SignUpForm = ({
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [actionDisabled, setActionDisabled] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -121,9 +116,11 @@ const SignUpForm = ({
       return;
     }
 
-    onSignUp();
+    setSubmitting(true);
 
-    setActionDisabled(true);
+    onSignUp().finally(() => {
+      setSubmitting(false);
+    });
   }, [onSignUp, userData]);
 
   const validateForm = useCallback(() => {
@@ -140,8 +137,6 @@ const SignUpForm = ({
     const isPasswordEqual = password === confirmPassword;
 
     setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-
-    setActionDisabled(false);
   }, [isPasswordValid, userData]);
 
   useEffect(() => {
@@ -360,7 +355,7 @@ const SignUpForm = ({
                   <Button
                     variant='contained'
                     onClick={onSignUpClick}
-                    disabled={actionDisabled || !isFormValid}
+                    disabled={!isFormValid || submitting}
                   >
                     {signUp.action}
                   </Button>
