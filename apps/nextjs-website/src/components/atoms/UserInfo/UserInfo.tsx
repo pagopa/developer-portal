@@ -24,7 +24,7 @@ const UserInfo: FC = () => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const open = Boolean(menu);
 
@@ -57,7 +57,7 @@ const UserInfo: FC = () => {
       gap={1}
       justifyContent='flex-end'
     >
-      {!user && !isProduction && (
+      {!user && !loading && !isProduction && (
         <MuiLink
           href='/auth/login'
           component={Link}
