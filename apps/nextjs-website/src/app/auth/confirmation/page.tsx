@@ -5,11 +5,11 @@ import { Auth } from 'aws-amplify';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import FileErrorIcon from '@/components/atoms/FileErrorIcon/FileErrorIcon';
 import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { isProduction } from '@/config';
+import { IllusError } from '@pagopa/mui-italia';
 
 enum State {
   loading = 'loading',
@@ -68,7 +68,7 @@ const Confirmation = () => {
       return (
         <PageBackgroundWrapper>
           <SingleCard
-            icon={<FileErrorIcon />}
+            icon={<IllusError />}
             title={t('confirmation.title')}
             cta={
               <Button
