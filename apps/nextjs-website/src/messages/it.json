@@ -55,7 +55,8 @@
         "logout": "Esci",
         "login": {
             "action": "Accedi"
-        }
+        },
+        "resendEmail": { "label": "Reinvia e-mail" }
     },
     "shared": {
         "goToModel": "Vai al modello",

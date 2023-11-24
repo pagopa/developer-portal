@@ -6,25 +6,23 @@ import {
   Card,
   Snackbar,
   Alert,
-  Link,
   Stack,
   Typography,
   TextField,
-  Divider,
   Button,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
+import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 
 interface confirmLoginProps {
-  onBackStep: () => null;
+  email: string | null;
   onConfirmLogin: (code: string) => Promise<void>;
 }
 
-const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
+const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
   const {
     auth: { confirmLogin },
-    shared,
   } = translations;
 
   const [error, setError] = useState<string | null>(null);
@@ -55,15 +53,26 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
             <Stack pt={4} display='flex' alignItems='center'>
               <IllusEmailValidation />
             </Stack>
-            <Typography variant='h4' pt={8} mb={4} textAlign='center'>
+            <Typography variant='h4' pt={8} mb={5} textAlign='center'>
               {confirmLogin.title}
             </Typography>
-            <Typography variant='body2' mb={2}>
-              {confirmLogin.body}
+            {email && (
+              <Typography
+                variant='body2'
+                mb={6}
+                dangerouslySetInnerHTML={{
+                  __html: confirmLogin.body(email),
+                }}
+              />
+            )}
+            <Typography
+              variant='body1'
+              sx={{ marginBottom: 1.5, fontWeight: 600 }}
+            >
+              {confirmLogin.code}
             </Typography>
             <Stack spacing={2} mb={4}>
               <TextField
-                label={confirmLogin.code}
                 variant='outlined'
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
@@ -72,6 +81,9 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
                 }}
               />
             </Stack>
+            {email && (
+              <ResendEmail email={email} text={confirmLogin.checkJunkMail} />
+            )}
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
                 <Button
@@ -79,29 +91,9 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
                   disabled={submitting}
                   onClick={onConfirmLoginHandler}
                 >
-                  {confirmLogin.send}
+                  {confirmLogin.continue}
                 </Button>
               </Stack>
-            </Stack>
-            <Divider />
-            <Stack
-              pt={4}
-              pb={8}
-              display='flex'
-              alignItems='center'
-              justifyContent='center'
-              flexDirection='row'
-            >
-              <Typography variant='caption-semibold' mr={1}>
-                {confirmLogin.wrongAccount}
-              </Typography>
-              <Link
-                variant='body2'
-                onClick={onBackStep}
-                sx={{ fontWeight: 600, cursor: 'pointer' }}
-              >
-                {shared.goBack}
-              </Link>
             </Stack>
           </Grid>
         </Grid>
