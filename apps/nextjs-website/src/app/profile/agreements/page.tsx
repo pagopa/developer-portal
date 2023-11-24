@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import {
   Alert,
   Box,
-  CircularProgress,
   Divider,
   Link as LinkMui,
   Snackbar,
@@ -16,7 +15,6 @@ import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
-import PageNotFound from '@/app/not-found';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -105,26 +103,15 @@ const Agreements = () => {
     }, [])
     .map((node, index) => <span key={index}>{node}</span>);
 
-  // TODO: add dedicated loading and unauthorized pages
-  if (!loading && !user) {
-    return <PageNotFound />;
-  }
-  if (loading) {
-    return (
-      <Stack
-        justifyContent={'center'}
-        height={'80vh'}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress size={40} />
-      </Stack>
-    );
-  }
-
   return (
     <>
-      <Stack sx={{ padding: '30px', width: '100%', maxWidth: '694px' }}>
+      <Stack
+        sx={{
+          padding: { xs: '40px 24px', md: '80px 40px' },
+          width: '100%',
+          maxWidth: '694px',
+        }}
+      >
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
           {t('title')}
         </Typography>
@@ -164,7 +151,7 @@ const Agreements = () => {
           >
             {hasAcceptedMailingListSubscription ? (
               <ButtonNaked
-                disabled={isSubscriptionButtonDisabled}
+                disabled={loading || isSubscriptionButtonDisabled}
                 sx={{
                   color: palette.error.dark,
                   whiteSpace: 'nowrap',
@@ -175,7 +162,7 @@ const Agreements = () => {
               </ButtonNaked>
             ) : (
               <ButtonNaked
-                disabled={isSubscriptionButtonDisabled}
+                disabled={loading || isSubscriptionButtonDisabled}
                 sx={{ whiteSpace: 'nowrap' }}
                 onClick={handleSubscribe}
                 color='primary'

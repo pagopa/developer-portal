@@ -19,6 +19,7 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
+    siteTitle: 'PagoPA DevPortal',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
@@ -105,8 +106,7 @@ export const translations = {
       },
     ],
     webinarsSection: {
-      description:
-        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      description: '',
       title: 'Partecipa ai nostri webinar',
       link: {
         href: '#',
@@ -325,7 +325,6 @@ export const translations = {
     speakersTitle: 'Chi Parla',
   },
   auth: {
-    logout: 'Esci',
     login: {
       action: 'Accedi',
       loginToYourAccount: 'Accedi al tuo account',
@@ -341,7 +340,7 @@ export const translations = {
       send: 'Invia',
     },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToLogin: 'Vai al login',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
@@ -359,16 +358,20 @@ export const translations = {
       emailSent: (email: string) => `Email inviata a ${email}`,
       advantages: [
         {
-          title: 'vantaggio 1',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Accedi a contenuti esclusivi',
+          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
         },
         {
-          title: 'vantaggio 2',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Ricevi aggiornamenti sui nostri prodotti',
+          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
         },
         {
-          title: 'vantaggio 3',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
+          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
+        },
+        {
+          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
+          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
         },
       ],
       companyRoles: [
@@ -386,7 +389,7 @@ export const translations = {
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
       description: (email: string) =>
-        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',

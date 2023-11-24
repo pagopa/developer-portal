@@ -8,6 +8,11 @@ const jestConfig: JestConfigWithTsJest = {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
+  moduleNameMapper: {
+    // Needed or else if some test files imports a file from the src folder using the Next naming convention, it will fail.
+    // Example: import { shared } from '@/_contents/translations'; returns Cannot find module '@/_contents/translations' from 'src/some-file.ts'
+    '@/(.*)': '<rootDir>/src/$1',
+  },
 };
 
 export default jestConfig;

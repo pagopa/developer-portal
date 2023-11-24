@@ -1,17 +1,29 @@
 import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
-  previewText: 'Ecco il tuo OTP',
-  title: 'Ecco il tuo OTP',
-  text: 'Per poter accedere al Developer Portal, inserisci il seguente codice',
+  previewText: 'Verifica la tua identità',
+  title: 'Verifica la tua identità',
+  text: 'Usa questo codice OTP per accedere a PagoPA DevPortal:',
+  codeDuration: (minutes: number) =>
+    `Questo codice scadrà tra ${minutes} minuti.`,
+  whyThisMessage:
+    'Ricevi questo messaggio in quanto abbiamo rilevato una richiesta di login su PagoPA DevPortal da questo indirizzo email registrato. \n' +
+    'Non sei tu? Ignora o cancella questa e-mail',
   companyLegalDetails:
     'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
 };
 
-export const makeOtpMessageEmail = (otp: string, domain: string): string =>
-  parseMjmlToHtml(otpMessage(otp, domain));
+export const makeOtpMessageEmail = (
+  otp: string,
+  domain: string,
+  codeDurationMinutes: number
+): string => parseMjmlToHtml(otpMessage(otp, domain, codeDurationMinutes));
 
-const otpMessage = (otp: string, domain: string): string => `
+const otpMessage = (
+  otp: string,
+  domain: string,
+  codeDurationMinutes: number
+): string => `
 <mjml>
   <mj-head>
     <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
@@ -58,15 +70,26 @@ const otpMessage = (otp: string, domain: string): string => `
         <mj-image align="left" src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
-        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${TRANSLATIONS.title}</mj-text>
+        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${
+          TRANSLATIONS.title
+        }</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
         <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
-        <mj-text align="center"><strong>${otp}</strong></mj-text>
+        <mj-text align="left" font-size="28px"><strong>${otp}</strong></mj-text>
         <mj-spacer height="5px" />
+        <mj-text mj-class="text" font-size="14px">${TRANSLATIONS.codeDuration(
+          codeDurationMinutes
+        )}</mj-text>
+        <mj-spacer height="5px" />
+        <mj-text mj-class="text" font-size="14px" line-height='18px' color='#5C6F82'>${
+          TRANSLATIONS.whyThisMessage
+        }</mj-text>
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
-        <mj-text mj-class="footer-text">${TRANSLATIONS.companyLegalDetails}</mj-text>
+        <mj-text mj-class="footer-text">${
+          TRANSLATIONS.companyLegalDetails
+        }</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

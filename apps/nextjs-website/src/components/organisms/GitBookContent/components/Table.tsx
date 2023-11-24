@@ -7,6 +7,7 @@ import MUITableRow from '@mui/material/TableRow';
 import MUITableCell, { TableCellProps } from '@mui/material/TableCell';
 import { ReactNode } from 'react';
 import { TableProps } from 'gitbook-docs/markdoc/schema/table';
+import { Checkbox } from '@mui/material';
 
 export const Table = ({ children }: TableProps<ReactNode>) => (
   <MUITableContainer component={'div'}>
@@ -40,10 +41,29 @@ export const TableH = styled(MUITableCell)(({ theme }) => ({
   padding: '0.5rem 1rem',
 }));
 
-export const TableDD = styled(MUITableCell)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  padding: '0.5rem 1rem',
-}));
+
+export const TableD = (props: TableCellProps) => {
+  const theme = useTheme();
+  return (
+    <MUITableCell
+      sx={{ border: `1px solid ${theme.palette.divider}` }}
+      {...props}
+    >
+      {props.children === 'true' ? (
+        <Checkbox
+          disabled
+          checked
+          style={{ color: theme.palette.primary.main }}
+        />
+      ) : props.children === 'false' ? (
+        <Checkbox disabled />
+      ) : (
+        props.children || ''
+      )}
+    </MUITableCell>
+  );
+};
+
 
 export const TableD = (props: TableCellProps) => {
   const theme = useTheme();
