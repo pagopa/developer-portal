@@ -33,11 +33,10 @@ const ConfirmLogin = ({ onBackStep, onConfirmLogin }: confirmLoginProps) => {
 
   const onConfirmLoginHandler = useCallback(() => {
     setSubmitting(true);
-    onConfirmLogin(code)
-      .catch((e) => setError(e.message))
-      .finally(() => {
-        setSubmitting(false);
-      });
+    onConfirmLogin(code).catch((e) => {
+      setError(e.message);
+      setSubmitting(false);
+    });
   }, [onConfirmLogin, code]);
 
   return (
