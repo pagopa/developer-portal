@@ -56,6 +56,10 @@
         "login": {
             "action": "Accedi"
         },
+        "confirmation": {
+            "title": "Il link non è più valido",
+            "ctaLabel": "Reinvia email"
+        },
         "resendEmail": { "label": "Reinvia e-mail" }
     },
     "shared": {
