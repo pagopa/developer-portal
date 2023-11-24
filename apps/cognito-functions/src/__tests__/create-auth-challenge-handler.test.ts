@@ -2,6 +2,7 @@ import { CreateAuthChallengeTriggerEvent } from 'aws-lambda';
 import {
   generateVerificationCode,
   makeHandler,
+  OTP_DURATION_MINUTES,
 } from '../create-auth-challenge-handler';
 import { SES } from '@aws-sdk/client-ses';
 import { mock } from 'jest-mock-extended';
@@ -78,11 +79,15 @@ describe('Handler', () => {
           Message: {
             Body: {
               Html: {
-                Data: makeOtpMessageEmail(verificationCode, env.config.domain),
+                Data: makeOtpMessageEmail(
+                  verificationCode,
+                  env.config.domain,
+                  OTP_DURATION_MINUTES
+                ),
               },
             },
             Subject: {
-              Data: 'Ecco il tuo OTP per la login',
+              Data: `Codice di verifica PagoPA DevPortal: ${verificationCode}`,
             },
           },
         },
