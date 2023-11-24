@@ -42,12 +42,21 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
         justifyContent: 'space-between',
         width: '100%',
         background: palette.text.primary,
-        padding: '10px 10rem',
+        padding: { xs: '10px 1rem', lg: '10px 10rem' },
       }}
     >
       <Box sx={{ display: 'flex' }}>
         <VideoLibraryIcon sx={{ color: 'white' }} />
-        <Typography sx={{ color: 'white', marginLeft: '10px' }}>
+        <Typography
+          sx={{
+            color: 'white',
+            marginLeft: '10px',
+            WebkitLineClamp: '1',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
           {text}
         </Typography>
         <MuiLink

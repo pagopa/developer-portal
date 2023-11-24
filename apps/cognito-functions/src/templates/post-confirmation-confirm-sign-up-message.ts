@@ -13,7 +13,7 @@ const TRANSLATIONS = {
     '  <li>Documentazione API, guide tecniche e manuali per approfondire tutte le informazioni di dettaglio;</li>' +
     '  <li>Tutorial che ti accompagneranno nello svolgimento di task specifici.</li>' +
     '</ul>',
-  startExploring: 'Inizia ad esplorare',
+  goToLogin: 'Vai al login',
   seeYouSoon: 'A presto,<br><br>il team DevPortal',
   companyLegalDetails:
     'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
@@ -85,8 +85,8 @@ const postConfirmationConfirmSignUpMessage = (
         } ${firstName},</mj-text>
         <mj-spacer height="36px" />
         <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
-        <mj-button align="left" background-color="#0073E6" href="${`https://${domain}`}" font-size="16px" font-weight="700">
-          ${TRANSLATIONS.startExploring}
+        <mj-button align="left" background-color="#0073E6" href="${`https://${domain}/auth/login`}" font-size="16px" font-weight="700">
+          ${TRANSLATIONS.goToLogin}
         </mj-button>
         <mj-spacer height="48px" />
         <mj-text mj-class="text" font-size="18px">${
