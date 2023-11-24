@@ -14,7 +14,7 @@ export const pagoPaApi: ApiData = {
   },
   specURLs: [
     {
-      url: 'https://raw.githubusercontent.com/pagopa/pagopa-api/f25f9becb7a784a6fb136a1ac7a0feca1fcbd3d7/api-definitions/db_positions/api.yaml',
+      url: 'https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.6.0/openapi/gpd.yaml',
     },
   ],
   bannerLinks: pagoPaBannerLinks,
