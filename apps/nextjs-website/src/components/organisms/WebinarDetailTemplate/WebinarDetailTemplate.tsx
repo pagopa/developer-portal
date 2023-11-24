@@ -12,7 +12,7 @@ import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
 import { useEffect, useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
-import { webinarSubscriptionPresent } from '@/helpers/userPreferences.helpers';
+import { webinarSubscriptionExists } from '@/helpers/userPreferences.helpers';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -27,7 +27,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   useEffect(() => {
     if (user && webinar.slug) {
       setIsSubscribed(
-        webinarSubscriptionPresent(webinar.slug, user.attributes)
+        webinarSubscriptionExists(webinar.slug, user.attributes)
       );
     }
   }, [user]);

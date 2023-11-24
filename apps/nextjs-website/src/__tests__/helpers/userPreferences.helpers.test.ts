@@ -4,7 +4,7 @@ import {
   mergeUserPreferencesToAttributes,
   removeWebinarSubscriptionToAttributes,
   userPreferencesFromAttributes,
-  webinarSubscriptionPresent,
+  webinarSubscriptionExists,
 } from '../../helpers/userPreferences.helpers';
 import { DevPortalUser, UserPreferences } from '@/lib/types/auth';
 
@@ -145,11 +145,9 @@ it('should remove existing webinar subscription to attributes', () => {
 });
 
 it('should return true if webinar subscription exists', () => {
-  expect(webinarSubscriptionPresent(existingSlugs[0], attributes)).toEqual(
-    true
-  );
+  expect(webinarSubscriptionExists(existingSlugs[0], attributes)).toEqual(true);
 });
 
 it('should return false if webinar subscription does not exist', () => {
-  expect(webinarSubscriptionPresent('new-slug', attributes)).toEqual(false);
+  expect(webinarSubscriptionExists('new-slug', attributes)).toEqual(false);
 });

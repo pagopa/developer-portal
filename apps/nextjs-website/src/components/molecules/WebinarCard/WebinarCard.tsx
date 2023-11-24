@@ -6,7 +6,7 @@ import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
-import { webinarSubscriptionPresent } from '@/helpers/userPreferences.helpers';
+import { webinarSubscriptionExists } from '@/helpers/userPreferences.helpers';
 import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useUser } from '@/helpers/user.helper';
@@ -37,7 +37,7 @@ const WebinarCard = ({
 
   useEffect(() => {
     if (user && slug) {
-      setIsSubscribed(webinarSubscriptionPresent(slug, user.attributes));
+      setIsSubscribed(webinarSubscriptionExists(slug, user.attributes));
     }
   }, []);
 

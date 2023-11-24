@@ -57,7 +57,7 @@ export function addWebinarSubscriptionToAttributes(
   if (currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return attributes;
   }
-  
+
   return mergeUserPreferencesToAttributes(
     {
       subscribedWebinarSlugs: [
@@ -77,19 +77,19 @@ export function removeWebinarSubscriptionToAttributes(
   if (!currentUserPreferences.subscribedWebinarSlugs.includes(slug)) {
     return attributes;
   }
-  
-return mergeUserPreferencesToAttributes(
-  {
-    subscribedWebinarSlugs:
-      currentUserPreferences.subscribedWebinarSlugs.filter(
-        (subscriptionSlug) => subscriptionSlug !== slug
-      ),
-  },
-  attributes
-);
+
+  return mergeUserPreferencesToAttributes(
+    {
+      subscribedWebinarSlugs:
+        currentUserPreferences.subscribedWebinarSlugs.filter(
+          (subscriptionSlug) => subscriptionSlug !== slug
+        ),
+    },
+    attributes
+  );
 }
 
-export function webinarSubscriptionPresent(
+export function webinarSubscriptionExists(
   slug: string,
   attributes: DevPortalUser['attributes']
 ): boolean {
