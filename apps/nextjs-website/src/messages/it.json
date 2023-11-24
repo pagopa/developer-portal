@@ -21,6 +21,7 @@
             },
             "title": "Consensi e privacy"
         },
+        "hello": "Ciao,",
         "personalData": {
             "title": "I tuoi dati",
             "dataSection": "Profilo",
@@ -46,10 +47,17 @@
             }
         }
     },
+    "auth": {
+        "logout": "Esci",
+        "login": {
+            "action": "Accedi"
+        }
+    },
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
+        "yourData": "I tuoi dati",
         "subscribeButton": {
             "subscribeLabel": "Iscriviti",
             "subscribedLabel": "Iscrizione confermata",

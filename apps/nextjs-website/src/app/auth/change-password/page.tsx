@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
 import PageNotFound from '@/app/not-found';
 import { translations } from '@/_contents/translations';
+import { RESET_AFTER_MS } from '@/lib/constants';
 
 const ChangePassword = () => {
   const {
@@ -85,7 +86,7 @@ const ChangePassword = () => {
       )}
       <Snackbar
         open={!!error}
-        autoHideDuration={4000}
+        autoHideDuration={RESET_AFTER_MS}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>
