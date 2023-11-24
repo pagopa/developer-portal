@@ -42,6 +42,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
@@ -63,7 +64,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   );
 
   const onLoginHandler = useCallback(() => {
-    onLogin({ username, password }).catch((e) => setError(e.message));
+    setSubmitting(true);
+    onLogin({ username, password })
+      .catch((e) => setError(e.message))
+      .finally(() => {
+        setSubmitting(false);
+      });
   }, [onLogin, username, password]);
 
   return (
@@ -135,7 +141,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onLoginHandler}>
+                  <Button
+                    disabled={submitting}
+                    variant='contained'
+                    onClick={onLoginHandler}
+                  >
                     {login.action}
                   </Button>
                 </Stack>
