@@ -340,7 +340,7 @@ export const translations = {
       send: 'Invia',
     },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToLogin: 'Vai al login',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
