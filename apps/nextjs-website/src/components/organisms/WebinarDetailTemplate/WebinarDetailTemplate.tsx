@@ -26,9 +26,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
 
   useEffect(() => {
     if (user && webinar.slug) {
-      setIsSubscribed(
-        webinarSubscriptionExists(webinar.slug, user.attributes)
-      );
+      setIsSubscribed(webinarSubscriptionExists(webinar.slug, user.attributes));
     }
   }, [user]);
 
