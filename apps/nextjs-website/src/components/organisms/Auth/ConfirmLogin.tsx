@@ -20,6 +20,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
 interface confirmLoginProps {
+  invalidCode: boolean;
   resendLoader?: LoaderPhase;
   onBackStep: () => null;
   onResendCode: () => Promise<void>;
@@ -27,6 +28,7 @@ interface confirmLoginProps {
 }
 
 const ConfirmLogin = ({
+  invalidCode,
   resendLoader,
   onBackStep,
   onResendCode,
@@ -36,9 +38,14 @@ const ConfirmLogin = ({
 
   const [error, setError] = useState<string | null>(null);
   const [code, setCode] = useState<string>('');
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const onconfirmLoginHandler = useCallback(() => {
-    onConfirmLogin(code).catch((e) => setError(e.message));
+    setSubmitting(true);
+
+    onConfirmLogin(code)
+      .catch((e) => setError(e.message))
+      .finally(() => setSubmitting(false));
   }, [onConfirmLogin, code]);
 
   const buildLoder = () => {
@@ -105,7 +112,11 @@ const ConfirmLogin = ({
             </Stack>
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' onClick={onconfirmLoginHandler}>
+                <Button
+                  variant='contained'
+                  disabled={submitting || invalidCode}
+                  onClick={onconfirmLoginHandler}
+                >
                   {t('auth.confirmLogin.send')}
                 </Button>
               </Stack>

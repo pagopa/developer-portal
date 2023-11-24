@@ -18,9 +18,13 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const [loader, setLoader] = useState<LoaderPhase | undefined>(undefined);
 
+  const [invalidCode, setInvalidCode] = useState(false);
+
   const onLogin: LoginFunction = useCallback(
     async ({ username, password }) => {
-      setLoader(LoaderPhase.LOADING);
+      if (logInStep === LoginSteps.MFA_CHALLENGE) {
+        setLoader(LoaderPhase.LOADING);
+      }
 
       setUsername(username);
       setPassword(password);
@@ -38,6 +42,7 @@ const Login = () => {
         }
 
         setLogInStep(LoginSteps.MFA_CHALLENGE);
+        setInvalidCode(false);
       }
 
       setTimeout(() => {
@@ -53,9 +58,16 @@ const Login = () => {
 
   const confirmLogin = useCallback(
     async (code: string) => {
-      await Auth.sendCustomChallengeAnswer(user, code);
+      const result = await Auth.sendCustomChallengeAnswer(user, code).catch(
+        () => {
+          setInvalidCode(true);
+          return false;
+        }
+      );
 
-      router.replace('/');
+      if (result) {
+        router.replace('/');
+      }
     },
     [router, user]
   );
@@ -89,6 +101,7 @@ const Login = () => {
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           <ConfirmLogIn
+            invalidCode={invalidCode}
             resendLoader={loader}
             onBackStep={onBackStep}
             onResendCode={resendCode}
