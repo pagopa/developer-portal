@@ -327,17 +327,20 @@ export const translations = {
   auth: {
     login: {
       action: 'Accedi',
-      loginToYourAccount: 'Accedi al tuo account',
+      loginToYourAccount: 'Accedi al tuo account DevPortal',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
     confirmLogin: {
-      title: 'Verifica di accesso MFA',
-      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
-      code: '012345',
-      wrongAccount: 'Hai sbagliato account? ',
-      send: 'Invia',
+      title: 'Verifica la tua identità',
+      body: (email: string) =>
+        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 3 minuti.`,
+      code: 'Codice di verifica',
+      checkJunkMail:
+        'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
+      continue: 'Continua',
+      resendEmail: 'Reinvia e-mail',
     },
     accountActivated: {
       goToLogin: 'Vai al login',
