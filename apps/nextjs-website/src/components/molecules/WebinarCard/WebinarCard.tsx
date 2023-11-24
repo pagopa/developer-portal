@@ -12,9 +12,6 @@ import { useUser } from '@/helpers/user.helper';
 
 type WebinarCardProps = {
   userAligned?: boolean;
-  setUserAttributes?: (
-    attributes: DevPortalUser['attributes']
-  ) => Promise<null>;
   handleErrorMessage?: (message: string) => null;
 } & Webinar;
 
@@ -26,13 +23,12 @@ const WebinarCard = ({
   startDateTime,
   endDateTime,
   userAligned,
-  setUserAttributes,
   handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
   const { webinar } = translations;
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { user } = useUser();
+  const { user, setUserAttributes } = useUser();
 
   return (
     <Card
@@ -73,7 +69,12 @@ const WebinarCard = ({
               webinarSlug={slug}
               userAttributes={user?.attributes}
               userAligned={userAligned}
-              setUserAttributes={setUserAttributes}
+              setUserAttributes={async (
+                attributes: DevPortalUser['attributes']
+              ) => {
+                await setUserAttributes(attributes);
+                return null;
+              }}
               isSubscribed={isSubscribed}
               setIsSubscribed={(bool: boolean) => {
                 setIsSubscribed(bool);

@@ -40,7 +40,7 @@ const SubscribeToWebinar = ({
     if (userAttributes && webinarSlug) {
       setIsSubscribed(webinarSubscriptionExists(webinarSlug, userAttributes));
     }
-  }, [userAttributes, webinarSlug, setIsSubscribed]);
+  }, [userAttributes, webinarSlug]);
 
   if (!webinarSlug) {
     return null;
