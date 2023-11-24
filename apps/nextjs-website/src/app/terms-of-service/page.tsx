@@ -6,7 +6,7 @@ const TermsOfService = () => {
   return (
     <Box py={6}>
       <div
-        id='otnotice-a5c1cb86-dde7-4592-9ec0-1494fc48936f'
+        id='otnotice-30a52037-d537-4347-9dfc-cfc0cc7d5d13'
         className='otnotice'
       />
 
@@ -22,7 +22,7 @@ const TermsOfService = () => {
             // To ensure external settings are loaded, use the Initialized promise:
             (window as any).OneTrust.NoticeApi.Initialized.then(() => {
               (window as any).OneTrust.NoticeApi.LoadNotices([
-                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/a5c1cb86-dde7-4592-9ec0-1494fc48936f.json',
+                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/30a52037-d537-4347-9dfc-cfc0cc7d5d13.json',
               ]);
             });
           }
