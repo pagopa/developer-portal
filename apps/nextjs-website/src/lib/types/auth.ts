@@ -11,5 +11,10 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:job_role': string;
     readonly 'custom:mailinglist_accepted': 'true' | 'false';
     readonly 'custom:privacy_accepted': boolean;
+    readonly 'custom:user_preferences'?: string;
   };
+};
+
+export type UserPreferences = {
+  readonly subscribedWebinarSlugs: readonly string[];
 };

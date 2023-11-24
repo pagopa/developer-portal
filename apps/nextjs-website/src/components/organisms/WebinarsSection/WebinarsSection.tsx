@@ -1,11 +1,12 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import { Box, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
+import { useUser } from '@/helpers/user.helper';
+import { DevPortalUser } from '@/lib/types/auth';
 
 export type webinarsSectionProps = {
   title: string;
@@ -21,6 +22,8 @@ const WebinarsSection = ({
   webinars,
 }: webinarsSectionProps) => {
   const theme = useTheme();
+  const [error, setError] = useState<string | null>(null);
+  const { aligned: userAligned } = useUser();
 
   return (
     <Box
@@ -71,13 +74,23 @@ const WebinarsSection = ({
                 speakers={webinar.speakers}
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
-              >
-                <SubscribeToWebinar />
-              </WebinarCard>
+                userAligned={userAligned}
+                handleErrorMessage={(message: string) => {
+                  setError(message);
+                  return null;
+                }}
+              />
             ))}
           </Box>
         </Box>
       </EContainer>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={4000}
+        onClose={() => setError(null)}
+      >
+        <Alert severity={'error'}>{error}</Alert>
+      </Snackbar>
     </Box>
   );
 };
