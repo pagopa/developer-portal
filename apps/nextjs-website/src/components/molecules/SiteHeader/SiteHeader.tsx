@@ -34,10 +34,10 @@ const SiteHeader = (
         ref={ref}
         sx={{
           py: 2,
-          px: 3,
+          px: { xs: 2, md: 3 },
           backgroundColor: palette.common.white,
         }}
-        spacing={2}
+        spacing={{ xs: 0, md: 2 }}
         direction='row'
         justifyContent={{ sm: 'space-between', md: 'start' }}
         alignItems='center'

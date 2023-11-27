@@ -53,7 +53,7 @@ const UserInfo: FC = () => {
       flexGrow={1}
       alignItems='center'
       direction='row'
-      gap={1}
+      gap={{ xs: 0, md: 1 }}
       justifyContent='flex-end'
     >
       {!user && !loading && (
@@ -69,10 +69,14 @@ const UserInfo: FC = () => {
         >
           <Typography
             variant='body1'
-            sx={{ fontSize: '14px', fontWeight: 600 }}
+            sx={{
+              fontSize: '14px',
+              fontWeight: 600,
+              display: { xs: 'none', md: 'flex' },
+            }}
           >
             {t('auth.login.action')}
-          </Typography>{' '}
+          </Typography>
           <Login sx={{ marginLeft: '2px', height: 20, width: 18 }} />
         </MuiLink>
       )}
@@ -83,19 +87,26 @@ const UserInfo: FC = () => {
             alignItems='center'
             justifyContent='flex-end'
             onClick={handleClick}
+            gap={{ xs: 0, md: 1 }}
           >
             <Avatar
               sx={{
                 width: 20,
                 height: 20,
-                mr: 1,
                 bgcolor: palette.text.primary,
               }}
             ></Avatar>
-            <Typography variant='body2' sx={{ fontSize: 14, fontWeight: 600 }}>
+            <Typography
+              variant='body2'
+              sx={{
+                fontSize: 14,
+                fontWeight: 600,
+                display: { xs: 'none', md: 'flex' },
+              }}
+            >
               {user.attributes.given_name} {user.attributes.family_name}
             </Typography>
-            <IconButton size='small' sx={{ ml: 1 }}>
+            <IconButton size='small'>
               <ArrowDropDownOutlinedIcon
                 sx={{ width: 24, height: 24 }}
               ></ArrowDropDownOutlinedIcon>
