@@ -38,8 +38,7 @@ const UserInfo: FC = () => {
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
-      // eslint-disable-next-line functional/immutable-data
-      router.push('/');
+      router.replace('/');
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
       typeof window !== 'undefined' && window.location.reload();
