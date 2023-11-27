@@ -13,7 +13,6 @@ import {
   TextField,
   Button,
   CircularProgress,
-  FormHelperText,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
