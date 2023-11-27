@@ -5,14 +5,8 @@ import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import { translations } from '@/_contents/translations';
 
 const PersonalData = () => {
-  const {
-    auth: {
-      signUp: { companyRoles },
-    },
-  } = translations;
   const t = useTranslations('profile');
   const { user } = useUser();
 
@@ -31,9 +25,7 @@ const PersonalData = () => {
     },
     {
       title: t('personalData.fields.sector'),
-      value: companyRoles.find(
-        (role) => role.value === user?.attributes['custom:company_type']
-      )?.title,
+      value: user?.attributes['custom:company_type'],
     },
   ];
 
