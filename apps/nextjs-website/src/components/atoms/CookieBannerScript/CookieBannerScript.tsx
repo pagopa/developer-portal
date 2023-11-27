@@ -22,7 +22,7 @@ const CookieBannerScript = ({
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
 
   return (
-    !isProduction && (
+    isProduction && (
       <div
         key='script-cookie'
         dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
