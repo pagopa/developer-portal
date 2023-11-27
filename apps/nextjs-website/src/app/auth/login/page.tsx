@@ -103,6 +103,7 @@ const Login = () => {
           <ConfirmLogIn
             invalidCode={invalidCode}
             resendLoader={loader}
+            username={username}
             onBackStep={onBackStep}
             onResendCode={resendCode}
             onConfirmLogin={confirmLogin}

@@ -11,9 +11,9 @@ import {
   Stack,
   Typography,
   TextField,
-  Divider,
   Button,
   CircularProgress,
+  FormHelperText,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
@@ -25,14 +25,15 @@ interface confirmLoginProps {
   onBackStep: () => null;
   onResendCode: () => Promise<void>;
   onConfirmLogin: (code: string) => Promise<void>;
+  username: string;
 }
 
 const ConfirmLogin = ({
   invalidCode,
   resendLoader,
-  onBackStep,
   onResendCode,
   onConfirmLogin,
+  username,
 }: confirmLoginProps) => {
   const t = useTranslations();
 
@@ -84,19 +85,54 @@ const ConfirmLogin = ({
             </Typography>
             <Typography variant='body2' mb={2}>
               {t('auth.confirmLogin.body')}
+              <Box component='span' fontWeight='bold'>
+                {username}{' '}
+              </Box>
+              {t('auth.confirmLogin.body2')}
             </Typography>
-            <Stack spacing={2} mb={4}>
+            <Stack spacing={2} mb={2} mt={4}>
+              <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
+                {t('auth.confirmLogin.code')}
+              </Typography>
               <TextField
                 label={t('auth.confirmLogin.code')}
                 variant='outlined'
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
-                sx={{
-                  backgroundColor: 'white',
-                }}
+                disabled={submitting || invalidCode}
+                error={invalidCode}
+                helperText={invalidCode && t('auth.confirmLogin.errorCode')}
               />
+              {invalidCode && (
+                <Box display='flex' justifyContent='center' alignItems='center'>
+                  <Link
+                    onClick={onResendCode}
+                    underline='none'
+                    variant='body2'
+                    mt={4}
+                    sx={{
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {t('auth.confirmLogin.resendNewCode')}
+                  </Link>
+                </Box>
+              )}
             </Stack>
-            <Stack spacing={2} mb={4}>
+            <Stack spacing={4} pt={2} pb={2}>
+              <Stack direction='row' justifyContent='center'>
+                <Button
+                  variant='contained'
+                  disabled={submitting || invalidCode}
+                  onClick={onconfirmLoginHandler}
+                >
+                  {t('auth.confirmLogin.send')}
+                </Button>
+              </Stack>
+            </Stack>
+            <Stack spacing={2} mt={2} mb={4}>
               <Typography component='p' variant='caption' mb={4}>
                 {t('auth.confirmLogin.didntReceiveEmail')}{' '}
                 <Link
@@ -109,37 +145,6 @@ const ConfirmLogin = ({
                   {buildLoder()}
                 </Link>
               </Typography>
-            </Stack>
-            <Stack spacing={4} pt={4} pb={2}>
-              <Stack direction='row' justifyContent='center'>
-                <Button
-                  variant='contained'
-                  disabled={submitting || invalidCode}
-                  onClick={onconfirmLoginHandler}
-                >
-                  {t('auth.confirmLogin.send')}
-                </Button>
-              </Stack>
-            </Stack>
-            <Divider />
-            <Stack
-              pt={4}
-              pb={8}
-              display='flex'
-              alignItems='center'
-              justifyContent='center'
-              flexDirection='row'
-            >
-              <Typography variant='caption-semibold' mr={1}>
-                {t('auth.confirmLogin.wrongAccount')}
-              </Typography>
-              <Link
-                variant='body2'
-                onClick={onBackStep}
-                sx={{ fontWeight: 600, cursor: 'pointer' }}
-              >
-                {t('shared.goBack')}
-              </Link>
             </Stack>
           </Grid>
         </Grid>

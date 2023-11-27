@@ -53,13 +53,16 @@
       "action": "Accedi"
     },
     "confirmLogin": {
-      "title": "Verifica di accesso MFA",
-      "body": "Inserisci il codice di verifica inviato nella tua e-mail",
-      "code": "Inserisci il codice MFA (es. 012345)",
+      "title": "Verifica la tua identitá",
+      "body": "Abbiamo inviato un codice di verifica a ",
+      "body2": "Il codice scade tra 30 minuti",
+      "code": "Codice di verifica",
       "wrongAccount": "Hai sbagliato account? ",
-      "send": "Invia",
-      "didntReceiveEmail": "Non hai ricevuto l'e-mail? Controlla se si trova nella posta indesiderata oppure",
-      "resendEmail": "Reinvia e-mail"
+      "send": "Continua",
+      "didntReceiveEmail": "Non hai ricevuto alcuna e-mail? Controlla la posta indesiderata oppure",
+      "resendEmail": "Reinvia e-mail",
+      "errorCode": "Il codice inserito non e' corretto",
+      "resendNewCode": "Invia un nuovo codice"
     }
   },
   "shared": {
@@ -68,6 +71,8 @@
     "cancel": "Annulla",
     "goBack": "Torna indietro",
     "yourData": "I tuoi dati",
+    "requiredFields": "* Campi obbligatori",
+    "emailFieldError": "Inserisci un indirizzo email valido",
     "subscribeButton": {
       "subscribeLabel": "Iscriviti",
       "subscribedLabel": "Iscrizione confermata",
