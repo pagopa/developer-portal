@@ -25,7 +25,7 @@ export const Footer = ({
     borderColor='divider'
     borderTop='1px'
     component='footer'
-    px={{ sm: 8, xs: 2 }}
+    px={{ xs: 2, sm: 4, md: 8 }}
     sx={{ backgroundColor: 'background.paper' }}
   >
     <Container
