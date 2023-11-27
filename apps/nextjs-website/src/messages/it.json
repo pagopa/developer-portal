@@ -72,5 +72,27 @@
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
         }
+    },
+    "errors": {
+        "CodeDeliveryFailureException": "Impossibile inviare il codice di verifica.",
+        "ForbiddenException": "La tua richiesta non è stata consentita dal sistema di autenticazione.",
+        "InternalErrorException": "Si è verificato un errore interno al sistema di autenticazione.",
+        "InvalidEmailRoleAccessPolicyException": "Il sistema di autenticazione non è autorizzato a utilizzare la tua identità e-mail.",
+        "InvalidLambdaResponseException": "Il sistema di autenticazione ha riscontrato una risposta non valida.",
+        "InvalidParameterException": "Il servizio di autenticazione ha riscontrato un parametro non valido.",
+        "InvalidPasswordException": "Password non valida.",
+        "ResourceNotFoundException": "Il servizio di autenticazione non trova la risorsa richiesta.",
+        "TooManyRequestsException": "Troppe richieste di autenticazione.",
+        "UnexpectedLambdaException": "É stata riscontrata un'eccezione imprevista con il sistema di autenticazione.",
+        "UserLambdaValidationException": "Il servizio di autenticazione ha riscontrato un'eccezione di convalida utente.",
+        "UsernameExistsException": "Username giá registrato",
+        "UserNotFoundException": "Utente non registrato",
+        "NotAuthorizedException": "Operazione non autorizzata",
+        "PasswordResetRequiredException": "É stato richiesto un reset della password",
+        "UserNotConfirmedException": "Utente non confermato, controlla nella e-mail e apri il link di conferma",
+        "CodeMismatchException": "Codice non valido",
+        "ExpiredCodeException": "Codice scaduto",
+        "TooManyFailedAttemptsException": "Troppi tentativi errati!",
+        "LimitExceededException": "Limiti di autenticazione superati"
     }
 }

@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { RESET_AFTER_MS } from '@/config';
+import { useTranslations } from 'next-intl';
 
 interface Info {
   message: string;
@@ -27,6 +28,7 @@ const SignUp = () => {
   const {
     auth: { signUp },
   } = translations;
+  const t = useTranslations('errors');
   const params = useSearchParams();
   const router = useRouter();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
@@ -47,6 +49,15 @@ const SignUp = () => {
   );
 
   const [info, setInfo] = useState<Info | null>(null);
+
+  const goToConfirmSignUp = useCallback(() => {
+    router.replace(
+      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+        SignUpSteps.CONFIRM_SIGN_UP
+      }`
+    );
+    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+  }, [router, userData.username]);
 
   const onSignUp = useCallback(async () => {
     const {
@@ -72,10 +83,11 @@ const SignUp = () => {
       },
     }).catch((error) => {
       if (error.code.includes('UsernameExistsException')) {
+        setInfo({ message: t(error.code), isError: true });
         goToConfirmSignUp();
         return true;
       }
-      setInfo({ message: error.message, isError: true });
+      setInfo({ message: t(error.code), isError: true });
       return false;
     });
 
@@ -85,16 +97,7 @@ const SignUp = () => {
       goToConfirmSignUp();
       return !!result.user;
     }
-  }, [userData, router]);
-
-  const goToConfirmSignUp = useCallback(() => {
-    router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
-        SignUpSteps.CONFIRM_SIGN_UP
-      }`
-    );
-    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
-  }, [router, userData.username]);
+  }, [userData, t, goToConfirmSignUp]);
 
   const onBackStep = useCallback(() => {
     router.replace(

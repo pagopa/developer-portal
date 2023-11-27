@@ -27,6 +27,8 @@ import { IllusLogin } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
+import { CognitoErrorTranslation } from '@/_contents/cognitoErrorTranslation';
+
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -66,7 +68,9 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const onLoginHandler = useCallback(() => {
     setSubmitting(true);
     onLogin({ username, password })
-      .catch((e) => setError(e.message))
+      .catch((e) => {
+        setError(CognitoErrorTranslation(e.code));
+      })
       .finally(() => {
         setSubmitting(false);
       });
