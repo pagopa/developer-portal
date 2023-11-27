@@ -66,6 +66,7 @@ runs:
     - name: Build static website
       env:
         ENVIRONMENT: ${{ inputs.environment }}
+        NEXT_PUBLIC_ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
