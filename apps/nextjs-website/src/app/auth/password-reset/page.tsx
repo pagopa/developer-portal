@@ -9,13 +9,11 @@ import { emailMatcher } from '@/helpers/auth.helpers';
 import { useRouter } from 'next/navigation';
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
 import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
-import { RESET_AFTER_MS } from '@/lib/constants';
-
+import { RESET_AFTER_MS } from '@/config';
 interface Info {
   message: string;
   isError: boolean;
 }
-
 const PasswordReset = () => {
   const [info, setInfo] = useState<Info | null>(null);
   const [email, setEmail] = useState<string>('');

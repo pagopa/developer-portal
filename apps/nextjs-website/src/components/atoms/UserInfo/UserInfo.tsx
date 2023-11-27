@@ -18,7 +18,6 @@ import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
-import { isProduction } from '@/config';
 
 const UserInfo: FC = () => {
   const t = useTranslations();
@@ -57,7 +56,7 @@ const UserInfo: FC = () => {
       gap={1}
       justifyContent='flex-end'
     >
-      {!user && !loading && !isProduction && (
+      {!user && !loading && (
         <MuiLink
           href='/auth/login'
           component={Link}
