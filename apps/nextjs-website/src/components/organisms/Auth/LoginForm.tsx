@@ -68,9 +68,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const onLoginHandler = useCallback(() => {
     setSubmitting(true);
     onLogin({ username, password })
-      .catch((e) => {
-        setError(t(e.code));
-      })
+      .catch((e) => setError(t(e.code)))
       .finally(() => {
         setSubmitting(false);
       });
