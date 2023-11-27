@@ -1,5 +1,8 @@
+import { useTranslations } from 'next-intl';
 import { OpenAPIV3 } from 'openapi-types';
+
 import { Operation } from './Operation';
+import { Card, Typography } from '@mui/material';
 
 const methods = [
   'get',
@@ -29,8 +32,21 @@ type OperationsProps = {
 };
 
 export const Operations = ({ spec, validOperations }: OperationsProps) => {
+  const t = useTranslations('swagger');
+
   if (!spec.paths || !validOperations) {
-    return <h3> No operations defined in spec!</h3>;
+    const noOpHeader = t('emptyOperations.header');
+    const noOpMessage = t('emptyOperations.message');
+    return (
+      <Card sx={{ borderRadius: 1, p: 2 }} variant='outlined'>
+        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
+          {noOpHeader}
+        </Typography>
+        <Typography variant='body2' color='GrayText'>
+          {noOpMessage}
+        </Typography>
+      </Card>
+    );
   }
 
   const paths = Object.entries(spec.paths);
