@@ -53,7 +53,7 @@ const UserInfo: FC = () => {
       flexGrow={1}
       alignItems='center'
       direction='row'
-      gap={{ xs: 0, md: 1 }}
+      gap={{ xs: 0, sm: 1 }}
       justifyContent='flex-end'
     >
       {!user && !loading && (
@@ -72,7 +72,7 @@ const UserInfo: FC = () => {
             sx={{
               fontSize: '14px',
               fontWeight: 600,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'none', sm: 'flex' },
             }}
           >
             {t('auth.login.action')}
@@ -87,7 +87,7 @@ const UserInfo: FC = () => {
             alignItems='center'
             justifyContent='flex-end'
             onClick={handleClick}
-            gap={{ xs: 0, md: 1 }}
+            gap={{ xs: 0, sm: 1 }}
           >
             <Avatar
               sx={{
@@ -101,7 +101,7 @@ const UserInfo: FC = () => {
               sx={{
                 fontSize: 14,
                 fontWeight: 600,
-                display: { xs: 'none', md: 'flex' },
+                display: { xs: 'none', sm: 'flex' },
               }}
             >
               {user.attributes.given_name} {user.attributes.family_name}
