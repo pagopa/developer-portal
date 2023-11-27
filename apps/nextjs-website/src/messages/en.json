@@ -18,6 +18,10 @@
             "header": "Responses"
         },
         "example": "Example",
-        "schema": "Schema"
+        "schema": "Schema",
+        "emptyOperations": {
+            "header": "No operations",
+            "message": "No operations defined in this endpoint."
+        }
     }
 }

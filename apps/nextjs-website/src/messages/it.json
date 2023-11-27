@@ -89,6 +89,10 @@
             "header": "Risposte"
         },
         "example": "Esempio",
-        "schema": "Modello"
+        "schema": "Modello",
+        "emptyOperations": {
+            "header": "Nessuna operazione",
+            "message": "Non ci sono operazioni disponibili per questo endpoint."
+        }
     }
 }
