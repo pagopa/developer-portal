@@ -24,11 +24,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
-import { CognitoErrorTranslation } from '@/_contents/cognitoErrorTranslation';
-
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -39,6 +38,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     auth: { login, signUp },
     shared,
   } = translations;
+  const t = useTranslations('errors');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
@@ -69,12 +69,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     setSubmitting(true);
     onLogin({ username, password })
       .catch((e) => {
-        setError(CognitoErrorTranslation(e.code));
+        setError(t(e.code));
       })
       .finally(() => {
         setSubmitting(false);
       });
-  }, [onLogin, username, password]);
+  }, [onLogin, username, password, t]);
 
   return (
     <Box
