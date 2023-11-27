@@ -39,6 +39,9 @@ const UserInfo: FC = () => {
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
       router.replace('/');
+    } else {
+      // router.refresh(); is not enough beacuse it will not clean current state of components
+      typeof window !== 'undefined' && window.location.reload();
     }
 
     handleClose();
