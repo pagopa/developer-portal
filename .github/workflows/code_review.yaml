@@ -76,7 +76,6 @@ jobs:
       - name: Build NextJS Website
         uses: ./.github/actions/build-nextjs-website
         with:
-          next_public_environment: ${{ inputs.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
