@@ -1,5 +1,5 @@
 'use client';
-import { cookieDomainScript, isProduction } from '@/config';
+import { isProduction } from '@/config';
 
 function makeCookieScript(dataDomainScript?: string) {
   return `
@@ -12,7 +12,13 @@ function makeCookieScript(dataDomainScript?: string) {
   `;
 }
 
-const CookieBannerScript = () => {
+type CookieBannerScriptProps = {
+  cookieDomainScript?: string;
+};
+
+const CookieBannerScript = ({
+  cookieDomainScript,
+}: CookieBannerScriptProps) => {
   const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
 
   return (

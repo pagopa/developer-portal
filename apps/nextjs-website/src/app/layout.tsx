@@ -1,4 +1,4 @@
-import { isProduction } from '@/config';
+import { cookieDomainScript, isProduction } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -77,7 +77,7 @@ export default async function RootLayout({
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
           <body>
-            <CookieBannerScript />
+            <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
               <SiteHeader products={products} />
               <MainWrapper>{children}</MainWrapper>
