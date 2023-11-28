@@ -27,6 +27,7 @@ import {
 } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { passwordMatcher } from '@/helpers/auth.helpers';
+import { useTranslations } from 'next-intl';
 
 interface ChangePasswordFormProps {
   onChangePassword: () => Promise<void>;
@@ -41,8 +42,10 @@ const ChangePasswordForm = ({
 }: ChangePasswordFormProps) => {
   const {
     shared,
-    auth: { login, signUp, resetPassword },
+    auth: { login, resetPassword },
   } = translations;
+
+  const signUp = useTranslations('auth.signUp');
 
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
@@ -137,7 +140,7 @@ const ChangePasswordForm = ({
                   }}
                 />
                 <FormHelperText error={isPasswordDirty && !isPasswordValid}>
-                  {signUp.passwordPolicy}
+                  {signUp('passwordPolicy')}
                 </FormHelperText>
               </FormControl>
             </Stack>
