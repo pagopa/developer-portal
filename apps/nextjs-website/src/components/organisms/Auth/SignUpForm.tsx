@@ -308,8 +308,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     }}
                   >
                     {translations.auth.signUp.companyRoles.map((role) => (
-                      <MenuItem key={role} value={role}>
-                        {role}
+                      <MenuItem key={role.value} value={role.value}>
+                        {role.title}
                       </MenuItem>
                     ))}
                   </Select>

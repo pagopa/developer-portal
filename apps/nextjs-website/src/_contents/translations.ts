@@ -371,12 +371,15 @@ export const translations = {
         },
       ],
       companyRoles: [
-        'Ente pubblico',
-        'Partner tecnologico',
-        'PSP',
-        'Gestore di pubblico servizio',
-        'Azienda privata',
-        'Altro',
+        { title: 'Ente pubblico', value: 'ente-pubblico' },
+        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'PSP', value: 'psp' },
+        {
+          title: 'Gestore di pubblico servizio',
+          value: 'gestore-di-pubblico-servizio',
+        },
+        { title: 'Azienda privata', value: 'azienda-privata' },
+        { title: 'Altro', value: 'altro' },
       ],
     },
     confirmSignUp: {
