@@ -13,7 +13,10 @@ export const Table = ({ children }: TableProps<ReactNode>) => (
   <MUITableContainer
     component={'div'}
     sx={{
-      maxWidth: { lg: 'calc(100vw - 700px)' },
+      maxWidth: {
+        xs: 'calc(100vw - 100px)',
+        lg: 'calc(100vw - 700px)',
+      },
     }}
   >
     <MUITable
