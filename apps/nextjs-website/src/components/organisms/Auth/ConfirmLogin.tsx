@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import {
   Box,
   Grid,
@@ -15,6 +14,7 @@ import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useTranslations } from 'next-intl';
 
 interface confirmLoginProps {
   email: string | null;
@@ -22,9 +22,7 @@ interface confirmLoginProps {
 }
 
 const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
-  const {
-    auth: { confirmLogin },
-  } = translations;
+  const confirmLogin = useTranslations('auth.confirmLogin');
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -55,14 +53,14 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
               <IllusEmailValidation />
             </Stack>
             <Typography variant='h4' pt={8} mb={5} textAlign='center'>
-              {confirmLogin.title}
+              {confirmLogin('title')}
             </Typography>
             {email && (
               <Typography
                 variant='body2'
                 mb={6}
                 dangerouslySetInnerHTML={{
-                  __html: confirmLogin.body(email),
+                  __html: confirmLogin.raw('body').replace('{email}', email),
                 }}
               />
             )}
@@ -70,7 +68,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
               variant='body1'
               sx={{ marginBottom: 1.5, fontWeight: 600 }}
             >
-              {confirmLogin.code}
+              {confirmLogin('code')}
             </Typography>
             <Stack spacing={2} mb={4}>
               <TextField
@@ -83,7 +81,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
               />
             </Stack>
             {email && (
-              <ResendEmail email={email} text={confirmLogin.checkJunkMail} />
+              <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
             )}
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
@@ -92,7 +90,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                   disabled={submitting}
                   onClick={onConfirmLoginHandler}
                 >
-                  {confirmLogin.continue}
+                  {confirmLogin('continue')}
                 </Button>
               </Stack>
             </Stack>

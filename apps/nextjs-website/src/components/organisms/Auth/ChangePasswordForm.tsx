@@ -16,7 +16,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { translations } from '@/_contents/translations';
 import {
   useState,
   MouseEvent,
@@ -40,12 +39,10 @@ const ChangePasswordForm = ({
   setPassword,
   password,
 }: ChangePasswordFormProps) => {
-  const {
-    shared,
-    auth: { login, resetPassword },
-  } = translations;
-
+  const login = useTranslations('auth.login');
+  const resetPassword = useTranslations('auth.resetPassword');
   const signUp = useTranslations('auth.signUp');
+  const shared = useTranslations('shared');
 
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
@@ -105,12 +102,12 @@ const ChangePasswordForm = ({
               <IllusDataSecurity />
             </Stack>
             <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-              {resetPassword.newPassword}
+              {resetPassword('newPassword')}
             </Typography>
             <Stack spacing={2} mb={2}>
               <FormControl variant='outlined'>
                 <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                  {shared.password}
+                  {shared('password')}
                 </InputLabel>
                 <OutlinedInput
                   id='password-input'
@@ -132,7 +129,7 @@ const ChangePasswordForm = ({
                     </InputAdornment>
                   }
                   value={password}
-                  label={shared.password}
+                  label={shared('password')}
                   inputProps={{
                     sx: {
                       padding: '8.5px 14px',
@@ -150,7 +147,7 @@ const ChangePasswordForm = ({
                   htmlFor='confirm-password-input'
                   sx={{ top: '-8px' }}
                 >
-                  {shared.confirmPassword}
+                  {shared('confirmPassword')}
                 </InputLabel>
                 <OutlinedInput
                   id='confirm-password-input'
@@ -172,7 +169,7 @@ const ChangePasswordForm = ({
                     </InputAdornment>
                   }
                   value={password_confirm}
-                  label={shared.confirmPassword}
+                  label={shared('confirmPassword')}
                   error={isPasswordDirty && password !== password_confirm}
                   inputProps={{
                     sx: {
@@ -192,7 +189,7 @@ const ChangePasswordForm = ({
                   }}
                   disabled={isSubmitDisabled}
                 >
-                  {resetPassword.send}
+                  {resetPassword('send')}
                 </Button>
               </Stack>
             </Stack>
@@ -206,9 +203,9 @@ const ChangePasswordForm = ({
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                {resetPassword.rememberPassword}
+                {resetPassword('rememberPassword')}
               </Typography>
-              <Link href='/auth/login'>{login.action}</Link>
+              <Link href='/auth/login'>{login('action')}</Link>
             </Stack>
           </Grid>
         </Grid>

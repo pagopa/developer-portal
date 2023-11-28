@@ -10,17 +10,12 @@ import {
   Box,
 } from '@mui/material';
 import { emailMatcher } from '@/helpers/auth.helpers';
-import { translations } from '@/_contents/translations';
 import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-
-const {
-  auth: { resetPassword },
-  shared,
-} = translations;
+import { useTranslations } from 'next-intl';
 
 interface ResetPasswordFormProps {
   email: string;
@@ -35,6 +30,9 @@ const ResetPasswordForm = ({
   handleResetPassword,
   emailValidators,
 }: ResetPasswordFormProps) => {
+  const resetPassword = useTranslations('auth.resetPassword');
+  const shared = useTranslations('shared');
+
   const [isSubmitDisabled, setSubmitDisabled] = useState(false);
 
   useEffect(() => {
@@ -58,16 +56,16 @@ const ResetPasswordForm = ({
               <IllusDataSecurity />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {resetPassword.title}
+              {resetPassword('title')}
             </Typography>
             <Typography variant='body2' mb={4}>
-              {resetPassword.body}
+              {resetPassword('body')}
             </Typography>
             <RequiredTextField
-              label={shared.emailAddress}
+              label={shared('emailAddress')}
               value={email}
               onChange={({ target: { value } }) => setEmail(value)}
-              helperText={shared.requiredFieldError}
+              helperText={shared('requiredFieldError')}
               customValidators={emailValidators}
             />
             <Stack spacing={4} pt={4} pb={2}>
@@ -80,7 +78,7 @@ const ResetPasswordForm = ({
                   }}
                   disabled={isSubmitDisabled}
                 >
-                  {resetPassword.send}
+                  {resetPassword('send')}
                 </Button>
               </Stack>
             </Stack>
@@ -98,7 +96,7 @@ const ResetPasswordForm = ({
                 href='/auth/login'
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
-                {resetPassword.goBackToLogin}
+                {resetPassword('goBackToLogin')}
               </Link>
             </Stack>
           </Grid>

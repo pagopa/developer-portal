@@ -1,12 +1,10 @@
-import { translations } from '@/_contents/translations';
 import IconFireworks from '@/components/atoms/IconFireworks/IconFireworks';
 import { Box, Typography, Stack, Grid, Button, Card } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 const PasswordChangedCard = () => {
-  const {
-    auth: { resetPassword },
-  } = translations;
+  const resetPassword = useTranslations('auth.resetPassword');
 
   // TODO: refactor using SingleCard component
   return (
@@ -22,12 +20,12 @@ const PasswordChangedCard = () => {
               <IconFireworks />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {resetPassword.passwordSet}
+              {resetPassword('passwordSet')}
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button variant='contained' component={Link} href='/auth/login'>
-                  {resetPassword.goBackToLogin}
+                  {resetPassword('goBackToLogin')}
                 </Button>
               </Stack>
             </Stack>
