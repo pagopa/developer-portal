@@ -88,10 +88,12 @@ export default async function RootLayout({
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
           <body>
-            <div
-              key='script-cookie'
-              dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-            />
+            {isProduction && (
+              <div
+                key='script-cookie'
+                dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
+              />
+            )}
             <AuthProvider>
               <SiteHeader products={products} />
               <MainWrapper>{children}</MainWrapper>
