@@ -7,6 +7,7 @@ import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
 import { DevPortalUser } from '@/lib/types/auth';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 export type webinarsSectionProps = {
   title: string;
