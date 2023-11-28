@@ -25,6 +25,10 @@ inputs:
     description: 'The region where Cognito has been deployed. Default set to Milan region'
     required: false
     default: 'eu-south-1'
+  snackbar_auto_hide_duration_ms:
+    description: 'The duration in milliseconds of the snackbar'
+    required: false
+    default: '10000'
 
 
 runs:
@@ -54,5 +58,6 @@ runs:
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.cognito_aws_region }}
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
+        SNACKBAR_AUTO_HIDE_DURATION_MS: ${{ inputs.snackbar_auto_hide_duration_ms }}
       shell: bash
       run: npm run build -w nextjs-website

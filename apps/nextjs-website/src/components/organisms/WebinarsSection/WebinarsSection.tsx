@@ -86,7 +86,7 @@ const WebinarsSection = ({
       </EContainer>
       <Snackbar
         open={!!error}
-        autoHideDuration={4000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>
