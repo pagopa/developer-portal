@@ -3,10 +3,7 @@
 const convertToNumberOrUndefined = (
   value: string | undefined
 ): number | undefined => {
-  if (value) {
-    return parseInt(value, 10);
-  }
-  return undefined;
+  return parseInt(`${value}`, 10) || undefined;
 };
 
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
