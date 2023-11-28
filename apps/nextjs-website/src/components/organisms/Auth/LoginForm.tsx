@@ -24,6 +24,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
@@ -34,9 +35,11 @@ interface LoginFormProps {
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
   const {
-    auth: { login, signUp },
+    auth: { login },
     shared,
   } = translations;
+
+  const signUp = useTranslations('auth.signUp');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
@@ -185,7 +188,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   variant='caption-semibold'
                   color={palette.primary.main}
                 >
-                  {signUp.action}
+                  {signUp('action')}
                 </Typography>
               </Box>
             </form>
