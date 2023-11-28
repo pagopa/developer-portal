@@ -340,57 +340,6 @@ export const translations = {
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
-    signUp: {
-      action: 'Iscriviti',
-      createYourAccount: 'Crea il tuo account',
-      confirmComunications:
-        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
-      acceptPolicy:
-        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
-      alreadyHaveAnAccount: 'Hai già un account?',
-      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
-      passwordPolicy:
-        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
-      emailSent: (email: string) => `Email inviata a ${email}`,
-      advantages: [
-        {
-          title: 'Accedi a contenuti esclusivi',
-          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
-        },
-        {
-          title: 'Ricevi aggiornamenti sui nostri prodotti',
-          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
-        },
-        {
-          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
-          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
-        },
-        {
-          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
-          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
-        },
-      ],
-      companyRoles: [
-        { title: 'Ente pubblico', value: 'public-authority' },
-        { title: 'Partner tecnologico', value: 'tech-partner' },
-        { title: 'PSP', value: 'psp' },
-        {
-          title: 'Gestore di pubblico servizio',
-          value: 'operator-of-public-service',
-        },
-        { title: 'Azienda privata', value: 'private-company' },
-        { title: 'Altro', value: 'other' },
-      ],
-    },
-    confirmSignUp: {
-      confirmSignUp: 'Conferma che sei tu',
-      description: (email: string) =>
-        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
-      didntReceiveEmail:
-        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
-      resendEmail: 'Reinvia e-mail',
-      wrongEmail: "L'indirizzo email è errato?",
-    },
     resetPassword: {
       title: 'Recupera password',
       body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',

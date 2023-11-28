@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
@@ -28,6 +27,7 @@ import {
   FormHelperText,
   useTheme,
 } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import {
@@ -36,22 +36,20 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
 interface SignUpFormProps {
   userData: SignUpUserData;
-
   setUserData: Dispatch<SetStateAction<SignUpUserData>>;
-
   onSignUp: () => Promise<boolean>;
 }
 
 const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
-  const {
-    auth: { login, signUp },
-    shared,
-  } = translations;
+  const login = useTranslations('auth.login');
+  const signUp = useTranslations('auth.signUp');
+  const shared = useTranslations('shared');
 
   const {
     company,
@@ -88,7 +86,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
   const emailValidators: ValidatorFunction[] = [
     (value: string) => ({
       valid: emailMatcher.test(value),
-      error: shared.emailFieldError,
+      error: shared('emailFieldError'),
     }),
   ];
 
@@ -143,6 +141,18 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
     validateForm();
   }, [validateForm, isPasswordValid, userData]);
 
+  const companyRoles = useMemo(
+    () => [
+      'ente-pubblico',
+      'partner-tecnologico',
+      'psp',
+      'gestore-di-pubblico-servizio',
+      'azienda-privata',
+      'altro',
+    ],
+    []
+  );
+
   if (authStatus === 'authenticated') {
     redirect('/');
   }
@@ -153,16 +163,16 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Typography variant='h4' pt={4} mb={4} textAlign='center'>
-              {signUp.createYourAccount}
+              {signUp('createYourAccount')}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {shared.requiredFields}
+              {shared('requiredFields')}
             </Typography>
             <form>
               <Grid container spacing={2} mb={2}>
                 <Grid item xs={6}>
                   <RequiredTextField
-                    label={shared.firstName}
+                    label={shared('firstName')}
                     value={firstName}
                     onChange={({ target: { value } }) =>
                       setUserData((prevData) => ({
@@ -170,12 +180,12 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                         firstName: value,
                       }))
                     }
-                    helperText={shared.requiredFieldError}
+                    helperText={shared('requiredFieldError')}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <RequiredTextField
-                    label={shared.lastName}
+                    label={shared('lastName')}
                     value={lastName}
                     onChange={({ target: { value } }) =>
                       setUserData((prevData) => ({
@@ -183,13 +193,13 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                         lastName: value,
                       }))
                     }
-                    helperText={shared.requiredFieldError}
+                    helperText={shared('requiredFieldError')}
                   />
                 </Grid>
               </Grid>
               <Stack spacing={2} mb={2}>
                 <RequiredTextField
-                  label={shared.emailAddress}
+                  label={shared('emailAddress')}
                   value={username}
                   onChange={({ target: { value } }) =>
                     setUserData((prevData) => ({
@@ -197,14 +207,14 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       username: value,
                     }))
                   }
-                  helperText={shared.emailFieldError}
+                  helperText={shared('emailFieldError')}
                   customValidators={emailValidators}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
                 <FormControl variant='outlined'>
                   <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                    {shared.password}
+                    {shared('password')}
                   </InputLabel>
                   <OutlinedInput
                     id='password-input'
@@ -231,7 +241,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       </InputAdornment>
                     }
                     value={password}
-                    label={shared.password}
+                    label={shared('password')}
                     inputProps={{
                       sx: {
                         padding: '8.5px 14px',
@@ -239,7 +249,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     }}
                   />
                   <FormHelperText error={isPasswordDirty && !isPasswordValid}>
-                    {signUp.passwordPolicy}
+                    {signUp('passwordPolicy')}
                   </FormHelperText>
                 </FormControl>
               </Stack>
@@ -249,7 +259,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     htmlFor='confirm-password-input'
                     sx={{ top: '-8px' }}
                   >
-                    {shared.confirmPassword}
+                    {shared('confirmPassword')}
                   </InputLabel>
                   <OutlinedInput
                     id='confirm-password-input'
@@ -274,7 +284,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       </InputAdornment>
                     }
                     value={confirmPassword}
-                    label={shared.confirmPassword}
+                    label={shared('confirmPassword')}
                     error={isPasswordDirty && password !== confirmPassword}
                     inputProps={{
                       sx: {
@@ -287,13 +297,13 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               <Stack spacing={2} mb={2}>
                 <FormControl fullWidth>
                   <InputLabel id='company-field' sx={{ top: '-8px' }}>
-                    {shared.company}
+                    {shared('company')}
                   </InputLabel>
                   <Select
                     labelId='company-field'
                     id='company-field-select'
                     value={company}
-                    label={shared.company}
+                    label={shared('company')}
                     onChange={({ target: { value } }) =>
                       setUserData((prevData) => ({
                         ...prevData,
@@ -307,9 +317,9 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       },
                     }}
                   >
-                    {translations.auth.signUp.companyRoles.map((role) => (
-                      <MenuItem key={role.value} value={role.value}>
-                        {role.title}
+                    {companyRoles.map((role) => (
+                      <MenuItem key={role} value={role}>
+                        {signUp(`companyRoles.${role}`)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -317,7 +327,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               </Stack>
               <Stack spacing={2} mb={2}>
                 <TextField
-                  label={shared.role}
+                  label={shared('role')}
                   variant='outlined'
                   size='small'
                   onChange={({ target: { value } }) =>
@@ -346,7 +356,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       sx={{ marginTop: '-4px' }}
                     />
                   }
-                  label={signUp.confirmComunications}
+                  label={signUp('confirmComunications')}
                   sx={{ alignItems: 'flex-start' }}
                 />
               </Grid>
@@ -357,13 +367,26 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     onClick={onSignUpClick}
                     disabled={!isFormValid || submitting}
                   >
-                    {signUp.action}
+                    {signUp('action')}
                   </Button>
                 </Stack>
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body2'>{signUp.acceptPolicy}</Typography>
+                  <Typography variant='body2'>
+                    {signUp('acceptPolicy1')}
+                    <Typography
+                      component={Link}
+                      fontSize={16}
+                      href='/privacy-policy'
+                      variant='caption-semibold'
+                      color={palette.primary.main}
+                    >
+                      {' '}
+                      {signUp('acceptPolicy2')}{' '}
+                    </Typography>
+                    {signUp('acceptPolicy3')}
+                  </Typography>
                 </Stack>
               </Stack>
             </form>
@@ -377,7 +400,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               flexDirection='row'
             >
               <Typography variant='body2' mr={1}>
-                {signUp.alreadyHaveAnAccount}
+                {signUp('alreadyHaveAnAccount')}
               </Typography>
               <Typography
                 component={Link}
@@ -386,7 +409,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                 variant='caption-semibold'
                 color={palette.primary.main}
               >
-                {login.action}
+                {login('action')}
               </Typography>
             </Stack>
           </Grid>

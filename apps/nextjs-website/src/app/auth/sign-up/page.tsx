@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
@@ -14,9 +13,10 @@ import {
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useTranslations } from 'next-intl';
 
 interface Info {
   message: string;
@@ -24,12 +24,10 @@ interface Info {
 }
 
 const SignUp = () => {
-  const {
-    auth: { signUp },
-  } = translations;
   const params = useSearchParams();
   const router = useRouter();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const signUp = useTranslations('auth.signUp');
 
   const [userData, setUserData] = useState<SignUpUserData>({
     username: decodeURIComponent(params.get('email') || ''),
@@ -106,6 +104,11 @@ const SignUp = () => {
     return null;
   }, [router, userData.username]);
 
+  const advantages = useMemo(
+    () => ['exclusive_contents', 'product_updates', 'api_keys', 'support'],
+    []
+  );
+
   return (
     <>
       <Box
@@ -130,14 +133,14 @@ const SignUp = () => {
         >
           <Grid item xs={isSmallScreen ? 1 : 5}>
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
-              {signUp.whyCreateAccount}
+              {signUp('whyCreateAccount')}
             </Typography>
-            {signUp.advantages.map((advantage, index) => {
+            {advantages.map((advantage, index) => {
               return (
                 <CheckItem
                   key={index}
-                  title={advantage.title}
-                  description={advantage.text}
+                  title={signUp(`advantages.${advantage}.title`)}
+                  description={signUp(`advantages.${advantage}.text`)}
                 />
               );
             })}
