@@ -1,13 +1,11 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import IconFireworks from '@/components/atoms/IconFireworks/IconFireworks';
 import { Box, Typography, Stack, Grid, Button, Card } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 const AccountActivatedCard = () => {
-  const {
-    auth: { accountActivated },
-  } = translations;
+  const accountActivated = useTranslations('auth.accountActivated');
 
   // TODO: refactor using SingleCard component
   return (
@@ -23,15 +21,15 @@ const AccountActivatedCard = () => {
               <IconFireworks />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {accountActivated.yourAccountIsActive}
+              {accountActivated('yourAccountIsActive')}
             </Typography>
             <Typography variant='body2' mb={2} textAlign='center'>
-              {accountActivated.welcomeMessage}
+              {accountActivated('welcomeMessage')}
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button variant='contained' component={Link} href='/auth/login'>
-                  {accountActivated.goToLogin}
+                  {accountActivated('goToLogin')}
                 </Button>
               </Stack>
             </Stack>

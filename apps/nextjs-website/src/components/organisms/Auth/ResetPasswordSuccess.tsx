@@ -1,4 +1,3 @@
-import { translations } from '@/_contents/translations';
 import {
   Box,
   Card,
@@ -9,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
 
 interface ResetPasswordSuccessProps {
   email: string;
@@ -16,16 +16,14 @@ interface ResetPasswordSuccessProps {
   resendEmail: () => Promise<void>;
 }
 
-const {
-  auth: { resetPassword },
-  shared,
-} = translations;
-
 const ResetPasswordSuccess = ({
   email,
   onBack,
   resendEmail,
 }: ResetPasswordSuccessProps) => {
+  const resetPassword = useTranslations('auth.resetPassword');
+  const shared = useTranslations('shared');
+
   return (
     <Box
       component='section'
@@ -43,20 +41,26 @@ const ResetPasswordSuccess = ({
               <IllusEmailValidation />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {resetPassword.checkEmailTitle}
+              {resetPassword('checkEmailTitle')}
             </Typography>
-            <Typography variant='body1' mb={2}>
-              {resetPassword.checkEmail(email)}
-            </Typography>
+            <Typography
+              variant='body1'
+              mb={2}
+              dangerouslySetInnerHTML={{
+                __html: resetPassword
+                  .raw('checkEmail')
+                  .replace('{email}', email),
+              }}
+            ></Typography>
             <Typography component='p' variant='caption' mb={4}>
-              {resetPassword.resendEmailPrompt}{' '}
+              {resetPassword('resendEmailPrompt')}{' '}
               <Link
                 onClick={resendEmail}
                 underline='none'
                 variant='caption-semibold'
                 sx={{ cursor: 'pointer' }}
               >
-                {resetPassword.resendEmail}
+                {resetPassword('resendEmail')}
               </Link>
             </Typography>
             <Divider />
@@ -69,10 +73,10 @@ const ResetPasswordSuccess = ({
               flexDirection='row'
             >
               <Typography variant='body1' mr={1}>
-                {resetPassword.wrongEmail}
+                {resetPassword('wrongEmail')}
                 {'  '}
                 <Link onClick={onBack} sx={{ cursor: 'pointer' }}>
-                  {shared.goBack}
+                  {shared('goBack')}
                 </Link>
               </Typography>
             </Stack>

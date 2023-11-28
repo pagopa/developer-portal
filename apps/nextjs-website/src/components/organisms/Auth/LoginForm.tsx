@@ -34,12 +34,9 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
-  const {
-    auth: { login },
-    shared,
-  } = translations;
-
   const signUp = useTranslations('auth.signUp');
+  const login = useTranslations('auth.login');
+  const shared = useTranslations('shared');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
@@ -93,11 +90,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 <IllusLogin />
               </Stack>
               <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-                {login.loginToYourAccount}
+                {login('loginToYourAccount')}
               </Typography>
               <Stack spacing={2} mb={4}>
                 <TextField
-                  label={shared.emailAddress}
+                  label={shared('emailAddress')}
                   variant='outlined'
                   size='small'
                   onChange={(e) => setUsername(e.target.value)}
@@ -109,7 +106,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Stack spacing={2} mb={2}>
                 <FormControl variant='outlined'>
                   <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                    {shared.password}
+                    {shared('password')}
                   </InputLabel>
                   <OutlinedInput
                     id='password-input'
@@ -127,7 +124,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label={shared.password}
+                    label={shared('password')}
                     inputProps={{
                       sx: {
                         padding: '8.5px 14px',
@@ -139,7 +136,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Grid container mb={1}>
                 <FormControlLabel
                   control={<Checkbox />}
-                  label={login.rememberMe}
+                  label={login('rememberMe')}
                 />
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
@@ -149,7 +146,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     variant='contained'
                     onClick={onLoginHandler}
                   >
-                    {login.action}
+                    {login('action')}
                   </Button>
                 </Stack>
               </Stack>
@@ -167,7 +164,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   variant='caption-semibold'
                   color={palette.primary.main}
                 >
-                  {login.forgotPassword}
+                  {login('forgotPassword')}
                 </Typography>
               </Box>
               <Divider />
@@ -179,7 +176,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 alignItems='center'
               >
                 <Typography variant='body2' mr={1}>
-                  {login.noAccount}
+                  {login('noAccount')}
                 </Typography>
                 <Typography
                   component={Link}

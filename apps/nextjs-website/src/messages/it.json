@@ -54,7 +54,11 @@
   "auth": {
       "logout": "Esci",
       "login": {
-          "action": "Accedi"
+        "action": "Accedi",
+        "loginToYourAccount": "Accedi al tuo account DevPortal",
+        "rememberMe": "Ricordami",
+        "forgotPassword": "Hai dimenticato la password?",
+        "noAccount": "Non hai un account?"
       },
       "confirmation": {
           "title": "Il link non è più valido",
@@ -109,6 +113,37 @@
           "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
         "resendEmail": "Invia nuovamente l'e-mail",
         "wrongEmail": "L'indirizzo e-mail è errato?"
+      },
+      
+      "confirmLogin": {
+        "title": "Verifica la tua identità",
+        "body": "Abbiamo inviato un codice di verifica a <strong>{email}</strong><br>Il codice scade tra 3 minuti.",
+        "code": "Codice di verifica",
+        "checkJunkMail":
+          "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
+        "continue": "Continua",
+        "resendEmail": "Reinvia e-mail"
+      },
+      "accountActivated": {
+        "goToLogin": "Vai al login",
+        "welcomeMessage": "Ti diamo il benvenuto su PagoPA DevPortal.",
+        "yourAccountIsActive": "Il tuo account è attivo"
+      },
+      "resetPassword": {
+        "title": "Recupera password",
+        "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
+        "goBackToLogin": "Torna al login",
+        "send": "Invia",
+        "checkEmailTitle": "Controlla l'email",
+        "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una e-mail con un link per impostare una nuova password.",
+        "resendEmailPrompt":
+          "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+        "resendEmail": "Reinvia e-mail",
+        "wrongEmail": "L'indirizzo e-mail è errato?",
+        "passwordSet": "Password impostata correttamente",
+        "newPassword": "Imposta una nuova password",
+        "rememberPassword": "Ricordi la tua password?",
+        "invalidLinkError": "Il link non è valido"
       }
   },
   "shared": {
