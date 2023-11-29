@@ -10,10 +10,10 @@ const Swagger = ({ path, method, src }: SwaggerProps) => {
   const { spec, loading } = useSpec(src);
   const t = useTranslations('swagger');
 
-  // if (loading) return null;
+  if (loading) return null;
   if (!spec || !src)
     return (
-      <Card sx={{ borderRadius: 1, p: 2 }} variant='outlined'>
+      <Card sx={{ borderRadius: 1, p: 2, mb: 2 }} variant='outlined'>
         <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
           {t('errorCard.header')}
         </Typography>
