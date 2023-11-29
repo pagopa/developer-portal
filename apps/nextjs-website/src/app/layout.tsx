@@ -12,6 +12,7 @@ import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
+import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -30,17 +31,6 @@ _paq.push(["enableLinkTracking"]);
   s.parentNode.insertBefore(g, s);
 })();
 `;
-
-function makeCookieScript(dataDomainScript?: string) {
-  return `
-    <script
-      src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
-      type="text/javascript"
-      charset="UTF-8"
-      data-domain-script="${dataDomainScript}"></script>
-    <script type="text/javascript"> function OptanonWrapper() { } </script>
-  `;
-}
 
 const baseUrl = isProduction
   ? 'https://developer.pagopa.it'
@@ -62,7 +52,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const products = [...(await getProducts())];
-  const COOKIE_SCRIPT = makeCookieScript(cookieDomainScript);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
@@ -88,12 +77,7 @@ export default async function RootLayout({
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
           <body>
-            {isProduction && (
-              <div
-                key='script-cookie'
-                dangerouslySetInnerHTML={{ __html: COOKIE_SCRIPT }}
-              />
-            )}
+            <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
               <SiteHeader products={products} />
               <MainWrapper>{children}</MainWrapper>
