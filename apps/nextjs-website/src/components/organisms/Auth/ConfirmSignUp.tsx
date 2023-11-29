@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { useTranslations } from 'next-intl';
+import { useCallback } from 'react';
+import { Auth } from 'aws-amplify';
 
 interface ConfirmSignUpProps {
   email: string;
@@ -20,6 +22,13 @@ interface ConfirmSignUpProps {
 const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
   const confirmSignUp = useTranslations('auth.confirmSignUp');
   const shared = useTranslations('shared');
+
+  const onResendEmail = useCallback(() => {
+    const result = Auth.resendSignUp(email).catch((e) => {
+      return new Error(e);
+    });
+    return result;
+  }, [email]);
 
   return (
     <Box component='section'>
@@ -43,8 +52,8 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
             ></Typography>
 
             <ResendEmail
-              email={email}
               text={confirmSignUp('didntReceiveEmail')}
+              onResendEmail={onResendEmail}
             />
             <Divider />
             <Stack

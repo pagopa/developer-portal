@@ -14,6 +14,7 @@ import { IllusError } from '@pagopa/mui-italia';
 enum State {
   loading = 'loading',
   resendCode = 'resendCode',
+  accountAlreadyConfirmed = 'accountAlreadyConfirmed',
   error = 'error',
 }
 
@@ -37,7 +38,17 @@ const Confirmation = () => {
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           !isProduction && console.warn(error);
-          setState(State.resendCode);
+          switch (error.code) {
+            case 'CodeMismatchException':
+              setState(State.resendCode);
+              break;
+            case 'NotAuthorizedException':
+              setState(State.accountAlreadyConfirmed);
+              break;
+            default:
+              setState(State.error);
+              break;
+          }
         });
     } else {
       setState(State.error);

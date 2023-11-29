@@ -54,7 +54,7 @@
   "auth": {
       "logout": "Esci",
       "login": {
-        "action": "Iscriviti",
+        "action": "Accedi",
         "loginToYourAccount": "Accedi al tuo account DevPortal",
         "rememberMe": "Ricordami",
         "forgotPassword": "Hai dimenticato la password?",
@@ -66,7 +66,7 @@
       },
       "resendEmail": { "label": "Reinvia email" },
       "signUp": {
-        "action": "Registrati",
+        "action": "Iscriviti",
         "createYourAccount": "Crea il tuo account",
         "confirmComunications":
           "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
@@ -89,12 +89,12 @@
                 "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. "
             },
             "api_keys": {
-              "title": "Genera, gestisci e utilizza api Key (In Arrivo)",
+              "title": "Genera, gestisci e utilizza api Key",
               "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
               "isComingSoon": "true"
             },
             "support": {
-              "title": "Richiedi assistenza tramite un form dedicato (In Arrivo)",
+              "title": "Richiedi assistenza tramite un form dedicato",
               "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
               "isComingSoon": "true"
             }
@@ -127,7 +127,7 @@
         "title": "Confermaci che sei tu",
         "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
         "didntReceiveEmail":
-          "Non hai ricevuto l'email? Controlla se nella posta indesiderata oppure",
+          "Non hai ricevuto l'email? Controlla la posta indesiderata oppure",
         "resendEmail": "Invia nuovamente l'email",
         "wrongEmail": "L'indirizzo email è errato?"
       },
@@ -139,6 +139,7 @@
         "checkJunkMail":
           "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
         "continue": "Continua",
+        "sendNewCode": "Invia nuovo codice",
         "resendEmail": "Reinvia email"
       },
       "accountActivated": {

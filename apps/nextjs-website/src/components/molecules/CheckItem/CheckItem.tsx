@@ -1,6 +1,6 @@
 'use client';
 import { CheckCircle } from '@mui/icons-material';
-import { Chip, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Grid, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 interface CheckItemProps {
@@ -19,7 +19,7 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
         <CheckCircle sx={{ fontSize: 40, color: palette.info.extraLight }} />
       </Grid>
       <Grid item xs={10}>
-        {isComingSoon && <Chip label={shared('comingSoon')} />}
+        <Box>{isComingSoon && <Chip label={shared('comingSoon')} />}</Box>
         <Typography
           variant='overline'
           content='div'

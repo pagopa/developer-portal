@@ -3,4 +3,4 @@ export type LoginFunctionParams = {
   readonly password: string;
 };
 
-export type LoginFunction = (params: LoginFunctionParams) => Promise<void>;
+export type LoginFunction = (params: LoginFunctionParams) => Promise<boolean>;

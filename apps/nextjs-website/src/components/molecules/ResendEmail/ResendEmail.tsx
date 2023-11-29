@@ -4,15 +4,14 @@ import { LoaderPhase } from '@/lib/types/loader';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useCallback, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { RESET_AFTER_MS } from '@/config';
 
 type ResendEmailProps = {
   text: string;
-  email: string;
+  onResendEmail: () => Promise<boolean>;
 };
 
-const ResendEmail = ({ text, email }: ResendEmailProps) => {
+const ResendEmail = ({ text, onResendEmail }: ResendEmailProps) => {
   const t = useTranslations('auth.resendEmail');
   const { palette } = useTheme();
 
@@ -23,7 +22,7 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
   const handleResendEmail = useCallback(async () => {
     setLoader(LoaderPhase.LOADING);
 
-    const result = await Auth.resendSignUp(email).catch(() => {
+    const result = await onResendEmail().catch(() => {
       setLoader(LoaderPhase.ERROR);
       return false;
     });
@@ -35,7 +34,7 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
     setTimeout(() => {
       setLoader(undefined);
     }, RESET_AFTER_MS);
-  }, [email]);
+  }, [onResendEmail]);
 
   const buildLoader = () => {
     switch (loader) {

@@ -9,18 +9,29 @@ import {
   Typography,
   TextField,
   Button,
+  Link,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
-import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { useTranslations } from 'next-intl';
+import { LoaderPhase } from '@/lib/types/loader';
+import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 
 interface confirmLoginProps {
   email: string | null;
   onConfirmLogin: (code: string) => Promise<void>;
+
+  invalidCode: boolean;
+  resendLoader?: LoaderPhase;
+  onResendCode: () => Promise<boolean>;
 }
 
-const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
+const ConfirmLogin = ({
+  email,
+  onConfirmLogin,
+  invalidCode,
+  onResendCode,
+}: confirmLoginProps) => {
   const confirmLogin = useTranslations('auth.confirmLogin');
 
   const [error, setError] = useState<string | null>(null);
@@ -77,21 +88,39 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 sx={{
                   backgroundColor: 'white',
                 }}
+                error={invalidCode}
               />
             </Stack>
-            {email && (
-              <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
+            {invalidCode && (
+              <Stack spacing={2} mb={2} mt={2}>
+                <Stack direction='row' justifyContent='center'>
+                  <Link
+                    onClick={onResendCode}
+                    underline='none'
+                    variant='caption-semibold'
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    {confirmLogin('sendNewCode')}
+                  </Link>
+                </Stack>
+              </Stack>
             )}
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
-                  disabled={submitting}
+                  disabled={submitting || invalidCode}
                   onClick={onConfirmLoginHandler}
                 >
                   {confirmLogin('continue')}
                 </Button>
               </Stack>
+            </Stack>
+            <Stack spacing={2} mt={2} mb={4}>
+              <ResendEmail
+                text={confirmLogin('checkHunkMail')}
+                onResendEmail={onResendCode}
+              />
             </Stack>
           </Grid>
         </Grid>
