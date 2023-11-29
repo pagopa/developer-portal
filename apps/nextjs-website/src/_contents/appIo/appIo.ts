@@ -10,6 +10,7 @@ export const appIo: Product = {
   description:
     'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
   svgPath: '/icons/appIo.svg',
+  pngPath: 'https://dev.developer.pagopa.it/icons/appIo.png',
   path: '/app-io',
   slug: 'app-io',
   subpaths: {

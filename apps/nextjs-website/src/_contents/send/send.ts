@@ -12,6 +12,7 @@ export const send: Product = {
   description:
     'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
   svgPath: '/icons/send.svg',
+  pngPath: '/icons/send.png',
   subpaths: {
     overview: sendOverviewPath,
     quickStart: sendQuickStartGuidePath,

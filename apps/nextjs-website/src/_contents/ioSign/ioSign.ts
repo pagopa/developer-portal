@@ -12,6 +12,7 @@ export const ioSign: Product = {
   description:
     'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
   svgPath: '/icons/appIo.svg',
+  pngPath: 'https://dev.developer.pagopa.it/icons/appIo.png',
   subpaths: {
     overview: ioSignOverviewPath,
     quickStart: ioSignQuickStartGuidePath,

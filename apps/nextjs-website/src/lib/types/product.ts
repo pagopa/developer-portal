@@ -4,6 +4,7 @@ export type Product = {
   readonly slug: string;
   readonly description: string;
   readonly svgPath: string;
+  readonly pngPath?: string;
   readonly subpaths: Subpaths;
 } & Path;
 

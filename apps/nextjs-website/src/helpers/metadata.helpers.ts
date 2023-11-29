@@ -12,6 +12,9 @@ type MakeMetadataParams = {
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
 
+export const DEFAULT_IMAGE =
+  'https://dev.developer.pagopa.it/images/dev-portal-home.jpg';
+
 export const makeMetadata: MakeMetadataFunction = ({
   parent,
   title,
@@ -28,8 +31,17 @@ export const makeMetadata: MakeMetadataFunction = ({
     title: metadataTitle,
     description: description || '',
     url: url || '',
-    openGraph: getOpenGraphMetadata(metadataTitle, description, image, locale),
-    twitter: getTwitterMetadata(metadataTitle, description, image),
+    openGraph: getOpenGraphMetadata(
+      metadataTitle,
+      description,
+      image || DEFAULT_IMAGE,
+      locale
+    ),
+    twitter: getTwitterMetadata(
+      metadataTitle,
+      description,
+      image || DEFAULT_IMAGE
+    ),
   };
 };
 
