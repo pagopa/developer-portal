@@ -47,11 +47,25 @@
             }
         }
     },
+    "webinar": {
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
+        "whyParticipate": "Perché partecipare?",
+        "speakers": "Speaker",
+        "subscribe": "Iscriviti",
+        "relatedLinksTitle": "Link utili",
+        "speakersTitle": "Chi Parla"
+    },
     "auth": {
         "logout": "Esci",
         "login": {
             "action": "Accedi"
-        }
+        },
+        "confirmation": {
+            "title": "Il link non è più valido",
+            "ctaLabel": "Reinvia email"
+        },
+        "resendEmail": { "label": "Reinvia e-mail" }
     },
     "shared": {
         "goToModel": "Vai al modello",

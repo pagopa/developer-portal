@@ -1,56 +1,88 @@
 'use client';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import PageNotFound from '@/app/not-found';
 import { Auth } from 'aws-amplify';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import Spinner from '@/components/atoms/Spinner/Spinner';
+import { useTranslations } from 'next-intl';
+import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
+import SingleCard from '@/components/atoms/SingleCard/SingleCard';
+import { isProduction } from '@/config';
+import { IllusError } from '@pagopa/mui-italia';
+
+enum State {
+  loading = 'loading',
+  resendCode = 'resendCode',
+  error = 'error',
+}
 
 const Confirmation = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const username = searchParams.get('username');
   const code = searchParams.get('code');
+  const t = useTranslations('auth');
 
-  const [renderNotFound, setRenderNotFound] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [state, setState] = useState<State>(State.loading);
 
   useEffect(() => {
     if (username && code) {
       Auth.confirmSignUp(username, code)
         .then(() => {
-          setRenderNotFound(false);
           // eslint-disable-next-line functional/immutable-data
           router.push('/auth/account-activated');
         })
-        .catch(() => {
-          setRenderNotFound(true);
+        .catch((error) => {
+          // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
+          !isProduction && console.warn(error);
+          setState(State.resendCode);
         });
     } else {
-      setRenderNotFound(true);
+      setState(State.error);
     }
-  }, [username, code]);
+  }, [username, code, router]);
 
-  return renderNotFound ? (
-    <PageNotFound />
-  ) : (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
-      <Stack
-        justifyContent={'center'}
-        height={500}
-        padding={2}
-        alignItems='center'
-      >
-        <CircularProgress />
-      </Stack>
-    </Box>
-  );
+  const onResendEmail = useCallback(async () => {
+    setSubmitting(true);
+    if (!username) {
+      setState(State.error);
+      return;
+    }
+
+    await Auth.resendSignUp(username).catch(() => {
+      setState(State.error);
+      return false;
+    });
+
+    setSubmitting(false);
+  }, [username]);
+
+  switch (state) {
+    case State.error:
+      return <PageNotFound />;
+    case State.resendCode:
+      return (
+        <PageBackgroundWrapper>
+          <SingleCard
+            icon={<IllusError />}
+            title={t('confirmation.title')}
+            cta={
+              <Button
+                disabled={submitting}
+                variant='contained'
+                onClick={onResendEmail}
+              >
+                {t('confirmation.ctaLabel')}
+              </Button>
+            }
+          />
+        </PageBackgroundWrapper>
+      );
+    default:
+      return <Spinner />;
+  }
 };
 
 export default Confirmation;

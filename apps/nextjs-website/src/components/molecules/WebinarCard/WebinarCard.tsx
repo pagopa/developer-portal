@@ -1,5 +1,6 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
+import React, { useState } from 'react';
 import {
   Box,
   Card,
@@ -8,13 +9,18 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
+import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
+import { DevPortalUser } from '@/lib/types/auth';
+import { useUser } from '@/helpers/user.helper';
+import { useTranslations } from 'next-intl';
 
-type WebinarCardProps = { children?: React.ReactNode } & Webinar;
+type WebinarCardProps = {
+  userAligned?: boolean;
+  handleErrorMessage?: (message: string) => null;
+} & Webinar;
 
 const WebinarCard = ({
   title,
@@ -23,10 +29,13 @@ const WebinarCard = ({
   speakers,
   startDateTime,
   endDateTime,
-  children,
+  userAligned,
+  handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
-  const { webinar } = translations;
+  const t = useTranslations('webinar');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { user, setUserAttributes } = useUser();
 
   return (
     <Card
@@ -59,10 +68,28 @@ const WebinarCard = ({
           <LinkButton
             disabled={false}
             href={`/webinars/${slug}`}
-            label={webinar.whyParticipate}
+            label={t('whyParticipate')}
             color={theme.palette.primary.main}
           />
-          <Box mt={4}>{children}</Box>
+          <Box mt={4}>
+            <SubscribeToWebinar
+              webinarSlug={slug}
+              userAttributes={user?.attributes}
+              userAligned={userAligned}
+              setUserAttributes={async (
+                attributes: DevPortalUser['attributes']
+              ) => {
+                await setUserAttributes(attributes);
+                return null;
+              }}
+              isSubscribed={isSubscribed}
+              setIsSubscribed={(bool: boolean) => {
+                setIsSubscribed(bool);
+                return null;
+              }}
+              handleErrorMessage={handleErrorMessage}
+            />
+          </Box>
         </Box>
         {speakers && (
           <Box>
@@ -73,7 +100,7 @@ const WebinarCard = ({
               fontWeight={600}
               textTransform={'uppercase'}
             >
-              {webinar.speakers}
+              {t('speakers')}
             </Typography>
             <Stack direction='column' gap={2}>
               {speakers.map((speaker, index) => (

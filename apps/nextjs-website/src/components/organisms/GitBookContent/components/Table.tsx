@@ -10,7 +10,15 @@ import { TableProps } from 'gitbook-docs/markdoc/schema/table';
 import { Checkbox } from '@mui/material';
 
 export const Table = ({ children }: TableProps<ReactNode>) => (
-  <MUITableContainer component={'div'}>
+  <MUITableContainer
+    component={'div'}
+    sx={{
+      maxWidth: {
+        xs: 'calc(100vw - 100px)',
+        lg: 'calc(100vw - 700px)',
+      },
+    }}
+  >
     <MUITable
       sx={{
         borderCollapse: 'collapse',
