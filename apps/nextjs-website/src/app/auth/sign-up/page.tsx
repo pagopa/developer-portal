@@ -16,7 +16,7 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
-import { RESET_AFTER_MS } from '@/config';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface Info {
   message: string;
@@ -158,7 +158,7 @@ const SignUp = () => {
       </Box>
       <Snackbar
         open={!!info}
-        autoHideDuration={RESET_AFTER_MS}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setInfo(null)}
       >
         <Alert severity={info?.isError ? 'error' : 'success'}>

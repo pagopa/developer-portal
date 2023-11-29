@@ -31,3 +31,5 @@ export const baseUrl = isProduction
   : 'https://dev.developer.pagopa.it';
 
 export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
+export const snackbarAutoHideDurationMs = 10_000;
+export const resetResendEmailAfterMs = 4_000;
