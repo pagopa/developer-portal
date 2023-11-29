@@ -91,12 +91,12 @@
             "api_keys": {
               "title": "Genera, gestisci e utilizza api Key (In Arrivo)",
               "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
-              "isComingSoon": true
+              "isComingSoon": "true"
             },
             "support": {
               "title": "Richiedi assistenza tramite un form dedicato (In Arrivo)",
               "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
-              "isComingSoon": true
+              "isComingSoon": "true"
             }
         }
     },
