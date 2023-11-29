@@ -317,13 +317,6 @@ export const translations = {
       },
     },
   },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
-    relatedLinksTitle: 'Link utili',
-    speakersTitle: 'Chi Parla',
-  },
   auth: {
     login: {
       action: 'Accedi',
@@ -378,15 +371,15 @@ export const translations = {
         },
       ],
       companyRoles: [
-        { title: 'Ente pubblico', value: 'ente-pubblico' },
-        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'Ente pubblico', value: 'public-authority' },
+        { title: 'Partner tecnologico', value: 'tech-partner' },
         { title: 'PSP', value: 'psp' },
         {
           title: 'Gestore di pubblico servizio',
-          value: 'gestore-di-pubblico-servizio',
+          value: 'operator-of-public-service',
         },
-        { title: 'Azienda privata', value: 'azienda-privata' },
-        { title: 'Altro', value: 'altro' },
+        { title: 'Azienda privata', value: 'private-company' },
+        { title: 'Altro', value: 'other' },
       ],
     },
     confirmSignUp: {
