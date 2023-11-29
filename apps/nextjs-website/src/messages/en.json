@@ -1,5 +1,14 @@
 {
     "shared": {
         "goToModel": "Go to model"
+    },
+    "webinar": {
+        "subscriptionError": "Registration limit reached",
+        "genericSubscriptionError": "Something went wrong, please try again later",
+        "whyParticipate": "Why participate?",
+        "speakers": "Speaker",
+        "subscribe": "Subscribe",
+        "relatedLinksTitle": "Useful links",
+        "speakersTitle": "Who's talking"
     }
 }

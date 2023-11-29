@@ -1,17 +1,16 @@
 'use client';
-import { Box, Stack, Typography } from '@mui/material';
-import React from 'react';
-import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Speaker } from '@/lib/types/speaker';
+import { Box, Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 type SpeakerListProps = {
   speakers: Speaker[];
 };
 
 const SpeakerList = ({ speakers }: SpeakerListProps) => {
-  const { webinar } = translations;
+  const t = useTranslations('webinar');
 
   return (
     <EContainer>
@@ -24,7 +23,7 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
           marginBottom={2}
           width={{ xs: '100%', md: '60%' }}
         >
-          {webinar.speakersTitle}
+          {t('speakersTitle')}
         </Typography>
         <Stack direction='column' gap={4}>
           {speakers?.map((speaker, index) => (
