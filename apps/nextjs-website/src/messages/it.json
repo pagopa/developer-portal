@@ -96,6 +96,21 @@
               "title": "Richiedi assistenza tramite un form dedicato (In Arrivo)",
               "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto."
             }
+        }
+    },
+    "webinar": {
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
+        "whyParticipate": "Perché partecipare?",
+        "speakers": "Speaker",
+        "subscribe": "Iscriviti",
+        "relatedLinksTitle": "Link utili",
+        "speakersTitle": "Chi Parla"
+    },
+    "auth": {
+        "logout": "Esci",
+        "login": {
+            "action": "Accedi"
         },
         "companyRoles": {
           "ente-pubblico": "Ente pubblico",

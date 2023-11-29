@@ -317,11 +317,4 @@ export const translations = {
       },
     },
   },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
-    relatedLinksTitle: 'Link utili',
-    speakersTitle: 'Chi Parla',
-  },
 };
