@@ -11,7 +11,6 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
-import { isProduction } from '@/config';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
