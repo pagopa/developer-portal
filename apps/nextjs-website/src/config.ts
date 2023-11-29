@@ -25,3 +25,9 @@ export const profileMenuItems: readonly {
 ];
 
 export const RESET_AFTER_MS = 4_000;
+
+export const baseUrl = isProduction
+  ? 'https://developer.pagopa.it'
+  : 'https://dev.developer.pagopa.it';
+
+export const DEFAULT_OG_TAG_IMAGE = `${baseUrl}/images/dev-portal-home.jpg`;

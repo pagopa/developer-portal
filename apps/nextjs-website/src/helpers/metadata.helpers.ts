@@ -1,4 +1,5 @@
 import { translations } from '@/_contents/translations';
+import { DEFAULT_OG_TAG_IMAGE, baseUrl } from '@/config';
 import { Metadata, ResolvedMetadata } from 'next';
 
 type MakeMetadataParams = {
@@ -11,9 +12,6 @@ type MakeMetadataParams = {
 };
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
-
-export const DEFAULT_IMAGE =
-  'https://dev.developer.pagopa.it/images/dev-portal-home.jpg';
 
 export const makeMetadata: MakeMetadataFunction = ({
   parent,
@@ -34,13 +32,13 @@ export const makeMetadata: MakeMetadataFunction = ({
     openGraph: getOpenGraphMetadata(
       metadataTitle,
       description,
-      image || DEFAULT_IMAGE,
+      image || DEFAULT_OG_TAG_IMAGE,
       locale
     ),
     twitter: getTwitterMetadata(
       metadataTitle,
       description,
-      image || DEFAULT_IMAGE
+      image || DEFAULT_OG_TAG_IMAGE
     ),
   };
 };

@@ -4,6 +4,7 @@ import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { Product } from '@/lib/types/product';
 import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
+import { baseUrl } from '@/config';
 
 export const ioSign: Product = {
   name: 'Firma con IO',
@@ -12,7 +13,7 @@ export const ioSign: Product = {
   description:
     'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
   svgPath: '/icons/appIo.svg',
-  pngPath: 'https://dev.developer.pagopa.it/icons/appIo.png',
+  pngPath: `${baseUrl}/icons/appIo.png`,
   subpaths: {
     overview: ioSignOverviewPath,
     quickStart: ioSignQuickStartGuidePath,

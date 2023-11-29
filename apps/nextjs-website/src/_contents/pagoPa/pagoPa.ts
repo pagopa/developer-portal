@@ -4,6 +4,7 @@ import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { pagoPaTutorialListsPath } from '@/_contents/pagoPa/tutorialListsPath';
 import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
 import { Product } from '@/lib/types/product';
+import { baseUrl } from '@/config';
 
 export const pagoPa: Product = {
   name: 'Piattaforma pagoPA',
@@ -12,7 +13,7 @@ export const pagoPa: Product = {
   description:
     'Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.',
   svgPath: '/icons/pagoPa.svg',
-  pngPath: 'https://dev.developer.pagopa.it/icons/pagoPa.png',
+  pngPath: `${baseUrl}/icons/pagoPa.png`,
   subpaths: {
     overview: pagoPaOverviewPath,
     quickStart: pagoPaQuickStartGuidePath,
