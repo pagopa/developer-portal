@@ -31,3 +31,12 @@ export const baseUrl = isProduction
 export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const snackbarAutoHideDurationMs = 10_000;
 export const resetResendEmailAfterMs = 4_000;
+
+export const companyRoles = [
+  'ente-pubblico',
+  'partner-tecnologico',
+  'psp',
+  'gestore-di-pubblico-servizio',
+  'azienda-privata',
+  'altro',
+];
