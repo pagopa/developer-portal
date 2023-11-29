@@ -2,7 +2,7 @@
   "profile": {
       "agreements": {
           "newsletter": {
-              "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
+              "description": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti.",
               "error": {
                   "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica",
                   "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica"
@@ -42,7 +42,7 @@
               "company": "Tipologia di ente o azienda",
               "sector": "Settore",
               "products": "Prodotti di interesse",
-              "email": "Indirizzo e-mail",
+              "email": "Indirizzo email",
               "password": "Password"
           }
       }
@@ -54,7 +54,7 @@
   "auth": {
       "logout": "Esci",
       "login": {
-        "action": "Accedi",
+        "action": "Iscriviti",
         "loginToYourAccount": "Accedi al tuo account DevPortal",
         "rememberMe": "Ricordami",
         "forgotPassword": "Hai dimenticato la password?",
@@ -64,12 +64,12 @@
           "title": "Il link non è più valido",
           "ctaLabel": "Reinvia email"
       },
-      "resendEmail": { "label": "Reinvia e-mail" },
+      "resendEmail": { "label": "Reinvia email" },
       "signUp": {
         "action": "Registrati",
         "createYourAccount": "Crea il tuo account",
         "confirmComunications":
-          "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+          "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
         "acceptPolicy1":
           "Cliccando su 'Iscriviti' accetti la nostra ",
         "acceptPolicy2": "informativa",
@@ -90,11 +90,13 @@
             },
             "api_keys": {
               "title": "Genera, gestisci e utilizza api Key (In Arrivo)",
-              "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora."
+              "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
+              "isComingSoon": true
             },
             "support": {
               "title": "Richiedi assistenza tramite un form dedicato (In Arrivo)",
-              "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto."
+              "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
+              "isComingSoon": true
             }
         }
     },
@@ -123,11 +125,11 @@
       },
       "confirmSignUp": {
         "title": "Confermaci che sei tu",
-        "emailSent": "Abbiamo inviato una e-mail a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
+        "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
         "didntReceiveEmail":
-          "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
-        "resendEmail": "Invia nuovamente l'e-mail",
-        "wrongEmail": "L'indirizzo e-mail è errato?"
+          "Non hai ricevuto l'email? Controlla se nella posta indesiderata oppure",
+        "resendEmail": "Invia nuovamente l'email",
+        "wrongEmail": "L'indirizzo email è errato?"
       },
       
       "confirmLogin": {
@@ -137,7 +139,7 @@
         "checkJunkMail":
           "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
         "continue": "Continua",
-        "resendEmail": "Reinvia e-mail"
+        "resendEmail": "Reinvia email"
       },
       "accountActivated": {
         "goToLogin": "Vai al login",
@@ -146,19 +148,19 @@
       },
       "resetPassword": {
         "title": "Recupera password",
-        "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
-        "goBackToLogin": "Torna al login",
-        "send": "Invia",
+        "body": "Inserisci il tuo indirizzo email e ti invieremo le istruzioni per impostare una nuova password.",
+        "goBackToLogin": "Vai al login",
+        "send": "Conferma",
         "checkEmailTitle": "Controlla l'email",
-        "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una e-mail con un link per impostare una nuova password.",
+        "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
         "resendEmailPrompt":
           "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-        "resendEmail": "Reinvia e-mail",
-        "wrongEmail": "L'indirizzo e-mail è errato?",
+        "resendEmail": "Reinvia email",
+        "wrongEmail": "L'indirizzo email è errato?",
         "passwordSet": "Password impostata correttamente",
         "newPassword": "Imposta una nuova password",
         "rememberPassword": "Ricordi la tua password?",
-        "invalidLinkError": "Il link non è valido"
+        "invalidLinkError": "Il link che hai usato è scaduto"
       }
   },
   "shared": {
