@@ -73,29 +73,6 @@ export default async function RootLayout({
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
           />
         )}
-        <meta property='og:title' content='PagoPA DevPortal' />
-        <meta property='og:type' content='website' />
-        <meta property='og:image:width' content='1140' />
-        <meta property='og:image:height' content='600' />
-        <meta property='og:url' content='https://developer.pagopa.it' />
-        <meta
-          property='og:image'
-          content='https://developer.pagopa.it/images/dev-portal-home.jpg'
-        />
-        twitter
-        <meta name='twitter:card' content='summary_large_image' />
-        <meta name='twitter:site' content='@pagopa' />
-        <meta name='twitter:title' content='PagoPA DevPortal' />
-        <meta
-          name='twitter:description'
-          content='Il portale per gli sviluppatori di PagoPA'
-        />
-        <meta
-          name='twitter:image'
-          content='https://developer.pagopa.it/images/dev-portal-home.jpg'
-        />
-        <meta name='twitter:image:alt' content='PagoPA DevPortal' />
-        <meta name='twitter:creator' content='@pagopa' />
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
