@@ -1,7 +1,6 @@
 'use client';
 import { Alert, Box, Grid, Snackbar } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { translations } from '@/_contents/translations';
 import { ValidatorFunction } from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { SendResetPasswordSteps } from '@/lib/types/sendResetPasswordSteps';
 import { Auth } from 'aws-amplify';
@@ -10,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
 import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useTranslations } from 'next-intl';
 interface Info {
   message: string;
   isError: boolean;
@@ -21,7 +21,7 @@ const PasswordReset = () => {
     SendResetPasswordSteps.SEND_EMAIL
   );
 
-  const { shared } = translations;
+  const shared = useTranslations('shared');
 
   const router = useRouter();
 
@@ -40,7 +40,7 @@ const PasswordReset = () => {
   const emailValidators: ValidatorFunction[] = [
     (value: string) => ({
       valid: emailMatcher.test(value),
-      error: shared.emailFieldError,
+      error: shared('emailFieldError'),
     }),
   ];
 

@@ -83,7 +83,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
             {email && (
               <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
             )}
-            <Stack spacing={4} pt={4} pb={2}>
+            <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
