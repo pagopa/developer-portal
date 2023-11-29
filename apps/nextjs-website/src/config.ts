@@ -24,4 +24,6 @@ export const profileMenuItems: readonly {
   { label: 'agreements.title', href: '/profile/agreements' },
 ];
 
-export const RESET_AFTER_MS = 4_000;
+export const snackbarAutoHideDurationMs = 10_000;
+
+export const resetResendEmailAfterMs = 4_000;

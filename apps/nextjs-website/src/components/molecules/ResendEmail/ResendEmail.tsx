@@ -5,7 +5,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { RESET_AFTER_MS } from '@/config';
+import { resetResendEmailAfterMs } from '@/config';
 
 type ResendEmailProps = {
   text: string;
@@ -34,7 +34,7 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
 
     setTimeout(() => {
       setLoader(undefined);
-    }, RESET_AFTER_MS);
+    }, resetResendEmailAfterMs);
   }, [email]);
 
   const buildLoader = () => {
