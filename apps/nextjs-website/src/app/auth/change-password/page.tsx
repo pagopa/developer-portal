@@ -7,13 +7,11 @@ import { useCallback, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
 import PageNotFound from '@/app/not-found';
-import { translations } from '@/_contents/translations';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useTranslations } from 'next-intl';
 
 const ChangePassword = () => {
-  const {
-    auth: { resetPassword },
-  } = translations;
+  const resetPassword = useTranslations('auth.resetPassword');
   const searchParams = useSearchParams();
   const username = searchParams.get('username') || '';
   const code = searchParams.get('code') || '';
@@ -44,7 +42,7 @@ const ChangePassword = () => {
     if (username != '' && code != '') {
       setIsValidLink(true);
     } else {
-      setError(resetPassword.invalidLinkError);
+      setError(resetPassword('invalidLinkError'));
     }
   }, []);
 
