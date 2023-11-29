@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 export const useSpec = (src?: string) => {
   const [spec, setSpec] = useState<OpenAPI.Document>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (src) {

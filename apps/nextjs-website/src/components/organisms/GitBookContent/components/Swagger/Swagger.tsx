@@ -10,8 +10,8 @@ const Swagger = ({ path, method, src }: SwaggerProps) => {
   const { spec, loading } = useSpec(src);
   const t = useTranslations('swagger');
 
-  if (!src || loading) return null;
-  if (!spec)
+  // if (loading) return null;
+  if (!spec || !src)
     return (
       <Card sx={{ borderRadius: 1, p: 2 }} variant='outlined'>
         <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
