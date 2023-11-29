@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: 'PagoPA DevPortal',
     description: 'Il portale per gli sviluppatori di PagoPA',
     url: 'https://developer.pagopa.it',
-    image: 'https://developer.pagopa.it/images/dev-portal-home.jpg',
+    image: 'https://dev.developer.pagopa.it/images/dev-portal-home.jpg',
     locale: 'it_IT',
   });
 }
