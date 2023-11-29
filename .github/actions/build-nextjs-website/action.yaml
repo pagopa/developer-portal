@@ -26,6 +26,7 @@ inputs:
     required: false
     default: 'eu-south-1'
 
+
 runs:
   using: "composite"
   steps:
