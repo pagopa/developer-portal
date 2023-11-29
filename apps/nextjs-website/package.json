@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh 056828be9dd9dcc5bd89cad237465578687182fd",
