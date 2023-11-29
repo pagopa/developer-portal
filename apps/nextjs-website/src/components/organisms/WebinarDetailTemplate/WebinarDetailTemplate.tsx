@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
 import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
@@ -12,6 +11,7 @@ import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
 import { useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
+import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
 
 type WebinarDetailTemplateProps = {
@@ -19,7 +19,7 @@ type WebinarDetailTemplateProps = {
 };
 
 const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
-  const { webinar: webinarLabels } = translations;
+  const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
   const { user, aligned: userAligned, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -74,7 +74,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         />
       )}
       <RelatedLinks
-        title={webinarLabels.relatedLinksTitle}
+        title={t('relatedLinksTitle')}
         links={
           webinar.relatedLinks?.map(({ path, name }) => ({
             text: name,
