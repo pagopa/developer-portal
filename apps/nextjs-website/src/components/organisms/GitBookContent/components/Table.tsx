@@ -10,7 +10,15 @@ import { TableProps } from 'gitbook-docs/markdoc/schema/table';
 import { Checkbox } from '@mui/material';
 
 export const Table = ({ children }: TableProps<ReactNode>) => (
-  <MUITableContainer component={'div'}>
+  <MUITableContainer
+    component={'div'}
+    sx={{
+      maxWidth: {
+        xs: 'calc(100vw - 100px)',
+        lg: 'calc(100vw - 700px)',
+      },
+    }}
+  >
     <MUITable
       sx={{
         borderCollapse: 'collapse',
@@ -43,22 +51,42 @@ export const TableH = styled(MUITableCell)(({ theme }) => ({
 
 export const TableD = (props: TableCellProps) => {
   const theme = useTheme();
+  if (props.children === 'true' || props.children === 'false')
+    return (
+      <MUITableCell
+        sx={{ border: `1px solid ${theme.palette.divider}` }}
+        {...props}
+      >
+        {props.children === 'true' ? (
+          <Checkbox
+            disabled
+            checked
+            style={{ color: theme.palette.primary.main }}
+          />
+        ) : props.children === 'false' ? (
+          <Checkbox disabled />
+        ) : (
+          props.children || ''
+        )}
+      </MUITableCell>
+    );
+
   return (
     <MUITableCell
-      sx={{ border: `1px solid ${theme.palette.divider}` }}
+      sx={{
+        border: `1px solid ${theme.palette.divider}`,
+        padding: '0.5rem 1rem',
+      }}
       {...props}
     >
-      {props.children === 'true' ? (
-        <Checkbox
-          disabled
-          checked
-          style={{ color: theme.palette.primary.main }}
-        />
-      ) : props.children === 'false' ? (
-        <Checkbox disabled />
-      ) : (
-        props.children || ''
-      )}
+      {Array.isArray(props.children)
+        ? props.children.map((children) => (
+            <>
+              {children}
+              <br />
+            </>
+          ))
+        : props.children}
     </MUITableCell>
   );
 };
