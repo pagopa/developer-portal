@@ -48,7 +48,7 @@ runs:
         ENVIRONMENT: ${{ inputs.environment }}
         NEXT_PUBLIC_ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
-        COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
         ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
         NEXT_TELEMETRY_DISABLED: '1'
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
