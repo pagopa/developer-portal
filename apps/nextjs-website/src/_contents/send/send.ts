@@ -4,6 +4,7 @@ import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { sendTutorialListsPath } from '@/_contents/send/tutorialListsPath';
 import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
+import { baseUrl } from '@/config';
 
 export const send: Product = {
   name: 'SEND - Servizio Notifiche Digitali',
@@ -12,7 +13,7 @@ export const send: Product = {
   description:
     'Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.',
   svgPath: '/icons/send.svg',
-  pngPath: '/icons/send.png',
+  pngUrl: `${baseUrl}/icons/send.png`,
   subpaths: {
     overview: sendOverviewPath,
     quickStart: sendQuickStartGuidePath,

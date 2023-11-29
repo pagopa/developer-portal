@@ -13,7 +13,7 @@ export const pagoPa: Product = {
   description:
     'Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.',
   svgPath: '/icons/pagoPa.svg',
-  pngPath: `${baseUrl}/icons/pagoPa.png`,
+  pngUrl: `${baseUrl}/icons/pagoPa.png`,
   subpaths: {
     overview: pagoPaOverviewPath,
     quickStart: pagoPaQuickStartGuidePath,

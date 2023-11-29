@@ -42,7 +42,7 @@ export async function generateMetadata(
     title: product.name,
     description: abstract?.description,
     url: path,
-    image: product.pngPath,
+    image: product.pngUrl,
   });
 }
 
