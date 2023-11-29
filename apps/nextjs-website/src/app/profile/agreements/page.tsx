@@ -15,6 +15,7 @@ import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -206,7 +207,7 @@ const Agreements = () => {
       </Stack>
       <Snackbar
         open={!!info}
-        autoHideDuration={4000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setInfo(null)}
       >
         <Alert severity={info?.isError ? 'error' : 'success'}>

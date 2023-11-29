@@ -14,6 +14,7 @@ import {
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface confirmLoginProps {
   email: string | null;
@@ -100,7 +101,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
       </Card>
       <Snackbar
         open={!!error}
-        autoHideDuration={2000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity='error'>{error}</Alert>

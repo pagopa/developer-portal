@@ -12,6 +12,7 @@ import { useUser } from '@/helpers/user.helper';
 import { useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -83,7 +84,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       />
       <Snackbar
         open={!!error}
-        autoHideDuration={4000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>
