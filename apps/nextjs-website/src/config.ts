@@ -24,4 +24,13 @@ export const profileMenuItems: readonly {
   { label: 'agreements.title', href: '/profile/agreements' },
 ];
 
+export const companyRoles = [
+  'ente-pubblico',
+  'partner-tecnologico',
+  'psp',
+  'gestore-di-pubblico-servizio',
+  'azienda-privata',
+  'altro',
+];
+
 export const RESET_AFTER_MS = 4_000;
