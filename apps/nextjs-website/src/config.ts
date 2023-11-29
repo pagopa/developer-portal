@@ -1,11 +1,4 @@
 // TODO: Add environment parser
-
-const convertToNumberOrUndefined = (
-  value: string | undefined
-): number | undefined => {
-  return parseInt(`${value}`, 10) || undefined;
-};
-
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
 export const cookieDomainScript = process.env.COOKIE_DOMAIN_SCRIPT;
 export const environment = process.env.ENVIRONMENT;
@@ -31,8 +24,6 @@ export const profileMenuItems: readonly {
   { label: 'agreements.title', href: '/profile/agreements' },
 ];
 
-export const snackbarAutoHideDurationMs: number | undefined =
-  convertToNumberOrUndefined(process.env.SNACKBAR_AUTO_HIDE_DURATION_MS);
+export const snackbarAutoHideDurationMs = 10_000;
 
-export const resetResendEmailAfterMs: number | undefined =
-  convertToNumberOrUndefined(process.env.RESET_RESEND_EMAIL_AFTER_MS);
+export const resetResendEmailAfterMs = 4_000;

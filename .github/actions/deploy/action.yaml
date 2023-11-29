@@ -33,14 +33,6 @@ inputs:
   cognito_app_client_id:
     description: 'The App Client registered on Cognito'
     required: true
-  snackbar_auto_hide_duration_ms:
-    description: 'The duration in milliseconds of the snackbar'
-    required: false
-    default: '10000'
-  reset_resend_email_after_ms:
-    description: 'The time in milliseconds the user must wait before resending the email'
-    required: false
-    default: '4000'
 
 runs:
   using: "composite"
@@ -82,8 +74,6 @@ runs:
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.aws_region }}
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
-        SNACKBAR_AUTO_HIDE_DURATION_MS: ${{ inputs.snackbar_auto_hide_duration_ms }}
-        RESET_RESEND_EMAIL_AFTER_MS: ${{ inputs.reset_resend_email_after_ms }}
       shell: bash
       run: npm run build -w nextjs-website
 
