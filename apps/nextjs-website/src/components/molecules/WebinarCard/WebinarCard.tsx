@@ -10,12 +10,12 @@ import {
   useTheme,
 } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
 import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useUser } from '@/helpers/user.helper';
+import { useTranslations } from 'next-intl';
 
 type WebinarCardProps = {
   userAligned?: boolean;
@@ -33,7 +33,7 @@ const WebinarCard = ({
   handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
-  const { webinar } = translations;
+  const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { user, setUserAttributes } = useUser();
 
@@ -68,7 +68,7 @@ const WebinarCard = ({
           <LinkButton
             disabled={false}
             href={`/webinars/${slug}`}
-            label={webinar.whyParticipate}
+            label={t('whyParticipate')}
             color={theme.palette.primary.main}
           />
           <Box mt={4}>
@@ -100,7 +100,7 @@ const WebinarCard = ({
               fontWeight={600}
               textTransform={'uppercase'}
             >
-              {webinar.speakers}
+              {t('speakers')}
             </Typography>
             <Stack direction='column' gap={2}>
               {speakers.map((speaker, index) => (

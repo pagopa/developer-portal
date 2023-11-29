@@ -66,7 +66,6 @@ export default async function RootLayout({
   return (
     <html lang='it'>
       <head>
-        <meta name='robots' content='noindex,nofollow' />
         {isProduction && (
           <script
             key='script-matomo'
