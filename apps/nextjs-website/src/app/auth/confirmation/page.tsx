@@ -10,10 +10,12 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { isProduction } from '@/config';
 import { IllusError } from '@pagopa/mui-italia';
+import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
 
 enum State {
   loading = 'loading',
   resendCode = 'resendCode',
+  alreadyConfirmed = 'alreadyConfirmed',
   error = 'error',
 }
 
@@ -35,9 +37,26 @@ const Confirmation = () => {
           router.push('/auth/account-activated');
         })
         .catch((error) => {
-          // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           !isProduction && console.warn(error);
-          setState(State.resendCode);
+          switch (error.code) {
+            case 'CodeMismatchException':
+              setState(State.resendCode);
+              break;
+            case 'ExpiredCodeException':
+              setState(State.resendCode);
+              break;
+            case 'InternalErrorException':
+              setState(State.resendCode);
+              break;
+            case 'LimitExceededException':
+              setState(State.error);
+              break;
+            case 'AliasExistsException':
+              setState(State.resendCode);
+              break;
+            default:
+              setState(State.resendCode);
+          }
         });
     } else {
       setState(State.error);
@@ -62,6 +81,8 @@ const Confirmation = () => {
   switch (state) {
     case State.error:
       return <PageNotFound />;
+    case State.alreadyConfirmed:
+      return <AccountAlreadyConfirmed />;
     case State.resendCode:
       return (
         <PageBackgroundWrapper>

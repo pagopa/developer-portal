@@ -54,7 +54,11 @@
       "loginToYourAccount": "Accedi al tuo account DevPortal",
       "rememberMe": "Ricordami",
       "forgotPassword": "Hai dimenticato la password?",
-      "noAccount": "Non hai un account?"
+      "noAccount": "Non hai un account?",
+      "accountAlreadyConfirmed": {
+        "yourAccountIsAlreadyConfirmed": "Hai già validato questo indirizzo email",
+        "goToLogin": "Vai al Login"
+      }
     },
     "confirmation": {
       "title": "Il link non è più valido",
