@@ -79,6 +79,11 @@
             "subscribeLabel": "Iscriviti",
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
-        }
+        },
+        "currentPassword": "Password attuale",
+        "newPassword": "Nuova password",
+        "confirmPassword": "Conferma password",
+        "requiredCurrentPassword": "È necessario inserire la password attuale",
+        "passwordsNotMatch": "Le password non corrispondono"
     }
 }
