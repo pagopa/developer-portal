@@ -1,4 +1,5 @@
 import { translations } from '@/_contents/translations';
+import { defaultOgTagImage, baseUrl } from '@/config';
 import { Metadata, ResolvedMetadata } from 'next';
 
 type MakeMetadataParams = {
@@ -28,8 +29,17 @@ export const makeMetadata: MakeMetadataFunction = ({
     title: metadataTitle,
     description: description || '',
     url: url || '',
-    openGraph: getOpenGraphMetadata(metadataTitle, description, image, locale),
-    twitter: getTwitterMetadata(metadataTitle, description, image),
+    openGraph: getOpenGraphMetadata(
+      metadataTitle,
+      description,
+      image || defaultOgTagImage,
+      locale
+    ),
+    twitter: getTwitterMetadata(
+      metadataTitle,
+      description,
+      image || defaultOgTagImage
+    ),
   };
 };
 

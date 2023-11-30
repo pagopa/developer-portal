@@ -1,6 +1,7 @@
 import { ResolvedMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { translations } from '@/_contents/translations';
+import { baseUrl } from '@/config';
 
 const { shared } = translations;
 
@@ -148,12 +149,12 @@ it('should return the correct metadata when image is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: undefined,
+      images: `${baseUrl}/images/dev-portal-home.jpg`,
     },
     twitter: {
       title: 'Parent title | Title',
       description: 'Description',
-      images: undefined,
+      images: `${baseUrl}/images/dev-portal-home.jpg`,
       card: 'summary',
       site: '@pagopa',
       creator: '@pagopa',
