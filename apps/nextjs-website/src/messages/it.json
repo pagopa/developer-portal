@@ -61,7 +61,7 @@
       }
     },
     "confirmation": {
-      "title": "Il link non è più valido",
+      "title": "Il link che hai usato è scaduto",
       "ctaLabel": "Reinvia email"
     },
     "resendEmail": { "label": "Reinvia email" },
@@ -100,11 +100,10 @@
     "confirmSignUp": {
       "title": "Confermaci che sei tu",
       "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
-      "didntReceiveEmail": "Non hai ricevuto l'email? Controlla se nella posta indesiderata oppure",
+      "didntReceiveEmail": "Non hai ricevuto l'email? Controlla la posta indesiderata oppure",
       "resendEmail": "Invia nuovamente l'email",
       "wrongEmail": "L'indirizzo email è errato?"
     },
-
     "confirmLogin": {
       "title": "Verifica la tua identità",
       "body": "Abbiamo inviato un codice di verifica a <strong>{email}</strong><br>Il codice scade tra 3 minuti.",
@@ -212,7 +211,7 @@
     "confirmPassword": "Conferma password",
     "company": "Tipologia Ente o Azienda",
     "role": "Ruolo",
-    "requiredFieldError": "Questo campo non può essere vuoto",
-    "emailFieldError": "Inserisci un indirizzo email valido"
+    "requiredFieldError": "Questo dato é obbligatorio",
+    "emailFieldError": "Il formato non risulta corretto"
   }
 }

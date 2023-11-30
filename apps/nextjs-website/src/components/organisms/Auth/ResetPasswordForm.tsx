@@ -65,7 +65,7 @@ const ResetPasswordForm = ({
               label={shared('emailAddress')}
               value={email}
               onChange={({ target: { value } }) => setEmail(value)}
-              helperText={shared('requiredFieldError')}
+              helperText={shared('emailFieldError')}
               customValidators={emailValidators}
             />
             <Stack spacing={4} pt={4} pb={2}>
