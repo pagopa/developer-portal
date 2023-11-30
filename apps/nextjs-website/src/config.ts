@@ -24,8 +24,6 @@ export const profileMenuItems: readonly {
   { label: 'agreements.title', href: '/profile/agreements' },
 ];
 
-export const RESET_AFTER_MS = 4_000;
-
 export const baseUrl = isProduction
   ? 'https://developer.pagopa.it'
   : 'https://dev.developer.pagopa.it';
