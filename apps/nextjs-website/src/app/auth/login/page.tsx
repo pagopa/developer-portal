@@ -29,7 +29,9 @@ const Login = () => {
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      router.replace('/');
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect');
+      router.replace(redirect ? redirect : '/');
     },
     [router, user]
   );
