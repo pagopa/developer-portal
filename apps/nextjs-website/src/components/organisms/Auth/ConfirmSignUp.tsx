@@ -50,7 +50,10 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
                 __html: confirmSignUp.description(email),
               }}
             />
-            <ResendEmail text={confirmSignUp.didntReceiveEmail} onResendClick={onResendEmail} />
+            <ResendEmail
+              text={confirmSignUp.didntReceiveEmail}
+              onResendClick={onResendEmail}
+            />
             <Divider />
             <Stack
               pt={4}
