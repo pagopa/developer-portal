@@ -16,6 +16,7 @@ import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { LoaderPhase } from '@/lib/types/loader';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface confirmLoginProps {
   email: string | null;
@@ -127,7 +128,7 @@ const ConfirmLogin = ({
       </Card>
       <Snackbar
         open={!!error}
-        autoHideDuration={2000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity='error'>{error}</Alert>

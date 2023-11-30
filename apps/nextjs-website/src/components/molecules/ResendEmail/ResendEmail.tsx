@@ -4,7 +4,7 @@ import { LoaderPhase } from '@/lib/types/loader';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useCallback, useState } from 'react';
-import { RESET_AFTER_MS } from '@/config';
+import { resetResendEmailAfterMs } from '@/config';
 
 type ResendEmailProps = {
   text: string;
@@ -33,7 +33,7 @@ const ResendEmail = ({ text, onResendEmail }: ResendEmailProps) => {
 
     setTimeout(() => {
       setLoader(undefined);
-    }, RESET_AFTER_MS);
+    }, resetResendEmailAfterMs);
   }, [onResendEmail]);
 
   const buildLoader = () => {

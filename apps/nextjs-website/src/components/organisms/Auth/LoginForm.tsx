@@ -28,6 +28,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -194,7 +195,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
       </Card>
       <Snackbar
         open={!!error}
-        autoHideDuration={2000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity='error'>{error}</Alert>
