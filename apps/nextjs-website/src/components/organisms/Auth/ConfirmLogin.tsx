@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import {
   Box,
   Grid,
@@ -10,18 +9,28 @@ import {
   Typography,
   TextField,
   Button,
+  Link,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
-import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { translations } from '@/_contents/translations';
+import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 
 interface confirmLoginProps {
-  email: string | null;
   onConfirmLogin: (code: string) => Promise<void>;
+
+  invalidCode: boolean;
+  onResendCode: () => Promise<boolean>;
+  username: string;
 }
 
-const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
+const ConfirmLogin = ({
+  invalidCode,
+  onResendCode,
+  onConfirmLogin,
+  username,
+}: confirmLoginProps) => {
   const {
     auth: { confirmLogin },
   } = translations;
@@ -57,12 +66,12 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
             <Typography variant='h4' pt={8} mb={5} textAlign='center'>
               {confirmLogin.title}
             </Typography>
-            {email && (
+            {username && (
               <Typography
                 variant='body2'
                 mb={6}
                 dangerouslySetInnerHTML={{
-                  __html: confirmLogin.body(email),
+                  __html: confirmLogin.body(username),
                 }}
               />
             )}
@@ -80,21 +89,42 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 sx={{
                   backgroundColor: 'white',
                 }}
+                error={invalidCode}
               />
             </Stack>
-            {email && (
-              <ResendEmail email={email} text={confirmLogin.checkJunkMail} />
+            {invalidCode && (
+              <Box display='flex' justifyContent='center' alignItems='center'>
+                <Link
+                  onClick={onResendCode}
+                  underline='none'
+                  variant='body2'
+                  mt={4}
+                  sx={{
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 700,
+                  }}
+                >
+                  {confirmLogin.resendEmail}
+                </Link>
+              </Box>
             )}
-            <Stack spacing={4} pt={4} pb={2}>
+            <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
-                  disabled={submitting}
+                  disabled={submitting || invalidCode}
                   onClick={onConfirmLoginHandler}
                 >
                   {confirmLogin.continue}
                 </Button>
               </Stack>
+            </Stack>
+            <Stack spacing={2} mt={2} mb={4}>
+              <ResendEmail
+                text={confirmLogin.checkJunkMail}
+                onResendClick={onResendCode}
+              />
             </Stack>
           </Grid>
         </Grid>

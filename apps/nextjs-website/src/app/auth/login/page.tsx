@@ -12,24 +12,44 @@ const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [userName, setUserName] = useState<string | null>(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [invalidCode, setInvalidCode] = useState(false);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
-    const user = await Auth.signIn({
-      username,
-      password,
+    setUsername(username);
+    setPassword(password);
+
+    const user = await Auth.signIn(username, password).catch((e) => {
+      return new Error(e);
     });
 
-    setUserName(username);
-    setUser(user);
-    setLogInStep(LoginSteps.MFA_CHALLENGE);
+    if (user) {
+      setUser(user);
+
+      setLogInStep(LoginSteps.MFA_CHALLENGE);
+      setInvalidCode(false);
+    }
+
+    return !!user;
   }, []);
+
+  const resendCode = useCallback(async () => {
+    return onLogin({ username, password }).finally(() => setInvalidCode(false));
+  }, [onLogin, password, username]);
 
   const confirmLogin = useCallback(
     async (code: string) => {
-      await Auth.sendCustomChallengeAnswer(user, code);
+      const result = await Auth.sendCustomChallengeAnswer(user, code).catch(
+        () => {
+          setInvalidCode(true);
+          return false;
+        }
+      );
 
-      router.replace('/');
+      if (result) {
+        router.replace('/');
+      }
     },
     [router, user]
   );
@@ -57,7 +77,12 @@ const Login = () => {
       >
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
-          <ConfirmLogIn email={userName} onConfirmLogin={confirmLogin} />
+          <ConfirmLogIn
+            invalidCode={invalidCode}
+            username={username}
+            onResendCode={resendCode}
+            onConfirmLogin={confirmLogin}
+          />
         )}
       </Grid>
     </Box>

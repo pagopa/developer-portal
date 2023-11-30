@@ -4,15 +4,15 @@ import { LoaderPhase } from '@/lib/types/loader';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useCallback, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { resetResendEmailAfterMs } from '@/config';
 
 type ResendEmailProps = {
   text: string;
-  email: string;
+
+  onResendClick: () => Promise<boolean>;
 };
 
-const ResendEmail = ({ text, email }: ResendEmailProps) => {
+const ResendEmail = ({ text, onResendClick }: ResendEmailProps) => {
   const t = useTranslations('auth.resendEmail');
   const { palette } = useTheme();
 
@@ -20,10 +20,10 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
 
   const isLoading = loader === LoaderPhase.LOADING;
 
-  const handleResendEmail = useCallback(async () => {
+  const handleClick = useCallback(async () => {
     setLoader(LoaderPhase.LOADING);
 
-    const result = await Auth.resendSignUp(email).catch(() => {
+    const result = await onResendClick().catch(() => {
       setLoader(LoaderPhase.ERROR);
       return false;
     });
@@ -35,7 +35,7 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
     setTimeout(() => {
       setLoader(undefined);
     }, resetResendEmailAfterMs);
-  }, [email]);
+  }, [onResendClick]);
 
   const buildLoader = () => {
     switch (loader) {
@@ -61,7 +61,7 @@ const ResendEmail = ({ text, email }: ResendEmailProps) => {
     >
       {text}{' '}
       <Link
-        onClick={() => !isLoading && handleResendEmail()}
+        onClick={handleClick}
         underline='none'
         variant='caption-semibold'
         sx={{ cursor: isLoading ? 'unset' : 'pointer' }}
