@@ -50,7 +50,7 @@ export const pagoPaOverview: OverviewData = {
     cta: {
       label: 'Leggi la guida tecnica',
       text: 'Scopri tutti i dettagli dell’integrazione',
-      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
+      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/latest`,
     },
     cards: [
       {
@@ -84,7 +84,7 @@ export const pagoPaOverview: OverviewData = {
       name: 'Contribuisci al miglioramento della Tassonomia',
     },
     {
-      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
+      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/latest`,
       name: 'Consulta le linee guida brand pagoPA',
     },
     {
@@ -92,7 +92,7 @@ export const pagoPaOverview: OverviewData = {
       name: 'Consulta le linee Guida Gazzetta Ufficiale',
     },
     {
-      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni/v4`,
+      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni/latest`,
       name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
     },
   ],
@@ -125,7 +125,7 @@ export const pagoPaOverview: OverviewData = {
           ],
         },
         link: {
-          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
+          href: `${pagoPaGuideListsPath.path}/avviso-pagamento/latest`,
           label: 'Scopri di più',
         },
         imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
