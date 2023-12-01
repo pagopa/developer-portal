@@ -27,7 +27,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
+            href: `${appIOGuideListsPath.path}/io-guida-tecnica/latest`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',
@@ -50,7 +50,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/manuale-servizi/v2.0`,
+            href: `${appIOGuideListsPath.path}/manuale-servizi/latest`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-dei-servizi.png',
@@ -68,7 +68,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/supporto-agli-enti/v1.0`,
+            href: `${appIOGuideListsPath.path}/supporto-agli-enti/latest`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/app-io-supporto-enti.png',
@@ -86,7 +86,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
+            href: `${appIOGuideListsPath.path}/kit-comunicazione/latest`,
             label: 'Vai al kit',
           },
           imagePath: '/images/kit-di-comunicazione.png',
@@ -109,7 +109,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/carta-giovani-nazionale/v1.0`,
+            href: `${appIOGuideListsPath.path}/carta-giovani-nazionale/latest`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-di-carta-giovani-nazionale.png',
