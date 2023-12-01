@@ -48,6 +48,22 @@
                 "email": "Indirizzo e-mail",
                 "password": "Password"
             }
+        },
+        "renewPassword": {
+            "title": "Cambia password",
+            "currentPassword": "Password attuale",
+            "newPassword": "Nuova password",
+            "confirmPassword": "Conferma password",
+            "wrongPassword": "La password inserita non risulta corretta",
+            "requiredCurrentPassword": "È necessario inserire la password attuale",
+            "passwordsNotMatch": "Le password non corrispondono",
+            "cancel": "Annulla",
+            "save": "Conferma",
+            "dialog": {
+                "title": "La password è stata modificata correttamente",
+                "text": "Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.",
+                "confirmLabel": "Vai al login"
+            }
         }
     },
     "webinar": {
@@ -68,7 +84,9 @@
             "title": "Il link non è più valido",
             "ctaLabel": "Reinvia email"
         },
-        "resendEmail": { "label": "Reinvia e-mail" }
+        "resendEmail": {
+            "label": "Reinvia e-mail"
+        }
     },
     "shared": {
         "goToModel": "Vai al modello",
@@ -79,11 +97,6 @@
             "subscribeLabel": "Iscriviti",
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
-        },
-        "currentPassword": "Password attuale",
-        "newPassword": "Nuova password",
-        "confirmPassword": "Conferma password",
-        "requiredCurrentPassword": "È necessario inserire la password attuale",
-        "passwordsNotMatch": "Le password non corrispondono"
+        }
     }
 }

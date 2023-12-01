@@ -30,11 +30,10 @@ const PersonalData = () => {
   const [showModal, setShowModal] = useState(false);
 
   function handleSave(oldPassword: string, newPassword: string) {
-    return Auth.changePassword(user, oldPassword, newPassword)
-      .then(() => {
-        setShowModal(true);
-      })
-      .catch((err: Error) => console.log(err));
+    return Auth.changePassword(user, oldPassword, newPassword).then(() => {
+      setShowModal(true);
+    });
+    // .catch((err: Error) => console.log(err));
   }
 
   const dataSectionItems: InfoCardItemProps[] = [
@@ -97,10 +96,10 @@ const PersonalData = () => {
       <ConfirmationModal
         setOpen={() => null}
         open={showModal}
-        title='La password è stata modificata correttamente'
-        text='Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.'
+        title={t('renewPassword.dialog.title')}
+        text={t('renewPassword.dialog.text')}
         confirmCta={{
-          label: 'Vai a login',
+          label: t('renewPassword.dialog.confirmLabel'),
           onClick: () => {
             Auth.signOut().then(() => {
               router.replace('/auth/login');
