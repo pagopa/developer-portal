@@ -10,6 +10,7 @@ const validatore: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'niZ9BM7pjxsgBMMWBim1',
     },
@@ -25,6 +26,7 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.1',
       dirName: 'fJIYTgeiXFHm8gUu4gAD',
     },
@@ -52,6 +54,7 @@ const knowledgeBase: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v2.0',
       dirName: 'LkozJ77TMlb5XupVDO7J',
     },
@@ -75,6 +78,7 @@ const modelloDiIntegrazione: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v2.1',
       dirName: 'cQbgjUoB6uPKpsuCW3ZW',
     },
