@@ -80,9 +80,6 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 }}
               />
             </Stack>
-            {email && (
-              <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
-            )}
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
@@ -94,6 +91,9 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 </Button>
               </Stack>
             </Stack>
+            {email && (
+              <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
+            )}
           </Grid>
         </Grid>
       </Card>

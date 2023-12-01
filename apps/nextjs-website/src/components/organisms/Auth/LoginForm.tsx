@@ -9,7 +9,6 @@ import {
   Stack,
   Checkbox,
   Grid,
-  TextField,
   Divider,
   Button,
   Card,
@@ -22,13 +21,18 @@ import {
   Snackbar,
   Alert,
   useTheme,
+  FormHelperText,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { emailMatcher } from '@/helpers/auth.helpers';
+import RequiredTextField, {
+  ValidatorFunction,
+} from '@/components/molecules/RequiredTextField/RequiredTextField';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -45,6 +49,9 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -73,6 +80,31 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
       });
   }, [onLogin, username, password]);
 
+  const emailValidators: ValidatorFunction[] = [
+    (value: string) => ({
+      valid: emailMatcher.test(value),
+      error: shared('emailFieldError'),
+    }),
+  ];
+
+  const validateForm = useCallback(() => {
+    const areFieldsValid = [username, password].every(
+      (value) => value && value.trim().length > 0
+    );
+
+    if (password.length == 0) {
+      setIsPasswordEmpty(true);
+    } else {
+      setIsPasswordEmpty(false);
+    }
+
+    setIsFormValid(areFieldsValid);
+  }, [username, password]);
+
+  useEffect(() => {
+    validateForm();
+  }, [validateForm, username, password]);
+
   return (
     <Box
       component='section'
@@ -94,14 +126,13 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 {login('loginToYourAccount')}
               </Typography>
               <Stack spacing={2} mb={4}>
-                <TextField
+                <RequiredTextField
                   label={shared('emailAddress')}
                   variant='outlined'
-                  size='small'
+                  value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
+                  helperText={shared('emailFieldError')}
+                  customValidators={emailValidators}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -113,6 +144,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     id='password-input'
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
+                    error={isPasswordEmpty}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -132,6 +164,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                       },
                     }}
                   />
+                  <FormHelperText
+                    sx={{ display: !isPasswordEmpty ? 'none' : 'block' }}
+                    error={isPasswordEmpty}
+                  >
+                    {shared('requiredFieldError')}
+                  </FormHelperText>
                 </FormControl>
               </Stack>
               <Grid container mb={1}>
@@ -143,7 +181,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
                   <Button
-                    disabled={submitting}
+                    disabled={submitting || !isFormValid}
                     variant='contained'
                     onClick={onLoginHandler}
                   >

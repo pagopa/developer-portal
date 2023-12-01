@@ -75,7 +75,10 @@ const ResetPasswordSuccess = ({
               <Typography variant='body1' mr={1}>
                 {resetPassword('wrongEmail')}
                 {'  '}
-                <Link onClick={onBack} sx={{ cursor: 'pointer' }}>
+                <Link
+                  onClick={onBack}
+                  sx={{ cursor: 'pointer', fontWeight: 600 }}
+                >
                   {shared('goBack')}
                 </Link>
               </Typography>
