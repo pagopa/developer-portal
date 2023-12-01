@@ -424,7 +424,7 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             `Invia i documenti nelle due modalità previste:` +
             `</br>` +
             `<ul>` +
-            ` <li>Tramite <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">QR Code</a> (anche con il supporto del <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">pulsante Firma con IO</a>)</li>` +
+            ` <li>Tramite <a href="./guides/manuale-operativo/latest/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">QR Code</a> (anche con il supporto del <a href="./guides/manuale-operativo/v1.0/richiedere-una-firma/invio-della-richiesta-di-firma/tramite-pulsante-firma-con-io-o-qr-code">pulsante Firma con IO</a>)</li>` +
             ` <li>Sull’app IO, effettuando una richiesta, senza specificare nulla nel messaggio, verso questo endpoint</li>` +
             `</ul>`,
         },
