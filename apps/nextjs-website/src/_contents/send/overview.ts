@@ -31,7 +31,7 @@ export const sendOverview: OverviewData = {
           ],
         },
         link: {
-          href: `${sendGuideListsPath.path}/validatore/v1.0`,
+          href: `${sendGuideListsPath.path}/validatore/latest`,
           label: 'Scopri di più',
         },
         imagePath: '/images/validatore.png',
@@ -68,7 +68,7 @@ export const sendOverview: OverviewData = {
     cta: {
       label: 'Leggi il manuale operativo',
       text: "Scopri i dettagli dell'integrazione",
-      href: `${sendGuideListsPath.path}/manuale-operativo/v1.1.1`,
+      href: `${sendGuideListsPath.path}/manuale-operativo/latest`,
     },
     cards: [
       {
@@ -92,15 +92,15 @@ export const sendOverview: OverviewData = {
   },
   relatedLinks: [
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/latest/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
+      path: `${sendGuideListsPath.path}/modello-di-integrazione/latest`,
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/latest/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],
