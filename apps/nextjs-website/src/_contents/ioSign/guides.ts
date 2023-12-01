@@ -10,6 +10,7 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'AdBuOCmwur7AhLlgfCeG',
     },
