@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { OpenAPIV3 } from 'openapi-types';
 import { MouseEventHandler, PropsWithChildren, useState } from 'react';
-import { useModelProps } from './hooks/use-model';
+import { useModelProps } from './hooks/useModel';
 
 type ModelEntryProps = {
   title?: string;

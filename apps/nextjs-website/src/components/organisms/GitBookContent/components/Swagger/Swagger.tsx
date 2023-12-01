@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { OpenAPIV3 } from 'openapi-types';
 
 import { Operations } from './Operations';
-import { useSpec } from './hooks/use-spec';
+import { useSpec } from './hooks/useSpec';
 
 const Swagger = ({ path, method, src }: SwaggerProps) => {
   const { spec, loading } = useSpec(src);
