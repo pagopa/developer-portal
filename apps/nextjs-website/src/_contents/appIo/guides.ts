@@ -10,6 +10,7 @@ const guidaTecnica: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v4.0',
       dirName: 'mzXDeCSRezM6r2ocy8gb',
     },
@@ -49,6 +50,7 @@ const manualeDeiServizi: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v2.0',
       dirName: 'xWONfJmawghGo2ekuaKh',
     },
@@ -72,6 +74,7 @@ const supportoAgliEnti: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'rPr79NYJ4xbKA7EvgHxo',
     },
@@ -87,6 +90,7 @@ const kitDiComunicazione: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'SpNLdqKSqoCvaOneGN7K',
     },
@@ -102,6 +106,7 @@ const cartaGiovani: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'Vgh5yq561A3SOPVQrWes',
     },
@@ -117,6 +122,7 @@ const accordiAdesione: GuideDefinition = {
   },
   versions: [
     {
+      versionPath: 'latest',
       version: 'v1.0',
       dirName: 'O7clRJB6pY0VI5sEBF8J',
     },
