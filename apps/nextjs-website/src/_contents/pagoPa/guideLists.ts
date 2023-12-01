@@ -27,7 +27,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/saci/3.1.0`,
+            href: `${pagoPaGuideListsPath.path}/saci/latest`,
             label: 'Vai al documento',
           },
           imagePath: '/images/saci.png',
@@ -45,7 +45,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/sanp/3.5.0`,
+            href: `${pagoPaGuideListsPath.path}/sanp/latest`,
             label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
@@ -68,7 +68,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/latest`,
             label: 'Vai al documento',
           },
           imagePath: '/images/pago-pa-manuale-bo-ec.png',
@@ -86,7 +86,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/manuale-bo-psp/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-psp/latest`,
             label: 'Vai al documento',
           },
           imagePath: '/images/pago-pa-manuale-bo-psp.png',
@@ -104,7 +104,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/latest`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
@@ -123,7 +123,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/latest`,
             label: 'Vai al documento',
           },
           imagePath: '/images/linee-guida-di-brand.png',
