@@ -21,6 +21,7 @@ export type GuideDefinition = {
   readonly versions: ReadonlyArray<{
     readonly version: string;
     readonly dirName: string;
+    readonly versionPath?: string;
   }>;
   readonly bannerLinks: readonly BannerLinkProps[];
 };
@@ -67,7 +68,7 @@ export const makeGuide = ({
   const guidePath = `${product.path}/guides/${guide.slug}`;
   return pipe(
     versions,
-    RA.map(({ version, dirName }) => ({
+    RA.map(({ version, dirName, versionPath }) => ({
       product: product,
       guide: {
         name: guide.name,
@@ -77,12 +78,14 @@ export const makeGuide = ({
         name: version,
         path: `${guidePath}/${version}`,
       },
-      versions: versions.map(({ version }) => ({
-        name: version,
-        path: `${guidePath}/${version}`,
+      versions: versions
+      .map(version => ({ 
+        name:version.version,
+        path:  version.versionPath? `${guidePath}/latest` : `${guidePath}/${version.version}`,
+        //url: version.versionPath ? `${guidePath}/latest` : null,
       })),
       source: {
-        pathPrefix: `${guidePath}/${version}`,
+        pathPrefix: versionPath ? `${guidePath}/${versionPath}` : `${guidePath}/${version}`,
         assetsPrefix: `${docsAssetsPath}/${dirName}`,
         dirPath: `${docsPath}/${dirName}`,
         spaceId: dirName,
