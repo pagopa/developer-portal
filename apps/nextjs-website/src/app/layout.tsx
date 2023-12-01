@@ -1,4 +1,4 @@
-import { cookieDomainScript, isProduction } from '@/config';
+import { baseUrl, cookieDomainScript, isProduction } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -32,10 +32,6 @@ _paq.push(["enableLinkTracking"]);
   s.parentNode.insertBefore(g, s);
 })();
 `;
-
-const baseUrl = isProduction
-  ? 'https://developer.pagopa.it'
-  : 'https://dev.developer.pagopa.it';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

@@ -9,13 +9,14 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getNextWebinars, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import dynamic from 'next/dynamic';
+import { baseUrl } from '@/config';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { homepage } = translations;
-
   return makeMetadata({
-    description: homepage.productsShowcaseTitle,
-    url: '/',
+    title: 'PagoPA DevPortal',
+    description: 'Il portale per gli sviluppatori di PagoPA',
+    url: baseUrl,
+    locale: 'it_IT',
   });
 }
 
