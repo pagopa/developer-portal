@@ -54,10 +54,10 @@
         "subscriptionError": "Limite di iscrizioni raggiunto",
         "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
         "whyParticipate": "Perché partecipare?",
-        "speakers": "Speaker",
+        "speakers": "Ospiti",
         "subscribe": "Iscriviti",
         "relatedLinksTitle": "Link utili",
-        "speakersTitle": "Chi Parla"
+        "speakersTitle": "Ospiti"
     },
     "auth": {
         "logout": "Esci",

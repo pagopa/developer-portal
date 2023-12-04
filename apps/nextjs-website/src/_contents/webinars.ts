@@ -11,7 +11,7 @@ export const webinars: readonly Webinar[] = [
       `<h4 style="font-weight: 600; font-size: 24px;">Tutto quello che serve per integrarsi con le nuove API</h4> \n` +
       `<p>Durante il webinar, approfondiremo la creazione, l'invio di un servizio e la gestione di scenari comuni, come "Ho creato un servizio e lo vedo in stato di bozza. Cosa devo fare?". Partecipate a questo webinar per ottenere una comprensione approfondita e per imparare a gestire in modo efficace il ciclo di vita dei vostri servizi su IO. </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-image.png' /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n` +
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
