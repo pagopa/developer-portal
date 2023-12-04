@@ -1,5 +1,12 @@
 {
     "devPortal": {
+        "company": "PagoPA",
+        "siteHeader": {
+            "label": "Menu",
+            "products": "Prodotti",
+            "profile": "Profilo",
+            "webinars": "Webinar"
+        },
         "title": "DevPortal"
     },
     "profile": {

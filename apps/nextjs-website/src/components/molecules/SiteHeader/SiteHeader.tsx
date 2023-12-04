@@ -1,16 +1,16 @@
 'use client';
-import { translations } from '@/_contents/translations';
-import Dropdown from '@/components/atoms/Dropdown/Dropdown';
-import UserInfo from '@/components/atoms/UserInfo/UserInfo';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 import { Product } from '@/lib/types/product';
 import { Box, Divider, Stack, useTheme } from '@mui/material';
-import { ForwardedRef, forwardRef } from 'react';
+import { useTranslations } from 'next-intl';
+import React, { ForwardedRef, forwardRef } from 'react';
+import MobileSiteHeader from '../MobileSiteHeader/MobileSiteHeader';
+import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopSiteHeader';
 
 // Used in ProductHeader.tsx to manage scroll-up animation
-export const SITE_HEADER_HEIGHT = 60;
+export const SITE_HEADER_HEIGHT = 48;
 
-type SiteHeaderProps = {
+export type SiteHeaderProps = {
   products: Product[];
 };
 
@@ -18,8 +18,8 @@ const SiteHeader = (
   { products }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const { header } = translations;
   const { palette } = useTheme();
+  const t = useTranslations('devPortal');
 
   return (
     <Box
@@ -33,24 +33,23 @@ const SiteHeader = (
       <Stack
         ref={ref}
         sx={{
-          py: 2,
-          px: { xs: 1, sm: 3 },
+          paddingTop: '7px',
+          paddingBottom: '6px',
+          px: 3,
           backgroundColor: palette.common.white,
+          minHeight: SITE_HEADER_HEIGHT,
+          borderBottomWidth: 1,
+          borderBottomStyle: 'solid',
+          borderBottomColor: palette.divider,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'
         justifyContent={{ sm: 'space-between', md: 'start' }}
         alignItems='center'
       >
-        <HomepageButton title={header.title} boldTitle={header.boldTitle} />
-        <Dropdown
-          label={header.products}
-          items={products.map((product) => ({
-            href: product.subpaths.overview.path,
-            label: product.name,
-          }))}
-        />
-        <UserInfo />
+        <HomepageButton title={t('title')} boldTitle={t('company')} />
+        <MobileSiteHeader products={products} />
+        <DesktopSiteHeader products={products} />
       </Stack>
       <Divider />
     </Box>
