@@ -30,7 +30,8 @@ export const strikethrough: Schema = {
 
 export const code: Schema = {
   transform: (node) => {
-    const children = [node.attributes.content];
+    // Remove the double backtick (``) provided by the gitbook sync
+    const children = [node.attributes.content.replace('``', '')];
     return new Markdoc.Tag(tagName, { style: 'code' }, children);
   },
 };

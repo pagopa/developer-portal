@@ -1,4 +1,5 @@
 import { Product } from '@/lib/types/product';
+import { Metadata, ResolvingMetadata } from 'next';
 import { getTutorialLists, getProductsSlugs } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
@@ -10,6 +11,7 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -25,6 +27,24 @@ export type TutorialsPageProps = {
   };
   readonly tutorials: readonly Tutorial[];
 } & ProductLayoutProps;
+
+export async function generateMetadata(
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const resolvedParent = await parent;
+  const { product, abstract, path } = await getTutorialLists(
+    params.productSlug
+  );
+
+  return makeMetadata({
+    parent: resolvedParent,
+    title: product.name,
+    description: abstract?.description,
+    url: path,
+    image: product.pngUrl,
+  });
+}
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;

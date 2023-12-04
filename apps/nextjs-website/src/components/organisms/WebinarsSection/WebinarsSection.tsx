@@ -1,17 +1,19 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import { Box, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { useUser } from '@/helpers/user.helper';
+import { DevPortalUser } from '@/lib/types/auth';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 export type webinarsSectionProps = {
   title: string;
   description: string;
   link?: { href?: string; label: string };
   webinars: Webinar[];
-  children?: React.ReactNode;
 };
 
 const WebinarsSection = ({
@@ -19,9 +21,10 @@ const WebinarsSection = ({
   description,
   link,
   webinars,
-  children,
 }: webinarsSectionProps) => {
   const theme = useTheme();
+  const [error, setError] = useState<string | null>(null);
+  const { aligned: userAligned } = useUser();
 
   return (
     <Box
@@ -68,17 +71,27 @@ const WebinarsSection = ({
                 key={index}
                 title={webinar.title}
                 description={webinar.description}
-                path={webinar.path}
+                slug={webinar.slug}
                 speakers={webinar.speakers}
                 startDateTime={webinar.startDateTime}
                 endDateTime={webinar.endDateTime}
-              >
-                {children}
-              </WebinarCard>
+                userAligned={userAligned}
+                handleErrorMessage={(message: string) => {
+                  setError(message);
+                  return null;
+                }}
+              />
             ))}
           </Box>
         </Box>
       </EContainer>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={snackbarAutoHideDurationMs}
+        onClose={() => setError(null)}
+      >
+        <Alert severity={'error'}>{error}</Alert>
+      </Snackbar>
     </Box>
   );
 };

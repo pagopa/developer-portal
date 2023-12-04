@@ -19,9 +19,7 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
-    login: 'Accedi',
-    signUp: 'Iscriviti',
-    logout: 'Esci',
+    siteTitle: 'PagoPA DevPortal',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
@@ -31,6 +29,8 @@ export const translations = {
     confirmPassword: 'Conferma password',
     company: 'Tipologia Ente o Azienda',
     role: 'Ruolo',
+    requiredFieldError: 'Questo campo non può essere vuoto',
+    emailFieldError: 'Inserisci un indirizzo email valido',
   },
   pageNotFound: {
     overline: '404',
@@ -84,6 +84,7 @@ export const translations = {
         },
       ],
     },
+    webinarBannerButtonContent: 'Scopri',
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
     heroItems: [
       {
@@ -105,8 +106,7 @@ export const translations = {
       },
     ],
     webinarsSection: {
-      description:
-        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
+      description: '',
       title: 'Partecipa ai nostri webinar',
       link: {
         href: '#',
@@ -297,9 +297,9 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: Piattaforma Notifiche Digitali',
-            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali',
-            label: 'Piattaforma Notifiche Digitali',
+            ariaLabel: 'Vai al link: SEND - Servizio Notifiche Digitali',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/send-notifiche-digitali/',
+            label: 'SEND - Servizio Notifiche Digitali',
             linkType: 'external',
           },
           {
@@ -319,20 +319,94 @@ export const translations = {
   },
   auth: {
     login: {
-      loginToYourAccount: 'Accedi al tuo account',
+      action: 'Accedi',
+      loginToYourAccount: 'Accedi al tuo account DevPortal',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
+    confirmLogin: {
+      title: 'Verifica la tua identità',
+      body: (email: string) =>
+        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 3 minuti.`,
+      code: 'Codice di verifica',
+      checkJunkMail:
+        'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
+      continue: 'Continua',
+      resendEmail: 'Reinvia e-mail',
+    },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToLogin: 'Vai al login',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
-  },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
+    signUp: {
+      action: 'Iscriviti',
+      createYourAccount: 'Crea il tuo account',
+      confirmComunications:
+        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+      acceptPolicy:
+        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      alreadyHaveAnAccount: 'Hai già un account?',
+      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
+      passwordPolicy:
+        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
+      emailSent: (email: string) => `Email inviata a ${email}`,
+      advantages: [
+        {
+          title: 'Accedi a contenuti esclusivi',
+          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
+        },
+        {
+          title: 'Ricevi aggiornamenti sui nostri prodotti',
+          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
+        },
+        {
+          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
+          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
+        },
+        {
+          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
+          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
+        },
+      ],
+      companyRoles: [
+        { title: 'Ente pubblico', value: 'public-authority' },
+        { title: 'Partner tecnologico', value: 'tech-partner' },
+        { title: 'PSP', value: 'psp' },
+        {
+          title: 'Gestore di pubblico servizio',
+          value: 'operator-of-public-service',
+        },
+        { title: 'Azienda privata', value: 'private-company' },
+        { title: 'Altro', value: 'other' },
+      ],
+    },
+    confirmSignUp: {
+      confirmSignUp: 'Conferma che sei tu',
+      description: (email: string) =>
+        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
+      didntReceiveEmail:
+        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo email è errato?",
+    },
+    resetPassword: {
+      title: 'Recupera password',
+      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
+      goBackToLogin: 'Torna al login',
+      send: 'Invia',
+      checkEmailTitle: "Controlla l'email",
+      checkEmail: (email: string) =>
+        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
+      resendEmailPrompt:
+        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+      resendEmail: 'Reinvia e-mail',
+      wrongEmail: "L'indirizzo e-mail è errato?",
+      passwordSet: 'Password impostata correttamente',
+      newPassword: 'Imposta una nuova password',
+      rememberPassword: 'Ricordi la tua password?',
+      invalidLinkError: 'Il link non è valido',
+    },
   },
 };

@@ -14,12 +14,12 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
   defaultStepAnchor: '01',
   steps: [
     {
-      title: 'Aderisci tramite Self Care',
+      title: "Aderisci tramite l'Area Riservata",
       anchor: '01',
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: "Prima di poter utilizzare le API di IO, il tuo ente dovrà avere un'adesione base attiva. Se non la possiede, il primo passo è quello di eseguire il processo di <a href='https://selfcare.pagopa.it/auth/login?onSuccess=%2Fonboarding%2Fprod-io'>onboarding ad App IO</a> tramite Self Care.",
+          html: "Prima di poter utilizzare le API di IO, il tuo ente dovrà avere un'adesione base attiva. Se non la possiede, il primo passo è quello di eseguire il processo di <a href='https://selfcare.pagopa.it/auth/login?onSuccess=%2Fonboarding%2Fprod-io'>onboarding ad App IO</a> tramite l'Area Riservata.",
         },
       ],
     },
@@ -36,7 +36,7 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
           html:
             `<div style="position: relative; padding-bottom: calc(64.41666666666667% + 41px); height: 0; width: 100%"> \n` +
             `  <iframe \n` +
-            `    src="https://demo.arcade.software/vzSmyIz00g6JlozGlG3k?embed" \n` +
+            `    src="https://demo.arcade.software/zdEbTvRdFL58al1yb1f3?embed" \n` +
             `    frameborder="0" \n` +
             `    loading="lazy" \n` +
             `    webkitallowfullscreen \n` +

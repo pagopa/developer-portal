@@ -217,6 +217,32 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should convert 127.0.0.1 URL to other gitbook space', () => {
+    expect(
+      parseContent('[Page](http://127.0.0.1:5000/o/xY/s/s1/ "mention")', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, [
+          'S1 Home',
+        ]),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://127.0.0.1:5000/o/KXY/s/s1/)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](http://127.0.0.1:5000/s/s0/page/1)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+      ]),
+    ]);
+  });
+
   it('should parse unordered list', () => {
     expect(parseContent('* Item', config)).toStrictEqual([
       new Markdoc.Tag('List', { ordered: false }, [
@@ -507,6 +533,33 @@ describe('parseContent', () => {
         '',
       ]),
     ]);
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% hint style="info" %}\nText\n{% endhint %}\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, [
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+          new Markdoc.Tag(
+            'Hint',
+            {
+              style: 'info',
+            },
+            [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+          ),
+        ]),
+        new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
   });
 
   it('should parse expandable', () => {
@@ -681,6 +734,32 @@ describe('parseContent', () => {
         },
         ['S0 Page 1']
       ),
+    ]);
+  });
+
+  it('should parse mailto inside links', () => {
+    expect(
+      parseContent(
+        '[pagamenti@assistenza.pagopa.it](mailto:pagamenti@assistenza.pagopa.it)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          { href: 'mailto:pagamenti@assistenza.pagopa.it' },
+          ['pagamenti@assistenza.pagopa.it']
+        ),
+      ]),
+    ]);
+  });
+
+  it('should parse code blocks', () => {
+    const content = '`DELETE`` `';
+    expect(parseContent(content, config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('StyledText', { style: 'code' }, ['DELETE ']),
+      ]),
     ]);
   });
 });

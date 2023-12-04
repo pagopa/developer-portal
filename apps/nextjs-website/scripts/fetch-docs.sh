@@ -19,7 +19,7 @@ rm -r ./docs
 mv ./.tmp/devportal-docs-$hash*/docs .
 
 # cleanup
-rm -r ./tmp
+rm -r .tmp
 
 # copy all gitbook assets to public assets of nextjs-website
 dest='public/gitbook/'

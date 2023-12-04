@@ -35,6 +35,26 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS website.
 
+### Run test locally
+
+Run the following command from the root folder.
+
+``` bash
+npm run test
+```
+
+or run the following command to execute test of single workspace
+
+``` bash
+npm run test -w <workspace>
+```
+
+or run the following command to keep watching changes while updating code or test
+
+``` bash
+npm run test -w <workspace> -- --watch
+```
+
 ## Commands Cheat Sheet
 
 

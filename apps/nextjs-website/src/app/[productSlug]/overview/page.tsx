@@ -1,5 +1,6 @@
 import { getOverview, getProductsSlugs } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
+import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
@@ -15,6 +16,9 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
+import { makeMetadata } from '@/helpers/metadata.helpers';
+
+const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('overview')].map((productSlug) => ({
@@ -73,6 +77,22 @@ export type OverviewPageProps = {
   readonly relatedLinks?: Path[];
 } & ProductLayoutProps;
 
+export async function generateMetadata(
+  { params }: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const resolvedParent = await parent;
+  const { product, path } = await getOverview(params.productSlug);
+
+  return makeMetadata({
+    parent: resolvedParent,
+    title: product.name,
+    description: product.description,
+    url: path,
+    image: product.pngUrl,
+  });
+}
+
 const OverviewPage = async ({ params }: ProductParams) => {
   const {
     hero,
@@ -86,6 +106,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
     bannerLinks,
   } = await getOverview(params.productSlug);
   const { overview } = translations;
+
+  const tutorialsListToShow = tutorials.list
+    ?.filter((tutorial) => tutorial.showInOverview)
+    .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
 
   return (
     <ProductLayout product={product} path={path} bannerLinks={bannerLinks}>
@@ -116,7 +140,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorials}
-          tutorials={[...(tutorials.list || [])]}
+          tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
       {product.subpaths.guides && postIntegration && (

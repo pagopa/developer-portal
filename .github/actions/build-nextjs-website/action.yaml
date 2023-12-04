@@ -12,6 +12,9 @@ inputs:
   cookie_domain_script:
     description: 'The data-domain-script code needed by cookie script from One Trust'
     required: false
+  allow_crawler:
+    description: 'Allow crawler to index the website, by default are not allowed'
+    required: false
   cognito_user_pool_id:
     description: 'The id of the User Pool on Cognito, needed for the authentication'
     required: true
@@ -22,6 +25,7 @@ inputs:
     description: 'The region where Cognito has been deployed. Default set to Milan region'
     required: false
     default: 'eu-south-1'
+
 
 runs:
   using: "composite"
@@ -42,8 +46,10 @@ runs:
     - name: Build static website
       env:
         ENVIRONMENT: ${{ inputs.environment }}
+        NEXT_PUBLIC_ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
-        COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
         NEXT_TELEMETRY_DISABLED: '1'
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.cognito_aws_region }}

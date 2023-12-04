@@ -11,7 +11,6 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
-import { isProduction } from '@/config';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -132,14 +131,20 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-async function getWebinars(): Promise<readonly Webinar[]> {
-  // TODO: Remove this condition when the webinar content is ready
-  return isProduction ? [] : webinars;
+export async function getWebinars(): Promise<readonly Webinar[]> {
+  return webinars;
+}
+
+export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
+  const props = manageUndefined(
+    (await getWebinars()).find(({ slug }) => slug === webinarSlug)
+  );
+  return props;
 }
 
 export async function getNextWebinars(): Promise<readonly Webinar[]> {
   return (await getWebinars()).filter(
     ({ startDateTime }) =>
-      startDateTime && startDateTime.getTime() > new Date().getTime()
+      startDateTime && new Date(startDateTime).getTime() > new Date().getTime()
   );
 }

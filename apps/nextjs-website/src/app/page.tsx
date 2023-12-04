@@ -4,8 +4,26 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
+import { Metadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getNextWebinars, getProducts } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import dynamic from 'next/dynamic';
+import { baseUrl } from '@/config';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return makeMetadata({
+    title: 'PagoPA DevPortal',
+    description: 'Il portale per gli sviluppatori di PagoPA',
+    url: baseUrl,
+    locale: 'it_IT',
+  });
+}
+
+const NotSsrWebinarHeaderBanner = dynamic(
+  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
+  { ssr: false }
+);
 
 const Home = async () => {
   const products = await getProducts();
@@ -14,6 +32,14 @@ const Home = async () => {
 
   return (
     <>
+      {nextWebinars.length !== 0 && nextWebinars[0].endDateTime && (
+        <NotSsrWebinarHeaderBanner
+          slug={nextWebinars[0].slug}
+          text={nextWebinars[0].title}
+          endDateTime={nextWebinars[0].endDateTime}
+        />
+      )}
+
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
           ...itemProp,

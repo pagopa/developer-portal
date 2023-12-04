@@ -31,7 +31,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     strategy:
       matrix:
-        environment: [ 'dev', 'prod' ]
+        environment: [ 'dev' ]
 
     environment: ${{ matrix.environment }}
 
@@ -45,6 +45,7 @@ jobs:
           environment: ${{ matrix.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
@@ -67,6 +68,7 @@ jobs:
           environment: ${{ inputs.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
