@@ -334,6 +334,7 @@ export const translations = {
         'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
       continue: 'Continua',
       resendEmail: 'Reinvia e-mail',
+      submitNewCode: 'Invia nuovo codice',
     },
     accountActivated: {
       goToLogin: 'Vai al login',

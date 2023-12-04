@@ -15,6 +15,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [invalidCode, setInvalidCode] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
     setUsername(username);
@@ -35,7 +36,10 @@ const Login = () => {
   }, []);
 
   const resendCode = useCallback(async () => {
-    return onLogin({ username, password }).finally(() => setInvalidCode(false));
+    return onLogin({ username, password }).finally(() => {
+      setInvalidCode(false);
+      setSubmitting(false);
+    });
   }, [onLogin, password, username]);
 
   const confirmLogin = useCallback(
@@ -82,6 +86,8 @@ const Login = () => {
             username={username}
             onResendCode={resendCode}
             onConfirmLogin={confirmLogin}
+            submitting={submitting}
+            setSubmitting={setSubmitting}
           />
         )}
       </Grid>

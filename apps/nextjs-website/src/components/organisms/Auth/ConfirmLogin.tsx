@@ -12,13 +12,15 @@ import {
   Link,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
-import { useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { snackbarAutoHideDurationMs } from '@/config';
 import { translations } from '@/_contents/translations';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 
 interface confirmLoginProps {
   onConfirmLogin: (code: string) => Promise<void>;
+  setSubmitting: Dispatch<SetStateAction<boolean>>;
+  submitting: boolean;
 
   invalidCode: boolean;
   onResendCode: () => Promise<boolean>;
@@ -30,13 +32,14 @@ const ConfirmLogin = ({
   onResendCode,
   onConfirmLogin,
   username,
+  submitting,
+  setSubmitting,
 }: confirmLoginProps) => {
   const {
     auth: { confirmLogin },
   } = translations;
 
   const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
 
   const onConfirmLoginHandler = useCallback(() => {
@@ -45,7 +48,7 @@ const ConfirmLogin = ({
       setError(e.message);
       setSubmitting(false);
     });
-  }, [onConfirmLogin, code]);
+  }, [setSubmitting, onConfirmLogin, code]);
 
   return (
     <Box
@@ -105,7 +108,7 @@ const ConfirmLogin = ({
                     fontWeight: 700,
                   }}
                 >
-                  {confirmLogin.resendEmail}
+                  {confirmLogin.submitNewCode}
                 </Link>
               </Box>
             )}
