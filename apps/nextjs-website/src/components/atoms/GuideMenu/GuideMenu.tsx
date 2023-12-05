@@ -23,7 +23,7 @@ type GuideMenuProps = {
   menu: string;
   guideName: string;
   versionName: string;
-  versions: { name: string; path: string;  url?:string }[];
+  versions: { name: string; path: string; url?: string }[];
 };
 
 export const PRODUCT_HEADER_HEIGHT = 80;
