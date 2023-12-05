@@ -9,7 +9,7 @@ export type ProfileInfoCardProps = PropsWithChildren<{
     item: InfoCardItemProps,
     index: number,
     items: InfoCardItemProps[]
-  ) => JSX.Element;
+  ) => React.ReactNode;
 }>;
 
 export const ProfileInfoCard = ({

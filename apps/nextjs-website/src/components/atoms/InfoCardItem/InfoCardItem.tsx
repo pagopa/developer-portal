@@ -3,7 +3,6 @@
 import { Stack, Typography } from '@mui/material';
 import { ReactNode, useCallback } from 'react';
 import InfoCardEditButton from '../InfoCardEditButton/InfoCardEditButton';
-import { isProduction } from '@/config';
 
 export type InfoCardItemProps = {
   editable?: boolean;
@@ -27,12 +26,11 @@ export const InfoCardItem = ({
     }
   }, [onEdit]);
 
-  const showEditButton = !isProduction && editable;
-  const editButton = showEditButton ? (
+  const editButton = editable ? (
     <InfoCardEditButton onClick={handleClick} />
   ) : null;
 
-  const valueComp = value ? (
+  const valueComponent = value ? (
     <Typography minHeight='24px' fontSize={16} flexGrow={1} fontWeight={700}>
       {value}
     </Typography>
@@ -54,7 +52,7 @@ export const InfoCardItem = ({
       >
         {title}
       </Typography>
-      {valueComp}
+      {valueComponent}
       {editButton}
     </Stack>
   );

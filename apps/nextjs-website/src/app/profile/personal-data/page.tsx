@@ -33,7 +33,6 @@ const PersonalData = () => {
     return Auth.changePassword(user, oldPassword, newPassword).then(() => {
       setShowModal(true);
     });
-    // .catch((err: Error) => console.log(err));
   }
 
   const dataSectionItems: InfoCardItemProps[] = [
@@ -96,10 +95,10 @@ const PersonalData = () => {
       <ConfirmationModal
         setOpen={() => null}
         open={showModal}
-        title={t('renewPassword.dialog.title')}
-        text={t('renewPassword.dialog.text')}
+        title={t('changePassword.dialog.title')}
+        text={t('changePassword.dialog.text')}
         confirmCta={{
-          label: t('renewPassword.dialog.confirmLabel'),
+          label: t('changePassword.dialog.confirmLabel'),
           onClick: () => {
             Auth.signOut().then(() => {
               router.replace('/auth/login');

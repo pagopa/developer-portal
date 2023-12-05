@@ -38,13 +38,13 @@ export const EditPasswordForm = ({
     let err = {};
 
     if (!current_password) {
-      err = { current_password: t('renewPassword.requiredCurrentPassword') };
+      err = { current_password: t('changePassword.requiredCurrentPassword') };
     }
 
     if (!passwordMatcher.test(new_password)) {
       err = { ...err, new_password: auth.signUp.passwordPolicy };
     } else if (new_password !== password_confirm) {
-      err = { ...err, new_password: t('renewPassword.passwordsNotMatch') };
+      err = { ...err, new_password: t('changePassword.passwordsNotMatch') };
     }
 
     setErrors(err);
@@ -64,8 +64,8 @@ export const EditPasswordForm = ({
     if (!validateForm()) return;
     onSave(passwords.current_password, passwords.new_password).catch(
       (error) => {
-        if (error.__type === 'NotAuthorizedException') {
-          setErrors({ current_password: t('renewPassword.wrongPassword') });
+        if (error.code === 'NotAuthorizedException') {
+          setErrors({ current_password: t('changePassword.wrongPassword') });
         } else {
           console.error(error);
         }
@@ -80,10 +80,10 @@ export const EditPasswordForm = ({
         sx={{ paddingLeft: 0, paddingRight: 0 }}
         onClick={onCancel}
       >
-        {t('renewPassword.cancel')}
+        {t('changePassword.cancel')}
       </ButtonNaked>
       <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
-        {t('renewPassword.save')}
+        {t('changePassword.save')}
       </ButtonNaked>
     </>
   );
@@ -94,7 +94,7 @@ export const EditPasswordForm = ({
         alignItems={{ xs: 'flex-start', md: 'center' }}
         flexDirection={{ xs: 'column', md: 'row' }}
         gap={2}
-        my={{ xs: 1, md: 3 }}
+        my={3}
       >
         <Typography
           variant='body2'
@@ -102,7 +102,7 @@ export const EditPasswordForm = ({
           fontSize={16}
           minWidth={{ xs: 'auto', md: '170px' }}
         >
-          {t('renewPassword.title')}
+          {t('changePassword.title')}
         </Typography>
         <Stack flexDirection='row' gap={4} display={{ xs: 'none', md: 'flex' }}>
           {actions}
@@ -110,7 +110,7 @@ export const EditPasswordForm = ({
       </Stack>
       <PasswordTextField
         id='current_password'
-        label={t('renewPassword.currentPassword')}
+        label={t('changePassword.currentPassword')}
         hasError={Reflect.has(errors, 'current_password')}
         helperText={errors.current_password}
         value={passwords.current_password}
@@ -118,7 +118,7 @@ export const EditPasswordForm = ({
       />
       <PasswordTextField
         id='new_password'
-        label={t('renewPassword.newPassword')}
+        label={t('changePassword.newPassword')}
         value={passwords.new_password}
         hasError={Reflect.has(errors, 'new_password')}
         helperText={errors.new_password}
@@ -126,7 +126,7 @@ export const EditPasswordForm = ({
       />
       <PasswordTextField
         id='password_confirm'
-        label={t('renewPassword.confirmPassword')}
+        label={t('changePassword.confirmPassword')}
         value={passwords.password_confirm}
         onChange={handlePasswordChange}
       />

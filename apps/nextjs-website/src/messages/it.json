@@ -49,7 +49,7 @@
                 "password": "Password"
             }
         },
-        "renewPassword": {
+        "changePassword": {
             "title": "Cambia password",
             "currentPassword": "Password attuale",
             "newPassword": "Nuova password",
