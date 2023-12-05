@@ -14,8 +14,13 @@ const sendQuestion = (question: string) => {
 };
 
 type FormState = 'submitting' | 'submitted' | undefined;
+type WebinarQuestionsFormProps = {
+  disabled?: boolean;
+};
 
-export const WebinarQuestionsForm = () => {
+export const WebinarQuestionsForm = ({
+  disabled = false,
+}: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
   const [question, setQuestion] = useState('');
   const [formState, setFormState] = useState<FormState>();
@@ -37,7 +42,7 @@ export const WebinarQuestionsForm = () => {
   };
 
   const hasFormState = formState === 'submitting' || formState === 'submitted';
-  const disabled = !question || hasFormState;
+  const btnDisabled = !question || hasFormState || disabled;
   const startIcon = hasFormState ? <Done /> : null;
   const btnLabel =
     formState === 'submitted'
@@ -49,15 +54,22 @@ export const WebinarQuestionsForm = () => {
       elevation={1}
       sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 3 }}
     >
-      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+      <Typography
+        variant='body2'
+        sx={{ fontWeight: 600 }}
+        color={(theme) =>
+          disabled ? theme.palette.text.disabled : theme.palette.text.primary
+        }
+      >
         {t('questionsForm.title')}
       </Typography>
 
       <TextField
-        value={question}
+        disabled={disabled}
         label={t('questionsForm.question')}
         multiline
         maxRows={6}
+        value={question}
         variant='outlined'
         onChange={handleChange}
       />
@@ -67,7 +79,7 @@ export const WebinarQuestionsForm = () => {
         loadingPosition={hasFormState ? 'start' : undefined}
         loading={formState === 'submitting'}
         startIcon={startIcon}
-        disabled={disabled}
+        disabled={btnDisabled}
         variant='contained'
         onClick={handleSubmit}
       >
