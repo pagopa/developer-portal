@@ -78,14 +78,16 @@ export const makeGuide = ({
         name: version,
         path: `${guidePath}/${version}`,
       },
-      versions: versions
-      .map(version => ({ 
-        name:version.version,
-        path:  version.versionPath? `${guidePath}/latest` : `${guidePath}/${version.version}`,
-        //url: version.versionPath ? `${guidePath}/latest` : null,
+      versions: versions.map((version) => ({
+        name: version.version,
+        path: version.versionPath
+          ? `${guidePath}/latest`
+          : `${guidePath}/${version.version}`,
       })),
       source: {
-        pathPrefix: versionPath ? `${guidePath}/${versionPath}` : `${guidePath}/${version}`,
+         pathPrefix: versionPath
+          ? `${guidePath}/${versionPath}`
+          : `${guidePath}/${version}`,
         assetsPrefix: `${docsAssetsPath}/${dirName}`,
         dirPath: `${docsPath}/${dirName}`,
         spaceId: dirName,
