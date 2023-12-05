@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { WebinarQuestionsForm } from '../WebinarQuestionsForm/WebinarQuestionsForm';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -54,6 +55,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         endDateTime={webinar.endDateTime}
       >
         {subscribeToWebinarButton}
+        <WebinarQuestionsForm />
       </SummaryInformation>
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
