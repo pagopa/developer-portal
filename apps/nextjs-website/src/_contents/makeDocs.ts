@@ -85,7 +85,7 @@ export const makeGuide = ({
           : `${guidePath}/${version.version}`,
       })),
       source: {
-         pathPrefix: versionPath
+        pathPrefix: versionPath
           ? `${guidePath}/${versionPath}`
           : `${guidePath}/${version}`,
         assetsPrefix: `${docsAssetsPath}/${dirName}`,
