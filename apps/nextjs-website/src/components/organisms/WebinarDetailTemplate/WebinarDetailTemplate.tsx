@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
+import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -55,6 +56,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       >
         {subscribeToWebinarButton}
       </SummaryInformation>
+      {isSubscribed && (
+        <WebinarPlayerSection webinar={webinar}></WebinarPlayerSection>
+      )}
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}
