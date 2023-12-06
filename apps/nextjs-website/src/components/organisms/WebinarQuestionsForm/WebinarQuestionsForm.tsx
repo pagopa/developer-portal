@@ -52,7 +52,13 @@ export const WebinarQuestionsForm = ({
   return (
     <Card
       elevation={1}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 3 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        gap: 3,
+        p: 3,
+      }}
     >
       <Typography
         variant='body2'
@@ -69,6 +75,7 @@ export const WebinarQuestionsForm = ({
         label={t('questionsForm.question')}
         multiline
         maxRows={6}
+        sx={{ flexGrow: 1 }}
         value={question}
         variant='outlined'
         onChange={handleChange}
