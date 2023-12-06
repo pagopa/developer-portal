@@ -21,20 +21,23 @@ import {
   Alert,
   useTheme,
   FormHelperText,
+  TextField,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import { snackbarAutoHideDurationMs } from '@/config';
 import { emailMatcher } from '@/helpers/auth.helpers';
-import RequiredTextField, {
-  ValidatorFunction,
-} from '@/components/molecules/RequiredTextField/RequiredTextField';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
+}
+
+interface LoginFieldsError {
+  email: string | null;
+  password: string | null;
 }
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
@@ -46,14 +49,14 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
-  const [isPasswordDirty, setIsPasswordDirty] = useState<boolean>(false);
-
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
+
+  const [fieldErrors, setFieldErrors] = useState<LoginFieldsError>({
+    email: null,
+    password: null,
+  });
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -71,39 +74,32 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     []
   );
 
-  const onLoginHandler = useCallback(() => {
-    setSubmitting(true);
-    onLogin({ username, password })
-      .catch((e) => setError(e.message))
-      .finally(() => {
-        setSubmitting(false);
-      });
-  }, [onLogin, username, password]);
-
-  const emailValidators: ValidatorFunction[] = [
-    (value: string) => ({
-      valid: emailMatcher.test(value),
-      error: shared('emailFieldError'),
-    }),
-  ];
-
   const validateForm = useCallback(() => {
-    const areFieldsValid = [username, password].every(
-      (value) => value && value.trim().length > 0
-    );
+    const emailError =
+      !username || username.trim().length === 0
+        ? shared('requiredFieldError')
+        : !emailMatcher.test(username)
+        ? shared('emailFieldError')
+        : null;
+    const passwordError =
+      !password || password.trim().length === 0
+        ? shared('requiredFieldError')
+        : null;
+    setFieldErrors({
+      email: emailError,
+      password: passwordError,
+    });
 
-    if (isPasswordDirty && password.length == 0) {
-      setIsPasswordEmpty(true);
-    } else {
-      setIsPasswordEmpty(false);
+    return !emailError && !passwordError;
+  }, [username, shared, password]);
+
+  const onLoginHandler = useCallback(() => {
+    const valid = validateForm();
+    if (!valid) {
+      return;
     }
-
-    setIsFormValid(areFieldsValid);
-  }, [username, password, isPasswordDirty]);
-
-  useEffect(() => {
-    validateForm();
-  }, [validateForm, username, password]);
+    onLogin({ username, password }).catch((e) => setError(e.message));
+  }, [validateForm, onLogin, username, password]);
 
   return (
     <Box
@@ -126,13 +122,18 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 {login('loginToYourAccount')}
               </Typography>
               <Stack spacing={2} mb={4}>
-                <RequiredTextField
+                <TextField
                   label={shared('emailAddress')}
                   variant='outlined'
+                  size='small'
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  helperText={shared('emailFieldError')}
-                  customValidators={emailValidators}
+                  helperText={fieldErrors.email}
+                  error={!!fieldErrors.email}
+                  sx={{
+                    backgroundColor: 'white',
+                    width: '100%',
+                  }}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -144,8 +145,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     id='password-input'
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
-                    error={isPasswordEmpty}
-                    onBlur={() => setIsPasswordDirty(true)}
+                    error={!!fieldErrors.password}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -165,12 +165,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                       },
                     }}
                   />
-                  <FormHelperText
-                    sx={{ display: !isPasswordEmpty ? 'none' : 'block' }}
-                    error={isPasswordEmpty}
-                  >
-                    {shared('requiredFieldError')}
-                  </FormHelperText>
+                  {fieldErrors.password && (
+                    <FormHelperText error>
+                      {fieldErrors.password}
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Stack>
               <Grid container mb={1}>
@@ -181,11 +180,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button
-                    disabled={submitting || !isFormValid}
-                    variant='contained'
-                    onClick={onLoginHandler}
-                  >
+                  <Button variant='contained' onClick={onLoginHandler}>
                     {login('action')}
                   </Button>
                 </Stack>

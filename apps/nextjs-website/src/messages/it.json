@@ -113,6 +113,7 @@
     "signUp": {
       "action": "Iscriviti",
       "createYourAccount": "Crea il tuo account",
+      "passwordMismatchError": "Le password non combaciano",
       "confirmComunications": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
       "acceptPolicy1": "Cliccando su 'Iscriviti' accetti la nostra ",
       "acceptPolicy2": "informativa",
@@ -125,11 +126,13 @@
       "advantages": {
         "exclusive_contents": {
           "title": "Accedi a contenuti esclusivi",
-          "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento."
+          "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.",
+          "isComingSoon": "false"
         },
         "product_updates": {
           "title": "Ricevi aggiornamenti sui nostri prodotti",
-          "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. "
+          "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
+          "isComingSoon": "false"
         },
         "api_keys": {
           "title": "Genera, gestisci e utilizza api Key",
@@ -221,7 +224,7 @@
     "confirmPassword": "Conferma password",
     "company": "Tipologia Ente o Azienda",
     "role": "Ruolo",
-    "requiredFieldError": "Questo dato é obbligatorio",
+    "requiredFieldError": "Questo dato è obbligatorio",
     "emailFieldError": "Il formato non risulta corretto"
   }
 }

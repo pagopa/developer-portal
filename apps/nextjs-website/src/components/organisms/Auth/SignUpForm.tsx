@@ -1,7 +1,4 @@
 'use client';
-import RequiredTextField, {
-  ValidatorFunction,
-} from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { emailMatcher, passwordMatcher } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -35,7 +32,6 @@ import {
   MouseEvent,
   SetStateAction,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -44,6 +40,14 @@ interface SignUpFormProps {
   userData: SignUpUserData;
   setUserData: Dispatch<SetStateAction<SignUpUserData>>;
   onSignUp: () => Promise<boolean>;
+}
+
+interface SignUpFieldsError {
+  name: string | null;
+  surname: string | null;
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
 }
 
 const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
@@ -64,10 +68,14 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
 
   const { palette } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isPasswordDirty, setIsPasswordDirty] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+
+  const [fieldErrors, setFieldErrors] = useState<SignUpFieldsError>({
+    name: null,
+    surname: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
+  });
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -83,63 +91,54 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
     event.preventDefault();
   };
 
-  const emailValidators: ValidatorFunction[] = [
-    (value: string) => ({
-      valid: emailMatcher.test(value),
-      error: shared('emailFieldError'),
-    }),
-  ];
-
-  const validatePassword = useCallback(() => {
-    setIsPasswordValid(passwordMatcher.test(password));
-  }, [password]);
-
-  useEffect(() => {
-    validatePassword();
-  }, [password, validatePassword]);
-
-  const onSignUpClick = useCallback(() => {
-    const { username, confirmPassword, firstName, lastName, password } =
-      userData;
-
-    if (
-      [firstName, lastName, username, password, confirmPassword].some(
-        (value) => !value || value.trim().length === 0
-      )
-    ) {
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      return;
-    }
-
-    setSubmitting(true);
-
-    onSignUp().finally(() => {
-      setSubmitting(false);
-    });
-  }, [onSignUp, userData]);
-
   const validateForm = useCallback(() => {
     const { username, confirmPassword, firstName, lastName, password } =
       userData;
 
-    const areFieldsValid = [
-      firstName,
-      lastName,
-      username,
-      password,
-      confirmPassword,
-    ].every((value) => value && value.trim().length > 0);
-    const isPasswordEqual = password === confirmPassword;
+    const nameError = !firstName || firstName.trim().length === 0;
+    const surnameError = !lastName || lastName.trim().length === 0;
+    const emailError =
+      !username || username.trim().length === 0
+        ? shared('requiredFieldError')
+        : !emailMatcher.test(username)
+        ? shared('emailFieldError')
+        : null;
+    const passwordError =
+      !password || password.trim().length === 0
+        ? shared('requiredFieldError')
+        : !passwordMatcher.test(password)
+        ? shared('passwordError')
+        : null;
+    const confirmPasswordError = password !== confirmPassword;
 
-    setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-  }, [isPasswordValid, userData]);
+    setFieldErrors({
+      name: nameError ? shared('requiredFieldError') : null,
+      surname: surnameError ? shared('requiredFieldError') : null,
+      email: emailError,
+      password: passwordError,
+      confirmPassword: confirmPasswordError
+        ? signUp('passwordMismatchError')
+        : null,
+    });
 
-  useEffect(() => {
-    validateForm();
-  }, [validateForm, isPasswordValid, userData]);
+    return (
+      !nameError &&
+      !surnameError &&
+      !emailError &&
+      !passwordError &&
+      !confirmPasswordError
+    );
+  }, [shared, signUp, userData]);
+
+  const onSignUpClick = useCallback(() => {
+    const valid = validateForm();
+
+    if (!valid) {
+      return;
+    }
+
+    onSignUp();
+  }, [onSignUp, validateForm]);
 
   const companyRoles = useMemo(
     () => [
@@ -171,7 +170,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
             <form>
               <Grid container spacing={2} mb={2}>
                 <Grid item xs={6}>
-                  <RequiredTextField
+                  <TextField
+                    size='small'
                     label={shared('firstName')}
                     value={firstName}
                     onChange={({ target: { value } }) =>
@@ -180,11 +180,17 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                         firstName: value,
                       }))
                     }
-                    helperText={shared('requiredFieldError')}
+                    helperText={fieldErrors.name}
+                    error={!!fieldErrors.name}
+                    sx={{
+                      backgroundColor: 'white',
+                      width: '100%',
+                    }}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <RequiredTextField
+                  <TextField
+                    size='small'
                     label={shared('lastName')}
                     value={lastName}
                     onChange={({ target: { value } }) =>
@@ -193,12 +199,18 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                         lastName: value,
                       }))
                     }
-                    helperText={shared('requiredFieldError')}
+                    helperText={fieldErrors.surname}
+                    error={!!fieldErrors.surname}
+                    sx={{
+                      backgroundColor: 'white',
+                      width: '100%',
+                    }}
                   />
                 </Grid>
               </Grid>
               <Stack spacing={2} mb={2}>
-                <RequiredTextField
+                <TextField
+                  size='small'
                   label={shared('emailAddress')}
                   value={username}
                   onChange={({ target: { value } }) =>
@@ -207,8 +219,12 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       username: value,
                     }))
                   }
-                  helperText={shared('emailFieldError')}
-                  customValidators={emailValidators}
+                  helperText={fieldErrors.email}
+                  error={!!fieldErrors.email}
+                  sx={{
+                    backgroundColor: 'white',
+                    width: '100%',
+                  }}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -226,8 +242,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                         password: value,
                       }))
                     }
-                    onBlur={() => setIsPasswordDirty(true)}
-                    error={isPasswordDirty && !isPasswordValid}
+                    error={!!fieldErrors.password}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -248,10 +263,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                       },
                     }}
                   />
-                  <FormHelperText error={isPasswordDirty && !isPasswordValid}>
-                    {isPasswordDirty && !isPasswordValid
-                      ? `${signUp('passwordError')} `
-                      : ''}
+                  <FormHelperText error={!!fieldErrors.password}>
+                    {fieldErrors.password ? `${signUp('passwordError')} ` : ''}
                     {signUp('passwordPolicy')}
                   </FormHelperText>
                 </FormControl>
@@ -288,13 +301,18 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     }
                     value={confirmPassword}
                     label={shared('confirmPassword')}
-                    error={isPasswordDirty && password !== confirmPassword}
+                    error={!!fieldErrors.confirmPassword}
                     inputProps={{
                       sx: {
                         padding: '8.5px 14px',
                       },
                     }}
                   />
+                  {fieldErrors.confirmPassword && (
+                    <FormHelperText error>
+                      {signUp('passwordMismatchError')}
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -365,11 +383,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               </Grid>
               <Stack spacing={4} pt={4} pb={2}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button
-                    variant='contained'
-                    onClick={onSignUpClick}
-                    disabled={!isFormValid || submitting}
-                  >
+                  <Button variant='contained' onClick={onSignUpClick}>
                     {signUp('action')}
                   </Button>
                 </Stack>
