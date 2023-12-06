@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import EditIcon from '@mui/icons-material/Edit';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
-const InfoCardEditButton = ({ onClick }: { onClick?: () => null }) => {
+const InfoCardEditButton = ({ onClick }: { onClick?: () => void }) => {
   const t = useTranslations('shared');
 
   return (

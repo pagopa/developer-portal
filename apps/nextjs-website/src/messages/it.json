@@ -38,6 +38,8 @@
             },
             "deleteAccountButton": "Elimina account",
             "addField": "Inserisci",
+            "save": "Conferma",
+            "cancel": "Annulla",
             "fields": {
                 "name": "Nome",
                 "surname": "Cognome",
@@ -68,7 +70,9 @@
             "title": "Il link non è più valido",
             "ctaLabel": "Reinvia email"
         },
-        "resendEmail": { "label": "Reinvia e-mail" }
+        "resendEmail": {
+            "label": "Reinvia e-mail"
+        }
     },
     "shared": {
         "goToModel": "Vai al modello",
