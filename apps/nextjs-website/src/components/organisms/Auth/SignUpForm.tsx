@@ -249,6 +249,9 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     }}
                   />
                   <FormHelperText error={isPasswordDirty && !isPasswordValid}>
+                    {isPasswordDirty && !isPasswordValid
+                      ? `${signUp('passwordError')} `
+                      : ''}
                     {signUp('passwordPolicy')}
                   </FormHelperText>
                 </FormControl>

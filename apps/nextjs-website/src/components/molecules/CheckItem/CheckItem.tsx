@@ -19,7 +19,18 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
         <CheckCircle sx={{ fontSize: 40, color: palette.info.extraLight }} />
       </Grid>
       <Grid item xs={10}>
-        <Box>{isComingSoon && <Chip label={shared('comingSoon')} />}</Box>
+        <Box>
+          {isComingSoon && (
+            <Chip
+              label={shared('comingSoon')}
+              size='small'
+              sx={{
+                color: palette.text.secondary,
+                backgroundColor: '#EEEEEE',
+              }}
+            />
+          )}
+        </Box>
         <Typography
           variant='overline'
           content='div'

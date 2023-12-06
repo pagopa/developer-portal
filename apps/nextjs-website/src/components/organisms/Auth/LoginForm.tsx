@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -52,6 +51,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
 
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
+  const [isPasswordDirty, setIsPasswordDirty] = useState<boolean>(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -92,14 +92,14 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
       (value) => value && value.trim().length > 0
     );
 
-    if (password.length == 0) {
+    if (isPasswordDirty && password.length == 0) {
       setIsPasswordEmpty(true);
     } else {
       setIsPasswordEmpty(false);
     }
 
     setIsFormValid(areFieldsValid);
-  }, [username, password]);
+  }, [username, password, isPasswordDirty]);
 
   useEffect(() => {
     validateForm();
@@ -145,6 +145,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
                     error={isPasswordEmpty}
+                    onBlur={() => setIsPasswordDirty(true)}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
