@@ -57,6 +57,7 @@
             "wrongPassword": "La password inserita non risulta corretta",
             "requiredCurrentPassword": "È necessario inserire la password attuale",
             "passwordsNotMatch": "Le password non corrispondono",
+            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
             "cancel": "Annulla",
             "save": "Conferma",
             "dialog": {

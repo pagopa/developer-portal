@@ -2,7 +2,6 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { Stack, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 
-import { translations } from '@/_contents/translations';
 import { PasswordTextField } from './PasswordTextField';
 import { useTranslations } from 'next-intl';
 import { passwordMatcher } from '@/helpers/auth.helpers';
@@ -23,7 +22,6 @@ export const EditPasswordForm = ({
   onSave,
   onCancel,
 }: EditPasswordFormProps) => {
-  const { auth } = translations;
   const t = useTranslations('profile');
   const [errors, setErrors] = useState<Partial<Passwords>>({});
   const [passwords, setPasswords] = useState<Passwords>({
@@ -42,7 +40,7 @@ export const EditPasswordForm = ({
     }
 
     if (!passwordMatcher.test(new_password)) {
-      err = { ...err, new_password: auth.signUp.passwordPolicy };
+      err = { ...err, new_password: t('changePassword.passwordPolicy') };
     } else if (new_password !== password_confirm) {
       err = { ...err, new_password: t('changePassword.passwordsNotMatch') };
     }
@@ -50,7 +48,7 @@ export const EditPasswordForm = ({
     setErrors(err);
     const hasErrors = Object.keys(err).length > 0;
     return !hasErrors;
-  }, [passwords, auth.signUp.passwordPolicy, t]);
+  }, [passwords, t]);
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -89,12 +87,12 @@ export const EditPasswordForm = ({
   );
 
   return (
-    <Stack>
+    <Stack gap={3}>
       <Stack
         alignItems={{ xs: 'flex-start', md: 'center' }}
         flexDirection={{ xs: 'column', md: 'row' }}
         gap={2}
-        my={3}
+        mt={{ xs: 1, md: 3 }}
       >
         <Typography
           variant='body2'

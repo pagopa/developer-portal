@@ -34,7 +34,7 @@ export const PasswordTextField = ({
   };
 
   return (
-    <Stack spacing={2} mb={2}>
+    <Stack spacing={2}>
       <FormControl variant='outlined'>
         <InputLabel htmlFor={id} sx={{ top: '-8px' }}>
           {label}
