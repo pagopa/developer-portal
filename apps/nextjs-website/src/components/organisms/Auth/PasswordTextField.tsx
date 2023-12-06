@@ -36,7 +36,7 @@ export const PasswordTextField = ({
   return (
     <Stack spacing={2}>
       <FormControl variant='outlined'>
-        <InputLabel htmlFor={id} sx={{ top: '-8px' }}>
+        <InputLabel error={hasError} htmlFor={id} sx={{ top: '-8px' }}>
           {label}
         </InputLabel>
         <OutlinedInput
