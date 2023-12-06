@@ -8,36 +8,49 @@ import {
   Card,
   Grid,
   Box,
+  TextField,
 } from '@mui/material';
 import { emailMatcher } from '@/helpers/auth.helpers';
-import RequiredTextField, {
-  ValidatorFunction,
-} from '@/components/molecules/RequiredTextField/RequiredTextField';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface ResetPasswordFormProps {
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
   handleResetPassword: () => Promise<void>;
-  emailValidators: ValidatorFunction[];
 }
 
 const ResetPasswordForm = ({
   email,
   setEmail,
   handleResetPassword,
-  emailValidators,
 }: ResetPasswordFormProps) => {
   const resetPassword = useTranslations('auth.resetPassword');
   const shared = useTranslations('shared');
 
-  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setSubmitDisabled(!emailMatcher.test(email));
-  }, [email]);
+  const validateForm = useCallback(() => {
+    const emailError =
+      !email || email?.trim().length === 0
+        ? shared('requiredFieldError')
+        : !emailMatcher.test(email)
+        ? shared('emailFieldError')
+        : null;
+    setEmailError(emailError);
+
+    return !emailError;
+  }, [email, shared]);
+
+  const onResetPassword = useCallback(() => {
+    const valid = validateForm();
+    if (!valid) {
+      return;
+    }
+
+    handleResetPassword();
+  }, [handleResetPassword, validateForm]);
 
   return (
     <Box
@@ -61,23 +74,21 @@ const ResetPasswordForm = ({
             <Typography variant='body2' mb={4}>
               {resetPassword('body')}
             </Typography>
-            <RequiredTextField
+            <TextField
               label={shared('emailAddress')}
               value={email}
               onChange={({ target: { value } }) => setEmail(value)}
-              helperText={shared('emailFieldError')}
-              customValidators={emailValidators}
+              helperText={emailError}
+              error={!!emailError}
+              size='small'
+              sx={{
+                backgroundColor: 'white',
+                width: '100%',
+              }}
             />
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
-                <Button
-                  variant='contained'
-                  onClick={() => {
-                    setSubmitDisabled(true);
-                    handleResetPassword();
-                  }}
-                  disabled={isSubmitDisabled}
-                >
+                <Button variant='contained' onClick={onResetPassword}>
                   {resetPassword('send')}
                 </Button>
               </Stack>
