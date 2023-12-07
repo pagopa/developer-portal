@@ -2,11 +2,14 @@ import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Box, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
+import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
+import { DevPortalUser } from '@/lib/types/auth';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
+  user: DevPortalUser;
 };
-const WebinarPlayerSection = ({ webinar }: WebinarPlayerSectionProps) => {
+const WebinarPlayerSection = ({ webinar, user }: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
 
   return (
@@ -27,7 +30,9 @@ const WebinarPlayerSection = ({ webinar }: WebinarPlayerSectionProps) => {
             <Box sx={{ width: { md: '66%' } }}>
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            <Box> {/* TODO: Insert Form */} </Box>
+            <Box>
+              <WebinarQuestionsForm webinarSlug={webinar.slug} user={user} />
+            </Box>
           </Box>
         </EContainer>
       </div>

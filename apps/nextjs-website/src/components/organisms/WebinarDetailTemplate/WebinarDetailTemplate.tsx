@@ -56,8 +56,11 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       >
         {subscribeToWebinarButton}
       </SummaryInformation>
-      {isSubscribed && (
-        <WebinarPlayerSection webinar={webinar}></WebinarPlayerSection>
+      {user && isSubscribed && (
+        <WebinarPlayerSection
+          webinar={webinar}
+          user={user}
+        ></WebinarPlayerSection>
       )}
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>

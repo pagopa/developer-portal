@@ -1,40 +1,62 @@
+'use client';
+import { snackbarAutoHideDurationMs } from '@/config';
+import { addWebinarQuestion } from '@/helpers/webinarQuestions.helpers';
+import { DevPortalUser } from '@/lib/types/auth';
 import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Card, TextField, Typography } from '@mui/material';
+import { Alert, Card, Snackbar, TextField, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-
-const sendQuestion = (question: string) => {
-  return new Promise((resolve) => {
-    console.log(question);
-    setTimeout(() => {
-      resolve('ok');
-    }, 3000);
-  });
-};
+import { useCallback, useState } from 'react';
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
   disabled?: boolean;
+  webinarSlug: string;
+  user: DevPortalUser;
 };
 
 export const WebinarQuestionsForm = ({
   disabled = false,
+  webinarSlug,
+  user,
 }: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
+  const [error, setError] = useState<string | null>(null);
   const [question, setQuestion] = useState('');
   const [formState, setFormState] = useState<FormState>();
+
+  const sendQuestion = useCallback(async () => {
+    return await addWebinarQuestion({
+      email: user.attributes.email,
+      given_name: user.attributes.given_name,
+      family_name: user.attributes.family_name,
+      question: question,
+      webinarSlug: webinarSlug,
+      data: new Date().toISOString(),
+    });
+  }, [webinarSlug, user, question]);
+
+  const handleError = () => {
+    setFormState(undefined);
+    setError(t('questionsForm.error'));
+  };
 
   const handleSubmit = () => {
     if (!question) return;
     setFormState('submitting');
-    sendQuestion(question).then(() => {
-      setFormState('submitted');
-      setQuestion('');
-      setTimeout(() => {
-        setFormState(undefined);
-      }, 3000);
-    });
+    sendQuestion()
+      .then((res: { status: string }) => {
+        if (res.status !== 'SUCCESS') {
+          handleError();
+          return;
+        }
+        setFormState('submitted');
+        setQuestion('');
+        setTimeout(() => {
+          setFormState(undefined);
+        }, 3000);
+      })
+      .catch(handleError);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,48 +72,58 @@ export const WebinarQuestionsForm = ({
       : t('questionsForm.submit');
 
   return (
-    <Card
-      elevation={1}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        gap: 3,
-        p: 3,
-      }}
-    >
-      <Typography
-        variant='body2'
-        sx={{ fontWeight: 600 }}
-        color={(theme) =>
-          disabled ? theme.palette.text.disabled : theme.palette.text.primary
-        }
+    <>
+      <Card
+        elevation={1}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          gap: 3,
+          p: 3,
+        }}
       >
-        {t('questionsForm.title')}
-      </Typography>
+        <Typography
+          variant='body2'
+          sx={{ fontWeight: 600 }}
+          color={(theme) =>
+            disabled ? theme.palette.text.disabled : theme.palette.text.primary
+          }
+        >
+          {t('questionsForm.title')}
+        </Typography>
 
-      <TextField
-        disabled={disabled}
-        label={t('questionsForm.question')}
-        multiline
-        maxRows={6}
-        sx={{ flexGrow: 1 }}
-        value={question}
-        variant='outlined'
-        onChange={handleChange}
-      />
-      <LoadingButton
-        sx={{ alignSelf: 'start' }}
-        color='primary'
-        loadingPosition={hasFormState ? 'start' : undefined}
-        loading={formState === 'submitting'}
-        startIcon={startIcon}
-        disabled={btnDisabled}
-        variant='contained'
-        onClick={handleSubmit}
+        <TextField
+          disabled={disabled}
+          label={t('questionsForm.question')}
+          multiline
+          maxRows={6}
+          sx={{ flexGrow: 1 }}
+          value={question}
+          variant='outlined'
+          onChange={handleChange}
+        />
+        <LoadingButton
+          sx={{ alignSelf: 'start' }}
+          color='primary'
+          loadingPosition={hasFormState ? 'start' : undefined}
+          loading={formState === 'submitting'}
+          startIcon={startIcon}
+          disabled={btnDisabled}
+          variant='contained'
+          onClick={handleSubmit}
+        >
+          <span>{btnLabel}</span>
+        </LoadingButton>
+      </Card>
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={snackbarAutoHideDurationMs}
+        onClose={() => setError(null)}
       >
-        <span>{btnLabel}</span>
-      </LoadingButton>
-    </Card>
+        <Alert severity={'error'}>{error}</Alert>
+      </Snackbar>
+    </>
   );
 };
