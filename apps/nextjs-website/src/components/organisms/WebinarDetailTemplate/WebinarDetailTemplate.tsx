@@ -9,10 +9,12 @@ import { Alert, Box, Snackbar } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
+import Typography from '@mui/material/Typography';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -23,6 +25,52 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const [error, setError] = useState<string | null>(null);
   const { user, aligned: userAligned, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { webinarState, setWebinar } = useWebinar();
+
+  useEffect(() => {
+    webinar && setWebinar(webinar);
+  }, [webinar]);
+
+  const html = useMemo(
+    () =>
+      webinar.html ? (
+        <EContainer>
+          <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
+        </EContainer>
+      ) : null,
+    [webinar.html]
+  );
+
+  const speakerList = useMemo(
+    () => webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />,
+    [webinar.speakers]
+  );
+
+  const startInfo = useMemo(
+    () =>
+      webinar.startInfo && (
+        <StartInfo
+          cardVariant='outlined'
+          title={webinar.startInfo.title}
+          cards={[...webinar.startInfo.cards]}
+        />
+      ),
+    [webinar.startInfo]
+  );
+  const relatedLinks = useMemo(
+    () => (
+      <RelatedLinks
+        title={t('relatedLinksTitle')}
+        links={
+          webinar.relatedLinks?.map(({ path, name }) => ({
+            text: name,
+            href: path,
+          })) || []
+        }
+      />
+    ),
+    [webinar.relatedLinks]
+  );
 
   const subscribeToWebinarButton = (
     <SubscribeToWebinar
@@ -42,6 +90,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         setError(message);
         return null;
       }}
+      webinarState={webinarState}
     />
   );
 
@@ -52,36 +101,29 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         description={webinar.description}
         startDateTime={webinar.startDateTime}
         endDateTime={webinar.endDateTime}
+        webinarState={webinarState}
       >
         {subscribeToWebinarButton}
+        {isSubscribed && webinarState === WebinarState.future && (
+          <Typography variant={'body2'} sx={{ position: 'absolute', bottom: '24px', fontSize: '12px', marginTop: 1 }}>
+            {t('warnings.email')}
+          </Typography>
+        )}
+        {isSubscribed && webinarState === WebinarState.comingSoon && (
+          <Typography variant={'body2'} sx={{ position: 'absolute', bottom: '24px', fontSize: '12px', marginTop: 1 }}>
+            {t('warnings.refresh')}
+          </Typography>
+        )}
       </SummaryInformation>
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}
         </SubscribeCta>
       )}
-      {webinar.html && (
-        <EContainer>
-          <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
-        </EContainer>
-      )}
-      {webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />}
-      {webinar.startInfo && (
-        <StartInfo
-          cardVariant='outlined'
-          title={webinar.startInfo.title}
-          cards={[...webinar.startInfo.cards]}
-        />
-      )}
-      <RelatedLinks
-        title={t('relatedLinksTitle')}
-        links={
-          webinar.relatedLinks?.map(({ path, name }) => ({
-            text: name,
-            href: path,
-          })) || []
-        }
-      />
+      {html}
+      {speakerList}
+      {startInfo}
+      {relatedLinks}
       <Snackbar
         open={!!error}
         autoHideDuration={snackbarAutoHideDurationMs}
