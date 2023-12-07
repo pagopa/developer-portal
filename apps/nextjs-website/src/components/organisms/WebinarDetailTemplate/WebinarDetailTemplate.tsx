@@ -105,12 +105,28 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       >
         {subscribeToWebinarButton}
         {isSubscribed && webinarState === WebinarState.future && (
-          <Typography variant={'body2'} sx={{ position: 'absolute', bottom: '24px', fontSize: '12px', marginTop: 1 }}>
+          <Typography
+            variant={'body2'}
+            sx={{
+              position: 'absolute',
+              bottom: '24px',
+              fontSize: '12px',
+              marginTop: 1,
+            }}
+          >
             {t('warnings.email')}
           </Typography>
         )}
         {isSubscribed && webinarState === WebinarState.comingSoon && (
-          <Typography variant={'body2'} sx={{ position: 'absolute', bottom: '24px', fontSize: '12px', marginTop: 1 }}>
+          <Typography
+            variant={'body2'}
+            sx={{
+              position: 'absolute',
+              bottom: '24px',
+              fontSize: '12px',
+              marginTop: 1,
+            }}
+          >
             {t('warnings.refresh')}
           </Typography>
         )}
