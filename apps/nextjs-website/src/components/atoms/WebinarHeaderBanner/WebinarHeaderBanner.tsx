@@ -12,18 +12,24 @@ import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
 import { translations } from '@/_contents/translations';
 import Link from 'next/link';
+import { Webinar } from '@/lib/types/webinar';
+import next from 'next';
 
 export type WebinarHeaderBannerProps = {
-  readonly slug: string;
-  readonly text: string;
-  readonly endDateTime: string;
+  webinars: readonly Webinar[];
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
-  slug,
-  text,
-  endDateTime,
-}) => {
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
+  const nextWebinars = webinars.filter(
+    ({ startDateTime }) =>
+      startDateTime && new Date(startDateTime).getTime() > new Date().getTime()
+  );
+  const webinar = nextWebinars[0];
+
+  const slug = webinar?.slug;
+  const text = webinar?.title;
+  const endDateTime = webinar?.endDateTime;
+
   const [visible, setVisible] = useState(
     !window?.localStorage.getItem(slug) ||
       new Date(window?.localStorage.getItem(slug) || new Date().toISOString()) <
@@ -32,6 +38,8 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
 
   const { palette } = useTheme();
 
+  if (!webinar) return null;
+  if (!endDateTime) return null;
   if (!visible) return null;
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
@@ -25,6 +25,15 @@ const WebinarsSection = ({
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);
   const { aligned: userAligned } = useUser();
+  const filteredWebinars = useMemo(() => {
+    return webinars.filter(
+      ({ startDateTime }) =>
+        startDateTime &&
+        new Date(startDateTime).getTime() > new Date().getTime()
+    );
+  }, [webinars]);
+
+  if (filteredWebinars.length === 0) return null;
 
   return (
     <Box
@@ -66,7 +75,7 @@ const WebinarsSection = ({
             )}
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-            {webinars.map((webinar, index) => (
+            {filteredWebinars.map((webinar, index) => (
               <WebinarCard
                 key={index}
                 title={webinar.title}
