@@ -53,7 +53,6 @@ jobs:
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
           webinar_question_url: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_URL }}
           webinar_question_sheet_name: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME }}
-          webinar_question_api_key: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_API_KEY }}
 
   manual_deploy:
     name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
@@ -79,4 +78,3 @@ jobs:
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
           webinar_question_url: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_URL }}
           webinar_question_sheet_name: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME }}
-          webinar_question_api_key: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_API_KEY }}

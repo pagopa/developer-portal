@@ -32,12 +32,7 @@ export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const snackbarAutoHideDurationMs = 10_000;
 export const resetResendEmailAfterMs = 4_000;
 
-// TODO: remove default values only for testing
 export const webinarQuestionConfig = {
-  url:
-    process.env.NEXT_PUBLIC_WEBINAR_QUESTION_URL ||
-    'https://script.google.com/macros/s/AKfycbyB3gzSdyH9941oSq3qTRJZIupMJ91baubWOY4rWWxNpG7JO2pv69LcItqkizGOIec/exec',
-  resource: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME || 'questions',
-  token:
-    process.env.NEXT_PUBLIC_WEBINAR_QUESTION_API_KEY || 'test_api_key_pago_pa',
+  url: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_URL,
+  resource: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME,
 };

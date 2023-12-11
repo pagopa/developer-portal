@@ -76,7 +76,6 @@ runs:
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
         NEXT_PUBLIC_WEBINAR_QUESTION_URL: ${{ inputs.webinar_question_url }}
         NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME: ${{ inputs.webinar_question_sheet_name }}
-        NEXT_PUBLIC_WEBINAR_QUESTION_API_KEY: ${{ inputs.webinar_question_api_key }}
       shell: bash
       run: npm run build -w nextjs-website
 
