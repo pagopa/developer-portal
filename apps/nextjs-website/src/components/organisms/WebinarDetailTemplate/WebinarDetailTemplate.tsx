@@ -13,6 +13,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
+import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
 
@@ -131,6 +132,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           </Typography>
         )}
       </SummaryInformation>
+      {isSubscribed && (
+        <WebinarPlayerSection webinar={webinar}></WebinarPlayerSection>
+      )}
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}
