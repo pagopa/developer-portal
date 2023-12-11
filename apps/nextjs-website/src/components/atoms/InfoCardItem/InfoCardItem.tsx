@@ -5,7 +5,9 @@ import {
   Input,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   Stack,
   Typography,
 } from '@mui/material';
@@ -17,7 +19,10 @@ export type InfoCardItemProps = {
   value?: string;
   valueFallback?: ReactNode;
   editable: boolean;
-};
+} & (
+  | { type: 'select'; values: { title: string; value: string }[] }
+  | { type: 'text' }
+);
 
 type InfoCardItemEditingProps = {
   editing: boolean;
@@ -25,33 +30,63 @@ type InfoCardItemEditingProps = {
   onValue?: (value: string) => void;
 };
 
-export const InfoCardItem = ({
-  title,
-  value,
-  valueFallback,
-  editing,
-  onValue,
-}: InfoCardItemProps & InfoCardItemEditingProps) => {
-  if (editing)
+export const InfoCardItem = (
+  infoCardItem: InfoCardItemProps & InfoCardItemEditingProps
+) => {
+  if (infoCardItem.editing)
     return (
       <Stack spacing={2} mb={2} sx={{ marginTop: '2rem' }}>
         <FormControl variant='outlined'>
-          <InputLabel htmlFor={title} sx={{ top: '-8px' }} shrink>
-            {title}
+          <InputLabel htmlFor={infoCardItem.title} sx={{ top: '-8px' }} shrink>
+            {infoCardItem.title}
           </InputLabel>
-          <OutlinedInput
-            id={title}
-            required
-            type={'text'}
-            onChange={({ target: { value } }) => onValue && onValue(value)}
-            value={value}
-            label={title}
-            inputProps={{
-              sx: {
-                padding: '8.5px 14px',
-              },
-            }}
-          />
+          {infoCardItem.type === 'text' ? (
+            <OutlinedInput
+              id={infoCardItem.title}
+              required
+              type={'text'}
+              onChange={({ target: { value } }) =>
+                infoCardItem.onValue && infoCardItem.onValue(value)
+              }
+              value={infoCardItem.value}
+              label={infoCardItem.title}
+              inputProps={{
+                sx: {
+                  padding: '8.5px 14px',
+                },
+              }}
+            />
+          ) : (
+            <Select
+              labelId='company-field'
+              id='company-field-select'
+              value={
+                infoCardItem.values.find(
+                  ({ value }) => value === infoCardItem.value
+                )?.value || ''
+              }
+              label={infoCardItem.title}
+              onChange={({ target: { value } }) =>
+                infoCardItem.onValue &&
+                infoCardItem.onValue(
+                  infoCardItem.values.find(({ value: v }) => v === value)
+                    ?.value || ''
+                )
+              }
+              sx={{ padding: '8.5px 14px' }}
+              inputProps={{
+                sx: {
+                  padding: 0,
+                },
+              }}
+            >
+              {infoCardItem.values.map(({ title, value }) => (
+                <MenuItem key={value} value={value}>
+                  {title}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
         </FormControl>
       </Stack>
     );
@@ -63,19 +98,23 @@ export const InfoCardItem = ({
         fontSize={16}
         minWidth={{ xs: 'auto', md: '200px' }}
       >
-        {title}
+        {infoCardItem.title}
       </Typography>
-      {value ? (
+      {infoCardItem.value ? (
         <Typography
           minHeight={'24px'}
           fontSize={16}
           flexGrow={1}
           fontWeight={700}
         >
-          {value}
+          {infoCardItem.type === 'select'
+            ? infoCardItem.values.find(
+                ({ value }) => value === infoCardItem.value
+              )?.title
+            : infoCardItem.value}
         </Typography>
       ) : (
-        valueFallback
+        infoCardItem.valueFallback
       )}
     </Stack>
   );

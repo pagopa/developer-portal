@@ -27,24 +27,28 @@ const PersonalData = () => {
         title: t('personalData.fields.name'),
         value: user?.attributes.given_name,
         editable: true,
+        type: 'text',
       },
       {
         title: t('personalData.fields.surname'),
         value: user?.attributes.family_name,
         editable: true,
+        type: 'text',
       },
       {
         title: t('personalData.fields.role'),
         value: user?.attributes['custom:job_role'],
         editable: true,
+        type: 'text',
       },
       {
         title: t('personalData.fields.sector'),
         value: user?.attributes['custom:company_type'],
         editable: true,
+        type: 'select',
+        values: companyRoles,
       },
     ]);
-    console.log('user?.attributes', user?.attributes);
   }, [user?.attributes]);
 
   const accountSectionItems: InfoCardItemProps[] = [
@@ -52,11 +56,13 @@ const PersonalData = () => {
       title: t('personalData.fields.email'),
       value: user?.attributes.email,
       editable: false,
+      type: 'text',
     },
     {
       title: t('personalData.fields.password'),
       value: '••••••••••••',
       editable: false,
+      type: 'text',
     },
   ];
 
