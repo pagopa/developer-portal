@@ -116,12 +116,12 @@ const SubscribeToWebinar = ({
     [WebinarState.unknown]: 'default',
   };
 
-  // if (
-  //   isSubscribed &&
-  //   (webinarState === WebinarState.live || webinarState === WebinarState.past)
-  // ) {
-  //   return null;
-  // }
+  if (
+    isSubscribed &&
+    (webinarState === WebinarState.live || webinarState === WebinarState.past)
+  ) {
+    return null;
+  }
 
   return (
     <SubscribeButton
