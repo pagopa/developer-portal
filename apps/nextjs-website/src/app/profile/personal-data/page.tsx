@@ -17,35 +17,35 @@ const PersonalData = () => {
   const t = useTranslations('profile');
   const { user, setUserAttributes } = useUser();
 
-  const [dataSectionItems, setDataSectionItems] = useState<InfoCardItemProps[]>([]);
+  const [dataSectionItems, setDataSectionItems] = useState<InfoCardItemProps[]>(
+    []
+  );
 
   useEffect(() => {
-    setDataSectionItems(
-      [
-        {
-          title: t('personalData.fields.name'),
-          value: user?.attributes.given_name,
-          editable: true,
-        },
-        {
-          title: t('personalData.fields.surname'),
-          value: user?.attributes.family_name,
-          editable: true,
-        },
-        {
-          title: t('personalData.fields.role'),
-          value: user?.attributes['custom:job_role'],
-          editable: true,
-        },
-        {
-          title: t('personalData.fields.sector'),
-          value: user?.attributes['custom:company_type'],
-          editable: true,
-        },
-      ]
-    )
+    setDataSectionItems([
+      {
+        title: t('personalData.fields.name'),
+        value: user?.attributes.given_name,
+        editable: true,
+      },
+      {
+        title: t('personalData.fields.surname'),
+        value: user?.attributes.family_name,
+        editable: true,
+      },
+      {
+        title: t('personalData.fields.role'),
+        value: user?.attributes['custom:job_role'],
+        editable: true,
+      },
+      {
+        title: t('personalData.fields.sector'),
+        value: user?.attributes['custom:company_type'],
+        editable: true,
+      },
+    ]);
     console.log('user?.attributes', user?.attributes);
-  }, [user?.attributes])
+  }, [user?.attributes]);
 
   const accountSectionItems: InfoCardItemProps[] = [
     {
@@ -70,24 +70,25 @@ const PersonalData = () => {
         cardTitle={t('personalData.dataSection')}
         items={dataSectionItems}
         onValue={(items: InfoCardItemProps[]) => {
-          const oldItems = [...dataSectionItems]
+          const oldItems = [...dataSectionItems];
 
-          setUserAttributes({
-            ...user!.attributes,
-            given_name: items[0]!.value!,
-            family_name: items[1]!.value!,
-            'custom:job_role': items[2]!.value!,
-            'custom:company_type': items[3]!.value!,
-          }, () => {
-            setDataSectionItems(items)
-            return null;
-          }, () => {
-            setDataSectionItems(oldItems)
-            return null;
-          })
-
-
-
+          setUserAttributes(
+            {
+              ...user!.attributes,
+              given_name: items[0]!.value!,
+              family_name: items[1]!.value!,
+              'custom:job_role': items[2]!.value!,
+              'custom:company_type': items[3]!.value!,
+            },
+            () => {
+              setDataSectionItems(items);
+              return null;
+            },
+            () => {
+              setDataSectionItems(oldItems);
+              return null;
+            }
+          );
         }}
       />
       <InfoCard

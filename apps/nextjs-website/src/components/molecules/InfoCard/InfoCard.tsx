@@ -13,20 +13,24 @@ import { useEffect, useState } from 'react';
 export type InfoCardProps = {
   cardTitle: string;
   items: InfoCardItemProps[];
-  onValue?: (items: InfoCardItemProps[]) => void
+  // eslint-disable-next-line functional/no-return-void
+  onValue?: (items: InfoCardItemProps[]) => void;
 };
 
 export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
   const t = useTranslations('profile');
 
-  const [dataSectionItems, setDataSectionItems] = useState([...items])
-  useEffect(() => { setDataSectionItems([...items]) }, [items]);
+  const [dataSectionItems, setDataSectionItems] = useState([...items]);
+  useEffect(() => {
+    setDataSectionItems([...items]);
+  }, [items]);
 
   const [editing, setEditing] = useState(false);
   // if at least one item is editable, show the edit button
-  const editButton = !editing
-    ? <InfoCardEditButton onClick={() => setEditing(true)} />
-    : <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
+  const editButton = !editing ? (
+    <InfoCardEditButton onClick={() => setEditing(true)} />
+  ) : (
+    <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
       <ButtonNaked
         color='primary'
         fontWeight={600}
@@ -40,7 +44,7 @@ export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
         {t('personalData.cancel')}
       </ButtonNaked>
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ marginLeft: '1rem' }}
         onClick={() => {
           setEditing(false);
@@ -49,7 +53,8 @@ export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
       >
         {t('personalData.save')}
       </Button>
-    </Stack>;
+    </Stack>
+  );
 
   // TODO: add onClick to add button
   const addValueComponent = !isProduction ? (
@@ -73,13 +78,20 @@ export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
       </Box>
       {dataSectionItems.map((item, index) => (
         <Box key={index}>
-          <InfoCardItem {...item} valueFallback={addValueComponent} editing={editing} onValue={(value) => {
-            const newItems = [...dataSectionItems];
-            newItems[index] = {
-              ...newItems[index], value
-            };
-            setDataSectionItems(newItems);
-          }} />
+          <InfoCardItem
+            {...item}
+            valueFallback={addValueComponent}
+            editing={editing}
+            onValue={(value) => {
+              const newItems = [...dataSectionItems];
+              // eslint-disable-next-line functional/immutable-data
+              newItems[index] = {
+                ...newItems[index],
+                value,
+              };
+              setDataSectionItems(newItems);
+            }}
+          />
           {index + 1 !== items.length && !editing && <Divider />}
         </Box>
       ))}

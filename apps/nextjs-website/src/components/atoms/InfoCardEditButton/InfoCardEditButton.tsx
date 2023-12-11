@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import EditIcon from '@mui/icons-material/Edit';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
+// eslint-disable-next-line functional/no-return-void
 const InfoCardEditButton = ({ onClick }: { onClick?: () => void }) => {
   const t = useTranslations('shared');
 
