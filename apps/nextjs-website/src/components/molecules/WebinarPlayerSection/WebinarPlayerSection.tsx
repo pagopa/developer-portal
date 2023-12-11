@@ -4,13 +4,25 @@ import { Box, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { DevPortalUser } from '@/lib/types/auth';
+import { WebinarState } from '@/helpers/webinar.helpers';
+import { useMemo } from 'react';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   user: DevPortalUser;
+  webinarState: WebinarState;
 };
-const WebinarPlayerSection = ({ webinar, user }: WebinarPlayerSectionProps) => {
+const WebinarPlayerSection = ({
+  webinar,
+  user,
+  webinarState,
+}: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
+
+  const isLive = useMemo(
+    () => webinarState === WebinarState.live,
+    [webinarState]
+  );
 
   return (
     webinar.playerSrc && (
@@ -27,12 +39,20 @@ const WebinarPlayerSection = ({ webinar, user }: WebinarPlayerSectionProps) => {
               marginBottom: 10,
             }}
           >
-            <Box sx={{ width: { md: '66%' } }}>
+            <Box
+              sx={{
+                width: {
+                  md: isLive ? '66%' : '100%',
+                },
+              }}
+            >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            <Box>
-              <WebinarQuestionsForm webinarSlug={webinar.slug} user={user} />
-            </Box>
+            {isLive && (
+              <Box minWidth={{ md: '33%' }}>
+                <WebinarQuestionsForm webinarSlug={webinar.slug} user={user} />
+              </Box>
+            )}
           </Box>
         </EContainer>
       </div>
