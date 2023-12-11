@@ -1,6 +1,6 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -16,19 +16,17 @@ import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { DevPortalUser } from '@/lib/types/auth';
 import { useUser } from '@/helpers/user.helper';
 import { useTranslations } from 'next-intl';
+import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
+import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 
 type WebinarCardProps = {
+  webinar: Webinar;
   userAligned?: boolean;
   handleErrorMessage?: (message: string) => null;
-} & Webinar;
+};
 
 const WebinarCard = ({
-  title,
-  description,
-  slug,
-  speakers,
-  startDateTime,
-  endDateTime,
+  webinar,
   userAligned,
   handleErrorMessage,
 }: WebinarCardProps) => {
@@ -36,6 +34,12 @@ const WebinarCard = ({
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { user, setUserAttributes } = useUser();
+
+  const { webinarState, setWebinar } = useWebinar();
+
+  useEffect(() => {
+    webinar && setWebinar(webinar);
+  }, [webinar]);
 
   return (
     <Card
@@ -45,6 +49,7 @@ const WebinarCard = ({
         justifyContent: 'space-between',
         height: '100%',
         overflow: 'visible',
+        position: 'relative',
       }}
     >
       <CardContent
@@ -56,24 +61,34 @@ const WebinarCard = ({
         }}
       >
         <Box width={{ md: '55%' }}>
-          <Typography fontSize={18} fontWeight={600}>
-            <TimeSlot start={startDateTime} end={endDateTime} />
-          </Typography>
+          {webinarState === WebinarState.live && <LiveWebinarChip />}
+          {![
+            WebinarState.unknown,
+            WebinarState.live,
+            WebinarState.past,
+          ].includes(webinarState) && (
+            <Typography fontSize={18} fontWeight={600}>
+              <TimeSlot
+                start={webinar.startDateTime}
+                end={webinar.endDateTime}
+              />
+            </Typography>
+          )}
           <Typography variant='h6' mt={2} gutterBottom>
-            {title}
+            {webinar.title}
           </Typography>
           <Typography variant='body2' mb={1}>
-            {description}
+            {webinar.description}
           </Typography>
           <LinkButton
             disabled={false}
-            href={`/webinars/${slug}`}
+            href={`/webinars/${webinar.slug}`}
             label={t('whyParticipate')}
             color={theme.palette.primary.main}
           />
           <Box mt={4}>
             <SubscribeToWebinar
-              webinarSlug={slug}
+              webinarSlug={webinar.slug}
               userAttributes={user?.attributes}
               userAligned={userAligned}
               setUserAttributes={async (
@@ -88,10 +103,37 @@ const WebinarCard = ({
                 return null;
               }}
               handleErrorMessage={handleErrorMessage}
+              webinarState={webinarState}
             />
           </Box>
+          {isSubscribed && webinarState === WebinarState.future && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+              }}
+            >
+              {t('warnings.email')}
+            </Typography>
+          )}
+          {isSubscribed && webinarState === WebinarState.comingSoon && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+              }}
+            >
+              {t('warnings.goTo')}
+            </Typography>
+          )}
         </Box>
-        {speakers && (
+        {webinar.speakers && (
           <Box>
             <Typography
               mb={2}
@@ -103,7 +145,7 @@ const WebinarCard = ({
               {t('speakers')}
             </Typography>
             <Stack direction='column' gap={2}>
-              {speakers.map((speaker, index) => (
+              {webinar.speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}
                   name={speaker.name}

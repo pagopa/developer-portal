@@ -51,6 +51,7 @@
         }
     },
     "webinar": {
+        "liveWebinar": "Webinar in corso",
         "subscriptionError": "Limite di iscrizioni raggiunto",
         "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
         "whyParticipate": "Perché partecipare?",
@@ -64,6 +65,11 @@
             "submit": "Invia",
             "submitted": "Inviato",
             "error": "Errore nell'invio, riprova più tardi"
+        },
+        "warnings": {
+            "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
+            "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento",
+            "refresh": "Collegati a questa pagina all'orario di inizio dell'evento"
         }
     },
     "auth": {
@@ -83,7 +89,11 @@
         "cancel": "Annulla",
         "yourData": "I tuoi dati",
         "subscribeButton": {
-            "subscribeLabel": "Iscriviti",
+            "subscribeLabel": {
+                "default": "Iscriviti",
+                "takePart": "Partecipa",
+                "view": "Visualizza"
+            },
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
         }
