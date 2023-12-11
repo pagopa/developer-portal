@@ -70,7 +70,7 @@ const mockWebinar: readonly Webinar[] = [
       },
     ],
     startDateTime: '2023-12-11T12:00:00',
-    endDateTime: '2023-12-14T6:00:00',
+    endDateTime: '2023-12-14T06:00:00',
     subscribeCtaLabel: '',
   },
 ];
