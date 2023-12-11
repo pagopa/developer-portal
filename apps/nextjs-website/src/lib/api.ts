@@ -144,7 +144,7 @@ export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
 
 export async function getNextWebinars(): Promise<readonly Webinar[]> {
   return (await getWebinars()).filter(
-    ({ startDateTime }) =>
-      startDateTime && new Date(startDateTime).getTime() > new Date().getTime()
+    ({ endDateTime }) =>
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
 }
