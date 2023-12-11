@@ -25,15 +25,6 @@ const WebinarsSection = ({
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);
   const { aligned: userAligned } = useUser();
-  const filteredWebinars = useMemo(() => {
-    return webinars.filter(
-      ({ startDateTime }) =>
-        startDateTime &&
-        new Date(startDateTime).getTime() > new Date().getTime()
-    );
-  }, [webinars]);
-
-  if (filteredWebinars.length === 0) return null;
 
   return (
     <Box
@@ -75,7 +66,7 @@ const WebinarsSection = ({
             )}
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-            {filteredWebinars.map((webinar, index) => (
+            {webinars.map((webinar, index) => (
               <WebinarCard
                 key={index}
                 title={webinar.title}

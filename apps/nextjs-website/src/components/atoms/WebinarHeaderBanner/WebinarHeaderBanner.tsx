@@ -21,8 +21,8 @@ export type WebinarHeaderBannerProps = {
 
 const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   const nextWebinars = webinars.filter(
-    ({ startDateTime }) =>
-      startDateTime && new Date(startDateTime).getTime() > new Date().getTime()
+    ({ endDateTime }) =>
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
   const webinar = nextWebinars[0];
 
