@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 const sendQuestion = (question: string) => {
   return new Promise((resolve) => {
-    console.log(question);
     setTimeout(() => {
       resolve('ok');
     }, 3000);
