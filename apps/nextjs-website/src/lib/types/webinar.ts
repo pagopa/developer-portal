@@ -4,6 +4,7 @@ import { Path } from './path';
 export type Webinar = {
   readonly description: string;
   readonly html?: string;
+  readonly playerSrc?: string;
   readonly speakers: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
