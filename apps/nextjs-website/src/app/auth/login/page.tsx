@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Login = () => {
   const router = useRouter();
@@ -24,13 +24,13 @@ const Login = () => {
     setUser(user);
     setLogInStep(LoginSteps.MFA_CHALLENGE);
   }, []);
+  const searchParams = useSearchParams();
 
   const confirmLogin = useCallback(
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get('redirect');
+      const redirect = searchParams.get('redirect');
       router.replace(redirect ? redirect : '/');
     },
     [router, user]
