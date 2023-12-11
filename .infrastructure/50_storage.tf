@@ -45,3 +45,30 @@ resource "aws_s3_bucket_policy" "cloudfront" {
   bucket = aws_s3_bucket.website.id
   policy = data.aws_iam_policy_document.website_iam_policy.json
 }
+
+## WebinarQuestions database ##
+
+module "dynamodb_webinar_questions" {
+  source = "git::git@github.com:terraform-aws-modules/terraform-aws-dynamodb-table.git?ref=715399dbe24f6443820bf5de80f6100b35d56355" # v4.0.0
+
+  billing_mode                = "PAY_PER_REQUEST"
+  deletion_protection_enabled = true
+
+  name                           = "WebinarQuestions"
+  hash_key                       = "webinarId"
+  range_key                      = "createdAt"
+  ttl_enabled                    = true
+  ttl_attribute_name             = "expireAt"
+  server_side_encryption_enabled = true
+
+  attributes = [
+    {
+      name = "webinarId"
+      type = "S"
+    },
+    {
+      name = "createdAt"
+      type = "S"
+    },
+  ]
+}
