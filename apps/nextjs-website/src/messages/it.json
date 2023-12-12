@@ -80,7 +80,8 @@
             "title": "Scrivi qui domande e commenti per la discussione finale",
             "question": "Domanda",
             "submit": "Invia",
-            "submitted": "Inviato"
+            "submitted": "Inviato",
+            "error": "Errore nell'invio, riprova più tardi"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
