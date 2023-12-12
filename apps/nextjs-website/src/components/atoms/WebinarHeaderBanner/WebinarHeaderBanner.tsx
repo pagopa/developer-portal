@@ -13,7 +13,6 @@ import EastIcon from '@mui/icons-material/East';
 import { translations } from '@/_contents/translations';
 import Link from 'next/link';
 import { Webinar } from '@/lib/types/webinar';
-import next from 'next';
 
 export type WebinarHeaderBannerProps = {
   webinars: readonly Webinar[];
@@ -24,16 +23,17 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
     ({ endDateTime }) =>
       endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
-  const webinar = nextWebinars[0];
+  const webinar = nextWebinars.find((webinar) => !!webinar);
 
   const slug = webinar?.slug;
   const text = webinar?.title;
   const endDateTime = webinar?.endDateTime;
 
   const [visible, setVisible] = useState(
-    !window?.localStorage.getItem(slug) ||
-      new Date(window?.localStorage.getItem(slug) || new Date().toISOString()) <
-        new Date()
+    !window?.localStorage.getItem(slug || '') ||
+      new Date(
+        window?.localStorage.getItem(slug || '') || new Date().toISOString()
+      ) < new Date()
   );
 
   const { palette } = useTheme();
@@ -86,7 +86,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
       <IconButton
         onClick={() => {
           setVisible(false);
-          window?.localStorage.setItem(slug, endDateTime);
+          window?.localStorage.setItem(slug || '', endDateTime);
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>

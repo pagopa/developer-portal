@@ -1,12 +1,11 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
-import { DevPortalUser } from '@/lib/types/auth';
 import { snackbarAutoHideDurationMs } from '@/config';
 
 export type webinarsSectionProps = {
