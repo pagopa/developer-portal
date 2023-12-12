@@ -45,7 +45,7 @@ export const WebinarQuestionsForm = ({
     if (!question) return;
     setFormState('submitting');
     sendQuestion()
-      .then((res: { status: string }) => {
+      .then((res) => {
         if (res.status !== 'SUCCESS') {
           handleError();
           return;
