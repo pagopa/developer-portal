@@ -1,6 +1,15 @@
 import { webinarQuestionConfig } from '@/config';
 
-export async function addWebinarQuestion(params: Record<string, string>) {
+type WebinarQuestion = {
+  readonly email: string;
+  readonly givenName: string;
+  readonly familyName: string;
+  readonly question: string;
+  readonly webinarSlug: string;
+  readonly data: string;
+};
+
+export async function addWebinarQuestion(params: WebinarQuestion) {
   const { url, resource } = webinarQuestionConfig;
   if (!url || !resource) {
     return { status: 'Missing configuration' };

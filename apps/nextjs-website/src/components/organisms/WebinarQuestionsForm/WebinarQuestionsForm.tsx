@@ -28,8 +28,8 @@ export const WebinarQuestionsForm = ({
   const sendQuestion = useCallback(async () => {
     return await addWebinarQuestion({
       email: user.attributes.email,
-      given_name: user.attributes.given_name,
-      family_name: user.attributes.family_name,
+      givenName: user.attributes.given_name,
+      familyName: user.attributes.family_name,
       question: question,
       webinarSlug: webinarSlug,
       data: new Date().toISOString(),

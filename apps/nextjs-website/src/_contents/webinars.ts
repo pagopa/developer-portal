@@ -14,6 +14,8 @@ const mockWebinar: readonly Webinar[] = [
       `<br /> \n` +
       `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n`,
     slug: 'past',
+    startDateTime: '2023-12-10T11:00:00',
+    endDateTime: '2023-12-10T11:40:00',
     speakers: [
       {
         name: 'Ivan Diana',
@@ -23,8 +25,6 @@ const mockWebinar: readonly Webinar[] = [
         imagePath: '/images/speaker-diana.png',
       },
     ],
-    startDateTime: '2023-12-10T11:00:00',
-    endDateTime: '2023-12-10T11:40:00',
     subscribeCtaLabel: '',
   },
   {
@@ -37,6 +37,8 @@ const mockWebinar: readonly Webinar[] = [
       `<br /> \n` +
       `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n`,
     slug: 'cooming-soon',
+    startDateTime: '2023-12-13T02:00:00',
+    endDateTime: '2023-12-13T11:40:00',
     speakers: [
       {
         name: 'Ivan Diana',
@@ -46,8 +48,6 @@ const mockWebinar: readonly Webinar[] = [
         imagePath: '/images/speaker-diana.png',
       },
     ],
-    startDateTime: '2023-12-12T11:00:00',
-    endDateTime: '2023-12-12T11:40:00',
     subscribeCtaLabel: '',
   },
   {
