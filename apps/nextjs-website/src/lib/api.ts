@@ -135,6 +135,10 @@ export async function getWebinars(): Promise<readonly Webinar[]> {
   return webinars;
 }
 
+export async function getVisibleWebinars(): Promise<readonly Webinar[]> {
+  return webinars.filter((webinar) => webinar.isVisibleInHome);
+}
+
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
     (await getWebinars()).find(({ slug }) => slug === webinarSlug)
