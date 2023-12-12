@@ -24,5 +24,12 @@ export async function addWebinarQuestion(params: WebinarQuestion) {
       },
     }),
   };
-  return await fetch(url, requestOptions).then((response) => response.json());
+  const response = await fetch(url, requestOptions).then((response) =>
+    response.json()
+  );
+  if (response.status !== 'SUCCESS') {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to add question');
+  }
+  return true;
 }

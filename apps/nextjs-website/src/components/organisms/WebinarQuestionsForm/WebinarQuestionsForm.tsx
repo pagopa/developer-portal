@@ -7,6 +7,9 @@ import { LoadingButton } from '@mui/lab';
 import { Alert, Card, Snackbar, TextField, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
+import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
@@ -26,6 +29,9 @@ export const WebinarQuestionsForm = ({
   const [formState, setFormState] = useState<FormState>();
 
   const sendQuestion = useCallback(async () => {
+    if (!question) return;
+
+    setFormState('submitting');
     return await addWebinarQuestion({
       email: user.attributes.email,
       givenName: user.attributes.given_name,
@@ -36,27 +42,19 @@ export const WebinarQuestionsForm = ({
     });
   }, [webinarSlug, user, question]);
 
-  const handleError = () => {
-    setFormState(undefined);
-    setError(t('questionsForm.error'));
-  };
-
   const handleSubmit = () => {
-    if (!question) return;
-    setFormState('submitting');
     sendQuestion()
-      .then((res) => {
-        if (res.status !== 'SUCCESS') {
-          handleError();
-          return;
-        }
+      .then(() => {
         setFormState('submitted');
         setQuestion('');
         setTimeout(() => {
           setFormState(undefined);
         }, 3000);
       })
-      .catch(handleError);
+      .catch(() => {
+        setFormState(undefined);
+        setError(t('questionsForm.error'));
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
