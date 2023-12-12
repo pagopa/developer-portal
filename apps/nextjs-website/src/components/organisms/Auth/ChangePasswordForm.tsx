@@ -34,6 +34,11 @@ interface ChangePasswordFormProps {
   password: string;
 }
 
+interface ChangePasswordFieldsError {
+  passwordError: string | null;
+  confirmpasswordError: string | null;
+}
+
 const ChangePasswordForm = ({
   onChangePassword,
   setPassword,
@@ -45,12 +50,13 @@ const ChangePasswordForm = ({
   const shared = useTranslations('shared');
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isPasswordDirty, setIsPasswordDirty] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
 
   const [password_confirm, setPasswordConfirm] = useState('');
+
+  const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
+    passwordError: null,
+    confirmpasswordError: null,
+  });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
@@ -63,27 +69,34 @@ const ChangePasswordForm = ({
     event.preventDefault();
   };
 
-  const validatePassword = useCallback(() => {
-    setIsPasswordValid(passwordMatcher.test(password));
-  }, [password]);
-
-  useEffect(() => {
-    validatePassword();
-  }, [password, validatePassword]);
-
   const validateForm = useCallback(() => {
-    const areFieldsValid = [password, password_confirm].every(
-      (value) => value && value.trim().length > 0
-    );
-    const isPasswordEqual = password === password_confirm;
+    const passwordError =
+      !password || password.trim().length === 0
+        ? shared('requiredFieldError')
+        : !passwordMatcher.test(password)
+        ? shared('passwordError')
+        : null;
+    const confirmPasswordError = password !== password_confirm;
 
-    setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-    setSubmitDisabled(!isFormValid);
-  }, [isFormValid, isPasswordValid, password, password_confirm]);
+    setFieldErrors({
+      passwordError: passwordError,
+      confirmpasswordError: confirmPasswordError
+        ? signUp('passwordMismatchError')
+        : null,
+    });
 
-  useEffect(() => {
-    validateForm();
-  }, [validateForm, isPasswordValid]);
+    return !passwordError && !confirmPasswordError;
+  }, [password, shared, password_confirm, signUp]);
+
+  const onChangePasswordClick = useCallback(() => {
+    const valid = validateForm();
+
+    if (!valid) {
+      return;
+    }
+
+    onChangePassword();
+  }, [onChangePassword, validateForm]);
 
   return (
     <Box
@@ -114,8 +127,7 @@ const ChangePasswordForm = ({
                   required
                   type={showPassword ? 'text' : 'password'}
                   onChange={({ target: { value } }) => setPassword(value)}
-                  onBlur={() => setIsPasswordDirty(true)}
-                  error={isPasswordDirty && !isPasswordValid}
+                  error={!!fieldErrors.passwordError}
                   endAdornment={
                     <InputAdornment position='end'>
                       <IconButton
@@ -136,7 +148,7 @@ const ChangePasswordForm = ({
                     },
                   }}
                 />
-                <FormHelperText error={isPasswordDirty && !isPasswordValid}>
+                <FormHelperText error={!!fieldErrors.passwordError}>
                   {signUp('passwordPolicy')}
                 </FormHelperText>
               </FormControl>
@@ -170,13 +182,18 @@ const ChangePasswordForm = ({
                   }
                   value={password_confirm}
                   label={shared('confirmPassword')}
-                  error={isPasswordDirty && password !== password_confirm}
+                  error={!!fieldErrors.confirmpasswordError}
                   inputProps={{
                     sx: {
                       padding: '8.5px 14px',
                     },
                   }}
                 />
+                {fieldErrors.confirmpasswordError && (
+                  <FormHelperText error>
+                    {signUp('passwordMismatchError')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Stack>
             <Stack spacing={4} pt={4} pb={2}>
@@ -184,10 +201,8 @@ const ChangePasswordForm = ({
                 <Button
                   variant='contained'
                   onClick={() => {
-                    setSubmitDisabled(true);
-                    onChangePassword();
+                    onChangePasswordClick();
                   }}
-                  disabled={isSubmitDisabled}
                 >
                   {resetPassword('send')}
                 </Button>

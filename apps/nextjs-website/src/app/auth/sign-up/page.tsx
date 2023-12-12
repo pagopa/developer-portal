@@ -78,10 +78,6 @@ const SignUp = () => {
         'custom:company_type': company,
       },
     }).catch((error) => {
-      if (error.code.includes('UsernameExistsException')) {
-        goToConfirmSignUp();
-        return true;
-      }
       setInfo({ message: error.message, isError: true });
       return false;
     });
