@@ -24,6 +24,11 @@ const WebinarPlayerSection = ({
     [webinarState]
   );
 
+  const isComingSoon = useMemo(
+    () => webinarState === WebinarState.comingSoon,
+    [webinarState]
+  );
+
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -42,15 +47,19 @@ const WebinarPlayerSection = ({
             <Box
               sx={{
                 width: {
-                  md: isLive ? '66%' : '100%',
+                  md: isLive || isComingSoon ? '66%' : '100%',
                 },
               }}
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            {isLive && (
+           {(isLive || isComingSoon) && (
               <Box minWidth={{ md: '33%' }}>
-                <WebinarQuestionsForm webinarSlug={webinar.slug} user={user} />
+                <WebinarQuestionsForm
+                  webinarSlug={webinar.slug}
+                  user={user}
+                  disabled={isComingSoon}
+                />
               </Box>
             )}
           </Box>
