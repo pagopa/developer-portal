@@ -135,7 +135,7 @@ export async function getWebinars(): Promise<readonly Webinar[]> {
   return webinars;
 }
 
-export async function getVisibleWebinars(): Promise<readonly Webinar[]> {
+export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
   return webinars.filter((webinar) => webinar.isVisibleInHome);
 }
 

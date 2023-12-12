@@ -6,7 +6,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getProducts, getVisibleWebinars } from '@/lib/api';
+import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
@@ -27,7 +27,7 @@ const NotSsrWebinarHeaderBanner = dynamic(
 
 const Home = async () => {
   const products = await getProducts();
-  const webinars = await getVisibleWebinars();
+  const webinars = await getVisibleInHomeWebinars();
   const { homepage, header } = translations;
 
   return (
