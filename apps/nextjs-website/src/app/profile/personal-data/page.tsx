@@ -78,13 +78,15 @@ const PersonalData = () => {
         onValue={(items: InfoCardItemProps[]) => {
           const oldItems = [...dataSectionItems];
 
+          if (!user) return;
+
           setUserAttributes(
             {
-              ...user!.attributes,
-              given_name: items[0]!.value!,
-              family_name: items[1]!.value!,
-              'custom:job_role': items[2]!.value!,
-              'custom:company_type': items[3]!.value!,
+              ...user.attributes,
+              given_name: items[0].value || '',
+              family_name: items[1].value || '',
+              'custom:job_role': items[2].value || '',
+              'custom:company_type': items[3].value || '',
             },
             () => {
               setDataSectionItems(items);
