@@ -9,10 +9,13 @@ type WebinarQuestion = {
   readonly date: string;
 };
 
-export async function addWebinarQuestion(params: WebinarQuestion) {
+export async function addWebinarQuestion(
+  params: WebinarQuestion
+): Promise<void> {
   const { url, resource } = webinarQuestionConfig;
   if (!url || !resource) {
-    return { status: 'Missing configuration' };
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Missing configuration');
   }
   const requestOptions = {
     method: 'POST',
@@ -31,5 +34,4 @@ export async function addWebinarQuestion(params: WebinarQuestion) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to add question');
   }
-  return true;
 }
