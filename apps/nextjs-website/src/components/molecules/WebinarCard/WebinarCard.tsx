@@ -86,7 +86,7 @@ const WebinarCard = ({
             label={t('whyParticipate')}
             color={theme.palette.primary.main}
           />
-          <Box mt={4}>
+          <Box my={4}>
             <SubscribeToWebinar
               webinarSlug={webinar.slug}
               userAttributes={user?.attributes}
