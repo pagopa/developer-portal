@@ -16,6 +16,7 @@ export type SubscribeButtonProps = {
   isSubscribed?: boolean;
   onSubscribe: () => null;
   onCancelSubscription: () => null;
+  subscribeLabel?: string;
 };
 
 const SubscribeButton = ({
@@ -24,6 +25,7 @@ const SubscribeButton = ({
   isSubscribed = false,
   onSubscribe,
   onCancelSubscription,
+  subscribeLabel = 'default',
 }: SubscribeButtonProps) => {
   const t = useTranslations('shared');
   const { palette } = useTheme();
@@ -84,7 +86,7 @@ const SubscribeButton = ({
           variant={'contained'}
           onClick={!isLoading ? onSubscribe : undefined}
         >
-          {t('subscribeButton.subscribeLabel')}
+          {t(`subscribeButton.subscribeLabel.${subscribeLabel}`)}
         </Button>
       )}
     </Box>

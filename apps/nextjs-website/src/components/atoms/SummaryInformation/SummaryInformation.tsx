@@ -1,14 +1,17 @@
 'use client';
 import React, { FC } from 'react';
-import { Typography, useTheme, Stack } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
+import { WebinarState } from '@/helpers/webinar.helpers';
 
 export type SummaryInformationProps = {
   startDateTime?: string;
   endDateTime?: string;
   title: string;
   description: string;
+  webinarState: WebinarState;
   children?: React.ReactNode | React.ReactNode[];
 };
 
@@ -17,6 +20,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   endDateTime,
   title,
   description,
+  webinarState,
   children,
 }) => {
   const { palette } = useTheme();
@@ -38,7 +42,14 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             variant='caption'
             style={{ fontWeight: 900, color: palette.grey[600] }}
           >
-            <TimeSlot start={startDateTime} end={endDateTime} />
+            {webinarState === WebinarState.live && <LiveWebinarChip />}
+            {![
+              WebinarState.unknown,
+              WebinarState.live,
+              WebinarState.past,
+            ].includes(webinarState) && (
+              <TimeSlot start={startDateTime} end={endDateTime} />
+            )}
           </Typography>
           <Typography variant='h5' style={{ marginTop: 16, marginBottom: 32 }}>
             {title}

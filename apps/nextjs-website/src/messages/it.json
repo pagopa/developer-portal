@@ -51,13 +51,26 @@
         }
     },
     "webinar": {
+        "liveWebinar": "Webinar in corso",
         "subscriptionError": "Limite di iscrizioni raggiunto",
         "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
         "whyParticipate": "Perché partecipare?",
         "speakers": "Ospiti",
         "subscribe": "Iscriviti",
         "relatedLinksTitle": "Link utili",
-        "speakersTitle": "Ospiti"
+        "speakersTitle": "Ospiti",
+        "questionsForm": {
+            "title": "Scrivi qui domande e commenti per la discussione finale",
+            "question": "Domanda",
+            "submit": "Invia",
+            "submitted": "Inviato",
+            "error": "Errore nell'invio, riprova più tardi"
+        },
+        "warnings": {
+            "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
+            "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento",
+            "refresh": "Collegati a questa pagina all'orario di inizio dell'evento"
+        }
     },
     "auth": {
         "logout": "Esci",
@@ -76,7 +89,11 @@
         "cancel": "Annulla",
         "yourData": "I tuoi dati",
         "subscribeButton": {
-            "subscribeLabel": "Iscriviti",
+            "subscribeLabel": {
+                "default": "Iscriviti",
+                "takePart": "Partecipa",
+                "view": "Visualizza"
+            },
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
         }
