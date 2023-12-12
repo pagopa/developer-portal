@@ -2,12 +2,27 @@ import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Box, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
+import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
+import { DevPortalUser } from '@/lib/types/auth';
+import { WebinarState } from '@/helpers/webinar.helpers';
+import { useMemo } from 'react';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
+  user: DevPortalUser;
+  webinarState: WebinarState;
 };
-const WebinarPlayerSection = ({ webinar }: WebinarPlayerSectionProps) => {
+const WebinarPlayerSection = ({
+  webinar,
+  user,
+  webinarState,
+}: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
+
+  const showQuestionForm = useMemo(
+    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
+    [webinarState]
+  );
 
   return (
     webinar.playerSrc && (
@@ -24,10 +39,24 @@ const WebinarPlayerSection = ({ webinar }: WebinarPlayerSectionProps) => {
               marginBottom: 10,
             }}
           >
-            <Box sx={{ width: { md: '66%' } }}>
+            <Box
+              sx={{
+                width: {
+                  md: showQuestionForm ? '66%' : '100%',
+                },
+              }}
+            >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            <Box> {/* TODO: Insert Form */} </Box>
+            {showQuestionForm && (
+              <Box>
+                <WebinarQuestionsForm
+                  webinarSlug={webinar.slug}
+                  user={user}
+                  disabled={webinarState === WebinarState.comingSoon}
+                />
+              </Box>
+            )}
           </Box>
         </EContainer>
       </div>
