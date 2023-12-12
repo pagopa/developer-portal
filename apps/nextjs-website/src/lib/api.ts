@@ -141,10 +141,3 @@ export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   );
   return props;
 }
-
-export async function getNextWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinars()).filter(
-    ({ endDateTime }) =>
-      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
-  );
-}
