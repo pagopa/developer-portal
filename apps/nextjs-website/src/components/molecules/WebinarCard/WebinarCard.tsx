@@ -83,7 +83,7 @@ const WebinarCard = ({
           <LinkButton
             disabled={false}
             href={`/webinars/${webinar.slug}`}
-            label={t('whyParticipate')}
+            label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
             color={theme.palette.primary.main}
           />
           <Box mt={4}>
