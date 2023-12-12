@@ -6,7 +6,7 @@ type WebinarQuestion = {
   readonly familyName: string;
   readonly question: string;
   readonly webinarSlug: string;
-  readonly data: string;
+  readonly date: string;
 };
 
 export async function addWebinarQuestion(params: WebinarQuestion) {

@@ -32,7 +32,7 @@ export const WebinarQuestionsForm = ({
       familyName: user.attributes.family_name,
       question: question,
       webinarSlug: webinarSlug,
-      data: new Date().toISOString(),
+      date: new Date().toISOString(),
     });
   }, [webinarSlug, user, question]);
 
