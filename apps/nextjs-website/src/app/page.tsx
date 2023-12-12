@@ -7,7 +7,6 @@ import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsSh
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
-import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 
@@ -22,6 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const NotSsrWebinarHeaderBanner = dynamic(
   () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
+  { ssr: false }
+);
+
+const NotSsrWebinarsSection = dynamic(
+  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
   { ssr: false }
 );
 
@@ -57,11 +61,7 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      <WebinarsSection
-        title={homepage.webinarsSection.title}
-        description={homepage.webinarsSection.description}
-        webinars={[...webinars]}
-      />
+      <NotSsrWebinarsSection webinars={[...webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
