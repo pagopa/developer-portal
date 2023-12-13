@@ -438,6 +438,7 @@ describe('parseContent', () => {
       new Markdoc.Tag('File', {
         src: `${prefix}/p/a-src.jpg`,
         filename: 'a-src',
+        caption: undefined,
       }),
     ]);
     expect(
