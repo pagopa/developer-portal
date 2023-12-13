@@ -32,3 +32,8 @@ export const baseUrl = isProduction
 
 export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const resetResendEmailAfterMs = 4_000;
+
+export const webinarQuestionConfig = {
+  url: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_URL,
+  resource: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME,
+};

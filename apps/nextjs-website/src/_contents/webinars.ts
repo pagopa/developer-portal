@@ -2,19 +2,49 @@ import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
+// TODO: remove mock before release, ONLY FOR TESTING
+const mockWebinar: readonly Webinar[] = [
+  {
+    title: 'Webinar live',
+    description: 'Webinar di test live',
+    playerSrc: 'https://vimeo.com/event/3859248/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;">Lorem ipsum</h4> \n` +
+      `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse commodo elit sed porttitor mollis. Vivamus scelerisque odio quis lacus ullamcorper, eu sodales lectus pretium. Pellentesque ultricies condimentum varius. Nam at ultricies mauris, at fermentum turpis. Donec id velit risus. Nulla blandit nisi odio, eu elementum nulla fringilla sed. Nam cursus nunc dignissim pellentesque commodo. Duis vestibulum arcu vitae tellus tincidunt, a cursus eros efficitur. Phasellus pellentesque tristique nulla sit amet euismod. Donec eu tortor a ligula commodo molestie a sed ante. Nam mattis tellus quis orci rutrum vestibulum sit amet iaculis dolor. </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n`,
+    slug: 'live',
+    isVisibleInHome: false,
+    speakers: [
+      {
+        name: 'Ivan Diana',
+        jobTitle: 'Engineering Manager',
+        description:
+          'Engineering leader appassionato, metto al primo posto le persone e poi la tecnologia',
+        imagePath: '/images/speaker-diana.png',
+      },
+    ],
+    startDateTime: '2023-12-11T12:00:00',
+    endDateTime: '2023-12-14T06:00:00',
+    subscribeCtaLabel: '',
+  },
+];
+
 export const webinars: readonly Webinar[] = [
   {
     title: 'Esplorando App IO: Le nuove API dei Servizi',
     description:
       'Il mondo di IO è molto ampio, il primo passo è capire come integrarsi alle nuove API e con questo webinar vedremo le informazioni principali per farlo!',
+    playerSrc: 'https://vimeo.com/event/3859248/embed',
     html:
       `<h4 style="font-weight: 600; font-size: 24px;">Tutto quello che serve per integrarsi con le nuove API</h4> \n` +
       `<p>Durante il webinar, approfondiremo la creazione, l'invio di un servizio e la gestione di scenari comuni, come "Ho creato un servizio e lo vedo in stato di bozza. Cosa devo fare?". Partecipate a questo webinar per ottenere una comprensione approfondita e per imparare a gestire in modo efficace il ciclo di vita dei vostri servizi su IO. </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-image.png' /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n` +
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
+    isVisibleInHome: true,
     speakers: [
       {
         name: 'Ivan Diana',
@@ -79,4 +109,5 @@ export const webinars: readonly Webinar[] = [
       },
     ],
   },
+  ...mockWebinar,
 ];
