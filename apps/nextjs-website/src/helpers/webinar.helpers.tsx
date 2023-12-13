@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Webinar } from '@/lib/types/webinar';
 
-const MILLISECONDS_IN_21_HOURS = 21 * 1000 * 60 * 60;
+const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
 
 export enum WebinarState {
@@ -31,7 +31,7 @@ export const useWebinar = () => {
     if (endDateTimestamp < currentTimestamp) return WebinarState.past;
 
     const delta = startDateTimestamp - currentTimestamp;
-    if (delta > 0 && delta < MILLISECONDS_IN_21_HOURS) {
+    if (delta > 0 && delta < COMING_SOON_START_TIME_DELTA_MS) {
       return WebinarState.comingSoon;
     }
     if (
