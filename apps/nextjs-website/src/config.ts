@@ -40,3 +40,8 @@ export const companyRoles = [
   'azienda-privata',
   'altro',
 ];
+
+export const webinarQuestionConfig = {
+  url: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_URL,
+  resource: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME,
+};
