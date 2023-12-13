@@ -228,8 +228,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl variant='outlined'>
-                  <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
+                <FormControl variant='outlined' size='small'>
+                  <InputLabel htmlFor='password-input'>
                     {shared('password')}
                   </InputLabel>
                   <OutlinedInput
@@ -257,11 +257,6 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     }
                     value={password}
                     label={shared('password')}
-                    inputProps={{
-                      sx: {
-                        padding: '8.5px 14px',
-                      },
-                    }}
                   />
                   <FormHelperText error={!!fieldErrors.password}>
                     {fieldErrors.password ? `${signUp('passwordError')} ` : ''}
@@ -270,11 +265,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                 </FormControl>
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl variant='outlined'>
-                  <InputLabel
-                    htmlFor='confirm-password-input'
-                    sx={{ top: '-8px' }}
-                  >
+                <FormControl variant='outlined' size='small'>
+                  <InputLabel htmlFor='confirm-password-input'>
                     {shared('confirmPassword')}
                   </InputLabel>
                   <OutlinedInput
@@ -302,11 +294,6 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                     value={confirmPassword}
                     label={shared('confirmPassword')}
                     error={!!fieldErrors.confirmPassword}
-                    inputProps={{
-                      sx: {
-                        padding: '8.5px 14px',
-                      },
-                    }}
                   />
                   {fieldErrors.confirmPassword && (
                     <FormHelperText error>

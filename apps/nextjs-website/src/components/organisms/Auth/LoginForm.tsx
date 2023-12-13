@@ -137,8 +137,8 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl variant='outlined'>
-                  <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
+                <FormControl variant='outlined' size='small'>
+                  <InputLabel htmlFor='password-input'>
                     {shared('password')}
                   </InputLabel>
                   <OutlinedInput
@@ -159,11 +159,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                       </InputAdornment>
                     }
                     label={shared('password')}
-                    inputProps={{
-                      sx: {
-                        padding: '8.5px 14px',
-                      },
-                    }}
                   />
                   {fieldErrors.password && (
                     <FormHelperText error>

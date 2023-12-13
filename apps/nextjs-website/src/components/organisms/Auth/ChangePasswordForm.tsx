@@ -118,8 +118,8 @@ const ChangePasswordForm = ({
               {resetPassword('newPassword')}
             </Typography>
             <Stack spacing={2} mb={2}>
-              <FormControl variant='outlined'>
-                <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
+              <FormControl variant='outlined' size='small'>
+                <InputLabel htmlFor='password-input'>
                   {shared('password')}
                 </InputLabel>
                 <OutlinedInput
@@ -142,11 +142,6 @@ const ChangePasswordForm = ({
                   }
                   value={password}
                   label={shared('password')}
-                  inputProps={{
-                    sx: {
-                      padding: '8.5px 14px',
-                    },
-                  }}
                 />
                 <FormHelperText error={!!fieldErrors.passwordError}>
                   {signUp('passwordPolicy')}
