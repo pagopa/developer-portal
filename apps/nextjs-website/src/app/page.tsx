@@ -6,8 +6,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getNextWebinars, getProducts } from '@/lib/api';
-import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 
@@ -25,20 +24,19 @@ const NotSsrWebinarHeaderBanner = dynamic(
   { ssr: false }
 );
 
+const NotSsrWebinarsSection = dynamic(
+  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
+  { ssr: false }
+);
+
 const Home = async () => {
   const products = await getProducts();
-  const nextWebinars = await getNextWebinars();
+  const webinars = await getVisibleInHomeWebinars();
   const { homepage, header } = translations;
 
   return (
     <>
-      {nextWebinars.length !== 0 && nextWebinars[0].endDateTime && (
-        <NotSsrWebinarHeaderBanner
-          slug={nextWebinars[0].slug}
-          text={nextWebinars[0].title}
-          endDateTime={nextWebinars[0].endDateTime}
-        />
-      )}
+      <NotSsrWebinarHeaderBanner webinars={webinars} />
 
       <HeroSwiper
         cards={homepage.heroItems.map((itemProp, index) => ({
@@ -63,13 +61,7 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      {nextWebinars.length !== 0 && (
-        <WebinarsSection
-          title={homepage.webinarsSection.title}
-          description={homepage.webinarsSection.description}
-          webinars={[...nextWebinars]}
-        />
-      )}
+      <NotSsrWebinarsSection webinars={[...webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
