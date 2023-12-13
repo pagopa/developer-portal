@@ -105,14 +105,6 @@ export const translations = {
         },
       },
     ],
-    webinarsSection: {
-      description: '',
-      title: 'Partecipa ai nostri webinar',
-      link: {
-        href: '#',
-        label: 'Vedi tutti i webinar',
-      },
-    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
