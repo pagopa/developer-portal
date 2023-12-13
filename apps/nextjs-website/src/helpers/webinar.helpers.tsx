@@ -14,9 +14,6 @@ export enum WebinarState {
 
 export const useWebinar = () => {
   const [webinar, setWebinar] = useState<Webinar | null>(null);
-  const [currentTimestamp, setCurrentTimestamp] = useState<number>(
-    new Date().getTime()
-  );
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
@@ -27,6 +24,7 @@ export const useWebinar = () => {
     webinar?.endDateTime && new Date(webinar.endDateTime).getTime();
 
   const handleWebinarState = (): WebinarState => {
+    const currentTimestamp = new Date().getTime();
     if (!webinar || !startDateTimestamp || !endDateTimestamp) {
       return WebinarState.unknown;
     }
@@ -55,7 +53,7 @@ export const useWebinar = () => {
 
     // Cleanup the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [webinar, currentTimestamp]);
+  }, [webinar]);
 
   return { webinarState, setWebinar };
 };
