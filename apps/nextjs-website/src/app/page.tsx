@@ -6,8 +6,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getProducts, getWebinars } from '@/lib/api';
-import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 
@@ -25,9 +24,14 @@ const NotSsrWebinarHeaderBanner = dynamic(
   { ssr: false }
 );
 
+const NotSsrWebinarsSection = dynamic(
+  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
+  { ssr: false }
+);
+
 const Home = async () => {
   const products = await getProducts();
-  const webinars = await getWebinars();
+  const webinars = await getVisibleInHomeWebinars();
   const { homepage, header } = translations;
 
   return (
@@ -57,11 +61,7 @@ const Home = async () => {
           svgPath: product.svgPath,
         }))}
       />
-      <WebinarsSection
-        title={homepage.webinarsSection.title}
-        description={homepage.webinarsSection.description}
-        webinars={[...webinars]}
-      />
+      <NotSsrWebinarsSection webinars={[...webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={homepage.comingsoonDocumentation.links}
