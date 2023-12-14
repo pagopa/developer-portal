@@ -48,6 +48,15 @@ const SignUp = () => {
 
   const [info, setInfo] = useState<Info | null>(null);
 
+  const goToConfirmSignUp = useCallback(() => {
+    router.replace(
+      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+        SignUpSteps.CONFIRM_SIGN_UP
+      }`
+    );
+    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+  }, [router, userData.username]);
+
   const onSignUp = useCallback(async () => {
     const {
       company,
@@ -85,16 +94,7 @@ const SignUp = () => {
       goToConfirmSignUp();
       return !!result.user;
     }
-  }, [userData, router]);
-
-  const goToConfirmSignUp = useCallback(() => {
-    router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
-        SignUpSteps.CONFIRM_SIGN_UP
-      }`
-    );
-    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
-  }, [router, userData.username]);
+  }, [userData, goToConfirmSignUp]);
 
   const onBackStep = useCallback(() => {
     router.replace(

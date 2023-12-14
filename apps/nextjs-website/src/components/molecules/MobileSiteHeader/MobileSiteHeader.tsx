@@ -170,6 +170,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           padding: '16px 44px 8px 44px',
           position: 'fixed',
           width: '100%',
+          zIndex: 200,
         }}
       >
         <TreeView

@@ -1,7 +1,7 @@
 'use client';
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
-import { Box, useTheme } from '@mui/material';
+import { Box, Divider, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
@@ -22,7 +22,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       sx={{
         position: 'sticky',
         top: scrollUp ? SITE_HEADER_HEIGHT : 0,
-        zIndex: 101,
+        zIndex: 90,
         transition: 'all 0.5s linear',
       }}
     >

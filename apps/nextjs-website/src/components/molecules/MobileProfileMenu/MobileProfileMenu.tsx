@@ -1,19 +1,13 @@
 'use client';
 import React, { useCallback, useState } from 'react';
-import {
-  IconButton,
-  Link as MuiLink,
-  Menu,
-  MenuItem,
-  useTheme,
-} from '@mui/material';
+import { IconButton, Link as MuiLink, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { Stack } from '@mui/system';
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { profileMenuItems } from '@/config';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import Link from 'next/link';
+import { TreeView } from '@mui/lab';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 
 type MobileProfileMenuProps = {
   userFullName: string | null;
@@ -23,16 +17,9 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
 
-  const [menu, setMenu] = useState<HTMLElement | null>(null);
-  const open = Boolean(menu);
+  const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setMenu(null);
-  };
-
-  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setMenu(event.currentTarget);
-  }, []);
+  const handleClick = useCallback(() => setOpen(!open), [open]);
 
   return (
     <Stack
@@ -49,65 +36,49 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
     >
       <EContainer>
         <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='flex-start'
+          direction='column'
+          justifyContent='center'
+          alignItems='stretch'
+          spacing={1}
           onClick={handleClick}
-          sx={{ padding: 3 }}
         >
           <Typography variant='body2' sx={{ fontWeight: 600 }}>
-            {`${t('hello')} ${userFullName}`}
+            {t('hello')} {userFullName}
+            <IconButton size='small' sx={{ ml: 1 }}>
+              {open ? <ArrowDropUp /> : <ArrowDropDown />}
+            </IconButton>
           </Typography>
-          <IconButton size='small' sx={{ ml: 1 }}>
-            <ArrowDropDownOutlinedIcon
-              sx={{ width: 24, height: 24 }}
-            ></ArrowDropDownOutlinedIcon>
-          </IconButton>
+
+          {open && (
+            <TreeView>
+              {profileMenuItems.map(
+                (
+                  { label, href }: { label: string; href: string },
+                  index: number
+                ) => {
+                  return (
+                    <Typography
+                      key={index}
+                      variant='body1'
+                      component={MuiLink}
+                      href={href}
+                      style={{
+                        color: 'black',
+                        display: 'block',
+                        textDecoration: 'none',
+                      }}
+                      my={1}
+                      mx={2}
+                    >
+                      {t(label)}
+                    </Typography>
+                  );
+                }
+              )}
+            </TreeView>
+          )}
         </Stack>
       </EContainer>
-
-      <Menu
-        anchorEl={menu}
-        id='profile-menu'
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        sx={{
-          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-          ml: 1,
-        }}
-      >
-        {profileMenuItems.map(
-          ({ label, href }: { label: string; href: string }, index: number) => (
-            <MenuItem
-              key={index}
-              onClick={handleClose}
-              sx={{ flexDirection: 'column', p: 0 }}
-            >
-              <MuiLink
-                component={Link}
-                href={href}
-                sx={{
-                  alignSelf: 'stretch',
-                  textDecoration: 'none',
-                  color: palette.text.primary,
-                  p: 2,
-                }}
-              >
-                {t(label)}
-              </MuiLink>
-            </MenuItem>
-          )
-        )}
-      </Menu>
     </Stack>
   );
 };
