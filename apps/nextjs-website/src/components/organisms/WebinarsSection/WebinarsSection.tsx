@@ -1,30 +1,33 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
-import React, { useState } from 'react';
-import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
+import React, { useMemo, useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
-import { DevPortalUser } from '@/lib/types/auth';
 import { snackbarAutoHideDurationMs } from '@/config';
+import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
+import { useTranslations } from 'next-intl';
 
 export type webinarsSectionProps = {
-  title: string;
-  description: string;
   link?: { href?: string; label: string };
   webinars: Webinar[];
 };
 
-const WebinarsSection = ({
-  title,
-  description,
-  link,
-  webinars,
-}: webinarsSectionProps) => {
+const WebinarsSection = ({ link, webinars }: webinarsSectionProps) => {
   const theme = useTheme();
+  const t = useTranslations('webinar.webinarsSection');
   const [error, setError] = useState<string | null>(null);
   const { aligned: userAligned } = useUser();
+
+  const futureWebinarsExist = useMemo(
+    () =>
+      !!webinars.filter(
+        ({ endDateTime }) =>
+          endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
+      ).length,
+    [webinars]
+  );
 
   return (
     <Box
@@ -51,10 +54,10 @@ const WebinarsSection = ({
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box mb={6}>
             <Typography variant='h4' mb={2} color={theme.palette.common.white}>
-              {title}
+              {t(futureWebinarsExist ? 'title.future' : 'title.past')}
             </Typography>
             <Typography variant='body2' color={theme.palette.common.white}>
-              {description}
+              {t('description')}
             </Typography>
             {link && (
               <LinkButton
@@ -69,12 +72,7 @@ const WebinarsSection = ({
             {webinars.map((webinar, index) => (
               <WebinarCard
                 key={index}
-                title={webinar.title}
-                description={webinar.description}
-                slug={webinar.slug}
-                speakers={webinar.speakers}
-                startDateTime={webinar.startDateTime}
-                endDateTime={webinar.endDateTime}
+                webinar={webinar}
                 userAligned={userAligned}
                 handleErrorMessage={(message: string) => {
                   setError(message);
