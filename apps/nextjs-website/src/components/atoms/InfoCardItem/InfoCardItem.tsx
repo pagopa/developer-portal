@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
-import { on } from 'events';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
@@ -20,9 +19,9 @@ export type InfoCardItemProps = {
   valueFallback?: ReactNode;
   editable: boolean;
 } & (
-    | { type: 'select'; values: { title: string; value: string }[] }
-    | { type: 'text' }
-  );
+  | { type: 'select'; values: { title: string; value: string }[] }
+  | { type: 'text' }
+);
 
 type InfoCardItemEditingProps = {
   editing: boolean;
@@ -111,8 +110,8 @@ export const InfoCardItem = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-              ({ value }) => value === infoCardItem.value
-            )?.title
+                ({ value }) => value === infoCardItem.value
+              )?.title
             : infoCardItem.value}
         </Typography>
       ) : (
