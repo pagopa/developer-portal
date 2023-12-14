@@ -10,7 +10,7 @@ import {
   Box,
   TextField,
 } from '@mui/material';
-import { emailMatcher } from '@/helpers/auth.helpers';
+import { validateEmail } from '@/helpers/auth.helpers';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -32,13 +32,8 @@ const ResetPasswordForm = ({
   const [emailError, setEmailError] = useState<string | null>(null);
 
   const validateForm = useCallback(() => {
-    const emailError =
-      !email || email?.trim().length === 0
-        ? shared('requiredFieldError')
-        : !emailMatcher.test(email)
-        ? shared('emailFieldError')
-        : null;
-    setEmailError(emailError);
+    const emailError = validateEmail(email);
+    setEmailError(shared(emailError));
 
     return !emailError;
   }, [email, shared]);

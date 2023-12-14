@@ -20,12 +20,11 @@ import {
   useState,
   MouseEvent,
   useCallback,
-  useEffect,
   Dispatch,
   SetStateAction,
 } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { passwordMatcher } from '@/helpers/auth.helpers';
+import { passwordMatcher, validatePassword } from '@/helpers/auth.helpers';
 import { useTranslations } from 'next-intl';
 
 interface ChangePasswordFormProps {
@@ -36,7 +35,7 @@ interface ChangePasswordFormProps {
 
 interface ChangePasswordFieldsError {
   passwordError: string | null;
-  confirmpasswordError: string | null;
+  confirmPasswordError: string | null;
 }
 
 const ChangePasswordForm = ({
@@ -55,7 +54,7 @@ const ChangePasswordForm = ({
 
   const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
     passwordError: null,
-    confirmpasswordError: null,
+    confirmPasswordError: null,
   });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -70,22 +69,17 @@ const ChangePasswordForm = ({
   };
 
   const validateForm = useCallback(() => {
-    const passwordError =
-      !password || password.trim().length === 0
-        ? shared('requiredFieldError')
-        : !passwordMatcher.test(password)
-        ? shared('passwordError')
-        : null;
-    const confirmPasswordError = password !== password_confirm;
+    const passwordError = validatePassword(password);
+    const confirmPasswordHasErrors = password !== password_confirm;
 
     setFieldErrors({
-      passwordError: passwordError,
-      confirmpasswordError: confirmPasswordError
+      passwordError: passwordError ? shared(passwordError) : null,
+      confirmPasswordError: confirmPasswordHasErrors
         ? signUp('passwordMismatchError')
         : null,
     });
 
-    return !passwordError && !confirmPasswordError;
+    return !passwordError && !confirmPasswordHasErrors;
   }, [password, shared, password_confirm, signUp]);
 
   const onChangePasswordClick = useCallback(() => {
@@ -177,14 +171,14 @@ const ChangePasswordForm = ({
                   }
                   value={password_confirm}
                   label={shared('confirmPassword')}
-                  error={!!fieldErrors.confirmpasswordError}
+                  error={!!fieldErrors.confirmPasswordError}
                   inputProps={{
                     sx: {
                       padding: '8.5px 14px',
                     },
                   }}
                 />
-                {fieldErrors.confirmpasswordError && (
+                {fieldErrors.confirmPasswordError && (
                   <FormHelperText error>
                     {signUp('passwordMismatchError')}
                   </FormHelperText>

@@ -39,20 +39,8 @@ const Confirmation = () => {
         .catch((error) => {
           !isProduction && console.warn(error);
           switch (error.code) {
-            case 'CodeMismatchException':
-              setState(State.resendCode);
-              break;
-            case 'ExpiredCodeException':
-              setState(State.resendCode);
-              break;
-            case 'InternalErrorException':
-              setState(State.resendCode);
-              break;
             case 'LimitExceededException':
               setState(State.error);
-              break;
-            case 'AliasExistsException':
-              setState(State.resendCode);
               break;
             default:
               setState(State.resendCode);

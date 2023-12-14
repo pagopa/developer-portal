@@ -29,7 +29,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
 import { snackbarAutoHideDurationMs } from '@/config';
-import { emailMatcher } from '@/helpers/auth.helpers';
+import { validateEmail, validateField } from '@/helpers/auth.helpers';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -75,19 +75,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   );
 
   const validateForm = useCallback(() => {
-    const emailError =
-      !username || username.trim().length === 0
-        ? shared('requiredFieldError')
-        : !emailMatcher.test(username)
-        ? shared('emailFieldError')
-        : null;
-    const passwordError =
-      !password || password.trim().length === 0
-        ? shared('requiredFieldError')
-        : null;
+    const emailError = validateEmail(username);
+
+    const passwordError = validateField(password);
     setFieldErrors({
-      email: emailError,
-      password: passwordError,
+      email: emailError ? shared(emailError) : null,
+      password: passwordError ? shared(passwordError) : null,
     });
 
     return !emailError && !passwordError;

@@ -1,5 +1,9 @@
 'use client';
-import { emailMatcher, passwordMatcher } from '@/helpers/auth.helpers';
+import {
+  validateEmail,
+  validateField,
+  validatePassword,
+} from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -95,27 +99,17 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
     const { username, confirmPassword, firstName, lastName, password } =
       userData;
 
-    const nameError = !firstName || firstName.trim().length === 0;
-    const surnameError = !lastName || lastName.trim().length === 0;
-    const emailError =
-      !username || username.trim().length === 0
-        ? shared('requiredFieldError')
-        : !emailMatcher.test(username)
-        ? shared('emailFieldError')
-        : null;
-    const passwordError =
-      !password || password.trim().length === 0
-        ? shared('requiredFieldError')
-        : !passwordMatcher.test(password)
-        ? shared('passwordError')
-        : null;
+    const nameError = validateField(firstName);
+    const surnameError = validateField(lastName);
+    const emailError = validateEmail(username);
+    const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
 
     setFieldErrors({
-      name: nameError ? shared('requiredFieldError') : null,
-      surname: surnameError ? shared('requiredFieldError') : null,
-      email: emailError,
-      password: passwordError,
+      name: nameError ? shared(nameError) : null,
+      surname: surnameError ? shared(passwordError) : null,
+      email: shared(emailError),
+      password: passwordError ? shared(passwordError) : null,
       confirmPassword: confirmPasswordError
         ? signUp('passwordMismatchError')
         : null,
