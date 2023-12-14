@@ -2,8 +2,6 @@
 
 import {
   FormControl,
-  Input,
-  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -11,8 +9,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { on } from 'events';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
-import InfoCardEditButton from '../InfoCardEditButton/InfoCardEditButton';
 
 export type InfoCardItemProps = {
   title: string;
@@ -20,19 +20,21 @@ export type InfoCardItemProps = {
   valueFallback?: ReactNode;
   editable: boolean;
 } & (
-  | { type: 'select'; values: { title: string; value: string }[] }
-  | { type: 'text' }
-);
+    | { type: 'select'; values: { title: string; value: string }[] }
+    | { type: 'text' }
+  );
 
 type InfoCardItemEditingProps = {
   editing: boolean;
-  // eslint-disable-next-line functional/no-return-void
-  onValue?: (value: string) => void;
+  onValue?: (value: string) => null;
+  onInsertPressed: () => null;
 };
 
 export const InfoCardItem = (
   infoCardItem: InfoCardItemProps & InfoCardItemEditingProps
 ) => {
+  const t = useTranslations('profile');
+
   if (infoCardItem.editing)
     return (
       <Stack spacing={2} mb={2} sx={{ marginTop: '2rem' }}>
@@ -100,7 +102,7 @@ export const InfoCardItem = (
       >
         {infoCardItem.title}
       </Typography>
-      {infoCardItem.value ? (
+      {infoCardItem.value && infoCardItem.value != '' ? (
         <Typography
           minHeight={'24px'}
           fontSize={16}
@@ -109,12 +111,18 @@ export const InfoCardItem = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-                ({ value }) => value === infoCardItem.value
-              )?.title
+              ({ value }) => value === infoCardItem.value
+            )?.title
             : infoCardItem.value}
         </Typography>
       ) : (
-        infoCardItem.valueFallback
+        <ButtonNaked
+          onClick={infoCardItem.onInsertPressed}
+          color='primary'
+          sx={{ paddingLeft: 0, paddingRight: 0 }}
+        >
+          {t('insert')}
+        </ButtonNaked>
       )}
     </Stack>
   );

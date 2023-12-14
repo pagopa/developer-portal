@@ -50,7 +50,8 @@
                 "email": "Indirizzo e-mail",
                 "password": "Password"
             }
-        }
+        },
+        "insert": "Inserisci"
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",

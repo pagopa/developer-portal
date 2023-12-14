@@ -13,8 +13,7 @@ import { useEffect, useState } from 'react';
 export type InfoCardProps = {
   cardTitle: string;
   items: InfoCardItemProps[];
-  // eslint-disable-next-line functional/no-return-void
-  onValue?: (items: InfoCardItemProps[]) => void;
+  onValue?: (items: InfoCardItemProps[]) => null;
 };
 
 export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
@@ -28,7 +27,12 @@ export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
   const [editing, setEditing] = useState(false);
   // if at least one item is editable, show the edit button
   const editButton = !editing ? (
-    <InfoCardEditButton onClick={() => setEditing(true)} />
+    <InfoCardEditButton
+      onClick={() => {
+        setEditing(true);
+        return null;
+      }}
+    />
   ) : (
     <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
       <ButtonNaked
@@ -90,6 +94,11 @@ export const InfoCard = ({ cardTitle, items, onValue }: InfoCardProps) => {
                 value,
               };
               setDataSectionItems(newItems);
+              return null;
+            }}
+            onInsertPressed={() => {
+              setEditing(true);
+              return null;
             }}
           />
           {index + 1 !== items.length && !editing && <Divider />}
