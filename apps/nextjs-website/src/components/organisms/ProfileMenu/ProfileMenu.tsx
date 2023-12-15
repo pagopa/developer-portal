@@ -33,7 +33,7 @@ const ProfileMenu = ({ children }: { children: ReactNode }) => {
     <>
       <MobileProfileMenu userFullName={userFullName} />
       <EContainer>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', mt: { xs: '60px', md: 0 } }}>
           <DesktopProfileMenu
             currentPathname={pathname}
             userFullName={userFullName}

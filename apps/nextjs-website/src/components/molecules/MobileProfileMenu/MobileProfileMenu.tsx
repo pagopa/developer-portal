@@ -3,9 +3,11 @@ import React, { useCallback, useState } from 'react';
 import {
   IconButton,
   Link as MuiLink,
-  Menu,
   MenuItem,
   useTheme,
+  Collapse,
+  MenuList,
+  ClickAwayListener,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
@@ -23,92 +25,70 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
 
-  const [menu, setMenu] = useState<HTMLElement | null>(null);
-  const open = Boolean(menu);
-
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
-    setMenu(null);
+    setOpen(false);
   };
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setMenu(event.currentTarget);
+  const handleClick = useCallback(() => {
+    setOpen((prev) => !prev);
   }, []);
 
   return (
-    <Stack
-      sx={{
-        display: { md: 'none' },
-        backgroundColor: palette.grey[50],
-        position: 'relative',
-      }}
-      flexGrow={1}
-      alignItems='center'
-      direction='row'
-      gap={1}
-      justifyContent='flex-start'
-    >
-      <EContainer>
-        <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='flex-start'
-          onClick={handleClick}
-          sx={{ padding: 3 }}
-        >
-          <Typography variant='body2' sx={{ fontWeight: 600 }}>
-            {`${t('hello')} ${userFullName}`}
-          </Typography>
-          <IconButton size='small' sx={{ ml: 1 }}>
-            <ArrowDropDownOutlinedIcon
-              sx={{ width: 24, height: 24 }}
-            ></ArrowDropDownOutlinedIcon>
-          </IconButton>
-        </Stack>
-      </EContainer>
-
-      <Menu
-        anchorEl={menu}
-        id='profile-menu'
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+    <ClickAwayListener onClickAway={handleClose}>
+      <Stack
         sx={{
-          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-          ml: 1,
+          position: 'sticky',
+          top: 0,
+          zIndex: 101,
+          display: { md: 'none' },
+          backgroundColor: palette.grey[50],
+          borderBottom: `1px solid ${palette.divider}`,
+          width: 1,
         }}
       >
-        {profileMenuItems.map(
-          ({ label, href }: { label: string; href: string }, index: number) => (
-            <MenuItem
-              key={index}
-              onClick={handleClose}
-              sx={{ flexDirection: 'column', p: 0 }}
-            >
-              <MuiLink
-                component={Link}
-                href={href}
-                sx={{
-                  alignSelf: 'stretch',
-                  textDecoration: 'none',
-                  color: palette.text.primary,
-                  p: 2,
-                }}
-              >
-                {t(label)}
-              </MuiLink>
-            </MenuItem>
-          )
-        )}
-      </Menu>
-    </Stack>
+        <EContainer>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-start'
+            onClick={handleClick}
+            sx={{ py: 2, cursor: 'pointer' }}
+          >
+            <Typography variant='body2' sx={{ fontWeight: 600 }}>
+              {`${t('hello')} ${userFullName}`}
+            </Typography>
+            <IconButton size='small' sx={{ ml: 1 }}>
+              <ArrowDropDownOutlinedIcon
+                sx={{ width: 24, height: 24 }}
+              ></ArrowDropDownOutlinedIcon>
+            </IconButton>
+          </Stack>
+        </EContainer>
+
+        <Collapse in={open} mountOnEnter unmountOnExit>
+          <MenuList sx={{ flexDirection: 'column', gap: 2, width: 1 }}>
+            {profileMenuItems.map(({ label, href }, index: number) => (
+              <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
+                <MuiLink
+                  component={Link}
+                  href={href}
+                  sx={{
+                    alignSelf: 'stretch',
+                    textDecoration: 'none',
+                    color: palette.text.primary,
+                    py: 1,
+                    pl: 6,
+                  }}
+                >
+                  {t(label)}
+                </MuiLink>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Collapse>
+      </Stack>
+    </ClickAwayListener>
   );
 };
 
