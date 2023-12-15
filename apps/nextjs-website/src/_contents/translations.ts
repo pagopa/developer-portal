@@ -101,7 +101,7 @@ export const translations = {
         title: 'Richiedi una firma su documenti e contratti',
         cta: {
           label: 'Vai a Firma con IO',
-          href: '/io-sign/overview',
+          href: '/firma-con-io/overview',
         },
       },
     ],
