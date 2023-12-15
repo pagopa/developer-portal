@@ -50,6 +50,10 @@ export const Header = (props: HeaderProps) => {
         paddingX={{ xs: 1, sm: 3 }}
         component='header'
         role='banner'
+        sx={{
+          borderBottomRightRadius: '8px',
+          borderBottomLeftRadius: '8px',
+        }}
       >
         <Stack
           direction={{ md: 'row' }}

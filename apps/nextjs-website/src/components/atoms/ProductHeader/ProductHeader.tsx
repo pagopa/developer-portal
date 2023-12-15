@@ -20,10 +20,11 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   return (
     <Box
       sx={{
-        position: 'sticky',
+        position: 'fixed',
         top: scrollUp ? SITE_HEADER_HEIGHT : 0,
-        zIndex: 90,
+        zIndex: scrollUp ? 90 : 250,
         transition: 'all 0.5s linear',
+        width: '100vw',
       }}
     >
       <Header
