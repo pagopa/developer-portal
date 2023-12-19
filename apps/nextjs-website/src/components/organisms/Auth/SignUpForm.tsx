@@ -372,18 +372,30 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
                   <Typography variant='body2'>
-                    {signUp('acceptPolicy1')}
-                    <Typography
-                      component={Link}
-                      fontSize={16}
-                      href='/privacy-policy'
-                      variant='caption-semibold'
-                      color={palette.primary.main}
-                    >
-                      {' '}
-                      {signUp('acceptPolicy2')}{' '}
-                    </Typography>
-                    {signUp('acceptPolicy3')}
+                    {signUp.rich('acceptPolicy', {
+                      terms: (chunks) => (
+                        <Typography
+                          component={Link}
+                          fontSize={16}
+                          href='/terms-of-service'
+                          variant='caption-semibold'
+                          color={palette.primary.main}
+                        >
+                          {chunks}
+                        </Typography>
+                      ),
+                      policy: (chunks) => (
+                        <Typography
+                          component={Link}
+                          fontSize={16}
+                          href='/privacy-policy'
+                          variant='caption-semibold'
+                          color={palette.primary.main}
+                        >
+                          {chunks}
+                        </Typography>
+                      ),
+                    })}
                   </Typography>
                 </Stack>
               </Stack>
