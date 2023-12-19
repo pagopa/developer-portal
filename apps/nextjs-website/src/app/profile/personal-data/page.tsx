@@ -2,7 +2,7 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { translations } from '@/_contents/translations';
 import {
@@ -11,11 +11,11 @@ import {
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
-import { EditPasswordForm } from '@/components/organisms/Auth/EditPasswordForm';
 import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
 import { useUser } from '@/helpers/user.helper';
 import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
+import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 
 const PersonalData = () => {
   const {
@@ -26,29 +26,35 @@ const PersonalData = () => {
   const t = useTranslations('profile');
   const router = useRouter();
   const { user } = useUser();
-  const [editItem, setEditItem] = useState<number | null>(null);
+  const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
   const [showModal, setShowModal] = useState(false);
 
-  function handleSave(oldPassword: string, newPassword: string) {
-    return Auth.changePassword(user, oldPassword, newPassword).then(() => {
-      setShowModal(true);
-    });
+  async function handleChangePassword(
+    oldPassword: string,
+    newPassword: string
+  ) {
+    await Auth.changePassword(user, oldPassword, newPassword);
+    setShowModal(true);
   }
 
   const dataSectionItems: InfoCardItemProps[] = [
     {
+      name: 'name',
       title: t('personalData.fields.name'),
       value: user?.attributes.given_name,
     },
     {
+      name: 'surname',
       title: t('personalData.fields.surname'),
       value: user?.attributes.family_name,
     },
     {
+      name: 'role',
       title: t('personalData.fields.role'),
       value: user?.attributes['custom:job_role'],
     },
     {
+      name: 'sector',
       title: t('personalData.fields.sector'),
       value: companyRoles.find(
         (role) => role.value === user?.attributes['custom:company_type']
@@ -58,10 +64,12 @@ const PersonalData = () => {
 
   const accountSectionItems: InfoCardItemProps[] = [
     {
+      name: 'email',
       title: t('personalData.fields.email'),
       value: user?.attributes.email,
     },
     {
+      name: 'password',
       title: t('personalData.fields.password'),
       value: '••••••••••••',
       editable: true,
@@ -73,17 +81,25 @@ const PersonalData = () => {
     index: number,
     items: InfoCardItemProps[]
   ) => {
-    const isEditing = editItem === index;
+    const isPasswordItem: boolean = item.name === 'password';
+    const isEmailItem: boolean = item.name === 'email';
     const showDivider = index !== items.length - 1;
+
+    const isEditing = editItem?.name === item.name;
+
     return (
       <Box key={index}>
-        {isEditing ? (
-          <EditPasswordForm
+        {isPasswordItem && (
+          <PasswordFormWrapper
+            item={item}
+            isEditing={isEditing}
             onCancel={() => setEditItem(null)}
-            onSave={handleSave}
+            onSave={handleChangePassword}
+            onEdit={() => setEditItem(item)}
           />
-        ) : (
-          <InfoCardItem {...item} onEdit={() => setEditItem(index)} />
+        )}
+        {isEmailItem && (
+          <InfoCardItem {...item} onEdit={() => setEditItem(item)} />
         )}
         {showDivider && <Divider />}
       </Box>

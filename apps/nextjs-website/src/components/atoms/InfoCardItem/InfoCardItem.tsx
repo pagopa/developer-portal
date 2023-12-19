@@ -5,6 +5,7 @@ import { ReactNode, useCallback } from 'react';
 import InfoCardEditButton from '../InfoCardEditButton/InfoCardEditButton';
 
 export type InfoCardItemProps = {
+  name: string;
   editable?: boolean;
   title: string;
   value?: string;
