@@ -19,11 +19,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   guideName: string;
 };
 
-export const PRODUCT_HEADER_HEIGHT = {
-  xs: 60,
-  md: 90,
-  lg: 75,
-};
+export const PRODUCT_HEADER_HEIGHT = 75;
 
 const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
@@ -33,18 +29,11 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
   const currentPath = usePathname();
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
-  // const top = scrollUp
-  //   ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
-  //   : PRODUCT_HEADER_HEIGHT;
+  const top = scrollUp
+    ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+    : PRODUCT_HEADER_HEIGHT;
 
-  const getTopValue = (breakpoint: 'xs' | 'md' | 'lg') => {
-    const top = scrollUp
-      ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT[breakpoint]
-      : PRODUCT_HEADER_HEIGHT[breakpoint];
-    return top;
-  };
-
-  const height = `calc(100vh - ${getTopValue('lg')}px)`;
+  const height = `calc(100vh - ${top}px)`;
 
   const handleClick = useCallback(() => {
     setOpen((prev) => !prev);
@@ -64,11 +53,7 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
         backgroundColor: palette.grey[50],
         flexShrink: 0,
         position: 'sticky',
-        top: {
-          xs: getTopValue('xs'),
-          md: getTopValue('md'),
-          lg: getTopValue('lg'),
-        },
+        top,
         height: { xs: 'auto', lg: height },
         maxHeight: { xs: 350, lg: height },
         overflowY: 'auto',
