@@ -132,9 +132,15 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           </Typography>
         )}
       </SummaryInformation>
-      {isSubscribed && (
-        <WebinarPlayerSection webinar={webinar}></WebinarPlayerSection>
-      )}
+      {user &&
+        isSubscribed &&
+        ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
+          <WebinarPlayerSection
+            webinar={webinar}
+            user={user}
+            webinarState={webinarState}
+          ></WebinarPlayerSection>
+        )}
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}

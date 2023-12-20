@@ -5,7 +5,7 @@ import MUITableHead from '@mui/material/TableHead';
 import MUITableBody from '@mui/material/TableBody';
 import MUITableRow from '@mui/material/TableRow';
 import MUITableCell, { TableCellProps } from '@mui/material/TableCell';
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { TableProps } from 'gitbook-docs/markdoc/schema/table';
 import { Checkbox } from '@mui/material';
 
@@ -80,11 +80,11 @@ export const TableD = (props: TableCellProps) => {
       {...props}
     >
       {Array.isArray(props.children)
-        ? props.children.map((children) => (
-            <>
+        ? props.children.map((children, index) => (
+            <Fragment key={index}>
               {children}
               <br />
-            </>
+            </Fragment>
           ))
         : props.children}
     </MUITableCell>
