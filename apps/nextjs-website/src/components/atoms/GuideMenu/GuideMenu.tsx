@@ -1,10 +1,13 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import {
-  Collapse,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Stack,
   Theme,
@@ -39,6 +42,12 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
     setOpen((prev) => !prev);
   }, []);
 
+  useEffect(() => {
+    if (isDesktop) {
+      setOpen(false);
+    }
+  }, [isDesktop]);
+
   const items = (
     <GuideMenuItems
       {...menuProps}
@@ -48,55 +57,68 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
   );
 
   return (
-    <Stack
-      sx={{
-        backgroundColor: palette.grey[50],
-        flexShrink: 0,
-        position: 'sticky',
-        top,
-        height: { xs: 'auto', lg: height },
-        maxHeight: { xs: 350, lg: height },
-        overflowY: 'auto',
-        transition: 'all 0.5s linear',
-        scrollbarWidth: 'thin',
-        width: { lg: '347px' },
-      }}
-    >
+    <Fragment>
       <Stack
         sx={{
-          padding: { lg: '80px 0' },
-          flexGrow: { lg: 0 },
-          flexShrink: { lg: 0 },
+          backgroundColor: palette.grey[50],
+          flexShrink: 0,
+          position: 'sticky',
+          top,
+          height: { lg: height },
+          overflowY: 'auto',
+          transition: 'all 0.5s linear',
+          scrollbarWidth: 'thin',
+          width: { lg: '347px' },
         }}
       >
         <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='flex-start'
-          onClick={isDesktop ? undefined : handleClick}
-          sx={{ padding: '16px 24px', cursor: 'pointer' }}
+          sx={{
+            padding: { lg: '80px 0' },
+            flexGrow: { lg: 0 },
+            flexShrink: { lg: 0 },
+          }}
         >
-          <Typography
-            variant='h6'
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-start'
+            onClick={isDesktop ? undefined : handleClick}
+            sx={{ padding: '16px 24px', cursor: 'pointer' }}
+          >
+            <Typography
+              variant='h6'
+              sx={{
+                verticalAlign: 'middle',
+              }}
+            >
+              {guideName}
+            </Typography>
+            <IconButton size='small' sx={{ display: { lg: 'none' } }}>
+              <ArrowDropDownOutlinedIcon sx={{ width: 24, height: 24 }} />
+            </IconButton>
+          </Stack>
+          {isDesktop && items}
+        </Stack>
+      </Stack>
+      {!isDesktop && (
+        <Dialog open={open} onClose={handleClick} fullScreen>
+          <DialogTitle>{guideName}</DialogTitle>
+          <IconButton
+            aria-label='close'
+            onClick={handleClick}
             sx={{
-              verticalAlign: 'middle',
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
             }}
           >
-            {guideName}
-          </Typography>
-          <IconButton size='small' sx={{ display: { lg: 'none' } }}>
-            <ArrowDropDownOutlinedIcon sx={{ width: 24, height: 24 }} />
+            <CloseIcon />
           </IconButton>
-        </Stack>
-        {isDesktop ? (
-          items
-        ) : (
-          <Collapse appear={open} in={open}>
-            {items}
-          </Collapse>
-        )}
-      </Stack>
-    </Stack>
+          <DialogContent sx={{ px: 0 }}>{items}</DialogContent>
+        </Dialog>
+      )}
+    </Fragment>
   );
 };
 
