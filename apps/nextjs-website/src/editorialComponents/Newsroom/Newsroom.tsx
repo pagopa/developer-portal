@@ -99,7 +99,9 @@ const Item = (props: INewsroomItem) => {
           {new Intl.DateTimeFormat(locale, options).format(date)}
         </Typography>
       )}
-      <Typography variant='h6' sx={{ minHeight: 55 }}>{title}</Typography>
+      <Typography variant='h6' sx={{ minHeight: 55 }}>
+        {title}
+      </Typography>
       <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
         <LinkButton
           disabled={!!comingSoonLabel}
