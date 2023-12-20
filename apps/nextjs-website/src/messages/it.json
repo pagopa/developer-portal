@@ -65,6 +65,18 @@
                 "text": "Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.",
                 "confirmLabel": "Vai al login"
             }
+        },
+        "changeEmail": {
+            "cancel": "Annulla",
+            "save": "Conferma",
+            "title": "Modifica l'indirizzo email",
+            "notAuthorizedException": "L'indirizzo email inserito non è valido",
+            "wrongEmail": "L'indirizzo email inserito non risulta corretto",
+            "dialog": {
+                "title": "Verifica il nuovo indirizzo email",
+                "text": "Abbiamo inviato una email all’indirizzo che hai inserito.\nClicca sul link contenuto al suo interno per verificarlo e associarlo al tuo account PagoPA DevPortal.",
+                "confirmLabel": "Chiudi"
+            }
         }
     },
     "webinar": {

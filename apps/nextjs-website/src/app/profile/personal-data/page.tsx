@@ -5,10 +5,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 
 import { translations } from '@/_contents/translations';
-import {
-  InfoCardItem,
-  InfoCardItemProps,
-} from '@/components/atoms/InfoCardItem/InfoCardItem';
+import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
@@ -16,6 +13,7 @@ import { useUser } from '@/helpers/user.helper';
 import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
+import EmailFormWrapper from '@/components/organisms/Auth/EmailFormWrapper';
 
 const PersonalData = () => {
   const {
@@ -27,14 +25,19 @@ const PersonalData = () => {
   const router = useRouter();
   const { user } = useUser();
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<'password' | 'email' | null>(null);
 
   async function handleChangePassword(
     oldPassword: string,
     newPassword: string
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
-    setShowModal(true);
+    setShowModal('password');
+  }
+
+  async function handleChangeEmail(newEmail: string) {
+    await Auth.updateUserAttributes(user, { email: newEmail });
+    setShowModal('email');
   }
 
   const dataSectionItems: InfoCardItemProps[] = [
@@ -67,6 +70,7 @@ const PersonalData = () => {
       name: 'email',
       title: t('personalData.fields.email'),
       value: user?.attributes.email,
+      editable: true,
     },
     {
       name: 'password',
@@ -99,7 +103,13 @@ const PersonalData = () => {
           />
         )}
         {isEmailItem && (
-          <InfoCardItem {...item} onEdit={() => setEditItem(item)} />
+          <EmailFormWrapper
+            item={item}
+            isEditing={isEditing}
+            onCancel={() => setEditItem(null)}
+            onSave={handleChangeEmail}
+            onEdit={() => setEditItem(item)}
+          />
         )}
         {showDivider && <Divider />}
       </Box>
@@ -108,21 +118,42 @@ const PersonalData = () => {
 
   return (
     <>
-      <ConfirmationModal
-        setOpen={() => null}
-        open={showModal}
-        title={t('changePassword.dialog.title')}
-        text={t('changePassword.dialog.text')}
-        confirmCta={{
-          label: t('changePassword.dialog.confirmLabel'),
-          onClick: () => {
-            Auth.signOut().then(() => {
-              router.replace('/auth/login');
-            });
-            return null;
-          },
-        }}
-      />
+      {showModal === 'password' && (
+        <ConfirmationModal
+          setOpen={() => null}
+          open={true}
+          title={t('changePassword.dialog.title')}
+          text={t('changePassword.dialog.text')}
+          confirmCta={{
+            label: t('changePassword.dialog.confirmLabel'),
+            onClick: () => {
+              Auth.signOut().then(() => {
+                router.replace('/auth/login');
+              });
+              return null;
+            },
+          }}
+        />
+      )}
+      {showModal === 'email' && (
+        <ConfirmationModal
+          setOpen={() => null}
+          open={true}
+          title={t('changeEmail.dialog.title')}
+          text={t('changeEmail.dialog.text')}
+          confirmCta={{
+            label: t('changeEmail.dialog.confirmLabel'),
+            onClick: () => {
+              // TODO: Uncomment this if necessary or remove it once defined the flow
+              // Auth.signOut().then(() => {
+              //   router.replace('/auth/login');
+              // });
+              typeof window !== 'undefined' && window.location.reload();
+              return null;
+            },
+          }}
+        />
+      )}
       <Stack
         gap={5}
         sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
