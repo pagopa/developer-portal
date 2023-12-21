@@ -363,7 +363,28 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body2'>{signUp.acceptPolicy}</Typography>
+                  <Typography variant='body2'>
+                    {signUp.acceptPolicy1}
+                    <Typography
+                      component={Link}
+                      fontSize={16}
+                      href='/privacy-policy'
+                      variant='caption-semibold'
+                      color={palette.primary.main}
+                    >
+                      {signUp.acceptPolicy2}
+                    </Typography>
+                    {signUp.acceptPolicy3}
+                    <Typography
+                      component={Link}
+                      fontSize={16}
+                      href='/terms-of-service'
+                      variant='caption-semibold'
+                      color={palette.primary.main}
+                    >
+                      {signUp.acceptPolicy4}
+                    </Typography>
+                  </Typography>
                 </Stack>
               </Stack>
             </form>

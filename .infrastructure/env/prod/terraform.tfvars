@@ -14,7 +14,7 @@ cdn_custom_headers = [
   {
     header   = "X-Robots-Tag"
     override = true
-    value    = "noindex"
+    value    = "all"
   }
 ]
 
