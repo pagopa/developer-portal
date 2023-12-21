@@ -71,7 +71,11 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
-          <body>
+          <body
+            style={{
+              backgroundColor: 'white',
+            }}
+          >
             <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
               <SiteHeader products={products} />
