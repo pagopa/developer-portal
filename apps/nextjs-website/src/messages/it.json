@@ -74,11 +74,18 @@
         },
         "webinarsSection": {
             "description": "",
+            "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
             "title": {
                 "future": "Partecipa ai nostri webinar",
                 "past": "I nostri webinar"
             }
         }
+    },
+    "webinars": {
+        "title": "Partecipa agli eventi live e guarda i webinar passati ",
+        "subtitle": "Con i webinar di PagoPA DevPortal hai l'opportunità di approfondire argomenti legati all'integrazione con i nostri prodotti, attraverso la guida e i consigli esperti del nostro team.",
+        "nextWebinars": "I prossimi appuntamenti",
+        "pastWebinars": "Webinar passati"
     },
     "auth": {
         "logout": "Esci",

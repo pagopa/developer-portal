@@ -52,7 +52,7 @@ const WebinarsSection = ({ link, webinars }: webinarsSectionProps) => {
     >
       <EContainer>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box mb={6}>
+          <Box mb={webinars.length ? 6 : 0}>
             <Typography variant='h4' mb={2} color={theme.palette.common.white}>
               {t(futureWebinarsExist ? 'title.future' : 'title.past')}
             </Typography>
@@ -69,17 +69,27 @@ const WebinarsSection = ({ link, webinars }: webinarsSectionProps) => {
             )}
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-            {webinars.map((webinar, index) => (
-              <WebinarCard
-                key={index}
-                webinar={webinar}
-                userAligned={userAligned}
-                handleErrorMessage={(message: string) => {
-                  setError(message);
-                  return null;
-                }}
-              />
-            ))}
+            {webinars.length ? (
+              webinars.map((webinar, index) => (
+                <WebinarCard
+                  key={index}
+                  webinar={webinar}
+                  userAligned={userAligned}
+                  handleErrorMessage={(message: string) => {
+                    setError(message);
+                    return null;
+                  }}
+                />
+              ))
+            ) : (
+              <Typography
+                variant='body1'
+                fontSize={18}
+                color={theme.palette.common.white}
+              >
+                {t('noWebinars')}
+              </Typography>
+            )}
           </Box>
         </Box>
       </EContainer>
