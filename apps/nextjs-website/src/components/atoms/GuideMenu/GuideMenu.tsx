@@ -13,9 +13,9 @@ import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
-import { translations } from '@/_contents/translations';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { useTranslations } from 'next-intl';
 
 type GuideMenuProps = {
   linkPrefix: string;
@@ -152,7 +152,7 @@ const GuideMenu = ({
   versions,
 }: GuideMenuProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
+  const t = useTranslations('shared');
   const scrollUp = useScrollUp();
   const currentPath = usePathname();
   const segments = currentPath.split('/');
@@ -195,7 +195,7 @@ const GuideMenu = ({
           {guideName}
         </Typography>
         <Dropdown
-          label={`${shared.version} ${versionName}`}
+          label={`${t('version')} ${versionName}`}
           items={versions.map((version) => ({
             href: version.path,
             label: version.name,

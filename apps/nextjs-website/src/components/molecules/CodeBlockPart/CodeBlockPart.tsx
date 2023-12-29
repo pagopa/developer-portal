@@ -4,8 +4,8 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCustomStyle';
 import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustomStyle';
-import { translations } from '@/_contents/translations';
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
+import { useTranslations } from 'next-intl';
 
 export type CodeBlockPartProps = {
   code: string;
@@ -27,11 +27,15 @@ const CodeBlockPart = ({
   wrapLines = true,
 }: CodeBlockPartProps) => {
   const { spacing, palette } = useTheme();
-  const { shared } = translations;
+  const t = useTranslations('shared');
   const isLightMode = mode === 'light';
   const codeBackground = isLightMode
     ? lightCustomStyle['code[class*="language-"]'].background
     : darkCustomStyle['code[class*="language-"]'].background;
+
+  const copyColor = isLightMode
+    ? palette.primary.main
+    : palette.primary.contrastText;
 
   return (
     <Box
@@ -88,10 +92,8 @@ const CodeBlockPart = ({
         <Box marginY={'4px'} marginRight={{ xs: '5px', md: '10px' }}>
           <CopyToClipboard
             textToCopy={code}
-            copiedTooltipLabel={shared.copiedTooltip}
-            copyColor={
-              isLightMode ? palette.primary.main : palette.primary.contrastText
-            }
+            copiedTooltipLabel={t('copiedTooltip')}
+            copyColor={copyColor}
           />
         </Box>
       </Box>

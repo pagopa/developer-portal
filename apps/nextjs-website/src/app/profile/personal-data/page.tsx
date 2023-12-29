@@ -5,16 +5,15 @@ import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import { translations } from '@/_contents/translations';
+import { companyRoles } from '@/config';
 
 const PersonalData = () => {
-  const {
-    auth: {
-      signUp: { companyRoles },
-    },
-  } = translations;
+  const companyRolesTranslations = useTranslations('auth.signUp');
   const t = useTranslations('profile');
   const { user } = useUser();
+  const role = companyRoles.find(
+    (role) => role === user?.attributes['custom:company_type']
+  );
 
   const dataSectionItems: InfoCardItemProps[] = [
     {
@@ -31,9 +30,7 @@ const PersonalData = () => {
     },
     {
       title: t('personalData.fields.sector'),
-      value: companyRoles.find(
-        (role) => role.value === user?.attributes['custom:company_type']
-      )?.title,
+      value: role ? companyRolesTranslations(`companyRoles.${role}`) : '',
     },
   ];
 
