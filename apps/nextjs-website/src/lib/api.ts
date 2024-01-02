@@ -135,16 +135,13 @@ export async function getWebinars(): Promise<readonly Webinar[]> {
   return webinars;
 }
 
+export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
+  return webinars.filter((webinar) => webinar.isVisibleInHome);
+}
+
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
     (await getWebinars()).find(({ slug }) => slug === webinarSlug)
   );
   return props;
-}
-
-export async function getNextWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinars()).filter(
-    ({ startDateTime }) =>
-      startDateTime && new Date(startDateTime).getTime() > new Date().getTime()
-  );
 }
