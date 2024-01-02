@@ -21,11 +21,13 @@ import {
   IconButton,
   Snackbar,
   Alert,
+  useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -37,9 +39,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     shared,
   } = translations;
 
+  const { palette } = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
@@ -61,7 +65,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   );
 
   const onLoginHandler = useCallback(() => {
-    onLogin({ username, password }).catch((e) => setError(e.message));
+    setSubmitting(true);
+    onLogin({ username, password })
+      .catch((e) => setError(e.message))
+      .finally(() => {
+        setSubmitting(false);
+      });
   }, [onLogin, username, password]);
 
   return (
@@ -133,7 +142,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onLoginHandler}>
+                  <Button
+                    disabled={submitting}
+                    variant='contained'
+                    onClick={onLoginHandler}
+                  >
                     {login.action}
                   </Button>
                 </Stack>
@@ -145,7 +158,15 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 justifyContent='center'
                 alignItems='center'
               >
-                <Link href='/auth/password-reset'>{login.forgotPassword}</Link>
+                <Typography
+                  component={Link}
+                  href='/auth/password-reset'
+                  fontSize={16}
+                  variant='caption-semibold'
+                  color={palette.primary.main}
+                >
+                  {login.forgotPassword}
+                </Typography>
               </Box>
               <Divider />
               <Box
@@ -155,10 +176,18 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 justifyContent='center'
                 alignItems='center'
               >
-                <Typography variant='body2' textAlign='center' mr={1}>
-                  {login.noAccount}{' '}
+                <Typography variant='body2' mr={1}>
+                  {login.noAccount}
                 </Typography>
-                <Link href='/auth/sign-up'>{signUp.action}</Link>
+                <Typography
+                  component={Link}
+                  href='/auth/sign-up'
+                  fontSize={16}
+                  variant='caption-semibold'
+                  color={palette.primary.main}
+                >
+                  {signUp.action}
+                </Typography>
               </Box>
             </form>
           </Grid>
@@ -166,7 +195,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
       </Card>
       <Snackbar
         open={!!error}
-        autoHideDuration={2000}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity='error'>{error}</Alert>

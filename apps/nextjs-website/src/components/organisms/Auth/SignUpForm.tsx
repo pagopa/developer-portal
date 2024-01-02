@@ -26,6 +26,7 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  useTheme,
 } from '@mui/material';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -46,12 +47,7 @@ interface SignUpFormProps {
   onSignUp: () => Promise<boolean>;
 }
 
-const SignUpForm = ({
-  userData,
-  setUserData,
-
-  onSignUp,
-}: SignUpFormProps) => {
+const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
   const {
     auth: { login, signUp },
     shared,
@@ -68,10 +64,12 @@ const SignUpForm = ({
     mailinglistAccepted,
   } = userData;
 
+  const { palette } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordDirty, setIsPasswordDirty] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -118,7 +116,11 @@ const SignUpForm = ({
       return;
     }
 
-    onSignUp();
+    setSubmitting(true);
+
+    onSignUp().finally(() => {
+      setSubmitting(false);
+    });
   }, [onSignUp, userData]);
 
   const validateForm = useCallback(() => {
@@ -147,10 +149,10 @@ const SignUpForm = ({
 
   return (
     <Box component='section'>
-      <Card variant='outlined' elevation={8}>
+      <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
-            <Typography variant='h4' pt={8} mb={4} textAlign='center'>
+            <Typography variant='h4' pt={4} mb={4} textAlign='center'>
               {signUp.createYourAccount}
             </Typography>
             <Typography variant='body2' mb={2}>
@@ -353,7 +355,7 @@ const SignUpForm = ({
                   <Button
                     variant='contained'
                     onClick={onSignUpClick}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || submitting}
                   >
                     {signUp.action}
                   </Button>
@@ -361,23 +363,52 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body2'>{signUp.acceptPolicy}</Typography>
+                  <Typography variant='body2'>
+                    {signUp.acceptPolicy1}
+                    <Typography
+                      component={Link}
+                      fontSize={16}
+                      href='/privacy-policy'
+                      variant='caption-semibold'
+                      color={palette.primary.main}
+                    >
+                      {signUp.acceptPolicy2}
+                    </Typography>
+                    {signUp.acceptPolicy3}
+                    <Typography
+                      component={Link}
+                      fontSize={16}
+                      href='/terms-of-service'
+                      variant='caption-semibold'
+                      color={palette.primary.main}
+                    >
+                      {signUp.acceptPolicy4}
+                    </Typography>
+                  </Typography>
                 </Stack>
               </Stack>
             </form>
             <Divider />
             <Stack
               pt={4}
-              pb={8}
+              pb={4}
               display='flex'
               alignItems='center'
               justifyContent='center'
               flexDirection='row'
             >
-              <Typography variant='caption-semibold' mr={1}>
+              <Typography variant='body2' mr={1}>
                 {signUp.alreadyHaveAnAccount}
               </Typography>
-              <Link href='/auth/login'>{login.action}</Link>
+              <Typography
+                component={Link}
+                fontSize={16}
+                href='/auth/login'
+                variant='caption-semibold'
+                color={palette.primary.main}
+              >
+                {login.action}
+              </Typography>
             </Stack>
           </Grid>
         </Grid>

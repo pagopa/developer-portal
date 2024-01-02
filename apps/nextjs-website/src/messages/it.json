@@ -1,21 +1,30 @@
 {
+    "devPortal": {
+        "title": "DevPortal"
+    },
     "profile": {
         "agreements": {
             "newsletter": {
                 "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
+                "error": {
+                    "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica",
+                    "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica"
+                },
                 "subscribe": "Iscriviti",
-                "title": "Iscrizione alla newsletter"
+                "title": "Iscrizione alla newsletter",
+                "unsubscribe": "Annulla iscrizione"
             },
             "privacy": {
-                "basicData": "PagoPA collects Basic Personal Data enabling you to create and use your DevPortal account. You provide this personal data at registration, when updating your profile, or through an Identity Provider. PagoPA uses secured storage and communications, and justified use within PagoPA to protect your data. Your Basic Personal Data will be stored as long as you have an active PagoPA account.",
+                "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
                 "title": "Privacy",
                 "statement": {
-                    "text": "The $labelOfLinkToReplace$ provides detailed information about your privacy rights.",
-                    "labelOfLinkToReplace": "PagoPA Privacy Statement"
+                    "text": "La nostra $labelOfLinkToReplace$ fornisce informazioni dettagliate sui tuoi diritti in materia di privacy.",
+                    "labelOfLinkToReplace": "Informativa Privacy"
                 }
             },
             "title": "Consensi e privacy"
         },
+        "hello": "Ciao,",
         "personalData": {
             "title": "I tuoi dati",
             "dataSection": "Profilo",
@@ -41,9 +50,60 @@
             }
         }
     },
+    "webinar": {
+        "liveWebinar": "Webinar in corso",
+        "subscriptionError": "Limite di iscrizioni raggiunto",
+        "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
+        "goToWebinar": "Vai al webinar",
+        "whyParticipate": "Perché partecipare?",
+        "speakers": "Ospiti",
+        "subscribe": "Iscriviti",
+        "relatedLinksTitle": "Link utili",
+        "speakersTitle": "Ospiti",
+        "questionsForm": {
+            "title": "Scrivi qui domande e commenti per la discussione finale",
+            "question": "Domanda",
+            "submit": "Invia",
+            "submitted": "Inviato",
+            "error": "Errore nell'invio, riprova più tardi"
+        },
+        "warnings": {
+            "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
+            "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento",
+            "refresh": "Collegati a questa pagina all'orario di inizio dell'evento"
+        },
+        "webinarsSection": {
+            "description": "",
+            "title": {
+                "future": "Partecipa ai nostri webinar",
+                "past": "I nostri webinar"
+            }
+        }
+    },
+    "auth": {
+        "logout": "Esci",
+        "login": {
+            "action": "Accedi"
+        },
+        "confirmation": {
+            "title": "Il link non è più valido",
+            "ctaLabel": "Reinvia email"
+        },
+        "resendEmail": { "label": "Reinvia e-mail" }
+    },
     "shared": {
         "goToModel": "Vai al modello",
         "edit": "Modifica",
-        "cancel": "Annulla"
+        "cancel": "Annulla",
+        "yourData": "I tuoi dati",
+        "subscribeButton": {
+            "subscribeLabel": {
+                "default": "Iscriviti",
+                "takePart": "Partecipa",
+                "view": "Visualizza"
+            },
+            "subscribedLabel": "Iscrizione confermata",
+            "unsubscribeLabel": "Annulla iscrizione"
+        }
     }
 }

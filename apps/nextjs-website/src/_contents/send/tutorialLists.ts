@@ -16,22 +16,22 @@ export const sendTutorials: readonly Tutorial[] = [
     showInOverview: true,
   },
   {
-    title: 'Inserisci una notifica via postman',
-    path: `${sendTutorialListsPath.path}/come-inserire-una-notifica-con-postman`,
-    name: 'Inserisci una notifica via postman',
-    image: {
-      alt: 'Immagine: Inserisci una notifica via postman',
-      url: '/images/send-tutorial-1.png',
-    },
-    showInOverview: true,
-  },
-  {
     title: 'Genera il tuo client',
     path: `${sendTutorialListsPath.path}/come-generare-il-tuo-api-client-per-le-api-di-send`,
     name: 'Genera il tuo client',
     image: {
       alt: 'Immagine: Genera il tuo client',
       url: '/images/send-tutorial-0.png',
+    },
+    showInOverview: true,
+  },
+  {
+    title: `Configurare PDND/Interoperabilità per i servizi SEND`,
+    path: `${sendTutorialListsPath.path}/configurare-laccesso-ad-interoperabilita-per-i-servizi-send`,
+    name: 'Genera il tuo client',
+    image: {
+      alt: 'Immagine: Genera il tuo client',
+      url: '/images/send-tutorial-2.png',
     },
     showInOverview: true,
   },

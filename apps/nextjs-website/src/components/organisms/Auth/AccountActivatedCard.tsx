@@ -9,6 +9,7 @@ const AccountActivatedCard = () => {
     auth: { accountActivated },
   } = translations;
 
+  // TODO: refactor using SingleCard component
   return (
     <Box
       component='section'
@@ -29,8 +30,8 @@ const AccountActivatedCard = () => {
             </Typography>
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' component={Link} href='/'>
-                  {accountActivated.goToDashboard}
+                <Button variant='contained' component={Link} href='/auth/login'>
+                  {accountActivated.goToLogin}
                 </Button>
               </Stack>
             </Stack>

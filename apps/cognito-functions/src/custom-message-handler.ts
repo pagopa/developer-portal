@@ -11,11 +11,21 @@ export type CustomMessageEnv = t.TypeOf<typeof CustomMessageEnv>;
 export const makeHandler =
   (env: CustomMessageEnv) => async (event: CustomMessageTriggerEvent) => {
     const username = event.request.userAttributes['sub'];
+    const cognitoUserStatus =
+      event.request.userAttributes['cognito:user_status'];
 
     if (
       event.triggerSource === 'CustomMessage_SignUp' ||
       event.triggerSource === 'CustomMessage_ResendCode'
     ) {
+      if (cognitoUserStatus === 'CONFIRMED') {
+        // eslint-disable-next-line functional/no-expression-statements
+        console.log(
+          `User ${username} is confirmed and has requested to resend the email`
+        );
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Operation not permitted');
+      }
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;
       const emailMessage = makeConfirmationEmail(href, env.domain);

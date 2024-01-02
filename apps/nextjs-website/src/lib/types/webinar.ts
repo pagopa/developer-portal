@@ -4,13 +4,15 @@ import { Path } from './path';
 export type Webinar = {
   readonly description: string;
   readonly html?: string;
+  readonly playerSrc?: string;
   readonly speakers: readonly Speaker[];
-  readonly startDateTime?: Date;
-  readonly endDateTime?: Date;
+  readonly startDateTime?: string;
+  readonly endDateTime?: string;
   readonly title: string;
   readonly slug: string;
   readonly relatedLinks?: readonly Path[];
   readonly subscribeCtaLabel?: string;
+  readonly isVisibleInHome: boolean;
   readonly startInfo?: {
     readonly title: string;
     readonly cards: readonly {

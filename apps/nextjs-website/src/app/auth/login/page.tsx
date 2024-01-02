@@ -12,6 +12,7 @@ const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
     const user = await Auth.signIn({
@@ -19,6 +20,7 @@ const Login = () => {
       password,
     });
 
+    setUserName(username);
     setUser(user);
     setLogInStep(LoginSteps.MFA_CHALLENGE);
   }, []);
@@ -31,11 +33,6 @@ const Login = () => {
     },
     [router, user]
   );
-
-  const onBackStep = useCallback(() => {
-    setLogInStep(LoginSteps.LOG_IN);
-    return null;
-  }, []);
 
   return (
     <Box
@@ -60,7 +57,7 @@ const Login = () => {
       >
         {logInStep === LoginSteps.LOG_IN && <LoginForm onLogin={onLogin} />}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
-          <ConfirmLogIn onBackStep={onBackStep} onConfirmLogin={confirmLogin} />
+          <ConfirmLogIn email={userName} onConfirmLogin={confirmLogin} />
         )}
       </Grid>
     </Box>

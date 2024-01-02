@@ -19,6 +19,7 @@ export const translations = {
     goToModel: 'Vai al modello',
     version: 'Versione',
     copiedTooltip: 'Copiato',
+    siteTitle: 'PagoPA DevPortal',
     emailAddress: 'Indirizzo email',
     password: 'Password',
     goBack: 'Torna indietro',
@@ -104,15 +105,6 @@ export const translations = {
         },
       },
     ],
-    webinarsSection: {
-      description:
-        'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
-      title: 'Partecipa ai nostri webinar',
-      link: {
-        href: '#',
-        label: 'Vedi tutti i webinar',
-      },
-    },
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
@@ -297,9 +289,9 @@ export const translations = {
             linkType: 'external',
           },
           {
-            ariaLabel: 'Vai al link: Piattaforma Notifiche Digitali',
-            href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali',
-            label: 'Piattaforma Notifiche Digitali',
+            ariaLabel: 'Vai al link: SEND - Servizio Notifiche Digitali',
+            href: 'https://www.pagopa.it/it/prodotti-e-servizi/send-notifiche-digitali/',
+            label: 'SEND - Servizio Notifiche Digitali',
             linkType: 'external',
           },
           {
@@ -317,31 +309,26 @@ export const translations = {
       },
     },
   },
-  webinar: {
-    whyParticipate: 'Perché partecipare?',
-    speakers: 'Speaker',
-    subscribe: 'Iscriviti',
-    relatedLinksTitle: 'Link utili',
-    speakersTitle: 'Chi Parla',
-  },
   auth: {
-    logout: 'Esci',
     login: {
       action: 'Accedi',
-      loginToYourAccount: 'Accedi al tuo account',
+      loginToYourAccount: 'Accedi al tuo account DevPortal',
       rememberMe: 'Ricordami',
       forgotPassword: 'Hai dimenticato la password?',
       noAccount: 'Non hai un account?',
     },
     confirmLogin: {
-      title: 'Verifica di accesso MFA',
-      body: 'Inserisci il codice di verifica inviato nella tua e-mail',
-      code: '012345',
-      wrongAccount: 'Hai sbagliato account? ',
-      send: 'Invia',
+      title: 'Verifica la tua identità',
+      body: (email: string) =>
+        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 3 minuti.`,
+      code: 'Codice di verifica',
+      checkJunkMail:
+        'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
+      continue: 'Continua',
+      resendEmail: 'Reinvia e-mail',
     },
     accountActivated: {
-      goToDashboard: 'Inizia',
+      goToLogin: 'Vai al login',
       welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
       yourAccountIsActive: 'Il tuo account è attivo',
     },
@@ -350,8 +337,11 @@ export const translations = {
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
         "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
-      acceptPolicy:
-        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      acceptPolicy1:
+        'Cliccando su iscriviti dichiari di aver preso visione della nostra ',
+      acceptPolicy2: 'privacy policy',
+      acceptPolicy3: ' e dei nostri ',
+      acceptPolicy4: "termini e condizioni d'uso",
       alreadyHaveAnAccount: 'Hai già un account?',
       whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
       passwordPolicy:
@@ -359,34 +349,38 @@ export const translations = {
       emailSent: (email: string) => `Email inviata a ${email}`,
       advantages: [
         {
-          title: 'vantaggio 1',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Accedi a contenuti esclusivi',
+          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
         },
         {
-          title: 'vantaggio 2',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Ricevi aggiornamenti sui nostri prodotti',
+          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
         },
         {
-          title: 'vantaggio 3',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
+          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
+        },
+        {
+          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
+          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
         },
       ],
       companyRoles: [
-        { title: 'Ente pubblico', value: 'ente-pubblico' },
-        { title: 'Partner tecnologico', value: 'partner-tecnologico' },
+        { title: 'Ente pubblico', value: 'public-authority' },
+        { title: 'Partner tecnologico', value: 'tech-partner' },
         { title: 'PSP', value: 'psp' },
         {
           title: 'Gestore di pubblico servizio',
-          value: 'gestore-di-pubblico-servizio',
+          value: 'operator-of-public-service',
         },
-        { title: 'Azienda privata', value: 'azienda-privata' },
-        { title: 'Altro', value: 'altro' },
+        { title: 'Azienda privata', value: 'private-company' },
+        { title: 'Altro', value: 'other' },
       ],
     },
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
       description: (email: string) =>
-        `Abbiamo inviato una e-mail a ${email} Clicca sul bottone contenuto al suo interno per verificarla.`,
+        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',

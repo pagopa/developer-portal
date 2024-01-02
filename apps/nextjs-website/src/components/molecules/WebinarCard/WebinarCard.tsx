@@ -1,25 +1,45 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import { translations } from '@/_contents/translations';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
+import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
+import { DevPortalUser } from '@/lib/types/auth';
+import { useUser } from '@/helpers/user.helper';
+import { useTranslations } from 'next-intl';
+import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
+import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 
-type WebinarCardProps = { children?: React.ReactNode } & Webinar;
+type WebinarCardProps = {
+  webinar: Webinar;
+  userAligned?: boolean;
+  handleErrorMessage?: (message: string) => null;
+};
 
 const WebinarCard = ({
-  title,
-  description,
-  slug,
-  speakers,
-  startDateTime,
-  endDateTime,
-  children,
+  webinar,
+  userAligned,
+  handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
-  const { webinar } = translations;
+  const t = useTranslations('webinar');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { user, setUserAttributes } = useUser();
+
+  const { webinarState, setWebinar } = useWebinar();
+
+  useEffect(() => {
+    webinar && setWebinar(webinar);
+  }, [webinar]);
 
   return (
     <Card
@@ -29,6 +49,7 @@ const WebinarCard = ({
         justifyContent: 'space-between',
         height: '100%',
         overflow: 'visible',
+        position: 'relative',
       }}
     >
       <CardContent
@@ -40,24 +61,79 @@ const WebinarCard = ({
         }}
       >
         <Box width={{ md: '55%' }}>
-          <Typography fontSize={18} fontWeight={600}>
-            <TimeSlot start={startDateTime} end={endDateTime} />
-          </Typography>
+          {webinarState === WebinarState.live && <LiveWebinarChip />}
+          {![
+            WebinarState.unknown,
+            WebinarState.live,
+            WebinarState.past,
+          ].includes(webinarState) && (
+            <Typography fontSize={18} fontWeight={600}>
+              <TimeSlot
+                start={webinar.startDateTime}
+                end={webinar.endDateTime}
+              />
+            </Typography>
+          )}
           <Typography variant='h6' mt={2} gutterBottom>
-            {title}
+            {webinar.title}
           </Typography>
           <Typography variant='body2' mb={1}>
-            {description}
+            {webinar.description}
           </Typography>
           <LinkButton
             disabled={false}
-            href={`/webinars/${slug}`}
-            label={webinar.whyParticipate}
+            href={`/webinars/${webinar.slug}`}
+            label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
             color={theme.palette.primary.main}
           />
-          <Box mt={4}>{children}</Box>
+          <Box my={4}>
+            <SubscribeToWebinar
+              webinarSlug={webinar.slug}
+              userAttributes={user?.attributes}
+              userAligned={userAligned}
+              setUserAttributes={async (
+                attributes: DevPortalUser['attributes']
+              ) => {
+                await setUserAttributes(attributes);
+                return null;
+              }}
+              isSubscribed={isSubscribed}
+              setIsSubscribed={(bool: boolean) => {
+                setIsSubscribed(bool);
+                return null;
+              }}
+              handleErrorMessage={handleErrorMessage}
+              webinarState={webinarState}
+            />
+          </Box>
+          {isSubscribed && webinarState === WebinarState.future && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+              }}
+            >
+              {t('warnings.email')}
+            </Typography>
+          )}
+          {isSubscribed && webinarState === WebinarState.comingSoon && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+              }}
+            >
+              {t('warnings.goTo')}
+            </Typography>
+          )}
         </Box>
-        {speakers && (
+        {webinar.speakers && (
           <Box>
             <Typography
               mb={2}
@@ -66,10 +142,10 @@ const WebinarCard = ({
               fontWeight={600}
               textTransform={'uppercase'}
             >
-              {webinar.speakers}
+              {t('speakers')}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {speakers.map((speaker, index) => (
+            <Stack direction='column' gap={2}>
+              {webinar.speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}
                   name={speaker.name}
@@ -78,7 +154,7 @@ const WebinarCard = ({
                   imagePath={speaker.imagePath}
                 />
               ))}
-            </Box>
+            </Stack>
           </Box>
         )}
       </CardContent>

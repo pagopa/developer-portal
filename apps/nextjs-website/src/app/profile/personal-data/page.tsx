@@ -1,16 +1,20 @@
 'use client';
-
 import { Stack, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useUser } from '@/helpers/user.helper';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
-import PageNotFound from '@/app/not-found';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
+import { translations } from '@/_contents/translations';
 
 const PersonalData = () => {
+  const {
+    auth: {
+      signUp: { companyRoles },
+    },
+  } = translations;
   const t = useTranslations('profile');
-  const { user, loading } = useUser();
+  const { user } = useUser();
 
   const dataSectionItems: InfoCardItemProps[] = [
     {
@@ -27,7 +31,9 @@ const PersonalData = () => {
     },
     {
       title: t('personalData.fields.sector'),
-      value: user?.attributes['custom:company_type'],
+      value: companyRoles.find(
+        (role) => role.value === user?.attributes['custom:company_type']
+      )?.title,
     },
   ];
 
@@ -42,13 +48,11 @@ const PersonalData = () => {
     },
   ];
 
-  // TODO: add dedicated loading and unauthorized pages
-  if (!loading && !user) {
-    return <PageNotFound />;
-  }
-
   return (
-    <Stack gap={5} sx={{ padding: 5, width: '100%' }}>
+    <Stack
+      gap={5}
+      sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
+    >
       <Typography variant='h4'>{t('personalData.title')}</Typography>
       <InfoCard
         cardTitle={t('personalData.dataSection')}

@@ -11,7 +11,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
     description:
       'Se vuoi sapere cosa devi fare per integrarti, sei nel posto giusto. Con la quick start scoprirai in poco tempo tutti i passaggi che compongono il processo di integrazione.',
   },
-  defaultStepAnchor: '01',
+  defaultStepAnchor: '00',
   steps: [
     {
       title: 'Per iniziare',
@@ -19,7 +19,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: 'Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati.',
+          html: 'Come prima cosa, dovrai avere a disposizione un documento in formato pdf contente l’atto da notificare, insieme ad eventuali allegati. </br> <b>Tutti i documenti PDF forniti alla piattaforma devono essere firmati digitalmente.</b>',
         },
         {
           component: 'alert',
@@ -29,7 +29,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
         },
         {
           component: 'innerHTMLLazyLoaded',
-          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b> e <b>pagamento.pdf</b>',
+          html: 'In questo esempio utilizzeremo due documenti che chiameremo <b>notifica.pdf</b>, contenente l’atto della notifica, e <b>pagamento.pdf</b>, contenente il bollettino pagoPA.',
         },
       ],
     },
@@ -39,7 +39,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'innerHTMLLazyLoaded',
-          html: "Accedi alla <a href='https://selfcare.notifichedigitali.it'>piattaforma Self Care</a> ed entra su SEND. In questo video interattivo troverai tutti i passaggi per generare la tua API Key. </br> <b>Ricorda di conservare la tua API Key, ti servirà come secret di autenticazione in tutte le chiamate alle API Rest di SEND.</b>",
+          html: "Accedi all'<a href='https://selfcare.notifichedigitali.it'>Area Riservata - SEND</a>. In questo video interattivo troverai tutti i passaggi per generare la tua API Key. </br> <b>Ricorda di conservare la tua API Key, ti servirà come secret di autenticazione in tutte le chiamate alle API Rest di SEND.</b>",
         },
         {
           component: 'innerHTMLLazyLoaded',
@@ -53,7 +53,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             `    mozallowfullscreen \n` +
             `    allowfullscreen \n` +
             `    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;color-scheme: light;" \n` +
-            `    title="PagoPA Piattaforma Self Care -- SEND" \n` +
+            `    title="Area Riservata -- SEND" \n` +
             `  /> \n` +
             `</div> \n`,
         },
@@ -65,7 +65,7 @@ export const sendQuickStartGuide: QuickStartGuideData = {
       parts: [
         {
           component: 'typography',
-          text: 'Per poter caricare e inviare i documenti allegati alla notifica attraverso SEND, dovrai calcolare il loro hash con algoritmo SHA256 convertendolo in base64, ad esempio con i comandi:',
+          text: 'Per essere certi che i documenti caricati siano quelli effettivamente allegati alla notifica è necessario calcolare il loro hash, con algoritmo SHA256 convertendolo in base64, ad esempio con i comandi:',
           variant: 'body2',
         },
         {
@@ -188,10 +188,10 @@ export const sendQuickStartGuide: QuickStartGuideData = {
             `Per poter inviare i documenti è necessario caricarli sullo storage, utilizzando i parametri ricevuti in risposta allo step 03 e generati nello step 02: \n` +
             `<br /> \n` +
             `<ul> \n` +
+            `  <li>l’url da inserire è “url“ ricevuto nella riposta dello step 03</li> \n` +
+            `  <li>il metodo da utilizzare è “httpMethod“ ricevuto nella riposta dello step 03</li> \n` +
             `  <li>Content-type è lo stesso inserito nella chiamata dello step 03</li> \n` +
             `  <li><code style="background-color: #F4F5F7; font-size: 0.875em;">x-amz-meta-secret</code> dovrà essere valorizzato con il “secret“ ricevuto nella riposta dello step 03</li> \n` +
-            `  <li>il metodo da utilizzare è “httpMethod“ ricevuto nella riposta dello step 03</li> \n` +
-            `  <li>l’url da inserire è “url“ ricevuto nella riposta dello step 03</li> \n` +
             `  <li><code style="background-color: #F4F5F7; font-size: 0.875em;">x-amz-checksum-sha256</code> sono quelli ricavati dallo step 02</li> \n` +
             `</ul> \n` +
             `L’esempio che segue mostra come potrebbe essere realizzata la chiamata con il comando curl. Per ciascun documento occorre reiterare la chiamata.\n`,

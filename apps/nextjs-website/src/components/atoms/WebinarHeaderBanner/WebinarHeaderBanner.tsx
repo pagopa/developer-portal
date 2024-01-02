@@ -12,26 +12,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
 import { translations } from '@/_contents/translations';
 import Link from 'next/link';
+import { Webinar } from '@/lib/types/webinar';
 
 export type WebinarHeaderBannerProps = {
-  readonly slug: string;
-  readonly text: string;
-  readonly endDateTime: Date;
+  webinars: readonly Webinar[];
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
-  slug,
-  text,
-  endDateTime,
-}) => {
-  const [visible, setVisible] = useState(
-    !window?.localStorage.getItem(slug) ||
-      new Date(window?.localStorage.getItem(slug) || new Date().toISOString()) <
-        new Date()
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
+  const webinar = webinars.find(
+    ({ endDateTime }) =>
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
+  const { slug, title: text, endDateTime } = webinar || {};
+  const storedDateTime =
+    (slug && window?.localStorage.getItem(slug)) || new Date().toISOString();
+  const shouldShow = !storedDateTime || new Date(storedDateTime) < new Date();
+  const [visible, setVisible] = useState(shouldShow);
 
   const { palette } = useTheme();
 
+  if (!webinar) return null;
+  if (!endDateTime) return null;
   if (!visible) return null;
 
   return (
@@ -42,12 +43,21 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
         justifyContent: 'space-between',
         width: '100%',
         background: palette.text.primary,
-        padding: '10px 10rem',
+        padding: { xs: '10px 1rem', lg: '10px 10rem' },
       }}
     >
       <Box sx={{ display: 'flex' }}>
         <VideoLibraryIcon sx={{ color: 'white' }} />
-        <Typography sx={{ color: 'white', marginLeft: '10px' }}>
+        <Typography
+          sx={{
+            color: 'white',
+            marginLeft: '10px',
+            WebkitLineClamp: '1',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
           {text}
         </Typography>
         <MuiLink
@@ -69,7 +79,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
       <IconButton
         onClick={() => {
           setVisible(false);
-          window?.localStorage.setItem(slug, endDateTime.toISOString());
+          slug && window?.localStorage.setItem(slug, endDateTime);
         }}
       >
         <CloseIcon sx={{ color: 'white' }}></CloseIcon>
