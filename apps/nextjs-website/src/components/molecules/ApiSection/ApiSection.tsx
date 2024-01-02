@@ -10,6 +10,7 @@ import {
   Typography,
   formLabelClasses,
   styled,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
@@ -21,13 +22,14 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import ApiViewerMobile from '@/components/atoms/ApiViewer/ApiViewerMobile';
 
 /* TODO: Workaround due to error in SSR of elements package:
  * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
  * Error: Cannot find module './impl/format'
  */
 const NotSsrApiViewer = dynamic(
-  () => import('@/components/atoms/ApiViewer/ApiViewer'),
+  () => import('@/components/atoms/ApiViewer/ApiViewerDesktop'),
   {
     ssr: false,
     loading: () => <Spinner />,
@@ -72,6 +74,7 @@ const ApiSection = ({
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
+  const theme = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -86,6 +89,8 @@ const ApiSection = ({
       }
     }
   }, [searchParams, specURLs]);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedItemURL(event.target.value);
@@ -175,11 +180,16 @@ const ApiSection = ({
           </Stack>
         </Stack>
       )}
-      <NotSsrApiViewer
-        product={product}
-        specURL={selectedApi.url}
-        hideTryIt={selectedApi.hideTryIt}
-      />
+
+      {isMobile ? (
+        <ApiViewerMobile specURL={selectedApi.url} />
+      ) : (
+        <NotSsrApiViewer
+          product={product}
+          specURL={selectedApi.url}
+          hideTryIt={selectedApi.hideTryIt}
+        />
+      )}
     </>
   );
 };

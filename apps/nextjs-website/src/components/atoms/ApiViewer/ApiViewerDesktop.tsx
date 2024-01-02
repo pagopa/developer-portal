@@ -1,31 +1,26 @@
-'use client';
+import React from 'react';
 import { FC } from 'react';
-import { API } from '@stoplight/elements';
 import '@stoplight/elements/styles.min.css';
 import { Product } from '@/lib/types/product';
-
-type ApiViewerProps = {
+import { API } from '@stoplight/elements';
+type ApiViewerDesktopProps = {
+  hideTryIt?: boolean;
   specURL: string;
   product: Product;
-  hideTryIt?: boolean;
 };
-const ApiViewer: FC<ApiViewerProps> = ({
+const ApiViewerDesktop: FC<ApiViewerDesktopProps> = ({
   hideTryIt = true,
   specURL,
-  product: {
-    path,
-    subpaths: { api },
-  },
+  product,
 }) => {
   return (
     <API
       apiDescriptionUrl={specURL}
       hideTryIt={hideTryIt}
       hideExport
-      basePath={`${api?.path}` ?? `${path}/api`}
+      basePath={`${product.subpaths.api?.path}` ?? `${product.path}/api`}
       router={typeof window === 'undefined' ? 'memory' : 'hash'}
     />
   );
 };
-
-export default ApiViewer;
+export default ApiViewerDesktop;
