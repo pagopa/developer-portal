@@ -7,8 +7,8 @@
             "newsletter": {
                 "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
                 "error": {
-                    "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica",
-                    "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica"
+                    "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica.",
+                    "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica."
                 },
                 "subscribe": "Iscriviti",
                 "title": "Iscrizione alla newsletter",
@@ -65,12 +65,12 @@
             "question": "Domanda",
             "submit": "Invia",
             "submitted": "Inviato",
-            "error": "Errore nell'invio, riprova più tardi"
+            "error": "Errore nell'invio, riprova più tardi."
         },
         "warnings": {
-            "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
-            "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento",
-            "refresh": "Collegati a questa pagina all'orario di inizio dell'evento"
+            "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
+            "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento.",
+            "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
         },
         "webinarsSection": {
             "description": "",
@@ -118,14 +118,14 @@
         "TooManyRequestsException": "Troppe richieste di autenticazione.",
         "UnexpectedLambdaException": "É stata riscontrata un'eccezione imprevista con il sistema di autenticazione.",
         "UserLambdaValidationException": "Il servizio di autenticazione ha riscontrato un'eccezione di convalida utente.",
-        "UsernameExistsException": "Username giá registrato",
-        "UserNotFoundException": "Utente non registrato",
-        "NotAuthorizedException": "Operazione non autorizzata",
-        "PasswordResetRequiredException": "É stato richiesto un reset della password",
-        "UserNotConfirmedException": "Utente non confermato, controlla nella e-mail e apri il link di conferma",
-        "CodeMismatchException": "Codice non valido",
-        "ExpiredCodeException": "Codice scaduto",
-        "TooManyFailedAttemptsException": "Troppi tentativi errati!",
-        "LimitExceededException": "Limiti di autenticazione superati"
+        "UsernameExistsException": "Username già registrato.",
+        "UserNotFoundException": "Utente non registrato.",
+        "NotAuthorizedException": "Operazione non autorizzata.",
+        "PasswordResetRequiredException": "É stato richiesto un reset della password.",
+        "UserNotConfirmedException": "Utente non confermato, controlla nella e-mail e apri il link di conferma.",
+        "CodeMismatchException": "Codice non valido.",
+        "ExpiredCodeException": "Codice scaduto.",
+        "TooManyFailedAttemptsException": "Troppi tentativi errati.",
+        "LimitExceededException": "Limiti di autenticazione superati."
     }
 }
