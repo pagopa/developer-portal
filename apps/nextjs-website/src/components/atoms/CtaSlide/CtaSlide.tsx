@@ -67,6 +67,7 @@ const CtaSlide = ({
           src={backgroundImage}
           alt={title}
           fill={true}
+          priority
         />
       </Box>
     </Stack>
