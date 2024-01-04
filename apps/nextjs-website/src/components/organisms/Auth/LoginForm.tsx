@@ -102,7 +102,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   size='small'
                   onChange={(e) => setUsername(e.target.value)}
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: palette.common.white,
                   }}
                 />
               </Stack>

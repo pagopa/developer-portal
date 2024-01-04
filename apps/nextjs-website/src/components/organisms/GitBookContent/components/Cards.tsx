@@ -1,3 +1,4 @@
+'use client';
 import {
   CardsProps,
   CardProps,
@@ -11,12 +12,14 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/navigation';
 import CardActionArea from '@mui/material/CardActionArea';
+import { useTheme } from '@mui/material';
 
 export const CardItem = ({ children }: CardItemProps<ReactNode>) => (
   <Typography component='div'>{children}</Typography>
 );
 
 export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
+  const { palette } = useTheme();
   const router = useRouter();
   const content = (
     <>
@@ -36,7 +39,7 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
             sx={{
               height: '100%',
               '.MuiCardActionArea-focusHighlight': {
-                backgroundColor: 'white',
+                backgroundColor: palette.common.white,
                 opacity: 0,
               },
               '.MuiCardContent-root': { height: 'inherit' },
