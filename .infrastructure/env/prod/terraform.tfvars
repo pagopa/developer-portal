@@ -10,13 +10,7 @@ tags = {
   CostCenter  = "BD110 - PORTALS and TOOLS"
 }
 
-cdn_custom_headers = [
-  {
-    header   = "X-Robots-Tag"
-    override = true
-    value    = "all"
-  }
-]
+cdn_custom_headers = []
 
 dns_domain_name = "developer.pagopa.it"
 
