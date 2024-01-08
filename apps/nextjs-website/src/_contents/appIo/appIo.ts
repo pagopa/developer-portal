@@ -7,7 +7,7 @@ import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
 import { baseUrl } from '@/config';
 
 export const appIo: Product = {
-  name: "L'App IO",
+  name: 'IO, l’app dei servizi pubblici',
   description:
     'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
   svgPath: '/icons/appIo.svg',
