@@ -8,11 +8,11 @@ import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
+import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -71,18 +71,14 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
-          <body
-            style={{
-              backgroundColor: 'white',
-            }}
-          >
+          <BodyWrapper>
             <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
               <SiteHeader products={products} />
-              <MainWrapper>{children}</MainWrapper>
+              <main>{children}</main>
               <SiteFooter />
             </AuthProvider>
-          </body>
+          </BodyWrapper>
         </NextIntlClientProvider>
       </ThemeRegistry>
     </html>
