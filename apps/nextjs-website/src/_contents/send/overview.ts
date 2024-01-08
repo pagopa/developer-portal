@@ -92,7 +92,7 @@ export const sendOverview: OverviewData = {
   },
   relatedLinks: [
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/v2.1/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
       name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
     },
     {
@@ -100,7 +100,7 @@ export const sendOverview: OverviewData = {
       name: 'Consulta la documentazione sul modello di integrazione SEND',
     },
     {
-      path: `${sendGuideListsPath.path}/knowledge-base/v2.0/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
+      path: `${sendGuideListsPath.path}/knowledge-base/v2.1/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
       name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
     },
   ],

@@ -8,8 +8,8 @@ import { baseUrl } from '@/config';
 
 export const ioSign: Product = {
   name: 'Firma con IO',
-  slug: 'io-sign',
-  path: '/io-sign',
+  slug: 'firma-con-io',
+  path: '/firma-con-io',
   description:
     'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
   svgPath: '/icons/appIo.svg',
