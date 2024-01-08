@@ -40,8 +40,8 @@ export const webinars: readonly Webinar[] = [
         imagePath: '/images/speaker-ferraro.png',
       },
     ],
-    startDateTime: '2023-12-14T11:00:00',
-    endDateTime: '2023-12-14T11:40:00',
+    startDateTime: '2023-12-14T10:00:00.000Z',
+    endDateTime: '2023-12-14T10:40:00.000Z',
     subscribeCtaLabel: '',
     startInfo: {
       title: 'Risorse correlate',
