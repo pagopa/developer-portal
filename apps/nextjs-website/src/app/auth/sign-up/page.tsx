@@ -16,7 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { signUpAdvantages, snackbarAutoHideDurationMs } from '@/config';
 
 interface Info {
   message: string;
@@ -100,10 +100,7 @@ const SignUp = () => {
     return null;
   }, [router, userData.username]);
 
-  const advantages = useMemo(
-    () => ['exclusive_contents', 'product_updates', 'api_keys', 'support'],
-    []
-  );
+  const advantages = useMemo(() => signUpAdvantages, []);
 
   return (
     <>
