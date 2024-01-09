@@ -196,7 +196,11 @@
     "cancel": "Annulla",
     "yourData": "I tuoi dati",
     "subscribeButton": {
-      "subscribeLabel": "Iscriviti",
+      "subscribeLabel": {
+        "default": "Iscriviti",
+        "takePart": "Partecipa",
+        "view": "Visualizza"
+      },
       "subscribedLabel": "Iscrizione confermata",
       "unsubscribeLabel": "Annulla iscrizione"
     },
