@@ -10,9 +10,9 @@ import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
-import { translations } from '@/_contents/translations';
 import Link from 'next/link';
 import { Webinar } from '@/lib/types/webinar';
+import { useTranslations } from 'next-intl';
 
 export type WebinarHeaderBannerProps = {
   webinars: readonly Webinar[];
@@ -30,6 +30,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   const [visible, setVisible] = useState(shouldShow);
 
   const { palette } = useTheme();
+  const t = useTranslations('homepage');
 
   if (!webinar) return null;
   if (!endDateTime) return null;
@@ -72,7 +73,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
           }}
           href={'/webinars/' + slug}
         >
-          {translations.homepage.webinarBannerButtonContent}
+          {t('webinarBannerButtonContent')}
           <EastIcon sx={{ height: 30, ml: 1 }} />
         </MuiLink>
       </Box>

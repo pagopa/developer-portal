@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { IconWrapperProps } from '@/components/atoms/IconWrapper/IconWrapper';
 
 export type LinkType = 'internal' | 'external';
+export type FooterColumnIcon = IconWrapperProps & { readonly href: string };
 
 export interface FooterLinksType {
   readonly label: string;
@@ -25,9 +26,7 @@ export interface PreLoginFooterLinksType {
   readonly resources: PreLoginFooterSingleSectionType;
   readonly followUs: {
     readonly title: string;
-    readonly socialLinks: readonly (IconWrapperProps & {
-      readonly href: string;
-    })[];
+    readonly socialLinks: readonly FooterColumnIcon[];
     readonly links: readonly FooterLinksType[];
   };
 }
