@@ -240,7 +240,8 @@
         "description": "La pagina che stai cercando non esiste"
     },
     "productGuidePage": {
-        "onThisPage": "In questa pagina"
+        "onThisPage": "In questa pagina",
+        "tableOfContents": "Tabella dei contenuti"
     },
     "homepage": {
         "news": {
@@ -470,10 +471,5 @@
         "ExpiredCodeException": "Codice scaduto.",
         "TooManyFailedAttemptsException": "Troppi tentativi errati.",
         "LimitExceededException": "Limiti di autenticazione superati."
-    },
-    "productGuidePage": {
-        "menu": {
-            "tableOfContents": "Tabella dei contenuti"
-        }
     }
 }

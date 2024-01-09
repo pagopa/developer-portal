@@ -100,7 +100,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('menu.tableOfContents')}
+              {t('tableOfContents')}
             </Typography>
             <IconButton
               size='small'
@@ -133,7 +133,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('menu.tableOfContents')}
+              {t('tableOfContents')}
             </Typography>
             <IconButton
               aria-label='close'
