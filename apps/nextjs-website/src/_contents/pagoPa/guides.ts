@@ -10,6 +10,10 @@ const saci: GuideDefinition = {
   },
   versions: [
     {
+      version: '3.2.0',
+      dirName: 'PXEYBQEZ9LagztJLF89O',
+    },
+    {
       version: '3.1.0',
       dirName: 'w0Q7L4P8ucTWqcitlbkJ',
     },
@@ -36,6 +40,10 @@ const sanp: GuideDefinition = {
     slug: 'sanp',
   },
   versions: [
+    {
+      version: '3.6.0',
+      dirName: 'MiKJPaFrEwpU051b68kr',
+    },
     {
       version: '3.5.0',
       dirName: 'PJuzswk8l2kp9Wm5PwAW',
