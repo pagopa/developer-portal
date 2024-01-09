@@ -15,8 +15,8 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
-import { snackbarAutoHideDurationMs } from '@/config';
 import { useTranslations } from 'next-intl';
+import { snackbarAutoHideDurationMs } from '@/config';
 
 interface Info {
   message: string;

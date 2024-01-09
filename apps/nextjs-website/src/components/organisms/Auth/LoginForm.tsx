@@ -44,12 +44,14 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
   const shared = useTranslations('shared');
+  const errors = useTranslations('errors');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -91,8 +93,13 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     if (!valid) {
       return;
     }
-    onLogin({ username, password }).catch((e) => setError(e.message));
-  }, [validateForm, onLogin, username, password]);
+    setSubmitting(true);
+    onLogin({ username, password })
+      .catch((e) => setError(errors(e.code)))
+      .finally(() => {
+        setSubmitting(false);
+      });
+  }, [validateForm, onLogin, username, password, errors]);
 
   return (
     <Box
@@ -168,7 +175,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onLoginHandler}>
+                  <Button
+                    variant='contained'
+                    onClick={onLoginHandler}
+                    disabled={submitting}
+                  >
                     {login('action')}
                   </Button>
                 </Stack>

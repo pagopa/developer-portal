@@ -6,9 +6,9 @@ import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
-import { useRouter } from 'next/navigation';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Login = () => {
   const router = useRouter();
@@ -39,14 +39,16 @@ const Login = () => {
       setLogInStep(LoginSteps.MFA_CHALLENGE);
     }
   }, []);
+  const searchParams = useSearchParams();
 
   const confirmLogin = useCallback(
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      router.replace('/');
+      const redirect = searchParams.get('redirect');
+      router.replace(redirect ? redirect : '/');
     },
-    [router, user]
+    [router, searchParams, user]
   );
 
   const onBackStep = useCallback(() => {
