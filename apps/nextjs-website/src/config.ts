@@ -39,4 +39,4 @@ export const webinarQuestionConfig = {
 };
 
 export const defaultLanguage = { id: 'it', value: 'Italiano' };
-export const languages = [{ id: 'it', value: 'Italiano' }];
+export const languages = [defaultLanguage];
