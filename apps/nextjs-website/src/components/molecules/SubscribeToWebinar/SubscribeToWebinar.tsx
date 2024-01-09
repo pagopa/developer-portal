@@ -9,7 +9,7 @@ import {
 } from '@/helpers/userPreferences.helpers';
 import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
 
 export type SubscribeButtonProps = {
@@ -38,6 +38,7 @@ const SubscribeToWebinar = ({
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (userAttributes && webinarSlug) {
@@ -90,7 +91,7 @@ const SubscribeToWebinar = ({
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
     // eslint-disable-next-line functional/immutable-data
-    router.push('/auth/login');
+    router.push(`/auth/login?redirect=${pathname}`);
     return null;
   };
 
