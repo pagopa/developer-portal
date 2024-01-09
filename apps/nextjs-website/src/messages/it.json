@@ -146,5 +146,10 @@
         "ExpiredCodeException": "Codice scaduto.",
         "TooManyFailedAttemptsException": "Troppi tentativi errati.",
         "LimitExceededException": "Limiti di autenticazione superati."
+    },
+    "productGuidePage": {
+        "menu": {
+            "tableOfContents": "Tabella dei contenuti"
+        }
     }
 }

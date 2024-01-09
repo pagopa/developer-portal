@@ -129,6 +129,7 @@ const components: RenderingComponents<React.ReactNode> = {
 };
 
 export type GuideMenuItemsProps = GuideVersionSelectorProps & {
+  guideName: string;
   assetsPrefix: string;
   currentPath?: string;
   expanded?: string[];
@@ -140,6 +141,7 @@ const GuideMenuItems = ({
   assetsPrefix,
   currentPath,
   expanded = [],
+  guideName,
   linkPrefix,
   menu,
   versionName,
@@ -151,6 +153,17 @@ const GuideMenuItems = ({
   }, [menu, assetsPrefix, linkPrefix]);
   return (
     <>
+      <Typography
+        variant='h6'
+        sx={{
+          verticalAlign: 'middle',
+          padding: { xs: '16px 24px', lg: '16px 32px' },
+          fontSize: { xs: '20px', md: '24px' },
+          fontWeight: { xs: 700, md: 600 },
+        }}
+      >
+        {guideName}
+      </Typography>
       <GuideVersionSelector versions={versions} versionName={versionName} />
       <TreeView
         defaultCollapseIcon={<ExpandLessIcon />}

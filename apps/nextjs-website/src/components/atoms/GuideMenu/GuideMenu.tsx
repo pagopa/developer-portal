@@ -17,21 +17,23 @@ import {
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
+import { useTranslations } from 'next-intl';
 
-type GuideMenuProps = GuideMenuItemsProps & {
-  guideName: string;
-};
+type GuideMenuProps = GuideMenuItemsProps;
 
 export const PRODUCT_HEADER_HEIGHT = 75;
 
-const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
+const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const { palette } = useTheme();
+  const t = useTranslations('productGuidePage');
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const scrollUp = useScrollUp();
   const currentPath = usePathname();
+
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
+
   const top = scrollUp
     ? SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
     : PRODUCT_HEADER_HEIGHT;
@@ -69,6 +71,7 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
+          zIndex: 1,
         }}
       >
         <Stack
@@ -83,17 +86,26 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
             alignItems='center'
             justifyContent='flex-start'
             onClick={isDesktop ? undefined : handleClick}
-            sx={{ padding: '16px 24px', cursor: 'pointer' }}
+            sx={{
+              padding: '12px 24px',
+              cursor: 'pointer',
+              display: { lg: 'none' },
+            }}
           >
             <Typography
               variant='h6'
               sx={{
+                fontSize: '16px!important',
                 verticalAlign: 'middle',
+                color: palette.primary.main,
               }}
             >
-              {guideName}
+              {t('menu.tableOfContents')}
             </Typography>
-            <IconButton size='small' sx={{ display: { lg: 'none' } }}>
+            <IconButton
+              size='small'
+              sx={{ display: { lg: 'none' }, color: palette.primary.main }}
+            >
               <ArrowDropDownOutlinedIcon sx={{ width: 24, height: 24 }} />
             </IconButton>
           </Stack>
@@ -102,19 +114,37 @@ const GuideMenu = ({ guideName, ...menuProps }: GuideMenuProps) => {
       </Stack>
       {!isDesktop && (
         <Dialog open={open} onClose={handleClick} fullScreen>
-          <DialogTitle>{guideName}</DialogTitle>
-          <IconButton
-            aria-label='close'
-            onClick={handleClick}
+          <DialogTitle
+            component={Stack}
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-start'
             sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
+              padding: '12px 24px',
             }}
           >
-            <CloseIcon />
-          </IconButton>
+            <Typography
+              variant='h6'
+              sx={{
+                flexGrow: 1,
+                flexShrink: 0,
+                fontSize: '16px!important',
+                verticalAlign: 'middle',
+                color: palette.primary.main,
+              }}
+            >
+              {t('menu.tableOfContents')}
+            </Typography>
+            <IconButton
+              aria-label='close'
+              onClick={handleClick}
+              sx={{
+                color: palette.primary.main,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent sx={{ px: 0 }}>{items}</DialogContent>
         </Dialog>
       )}
