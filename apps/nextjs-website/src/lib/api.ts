@@ -37,10 +37,7 @@ export async function getGuide(
 ) {
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
-
-  const guide =
-    guides.find(({ page }) => page.path === path) ?? getLastGuide(productSlug);
-  const props = manageUndefined(guide);
+const props = manageUndefined(guides.find(({ page }) => page.path === path));
 
   return {
     ...props,
@@ -48,20 +45,6 @@ export async function getGuide(
     assetsPrefix: props.source.assetsPrefix,
     products: [...(await getProducts())],
   };
-}
-
-function getLastGuide(productSlug?: string) {
-  const partialPath = `/${productSlug}/guides`;
-  // sort guides by path
-  // eslint-disable-next-line functional/immutable-data
-  const sortedGuides = guides.sort((a, b) =>
-    a.page.path.localeCompare(b.page.path)
-  );
-  // get the last guide that includes the partial path with find last
-  // eslint-disable-next-line functional/immutable-data
-  return sortedGuides
-    .reverse()
-    .find(({ page }) => page.path.includes(partialPath));
 }
 
 export function getGuidePaths() {
