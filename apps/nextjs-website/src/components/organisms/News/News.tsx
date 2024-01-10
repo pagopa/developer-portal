@@ -3,7 +3,7 @@ import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box } from '@mui/material';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
-import { translations } from '@/_contents/translations';
+import { useTranslations } from 'next-intl';
 
 type NewsProps = {
   title: string;
@@ -30,14 +30,15 @@ type NewsProps = {
 };
 
 const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
-  const { shared } = translations;
+  const t = useTranslations('shared');
+  const coomingSoonLabel = t('comingSoon');
   return (
     <Box marginTop={marginTop}>
       <SectionTitle title={title} subtitle={subtitle} cta={cta} />
       <Box mt={2}>
         <Newsroom
           items={cards.map((card) => ({
-            comingSoonLabel: !card.comingSoon ? undefined : shared.comingSoon,
+            comingSoonLabel: !card.comingSoon ? undefined : coomingSoonLabel,
             title: card.title,
             date: {
               date: card.dateString ? new Date(card.dateString) : undefined,

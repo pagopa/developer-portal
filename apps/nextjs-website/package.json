@@ -1,9 +1,9 @@
 {
   "name": "nextjs-website",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh 312b35a39fe5b4ac189395fa19d656058942e793",
+    "download-docs": "./scripts/fetch-docs.sh 279811f68c936b68ea803b10d4572a526a30f27e",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",

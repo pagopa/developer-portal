@@ -47,6 +47,10 @@ const markR = pairedHtmlTag('mark');
 const pR = pairedHtmlTag('p');
 const detailsR = pairedHtmlTag('details');
 const summaryR = pairedHtmlTag('summary');
+const fileR = {
+  regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
+  replace: '$1\n{% /file %}',
+};
 
 const schema: ConfigType = {
   tags: {
@@ -100,7 +104,8 @@ export const parseAst = (markdown: string) => {
     .replaceAll(pR.regex, pR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
-    .replaceAll('{% @figma/embed', '{% figma-embed');
+    .replaceAll('{% @figma/embed', '{% figma-embed')
+    .replaceAll(fileR.regex, fileR.replace);
 
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
