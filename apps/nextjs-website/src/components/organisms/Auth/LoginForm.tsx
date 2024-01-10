@@ -24,6 +24,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { MouseEvent, useCallback, useState } from 'react';
@@ -38,6 +39,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     auth: { login, signUp },
     shared,
   } = translations;
+  const t = useTranslations('errors');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
@@ -67,11 +69,11 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const onLoginHandler = useCallback(() => {
     setSubmitting(true);
     onLogin({ username, password })
-      .catch((e) => setError(e.message))
+      .catch((e) => setError(t(e.code)))
       .finally(() => {
         setSubmitting(false);
       });
-  }, [onLogin, username, password]);
+  }, [onLogin, username, password, t]);
 
   return (
     <Box
@@ -100,7 +102,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   size='small'
                   onChange={(e) => setUsername(e.target.value)}
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: palette.background.paper,
                   }}
                 />
               </Stack>

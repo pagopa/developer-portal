@@ -16,7 +16,7 @@ export const pagoPaGuideLists: GuideListsData = {
       title: "Per l'integrazione",
       guides: [
         {
-          title: 'SACI 3.1.0',
+          title: 'SACI 3.2.0',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -27,14 +27,14 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/saci/3.1.0`,
+            href: `${pagoPaGuideListsPath.path}/saci/3.2.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/saci.png',
           mobileImagePath: '/images/saci-mobile.png',
         },
         {
-          title: 'SANP 3.5.0',
+          title: 'SANP 3.6.0',
           description: {
             title: 'Argomenti trattati',
             listItems: [
@@ -45,7 +45,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/sanp/3.5.0`,
+            href: `${pagoPaGuideListsPath.path}/sanp/3.6.0`,
             label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
