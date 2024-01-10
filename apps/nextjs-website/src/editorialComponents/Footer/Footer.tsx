@@ -4,8 +4,11 @@ import { type Generic } from '../types/components';
 import { FooterColumn } from './components/FooterColumn';
 import { LangSwitch, type LangSwitchProps } from './components/LangSwitch';
 import { LegalInfo } from './components/LegalInfo';
-import { type CompanyLinkType, type PreLoginFooterLinksType } from './types';
-import { IconWrapperProps } from '@/components/atoms/IconWrapper/IconWrapper';
+import type {
+  CompanyLinkType,
+  PreLoginFooterLinksType,
+  FooterColumnIcon,
+} from './types';
 
 export interface FooterProps extends LangSwitchProps {
   companyLink: CompanyLinkType;
@@ -48,9 +51,7 @@ export const Footer = ({
       >
         <FooterColumn
           data={followUs}
-          icons={
-            followUs.socialLinks as (IconWrapperProps & { href: string })[]
-          }
+          icons={followUs.socialLinks as FooterColumnIcon[]}
         />
         {!!langProps?.languages?.length && <LangSwitch {...langProps} />}
         {showFundedByNextGenerationEULogo && (
