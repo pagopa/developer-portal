@@ -37,7 +37,7 @@ export async function getGuide(
 ) {
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
-const props = manageUndefined(guides.find(({ page }) => page.path === path));
+  const props = manageUndefined(guides.find(({ page }) => page.path === path));
 
   return {
     ...props,
