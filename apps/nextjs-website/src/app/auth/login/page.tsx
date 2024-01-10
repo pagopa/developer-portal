@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Login = () => {
   const router = useRouter();
@@ -34,6 +34,7 @@ const Login = () => {
 
     return !!user;
   }, []);
+  const searchParams = useSearchParams();
 
   const resendCode = useCallback(async () => {
     return onLogin({ username, password }).finally(() => {
@@ -52,10 +53,11 @@ const Login = () => {
       );
 
       if (result) {
-        router.replace('/');
+        const redirect = searchParams.get('redirect');
+        router.replace(redirect ? redirect : '/');
       }
     },
-    [router, user]
+    [router, searchParams, user]
   );
 
   return (

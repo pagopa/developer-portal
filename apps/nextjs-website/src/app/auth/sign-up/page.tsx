@@ -16,6 +16,7 @@ import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
+import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
 
 interface Info {
@@ -27,6 +28,7 @@ const SignUp = () => {
   const {
     auth: { signUp },
   } = translations;
+  const t = useTranslations('errors');
   const params = useSearchParams();
   const router = useRouter();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
@@ -57,16 +59,6 @@ const SignUp = () => {
     setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
   }, [router, userData.username]);
 
-  const onBackStep = useCallback(() => {
-    router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
-        SignUpSteps.SIGN_UP
-      }`
-    );
-    setSignUpStep(SignUpSteps.SIGN_UP);
-    return null;
-  }, [router, userData.username]);
-
   const onSignUp = useCallback(async () => {
     const {
       company,
@@ -91,10 +83,11 @@ const SignUp = () => {
       },
     }).catch((error) => {
       if (error.code.includes('UsernameExistsException')) {
+        setInfo({ message: t(error.code), isError: true });
         goToConfirmSignUp();
         return true;
       }
-      setInfo({ message: error.message, isError: true });
+      setInfo({ message: t(error.code), isError: true });
       return false;
     });
 
@@ -104,7 +97,17 @@ const SignUp = () => {
       goToConfirmSignUp();
       return !!result.user;
     }
-  }, [userData, goToConfirmSignUp]);
+  }, [userData, t, goToConfirmSignUp]);
+
+  const onBackStep = useCallback(() => {
+    router.replace(
+      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+        SignUpSteps.SIGN_UP
+      }`
+    );
+    setSignUpStep(SignUpSteps.SIGN_UP);
+    return null;
+  }, [router, userData.username]);
 
   return (
     <>

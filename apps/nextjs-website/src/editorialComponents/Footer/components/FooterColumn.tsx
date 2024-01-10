@@ -1,19 +1,18 @@
 import { Link as LinkMui, Stack, Typography } from '@mui/material';
 import { hrefNoOp } from '@/editorialComponents/utils';
 import {
+  FooterColumnIcon,
   type CompanyLinkType,
   type PreLoginFooterSingleSectionType,
 } from '../types';
-import IconWrapper, {
-  IconWrapperProps,
-} from '@/components/atoms/IconWrapper/IconWrapper';
 import { LogoPagoPACompany } from '@/editorialComponents/LogoPagoPACompany';
 import Link from 'next/link';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 export interface FooterColumnProps {
   data: PreLoginFooterSingleSectionType;
   companyLink?: CompanyLinkType;
-  icons?: (IconWrapperProps & { href: string })[];
+  icons?: FooterColumnIcon[];
 }
 
 export const FooterColumn = ({
