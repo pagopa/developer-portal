@@ -96,7 +96,7 @@ This project utilizes [changesets](https://github.com/changesets/changesets) to 
 This will initiate a wizard that guides you through the process.
 
 2. **Defining the Change Type**: the wizard will ask you to specify the type of changes made (major, minor, patch).  
-The summary you provide here will be added to the `CHANGELOG.md` file. Follow the [semver](https://semver.org/#summary) specification in order to chose the prover type of change.
+The summary you provide here will be added to the `CHANGELOG.md` file. Follow the [semver](https://semver.org/#summary) specification in order to choose the proper type of change.
 
 3. **Generating the Changelog**: the [Changelog workflow](.github/workflows/changelog.yaml) uses the changeset's action to convert the changes tracked with `npm run changeset` into a `CHANGELOG.md` file.
 
