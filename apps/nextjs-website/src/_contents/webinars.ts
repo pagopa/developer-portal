@@ -61,7 +61,7 @@ export const webinars: readonly Webinar[] = [
         {
           title: 'Guida tecnica',
           text: 'Cosa può fare il tuo ente con l’app IO? Seleziona il settore di appartenenza e approfondisci i principali casi d’uso dedicati.',
-          href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
+          href: `${appIOGuideListsPath.path}/io-guida-tecnica/v5.0`,
           iconName: 'MenuBook',
         },
       ],
