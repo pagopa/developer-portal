@@ -24,7 +24,7 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
         content='div'
         mb={3}
         mt={6}
-        color={palette.action.active}
+        color={palette.text.secondary}
         fontSize={14}
         sx={{
           fontWeight: typography.fontWeightBold,

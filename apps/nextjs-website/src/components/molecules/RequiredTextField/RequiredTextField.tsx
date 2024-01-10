@@ -63,7 +63,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
       onChange={onChange}
       onBlur={() => setIsDirty(true)}
       sx={{
-        backgroundColor: palette.common.white,
+        backgroundColor: palette.background.paper,
         width: '100%',
       }}
       error={isDirty && !isValid}

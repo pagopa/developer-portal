@@ -39,7 +39,7 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
             sx={{
               height: '100%',
               '.MuiCardActionArea-focusHighlight': {
-                backgroundColor: palette.common.white,
+                backgroundColor: palette.background.paper,
                 opacity: 0,
               },
               '.MuiCardContent-root': { height: 'inherit' },

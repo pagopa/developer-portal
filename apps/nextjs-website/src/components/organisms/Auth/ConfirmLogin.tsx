@@ -80,7 +80,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
                 sx={{
-                  backgroundColor: palette.common.white,
+                  backgroundColor: palette.background.paper,
                 }}
               />
             </Stack>
