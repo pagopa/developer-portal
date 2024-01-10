@@ -8,7 +8,7 @@ const BodyWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <body
       style={{
-        backgroundColor: palette.common.white,
+        backgroundColor: palette.background.paper,
       }}
     >
       {children}
