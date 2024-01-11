@@ -30,11 +30,10 @@
             },
             "title": "Consensi e privacy"
         },
-        "hello": "Ciao,",
         "personalData": {
-          "title": "I tuoi dati",
-          "dataSection": "Profilo",
-          "accountSection": "Account",
+          "title": "Su di te",
+          "dataSection": "I tuoi dati",
+          "accountSection": "Il tuo account",
           "deleteAccountSection": "Eliminazione Account",
           "deleteAccount": {
             "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
@@ -224,7 +223,7 @@
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
-        "yourData": "I tuoi dati",
+        "yourData": "Profilo",
         "subscribeButton": {
           "subscribeLabel": {
             "default": "Iscriviti",

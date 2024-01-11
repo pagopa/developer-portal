@@ -42,16 +42,6 @@ const DesktopProfileMenu = ({
       >
         <Box sx={{ marginBottom: 8 }}>
           <Typography
-            variant='h6'
-            sx={{
-              padding: '0px 32px',
-              verticalAlign: 'middle',
-              fontWeight: 'regular',
-            }}
-          >
-            {t('hello')}
-          </Typography>
-          <Typography
             variant='h5'
             sx={{
               padding: '0px 32px',
