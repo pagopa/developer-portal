@@ -27,7 +27,7 @@ export const appIoGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
+            href: `${appIOGuideListsPath.path}/io-guida-tecnica/v5.0`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica.png',

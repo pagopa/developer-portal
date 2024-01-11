@@ -61,7 +61,11 @@ const UserInfo: FC = () => {
     >
       {!user && !loading && (
         <MuiLink
-          href='/auth/login'
+          href={
+            pathname !== '/'
+              ? `/auth/login?redirect=${pathname}`
+              : '/auth/login'
+          }
           component={Link}
           sx={{
             display: 'flex',
