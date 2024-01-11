@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-expression-statements */
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPI } from 'openapi-types';
 import { useState, useEffect } from 'react';
@@ -7,6 +6,7 @@ export const useSpec = (src?: string) => {
   const [spec, setSpec] = useState<OpenAPI.Document>();
   const [loading, setLoading] = useState(false);
 
+  /* eslint-disable functional/no-expression-statements */
   useEffect(() => {
     if (src) {
       setLoading(true);
