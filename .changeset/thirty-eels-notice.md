@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix mobile slider on home page
+[DEV-1243] Guide mobile menu
