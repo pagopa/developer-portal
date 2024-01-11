@@ -131,8 +131,8 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   helperText={fieldErrors.email}
                   error={!!fieldErrors.email}
                   sx={{
-                    backgroundColor: 'white',
                     width: '100%',
+                    backgroundColor: palette.background.paper,
                   }}
                 />
               </Stack>

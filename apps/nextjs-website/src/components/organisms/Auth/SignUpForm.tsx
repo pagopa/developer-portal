@@ -340,7 +340,7 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
                   }
                   value={role}
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: palette.background.paper,
                   }}
                 />
               </Stack>

@@ -1,22 +1,30 @@
 {
-  "devPortal": {
+  "header": {
+    "title": "PagoPA",
+    "boldTitle": "DevPortal",
+    "products": "Prodotti"
+  },
+  "breadcrumbs": {
     "title": "DevPortal"
   },
   "profile": {
     "agreements": {
       "newsletter": {
-        "description": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti.",
+        "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
         "error": {
-          "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica",
-          "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica"
+          "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica.",
+          "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica."
         },
-        "privacy": {
-          "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
-          "title": "Privacy",
-          "statement": {
-            "text": "La nostra $labelOfLinkToReplace$ fornisce informazioni dettagliate sui tuoi diritti in materia di privacy.",
-            "labelOfLinkToReplace": "Informativa Privacy"
-          }
+        "subscribe": "Iscriviti",
+        "title": "Iscrizione alla newsletter",
+        "unsubscribe": "Annulla iscrizione"
+      },
+      "privacy": {
+        "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
+        "title": "Privacy",
+        "statement": {
+          "text": "La nostra $labelOfLinkToReplace$ fornisce informazioni dettagliate sui tuoi diritti in materia di privacy.",
+          "labelOfLinkToReplace": "Informativa Privacy"
         }
       },
       "title": "Consensi e privacy"
@@ -70,21 +78,21 @@
     "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
     "goToWebinar": "Vai al webinar",
     "whyParticipate": "Perché partecipare?",
-    "speakers": "Ospiti",
+    "speakers": "Speaker",
     "subscribe": "Iscriviti",
     "relatedLinksTitle": "Link utili",
-    "speakersTitle": "Ospiti",
+    "speakersTitle": "Chi Parla",
     "questionsForm": {
       "title": "Scrivi qui domande e commenti per la discussione finale",
       "question": "Domanda",
       "submit": "Invia",
       "submitted": "Inviato",
-      "error": "Errore nell'invio, riprova più tardi"
+      "error": "Errore nell'invio, riprova più tardi."
     },
     "warnings": {
-      "email": "Il giorno prima dell'evento riceverai una email con i dettagli",
-      "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento",
-      "refresh": "Collegati a questa pagina all'orario di inizio dell'evento"
+      "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
+      "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento.",
+      "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
     },
     "webinarsSection": {
       "description": "",
@@ -191,19 +199,6 @@
     }
   },
   "shared": {
-    "goToModel": "Vai al modello",
-    "edit": "Modifica",
-    "cancel": "Annulla",
-    "yourData": "I tuoi dati",
-    "subscribeButton": {
-      "subscribeLabel": {
-        "default": "Iscriviti",
-        "takePart": "Partecipa",
-        "view": "Visualizza"
-      },
-      "subscribedLabel": "Iscrizione confermata",
-      "unsubscribeLabel": "Annulla iscrizione"
-    },
     "comingSoon": "In Arrivo",
     "readTutorial": "Leggi il tutorial",
     "moreInfo": "Scopri di più",
@@ -220,7 +215,235 @@
     "company": "Tipologia Ente o Azienda",
     "role": "Ruolo",
     "requiredFieldError": "Questo dato è obbligatorio",
-    "emailFieldError": "Il formato non risulta corretto"
+    "emailFieldError": "Il formato non risulta corretto",
+    "goToModel": "Vai al modello",
+    "edit": "Modifica",
+    "cancel": "Annulla",
+    "yourData": "I tuoi dati",
+    "subscribeButton": {
+      "subscribeLabel": {
+        "default": "Iscriviti",
+        "takePart": "Partecipa",
+        "view": "Visualizza"
+      },
+      "subscribedLabel": "Iscrizione confermata",
+      "unsubscribeLabel": "Annulla iscrizione"
+    }
+  },
+  "pageNotFound": {
+    "overline": "404",
+    "title": "Pagina non trovata",
+    "description": "La pagina che stai cercando non esiste"
+  },
+  "productGuidePage": {
+    "onThisPage": "In questa pagina"
+  },
+  "homepage": {
+    "news": {
+      "title": "In evidenza",
+      "list": {
+        "0": {
+          "title": "Usa il validatore di SEND per fare una verifica sull’integrazione",
+          "href": {
+            "label": "Vai al validatore",
+            "title": "Vai al validatore"
+          },
+          "image": {
+            "url": "/images/homepage-validatore.png",
+            "alt": "Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione"
+          }
+        },
+        "1": {
+          "title": "Scopri i nuovi tutorial di Firma con IO",
+          "href": {
+            "label": "Vai ai tutorial",
+            "title": "Vai ai tutorial"
+          },
+          "image": {
+            "url": "/images/homepage-io-sign.png",
+            "alt": "Immagine: Scopri i nuovi tutorial di Firma con IO"
+          }
+        },
+        "2": {
+          "title": "Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step",
+          "href": {
+            "label": "Vai alla guida",
+            "title": "Vai alla guida"
+          },
+          "image": {
+            "url": "/images/homepage-pago-pa.png",
+            "alt": "Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step"
+          }
+        }
+      }
+    },
+    "webinarBannerButtonContent": "Scopri",
+    "productsShowcaseTitle": "Scopri il nostro ecosistema",
+    "heroItems": {
+      "0": {
+        "title": "Tutto ciò che serve per integrarsi con i prodotti PagoPA"
+      },
+      "1": {
+        "title": "Invia comunicazioni a valore legale con piattaforma notifiche",
+        "ctaLabel": "Vai a SEND"
+      },
+      "2": {
+        "title": "Richiedi una firma su documenti e contratti",
+        "ctaLabel": "Vai a Firma con IO"
+      }
+    },
+    "webinarsSection": {
+      "description": "",
+      "title": "Partecipa ai nostri webinar",
+      "link": {
+        "href": "#",
+        "label": "Vedi tutti i webinar"
+      }
+    },
+    "comingsoonDocumentation": {
+      "title": "Documentazione in arrivo",
+      "links": {
+        "0": {
+          "text": "Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza."
+        },
+        "1": {
+          "text": "Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato."
+        }
+      }
+    }
+  },
+  "quickStartGuide": {
+    "content": {
+      "apiPhases": {
+        "request": {
+          "cta": {
+            "label": "Invia la richiesta"
+          },
+          "title": "Chiamata API"
+        },
+        "response": {
+          "cta": {
+            "icon": "Replay",
+            "label": "Ripristina la chiamata"
+          },
+          "title": "Risposta del server"
+        }
+      },
+      "next": "Prossimo contenuto",
+      "previous": "Contenuto precedente"
+    }
+  },
+  "overview": {
+    "startInfo": {
+      "title": "Si comincia da qui"
+    },
+    "tutorial": {
+      "title": "Esplora i tutorial",
+      "ctaLabel": "Vedi tutti i tutorial"
+    },
+    "postIntegration": {
+      "title": "Dopo l'integrazione"
+    },
+    "relatedLinks": {
+      "title": "LINK UTILI"
+    }
+  },
+  "footer": {
+    "companyLink": {
+      "ariaLabel": "Link: vai al sito di PagoPA S.p.A."
+    },
+    "languages": {
+      "it": "Italiano"
+    },
+    "legalInfo": "<strong>PagoPA S.p.A.</strong> - Società per azioni con socio unico - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <br />CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
+    "followUs": {
+      "links": {
+        "accessibility": {
+          "ariaLabel": "Vai al link: Accessibilità",
+          "label": "Accessibilità"
+        }
+      },
+      "title": "Seguici su"
+    },
+    "aboutUs": {
+      "title": "",
+      "links": {
+        "whoWeAre": {
+          "ariaLabel": "Vai al link: Chi siamo",
+          "label": "Chi siamo"
+        },
+        "pnrr": {
+          "ariaLabel": "Vai al link: PNRR",
+          "label": "PNRR"
+        },
+        "media": {
+          "ariaLabel": "Vai al link: Media",
+          "label": "Media"
+        },
+        "workWithUs": {
+          "ariaLabel": "Vai al link: Lavora con noi",
+          "label": "Lavora con noi"
+        }
+      }
+    },
+    "resources": {
+      "title": "Risorse",
+      "links": {
+        "privacyPolicy": {
+          "ariaLabel": "Vai al link: Informativa Privacy",
+          "label": "Informativa Privacy"
+        },
+        "termsOfService": {
+          "ariaLabel": "Vai al link: Termini e Condizioni",
+          "label": "Termini e Condizioni"
+        },
+        "societaTrasparente": {
+          "ariaLabel": "Vai al link: Società trasparente",
+          "label": "Società trasparente"
+        },
+        "disclosurePolicy": {
+          "ariaLabel": "Vai al link: Responsible Disclosure Policy",
+          "label": "Responsible Disclosure Policy"
+        },
+        "model231": {
+          "ariaLabel": "Vai al link: Modello 231",
+          "label": "Modello 231"
+        }
+      }
+    },
+    "services": {
+      "title": "PRODOTTI E SERVIZI",
+      "links": {
+        "appIO": {
+          "ariaLabel": "Vai al link: App IO",
+          "label": "App IO"
+        },
+        "pagoPA": {
+          "ariaLabel": "Vai al link: Piattaforma pagoPA",
+          "label": "Piattaforma pagoPA"
+        },
+        "centroStella": {
+          "ariaLabel": "Vai al link: Centro stella",
+          "label": "Centro stella"
+        },
+        "checkIBAN": {
+          "ariaLabel": "Vai al link: Check IBAN",
+          "label": "Check IBAN"
+        },
+        "send": {
+          "ariaLabel": "Vai al link: SEND - Servizio Notifiche Digitali",
+          "label": "SEND - Servizio Notifiche Digitali"
+        },
+        "pdnd": {
+          "ariaLabel": "Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità",
+          "label": "Piattaforma Digitale Nazionale Dati - Interoperabilità"
+        }
+      }
+    },
+    "cookiePreferences": {
+      "ariaLabel": "Preferenza Cookie",
+      "label": "Preferenza Cookie"
+    }
   },
   "errors": {
     "CodeDeliveryFailureException": "Impossibile inviare il codice di verifica.",

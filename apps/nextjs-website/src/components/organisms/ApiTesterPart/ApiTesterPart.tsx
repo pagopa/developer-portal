@@ -5,8 +5,8 @@ import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import Button from '@mui/material/Button';
-import { translations } from '@/_contents/translations';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { useTranslations } from 'next-intl';
 
 type ApiPhaseDescription = {
   code: string;
@@ -22,8 +22,9 @@ export type ApiTesterPartProps = {
 const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
   const { spacing, palette } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
-  const { quickStartGuide } = translations;
+  const t = useTranslations('quickStartGuide.content.apiPhases');
   const boxBorder = `1px solid ${palette.grey[300]}`;
+  const parts = isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts;
 
   return (
     <Box
@@ -46,17 +47,15 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
         }}
       >
         <Stack width={{ xs: 'auto', md: '200px' }}>
-          {(isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts).map(
-            (part: Part, index: number) => (
-              <PartRenderer key={index} part={part} />
-            )
-          )}
+          {parts.map((part, index) => (
+            <PartRenderer key={index} part={part} />
+          ))}
           {isLifeCycleCallPhase ? (
             <Button
               onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
               variant='contained'
             >
-              {quickStartGuide.content.apiPhases.request.cta.label}
+              {t('request.cta.label')}
             </Button>
           ) : (
             <Button
@@ -81,10 +80,10 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
                   <IconWrapper
                     color={palette.primary.main}
                     size={20}
-                    icon={quickStartGuide.content.apiPhases.response.cta.icon}
+                    icon={t('response.cta.icon')}
                   />
                 </Box>
-                {quickStartGuide.content.apiPhases.response.cta.label}
+                {t('response.cta.label')}
               </Stack>
             </Button>
           )}
@@ -96,12 +95,8 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           isLifeCycleCallPhase ? apiRequest.language : apiResponse.language
         }
         mode='dark'
-        title={
-          isLifeCycleCallPhase
-            ? quickStartGuide.content.apiPhases.request.title
-            : quickStartGuide.content.apiPhases.response.title
-        }
-      ></CodeBlockPart>
+        title={t(isLifeCycleCallPhase ? 'request.title' : 'response.title')}
+      />
     </Box>
   );
 };

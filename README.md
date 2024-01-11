@@ -88,3 +88,18 @@ Add to the package `<package>` the dependency `<dependency>` as `devDependencies
 ``` bash
 npm -w <package> install <dependency> -D
 ```
+
+## Changelog
+This project utilizes [changesets](https://github.com/changesets/changesets) to generate the changelog. Here's how you can use it:
+
+1. **Adding Changelog Information**: to add entries to the changelog, execute `npx changeset` or `npm run changeset`.  
+This will initiate a wizard that guides you through the process.
+
+2. **Defining the Change Type**: the wizard will ask you to specify the type of changes made (major, minor, patch).  
+The summary you provide here will be added to the `CHANGELOG.md` file. Follow the [semver](https://semver.org/#summary) specification in order to choose the proper type of change.
+
+3. **Generating the Changelog**: the [Changelog workflow](.github/workflows/changelog.yaml) uses the changeset's action to convert the changes tracked with `npm run changeset` into a `CHANGELOG.md` file.
+
+4. **Creating a Pull Request**: after generating the changelog, the workflow will create a PR with the proposed changes, which include version bumping and updating the `CHANGELOG.md` file.
+
+5. **Updating the PR**: if additional changes are made while the PR is open, the changeset's bot will automatically update the PR based on the changes in the `.changeset` folder.

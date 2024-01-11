@@ -1,0 +1,34 @@
+name: Changelog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .changeset/** # Only on changes to ./changeset/*
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  changelog:
+    name: Update CHANGELOG
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Install dependencies
+        run: npm ci --audit=false --fund=false
+
+      - name: Create PR for next release
+        uses: changesets/action@f13b1baaa620fde937751f5d2c3572b9da32af23 # v1.4.5
+        with:
+          # Note: `npm i` after versioning is necessary to refresh package-lock.json file with new version
+          version: npm run version
+          commit: "Update CHANGELOG and prepare next release"
+          title: "Bump version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

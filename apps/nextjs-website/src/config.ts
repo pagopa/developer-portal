@@ -53,3 +53,6 @@ export const webinarQuestionConfig = {
   url: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_URL,
   resource: process.env.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME,
 };
+
+export const defaultLanguage = { id: 'it', value: 'Italiano' };
+export const languages = [defaultLanguage];
