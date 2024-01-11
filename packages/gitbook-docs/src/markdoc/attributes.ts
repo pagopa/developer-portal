@@ -2,6 +2,15 @@ import { Config } from '@markdoc/markdoc';
 import path from 'path';
 import { ParseContentConfig } from '../parseContent';
 
+const getCorrectGuide = (guide: string) => {
+  switch (guide) {
+    case 'manuale-operativo-dei-servizi':
+      return 'manuale-servizi';
+    default:
+      return guide;
+  }
+};
+
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
   readonly transform = (value: string) => value === '' || value === 'true';
@@ -53,7 +62,42 @@ export class LinkAttr {
             spacePrefix.pathPrefix
           )
         : value;
-    } else return value;
+    } else if (value) {
+      const DOCS_URL = 'https://docs.pagopa.it';
+      const allowedHosts = ['docs.pagopa.it'];
+      const host = new URL(value).host;
+
+      const isDocsUrl = allowedHosts.includes(host);
+
+      if (!isDocsUrl) {
+        return value;
+      }
+
+      const cleanUrl = value.replace(DOCS_URL, '');
+
+      const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
+      const correctGuide = getCorrectGuide(currentGuide);
+
+      const finalUrl = cleanUrl.replace(currentGuide, correctGuide);
+
+      const guides = parseContentConfig.gitBookPagesWithTitle;
+
+      const guide = guides.find((g) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [_product, _path, name, _version, ...rest] = g.path
+          .split('/')
+          .filter((p) => p !== '');
+        return finalUrl === `/${name}/${rest.join('/')}`;
+      });
+
+      if (guide) {
+        return guide.path;
+      }
+
+      return value;
+    } else {
+      return value;
+    }
   };
 }
 
