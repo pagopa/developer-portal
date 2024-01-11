@@ -69,7 +69,7 @@ const CodeBlockPart = ({
       {title && (
         <Typography
           sx={{
-            color: 'white',
+            color: palette.common.white,
             fontSize: '16px',
             fontWeight: 700,
             position: 'absolute',

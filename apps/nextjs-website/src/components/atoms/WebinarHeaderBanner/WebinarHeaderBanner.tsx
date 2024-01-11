@@ -48,10 +48,10 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
       }}
     >
       <Box sx={{ display: 'flex' }}>
-        <VideoLibraryIcon sx={{ color: 'white' }} />
+        <VideoLibraryIcon sx={{ color: palette.common.white }} />
         <Typography
           sx={{
-            color: 'white',
+            color: palette.common.white,
             marginLeft: '10px',
             WebkitLineClamp: '1',
             display: '-webkit-box',
@@ -66,7 +66,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
           component={Link}
           sx={{
             display: 'flex',
-            color: 'white',
+            color: palette.common.white,
             fontWeight: 600,
             height: 28,
             marginLeft: '16px',
@@ -83,7 +83,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
           slug && window?.localStorage.setItem(slug, endDateTime);
         }}
       >
-        <CloseIcon sx={{ color: 'white' }}></CloseIcon>
+        <CloseIcon sx={{ color: palette.common.white }}></CloseIcon>
       </IconButton>
     </Box>
   );

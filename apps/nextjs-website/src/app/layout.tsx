@@ -13,6 +13,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
 import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
+import Script from 'next/script';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -63,9 +64,11 @@ export default async function RootLayout({
     <html lang='it'>
       <head>
         {isProduction && (
-          <script
+          <Script
+            id='matomo'
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
+            strategy='lazyOnload'
           />
         )}
       </head>

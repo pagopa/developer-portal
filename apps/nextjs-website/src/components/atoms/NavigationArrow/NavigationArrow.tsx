@@ -19,7 +19,7 @@ const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
   const boxSx = direction === 'right' ? { right: 20 } : { left: 20 };
   const arrowIcon = createElement(
     direction === 'right' ? ArrowForward : ArrowBack,
-    { sx: { color: 'white', height: 12, width: 12 } }
+    { sx: { color: palette.common.white, height: 12, width: 12 } }
   );
 
   return (
