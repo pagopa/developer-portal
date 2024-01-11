@@ -2,18 +2,18 @@
 import React from 'react';
 import { useTheme } from '@mui/material';
 
-const MainWrapper = ({ children }: { children: React.ReactNode }) => {
+const BodyWrapper = ({ children }: { children: React.ReactNode }) => {
   const { palette } = useTheme();
 
   return (
-    <main
+    <body
       style={{
         backgroundColor: palette.background.paper,
       }}
     >
       {children}
-    </main>
+    </body>
   );
 };
 
-export default MainWrapper;
+export default BodyWrapper;
