@@ -152,13 +152,11 @@ const Newsroom = (props: INewsroom) => {
         wrap='nowrap'
         sx={{
           overflowX: 'scroll',
+          paddingRight: '32px',
           width: 'calc(100% + 32px)',
           marginLeft: '-32px',
           'div.MuiGrid-item:first-of-type': {
             marginLeft: '16px',
-          },
-          'div.MuiGrid-item:last-of-type': {
-            marginRight: '32px',
           },
         }}
       >

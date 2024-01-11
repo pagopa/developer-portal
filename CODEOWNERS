@@ -1,5 +1,5 @@
 # Default owners
-* @datalek @kin0992
+* @pagopa/devportal-maintain
 
 # Frontend codeowners
 apps/nextjs-website/public/icons/ @MarcoPonchia @marcobottaro @tommaso1
@@ -12,3 +12,7 @@ apps/nextjs-website/src/helpers/ @MarcoPonchia @marcobottaro @tommaso1
 apps/nextjs-website/src/lib/types/ @MarcoPonchia @marcobottaro @tommaso1
 apps/nextjs-website/src/messages/ @MarcoPonchia @marcobottaro @tommaso1
 apps/nextjs-website/src/styles/ @MarcoPonchia @marcobottaro @tommaso1
+
+.changeset/*
+.changeset/README.md @pagopa/devportal-maintain
+.changeset/config.json @pagopa/devportal-maintain
