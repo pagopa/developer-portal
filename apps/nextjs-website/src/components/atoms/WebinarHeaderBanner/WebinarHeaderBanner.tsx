@@ -10,28 +10,30 @@ import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
-import { translations } from '@/_contents/translations';
 import Link from 'next/link';
+import { Webinar } from '@/lib/types/webinar';
+import { useTranslations } from 'next-intl';
 
 export type WebinarHeaderBannerProps = {
-  readonly slug: string;
-  readonly text: string;
-  readonly endDateTime: string;
+  webinars: readonly Webinar[];
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
-  slug,
-  text,
-  endDateTime,
-}) => {
-  const [visible, setVisible] = useState(
-    !window?.localStorage.getItem(slug) ||
-      new Date(window?.localStorage.getItem(slug) || new Date().toISOString()) <
-        new Date()
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
+  const webinar = webinars.find(
+    ({ endDateTime }) =>
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
+  const { slug, title: text, endDateTime } = webinar || {};
+  const storedDateTime =
+    (slug && window?.localStorage.getItem(slug)) || new Date().toISOString();
+  const shouldShow = !storedDateTime || new Date(storedDateTime) < new Date();
+  const [visible, setVisible] = useState(shouldShow);
 
   const { palette } = useTheme();
+  const t = useTranslations('homepage');
 
+  if (!webinar) return null;
+  if (!endDateTime) return null;
   if (!visible) return null;
 
   return (
@@ -46,10 +48,10 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
       }}
     >
       <Box sx={{ display: 'flex' }}>
-        <VideoLibraryIcon sx={{ color: 'white' }} />
+        <VideoLibraryIcon sx={{ color: palette.common.white }} />
         <Typography
           sx={{
-            color: 'white',
+            color: palette.common.white,
             marginLeft: '10px',
             WebkitLineClamp: '1',
             display: '-webkit-box',
@@ -64,24 +66,24 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
           component={Link}
           sx={{
             display: 'flex',
-            color: 'white',
+            color: palette.common.white,
             fontWeight: 600,
             height: 28,
             marginLeft: '16px',
           }}
           href={'/webinars/' + slug}
         >
-          {translations.homepage.webinarBannerButtonContent}
+          {t('webinarBannerButtonContent')}
           <EastIcon sx={{ height: 30, ml: 1 }} />
         </MuiLink>
       </Box>
       <IconButton
         onClick={() => {
           setVisible(false);
-          window?.localStorage.setItem(slug, endDateTime);
+          slug && window?.localStorage.setItem(slug, endDateTime);
         }}
       >
-        <CloseIcon sx={{ color: 'white' }}></CloseIcon>
+        <CloseIcon sx={{ color: palette.common.white }}></CloseIcon>
       </IconButton>
     </Box>
   );

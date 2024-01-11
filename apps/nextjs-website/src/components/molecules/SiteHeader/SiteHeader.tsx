@@ -1,10 +1,10 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import UserInfo from '@/components/atoms/UserInfo/UserInfo';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
 import { Product } from '@/lib/types/product';
 import { Box, Divider, Stack, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { ForwardedRef, forwardRef } from 'react';
 
 // Used in ProductHeader.tsx to manage scroll-up animation
@@ -18,8 +18,12 @@ const SiteHeader = (
   { products }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const { header } = translations;
+  const t = useTranslations('header');
   const { palette } = useTheme();
+  const dropdownItems = products.map((product) => ({
+    href: product.subpaths.overview.path,
+    label: product.name,
+  }));
 
   return (
     <Box
@@ -42,14 +46,8 @@ const SiteHeader = (
         justifyContent={{ sm: 'space-between', md: 'start' }}
         alignItems='center'
       >
-        <HomepageButton title={header.title} boldTitle={header.boldTitle} />
-        <Dropdown
-          label={header.products}
-          items={products.map((product) => ({
-            href: product.subpaths.overview.path,
-            label: product.name,
-          }))}
-        />
+        <HomepageButton title={t('title')} boldTitle={t('boldTitle')} />
+        <Dropdown label={t('products')} items={dropdownItems} />
         <UserInfo />
       </Stack>
       <Divider />

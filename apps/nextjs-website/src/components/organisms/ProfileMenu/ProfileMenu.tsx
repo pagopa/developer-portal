@@ -1,7 +1,7 @@
 'use client';
 import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobileProfileMenu';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import DesktopProfileMenu from '@/components/molecules/DesktopProfileMenu/DesktopProfileMenu';
 import React, { ReactNode } from 'react';
 import { useUser } from '@/helpers/user.helper';
@@ -33,7 +33,7 @@ const ProfileMenu = ({ children }: { children: ReactNode }) => {
     <>
       <MobileProfileMenu userFullName={userFullName} />
       <EContainer>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', mt: { xs: '60px', md: 0 } }}>
           <DesktopProfileMenu
             currentPathname={pathname}
             userFullName={userFullName}

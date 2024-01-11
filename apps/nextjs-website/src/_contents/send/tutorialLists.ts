@@ -25,6 +25,16 @@ export const sendTutorials: readonly Tutorial[] = [
     },
     showInOverview: true,
   },
+  {
+    title: `Configurare PDND/Interoperabilità per i servizi SEND`,
+    path: `${sendTutorialListsPath.path}/configurare-laccesso-ad-interoperabilita-per-i-servizi-send`,
+    name: 'Genera il tuo client',
+    image: {
+      alt: 'Immagine: Genera il tuo client',
+      url: '/images/send-tutorial-2.png',
+    },
+    showInOverview: true,
+  },
 ];
 
 export const sendTutorialLists: TutorialListsData = {

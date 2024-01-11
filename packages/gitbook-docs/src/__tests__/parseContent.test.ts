@@ -439,6 +439,7 @@ describe('parseContent', () => {
       new Markdoc.Tag('File', {
         src: `${prefix}/p/a-src.jpg`,
         filename: 'a-src',
+        caption: undefined,
       }),
     ]);
     expect(
@@ -559,6 +560,30 @@ describe('parseContent', () => {
           ),
         ]),
         new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+      ]),
+    ]);
+
+    const fileAttrs = {
+      src: `${config.assetsPrefix}/p/a-src.jpg`,
+      filename: 'a-src',
+      caption: undefined,
+    };
+
+    expect(
+      parseContent(
+        '{% tabs %}\n{% tab title="Tab 1" %}\nTab 1 Content\n\n{% file src="p/a-src.jpg" %}\n{% endtab %}\n\n{% tab title="Tab 2" %}\nTab 2 Content\n\n{% file src="p/a-src.jpg" %}\n{% endtab %}\n{% endtabs %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Tabs', { titles: ['Tab 1', 'Tab 2'] }, [
+        new Markdoc.Tag('Paragraph', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['Tab 1 Content']),
+          new Markdoc.Tag('File', fileAttrs),
+        ]),
+        new Markdoc.Tag('Paragraph', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['Tab 2 Content']),
+          new Markdoc.Tag('File', fileAttrs),
+        ]),
       ]),
     ]);
   });

@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { Box, useTheme } from '@mui/material';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { translations } from '@/_contents/translations';
+import { useTranslations } from 'next-intl';
 
 type GoToStepProps = {
   previousOrNext: 'previous' | 'next';
@@ -18,7 +18,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
     previousOrNext === 'next' ? ArrowForward : ArrowBack,
     { sx: { color: palette.text.secondary, height: '24px', width: '24px' } }
   );
-  const { quickStartGuide } = translations;
+  const t = useTranslations('quickStartGuide');
 
   return (
     <Box
@@ -36,9 +36,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
         marginBottom='4px'
         sx={{ display: { xs: 'none', md: 'block' } }}
       >
-        {previousOrNext === 'next'
-          ? quickStartGuide.content.next
-          : quickStartGuide.content.previous}
+        {t(previousOrNext === 'next' ? 'content.next' : 'content.previous')}
       </Typography>
       <Box
         sx={{

@@ -9,7 +9,8 @@ import {
 } from '@/helpers/userPreferences.helpers';
 import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { WebinarState } from '@/helpers/webinar.helpers';
 
 export type SubscribeButtonProps = {
   webinarSlug?: string;
@@ -21,6 +22,7 @@ export type SubscribeButtonProps = {
   isSubscribed: boolean;
   setIsSubscribed: (isSubscribed: boolean) => null;
   handleErrorMessage?: (message: string) => null;
+  webinarState: WebinarState;
 };
 
 const SubscribeToWebinar = ({
@@ -31,10 +33,12 @@ const SubscribeToWebinar = ({
   isSubscribed,
   setIsSubscribed,
   handleErrorMessage,
+  webinarState,
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (userAttributes && webinarSlug) {
@@ -87,7 +91,7 @@ const SubscribeToWebinar = ({
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
     // eslint-disable-next-line functional/immutable-data
-    router.push('/auth/login');
+    router.push(`/auth/login?redirect=${pathname}`);
     return null;
   };
 
@@ -105,6 +109,21 @@ const SubscribeToWebinar = ({
     return null;
   };
 
+  const subscribeLabelMap = {
+    [WebinarState.past]: 'view',
+    [WebinarState.comingSoon]: 'takePart',
+    [WebinarState.live]: 'takePart',
+    [WebinarState.future]: 'default',
+    [WebinarState.unknown]: 'default',
+  };
+
+  if (
+    isSubscribed &&
+    (webinarState === WebinarState.live || webinarState === WebinarState.past)
+  ) {
+    return null;
+  }
+
   return (
     <SubscribeButton
       disabled={!userAligned || isLoading}
@@ -112,6 +131,7 @@ const SubscribeToWebinar = ({
       isSubscribed={isSubscribed}
       onSubscribe={userAttributes ? onSubscribe : onSubscribeWithoutUser}
       onCancelSubscription={onUnsubscribe}
+      subscribeLabel={subscribeLabelMap[webinarState]}
     />
   );
 };

@@ -1,5 +1,6 @@
 import { getWebinar, getWebinars } from '@/lib/api';
-import WebinarDetailTemplate from '@/components/organisms/WebinarDetailTemplate/WebinarDetailTemplate';
+import dynamic from 'next/dynamic';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 type Params = {
   webinarSlug: string;
@@ -12,10 +13,21 @@ export async function generateStaticParams() {
   }));
 }
 
+const NotSsrWebinarDetailTemplate = dynamic(
+  () =>
+    import(
+      '@/components/organisms/WebinarDetailTemplate/WebinarDetailTemplate'
+    ),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  }
+);
+
 const Page = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
 
-  return <WebinarDetailTemplate webinar={webinar} />;
+  return <NotSsrWebinarDetailTemplate webinar={webinar} />;
 };
 
 export default Page;
