@@ -45,7 +45,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/knowledge-base/v2.0`,
+            href: `${sendGuideListsPath.path}/knowledge-base/v2.1`,
             label: 'Vai al documento',
           },
           imagePath: '/images/approfondimenti-sull-integrazione.png',

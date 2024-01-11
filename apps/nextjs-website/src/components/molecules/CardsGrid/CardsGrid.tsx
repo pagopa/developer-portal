@@ -3,8 +3,8 @@ import React from 'react';
 import { Box, Grid, GridSize, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
-import { translations } from '@/_contents/translations';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { useTranslations } from 'next-intl';
 
 type CardsGridProps = {
   cardVariant?: 'text' | 'contained' | 'outlined';
@@ -29,7 +29,7 @@ const CardsGrid = ({
   cardSize,
 }: CardsGridProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
+  const t = useTranslations('shared');
 
   return (
     <EContainer>
@@ -48,7 +48,7 @@ const CardsGrid = ({
                   title={title}
                   text={text}
                   cta={{
-                    label: comingSoon ? shared.comingSoon : shared.moreInfo,
+                    label: t(comingSoon ? 'comingSoon' : 'moreInfo'),
                     href,
                     variant: cardVariant,
                   }}
