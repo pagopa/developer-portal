@@ -96,7 +96,7 @@ const Page = async ({ params }: { params: Params }) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column-reverse', lg: 'row' },
+            flexDirection: { xs: 'column', lg: 'row' },
             margin: '0 auto',
             maxWidth: '1900px',
           }}
