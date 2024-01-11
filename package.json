@@ -12,7 +12,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "changeset": "changeset",
-    "version": "changeset version"
+    "version": "changeset version && npm i"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

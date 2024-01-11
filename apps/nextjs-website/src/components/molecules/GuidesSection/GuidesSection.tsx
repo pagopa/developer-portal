@@ -16,15 +16,15 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
   title,
   guides,
 }: GuidesSectionProps) => {
-  const { typography } = useTheme();
+  const { typography, palette } = useTheme();
 
   return (
-    <EContainer background={'#FAFAFA'} py={0}>
+    <EContainer background={palette.background.default} py={0}>
       <Typography
         content='div'
         mb={3}
         mt={6}
-        color={'#5C6F82'}
+        color={palette.text.secondary}
         fontSize={14}
         sx={{
           fontWeight: typography.fontWeightBold,
