@@ -40,8 +40,8 @@ export const webinars: readonly Webinar[] = [
         imagePath: '/images/speaker-ferraro.png',
       },
     ],
-    startDateTime: '2023-12-14T11:00:00',
-    endDateTime: '2023-12-14T11:40:00',
+    startDateTime: '2023-12-14T10:00:00.000Z',
+    endDateTime: '2023-12-14T10:40:00.000Z',
     subscribeCtaLabel: '',
     startInfo: {
       title: 'Risorse correlate',
@@ -61,7 +61,7 @@ export const webinars: readonly Webinar[] = [
         {
           title: 'Guida tecnica',
           text: 'Cosa può fare il tuo ente con l’app IO? Seleziona il settore di appartenenza e approfondisci i principali casi d’uso dedicati.',
-          href: `${appIOGuideListsPath.path}/io-guida-tecnica/v4.0`,
+          href: `${appIOGuideListsPath.path}/io-guida-tecnica/v5.0`,
           iconName: 'MenuBook',
         },
       ],
