@@ -42,7 +42,10 @@ export const Operations = ({ spec, validOperations }: OperationsProps) => {
         <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
           {noOpHeader}
         </Typography>
-        <Typography variant='body2' color='GrayText'>
+        <Typography
+          variant='body2'
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
           {noOpMessage}
         </Typography>
       </Card>

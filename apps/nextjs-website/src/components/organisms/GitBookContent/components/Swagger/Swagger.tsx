@@ -17,7 +17,10 @@ const Swagger = ({ path, method, src }: SwaggerProps) => {
         <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
           {t('errorCard.header')}
         </Typography>
-        <Typography variant='body2' color='GrayText'>
+        <Typography
+          variant='body2'
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
           {t('errorCard.message')}
         </Typography>
       </Card>

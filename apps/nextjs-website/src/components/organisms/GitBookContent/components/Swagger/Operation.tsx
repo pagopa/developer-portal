@@ -66,7 +66,10 @@ export const Operation = ({
             color={chipColor}
             size='small'
           />
-          <Typography variant='caption' color='GrayText'>
+          <Typography
+            variant='caption'
+            sx={{ color: (theme) => theme.palette.text.secondary }}
+          >
             {baseUrl}
           </Typography>
           <Typography variant='caption-semibold'>{path}</Typography>
