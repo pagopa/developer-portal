@@ -8,6 +8,7 @@
         "title": "DevPortal"
     },
     "profile": {
+        "title": "Profilo",
         "agreements": {
             "newsletter": {
                 "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
