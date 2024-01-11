@@ -15,6 +15,7 @@ import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { snackbarAutoHideDurationMs } from '@/config';
+import { useTheme } from '@mui/material';
 
 interface confirmLoginProps {
   email: string | null;
@@ -26,6 +27,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
     auth: { confirmLogin },
   } = translations;
 
+  const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
@@ -78,7 +80,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
                 sx={{
-                  backgroundColor: 'white',
+                  backgroundColor: palette.background.paper,
                 }}
               />
             </Stack>
