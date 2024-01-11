@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": patch
 ---
 
 Update profile page copy
