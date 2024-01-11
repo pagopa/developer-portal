@@ -56,7 +56,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
           sx={{ padding: 3 }}
         >
           <Typography variant='body2' sx={{ fontWeight: 600 }}>
-            {`${t('hello')} ${userFullName}`}
+            {userFullName}
           </Typography>
           <IconButton size='small' sx={{ ml: 1 }}>
             <ArrowDropDownOutlinedIcon
