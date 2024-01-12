@@ -47,12 +47,15 @@ export const Header = (props: HeaderProps) => {
     <>
       <Box
         bgcolor={backgroundColor}
-        paddingX={{ xs: 1, sm: 3 }}
         component='header'
         role='banner'
         sx={{
           borderBottomRightRadius: '8px',
           borderBottomLeftRadius: '8px',
+          paddingX: {
+            xs: 3,
+            sm: 3,
+          },
         }}
       >
         <Stack
@@ -108,7 +111,7 @@ const styles: Record<string, SxProps> = {
     flexDirection: { xs: 'column', md: 'row' },
     alignItems: { md: 'center', xs: 'flex-start' },
     gap: { xs: 2 },
-    px: '44px',
+    px: 3,
   },
   headerInfo: {
     flexDirection: 'row',

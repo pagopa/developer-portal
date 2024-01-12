@@ -1,7 +1,7 @@
 'use client';
 import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
-import { Box, Divider, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
