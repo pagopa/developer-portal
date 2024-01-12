@@ -6,6 +6,26 @@ const getCorrectGuide = (guide: string) => {
   switch (guide) {
     case 'manuale-operativo-dei-servizi':
       return 'manuale-servizi';
+    case 'kb-enti':
+      return 'supporto-agli-enti';
+    case 'kit-di-comunicazione-per-gli-enti':
+      return 'kit-comunicazione';
+    case 'io-come-aderire':
+      return 'accordi-adesione';
+    case 'f.a.q.-per-integratori':
+      return 'knowledge-base';
+    case 'modello-di-integrazione-di-piattaforma-notifiche':
+      return 'modello-di-integrazione';
+    case 'manuale-operativo-back-office-pagopa-ente-creditore':
+      return 'manuale-bo-ec';
+    case 'manuale-bo-pagopa-psp':
+      return 'manuale-bo-psp';
+    case 'gestionedeglierrori':
+      return 'errori';
+    case 'dizionario-dei-metadata':
+      return 'metadata';
+    case 'manuale-operativo-di-firma-con-io':
+      return 'manuale-operativo';
     default:
       return guide;
   }
