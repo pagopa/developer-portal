@@ -9,6 +9,7 @@ import {
   Grid,
   Box,
   TextField,
+  useTheme,
 } from '@mui/material';
 import { validateEmail } from '@/helpers/auth.helpers';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
@@ -47,6 +48,8 @@ const ResetPasswordForm = ({
     handleResetPassword();
   }, [handleResetPassword, validateForm]);
 
+  const { palette } = useTheme();
+
   return (
     <Box
       component='section'
@@ -77,7 +80,7 @@ const ResetPasswordForm = ({
               error={!!emailError}
               size='small'
               sx={{
-                backgroundColor: 'white',
+                backgroundColor: palette.background.paper,
                 width: '100%',
               }}
             />

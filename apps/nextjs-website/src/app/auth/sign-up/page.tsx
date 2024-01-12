@@ -3,25 +3,13 @@ import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
-import {
-  Alert,
-  Box,
-  Grid,
-  Snackbar,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { signUpAdvantages, snackbarAutoHideDurationMs } from '@/config';
-
-interface Info {
-  message: string;
-  isError: boolean;
-}
+import { signUpAdvantages } from '@/config';
 
 const SignUp = () => {
   const params = useSearchParams();
@@ -44,7 +32,7 @@ const SignUp = () => {
     params.get('step') || SignUpSteps.SIGN_UP
   );
 
-  const [info, setInfo] = useState<Info | null>(null);
+  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
 
   const goToConfirmSignUp = useCallback(() => {
     router.replace(
@@ -56,6 +44,7 @@ const SignUp = () => {
   }, [router, userData.username]);
 
   const onSignUp = useCallback(async () => {
+    setUserAlreadyExist(false);
     const {
       company,
       firstName,
@@ -78,7 +67,11 @@ const SignUp = () => {
         'custom:company_type': company,
       },
     }).catch((error) => {
-      setInfo({ message: error.message, isError: true });
+      if (error.code === 'UsernameExistsException') {
+        setUserAlreadyExist(true);
+      } else {
+        setUserAlreadyExist(false);
+      }
       return false;
     });
 
@@ -147,6 +140,7 @@ const SignUp = () => {
                 userData={userData}
                 setUserData={setUserData}
                 onSignUp={onSignUp}
+                userAlreadyExist={userAlreadyExist}
               />
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
@@ -155,15 +149,6 @@ const SignUp = () => {
           </Grid>
         </Grid>
       </Box>
-      <Snackbar
-        open={!!info}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setInfo(null)}
-      >
-        <Alert severity={info?.isError ? 'error' : 'success'}>
-          {info?.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

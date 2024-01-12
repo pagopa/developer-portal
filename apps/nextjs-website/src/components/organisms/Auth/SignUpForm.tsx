@@ -36,6 +36,7 @@ import {
   MouseEvent,
   SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -44,6 +45,7 @@ interface SignUpFormProps {
   userData: SignUpUserData;
   setUserData: Dispatch<SetStateAction<SignUpUserData>>;
   onSignUp: () => Promise<boolean>;
+  userAlreadyExist: boolean;
 }
 
 interface SignUpFieldsError {
@@ -54,7 +56,12 @@ interface SignUpFieldsError {
   confirmPassword: string | null;
 }
 
-const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
+const SignUpForm = ({
+  userData,
+  setUserData,
+  onSignUp,
+  userAlreadyExist,
+}: SignUpFormProps) => {
   const login = useTranslations('auth.login');
   const signUp = useTranslations('auth.signUp');
   const shared = useTranslations('shared');
@@ -107,8 +114,8 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
 
     setFieldErrors({
       name: nameError ? shared(nameError) : null,
-      surname: surnameError ? shared(passwordError) : null,
-      email: shared(emailError),
+      surname: surnameError ? shared(surnameError) : null,
+      email: emailError ? shared(emailError) : null,
       password: passwordError ? shared(passwordError) : null,
       confirmPassword: confirmPasswordError
         ? signUp('passwordMismatchError')
@@ -123,6 +130,19 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
       !confirmPasswordError
     );
   }, [shared, signUp, userData]);
+
+  const setEmailErrorIfUserExists = useCallback(() => {
+    if (userAlreadyExist) {
+      setFieldErrors((prevFieldErrors) => ({
+        ...prevFieldErrors,
+        email: shared('emailAlreadyTaken'),
+      }));
+    }
+  }, [userAlreadyExist, shared]);
+
+  useEffect(() => {
+    setEmailErrorIfUserExists();
+  }, [userAlreadyExist, setEmailErrorIfUserExists]);
 
   const onSignUpClick = useCallback(() => {
     const valid = validateForm();
