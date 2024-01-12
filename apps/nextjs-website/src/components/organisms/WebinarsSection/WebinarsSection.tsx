@@ -1,7 +1,7 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
 import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
@@ -11,23 +11,19 @@ import { useTranslations } from 'next-intl';
 
 export type webinarsSectionProps = {
   link?: { href?: string; label: string };
+  title?: 'dontLoseNext' | 'next' | 'participateTo';
   webinars: Webinar[];
 };
 
-const WebinarsSection = ({ link, webinars }: webinarsSectionProps) => {
+const WebinarsSection = ({
+  link,
+  title = 'participateTo',
+  webinars,
+}: webinarsSectionProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection');
   const [error, setError] = useState<string | null>(null);
   const { aligned: userAligned } = useUser();
-
-  const futureWebinarsExist = useMemo(
-    () =>
-      !!webinars.filter(
-        ({ endDateTime }) =>
-          endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
-      ).length,
-    [webinars]
-  );
 
   return (
     <Box
@@ -54,7 +50,7 @@ const WebinarsSection = ({ link, webinars }: webinarsSectionProps) => {
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box mb={webinars.length ? 6 : 0}>
             <Typography variant='h4' mb={2} color={theme.palette.common.white}>
-              {t(futureWebinarsExist ? 'title.future' : 'title.past')}
+              {t(`title.${title}`)}
             </Typography>
             <Typography variant='body2' color={theme.palette.common.white}>
               {t('description')}

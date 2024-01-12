@@ -30,7 +30,7 @@ const Webinars = async () => {
     <WebinarsLayout
       visibleInHomeWebinars={visibleInHomeWebinars}
       otherWebinars={otherWebinars}
-    ></WebinarsLayout>
+    />
   );
 };
 

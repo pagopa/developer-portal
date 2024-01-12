@@ -98,8 +98,9 @@
             "description": "",
             "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
             "title": {
-                "future": "Partecipa ai nostri webinar",
-                "past": "I nostri webinar"
+                "dontLoseNext": "Non perderti il prossimo webinar",
+                "next": "I prossimi appuntamenti",
+                "participateTo": "Partecipa ai nostri webinar"
             }
         }
     },
