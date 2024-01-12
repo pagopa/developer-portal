@@ -10,6 +10,7 @@
         "title": "DevPortal"
     },
     "profile": {
+        "title": "Profilo",
         "agreements": {
             "newsletter": {
                 "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
@@ -31,30 +32,29 @@
             },
             "title": "Consensi e privacy"
         },
-        "hello": "Ciao,",
         "personalData": {
-            "title": "I tuoi dati",
-            "dataSection": "Profilo",
-            "accountSection": "Account",
-            "deleteAccountSection": "Eliminazione Account",
-            "deleteAccount": {
-                "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
-                "buttonLabel": "Elimina account",
-                "modalTitle": "Confermi di voler eliminare il tuo account?",
-                "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
-            },
-            "deleteAccountButton": "Elimina account",
-            "addField": "Inserisci",
-            "fields": {
-                "name": "Nome",
-                "surname": "Cognome",
-                "role": "Ruolo",
-                "company": "Tipologia di ente o azienda",
-                "sector": "Settore",
-                "products": "Prodotti di interesse",
-                "email": "Indirizzo e-mail",
-                "password": "Password"
-            }
+          "title": "Su di te",
+          "dataSection": "I tuoi dati",
+          "accountSection": "Il tuo account",
+          "deleteAccountSection": "Eliminazione Account",
+          "deleteAccount": {
+            "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
+            "buttonLabel": "Elimina account",
+            "modalTitle": "Confermi di voler eliminare il tuo account?",
+            "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
+          },
+          "deleteAccountButton": "Elimina account",
+          "addField": "Inserisci",
+          "fields": {
+            "name": "Nome",
+            "surname": "Cognome",
+            "role": "Ruolo",
+            "company": "Tipologia di ente o azienda",
+            "sector": "Settore",
+            "products": "Prodotti di interesse",
+            "email": "Indirizzo e-mail",
+            "password": "Password"
+          }
         },
         "changePassword": {
             "title": "Cambia password",
@@ -225,7 +225,7 @@
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
-        "yourData": "I tuoi dati",
+        "yourData": "Profilo",
         "subscribeButton": {
             "subscribeLabel": {
                 "default": "Iscriviti",
@@ -242,7 +242,8 @@
         "description": "La pagina che stai cercando non esiste"
     },
     "productGuidePage": {
-        "onThisPage": "In questa pagina"
+        "onThisPage": "In questa pagina",
+        "tableOfContents": "Tabella dei contenuti"
     },
     "homepage": {
         "news": {
