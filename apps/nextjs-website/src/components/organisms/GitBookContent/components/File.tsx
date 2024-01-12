@@ -6,7 +6,15 @@ import Paper from '@mui/material/Paper';
 const File = ({ src, filename }: FileProps) => (
   <Paper
     variant='outlined'
-    sx={{ p: 3, justifyContent: 'left' }}
+    sx={{
+      p: 3,
+      justifyContent: 'left',
+      maxWidth: '100%',
+      overflow: 'hidden',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      wordBreak: 'break-all',
+    }}
     component={ButtonNaked}
     color='text'
     size='medium'

@@ -56,7 +56,14 @@ const Item = (props: INewsroomItem) => {
   } = props;
 
   return (
-    <Grid item sm={12} md={4} mb={8} minWidth={{ xs: '80vw', md: 'auto' }}>
+    <Grid
+      item
+      sm={12}
+      md={4}
+      mb={8}
+      minWidth={{ xs: '80vw', md: 'auto' }}
+      sx={{ display: 'flex', flexDirection: 'column' }}
+    >
       <Box
         position={'relative'}
         sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
@@ -99,14 +106,23 @@ const Item = (props: INewsroomItem) => {
           {new Intl.DateTimeFormat(locale, options).format(date)}
         </Typography>
       )}
-      <Typography variant='h6'>{title}</Typography>
-      <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
-        <LinkButton
-          disabled={!!comingSoonLabel}
-          href={href.link}
-          label={href.label}
-        />
-      </Stack>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          flexGrow: '1',
+        }}
+      >
+        <Typography variant='h6'>{title}</Typography>
+        <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
+          <LinkButton
+            disabled={!!comingSoonLabel}
+            href={href.link}
+            label={href.label}
+          />
+        </Stack>
+      </div>
     </Grid>
   );
 };
@@ -136,13 +152,11 @@ const Newsroom = (props: INewsroom) => {
         wrap='nowrap'
         sx={{
           overflowX: 'scroll',
+          paddingRight: '32px',
           width: 'calc(100% + 32px)',
           marginLeft: '-32px',
           'div.MuiGrid-item:first-of-type': {
             marginLeft: '16px',
-          },
-          'div.MuiGrid-item:last-of-type': {
-            marginRight: '32px',
           },
         }}
       >

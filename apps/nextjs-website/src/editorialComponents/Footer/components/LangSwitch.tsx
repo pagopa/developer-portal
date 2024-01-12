@@ -4,6 +4,7 @@ import { ButtonNaked } from './ButtonNaked';
 
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
+import { useTranslations } from 'next-intl';
 
 export interface Language {
   id: string | number;
@@ -22,6 +23,7 @@ export function LangSwitch({
   onLanguageChanged,
   activeLanguage,
 }: LangSwitchProps) {
+  const t = useTranslations('footer');
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -65,17 +67,20 @@ export function LangSwitch({
           }}
           MenuListProps={{ 'aria-labelledby': 'lang-menu-button' }}
         >
-          {languages.map((language) => (
-            <MenuItem
-              aria-label={language.value}
-              key={language.id}
-              onClick={() => {
-                onLanguageChanged(language);
-              }}
-            >
-              {language.value}
-            </MenuItem>
-          ))}
+          {languages.map((language) => {
+            const label = t(`languages.${language.id}`);
+            return (
+              <MenuItem
+                aria-label={label}
+                key={language.id}
+                onClick={() => {
+                  onLanguageChanged(language);
+                }}
+              >
+                {label}
+              </MenuItem>
+            );
+          })}
         </Menu>
       )}
     </Stack>
