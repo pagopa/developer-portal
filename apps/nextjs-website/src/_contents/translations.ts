@@ -308,5 +308,5 @@ export const translations = {
         label: 'Preferenza Cookie',
       },
     },
-  }
+  },
 };
