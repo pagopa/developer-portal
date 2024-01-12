@@ -79,7 +79,7 @@ const WebinarsLayout = ({
                   >
                     <Box position={'relative'} sx={{ overflow: 'hidden' }}>
                       <Image
-                        src={webinar.imagePath ?? '/images/webinar-default.png'}
+                        src={webinar.imagePath}
                         alt={webinar.title}
                         width={0}
                         height={0}
@@ -111,7 +111,7 @@ const WebinarsLayout = ({
                       color='primary.main'
                     >
                       <LinkButton
-                        href={webinar.slug}
+                        href={`/webinars/${webinar.slug}`}
                         label={t('webinar.goToWebinar')}
                       />
                     </Stack>
