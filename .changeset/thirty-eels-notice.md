@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix mobile layout on guides page
+[DEV-1243] Guide mobile menu

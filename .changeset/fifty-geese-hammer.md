@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Improve scripts loading
+Update profile page copy
