@@ -2,7 +2,6 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
 
 import { translations } from '@/_contents/translations';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
