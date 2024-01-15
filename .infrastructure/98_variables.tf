@@ -54,3 +54,9 @@ variable "use_custom_certificate" {
   description = "Enable CDN https support with a custom certificate instead using the default one"
   default     = true
 }
+
+variable "log_retention_days" {
+  type        = number
+  description = "The number of days logs should be retained. Default is 90 days."
+  default     = 90
+}
