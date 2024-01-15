@@ -31,28 +31,28 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
-          "title": "Su di te",
-          "dataSection": "I tuoi dati",
-          "accountSection": "Il tuo account",
-          "deleteAccountSection": "Eliminazione Account",
-          "deleteAccount": {
-            "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
-            "buttonLabel": "Elimina account",
-            "modalTitle": "Confermi di voler eliminare il tuo account?",
-            "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
-          },
-          "deleteAccountButton": "Elimina account",
-          "addField": "Inserisci",
-          "fields": {
-            "name": "Nome",
-            "surname": "Cognome",
-            "role": "Ruolo",
-            "company": "Tipologia di ente o azienda",
-            "sector": "Settore",
-            "products": "Prodotti di interesse",
-            "email": "Indirizzo e-mail",
-            "password": "Password"
-          }
+            "title": "Su di te",
+            "dataSection": "I tuoi dati",
+            "accountSection": "Il tuo account",
+            "deleteAccountSection": "Eliminazione Account",
+            "deleteAccount": {
+                "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
+                "buttonLabel": "Elimina account",
+                "modalTitle": "Confermi di voler eliminare il tuo account?",
+                "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
+            },
+            "deleteAccountButton": "Elimina account",
+            "addField": "Inserisci",
+            "fields": {
+                "name": "Nome",
+                "surname": "Cognome",
+                "role": "Ruolo",
+                "company": "Tipologia di ente o azienda",
+                "sector": "Settore",
+                "products": "Prodotti di interesse",
+                "email": "Indirizzo e-mail",
+                "password": "Password"
+            }
         },
         "changePassword": {
             "title": "Cambia password",
@@ -166,24 +166,24 @@
             "emailSent": "Email inviata a {email}",
             "advantages": {
                 "exclusive_contents": {
-                  "title": "Accedi a contenuti esclusivi",
-                  "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.",
-                  "isComingSoon": "false"
+                    "title": "Accedi a contenuti esclusivi",
+                    "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.",
+                    "isComingSoon": "false"
                 },
                 "product_updates": {
-                  "title": "Ricevi aggiornamenti sui nostri prodotti",
-                  "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
-                  "isComingSoon": "false"
+                    "title": "Ricevi aggiornamenti sui nostri prodotti",
+                    "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
+                    "isComingSoon": "false"
                 },
                 "api_keys": {
-                  "title": "Genera, gestisci e utilizza api Key",
-                  "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
-                  "isComingSoon": "true"
+                    "title": "Genera, gestisci e utilizza api Key",
+                    "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
+                    "isComingSoon": "true"
                 },
                 "support": {
-                  "title": "Richiedi assistenza tramite un form dedicato",
-                  "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
-                  "isComingSoon": "true"
+                    "title": "Richiedi assistenza tramite un form dedicato",
+                    "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
+                    "isComingSoon": "true"
                 }
             },
             "companyRoles": {
@@ -402,19 +402,19 @@
         "aboutUs": {
             "title": "",
             "links": {
-                "whoWeAre":{
+                "whoWeAre": {
                     "ariaLabel": "Vai al link: Chi siamo",
                     "label": "Chi siamo"
                 },
-                "pnrr":{
+                "pnrr": {
                     "ariaLabel": "Vai al link: PNRR",
                     "label": "PNRR"
                 },
-                "media":{
+                "media": {
                     "ariaLabel": "Vai al link: Media",
                     "label": "Media"
                 },
-                "workWithUs":{
+                "workWithUs": {
                     "ariaLabel": "Vai al link: Lavora con noi",
                     "label": "Lavora con noi"
                 }
@@ -423,23 +423,23 @@
         "resources": {
             "title": "Risorse",
             "links": {
-                "privacyPolicy":{
+                "privacyPolicy": {
                     "ariaLabel": "Vai al link: Informativa Privacy",
                     "label": "Informativa Privacy"
                 },
-                "termsOfService":{
+                "termsOfService": {
                     "ariaLabel": "Vai al link: Termini e Condizioni",
                     "label": "Termini e Condizioni"
                 },
-                "societaTrasparente":{
+                "societaTrasparente": {
                     "ariaLabel": "Vai al link: Società trasparente",
                     "label": "Società trasparente"
                 },
-                "disclosurePolicy":{
+                "disclosurePolicy": {
                     "ariaLabel": "Vai al link: Responsible Disclosure Policy",
                     "label": "Responsible Disclosure Policy"
                 },
-                "model231":{
+                "model231": {
                     "ariaLabel": "Vai al link: Modello 231",
                     "label": "Modello 231"
                 }
