@@ -107,8 +107,14 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
         onChange={handleEmailChange}
         helperText={t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
+        sx={{ marginBottom: { xs: 0, md: 3 } }}
       />
-      <Stack flexDirection='row' gap={4} display={{ xs: 'flex', md: 'none' }}>
+      <Stack
+        flexDirection='row'
+        gap={4}
+        display={{ xs: 'flex', md: 'none' }}
+        sx={{ marginBottom: { xs: 3, md: 0 } }}
+      >
         {actions}
       </Stack>
     </Stack>
