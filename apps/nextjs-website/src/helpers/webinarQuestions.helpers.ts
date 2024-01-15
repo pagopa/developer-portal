@@ -23,7 +23,7 @@ export async function addWebinarQuestion(
       type: 'create',
       args: {
         resource,
-        ...params,
+        ...sanitizeParams(params),
       },
     }),
   };
@@ -34,4 +34,20 @@ export async function addWebinarQuestion(
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to add question');
   }
+}
+
+function sanitizeParams(params: WebinarQuestion): WebinarQuestion {
+  return {
+    email: sanitize(params.email),
+    givenName: sanitize(params.givenName),
+    familyName: sanitize(params.familyName),
+    question: sanitize(params.question),
+    webinarSlug: sanitize(params.webinarSlug),
+    date: sanitize(params.date),
+  };
+}
+
+function sanitize(value: string): string {
+  // remove any leading =
+  return value.replace(/^=+/, '');
 }
