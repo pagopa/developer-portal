@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix mobile slider on home page
+Fix homepage vertical align
