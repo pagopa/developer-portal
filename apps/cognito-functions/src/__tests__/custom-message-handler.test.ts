@@ -112,12 +112,12 @@ describe('Handler', () => {
   });
 
   it('should reply with verification link on UpdateUserAttribute event', async () => {
-    const resendCodeEvent: CustomMessageTriggerEvent = {
+    const updateUserAttributeEvent: CustomMessageTriggerEvent = {
       ...makeEvent(),
       triggerSource: 'CustomMessage_UpdateUserAttribute',
     };
-    const { response } = await makeHandler(env)(resendCodeEvent);
-    const { userAttributes, codeParameter } = resendCodeEvent.request;
+    const { response } = await makeHandler(env)(updateUserAttributeEvent);
+    const { userAttributes, codeParameter } = updateUserAttributeEvent.request;
     const expected = makeConfirmationUpdateEmailAddress(
       `https://${env.domain}/auth/email-confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
       env.domain
