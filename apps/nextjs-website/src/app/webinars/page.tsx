@@ -1,8 +1,11 @@
-import { getOtherWebinars, getVisibleInHomeWebinars } from '@/lib/api';
+import { getWebinars } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
-import WebinarsLayout from '@/components/organisms/WebinarsLayout/WebinarsLayout';
+import dynamic from 'next/dynamic';
+import Spinner from '@/components/atoms/Spinner/Spinner';
+
+// export async function generateMetadata({params: {locale}}) {
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -13,25 +16,18 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const Webinars = async () => {
-  const visibleInHomeWebinars = await getVisibleInHomeWebinars();
-  const otherWebinars = await getOtherWebinars().then((webinars) => {
-    return (
-      [...webinars]
-        .filter(
-          (webinar) => !!webinar.startDateTime && !webinar.isVisibleInHome
-        )
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1))
-    );
-  });
+const NotSsrWebinarsTemplate = dynamic(
+  () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  }
+);
 
-  return (
-    <WebinarsLayout
-      visibleInHomeWebinars={visibleInHomeWebinars}
-      otherWebinars={otherWebinars}
-    />
-  );
+const Webinars = async () => {
+  const webinars = await getWebinars();
+
+  return <NotSsrWebinarsTemplate webinars={webinars} />;
 };
 
 export default Webinars;

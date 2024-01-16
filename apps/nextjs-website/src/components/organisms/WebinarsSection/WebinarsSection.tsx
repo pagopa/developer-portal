@@ -11,13 +11,13 @@ import { useTranslations } from 'next-intl';
 
 export type webinarsSectionProps = {
   link?: { href?: string; label: string };
-  title?: 'dontLoseNext' | 'next' | 'participateTo';
+  title?: 'dontLoseNext' | 'next' | 'our' | 'participateTo';
   webinars: Webinar[];
 };
 
 const WebinarsSection = ({
   link,
-  title = 'participateTo',
+  title = 'our',
   webinars,
 }: webinarsSectionProps) => {
   const theme = useTheme();
