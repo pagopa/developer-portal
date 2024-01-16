@@ -44,6 +44,15 @@ export const makeHandler =
       const emailSubject = 'Password dimenticata';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
+    } else if (eventTrigger === 'CustomMessage_UpdateUserAttribute') {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.log(`User ${username} has requested to update the email address`);
+      const { codeParameter } = event.request;
+      const href = `https://${env.domain}/auth/email-confirmation?username=${username}&code=${codeParameter}`;
+      const emailMessage = makeConfirmationUpdateEmailAddress(href, env.domain);
+      const emailSubject = 'Verifica nuovo indirizzo email';
+      const response = { ...event.response, emailMessage, emailSubject };
+      return { ...event, response };
     } else {
       return event;
     }
