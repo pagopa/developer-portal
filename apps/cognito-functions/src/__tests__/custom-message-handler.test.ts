@@ -111,7 +111,7 @@ describe('Handler', () => {
     }
   });
 
-  it('should reply with verification link on user update attributes event', async () => {
+  it('should reply with verification link on UpdateUserAttribute event', async () => {
     const resendCodeEvent: CustomMessageTriggerEvent = {
       ...makeEvent(),
       triggerSource: 'CustomMessage_UpdateUserAttribute',
