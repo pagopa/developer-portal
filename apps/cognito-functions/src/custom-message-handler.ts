@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { CustomMessageTriggerEvent } from 'aws-lambda';
 import { makeConfirmationEmail } from './templates/confirmation-message';
 import { makeConfirmationForgotPasswordEmail } from './templates/confirmation-forgot-password';
+import { makeConfirmationUpdateEmailAddress } from './templates/confirmation-update-email-address';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
