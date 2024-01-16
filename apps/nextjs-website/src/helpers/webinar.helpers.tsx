@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Webinar } from '@/lib/types/webinar';
 
-const MILLISECONDS_IN_21_HOURS = 21 * 1000 * 60 * 60;
+const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
 
 export enum WebinarState {
@@ -14,9 +14,6 @@ export enum WebinarState {
 
 export const useWebinar = () => {
   const [webinar, setWebinar] = useState<Webinar | null>(null);
-  const [currentTimestamp, setCurrentTimestamp] = useState<number>(
-    new Date().getTime()
-  );
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
@@ -27,13 +24,14 @@ export const useWebinar = () => {
     webinar?.endDateTime && new Date(webinar.endDateTime).getTime();
 
   const handleWebinarState = (): WebinarState => {
+    const currentTimestamp = new Date().getTime();
     if (!webinar || !startDateTimestamp || !endDateTimestamp) {
       return WebinarState.unknown;
     }
     if (endDateTimestamp < currentTimestamp) return WebinarState.past;
 
     const delta = startDateTimestamp - currentTimestamp;
-    if (delta > 0 && delta < MILLISECONDS_IN_21_HOURS) {
+    if (delta > 0 && delta < COMING_SOON_START_TIME_DELTA_MS) {
       return WebinarState.comingSoon;
     }
     if (
@@ -55,7 +53,7 @@ export const useWebinar = () => {
 
     // Cleanup the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [webinar, currentTimestamp]);
+  }, [webinar]);
 
   return { webinarState, setWebinar };
 };

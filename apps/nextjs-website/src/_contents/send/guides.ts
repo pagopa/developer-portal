@@ -25,12 +25,12 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
-      version: 'v1.1',
-      dirName: 'fJIYTgeiXFHm8gUu4gAD',
-    },
-    {
       version: 'v1.1.1',
       dirName: 'XbcyIfLqbQFM4OsEpBQY',
+    },
+    {
+      version: 'v1.1',
+      dirName: 'fJIYTgeiXFHm8gUu4gAD',
     },
     {
       version: 'v1.0.1',
@@ -52,12 +52,12 @@ const knowledgeBase: GuideDefinition = {
   },
   versions: [
     {
-      version: 'v2.0',
-      dirName: 'LkozJ77TMlb5XupVDO7J',
-    },
-    {
       version: 'v2.1',
       dirName: 'LjuHmRnHyge98hRa4Ao4',
+    },
+    {
+      version: 'v2.0',
+      dirName: 'LkozJ77TMlb5XupVDO7J',
     },
     {
       version: 'v1.0',

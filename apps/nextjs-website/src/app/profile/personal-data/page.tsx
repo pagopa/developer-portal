@@ -1,12 +1,25 @@
 'use client';
-import { Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
-import { useUser } from '@/helpers/user.helper';
-import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
-import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
-import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
+import React, { useEffect, useState } from 'react';
 import { translations } from '@/_contents/translations';
-import { useEffect, useState } from 'react';
+import {
+  InfoCardItemProfile,
+  InfoCardItemProfileProps,
+} from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
+import {
+  InfoCardItem,
+  InfoCardItemProps,
+} from '@/components/atoms/InfoCardItem/InfoCardItem';
+import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
+import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
+import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
+import { useUser } from '@/helpers/user.helper';
+import { useRouter } from 'next/navigation';
+import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
+import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
+import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
 
 const PersonalData = () => {
   const {
@@ -15,14 +28,15 @@ const PersonalData = () => {
     },
   } = translations;
   const t = useTranslations('profile');
+
   const { user, setUserAttributes } = useUser();
 
-  const [dataSectionItems, setDataSectionItems] = useState<InfoCardItemProps[]>(
-    []
-  );
+  const [profileDataSectionItems, setProfileDataSectionItems] = useState<
+    InfoCardItemProfileProps[]
+  >([]);
 
   useEffect(() => {
-    setDataSectionItems([
+    setProfileDataSectionItems([
       {
         title: t('personalData.fields.name'),
         value: user?.attributes.given_name,
@@ -51,61 +65,109 @@ const PersonalData = () => {
     ]);
   }, [user?.attributes]);
 
+  const router = useRouter();
+  const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  async function handleChangePassword(
+    oldPassword: string,
+    newPassword: string
+  ) {
+    await Auth.changePassword(user, oldPassword, newPassword);
+    setShowModal(true);
+  }
+
   const accountSectionItems: InfoCardItemProps[] = [
     {
+      name: 'email',
       title: t('personalData.fields.email'),
       value: user?.attributes.email,
       editable: false,
-      type: 'text',
     },
     {
+      name: 'password',
       title: t('personalData.fields.password'),
       value: '••••••••••••',
-      editable: false,
-      type: 'text',
+      editable: true,
     },
   ];
 
+  const renderItem = (
+    item: InfoCardItemProps,
+    index: number,
+    items: InfoCardItemProps[]
+  ) => {
+    const isPasswordItem: boolean = item.name === 'password';
+    const isEmailItem: boolean = item.name === 'email';
+    const showDivider = index !== items.length - 1;
+
+    const isEditing = editItem?.name === item.name;
+
+    return (
+      <Box key={index}>
+        {isPasswordItem && (
+          <PasswordFormWrapper
+            item={item}
+            isEditing={isEditing}
+            onCancel={() => setEditItem(null)}
+            onSave={handleChangePassword}
+            onEdit={() => setEditItem(item)}
+          />
+        )}
+        {isEmailItem && (
+          <InfoCardItem {...item} onEdit={() => setEditItem(item)} />
+        )}
+        {showDivider && <Divider />}
+      </Box>
+    );
+  };
+
   return (
-    <Stack
-      gap={5}
-      sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
-    >
-      <Typography variant='h4'>{t('personalData.title')}</Typography>
-      <InfoCard
-        cardTitle={t('personalData.dataSection')}
-        items={dataSectionItems}
-        onValue={(items: InfoCardItemProps[]) => {
-          const oldItems = [...dataSectionItems];
+    <>
+      <Stack
+        gap={5}
+        sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
+      >
+        <Typography variant='h4'>{t('personalData.title')}</Typography>
+        <InfoCardProfile
+          cardTitle={t('personalData.dataSection')}
+          items={profileDataSectionItems}
+          onValue={(items: InfoCardItemProfileProps[]) => {
+            const oldItems = [...profileDataSectionItems];
 
-          if (!user) return null;
+            if (!user) return null;
 
-          setUserAttributes(
-            {
-              ...user.attributes,
-              ...(items[0].value && { given_name: items[0].value }),
-              ...(items[1].value && { family_name: items[1].value }),
-              ...(items[2].value && { 'custom:job_role': items[2].value }),
-              ...(items[3].value && { 'custom:company_type': items[3].value }),
-            },
-            () => {
-              setDataSectionItems(items);
-              return null;
-            },
-            () => {
-              setDataSectionItems(oldItems);
-              return null;
-            }
-          );
-          return null;
-        }}
-      />
-      <InfoCard
-        cardTitle={t('personalData.accountSection')}
-        items={accountSectionItems}
-      />
-      <DeleteSection user={user} />
-    </Stack>
+            setUserAttributes(
+              {
+                ...user.attributes,
+                ...(items[0].value && { given_name: items[0].value }),
+                ...(items[1].value && { family_name: items[1].value }),
+                ...(items[2].value && { 'custom:job_role': items[2].value }),
+                ...(items[3].value && {
+                  'custom:company_type': items[3].value,
+                }),
+              },
+              () => {
+                setProfileDataSectionItems(items);
+                return null;
+              },
+              () => {
+                setProfileDataSectionItems(oldItems);
+                return null;
+              }
+            );
+            return null;
+          }}
+        />
+
+        <ProfileInfoCard
+          cardTitle={t('personalData.accountSection')}
+          items={accountSectionItems}
+          renderItem={renderItem}
+        />
+        <DeleteSection user={user} />
+      </Stack>
+    </>
   );
 };
 

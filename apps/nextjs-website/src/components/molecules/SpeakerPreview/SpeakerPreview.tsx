@@ -14,6 +14,7 @@ const SpeakerAvatar = ({
   name,
   compactMode = true,
 }: SpeakerAvatarProps) => {
+  const { palette } = useTheme();
   return imagePath ? (
     <Image
       src={imagePath}
@@ -37,7 +38,7 @@ const SpeakerAvatar = ({
         borderStyle: 'solid',
         borderWidth: '1px',
         borderRadius: '100%',
-        borderColor: '#E3E7EB',
+        borderColor: palette.divider,
         width: compactMode ? '64px' : '145px',
         height: compactMode ? '64px' : '145px',
       }}
