@@ -25,7 +25,8 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : var.aws_region }]
+            ["AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }],
+            [".", "FunctionInvocations", "FunctionName", aws_cloudfront_function.website_viewer_request_handler.id, "Region", "Global", { "region" : "us-east-1" }],
           ],
           "title" : "Requests"
         }
@@ -42,10 +43,12 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : var.aws_region }],
-            [".", "5xxErrorRate", ".", ".", ".", ".", { "region" : "us-east-1" }]
+            ["AWS/CloudFront", "FunctionComputeUtilization", "FunctionName", aws_cloudfront_function.website_viewer_request_handler.id, "Region", "Global", { "region" : "us-east-1" }]
           ],
-          "title" : "4xxErrorRate, 5xxErrorRate"
+          "legend" : {
+            "position" : "right"
+          },
+          "title" : "Execution time"
         }
       },
       {
@@ -60,7 +63,25 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "BytesDownloaded", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : var.aws_region }]
+            ["AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }],
+            [".", "5xxErrorRate", ".", ".", ".", ".", { "region" : "us-east-1" }]
+          ],
+          "title" : "4xxErrorRate, 5xxErrorRate"
+        }
+      },
+      {
+        "height" : 6,
+        "width" : 6,
+        "y" : 1,
+        "x" : 18,
+        "type" : "metric",
+        "properties" : {
+          "timezone" : "UTC",
+          "region" : var.aws_region,
+          "view" : "timeSeries",
+          "stacked" : false,
+          "metrics" : [
+            ["AWS/CloudFront", "BytesDownloaded", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }]
           ],
           "title" : "BytesDownloaded"
         }

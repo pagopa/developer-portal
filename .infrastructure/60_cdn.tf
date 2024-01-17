@@ -1,3 +1,14 @@
+locals {
+  script_src  = "'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org/ https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com"
+  style_src   = "'self' 'unsafe-inline' recaptcha.net https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/"
+  object_src  = "'none'"
+  form_action = "'self'"
+  font_src    = "data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/"
+  connect_src = "'self' https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/"
+  img_src     = "data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net"
+  frame_src   = "https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/"
+}
+
 resource "aws_cloudfront_origin_access_identity" "main" {
   comment = "Identity to access S3 bucket."
 }
@@ -18,12 +29,11 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
         }
       }
     }
-
   }
 
   security_headers_config {
     content_security_policy {
-      content_security_policy = "script-src 'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org/ https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' recaptcha.net https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/; object-src 'none'; form-action 'self'; font-src data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/; connect-src 'self' https://script.googleusercontent.com/macros/ https://script.google.com/macros/s/ https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/; img-src data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net; frame-src https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/"
+      content_security_policy = format("script-src %s; style-src %s; object-src %s; form-action %s; font-src %s; connect-src %s; img-src %s; frame-src %s", local.script_src, local.style_src, local.object_src, local.form_action, local.font_src, local.connect_src, local.img_src, local.frame_src)
       override                = true
     }
   }

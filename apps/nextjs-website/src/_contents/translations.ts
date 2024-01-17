@@ -101,7 +101,7 @@ export const translations = {
         title: 'Richiedi una firma su documenti e contratti',
         cta: {
           label: 'Vai a Firma con IO',
-          href: '/io-sign/overview',
+          href: '/firma-con-io/overview',
         },
       },
     ],
@@ -337,8 +337,11 @@ export const translations = {
       createYourAccount: 'Crea il tuo account',
       confirmComunications:
         "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
-      acceptPolicy:
-        'Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.',
+      acceptPolicy1:
+        'Cliccando su iscriviti dichiari di aver preso visione della nostra ',
+      acceptPolicy2: 'privacy policy',
+      acceptPolicy3: ' e dei nostri ',
+      acceptPolicy4: "termini e condizioni d'uso",
       alreadyHaveAnAccount: 'Hai già un account?',
       whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
       passwordPolicy:
