@@ -5,12 +5,10 @@ import { baseUrl } from '@/config';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 
-// export async function generateMetadata({params: {locale}}) {
-
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
     title: 'PagoPA DevPortal - Webinars',
-    description: 'Il portale per gli sviluppatori di PagoPA',
+    description: 'I nostri webinar',
     url: `${baseUrl}/webinars`,
     locale: 'it_IT',
   });
