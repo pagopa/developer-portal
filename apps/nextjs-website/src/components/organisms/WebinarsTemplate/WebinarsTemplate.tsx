@@ -30,10 +30,11 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
 
   const getPastWebinars = (currentWebinars: readonly Webinar[]) =>
     currentWebinars
-      .filter((webinar) => !!webinar.startDateTime)
       .filter(
-        ({ endDateTime }) =>
-          endDateTime && new Date(endDateTime).getTime() <= new Date().getTime()
+        ({ endDateTime, startDateTime }) =>
+          endDateTime &&
+          startDateTime &&
+          new Date(endDateTime).getTime() <= new Date().getTime()
       )
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1));
