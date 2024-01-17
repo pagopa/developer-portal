@@ -42,18 +42,21 @@ const PersonalData = () => {
         value: user?.attributes.given_name,
         editable: true,
         type: 'text',
+        required: true,
       },
       {
         title: t('personalData.fields.surname'),
         value: user?.attributes.family_name,
         editable: true,
         type: 'text',
+        required: true,
       },
       {
         title: t('personalData.fields.role'),
         value: user?.attributes['custom:job_role'],
         editable: true,
         type: 'text',
+        required: false,
       },
       {
         title: t('personalData.fields.sector'),
@@ -61,6 +64,7 @@ const PersonalData = () => {
         editable: true,
         type: 'select',
         values: companyRoles,
+        required: false,
       },
     ]);
   }, [user?.attributes]);

@@ -1,5 +1,6 @@
 'use client';
-
+import { translations } from '@/_contents/translations';
+import RequiredTextField from '@/components/molecules/RequiredTextField/RequiredTextField';
 import {
   FormControl,
   InputLabel,
@@ -18,6 +19,7 @@ export type InfoCardItemProfileProps = {
   value?: string;
   valueFallback?: ReactNode;
   editable: boolean;
+  required: boolean;
 } & (
   | { type: 'select'; values: { title: string; value: string }[] }
   | { type: 'text' }
@@ -38,25 +40,44 @@ export const InfoCardItemProfile = (
     return (
       <Stack spacing={2} mb={2} sx={{ marginTop: '2rem' }}>
         <FormControl variant='outlined'>
-          <InputLabel htmlFor={infoCardItem.title} sx={{ top: '-8px' }} shrink>
-            {infoCardItem.title}
-          </InputLabel>
+          {infoCardItem.type !== 'text' ||
+            (!infoCardItem.required && (
+              <InputLabel
+                htmlFor={infoCardItem.title}
+                sx={{ top: '-8px' }}
+                shrink
+              >
+                {infoCardItem.title}
+                {infoCardItem.required ? '*' : ''}
+              </InputLabel>
+            ))}
+
           {infoCardItem.type === 'text' ? (
-            <OutlinedInput
-              id={infoCardItem.title}
-              required
-              type={'text'}
-              onChange={({ target: { value } }) =>
-                infoCardItem.onValue && infoCardItem.onValue(value)
-              }
-              value={infoCardItem.value}
-              label={infoCardItem.title}
-              inputProps={{
-                sx: {
-                  padding: '8.5px 14px',
-                },
-              }}
-            />
+            infoCardItem.required ? (
+              <RequiredTextField
+                label={infoCardItem.title}
+                value={infoCardItem.value ?? ''}
+                onChange={({ target: { value } }) => {
+                  infoCardItem.onValue && infoCardItem.onValue(value);
+                }}
+                helperText={translations.shared.requiredFieldError}
+              />
+            ) : (
+              <OutlinedInput
+                id={infoCardItem.title}
+                type={'text'}
+                onChange={({ target: { value } }) => {
+                  infoCardItem.onValue && infoCardItem.onValue(value);
+                }}
+                value={infoCardItem.value}
+                label={infoCardItem.title}
+                inputProps={{
+                  sx: {
+                    padding: '8.5px 14px',
+                  },
+                }}
+              />
+            )
           ) : (
             <Select
               labelId='company-field'
@@ -66,7 +87,7 @@ export const InfoCardItemProfile = (
                   ({ value }) => value === infoCardItem.value
                 )?.value || ''
               }
-              label={infoCardItem.title}
+              label={infoCardItem.title + infoCardItem.required ? '*' : ''}
               onChange={({ target: { value } }) =>
                 infoCardItem.onValue &&
                 infoCardItem.onValue(

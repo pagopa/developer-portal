@@ -28,6 +28,10 @@ export const InfoCardProfile = ({
     setDataSectionItems([...items]);
   }, [items]);
 
+  const isButtonDisabled = dataSectionItems.some(
+    (item) => item.required && (!item.value || item.value.trim() === '')
+  );
+
   const [editing, setEditing] = useState(false);
   // if at least one item is editable, show the edit button
   const editButton = !editing ? (
@@ -52,9 +56,11 @@ export const InfoCardProfile = ({
         {t('personalData.cancel')}
       </ButtonNaked>
       <Button
+        disabled={isButtonDisabled}
         variant='contained'
         sx={{ marginLeft: '1rem' }}
         onClick={() => {
+          if (isButtonDisabled) return;
           setEditing(false);
           onValue && onValue(dataSectionItems);
         }}
