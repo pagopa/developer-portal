@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { CustomMessageTriggerEvent } from 'aws-lambda';
 import { makeConfirmationEmail } from './templates/confirmation-message';
 import { makeConfirmationForgotPasswordEmail } from './templates/confirmation-forgot-password';
+import { makeConfirmationUpdateEmailAddress } from './templates/confirmation-update-email-address';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -13,10 +14,11 @@ export const makeHandler =
     const username = event.request.userAttributes['sub'];
     const cognitoUserStatus =
       event.request.userAttributes['cognito:user_status'];
+    const eventTrigger = event.triggerSource;
 
     if (
-      event.triggerSource === 'CustomMessage_SignUp' ||
-      event.triggerSource === 'CustomMessage_ResendCode'
+      eventTrigger === 'CustomMessage_SignUp' ||
+      eventTrigger === 'CustomMessage_ResendCode'
     ) {
       if (cognitoUserStatus === 'CONFIRMED') {
         // eslint-disable-next-line functional/no-expression-statements
@@ -32,7 +34,7 @@ export const makeHandler =
       const emailSubject = 'Verifica la tua e-mail per PagoPA DevPortal';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
-    } else if (event.triggerSource === 'CustomMessage_ForgotPassword') {
+    } else if (eventTrigger === 'CustomMessage_ForgotPassword') {
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/change-password?username=${username}&code=${codeParameter}`;
       const emailMessage = makeConfirmationForgotPasswordEmail(
@@ -40,6 +42,15 @@ export const makeHandler =
         env.domain
       );
       const emailSubject = 'Password dimenticata';
+      const response = { ...event.response, emailMessage, emailSubject };
+      return { ...event, response };
+    } else if (eventTrigger === 'CustomMessage_UpdateUserAttribute') {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.log(`User ${username} has requested to update the email address`);
+      const { codeParameter } = event.request;
+      const href = `https://${env.domain}/auth/email-confirmation?username=${username}&code=${codeParameter}`;
+      const emailMessage = makeConfirmationUpdateEmailAddress(href, env.domain);
+      const emailSubject = 'Verifica nuovo indirizzo email';
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
     } else {
