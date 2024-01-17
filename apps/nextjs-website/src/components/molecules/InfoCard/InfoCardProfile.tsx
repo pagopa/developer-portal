@@ -64,7 +64,6 @@ export const InfoCardProfile = ({
     </Stack>
   );
 
-  // TODO: add onClick to add button
   const addValueComponent = !isProduction ? (
     <ButtonNaked
       color='primary'
