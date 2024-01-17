@@ -1,6 +1,5 @@
 import { parseMjmlToHtml } from './mjmlParser';
 
-// FIXME: Change and/or remove some translations. These are just a placeholder
 const TRANSLATIONS = {
   previewText: 'Confermarci la validità di questa e-mail',
   title: 'L’ultimo passo per attivare la tua utenza su PagoPA DevPortal',
@@ -18,7 +17,6 @@ export const makeConfirmationUpdateEmailAddress = (
   domain: string
 ) => parseMjmlToHtml(updateEmailAddressMessage(confirmationLink, domain));
 
-// TODO: This template is just a copy of another one. If something is different, change it here and then remove this comment
 const updateEmailAddressMessage = (
   confirmationLink: string,
   domain: string
