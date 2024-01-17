@@ -2,6 +2,7 @@ import { CustomMessageTriggerEvent } from 'aws-lambda';
 import { makeHandler } from '../custom-message-handler';
 import { makeConfirmationEmail } from '../templates/confirmation-message';
 import { makeConfirmationForgotPasswordEmail } from '../templates/confirmation-forgot-password';
+import { makeConfirmationUpdateEmailAddress } from '../templates/confirmation-update-email-address';
 
 const makeEvent = (): CustomMessageTriggerEvent => ({
   version: 'aVersion',
@@ -108,5 +109,19 @@ describe('Handler', () => {
     } catch (error) {
       expect(error).toStrictEqual(new Error('Operation not permitted'));
     }
+  });
+
+  it('should reply with verification link on UpdateUserAttribute event', async () => {
+    const updateUserAttributeEvent: CustomMessageTriggerEvent = {
+      ...makeEvent(),
+      triggerSource: 'CustomMessage_UpdateUserAttribute',
+    };
+    const { response } = await makeHandler(env)(updateUserAttributeEvent);
+    const { userAttributes, codeParameter } = updateUserAttributeEvent.request;
+    const expected = makeConfirmationUpdateEmailAddress(
+      `https://${env.domain}/auth/email-confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      env.domain
+    );
+    expect(response.emailMessage).toStrictEqual(expected);
   });
 });
