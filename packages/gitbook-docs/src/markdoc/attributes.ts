@@ -70,9 +70,9 @@ export class LinkAttr {
     );
     const DOCS_URL = 'https://docs.pagopa.it';
     const allowedHosts = ['docs.pagopa.it'];
-    const host = new URL(value ?? '').host;
+    const host = value ? new URL(value).host : null;
 
-    const isDocsUrl = allowedHosts.includes(host);
+    const isDocsUrl = host && allowedHosts.includes(host);
 
     if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
