@@ -70,7 +70,7 @@ export class LinkAttr {
     );
     const DOCS_URL = 'https://docs.pagopa.it';
     const allowedHosts = ['docs.pagopa.it'];
-    const host = value ? new URL(value).host : null;
+    const host = value && value.startsWith('http') ? new URL(value).host : null;
 
     const isDocsUrl = host && allowedHosts.includes(host);
 
