@@ -69,6 +69,10 @@ export class LinkAttr {
       'g'
     );
     const DOCS_URL = 'https://docs.pagopa.it';
+    const allowedHosts = ['docs.pagopa.it'];
+    const host = new URL(value ?? '').host;
+
+    const isDocsUrl = allowedHosts.includes(host);
 
     if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
@@ -89,7 +93,7 @@ export class LinkAttr {
             spacePrefix.pathPrefix
           )
         : value;
-    } else if (value?.includes(DOCS_URL)) {
+    } else if (value && isDocsUrl) {
       const cleanUrl = value.replace(DOCS_URL, '');
 
       const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
