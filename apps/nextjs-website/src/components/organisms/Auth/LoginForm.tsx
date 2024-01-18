@@ -17,8 +17,6 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Snackbar,
-  Alert,
   useTheme,
   FormHelperText,
   TextField,
@@ -27,12 +25,12 @@ import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useState } from 'react';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { validateEmail, validateField } from '@/helpers/auth.helpers';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
+  noAccount: boolean;
 }
 
 interface LoginFieldsError {
@@ -40,7 +38,7 @@ interface LoginFieldsError {
   password: string | null;
 }
 
-const LoginForm = ({ onLogin }: LoginFormProps) => {
+const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
   const shared = useTranslations('shared');
@@ -50,7 +48,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
@@ -88,6 +85,19 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     return !emailError && !passwordError;
   }, [username, shared, password]);
 
+  const setNotloggedOnError = useCallback(() => {
+    if (noAccount) {
+      setFieldErrors((prevFieldErrors) => ({
+        ...prevFieldErrors,
+        email: login('noAccountError'),
+      }));
+    }
+  }, [noAccount, login]);
+
+  useEffect(() => {
+    setNotloggedOnError();
+  }, [noAccount, setNotloggedOnError]);
+
   const onLoginHandler = useCallback(() => {
     const valid = validateForm();
     if (!valid) {
@@ -95,7 +105,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     }
     setSubmitting(true);
     onLogin({ username, password })
-      .catch((e) => setError(errors(e.code)))
+      .catch((e) => console.log(errors(e.code)))
       .finally(() => {
         setSubmitting(false);
       });
@@ -129,7 +139,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   helperText={fieldErrors.email}
-                  error={!!fieldErrors.email}
+                  error={!!fieldErrors.email || noAccount}
                   sx={{
                     width: '100%',
                     backgroundColor: palette.background.paper,
@@ -145,7 +155,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     id='password-input'
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
-                    error={!!fieldErrors.password}
+                    error={!!fieldErrors.password || noAccount}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -226,13 +236,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
           </Grid>
         </Grid>
       </Card>
-      <Snackbar
-        open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setError(null)}
-      >
-        <Alert severity='error'>{error}</Alert>
-      </Snackbar>
     </Box>
   );
 };

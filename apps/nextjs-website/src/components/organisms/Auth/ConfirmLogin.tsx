@@ -3,8 +3,6 @@ import {
   Box,
   Grid,
   Card,
-  Snackbar,
-  Alert,
   Stack,
   Typography,
   TextField,
@@ -13,7 +11,6 @@ import {
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useCallback, useState } from 'react';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
-import { snackbarAutoHideDurationMs } from '@/config';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material';
 
@@ -26,16 +23,12 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
   const confirmLogin = useTranslations('auth.confirmLogin');
 
   const { palette } = useTheme();
-  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
 
   const onConfirmLoginHandler = useCallback(() => {
     setSubmitting(true);
-    onConfirmLogin(code).catch((e) => {
-      setError(e.message);
-      setSubmitting(false);
-    });
+    onConfirmLogin(code).catch(() => setSubmitting(false));
   }, [onConfirmLogin, code]);
 
   return (
@@ -99,13 +92,6 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
           </Grid>
         </Grid>
       </Card>
-      <Snackbar
-        open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setError(null)}
-      >
-        <Alert severity='error'>{error}</Alert>
-      </Snackbar>
     </Box>
   );
 };
