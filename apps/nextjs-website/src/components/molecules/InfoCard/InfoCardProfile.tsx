@@ -100,8 +100,7 @@ export const InfoCardProfile = ({
               // eslint-disable-next-line functional/immutable-data
               newItems[index] = {
                 ...newItems[index],
-                // workaround for cognito not accepting empty strings
-                value: value == '' ? ' ' : value,
+                value,
               };
               setDataSectionItems(newItems);
               return null;
