@@ -161,6 +161,10 @@ resource "aws_cognito_user_pool" "devportal" {
   username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
 
+  user_attribute_update_settings {
+    attributes_require_verification_before_update = ["email"]
+  }
+
   account_recovery_setting {
     recovery_mechanism {
       name     = "verified_email"

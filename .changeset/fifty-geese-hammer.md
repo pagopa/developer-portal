@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix carousel margin on mobile
+Update profile page copy

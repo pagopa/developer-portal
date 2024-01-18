@@ -96,7 +96,7 @@ const Page = async ({ params }: { params: Params }) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column-reverse', lg: 'row' },
+            flexDirection: { xs: 'column', lg: 'row' },
             margin: '0 auto',
             maxWidth: '1900px',
           }}
@@ -112,9 +112,12 @@ const Page = async ({ params }: { params: Params }) => {
           <Box
             sx={{
               margin: '0 auto',
-              maxWidth: '1008px',
               padding: '56px 40px',
               flexGrow: { lg: 1 },
+              maxWidth: {
+                xs: '100%',
+                lg: '1008px',
+              },
             }}
           >
             <GitBookContent content={props.body} config={props.bodyConfig} />

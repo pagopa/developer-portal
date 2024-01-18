@@ -1,0 +1,139 @@
+'use client';
+import { Login, Logout, PersonOutline } from '@mui/icons-material';
+import { Box, Link as MuiLink, Typography, useTheme } from '@mui/material';
+import { Auth } from 'aws-amplify';
+import React, { FC, useCallback } from 'react';
+import { useUser } from '@/helpers/user.helper';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { usePathname, useRouter } from 'next/navigation';
+import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
+import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
+
+const MobileUserInfo: FC = () => {
+  const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user, loading } = useUser();
+
+  const { palette } = useTheme();
+
+  const signOut = useCallback(async () => {
+    await Auth.signOut();
+
+    // Check if the user in an auth only page
+    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+      router.replace('/');
+    } else {
+      // router.refresh(); is not enough beacuse it will not clean current state of components
+      typeof window !== 'undefined' && window.location.reload();
+    }
+  }, [pathname, router]);
+
+  return (
+    <>
+      {!user && !loading && (
+        <MuiLink
+          href='/auth/login'
+          component={Link}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            color: palette.text.primary,
+            marginBottom: 2,
+          }}
+        >
+          <Typography
+            variant='body1'
+            sx={{
+              color: palette.primary.dark,
+              fontSize: 18,
+              fontWeight: 600,
+              display: 'flex',
+              marginRight: 1,
+            }}
+          >
+            {t('auth.login.action')}
+          </Typography>
+          <Login
+            sx={{
+              color: palette.primary.dark,
+              height: 20,
+              width: 18,
+            }}
+          />
+        </MuiLink>
+      )}
+      {user && (
+        <MobileSiteHeaderStyledTreeItem
+          nodeId={'siteHeader.userInfo'}
+          label={
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <PersonOutline
+                sx={{
+                  width: 20,
+                  height: 20,
+                  color: palette.primary.dark,
+                  marginRight: 1,
+                }}
+              ></PersonOutline>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: palette.primary.dark,
+                  fontSize: 18,
+                  fontWeight: 600,
+                  display: 'flex',
+                }}
+              >
+                {user.attributes.given_name} {user.attributes.family_name}
+              </Typography>
+            </Box>
+          }
+        >
+          <Typography
+            variant='body1'
+            component={Link}
+            href={'/profile/personal-data'}
+            style={{
+              color: palette.primary.dark,
+              display: 'block',
+              textDecoration: 'none',
+            }}
+          >
+            {t('shared.yourData')}
+          </Typography>
+          <MuiLink
+            href='/auth/login'
+            component={ButtonNaked}
+            onClick={signOut}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: palette.text.primary,
+              justifyContent: 'start',
+            }}
+          >
+            <Typography
+              variant='body1'
+              sx={{
+                color: palette.primary.dark,
+                fontSize: '18px',
+                fontWeight: 400,
+                display: 'flex',
+                marginRight: 1,
+              }}
+            >
+              {t('auth.logout')}
+            </Typography>
+            <Logout fontSize='small' sx={{ color: palette.primary.dark }} />
+          </MuiLink>
+        </MobileSiteHeaderStyledTreeItem>
+      )}
+    </>
+  );
+};
+
+export default MobileUserInfo;
