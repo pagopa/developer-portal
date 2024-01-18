@@ -144,12 +144,13 @@ const PersonalData = () => {
             setUserAttributes(
               {
                 ...user.attributes,
-                ...(items[0].value && { given_name: items[0].value }),
-                ...(items[1].value && { family_name: items[1].value }),
-                ...(items[2].value && { 'custom:job_role': items[2].value }),
-                ...(items[3].value && {
-                  'custom:company_type': items[3].value,
-                }),
+                ...{
+                  given_name: items[0].value || user.attributes.given_name,
+                  family_name: items[1].value || user.attributes.family_name,
+                  'custom:job_role': items[2].value || '',
+                  'custom:company_type':
+                    items[3].value || user.attributes['custom:company_type'],
+                },
               },
               () => {
                 setProfileDataSectionItems(items);
