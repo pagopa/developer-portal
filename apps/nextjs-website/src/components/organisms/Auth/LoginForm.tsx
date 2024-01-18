@@ -90,6 +90,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
       setFieldErrors((prevFieldErrors) => ({
         ...prevFieldErrors,
         email: login('noAccountError'),
+        password: login('noAccountError'),
       }));
     }
   }, [noAccount, login]);
@@ -170,7 +171,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                     }
                     label={shared('password')}
                   />
-                  {fieldErrors.password && (
+                  {(fieldErrors.password || noAccount) && (
                     <FormHelperText error>
                       {fieldErrors.password}
                     </FormHelperText>

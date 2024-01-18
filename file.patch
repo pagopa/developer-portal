@@ -1,0 +1,34 @@
+diff --git a/apps/nextjs-website/src/components/organisms/Auth/LoginForm.tsx b/apps/nextjs-website/src/components/organisms/Auth/LoginForm.tsx
+index 05d07ba..b90bea8 100644
+--- a/apps/nextjs-website/src/components/organisms/Auth/LoginForm.tsx
++++ b/apps/nextjs-website/src/components/organisms/Auth/LoginForm.tsx
+@@ -90,6 +90,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
+       setFieldErrors((prevFieldErrors) => ({
+         ...prevFieldErrors,
+         email: login('noAccountError'),
++        password: login('noAccountError'),
+       }));
+     }
+   }, [noAccount, login]);
+@@ -170,7 +171,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
+                     }
+                     label={shared('password')}
+                   />
+-                  {fieldErrors.password && (
++                  {(fieldErrors.password || noAccount) && (
+                     <FormHelperText error>
+                       {fieldErrors.password}
+                     </FormHelperText>
+diff --git a/apps/nextjs-website/src/messages/it.json b/apps/nextjs-website/src/messages/it.json
+index cb8209b..0c30f73 100644
+--- a/apps/nextjs-website/src/messages/it.json
++++ b/apps/nextjs-website/src/messages/it.json
+@@ -120,7 +120,7 @@
+       "rememberMe": "Ricordami",
+       "forgotPassword": "Hai dimenticato la password?",
+       "noAccount": "Non hai un account?",
+-      "noAccountError": "Non esiste un account per questo indirizzo email",
++      "noAccountError": "Nome utente o password non corretti.",
+       "accountAlreadyConfirmed": {
+         "yourAccountIsAlreadyConfirmed": "Hai già validato questo indirizzo email",
+         "goToLogin": "Vai al Login"

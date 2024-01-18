@@ -120,7 +120,7 @@
       "rememberMe": "Ricordami",
       "forgotPassword": "Hai dimenticato la password?",
       "noAccount": "Non hai un account?",
-      "noAccountError": "Non esiste un account per questo indirizzo email",
+      "noAccountError": "Nome utente o password non corretti.",
       "accountAlreadyConfirmed": {
         "yourAccountIsAlreadyConfirmed": "Hai già validato questo indirizzo email",
         "goToLogin": "Vai al Login"
