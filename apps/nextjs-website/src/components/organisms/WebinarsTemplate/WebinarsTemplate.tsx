@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
 import { Box, Grid, useTheme } from '@mui/material';
@@ -21,23 +21,30 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
   const [nextWebinars, setNextWebinars] = useState<Webinar[]>([]);
   const [pastWebinars, setPastWebinars] = useState<Webinar[]>([]);
 
-  const getNextWebinars = (currentWebinars: readonly Webinar[]) =>
-    currentWebinars.filter(
-      ({ startDateTime, endDateTime }) =>
-        (!startDateTime && !endDateTime) ||
-        (endDateTime && new Date(endDateTime).getTime() > new Date().getTime())
-    );
+  const getNextWebinars = useCallback(
+    (currentWebinars: readonly Webinar[]) =>
+      currentWebinars.filter(
+        ({ startDateTime, endDateTime }) =>
+          (!startDateTime && !endDateTime) ||
+          (endDateTime &&
+            new Date(endDateTime).getTime() > new Date().getTime())
+      ),
+    []
+  );
 
-  const getPastWebinars = (currentWebinars: readonly Webinar[]) =>
-    currentWebinars
-      .filter(
-        ({ endDateTime, startDateTime }) =>
-          endDateTime &&
-          startDateTime &&
-          new Date(endDateTime).getTime() <= new Date().getTime()
-      )
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1));
+  const getPastWebinars = useCallback(
+    (currentWebinars: readonly Webinar[]) =>
+      currentWebinars
+        .filter(
+          ({ endDateTime, startDateTime }) =>
+            endDateTime &&
+            startDateTime &&
+            new Date(endDateTime).getTime() <= new Date().getTime()
+        )
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1)),
+    []
+  );
 
   useEffect(() => {
     setNextWebinars(getNextWebinars(webinars));
