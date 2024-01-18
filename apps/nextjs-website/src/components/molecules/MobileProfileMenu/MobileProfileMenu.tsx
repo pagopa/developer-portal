@@ -82,9 +82,10 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
     >
       <EContainer>
         <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='flex-start'
+          direction='column'
+          justifyContent='center'
+          alignItems='stretch'
+          spacing={1}
           onClick={handleClick}
           sx={{ py: 2, cursor: 'pointer' }}
         >
