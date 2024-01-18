@@ -17,6 +17,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
     isVisibleInHome: true,
+    imagePath: '/images/webinar-cover-nuove-api-io.png',
     speakers: [
       {
         name: 'Ivan Diana',
