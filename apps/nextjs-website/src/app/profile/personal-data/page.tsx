@@ -4,10 +4,7 @@ import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { translations } from '@/_contents/translations';
-import {
-  InfoCardItemProfile,
-  InfoCardItemProfileProps,
-} from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
+import { InfoCardItemProfileProps } from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
 import {
   InfoCardItem,
   InfoCardItemProps,
