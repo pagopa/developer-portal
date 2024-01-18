@@ -29,6 +29,10 @@ const config = {
       path: '/to/s1',
       title: 'S1 Home',
     },
+    {
+      path: '/send/guides/modello-di-integrazione/v2.1/',
+      title: 'Modello di Integrazione',
+    },
   ],
 };
 
@@ -239,6 +243,25 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+      ]),
+    ]);
+  });
+
+  it('should convert docs.pagopa.it to developer portal links', () => {
+    expect(
+      parseContent(
+        '[Modello di Integrazione](https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/send/guides/modello-di-integrazione/v2.1/',
+          },
+          ['Modello di Integrazione']
+        ),
       ]),
     ]);
   });

@@ -94,6 +94,7 @@ export class LinkAttr {
 
       const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
       const correctGuide = getCorrectGuide(currentGuide);
+      const anchor = cleanUrl.split('#')[1];
 
       const finalUrl = cleanUrl.replace(currentGuide, correctGuide);
 
@@ -108,7 +109,7 @@ export class LinkAttr {
       });
 
       if (guide) {
-        return guide.path;
+        return `${guide.path}${anchor && anchor !== '' ? `#${anchor}` : ''}`;
       }
 
       return value;
