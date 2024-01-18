@@ -1,10 +1,12 @@
 {
-    "header": {
-        "title": "PagoPA",
-        "boldTitle": "DevPortal",
-        "products": "Prodotti"
-    },
-    "breadcrumbs": {
+    "devPortal": {
+        "company": "PagoPA",
+        "siteHeader": {
+            "label": "Menu",
+            "products": "Prodotti",
+            "profile": "Profilo",
+            "webinars": "Webinar"
+        },
         "title": "DevPortal"
     },
     "profile": {
@@ -180,12 +182,12 @@
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
             "resendEmail": "Reinvia email"
-        }, 
+        },
         "accountActivated": {
             "goToLogin": "Vai al login",
             "welcomeMessage": "Ti diamo il benvenuto su PagoPA DevPortal.",
             "yourAccountIsActive": "Il tuo account è attivo"
-        },               
+        },
         "resetPassword": {
             "title": "Recupera password",
             "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
@@ -225,13 +227,13 @@
         "cancel": "Annulla",
         "yourData": "Profilo",
         "subscribeButton": {
-          "subscribeLabel": {
-            "default": "Iscriviti",
-            "takePart": "Partecipa",
-            "view": "Visualizza"
-          },
-          "subscribedLabel": "Iscrizione confermata",
-          "unsubscribeLabel": "Annulla iscrizione"
+            "subscribeLabel": {
+                "default": "Iscriviti",
+                "takePart": "Partecipa",
+                "view": "Visualizza"
+            },
+            "subscribedLabel": "Iscrizione confermata",
+            "unsubscribeLabel": "Annulla iscrizione"
         }
     },
     "pageNotFound": {
@@ -443,7 +445,7 @@
                     "ariaLabel": "Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità",
                     "label": "Piattaforma Digitale Nazionale Dati - Interoperabilità"
                 }
-            } 
+            }
         },
         "cookiePreferences": {
             "ariaLabel": "Preferenza Cookie",
