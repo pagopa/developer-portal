@@ -76,7 +76,6 @@ const PersonalData = () => {
     newPassword: string
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
-    setShowModal(true);
   }
 
   const accountSectionItems: InfoCardItemProps[] = [
