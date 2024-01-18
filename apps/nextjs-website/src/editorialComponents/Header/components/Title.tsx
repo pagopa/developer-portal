@@ -29,6 +29,16 @@ export const Content = ({
     theme === 'dark' ? palette.primary.contrastText : palette.text.primary;
   const label = 'beta';
 
+  const productNameComponent = (
+    <Typography
+      component='strong'
+      fontSize={{ xs: '20px', md: '28px' }}
+      fontWeight={700}
+    >
+      {productName}
+    </Typography>
+  );
+
   return (
     <Stack direction='row' gap={1} alignItems='center'>
       {avatar && <Avatar {...avatar} />}
@@ -40,10 +50,10 @@ export const Content = ({
       >
         {productHref ? (
           <Link href={productHref} underline='none' color='text.primary'>
-            <b>{productName}</b>
+            {productNameComponent}
           </Link>
         ) : (
-          <b>{productName}</b>
+          productNameComponent
         )}
       </Typography>
       {beta && (
