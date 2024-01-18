@@ -1,6 +1,7 @@
 * {
   scrollbar-color: initial;
   scrollbar-width: initial;
+  font-family: var(--font-titillium-web)!important;
 }
 
 body {
