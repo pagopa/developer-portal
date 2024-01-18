@@ -69,7 +69,6 @@ const PersonalData = () => {
     ]);
   }, [user?.attributes]);
 
-  const router = useRouter();
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
   const [showModal, setShowModal] = useState(false);
 
