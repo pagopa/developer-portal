@@ -7,6 +7,12 @@ const getCorrectGuide = (guide: string) => {
     case 'manuale-operativo-dei-servizi':
       return 'manuale-servizi';
     case 'kb-enti':
+    case 'kb-enti-adesione':
+    case 'kb-enti-servizi':
+    case 'kb-enti-messaggi':
+    case 'kb-enti-pagamenti':
+    case 'kb-enti-accordi':
+    case 'kb-enti-assistenza':
       return 'supporto-agli-enti';
     case 'kit-di-comunicazione-per-gli-enti':
       return 'kit-comunicazione';
@@ -62,6 +68,7 @@ export class LinkAttr {
       '^http:\\/\\/(?:localhost|127.0.0.1):5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
+    const DOCS_URL = 'https://docs.pagopa.it';
 
     if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
@@ -82,17 +89,7 @@ export class LinkAttr {
             spacePrefix.pathPrefix
           )
         : value;
-    } else if (value) {
-      const DOCS_URL = 'https://docs.pagopa.it';
-      const allowedHosts = ['docs.pagopa.it'];
-      const host = new URL(value).host;
-
-      const isDocsUrl = allowedHosts.includes(host);
-
-      if (!isDocsUrl) {
-        return value;
-      }
-
+    } else if (value?.includes(DOCS_URL)) {
       const cleanUrl = value.replace(DOCS_URL, '');
 
       const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
