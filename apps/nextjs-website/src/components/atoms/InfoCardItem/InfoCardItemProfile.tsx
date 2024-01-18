@@ -5,9 +5,9 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
