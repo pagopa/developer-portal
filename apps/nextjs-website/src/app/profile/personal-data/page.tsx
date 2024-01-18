@@ -70,7 +70,6 @@ const PersonalData = () => {
   }, [user?.attributes]);
 
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
-  const [showModal, setShowModal] = useState(false);
 
   async function handleChangePassword(
     oldPassword: string,
