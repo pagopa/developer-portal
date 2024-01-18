@@ -17,6 +17,7 @@ export interface HeroProps extends CommonProps, HeroTextProps {
   background?: string | Generic;
   size?: 'small' | 'big';
   useHoverlay?: boolean;
+  smallHeight?: string;
 }
 
 interface CtaButton extends Partial<ButtonProps> {
@@ -86,8 +87,9 @@ const Hero = (props: HeroProps) => {
     useHoverlay = true,
     image,
     altText = '',
+    smallHeight = '480px',
   } = props;
-  const minHeight = size === 'big' ? '720px' : '480px';
+  const heroHeight = size === 'big' ? '720px' : smallHeight;
 
   const overlay = useHoverlay
     ? theme === 'dark'
@@ -122,7 +124,7 @@ const Hero = (props: HeroProps) => {
       background={!background ? backgroundColor : BackgroundImage}
       direction={inverse ? 'row-reverse' : 'row'}
     >
-      <Grid item lg={6} sx={{ minHeight: { lg: minHeight } }}>
+      <Grid item lg={6} sx={{ minHeight: { lg: heroHeight } }}>
         <HeroTextContent {...props} />
       </Grid>
       {image ? (
@@ -138,7 +140,7 @@ const Hero = (props: HeroProps) => {
                 objectPosition: 'center',
                 width: '100%',
                 height: '100%',
-                maxHeight: minHeight,
+                maxHeight: heroHeight,
                 userSelect: 'none',
               }}
             />
