@@ -36,22 +36,10 @@ export const InfoCardItemProfile = (
 ) => {
   const t = useTranslations('profile');
 
-  if (infoCardItem.editing)
+  if (infoCardItem.editing) {
     return (
       <Stack spacing={2} mb={2} sx={{ marginTop: '2rem' }}>
         <FormControl variant='outlined'>
-          {infoCardItem.type !== 'text' ||
-            (!infoCardItem.required && (
-              <InputLabel
-                htmlFor={infoCardItem.title}
-                sx={{ top: '-8px' }}
-                shrink
-              >
-                {infoCardItem.title}
-                {infoCardItem.required ? '*' : ''}
-              </InputLabel>
-            ))}
-
           {infoCardItem.type === 'text' ? (
             infoCardItem.required ? (
               <RequiredTextField
@@ -63,7 +51,8 @@ export const InfoCardItemProfile = (
                 helperText={translations.shared.requiredFieldError}
               />
             ) : (
-              <OutlinedInput
+              <TextField
+                variant='outlined'
                 id={infoCardItem.title}
                 type={'text'}
                 onChange={({ target: { value } }) => {
@@ -71,47 +60,56 @@ export const InfoCardItemProfile = (
                 }}
                 value={infoCardItem.value}
                 label={infoCardItem.title}
-                inputProps={{
-                  sx: {
-                    padding: '8.5px 14px',
-                  },
-                }}
+                size='small'
               />
             )
           ) : (
-            <Select
-              labelId='company-field'
-              id='company-field-select'
-              value={
-                infoCardItem.values.find(
-                  ({ value }) => value === infoCardItem.value
-                )?.value || ''
-              }
-              label={infoCardItem.title + infoCardItem.required ? '*' : ''}
-              onChange={({ target: { value } }) =>
-                infoCardItem.onValue &&
-                infoCardItem.onValue(
-                  infoCardItem.values.find(({ value: v }) => v === value)
-                    ?.value || ''
-                )
-              }
-              sx={{ padding: '8.5px 14px' }}
-              inputProps={{
-                sx: {
-                  padding: 0,
-                },
-              }}
-            >
-              {infoCardItem.values.map(({ title, value }) => (
-                <MenuItem key={value} value={value}>
-                  {title}
-                </MenuItem>
-              ))}
-            </Select>
+            <>
+              <InputLabel
+                id={'company-field'}
+                sx={{
+                  backgroundColor: 'white',
+                  paddingX: '8px',
+                  marginLeft: '-6px',
+                }}
+              >
+                {infoCardItem.title}
+                {infoCardItem.required ? '*' : ''}
+              </InputLabel>
+              <Select
+                labelId='company-field'
+                id='company-field-select'
+                value={
+                  infoCardItem.values.find(
+                    ({ value }) => value === infoCardItem.value
+                  )?.value || ''
+                }
+                onChange={({ target: { value } }) =>
+                  infoCardItem.onValue &&
+                  infoCardItem.onValue(
+                    infoCardItem.values.find(({ value: v }) => v === value)
+                      ?.value || ''
+                  )
+                }
+                sx={{ padding: '8.5px 14px' }}
+                inputProps={{
+                  sx: {
+                    padding: 0,
+                  },
+                }}
+              >
+                {infoCardItem.values.map(({ title, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
           )}
         </FormControl>
       </Stack>
     );
+  }
 
   return (
     <Stack
