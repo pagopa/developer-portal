@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
+import { Box, Button } from '@mui/material';
 
 export type SubscribeButtonProps = {
   webinarSlug?: string;
@@ -111,7 +112,7 @@ const SubscribeToWebinar = ({
 
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
-    [WebinarState.comingSoon]: 'takePart',
+    [WebinarState.comingSoon]: 'default',
     [WebinarState.live]: 'takePart',
     [WebinarState.future]: 'default',
     [WebinarState.unknown]: 'default',
@@ -121,7 +122,20 @@ const SubscribeToWebinar = ({
     isSubscribed &&
     (webinarState === WebinarState.live || webinarState === WebinarState.past)
   ) {
-    return null;
+    return (
+      <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
+        <Button
+          variant={'contained'}
+          onClick={() => {
+            // eslint-disable-next-line functional/immutable-data
+            router.push(`/webinars/${webinarSlug}`);
+            return null;
+          }}
+        >
+          {t('view')}
+        </Button>
+      </Box>
+    );
   }
 
   return (
