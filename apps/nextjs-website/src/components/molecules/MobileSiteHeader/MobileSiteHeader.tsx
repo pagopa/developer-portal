@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
+import { isProduction } from '@/config';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -202,10 +203,12 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-          <MobileSiteHeaderStyledTreeItem
-            nodeId={'siteHeader.webinars'}
-            label={t('siteHeader.webinars')}
-          />
+          {!isProduction && (
+            <MobileSiteHeaderStyledTreeItem
+              nodeId={'siteHeader.webinars'}
+              label={t('siteHeader.webinars')}
+            />
+          )}
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo />
         </TreeView>
