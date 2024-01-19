@@ -1,6 +1,6 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Card,
@@ -41,6 +41,21 @@ const WebinarCard = ({
     webinar && setWebinar(webinar);
   }, [webinar]);
 
+  const linkButton: React.ReactNode = useMemo(() => {
+    if ([WebinarState.unknown, WebinarState.past].includes(webinarState)) {
+      return null;
+    }
+
+    return (
+      <LinkButton
+        disabled={false}
+        href={`/webinars/${webinar.slug}`}
+        label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
+        color={theme.palette.primary.main}
+      />
+    );
+  }, [isSubscribed, webinarState]);
+
   return (
     <Card
       style={{
@@ -80,12 +95,7 @@ const WebinarCard = ({
           <Typography variant='body2' mb={1}>
             {webinar.description}
           </Typography>
-          <LinkButton
-            disabled={false}
-            href={`/webinars/${webinar.slug}`}
-            label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
-            color={theme.palette.primary.main}
-          />
+          {linkButton}
           <Box my={4}>
             <SubscribeToWebinar
               webinarSlug={webinar.slug}

@@ -1,5 +1,5 @@
 import { translations } from '@/_contents/translations';
-import { defaultOgTagImage, baseUrl } from '@/config';
+import { defaultOgTagImage } from '@/config';
 import { Metadata, ResolvedMetadata } from 'next';
 
 type MakeMetadataParams = {
@@ -18,28 +18,27 @@ export const makeMetadata: MakeMetadataFunction = ({
   title,
   description,
   url,
-  image,
+  image: imageParam,
   locale,
 }) => {
   const { shared } = translations;
   const previousTitle = parent?.title?.absolute || shared.siteTitle;
   const metadataTitle = title ? `${previousTitle} | ${title}` : previousTitle;
+  const image = imageParam || defaultOgTagImage;
+  const openGraph = getOpenGraphMetadata(
+    metadataTitle,
+    description,
+    image,
+    locale
+  );
+  const twitter = getTwitterMetadata(metadataTitle, description, image);
 
   return {
     title: metadataTitle,
     description: description || '',
     url: url || '',
-    openGraph: getOpenGraphMetadata(
-      metadataTitle,
-      description,
-      image || defaultOgTagImage,
-      locale
-    ),
-    twitter: getTwitterMetadata(
-      metadataTitle,
-      description,
-      image || defaultOgTagImage
-    ),
+    openGraph,
+    twitter,
   };
 };
 

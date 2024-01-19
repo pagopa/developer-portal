@@ -40,9 +40,12 @@ const CtaSlide = ({
         textAlign={'center'}
         zIndex={10}
       >
-        <Box mb={4}>{child}</Box>
+        {child && <Box mb={4}>{child}</Box>}
         <Typography
-          fontSize={{ xs: 48, md: 58 }}
+          fontSize={{
+            xs: 'clamp(36px, 8vw, 48px)',
+            md: 'clamp(48px, 10vw, 58px)',
+          }}
           variant={'h1'}
           color={textColor}
         >
@@ -55,6 +58,7 @@ const CtaSlide = ({
               href={cta.href}
               color={'negative'}
               variant={cta.variant || 'contained'}
+              sx={{ mb: 6 }}
             >
               {cta.label}
             </ButtonNaked>

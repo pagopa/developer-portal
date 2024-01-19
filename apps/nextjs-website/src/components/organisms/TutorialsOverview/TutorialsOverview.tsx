@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { translations } from '@/_contents/translations';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { Path } from '@/lib/types/path';
 import News from '@/components/organisms/News/News';
+import { useTranslations } from 'next-intl';
 
 type TutorialsOverviewProps = {
   title: string;
@@ -21,7 +21,8 @@ const TutorialsOverview = ({
   tutorials,
   tutorialPath,
 }: TutorialsOverviewProps) => {
-  const { shared } = translations;
+  const t = useTranslations('shared');
+  const label = t('readTutorial');
   return (
     <News
       marginTop={8}
@@ -34,9 +35,9 @@ const TutorialsOverview = ({
       cards={tutorials.map((tutorial) => ({
         ...tutorial,
         href: {
-          label: shared.readTutorial,
+          label,
           link: tutorial.path,
-          title: shared.readTutorial,
+          title: label,
         },
       }))}
     />

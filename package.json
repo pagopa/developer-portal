@@ -11,9 +11,12 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "storybook": "cd ./apps/storybook; npm run storybook"
+    "storybook": "cd ./apps/storybook; npm run storybook",
+    "changeset": "changeset",
+    "version": "changeset version && npm i"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "husky": "^8.0.3",
     "turbo": "^1.10.12"
   }

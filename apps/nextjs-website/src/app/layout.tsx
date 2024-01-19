@@ -8,11 +8,13 @@ import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import MainWrapper from '@/components/atoms/MainWrapper/MainWrapper';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
+import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
+import Script from 'next/script';
+import { Titillium_Web } from 'next/font/google';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -31,6 +33,14 @@ _paq.push(["enableLinkTracking"]);
   s.parentNode.insertBefore(g, s);
 })();
 `;
+
+const titilliumWeb = Titillium_Web({
+  fallback: ['serif'],
+  subsets: ['latin'],
+  style: 'normal',
+  variable: '--font-titillium-web',
+  weight: ['400', '600', '700'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -60,25 +70,27 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang='it'>
+    <html lang='it' className={titilliumWeb.variable}>
       <head>
         {isProduction && (
-          <script
+          <Script
+            id='matomo'
             key='script-matomo'
             dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
+            strategy='lazyOnload'
           />
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlClientProvider locale={'it'} messages={messages}>
-          <body>
+          <BodyWrapper>
             <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
               <SiteHeader products={products} />
-              <MainWrapper>{children}</MainWrapper>
+              <main>{children}</main>
               <SiteFooter />
             </AuthProvider>
-          </body>
+          </BodyWrapper>
         </NextIntlClientProvider>
       </ThemeRegistry>
     </html>

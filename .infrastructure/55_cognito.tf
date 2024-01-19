@@ -24,6 +24,7 @@ module "cognito_custom_message_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
+  cloudwatch_logs_retention_in_days       = var.log_retention_days
 
   environment_variables = local.lambda_env_variables
 
@@ -47,6 +48,7 @@ module "cognito_post_confirmation_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
+  cloudwatch_logs_retention_in_days       = var.log_retention_days
 
   environment_variables = local.lambda_env_variables
 
@@ -79,6 +81,7 @@ module "cognito_define_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
+  cloudwatch_logs_retention_in_days       = var.log_retention_days
 
   environment_variables = local.lambda_env_variables
 
@@ -102,6 +105,7 @@ module "cognito_create_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
+  cloudwatch_logs_retention_in_days       = var.log_retention_days
 
   environment_variables = local.lambda_env_variables
 
@@ -134,6 +138,7 @@ module "cognito_verify_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   create_current_version_allowed_triggers = false
+  cloudwatch_logs_retention_in_days       = var.log_retention_days
 
   environment_variables = local.lambda_env_variables
 
@@ -155,6 +160,10 @@ resource "aws_cognito_user_pool" "devportal" {
 
   username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
+
+  user_attribute_update_settings {
+    attributes_require_verification_before_update = ["email"]
+  }
 
   account_recovery_setting {
     recovery_mechanism {

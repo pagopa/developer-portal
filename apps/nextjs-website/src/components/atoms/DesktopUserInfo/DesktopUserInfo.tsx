@@ -1,11 +1,10 @@
 'use client';
-import { Login, Logout } from '@mui/icons-material';
+import { Login, Logout, PersonOutline } from '@mui/icons-material';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import {
   Stack,
   Typography,
   IconButton,
-  Avatar,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -13,13 +12,13 @@ import {
   Link as MuiLink,
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 
-const UserInfo: FC = () => {
+const DesktopUserInfo: FC = () => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -61,7 +60,11 @@ const UserInfo: FC = () => {
     >
       {!user && !loading && (
         <MuiLink
-          href='/auth/login'
+          href={
+            pathname !== '/'
+              ? `/auth/login?redirect=${pathname}`
+              : '/auth/login'
+          }
           component={Link}
           sx={{
             display: 'flex',
@@ -92,13 +95,14 @@ const UserInfo: FC = () => {
             onClick={handleClick}
             gap={{ xs: 0, sm: 1 }}
           >
-            <Avatar
+            <PersonOutline
               sx={{
                 width: 20,
                 height: 20,
-                bgcolor: palette.text.primary,
+                color: palette.text.primary,
+                marginRight: 1,
               }}
-            ></Avatar>
+            ></PersonOutline>
             <Typography
               variant='body2'
               sx={{
@@ -164,4 +168,4 @@ const UserInfo: FC = () => {
   );
 };
 
-export default UserInfo;
+export default DesktopUserInfo;
