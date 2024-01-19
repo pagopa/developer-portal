@@ -14,6 +14,7 @@ import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { redirect } from 'next/navigation';
 
 type Params = {
   productSlug: string;
@@ -66,6 +67,21 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
+
+  const guidePath = params?.productGuidePage?.join('/');
+  const path = `/${params?.productSlug}/guides/${guidePath}`;
+
+  if (guideProps.version.main && !path.startsWith(guideProps.version.path)) {
+    const newPath =
+      params?.productGuidePage.length < 3
+        ? ''
+        : [
+            guideProps.version.path,
+            ...(params?.productGuidePage ?? []).slice(1),
+          ].join('/');
+    redirect(newPath);
+  }
+
   const { product, page, guide, version, versions, source, bannerLinks } =
     guideProps;
   const props: ProductGuidePageProps = {

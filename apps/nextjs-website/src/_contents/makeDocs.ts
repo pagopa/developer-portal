@@ -19,6 +19,7 @@ export type GuideDefinition = {
     readonly slug: string;
   };
   readonly versions: ReadonlyArray<{
+    readonly main?: boolean;
     readonly version: string;
     readonly dirName: string;
   }>;
@@ -67,17 +68,19 @@ export const makeGuide = ({
   const guidePath = `${product.path}/guides/${guide.slug}`;
   return pipe(
     versions,
-    RA.map(({ version, dirName }) => ({
+    RA.map(({ main = false, version, dirName }) => ({
       product: product,
       guide: {
         name: guide.name,
         path: guidePath,
       },
       version: {
+        main,
         name: version,
         path: `${guidePath}/${version}`,
       },
-      versions: versions.map(({ version }) => ({
+      versions: versions.map(({ main = false, version }) => ({
+        main,
         name: version,
         path: `${guidePath}/${version}`,
       })),

@@ -41,6 +41,7 @@ const sanp: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: '3.6.0',
       dirName: 'MiKJPaFrEwpU051b68kr',
     },
