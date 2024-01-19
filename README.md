@@ -35,6 +35,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS website.
 
+### Run the storybook for nextjs-website locally
+
+Run the following command from the root folder.
+
+``` bash
+npm run storybook -w nextjs-website
+```
+
+Open [http://localhost:6006/](http://localhost:6006/) with your browser to see the storybook.
+
 ### Run test locally
 
 Run the following command from the root folder.
