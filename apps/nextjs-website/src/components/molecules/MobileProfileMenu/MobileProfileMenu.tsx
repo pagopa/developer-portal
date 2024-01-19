@@ -73,7 +73,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
       sx={{
         position: 'sticky',
         top: 0,
-        zIndex: 101,
+        zIndex: 11,
         display: { md: 'none' },
         backgroundColor: palette.grey[50],
         borderBottom: `1px solid ${palette.divider}`,
@@ -82,9 +82,9 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
     >
       <EContainer>
         <Stack
-          direction='column'
+          direction='row'
           justifyContent='center'
-          alignItems='stretch'
+          alignItems='center'
           spacing={1}
           onClick={handleClick}
           sx={{ py: 2, cursor: 'pointer' }}
