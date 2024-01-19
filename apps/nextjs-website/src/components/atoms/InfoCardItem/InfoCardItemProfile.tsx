@@ -69,8 +69,12 @@ export const InfoCardItemProfile = (
                 id={'company-field'}
                 sx={{
                   backgroundColor: 'white',
-                  paddingX: '8px',
-                  marginLeft: '-6px',
+                  top: '-8px',
+                  '&.Mui-focused': {
+                    paddingX: '8px',
+                    marginLeft: '-6px',
+                    top: '0',
+                  },
                 }}
               >
                 {infoCardItem.title}

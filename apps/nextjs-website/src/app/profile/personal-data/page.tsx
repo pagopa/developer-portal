@@ -10,10 +10,8 @@ import {
   InfoCardItemProps,
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import { InfoCard } from '@/components/molecules/InfoCard/InfoCard';
 import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
 import { useUser } from '@/helpers/user.helper';
-import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
 

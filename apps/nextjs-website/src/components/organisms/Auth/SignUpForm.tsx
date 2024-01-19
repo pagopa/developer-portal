@@ -286,7 +286,18 @@ const SignUpForm = ({ userData, setUserData, onSignUp }: SignUpFormProps) => {
               </Stack>
               <Stack spacing={2} mb={2}>
                 <FormControl fullWidth>
-                  <InputLabel id='company-field' sx={{ top: '-8px' }}>
+                  <InputLabel
+                    id='company-field'
+                    sx={{
+                      backgroundColor: 'white',
+                      top: '-8px',
+                      '&.Mui-focused': {
+                        paddingX: '8px',
+                        marginLeft: '-6px',
+                        top: '0',
+                      },
+                    }}
+                  >
                     {shared.company}
                   </InputLabel>
                   <Select
