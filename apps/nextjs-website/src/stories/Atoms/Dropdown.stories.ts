@@ -22,5 +22,5 @@ export const Default: Story = {
       { href: '#2', label: 'Item 2' },
       { href: '#3', label: 'Item 3' },
     ],
-  }
+  },
 };
