@@ -11,7 +11,6 @@ import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { Box, Button } from '@mui/material';
 
 export type SubscribeButtonProps = {
   webinarSlug?: string;
@@ -84,6 +83,13 @@ const SubscribeToWebinar = ({
       if (updateSuccess) {
         setIsSubscribed(true);
       }
+      if (
+        webinarState === WebinarState.past ||
+        webinarState === WebinarState.live
+      ) {
+        // eslint-disable-next-line functional/immutable-data
+        router.push(`/webinars/${webinarSlug}`);
+      }
       setIsLoading(false);
     });
     return null;
@@ -122,20 +128,7 @@ const SubscribeToWebinar = ({
     isSubscribed &&
     (webinarState === WebinarState.live || webinarState === WebinarState.past)
   ) {
-    return (
-      <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
-        <Button
-          variant={'contained'}
-          onClick={() => {
-            // eslint-disable-next-line functional/immutable-data
-            router.push(`/webinars/${webinarSlug}`);
-            return null;
-          }}
-        >
-          {t('view')}
-        </Button>
-      </Box>
-    );
+    return null;
   }
 
   return (
