@@ -148,6 +148,7 @@
             "code": "Codice di verifica",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
+            "ctaLabel": "Reinvia e-mail",
             "resendEmail": "Reinvia e-mail"
         },
         "resendEmail": {
@@ -227,6 +228,10 @@
             "newPassword": "Imposta una nuova password",
             "rememberPassword": "Ricordi la tua password?",
             "invalidLinkError": "Il link non è valido"
+        },
+        "expiredCode": {
+            "expiredLink": "Il link che hai usato è scaduto",
+            "goToProfile": "Vai al profilo"
         }
     },
     "shared": {

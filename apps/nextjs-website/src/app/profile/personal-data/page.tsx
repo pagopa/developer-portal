@@ -159,11 +159,8 @@ const PersonalData = () => {
           confirmCta={{
             label: t('changeEmail.dialog.confirmLabel'),
             onClick: () => {
-              // TODO: Uncomment this if necessary or remove it once defined the flow
-              // Auth.signOut().then(() => {
-              //   router.replace('/auth/login');
-              // });
-              typeof window !== 'undefined' && window.location.reload();
+              setEditItem(null);
+              setShowModal(null);
               return null;
             },
           }}
