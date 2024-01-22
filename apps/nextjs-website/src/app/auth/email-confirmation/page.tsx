@@ -23,9 +23,9 @@ const EmailConfirmation = () => {
     if (code) {
       Auth.verifyCurrentUserAttributeSubmit('email', code)
         .then(() => {
-          Auth.signOut();
           // eslint-disable-next-line functional/immutable-data
           router.push('/auth/account-activated');
+          Auth.signOut();
         })
         .catch((error) => {
           switch (error.code) {
@@ -33,6 +33,7 @@ const EmailConfirmation = () => {
               setState(State.expiredCode);
               break;
             case 'CodeMismatchException':
+            case 'InternalErrorException':
             case 'LimitExceededException':
             default:
               setState(State.error);
