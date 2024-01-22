@@ -411,3 +411,9 @@ resource "aws_cognito_identity_pool_roles_attachment" "main" {
     authenticated = aws_iam_role.devportal_authenticated_user.arn
   }
 }
+
+resource "aws_cognito_user_group" "hosts" {
+  name         = "hosts"
+  user_pool_id = aws_cognito_user_pool.devportal.id
+  role_arn     = aws_iam_role.devportal_authenticated_host_user.arn
+}
