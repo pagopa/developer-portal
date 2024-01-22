@@ -71,7 +71,7 @@ describe('webinarQuestions', () => {
   });
 
   describe('listWebinarQuestion', () => {
-    it('should returns a list of webinar questions', async () => {
+    it('should return a list of webinar questions', async () => {
       const { env } = makeTestWebinarEnv();
       const { webinarId } = aWebinarQuestion;
       const actual = await listWebinarQuestion(webinarId)(env)();
