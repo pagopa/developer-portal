@@ -394,3 +394,20 @@ resource "aws_iam_role" "devportal_authenticated_host_user" {
     ]
   })
 }
+
+resource "aws_cognito_identity_pool_roles_attachment" "main" {
+  identity_pool_id = aws_cognito_identity_pool.devportal.id
+
+  role_mapping {
+    identity_provider = format(
+      "cognito-idp.%s.amazonaws.com/%s:%s",
+      var.aws_region, aws_cognito_user_pool.devportal.id, aws_cognito_user_pool_client.devportal_website.id
+    )
+    ambiguous_role_resolution = "AuthenticatedRole"
+    type                      = "Token"
+  }
+
+  roles = {
+    authenticated = aws_iam_role.devportal_authenticated_user.arn
+  }
+}
