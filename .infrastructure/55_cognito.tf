@@ -330,3 +330,15 @@ resource "aws_cognito_user_pool_domain" "devportal" {
   certificate_arn = aws_acm_certificate.auth.arn
   user_pool_id    = aws_cognito_user_pool.devportal.id
 }
+
+resource "aws_cognito_identity_pool" "devportal" {
+  identity_pool_name               = "devportal-identity"
+  allow_unauthenticated_identities = false
+  allow_classic_flow               = false
+
+  cognito_identity_providers {
+    client_id               = aws_cognito_user_pool_client.devportal_website.id
+    provider_name           = aws_cognito_user_pool.devportal.endpoint
+    server_side_token_check = false
+  }
+}
