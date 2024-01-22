@@ -342,3 +342,55 @@ resource "aws_cognito_identity_pool" "devportal" {
     server_side_token_check = false
   }
 }
+
+resource "aws_iam_role" "devportal_authenticated_user" {
+  name        = "DevPortalAuthenticatedUser"
+  description = "The role assumed by the authenticated devportal users"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Principal = {
+          "Federated" : "cognito-identity.amazonaws.com"
+        }
+        Condition = {
+          StringEquals = {
+            "cognito-identity.amazonaws.com:aud" : aws_cognito_identity_pool.devportal.id
+          }
+          "ForAnyValue:StringLike" = {
+            "cognito-identity.amazonaws.com:amr" : "authenticated"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "devportal_authenticated_host_user" {
+  name        = "DevPortalAuthenticatedHostUser"
+  description = "The role assumed by the authenticated host devportal users"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Principal = {
+          "Federated" : "cognito-identity.amazonaws.com"
+        }
+        Condition = {
+          StringEquals = {
+            "cognito-identity.amazonaws.com:aud" : aws_cognito_identity_pool.devportal.id
+          }
+          "ForAnyValue:StringLike" = {
+            "cognito-identity.amazonaws.com:amr" : "authenticated"
+          }
+        }
+      }
+    ]
+  })
+}
