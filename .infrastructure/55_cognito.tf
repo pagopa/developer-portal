@@ -417,3 +417,42 @@ resource "aws_cognito_user_group" "hosts" {
   user_pool_id = aws_cognito_user_pool.devportal.id
   role_arn     = aws_iam_role.devportal_authenticated_host_user.arn
 }
+
+resource "aws_iam_role_policy" "devportal_authenticated_user" {
+  name = "DevPortalAuthenticatedUserPolicy"
+  role = aws_iam_role.devportal_authenticated_user.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
+        ],
+        Resource = [
+          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "devportal_authenticated_host_user" {
+  name = "DevPortalAuthenticatedHostUserPolicy"
+  role = aws_iam_role.devportal_authenticated_host_user.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+        ],
+        Resource = [
+          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
+        ]
+      }
+    ]
+  })
+}
