@@ -19,6 +19,7 @@ export const WebinarQuestionDynamodbCodec = t.strict({
   givenName: DynamodbAttrS,
   familyName: DynamodbAttrS,
   question: DynamodbAttrS,
+  // must be in unix epoch time to work with TTL index
   expireAt: DynamodbAttrUnixTime,
 });
 
@@ -52,6 +53,5 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     givenName: { S: input.givenName },
     familyName: { S: input.familyName },
     question: { S: input.question },
-    // must be in unix epoch time format
     expireAt: { N: input.expireAt },
   });
