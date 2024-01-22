@@ -14,6 +14,9 @@
   "dependencies": {
     "@aws-amplify/auth": "^5.6.6",
     "@aws-amplify/ui-react": "^5.3.1",
+    "@aws-sdk/client-cognito-identity": "^3.489.0",
+    "@aws-sdk/client-dynamodb": "^3.490.0",
+    "@aws-sdk/credential-providers": "^3.489.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@markdoc/markdoc": "0.3.0",
@@ -27,6 +30,9 @@
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
     "io-ts": "^2.2.20",
+    "io-ts-types": "^0.5.19",
+    "monocle-ts": "^2.3.13",
+    "newtype-ts": "^0.3.5",
     "next": "^13.4.19",
     "next-intl": "^2.20.2",
     "react": "18.2.0",
@@ -44,6 +50,7 @@
     "eslint-config-custom": "*",
     "eslint-config-next": "13.4.19",
     "jest": "^29.5.0",
+    "jest-mock-extended": "^3.0.5",
     "ts-jest": "^29.1.1",
     "typescript": "5.1.6"
   },
