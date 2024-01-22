@@ -33,6 +33,8 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
+            "save": "Conferma",
+            "cancel": "Annulla",
             "title": "Su di te",
             "dataSection": "I tuoi dati",
             "accountSection": "Il tuo account",
@@ -73,23 +75,6 @@
                 "confirmLabel": "Vai al login"
             }
         },
-        "changePassword": {
-            "title": "Cambia password",
-            "currentPassword": "Password attuale",
-            "newPassword": "Nuova password",
-            "confirmPassword": "Conferma password",
-            "wrongPassword": "La password inserita non risulta corretta",
-            "requiredCurrentPassword": "È necessario inserire la password attuale",
-            "passwordsNotMatch": "Le password non corrispondono",
-            "passwordPolicy": "Non rispetta i requisiti. Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
-            "cancel": "Annulla",
-            "save": "Conferma",
-            "dialog": {
-                "title": "La password è stata modificata correttamente",
-                "text": "Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.",
-                "confirmLabel": "Vai al login"
-            }
-        },
         "changeEmail": {
             "cancel": "Annulla",
             "save": "Conferma",
@@ -101,7 +86,8 @@
                 "text": "Abbiamo inviato una email all’indirizzo che hai inserito.\nClicca sul link contenuto al suo interno per verificarlo e associarlo al tuo account PagoPA DevPortal.",
                 "confirmLabel": "Chiudi"
             }
-        }
+        },
+        "insert": "Inserisci"
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",

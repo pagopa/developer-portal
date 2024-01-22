@@ -121,6 +121,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
         useHoverlay={false}
         altText={hero.altText}
         theme='light'
+        gridTextSx={{ marginTop: { xs: '62px', md: '77px' } }}
       />
       <Feature
         items={feature.items}

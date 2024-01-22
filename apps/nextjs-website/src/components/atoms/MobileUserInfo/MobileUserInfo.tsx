@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
-import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 
 const MobileUserInfo: FC = () => {
   const t = useTranslations();
@@ -106,7 +105,7 @@ const MobileUserInfo: FC = () => {
           </Typography>
           <MuiLink
             href='/auth/login'
-            component={ButtonNaked}
+            component={Link}
             onClick={signOut}
             sx={{
               display: 'flex',
