@@ -332,6 +332,10 @@ resource "aws_cognito_user_pool_domain" "devportal" {
 }
 
 resource "aws_cognito_identity_pool" "devportal" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   identity_pool_name               = "devportal-identity"
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
@@ -341,6 +345,7 @@ resource "aws_cognito_identity_pool" "devportal" {
     provider_name           = aws_cognito_user_pool.devportal.endpoint
     server_side_token_check = false
   }
+
 }
 
 resource "aws_iam_role" "devportal_authenticated_user" {
