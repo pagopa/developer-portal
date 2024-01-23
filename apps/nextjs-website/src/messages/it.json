@@ -132,7 +132,7 @@
     },
     "resendEmail": { "label": "Reinvia email" },
     "signUp": {
-      "action": "Iscriviti",
+      "action": "Registrati",
       "createYourAccount": "Crea il tuo account",
       "passwordMismatchError": "Le password non combaciano",
       "confirmComunications": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
@@ -186,7 +186,9 @@
       "code": "Codice di verifica",
       "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
       "continue": "Continua",
-      "resendEmail": "Reinvia email"
+      "resendEmail": "Reinvia email",
+      "invalidCode": "Il codice utilizzato non è valido, clicca su reinvia email per riceverne uno nuovo",
+      "emptyCode": "Il codice è obbligatorio"
     },
     "accountActivated": {
       "goToLogin": "Vai al login",
@@ -196,8 +198,8 @@
     "resetPassword": {
       "title": "Recupera password",
       "body": "Inserisci il tuo indirizzo email e ti invieremo le istruzioni per impostare una nuova password.",
-      "goBackToLogin": "Vai al login",
-      "send": "Conferma",
+      "goBackToLogin": "Torna al login",
+      "send": "Invia",
       "checkEmailTitle": "Controlla l'email",
       "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
       "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
@@ -206,7 +208,9 @@
       "passwordSet": "Password impostata correttamente",
       "newPassword": "Imposta una nuova password",
       "rememberPassword": "Ricordi la tua password?",
-      "invalidLinkError": "Il link che hai usato è scaduto"
+      "invalidLinkError": "Il link che hai usato è scaduto",
+      "emailFieldError": "L’indirizzo email non è valido",
+      "passwordError": "Non rispetta i requisiti."
     }
   },
   "shared": {
@@ -231,7 +235,7 @@
     "edit": "Modifica",
     "cancel": "Annulla",
     "yourData": "I tuoi dati",
-    "emailAlreadyTaken": "Esiste già un account per questo indirizzo email.",
+    "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
     "subscribeButton": {
       "subscribeLabel": {
         "default": "Iscriviti",

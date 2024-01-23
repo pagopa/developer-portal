@@ -109,14 +109,19 @@ const SignUpForm = ({
     const nameError = validateField(firstName);
     const surnameError = validateField(lastName);
     const emailError = validateEmail(username);
+    const emailEmptyError = validateField(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
 
     setFieldErrors({
-      name: nameError ? shared(nameError) : null,
-      surname: surnameError ? shared(surnameError) : null,
-      email: emailError ? shared(emailError) : null,
-      password: passwordError ? shared(passwordError) : null,
+      name: nameError ? shared('requiredFieldError') : null,
+      surname: surnameError ? shared('requiredFieldError') : null,
+      email: emailEmptyError
+        ? shared('requiredFieldError')
+        : emailError
+        ? shared(emailError)
+        : null,
+      password: passwordError ? signUp('passwordPolicy') : null,
       confirmPassword: confirmPasswordError
         ? signUp('passwordMismatchError')
         : null,

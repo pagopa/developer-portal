@@ -34,10 +34,13 @@ const ResetPasswordForm = ({
 
   const validateForm = useCallback(() => {
     const emailError = validateEmail(email);
-    setEmailError(shared(emailError));
+
+    if (emailError) {
+      setEmailError(resetPassword('emailFieldError'));
+    }
 
     return !emailError;
-  }, [email, shared]);
+  }, [email, resetPassword]);
 
   const onResetPassword = useCallback(() => {
     const valid = validateForm();

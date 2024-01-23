@@ -17,18 +17,34 @@ import { useTheme } from '@mui/material';
 interface confirmLoginProps {
   email: string | null;
   onConfirmLogin: (code: string) => Promise<void>;
+  resendCode: () => Promise<boolean>;
 }
 
-const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
+const ConfirmLogin = ({
+  email,
+  onConfirmLogin,
+  resendCode,
+}: confirmLoginProps) => {
   const confirmLogin = useTranslations('auth.confirmLogin');
 
   const { palette } = useTheme();
   const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
+  const [codeError, setCodeError] = useState<boolean>(false);
+  const [emptyCode, setEmptyCode] = useState<boolean>(false);
 
   const onConfirmLoginHandler = useCallback(() => {
+    setCodeError(false);
+    setEmptyCode(false);
     setSubmitting(true);
-    onConfirmLogin(code).catch(() => setSubmitting(false));
+
+    onConfirmLogin(code).catch((e) => {
+      if (e.message === 'Challenge response cannot be empty') {
+        setEmptyCode(true);
+      } else if (e.name === 'NotAuthorizedException') {
+        setCodeError(true);
+      }
+    });
   }, [onConfirmLogin, code]);
 
   return (
@@ -70,11 +86,28 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 variant='outlined'
                 size='small'
                 onChange={(e) => setCode(e.target.value)}
+                helperText={
+                  codeError
+                    ? confirmLogin('invalidCode')
+                    : emptyCode
+                    ? confirmLogin('emptyCode')
+                    : ''
+                }
+                error={codeError || emptyCode}
                 sx={{
                   backgroundColor: palette.background.paper,
                 }}
               />
             </Stack>
+            {email && (
+              <ResendEmail
+                isLoginCTA={true}
+                resendCode={resendCode}
+                setSubmitting={setSubmitting}
+                email={email}
+                text={confirmLogin('checkJunkMail')}
+              />
+            )}
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
@@ -86,9 +119,6 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
                 </Button>
               </Stack>
             </Stack>
-            {email && (
-              <ResendEmail email={email} text={confirmLogin('checkJunkMail')} />
-            )}
           </Grid>
         </Grid>
       </Card>

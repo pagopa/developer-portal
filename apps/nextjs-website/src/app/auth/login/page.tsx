@@ -16,8 +16,13 @@ const Login = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [noAccount, setNoAccount] = useState<boolean>(false);
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
     setNoAccount(false);
+    setUsername(username);
+    setPassword(password);
 
     const user = await Auth.signIn({
       username,
@@ -39,6 +44,15 @@ const Login = () => {
       setLogInStep(LoginSteps.MFA_CHALLENGE);
     }
   }, []);
+
+  const resendCode = useCallback(async () => {
+    const result = await onLogin({ username, password })
+      .then(() => true)
+      .catch(() => false);
+
+    return result;
+  }, [onLogin, password, username]);
+
   const searchParams = useSearchParams();
 
   const confirmLogin = useCallback(
@@ -87,7 +101,11 @@ const Login = () => {
             <LoginForm noAccount={noAccount} onLogin={onLogin} />
           )}
           {logInStep === LoginSteps.MFA_CHALLENGE && (
-            <ConfirmLogIn email={userName} onConfirmLogin={confirmLogin} />
+            <ConfirmLogIn
+              email={userName}
+              onConfirmLogin={confirmLogin}
+              resendCode={resendCode}
+            />
           )}
           {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
             <ConfirmSignUp email={userName || ''} onBack={onBackStep} />

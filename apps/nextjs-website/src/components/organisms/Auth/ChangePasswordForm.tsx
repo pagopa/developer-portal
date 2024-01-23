@@ -24,7 +24,7 @@ import {
   SetStateAction,
 } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { passwordMatcher, validatePassword } from '@/helpers/auth.helpers';
+import { validatePassword } from '@/helpers/auth.helpers';
 import { useTranslations } from 'next-intl';
 
 interface ChangePasswordFormProps {
@@ -34,7 +34,7 @@ interface ChangePasswordFormProps {
 }
 
 interface ChangePasswordFieldsError {
-  passwordError: string | null;
+  passwordError: boolean | null;
   confirmPasswordError: string | null;
 }
 
@@ -50,7 +50,7 @@ const ChangePasswordForm = ({
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [password_confirm, setPasswordConfirm] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
     passwordError: null,
@@ -70,17 +70,17 @@ const ChangePasswordForm = ({
 
   const validateForm = useCallback(() => {
     const passwordError = validatePassword(password);
-    const confirmPasswordHasErrors = password !== password_confirm;
+    const confirmPasswordHasErrors = password !== passwordConfirm;
 
     setFieldErrors({
-      passwordError: passwordError ? shared(passwordError) : null,
+      passwordError: passwordError ? true : null,
       confirmPasswordError: confirmPasswordHasErrors
         ? signUp('passwordMismatchError')
         : null,
     });
 
     return !passwordError && !confirmPasswordHasErrors;
-  }, [password, shared, password_confirm, signUp]);
+  }, [password, passwordConfirm, signUp]);
 
   const onChangePasswordClick = useCallback(() => {
     const valid = validateForm();
@@ -169,7 +169,7 @@ const ChangePasswordForm = ({
                       </IconButton>
                     </InputAdornment>
                   }
-                  value={password_confirm}
+                  value={passwordConfirm}
                   label={shared('confirmPassword')}
                   error={!!fieldErrors.confirmPasswordError}
                   inputProps={{
