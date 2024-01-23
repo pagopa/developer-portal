@@ -350,7 +350,7 @@ resource "aws_cognito_identity_pool" "devportal" {
 
 data "aws_iam_policy_document" "authenticated_users_policy" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
