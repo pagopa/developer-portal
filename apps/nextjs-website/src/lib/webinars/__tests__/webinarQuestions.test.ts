@@ -33,7 +33,6 @@ const makeTestWebinarEnv = () => {
     else return Promise.reject(new Error('Unsupported command'));
   });
   nowDateMock.mockImplementation(() => nowDate);
-  nowDateMock;
   const env = {
     questionLifetimeInSeconds: 1000,
     dynamodbClient: dynamodbClientMock,
