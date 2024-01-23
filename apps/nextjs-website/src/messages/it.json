@@ -125,11 +125,7 @@
       "rememberMe": "Ricordami",
       "forgotPassword": "Hai dimenticato la password?",
       "noAccount": "Non hai un account?",
-      "noAccountError": "Nome utente o password non corretti.",
-      "accountAlreadyConfirmed": {
-        "yourAccountIsAlreadyConfirmed": "Hai già validato questo indirizzo email",
-        "goToLogin": "Vai al Login"
-      }
+      "noAccountError": "Nome utente o password non corretti."
     },
     "confirmation": {
       "title": "Il link che hai usato è scaduto",
@@ -146,7 +142,6 @@
       "whyCreateAccount": "Perché iscriversi a PagoPA DevPortal",
       "passwordError": "Non rispetta i requisiti.",
       "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
-      "emailSent": "Email inviata a ",
       "advantages": {
         "exclusive_contents": {
           "title": "Accedi a contenuti esclusivi",
@@ -182,7 +177,6 @@
       "title": "Confermaci che sei tu",
       "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
       "didntReceiveEmail": "Non hai ricevuto l'email? Controlla la posta indesiderata oppure",
-      "resendEmail": "Invia nuovamente l'email",
       "wrongEmail": "L'indirizzo email è errato?"
     },
     "confirmLogin": {
@@ -191,7 +185,7 @@
       "code": "Codice di verifica",
       "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
       "continue": "Continua",
-      "resendEmail": "Reinvia email"
+      "invalidCode": "Il codice inserito non è corretto"
     },
     "accountActivated": {
       "goToLogin": "Vai al login",
@@ -232,6 +226,7 @@
       "role": "Ruolo",
       "requiredFieldError": "Questo campo non può essere vuoto",
       "emailFieldError": "Inserisci un indirizzo email valido",
+      "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
       "goToModel": "Vai al modello",
       "edit": "Modifica",
       "cancel": "Annulla",
