@@ -1,16 +1,4 @@
-const DEFAULT_LOCALE = 'it-IT';
-
-const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  timeZone: 'Europe/Rome',
-};
-
-const TIME_OPTIONS: Intl.DateTimeFormatOptions = {
-  hour: '2-digit',
-  minute: '2-digit',
-};
+import { dateOptions, defaultLocale, timeOptions } from '@/config';
 
 function isSameDay(start: Date, end: Date): boolean {
   return (
@@ -22,13 +10,13 @@ function isSameDay(start: Date, end: Date): boolean {
 
 /**
  * this function is used to format the date and time
- * in the format defined with DATE_OPTIONS and TIME_OPTIONS
+ * in the format defined with dateOptions and timeOptions
  */
 function formattedDateTime(date: Date): string {
   return `${date.toLocaleDateString(
-    DEFAULT_LOCALE,
-    DATE_OPTIONS
-  )}, ${date.toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)}`;
+    defaultLocale,
+    dateOptions
+  )}, ${date.toLocaleTimeString(defaultLocale, timeOptions)}`;
 }
 
 /**
@@ -41,10 +29,10 @@ function conditionallyFormattedEndDate(
 ): string | undefined {
   if (!end) return;
 
-  if (!start) return end.toLocaleDateString(DEFAULT_LOCALE, DATE_OPTIONS);
+  if (!start) return end.toLocaleDateString(defaultLocale, dateOptions);
 
   return isSameDay(start, end)
-    ? end.toLocaleTimeString(DEFAULT_LOCALE, TIME_OPTIONS)
+    ? end.toLocaleTimeString(defaultLocale, timeOptions)
     : formattedDateTime(end);
 }
 

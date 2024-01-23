@@ -83,6 +83,13 @@ const SubscribeToWebinar = ({
       if (updateSuccess) {
         setIsSubscribed(true);
       }
+      if (
+        webinarState === WebinarState.past ||
+        webinarState === WebinarState.live
+      ) {
+        // eslint-disable-next-line functional/immutable-data
+        router.push(`/webinars/${webinarSlug}`);
+      }
       setIsLoading(false);
     });
     return null;
@@ -111,7 +118,7 @@ const SubscribeToWebinar = ({
 
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
-    [WebinarState.comingSoon]: 'takePart',
+    [WebinarState.comingSoon]: 'default',
     [WebinarState.live]: 'takePart',
     [WebinarState.future]: 'default',
     [WebinarState.unknown]: 'default',
