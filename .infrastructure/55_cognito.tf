@@ -354,7 +354,7 @@ data "aws_iam_policy_document" "authenticated_users_policy" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
-      type        = "Service"
+      type        = "Federated"
       identifiers = ["cognito-identity.amazonaws.com"]
     }
 
