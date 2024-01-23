@@ -68,18 +68,8 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
-  const guidePath = params?.productGuidePage?.join('/');
-  const path = `/${params?.productSlug}/guides/${guidePath}`;
-
-  if (guideProps.version.main && !path.startsWith(guideProps.version.path)) {
-    const newPath =
-      params?.productGuidePage.length < 3
-        ? ''
-        : [
-            guideProps.version.path,
-            ...(params?.productGuidePage ?? []).slice(1),
-          ].join('/');
-    redirect(newPath);
+  if (guideProps.redirect) {
+    redirect(guideProps.page.path);
   }
 
   const { product, page, guide, version, versions, source, bannerLinks } =
@@ -89,7 +79,7 @@ const Page = async ({ params }: { params: Params }) => {
     product,
     guide,
     version,
-    versions,
+    versions: Array.from(versions),
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {

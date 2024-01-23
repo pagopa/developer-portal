@@ -11,6 +11,9 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { GuidePage } from './types/guideData';
+
+const VERSION_REGEX = /v?\d+\.\d+\.\d+/;
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -34,12 +37,36 @@ export async function getApi(productSlug?: string) {
 export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
-) {
+): Promise<GuidePage> {
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
   const guide = guides.find(({ page }) => page.path === path) ?? getMainGuide();
   const props = manageUndefined(guide);
+
+  const isPathWithMainVersion =
+    props.version.main && !path.startsWith(props.version.path);
+
+  // We need to redirect to the main version if the user is trying to access to a url without version
+  // Example: /sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/changelog
+  // We need to redirect to /sanp/3.6.0/specifiche-attuative-del-nodo-dei-pagamenti-spc/changelog
+
+  if (isPathWithMainVersion) {
+    // Check if the current path has a version in it
+    const hasVersionInPath = (guidePath ?? '').match(VERSION_REGEX);
+    const sliceFrom = hasVersionInPath ? 2 : 1;
+    const to = [
+      props.version.path,
+      ...(productGuidePage ?? []).slice(sliceFrom),
+    ].join('/');
+
+    // Check if the guide exists
+    const guide = await getGuide(productSlug, getGuidePath(to));
+    return {
+      ...guide,
+      redirect: true,
+    };
+  }
 
   return {
     ...props,
@@ -53,12 +80,16 @@ function getMainGuide() {
   return guides.find(({ version }) => version.main === true);
 }
 
+function getGuidePath(path: string) {
+  // the filter is to remove the first 3 elements of the path which are
+  // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
+  return path.split('/').filter((p, index) => index > 2);
+}
+
 export function getGuidePaths() {
   return guides.map((guide) => ({
     slug: guide.product.slug,
-    // the filter is to remove the first 3 elements of the path which are
-    // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
-    guidePaths: guide.page.path.split('/').filter((p, index) => index > 2),
+    guidePaths: getGuidePath(guide.page.path),
   }));
 }
 
