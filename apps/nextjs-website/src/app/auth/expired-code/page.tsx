@@ -1,15 +1,18 @@
 import { Button } from '@mui/material';
-import ExpiredCodeCard from '@/components/organisms/Auth/ExpiredCodeCard';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
+import SingleCard from '@/components/atoms/SingleCard/SingleCard';
+import { IllusError } from '@pagopa/mui-italia';
 
 const ExpiredCode = () => {
   const t = useTranslations('auth');
 
   return (
     <PageBackgroundWrapper>
-      <ExpiredCodeCard
+      <SingleCard
+        icon={<IllusError />}
+        title={t('expiredCode.expiredLink')}
         cta={
           <Button
             variant='contained'
