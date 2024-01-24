@@ -33,6 +33,8 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
+          "save": "Conferma",
+          "cancel": "Annulla",
           "title": "Su di te",
           "dataSection": "I tuoi dati",
           "accountSection": "Il tuo account",
@@ -72,7 +74,8 @@
                 "text": "Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.",
                 "confirmLabel": "Vai al login"
             }
-        }
+        },
+        "insert": "Inserisci"
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",
@@ -212,6 +215,7 @@
             "newPassword": "Imposta una nuova password",
             "rememberPassword": "Ricordi la tua password?",
             "invalidLinkError": "Il link non è valido"
+
         }
     },
     "shared": {
