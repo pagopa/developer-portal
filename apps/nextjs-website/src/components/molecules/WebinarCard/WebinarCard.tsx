@@ -1,8 +1,9 @@
 'use client';
 import { Webinar } from '@/lib/types/webinar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Stack,
@@ -18,6 +19,7 @@ import { useUser } from '@/helpers/user.helper';
 import { useTranslations } from 'next-intl';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
+import { useRouter } from 'next/navigation';
 
 type WebinarCardProps = {
   webinar: Webinar;
@@ -31,6 +33,7 @@ const WebinarCard = ({
   handleErrorMessage,
 }: WebinarCardProps) => {
   const theme = useTheme();
+  const router = useRouter();
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { user, setUserAttributes } = useUser();
@@ -40,6 +43,21 @@ const WebinarCard = ({
   useEffect(() => {
     webinar && setWebinar(webinar);
   }, [webinar]);
+
+  const linkButton: React.ReactNode = useMemo(() => {
+    if ([WebinarState.unknown, WebinarState.past].includes(webinarState)) {
+      return null;
+    }
+
+    return (
+      <LinkButton
+        disabled={false}
+        href={`/webinars/${webinar.slug}`}
+        label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
+        color={theme.palette.primary.main}
+      />
+    );
+  }, [isSubscribed, webinarState]);
 
   return (
     <Card
@@ -80,31 +98,43 @@ const WebinarCard = ({
           <Typography variant='body2' mb={1}>
             {webinar.description}
           </Typography>
-          <LinkButton
-            disabled={false}
-            href={`/webinars/${webinar.slug}`}
-            label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
-            color={theme.palette.primary.main}
-          />
+          {linkButton}
           <Box my={4}>
-            <SubscribeToWebinar
-              webinarSlug={webinar.slug}
-              userAttributes={user?.attributes}
-              userAligned={userAligned}
-              setUserAttributes={async (
-                attributes: DevPortalUser['attributes']
-              ) => {
-                await setUserAttributes(attributes);
-                return null;
-              }}
-              isSubscribed={isSubscribed}
-              setIsSubscribed={(bool: boolean) => {
-                setIsSubscribed(bool);
-                return null;
-              }}
-              handleErrorMessage={handleErrorMessage}
-              webinarState={webinarState}
-            />
+            {isSubscribed &&
+            (webinarState === WebinarState.live ||
+              webinarState === WebinarState.past) ? (
+              <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
+                <Button
+                  variant={'contained'}
+                  onClick={() => {
+                    // eslint-disable-next-line functional/immutable-data
+                    router.push(`/webinars/${webinar.slug}`);
+                    return null;
+                  }}
+                >
+                  {t('view')}
+                </Button>
+              </Box>
+            ) : (
+              <SubscribeToWebinar
+                webinarSlug={webinar.slug}
+                userAttributes={user?.attributes}
+                userAligned={userAligned}
+                setUserAttributes={async (
+                  attributes: DevPortalUser['attributes']
+                ) => {
+                  await setUserAttributes(attributes);
+                  return null;
+                }}
+                isSubscribed={isSubscribed}
+                setIsSubscribed={(bool: boolean) => {
+                  setIsSubscribed(bool);
+                  return null;
+                }}
+                handleErrorMessage={handleErrorMessage}
+                webinarState={webinarState}
+              />
+            )}
           </Box>
           {isSubscribed && webinarState === WebinarState.future && (
             <Typography

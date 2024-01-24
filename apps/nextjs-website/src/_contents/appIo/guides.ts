@@ -10,6 +10,10 @@ const guidaTecnica: GuideDefinition = {
   },
   versions: [
     {
+      version: 'v5.0',
+      dirName: 'UAvruCMPsowDKZMH1jNr',
+    },
+    {
       version: 'v4.0',
       dirName: 'mzXDeCSRezM6r2ocy8gb',
     },
