@@ -1,13 +1,14 @@
 'use client';
 import LoginForm from '@/components/organisms/Auth/LoginForm';
 import ConfirmLogIn from '@/components/organisms/Auth/ConfirmLogin';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import { useRouter, useSearchParams } from 'next/navigation';
+import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 
 const Login = () => {
   const router = useRouter();
@@ -77,19 +78,7 @@ const Login = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          minHeight: '100vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100vw',
-          backgroundImage: 'url(/images/hero.jpg)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'bottom right',
-        }}
-      >
+      <PageBackgroundWrapper>
         <Grid
           container
           justifyContent='center'
@@ -111,7 +100,7 @@ const Login = () => {
             <ConfirmSignUp email={userName || ''} onBack={onBackStep} />
           )}
         </Grid>
-      </Box>
+      </PageBackgroundWrapper>
     </>
   );
 };

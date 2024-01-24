@@ -40,6 +40,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { companyRoles as configCompanyRoles } from '@/config';
 
 interface SignUpFormProps {
   userData: SignUpUserData;
@@ -159,17 +160,7 @@ const SignUpForm = ({
     onSignUp();
   }, [onSignUp, validateForm]);
 
-  const companyRoles = useMemo(
-    () => [
-      'ente-pubblico',
-      'partner-tecnologico',
-      'psp',
-      'gestore-di-pubblico-servizio',
-      'azienda-privata',
-      'altro',
-    ],
-    []
-  );
+  const companyRoles = useMemo(() => configCompanyRoles, []);
 
   if (authStatus === 'authenticated') {
     redirect('/');

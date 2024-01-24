@@ -26,7 +26,7 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
               size='small'
               sx={{
                 color: palette.text.secondary,
-                backgroundColor: '#EEEEEE',
+                backgroundColor: palette.grey[200],
               }}
             />
           )}

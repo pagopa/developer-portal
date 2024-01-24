@@ -1,5 +1,5 @@
 'use client';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import PasswordChangedCard from '@/components/organisms/Auth/PasswordChangedCard';
 import ChangePasswordForm from '@/components/organisms/Auth/ChangePasswordForm';
 import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
@@ -68,19 +68,7 @@ const ChangePassword = () => {
     case State.success:
       return (
         <>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100vw',
-              minHeight: '70vh',
-              backgroundImage: 'url(/images/hero.jpg)',
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-              backgroundPosition: 'bottom right',
-            }}
-          >
+          <PageBackgroundWrapper>
             <Grid
               container
               justifyContent='center'
@@ -97,7 +85,7 @@ const ChangePassword = () => {
                 <PasswordChangedCard />
               )}
             </Grid>
-          </Box>
+          </PageBackgroundWrapper>
           )
         </>
       );
