@@ -2,8 +2,10 @@ import { parseMjmlToHtml } from './mjmlParser';
 
 const TRANSLATIONS = {
   previewText: 'Confermarci la validità di questa e-mail',
-  title: 'L’ultimo passo per attivare la tua utenza su PagoPA DevPortal',
-  text: 'Ciao,<br><br><br>Grazie per aver creato un account sul nostro DevPortal!<br><br>Non ti resta che confermarci la validità di questa e-mail.',
+  title: 'Verifica nuovo indirizzo email',
+  text:
+    'Ciao,<br><br><br>Ci risulta che tu abbia richiesto di associare questo indirizzo email al tuo account su PagoPA DevPortal.' +
+    'Se è così, usa il bottone qui sotto per procedere.<br><br><br>Questo link scadrà tra 3 minuti.',
   emailVerification: 'Verifica e-mail',
   companyLegalDetails:
     'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
