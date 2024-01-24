@@ -30,7 +30,7 @@ export type GuidePage = NonNullable<
     };
     readonly version: GuideVersion;
     readonly versions: readonly GuideVersion[];
-    readonly source: GuideSouce;
+    readonly source: GuideSource;
     readonly bannerLinks: readonly BannerLinkProps[];
     readonly products: readonly Product[];
     readonly pathPrefix: string;
