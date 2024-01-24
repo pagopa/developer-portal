@@ -65,19 +65,21 @@ const PersonalData = () => {
   }, [user?.attributes]);
 
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
-  const [showModal, setShowModal] = useState<'password' | 'email' | null>(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState<
+    'password' | 'email' | null
+  >(null);
 
   async function handleChangePassword(
     oldPassword: string,
     newPassword: string
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
-    setShowModal('password');
+    setShowConfirmationModal('password');
   }
 
   async function handleChangeEmail(newEmail: string) {
     await Auth.updateUserAttributes(user, { email: newEmail });
-    setShowModal('email');
+    setShowConfirmationModal('email');
   }
 
   const accountSectionItems: InfoCardItemProps[] = [
@@ -133,7 +135,7 @@ const PersonalData = () => {
 
   return (
     <>
-      {showModal === 'password' && (
+      {showConfirmationModal === 'password' && (
         <ConfirmationModal
           setOpen={() => null}
           open={true}
@@ -150,7 +152,7 @@ const PersonalData = () => {
           }}
         />
       )}
-      {showModal === 'email' && (
+      {showConfirmationModal === 'email' && (
         <ConfirmationModal
           setOpen={() => null}
           open={true}
@@ -160,7 +162,7 @@ const PersonalData = () => {
             label: t('changeEmail.dialog.confirmLabel'),
             onClick: () => {
               setEditItem(null);
-              setShowModal(null);
+              setShowConfirmationModal(null);
               return null;
             },
           }}
