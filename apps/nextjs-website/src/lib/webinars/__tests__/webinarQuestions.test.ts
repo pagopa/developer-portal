@@ -22,10 +22,10 @@ const aDynamoDBItem = makeDynamodbItemFromWebinarQuestion({
 
 const makeTestWebinarEnv = () => {
   const nowDate = new Date(0);
-  const dynamodbClientMock = mock<WebinarEnv['dynamodbClient']>();
+  const dynamoDBClientMock = mock<WebinarEnv['dynamoDBClient']>();
   const nowDateMock = jest.fn();
   // default mock behaviour
-  dynamodbClientMock.send.mockImplementation((cmd) => {
+  dynamoDBClientMock.send.mockImplementation((cmd) => {
     if (cmd instanceof PutItemCommand) return Promise.resolve({});
     else if (cmd instanceof QueryCommand)
       return Promise.resolve({ Items: [aDynamoDBItem] });
@@ -35,35 +35,35 @@ const makeTestWebinarEnv = () => {
   nowDateMock.mockImplementation(() => nowDate);
   const env = {
     questionLifetimeInSeconds: 1000,
-    dynamodbClient: dynamodbClientMock,
+    dynamoDBClient: dynamoDBClientMock,
     nowDate: nowDateMock,
   };
-  return { env, dynamodbClientMock, nowDateMock, nowDate };
+  return { env, dynamoDBClientMock, nowDateMock, nowDate };
 };
 
 describe('webinarQuestions', () => {
   describe('insertWebinarQuestion', () => {
     it('should send dynamodb put command', async () => {
-      const { env, dynamodbClientMock, nowDateMock } = makeTestWebinarEnv();
+      const { env, dynamoDBClientMock, nowDateMock } = makeTestWebinarEnv();
       const actual = await insertWebinarQuestion(aWebinarQuestion)(env)();
       const expected = E.right(undefined);
 
-      expect(dynamodbClientMock.send).toBeCalledTimes(1);
+      expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(nowDateMock).toBeCalledTimes(1);
       expect(actual).toStrictEqual(expected);
     });
     it('should return error if send returns an error', async () => {
       const error = new Error();
-      const { env, dynamodbClientMock, nowDateMock } = makeTestWebinarEnv();
+      const { env, dynamoDBClientMock, nowDateMock } = makeTestWebinarEnv();
 
       // override the mock to simulate a rejection
       // eslint-disable-next-line functional/no-promise-reject
-      dynamodbClientMock.send.mockImplementation(() => Promise.reject(error));
+      dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await insertWebinarQuestion(aWebinarQuestion)(env)();
       const expected = E.left(error);
 
-      expect(dynamodbClientMock.send).toBeCalledTimes(1);
+      expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(nowDateMock).toBeCalledTimes(1);
       expect(actual).toStrictEqual(expected);
     });

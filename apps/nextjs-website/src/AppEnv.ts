@@ -25,7 +25,7 @@ const makeAppEnv = (
       questionLifetimeInSeconds:
         config.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS,
       nowDate: () => new Date(),
-      dynamodbClient: new DynamoDBClient({
+      dynamoDBClient: new DynamoDBClient({
         region: config.NEXT_PUBLIC_COGNITO_REGION,
         credentials: makeAwsCredentialsFromCognito(
           config,

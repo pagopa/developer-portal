@@ -18,7 +18,7 @@ import {
 
 export type WebinarEnv = {
   readonly questionLifetimeInSeconds: number;
-  readonly dynamodbClient: DynamoDBClient;
+  readonly dynamoDBClient: DynamoDBClient;
   readonly nowDate: () => Date;
 };
 
@@ -41,10 +41,10 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
     R.ask<
       Pick<
         WebinarEnv,
-        'dynamodbClient' | 'nowDate' | 'questionLifetimeInSeconds'
+        'dynamoDBClient' | 'nowDate' | 'questionLifetimeInSeconds'
       >
     >(),
-    R.map(({ dynamodbClient, nowDate, questionLifetimeInSeconds }) => {
+    R.map(({ dynamoDBClient, nowDate, questionLifetimeInSeconds }) => {
       const createdAt = nowDate();
       // calculate the expireAt time
       const expireAt = new Date(
@@ -62,20 +62,20 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
           expireAt: expireAt,
         }),
       });
-      return TE.tryCatch(() => dynamodbClient.send(putCommand), E.toError);
+      return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     RTE.map(() => void 0)
   );
 
 export const listWebinarQuestion = (webinarId: string) =>
   pipe(
-    R.ask<Pick<WebinarEnv, 'dynamodbClient'>>(),
-    R.map(({ dynamodbClient }) => {
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.map(({ dynamoDBClient }) => {
       const queryCommand = new QueryCommand({
         TableName: 'WebinarQuestions',
         ...makeWebinarQuestionListQueryCondition(webinarId),
       });
-      return TE.tryCatch(() => dynamodbClient.send(queryCommand), E.toError);
+      return TE.tryCatch(() => dynamoDBClient.send(queryCommand), E.toError);
     }),
     RTE.chainEitherK(({ Items }) =>
       pipe(
