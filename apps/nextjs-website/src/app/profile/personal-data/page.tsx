@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
-import EmailFormWrapper from '@/components/organisms/Auth/EmailFormWrapper';
+import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 
 const PersonalData = () => {
   const {
