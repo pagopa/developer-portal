@@ -7,7 +7,7 @@ import { appEnv } from '@/AppEnv';
 import {
   InsertWebinarQuestion,
   insertWebinarQuestion,
-  listWebinarQuestion,
+  listWebinarQuestions,
 } from './webinars/webinarQuestions';
 
 const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
@@ -24,4 +24,4 @@ export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(insertWebinarQuestion(question)(appEnv), makePromiseFromTE)();
 
 export const getWebinarQuestionList = (webinarId: string) =>
-  pipe(listWebinarQuestion(webinarId)(appEnv), makePromiseFromTE)();
+  pipe(listWebinarQuestions(webinarId)(appEnv), makePromiseFromTE)();

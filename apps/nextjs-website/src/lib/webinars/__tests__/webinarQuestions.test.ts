@@ -3,7 +3,7 @@ import * as E from 'fp-ts/lib/Either';
 import {
   WebinarEnv,
   insertWebinarQuestion,
-  listWebinarQuestion,
+  listWebinarQuestions,
 } from '../webinarQuestions';
 import { PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
@@ -73,7 +73,7 @@ describe('webinarQuestions', () => {
     it('should return a list of webinar questions', async () => {
       const { env } = makeTestWebinarEnv();
       const { webinarId } = aWebinarQuestion;
-      const actual = await listWebinarQuestion(webinarId)(env)();
+      const actual = await listWebinarQuestions(webinarId)(env)();
       const expected = E.right([aWebinarQuestion]);
 
       expect(actual).toStrictEqual(expected);

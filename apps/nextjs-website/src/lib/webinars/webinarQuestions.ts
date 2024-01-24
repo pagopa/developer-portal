@@ -67,7 +67,7 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
     RTE.map(() => void 0)
   );
 
-export const listWebinarQuestion = (webinarId: string) =>
+export const listWebinarQuestions = (webinarId: string) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
