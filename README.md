@@ -40,7 +40,7 @@ Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your brow
 Run the following command from the root folder.
 
 ``` bash
-npm run storybook -w nextjs-website
+npm run storybook --no-open -w nextjs-website
 ```
 
 Open [http://localhost:6006/](http://localhost:6006/) with your browser to see the storybook.
