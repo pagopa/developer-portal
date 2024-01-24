@@ -37,6 +37,8 @@ const Confirmation = () => {
           router.push('/auth/account-activated');
         })
         .catch((error) => {
+          // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
+          // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
           !isProduction && console.warn(error);
           switch (error.code) {
             case 'LimitExceededException':
