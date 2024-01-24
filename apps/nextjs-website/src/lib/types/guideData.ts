@@ -14,7 +14,7 @@ export type GuideVersion = {
   readonly path: string;
 };
 
-export type GuideSouce = {
+export type GuideSource = {
   readonly pathPrefix: string;
   readonly assetsPrefix: string;
   readonly dirPath: string;
