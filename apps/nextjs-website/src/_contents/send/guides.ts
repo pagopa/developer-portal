@@ -10,6 +10,7 @@ const validatore: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: 'niZ9BM7pjxsgBMMWBim1',
     },
