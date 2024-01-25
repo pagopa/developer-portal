@@ -6,7 +6,11 @@ import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
+import {
+  gitBookPagesWithTitle,
+  spaceToPrefixMap,
+  urlRewritesMap,
+} from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
@@ -63,6 +67,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
+      urlRewrites: urlRewritesMap,
     },
   };
 

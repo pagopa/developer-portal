@@ -99,4 +99,24 @@ export const spaceToPrefixMap = pipe(
   RA.uniq(Eq.struct({ spaceId: s.Eq, pathPrefix: s.Eq }))
 );
 
+export const urlRewritesMap: { readonly [url: string]: string } = {
+  'manuale-operativo-dei-servizi': 'manuale-servizi',
+  'kb-enti': 'supporto-agli-enti',
+  'kb-enti-adesione': 'supporto-agli-enti',
+  'kb-enti-servizi': 'supporto-agli-enti',
+  'kb-enti-messaggi': 'supporto-agli-enti',
+  'kb-enti-pagamenti': 'supporto-agli-enti',
+  'kb-enti-accordi': 'supporto-agli-enti',
+  'kb-enti-assistenza': 'supporto-agli-enti',
+  'kit-di-comunicazione-per-gli-enti': 'kit-comunicazione',
+  'io-come-aderire': 'accordi-adesione',
+  'f.a.q.-per-integratori': 'knowledge-base',
+  'modello-di-integrazione-di-piattaforma-notifiche': 'modello-di-integrazione',
+  'manuale-operativo-back-office-pagopa-ente-creditore': 'manuale-bo-ec',
+  'manuale-bo-pagopa-psp': 'manuale-bo-psp',
+  gestionedeglierrori: 'errori',
+  'dizionario-dei-metadata': 'metadata',
+  'manuale-operativo-di-firma-con-io': 'manuale-operativo',
+};
+
 export const products = [appIo, ioSign, send, pagoPa];

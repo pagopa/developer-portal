@@ -2,41 +2,6 @@ import { Config } from '@markdoc/markdoc';
 import path from 'path';
 import { ParseContentConfig } from '../parseContent';
 
-const getCorrectGuide = (guide: string) => {
-  switch (guide) {
-    case 'manuale-operativo-dei-servizi':
-      return 'manuale-servizi';
-    case 'kb-enti':
-    case 'kb-enti-adesione':
-    case 'kb-enti-servizi':
-    case 'kb-enti-messaggi':
-    case 'kb-enti-pagamenti':
-    case 'kb-enti-accordi':
-    case 'kb-enti-assistenza':
-      return 'supporto-agli-enti';
-    case 'kit-di-comunicazione-per-gli-enti':
-      return 'kit-comunicazione';
-    case 'io-come-aderire':
-      return 'accordi-adesione';
-    case 'f.a.q.-per-integratori':
-      return 'knowledge-base';
-    case 'modello-di-integrazione-di-piattaforma-notifiche':
-      return 'modello-di-integrazione';
-    case 'manuale-operativo-back-office-pagopa-ente-creditore':
-      return 'manuale-bo-ec';
-    case 'manuale-bo-pagopa-psp':
-      return 'manuale-bo-psp';
-    case 'gestionedeglierrori':
-      return 'errori';
-    case 'dizionario-dei-metadata':
-      return 'metadata';
-    case 'manuale-operativo-di-firma-con-io':
-      return 'manuale-operativo';
-    default:
-      return guide;
-  }
-};
-
 // eslint-disable-next-line functional/no-classes
 export class BooleanAttr {
   readonly transform = (value: string) => value === '' || value === 'true';
@@ -94,10 +59,11 @@ export class LinkAttr {
           )
         : value;
     } else if (value && isDocsUrl) {
+      const { urlRewrites } = parseContentConfig;
       const cleanUrl = value.replace(DOCS_URL, '');
 
       const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
-      const correctGuide = getCorrectGuide(currentGuide);
+      const correctGuide = urlRewrites[currentGuide] ?? currentGuide;
       const anchor = cleanUrl.split('#')[1];
 
       const finalUrl = cleanUrl.replace(currentGuide, correctGuide);

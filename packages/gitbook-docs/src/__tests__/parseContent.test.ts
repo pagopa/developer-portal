@@ -34,6 +34,10 @@ const config = {
       title: 'Modello di Integrazione',
     },
   ],
+  urlRewrites: {
+    'modello-di-integrazione-di-piattaforma-notifiche':
+      'modello-di-integrazione',
+  },
 };
 
 describe('parseContent', () => {
@@ -259,6 +263,25 @@ describe('parseContent', () => {
           'Link',
           {
             href: '/send/guides/modello-di-integrazione/v2.1/',
+          },
+          ['Modello di Integrazione']
+        ),
+      ]),
+    ]);
+  });
+
+  it("should not convert docs.pagopa.it to developer portal links if there's no corresponding url", () => {
+    expect(
+      parseContent(
+        '[Modello di Integrazione](https://docs.pagopa.it/dont-exists/)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: 'https://docs.pagopa.it/dont-exists/',
           },
           ['Modello di Integrazione']
         ),
