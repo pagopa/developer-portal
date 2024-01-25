@@ -1,15 +1,12 @@
 'use client';
 import { snackbarAutoHideDurationMs } from '@/config';
-import { addWebinarQuestion } from '@/helpers/webinarQuestions.helpers';
 import { DevPortalUser } from '@/lib/types/auth';
+import { sendWebinarQuestion } from '@/lib/webinarApi';
 import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Card, Snackbar, TextField, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
-import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
@@ -32,13 +29,11 @@ export const WebinarQuestionsForm = ({
     if (!question) return;
 
     setFormState('submitting');
-    return await addWebinarQuestion({
-      email: user.attributes.email,
+    return await sendWebinarQuestion({
+      webinarId: webinarSlug,
       givenName: user.attributes.given_name,
       familyName: user.attributes.family_name,
       question: question,
-      webinarSlug: webinarSlug,
-      date: new Date().toISOString(),
     });
   }, [webinarSlug, user, question]);
 
