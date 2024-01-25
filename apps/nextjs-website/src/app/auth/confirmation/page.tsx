@@ -36,6 +36,7 @@ const Confirmation = () => {
         })
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
+          // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
           !isProduction && console.warn(error);
           setState(State.resendCode);
         });
