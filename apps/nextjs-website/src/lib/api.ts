@@ -41,7 +41,8 @@ export async function getGuide(
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const guide = guides.find(({ page }) => page.path === path) ?? getMainGuide();
+  const guide =
+    guides.find(({ page }) => page.path === path) ?? getMainGuide(path);
   const props = manageUndefined(guide);
 
   const isPathWithMainVersion =
@@ -61,7 +62,7 @@ export async function getGuide(
     ].join('/');
 
     // Check if the guide exists
-    const guide = await getGuide(productSlug, getGuidePath(to));
+    const guide = await getGuide(productSlug, getProductGuidePath(to));
     return {
       ...guide,
       redirect: true,
@@ -76,11 +77,16 @@ export async function getGuide(
   };
 }
 
-function getMainGuide() {
-  return guides.find(({ version }) => version.main === true);
+function getMainGuide(path?: string) {
+  const guidePath = path?.split('/').filter((p, index) => index < 4);
+
+  return guides.find(
+    ({ version, guide }) =>
+      guide.path === guidePath?.join('/') && version.main === true
+  );
 }
 
-function getGuidePath(path: string) {
+function getProductGuidePath(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
   return path.split('/').filter((p, index) => index > 2);
@@ -89,7 +95,7 @@ function getGuidePath(path: string) {
 export function getGuidePaths() {
   return guides.map((guide) => ({
     slug: guide.product.slug,
-    guidePaths: getGuidePath(guide.page.path),
+    guidePaths: getProductGuidePath(guide.page.path),
   }));
 }
 
