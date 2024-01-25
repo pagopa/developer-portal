@@ -1,10 +1,12 @@
 {
-    "header": {
-        "title": "PagoPA",
-        "boldTitle": "DevPortal",
-        "products": "Prodotti"
-    },
-    "breadcrumbs": {
+    "devPortal": {
+        "company": "PagoPA",
+        "siteHeader": {
+            "label": "Menu",
+            "products": "Prodotti",
+            "profile": "Profilo",
+            "webinars": "Webinar"
+        },
         "title": "DevPortal"
     },
     "profile": {
@@ -31,28 +33,30 @@
             "title": "Consensi e privacy"
         },
         "personalData": {
-          "title": "Su di te",
-          "dataSection": "I tuoi dati",
-          "accountSection": "Il tuo account",
-          "deleteAccountSection": "Eliminazione Account",
-          "deleteAccount": {
-            "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
-            "buttonLabel": "Elimina account",
-            "modalTitle": "Confermi di voler eliminare il tuo account?",
-            "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
-          },
-          "deleteAccountButton": "Elimina account",
-          "addField": "Inserisci",
-          "fields": {
-            "name": "Nome",
-            "surname": "Cognome",
-            "role": "Ruolo",
-            "company": "Tipologia di ente o azienda",
-            "sector": "Settore",
-            "products": "Prodotti di interesse",
-            "email": "Indirizzo e-mail",
-            "password": "Password"
-          }
+            "save": "Conferma",
+            "cancel": "Annulla",
+            "title": "Su di te",
+            "dataSection": "I tuoi dati",
+            "accountSection": "Il tuo account",
+            "deleteAccountSection": "Eliminazione Account",
+            "deleteAccount": {
+                "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
+                "buttonLabel": "Elimina account",
+                "modalTitle": "Confermi di voler eliminare il tuo account?",
+                "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
+            },
+            "deleteAccountButton": "Elimina account",
+            "addField": "Inserisci",
+            "fields": {
+                "name": "Nome",
+                "surname": "Cognome",
+                "role": "Ruolo",
+                "company": "Tipologia di ente o azienda",
+                "sector": "Settore",
+                "products": "Prodotti di interesse",
+                "email": "Indirizzo e-mail",
+                "password": "Password"
+            }
         },
         "changePassword": {
             "title": "Cambia password",
@@ -70,7 +74,20 @@
                 "text": "Effettua l’accesso utilizzando la nuova password. Se sono presenti altre finestre del browser con accesso al tuo account tramite la vecchia password, assicurati di chiuderle.",
                 "confirmLabel": "Vai al login"
             }
-        }
+        },
+        "changeEmail": {
+            "cancel": "Annulla",
+            "save": "Conferma",
+            "title": "Modifica l'indirizzo email",
+            "notAuthorizedException": "L'indirizzo email inserito non è valido",
+            "wrongEmail": "L'indirizzo email inserito non risulta corretto",
+            "dialog": {
+                "title": "Verifica il nuovo indirizzo email",
+                "text": "Abbiamo inviato una email all’indirizzo che hai inserito.\nClicca sul link contenuto al suo interno per verificarlo e associarlo al tuo account PagoPA DevPortal.",
+                "confirmLabel": "Chiudi"
+            }
+        },
+        "insert": "Inserisci"
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",
@@ -96,11 +113,21 @@
         },
         "webinarsSection": {
             "description": "",
+            "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
             "title": {
-                "future": "Partecipa ai nostri webinar",
-                "past": "I nostri webinar"
+                "dontLoseNext": "Non perderti il prossimo webinar",
+                "next": "I prossimi appuntamenti",
+                "our": "I nostri webinar",
+                "participateTo": "Partecipa ai nostri webinar"
             }
-        }
+        },
+        "view": "Visualizza"
+    },
+    "webinars": {
+        "title": "Partecipa agli eventi live e guarda i webinar passati ",
+        "subtitle": "Con i webinar di PagoPA DevPortal hai l'opportunità di approfondire argomenti legati all'integrazione con i nostri prodotti, attraverso la guida e i consigli esperti del nostro team.",
+        "nextWebinars": "I prossimi appuntamenti",
+        "pastWebinars": "Webinar passati"
     },
     "auth": {
         "logout": "Esci",
@@ -121,6 +148,7 @@
             "code": "Codice di verifica",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
+            "ctaLabel": "Reinvia e-mail",
             "resendEmail": "Reinvia e-mail"
         },
         "resendEmail": {
@@ -137,24 +165,24 @@
             "emailSent": "Email inviata a {email}",
             "advantages": {
                 "exclusive_contents": {
-                  "title": "Accedi a contenuti esclusivi",
-                  "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.",
-                  "isComingSoon": "false"
+                    "title": "Accedi a contenuti esclusivi",
+                    "text": "Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.",
+                    "isComingSoon": "false"
                 },
                 "product_updates": {
-                  "title": "Ricevi aggiornamenti sui nostri prodotti",
-                  "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
-                  "isComingSoon": "false"
+                    "title": "Ricevi aggiornamenti sui nostri prodotti",
+                    "text": "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
+                    "isComingSoon": "false"
                 },
                 "api_keys": {
-                  "title": "Genera, gestisci e utilizza api Key",
-                  "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
-                  "isComingSoon": "true"
+                    "title": "Genera, gestisci e utilizza api Key",
+                    "text": "Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.",
+                    "isComingSoon": "true"
                 },
                 "support": {
-                  "title": "Richiedi assistenza tramite un form dedicato",
-                  "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
-                  "isComingSoon": "true"
+                    "title": "Richiedi assistenza tramite un form dedicato",
+                    "text": "Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.",
+                    "isComingSoon": "true"
                 }
             },
             "companyRoles": {
@@ -180,12 +208,12 @@
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
             "resendEmail": "Reinvia email"
-        }, 
+        },
         "accountActivated": {
             "goToLogin": "Vai al login",
             "welcomeMessage": "Ti diamo il benvenuto su PagoPA DevPortal.",
             "yourAccountIsActive": "Il tuo account è attivo"
-        },               
+        },
         "resetPassword": {
             "title": "Recupera password",
             "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
@@ -200,6 +228,10 @@
             "newPassword": "Imposta una nuova password",
             "rememberPassword": "Ricordi la tua password?",
             "invalidLinkError": "Il link non è valido"
+        },
+        "expiredCode": {
+            "expiredLink": "Il link che hai usato è scaduto",
+            "goToProfile": "Vai al profilo"
         }
     },
     "shared": {
@@ -225,13 +257,13 @@
         "cancel": "Annulla",
         "yourData": "Profilo",
         "subscribeButton": {
-          "subscribeLabel": {
-            "default": "Iscriviti",
-            "takePart": "Partecipa",
-            "view": "Visualizza"
-          },
-          "subscribedLabel": "Iscrizione confermata",
-          "unsubscribeLabel": "Annulla iscrizione"
+            "subscribeLabel": {
+                "default": "Iscriviti",
+                "takePart": "Partecipa",
+                "view": "Visualizza"
+            },
+            "subscribedLabel": "Iscrizione confermata",
+            "unsubscribeLabel": "Annulla iscrizione"
         }
     },
     "pageNotFound": {
@@ -373,19 +405,19 @@
         "aboutUs": {
             "title": "",
             "links": {
-                "whoWeAre":{
+                "whoWeAre": {
                     "ariaLabel": "Vai al link: Chi siamo",
                     "label": "Chi siamo"
                 },
-                "pnrr":{
+                "pnrr": {
                     "ariaLabel": "Vai al link: PNRR",
                     "label": "PNRR"
                 },
-                "media":{
+                "media": {
                     "ariaLabel": "Vai al link: Media",
                     "label": "Media"
                 },
-                "workWithUs":{
+                "workWithUs": {
                     "ariaLabel": "Vai al link: Lavora con noi",
                     "label": "Lavora con noi"
                 }
@@ -394,23 +426,23 @@
         "resources": {
             "title": "Risorse",
             "links": {
-                "privacyPolicy":{
+                "privacyPolicy": {
                     "ariaLabel": "Vai al link: Informativa Privacy",
                     "label": "Informativa Privacy"
                 },
-                "termsOfService":{
+                "termsOfService": {
                     "ariaLabel": "Vai al link: Termini e Condizioni",
                     "label": "Termini e Condizioni"
                 },
-                "societaTrasparente":{
+                "societaTrasparente": {
                     "ariaLabel": "Vai al link: Società trasparente",
                     "label": "Società trasparente"
                 },
-                "disclosurePolicy":{
+                "disclosurePolicy": {
                     "ariaLabel": "Vai al link: Responsible Disclosure Policy",
                     "label": "Responsible Disclosure Policy"
                 },
-                "model231":{
+                "model231": {
                     "ariaLabel": "Vai al link: Modello 231",
                     "label": "Modello 231"
                 }
@@ -443,7 +475,7 @@
                     "ariaLabel": "Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità",
                     "label": "Piattaforma Digitale Nazionale Dati - Interoperabilità"
                 }
-            } 
+            }
         },
         "cookiePreferences": {
             "ariaLabel": "Preferenza Cookie",

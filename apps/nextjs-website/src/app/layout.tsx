@@ -15,6 +15,7 @@ import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
 import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 import Script from 'next/script';
+import { Titillium_Web } from 'next/font/google';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -33,6 +34,14 @@ _paq.push(["enableLinkTracking"]);
   s.parentNode.insertBefore(g, s);
 })();
 `;
+
+const titilliumWeb = Titillium_Web({
+  fallback: ['serif'],
+  subsets: ['latin'],
+  style: 'normal',
+  variable: '--font-titillium-web',
+  weight: ['400', '600', '700'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -62,7 +71,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang='it'>
+    <html lang='it' className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script

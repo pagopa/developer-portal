@@ -13,6 +13,7 @@ export type Webinar = {
   readonly relatedLinks?: readonly Path[];
   readonly subscribeCtaLabel?: string;
   readonly isVisibleInHome: boolean;
+  readonly imagePath: string;
   readonly startInfo?: {
     readonly title: string;
     readonly cards: readonly {

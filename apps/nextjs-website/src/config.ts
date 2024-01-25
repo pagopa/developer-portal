@@ -40,3 +40,17 @@ export const webinarQuestionConfig = {
 
 export const defaultLanguage = { id: 'it', value: 'Italiano' };
 export const languages = [defaultLanguage];
+
+export const defaultLocale = 'it-IT';
+
+export const dateOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Europe/Rome',
+};
+
+export const timeOptions: Intl.DateTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+};
