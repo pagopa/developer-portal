@@ -25,6 +25,7 @@ const manualeOperativo: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.1.1',
       dirName: 'XbcyIfLqbQFM4OsEpBQY',
     },
@@ -52,6 +53,7 @@ const knowledgeBase: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v2.1',
       dirName: 'LjuHmRnHyge98hRa4Ao4',
     },
@@ -75,6 +77,7 @@ const modelloDiIntegrazione: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v2.1',
       dirName: 'cQbgjUoB6uPKpsuCW3ZW',
     },
