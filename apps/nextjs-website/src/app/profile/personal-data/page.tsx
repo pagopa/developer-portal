@@ -3,17 +3,18 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
+
 import { translations } from '@/_contents/translations';
 import { InfoCardItemProfileProps } from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
-import {
-  InfoCardItem,
-  InfoCardItemProps,
-} from '@/components/atoms/InfoCardItem/InfoCardItem';
+import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
 import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
 import { useUser } from '@/helpers/user.helper';
+import { useRouter } from 'next/navigation';
+import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
+import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 
 const PersonalData = () => {
   const {
@@ -22,7 +23,7 @@ const PersonalData = () => {
     },
   } = translations;
   const t = useTranslations('profile');
-
+  const router = useRouter();
   const { user, setUserAttributes } = useUser();
 
   const [profileDataSectionItems, setProfileDataSectionItems] = useState<
@@ -64,12 +65,21 @@ const PersonalData = () => {
   }, [user?.attributes]);
 
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState<
+    'password' | 'email' | null
+  >(null);
 
   async function handleChangePassword(
     oldPassword: string,
     newPassword: string
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
+    setShowConfirmationModal('password');
+  }
+
+  async function handleChangeEmail(newEmail: string) {
+    await Auth.updateUserAttributes(user, { email: newEmail });
+    setShowConfirmationModal('email');
   }
 
   const accountSectionItems: InfoCardItemProps[] = [
@@ -77,7 +87,7 @@ const PersonalData = () => {
       name: 'email',
       title: t('personalData.fields.email'),
       value: user?.attributes.email,
-      editable: false,
+      editable: true,
     },
     {
       name: 'password',
@@ -110,7 +120,13 @@ const PersonalData = () => {
           />
         )}
         {isEmailItem && (
-          <InfoCardItem {...item} onEdit={() => setEditItem(item)} />
+          <EmailFormWrapper
+            item={item}
+            isEditing={isEditing}
+            onCancel={() => setEditItem(null)}
+            onSave={handleChangeEmail}
+            onEdit={() => setEditItem(item)}
+          />
         )}
         {showDivider && <Divider />}
       </Box>
@@ -119,6 +135,39 @@ const PersonalData = () => {
 
   return (
     <>
+      {showConfirmationModal === 'password' && (
+        <ConfirmationModal
+          setOpen={() => null}
+          open={true}
+          title={t('changePassword.dialog.title')}
+          text={t('changePassword.dialog.text')}
+          confirmCta={{
+            label: t('changePassword.dialog.confirmLabel'),
+            onClick: () => {
+              Auth.signOut().then(() => {
+                router.replace('/auth/login');
+              });
+              return null;
+            },
+          }}
+        />
+      )}
+      {showConfirmationModal === 'email' && (
+        <ConfirmationModal
+          setOpen={() => null}
+          open={true}
+          title={t('changeEmail.dialog.title')}
+          text={t('changeEmail.dialog.text')}
+          confirmCta={{
+            label: t('changeEmail.dialog.confirmLabel'),
+            onClick: () => {
+              setEditItem(null);
+              setShowConfirmationModal(null);
+              return null;
+            },
+          }}
+        />
+      )}
       <Stack
         gap={5}
         sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
@@ -155,7 +204,6 @@ const PersonalData = () => {
             return null;
           }}
         />
-
         <ProfileInfoCard
           cardTitle={t('personalData.accountSection')}
           items={accountSectionItems}
