@@ -141,6 +141,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                   onChange={(e) => setUsername(e.target.value)}
                   helperText={fieldErrors.email}
                   error={!!fieldErrors.email || noAccount}
+                  required
                   sx={{
                     width: '100%',
                     backgroundColor: palette.background.paper,
@@ -150,13 +151,14 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
               <Stack spacing={2} mb={2}>
                 <FormControl variant='outlined' size='small'>
                   <InputLabel htmlFor='password-input'>
-                    {shared('password')}
+                    {`${shared('password')} *`}
                   </InputLabel>
                   <OutlinedInput
                     id='password-input'
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
                     error={!!fieldErrors.password || noAccount}
+                    required
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -169,7 +171,6 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label={shared('password')}
                   />
                   {(fieldErrors.password || noAccount) && (
                     <FormHelperText error>

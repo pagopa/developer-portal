@@ -222,7 +222,7 @@
             "title": "Recupera password",
             "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
             "goBackToLogin": "Torna al login",
-            "send": "Invia",
+            "send": "Conferma",
             "checkEmailTitle": "Controlla l'email",
             "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
             "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
