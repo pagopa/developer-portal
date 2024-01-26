@@ -8,29 +8,27 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-    const webinars = await getWebinars();
-    return [...webinars].map(({ slug }) => ({
-      webinarSlug: slug,
-    }));
-  }
+  const webinars = await getWebinars();
+  return [...webinars].map(({ slug }) => ({
+    webinarSlug: slug,
+  }));
+}
 
 const NotSsrWebinarQuestionsTemplate = dynamic(
-    () =>
-      import(
-        '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate'
-      ),
-    {
-      ssr: false,
-      loading: () => <Spinner />,
-    }
-  );
+  () =>
+    import(
+      '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate'
+    ),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  }
+);
 
 const WebinarQuestionsPage = async ({ params }: { params: Params }) => {
-    const webinar = await getWebinar(params?.webinarSlug);
+  const webinar = await getWebinar(params?.webinarSlug);
 
-  return (
-   webinar && <NotSsrWebinarQuestionsTemplate webinar={webinar} />
-  );
+  return webinar && <NotSsrWebinarQuestionsTemplate webinar={webinar} />;
 };
 
 export default WebinarQuestionsPage;
