@@ -18,6 +18,9 @@ inputs:
   cognito_user_pool_id:
     description: 'The id of the User Pool on Cognito, needed for the authentication'
     required: true
+  cognito_identity_pool_id:
+    description: 'The id of the Identity Pool on Cognito, needed for the authorization'
+    required: true
   cognito_app_client_id:
     description: 'The App Client registered on Cognito'
     required: true
@@ -25,6 +28,9 @@ inputs:
     description: 'The region where Cognito has been deployed. Default set to Milan region'
     required: false
     default: 'eu-south-1'
+  webinar_question_lifetime_in_seconds:
+    description: 'The lifetime of each question expressed in seconds'
+    required: true
 
 
 runs:
@@ -54,7 +60,7 @@ runs:
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.cognito_aws_region }}
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
-        NEXT_PUBLIC_WEBINAR_QUESTION_URL: ${{ inputs.webinar_question_url }}
-        NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME: ${{ inputs.webinar_question_sheet_name }}
+        NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: ${{ inputs.cognito_identity_pool_id }}
+        NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS: ${{ inputs.webinar_question_lifetime_in_seconds }}
       shell: bash
       run: npm run build -w nextjs-website
