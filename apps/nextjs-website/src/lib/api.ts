@@ -78,6 +78,8 @@ export async function getGuide(
 }
 
 function getMainGuide(path?: string) {
+  // the filter is to take the first 4 elements of the path which are
+  // an empty string (the path begins with a / symbol), the product slug, 'guides' hard-coded string and the guide slug
   const guidePath = path?.split('/').filter((p, index) => index < 4);
 
   return guides.find(
