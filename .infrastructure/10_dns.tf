@@ -105,5 +105,5 @@ resource "aws_route53_record" "devportal_google_site_verification_txt" {
   type    = "TXT"
   zone_id = aws_route53_zone.dev_portal.zone_id
   records = ["google-site-verification=Z94dFrXZD0YqP-r5BY5ODb4NsbQBAggTGRZM9fNtOj0"]
-  ttl     = 3600
+  ttl     = 300
 }
