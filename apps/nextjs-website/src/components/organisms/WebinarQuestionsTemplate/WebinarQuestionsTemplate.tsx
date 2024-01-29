@@ -46,7 +46,7 @@ const WebinarQuestionsTemplate = ({
 
   useEffect(() => {
     fetchQuestions();
-    const intervalId = setInterval(fetchQuestions, 5000);
+    const intervalId = setInterval(fetchQuestions, 1_000);
     return () => clearInterval(intervalId);
   }, []);
 
