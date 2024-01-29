@@ -60,13 +60,9 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
               {confirmLogin.title}
             </Typography>
             {email && (
-              <Typography
-                variant='body2'
-                mb={6}
-                dangerouslySetInnerHTML={{
-                  __html: confirmLogin.body(email),
-                }}
-              />
+              <Typography variant='body2' mb={6}>
+                {confirmLogin.body(email).replace(/<[^>]*>/g, '')}
+              </Typography>
             )}
             <Typography
               variant='body1'

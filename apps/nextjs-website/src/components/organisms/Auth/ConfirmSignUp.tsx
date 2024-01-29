@@ -34,13 +34,9 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {confirmSignUp.confirmSignUp}
             </Typography>
-            <Typography
-              variant='body2'
-              mb={2}
-              dangerouslySetInnerHTML={{
-                __html: confirmSignUp.description(email),
-              }}
-            />
+            <Typography variant='body2' mb={2}>
+              {confirmSignUp.description(email).replace(/<[^>]*>/g, '')}
+            </Typography>
             <ResendEmail email={email} text={confirmSignUp.didntReceiveEmail} />
             <Divider />
             <Stack
