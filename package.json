@@ -18,8 +18,5 @@
     "@changesets/cli": "^2.27.1",
     "husky": "^8.0.3",
     "turbo": "^1.10.12"
-  },
-  "dependencies": {
-    "isomorphic-dompurify": "^2.3.0"
   }
 }
