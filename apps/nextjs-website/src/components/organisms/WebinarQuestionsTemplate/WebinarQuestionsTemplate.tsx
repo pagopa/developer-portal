@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
 import { useRouter } from 'next/navigation';
 import { useFormatter } from 'next-intl';
+import { CopyToClipboardButton } from '@pagopa/mui-italia';
+import DOMPurify from 'isomorphic-dompurify';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -68,6 +70,7 @@ const WebinarQuestionsTemplate = ({
                 <TableCell>Ora creazione</TableCell>
                 <TableCell>Domanda</TableCell>
                 <TableCell>Utente</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -86,9 +89,16 @@ const WebinarQuestionsTemplate = ({
                       minute: 'numeric',
                     })}
                   </TableCell>
-                  <TableCell width='70%'>{row.question}</TableCell>
+                  <TableCell width='70%'>
+                    {DOMPurify.sanitize(row.question)}
+                  </TableCell>
                   <TableCell>
                     {row.givenName} {row.familyName}
+                  </TableCell>
+                  <TableCell>
+                    <CopyToClipboardButton
+                      value={row.question}
+                    ></CopyToClipboardButton>
                   </TableCell>
                 </TableRow>
               ))}
