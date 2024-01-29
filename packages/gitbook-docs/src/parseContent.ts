@@ -100,7 +100,6 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
-    //    .replaceAll(pR.regex, pR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
