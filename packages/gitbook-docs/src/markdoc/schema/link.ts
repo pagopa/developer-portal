@@ -1,6 +1,5 @@
 import { Schema, Tag } from '@markdoc/markdoc';
 import { LinkAttr } from '../attributes';
-import { PageTitlePath } from '../../parseDoc';
 
 const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
@@ -18,10 +17,6 @@ export const link: Schema = {
   },
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
-    const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> = config.variables
-      ? [...config.variables.gitBookPagesWithTitle]
-      : [];
-    const page = gitBookPagesWithTitle.find(({ path }) => path === attrs.href);
     const childrenTreeNode = node.transformChildren(config);
 
     const titleFromAnchor =
@@ -33,11 +28,7 @@ export const link: Schema = {
           )
         : undefined;
 
-    const children = page
-      ? [page.title]
-      : titleFromAnchor
-      ? [titleFromAnchor]
-      : childrenTreeNode;
+    const children = titleFromAnchor ? [titleFromAnchor] : childrenTreeNode;
     return new Tag('Link', attrs, children);
   },
 };
