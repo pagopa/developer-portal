@@ -35,8 +35,27 @@ const config = {
     },
   ],
   urlRewrites: {
-    'modello-di-integrazione-di-piattaforma-notifiche':
+    'https://docs.pagopa.it/manuale-operativo-dei-servizi': 'manuale-servizi',
+    'https://docs.pagopa.it/kb-enti': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-adesione': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-servizi': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-messaggi': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-pagamenti': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-accordi': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kb-enti-assistenza': 'supporto-agli-enti',
+    'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
+      'kit-comunicazione',
+    'https://docs.pagopa.it/io-come-aderire': 'accordi-adesione',
+    'https://docs.pagopa.it/f.a.q.-per-integratori': 'knowledge-base',
+    'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
       'modello-di-integrazione',
+    'https://docs.pagopa.it/manuale-operativo-back-office-pagopa-ente-creditore':
+      'manuale-bo-ec',
+    'https://docs.pagopa.it/manuale-bo-pagopa-psp': 'manuale-bo-psp',
+    'https://docs.pagopa.it/gestionedeglierrori': 'errori',
+    'https://docs.pagopa.it/dizionario-dei-metadata': 'metadata',
+    'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
+      'manuale-operativo',
   },
 };
 
