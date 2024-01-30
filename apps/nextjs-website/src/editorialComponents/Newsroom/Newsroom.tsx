@@ -1,16 +1,8 @@
 'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import {
-  Typography,
-  Grid,
-  Stack,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Theme,
-} from '@mui/material';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 interface INewsroomItem {
   comingSoonLabel?: string;
@@ -129,40 +121,35 @@ const Item = (props: INewsroomItem) => {
 
 const Newsroom = (props: INewsroom) => {
   const { items, py = 2 } = props;
-  const isScreenLargerThenMd = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.up('md')
-  );
-  const { palette } = useTheme();
 
-  return isScreenLargerThenMd ? (
-    <EContainer background={palette.background.paper} py={py}>
-      <Grid item md={12}>
-        <Grid container spacing={3}>
-          {items.map((item, i) => (
-            <Item key={i} {...item} />
-          ))}
-        </Grid>
-      </Grid>
-    </EContainer>
-  ) : (
-    <Box ml={4}>
+  const news = useMemo(
+    () => items.map((item, i) => <Item key={i} {...item} />),
+    [items]
+  );
+
+  return (
+    <Box ml={{ sm: 4, md: 3, xl: 6 }}>
       <Grid
         container
-        spacing={2}
+        spacing={{ xs: 2, md: 3 }}
         wrap='nowrap'
+        py={py}
         sx={{
           overflowX: 'scroll',
           paddingRight: '32px',
-          width: 'calc(100% + 32px)',
-          marginLeft: '-32px',
+          width: {
+            sm: 'auto',
+            md: '100%',
+          },
+          maxWidth: { md: '1280px', lg: '1310px' },
+          marginLeft: { xs: '18px', sm: '-32px', md: '-16px', lg: 'auto' },
+          mx: 'auto',
           'div.MuiGrid-item:first-of-type': {
-            marginLeft: '16px',
+            marginLeft: { sm: '16px', md: '0px' },
           },
         }}
       >
-        {items.map((item, i) => (
-          <Item key={i} {...item} />
-        ))}
+        {news}
       </Grid>
     </Box>
   );
