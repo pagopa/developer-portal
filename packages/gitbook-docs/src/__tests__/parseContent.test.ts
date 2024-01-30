@@ -254,9 +254,7 @@ describe('parseContent', () => {
       parseContent('[Page](http://127.0.0.1:5000/o/xY/s/s1/ "mention")', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, [
-          'Page',
-        ]),
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
       ]),
     ]);
     expect(
