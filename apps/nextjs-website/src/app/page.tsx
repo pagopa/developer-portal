@@ -1,4 +1,3 @@
-import { translations } from '@/_contents/translations';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
@@ -6,7 +5,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
+import { getHomepage, getProducts, getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 
@@ -32,28 +31,36 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const products = await getProducts();
   const webinars = await getVisibleInHomeWebinars();
-  const { homepage, header } = translations;
+  const homepageProps = await getHomepage();
+
+  if (!homepageProps) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Data is required but not provided.');
+  }
 
   return (
     <>
       <NotSsrWebinarHeaderBanner webinars={webinars} />
 
       <HeroSwiper
-        cards={homepage.heroItems.map((itemProp, index) => ({
+        cards={[...homepageProps.hero.cards].map((itemProp, index) => ({
           ...itemProp,
           child:
             index === 0 ? (
-              <SiteLabel title={header.title} boldTitle={header.boldTitle} />
+              <SiteLabel
+                title={homepageProps.hero.siteTitle}
+                boldTitle={homepageProps.hero.boldTitle}
+              />
             ) : undefined,
         }))}
       />
       <News
         marginTop={5}
-        title={homepage.news.title}
-        cards={homepage.news.list}
+        title={homepageProps.news.title}
+        cards={[...homepageProps.news.cards]}
       />
       <ProductsShowcase
-        title={homepage.productsShowcaseTitle}
+        title={homepageProps.productsShowcaseTitle}
         cards={products.map((product) => ({
           title: product.name,
           text: product.description,
@@ -63,8 +70,8 @@ const Home = async () => {
       />
       <NotSsrWebinarsSection webinars={[...webinars]} />
       <RelatedLinks
-        title={homepage.comingsoonDocumentation.title}
-        links={homepage.comingsoonDocumentation.links}
+        title={homepageProps.comingsoonDocumentation.title}
+        links={[...homepageProps.comingsoonDocumentation.links]}
       />
     </>
   );

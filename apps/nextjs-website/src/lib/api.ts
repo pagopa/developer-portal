@@ -11,6 +11,28 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { cmsBasePath, usingCms } from '@/config';
+import { ResponseData } from './types/responseData';
+import { HomepageProps } from './types/homepageProps';
+import { HomepageApi } from './types/homepageResponseData';
+import { translations } from '@/_contents/translations';
+
+async function cmsRequest<T>(
+  enpoint: string,
+  populate?: string
+): Promise<T | null> {
+  const res = await fetch(
+    `${cmsBasePath}/${enpoint}?populate=${populate || '*'}`
+  );
+
+  if (res.status !== 200) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data from CMS');
+  }
+
+  const json = (await res.json()) as ResponseData<T>;
+  return json.data.attributes;
+}
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -82,6 +104,41 @@ export function getProductsSlugs(
 
 export async function getProducts(): Promise<readonly Product[]> {
   return [...products];
+}
+
+export async function getHomepage(): Promise<HomepageProps | null> {
+  // TODO: remove this when the CMS will be ready
+  const { homepage, header } = translations;
+  const staticConent: HomepageProps = {
+    hero: {
+      siteTitle: header.title,
+      boldTitle: header.boldTitle,
+      cards: homepage.heroItems,
+    },
+    news: {
+      title: homepage.news.title,
+      cards: homepage.news.list,
+    },
+    productsShowcaseTitle: homepage.productsShowcaseTitle,
+    comingsoonDocumentation: {
+      title: homepage.comingsoonDocumentation.title,
+      links: homepage.comingsoonDocumentation.links,
+    },
+  };
+  if (!usingCms) return staticConent;
+
+  const response = await cmsRequest<HomepageApi>(
+    'home-page',
+    'comingsoonDocumentation.links'
+  );
+  if (!response) {
+    return null;
+  } else {
+    return {
+      ...staticConent, // TODO: remove merge when Homepage will be fully implemented ready
+      comingsoonDocumentation: response.comingsoonDocumentation,
+    };
+  }
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
