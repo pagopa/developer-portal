@@ -11,6 +11,8 @@ export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
+export const usingCms = !!process.env.CMS_BASE_PATH;
+export const cmsBasePath = process.env.CMS_BASE_PATH;
 
 export const amplifyConfig = {
   Auth: {
