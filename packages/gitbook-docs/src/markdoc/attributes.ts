@@ -33,7 +33,6 @@ export class LinkAttr {
       '^http:\\/\\/(?:localhost|127.0.0.1):5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
-    const DOCS_URL = 'https://docs.pagopa.it';
     const allowedHosts = ['docs.pagopa.it'];
     const host = value && value.startsWith('http') ? new URL(value).host : null;
 
@@ -60,23 +59,17 @@ export class LinkAttr {
         : value;
     } else if (value && isDocsUrl) {
       const { urlRewrites } = parseContentConfig;
-      const cleanUrl = value.replace(DOCS_URL, '');
+      const key = Object.keys(urlRewrites).find((key) => value.includes(key));
 
-      const [currentGuide] = cleanUrl.split('/').filter((p) => p !== '');
-      const correctGuide = urlRewrites[currentGuide] ?? currentGuide;
-      const anchor = cleanUrl.split('#')[1];
+      if (!key) return value;
 
-      const finalUrl = cleanUrl.replace(currentGuide, correctGuide);
+      const finalUrl = urlRewrites[key];
+
+      const anchor = value.split('#')[1];
 
       const guides = parseContentConfig.gitBookPagesWithTitle;
 
-      const guide = guides.find((g) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [_product, _path, name, _version, ...rest] = g.path
-          .split('/')
-          .filter((p) => p !== '');
-        return finalUrl === `/${name}/${rest.join('/')}`;
-      });
+      const guide = guides.find((g) => g.path.includes(finalUrl));
 
       if (guide) {
         return `${guide.path}${anchor && anchor !== '' ? `#${anchor}` : ''}`;
