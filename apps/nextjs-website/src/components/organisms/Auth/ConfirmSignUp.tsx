@@ -35,7 +35,7 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               {confirmSignUp.confirmSignUp}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {confirmSignUp.description(email).replace(/<[^>]*>/g, '')}
+              {confirmSignUp.description(email)}
             </Typography>
             <ResendEmail email={email} text={confirmSignUp.didntReceiveEmail} />
             <Divider />

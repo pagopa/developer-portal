@@ -61,7 +61,7 @@ const ConfirmLogin = ({ email, onConfirmLogin }: confirmLoginProps) => {
             </Typography>
             {email && (
               <Typography variant='body2' mb={6}>
-                {confirmLogin.body(email).replace(/<[^>]*>/g, '')}
+                {confirmLogin.body(email)}
               </Typography>
             )}
             <Typography
