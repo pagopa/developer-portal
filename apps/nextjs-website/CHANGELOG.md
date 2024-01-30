@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 0.7.1
+
+### Patch Changes
+
+- 7c3c680: Fix speakers and speakersTitle label in Webinar section
+
+## 0.7.0
+
+### Minor Changes
+
+- eadf4e3: Add form to update email attribute of the current user
+
+### Patch Changes
+
+- dc5ece2: [DEV-1309] Update WebinarQuestionsForm logic
+
 ## 0.6.0
 
 ### Minor Changes

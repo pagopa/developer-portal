@@ -50,9 +50,9 @@ jobs:
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          webinar_question_url: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_URL }}
-          webinar_question_sheet_name: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
   manual_deploy:
     name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
@@ -75,6 +75,6 @@ jobs:
           bucket: ${{ vars.S3_BUCKET_NAME }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          webinar_question_url: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_URL }}
-          webinar_question_sheet_name: ${{ secrets.NEXT_PUBLIC_WEBINAR_QUESTION_SHEET_NAME }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
