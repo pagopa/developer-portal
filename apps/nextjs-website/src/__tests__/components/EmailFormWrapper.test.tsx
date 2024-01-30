@@ -1,15 +1,6 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { PropsWithChildren } from 'react';
 import { render, fireEvent } from '@testing-library/react';
-
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
-import messages from '@/messages/it.json';
-
-const Wrapper = ({ children }: PropsWithChildren) => (
-  <NextIntlClientProvider locale={'it'} messages={messages}>
-    {children}
-  </NextIntlClientProvider>
-);
+import Wrapper from './Wrapper';
 
 describe('EmailFormWrapper', () => {
   const mockOnCancel = jest.fn();
