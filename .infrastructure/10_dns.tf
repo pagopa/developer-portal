@@ -99,9 +99,11 @@ resource "aws_route53_record" "devportal_ses_dkim_cname" {
 }
 
 resource "aws_route53_record" "devportal_google_site_verification_txt" {
-  name    = "google-site-verification"
+  count = var.environment == "prod" ? 1 : 0
+
+  name    = ""
   type    = "TXT"
   zone_id = aws_route53_zone.dev_portal.zone_id
-  records = ["Z94dFrXZD0YqP-r5BY5ODb4NsbQBAggTGRZM9fNtOj0"]
+  records = ["google-site-verification=Z94dFrXZD0YqP-r5BY5ODb4NsbQBAggTGRZM9fNtOj0"]
   ttl     = 3600
 }
