@@ -2,4 +2,4 @@
 "gitbook-docs": patch
 ---
 
-Remove old workaround coausing paragraphs to have %p inside tables
+Remove a workaround causing paragraphs to have %p inside tables
