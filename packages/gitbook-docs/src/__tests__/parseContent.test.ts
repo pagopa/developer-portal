@@ -205,6 +205,25 @@ describe('parseContent', () => {
       ]),
     ]);
   });
+  it('should replace an ending with `.md` title of the link with the page title', () => {
+    expect(
+      parseContent(
+        "[integrazione-touch-point-dellec-con-checkout.md](../ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/to/s0/ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout',
+          },
+          ['Integrazione touch point dell’EC con Checkout']
+        ),
+        " a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+      ]),
+    ]);
+  });
 
   it('should transform the link but leave its title as it is', () => {
     expect(
