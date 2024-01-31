@@ -100,27 +100,43 @@ export const spaceToPrefixMap = pipe(
 );
 
 export const urlRewritesMap: { readonly [url: string]: string } = {
-  'https://docs.pagopa.it/manuale-operativo-dei-servizi': 'manuale-servizi',
-  'https://docs.pagopa.it/kb-enti': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-adesione': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-servizi': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-messaggi': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-pagamenti': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-accordi': 'supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-assistenza': 'supporto-agli-enti',
+  // App IO
+  'https://docs.pagopa.it/manuale-operativo-dei-servizi':
+    '/app-io/guides/manuale-servizi',
+  'https://docs.pagopa.it/kb-enti': '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-adesione':
+    '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-servizi': '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-messaggi':
+    '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-pagamenti':
+    '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-accordi': '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-assistenza':
+    '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
-    'kit-comunicazione',
-  'https://docs.pagopa.it/io-come-aderire': 'accordi-adesione',
-  'https://docs.pagopa.it/f.a.q.-per-integratori': 'knowledge-base',
+    '/app-io/guides/kit-comunicazione',
+  'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
+
+  // SEND
+  'https://docs.pagopa.it/f.a.q.-per-integratori/knowledge-base-di-piattaforma-notifiche':
+    '/send/guides/knowledge-base',
   'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
-    'modello-di-integrazione',
-  'https://docs.pagopa.it/manuale-operativo-back-office-pagopa-ente-creditore':
-    'manuale-bo-ec',
-  'https://docs.pagopa.it/manuale-bo-pagopa-psp': 'manuale-bo-psp',
-  'https://docs.pagopa.it/gestionedeglierrori': 'errori',
-  'https://docs.pagopa.it/dizionario-dei-metadata': 'metadata',
+    '/send/guides/modello-di-integrazione',
+
+  // PagoPA
+  'https://docs.pagopa.it/manuale-back-office-pagopa':
+    '/pago-pa/guides/manuale-bo-ec',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/manuale-operativo-back-office-pagopa-ente-creditore/':
+    '/pago-pa/guides/manuale-bo-ec',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-psp/':
+    '/pago-pa/guides/manuale-bo-psp',
+  'https://docs.pagopa.it/gestionedeglierrori': '/pago-pa/guides/errori',
+  'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
+
+  // Firma con IO
   'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
-    'manuale-operativo',
+    '/firma-con-io/guides/manuale-operativo',
 };
 
 export const products = [appIo, ioSign, send, pagoPa];
