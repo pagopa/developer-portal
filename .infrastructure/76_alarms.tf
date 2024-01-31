@@ -70,4 +70,5 @@ module "ses_sending_rate_limit_alarm" {
   unit                = "Count"
   period              = 10 # 10 seconds
   evaluation_periods  = 1
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 }
