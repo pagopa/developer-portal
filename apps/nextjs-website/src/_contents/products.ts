@@ -99,7 +99,10 @@ export const spaceToPrefixMap = pipe(
   RA.uniq(Eq.struct({ spaceId: s.Eq, pathPrefix: s.Eq }))
 );
 
-export const urlRewritesMap: { readonly [url: string]: string } = {
+/**
+ * Contains the mapping between the docs.pago.it url and the developer portal url.
+ */
+export const urlReplacesMap: { readonly [url: string]: string } = {
   // App IO
   'https://docs.pagopa.it/manuale-operativo-dei-servizi':
     '/app-io/guides/manuale-servizi',

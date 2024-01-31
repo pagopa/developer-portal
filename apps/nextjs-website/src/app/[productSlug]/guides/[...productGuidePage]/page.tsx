@@ -12,7 +12,7 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import {
   gitBookPagesWithTitle,
   spaceToPrefixMap,
-  urlRewritesMap,
+  urlReplacesMap,
 } from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -86,7 +86,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlRewrites: urlRewritesMap,
+      urlReplaces: urlReplacesMap,
     },
   };
 

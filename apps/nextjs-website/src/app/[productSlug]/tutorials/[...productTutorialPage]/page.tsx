@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import {
   gitBookPagesWithTitle,
   spaceToPrefixMap,
-  urlRewritesMap,
+  urlReplacesMap,
 } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
@@ -67,7 +67,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlRewrites: urlRewritesMap,
+      urlReplaces: urlReplacesMap,
     },
   };
 

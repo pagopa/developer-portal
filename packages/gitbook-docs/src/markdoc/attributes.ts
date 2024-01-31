@@ -33,10 +33,12 @@ export class LinkAttr {
       '^http:\\/\\/(?:localhost|127.0.0.1):5000(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
       'g'
     );
-    const allowedHosts = ['docs.pagopa.it'];
-    const host = value && value.startsWith('http') ? new URL(value).host : null;
 
-    const isDocsUrl = host && allowedHosts.includes(host);
+    const { urlReplaces } = parseContentConfig;
+    // Find the first key that match the url
+    const rewriteKey = Object.keys(urlReplaces).find((key) =>
+      value?.startsWith(key)
+    );
 
     if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
@@ -57,25 +59,8 @@ export class LinkAttr {
             spacePrefix.pathPrefix
           )
         : value;
-    } else if (value && isDocsUrl) {
-      const { urlRewrites } = parseContentConfig;
-      const key = Object.keys(urlRewrites).find((key) => value.includes(key));
-
-      if (!key) return value;
-
-      const finalUrl = urlRewrites[key];
-
-      const anchor = value.split('#')[1];
-
-      const guides = parseContentConfig.gitBookPagesWithTitle;
-
-      const guide = guides.find((g) => g.path.includes(finalUrl));
-
-      if (guide) {
-        return `${guide.path}${anchor && anchor !== '' ? `#${anchor}` : ''}`;
-      }
-
-      return value;
+    } else if (value && rewriteKey) {
+      return value.replace(rewriteKey, urlReplaces[rewriteKey]);
     } else {
       return value;
     }
