@@ -138,14 +138,14 @@ const Newsroom = (props: INewsroom) => {
           overflowX: 'scroll',
           paddingRight: '32px',
           width: {
-            sm: 'auto',
+            xs: 'auto',
             md: '100%',
           },
           maxWidth: { md: '1280px', lg: '1310px' },
-          marginLeft: { xs: '18px', sm: '-32px', md: '-16px', lg: 'auto' },
+          marginLeft: { sm: '-32px', md: '-16px', lg: 'auto' },
           mx: 'auto',
           'div.MuiGrid-item:first-of-type': {
-            marginLeft: { sm: '16px', md: '0px' },
+            marginLeft: { xs: '32px', sm: '16px', md: '0px' },
           },
         }}
       >
