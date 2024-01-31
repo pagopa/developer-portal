@@ -17,3 +17,21 @@ module "ses_bounce_rate_alarm" {
   period              = 300 # 5 minutes
   evaluation_periods  = 1
 }
+
+## Reputation complaint rate alarm
+module "ses_reputation_complaint_rate_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | SES | Complaint Rate"
+  actions_enabled   = true
+  alarm_description = "Alarm to monitor the reputation complaint rate"
+  metric_name       = "Complaint"
+  namespace         = "AWS/SES"
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = "0.001" # 0.1%
+  statistic           = "Average"
+  unit                = "Count"
+  period              = 300 # 5 minutes
+  evaluation_periods  = 1
+}
