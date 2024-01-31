@@ -503,5 +503,27 @@
         "ExpiredCodeException": "Codice scaduto.",
         "TooManyFailedAttemptsException": "Troppi tentativi errati.",
         "LimitExceededException": "Limiti di autenticazione superati."
+    },
+    "swagger": {
+        "errorCard": {
+            "header": "Oops, manca qualcosa.",
+            "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
+        },
+        "parameters": {
+            "header": "Parametri",
+            "empty": "Nessun parametro"
+        },
+        "requestBody": {
+            "header": "Corpo"
+        },
+        "responses": {
+            "header": "Risposte"
+        },
+        "example": "Esempio",
+        "schema": "Modello",
+        "emptyOperations": {
+            "header": "Nessuna operazione",
+            "message": "Non ci sono operazioni disponibili per questo endpoint."
+        }
     }
 }
