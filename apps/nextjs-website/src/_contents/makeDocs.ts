@@ -68,30 +68,38 @@ export const makeGuide = ({
   const guidePath = `${product.path}/guides/${guide.slug}`;
   return pipe(
     versions,
-    RA.map(({ main = false, version, dirName }) => ({
-      product: product,
-      guide: {
-        name: guide.name,
-        path: guidePath,
-      },
-      version: {
-        main,
-        name: version,
-        path: `${guidePath}/${version}`,
-      },
-      versions: versions.map(({ main = false, version }) => ({
-        main,
-        name: version,
-        path: `${guidePath}/${version}`,
-      })),
-      source: {
-        pathPrefix: `${guidePath}/${version}`,
-        assetsPrefix: `${docsAssetsPath}/${dirName}`,
-        dirPath: `${docsPath}/${dirName}`,
-        spaceId: dirName,
-      },
-      bannerLinks: bannerLinks,
-    })),
+    RA.map(({ main = false, version, dirName }) => {
+      const item = {
+        product: product,
+        guide: {
+          name: guide.name,
+          path: guidePath,
+        },
+        version: {
+          main,
+          name: version,
+          path: `${guidePath}/${version}`,
+        },
+        versions: versions.map(({ main = false, version }) => ({
+          main,
+          name: version,
+          path: `${guidePath}/${version}`,
+        })),
+        source: {
+          pathPrefix: `${guidePath}/${version}`,
+          assetsPrefix: `${docsAssetsPath}/${dirName}`,
+          dirPath: `${docsPath}/${dirName}`,
+          spaceId: dirName,
+        },
+        bannerLinks: bannerLinks,
+      };
+      // We need to generate two items for the main version of the guide
+      // One with the name version and one without version in the path
+      return main
+        ? [item, { ...item, source: { ...item.source, pathPrefix: guidePath } }]
+        : [item];
+    }),
+    RA.flatten,
     // parse docs files
     parseDocOrThrow
   );

@@ -41,33 +41,7 @@ export async function getGuide(
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const guide =
-    guides.find(({ page }) => page.path === path) ?? getMainGuide(path);
-  const props = manageUndefined(guide);
-
-  const isPathWithMainVersion =
-    props.version.main && !path.startsWith(props.version.path);
-
-  // We need to redirect to the main version if the user is trying to access to a url without version
-  // Example: /sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/changelog
-  // We need to redirect to /sanp/3.6.0/specifiche-attuative-del-nodo-dei-pagamenti-spc/changelog
-
-  if (isPathWithMainVersion) {
-    // Check if the current path has a version in it
-    const hasVersionInPath = (guidePath ?? '').match(VERSION_REGEX);
-    const sliceFrom = hasVersionInPath ? 2 : 1;
-    const to = [
-      props.version.path,
-      ...(productGuidePage ?? []).slice(sliceFrom),
-    ].join('/');
-
-    // Check if the guide exists
-    const guide = await getGuide(productSlug, getProductGuidePath(to));
-    return {
-      ...guide,
-      redirect: true,
-    };
-  }
+  const props = manageUndefined(guides.find(({ page }) => page.path === path));
 
   return {
     ...props,
@@ -75,17 +49,6 @@ export async function getGuide(
     assetsPrefix: props.source.assetsPrefix,
     products: [...(await getProducts())],
   };
-}
-
-function getMainGuide(path?: string) {
-  // the filter is to take the first 4 elements of the path which are
-  // an empty string (the path begins with a / symbol), the product slug, 'guides' hard-coded string and the guide slug
-  const guidePath = path?.split('/').filter((p, index) => index < 4);
-
-  return guides.find(
-    ({ version, guide }) =>
-      guide.path === guidePath?.join('/') && version.main === true
-  );
 }
 
 function getProductGuidePath(path: string) {

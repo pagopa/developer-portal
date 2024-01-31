@@ -14,7 +14,6 @@ import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import GuideWrapper from '@/components/atoms/GuideWrapper/GuideWrapper';
 
 type Params = {
   productSlug: string;
@@ -88,73 +87,68 @@ const Page = async ({ params }: { params: Params }) => {
   };
 
   return (
-    <GuideWrapper
-      guideProps={guideProps}
-      paths={params?.productGuidePage ?? ['']}
+    <ProductLayout
+      product={props.product}
+      path={props.path}
+      bannerLinks={props.bannerLinks}
+      showBreadcrumbs={false}
     >
-      <ProductLayout
-        product={props.product}
-        path={props.path}
-        bannerLinks={props.bannerLinks}
-        showBreadcrumbs={false}
-      >
-        <FragmentProvider>
+      <FragmentProvider>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            margin: '0 auto',
+            maxWidth: '1900px',
+          }}
+        >
+          <GuideMenu
+            menu={props.menu}
+            assetsPrefix={props.bodyConfig.assetsPrefix}
+            linkPrefix={props.pathPrefix}
+            guideName={props.guide.name}
+            versionName={props.version.name}
+            versions={props.versions}
+          />
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', lg: 'row' },
               margin: '0 auto',
-              maxWidth: '1900px',
+              padding: '56px 40px',
+              flexGrow: { lg: 1 },
+              maxWidth: {
+                xs: '100%',
+                lg: '1008px',
+              },
             }}
           >
-            <GuideMenu
-              menu={props.menu}
-              assetsPrefix={props.bodyConfig.assetsPrefix}
-              linkPrefix={props.pathPrefix}
-              guideName={props.guide.name}
-              versionName={props.version.name}
-              versions={props.versions}
-            />
+            <GitBookContent content={props.body} config={props.bodyConfig} />
+          </Box>
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              padding: { lg: '80px 64px' },
+              width: { lg: '270px' },
+            }}
+          >
             <Box
               sx={{
-                margin: '0 auto',
-                padding: '56px 40px',
-                flexGrow: { lg: 1 },
-                maxWidth: {
-                  xs: '100%',
-                  lg: '1008px',
-                },
+                position: 'sticky',
+                maxWidth: '270px',
+                top: 144,
               }}
             >
-              <GitBookContent content={props.body} config={props.bodyConfig} />
-            </Box>
-            <Box
-              sx={{
-                display: { xs: 'none', lg: 'initial' },
-                position: 'relative',
-                padding: { lg: '80px 64px' },
-                width: { lg: '270px' },
-              }}
-            >
-              <Box
-                sx={{
-                  position: 'sticky',
-                  maxWidth: '270px',
-                  top: 144,
-                }}
-              >
-                <GuideInPageMenu
-                  assetsPrefix={props.bodyConfig.assetsPrefix}
-                  pagePath={props.path}
-                  inPageMenu={props.body}
-                  title={translations.productGuidePage.onThisPage}
-                />
-              </Box>
+              <GuideInPageMenu
+                assetsPrefix={props.bodyConfig.assetsPrefix}
+                pagePath={props.path}
+                inPageMenu={props.body}
+                title={translations.productGuidePage.onThisPage}
+              />
             </Box>
           </Box>
-        </FragmentProvider>
-      </ProductLayout>
-    </GuideWrapper>
+        </Box>
+      </FragmentProvider>
+    </ProductLayout>
   );
 };
 
