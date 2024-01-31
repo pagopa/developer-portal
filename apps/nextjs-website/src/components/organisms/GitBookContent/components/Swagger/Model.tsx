@@ -62,7 +62,9 @@ const ModelItem = ({
             )}
           </Typography>
         )}
-        <Typography color='blue'>{schemaType}</Typography>
+        <Typography sx={{ color: (theme) => theme.palette.primary.main }}>
+          {schemaType}
+        </Typography>
       </Box>
       <Typography sx={{ ml: 2 }}>{description}</Typography>
     </ListItemButton>
