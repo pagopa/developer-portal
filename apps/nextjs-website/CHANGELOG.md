@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 0.7.2
+
+### Patch Changes
+
+- b9b9a21: Fix XSS issue
+
+## 0.7.1
+
+### Patch Changes
+
+- 7c3c680: Fix speakers and speakersTitle label in Webinar section
+
 ## 0.7.0
 
 ### Minor Changes
