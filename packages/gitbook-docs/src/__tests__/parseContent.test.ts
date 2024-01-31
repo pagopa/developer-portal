@@ -445,22 +445,23 @@ describe('parseContent', () => {
   });
 
   it('should parse swagger', () => {
-    expect(
-      parseContent(
-        '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
-        config
-      )
-    ).toStrictEqual([
+    const result = [
       new Markdoc.Tag(
         'Swagger',
         {
-          src: 'index.yaml',
+          src: '/assets/prefix/index.yaml',
           path: '/p',
           method: 'post',
         },
         []
       ),
-    ]);
+    ];
+
+    const parsed = parseContent(
+      '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
+      config
+    );
+    expect(parsed).toStrictEqual(result);
   });
 
   it('should parse code block', () => {

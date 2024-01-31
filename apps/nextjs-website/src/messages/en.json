@@ -2,6 +2,28 @@
     "shared": {
         "goToModel": "Go to model"
     },
+    "swagger": {
+        "errorCard": {
+            "header": "Oops, manca qualcosa.",
+            "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
+        },
+        "parameters": {
+            "header": "Parameters",
+            "empty": "No parameters"
+        },
+        "requestBody": {
+            "header": "Body"
+        },
+        "responses": {
+            "header": "Responses"
+        },
+        "example": "Example",
+        "schema": "Schema",
+        "emptyOperations": {
+            "header": "No operations",
+            "message": "No operations defined in this endpoint."
+        }
+    },
     "webinar": {
         "subscriptionError": "Registration limit reached",
         "genericSubscriptionError": "Something went wrong, please try again later",

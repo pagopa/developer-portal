@@ -320,7 +320,7 @@ export const translations = {
     confirmLogin: {
       title: 'Verifica la tua identità',
       body: (email: string) =>
-        `Abbiamo inviato un codice di verifica a <b>${email}</b><br>Il codice scade tra 3 minuti.`,
+        `Abbiamo inviato un codice di verifica a ${email} Il codice scade tra 3 minuti.`,
       code: 'Codice di verifica',
       checkJunkMail:
         'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
@@ -380,7 +380,7 @@ export const translations = {
     confirmSignUp: {
       confirmSignUp: 'Conferma che sei tu',
       description: (email: string) =>
-        `Abbiamo inviato una e-mail a <strong>${email}</strong>. <br/> Clicca sul bottone contenuto al suo interno per verificarla.`,
+        `Abbiamo inviato una e-mail a ${email}. Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
       resendEmail: 'Reinvia e-mail',
