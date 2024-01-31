@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { useFormatter } from 'next-intl';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'isomorphic-dompurify';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -28,6 +29,7 @@ const WebinarQuestionsTemplate = ({
 }: WebinarQuestionsTemplateProps) => {
   const router = useRouter();
   const formatter = useFormatter();
+  const [loading, setLoading] = useState<boolean>(true);
   const [questions, setQuestions] = useState<WebinarQuestion[]>([]);
   const { webinarState, setWebinar } = useWebinar();
 
@@ -42,6 +44,7 @@ const WebinarQuestionsTemplate = ({
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
     setQuestions(sortedQuestions);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,7 +57,9 @@ const WebinarQuestionsTemplate = ({
     webinar && setWebinar(webinar);
   }, [webinar]);
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <>
       <SummaryInformation
         title={webinar.title}
