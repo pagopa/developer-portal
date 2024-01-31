@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.7.2
+
+### Patch Changes
+
+- b9b9a21: Fix XSS issue
+
 ## 0.7.1
 
 ### Patch Changes
