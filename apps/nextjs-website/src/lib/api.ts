@@ -18,14 +18,14 @@ import { HomepageApi } from './types/homepageResponseData';
 import { translations } from '@/_contents/translations';
 
 async function cmsRequest<T>(
-  enpoint: string,
+  endpoint: string,
   populate?: string
 ): Promise<T | null> {
   const res = await fetch(
-    `${cmsBasePath}/${enpoint}?populate=${populate || '*'}`
+    `${cmsBasePath}/${endpoint}?populate=${populate || '*'}`
   );
 
-  if (res.status !== 200) {
+  if (res?.status !== 200) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data from CMS');
   }
@@ -109,7 +109,7 @@ export async function getProducts(): Promise<readonly Product[]> {
 export async function getHomepage(): Promise<HomepageProps | null> {
   // TODO: remove this when the CMS will be ready
   const { homepage, header } = translations;
-  const staticConent: HomepageProps = {
+  const staticContent: HomepageProps = {
     hero: {
       siteTitle: header.title,
       boldTitle: header.boldTitle,
@@ -125,7 +125,7 @@ export async function getHomepage(): Promise<HomepageProps | null> {
       links: homepage.comingsoonDocumentation.links,
     },
   };
-  if (!usingCms) return staticConent;
+  if (!usingCms) return staticContent;
 
   const response = await cmsRequest<HomepageApi>(
     'home-page',
@@ -135,7 +135,7 @@ export async function getHomepage(): Promise<HomepageProps | null> {
     return null;
   } else {
     return {
-      ...staticConent, // TODO: remove merge when Homepage will be fully implemented ready
+      ...staticContent, // TODO: remove merge when Homepage will be fully implemented ready
       comingsoonDocumentation: response.comingsoonDocumentation,
     };
   }
