@@ -15,7 +15,7 @@ import { useWebinar } from '@/helpers/webinar.helpers';
 import { useCallback, useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
 import { useRouter } from 'next/navigation';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'isomorphic-dompurify';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -32,6 +32,7 @@ const WebinarQuestionsTemplate = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [questions, setQuestions] = useState<WebinarQuestion[]>([]);
   const { webinarState, setWebinar } = useWebinar();
+  const t = useTranslations('webinar');
 
   const fetchQuestions = useCallback(() => {
     getWebinarQuestionList(webinar.slug)
@@ -98,7 +99,7 @@ const WebinarQuestionsTemplate = ({
                   </TableCell>
                   <TableCell width='70%'>
                     {DOMPurify.sanitize(row.question) === ''
-                      ? 'Domanda cancellata automaticamente'
+                      ? t('deletedQuestion')
                       : DOMPurify.sanitize(row.question)}
                   </TableCell>
                   <TableCell>

@@ -121,7 +121,8 @@
                 "participateTo": "Partecipa ai nostri webinar"
             }
         },
-        "view": "Visualizza"
+        "view": "Visualizza",
+        "deletedQuestion": "Domanda eliminata automaticamente per ragioni di sicurezza"
     },
     "webinars": {
         "title": "Partecipa agli eventi live e guarda i webinar passati ",
