@@ -98,3 +98,4 @@ coverage
 # End of https://www.toptal.com/developers/gitignore/api/strapi
 
 types/generated/*
+*.strapi
