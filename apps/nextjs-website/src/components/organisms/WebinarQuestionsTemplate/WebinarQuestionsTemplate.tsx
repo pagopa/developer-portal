@@ -12,7 +12,7 @@ import {
 import { Webinar } from '@/lib/types/webinar';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
 import { useRouter } from 'next/navigation';
 import { useFormatter } from 'next-intl';
@@ -33,19 +33,21 @@ const WebinarQuestionsTemplate = ({
   const [questions, setQuestions] = useState<WebinarQuestion[]>([]);
   const { webinarState, setWebinar } = useWebinar();
 
-  const fetchQuestions = async () => {
-    const data = await getWebinarQuestionList(webinar.slug).catch(() => {
-      router.replace('/404');
-      return [];
-    });
-
-    const sortedQuestions = [...data].sort(
-      (a: WebinarQuestion, b: WebinarQuestion) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-    setQuestions(sortedQuestions);
-    setLoading(false);
-  };
+  const fetchQuestions = useCallback(() => {
+    getWebinarQuestionList(webinar.slug)
+      .then((data) => {
+        const sortedQuestions = [...data].sort(
+          (a: WebinarQuestion, b: WebinarQuestion) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setQuestions(sortedQuestions);
+        setLoading(false);
+      })
+      .catch(() => {
+        router.replace('/404');
+        return [];
+      });
+  }, [router, webinar.slug]);
 
   useEffect(() => {
     fetchQuestions();
