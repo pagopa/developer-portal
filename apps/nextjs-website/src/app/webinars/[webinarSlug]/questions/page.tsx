@@ -1,11 +1,18 @@
 import React from 'react';
-import { getWebinar } from '@/lib/api';
+import { getWebinar, getWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 
 type Params = {
   webinarSlug: string;
 };
+
+export async function generateStaticParams() {
+  const webinars = await getWebinars();
+  return [...webinars].map(({ slug }) => ({
+    webinarSlug: slug,
+  }));
+}
 
 const NotSsrWebinarQuestionsTemplate = dynamic(
   () =>
