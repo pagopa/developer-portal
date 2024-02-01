@@ -44,7 +44,6 @@ const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
 const markR = pairedHtmlTag('mark');
-const pR = pairedHtmlTag('p');
 const detailsR = pairedHtmlTag('details');
 const summaryR = pairedHtmlTag('summary');
 const fileR = {
@@ -101,7 +100,6 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
-    .replaceAll(pR.regex, pR.replace)
     .replaceAll(detailsR.regex, detailsR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')

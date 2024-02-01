@@ -21,7 +21,6 @@ const ApiViewer: FC<ApiViewerProps> = ({
     <API
       apiDescriptionUrl={specURL}
       hideTryIt={hideTryIt}
-      hideExport
       basePath={`${api?.path}` ?? `${path}/api`}
       router={typeof window === 'undefined' ? 'memory' : 'hash'}
     />
