@@ -100,7 +100,7 @@ export const spaceToPrefixMap = pipe(
 );
 
 /**
- * Contains the mapping between the docs.pago.it url and the developer portal url.
+ * Contains the mapping between the docs.pagopa.it url and the developer portal url.
  */
 export const urlReplacesMap: { readonly [url: string]: string } = {
   // App IO
