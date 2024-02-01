@@ -132,20 +132,20 @@ const Newsroom = (props: INewsroom) => {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        wrap='nowrap'
         py={py}
         sx={{
+          flexWrap: { xs: 'nowrap', md: 'wrap' },
+          maxWidth: { md: '1280px', lg: '1310px' },
+          mx: 'auto',
+          marginLeft: { sm: '-32px', md: '-16px', lg: 'auto' },
+          'div.MuiGrid-item:first-of-type': {
+            marginLeft: { xs: '32px', sm: '16px', md: '0px' },
+          },
           overflowX: 'scroll',
           paddingRight: '32px',
           width: {
             xs: 'auto',
             md: '100%',
-          },
-          maxWidth: { md: '1280px', lg: '1310px' },
-          marginLeft: { sm: '-32px', md: '-16px', lg: 'auto' },
-          mx: 'auto',
-          'div.MuiGrid-item:first-of-type': {
-            marginLeft: { xs: '32px', sm: '16px', md: '0px' },
           },
         }}
       >
