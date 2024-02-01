@@ -35,7 +35,7 @@ const config = {
 describe('parseContent', () => {
   it('should ignore any <p> tag', () => {
     expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
+      'Hello there!',
     ]);
   });
   it('should parse heading', () => {
