@@ -35,7 +35,7 @@ const config = {
 describe('parseContent', () => {
   it('should ignore any <p> tag', () => {
     expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
+      'Hello there!',
     ]);
   });
   it('should parse heading', () => {
@@ -361,22 +361,23 @@ describe('parseContent', () => {
   });
 
   it('should parse swagger', () => {
-    expect(
-      parseContent(
-        '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
-        config
-      )
-    ).toStrictEqual([
+    const result = [
       new Markdoc.Tag(
         'Swagger',
         {
-          src: 'index.yaml',
+          src: '/assets/prefix/index.yaml',
           path: '/p',
           method: 'post',
         },
         []
       ),
-    ]);
+    ];
+
+    const parsed = parseContent(
+      '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
+      config
+    );
+    expect(parsed).toStrictEqual(result);
   });
 
   it('should parse code block', () => {
