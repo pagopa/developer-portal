@@ -22,7 +22,16 @@ export const link: Schema = {
       ? [...config.variables.gitBookPagesWithTitle]
       : [];
     const page = gitBookPagesWithTitle.find(({ path }) => path === attrs.href);
+
     const childrenTreeNode = node.transformChildren(config);
+
+    const titleFromPage =
+      childrenTreeNode &&
+      typeof childrenTreeNode[0] === 'string' &&
+      childrenTreeNode[0].endsWith('.md') &&
+      page
+        ? page.title
+        : undefined;
 
     const titleFromAnchor =
       childrenTreeNode &&
@@ -33,8 +42,8 @@ export const link: Schema = {
           )
         : undefined;
 
-    const children = page
-      ? [page.title]
+    const children = titleFromPage
+      ? [titleFromPage]
       : titleFromAnchor
       ? [titleFromAnchor]
       : childrenTreeNode;
