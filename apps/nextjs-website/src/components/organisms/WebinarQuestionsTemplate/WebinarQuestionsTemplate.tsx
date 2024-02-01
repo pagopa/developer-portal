@@ -97,14 +97,17 @@ const WebinarQuestionsTemplate = ({
                     })}
                   </TableCell>
                   <TableCell width='70%'>
-                    {DOMPurify.sanitize(row.question)}
+                    {DOMPurify.sanitize(row.question) === ''
+                      ? 'Domanda cancellata automaticamente'
+                      : DOMPurify.sanitize(row.question)}
                   </TableCell>
                   <TableCell>
-                    {row.givenName} {row.familyName}
+                    {DOMPurify.sanitize(row.givenName)}{' '}
+                    {DOMPurify.sanitize(row.familyName)}
                   </TableCell>
                   <TableCell>
                     <CopyToClipboardButton
-                      value={row.question}
+                      value={DOMPurify.sanitize(row.question)}
                     ></CopyToClipboardButton>
                   </TableCell>
                 </TableRow>
