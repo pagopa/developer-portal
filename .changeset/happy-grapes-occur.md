@@ -2,4 +2,4 @@
 "gitbook-docs": patch
 ---
 
-Disable the link's title replacing with destination page title and leave it as it was in Gitbook
+Update the logic that is used to replace the titles of links from GitBook

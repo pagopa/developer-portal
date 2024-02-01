@@ -29,14 +29,6 @@ const config = {
       path: '/to/s1',
       title: 'S1 Home',
     },
-    {
-      path: '/to/s0/ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout',
-      title: 'Integrazione touch point dell’EC con Checkout',
-    },
-    {
-      path: '/to/s0/comunicare-un-servizio/modificare-o-ampliare-un-servizio',
-      title: 'Modificare o ampliare un servizio',
-    },
   ],
 };
 
@@ -189,7 +181,7 @@ describe('parseContent', () => {
   it('should leave the title of the link as it is', () => {
     expect(
       parseContent(
-        "[redirect](../ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+        "[redirect](../page/1.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
         config
       )
     ).toStrictEqual([
@@ -197,7 +189,7 @@ describe('parseContent', () => {
         new Markdoc.Tag(
           'Link',
           {
-            href: '/to/s0/ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout',
+            href: '/to/s0/page/1',
           },
           ['redirect']
         ),
@@ -208,7 +200,7 @@ describe('parseContent', () => {
   it('should replace an ending with `.md` title of the link with the page title', () => {
     expect(
       parseContent(
-        "[integrazione-touch-point-dellec-con-checkout.md](../ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+        "[integrazione-touch-point-dellec-con-checkout.md](../page/1.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
         config
       )
     ).toStrictEqual([
@@ -216,9 +208,9 @@ describe('parseContent', () => {
         new Markdoc.Tag(
           'Link',
           {
-            href: '/to/s0/ente-creditore/modalita-dintegrazione/integrazione-touch-point-dellec-con-checkout',
+            href: '/to/s0/page/1',
           },
-          ['Integrazione touch point dell’EC con Checkout']
+          ['S0 Page 1']
         ),
         " a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
       ]),
