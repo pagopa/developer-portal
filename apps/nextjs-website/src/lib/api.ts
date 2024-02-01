@@ -13,8 +13,6 @@ import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
 import { GuidePage } from './types/guideData';
 
-const VERSION_REGEX = /v?\d+\.\d+\.\d+/;
-
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
     // eslint-disable-next-line functional/no-throw-statements
