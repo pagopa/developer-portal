@@ -163,19 +163,6 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should replace the title of link', () => {
-    expect(
-      parseContent('Go to [page.md](../home.md "mention")', config)
-    ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, [
-        'Go to ',
-        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s0/home' }, [
-          'S0 Home',
-        ]),
-      ]),
-    ]);
-  });
-
   it('should replace the title of link to an anchor with a human readable text', () => {
     expect(
       parseContent(
@@ -195,28 +182,84 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should leave the title of the link as it is', () => {
+    expect(
+      parseContent(
+        "[redirect](../page/1.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/to/s0/page/1',
+          },
+          ['redirect']
+        ),
+        " a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+      ]),
+    ]);
+  });
+  it('should replace an ending with `.md` title of the link with the page title', () => {
+    expect(
+      parseContent(
+        "[integrazione-touch-point-dellec-con-checkout.md](../page/1.md) a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/to/s0/page/1',
+          },
+          ['S0 Page 1']
+        ),
+        " a Checkout, l'interfaccia di front end di PagoPA S.p.A.",
+      ]),
+    ]);
+  });
+
+  it('should transform the link but leave its title as it is', () => {
+    expect(
+      parseContent(
+        '<a href="comunicare-un-servizio/modificare-o-ampliare-un-servizio.md">modificare-o-ampliare-un-servizio.md</a>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/to/s0/page/comunicare-un-servizio/modificare-o-ampliare-un-servizio',
+          },
+          ['modificare-o-ampliare-un-servizio.md']
+        ),
+      ]),
+    ]);
+  });
+
   it('should convert href to other gitbook space', () => {
     expect(
       parseContent('[Page](http://localhost:5000/o/KxY/s/s1/)', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['Page']),
       ]),
     ]);
     expect(
       parseContent('[Page](http://localhost:5000/s/s0/page/1)', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['Page']),
       ]),
     ]);
     expect(
       parseContent('[Page](http://localhost:5000/o/xY/s/s1/ "mention")', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, [
-          'S1 Home',
-        ]),
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
       ]),
     ]);
   });
@@ -226,23 +269,21 @@ describe('parseContent', () => {
       parseContent('[Page](http://127.0.0.1:5000/o/xY/s/s1/ "mention")', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, [
-          'S1 Home',
-        ]),
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
       ]),
     ]);
     expect(
       parseContent('[Page](http://127.0.0.1:5000/o/KXY/s/s1/)', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/to/s1' }, ['S1 Home']),
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['Page']),
       ]),
     ]);
     expect(
       parseContent('[Page](http://127.0.0.1:5000/s/s0/page/1)', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['S0 Page 1']),
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['Page']),
       ]),
     ]);
   });
