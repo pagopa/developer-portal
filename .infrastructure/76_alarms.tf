@@ -16,6 +16,7 @@ module "ses_bounce_rate_alarm" {
   unit                = "Count"
   period              = 300 # 5 minutes
   evaluation_periods  = 1
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 }
 
 ## Reputation complaint rate alarm
@@ -34,13 +35,14 @@ module "ses_reputation_complaint_rate_alarm" {
   unit                = "Count"
   period              = 300 # 5 minutes
   evaluation_periods  = 1
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 }
 
 ## Daily sending quota alarm
 module "ses_daily_sending_quota_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "DevPortal | Website | SES | Send"
+  alarm_name        = "DevPortal | Website | SES | Send Daily Quota"
   actions_enabled   = true
   alarm_description = "Alarm to monitor the daily sending quota limit"
   metric_name       = "Send"
