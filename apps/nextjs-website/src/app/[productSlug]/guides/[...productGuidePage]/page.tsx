@@ -9,7 +9,11 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
+import {
+  gitBookPagesWithTitle,
+  spaceToPrefixMap,
+  urlReplacesMap,
+} from '@/_contents/products';
 import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
@@ -66,6 +70,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
+
   const { product, page, guide, version, versions, source, bannerLinks } =
     guideProps;
   const props: ProductGuidePageProps = {
@@ -73,7 +78,7 @@ const Page = async ({ params }: { params: Params }) => {
     product,
     guide,
     version,
-    versions,
+    versions: Array.from(versions),
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
@@ -82,6 +87,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
+      urlReplaces: urlReplacesMap,
     },
   };
 
