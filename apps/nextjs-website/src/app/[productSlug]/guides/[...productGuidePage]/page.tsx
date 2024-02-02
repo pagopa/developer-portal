@@ -70,6 +70,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
+
   const { product, page, guide, version, versions, source, bannerLinks } =
     guideProps;
   const props: ProductGuidePageProps = {
@@ -77,7 +78,7 @@ const Page = async ({ params }: { params: Params }) => {
     product,
     guide,
     version,
-    versions,
+    versions: Array.from(versions),
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
