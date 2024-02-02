@@ -99,6 +99,11 @@
         "subscribe": "Iscriviti",
         "relatedLinksTitle": "Link utili",
         "speakersTitle": "Ospiti",
+        "questionList": {
+            "createdAt": "Ora creazione",
+            "text": "Domanda",
+            "user": "Utente"
+        },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale",
             "question": "Domanda",
@@ -121,8 +126,7 @@
                 "participateTo": "Partecipa ai nostri webinar"
             }
         },
-        "view": "Visualizza",
-        "deletedQuestion": "Domanda eliminata automaticamente per ragioni di sicurezza"
+        "view": "Visualizza"
     },
     "webinars": {
         "title": "Partecipa agli eventi live e guarda i webinar passati ",

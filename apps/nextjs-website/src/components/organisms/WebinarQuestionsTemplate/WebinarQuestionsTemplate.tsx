@@ -32,7 +32,7 @@ const WebinarQuestionsTemplate = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [questions, setQuestions] = useState<WebinarQuestion[]>([]);
   const { webinarState, setWebinar } = useWebinar();
-  const t = useTranslations('webinar');
+  const t = useTranslations('webinar.questionList');
 
   const fetchQuestions = useCallback(() => {
     getWebinarQuestionList(webinar.slug)
@@ -75,9 +75,9 @@ const WebinarQuestionsTemplate = ({
           <Table sx={{ minWidth: 650 }} aria-label='simple table'>
             <TableHead>
               <TableRow>
-                <TableCell>Ora creazione</TableCell>
-                <TableCell>Domanda</TableCell>
-                <TableCell>Utente</TableCell>
+                <TableCell>{t('createdAt')}</TableCell>
+                <TableCell>{t('text')}</TableCell>
+                <TableCell>{t('user')}</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -97,14 +97,9 @@ const WebinarQuestionsTemplate = ({
                       minute: 'numeric',
                     })}
                   </TableCell>
-                  <TableCell width='70%'>
-                    {DOMPurify.sanitize(row.question) === ''
-                      ? t('deletedQuestion')
-                      : DOMPurify.sanitize(row.question)}
-                  </TableCell>
+                  <TableCell width='70%'>{row.question}</TableCell>
                   <TableCell>
-                    {DOMPurify.sanitize(row.givenName)}{' '}
-                    {DOMPurify.sanitize(row.familyName)}
+                    {row.givenName} {row.familyName}
                   </TableCell>
                   <TableCell>
                     <CopyToClipboardButton
