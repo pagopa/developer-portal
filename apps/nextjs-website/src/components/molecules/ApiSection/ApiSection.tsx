@@ -11,6 +11,7 @@ import {
   formLabelClasses,
   styled,
   useTheme,
+  Box,
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
@@ -108,7 +109,7 @@ const ApiSection = ({
   const styles = getStyles(palette);
 
   return (
-    <>
+    <Box sx={{ marginTop: { xs: '62px', sm: '78px' } }}>
       {specURLs.length > 1 && specURLsName && (
         <Stack
           sx={styles.selectContainer}
@@ -180,7 +181,7 @@ const ApiSection = ({
         specURL={selectedApi.url}
         hideTryIt={selectedApi.hideTryIt}
       />
-    </>
+    </Box>
   );
 };
 
