@@ -39,7 +39,7 @@ const WebinarQuestionsTemplate = ({
       .then((data) => {
         const sortedQuestions = [...data].sort(
           (a: WebinarQuestion, b: WebinarQuestion) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            b.createdAt.getTime() - a.createdAt.getTime()
         );
         setQuestions(sortedQuestions);
         setLoading(false);
