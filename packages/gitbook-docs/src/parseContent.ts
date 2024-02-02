@@ -29,6 +29,7 @@ export type ParseContentConfig = {
     readonly spaceId: string;
     readonly pathPrefix: string;
   }>;
+  readonly urlReplaces: { readonly [url: string]: string };
 };
 
 const pairedHtmlTag = (tag: string) => ({
