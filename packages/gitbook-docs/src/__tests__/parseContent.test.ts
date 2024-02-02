@@ -30,6 +30,10 @@ const config = {
       title: 'S1 Home',
     },
   ],
+  urlReplaces: {
+    'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
+      '/send/guides/modello-di-integrazione',
+  },
 };
 
 describe('parseContent', () => {
@@ -280,6 +284,44 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['Page']),
+      ]),
+    ]);
+  });
+
+  it('should apply a rewritted url coming from the config', () => {
+    expect(
+      parseContent(
+        '[Modello di Integrazione](https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/path/#fragment)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/send/guides/modello-di-integrazione/path/#fragment',
+          },
+          ['Modello di Integrazione']
+        ),
+      ]),
+    ]);
+  });
+
+  it('should not apply a rewritted url coming from the config if not present', () => {
+    expect(
+      parseContent(
+        '[Modello di Integrazione](https://docs.pagopa.it/dont-exists/)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: 'https://docs.pagopa.it/dont-exists/',
+          },
+          ['Modello di Integrazione']
+        ),
       ]),
     ]);
   });

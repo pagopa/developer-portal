@@ -34,6 +34,12 @@ export class LinkAttr {
       'g'
     );
 
+    const { urlReplaces } = parseContentConfig;
+    // Find the first key that match the url
+    const rewriteKey = Object.keys(urlReplaces).find((key) =>
+      value?.startsWith(key)
+    );
+
     if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
@@ -53,7 +59,11 @@ export class LinkAttr {
             spacePrefix.pathPrefix
           )
         : value;
-    } else return value;
+    } else if (value && rewriteKey) {
+      return value.replace(rewriteKey, urlReplaces[rewriteKey]);
+    } else {
+      return value;
+    }
   };
 }
 
