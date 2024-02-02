@@ -1,7 +1,6 @@
 import React from 'react';
 import { getWebinar, getWebinars } from '@/lib/api';
-import dynamic from 'next/dynamic';
-import Spinner from '@/components/atoms/Spinner/Spinner';
+import WebinarQuestionsTemplate from '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate';
 
 type Params = {
   webinarSlug: string;
@@ -14,21 +13,10 @@ export async function generateStaticParams() {
   }));
 }
 
-const NotSsrWebinarQuestionsTemplate = dynamic(
-  () =>
-    import(
-      '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate'
-    ),
-  {
-    ssr: false,
-    loading: () => <Spinner />,
-  }
-);
-
 const WebinarQuestionsPage = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
 
-  return <NotSsrWebinarQuestionsTemplate webinar={webinar} />;
+  return <WebinarQuestionsTemplate webinar={webinar} />;
 };
 
 export default WebinarQuestionsPage;
