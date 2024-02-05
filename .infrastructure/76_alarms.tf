@@ -74,3 +74,24 @@ module "ses_sending_rate_limit_alarm" {
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 }
+
+# DynamoDB
+
+## Write capacity utilization
+module "dynamodb_write_capacity_utilization" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Webinar | Questions | CapacityUtilization"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect if the account’s write capacity utilization is approaching its provisioned write capacity utilization"
+  metric_name       = "AccountProvisionedWriteCapacityUtilization"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = "80.0"
+  statistic           = "Maximum"
+  period              = 300 # 5 minutes
+  evaluation_periods  = 2
+  datapoints_to_alarm = 2
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+}
