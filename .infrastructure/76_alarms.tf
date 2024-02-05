@@ -87,7 +87,7 @@ module "cloudfront_5xx_error_rate" {
   metric_name       = "5xxErrorRate"
   namespace         = "AWS/CloudFront"
 
-  comparison_operator = "GreaterThanOrEqualToThreshold"
+  comparison_operator = "GreaterThanThreshold"
   threshold           = 30 # 30%
   statistic           = "Average"
   period              = 60 # 1 minute
