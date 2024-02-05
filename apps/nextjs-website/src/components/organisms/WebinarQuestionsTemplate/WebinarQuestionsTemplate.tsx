@@ -63,7 +63,6 @@ const WebinarQuestionsTemplate = ({
                 <TableRow>
                   <TableCell>{t('createdAt')}</TableCell>
                   <TableCell>{t('text')}</TableCell>
-                  <TableCell>{t('user')}</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -84,9 +83,6 @@ const WebinarQuestionsTemplate = ({
                       })}
                     </TableCell>
                     <TableCell width='70%'>{row.question}</TableCell>
-                    <TableCell>
-                      {row.givenName} {row.familyName}
-                    </TableCell>
                     <TableCell>
                       <CopyToClipboardButton
                         value={DOMPurify.sanitize(row.question)}
