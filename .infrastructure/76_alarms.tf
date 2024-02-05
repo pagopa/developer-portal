@@ -81,7 +81,7 @@ module "ses_sending_rate_limit_alarm" {
 module "cloudfront_5xx_error_rate" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "Nome: DevPortal | Website | CloudFront 5xxErrorRate"
+  alarm_name        = "DevPortal | Website | CloudFront 5xxErrorRate"
   actions_enabled   = true
   alarm_description = "This alarm monitors the percentage of 5xx error responses from origin server"
   metric_name       = "5xxErrorRate"
@@ -105,7 +105,7 @@ module "cloudfront_5xx_error_rate" {
 module "cloudfront_function_execution_errors" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "Nome: DevPortal | Website | CloudFront Function | Execution Errors"
+  alarm_name        = "DevPortal | Website | CloudFront Function | Execution Errors"
   actions_enabled   = true
   alarm_description = "This alarm is used to detect execution errors from CloudFront functions"
   metric_name       = "FunctionExecutionErrors"
@@ -130,7 +130,7 @@ module "cloudfront_function_execution_errors" {
 module "cloudfront_function_throttled" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "Nome: DevPortal | Website | CloudFront Function | Throttle"
+  alarm_name        = "DevPortal | Website | CloudFront Function | Throttle"
   actions_enabled   = true
   alarm_description = "This alarm can detect when the CloudFront function is taking too long to respond"
   metric_name       = "FunctionThrottles"
