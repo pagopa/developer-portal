@@ -81,7 +81,7 @@ module "ses_sending_rate_limit_alarm" {
 module "dynamodb_write_capacity_utilization" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "DevPortal | Website | Webinar | Questions | CapacityUtilization"
+  alarm_name        = "DevPortal | Website | Webinar | Questions | WriteCapacityUtilization"
   actions_enabled   = true
   alarm_description = "This alarm can detect if the account’s write capacity utilization is approaching its provisioned write capacity utilization"
   metric_name       = "AccountProvisionedWriteCapacityUtilization"
