@@ -33,6 +33,14 @@ const config = {
   urlReplaces: {
     'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
       '/send/guides/modello-di-integrazione',
+    'https://docs.pagopa.it/kb-enti-servizi/tutorial-e-casi-duso/indice-dei-tutorial-e-dei-casi-duso':
+      '/app-io/guides/supporto-agli-enti/servizi/indice-dei-tutorial-e-dei-casi-duso',
+    'https://docs.pagopa.it/kb-enti-messaggi/tutorial-e-casi-duso/indice-dei-tutorial-e-dei-casi-duso':
+      '/app-io/guides/supporto-agli-enti/messaggi/indice-dei-tutorial-e-dei-casi-duso',
+    'https://docs.pagopa.it/kb-enti-pagamenti/domande-frequenti/domande-e-risposte-sui-pagamenti-in-io':
+      '/app-io/guides/supporto-agli-enti/pagamenti/domande-e-risposte-sui-pagamenti-in-io',
+    'https://docs.pagopa.it/kb-enti-accordi/domande-frequenti/domande-e-risposte-sugli-accordi':
+      '/app-io/guides/supporto-agli-enti/accordi/domande-e-risposte-sugli-accordi',
   },
 };
 
@@ -291,7 +299,12 @@ describe('parseContent', () => {
   it('should apply a rewritted url coming from the config', () => {
     expect(
       parseContent(
-        '[Modello di Integrazione](https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/path/#fragment)',
+        `[Modello di Integrazione](https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche/path/#fragment)
+         [Indice](https://docs.pagopa.it/kb-enti-servizi/tutorial-e-casi-duso/indice-dei-tutorial-e-dei-casi-duso/path/#fragment)
+         [Indice](https://docs.pagopa.it/kb-enti-messaggi/tutorial-e-casi-duso/indice-dei-tutorial-e-dei-casi-duso/path/#fragment)
+         [Indice](https://docs.pagopa.it/kb-enti-pagamenti/domande-frequenti/domande-e-risposte-sui-pagamenti-in-io/path/#fragment)
+         [Indice](https://docs.pagopa.it/kb-enti-accordi/domande-frequenti/domande-e-risposte-sugli-accordi/path/#fragment)
+        `,
         config
       )
     ).toStrictEqual([
@@ -302,6 +315,38 @@ describe('parseContent', () => {
             href: '/send/guides/modello-di-integrazione/path/#fragment',
           },
           ['Modello di Integrazione']
+        ),
+        ' ',
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/app-io/guides/supporto-agli-enti/servizi/indice-dei-tutorial-e-dei-casi-duso/path/#fragment',
+          },
+          ['Indice']
+        ),
+        ' ',
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/app-io/guides/supporto-agli-enti/messaggi/indice-dei-tutorial-e-dei-casi-duso/path/#fragment',
+          },
+          ['Indice']
+        ),
+        ' ',
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/app-io/guides/supporto-agli-enti/pagamenti/domande-e-risposte-sui-pagamenti-in-io/path/#fragment',
+          },
+          ['Indice']
+        ),
+        ' ',
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: '/app-io/guides/supporto-agli-enti/accordi/domande-e-risposte-sugli-accordi/path/#fragment',
+          },
+          ['Indice']
         ),
       ]),
     ]);
