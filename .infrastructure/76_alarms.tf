@@ -125,3 +125,28 @@ module "cloudfront_function_execution_errors" {
     FunctionName   = aws_cloudfront_function.website_viewer_request_handler.name
   }
 }
+
+## Check CloudFront Function is throttled
+module "cloudfront_function_throttled" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "Nome: DevPortal | Website | CloudFront Function | Throttle"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect when the CloudFront function is taking too long to respond"
+  metric_name       = "FunctionThrottles"
+  namespace         = "AWS/CloudFront"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0.0
+  statistic           = "Sum"
+  period              = 60 # 1 minute
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.website.id
+    Region         = "Global" # Global because CloudFront is a global service
+    FunctionName   = aws_cloudfront_function.website_viewer_request_handler.name
+  }
+}
