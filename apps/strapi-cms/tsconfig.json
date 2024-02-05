@@ -1,9 +1,14 @@
 {
   "extends": [
     "@strapi/typescript-utils/tsconfigs/server",
-    "../../tsconfig.json",
+    "../../tsconfig.json"
   ],
   "compilerOptions": {
+    // with declaration to true strapi raises a runtime error
+    // error: Cannot read properties of undefined (reading 'type')
+    // TypeError: Cannot read properties of undefined (reading 'type')
+    // at /node_modules/@strapi/plugin-users-permissions/server/services/users-permissions.js:115:39
+    "declaration": false,
     "outDir": "dist",
     "rootDir": "."
   },
