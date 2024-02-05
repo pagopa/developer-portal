@@ -106,17 +106,35 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   // App IO
   'https://docs.pagopa.it/manuale-operativo-dei-servizi':
     '/app-io/guides/manuale-servizi',
-  'https://docs.pagopa.it/kb-enti': '/app-io/guides/supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-adesione':
-    '/app-io/guides/supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-servizi': '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-servizi/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/servizi',
+  'https://docs.pagopa.it/kb-enti-servizi':
+    '/app-io/guides/supporto-agli-enti/servizi',
+  'https://docs.pagopa.it/kb-enti-messaggi/tutorial-e-casi-duso':
+    '/app-io/guides/supporto-agli-enti/messaggi',
+  'https://docs.pagopa.it/kb-enti-messaggi/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/messaggi',
   'https://docs.pagopa.it/kb-enti-messaggi':
-    '/app-io/guides/supporto-agli-enti',
+    '/app-io/guides/supporto-agli-enti/messaggi',
+  'https://docs.pagopa.it/kb-enti-pagamenti/tutorial-e-casi-duso':
+    '/app-io/guides/supporto-agli-enti/pagamenti',
+  'https://docs.pagopa.it/kb-enti-pagamenti/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/pagamenti',
   'https://docs.pagopa.it/kb-enti-pagamenti':
-    '/app-io/guides/supporto-agli-enti',
-  'https://docs.pagopa.it/kb-enti-accordi': '/app-io/guides/supporto-agli-enti',
+    '/app-io/guides/supporto-agli-enti/pagamenti',
+  'https://docs.pagopa.it/kb-enti-accordi/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/accordi',
+  'https://docs.pagopa.it/kb-enti-accordi':
+    '/app-io/guides/supporto-agli-enti/accordi',
+  'https://docs.pagopa.it/kb-enti-assistenza/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/assistenza',
   'https://docs.pagopa.it/kb-enti-assistenza':
-    '/app-io/guides/supporto-agli-enti',
+    '/app-io/guides/supporto-agli-enti/assistenza',
+  'https://docs.pagopa.it/kb-enti-adesione/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/adesione',
+  'https://docs.pagopa.it/kb-enti-adesione':
+    '/app-io/guides/supporto-agli-enti/adesione',
+  'https://docs.pagopa.it/kb-enti': '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
     '/app-io/guides/kit-comunicazione',
   'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
