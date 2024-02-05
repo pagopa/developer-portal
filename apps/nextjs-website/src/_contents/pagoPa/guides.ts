@@ -10,6 +10,7 @@ const saci: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: '3.2.0',
       dirName: 'PXEYBQEZ9LagztJLF89O',
     },
@@ -45,6 +46,7 @@ const sanp: GuideDefinition = {
       dirName: 'PiBduZS70S7Ae4WpWywl',
     },
     {
+      main: true,
       version: '3.6.0',
       dirName: 'MiKJPaFrEwpU051b68kr',
     },
@@ -104,6 +106,7 @@ const avvisi: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: '3.2.0',
       dirName: 'WNT7oSWxH3PFe3AGG2zK',
     },
@@ -128,6 +131,7 @@ const brand: GuideDefinition = {
 
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: '8phwN5u2QXllSKsqBjQU',
     },
@@ -143,6 +147,7 @@ const pda: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v4',
       dirName: 'EQluaHvgNKaiHlsDcnrT',
     },
@@ -166,6 +171,7 @@ const boEc: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: 'TbHElktP96kviaIsxPFs',
     },
@@ -181,6 +187,7 @@ const boPsp: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: '46oWOwuxwu0HEYnJPQ4h',
     },
@@ -196,6 +203,7 @@ const errori: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: 'mU2qgiLV1G3m9z1VjAOc',
     },
@@ -211,6 +219,7 @@ const metadata: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: 'u6YdY319vyFX9MIvnKBa',
     },
@@ -226,6 +235,7 @@ const redirect: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: 'v1.0',
       dirName: '6zB9GJvZkc3ChlAsMjql',
     },

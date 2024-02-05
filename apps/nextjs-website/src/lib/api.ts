@@ -11,6 +11,7 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { GuidePage } from './types/guideData';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -34,9 +35,10 @@ export async function getApi(productSlug?: string) {
 export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
-) {
+): Promise<GuidePage> {
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
+
   const props = manageUndefined(guides.find(({ page }) => page.path === path));
 
   return {
@@ -47,12 +49,16 @@ export async function getGuide(
   };
 }
 
+function getProductGuidePath(path: string) {
+  // the filter is to remove the first 3 elements of the path which are
+  // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
+  return path.split('/').filter((p, index) => index > 2);
+}
+
 export function getGuidePaths() {
   return guides.map((guide) => ({
     slug: guide.product.slug,
-    // the filter is to remove the first 3 elements of the path which are
-    // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
-    guidePaths: guide.page.path.split('/').filter((p, index) => index > 2),
+    guidePaths: getProductGuidePath(guide.page.path),
   }));
 }
 
