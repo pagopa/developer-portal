@@ -116,13 +116,36 @@ module "dynamodb_write_capacity_utilization" {
 }
 
 ## Read throttle event
-module "dynamodb_read_throttle_events" {
+module "dynamodb_read_throttle_events_webinar_questions" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | ReadThrottleEvents"
   actions_enabled   = true
   alarm_description = "This alarm can detect sustained throttling for read requests to the DynamoDB table"
   metric_name       = "ReadThrottleEvents"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 1
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
+  }
+}
+
+## Write throttle event
+module "dynamodb_write_throttle_events_webinar_questions" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Webinar | Questions | WriteThrottleEvents"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect sustained throttling for write requests to the DynamoDB table"
+  metric_name       = "WriteThrottleEvents"
   namespace         = "AWS/DynamoDB"
 
   comparison_operator = "GreaterThanThreshold"
