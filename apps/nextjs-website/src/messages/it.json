@@ -149,11 +149,11 @@
             "code": "Codice di verifica",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
-            "ctaLabel": "Reinvia e-mail",
-            "resendEmail": "Reinvia e-mail"
+            "ctaLabel": "Reinvia email",
+            "resendEmail": "Reinvia email"
         },
         "resendEmail": {
-            "label": "Reinvia e-mail"
+            "label": "Reinvia email"
         },
         "signUp": {
             "action": "Iscriviti",
@@ -226,9 +226,10 @@
             "goBackToLogin": "Torna al login",
             "send": "Conferma",
             "checkEmailTitle": "Controlla l'email",
-            "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
+            "checkEmailStart": "Se esiste un account associato a ",
+            "checkEmailEnd": "riceverai una email con un link per impostare una nuova password.",
             "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-            "resendEmail": "Reinvia e-mail",
+            "resendEmail": "Reinvia email",
             "wrongEmail": "L'indirizzo e-mail è errato?",
             "passwordSet": "Password impostata correttamente",
             "newPassword": "Imposta una nuova password",
