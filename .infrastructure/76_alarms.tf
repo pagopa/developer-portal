@@ -160,3 +160,26 @@ module "dynamodb_write_throttle_events_webinar_questions" {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
   }
 }
+
+## User Errors
+module "dynamodb_user_errors" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | DynamoDB | UserErrors"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect sustained user errors for the DynamoDB table requests."
+  metric_name       = "UserErrors"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 10
+  datapoints_to_alarm = 10
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
+  }
+}
