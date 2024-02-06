@@ -119,6 +119,10 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const onClick = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     const closeMenu = (event: MouseEvent) => {
       if (
@@ -192,6 +196,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   variant='body1'
                   component={NextLink}
                   href={product.subpaths.overview.path}
+                  onClick={onClick}
                   style={{
                     color: palette.primary.dark,
                     display: 'block',
@@ -206,11 +211,27 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           {!isProduction && (
             <MobileSiteHeaderStyledTreeItem
               nodeId={'siteHeader.webinars'}
-              label={t('siteHeader.webinars')}
+              label={
+                <Typography
+                  component={NextLink}
+                  variant='body1'
+                  href={'/webinars'}
+                  onClick={onClick}
+                  style={{
+                    color: palette.primary.dark,
+                    display: 'block',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    padding: 0,
+                  }}
+                >
+                  {t('siteHeader.webinars')}
+                </Typography>
+              }
             />
           )}
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
-          <MobileUserInfo />
+          <MobileUserInfo onClick={onClick} />
         </TreeView>
       </Box>
     </Box>
