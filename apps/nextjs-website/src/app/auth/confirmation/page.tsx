@@ -10,10 +10,12 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { isProduction } from '@/config';
 import { IllusError } from '@pagopa/mui-italia';
+import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
 
 enum State {
   loading = 'loading',
   resendCode = 'resendCode',
+  alreadyConfirmed = 'alreadyConfirmed',
   error = 'error',
 }
 
@@ -38,7 +40,13 @@ const Confirmation = () => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
           !isProduction && console.warn(error);
-          setState(State.resendCode);
+          switch (error.code) {
+            case 'LimitExceededException':
+              setState(State.error);
+              break;
+            default:
+              setState(State.resendCode);
+          }
         });
     } else {
       setState(State.error);
@@ -63,6 +71,8 @@ const Confirmation = () => {
   switch (state) {
     case State.error:
       return <PageNotFound />;
+    case State.alreadyConfirmed:
+      return <AccountAlreadyConfirmed />;
     case State.resendCode:
       return (
         <PageBackgroundWrapper>

@@ -10,23 +10,22 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  InputLabel,
   Link,
-  OutlinedInput,
   Stack,
+  TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { translations } from '@/_contents/translations';
 import {
-  useState,
-  MouseEvent,
-  useCallback,
-  useEffect,
   Dispatch,
+  MouseEvent,
   SetStateAction,
+  useCallback,
+  useState,
 } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { passwordMatcher } from '@/helpers/auth.helpers';
+import { validatePassword } from '@/helpers/auth.helpers';
+import { useTranslations } from 'next-intl';
 
 interface ChangePasswordFormProps {
   onChangePassword: () => Promise<void>;
@@ -34,23 +33,31 @@ interface ChangePasswordFormProps {
   password: string;
 }
 
+interface ChangePasswordFieldsError {
+  passwordError: boolean | null;
+  confirmPasswordError: string | null;
+}
+
 const ChangePasswordForm = ({
   onChangePassword,
   setPassword,
   password,
 }: ChangePasswordFormProps) => {
-  const {
-    shared,
-    auth: { login, signUp, resetPassword },
-  } = translations;
+  const login = useTranslations('auth.login');
+  const resetPassword = useTranslations('auth.resetPassword');
+  const signUp = useTranslations('auth.signUp');
+  const shared = useTranslations('shared');
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isPasswordDirty, setIsPasswordDirty] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
 
-  const [password_confirm, setPasswordConfirm] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const { palette } = useTheme();
+
+  const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
+    passwordError: null,
+    confirmPasswordError: null,
+  });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
@@ -63,27 +70,29 @@ const ChangePasswordForm = ({
     event.preventDefault();
   };
 
-  const validatePassword = useCallback(() => {
-    setIsPasswordValid(passwordMatcher.test(password));
-  }, [password]);
-
-  useEffect(() => {
-    validatePassword();
-  }, [password, validatePassword]);
-
   const validateForm = useCallback(() => {
-    const areFieldsValid = [password, password_confirm].every(
-      (value) => value && value.trim().length > 0
-    );
-    const isPasswordEqual = password === password_confirm;
+    const passwordError = validatePassword(password);
+    const confirmPasswordHasErrors = password !== passwordConfirm;
 
-    setIsFormValid(areFieldsValid && isPasswordEqual && isPasswordValid);
-    setSubmitDisabled(!isFormValid);
-  }, [isFormValid, isPasswordValid, password, password_confirm]);
+    setFieldErrors({
+      passwordError: passwordError ? true : null,
+      confirmPasswordError: confirmPasswordHasErrors
+        ? signUp('passwordMismatchError')
+        : null,
+    });
 
-  useEffect(() => {
-    validateForm();
-  }, [validateForm, isPasswordValid]);
+    return !passwordError && !confirmPasswordHasErrors;
+  }, [password, passwordConfirm, signUp]);
+
+  const onChangePasswordClick = useCallback(() => {
+    const valid = validateForm();
+
+    if (!valid) {
+      return;
+    }
+
+    onChangePassword();
+  }, [onChangePassword, validateForm]);
 
   return (
     <Box
@@ -102,81 +111,87 @@ const ChangePasswordForm = ({
               <IllusDataSecurity />
             </Stack>
             <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-              {resetPassword.newPassword}
+              {resetPassword('newPassword')}
             </Typography>
             <Stack spacing={2} mb={2}>
-              <FormControl variant='outlined'>
-                <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                  {shared.password}
-                </InputLabel>
-                <OutlinedInput
+              <FormControl
+                variant='outlined'
+                size='small'
+                sx={{
+                  '& div.MuiFormControl-root:has(>label) + p': {
+                    display: 'none',
+                  },
+                  '& div.MuiFormControl-root:has(>label) + p.Mui-error': {
+                    display: 'block',
+                  },
+                  '& div.MuiFormControl-root:has(>label.Mui-focused) + p': {
+                    display: 'block',
+                  },
+                }}
+              >
+                <TextField
                   id='password-input'
                   required
                   type={showPassword ? 'text' : 'password'}
                   onChange={({ target: { value } }) => setPassword(value)}
-                  onBlur={() => setIsPasswordDirty(true)}
-                  error={isPasswordDirty && !isPasswordValid}
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge='end'
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  value={password}
-                  label={shared.password}
-                  inputProps={{
-                    sx: {
-                      padding: '8.5px 14px',
-                    },
+                  variant='outlined'
+                  size='small'
+                  error={!!fieldErrors.passwordError}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='toggle password visibility'
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
+                  value={password}
+                  label={shared('password')}
                 />
-                <FormHelperText error={isPasswordDirty && !isPasswordValid}>
-                  {signUp.passwordPolicy}
+                <FormHelperText error={!!fieldErrors.passwordError}>
+                  {signUp('passwordPolicy')}
                 </FormHelperText>
               </FormControl>
             </Stack>
             <Stack spacing={2} mb={2}>
               <FormControl variant='outlined'>
-                <InputLabel
-                  htmlFor='confirm-password-input'
-                  sx={{ top: '-8px' }}
-                >
-                  {shared.confirmPassword}
-                </InputLabel>
-                <OutlinedInput
+                <TextField
                   id='confirm-password-input'
                   type={showPassword ? 'text' : 'password'}
                   required
                   onChange={({ target: { value } }) =>
                     setPasswordConfirm(value)
                   }
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle confirm password visibility'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownConfirmPassword}
-                        edge='end'
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  value={password_confirm}
-                  label={shared.confirmPassword}
-                  error={isPasswordDirty && password !== password_confirm}
-                  inputProps={{
-                    sx: {
-                      padding: '8.5px 14px',
-                    },
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='toggle confirm password visibility'
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownConfirmPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
+                  value={passwordConfirm}
+                  label={shared('confirmPassword')}
+                  error={!!fieldErrors.confirmPasswordError}
+                  size='small'
                 />
+                {fieldErrors.confirmPasswordError && (
+                  <FormHelperText error>
+                    {signUp('passwordMismatchError')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Stack>
             <Stack spacing={4} pt={4} pb={2}>
@@ -184,12 +199,10 @@ const ChangePasswordForm = ({
                 <Button
                   variant='contained'
                   onClick={() => {
-                    setSubmitDisabled(true);
-                    onChangePassword();
+                    onChangePasswordClick();
                   }}
-                  disabled={isSubmitDisabled}
                 >
-                  {resetPassword.send}
+                  {resetPassword('send')}
                 </Button>
               </Stack>
             </Stack>
@@ -203,9 +216,17 @@ const ChangePasswordForm = ({
               flexDirection='row'
             >
               <Typography variant='caption-semibold' mr={1}>
-                {resetPassword.rememberPassword}
+                {resetPassword('rememberPassword')}
               </Typography>
-              <Link href='/auth/login'>{login.action}</Link>
+              <Typography
+                component={Link}
+                fontSize={16}
+                href='/auth/login'
+                variant='caption-semibold'
+                color={palette.primary.main}
+              >
+                {login('action')}
+              </Typography>
             </Stack>
           </Grid>
         </Grid>
