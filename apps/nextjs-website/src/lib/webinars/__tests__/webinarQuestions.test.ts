@@ -10,11 +10,8 @@ import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
 
 const aWebinarQuestion = {
   webinarId: 'aWebinarId',
-  givenName: 'aGivenName',
-  familyName: 'aFamilyName',
   question: 'aQuestion',
   createdAt: new Date(),
-  expireAt: new Date('2024-01-22T11:36:31.000Z'),
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarQuestion({
   ...aWebinarQuestion,
@@ -75,6 +72,18 @@ describe('webinarQuestions', () => {
       const { webinarId } = aWebinarQuestion;
       const actual = await listWebinarQuestions(webinarId)(env)();
       const expected = E.right([aWebinarQuestion]);
+
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('should return an empty list if questions are undefined', async () => {
+      const { env, dynamoDBClientMock } = makeTestWebinarEnv();
+      const { webinarId } = aWebinarQuestion;
+      dynamoDBClientMock.send.mockImplementation(() =>
+        Promise.resolve({ Items: undefined })
+      );
+      const actual = await listWebinarQuestions(webinarId)(env)();
+      const expected = E.right([]);
 
       expect(actual).toStrictEqual(expected);
     });

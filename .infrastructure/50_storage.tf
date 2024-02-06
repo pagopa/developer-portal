@@ -57,8 +57,7 @@ module "dynamodb_webinar_questions" {
   name                           = "WebinarQuestions"
   hash_key                       = "webinarId"
   range_key                      = "createdAt"
-  ttl_enabled                    = true
-  ttl_attribute_name             = "expireAt"
+  ttl_enabled                    = false
   server_side_encryption_enabled = true
 
   attributes = [
