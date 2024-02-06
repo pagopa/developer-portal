@@ -37,6 +37,10 @@ const SiteFooter = ({
           href: 'https://www.instagram.com/pagopaspa/',
           icon: 'Instagram',
         },
+        {
+          href: 'https://medium.com/pagopa-spa',
+          icon: 'Medium',
+        },
       ],
       links: [
         {
