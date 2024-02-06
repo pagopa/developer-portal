@@ -179,9 +179,6 @@ module "dynamodb_user_errors" {
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 
-  dimensions = {
-    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
-  }
 }
 
 module "dynamodb_system_errors_webinar_questions" {
