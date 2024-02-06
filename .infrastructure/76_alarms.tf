@@ -101,6 +101,30 @@ module "cloudfront_5xx_error_rate" {
   }
 }
 
+## Origin latency
+module "cloudfront_origin_latency" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | CloudFront Origin Latency"
+  actions_enabled   = true
+  alarm_description = "This alarm is used to detect problems with the origin server taking too long to respond"
+  metric_name       = "OriginLatency"
+  namespace         = "AWS/CloudFront"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 24 # 80% of 30. 30s is the default value. 80% is the threshold suggested by AWS
+  extended_statistic  = "p90"
+  period              = 60 # 1 minute
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.website.id
+    Region         = "Global" # Global because CloudFront is a global service
+  }
+}
+
 ## Number of errors of the CloudFront Function
 module "cloudfront_function_execution_errors" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
