@@ -202,3 +202,26 @@ module "dynamodb_system_errors_webinar_questions" {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
   }
 }
+
+module "dynamodb_successful_request_latency_put_item" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Webinar | Questions | Successful Request Latency | PutItem"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect a high latency for the DynamoDB table PutItem operation"
+  metric_name       = "SuccessfulRequestLatency"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 50
+  statistic           = "Average"
+  period              = 60
+  evaluation_periods  = 10
+  datapoints_to_alarm = 10
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
+    Operation = "PutItem"
+  }
+}
