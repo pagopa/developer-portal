@@ -9,30 +9,31 @@ import { LoginFunction } from '@/lib/types/loginFunction';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
+import { SignInOpts } from '@aws-amplify/auth/lib/types';
 
 const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [noAccount, setNoAccount] = useState<boolean>(false);
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [noAccountError, setNoAccountError] = useState<boolean>(false);
+
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
-    setNoAccount(false);
+    setNoAccountError(false);
     setUsername(username);
     setPassword(password);
 
     const user = await Auth.signIn({
       username,
       password,
-    }).catch((error) => {
+    } as SignInOpts).catch((error) => {
       if (error.code === 'UserNotConfirmedException') {
         setUsername(username);
         setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
       } else {
-        setNoAccount(true);
+        setNoAccountError(true);
       }
       return false;
     });
@@ -85,7 +86,7 @@ const Login = () => {
         spacing={6}
       >
         {logInStep === LoginSteps.LOG_IN && (
-          <LoginForm noAccount={noAccount} onLogin={onLogin} />
+          <LoginForm noAccount={noAccountError} onLogin={onLogin} />
         )}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           <ConfirmLogIn
