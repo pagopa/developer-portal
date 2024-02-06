@@ -22,8 +22,6 @@ const makeAppEnv = (
     makeConfig(env),
     E.map((config) => ({
       config,
-      questionLifetimeInSeconds:
-        config.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS,
       nowDate: () => new Date(),
       dynamoDBClient: new DynamoDBClient({
         region: config.NEXT_PUBLIC_COGNITO_REGION,

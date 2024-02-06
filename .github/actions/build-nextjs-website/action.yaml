@@ -61,6 +61,5 @@ runs:
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.cognito_aws_region }}
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
         NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: ${{ inputs.cognito_identity_pool_id }}
-        NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS: ${{ inputs.webinar_question_lifetime_in_seconds }}
       shell: bash
       run: npm run build -w nextjs-website

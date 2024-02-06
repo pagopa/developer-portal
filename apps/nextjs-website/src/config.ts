@@ -67,17 +67,12 @@ export const publicEnv = {
     process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
     process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
-  NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS:
-    process.env.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS,
 };
 
 const ConfigCodec = t.type({
   NEXT_PUBLIC_COGNITO_REGION: t.string,
   NEXT_PUBLIC_COGNITO_USER_POOL_ID: t.string,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: t.string,
-  NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS: t.string.pipe(
-    tt.NumberFromString
-  ),
 });
 
 export type Config = t.TypeOf<typeof ConfigCodec>;
