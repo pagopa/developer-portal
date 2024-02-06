@@ -14,7 +14,6 @@ const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [userName, setUserName] = useState<string | null>(null);
   const [noAccount, setNoAccount] = useState<boolean>(false);
 
   const [username, setUsername] = useState('');
@@ -30,7 +29,7 @@ const Login = () => {
       password,
     }).catch((error) => {
       if (error.code === 'UserNotConfirmedException') {
-        setUserName(username);
+        setUsername(username);
         setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
       } else {
         setNoAccount(true);
@@ -38,7 +37,7 @@ const Login = () => {
       return false;
     });
 
-    setUserName(username);
+    setUsername(username);
 
     if (user) {
       setUser(user);
@@ -68,13 +67,13 @@ const Login = () => {
 
   const onBackStep = useCallback(() => {
     router.replace(
-      `/auth/login?email=${encodeURIComponent(userName || '')}&step=${
+      `/auth/login?email=${encodeURIComponent(username || '')}&step=${
         LoginSteps.LOG_IN
       }`
     );
     setLogInStep(LoginSteps.LOG_IN);
     return null;
-  }, [router, userName]);
+  }, [router, username]);
 
   return (
     <>
@@ -91,13 +90,13 @@ const Login = () => {
           )}
           {logInStep === LoginSteps.MFA_CHALLENGE && (
             <ConfirmLogIn
-              email={userName}
+              email={username}
               onConfirmLogin={confirmLogin}
               resendCode={resendCode}
             />
           )}
           {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
-            <ConfirmSignUp email={userName || ''} onBack={onBackStep} />
+            <ConfirmSignUp email={username || ''} onBack={onBackStep} />
           )}
         </Grid>
       </PageBackgroundWrapper>
