@@ -77,11 +77,30 @@ module "ses_sending_rate_limit_alarm" {
 
 # DynamoDB
 
+## Read capacity utilization
+module "dynamodb_read_capacity_utilization" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | DynamoDB | ReadCapacityUtilization"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect if the account’s read capacity utilization is approaching its provisioned read capacity utilization"
+  metric_name       = "AccountProvisionedReadCapacityUtilization"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = "80.0"
+  statistic           = "Maximum"
+  period              = 300 # 5 minutes
+  evaluation_periods  = 2
+  datapoints_to_alarm = 2
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+}
+
 ## Write capacity utilization
 module "dynamodb_write_capacity_utilization" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "DevPortal | Website | Webinar | Questions | WriteCapacityUtilization"
+  alarm_name        = "DevPortal | Website | DynamoDB | WriteCapacityUtilization"
   actions_enabled   = true
   alarm_description = "This alarm can detect if the account’s write capacity utilization is approaching its provisioned write capacity utilization"
   metric_name       = "AccountProvisionedWriteCapacityUtilization"
@@ -96,21 +115,25 @@ module "dynamodb_write_capacity_utilization" {
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 }
 
-## Read capacity utilization
-module "dynamodb_read_capacity_utilization" {
+## Read throttle event
+module "dynamodb_read_throttle_events" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
-  alarm_name        = "DevPortal | Website | Webinar | Questions | ReadCapacityUtilization"
+  alarm_name        = "DevPortal | Website | Webinar | Questions | ReadThrottleEvents"
   actions_enabled   = true
-  alarm_description = "This alarm can detect if the account’s read capacity utilization is approaching its provisioned read capacity utilization"
-  metric_name       = "AccountProvisionedReadCapacityUtilization"
+  alarm_description = "This alarm can detect sustained throttling for read requests to the DynamoDB table"
+  metric_name       = "ReadThrottleEvents"
   namespace         = "AWS/DynamoDB"
 
   comparison_operator = "GreaterThanThreshold"
-  threshold           = "80.0"
-  statistic           = "Maximum"
-  period              = 300 # 5 minutes
-  evaluation_periods  = 2
-  datapoints_to_alarm = 2
+  threshold           = 1
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
+  }
 }
