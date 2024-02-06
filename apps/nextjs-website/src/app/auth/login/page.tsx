@@ -76,31 +76,29 @@ const Login = () => {
   }, [router, username]);
 
   return (
-    <>
-      <PageBackgroundWrapper>
-        <Grid
-          container
-          justifyContent='center'
-          sx={{ mx: 'auto' }}
-          my={6}
-          spacing={6}
-        >
-          {logInStep === LoginSteps.LOG_IN && (
-            <LoginForm noAccount={noAccount} onLogin={onLogin} />
-          )}
-          {logInStep === LoginSteps.MFA_CHALLENGE && (
-            <ConfirmLogIn
-              email={username}
-              onConfirmLogin={confirmLogin}
-              resendCode={resendCode}
-            />
-          )}
-          {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
-            <ConfirmSignUp email={username || ''} onBack={onBackStep} />
-          )}
-        </Grid>
-      </PageBackgroundWrapper>
-    </>
+    <PageBackgroundWrapper>
+      <Grid
+        container
+        justifyContent='center'
+        sx={{ mx: 'auto' }}
+        my={6}
+        spacing={6}
+      >
+        {logInStep === LoginSteps.LOG_IN && (
+          <LoginForm noAccount={noAccount} onLogin={onLogin} />
+        )}
+        {logInStep === LoginSteps.MFA_CHALLENGE && (
+          <ConfirmLogIn
+            email={username}
+            onConfirmLogin={confirmLogin}
+            resendCode={resendCode}
+          />
+        )}
+        {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
+          <ConfirmSignUp email={username || ''} onBack={onBackStep} />
+        )}
+      </Grid>
+    </PageBackgroundWrapper>
   );
 };
 
