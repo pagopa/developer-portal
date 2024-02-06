@@ -167,7 +167,7 @@ module "dynamodb_user_errors" {
 
   alarm_name        = "DevPortal | Website | DynamoDB | UserErrors"
   actions_enabled   = true
-  alarm_description = "This alarm can detect sustained user errors for the DynamoDB table requests."
+  alarm_description = "This alarm can detect sustained user errors for the DynamoDB table requests"
   metric_name       = "UserErrors"
   namespace         = "AWS/DynamoDB"
 
@@ -177,6 +177,28 @@ module "dynamodb_user_errors" {
   period              = 60
   evaluation_periods  = 10
   datapoints_to_alarm = 10
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    TableName = module.dynamodb_webinar_questions.dynamodb_table_id
+  }
+}
+
+module "dynamodb_system_errors_webinar_questions" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Webinar | Questions | SystemErrors"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect sustained system errors for the DynamoDB table requests"
+  metric_name       = "SystemErrors"
+  namespace         = "AWS/DynamoDB"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 15
+  datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
 
   dimensions = {
