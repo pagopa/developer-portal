@@ -101,8 +101,7 @@
         "speakersTitle": "Ospiti",
         "questionList": {
             "createdAt": "Ora creazione",
-            "text": "Domanda",
-            "user": "Utente"
+            "text": "Domanda"
         },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale",
