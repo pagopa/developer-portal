@@ -520,3 +520,26 @@ module "cognito_create_auth_challenge_lambda_concurrent_executions_alarm" {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
   }
 }
+
+### Verify auth challenge errors
+module "cognito_verify_auth_challenge_lambda_errors_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Cognito | Lambda | VerifyAuthChallenge | Errors"
+  actions_enabled   = true
+  alarm_description = "The alarm helps detect high error counts in function invocations"
+  metric_name       = "Errors"
+  namespace         = "AWS/Lambda"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 10 # TODO: change this after an analysis of historic data for this alarm
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 3
+  datapoints_to_alarm = 3
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
+  }
+}
