@@ -4,10 +4,8 @@ import { makeAwsCredentialsFromCognito } from './lib/makeAwsCredentialsFromCogni
 import { Auth } from 'aws-amplify';
 import { BrowserConfig } from '@/BrowserConfig';
 
-// This type represents the environment of the browser. It contains
-// configuration as well as other dependencies required by the browser. In
-// other words contains all runtime configuration and global functions that may
-// be mockable
+// This type represents the environment of the browser.
+// Contains all dependencies required to run the application on the browser.
 export type BrowserEnv = {
   readonly config: BrowserConfig;
 } & WebinarEnv;
