@@ -6,7 +6,7 @@
     "clean": "shx rm -rf dist/",
     "generate": "strapi ts:generate-types",
     "precompile": "npm run clean && npm run generate",
-    "compile": "npm run clean && tsc --noEmit",
+    "compile": "tsc --noEmit",
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
