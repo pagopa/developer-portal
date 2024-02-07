@@ -4,6 +4,7 @@ import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
 import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
+import { ioSignGuideListsPath } from './guideListsPath';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -61,5 +62,15 @@ export const ioSignOverview: OverviewData = {
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,
   },
+  relatedLinks: [
+    {
+      path: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
+      name: 'Perchè scegliere Firma con IO',
+    },
+    {
+      path: 'https://www.youtube.com/watch?v=puD-kDMLx7Y',
+      name: 'Firma con IO e sua integrazione nella PA - DevFest Venezia 2023',
+    },
+  ],
   bannerLinks: ioSignBannerLinks,
 };
