@@ -177,3 +177,26 @@ module "cognito_custom_message_lambda_errors_alarm" {
   }
 }
 
+### Custom message throttles
+module "cognito_custom_message_lambda_throttles_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Cognito | Lambda | CustomMessage | Throttles"
+  actions_enabled   = true
+  alarm_description = "The alarm helps detect a high number of throttled invocation requests for a Lambda function"
+  metric_name       = "Throttles"
+  namespace         = "AWS/Lambda"
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = 10 # TODO: change this after an analysis of historic data for this alarm
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    FunctionName = module.cognito_custom_message_function.lambda_function_name
+  }
+}
+
