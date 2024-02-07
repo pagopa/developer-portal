@@ -101,3 +101,28 @@ module "cognito_user_pool_sign_up_throttles" {
     UserPoolClient = aws_cognito_user_pool_client.devportal_website.id
   }
 }
+
+## Cognito User Pool Sign In Throttles
+module "cognito_user_pool_sign_in_throttles" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Cognito | SignIn Throttles"
+  actions_enabled   = true
+  alarm_description = "This alarm helps to monitor the occurrence of throttled sign-in requests"
+  metric_name       = "SignInThrottles"
+  namespace         = "AWS/Cognito"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  statistic           = "Sum"
+  unit                = "Count"
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    UserPool       = aws_cognito_user_pool.devportal.id
+    UserPoolClient = aws_cognito_user_pool_client.devportal_website.id
+  }
+}
