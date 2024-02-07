@@ -92,3 +92,20 @@ export const makeConfig = (
     ConfigCodec.decode(env),
     E.mapLeft((errors) => PR.failure(errors).join('\n'))
   );
+
+const BuildConfigCodec = t.type({
+  STRAPI_ENDPOINT: t.string,
+  STRAPI_API_TOKEN: t.string,
+  FETCH_FROM_STRAPI: t.string.pipe(tt.BooleanFromString),
+});
+
+export type BuildConfig = t.TypeOf<typeof BuildConfigCodec>;
+
+// parse config from environment variables
+export const makeBuildConfig = (
+  env: Record<string, undefined | string>
+): E.Either<string, BuildConfig> =>
+  pipe(
+    BuildConfigCodec.decode(env),
+    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+  );

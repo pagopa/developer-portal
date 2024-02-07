@@ -6,6 +6,7 @@ import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsSh
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getHomepage, getProducts, getVisibleInHomeWebinars } from '@/lib/api';
+import * as cms from '@/lib/cmsApi';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 
@@ -31,7 +32,7 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const products = await getProducts();
   const webinars = await getVisibleInHomeWebinars();
-  const homepageProps = await getHomepage();
+  const homepageProps = await cms.getHomepage();
 
   if (!homepageProps) {
     // eslint-disable-next-line functional/no-throw-statements
