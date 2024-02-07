@@ -200,3 +200,25 @@ module "cognito_custom_message_lambda_throttles_alarm" {
   }
 }
 
+### Custom message duration
+module "cognito_custom_message_lambda_duration_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | Cognito | Lambda | CustomMessage | Duration"
+  actions_enabled   = true
+  alarm_description = "This alarm can detect a long running duration of a Lambda function"
+  metric_name       = "Duration"
+  namespace         = "AWS/Lambda"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 7 # This must be lower than the Lambda function timeout. At the moment is less than the 50% of the timeout
+  extended_statistic  = "p90"
+  period              = 60
+  evaluation_periods  = 15
+  datapoints_to_alarm = 15
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    FunctionName = module.cognito_custom_message_function.lambda_function_name
+  }
+}
