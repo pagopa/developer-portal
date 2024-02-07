@@ -34,7 +34,4 @@ const guidaUso: GuideDefinition = {
   bannerLinks: ioSignBannerLinks,
 };
 
-export const ioSignGuides = [
-  manualeOperativo,
-  guidaUso,
-];
+export const ioSignGuides = [manualeOperativo, guidaUso];

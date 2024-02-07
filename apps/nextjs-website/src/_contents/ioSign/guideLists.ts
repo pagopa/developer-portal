@@ -20,7 +20,7 @@ export const ioSignGuideLists: GuideListsData = {
           description: {
             title: 'Argomenti trattati',
             listItems: [
-              "Tipologie di firma elettronica",
+              'Tipologie di firma elettronica',
               'I vantaggi di Firma con IO, una Firma Elettronica Qualificata',
               'Riferimenti normativi',
             ],
