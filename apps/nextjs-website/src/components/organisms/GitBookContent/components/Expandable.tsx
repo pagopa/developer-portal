@@ -56,12 +56,23 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   paddingRight: theme.spacing(2),
 }));
 
-const Expandable = ({ children }: ExpandableProps<ReactNode>) =>
-  children && (
-    <Accordion disableGutters variant='outlined' sx={{ my: 2 }}>
+const Expandable = ({ children }: ExpandableProps<ReactNode>) => {
+  console.log('çhildren', children);
+
+  // if children is array and an item is string wrap it with paragraph
+  if (Array.isArray(children)) {
+    children = children.map((child, index) =>
+      typeof child === 'string' ? <Paragraph key={index}>{child}</Paragraph> : child
+    );
+  }
+
+  return children && (
+    <Accordion disableGutters variant='outlined' id='expandable' sx={{ my: 2 }}>
       {children}
     </Accordion>
   );
+}
+
 
 export const ExpandableSummary = ({
   children,
