@@ -78,7 +78,7 @@ module "ses_sending_rate_limit_alarm" {
 # Cognito
 
 ## Cognito User Pool Sign Up Throttles
-module "cognito_user_pool_sign_up_throttles" {
+module "cognito_user_pool_sign_up_throttles_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Cognito | SignUp Throttles"
@@ -103,7 +103,7 @@ module "cognito_user_pool_sign_up_throttles" {
 }
 
 ## Cognito User Pool Sign In Throttles
-module "cognito_user_pool_sign_in_throttles" {
+module "cognito_user_pool_sign_in_throttles_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Cognito | SignIn Throttles"
@@ -128,7 +128,7 @@ module "cognito_user_pool_sign_in_throttles" {
 }
 
 ## Cognito User Pool Token Refresh Throttles
-module "cognito_user_pool_token_refresh_throttles" {
+module "cognito_user_pool_token_refresh_throttles_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Cognito | TokenRefresh Throttles"
