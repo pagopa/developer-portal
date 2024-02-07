@@ -67,10 +67,6 @@ export const ioSignOverview: OverviewData = {
       path: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
       name: 'Perchè scegliere Firma con IO',
     },
-    {
-      path: 'https://www.youtube.com/watch?v=puD-kDMLx7Y',
-      name: 'Firma con IO e sua integrazione nella PA - DevFest Venezia 2023',
-    },
   ],
   bannerLinks: ioSignBannerLinks,
 };
