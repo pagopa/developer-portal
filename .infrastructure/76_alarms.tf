@@ -78,7 +78,7 @@ module "ses_sending_rate_limit_alarm" {
 # DynamoDB
 
 ## Read capacity utilization
-module "dynamodb_read_capacity_utilization" {
+module "dynamodb_read_capacity_utilization_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | DynamoDB | ReadCapacityUtilization"
@@ -97,7 +97,7 @@ module "dynamodb_read_capacity_utilization" {
 }
 
 ## Write capacity utilization
-module "dynamodb_write_capacity_utilization" {
+module "dynamodb_write_capacity_utilization_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | DynamoDB | WriteCapacityUtilization"
@@ -116,7 +116,7 @@ module "dynamodb_write_capacity_utilization" {
 }
 
 ## Read throttle event
-module "dynamodb_read_throttle_events_webinar_questions" {
+module "dynamodb_read_throttle_events_webinar_questions_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | ReadThrottleEvents"
@@ -139,7 +139,7 @@ module "dynamodb_read_throttle_events_webinar_questions" {
 }
 
 ## Write throttle event
-module "dynamodb_write_throttle_events_webinar_questions" {
+module "dynamodb_write_throttle_events_webinar_questions_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | WriteThrottleEvents"
@@ -162,7 +162,7 @@ module "dynamodb_write_throttle_events_webinar_questions" {
 }
 
 ## User Errors
-module "dynamodb_user_errors" {
+module "dynamodb_user_errors_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | DynamoDB | UserErrors"
@@ -181,7 +181,7 @@ module "dynamodb_user_errors" {
 
 }
 
-module "dynamodb_system_errors_webinar_questions" {
+module "dynamodb_system_errors_webinar_questions_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | SystemErrors"
@@ -203,7 +203,7 @@ module "dynamodb_system_errors_webinar_questions" {
   }
 }
 
-module "dynamodb_successful_request_latency_put_item" {
+module "dynamodb_successful_request_latency_put_item_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | Successful Request Latency | PutItem"
@@ -226,7 +226,7 @@ module "dynamodb_successful_request_latency_put_item" {
   }
 }
 
-module "dynamodb_successful_request_latency_query" {
+module "dynamodb_successful_request_latency_query_alarm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | Webinar | Questions | Successful Request Latency | Query"
