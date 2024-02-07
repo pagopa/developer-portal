@@ -95,4 +95,9 @@ module "cognito_user_pool_sign_up_throttles" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+
+  dimensions = {
+    UserPool       = aws_cognito_user_pool.devportal.id
+    UserPoolClient = aws_cognito_user_pool_client.devportal_website.id
+  }
 }
