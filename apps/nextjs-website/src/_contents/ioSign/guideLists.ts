@@ -16,6 +16,23 @@ export const ioSignGuideLists: GuideListsData = {
       title: "Per l'integrazione",
       guides: [
         {
+          title: 'Guida alla scelta di Firma con IO',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              "Tipologie di firma elettronica",
+              'I vantaggi di Firma con IO, una Firma Elettronica Qualificata',
+              'Riferimenti normativi',
+            ],
+          },
+          link: {
+            href: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
+            label: 'Vai al manuale',
+          },
+          imagePath: '/images/guida-scelta-firma.png',
+          mobileImagePath: '/images/guida-scelta-firma-mobile.png',
+        },
+        {
           title: 'Manuale operativo di Firma con IO',
           description: {
             title: 'Argomenti trattati',
@@ -27,7 +44,7 @@ export const ioSignGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${ioSignGuideListsPath.path}/manuale-operativo/v1.0`,
+            href: `${ioSignGuideListsPath.path}/manuale-operativo/`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
