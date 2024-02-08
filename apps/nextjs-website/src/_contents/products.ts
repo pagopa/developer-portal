@@ -143,9 +143,9 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/kb-enti-adesione':
     '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kb-enti-contratti/domande-frequenti':
-    '/app-io/guides/supporto-agli-enti/accordi/domande-e-risposte-sugli-accordi',
-  'https://docs.pagopa.it/kb-enti-onboarding/domande-frequenti':
-    '/app-io/guides/supporto-agli-enti/adesione',
+    '/app-io/guides/supporto-agli-enti/accordi',
+  'https://docs.pagopa.it/kb-enti-onboarding/domande-frequenti/domande-e-risposte-sullonboarding-in-io':
+    '/app-io/guides/supporto-agli-enti/adesione/domande-e-risposte-sulladesione-a-io',
   'https://docs.pagopa.it/kb-enti': '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
     '/app-io/guides/kit-comunicazione',
