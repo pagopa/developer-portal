@@ -1,5 +1,5 @@
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import * as t from 'io-ts';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -52,6 +52,7 @@ const codec = t.strict({
     id: t.number,
   }),
 });
+// This codec is used to test cases when the decode function fails
 const badCodec = t.strict({
   data: t.strict({
     id: t.string,
@@ -62,28 +63,34 @@ describe('fetchFromStrapi', () => {
   it('should return strapi response given a 200 response', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
     const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
     const expected = { data: { id: 1 } };
     expect(await actual).toStrictEqual(expected);
   });
-  xit('should return error given a 401 response', async () => {
+  it('should return error given a 401 response', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
+      status: 401,
+      statusText: 'Unauthorized',
       json: () => Promise.resolve(strapiResponses[401]),
     });
     const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
-    const expected = new Error('Response 401 unauthorized');
+    const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  xit('should return error given a 404 response', async () => {
+  it('should return error given a 404 response', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
+      status: 404,
+      statusText: 'Not Found',
       json: () => Promise.resolve(strapiResponses[404]),
     });
     const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
-    const expected = new Error('Response 404 not found');
+    const expected = new Error('404 - Not Found');
     await expect(actual).rejects.toStrictEqual(expected);
   });
   it('should return error given a reject', async () => {
@@ -96,6 +103,8 @@ describe('fetchFromStrapi', () => {
   it('should return error given a decode error', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
     const actual = fetchFromStrapi('aPath', 'aPopulate', badCodec)(env);
