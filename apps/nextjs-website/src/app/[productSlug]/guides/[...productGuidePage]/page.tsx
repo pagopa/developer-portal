@@ -127,12 +127,10 @@ const Page = async ({ params }: { params: Params }) => {
               },
             }}
           >
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <pre style={{maxHeight: 1000, overflow: 'auto'}}>{props.body}</pre>
-          <pre style={{maxHeight: 1000, overflow: 'auto'}}>{destructureSwagger(props.body)}</pre>
-          </div>
-          
-          <GitBookContent content={destructureSwagger(props.body)} config={props.bodyConfig} />
+            <GitBookContent
+              content={destructureSwagger(props.body)}
+              config={props.bodyConfig}
+            />
           </Box>
           <Box
             sx={{
@@ -166,56 +164,68 @@ const Page = async ({ params }: { params: Params }) => {
 export default Page;
 
 const destructureSwagger = (body: string) => {
-
   // splitto il body in righe e cerco le coppie di tag {% swagger-* e {% endswagger-*
 
   //  se una volta aperto un blocco swagger trovo un blocco che non inizia con {% swagger mi salvo il contenuto delle cose non swagger e lo rimetto dopo la chiusura del blocco swagger
 
-  const lines = body.split('\n')
-  let swaggerBlokDepth = 0
-  let newLines: string[] = []
+  const lines = body.split('\n');
+  // eslint-disable-next-line functional/no-let
+  let swaggerBlokDepth = 0;
+  // eslint-disable-next-line functional/no-let
+  let newLines: string[] = [];
+  // eslint-disable-next-line functional/no-let
   let isCutting = false;
-  var wrongBlocksBuffer = []
+  // eslint-disable-next-line functional/no-let
+  let wrongBlocksBuffer = [];
 
   // itero le righe
+  // eslint-disable-next-line functional/no-let, functional/no-loop-statements
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
+    const line = lines[i];
     //console.log('line', line)
 
     // cerco se la riga inizia con {% swagger
     if (line.includes('{% swagger')) {
-      swaggerBlokDepth++
-      isCutting = false
+      swaggerBlokDepth++;
+      isCutting = false;
       //console.log('trovato swagger', swaggerBlokDepth)
     }
 
     // cerco se la riga inizia con {% endswagger
     if (line.includes('{% endswagger')) {
-      swaggerBlokDepth--
-      isCutting = false
+      swaggerBlokDepth--;
+      isCutting = false;
       //console.log('trovato endswagger', swaggerBlokDepth)
     }
 
     // se sono dentro un blocco swagger (swaggerBlokDepth > 0) e la riga non inizia con {% swagger o {% endswagger ma inizia con {% allora taglio
-    if (swaggerBlokDepth > 0 && !line.includes('{% swagger') && !line.includes('{% endswagger') && line.includes('{%')) {
+    if (
+      swaggerBlokDepth > 0 &&
+      !line.includes('{% swagger') &&
+      !line.includes('{% endswagger') &&
+      line.includes('{%')
+    ) {
       //console.log('taglio', line)
       isCutting = true;
     }
 
-    if(isCutting) {
-      wrongBlocksBuffer.push(line)
+    if (isCutting) {
+      // eslint-disable-next-line functional/immutable-data
+      wrongBlocksBuffer.push(line);
     } else {
-      newLines.push(line)
+      // eslint-disable-next-line functional/immutable-data
+      newLines.push(line);
 
-      if(wrongBlocksBuffer.length > 0 && swaggerBlokDepth === 0 && line.includes('{% endswagger ')) {
-        newLines = newLines.concat(wrongBlocksBuffer)
-        wrongBlocksBuffer = []
+      if (
+        wrongBlocksBuffer.length > 0 &&
+        swaggerBlokDepth === 0 &&
+        line.includes('{% endswagger ')
+      ) {
+        newLines = newLines.concat(wrongBlocksBuffer);
+        wrongBlocksBuffer = [];
       }
-
     }
   }
 
-
-
-  return newLines.join('\n')
-}
+  return newLines.join('\n');
+};
