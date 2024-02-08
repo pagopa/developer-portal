@@ -7,13 +7,19 @@ export const validateField = (value: string): string | null =>
   !value || value.trim().length === 0 ? 'requiredFieldError' : null;
 
 export const validateEmail = (value: string): string | null => {
-  return validateField(value) || !emailMatcher.test(value)
-    ? 'emailFieldError'
-    : null;
+  const isNotValid = validateField(value);
+  if (isNotValid) {
+    return isNotValid;
+  }
+
+  return !emailMatcher.test(value) ? 'emailFieldError' : null;
 };
 
 export const validatePassword = (value: string): string | null => {
-  return validateField(value) || !passwordMatcher.test(value)
-    ? 'passwordError'
-    : null;
+  const isNotValid = validateField(value);
+  if (isNotValid) {
+    return isNotValid;
+  }
+
+  return !passwordMatcher.test(value) ? 'passwordError' : null;
 };

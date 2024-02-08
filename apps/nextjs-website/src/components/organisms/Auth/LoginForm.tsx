@@ -144,6 +144,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                     width: '100%',
                     backgroundColor: palette.background.paper,
                   }}
+                  autoComplete={'username'}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -171,6 +172,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                         </InputAdornment>
                       ),
                     }}
+                    autoComplete={'current-password'}
                   />
                   {(fieldErrors.password || noAccount) && (
                     <FormHelperText error>
