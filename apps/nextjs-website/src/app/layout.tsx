@@ -4,7 +4,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
-import '@/polyfill';
 import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
@@ -16,6 +15,7 @@ import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBann
 import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -82,18 +82,20 @@ export default async function RootLayout({
           />
         )}
       </head>
-      <ThemeRegistry options={{ key: 'mui' }}>
-        <NextIntlClientProvider locale={'it'} messages={messages}>
-          <BodyWrapper>
-            <CookieBannerScript cookieDomainScript={cookieDomainScript} />
-            <AuthProvider>
-              <SiteHeader products={products} />
-              <main>{children}</main>
-              <SiteFooter />
-            </AuthProvider>
-          </BodyWrapper>
-        </NextIntlClientProvider>
-      </ThemeRegistry>
+      <AppRouterCacheProvider>
+        <ThemeRegistry>
+          <NextIntlClientProvider locale={'it'} messages={messages}>
+            <BodyWrapper>
+              <CookieBannerScript cookieDomainScript={cookieDomainScript} />
+              <AuthProvider>
+                <SiteHeader products={products} />
+                <main>{children}</main>
+                <SiteFooter />
+              </AuthProvider>
+            </BodyWrapper>
+          </NextIntlClientProvider>
+        </ThemeRegistry>
+      </AppRouterCacheProvider>
     </html>
   );
 }

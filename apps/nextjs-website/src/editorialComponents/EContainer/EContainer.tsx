@@ -1,3 +1,4 @@
+'use client';
 import Box, { type BoxProps } from '@mui/material/Box';
 import Grid, { type GridProps } from '@mui/material/Grid';
 import { Container } from '@mui/system';
