@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_common_links",
+  "info": {
+    "displayName": "Links",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    },
+    "target": {
+      "type": "enumeration",
+      "enum": [
+        "_self",
+        "_blank",
+        "_parent",
+        "_top"
+      ]
+    }
+  }
+}
