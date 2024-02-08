@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { Box, Divider, useTheme } from '@mui/material';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { TreeItem, treeItemClasses, TreeView } from '@mui/lab';
+import { TreeItem, treeItemClasses, TreeView } from '@mui/x-tree-view';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
