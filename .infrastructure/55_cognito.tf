@@ -151,6 +151,10 @@ module "cognito_verify_auth_challenge_function" {
 }
 
 resource "aws_cognito_user_pool" "devportal" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   name                = "devportalpool"
   deletion_protection = "ACTIVE"
 
