@@ -104,6 +104,10 @@ export const spaceToPrefixMap = pipe(
  */
 export const urlReplacesMap: { readonly [url: string]: string } = {
   // App IO
+  'https://docs.pagopa.it/io-guida-tecnica-1.3/':
+    '/app-io/guides/io-guida-tecnica/v1.3',
+  'https://docs.pagopa.it/io-guida-tecnica/v/io-guida-tecnica-2.2':
+    '/app-io/guides/io-guida-tecnica/v2.2',
   'https://docs.pagopa.it/io-guida-tecnica': '/app-io/guides/io-guida-tecnica',
   'https://docs.pagopa.it/manuale-servizi': '/app-io/guides/manuale-servizi',
   'https://docs.pagopa.it/carta-giovani-nazionale':
@@ -111,6 +115,8 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/manuale-operativo-dei-servizi':
     '/app-io/guides/manuale-servizi',
   'https://docs.pagopa.it/kb-enti-servizi/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/servizi',
+  'https://docs.pagopa.it/kb-enti-servizi/tutorial-e-casi-duso':
     '/app-io/guides/supporto-agli-enti/servizi',
   'https://docs.pagopa.it/kb-enti-servizi': '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kb-enti-messaggi/tutorial-e-casi-duso':
@@ -136,10 +142,18 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/app-io/guides/supporto-agli-enti/adesione',
   'https://docs.pagopa.it/kb-enti-adesione':
     '/app-io/guides/supporto-agli-enti',
+  'https://docs.pagopa.it/kb-enti-contratti/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/accordi/domande-e-risposte-sugli-accordi',
+  'https://docs.pagopa.it/kb-enti-onboarding/domande-frequenti':
+    '/app-io/guides/supporto-agli-enti/adesione',
   'https://docs.pagopa.it/kb-enti': '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
     '/app-io/guides/kit-comunicazione',
   'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
+
+  // Firma con IO
+  'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
+    '/firma-con-io/guides/manuale-operativo',
 
   // SEND
   'https://docs.pagopa.it/manuale-operativo': '/send/guides/manuale-operativo',
@@ -147,6 +161,7 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/send/guides/knowledge-base/knowledge-base-di-piattaforma-notifiche',
   'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
     '/send/guides/modello-di-integrazione',
+  'https://docs.pagopa.it/pnvalidator/': 'send/guides/validatore',
 
   // PagoPA
   'https://docs.pagopa.it/saci': '/pago-pa/guides/saci',
@@ -164,10 +179,6 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/pago-pa/guides/portale-delle-adesioni',
   'https://docs.pagopa.it/gestionedeglierrori': '/pago-pa/guides/errori',
   'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
-
-  // Firma con IO
-  'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
-    '/firma-con-io/guides/manuale-operativo',
 };
 
 export const products = [appIo, ioSign, send, pagoPa];
