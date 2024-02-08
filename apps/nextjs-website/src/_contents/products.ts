@@ -121,6 +121,8 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/kb-enti-servizi': '/app-io/guides/supporto-agli-enti',
   'https://docs.pagopa.it/kb-enti-messaggi/tutorial-e-casi-duso':
     '/app-io/guides/supporto-agli-enti/messaggi',
+  'https://docs.pagopa.it/kb-enti-messaggi/domande-frequenti/domande-e-risposte-sui-messaggi-io':
+    '/app-io/guides/supporto-agli-enti/messaggi/domande-e-risposte-sui-messaggi',
   'https://docs.pagopa.it/kb-enti-messaggi/domande-frequenti':
     '/app-io/guides/supporto-agli-enti/messaggi',
   'https://docs.pagopa.it/kb-enti-messaggi':
