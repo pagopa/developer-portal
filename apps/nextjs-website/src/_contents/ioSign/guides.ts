@@ -18,4 +18,20 @@ const manualeOperativo: GuideDefinition = {
   bannerLinks: ioSignBannerLinks,
 };
 
-export const ioSignGuides = [manualeOperativo];
+const guidaUso: GuideDefinition = {
+  product: ioSign,
+  guide: {
+    name: 'Guida alla scelta di Firma con IO',
+    slug: 'guida-scelta-firma',
+  },
+  versions: [
+    {
+      main: true,
+      version: 'v1.0',
+      dirName: 'pAbKWM3c3Yc9pzNrJPNX',
+    },
+  ],
+  bannerLinks: ioSignBannerLinks,
+};
+
+export const ioSignGuides = [manualeOperativo, guidaUso];
