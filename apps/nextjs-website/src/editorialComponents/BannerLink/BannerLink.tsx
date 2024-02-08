@@ -40,7 +40,7 @@ export const BannerLink = (props: BannerLinkProps) => {
                 },
               }}
             >
-              <div dangerouslySetInnerHTML={{ __html: body }} />
+              <div dangerouslySetInnerHTML={{ __html: body as string }} />
             </Typography>
           </Stack>
         </Stack>
