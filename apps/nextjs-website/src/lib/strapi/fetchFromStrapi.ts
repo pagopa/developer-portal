@@ -34,8 +34,13 @@ export const fetchFromStrapi = <A, O, I>(
               }),
             E.toError
           ),
-          // handle any error on json function
-          TE.chain((response) => TE.tryCatch(() => response.json(), E.toError)),
+          TE.chain((response) => {
+            if (response.status === 200) {
+              return TE.tryCatch(() => response.json(), E.toError);
+            } else {
+              return TE.left(makeError(response));
+            }
+          }),
           TE.chainEitherK((json) =>
             // decode the response with the given codec
             pipe(
@@ -51,3 +56,7 @@ export const fetchFromStrapi = <A, O, I>(
         )()
     )
   );
+
+const makeError = ({ status, statusText }: Response) => {
+  return new Error(`${status} - ${statusText}`);
+};
