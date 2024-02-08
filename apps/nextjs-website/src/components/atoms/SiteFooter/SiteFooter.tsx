@@ -165,6 +165,7 @@ const SiteFooter = ({
 
   const legalInfo = t.rich('legalInfo', {
     strong: (chunks) => <strong>{chunks}</strong>,
+    br: () => <br></br>,
   }) as string;
 
   const cookiePreferenceLink: FooterLinksType = {
