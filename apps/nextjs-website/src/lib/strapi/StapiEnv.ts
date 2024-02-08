@@ -5,14 +5,12 @@ import { publicEnv } from '@/BrowserConfig';
 
 // This type represents the environment of Strapi.
 export type StrapiEnv = {
-  readonly strapiEndpoint: string;
-  readonly strapiApiToken: string;
+  readonly config: StrapiConfig;
   readonly fetchFun: typeof fetch;
 };
 
 const makeStrapiEnv = (config: StrapiConfig): StrapiEnv => ({
-  strapiEndpoint: config.STRAPI_ENDPOINT,
-  strapiApiToken: config.STRAPI_API_TOKEN,
+  config,
   fetchFun: fetch,
 });
 
