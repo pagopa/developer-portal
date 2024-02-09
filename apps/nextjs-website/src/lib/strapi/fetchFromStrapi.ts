@@ -9,7 +9,7 @@ import { StrapiEnv } from '@/lib/strapi/StapiEnv';
 // Function to invoke in order to retrieve data from Strapi.
 export const fetchFromStrapi = <A, O, I>(
   path: string,
-  populate: '*' | string,
+  populate: string,
   codec: t.Type<A, O, I>
 ) =>
   pipe(
