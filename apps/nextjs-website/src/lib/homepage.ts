@@ -46,7 +46,7 @@ export const makeHomepageProps = (
   ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
   comingsoonDocumentation: {
     title: strapiHomepage.data.attributes.comingsoonDocumentation.title,
-    links: staticHomepage.comingsoonDocumentation.links,
+    links: strapiHomepage.data.attributes.comingsoonDocumentation.links,
   },
 });
 
