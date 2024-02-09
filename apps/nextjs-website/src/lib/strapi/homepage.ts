@@ -1,4 +1,5 @@
 import * as t from 'io-ts/lib';
+import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 
 const LinkHomepageCodec = t.strict({
@@ -27,8 +28,17 @@ export const StrapiHomepageCodec = t.strict({
 
 export type StrapiHomepage = t.TypeOf<typeof StrapiHomepageCodec>;
 
+const makeStrapiHomepagePopulate = () =>
+  qs.stringify({
+    populate: {
+      comingsoonDocumentation: {
+        populate: ['links'],
+      },
+    },
+  });
+
 export const fetchHomepage = fetchFromStrapi(
   'homepage',
-  'populate[comingsoonDocumentation][populate][0]=links',
+  makeStrapiHomepagePopulate(),
   StrapiHomepageCodec
 );
