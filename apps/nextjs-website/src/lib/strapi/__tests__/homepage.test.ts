@@ -1,7 +1,7 @@
 import { StrapiHomepageCodec } from '@/lib/strapi/homepage';
 import * as E from 'fp-ts/lib/Either';
 
-const makeHomepageFromStrapiJson = () => ({
+const makeStrapiResponseJson = () => ({
   data: {
     id: 2,
     attributes: {
@@ -10,7 +10,7 @@ const makeHomepageFromStrapiJson = () => ({
       publishedAt: '2024-02-09T08:44:21.612Z',
       comingsoonDocumentation: {
         id: 4,
-        title: 'Title',
+        title: 'aTitle',
         links: [
           {
             id: 5,
@@ -51,7 +51,7 @@ const makeHomepageFromStrapiJson = () => ({
 
 describe('StrapiHomepageCodec', () => {
   it('should decode strapi homepage', () => {
-    const jsonFromStrapi = makeHomepageFromStrapiJson();
+    const jsonFromStrapi = makeStrapiResponseJson();
     // Verify all the values are parsed properly, especially the nullable (e.g. links[0].target)
     const actual = StrapiHomepageCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
