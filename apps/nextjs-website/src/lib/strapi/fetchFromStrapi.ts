@@ -26,7 +26,7 @@ export const fetchFromStrapi = <A, O, I>(
           // handle any promise result
           TE.tryCatch(
             () =>
-              fetchFun(`${strapiEndpoint}/api/${path}/?populate=${populate}`, {
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
