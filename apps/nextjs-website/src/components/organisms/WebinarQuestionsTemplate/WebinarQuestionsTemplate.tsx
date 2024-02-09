@@ -20,6 +20,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/not-found';
+import { fetchWebinarsQuestionsIntervalMs } from '@/config';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -33,7 +34,7 @@ const WebinarQuestionsTemplate = ({
   const t = useTranslations('webinar.questionList');
 
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
-    refreshInterval: 2500,
+    refreshInterval: fetchWebinarsQuestionsIntervalMs,
   });
 
   useEffect(() => {

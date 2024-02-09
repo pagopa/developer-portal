@@ -31,7 +31,6 @@ const makeTestWebinarEnv = () => {
   });
   nowDateMock.mockImplementation(() => nowDate);
   const env = {
-    questionLifetimeInSeconds: 1000,
     dynamoDBClient: dynamoDBClientMock,
     nowDate: nowDateMock,
   };
