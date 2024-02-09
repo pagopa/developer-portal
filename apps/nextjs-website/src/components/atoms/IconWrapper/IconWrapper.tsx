@@ -16,8 +16,8 @@ type IconName = keyof typeof ICON_MAP;
 const IconWrapper = ({
   icon,
   isSvg = false,
-  color = 'primary.main',
-  size = 40,
+  color = 'text.primary',
+  size = 35,
 }: IconWrapperProps) => {
   if (isSvg) {
     return (
