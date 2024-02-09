@@ -1,10 +1,12 @@
 {
   "name": "strapi-cms",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "clean": "shx rm -rf dist/",
-    "compile": "npm run clean && tsc --noEmit",
+    "generate": "strapi ts:generate-types",
+    "precompile": "npm run clean && npm run generate",
+    "compile": "tsc --noEmit",
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
@@ -12,10 +14,14 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.13.6",
-    "@strapi/plugin-users-permissions": "4.13.6",
-    "@strapi/strapi": "4.13.6",
-    "better-sqlite3": "8.6.0"
+    "@strapi/plugin-i18n": "4.19.0",
+    "@strapi/plugin-users-permissions": "4.19.0",
+    "@strapi/strapi": "4.19.0",
+    "better-sqlite3": "8.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "eslint": "^8.50.0",

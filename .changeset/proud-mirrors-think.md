@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix title alignment in API pages
+Close mobile menu on links click
