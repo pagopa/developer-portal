@@ -35,9 +35,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "website" {
   rule {
     id = "Remove noncurrent versions"
 
-    # The Lifecycle rule applies to all objects in the bucket
-    filter {}
-
     noncurrent_version_expiration {
       noncurrent_days = 1
     }
