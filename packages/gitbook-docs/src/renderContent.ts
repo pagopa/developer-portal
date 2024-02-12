@@ -1,7 +1,7 @@
 import Markdoc, { RenderableTreeNode } from '@markdoc/markdoc';
 import type { ReactNode } from 'react';
 import { ReactShape } from './ReactShape';
-import { SwaggerProps } from './markdoc/schema/swagger';
+import { SwaggerDescriptionProps, SwaggerParameterProps, SwaggerProps, SwaggerResponseProps } from './markdoc/schema/swagger';
 import { LinkProps } from './markdoc/schema/link';
 import { HintProps } from './markdoc/schema/hint';
 import { ImageProps } from './markdoc/schema/image';
@@ -59,7 +59,10 @@ export type RenderingComponents<A> = {
   readonly Expandable: (props: ExpandableProps<A>) => A;
   readonly ExpandableSummary: (props: ExpandableSummaryProps<A>) => A;
   readonly ExpandableDetails: (props: ExpandableDetailsProps<A>) => A;
-  readonly Swagger: (props: SwaggerProps) => A;
+  readonly Swagger: (props: SwaggerProps<A>) => A;
+  readonly SwaggerParameter: (props: SwaggerParameterProps<A>) => A;
+  readonly SwaggerResponse: (props: SwaggerResponseProps<A>) => A;
+  readonly SwaggerDescription: (props: SwaggerDescriptionProps<A>) => A;
   readonly PageLink: (props: PageLinkProps<A>) => A;
 };
 
