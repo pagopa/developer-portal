@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_common_related_links",
+  "info": {
+    "displayName": "RelatedLinks",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.links"
+    }
+  }
+}
