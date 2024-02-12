@@ -60,3 +60,8 @@ variable "log_retention_days" {
   description = "The number of days logs should be retained. Default is 90 days."
   default     = 90
 }
+
+## CMS Strapi App Port
+variable "cms_app_port" {
+  default = 1337
+}
