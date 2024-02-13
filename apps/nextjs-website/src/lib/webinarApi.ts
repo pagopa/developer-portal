@@ -2,13 +2,25 @@
 // or components within the app and components folders, e.g.: provide a valid
 // application environment (AppEnv) and transform TaskEither to Promise
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { appEnv } from '@/AppEnv';
+import { makeBrowserEnv } from '@/BrowserEnv';
 import {
   InsertWebinarQuestion,
   insertWebinarQuestion,
   listWebinarQuestions,
 } from './webinars/webinarQuestions';
+import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
+
+// a BrowserEnv instance ready to be used
+const browserEnv = pipe(
+  makeBrowserConfig(publicEnv),
+  E.map(makeBrowserEnv),
+  E.getOrElseW((errors) => {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw errors;
+  })
+);
 
 const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
   pipe(
@@ -21,7 +33,7 @@ const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
   );
 
 export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
-  pipe(insertWebinarQuestion(question)(appEnv), makePromiseFromTE)();
+  pipe(insertWebinarQuestion(question)(browserEnv), makePromiseFromTE)();
 
 export const getWebinarQuestionList = (webinarId: string) =>
-  pipe(listWebinarQuestions(webinarId)(appEnv), makePromiseFromTE)();
+  pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();

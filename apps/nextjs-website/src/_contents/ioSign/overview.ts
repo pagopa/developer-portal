@@ -4,6 +4,7 @@ import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorialLists';
 import { ioSignBannerLinks } from '@/_contents/ioSign/bannerLinks';
 import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
+import { ioSignGuideListsPath } from './guideListsPath';
 
 export const ioSignOverview: OverviewData = {
   ...ioSignOverviewPath,
@@ -61,5 +62,11 @@ export const ioSignOverview: OverviewData = {
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,
   },
+  relatedLinks: [
+    {
+      path: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
+      name: 'Perchè scegliere Firma con IO',
+    },
+  ],
   bannerLinks: ioSignBannerLinks,
 };

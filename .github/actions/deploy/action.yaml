@@ -39,6 +39,16 @@ inputs:
   webinar_question_lifetime_in_seconds:
     description: 'The lifetime of each question expressed in seconds'
     required: true
+  strapi_endpoint:
+    description: 'The endpoint to invoke to fetch data from Strapi'
+    required: true
+  strapi_api_token:
+    description: 'The API key to use to invoke Strapi endpoint'
+    required: true
+  fetch_from_strapi:
+    description: 'If true, then fetch content from Strapi; otherwise, use only static contents'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -81,7 +91,9 @@ runs:
         NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID: ${{ inputs.cognito_app_client_id }}
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
         NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: ${{ inputs.cognito_identity_pool_id }}
-        NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS: ${{ inputs.webinar_question_lifetime_in_seconds }}
+        STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
+        STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
+        FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
       shell: bash
       run: npm run build -w nextjs-website
 
