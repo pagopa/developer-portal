@@ -3,18 +3,15 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Box, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
-import { DevPortalUser } from '@/lib/types/auth';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { useMemo } from 'react';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
-  user: DevPortalUser;
   webinarState: WebinarState;
 };
 const WebinarPlayerSection = ({
   webinar,
-  user,
   webinarState,
 }: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
@@ -52,7 +49,6 @@ const WebinarPlayerSection = ({
               <Box>
                 <WebinarQuestionsForm
                   webinarSlug={webinar.slug}
-                  user={user}
                   disabled={webinarState === WebinarState.comingSoon}
                 />
               </Box>
