@@ -3,6 +3,7 @@ import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
 import { type CommonProps } from '@/editorialComponents/types/components';
 import { CtaProps } from '@/editorialComponents/Ctas/Ctas';
 import { BannerLinkContentProps } from '@/editorialComponents/BannerLink/Content';
+import DOMPurify from 'isomorphic-dompurify';
 
 export interface BannerLinkProps
   extends CommonProps,
@@ -40,7 +41,8 @@ export const BannerLink = (props: BannerLinkProps) => {
                 },
               }}
             >
-              <div dangerouslySetInnerHTML={{ __html: body }} />
+              {/* Purify the body if it is a string or show the Element */}
+              {typeof body === 'string' ? DOMPurify.sanitize(body) : body}
             </Typography>
           </Stack>
         </Stack>
