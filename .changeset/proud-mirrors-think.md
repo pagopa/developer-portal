@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add EmailFormWrapper unit tests
+Close mobile menu on links click

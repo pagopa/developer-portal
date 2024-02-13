@@ -22,6 +22,7 @@ import TimerSharp from '@mui/icons-material/TimerSharp';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
+import { MediumIcon } from '@pagopa/mui-italia/dist/icons/MediumIcon';
 
 export const ICON_MAP = {
   AccountBalance: AccountBalance,
@@ -37,6 +38,7 @@ export const ICON_MAP = {
   LinkedIn: LinkedIn,
   LiveHelp: LiveHelp,
   MarkEmailRead: MarkEmailRead,
+  Medium: MediumIcon,
   MenuBook: MenuBook,
   MessageRounded: MessageRounded,
   Payment: Payment,
