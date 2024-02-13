@@ -136,7 +136,7 @@ module "cloudfront_cms" {
   default_cache_behavior = {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id       = "s3_one" #module.s3_bucket_cms.s3_bucket_bucket_regional_domain_name
+    target_origin_id       = "s3_one"
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0     # min time for objects to live in the distribution cache
     default_ttl            = 3600  # default time for objects to live in the distribution cache
