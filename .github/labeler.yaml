@@ -3,3 +3,7 @@ packages: packages/**/*
 docs: docs/**/*
 workflows: .github/workflows/**/*
 infra: .infrastructure/**/*
+changeset: .changeset/**/*
+cms: apps/strapi-cms/**/*
+cognito-functions: apps/cognito-functions/**/*
+cloudfront-functions: apps/cloudfront-functions/**/*
