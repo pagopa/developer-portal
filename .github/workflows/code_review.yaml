@@ -62,6 +62,12 @@ jobs:
   build_website:
     name: Build Website
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # We want to make sure the env variables are set correctly
+        environment: [ 'dev', 'prod' ]
+
+    environment: ${{ matrix.environment }}
 
     needs: compile
 
