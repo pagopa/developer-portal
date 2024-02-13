@@ -53,7 +53,7 @@ resource "aws_security_group" "cms_lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
+  ## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
   lifecycle {
     create_before_destroy = true
   }
