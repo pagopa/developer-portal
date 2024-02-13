@@ -52,6 +52,9 @@ jobs:
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
 
   manual_deploy:
     name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
@@ -76,3 +79,6 @@ jobs:
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
