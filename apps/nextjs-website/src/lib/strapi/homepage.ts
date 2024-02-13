@@ -42,7 +42,6 @@ export const StrapiHomepageCodec = t.strict({
         links: t.array(LinkHomepageCodec),
       }),
       productsShowcase: t.strict({
-        id: t.number,
         title: t.string,
         products: t.strict({
           data: t.array(ProductCodec),
