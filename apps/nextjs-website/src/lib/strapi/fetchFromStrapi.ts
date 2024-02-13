@@ -9,7 +9,7 @@ import { StrapiEnv } from '@/lib/strapi/StapiEnv';
 // Function to invoke in order to retrieve data from Strapi.
 export const fetchFromStrapi = <A, O, I>(
   path: string,
-  populate: '*' | string,
+  populate: string,
   codec: t.Type<A, O, I>
 ) =>
   pipe(
@@ -26,7 +26,7 @@ export const fetchFromStrapi = <A, O, I>(
           // handle any promise result
           TE.tryCatch(
             () =>
-              fetchFun(`${strapiEndpoint}/api/${path}/?populate=${populate}`, {
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
