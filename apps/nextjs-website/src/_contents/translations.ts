@@ -2,6 +2,10 @@
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
+import { send } from '@/_contents/send/send';
+import { appIo } from '@/_contents/appIo/appIo';
+import { ioSign } from '@/_contents/ioSign/ioSign';
+import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 
 export const translations = {
   header: {
@@ -85,7 +89,10 @@ export const translations = {
       ],
     },
     webinarBannerButtonContent: 'Scopri',
-    productsShowcaseTitle: 'Scopri il nostro ecosistema',
+    productsShowcase: {
+      title: 'Scopri il nostro ecosistema',
+      products: [appIo, ioSign, pagoPa, send],
+    },
     heroItems: [
       {
         title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',

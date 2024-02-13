@@ -40,7 +40,7 @@ export async function generateMetadata(
     title: abstract?.title,
     description: abstract?.description,
     url: path,
-    image: product.pngUrl,
+    image: product.logo.url,
   });
 }
 
