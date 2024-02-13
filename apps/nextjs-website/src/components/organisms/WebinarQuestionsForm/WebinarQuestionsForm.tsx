@@ -1,6 +1,5 @@
 'use client';
 import { snackbarAutoHideDurationMs } from '@/config';
-import { DevPortalUser } from '@/lib/types/auth';
 import { sendWebinarQuestion } from '@/lib/webinarApi';
 import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -12,13 +11,11 @@ type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
   disabled?: boolean;
   webinarSlug: string;
-  user: DevPortalUser;
 };
 
 export const WebinarQuestionsForm = ({
   disabled = false,
   webinarSlug,
-  user,
 }: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +28,9 @@ export const WebinarQuestionsForm = ({
     setFormState('submitting');
     return await sendWebinarQuestion({
       webinarId: webinarSlug,
-      givenName: user.attributes.given_name,
-      familyName: user.attributes.family_name,
       question: question,
     });
-  }, [webinarSlug, user, question]);
+  }, [webinarSlug, question]);
 
   const handleSubmit = () => {
     sendQuestion()

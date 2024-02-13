@@ -137,7 +137,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
           <WebinarPlayerSection
             webinar={webinar}
-            user={user}
             webinarState={webinarState}
           ></WebinarPlayerSection>
         )}
