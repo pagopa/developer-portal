@@ -2,14 +2,20 @@
 import { Login, Logout, PersonOutline } from '@mui/icons-material';
 import { Box, Link as MuiLink, Typography, useTheme } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import React, { FC, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
-const MobileUserInfo: FC = () => {
+type MobileUserInfoProps = {
+  // eslint-disable-next-line functional/no-return-void
+  onClick?: () => void;
+};
+
+const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -18,6 +24,7 @@ const MobileUserInfo: FC = () => {
   const { palette } = useTheme();
 
   const signOut = useCallback(async () => {
+    onClick && onClick();
     await Auth.signOut();
 
     // Check if the user in an auth only page
@@ -35,6 +42,7 @@ const MobileUserInfo: FC = () => {
         <MuiLink
           href='/auth/login'
           component={Link}
+          onClick={onClick}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -94,6 +102,7 @@ const MobileUserInfo: FC = () => {
           <Typography
             variant='body1'
             component={Link}
+            onClick={onClick}
             href={'/profile/personal-data'}
             style={{
               color: palette.primary.dark,
