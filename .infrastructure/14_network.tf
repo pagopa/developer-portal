@@ -53,6 +53,7 @@ resource "aws_security_group" "cms_lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
   lifecycle {
     create_before_destroy = true
   }
@@ -78,6 +79,11 @@ resource "aws_security_group" "ecs_tasks" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ### AWS RDS Security Group ###
@@ -101,5 +107,10 @@ resource "aws_security_group" "cms_database" {
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
+  lifecycle {
+    create_before_destroy = true
   }
 }
