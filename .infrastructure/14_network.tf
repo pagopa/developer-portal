@@ -109,7 +109,7 @@ resource "aws_security_group" "cms_database" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ## https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
+  # https://registry.terraform.io/providers/hashicorp/aws/5.35.0/docs/resources/security_group#recreating-a-security-group
   lifecycle {
     create_before_destroy = true
   }
