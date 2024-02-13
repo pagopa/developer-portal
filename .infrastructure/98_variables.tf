@@ -63,5 +63,6 @@ variable "log_retention_days" {
 
 ## CMS Strapi App Port
 variable "cms_app_port" {
-  default = 1337
+  description = "The standard app port used by CMS Strapi"
+  default     = 1337
 }

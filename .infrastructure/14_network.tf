@@ -3,18 +3,12 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-locals {
-  region   = "eu-south-1"
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
-}
-
 module "vpc" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=7666869d9ca7ff658f5bd10a29dea53bde5dc464" # v5.5.1
 
   name                         = "cms"
   cidr                         = "10.0.0.0/16"
-  azs                          = local.azs
+  azs                          = slice(data.aws_availability_zones.available.names, 0, 3)
   private_subnets              = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnet_names         = ["cms_private_1", "cms_private_2", "cms_private_3"]
   public_subnets               = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
