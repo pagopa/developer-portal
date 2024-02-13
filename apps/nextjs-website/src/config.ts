@@ -39,6 +39,7 @@ export const baseUrl = isProduction
 
 export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const resetResendEmailAfterMs = 4_000;
+export const fetchWebinarsQuestionsIntervalMs = 2_500;
 
 export const defaultLanguage = { id: 'it', value: 'Italiano' };
 export const languages = [defaultLanguage];
