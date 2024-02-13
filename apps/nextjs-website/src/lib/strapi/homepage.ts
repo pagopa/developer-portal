@@ -15,7 +15,6 @@ const LinkHomepageCodec = t.strict({
 });
 
 const MediaCodec = t.strict({
-  id: t.number,
   attributes: t.strict({
     name: t.string,
     width: t.number,
@@ -27,7 +26,6 @@ const MediaCodec = t.strict({
 });
 
 const ProductCodec = t.strict({
-  id: t.number,
   attributes: t.strict({
     name: t.string,
     description: t.string,
@@ -38,7 +36,6 @@ const ProductCodec = t.strict({
 
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
-    id: t.number,
     attributes: t.strict({
       comingsoonDocumentation: t.type({
         title: t.string,
