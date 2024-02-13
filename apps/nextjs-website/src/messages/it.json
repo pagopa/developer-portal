@@ -99,6 +99,10 @@
         "subscribe": "Iscriviti",
         "relatedLinksTitle": "Link utili",
         "speakersTitle": "Ospiti",
+        "questionList": {
+            "createdAt": "Ora creazione",
+            "text": "Domanda"
+        },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale",
             "question": "Domanda",
