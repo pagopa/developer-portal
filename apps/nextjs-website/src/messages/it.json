@@ -212,7 +212,8 @@
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
             "resendEmail": "Reinvia email",
-            "invalidCode": "Il codice inserito non è corretto"
+            "invalidCode": "Il codice inserito non è corretto",
+            "emptyCode": "Il codice è obbligatorio"
         },
         "accountActivated": {
             "goToLogin": "Vai al login",

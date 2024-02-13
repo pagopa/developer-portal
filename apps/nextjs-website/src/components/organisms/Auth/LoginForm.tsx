@@ -103,11 +103,9 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
       return;
     }
     setSubmitting(true);
-    onLogin({ username, password })
-      .catch((e) => console.log(errors(e.code)))
-      .finally(() => {
-        setSubmitting(false);
-      });
+    onLogin({ username, password }).finally(() => {
+      setSubmitting(false);
+    });
   }, [validateForm, onLogin, username, password, errors]);
 
   return (
