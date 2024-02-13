@@ -22,6 +22,23 @@ resource "aws_s3_bucket_public_access_block" "website" {
 resource "aws_s3_bucket_versioning" "website" {
   bucket = aws_s3_bucket.website.id
   versioning_configuration {
+    status = "Suspended"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "website" {
+  # Must have bucket versioning enabled first
+  depends_on = [aws_s3_bucket_versioning.website]
+
+  bucket = aws_s3_bucket.website.id
+
+  rule {
+    id = "Remove noncurrent versions"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+
     status = "Enabled"
   }
 }
