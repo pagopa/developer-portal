@@ -66,3 +66,15 @@ variable "cms_app_port" {
   description = "The standard app port used by CMS Strapi"
   default     = 1337
 }
+
+## CMS Strapi CPU
+variable "cms_app_cpu" {
+  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
+  default     = "1024" ##### 1 vCPU
+}
+
+## CMS Strapi RAM
+variable "cms_app_memory" {
+  description = "Fargate instance memory to provision (in MiB)"
+  default     = "3072" ##### 3 GB RAM
+}
