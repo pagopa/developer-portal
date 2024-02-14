@@ -25,7 +25,7 @@ permissions:
 jobs:
 
   cd_deploy:
-    name: Deploy to S3
+    name: Deploy to S3 (on ${{ matrix.environment }})
     # Trigger when the PR is merged
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
@@ -52,10 +52,12 @@ jobs:
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
 
   manual_deploy:
-    name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
+    name: Deploy to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
     environment: ${{ inputs.environment }}
@@ -77,4 +79,6 @@ jobs:
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}

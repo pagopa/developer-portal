@@ -17,7 +17,6 @@ import {
 } from './dynamodb/codec';
 
 export type WebinarEnv = {
-  readonly questionLifetimeInSeconds: number;
   readonly dynamoDBClient: DynamoDBClient;
   readonly nowDate: () => Date;
 };
@@ -29,37 +28,22 @@ export type InsertWebinarQuestion = Omit<
 
 export type WebinarQuestion = {
   readonly webinarId: string;
-  readonly givenName: string;
-  readonly familyName: string;
   readonly question: string;
   readonly createdAt: Date;
-  readonly expireAt: Date;
 };
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(
-    R.ask<
-      Pick<
-        WebinarEnv,
-        'dynamoDBClient' | 'nowDate' | 'questionLifetimeInSeconds'
-      >
-    >(),
-    R.map(({ dynamoDBClient, nowDate, questionLifetimeInSeconds }) => {
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
+    R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
-      // calculate the expireAt time
-      const expireAt = new Date(
-        createdAt.getTime() + questionLifetimeInSeconds * 1000
-      );
       // create put command
       const putCommand = new PutItemCommand({
         TableName: 'WebinarQuestions',
         Item: makeDynamodbItemFromWebinarQuestion({
           webinarId: question.webinarId,
           createdAt: createdAt,
-          givenName: question.givenName,
-          familyName: question.familyName,
           question: question.question,
-          expireAt: expireAt,
         }),
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);

@@ -39,7 +39,7 @@ const ConfirmLogin = ({
     setSubmitting(true);
 
     onConfirmLogin(code).catch((e) => {
-      if (e.message === 'Challenge response cannot be empty') {
+      if (e.name === 'AuthError') {
         setEmptyCode(true);
       } else if (e.name === 'NotAuthorizedException') {
         setCodeError(true);
@@ -100,15 +100,6 @@ const ConfirmLogin = ({
                 }}
               />
             </Stack>
-            {email && (
-              <ResendEmail
-                isLoginCTA={true}
-                resendCode={resendCode}
-                setSubmitting={setSubmitting}
-                email={email}
-                text={confirmLogin('checkJunkMail')}
-              />
-            )}
             <Stack spacing={4} pt={4} pb={4}>
               <Stack direction='row' justifyContent='center'>
                 <Button
@@ -120,6 +111,15 @@ const ConfirmLogin = ({
                 </Button>
               </Stack>
             </Stack>
+            {email && (
+              <ResendEmail
+                isLoginCTA={true}
+                resendCode={resendCode}
+                setSubmitting={setSubmitting}
+                email={email}
+                text={confirmLogin('checkJunkMail')}
+              />
+            )}
           </Grid>
         </Grid>
       </Card>

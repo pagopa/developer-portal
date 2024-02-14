@@ -1,5 +1,47 @@
 # nextjs-website
 
+## 0.9.1
+
+### Patch Changes
+
+- 3d86bfc: Remove the expireAt attribute from dynamodb that store the webinar questions
+
+## 0.9.0
+
+### Minor Changes
+
+- 50f538f: [DEV-1054]: Add webinars' questions page
+- a481265: [DEV-1363] Fetch homepage props from Strapi
+
+### Patch Changes
+
+- 013a47f: [DEV-1278]: uniform footer design
+- 0c33e93: Close mobile menu on links click
+
+## 0.8.0
+
+### Minor Changes
+
+- b2f50b8: [DEV-1040] Rendering component OpenAPI Gitbook
+- 2370d7e: [DEV-866] Redirect to the main guide if no version is specified from the path
+- d39d27a: [DPC-138] Add version 3.6.1 for "SANP"
+- 910f54a: [DEV-1362] Create BuildEnv and create function to use to make API calls to Strapi
+- a305b3d: Show export button in StopLight Element's component of API pages
+
+### Patch Changes
+
+- 4caeaaf: Add EmailFormWrapper unit tests
+- 1352c9e: [DEV-1364] Remove AppEnv and Config in favor of the BrowserEnv and BrowserConfig
+- 558d23c: [DEV-863]: Replace URLs host if specified in config
+- 4a34f5d: [DEV-863]: Add missing paths in urlReplacesMap URLs
+- f67d231: [DEV-1238] Resizing the "Featured" section as the page loads
+- 8026026: Fix title alignment in API pages
+- Updated dependencies [b2f50b8]
+- Updated dependencies [e976969]
+- Updated dependencies [558d23c]
+- Updated dependencies [7a6ee42]
+  - gitbook-docs@0.0.1
+
 ## 0.7.2
 
 ### Patch Changes

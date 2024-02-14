@@ -107,3 +107,9 @@ resource "aws_route53_record" "devportal_google_site_verification_txt" {
   records = ["google-site-verification=Z94dFrXZD0YqP-r5BY5ODb4NsbQBAggTGRZM9fNtOj0"]
   ttl     = 3600
 }
+
+## Route53 DNS zone and Records for CMS Strapi
+module "dns_zone_cms" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/zones?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0
+  zones  = var.dns_domain_name_cms
+}
