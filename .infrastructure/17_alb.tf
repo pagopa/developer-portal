@@ -23,7 +23,7 @@ module "cms_load_balancer" {
     front_end_https = {
       port            = 443
       protocol        = "HTTPS"
-      certificate_arn = module.acm.acm_certificate_arn
+      certificate_arn = module.cms_ssl_certificate.acm_certificate_arn
       forward = {
         target_group_key = "cms-target-group"
       }
