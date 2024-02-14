@@ -77,6 +77,58 @@ resource "aws_iam_role_policy_attachment" "deploy_website" {
   policy_arn = aws_iam_policy.deploy_website.arn
 }
 
+## IAM User Strapi with Access and Secret Key for CMS Strapi
+module "iam_user_cms" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name                          = "strapi"
+  create_iam_user_login_profile = false
+  create_iam_access_key         = true
+  policy_arns                   = [module.iam_policy_cms.arn]
+}
+
+module "iam_policy_cms" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name        = "S3UploadImages"
+  path        = "/"
+  description = "Policy to allow to manage files in S3 bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecs:DescribeTaskDefinition",
+          "ecs:RegisterTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:UpdateService",
+          "ecr:GetAuthorizationToken",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetAuthorizationToken",
+          "ecr:UploadLayerPart",
+          "ecr:InitiateLayerUpload",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:PutImage",
+          "ecr:BatchGetImage"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect = "Allow"
+        Resource = [
+          module.iam_role_ecs_task_execution.iam_role_arn,
+          module.iam_role_task_role.iam_role_arn
+        ]
+      }
+    ]
+  })
+}
+    
 ## IAM Role  GitHub for deploy CMS Strapi
 data "aws_caller_identity" "current" {}
 
@@ -119,42 +171,19 @@ resource "aws_iam_policy" "deploy_ecs" {
   name        = "DeployECS"
   description = "Policy to allow deploy on ECS."
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ecs:DescribeTaskDefinition",
-          "ecs:RegisterTaskDefinition",
-          "ecs:DescribeServices",
-          "ecs:UpdateService",
-          "ecr:GetAuthorizationToken",
-          "ecr:CompleteLayerUpload",
-          "ecr:GetAuthorizationToken",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:PutImage",
-          "ecr:BatchGetImage"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action = [
-          "iam:PassRole"
-        ]
-        Effect = "Allow"
-        Resource = [
-          module.iam_role_ecs_task_execution.iam_role_arn,
-          module.iam_role_task_role.iam_role_arn
-        ]
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role_policy_attachment" "deploy_ecs" {
   role       = aws_iam_role.deploy_ecs.name
   policy_arn = aws_iam_policy.deploy_ecs.arn
+}
+          "s3:DeleteObject",
+          "s3:GetObject",
+          "s3:GetObjectAttributes",
+          "s3:ListBucket",
+          "s3:PutObject"
+        ]
+        Effect   = "Allow"
+        Resource = format("%s/*", module.s3_bucket_cms.s3_bucket_arn)
+      },
+    ]
+  })
 }
