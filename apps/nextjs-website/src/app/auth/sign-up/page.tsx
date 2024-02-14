@@ -93,8 +93,6 @@ const SignUp = () => {
     return null;
   }, [router, userData.username]);
 
-  const advantages = useMemo(() => signUpAdvantages, []);
-
   return (
     <>
       <Box
@@ -121,7 +119,7 @@ const SignUp = () => {
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
               {signUp('whyCreateAccount')}
             </Typography>
-            {advantages.map((advantage, index) => {
+            {signUpAdvantages.map((advantage, index) => {
               return (
                 <CheckItem
                   key={index}
