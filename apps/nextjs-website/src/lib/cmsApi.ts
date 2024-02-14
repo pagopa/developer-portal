@@ -18,22 +18,14 @@ const buildEnv = pipe(
 
 export const getHomepageProps = async () => {
   const {
-    config: {
-      FETCH_FROM_STRAPI: fetchFromStrapi,
-      STRAPI_ENDPOINT: strapiEndpoint,
-    },
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   const { header: staticHeader, homepage: staticHomepage } = translations;
 
   if (fetchFromStrapi) {
     const strapiHomepage = await fetchHomepage(buildEnv);
-    return makeHomepageProps(
-      strapiHomepage,
-      strapiEndpoint,
-      staticHeader,
-      staticHomepage
-    );
+    return makeHomepageProps(strapiHomepage, staticHeader, staticHomepage);
   } else {
     return makeHomepagePropsFromStatic(staticHeader, staticHomepage);
   }

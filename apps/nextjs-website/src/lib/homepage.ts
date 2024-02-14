@@ -55,7 +55,6 @@ type StaticHomepage = typeof translations.homepage;
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage,
-  strapiEndpoint: string,
   staticHeader: StaticHeader,
   staticHomepage: StaticHomepage
 ): HomepageProps => ({
@@ -71,7 +70,7 @@ export const makeHomepageProps = (
         slug: product.attributes.slug,
         logo: {
           ...product.attributes.logo.data.attributes,
-          url: `${strapiEndpoint}${product.attributes.logo.data.attributes.url}`,
+          url: `${product.attributes.logo.data.attributes.url}`,
         },
       })
     ),
