@@ -41,22 +41,6 @@ export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const resetResendEmailAfterMs = 4_000;
 export const fetchWebinarsQuestionsIntervalMs = 2_500;
 
-export const companyRoles = [
-  'ente-pubblico',
-  'partner-tecnologico',
-  'psp',
-  'gestore-di-pubblico-servizio',
-  'azienda-privata',
-  'altro',
-];
-
-export const signUpAdvantages = [
-  'exclusive_contents',
-  'product_updates',
-  'api_keys',
-  'support',
-];
-
 export const defaultLanguage = { id: 'it', value: 'Italiano' };
 export const languages = [defaultLanguage];
 

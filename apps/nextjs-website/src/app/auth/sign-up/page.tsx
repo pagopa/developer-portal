@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { signUpAdvantages } from '@/config';
+import { signUpAdvantages } from '@/_contents/auth';
 
 const SignUp = () => {
   const params = useSearchParams();
