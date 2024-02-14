@@ -103,11 +103,9 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
       return;
     }
     setSubmitting(true);
-    onLogin({ username, password })
-      .catch((e) => console.log(errors(e.code)))
-      .finally(() => {
-        setSubmitting(false);
-      });
+    onLogin({ username, password }).finally(() => {
+      setSubmitting(false);
+    });
   }, [validateForm, onLogin, username, password, errors]);
 
   return (
@@ -144,6 +142,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                     width: '100%',
                     backgroundColor: palette.background.paper,
                   }}
+                  autoComplete={'username'}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
@@ -171,6 +170,7 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                         </InputAdornment>
                       ),
                     }}
+                    autoComplete={'current-password'}
                   />
                   {(fieldErrors.password || noAccount) && (
                     <FormHelperText error>

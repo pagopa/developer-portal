@@ -21,7 +21,11 @@ export const FooterColumn = ({
   icons,
 }: FooterColumnProps) => (
   <Stack spacing={2} display='flex' alignItems={{ xs: 'center', sm: 'start' }}>
-    {data?.title && <Typography variant='overline'>{data.title}</Typography>}
+    {data?.title && (
+      <Typography variant='overline' fontSize='body2.fontSize'>
+        {data.title}
+      </Typography>
+    )}
 
     {companyLink && (
       <LinkMui
@@ -67,6 +71,7 @@ export const FooterColumn = ({
         <li key={i}>
           <LinkMui
             aria-label={ariaLabel}
+            fontSize='body2.fontSize'
             component={'a'}
             href={href}
             onClick={onClick}
