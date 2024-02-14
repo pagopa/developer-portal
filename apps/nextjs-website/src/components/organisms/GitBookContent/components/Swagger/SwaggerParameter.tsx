@@ -15,17 +15,18 @@ const SwaggerParameter = ({
 }: SwaggerParameterProps<ReactNode>) => {
   return (
     <>
-    <Typography sx={{fontWeight: 700, fontSize: '14px', marginBottom: '8px'}}>
-      {inProp} 
-    </Typography>
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
-      <div>
-        {name}<span style={{color: 'red'}}>{required && ' *'}</span>
+      <Typography
+        sx={{ fontWeight: 700, fontSize: '14px', marginBottom: '8px' }}
+      >
+        {inProp}
+      </Typography>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          {name}
+          <span style={{ color: 'red' }}>{required && ' *'}</span>
+        </div>
+        <div>{children}</div>
       </div>
-      <div>
-        {children}
-      </div>
-    </div>
     </>
   );
 };

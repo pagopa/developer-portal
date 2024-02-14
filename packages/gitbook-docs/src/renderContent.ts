@@ -1,7 +1,12 @@
 import Markdoc, { RenderableTreeNode } from '@markdoc/markdoc';
 import type { ReactNode } from 'react';
 import { ReactShape } from './ReactShape';
-import { SwaggerDescriptionProps, SwaggerParameterProps, SwaggerProps, SwaggerResponseProps } from './markdoc/schema/swagger';
+import {
+  SwaggerDescriptionProps,
+  SwaggerParameterProps,
+  SwaggerProps,
+  SwaggerResponseProps,
+} from './markdoc/schema/swagger';
 import { LinkProps } from './markdoc/schema/link';
 import { HintProps } from './markdoc/schema/hint';
 import { ImageProps } from './markdoc/schema/image';

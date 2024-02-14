@@ -56,7 +56,6 @@ export const swaggerParameter: Schema = {
   },
 };
 
-
 export type SwaggerResponseProps<A> = {
   readonly status: string;
   readonly description: string;

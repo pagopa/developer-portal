@@ -11,7 +11,16 @@ const SwaggerDescription = ({
   children,
 }: SwaggerDescriptionProps<ReactNode>) => {
   return (
-    <Typography sx={{fontWeight: 700, fontSize: 16, marginTop: '16px', marginBottom: '16px'}}>{children}</Typography>
+    <Typography
+      sx={{
+        fontWeight: 700,
+        fontSize: 16,
+        marginTop: '16px',
+        marginBottom: '16px',
+      }}
+    >
+      {children}
+    </Typography>
   );
 };
 

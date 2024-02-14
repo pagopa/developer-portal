@@ -2,7 +2,12 @@ import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { document } from './markdoc/schema/document';
 import { hint } from './markdoc/schema/hint';
 import { figure, img } from './markdoc/schema/image';
-import { swagger, swaggerDescription, swaggerParameter, swaggerResponse } from './markdoc/schema/swagger';
+import {
+  swagger,
+  swaggerDescription,
+  swaggerParameter,
+  swaggerResponse,
+} from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
 import { link } from './markdoc/schema/link';
