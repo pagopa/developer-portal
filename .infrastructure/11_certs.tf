@@ -22,7 +22,7 @@ resource "aws_acm_certificate" "auth" {
 }
 
 ## Certificate HTTPS for CMS Strapi
-module "acm" {
+module "cms_ssl_certificate" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
 
   domain_name = keys(var.dns_domain_name_cms)[0]
