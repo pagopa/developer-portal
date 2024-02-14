@@ -52,28 +52,28 @@ resource "aws_ecs_task_definition" "cms_task_def" {
 module "cms_ecs_service" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
 
-  name                              = "cms-ecs"
-  cluster_arn                       = module.cms_ecs_cluster.arn
-  desired_count                     = 1
-  create_task_definition            = false
-  create_iam_role                   = false
-  create_task_exec_iam_role         = false
-  create_security_group = false
-  launch_type                       = "FARGATE"
-  force_new_deployment              = true
-  task_definition_arn               = aws_ecs_task_definition.cms_task_def.arn
-  tasks_iam_role_arn                = module.iam_role_task_role.iam_role_arn
-  task_exec_iam_role_arn            = module.iam_role_ecs_task_execution.iam_role_arn
+  name                      = "cms-ecs"
+  cluster_arn               = module.cms_ecs_cluster.arn
+  desired_count             = 1
+  create_task_definition    = false
+  create_iam_role           = false
+  create_task_exec_iam_role = false
+  create_security_group     = false
+  launch_type               = "FARGATE"
+  force_new_deployment      = true
+  task_definition_arn       = aws_ecs_task_definition.cms_task_def.arn
+  tasks_iam_role_arn        = module.iam_role_task_role.iam_role_arn
+  task_exec_iam_role_arn    = module.iam_role_ecs_task_execution.iam_role_arn
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
   subnet_ids         = module.vpc.private_subnets
   assign_public_ip   = true
 
   load_balancer = {
-  cms-target-group = {
-    target_group_arn = module.cms_load_balancer.target_groups["cms-target-group"].arn
-    container_name   = "cms-docker"
-    container_port   = var.cms_app_port
-  }
+    cms-target-group = {
+      target_group_arn = module.cms_load_balancer.target_groups["cms-target-group"].arn
+      container_name   = "cms-docker"
+      container_port   = var.cms_app_port
+    }
   }
 }
