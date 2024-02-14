@@ -12,15 +12,19 @@ import {
 import { Webinar } from '@/lib/types/webinar';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
-import { useEffect } from 'react';
-import { getWebinarQuestionList } from '@/lib/webinarApi';
-import { useFormatter, useTranslations } from 'next-intl';
-import { CopyToClipboardButton } from '@pagopa/mui-italia';
-import DOMPurify from 'isomorphic-dompurify';
+import { useCallback, useEffect } from 'react';
+import {
+  getWebinarQuestionList,
+  hideQuestion,
+  highlightQuestion,
+} from '@/lib/webinarApi';
+import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
+import WebinarQuestionTemplate from '../../molecules/WebinarQuestion/WebinarQuestionTemplate';
+import { useUser } from '@/helpers/user.helper';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -29,7 +33,8 @@ type WebinarQuestionsTemplateProps = {
 const WebinarQuestionsTemplate = ({
   webinar,
 }: WebinarQuestionsTemplateProps) => {
-  const formatter = useFormatter();
+  const { user, loading } = useUser();
+  const userEmail = user?.attributes['email'] as string;
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
 
@@ -37,12 +42,24 @@ const WebinarQuestionsTemplate = ({
     refreshInterval: fetchWebinarsQuestionsIntervalMs,
   });
 
+  const makeQuestionHighlighted = useCallback(
+    (question: WebinarQuestion, highlightedBy: string) =>
+      highlightQuestion(question, highlightedBy),
+    []
+  );
+
+  const makeQuestionHidden = useCallback(
+    (question: WebinarQuestion, hiddenBy: string) =>
+      hideQuestion(question, hiddenBy),
+    []
+  );
+
   useEffect(() => {
     webinar && setWebinar(webinar);
   }, [webinar]);
 
   if (error) return <PageNotFound />;
-  else if (!data) return <Spinner />;
+  else if (!data || loading) return <Spinner />;
   else {
     const sortedQuestions = [...data].sort(
       (a: WebinarQuestion, b: WebinarQuestion) =>
@@ -69,27 +86,17 @@ const WebinarQuestionsTemplate = ({
               </TableHead>
               <TableBody>
                 {sortedQuestions.map((row) => (
-                  <TableRow
-                    hover
-                    key={row.createdAt.toJSON()}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell>
-                      {formatter.dateTime(row.createdAt, {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      })}
-                    </TableCell>
-                    <TableCell width='70%'>{row.question}</TableCell>
-                    <TableCell>
-                      <CopyToClipboardButton
-                        value={DOMPurify.sanitize(row.question)}
-                      ></CopyToClipboardButton>
-                    </TableCell>
-                  </TableRow>
+                  <WebinarQuestionTemplate
+                    key={row.createdAt.valueOf.toString()}
+                    question={row}
+                    userEmail={userEmail}
+                    onHide={async () =>
+                      await makeQuestionHidden(row, userEmail)
+                    }
+                    onHighlight={async () =>
+                      await makeQuestionHighlighted(row, userEmail)
+                    }
+                  />
                 ))}
               </TableBody>
             </Table>

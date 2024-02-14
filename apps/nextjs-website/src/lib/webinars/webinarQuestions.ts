@@ -8,6 +8,7 @@ import {
   DynamoDBClient,
   PutItemCommand,
   QueryCommand,
+  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import {
   WebinarQuestionDynamodbCodec,
@@ -30,6 +31,8 @@ export type WebinarQuestion = {
   readonly webinarId: string;
   readonly question: string;
   readonly createdAt: Date;
+  readonly hiddenBy?: string;
+  readonly highlightedBy?: string;
 };
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
@@ -47,6 +50,58 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
         }),
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
+    }),
+    RTE.map(() => void 0)
+  );
+
+export const highlightWebinarQuestion = (
+  question: WebinarQuestion,
+  highlightedBy: string
+) =>
+  pipe(
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.map(({ dynamoDBClient }) => {
+      const updateCommand = new UpdateItemCommand({
+        TableName: 'WebinarQuestions',
+        Key: {
+          webinarId: { S: question.webinarId },
+          createdAt: { S: question.createdAt.toISOString() },
+        },
+        UpdateExpression: 'SET #highlightedBy = :highlightedBy',
+        ExpressionAttributeNames: {
+          '#highlightedBy': 'highlightedBy',
+        },
+        ExpressionAttributeValues: {
+          ':highlightedBy': { S: highlightedBy },
+        },
+      });
+      return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
+    }),
+    RTE.map(() => void 0)
+  );
+
+export const hideWebinarQuestion = (
+  question: WebinarQuestion,
+  hiddenBy: string
+) =>
+  pipe(
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.map(({ dynamoDBClient }) => {
+      const updateCommand = new UpdateItemCommand({
+        TableName: 'WebinarQuestions',
+        Key: {
+          webinarId: { S: question.webinarId },
+          createdAt: { S: question.createdAt.toISOString() },
+        },
+        UpdateExpression: 'SET #hiddenBy = :hiddenBy',
+        ExpressionAttributeNames: {
+          '#hiddenBy': 'hiddenBy',
+        },
+        ExpressionAttributeValues: {
+          ':hiddenBy': { S: hiddenBy },
+        },
+      });
+      return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
     RTE.map(() => void 0)
   );

@@ -7,8 +7,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { makeBrowserEnv } from '@/BrowserEnv';
 import {
   InsertWebinarQuestion,
+  WebinarQuestion,
   insertWebinarQuestion,
   listWebinarQuestions,
+  highlightWebinarQuestion,
+  hideWebinarQuestion,
 } from './webinars/webinarQuestions';
 import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
 
@@ -37,3 +40,18 @@ export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
 
 export const getWebinarQuestionList = (webinarId: string) =>
   pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();
+
+export const highlightQuestion = (
+  question: WebinarQuestion,
+  highlightedBy: string
+) =>
+  pipe(
+    highlightWebinarQuestion(question, highlightedBy)(browserEnv),
+    makePromiseFromTE
+  )();
+
+export const hideQuestion = (question: WebinarQuestion, hiddenBy: string) =>
+  pipe(
+    hideWebinarQuestion(question, hiddenBy)(browserEnv),
+    makePromiseFromTE
+  )();

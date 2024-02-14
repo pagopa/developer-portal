@@ -101,7 +101,10 @@
         "speakersTitle": "Ospiti",
         "questionList": {
             "createdAt": "Ora creazione",
-            "text": "Domanda"
+            "text": "Domanda",
+            "hiddenBy": "Nascosta da: ",
+            "hiddenByMe": "Hai nascosto questa domanda",
+            "highlightedBy": "Evidenziato da: "
         },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale",
