@@ -1,4 +1,5 @@
 export enum LoginSteps {
   LOG_IN = 'LOG_IN',
   MFA_CHALLENGE = 'MFA_CHALLENGE',
+  CONFIRM_ACCOUNT = 'CONFIRM_ACCOUNT',
 }
