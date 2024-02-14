@@ -25,7 +25,7 @@ permissions:
 jobs:
 
   cd_deploy:
-    name: Deploy to S3
+    name: Deploy to S3 (on ${{ matrix.environment }})
     # Trigger when the PR is merged
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
@@ -57,7 +57,7 @@ jobs:
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
 
   manual_deploy:
-    name: Deploy to S3 (manual trigger) - (${{ inputs.environment }})
+    name: Deploy to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
     environment: ${{ inputs.environment }}
