@@ -25,7 +25,9 @@ const SwaggerParameter = ({
           {name}
           <span style={{ color: 'red' }}>{required && ' *'}</span>
         </div>
-        <div>{children}</div>
+        <div style={{ fontSize: '16px !important', maxWidth: '400px' }}>
+          {children}
+        </div>
       </div>
     </>
   );
