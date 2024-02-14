@@ -42,7 +42,7 @@ export const webinars: readonly Webinar[] = [
       },
     ],
     startDateTime: '2023-12-14T10:00:00.000Z',
-    endDateTime: '2024-12-14T10:40:00.000Z',
+    endDateTime: '2023-12-14T10:40:00.000Z',
     subscribeCtaLabel: '',
     startInfo: {
       title: 'Risorse correlate',
