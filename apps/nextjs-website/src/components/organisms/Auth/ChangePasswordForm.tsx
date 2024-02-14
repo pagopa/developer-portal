@@ -48,6 +48,8 @@ const ChangePasswordForm = ({
   const signUp = useTranslations('auth.signUp');
   const shared = useTranslations('shared');
 
+  const [submitting, setSubmitting] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -91,7 +93,11 @@ const ChangePasswordForm = ({
       return;
     }
 
-    onChangePassword();
+    setSubmitting(true);
+
+    onChangePassword().finally(() => {
+      setSubmitting(false);
+    });
   }, [onChangePassword, validateForm]);
 
   return (
@@ -201,6 +207,7 @@ const ChangePasswordForm = ({
                   onClick={() => {
                     onChangePasswordClick();
                   }}
+                  disabled={submitting}
                 >
                   {resetPassword('send')}
                 </Button>
