@@ -14,11 +14,19 @@ const SwaggerParameter = ({
   children,
 }: SwaggerParameterProps<ReactNode>) => {
   return (
-    <div>
-      Parameter: {name} {required ? '*': ''}
-      <br></br>
-      {children}
+    <>
+    <Typography sx={{fontWeight: 700, fontSize: '14px', marginBottom: '8px'}}>
+      {inProp} 
+    </Typography>
+    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+      <div>
+        {name}<span style={{color: 'red'}}>{required && ' *'}</span>
+      </div>
+      <div>
+        {children}
+      </div>
     </div>
+    </>
   );
 };
 
