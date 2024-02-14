@@ -39,7 +39,7 @@ const ConfirmLogin = ({
     setSubmitting(true);
 
     onConfirmLogin(code).catch((e) => {
-      if (e.message === 'Challenge response cannot be empty') {
+      if (e.name === 'AuthError') {
         setEmptyCode(true);
       } else if (e.name === 'NotAuthorizedException') {
         setCodeError(true);
