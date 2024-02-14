@@ -24,10 +24,3 @@ dns_delegate_records = {
 }
 
 use_custom_certificate = true
-
-# CMS Strapi DNS
-dns_domain_name_cms = {
-  "cms.developer.pagopa.it" = {
-    comment = "DNS domain for the CMS developer portal"
-  }
-}
