@@ -137,3 +137,9 @@ module "cms_dns_records" {
 
   depends_on = [module.dns_zone_cms]
 }
+
+## Route53 DNS zone and Records for CMS Strapi
+module "dns_zone_cms" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/zones?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0
+  zones  = var.dns_domain_name_cms
+}
