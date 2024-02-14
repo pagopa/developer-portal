@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.9.1
+
+### Patch Changes
+
+- 3d86bfc: Remove the expireAt attribute from dynamodb that store the webinar questions
+
 ## 0.9.0
 
 ### Minor Changes
