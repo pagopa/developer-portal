@@ -1,5 +1,7 @@
 module "iam_user_mauro_dandrea" {
-  source                        = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  count  = var.environment == "dev" ? 1 : 0
+
   force_destroy                 = true
   password_reset_required       = true
   create_iam_user_login_profile = false
@@ -14,6 +16,7 @@ module "iam_user_mauro_dandrea" {
 
 module "iam_group_developers_readonly_access" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-group-with-policies?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  count  = var.environment == "dev" ? 1 : 0
 
   name                     = "developers_read_only"
   create_group             = true
