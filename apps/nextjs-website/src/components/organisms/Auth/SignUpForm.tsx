@@ -77,6 +77,7 @@ const SignUpForm = ({
 
   const { palette } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const [fieldErrors, setFieldErrors] = useState<SignUpFieldsError>({
     name: null,
@@ -154,7 +155,11 @@ const SignUpForm = ({
       return;
     }
 
-    onSignUp();
+    setSubmitting(true);
+
+    onSignUp().finally(() => {
+      setSubmitting(false);
+    });
   }, [onSignUp, validateForm]);
 
   const companyRoles = useMemo(() => configCompanyRoles, []);
@@ -396,7 +401,11 @@ const SignUpForm = ({
               </Grid>
               <Stack spacing={4} pt={4} pb={2}>
                 <Stack direction='row' justifyContent='center'>
-                  <Button variant='contained' onClick={onSignUpClick}>
+                  <Button
+                    variant='contained'
+                    onClick={onSignUpClick}
+                    disabled={submitting}
+                  >
                     {signUp('action')}
                   </Button>
                 </Stack>
