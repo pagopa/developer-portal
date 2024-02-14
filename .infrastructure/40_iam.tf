@@ -111,7 +111,7 @@ module "iam_policy_cms" {
     ]
   })
 }
-    
+
 ## IAM Role Deploy GitHub for CMS Strapi
 data "aws_caller_identity" "current" {}
 
