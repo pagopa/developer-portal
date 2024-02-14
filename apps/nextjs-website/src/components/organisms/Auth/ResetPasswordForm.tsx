@@ -54,7 +54,7 @@ const ResetPasswordForm = ({
     handleResetPassword().finally(() => {
       setSubmitting(false);
     });
-  }, [handleResetPassword, validateForm, submitting]);
+  }, [handleResetPassword, validateForm]);
 
   const { palette } = useTheme();
 
