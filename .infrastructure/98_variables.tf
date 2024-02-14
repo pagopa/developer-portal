@@ -71,5 +71,5 @@ variable "cms_app_port" {
 variable "dns_domain_name_cms" {
   description = "DNS domain for the CMS developer portal"
   type        = map(any)
-  default = null
-  }
+  default     = null
+}
