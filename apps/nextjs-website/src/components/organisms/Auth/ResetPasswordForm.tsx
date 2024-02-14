@@ -29,6 +29,7 @@ const ResetPasswordForm = ({
 }: ResetPasswordFormProps) => {
   const resetPassword = useTranslations('auth.resetPassword');
   const shared = useTranslations('shared');
+  const [submitting, setSubmitting] = useState(false);
 
   const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -48,8 +49,12 @@ const ResetPasswordForm = ({
       return;
     }
 
-    handleResetPassword();
-  }, [handleResetPassword, validateForm]);
+    setSubmitting(true);
+
+    handleResetPassword().finally(() => {
+      setSubmitting(false);
+    });
+  }, [handleResetPassword, validateForm, submitting]);
 
   const { palette } = useTheme();
 
@@ -89,7 +94,11 @@ const ResetPasswordForm = ({
             />
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
-                <Button variant='contained' onClick={onResetPassword}>
+                <Button
+                  variant='contained'
+                  onClick={onResetPassword}
+                  disabled={submitting}
+                >
                   {resetPassword('send')}
                 </Button>
               </Stack>
