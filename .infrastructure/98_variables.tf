@@ -77,6 +77,7 @@ variable "cms_app_cpu" {
 variable "cms_app_memory" {
   description = "Fargate instance memory to provision (in MiB)"
   default     = "3072" ##### 3 GB RAM
+}
 
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
