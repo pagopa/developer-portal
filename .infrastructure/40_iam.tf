@@ -183,6 +183,7 @@ module "iam_role_task_role" {
     "ecs-tasks.amazonaws.com"
   ]
   role_requires_mfa = false
+}
 
 ## IAM User Strapi with Access and Secret Key for CMS Strapi
 module "iam_user_cms" {
