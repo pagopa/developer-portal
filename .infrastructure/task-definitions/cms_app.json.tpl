@@ -7,6 +7,16 @@
         "containerPort": ${container_port}
       }
     ],
+	"logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-create-group": "true",
+            "awslogs-group": "/ecs/cms-task-def",
+            "awslogs-region": "eu-south-1",
+            "awslogs-stream-prefix": "ecs"
+            },
+            "secretOptions": []
+    },
     "environment": [
       {
         "name": "NODE_ENV",
