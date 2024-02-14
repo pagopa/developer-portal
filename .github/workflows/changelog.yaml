@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-tags: 'true'
+          fetch-depth: 0
 
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
