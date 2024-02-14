@@ -9,6 +9,7 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
+import { getHomepageProps } from '@/lib/cmsApi';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -32,14 +33,16 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const products = await getProducts();
   const webinars = await getVisibleInHomeWebinars();
-  const { homepage, header } = translations;
+  const { header } = translations;
+
+  const homepage = await getHomepageProps();
 
   return (
     <>
       <NotSsrWebinarHeaderBanner webinars={webinars} />
 
       <HeroSwiper
-        cards={homepage.heroItems.map((itemProp, index) => ({
+        cards={homepage.hero.cards.map((itemProp, index) => ({
           ...itemProp,
           child:
             index === 0 ? (
@@ -50,7 +53,7 @@ const Home = async () => {
       <News
         marginTop={5}
         title={homepage.news.title}
-        cards={homepage.news.list}
+        cards={[...homepage.news.cards]}
       />
       <ProductsShowcase
         title={homepage.productsShowcaseTitle}
@@ -64,7 +67,7 @@ const Home = async () => {
       <NotSsrWebinarsSection webinars={[...webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
-        links={homepage.comingsoonDocumentation.links}
+        links={[...homepage.comingsoonDocumentation.links]}
       />
     </>
   );

@@ -62,6 +62,12 @@ jobs:
   build_website:
     name: Build Website
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # We want to make sure the env variables are set correctly
+        environment: [ 'dev', 'prod' ]
+
+    environment: ${{ matrix.environment }}
 
     needs: compile
 
@@ -83,7 +89,9 @@ jobs:
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
           cognito_aws_region: 'eu-south-1'
-          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
 
       - name: Check NextJS bundle size
         uses: ./.github/actions/check-nextjs-bundle-size

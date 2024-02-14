@@ -83,7 +83,11 @@ export default async function RootLayout({
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <NextIntlClientProvider locale={'it'} messages={messages}>
+        <NextIntlClientProvider
+          locale={'it'}
+          messages={messages}
+          timeZone='Europe/Rome'
+        >
           <BodyWrapper>
             <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>

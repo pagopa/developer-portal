@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, Stack } from '@mui/material';
 import { FundedByNextGenerationEU } from '@/editorialComponents/FundedByNextGenerationEU';
 import { type Generic } from '../types/components';
 import { FooterColumn } from './components/FooterColumn';
@@ -28,7 +28,7 @@ export const Footer = ({
     borderColor='divider'
     borderTop='1px'
     component='footer'
-    px={{ xs: 2, sm: 4, md: 8 }}
+    px={{ xs: 2, sm: 4, md: 20 }}
     sx={{ backgroundColor: 'background.paper' }}
   >
     <Container
@@ -36,6 +36,7 @@ export const Footer = ({
       sx={{
         py: 8,
         display: 'flex',
+        alignItems: 'stretch',
         justifyContent: 'space-between',
         flexDirection: { xs: 'column', sm: 'row' },
         gap: 4,
@@ -48,12 +49,15 @@ export const Footer = ({
         display='flex'
         flexDirection='column'
         alignItems={{ sm: 'flex-start', xs: 'center' }}
+        justifyContent='space-between'
       >
-        <FooterColumn
-          data={followUs}
-          icons={followUs.socialLinks as FooterColumnIcon[]}
-        />
-        {!!langProps?.languages?.length && <LangSwitch {...langProps} />}
+        <Stack display='flex' alignItems={{ xs: 'center', sm: 'start' }}>
+          <FooterColumn
+            data={followUs}
+            icons={followUs.socialLinks as FooterColumnIcon[]}
+          />
+          {!!langProps?.languages?.length && <LangSwitch {...langProps} />}
+        </Stack>
         {showFundedByNextGenerationEULogo && (
           <FundedByNextGenerationEU size={180} />
         )}

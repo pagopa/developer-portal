@@ -99,6 +99,10 @@
         "subscribe": "Iscriviti",
         "relatedLinksTitle": "Link utili",
         "speakersTitle": "Ospiti",
+        "questionList": {
+            "createdAt": "Ora creazione",
+            "text": "Domanda"
+        },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale",
             "question": "Domanda",
@@ -137,6 +141,7 @@
             "rememberMe": "Ricordami",
             "forgotPassword": "Hai dimenticato la password?",
             "noAccount": "Non hai un account?",
+            "noAccountError": "Nome utente o password non corretti.",
             "accountAlreadyConfirmed": {
                 "yourAccountIsAlreadyConfirmed": "Hai già validato questo indirizzo email",
                 "goToLogin": "Vai al Login"
@@ -157,10 +162,12 @@
         "signUp": {
             "action": "Iscriviti",
             "createYourAccount": "Crea il tuo account",
-            "confirmComunications": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
-            "acceptPolicy": "Cliccando su “Iscriviti” accetti la nostra informativa sul trattamento dei dati personali per la Privacy Policy.",
+            "passwordMismatchError": "Le password non combaciano",
+            "confirmComunications": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+            "acceptPolicy": "Cliccando su iscriviti dichiari di aver preso visione della nostra <policy>informativa privacy</policy> e dei nostri <terms>termini e condizioni d'uso</terms>.",
             "alreadyHaveAnAccount": "Hai già un account?",
             "whyCreateAccount": "Perché iscriversi a PagoPA DevPortal",
+            "passwordError": "Non rispetta i requisiti.",
             "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
             "emailSent": "Email inviata a {email}",
             "advantages": {
@@ -203,11 +210,14 @@
         },
         "confirmLogin": {
             "title": "Verifica la tua identità",
-            "body": "Abbiamo inviato un codice di verifica a <strong>{email}</strong><br>Il codice scade tra 3 minuti.",
             "code": "Codice di verifica",
+            "confirmationCodeSent": "Abbiamo inviato un codice di verifica a ",
+            "confirmationCodeExpires": "Il codice scade tra 3 minuti.",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
-            "resendEmail": "Reinvia email"
+            "resendEmail": "Reinvia email",
+            "invalidCode": "Il codice inserito non è corretto",
+            "emptyCode": "Il codice è obbligatorio"
         },
         "accountActivated": {
             "goToLogin": "Vai al login",
@@ -218,9 +228,9 @@
             "title": "Recupera password",
             "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
             "goBackToLogin": "Torna al login",
-            "send": "Invia",
+            "send": "Conferma",
             "checkEmailTitle": "Controlla l'email",
-            "checkEmail": "Se esiste un account associato a {email}, riceverai una e-mail con un link per impostare una nuova password.",
+            "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
             "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
             "resendEmail": "Reinvia e-mail",
             "wrongEmail": "L'indirizzo e-mail è errato?",
@@ -252,6 +262,7 @@
         "role": "Ruolo",
         "requiredFieldError": "Questo campo non può essere vuoto",
         "emailFieldError": "Inserisci un indirizzo email valido",
+        "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
@@ -392,7 +403,7 @@
         "languages": {
             "it": "Italiano"
         },
-        "legalInfo": "<strong>PagoPA S.p.A.</strong> - Società per azioni con socio unico - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <br />CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
+        "legalInfo": "<strong>PagoPA S.p.A.</strong> - Società per azioni con socio unico - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <br></br>CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
         "followUs": {
             "links": {
                 "accessibility": {
