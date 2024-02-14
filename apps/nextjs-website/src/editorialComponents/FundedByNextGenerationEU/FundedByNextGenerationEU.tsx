@@ -60,6 +60,7 @@ export const FundedByNextGenerationEU = ({
     role='img'
     aria-labelledby='logo-next-genEU-titleID'
     sx={{
+      mt: { xs: 5 },
       width: size,
       /* If the color variant is set,
       the following property is ignored */

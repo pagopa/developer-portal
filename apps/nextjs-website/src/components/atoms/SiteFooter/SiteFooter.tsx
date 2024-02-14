@@ -37,6 +37,10 @@ const SiteFooter = ({
           href: 'https://www.instagram.com/pagopaspa/',
           icon: 'Instagram',
         },
+        {
+          href: 'https://medium.com/pagopa-spa',
+          icon: 'Medium',
+        },
       ],
       links: [
         {
@@ -161,6 +165,7 @@ const SiteFooter = ({
 
   const legalInfo = t.rich('legalInfo', {
     strong: (chunks) => <strong>{chunks}</strong>,
+    br: () => <br></br>,
   }) as string;
 
   const cookiePreferenceLink: FooterLinksType = {
