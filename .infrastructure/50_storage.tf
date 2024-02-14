@@ -85,14 +85,6 @@ module "dynamodb_webinar_questions" {
       name = "createdAt"
       type = "S"
     },
-    {
-      name = "hiddenBy"
-      type = "S"
-    },
-    {
-      name = "highlightedBy"
-      type = "S"
-    },
   ]
 }
 
