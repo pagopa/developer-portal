@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Terraform apply (manual)
+    name: Terraform apply (manual on ${{ inputs.environment }})
     runs-on: ubuntu-latest
     continue-on-error: false
     environment: ${{ inputs.environment }}
