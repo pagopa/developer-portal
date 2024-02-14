@@ -1,5 +1,23 @@
 # nextjs-website
 
+## 0.9.1
+
+### Patch Changes
+
+- 3d86bfc: Remove the expireAt attribute from dynamodb that store the webinar questions
+
+## 0.9.0
+
+### Minor Changes
+
+- 50f538f: [DEV-1054]: Add webinars' questions page
+- a481265: [DEV-1363] Fetch homepage props from Strapi
+
+### Patch Changes
+
+- 013a47f: [DEV-1278]: uniform footer design
+- 0c33e93: Close mobile menu on links click
+
 ## 0.8.0
 
 ### Minor Changes

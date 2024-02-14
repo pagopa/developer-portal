@@ -66,3 +66,10 @@ variable "cms_app_port" {
   description = "The standard app port used by CMS Strapi"
   default     = 1337
 }
+
+# CMS Strapi DNS
+variable "dns_domain_name_cms" {
+  description = "DNS domain name of the Developer Portal's CMS"
+  type        = map(any)
+  default     = null
+}
