@@ -15,6 +15,7 @@ module "rds" {
   apply_immediately           = true
   skip_final_snapshot         = true
   manage_master_user_password = false
+  backup_retention_period     = 1
 
   serverlessv2_scaling_configuration = {
     min_capacity = 0.5
