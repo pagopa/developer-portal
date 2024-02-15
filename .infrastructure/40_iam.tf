@@ -220,7 +220,7 @@ module "iam_policy_cms" {
 }
 
 ## IAM Role Deploy GitHub for CMS Strapi
-data "aws_iam_policy_document" "deploy_github" {
+data "aws_iam_policy_document" "trusted_cms_github" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -249,14 +249,11 @@ data "aws_iam_policy_document" "deploy_github" {
   }
 }
 
-resource "aws_iam_role" "deploy_ecs" {
-  name               = "GitHubActionDeployECS"
-  description        = "Role to assume to deploy on ECS."
-  assume_role_policy = data.aws_iam_policy_document.deploy_github.json
-}
+module "iam_policy_deploy_cms_github" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-resource "aws_iam_policy" "deploy_ecs" {
   name        = "DeployECS"
+  path        = "/"
   description = "Policy to allow deploy on ECS."
 
   policy = jsonencode({
@@ -294,7 +291,16 @@ resource "aws_iam_policy" "deploy_ecs" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "deploy_ecs" {
-  role       = aws_iam_role.deploy_ecs.name
-  policy_arn = aws_iam_policy.deploy_ecs.arn
+module "iam_role_deploy_cms_github" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "GitHubActionDeployECS"
+
+  custom_role_policy_arns = [
+    module.iam_policy_deploy_cms_github.arn
+  ]
+  number_of_custom_role_policy_arns = 1
+  custom_role_trust_policy          = data.aws_iam_policy_document.trusted_cms_github.json
+  role_requires_mfa                 = false
 }
