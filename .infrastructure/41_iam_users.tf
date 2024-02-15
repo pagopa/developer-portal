@@ -20,7 +20,7 @@ module "iam_group_developers_readonly_access" {
 
   name                     = "developers_read_only"
   create_group             = true
-  group_users              = [module.iam_user_mauro_dandrea.iam_user_name]
+  group_users              = [module.iam_user_mauro_dandrea[0].iam_user_name]
   custom_group_policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   # Attach IAM policy which allows IAM users to manage their credentials and MFA
   attach_iam_self_management_policy = true
