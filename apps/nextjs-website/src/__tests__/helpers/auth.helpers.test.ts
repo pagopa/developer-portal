@@ -1,24 +1,31 @@
-import { passwordMatcher } from '../../helpers/auth.helpers';
+import {
+  validateEmail,
+  validateField,
+  validatePassword,
+} from '../../helpers/auth.helpers';
 
-describe('passwordMatch', () => {
-  it('returns true if the passwords match', () => {
-    const validPasswords = ['Password1!', 'P4ssw0rd@!'];
-    const invalidPasswords = [
-      'password',
-      'password1',
-      'password!',
-      'password1!',
-      'Password',
-      'Password1',
-      'Password!',
-    ];
+describe('validateField', () => {
+  it('returns error if the value is empty', () => {
+    expect(validateField('')).toBe('requiredFieldError');
+  });
 
-    validPasswords.forEach((password) => {
-      expect(passwordMatcher.test(password)).toBe(true);
-    });
+  it('returns null if the value is not empty', () => {
+    expect(validateField('test')).toBe(null);
+  });
+});
 
-    invalidPasswords.forEach((password) => {
-      expect(passwordMatcher.test(password)).toBe(false);
-    });
+describe('validateEmail', () => {
+  it('returns error if the email is invalid', () => {
+    expect(validateEmail('')).toBe('requiredFieldError');
+    expect(validateEmail('test')).toBe('emailFieldError');
+    expect(validateEmail('mail@example.com')).toBe(null);
+  });
+});
+
+describe('validatePassword', () => {
+  it('returns error if the password is invalid', () => {
+    expect(validatePassword('')).toBe('requiredFieldError');
+    expect(validatePassword('password')).toBe('passwordError');
+    expect(validatePassword('Password1!')).toBe(null);
   });
 });
