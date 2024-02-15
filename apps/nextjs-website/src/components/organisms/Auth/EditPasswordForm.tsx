@@ -13,9 +13,9 @@ type EditPasswordFormProps = {
 };
 
 type Passwords = {
-  current_password: string;
-  new_password: string;
-  password_confirm: string;
+  currentPassword: string;
+  newPassword: string;
+  passwordConfirm: string;
 };
 
 export const EditPasswordForm = ({
@@ -25,24 +25,24 @@ export const EditPasswordForm = ({
   const t = useTranslations('profile');
   const [errors, setErrors] = useState<Partial<Passwords>>({});
   const [passwords, setPasswords] = useState<Passwords>({
-    current_password: '',
-    new_password: '',
-    password_confirm: '',
+    currentPassword: '',
+    newPassword: '',
+    passwordConfirm: '',
   });
 
   const validateForm = useCallback(() => {
-    const { current_password, new_password, password_confirm } = passwords;
+    const { currentPassword, newPassword, passwordConfirm } = passwords;
     // eslint-disable-next-line functional/no-let
     let err = {};
 
-    if (!current_password) {
-      err = { current_password: t('changePassword.requiredCurrentPassword') };
+    if (!currentPassword) {
+      err = { currentPassword: t('changePassword.requiredCurrentPassword') };
     }
 
-    if (!passwordMatcher.test(new_password)) {
-      err = { ...err, new_password: t('changePassword.passwordPolicy') };
-    } else if (new_password !== password_confirm) {
-      err = { ...err, new_password: t('changePassword.passwordsNotMatch') };
+    if (!passwordMatcher.test(newPassword)) {
+      err = { ...err, newPassword: t('changePassword.passwordPolicy') };
+    } else if (newPassword !== passwordConfirm) {
+      err = { ...err, newPassword: t('changePassword.passwordsNotMatch') };
     }
 
     setErrors(err);
@@ -60,15 +60,13 @@ export const EditPasswordForm = ({
 
   const handleSave = () => {
     if (!validateForm()) return;
-    onSave(passwords.current_password, passwords.new_password).catch(
-      (error) => {
-        if (error.code === 'NotAuthorizedException') {
-          setErrors({ current_password: t('changePassword.wrongPassword') });
-        } else {
-          console.error(error);
-        }
+    onSave(passwords.currentPassword, passwords.newPassword).catch((error) => {
+      if (error.code === 'NotAuthorizedException') {
+        setErrors({ currentPassword: t('changePassword.wrongPassword') });
+      } else {
+        console.error(error);
       }
-    );
+    });
   };
 
   const actions = (
@@ -107,25 +105,25 @@ export const EditPasswordForm = ({
         </Stack>
       </Stack>
       <PasswordTextField
-        id='current_password'
+        id='currentPassword'
         label={t('changePassword.currentPassword')}
-        hasError={Reflect.has(errors, 'current_password')}
-        helperText={errors.current_password}
-        value={passwords.current_password}
+        hasError={Reflect.has(errors, 'currentPassword')}
+        helperText={errors.currentPassword}
+        value={passwords.currentPassword}
         onChange={handlePasswordChange}
       />
       <PasswordTextField
-        id='new_password'
+        id='newPassword'
         label={t('changePassword.newPassword')}
-        value={passwords.new_password}
-        hasError={Reflect.has(errors, 'new_password')}
-        helperText={errors.new_password}
+        value={passwords.newPassword}
+        hasError={Reflect.has(errors, 'newPassword')}
+        helperText={errors.newPassword}
         onChange={handlePasswordChange}
       />
       <PasswordTextField
-        id='password_confirm'
+        id='passwordConfirm'
         label={t('changePassword.confirmPassword')}
-        value={passwords.password_confirm}
+        value={passwords.passwordConfirm}
         onChange={handlePasswordChange}
       />
       <Stack flexDirection='row' gap={4} display={{ xs: 'flex', md: 'none' }}>
