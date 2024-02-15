@@ -19,7 +19,12 @@ export const BannerLink = (props: BannerLinkProps) => {
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
 
-  const bodyElement = typeof body === 'string' ? <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} /> : body;
+  const bodyElement =
+    typeof body === 'string' ? (
+      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} />
+    ) : (
+      body
+    );
 
   const textColor = palette.primary.contrastText;
   return (
