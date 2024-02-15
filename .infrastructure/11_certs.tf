@@ -26,11 +26,7 @@ module "cms_ssl_certificate" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
 
   domain_name = keys(var.dns_domain_name_cms)[0]
-  zone_id     = aws_route53_zone.dev_portal.id
-
-  providers = {
-    aws = aws.us-east-1
-  }
+  zone_id     = module.dns_zone_cms.route53_zone_zone_id[keys(var.dns_domain_name_cms)[0]]
 
   subject_alternative_names = [
     "www.${keys(var.dns_domain_name_cms)[0]}"
