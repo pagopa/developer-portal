@@ -30,7 +30,8 @@ const ProductCodec = t.strict({
     name: t.string,
     description: t.string,
     slug: t.string,
-    logo: t.strict({ data: MediaCodec }),
+    // TODO: remove null when Strapi will manage media in localhost properly
+    logo: t.strict({ data: t.union([t.null, MediaCodec]) }),
   }),
 });
 
