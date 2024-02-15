@@ -117,7 +117,7 @@ const ResetPasswordForm = ({
                 href='/auth/login'
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
-                {resetPassword('goToLogin')}
+                {resetPassword('goBackToLogin')}
               </Link>
             </Stack>
           </Grid>
