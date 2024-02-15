@@ -6,7 +6,7 @@ import { SignUpSteps } from '@/lib/types/signUpSteps';
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
 import { signUpAdvantages } from '@/_contents/auth';
