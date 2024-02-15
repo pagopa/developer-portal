@@ -135,7 +135,6 @@ module "cms_dns_records" {
     }
   ]
 
-  depends_on = [module.dns_zone_cms]
 }
 
 ## Route53 DNS zone and Records for CMS Strapi
