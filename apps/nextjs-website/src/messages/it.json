@@ -13,7 +13,7 @@
         "title": "Profilo",
         "agreements": {
             "newsletter": {
-                "description": "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti.",
+                "description": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa opzione è attiva, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti.",
                 "error": {
                     "subscribe": "C'è stato un errore nell'iscrizione, riprova più tardi o contatta l'assistenza tecnica.",
                     "unsubscribe": "C'è stato un errore nella cancellazione, riprova più tardi o contatta l'assistenza tecnica."
@@ -54,7 +54,7 @@
                 "company": "Tipologia di ente o azienda",
                 "sector": "Settore",
                 "products": "Prodotti di interesse",
-                "email": "Indirizzo e-mail",
+                "email": "Indirizzo email",
                 "password": "Password"
             }
         },
@@ -153,11 +153,11 @@
             "code": "Codice di verifica",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
-            "ctaLabel": "Reinvia e-mail",
-            "resendEmail": "Reinvia e-mail"
+            "ctaLabel": "Reinvia email",
+            "resendEmail": "Reinvia email"
         },
         "resendEmail": {
-            "label": "Reinvia e-mail"
+            "label": "Reinvia email"
         },
         "signUp": {
             "action": "Iscriviti",
@@ -203,7 +203,8 @@
         },
         "confirmSignUp": {
             "title": "Confermaci che sei tu",
-            "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
+            "emailSent": "Abbiamo inviato una email a ",
+            "clickToConfirm": "Clicca sul pulsante contenuto al suo interno per verificarla.",
             "didntReceiveEmail": "Non hai ricevuto l'email? Controlla la posta indesiderata oppure",
             "resendEmail": "Invia nuovamente l'email",
             "wrongEmail": "L'indirizzo email è errato?"
@@ -226,18 +227,20 @@
         },
         "resetPassword": {
             "title": "Recupera password",
-            "body": "Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.",
+            "body": "Inserisci il tuo indirizzo email e ti invieremo le istruzioni per impostare una nuova password.",
             "goBackToLogin": "Torna al login",
-            "send": "Conferma",
+            "send": "Invia",
             "checkEmailTitle": "Controlla l'email",
-            "checkEmail": "Se esiste un account associato a <strong>{email}</strong>, riceverai una email con un link per impostare una nuova password.",
+            "checkEmailStart": "Se esiste un account associato a ",
+            "checkEmailEnd": "riceverai una email con un link per impostare una nuova password.",
             "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-            "resendEmail": "Reinvia e-mail",
-            "wrongEmail": "L'indirizzo e-mail è errato?",
+            "resendEmail": "Reinvia email",
+            "wrongEmail": "L'indirizzo email è errato?",
             "passwordSet": "Password impostata correttamente",
             "newPassword": "Imposta una nuova password",
             "rememberPassword": "Ricordi la tua password?",
-            "invalidLinkError": "Il link non è valido"
+            "invalidLinkError": "Il link non è valido",
+            "emailFieldError": "Inserisci un indirizzo email valido"
         },
         "expiredCode": {
             "expiredLink": "Il link che hai usato è scaduto",
@@ -497,7 +500,7 @@
         "CodeDeliveryFailureException": "Impossibile inviare il codice di verifica.",
         "ForbiddenException": "La tua richiesta non è stata consentita dal sistema di autenticazione.",
         "InternalErrorException": "Si è verificato un errore interno al sistema di autenticazione.",
-        "InvalidEmailRoleAccessPolicyException": "Il sistema di autenticazione non è autorizzato a utilizzare la tua identità e-mail.",
+        "InvalidEmailRoleAccessPolicyException": "Il sistema di autenticazione non è autorizzato a utilizzare la tua identità email.",
         "InvalidLambdaResponseException": "Il sistema di autenticazione ha riscontrato una risposta non valida.",
         "InvalidParameterException": "Il servizio di autenticazione ha riscontrato un parametro non valido.",
         "InvalidPasswordException": "Password non valida.",
@@ -509,7 +512,7 @@
         "UserNotFoundException": "Utente non registrato.",
         "NotAuthorizedException": "Operazione non autorizzata.",
         "PasswordResetRequiredException": "É stato richiesto un reset della password.",
-        "UserNotConfirmedException": "Utente non confermato, controlla nella e-mail e apri il link di conferma.",
+        "UserNotConfirmedException": "Utente non confermato, controlla nella email e apri il link di conferma.",
         "CodeMismatchException": "Codice non valido.",
         "ExpiredCodeException": "Codice scaduto.",
         "TooManyFailedAttemptsException": "Troppi tentativi errati.",
