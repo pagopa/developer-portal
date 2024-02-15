@@ -1,54 +1,59 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
-  Typography,
-  Stack,
-  Checkbox,
-  Grid,
-  TextField,
-  Divider,
   Button,
   Card,
-  FormControlLabel,
+  Checkbox,
+  Divider,
   FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
   IconButton,
-  Snackbar,
-  Alert,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
   useTheme,
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useState } from 'react';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { validateEmail, validateField } from '@/helpers/auth.helpers';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
+  noAccount: boolean;
 }
 
-const LoginForm = ({ onLogin }: LoginFormProps) => {
-  const {
-    auth: { login, signUp },
-    shared,
-  } = translations;
-  const t = useTranslations('errors');
+interface LoginFieldsError {
+  email: string | null;
+  password: string | null;
+}
+
+const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
+  const signUp = useTranslations('auth.signUp');
+  const login = useTranslations('auth.login');
+  const shared = useTranslations('shared');
+  const errors = useTranslations('errors');
 
   const { palette } = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
+
+  const [fieldErrors, setFieldErrors] = useState<LoginFieldsError>({
+    email: null,
+    password: null,
+  });
 
   if (authStatus === 'authenticated') {
     redirect('/');
@@ -66,14 +71,42 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     []
   );
 
+  const validateForm = useCallback(() => {
+    const emailError = validateEmail(username);
+
+    const passwordError = validateField(password);
+    setFieldErrors({
+      email: emailError ? shared(emailError) : null,
+      password: passwordError ? shared(passwordError) : null,
+    });
+
+    return !emailError && !passwordError;
+  }, [username, shared, password]);
+
+  const setNotloggedOnError = useCallback(() => {
+    if (noAccount) {
+      setFieldErrors((prevFieldErrors) => ({
+        ...prevFieldErrors,
+        email: login('noAccountError'),
+        password: login('noAccountError'),
+      }));
+    }
+  }, [noAccount, login]);
+
+  useEffect(() => {
+    setNotloggedOnError();
+  }, [noAccount, setNotloggedOnError]);
+
   const onLoginHandler = useCallback(() => {
+    const valid = validateForm();
+    if (!valid) {
+      return;
+    }
     setSubmitting(true);
-    onLogin({ username, password })
-      .catch((e) => setError(t(e.code)))
-      .finally(() => {
-        setSubmitting(false);
-      });
-  }, [onLogin, username, password, t]);
+    onLogin({ username, password }).finally(() => {
+      setSubmitting(false);
+    });
+  }, [validateForm, onLogin, username, password, errors]);
 
   return (
     <Box
@@ -93,63 +126,73 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 <IllusLogin />
               </Stack>
               <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-                {login.loginToYourAccount}
+                {login('loginToYourAccount')}
               </Typography>
               <Stack spacing={2} mb={4}>
                 <TextField
-                  label={shared.emailAddress}
+                  label={shared('emailAddress')}
                   variant='outlined'
                   size='small'
+                  value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  helperText={fieldErrors.email}
+                  error={!!fieldErrors.email || noAccount}
+                  required
                   sx={{
+                    width: '100%',
                     backgroundColor: palette.background.paper,
                   }}
+                  autoComplete={'username'}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
-                <FormControl variant='outlined'>
-                  <InputLabel htmlFor='password-input' sx={{ top: '-8px' }}>
-                    {shared.password}
-                  </InputLabel>
-                  <OutlinedInput
+                <FormControl variant='outlined' size='small'>
+                  <TextField
                     id='password-input'
                     type={showPassword ? 'text' : 'password'}
                     onChange={(e) => setPassword(e.target.value)}
-                    endAdornment={
-                      <InputAdornment position='end'>
-                        <IconButton
-                          aria-label='toggle password visibility'
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge='end'
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label={shared.password}
-                    inputProps={{
-                      sx: {
-                        padding: '8.5px 14px',
-                      },
+                    label={`${shared('password')}`}
+                    variant='outlined'
+                    size='small'
+                    error={!!fieldErrors.password || noAccount}
+                    required
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle password visibility'
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge='end'
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
                     }}
+                    autoComplete={'current-password'}
                   />
+                  {(fieldErrors.password || noAccount) && (
+                    <FormHelperText error>
+                      {fieldErrors.password}
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Stack>
               <Grid container mb={1}>
                 <FormControlLabel
                   control={<Checkbox />}
-                  label={login.rememberMe}
+                  label={login('rememberMe')}
                 />
               </Grid>
               <Stack spacing={4} pt={4} pb={5}>
                 <Stack direction='row' justifyContent='center'>
                   <Button
-                    disabled={submitting}
                     variant='contained'
                     onClick={onLoginHandler}
+                    disabled={submitting}
                   >
-                    {login.action}
+                    {login('action')}
                   </Button>
                 </Stack>
               </Stack>
@@ -167,7 +210,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   variant='caption-semibold'
                   color={palette.primary.main}
                 >
-                  {login.forgotPassword}
+                  {login('forgotPassword')}
                 </Typography>
               </Box>
               <Divider />
@@ -179,7 +222,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 alignItems='center'
               >
                 <Typography variant='body2' mr={1}>
-                  {login.noAccount}
+                  {login('noAccount')}
                 </Typography>
                 <Typography
                   component={Link}
@@ -188,20 +231,13 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   variant='caption-semibold'
                   color={palette.primary.main}
                 >
-                  {signUp.action}
+                  {signUp('action')}
                 </Typography>
               </Box>
             </form>
           </Grid>
         </Grid>
       </Card>
-      <Snackbar
-        open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setError(null)}
-      >
-        <Alert severity='error'>{error}</Alert>
-      </Snackbar>
     </Box>
   );
 };

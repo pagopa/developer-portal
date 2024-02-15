@@ -32,6 +32,7 @@ jobs:
     strategy:
       matrix:
         environment: [ 'dev' ]
+      fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
 
     environment: ${{ matrix.environment }}
 

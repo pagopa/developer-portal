@@ -3,13 +3,12 @@ import {
   FormHelperText,
   IconButton,
   InputAdornment,
-  InputLabel,
   InputProps,
-  OutlinedInput,
   Stack,
+  TextField,
 } from '@mui/material';
-import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { useState, MouseEvent } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { MouseEvent, useState } from 'react';
 
 type PasswordTextFieldProps = {
   id: string;
@@ -35,36 +34,31 @@ export const PasswordTextField = ({
 
   return (
     <Stack spacing={2}>
-      <FormControl variant='outlined'>
-        <InputLabel error={hasError} htmlFor={id} sx={{ top: '-8px' }}>
-          {label}
-        </InputLabel>
-        <OutlinedInput
+      <FormControl variant='outlined' size={'small'}>
+        <TextField
           id={id}
           name={id}
           required
           type={showPassword ? 'text' : 'password'}
           onChange={onChange}
           error={hasError}
-          endAdornment={
-            <InputAdornment position='end'>
-              <IconButton
-                aria-label='toggle password visibility'
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge='end'
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge='end'
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
           value={password}
           label={label}
-          inputProps={{
-            sx: {
-              padding: '8.5px 14px',
-            },
-          }}
+          size={'small'}
         />
         <FormHelperText error={hasError}>{helperText}</FormHelperText>
       </FormControl>
