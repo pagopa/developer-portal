@@ -6,8 +6,31 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { SwaggerProps } from 'gitbook-docs/markdoc/schema/swagger';
 
 import { ReactNode } from 'react';
+import { useSpec } from './hooks/useSpec';
+import { useTranslations } from 'next-intl';
+import { Operations } from './Operations';
+import { OpenAPIV3 } from 'openapi-types';
 
-const Swagger = ({ method, summary, children }: SwaggerProps<ReactNode>) => {
+const Swagger = ({
+  method,
+  summary,
+  children,
+  src,
+  path,
+}: SwaggerProps<ReactNode>) => {
+  const { spec, loading } = useSpec(src);
+  const t = useTranslations('swagger');
+
+  if (spec && src) {
+    const validOperations = { [path]: [method] as OpenAPIV3.HttpMethods[] };
+    return (
+      <Operations
+        spec={spec as OpenAPIV3.Document}
+        validOperations={validOperations}
+      />
+    );
+  }
+
   return (
     <Accordion
       sx={{

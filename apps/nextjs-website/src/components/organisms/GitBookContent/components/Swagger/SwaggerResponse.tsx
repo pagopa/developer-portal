@@ -1,17 +1,11 @@
-import { Card, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { SwaggerResponseProps } from 'gitbook-docs/markdoc/schema/swagger';
-import { useTranslations } from 'next-intl';
-import { OpenAPIV3 } from 'openapi-types';
 
-import { Operations } from './Operations';
-import { useSpec } from './hooks/useSpec';
 import { ReactNode } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { SwaggerProps } from 'gitbook-docs/markdoc/schema/swagger';
 
 const SwaggerResponse = ({
   status,
@@ -62,15 +56,6 @@ const SwaggerResponse = ({
         <div>{children}</div>
       </AccordionDetails>
     </Accordion>
-  );
-
-  return (
-    <div>
-      Response: {status}
-      <br></br>
-      {description && description}
-      {children}
-    </div>
   );
 };
 
