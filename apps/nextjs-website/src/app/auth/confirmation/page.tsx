@@ -41,6 +41,9 @@ const Confirmation = () => {
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
           !isProduction && console.warn(error);
           switch (error.code) {
+            case 'AliasExistsException':
+              setState(State.alreadyConfirmed);
+              break;
             case 'LimitExceededException':
               setState(State.error);
               break;
