@@ -68,10 +68,14 @@ export const makeHomepageProps = (
         name: product.attributes.name,
         description: product.attributes.description,
         slug: product.attributes.slug,
-        logo: {
-          ...product.attributes.logo.data.attributes,
-          url: `${product.attributes.logo.data.attributes.url}`,
-        },
+        // TODO: remove undefined fallback when Strapi will manage media in localhost properly
+        logo: product.attributes.logo.data
+          ? {
+              ...product.attributes.logo.data.attributes,
+            }
+          : {
+              url: '',
+            },
       })
     ),
   },
