@@ -1,5 +1,5 @@
 # RDS Aurora PostgreSQL Serverless for CMS Strapi
-module "rds" {
+module "cms_rds" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git?ref=7bf5933100eb355b13854232e5d63c62ea7cad35" # v9.0.0
 
   name                        = "cms-database"
