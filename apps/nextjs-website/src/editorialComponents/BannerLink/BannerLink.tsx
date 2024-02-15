@@ -19,6 +19,8 @@ export const BannerLink = (props: BannerLinkProps) => {
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
 
+  const bodyElement = typeof body === 'string' ? <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} /> : body;
+
   const textColor = palette.primary.contrastText;
   return (
     <Box bgcolor={backgroundColor} component='section' sx={{ width: '100%' }}>
@@ -42,7 +44,7 @@ export const BannerLink = (props: BannerLinkProps) => {
               }}
             >
               {/* Purify the body if it is a string or show the Element */}
-              {typeof body === 'string' ? DOMPurify.sanitize(body) : body}
+              {bodyElement}
             </Typography>
           </Stack>
         </Stack>
