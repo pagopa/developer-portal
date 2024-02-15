@@ -23,8 +23,8 @@ import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
-import WebinarQuestionTemplate from '../../molecules/WebinarQuestion/WebinarQuestionTemplate';
 import { useUser } from '@/helpers/user.helper';
+import WebinarQuestionRow from '@/components/molecules/WebinarQuestion/WebinarQuestionRow';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -43,14 +43,14 @@ const WebinarQuestionsTemplate = ({
   });
 
   const makeQuestionHighlighted = useCallback(
-    (question: WebinarQuestion, highlightedBy: string) =>
-      highlightQuestion(question, highlightedBy),
+    (question: WebinarQuestion, highlight: boolean, highlightedBy: string) =>
+      highlightQuestion(question, highlight, highlightedBy),
     []
   );
 
   const makeQuestionHidden = useCallback(
-    (question: WebinarQuestion, hiddenBy: string) =>
-      hideQuestion(question, hiddenBy),
+    (question: WebinarQuestion, hide: boolean, hiddenBy: string) =>
+      hideQuestion(question, hide, hiddenBy),
     []
   );
 
@@ -86,15 +86,15 @@ const WebinarQuestionsTemplate = ({
               </TableHead>
               <TableBody>
                 {sortedQuestions.map((row) => (
-                  <WebinarQuestionTemplate
-                    key={row.createdAt.valueOf.toString()}
+                  <WebinarQuestionRow
+                    key={row.createdAt.toJSON()}
                     question={row}
                     userEmail={userEmail}
-                    onHide={async () =>
-                      await makeQuestionHidden(row, userEmail)
+                    onHide={async (hide) =>
+                      await makeQuestionHidden(row, hide, userEmail)
                     }
-                    onHighlight={async () =>
-                      await makeQuestionHighlighted(row, userEmail)
+                    onHighlight={async (highlight) =>
+                      await makeQuestionHighlighted(row, highlight, userEmail)
                     }
                   />
                 ))}

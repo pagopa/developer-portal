@@ -1,6 +1,6 @@
 'use client';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
-import { IconButton, TableCell, TableRow } from '@mui/material';
+import { IconButton, TableCell, TableRow, useTheme } from '@mui/material';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'dompurify';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -9,20 +9,21 @@ import Visibility from '@mui/icons-material/Visibility';
 import { useFormatter, useTranslations } from 'next-intl';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 
-type WebinarQuestionTemplateProps = {
+type WebinarQuestionRowProps = {
   question: WebinarQuestion;
   userEmail: string;
-  onHighlight: () => Promise<void>;
-  onHide: () => Promise<void>;
+  onHighlight: (highlight: boolean) => Promise<void>;
+  onHide: (hidden: boolean) => Promise<void>;
 };
 
-export default function WebinarQuestionsTemplate({
+export default function WebinarQuestionRow({
   question,
   userEmail,
   onHide,
   onHighlight,
-}: WebinarQuestionTemplateProps) {
+}: WebinarQuestionRowProps) {
   const formatter = useFormatter();
+  const { palette } = useTheme();
   const t = useTranslations('webinar.questionList');
 
   const highlighted = question.highlightedBy;
@@ -34,11 +35,16 @@ export default function WebinarQuestionsTemplate({
       key={question.createdAt.toJSON()}
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
-        backgroundColor: highlighted ? 'action.hover' : '',
+        '&.MuiTableRow-hover:hover': {
+          backgroundColor: highlighted
+            ? palette.primary.dark
+            : palette.action.hover,
+        },
+        backgroundColor: highlighted ? palette.primary.light : '',
         fontStyle: hidden ? 'italic' : '',
       }}
     >
-      <TableCell>
+      <TableCell sx={{ color: highlighted ? palette.common.white : '' }}>
         {!hidden
           ? formatter.dateTime(question.createdAt, {
               year: 'numeric',
@@ -49,7 +55,10 @@ export default function WebinarQuestionsTemplate({
             })
           : ''}
       </TableCell>
-      <TableCell width='70%'>
+      <TableCell
+        width='70%'
+        sx={{ color: highlighted ? palette.common.white : '' }}
+      >
         {!hidden
           ? question.question
           : hidden === userEmail
@@ -58,26 +67,31 @@ export default function WebinarQuestionsTemplate({
       </TableCell>
       <TableCell>
         {!hidden || (hidden && hidden == userEmail) ? (
-          <IconButton onClick={onHide}>
+          <IconButton
+            onClick={() => onHide(!hidden)}
+            sx={{ color: highlighted ? palette.common.white : '' }}
+          >
             {!hidden ? <VisibilityOffIcon /> : <Visibility />}
           </IconButton>
         ) : (
           <></>
         )}
-      </TableCell>
-      <TableCell>
+
         {!hidden &&
           (userEmail === highlighted || !highlighted ? (
-            <IconButton onClick={onHighlight}>
+            <IconButton
+              onClick={() => onHighlight(!highlighted)}
+              sx={{ color: highlighted ? palette.common.white : '' }}
+            >
               {!highlighted ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
             </IconButton>
           ) : (
             <>{t('highlightedBy') + highlighted}</>
           ))}
-      </TableCell>
-      <TableCell>
+
         {!hidden && (
           <CopyToClipboardButton
+            sx={{ color: highlighted ? palette.common.white : '' }}
             value={DOMPurify.sanitize(question.question)}
           ></CopyToClipboardButton>
         )}
