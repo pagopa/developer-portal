@@ -4,7 +4,8 @@ module "iam_user_mauro_dandrea" {
 
   force_destroy                 = true
   password_reset_required       = true
-  create_iam_user_login_profile = false
+  create_iam_user_login_profile = true
+  create_iam_access_key         = false
 
   policy_arns = ["arn:aws:iam::aws:policy/IAMUserChangePassword"]
 
