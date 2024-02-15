@@ -309,19 +309,4 @@ export const translations = {
       },
     },
   },
-  auth: {
-    signUp: {
-      companyRoles: [
-        { title: 'Ente pubblico', value: 'public-authority' },
-        { title: 'Partner tecnologico', value: 'tech-partner' },
-        { title: 'PSP', value: 'psp' },
-        {
-          title: 'Gestore di pubblico servizio',
-          value: 'operator-of-public-service',
-        },
-        { title: 'Azienda privata', value: 'private-company' },
-        { title: 'Altro', value: 'other' },
-      ],
-    },
-  },
 };
