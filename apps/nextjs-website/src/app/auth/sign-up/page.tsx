@@ -6,10 +6,10 @@ import { SignUpSteps } from '@/lib/types/signUpSteps';
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { signUpAdvantages } from '@/config';
+import { signUpAdvantages } from '@/_contents/auth';
 
 const SignUp = () => {
   const params = useSearchParams();
@@ -93,8 +93,6 @@ const SignUp = () => {
     return null;
   }, [router, userData.username]);
 
-  const advantages = useMemo(() => signUpAdvantages, []);
-
   return (
     <>
       <Box
@@ -121,7 +119,7 @@ const SignUp = () => {
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
               {signUp('whyCreateAccount')}
             </Typography>
-            {advantages.map((advantage, index) => {
+            {signUpAdvantages.map((advantage, index) => {
               return (
                 <CheckItem
                   key={index}

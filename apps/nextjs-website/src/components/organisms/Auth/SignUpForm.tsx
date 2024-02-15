@@ -37,7 +37,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { companyRoles as configCompanyRoles } from '@/config';
+import { companyRoles as configCompanyRoles } from '@/_contents/auth';
 
 interface SignUpFormProps {
   userData: SignUpUserData;
