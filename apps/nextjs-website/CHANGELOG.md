@@ -1,5 +1,14 @@
 # nextjs-website
 
+## 0.9.2
+
+### Patch Changes
+
+- 875b2cb: [DEV-1375] Allow fetching documentation from a specific branch of the `devportal-docs` repository and enable sync of the documentation from "docs/from-gitbook" branch instead of from a commit id
+- 7322534: Fix sign-up and confirm sign-up UI and UX
+- c571989: Fix edit password card UX and UI in user profile section
+- c14d7e5: Fix sign-in and confirm sign-in UI and UX
+
 ## 0.9.1
 
 ### Patch Changes

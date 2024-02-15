@@ -203,7 +203,8 @@
         },
         "confirmSignUp": {
             "title": "Confermaci che sei tu",
-            "emailSent": "Abbiamo inviato una email a <strong>{email}</strong>. Clicca sul pulsante contenuto al suo interno per verificarla.",
+            "emailSent": "Abbiamo inviato una email a ",
+            "clickToConfirm": "Clicca sul pulsante contenuto al suo interno per verificarla.",
             "didntReceiveEmail": "Non hai ricevuto l'email? Controlla la posta indesiderata oppure",
             "resendEmail": "Invia nuovamente l'email",
             "wrongEmail": "L'indirizzo email è errato?"

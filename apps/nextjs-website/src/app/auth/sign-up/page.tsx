@@ -1,37 +1,21 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { SignUpSteps } from '@/lib/types/signUpSteps';
-import {
-  Alert,
-  Box,
-  Grid,
-  Snackbar,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { snackbarAutoHideDurationMs } from '@/config';
-
-interface Info {
-  message: string;
-  isError: boolean;
-}
+import { signUpAdvantages } from '@/_contents/auth';
 
 const SignUp = () => {
-  const {
-    auth: { signUp },
-  } = translations;
-  const t = useTranslations('errors');
   const params = useSearchParams();
   const router = useRouter();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const signUp = useTranslations('auth.signUp');
 
   const [userData, setUserData] = useState<SignUpUserData>({
     username: decodeURIComponent(params.get('email') || ''),
@@ -48,7 +32,7 @@ const SignUp = () => {
     params.get('step') || SignUpSteps.SIGN_UP
   );
 
-  const [info, setInfo] = useState<Info | null>(null);
+  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
 
   const goToConfirmSignUp = useCallback(() => {
     router.replace(
@@ -60,6 +44,7 @@ const SignUp = () => {
   }, [router, userData.username]);
 
   const onSignUp = useCallback(async () => {
+    setUserAlreadyExist(false);
     const {
       company,
       firstName,
@@ -82,12 +67,11 @@ const SignUp = () => {
         'custom:company_type': company,
       },
     }).catch((error) => {
-      if (error.code.includes('UsernameExistsException')) {
-        setInfo({ message: t(error.code), isError: true });
-        goToConfirmSignUp();
-        return true;
+      if (error.code === 'UsernameExistsException') {
+        setUserAlreadyExist(true);
+      } else {
+        setUserAlreadyExist(false);
       }
-      setInfo({ message: t(error.code), isError: true });
       return false;
     });
 
@@ -97,7 +81,7 @@ const SignUp = () => {
       goToConfirmSignUp();
       return !!result.user;
     }
-  }, [userData, t, goToConfirmSignUp]);
+  }, [userData, goToConfirmSignUp]);
 
   const onBackStep = useCallback(() => {
     router.replace(
@@ -133,14 +117,17 @@ const SignUp = () => {
         >
           <Grid item xs={isSmallScreen ? 1 : 5}>
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
-              {signUp.whyCreateAccount}
+              {signUp('whyCreateAccount')}
             </Typography>
-            {signUp.advantages.map((advantage, index) => {
+            {signUpAdvantages.map((advantage, index) => {
               return (
                 <CheckItem
                   key={index}
-                  title={advantage.title}
-                  description={advantage.text}
+                  title={signUp(`advantages.${advantage}.title`)}
+                  description={signUp(`advantages.${advantage}.text`)}
+                  isComingSoon={
+                    signUp(`advantages.${advantage}.isComingSoon`) === 'true'
+                  }
                 />
               );
             })}
@@ -151,6 +138,7 @@ const SignUp = () => {
                 userData={userData}
                 setUserData={setUserData}
                 onSignUp={onSignUp}
+                userAlreadyExist={userAlreadyExist}
               />
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
@@ -159,15 +147,6 @@ const SignUp = () => {
           </Grid>
         </Grid>
       </Box>
-      <Snackbar
-        open={!!info}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setInfo(null)}
-      >
-        <Alert severity={info?.isError ? 'error' : 'success'}>
-          {info?.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
