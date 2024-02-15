@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import IconInbox from '@/components/atoms/IconInbox/IconInbox';
 import {
   Box,
@@ -11,6 +10,7 @@ import {
   Link,
 } from '@mui/material';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
+import { useTranslations } from 'next-intl';
 
 interface ConfirmSignUpProps {
   email: string;
@@ -18,10 +18,8 @@ interface ConfirmSignUpProps {
 }
 
 const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
-  const {
-    auth: { confirmSignUp },
-    shared,
-  } = translations;
+  const confirmSignUp = useTranslations('auth.confirmSignUp');
+  const shared = useTranslations('shared');
 
   return (
     <Box component='section'>
@@ -32,12 +30,20 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               <IconInbox />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {confirmSignUp.confirmSignUp}
+              {confirmSignUp('title')}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {confirmSignUp.description(email)}
+              {confirmSignUp('emailSent')}
+              <Box component='span' fontWeight='fontWeightMedium'>
+                {email}
+              </Box>
+              <br />
+              {confirmSignUp('clickToConfirm')}
             </Typography>
-            <ResendEmail email={email} text={confirmSignUp.didntReceiveEmail} />
+            <ResendEmail
+              email={email}
+              text={confirmSignUp('didntReceiveEmail')}
+            />
             <Divider />
             <Stack
               pt={4}
@@ -48,14 +54,14 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
               flexDirection='row'
             >
               <Typography variant='body1' mr={1}>
-                {confirmSignUp.wrongEmail}
+                {confirmSignUp('wrongEmail')}
               </Typography>
               <Link
                 variant='body2'
                 onClick={onBack}
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
-                {shared.goBack}
+                {shared('goBack')}
               </Link>
             </Stack>
           </Grid>
