@@ -4,17 +4,37 @@
   "info": {
     "singularName": "homepage",
     "pluralName": "homepages",
-    "displayName": "Homepage"
+    "displayName": "Homepage",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
+    "productsShowcase": {
+      "type": "component",
+      "repeatable": false,
+      "component": "products.products-showcase",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "comingsoonDocumentation": {
       "type": "component",
       "repeatable": false,
-      "component": "common.related-links"
+      "component": "common.related-links",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }
