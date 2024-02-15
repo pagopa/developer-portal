@@ -441,7 +441,6 @@ resource "aws_iam_role_policy" "devportal_authenticated_host_user" {
         Action = [
           "dynamodb:PutItem",
           "dynamodb:Query",
-          "dynamodb:UpdateItem",
         ],
         Resource = [
           "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
