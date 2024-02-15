@@ -35,6 +35,11 @@
           "localized": true
         }
       }
+    },
+    "hero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.hero"
     }
   }
 }

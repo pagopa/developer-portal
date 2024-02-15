@@ -46,6 +46,7 @@ export const makeHomepageProps = (
   ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
+  hero: strapiHomepage.data.attributes.hero,
 });
 
 export const makeHomepagePropsFromStatic = (

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_common_cta_slide_props",
+  "info": {
+    "displayName": "HeroCard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "string"
+    },
+    "cta": {
+      "displayName": "Cta",
+      "type": "component",
+      "repeatable": false,
+      "component": "common.cta"
+    }
+  }
+}

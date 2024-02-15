@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_common_ctas",
+  "info": {
+    "displayName": "HeroCardCta",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "contained",
+        "outlined"
+      ],
+      "required": false
+    }
+  }
+}

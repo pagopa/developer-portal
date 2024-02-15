@@ -14,6 +14,25 @@ const LinkHomepageCodec = t.strict({
   ]),
 });
 
+const CtaCodec = t.strict({
+  label: t.string,
+  href: t.string,
+  variant: t.union([
+    t.undefined,
+    t.literal('text'),
+    t.literal('contained'),
+    t.literal('outlined'),
+  ]),
+});
+
+const CtaSlideCodec = t.strict({
+  title: t.string,
+  color: t.union([t.string, t.undefined]),
+  cta: t.union([CtaCodec, t.undefined]),
+  child: t.union([t.string, t.undefined]),
+  backgroundImage: t.union([t.string, t.undefined]),
+});
+
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
     id: t.number,
@@ -21,6 +40,11 @@ export const StrapiHomepageCodec = t.strict({
       comingsoonDocumentation: t.type({
         title: t.string,
         links: t.array(LinkHomepageCodec),
+      }),
+      hero: t.type({
+        siteTitle: t.string,
+        boldTitle: t.string,
+        cards: t.array(CtaSlideCodec),
       }),
     }),
   }),
@@ -33,6 +57,9 @@ const makeStrapiHomepagePopulate = () =>
     populate: {
       comingsoonDocumentation: {
         populate: ['links'],
+      },
+      hero: {
+        populate: ['boldTitle', 'siteTitle', 'cards'],
       },
     },
   });

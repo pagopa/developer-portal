@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_common_heroes",
+  "info": {
+    "displayName": "hero",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "siteTitle": {
+      "type": "string",
+      "required": true
+    },
+    "boldTitle": {
+      "type": "string",
+      "required": true
+    },
+    "cards": {
+      "displayName": "CtaSlideProps",
+      "type": "component",
+      "repeatable": true,
+      "component": "common.cta-slide-props"
+    }
+  }
+}
