@@ -43,7 +43,6 @@ export const BannerLink = (props: BannerLinkProps) => {
                 },
               }}
             >
-              {/* Purify the body if it is a string or show the Element */}
               {bodyElement}
             </Typography>
           </Stack>
