@@ -112,7 +112,7 @@ resource "aws_route53_record" "devportal_google_site_verification_txt" {
 module "cms_dns_records" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0"
 
-  zone_id = module.dns_zone_cms.route53_zone_zone_id[keys(var.dns_domain_name_cms)[0]]
+  zone_id = aws_route53_zone.dev_portal.id
 
   records = [
     {
