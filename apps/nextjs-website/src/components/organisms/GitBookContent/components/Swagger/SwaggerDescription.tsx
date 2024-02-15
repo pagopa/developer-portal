@@ -18,6 +18,7 @@ const SwaggerDescription = ({
         marginTop: '16px',
         marginBottom: '16px',
       }}
+      component={'div'}
     >
       {children}
     </Typography>
