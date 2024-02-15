@@ -13,12 +13,12 @@ data "template_file" "cms_app" {
     fargate_cpu          = var.cms_app_cpu
     fargate_memory       = var.cms_app_memory
     aws_region           = var.aws_region
-    db_host              = module.rds.cluster_endpoint
-    db_user              = module.rds.cluster_master_username
+    db_host              = module.cms_rds.cluster_endpoint
+    db_user              = module.cms_rds.cluster_master_username
     db_password_arn      = module.secret_cms_database_password.ssm_parameter_arn
     bucket_name          = module.s3_bucket_cms.s3_bucket_id
     admin_jwt_secret_arn = module.secret_cms_admin_jwt_secret.ssm_parameter_arn
-    db_name              = module.rds.cluster_database_name
+    db_name              = module.cms_rds.cluster_database_name
     db_client            = "postgres"
     container_port       = var.cms_app_port
     app_keys             = module.secret_cms_app_keys.ssm_parameter_arn
