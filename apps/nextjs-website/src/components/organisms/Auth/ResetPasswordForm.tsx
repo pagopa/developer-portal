@@ -8,38 +8,55 @@ import {
   Card,
   Grid,
   Box,
+  TextField,
+  useTheme,
 } from '@mui/material';
-import { emailMatcher } from '@/helpers/auth.helpers';
-import { translations } from '@/_contents/translations';
-import RequiredTextField, {
-  ValidatorFunction,
-} from '@/components/molecules/RequiredTextField/RequiredTextField';
+import { validateEmail } from '@/helpers/auth.helpers';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-
-const {
-  auth: { resetPassword },
-  shared,
-} = translations;
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ResetPasswordFormProps {
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
   handleResetPassword: () => Promise<void>;
-  emailValidators: ValidatorFunction[];
 }
 
 const ResetPasswordForm = ({
   email,
   setEmail,
   handleResetPassword,
-  emailValidators,
 }: ResetPasswordFormProps) => {
-  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
+  const resetPassword = useTranslations('auth.resetPassword');
+  const shared = useTranslations('shared');
+  const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    setSubmitDisabled(!emailMatcher.test(email));
-  }, [email]);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  const validateForm = useCallback(() => {
+    const emailError = validateEmail(email);
+
+    if (emailError) {
+      setEmailError(resetPassword('emailFieldError'));
+    }
+
+    return !emailError;
+  }, [email, resetPassword]);
+
+  const onResetPassword = useCallback(() => {
+    const valid = validateForm();
+    if (!valid) {
+      return;
+    }
+
+    setSubmitting(true);
+
+    handleResetPassword().finally(() => {
+      setSubmitting(false);
+    });
+  }, [handleResetPassword, validateForm]);
+
+  const { palette } = useTheme();
 
   return (
     <Box
@@ -58,29 +75,31 @@ const ResetPasswordForm = ({
               <IllusDataSecurity />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {resetPassword.title}
+              {resetPassword('title')}
             </Typography>
             <Typography variant='body2' mb={4}>
-              {resetPassword.body}
+              {resetPassword('body')}
             </Typography>
-            <RequiredTextField
-              label={shared.emailAddress}
+            <TextField
+              label={shared('emailAddress')}
               value={email}
               onChange={({ target: { value } }) => setEmail(value)}
-              helperText={shared.requiredFieldError}
-              customValidators={emailValidators}
+              helperText={emailError}
+              error={!!emailError}
+              size='small'
+              sx={{
+                backgroundColor: palette.background.paper,
+                width: '100%',
+              }}
             />
             <Stack spacing={4} pt={4} pb={2}>
               <Stack direction='row' justifyContent='center'>
                 <Button
                   variant='contained'
-                  onClick={() => {
-                    setSubmitDisabled(true);
-                    handleResetPassword();
-                  }}
-                  disabled={isSubmitDisabled}
+                  onClick={onResetPassword}
+                  disabled={submitting}
                 >
-                  {resetPassword.send}
+                  {resetPassword('send')}
                 </Button>
               </Stack>
             </Stack>
@@ -98,7 +117,7 @@ const ResetPasswordForm = ({
                 href='/auth/login'
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
-                {resetPassword.goBackToLogin}
+                {resetPassword('goBackToLogin')}
               </Link>
             </Stack>
           </Grid>
