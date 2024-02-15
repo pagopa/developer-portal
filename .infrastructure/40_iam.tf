@@ -77,6 +77,113 @@ resource "aws_iam_role_policy_attachment" "deploy_website" {
   policy_arn = aws_iam_policy.deploy_website.arn
 }
 
+## IAM Role and policy ECS for CMS Strapi
+data "aws_iam_policy_document" "ecs_task_execution" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:DescribeParameters"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameters"
+    ]
+    resources = [
+      module.secret_cms_database_password.ssm_parameter_arn,
+      module.secret_cms_admin_jwt_secret.ssm_parameter_arn,
+      module.secret_cms_app_keys.ssm_parameter_arn,
+      module.secret_cms_api_token_salt.ssm_parameter_arn,
+      module.secret_cms_transfer_token_salt.ssm_parameter_arn,
+      module.secret_cms_jwt_secret.ssm_parameter_arn,
+      module.secret_cms_access_key_id.ssm_parameter_arn,
+      module.secret_cms_access_key_secret.ssm_parameter_arn,
+      module.secret_cms_github_pat.ssm_parameter_arn
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation"
+    ]
+    resources = [
+      "${module.s3_bucket_cms.s3_bucket_arn}"
+    ]
+  }
+}
+
+module "iam_policy_ecs_task_execution" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name   = "CMSTaskExecutionPolicies"
+  path   = "/"
+  policy = data.aws_iam_policy_document.ecs_task_execution.json
+}
+
+module "iam_role_ecs_task_execution" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "ecs-task-execution-role"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    module.iam_policy_ecs_task_execution.arn,
+  ]
+  number_of_custom_role_policy_arns = 3
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  role_requires_mfa = false
+}
+
+data "aws_iam_policy_document" "ecs_task_role_s3" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:DeleteObject",
+      "s3:GetObject",
+      "s3:GetObjectAttributes",
+      "s3:ListBucket",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+    resources = [
+      "${module.s3_bucket_cms.s3_bucket_arn}"
+    ]
+  }
+}
+
+module "iam_policy_ecs_task_role_s3" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name   = "CMSTaskRolePoliciesS3"
+  path   = "/"
+  policy = data.aws_iam_policy_document.ecs_task_role_s3.json
+}
+
+module "iam_role_task_role" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "ecs-task-role"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
+    module.iam_policy_ecs_task_role_s3.arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  role_requires_mfa = false
+}
+
 ## IAM User Strapi with Access and Secret Key for CMS Strapi
 module "iam_user_cms" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
