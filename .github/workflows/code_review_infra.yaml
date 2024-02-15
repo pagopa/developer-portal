@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         environment: [dev, prod]
+      fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
     name: Infra checks
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
