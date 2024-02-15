@@ -325,7 +325,7 @@ export const translations = {
       checkJunkMail:
         'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
       continue: 'Continua',
-      resendEmail: 'Reinvia e-mail',
+      resendEmail: 'Reinvia email',
     },
     accountActivated: {
       goToLogin: 'Vai al login',
@@ -383,7 +383,7 @@ export const translations = {
         `Abbiamo inviato una e-mail a ${email}. Clicca sul bottone contenuto al suo interno per verificarla.`,
       didntReceiveEmail:
         "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
-      resendEmail: 'Reinvia e-mail',
+      resendEmail: 'Reinvia email',
       wrongEmail: "L'indirizzo email è errato?",
     },
     resetPassword: {
@@ -396,7 +396,7 @@ export const translations = {
         `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
       resendEmailPrompt:
         "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-      resendEmail: 'Reinvia e-mail',
+      resendEmail: 'Reinvia email',
       wrongEmail: "L'indirizzo e-mail è errato?",
       passwordSet: 'Password impostata correttamente',
       newPassword: 'Imposta una nuova password',
