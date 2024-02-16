@@ -7,14 +7,14 @@ import React, { ReactNode } from 'react';
 
 export type CtaSlideProps = {
   readonly title: string;
-  readonly color?: string;
+  readonly color?: string | null;
   readonly cta?: {
     readonly label: string;
     readonly href: string;
-    readonly variant?: 'text' | 'contained' | 'outlined';
-  };
+    readonly variant?: 'text' | 'contained' | 'outlined' | null;
+  } | null;
   readonly child?: ReactNode;
-  readonly backgroundImage?: string;
+  readonly backgroundImage?: string | null;
 };
 
 const CtaSlide = ({
@@ -68,7 +68,7 @@ const CtaSlide = ({
       <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
         <Image
           style={{ objectFit: 'cover' }}
-          src={backgroundImage}
+          src={backgroundImage as string}
           alt={title}
           fill={true}
         />

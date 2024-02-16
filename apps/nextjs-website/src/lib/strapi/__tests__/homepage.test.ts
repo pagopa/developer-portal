@@ -44,6 +44,12 @@ const makeStrapiResponseJson = () => ({
           },
         ],
       },
+      hero: {
+        id: 2,
+        siteTitle: 'Titolo',
+        boldTitle: 'saddf',
+        cards: [{ id: 2, title: 'sfgsdgf', color: null }],
+      },
     },
   },
   meta: {},
