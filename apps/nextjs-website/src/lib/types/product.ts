@@ -4,12 +4,11 @@ export type Product = {
   readonly slug: string;
   readonly description: string;
   readonly logo: {
-    // TODO: remove null when Strapi will manage media in localhost properly
-    readonly name?: string;
-    readonly width?: number;
-    readonly height?: number;
-    readonly ext?: string;
-    readonly mime?: string;
+    readonly name: string;
+    readonly width: number;
+    readonly height: number;
+    readonly ext: string;
+    readonly mime: string;
     readonly url: string;
   };
   readonly subpaths: Subpaths;

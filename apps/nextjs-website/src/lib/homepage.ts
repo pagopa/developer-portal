@@ -32,12 +32,11 @@ export type HomepageProps = {
       readonly description: string;
       readonly slug: string;
       readonly logo: {
-        // TODO: remove null when Strapi will manage media in localhost properly
-        readonly name?: string;
-        readonly width?: number;
-        readonly height?: number;
-        readonly ext?: string;
-        readonly mime?: string;
+        readonly name: string;
+        readonly width: number;
+        readonly height: number;
+        readonly ext: string;
+        readonly mime: string;
         readonly url: string;
       };
     }[];
@@ -69,14 +68,7 @@ export const makeHomepageProps = (
         name: product.attributes.name,
         description: product.attributes.description,
         slug: product.attributes.slug,
-        // TODO: remove undefined fallback when Strapi will manage media in localhost properly
-        logo: product.attributes.logo.data
-          ? {
-              ...product.attributes.logo.data.attributes,
-            }
-          : {
-              url: '',
-            },
+        logo: product.attributes.logo.data.attributes,
       })
     ),
   },
