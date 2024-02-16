@@ -46,16 +46,15 @@ const makeStrapiResponseJson = () => ({
       },
       productsShowcase: {
         id: 1,
-        title: 'Scopri il nostro ecosistema',
+        title: 'aText',
         products: {
           data: [
             {
               id: 1,
               attributes: {
-                name: 'IO, l’app dei servizi pubblici',
-                description:
-                  'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
-                slug: 'app-io',
+                name: 'aText',
+                description: 'aText',
+                slug: 'a-slug',
                 createdAt: '2024-02-09T13:32:16.646Z',
                 updatedAt: '2024-02-09T13:32:25.171Z',
                 publishedAt: '2024-02-09T13:32:25.170Z',
@@ -64,17 +63,17 @@ const makeStrapiResponseJson = () => ({
                   data: {
                     id: 2,
                     attributes: {
-                      name: 'appIo.svg',
+                      name: 'aFileName.svg',
                       alternativeText: null,
                       caption: null,
                       width: 60,
                       height: 61,
                       formats: null,
-                      hash: 'app_Io_714c6d0fd3',
+                      hash: 'a_file_name_714c6d0fd3',
                       ext: '.svg',
                       mime: 'image/svg+xml',
                       size: 1.9,
-                      url: '/uploads/app_Io_714c6d0fd3.svg',
+                      url: '/uploads/a_file_name_714c6d0fd3.svg',
                       previewUrl: null,
                       provider: 'local',
                       provider_metadata: null,
