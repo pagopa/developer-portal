@@ -1,4 +1,5 @@
 resource "aws_iam_user" "mauro_dandrea" {
+  count = var.environment == "dev" ? 1 : 0
   # This force the deletion of the user and its login profile
   # because we manually give access to the console
   force_destroy = true
