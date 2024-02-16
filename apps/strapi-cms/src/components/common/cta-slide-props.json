@@ -14,7 +14,11 @@
       "type": "string"
     },
     "backgroundImage": {
-      "type": "string"
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": true
     },
     "cta": {
       "displayName": "Cta",

@@ -27,10 +27,10 @@ const CtaCodec = t.strict({
 
 const CtaSlideCodec = t.strict({
   title: t.string,
-  color: t.union([t.string, t.undefined]),
-  cta: t.union([CtaCodec, t.undefined]),
-  child: t.union([t.string, t.undefined]),
-  backgroundImage: t.union([t.string, t.undefined]),
+  color: t.union([t.string, t.null, t.undefined]),
+  cta: t.union([CtaCodec, t.null, t.undefined]),
+  child: t.union([t.string, t.null, t.undefined]),
+  backgroundImage: t.union([t.string, t.null, t.undefined]),
 });
 
 export const StrapiHomepageCodec = t.strict({
