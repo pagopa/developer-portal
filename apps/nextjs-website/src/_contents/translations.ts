@@ -71,7 +71,7 @@ export const translations = {
         },
         {
           title:
-            'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
+            'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
           href: {
             label: 'Vai alla guida',
             link: `${pagoPaQuickStartGuidePath.path}`,
@@ -79,7 +79,7 @@ export const translations = {
           },
           image: {
             url: '/images/homepage-pago-pa.png',
-            alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in 6 step',
+            alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
           },
         },
       ],
@@ -310,61 +310,7 @@ export const translations = {
     },
   },
   auth: {
-    login: {
-      action: 'Accedi',
-      loginToYourAccount: 'Accedi al tuo account DevPortal',
-      rememberMe: 'Ricordami',
-      forgotPassword: 'Hai dimenticato la password?',
-      noAccount: 'Non hai un account?',
-    },
-    confirmLogin: {
-      title: 'Verifica la tua identità',
-      body: (email: string) =>
-        `Abbiamo inviato un codice di verifica a ${email} Il codice scade tra 3 minuti.`,
-      code: 'Codice di verifica',
-      checkJunkMail:
-        'Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure',
-      continue: 'Continua',
-      resendEmail: 'Reinvia email',
-    },
-    accountActivated: {
-      goToLogin: 'Vai al login',
-      welcomeMessage: 'Ti diamo il benvenuto su PagoPA DevPortal.',
-      yourAccountIsActive: 'Il tuo account è attivo',
-    },
     signUp: {
-      action: 'Iscriviti',
-      createYourAccount: 'Crea il tuo account',
-      confirmComunications:
-        "Inviami e-mail relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle e-mail utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
-      acceptPolicy1:
-        'Cliccando su iscriviti dichiari di aver preso visione della nostra ',
-      acceptPolicy2: 'privacy policy',
-      acceptPolicy3: ' e dei nostri ',
-      acceptPolicy4: "termini e condizioni d'uso",
-      alreadyHaveAnAccount: 'Hai già un account?',
-      whyCreateAccount: 'Perché iscriversi a PagoPA DevPortal',
-      passwordPolicy:
-        'Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale',
-      emailSent: (email: string) => `Email inviata a ${email}`,
-      advantages: [
-        {
-          title: 'Accedi a contenuti esclusivi',
-          text: 'Assisti ai webinar di PagoPA e interagisci con noi sugli argomenti del momento.',
-        },
-        {
-          title: 'Ricevi aggiornamenti sui nostri prodotti',
-          text: "Non perdere neanche un nuovo contenuto, guida o tutorial. Puoi scegliere di ricevere via email le novità sui prodotti PagoPA e sull'integrazione tecnologica. ",
-        },
-        {
-          title: 'Accedi ai tool per velocizzare i tuoi sviluppi (in arrivo)',
-          text: 'Sblocca tutto il potenziale del DevPortal con API Key, Mocker, SDK ed altro ancora.',
-        },
-        {
-          title: 'Richiedi assistenza su un canale dedicato (in arrivo)',
-          text: 'Avvicinati con facilità alle soluzioni di cui hai bisogno e risolvi le difficoltà con il nostro aiuto.',
-        },
-      ],
       companyRoles: [
         { title: 'Ente pubblico', value: 'public-authority' },
         { title: 'Partner tecnologico', value: 'tech-partner' },
@@ -376,32 +322,6 @@ export const translations = {
         { title: 'Azienda privata', value: 'private-company' },
         { title: 'Altro', value: 'other' },
       ],
-    },
-    confirmSignUp: {
-      confirmSignUp: 'Conferma che sei tu',
-      description: (email: string) =>
-        `Abbiamo inviato una e-mail a ${email}. Clicca sul bottone contenuto al suo interno per verificarla.`,
-      didntReceiveEmail:
-        "Non hai ricevuto l'e-mail? Controlla se nella posta indesiderata oppure",
-      resendEmail: 'Reinvia email',
-      wrongEmail: "L'indirizzo email è errato?",
-    },
-    resetPassword: {
-      title: 'Recupera password',
-      body: 'Inserisci il tuo indirizzo e-mail e ti invieremo le istruzioni per impostare una nuova password.',
-      goBackToLogin: 'Torna al login',
-      send: 'Invia',
-      checkEmailTitle: "Controlla l'email",
-      checkEmail: (email: string) =>
-        `Se esiste un account associato a ${email}, riceverai una e-mail con un link per impostare una nuova password.`,
-      resendEmailPrompt:
-        "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-      resendEmail: 'Reinvia email',
-      wrongEmail: "L'indirizzo e-mail è errato?",
-      passwordSet: 'Password impostata correttamente',
-      newPassword: 'Imposta una nuova password',
-      rememberPassword: 'Ricordi la tua password?',
-      invalidLinkError: 'Il link non è valido',
     },
   },
 };

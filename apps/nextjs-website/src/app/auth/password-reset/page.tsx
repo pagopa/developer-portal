@@ -28,9 +28,6 @@ const PasswordReset = () => {
   }, [email]);
 
   const onBackStep = useCallback(() => {
-    router.replace(
-      `/auth/password-reset?email=${email}&step=${SendResetPasswordSteps.SEND_EMAIL}`
-    );
     setSendResetPasswordSteps(SendResetPasswordSteps.SEND_EMAIL);
     return null;
   }, [router, email]);
