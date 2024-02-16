@@ -231,7 +231,7 @@
             "checkEmailStart": "Se esiste un account associato a ",
             "checkEmailTitle": "Controlla l'email",
             "emailFieldError": "Inserisci un indirizzo email valido",
-            "goToLogin": "Vai al login",
+            "goToLogin": "Torna al login",
             "invalidLinkError": "Il link non è valido",
             "newPassword": "Imposta una nuova password",
             "passwordSet": "Password impostata correttamente",
