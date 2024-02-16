@@ -42,6 +42,7 @@ export default function WebinarQuestionRow({
         },
         backgroundColor: highlighted ? palette.primary.light : '',
         fontStyle: hidden ? 'italic' : '',
+        position: 'relative',
       }}
     >
       <TableCell sx={{ color: highlighted ? palette.common.white : '' }}>
