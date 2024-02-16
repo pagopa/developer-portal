@@ -1,6 +1,6 @@
 'use client';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
-import { IconButton, TableCell, TableRow, useTheme } from '@mui/material';
+import { Box, IconButton, TableCell, TableRow, useTheme } from '@mui/material';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'dompurify';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
