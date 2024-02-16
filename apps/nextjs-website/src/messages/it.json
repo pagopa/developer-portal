@@ -230,7 +230,7 @@
             "checkEmailEnd": "riceverai una email con un link per impostare una nuova password.",
             "checkEmailStart": "Se esiste un account associato a ",
             "checkEmailTitle": "Controlla l'email",
-            "emailFieldError": "Inserisci un indirizzo email valido",
+            "emailFieldError": "L’indirizzo email non è valido",
             "goToLogin": "Torna al login",
             "invalidLinkError": "Il link non è valido",
             "newPassword": "Imposta una nuova password",
