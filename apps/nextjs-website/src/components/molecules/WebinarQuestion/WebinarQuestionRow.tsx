@@ -66,35 +66,47 @@ export default function WebinarQuestionRow({
           : t('hiddenBy') + hidden}
       </TableCell>
       <TableCell>
-        {!hidden || (hidden && hidden == userEmail) ? (
-          <IconButton
-            onClick={() => onHide(!hidden)}
-            sx={{ color: highlighted ? palette.common.white : '' }}
-          >
-            {!hidden ? <VisibilityOffIcon /> : <Visibility />}
-          </IconButton>
-        ) : (
-          <></>
-        )}
-
-        {!hidden &&
-          (userEmail === highlighted || !highlighted ? (
+        <Box display={'flex'} justifyContent={'space-between'}>
+          {!hidden || (hidden && hidden == userEmail) ? (
             <IconButton
-              onClick={() => onHighlight(!highlighted)}
+              onClick={() => onHide(!hidden)}
               sx={{ color: highlighted ? palette.common.white : '' }}
             >
-              {!highlighted ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
+              {!hidden ? <VisibilityOffIcon /> : <Visibility />}
             </IconButton>
           ) : (
-            <>{t('highlightedBy') + highlighted}</>
-          ))}
+            <></>
+          )}
 
-        {!hidden && (
-          <CopyToClipboardButton
-            sx={{ color: highlighted ? palette.common.white : '' }}
-            value={DOMPurify.sanitize(question.question)}
-          ></CopyToClipboardButton>
-        )}
+          {!hidden &&
+            (userEmail === highlighted || !highlighted ? (
+              <IconButton
+                onClick={() => onHighlight(!highlighted)}
+                sx={{ color: highlighted ? palette.common.white : '' }}
+              >
+                {!highlighted ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
+              </IconButton>
+            ) : (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 4,
+                  left: 16,
+                  fontSize: 14,
+                  color: palette.common.white,
+                }}
+              >
+                {t('highlightedBy') + highlighted}
+              </Box>
+            ))}
+
+          {!hidden && (
+            <CopyToClipboardButton
+              sx={{ color: highlighted ? palette.common.white : '' }}
+              value={DOMPurify.sanitize(question.question)}
+            ></CopyToClipboardButton>
+          )}
+        </Box>
       </TableCell>
     </TableRow>
   );
