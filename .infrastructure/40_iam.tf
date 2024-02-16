@@ -96,7 +96,7 @@ resource "aws_iam_role" "deploy_cms" {
 
 resource "aws_iam_policy" "deploy_cms" {
   name        = "DeployCms"
-  description = "Policy to allow to deploy the website"
+  description = "Policy to allow to deploy the cms"
 
   policy = jsonencode({
     Version = "2012-10-17"
