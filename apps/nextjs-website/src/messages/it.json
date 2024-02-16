@@ -229,21 +229,21 @@
             "yourAccountIsActive": "Il tuo account è attivo"
         },
         "resetPassword": {
-            "title": "Recupera password",
             "body": "Inserisci il tuo indirizzo email e ti invieremo le istruzioni per impostare una nuova password.",
-            "goBackToLogin": "Torna al login",
-            "send": "Invia",
-            "checkEmailTitle": "Controlla l'email",
-            "checkEmailStart": "Se esiste un account associato a ",
             "checkEmailEnd": "riceverai una email con un link per impostare una nuova password.",
-            "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
-            "resendEmail": "Reinvia email",
-            "wrongEmail": "L'indirizzo email è errato?",
-            "passwordSet": "Password impostata correttamente",
-            "newPassword": "Imposta una nuova password",
-            "rememberPassword": "Ricordi la tua password?",
+            "checkEmailStart": "Se esiste un account associato a ",
+            "checkEmailTitle": "Controlla l'email",
+            "emailFieldError": "L’indirizzo email non è valido",
+            "goToLogin": "Torna al login",
             "invalidLinkError": "Il link non è valido",
-            "emailFieldError": "Inserisci un indirizzo email valido"
+            "newPassword": "Imposta una nuova password",
+            "passwordSet": "Password impostata correttamente",
+            "rememberPassword": "Ricordi la tua password?",
+            "resendEmail": "Reinvia email",
+            "resendEmailPrompt": "Non hai ricevuto l'email? Controlla nella posta indesiderata oppure",
+            "send": "Invia",
+            "title": "Recupera password",
+            "wrongEmail": "L'indirizzo email è errato?"
         },
         "expiredCode": {
             "expiredLink": "Il link che hai usato è scaduto",
