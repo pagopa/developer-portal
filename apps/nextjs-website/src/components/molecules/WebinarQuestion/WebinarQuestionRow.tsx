@@ -26,8 +26,11 @@ export default function WebinarQuestionRow({
   const { palette } = useTheme();
   const t = useTranslations('webinar.questionList');
 
-  const highlighted = question.highlightedBy;
-  const hidden = question.hiddenBy;
+  const { hiddenBy, hiddenByFullName, highlightedBy, highlightedByFullName } =
+    question;
+
+  const isHidden = !!hiddenBy;
+  const isHighlighted = !!highlightedBy;
 
   return (
     <TableRow
@@ -36,17 +39,17 @@ export default function WebinarQuestionRow({
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
         '&.MuiTableRow-hover:hover': {
-          backgroundColor: highlighted
+          backgroundColor: isHighlighted
             ? palette.primary.dark
             : palette.action.hover,
         },
-        backgroundColor: highlighted ? palette.primary.light : '',
-        fontStyle: hidden ? 'italic' : '',
+        backgroundColor: isHighlighted ? palette.primary.light : '',
+        fontStyle: isHidden ? 'italic' : '',
         position: 'relative',
       }}
     >
-      <TableCell sx={{ color: highlighted ? palette.common.white : '' }}>
-        {!hidden
+      <TableCell sx={{ color: isHighlighted ? palette.common.white : '' }}>
+        {!isHidden
           ? formatter.dateTime(question.createdAt, {
               year: 'numeric',
               month: 'numeric',
@@ -58,34 +61,34 @@ export default function WebinarQuestionRow({
       </TableCell>
       <TableCell
         width='70%'
-        sx={{ color: highlighted ? palette.common.white : '' }}
+        sx={{ color: isHighlighted ? palette.common.white : '' }}
       >
-        {!hidden
+        {!isHidden
           ? question.question
-          : hidden === userEmail
+          : isHidden && hiddenBy === userEmail
           ? t('hiddenByMe') + ' ( ' + question.question + ' )'
-          : t('hiddenBy') + hidden}
+          : t('hiddenBy') + hiddenByFullName}
       </TableCell>
       <TableCell>
         <Box display={'flex'} justifyContent={'space-between'}>
-          {!hidden || (hidden && hidden == userEmail) ? (
+          {!isHidden || (isHidden && hiddenBy == userEmail) ? (
             <IconButton
-              onClick={() => onHide(!hidden)}
-              sx={{ color: highlighted ? palette.common.white : '' }}
+              onClick={() => onHide(!isHidden)}
+              sx={{ color: isHighlighted ? palette.common.white : '' }}
             >
-              {!hidden ? <VisibilityOffIcon /> : <Visibility />}
+              {!isHidden ? <VisibilityOffIcon /> : <Visibility />}
             </IconButton>
           ) : (
             <></>
           )}
 
-          {!hidden &&
-            (userEmail === highlighted || !highlighted ? (
+          {!isHidden &&
+            (userEmail === highlightedBy || !isHighlighted ? (
               <IconButton
-                onClick={() => onHighlight(!highlighted)}
-                sx={{ color: highlighted ? palette.common.white : '' }}
+                onClick={() => onHighlight(!isHighlighted)}
+                sx={{ color: isHighlighted ? palette.common.white : '' }}
               >
-                {!highlighted ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
+                {!isHidden ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
               </IconButton>
             ) : (
               <Box
@@ -97,13 +100,13 @@ export default function WebinarQuestionRow({
                   color: palette.common.white,
                 }}
               >
-                {t('highlightedBy') + highlighted}
+                {t('highlightedBy') + highlightedByFullName}
               </Box>
             ))}
 
-          {!hidden && (
+          {!isHidden && (
             <CopyToClipboardButton
-              sx={{ color: highlighted ? palette.common.white : '' }}
+              sx={{ color: isHighlighted ? palette.common.white : '' }}
               value={DOMPurify.sanitize(question.question)}
             ></CopyToClipboardButton>
           )}

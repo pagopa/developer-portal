@@ -34,7 +34,6 @@ const WebinarQuestionsTemplate = ({
   webinar,
 }: WebinarQuestionsTemplateProps) => {
   const { user, loading } = useUser();
-  const userEmail = user?.attributes['email'] as string;
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
 
@@ -43,14 +42,28 @@ const WebinarQuestionsTemplate = ({
   });
 
   const makeQuestionHighlighted = useCallback(
-    (question: WebinarQuestion, highlight: boolean, highlightedBy: string) =>
-      highlightQuestion(question, highlight, highlightedBy),
+    (
+      question: WebinarQuestion,
+      highlight: boolean,
+      highlightedBy: string,
+      highlightedByFullName: string
+    ) =>
+      highlightQuestion(
+        question,
+        highlight,
+        highlightedBy,
+        highlightedByFullName
+      ),
     []
   );
 
   const makeQuestionHidden = useCallback(
-    (question: WebinarQuestion, hide: boolean, hiddenBy: string) =>
-      hideQuestion(question, hide, hiddenBy),
+    (
+      question: WebinarQuestion,
+      hide: boolean,
+      hiddenBy: string,
+      hiddenByFullName: string
+    ) => hideQuestion(question, hide, hiddenBy, hiddenByFullName),
     []
   );
 
@@ -59,8 +72,10 @@ const WebinarQuestionsTemplate = ({
   }, [webinar]);
 
   if (error) return <PageNotFound />;
-  else if (!data || loading) return <Spinner />;
+  else if (!data || loading || !user) return <Spinner />;
   else {
+    const userEmail = user.attributes['email'];
+    const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
     const sortedQuestions = [...data].sort(
       (a: WebinarQuestion, b: WebinarQuestion) =>
         b.createdAt.getTime() - a.createdAt.getTime()
@@ -91,10 +106,15 @@ const WebinarQuestionsTemplate = ({
                     question={row}
                     userEmail={userEmail}
                     onHide={async (hide) =>
-                      await makeQuestionHidden(row, hide, userEmail)
+                      await makeQuestionHidden(row, hide, userEmail, userName)
                     }
                     onHighlight={async (highlight) =>
-                      await makeQuestionHighlighted(row, highlight, userEmail)
+                      await makeQuestionHighlighted(
+                        row,
+                        highlight,
+                        userEmail,
+                        userName
+                      )
                     }
                   />
                 ))}

@@ -32,7 +32,9 @@ export type WebinarQuestion = {
   readonly question: string;
   readonly createdAt: Date;
   readonly hiddenBy?: string;
+  readonly hiddenByFullName?: string;
   readonly highlightedBy?: string;
+  readonly highlightedByFullName?: string;
 };
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
@@ -57,7 +59,8 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
 export const highlightWebinarQuestion = (
   question: WebinarQuestion,
   highlight: boolean,
-  highlightedBy: string
+  highlightedByEmail: string,
+  highlightedByFullName: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
@@ -68,12 +71,17 @@ export const highlightWebinarQuestion = (
           webinarId: { S: question.webinarId },
           createdAt: { S: question.createdAt.toISOString() },
         },
-        UpdateExpression: 'SET #highlightedBy = :highlightedBy',
+        UpdateExpression:
+          'SET #highlightedBy = :highlightedBy, #highlightedByFullName = :highlightedByFullName',
         ExpressionAttributeNames: {
           '#highlightedBy': 'highlightedBy',
+          '#highlightedByFullName': 'highlightedByFullName',
         },
         ExpressionAttributeValues: {
-          ':highlightedBy': { S: highlight ? highlightedBy : '' },
+          ':highlightedBy': { S: highlight ? highlightedByEmail : '' },
+          ':highlightedByFullName': {
+            S: highlight ? highlightedByFullName : '',
+          },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
@@ -84,7 +92,8 @@ export const highlightWebinarQuestion = (
 export const hideWebinarQuestion = (
   question: WebinarQuestion,
   hide: boolean,
-  hiddenBy: string
+  hiddenByEmail: string,
+  hiddenByFullName: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
@@ -95,12 +104,15 @@ export const hideWebinarQuestion = (
           webinarId: { S: question.webinarId },
           createdAt: { S: question.createdAt.toISOString() },
         },
-        UpdateExpression: 'SET #hiddenBy = :hiddenBy',
+        UpdateExpression:
+          'SET #hiddenBy = :hiddenBy, #hiddenByFullName = :hiddenByFullName',
         ExpressionAttributeNames: {
           '#hiddenBy': 'hiddenBy',
+          '#hiddenByFullName': 'hiddenByFullName',
         },
         ExpressionAttributeValues: {
-          ':hiddenBy': { S: hide ? hiddenBy : '' },
+          ':hiddenBy': { S: hide ? hiddenByEmail : '' },
+          ':hiddenByFullName': { S: hide ? hiddenByFullName : '' },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
