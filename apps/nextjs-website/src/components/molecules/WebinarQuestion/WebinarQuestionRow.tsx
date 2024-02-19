@@ -1,4 +1,3 @@
-'use client';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { Box, IconButton, TableCell, TableRow, useTheme } from '@mui/material';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
