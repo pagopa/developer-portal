@@ -1,10 +1,17 @@
-import { productToMenuItems } from '../../helpers/productHeader.helper';
+import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
 
 const product: Product = {
   name: 'test',
   description: 'test',
-  svgPath: 'test',
+  logo: {
+    name: 'test',
+    width: 60,
+    height: 61,
+    ext: '.svg',
+    mime: 'image/svg+xml',
+    url: 'test',
+  },
   path: '/path',
   slug: 'path',
   subpaths: {

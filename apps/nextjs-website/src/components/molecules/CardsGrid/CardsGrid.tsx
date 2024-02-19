@@ -33,7 +33,7 @@ const CardsGrid = ({
 
   return (
     <EContainer>
-      <Box pb={4}>
+      <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(({ title, text, href, icon, comingSoon }, index) => {
             return (

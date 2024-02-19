@@ -3,8 +3,14 @@ import { Path } from '@/lib/types/path';
 export type Product = {
   readonly slug: string;
   readonly description: string;
-  readonly svgPath: string;
-  readonly pngUrl?: string;
+  readonly logo: {
+    readonly name: string;
+    readonly width: number;
+    readonly height: number;
+    readonly ext: string;
+    readonly mime: string;
+    readonly url: string;
+  };
   readonly subpaths: Subpaths;
 } & Path;
 
