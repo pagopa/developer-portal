@@ -50,7 +50,7 @@ export const pagoPaOverview: OverviewData = {
     cta: {
       label: 'Leggi la guida tecnica',
       text: 'Scopri tutti i dettagli dell’integrazione',
-      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
+      href: `${pagoPaGuideListsPath.path}/avviso-pagamento/`,
     },
     cards: [
       {
