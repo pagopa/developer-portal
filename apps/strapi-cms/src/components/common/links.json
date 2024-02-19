@@ -2,7 +2,8 @@
   "collectionName": "components_common_links",
   "info": {
     "displayName": "Links",
-    "icon": "link"
+    "icon": "link",
+    "description": ""
   },
   "options": {},
   "attributes": {

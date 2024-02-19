@@ -38,8 +38,14 @@
     },
     "hero": {
       "type": "component",
-      "repeatable": false,
-      "component": "common.hero"
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": false,
+      "component": "common.hero-card"
     }
   }
 }

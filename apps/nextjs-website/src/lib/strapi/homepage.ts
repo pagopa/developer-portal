@@ -14,23 +14,34 @@ const LinkHomepageCodec = t.strict({
   ]),
 });
 
-const CtaCodec = t.strict({
-  label: t.string,
-  href: t.string,
+const ImageBlockCodec = t.strict({
+  type: t.literal('image'),
+  image: t.strict({
+    url: t.string,
+    width: t.number,
+    height: t.number,
+    alternativeText: t.string,
+  }),
+});
+
+const BlocksContentCodec = t.strict({
+  type: t.string,
+  children: t.UnknownArray,
+  image: t.unknown,
+});
+
+const CtaSlideCodec = t.strict({
+  subhead: t.union([t.string, BlocksContentCodec]),
+  color: t.union([t.string, t.null, t.undefined]),
   variant: t.union([
-    t.undefined,
+    t.null,
     t.literal('text'),
     t.literal('contained'),
     t.literal('outlined'),
   ]),
-});
-
-const CtaSlideCodec = t.strict({
-  title: t.string,
-  color: t.union([t.string, t.null, t.undefined]),
-  cta: t.union([CtaCodec, t.null, t.undefined]),
+  cta: t.union([LinkHomepageCodec, t.null, t.undefined]),
   child: t.union([t.string, t.null, t.undefined]),
-  backgroundImage: t.union([t.string, t.null, t.undefined]),
+  backgroundImage: t.union([t.string, t.null, t.undefined, ImageBlockCodec]),
 });
 
 export const StrapiHomepageCodec = t.strict({
@@ -41,11 +52,7 @@ export const StrapiHomepageCodec = t.strict({
         title: t.string,
         links: t.array(LinkHomepageCodec),
       }),
-      hero: t.type({
-        siteTitle: t.string,
-        boldTitle: t.string,
-        cards: t.array(CtaSlideCodec),
-      }),
+      hero: t.array(CtaSlideCodec),
     }),
   }),
 });
@@ -59,7 +66,7 @@ const makeStrapiHomepagePopulate = () =>
         populate: ['links'],
       },
       hero: {
-        populate: ['boldTitle', 'siteTitle', 'cards'],
+        populate: ['backgroundImage'],
       },
     },
   });

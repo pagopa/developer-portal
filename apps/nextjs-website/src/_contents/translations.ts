@@ -88,19 +88,20 @@ export const translations = {
     productsShowcaseTitle: 'Scopri il nostro ecosistema',
     heroItems: [
       {
-        title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
+        subhead: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
       },
       {
-        title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
+        subhead:
+          'Invia comunicazioni a valore legale con piattaforma notifiche',
         cta: {
-          label: 'Vai a SEND',
+          text: 'Vai a SEND',
           href: '/send/overview',
         },
       },
       {
-        title: 'Richiedi una firma su documenti e contratti',
+        subhead: 'Richiedi una firma su documenti e contratti',
         cta: {
-          label: 'Vai a Firma con IO',
+          text: 'Vai a Firma con IO',
           href: '/firma-con-io/overview',
         },
       },

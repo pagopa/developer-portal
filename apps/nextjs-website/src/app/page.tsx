@@ -40,9 +40,8 @@ const Home = async () => {
   return (
     <>
       <NotSsrWebinarHeaderBanner webinars={webinars} />
-
       <HeroSwiper
-        cards={homepage.hero.cards.map((itemProp, index) => ({
+        cards={homepage.hero.map((itemProp, index) => ({
           ...itemProp,
           child:
             index === 0 ? (

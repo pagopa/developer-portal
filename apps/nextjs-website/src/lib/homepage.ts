@@ -3,11 +3,7 @@ import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 
 export type HomepageProps = {
-  readonly hero: {
-    readonly siteTitle: string;
-    readonly boldTitle: string;
-    readonly cards: readonly CtaSlideProps[];
-  };
+  readonly hero: readonly CtaSlideProps[];
   readonly news: {
     readonly title: string;
     readonly cards: readonly {
@@ -35,29 +31,22 @@ export type HomepageProps = {
   };
 };
 
-type StaticHeader = typeof translations.header;
 type StaticHomepage = typeof translations.homepage;
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage,
-  staticHeader: StaticHeader,
   staticHomepage: StaticHomepage
 ): HomepageProps => ({
-  ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
+  ...makeHomepagePropsFromStatic(staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.hero,
 });
 
 export const makeHomepagePropsFromStatic = (
-  staticHeader: StaticHeader,
   staticHomepage: StaticHomepage
 ): HomepageProps => ({
-  hero: {
-    siteTitle: staticHeader.title,
-    boldTitle: staticHeader.boldTitle,
-    cards: staticHomepage.heroItems,
-  },
+  hero: staticHomepage.heroItems,
   news: {
     title: staticHomepage.news.title,
     cards: staticHomepage.news.list,

@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_common_hero_cards",
+  "info": {
+    "displayName": "HeroCard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.links"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "contained",
+        "outlined"
+      ]
+    },
+    "subhead": {
+      "type": "blocks"
+    }
+  }
+}
