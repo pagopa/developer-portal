@@ -44,15 +44,40 @@ const CtaSlideCodec = t.strict({
   backgroundImage: t.union([t.string, t.null, t.undefined, ImageBlockCodec]),
 });
 
+const MediaCodec = t.strict({
+  attributes: t.strict({
+    name: t.string,
+    width: t.number,
+    height: t.number,
+    ext: t.string,
+    mime: t.string,
+    url: t.string,
+  }),
+});
+
+const ProductCodec = t.strict({
+  attributes: t.strict({
+    name: t.string,
+    description: t.string,
+    slug: t.string,
+    logo: t.strict({ data: MediaCodec }),
+  }),
+});
+
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
-    id: t.number,
     attributes: t.strict({
       comingsoonDocumentation: t.type({
         title: t.string,
         links: t.array(LinkHomepageCodec),
       }),
       hero: t.array(CtaSlideCodec),
+      productsShowcase: t.strict({
+        title: t.string,
+        products: t.strict({
+          data: t.array(ProductCodec),
+        }),
+      }),
     }),
   }),
 });
@@ -67,6 +92,9 @@ const makeStrapiHomepagePopulate = () =>
       },
       hero: {
         populate: ['backgroundImage'],
+      },
+      productsShowcase: {
+        populate: ['products.logo'],
       },
     },
   });

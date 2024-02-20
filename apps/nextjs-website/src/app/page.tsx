@@ -6,7 +6,7 @@ import News from '@/components/organisms/News/News';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getProducts, getVisibleInHomeWebinars } from '@/lib/api';
+import { getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
@@ -31,7 +31,6 @@ const NotSsrWebinarsSection = dynamic(
 );
 
 const Home = async () => {
-  const products = await getProducts();
   const webinars = await getVisibleInHomeWebinars();
   const { header } = translations;
 
@@ -55,12 +54,12 @@ const Home = async () => {
         cards={[...homepage.news.cards]}
       />
       <ProductsShowcase
-        title={homepage.productsShowcaseTitle}
-        cards={products.map((product) => ({
+        title={homepage.productsShowcase.title}
+        cards={homepage.productsShowcase.products.map((product) => ({
           title: product.name,
           text: product.description,
-          href: product.subpaths.overview.path,
-          svgPath: product.svgPath,
+          href: `/${product.slug}/overview`,
+          logoUrl: product.logo.url,
         }))}
       />
       <NotSsrWebinarsSection webinars={[...webinars]} />
