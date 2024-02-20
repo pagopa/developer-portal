@@ -18,7 +18,7 @@ const SignUp = () => {
   const signUp = useTranslations('auth.signUp');
 
   const [userData, setUserData] = useState<SignUpUserData>({
-    username: decodeURIComponent(params.get('email') || ''),
+    username: '',
     password: '',
     firstName: '',
     lastName: '',
@@ -36,7 +36,7 @@ const SignUp = () => {
 
   const goToConfirmSignUp = useCallback(() => {
     router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+      `/auth/sign-up?step=${
         SignUpSteps.CONFIRM_SIGN_UP
       }`
     );
