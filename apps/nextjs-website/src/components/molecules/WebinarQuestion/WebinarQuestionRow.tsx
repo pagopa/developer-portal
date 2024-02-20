@@ -10,14 +10,14 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
-  userEmail: string;
+  userName: string;
   onHighlight: (highlight: boolean) => Promise<void>;
   onHide: (hidden: boolean) => Promise<void>;
 };
 
 export default function WebinarQuestionRow({
   question,
-  userEmail,
+  userName,
   onHide,
   onHighlight,
 }: WebinarQuestionRowProps) {
@@ -25,8 +25,7 @@ export default function WebinarQuestionRow({
   const { palette } = useTheme();
   const t = useTranslations('webinar.questionList');
 
-  const { hiddenBy, hiddenByFullName, highlightedBy, highlightedByFullName } =
-    question;
+  const { hiddenBy, highlightedBy } = question;
 
   const isHidden = !!hiddenBy;
   const isHighlighted = !!highlightedBy;
@@ -64,13 +63,13 @@ export default function WebinarQuestionRow({
       >
         {!isHidden
           ? question.question
-          : isHidden && hiddenBy === userEmail
-          ? t('hiddenByMe') + ' ( ' + question.question + ' )'
-          : t('hiddenBy') + hiddenByFullName}
+          : isHidden && hiddenBy === userName
+          ? `${t('hiddenByMe')}: (${question.question})`
+          : `${t('hiddenBy')}: ${hiddenBy}`}
       </TableCell>
       <TableCell>
         <Box display={'flex'} justifyContent={'space-between'}>
-          {!isHidden || (isHidden && hiddenBy == userEmail) ? (
+          {!isHidden || (isHidden && hiddenBy === userName) ? (
             <IconButton
               onClick={() => onHide(!isHidden)}
               sx={{ color: isHighlighted ? palette.common.white : '' }}
@@ -82,7 +81,7 @@ export default function WebinarQuestionRow({
           )}
 
           {!isHidden &&
-            (userEmail === highlightedBy || !isHighlighted ? (
+            (userName === highlightedBy || !isHighlighted ? (
               <IconButton
                 onClick={() => onHighlight(!isHighlighted)}
                 sx={{ color: isHighlighted ? palette.common.white : '' }}
@@ -99,7 +98,7 @@ export default function WebinarQuestionRow({
                   color: palette.common.white,
                 }}
               >
-                {t('highlightedBy') + highlightedByFullName}
+                {t('highlightedBy')}: {highlightedBy}
               </Box>
             ))}
 

@@ -42,28 +42,14 @@ const WebinarQuestionsTemplate = ({
   });
 
   const makeQuestionHighlighted = useCallback(
-    (
-      question: WebinarQuestion,
-      highlight: boolean,
-      highlightedBy: string,
-      highlightedByFullName: string
-    ) =>
-      highlightQuestion(
-        question,
-        highlight,
-        highlightedBy,
-        highlightedByFullName
-      ),
+    (question: WebinarQuestion, highlight: boolean, highlightedBy: string) =>
+      highlightQuestion(question, highlight, highlightedBy),
     []
   );
 
   const makeQuestionHidden = useCallback(
-    (
-      question: WebinarQuestion,
-      hide: boolean,
-      hiddenBy: string,
-      hiddenByFullName: string
-    ) => hideQuestion(question, hide, hiddenBy, hiddenByFullName),
+    (question: WebinarQuestion, hide: boolean, hiddenBy: string) =>
+      hideQuestion(question, hide, hiddenBy),
     []
   );
 
@@ -74,7 +60,6 @@ const WebinarQuestionsTemplate = ({
   if (error) return <PageNotFound />;
   else if (!data || loading || !user) return <Spinner />;
   else {
-    const userEmail = user.attributes['email'];
     const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
     const sortedQuestions = [...data].sort(
       (a: WebinarQuestion, b: WebinarQuestion) =>
@@ -104,17 +89,12 @@ const WebinarQuestionsTemplate = ({
                   <WebinarQuestionRow
                     key={row.createdAt.toJSON()}
                     question={row}
-                    userEmail={userEmail}
+                    userName={userName}
                     onHide={async (hide) =>
-                      await makeQuestionHidden(row, hide, userEmail, userName)
+                      await makeQuestionHidden(row, hide, userName)
                     }
                     onHighlight={async (highlight) =>
-                      await makeQuestionHighlighted(
-                        row,
-                        highlight,
-                        userEmail,
-                        userName
-                      )
+                      await makeQuestionHighlighted(row, highlight, userName)
                     }
                   />
                 ))}

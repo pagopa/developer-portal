@@ -15,9 +15,7 @@ export const WebinarQuestionDynamodbCodec = t.strict({
   createdAt: DynamodbAttrISODate,
   question: DynamodbAttrS,
   hiddenBy: DynamodbAttrS,
-  hiddenByFullName: DynamodbAttrS,
   highlightedBy: DynamodbAttrS,
-  highlightedByFullName: DynamodbAttrS,
 });
 
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
@@ -39,9 +37,7 @@ export const makeWebinarQuestionFromDynamodbItem = (
   question: input.question.S,
   createdAt: input.createdAt.S,
   hiddenBy: input.hiddenBy.S,
-  hiddenByFullName: input.hiddenByFullName.S,
   highlightedBy: input.highlightedBy.S,
-  highlightedByFullName: input.highlightedByFullName.S,
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
@@ -50,7 +46,5 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     createdAt: { S: input.createdAt },
     question: { S: input.question },
     hiddenBy: { S: input.hiddenBy ?? '' },
-    hiddenByFullName: { S: input.hiddenByFullName ?? '' },
     highlightedBy: { S: input.highlightedBy ?? '' },
-    highlightedByFullName: { S: input.highlightedByFullName ?? '' },
   });
