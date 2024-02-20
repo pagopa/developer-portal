@@ -13,9 +13,7 @@ const aWebinarQuestion = {
   question: 'aQuestion',
   createdAt: new Date(),
   hiddenBy: 'aHiddenBy',
-  hiddenByFullName: 'aHiddenByFullName',
   highlightedBy: 'aHighlightedBy',
-  highlightedByFullName: 'aHighlightedByFullName',
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarQuestion({
   ...aWebinarQuestion,
