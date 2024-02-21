@@ -8,20 +8,25 @@ export type HomepageProps = {
     readonly boldTitle: string;
     readonly cards: readonly CtaSlideProps[];
   };
-  readonly news: {
+  readonly newsShowcase: {
     readonly title: string;
-    readonly cards: readonly {
+    readonly items: readonly {
       readonly comingSoon?: boolean;
       readonly title: string;
-      readonly dateString?: string;
-      readonly image?: {
+      readonly publishedAt?: string;
+      readonly link: {
+        readonly text: string;
         readonly url: string;
-        readonly alt: string;
+        readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
       };
-      readonly href: {
-        readonly label: string;
-        readonly link: string;
-        readonly title: string;
+      readonly image: {
+        readonly name: string;
+        readonly alternativeText: string | null;
+        readonly width: number;
+        readonly height: number;
+        readonly ext: string;
+        readonly mime: string;
+        readonly url: string;
       };
     }[];
   };
@@ -61,6 +66,22 @@ export const makeHomepageProps = (
   ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
+  newsShowcase: {
+    title: strapiHomepage.data.attributes.newsShowcase.title,
+    items: strapiHomepage.data.attributes.newsShowcase.items.data.map(
+      (item) => ({
+        comingSoon: item.attributes.comingSoon || undefined,
+        title: item.attributes.title,
+        publishedAt: item.attributes.publishedAt,
+        link: {
+          text: item.attributes.link.text,
+          url: item.attributes.link.href,
+          target: item.attributes.link.target,
+        },
+        image: item.attributes.image.data.attributes,
+      })
+    ),
+  },
   productsShowcase: {
     title: strapiHomepage.data.attributes.productsShowcase.title,
     products: strapiHomepage.data.attributes.productsShowcase.products.data.map(
@@ -83,9 +104,9 @@ export const makeHomepagePropsFromStatic = (
     boldTitle: staticHeader.boldTitle,
     cards: staticHomepage.heroItems,
   },
-  news: {
-    title: staticHomepage.news.title,
-    cards: staticHomepage.news.list,
+  newsShowcase: {
+    title: staticHomepage.newsShowcase.title,
+    items: staticHomepage.newsShowcase.items,
   },
   productsShowcase: staticHomepage.productsShowcase,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,

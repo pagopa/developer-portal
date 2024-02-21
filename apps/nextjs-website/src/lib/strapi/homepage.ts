@@ -2,7 +2,7 @@ import * as t from 'io-ts/lib';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 
-const LinkHomepageCodec = t.strict({
+const LinkCodec = t.strict({
   text: t.string,
   href: t.string,
   target: t.union([
@@ -17,6 +17,8 @@ const LinkHomepageCodec = t.strict({
 const MediaCodec = t.strict({
   attributes: t.strict({
     name: t.string,
+    alternativeText: t.union([t.null, t.string]),
+    caption: t.union([t.null, t.string]),
     width: t.number,
     height: t.number,
     ext: t.string,
@@ -34,12 +36,28 @@ const ProductCodec = t.strict({
   }),
 });
 
+const NewsItemCodec = t.strict({
+  attributes: t.strict({
+    comingSoon: t.boolean,
+    title: t.string,
+    link: LinkCodec,
+    publishedAt: t.string,
+    image: t.strict({ data: MediaCodec }),
+  }),
+});
+
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
       comingsoonDocumentation: t.type({
         title: t.string,
-        links: t.array(LinkHomepageCodec),
+        links: t.array(LinkCodec),
+      }),
+      newsShowcase: t.strict({
+        title: t.string,
+        items: t.strict({
+          data: t.array(NewsItemCodec),
+        }),
       }),
       productsShowcase: t.strict({
         title: t.string,
@@ -58,6 +76,9 @@ const makeStrapiHomepagePopulate = () =>
     populate: {
       comingsoonDocumentation: {
         populate: ['links'],
+      },
+      newsShowcase: {
+        populate: ['items.image', 'items.link'],
       },
       productsShowcase: {
         populate: ['products.logo'],

@@ -10,7 +10,7 @@ export const sendTutorials: readonly Tutorial[] = [
     path: `${sendTutorialListsPath.path}/come-inserire-una-notifica-via-curl`,
     name: 'Inserisci una notifica via curl',
     image: {
-      alt: 'Immagine: Inserisci una notifica via curl',
+      alternativeText: 'Immagine: Inserisci una notifica via curl',
       url: '/images/send-tutorial-1.png',
     },
     showInOverview: true,
@@ -20,7 +20,7 @@ export const sendTutorials: readonly Tutorial[] = [
     path: `${sendTutorialListsPath.path}/come-generare-il-tuo-api-client-per-le-api-di-send`,
     name: 'Genera il tuo client',
     image: {
-      alt: 'Immagine: Genera il tuo client',
+      alternativeText: 'Immagine: Genera il tuo client',
       url: '/images/send-tutorial-0.png',
     },
     showInOverview: true,
@@ -30,7 +30,7 @@ export const sendTutorials: readonly Tutorial[] = [
     path: `${sendTutorialListsPath.path}/configurare-laccesso-ad-interoperabilita-per-i-servizi-send`,
     name: 'Genera il tuo client',
     image: {
-      alt: 'Immagine: Genera il tuo client',
+      alternativeText: 'Immagine: Genera il tuo client',
       url: '/images/send-tutorial-2.png',
     },
     showInOverview: true,

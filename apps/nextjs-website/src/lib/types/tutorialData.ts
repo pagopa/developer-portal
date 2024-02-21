@@ -3,10 +3,10 @@ import { Path } from '@/lib/types/path';
 export type Tutorial = {
   readonly comingSoon?: boolean;
   readonly showInOverview?: boolean;
-  readonly image?: {
+  readonly image: {
     readonly url: string;
-    readonly alt: string;
+    readonly alternativeText: string;
   };
   readonly title: string;
-  readonly dateString?: string;
+  readonly publishedAt?: string;
 } & Path;
