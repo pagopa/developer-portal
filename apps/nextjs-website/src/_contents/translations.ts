@@ -1,4 +1,5 @@
 // TODO: move to proper localization system
+import { type BlocksContent } from '@strapi/blocks-react-renderer';
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
@@ -95,18 +96,52 @@ export const translations = {
     },
     heroItems: [
       {
-        subhead: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
+        subhead: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                text: 'PagoPA ',
+                type: 'text',
+              },
+              {
+                text: 'DevPortal',
+                type: 'text',
+                bold: true,
+              },
+            ],
+          },
+        ] as BlocksContent,
       },
       {
-        subhead:
-          'Invia comunicazioni a valore legale con piattaforma notifiche',
+        subhead: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                text: 'Invia comunicazioni a valore legale con piattaforma notifiche',
+                type: 'text',
+              },
+            ],
+          },
+        ] as BlocksContent,
         cta: {
           text: 'Vai a SEND',
           href: '/send/overview',
         },
       },
       {
-        subhead: 'Richiedi una firma su documenti e contratti',
+        subhead: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                text: 'Richiedi una firma su documenti e contratti',
+                type: 'text',
+              },
+            ],
+          },
+        ] as BlocksContent,
         cta: {
           text: 'Vai a Firma con IO',
           href: '/firma-con-io/overview',

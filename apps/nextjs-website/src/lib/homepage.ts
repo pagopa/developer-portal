@@ -55,7 +55,11 @@ export const makeHomepageProps = (
   ...makeHomepagePropsFromStatic(staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
-  hero: strapiHomepage.data.attributes.hero,
+  hero: strapiHomepage.data.attributes.hero.map((slide) => ({
+    subhead: slide.subhead,
+    backgroundImage: slide.backgroundImage?.data.attributes,
+    cta: slide.cta,
+  })),
   productsShowcase: {
     title: strapiHomepage.data.attributes.productsShowcase.title,
     products: strapiHomepage.data.attributes.productsShowcase.products.data.map(
