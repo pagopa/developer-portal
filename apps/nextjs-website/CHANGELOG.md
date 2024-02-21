@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 0.10.0
+
+### Minor Changes
+
+- 1e4b96e: Allow fetching from the CMS the "Discover our ecosystem" section on the home page
+
+### Patch Changes
+
+- c58c050: Fix link visualization
+- 532f1d6: Fix change password page and changed password page
+- b2ac24a: Fix reset password request page
+
 ## 0.9.2
 
 ### Patch Changes
