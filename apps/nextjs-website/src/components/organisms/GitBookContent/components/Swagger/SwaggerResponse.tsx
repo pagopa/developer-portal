@@ -1,3 +1,4 @@
+'use-client';
 import { Typography } from '@mui/material';
 import { SwaggerResponseProps } from 'gitbook-docs/markdoc/schema/swagger';
 
