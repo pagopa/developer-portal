@@ -3,11 +3,7 @@ import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 
 export type HomepageProps = {
-  readonly hero: {
-    readonly siteTitle: string;
-    readonly boldTitle: string;
-    readonly cards: readonly CtaSlideProps[];
-  };
+  readonly hero: readonly CtaSlideProps[];
   readonly news: {
     readonly title: string;
     readonly cards: readonly {
@@ -50,17 +46,27 @@ export type HomepageProps = {
   };
 };
 
-type StaticHeader = typeof translations.header;
 type StaticHomepage = typeof translations.homepage;
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage,
-  staticHeader: StaticHeader,
   staticHomepage: StaticHomepage
 ): HomepageProps => ({
-  ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
+  ...makeHomepagePropsFromStatic(staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
+  hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
+    title: slide.title,
+    titleColor: slide.titleColor,
+    backgroundImage: slide.backgroundImage?.data.attributes,
+    callToAction: slide.callToAction && {
+      link: {
+        href: slide.callToAction.link.href,
+        text: slide.callToAction.link.text,
+        target: slide.callToAction.link.target,
+      },
+    },
+  })),
   productsShowcase: {
     title: strapiHomepage.data.attributes.productsShowcase.title,
     products: strapiHomepage.data.attributes.productsShowcase.products.data.map(
@@ -75,14 +81,9 @@ export const makeHomepageProps = (
 });
 
 export const makeHomepagePropsFromStatic = (
-  staticHeader: StaticHeader,
   staticHomepage: StaticHomepage
 ): HomepageProps => ({
-  hero: {
-    siteTitle: staticHeader.title,
-    boldTitle: staticHeader.boldTitle,
-    cards: staticHomepage.heroItems,
-  },
+  hero: staticHomepage.heroItems,
   news: {
     title: staticHomepage.news.title,
     cards: staticHomepage.news.list,

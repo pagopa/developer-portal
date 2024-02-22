@@ -99,16 +99,20 @@ export const translations = {
       },
       {
         title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
-        cta: {
-          label: 'Vai a SEND',
-          href: '/send/overview',
+        callToAction: {
+          link: {
+            text: 'Vai a SEND',
+            href: '/send/overview',
+          },
         },
       },
       {
         title: 'Richiedi una firma su documenti e contratti',
-        cta: {
-          label: 'Vai a Firma con IO',
-          href: '/firma-con-io/overview',
+        callToAction: {
+          link: {
+            text: 'Vai a Firma con IO',
+            href: '/firma-con-io/overview',
+          },
         },
       },
     ],

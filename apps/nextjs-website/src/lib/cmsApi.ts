@@ -21,12 +21,12 @@ export const getHomepageProps = async () => {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
-  const { header: staticHeader, homepage: staticHomepage } = translations;
+  const { homepage: staticHomepage } = translations;
 
   if (fetchFromStrapi) {
     const strapiHomepage = await fetchHomepage(buildEnv);
-    return makeHomepageProps(strapiHomepage, staticHeader, staticHomepage);
+    return makeHomepageProps(strapiHomepage, staticHomepage);
   } else {
-    return makeHomepagePropsFromStatic(staticHeader, staticHomepage);
+    return makeHomepagePropsFromStatic(staticHomepage);
   }
 };

@@ -2,17 +2,20 @@ import * as t from 'io-ts/lib';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 
-const LinkHomepageCodec = t.strict({
-  text: t.string,
-  href: t.string,
-  target: t.union([
-    t.null,
-    t.literal('_self'),
-    t.literal('_blank'),
-    t.literal('_parent'),
-    t.literal('_top'),
-  ]),
-});
+const LinkHomepageCodec = t.intersection([
+  t.strict({
+    text: t.string,
+    href: t.string,
+  }),
+  t.partial({
+    target: t.union([
+      t.literal('_self'),
+      t.literal('_blank'),
+      t.literal('_parent'),
+      t.literal('_top'),
+    ]),
+  }),
+]);
 
 const MediaCodec = t.strict({
   attributes: t.strict({
@@ -34,6 +37,35 @@ const ProductCodec = t.strict({
   }),
 });
 
+const CtaCodec = t.intersection([
+  t.strict({
+    link: LinkHomepageCodec,
+  }),
+  t.partial({
+    variant: t.union([
+      t.literal('text'),
+      t.literal('contained'),
+      t.literal('outlined'),
+    ]),
+  }),
+]);
+
+const HeroSlideCodec = t.intersection([
+  t.strict({
+    title: t.string,
+  }),
+  t.partial({
+    callToAction: CtaCodec,
+    titleColor: t.union([
+      t.literal('contrastText'),
+      t.literal('main'),
+      t.literal('light'),
+      t.literal('dark'),
+    ]),
+    backgroundImage: t.strict({ data: MediaCodec }),
+  }),
+]);
+
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
@@ -41,6 +73,7 @@ export const StrapiHomepageCodec = t.strict({
         title: t.string,
         links: t.array(LinkHomepageCodec),
       }),
+      heroSlider: t.array(HeroSlideCodec),
       productsShowcase: t.strict({
         title: t.string,
         products: t.strict({
@@ -58,6 +91,9 @@ const makeStrapiHomepagePopulate = () =>
     populate: {
       comingsoonDocumentation: {
         populate: ['links'],
+      },
+      heroSlider: {
+        populate: ['backgroundImage', 'callToAction.link'],
       },
       productsShowcase: {
         populate: ['products.logo'],

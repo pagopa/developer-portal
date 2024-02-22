@@ -7,25 +7,44 @@ import React, { ReactNode } from 'react';
 
 export type CtaSlideProps = {
   readonly title: string;
-  readonly color?: string;
-  readonly cta?: {
-    readonly label: string;
-    readonly href: string;
+  readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
+  readonly callToAction?: {
     readonly variant?: 'text' | 'contained' | 'outlined';
+    readonly link: {
+      readonly href: string;
+      readonly text: string;
+      readonly target?: '_self' | '_blank' | '_parent' | '_top';
+    };
   };
   readonly child?: ReactNode;
-  readonly backgroundImage?: string;
+  readonly backgroundImage?: {
+    readonly name: string;
+    readonly width: number;
+    readonly height: number;
+    readonly ext: string;
+    readonly mime: string;
+    readonly url: string;
+  };
 };
 
 const CtaSlide = ({
   title,
-  color,
-  cta,
+  titleColor: color,
+  callToAction: cta,
   child,
-  backgroundImage = '/images/hero-swiper.png',
+  backgroundImage = {
+    name: 'hero-swiper.png',
+    width: 1920,
+    height: 1080,
+    ext: '.png',
+    mime: 'image/png',
+    url: '/images/hero-swiper.png',
+  },
 }: CtaSlideProps) => {
   const { palette } = useTheme();
-  const textColor = color || palette.primary.contrastText;
+  const textColor = color
+    ? palette.primary[color]
+    : palette.primary.contrastText;
 
   return (
     <Stack
@@ -55,12 +74,13 @@ const CtaSlide = ({
           {cta && (
             <ButtonNaked
               component={Link}
-              href={cta.href}
+              href={cta.link.href}
               color={'negative'}
               variant={cta.variant || 'contained'}
               sx={{ mb: 6 }}
+              target={cta.link.target ?? '_self'}
             >
-              {cta.label}
+              {cta.link.text}
             </ButtonNaked>
           )}
         </Box>
@@ -68,7 +88,7 @@ const CtaSlide = ({
       <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
         <Image
           style={{ objectFit: 'cover' }}
-          src={backgroundImage}
+          src={backgroundImage.url}
           alt={title}
           fill={true}
         />

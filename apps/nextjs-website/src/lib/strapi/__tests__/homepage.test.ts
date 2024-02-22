@@ -44,6 +44,58 @@ const makeStrapiResponseJson = () => ({
           },
         ],
       },
+      heroSlider: [
+        {
+          id: 1,
+          title: 'Titolo',
+          titleColor: 'contrastText',
+          callToAction: {
+            id: 1,
+            variant: 'text',
+            link: {
+              id: 9,
+              text: 'Prova',
+              href: 'https://google.com',
+              target: '_self',
+            },
+          },
+          backgroundImage: {
+            data: {
+              id: 2,
+              attributes: {
+                name: 'hero-swiper.png',
+                alternativeText: null,
+                caption: null,
+                width: 1440,
+                height: 495,
+                formats: {
+                  thumbnail: {
+                    name: 'thumbnail_hero-swiper.png',
+                    hash: 'thumbnail_hero_swiper_52d70c707f',
+                    ext: '.png',
+                    mime: 'image/png',
+                    path: null,
+                    width: 245,
+                    height: 84,
+                    size: 9.34,
+                    url: '/uploads/thumbnail_hero_swiper_52d70c707f.png',
+                  },
+                },
+                hash: 'hero_swiper_52d70c707f',
+                ext: '.png',
+                mime: 'image/png',
+                size: 49.52,
+                url: '/uploads/hero_swiper_52d70c707f.png',
+                previewUrl: null,
+                provider: 'local',
+                provider_metadata: null,
+                createdAt: '2024-02-15T15:50:04.876Z',
+                updatedAt: '2024-02-16T15:38:03.748Z',
+              },
+            },
+          },
+        },
+      ],
       productsShowcase: {
         id: 1,
         title: 'aText',
