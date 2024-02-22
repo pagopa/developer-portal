@@ -10,7 +10,7 @@ type ProductsShowcaseProps = {
     title: string;
     text: string;
     href: string;
-    svgPath: string;
+    logoUrl: string;
   }[];
 };
 
@@ -26,7 +26,7 @@ const ProductsShowcase = ({ title, cards }: ProductsShowcaseProps) => {
           title: card.title,
           text: card.text,
           href: card.href,
-          icon: card.svgPath,
+          icon: card.logoUrl,
         }))}
       />
     </Box>
