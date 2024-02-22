@@ -66,7 +66,7 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
         'h2 title ',
-        new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page/#code' }, []),
+        new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page#code' }, []),
       ]),
     ]);
     expect(
@@ -83,11 +83,7 @@ describe('parseContent', () => {
             'h2 title within backticks',
           ]),
           '',
-          new Markdoc.Tag(
-            'Link',
-            { id: 'code', href: '/to/s0/page/#code' },
-            []
-          ),
+          new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page#code' }, []),
         ]
       ),
     ]);
@@ -119,13 +115,13 @@ describe('parseContent', () => {
   it('should preserve a single space into a td tag nested into other tags', () => {
     expect(
       parseContent(
-        '<td><strong>before space</strong> <a><strong>after space</strong></a></td>',
+        '<td><strong>before space</strong> <a href="target-link"><strong>after space</strong></a></td>',
         config
       )
     ).toStrictEqual([
       new Markdoc.Tag('StyledText', { style: 'strong' }, ['before space']),
       ' ',
-      new Markdoc.Tag('Link', {}, [
+      new Markdoc.Tag('Link', { href: '/to/s0/page/target-link' }, [
         new Markdoc.Tag('StyledText', { style: 'strong' }, ['after space']),
       ]),
     ]);
@@ -145,6 +141,41 @@ describe('parseContent', () => {
     expect(parseContent('[Guida](../a/b.md)', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('Link', { href: '/to/s0/a/b' }, ['Guida']),
+      ]),
+    ]);
+  });
+
+  it('should convert href as expected given an link with anchor', () => {
+    expect(
+      parseContent(
+        'Fixed [#text-strings](./#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
+      ]),
+    ]);
+    expect(
+      parseContent(
+        'Fixed [#text-strings](/#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
       ]),
     ]);
   });
@@ -174,7 +205,7 @@ describe('parseContent', () => {
         'Fixed ',
         new Markdoc.Tag(
           'Link',
-          { title: 'mention', href: '/to/s0/page/#text-strings' },
+          { title: 'mention', href: '/to/s0/page#text-strings' },
           ['Text strings']
         ),
         ' are now in JSON format',
@@ -299,7 +330,7 @@ describe('parseContent', () => {
         new Markdoc.Tag(
           'Link',
           {
-            href: '/send/guides/modello-di-integrazione/path/#fragment',
+            href: '/send/guides/modello-di-integrazione/path#fragment',
           },
           ['Modello di Integrazione']
         ),
