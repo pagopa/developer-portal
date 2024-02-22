@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-[DPC-141] New Version for "Carta Giovani Nazionale - Documentazione Tecnica"
+[DPC-141] Add new version for "Carta Giovani Nazionale - Documentazione Tecnica"
