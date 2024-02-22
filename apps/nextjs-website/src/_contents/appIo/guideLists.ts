@@ -113,8 +113,7 @@ export const appIoGuideLists: GuideListsData = {
             label: 'Vai al manuale',
           },
           imagePath: '/images/documentazione-tecnica-CGN.png',
-          mobileImagePath:
-            '/images/manuale-di-carta-giovani-nazionale-mobile.png',
+          mobileImagePath: '/images/documentazione-tecnica-CGN-mobile.png',
         },
       ],
     },
