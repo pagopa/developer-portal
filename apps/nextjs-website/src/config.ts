@@ -5,11 +5,6 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
 
  @deprecated
  */
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import { makeBuildConfig } from '@/BuildConfig';
-import { makeBuildEnv } from '@/BuildEnv';
-
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
 export const cookieDomainScript = process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
@@ -27,16 +22,6 @@ export const amplifyConfig = {
   },
   authenticationFlowType: 'CUSTOM_AUTH',
 };
-
-// a BuildEnv instance ready to be used
-export const buildEnv = pipe(
-  makeBuildConfig(process.env),
-  E.map(makeBuildEnv),
-  E.getOrElseW((errors) => {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw errors;
-  })
-);
 
 export const profileMenuItems: readonly {
   readonly label: string;

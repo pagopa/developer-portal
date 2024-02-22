@@ -64,10 +64,7 @@ const ListBlockNodeCodec: any = t.type({
   type: t.literal('list'),
   format: t.union([t.literal('ordered'), t.literal('unordered')]),
   children: t.array(
-    t.union([
-      ListItemInlineNodeCodec,
-      t.recursion('ListBlockNodeCodec', () => ListBlockNodeCodec),
-    ])
+    t.union([ListItemInlineNodeCodec, t.recursion('any', () => t.any)])
   ),
 });
 
