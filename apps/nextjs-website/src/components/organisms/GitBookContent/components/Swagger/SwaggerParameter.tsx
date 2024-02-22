@@ -16,19 +16,18 @@ const SwaggerParameter = ({
   return (
     <>
       <Typography
+        component={'div'}
         sx={{ fontWeight: 700, fontSize: '14px', marginBottom: '8px' }}
       >
         {inProp}
       </Typography>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
+      <Box display={'flex'} fontSize={14}>
+        <Box flex={1}>
           {name}
           <span style={{ color: 'red' }}>{required && ' *'}</span>
-        </div>
-        <div style={{ fontSize: '16px !important', maxWidth: '400px' }}>
-          {children}
-        </div>
-      </div>
+        </Box>
+        <Box flex={1}>{children}</Box>
+      </Box>
     </>
   );
 };
