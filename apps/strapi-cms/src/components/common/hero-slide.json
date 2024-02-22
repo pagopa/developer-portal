@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_common_hero_slides",
+  "info": {
+    "displayName": "HeroSlide",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "titleColor": {
+      "type": "enumeration",
+      "enum": [
+        "contrastText",
+        "main",
+        "light",
+        "dark"
+      ]
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "callToAction": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.call-to-action"
+    }
+  }
+}

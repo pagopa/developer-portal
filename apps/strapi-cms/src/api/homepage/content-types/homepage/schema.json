@@ -35,6 +35,16 @@
           "localized": true
         }
       }
+    },
+    "heroSlider": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.hero-slide"
     }
   }
 }

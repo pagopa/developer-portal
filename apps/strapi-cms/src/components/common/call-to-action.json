@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_common_call_to_actions",
+  "info": {
+    "displayName": "CallToAction",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "contained",
+        "outlined"
+      ]
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.links"
+    }
+  }
+}
