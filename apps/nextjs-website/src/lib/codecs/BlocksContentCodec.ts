@@ -7,11 +7,11 @@ const TextInlineNodeCodec = t.intersection([
     text: t.string,
   }),
   t.partial({
-    bold: t.boolean,
-    italic: t.boolean,
-    underline: t.boolean,
-    strikethrough: t.boolean,
-    code: t.boolean,
+    bold: t.union([t.null, t.boolean]),
+    italic: t.union([t.null, t.boolean]),
+    underline: t.union([t.null, t.boolean]),
+    strikethrough: t.union([t.null, t.boolean]),
+    code: t.union([t.null, t.boolean]),
   }),
 ]);
 
@@ -64,7 +64,10 @@ const ListBlockNodeCodec: any = t.type({
   type: t.literal('list'),
   format: t.union([t.literal('ordered'), t.literal('unordered')]),
   children: t.array(
-    t.union([ListItemInlineNodeCodec, t.recursion('any', () => t.any)])
+    t.union([
+      ListItemInlineNodeCodec,
+      t.recursion('ListBlockNodeCodec', () => t.unknown),
+    ])
   ),
 });
 
@@ -90,11 +93,11 @@ export const ImageBlockNodeCodec = t.strict({
       updatedAt: t.string,
     }),
     t.partial({
-      alternativeText: t.string,
-      caption: t.string,
-      formats: t.record(t.unknown, t.string),
-      previewUrl: t.string,
-      provider_metadata: t.unknown,
+      alternativeText: t.union([t.null, t.string]),
+      caption: t.union([t.null, t.string]),
+      formats: t.union([t.null, t.record(t.unknown, t.string)]),
+      previewUrl: t.union([t.null, t.string]),
+      provider_metadata: t.union([t.null, t.unknown]),
     }),
   ]),
   children: t.array(ImageBlockChildCodec),

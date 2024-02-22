@@ -9,14 +9,13 @@ import BlockRendererClient from '@/components/molecules/BlockRendererClient/Bloc
 
 export type CtaSlideProps = {
   readonly subhead: BlocksContent;
-  readonly color?: string | null;
   readonly variant?: 'text' | 'contained' | 'outlined' | null;
   readonly cta?: {
     readonly text: string;
     readonly href: string;
     readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
   } | null;
-  readonly child?: ReactNode;
+  readonly child?: ReactNode | null;
   readonly backgroundImage?: {
     readonly name: string;
     readonly width: number;

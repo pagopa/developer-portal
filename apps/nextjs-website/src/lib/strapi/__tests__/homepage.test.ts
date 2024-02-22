@@ -45,8 +45,63 @@ const makeStrapiResponseJson = () => ({
         ],
       },
       hero: [
-        { id: 2, subhead: 'aText', color: null },
-        { id: 6, subhead: 'aText', color: null },
+        {
+          id: 1,
+          variant: 'aText',
+          subhead: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aText',
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  bold: true,
+                },
+              ],
+            },
+          ],
+          backgroundImage: {
+            data: [
+              {
+                id: 2,
+                attributes: {
+                  name: 'aText',
+                  alternativeText: null,
+                  caption: null,
+                  width: 1440,
+                  height: 495,
+                  formats: {
+                    thumbnail: {
+                      name: 'aText',
+                      hash: 'aText',
+                      ext: '.aText',
+                      mime: 'aText',
+                      path: null,
+                      width: 245,
+                      height: 84,
+                      size: 9.34,
+                      url: 'aText',
+                    },
+                  },
+                  hash: 'atext',
+                  ext: 'atext',
+                  mime: 'atext',
+                  size: 49.52,
+                  url: 'atext',
+                  previewUrl: null,
+                  provider: 'atext',
+                  provider_metadata: null,
+                  createdAt: '2024-02-15T15:50:04.876Z',
+                  updatedAt: '2024-02-16T15:38:03.748Z',
+                },
+              },
+            ],
+          },
+        },
       ],
       productsShowcase: {
         id: 1,

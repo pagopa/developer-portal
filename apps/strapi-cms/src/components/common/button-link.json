@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_common_button_links",
+  "info": {
+    "displayName": "ButtonLink"
+  },
+  "options": {},
+  "attributes": {
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.links"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "outlined",
+        "contained"
+      ]
+    }
+  }
+}

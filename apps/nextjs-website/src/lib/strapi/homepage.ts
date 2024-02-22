@@ -10,6 +10,7 @@ const CtaCodec = t.intersection([
   }),
   t.partial({
     target: t.union([
+      t.null,
       t.literal('_self'),
       t.literal('_blank'),
       t.literal('_parent'),
@@ -34,14 +35,14 @@ const CtaSlideCodec = t.intersection([
     subhead: t.array(RootNodeCodec),
   }),
   t.partial({
-    color: t.string,
     variant: t.union([
+      t.null,
       t.literal('text'),
       t.literal('contained'),
       t.literal('outlined'),
     ]),
-    cta: CtaCodec,
-    child: t.string,
+    cta: t.union([t.null, CtaCodec]),
+    child: t.union([t.string, t.null]),
     backgroundImage: t.strict({ data: MediaCodec }),
   }),
 ]);
@@ -82,7 +83,7 @@ const makeStrapiHomepagePopulate = () =>
         populate: ['links'],
       },
       hero: {
-        populate: ['backgroundImage'],
+        populate: ['backgroundImage', 'cta'],
       },
       productsShowcase: {
         populate: ['products.logo'],

@@ -101,13 +101,8 @@ export const translations = {
             type: 'paragraph',
             children: [
               {
-                text: 'PagoPA ',
+                text: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
                 type: 'text',
-              },
-              {
-                text: 'DevPortal',
-                type: 'text',
-                bold: true,
               },
             ],
           },

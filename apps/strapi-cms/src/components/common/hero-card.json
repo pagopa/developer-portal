@@ -6,32 +6,19 @@
   },
   "options": {},
   "attributes": {
-    "color": {
-      "type": "string"
+    "subhead": {
+      "type": "blocks"
     },
     "backgroundImage": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "allowedTypes": [
         "images"
       ]
     },
-    "cta": {
-      "type": "component",
-      "repeatable": false,
-      "component": "common.links"
-    },
-    "variant": {
-      "type": "enumeration",
-      "enum": [
-        "text",
-        "contained",
-        "outlined"
-      ]
-    },
-    "subhead": {
-      "type": "blocks"
+    "title": {
+      "type": "string"
     }
   }
 }
