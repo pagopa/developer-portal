@@ -30,7 +30,8 @@ export default function WebinarQuestionRow({
   const isHidden = !!hiddenBy;
   const isHighlighted = !!highlightedBy;
 
-  const tcColor = isHighlighted && !isHidden ? palette.common.white : '';
+  const tcColor =
+    isHighlighted && !isHidden ? palette.common.white : palette.text.primary;
 
   return (
     <TableRow
