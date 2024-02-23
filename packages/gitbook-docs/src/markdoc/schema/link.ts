@@ -48,14 +48,6 @@ export const link: Schema = {
       ? [titleFromAnchor]
       : childrenTreeNode;
 
-    if (attrs.href.match(/\/#/)) {
-      const splitted = attrs.href.split('/');
-      const anchor = splitted[splitted.length - 1].replace('/', '');
-      const href = splitted.slice(0, -1).join('/');
-      const linkAttrs = { ...attrs, href: `${href}${anchor}` };
-      return new Tag('Link', linkAttrs, children);
-    }
-
     return new Tag('Link', attrs, children);
   },
 };

@@ -16,12 +16,22 @@ export class BooleanOrNullAttr {
   };
 }
 
-const convertLink = (link: string): string =>
-  link
+const convertLink = (link: string): string => {
+  const replaced = link
     .replace('/README.md', '')
     .replace('README.md', '')
     .replace('.md', '')
     .replace(new RegExp('^(.*?)\\/?$'), '$1');
+
+  if (replaced.match(/\/#/)) {
+    const splitted = replaced.split('/');
+    const anchor = splitted[splitted.length - 1].replace('/', '');
+    const url = splitted.slice(0, -1).join('/');
+    return `${url}${anchor}`;
+  }
+
+  return replaced;
+};
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
@@ -60,7 +70,8 @@ export class LinkAttr {
           )
         : value;
     } else if (value && rewriteKey) {
-      return value.replace(rewriteKey, urlReplaces[rewriteKey]);
+      const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
+      return convertLink(href);
     } else {
       return value;
     }
