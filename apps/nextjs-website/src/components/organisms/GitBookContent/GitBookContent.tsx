@@ -64,6 +64,7 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
+  Br: () => <br />,
 };
 
 const GitBookContent = ({ content, config }: GitBookContentProps) =>
