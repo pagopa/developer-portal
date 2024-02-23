@@ -30,6 +30,8 @@ export default function WebinarQuestionRow({
   const isHidden = !!hiddenBy;
   const isHighlighted = !!highlightedBy;
 
+  const tcColor = isHighlighted && !isHidden ? palette.common.white : '';
+
   return (
     <TableRow
       hover
@@ -37,16 +39,22 @@ export default function WebinarQuestionRow({
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
         '&.MuiTableRow-hover:hover': {
-          backgroundColor: isHighlighted
-            ? palette.primary.dark
-            : palette.action.hover,
+          backgroundColor:
+            isHighlighted && !isHidden
+              ? palette.primary.dark
+              : palette.action.hover,
         },
-        backgroundColor: isHighlighted ? palette.primary.light : '',
+        backgroundColor:
+          isHighlighted && !isHidden ? palette.primary.light : '',
         fontStyle: isHidden ? 'italic' : '',
         position: 'relative',
       }}
     >
-      <TableCell sx={{ color: isHighlighted ? palette.common.white : '' }}>
+      <TableCell
+        sx={{
+          color: tcColor,
+        }}
+      >
         {!isHidden
           ? formatter.dateTime(question.createdAt, {
               year: 'numeric',
@@ -59,11 +67,13 @@ export default function WebinarQuestionRow({
       </TableCell>
       <TableCell
         width='70%'
-        sx={{ color: isHighlighted ? palette.common.white : '' }}
+        sx={{
+          color: tcColor,
+        }}
       >
         {!isHidden
           ? question.question
-          : isHidden && hiddenBy === userName
+          : hiddenBy === userName
           ? `${t('hiddenByMe')}: (${question.question})`
           : `${t('hiddenBy')}: ${hiddenBy}`}
       </TableCell>
@@ -72,7 +82,7 @@ export default function WebinarQuestionRow({
           {!isHidden || (isHidden && hiddenBy === userName) ? (
             <IconButton
               onClick={() => onHide(!isHidden)}
-              sx={{ color: isHighlighted ? palette.common.white : '' }}
+              sx={{ color: tcColor }}
             >
               {!isHidden ? <VisibilityOffIcon /> : <Visibility />}
             </IconButton>
@@ -84,7 +94,7 @@ export default function WebinarQuestionRow({
             (userName === highlightedBy || !isHighlighted ? (
               <IconButton
                 onClick={() => onHighlight(!isHighlighted)}
-                sx={{ color: isHighlighted ? palette.common.white : '' }}
+                sx={{ color: tcColor }}
               >
                 {!isHidden ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
               </IconButton>
@@ -104,7 +114,7 @@ export default function WebinarQuestionRow({
 
           {!isHidden && (
             <CopyToClipboardButton
-              sx={{ color: isHighlighted ? palette.common.white : '' }}
+              sx={{ color: tcColor }}
               value={DOMPurify.sanitize(question.question)}
             ></CopyToClipboardButton>
           )}

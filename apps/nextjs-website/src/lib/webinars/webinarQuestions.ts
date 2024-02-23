@@ -56,7 +56,6 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
 
 export const highlightWebinarQuestion = (
   question: WebinarQuestion,
-  highlight: boolean,
   highlightedByEmail: string
 ) =>
   pipe(
@@ -73,7 +72,7 @@ export const highlightWebinarQuestion = (
           '#highlightedBy': 'highlightedBy',
         },
         ExpressionAttributeValues: {
-          ':highlightedBy': { S: highlight ? highlightedByEmail : '' },
+          ':highlightedBy': { S: highlightedByEmail },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
@@ -83,7 +82,6 @@ export const highlightWebinarQuestion = (
 
 export const hideWebinarQuestion = (
   question: WebinarQuestion,
-  hide: boolean,
   hiddenByEmail: string
 ) =>
   pipe(
@@ -100,7 +98,7 @@ export const hideWebinarQuestion = (
           '#hiddenBy': 'hiddenBy',
         },
         ExpressionAttributeValues: {
-          ':hiddenBy': { S: hide ? hiddenByEmail : '' },
+          ':hiddenBy': { S: hiddenByEmail },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
