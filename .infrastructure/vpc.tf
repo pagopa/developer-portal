@@ -1,4 +1,3 @@
-## Network VPC and Security Group for CMS Strapi
 data "aws_availability_zones" "available" {
   state = "available"
 }
