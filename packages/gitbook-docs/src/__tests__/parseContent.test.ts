@@ -145,7 +145,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should convert href as expected given an link with anchor', () => {
+  it('should convert href as expected given a link with an anchor', () => {
     expect(
       parseContent(
         'Fixed [#text-strings](./#text-strings "mention") are now in JSON format',
