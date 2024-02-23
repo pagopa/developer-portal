@@ -16,7 +16,7 @@ export class BooleanOrNullAttr {
   };
 }
 
-const convertLink = (link: string): string => 
+const convertLink = (link: string): string =>
   link
     .replace('/README.md', '')
     .replace('README.md', '')
