@@ -16,22 +16,14 @@ export class BooleanOrNullAttr {
   };
 }
 
-const convertLink = (link: string): string => {
-  const replaced = link
+const convertLink = (link: string): string => 
+  link
     .replace('/README.md', '')
     .replace('README.md', '')
     .replace('.md', '')
-    .replace(new RegExp('^(.*?)\\/?$'), '$1');
-
-  if (replaced.match(/\/#/)) {
-    const splitted = replaced.split('/');
-    const anchor = splitted[splitted.length - 1].replace('/', '');
-    const url = splitted.slice(0, -1).join('/');
-    return `${url}${anchor}`;
-  }
-
-  return replaced;
-};
+    .replace(new RegExp('^(.*?)\\/?$'), '$1')
+    // uniform links like 'this/is/a/path/#fragment' to 'this/is/a/path#fragment'
+    .replace(new RegExp('/#'), '#');
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
