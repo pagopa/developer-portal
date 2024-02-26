@@ -2,7 +2,7 @@ import * as t from 'io-ts/lib';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 
-const LinkHomepageCodec = t.intersection([
+const LinkCodec = t.intersection([
   t.strict({
     text: t.string,
     href: t.string,
@@ -38,9 +38,9 @@ const ProductCodec = t.strict({
   }),
 });
 
-const CtaCodec = t.intersection([
+const CallToActionCodec = t.intersection([
   t.strict({
-    link: LinkHomepageCodec,
+    link: LinkCodec,
   }),
   t.partial({
     variant: t.union([
@@ -57,7 +57,7 @@ const HeroSlideCodec = t.intersection([
     title: t.string,
   }),
   t.partial({
-    callToAction: t.union([t.null, CtaCodec]),
+    callToAction: t.union([t.null, CallToActionCodec]),
     titleColor: t.union([
       t.null,
       t.literal('contrastText'),
@@ -74,7 +74,7 @@ export const StrapiHomepageCodec = t.strict({
     attributes: t.strict({
       comingsoonDocumentation: t.type({
         title: t.string,
-        links: t.array(LinkHomepageCodec),
+        links: t.array(LinkCodec),
       }),
       heroSlider: t.array(HeroSlideCodec),
       productsShowcase: t.strict({
