@@ -81,10 +81,8 @@ export const TableD = (props: TableCellProps) => {
     >
       {Array.isArray(props.children)
         ? props.children.map((children, index) => (
-          <Fragment key={index}>
-            {children}
-          </Fragment>
-        ))
+            <Fragment key={index}>{children}</Fragment>
+          ))
         : props.children}
     </MUITableCell>
   );

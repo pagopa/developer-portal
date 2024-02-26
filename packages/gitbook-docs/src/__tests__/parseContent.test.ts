@@ -149,6 +149,16 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse br correctly', () => {
+    expect(parseContent('Hello<br>there', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Hello',
+        new Markdoc.Tag('Br', {}),
+        'there',
+      ]),
+    ]);
+  });
+
   it('should convert href as expected given an index page', () => {
     const customConfig = { ...config, isPageIndex: true };
     expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
