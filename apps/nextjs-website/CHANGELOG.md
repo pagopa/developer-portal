@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.11.0
+
+### Minor Changes
+
+- 3e00190: [DPC-141] Add new version for "Carta Giovani Nazionale - Documentazione Tecnica"
+
 ## 0.10.0
 
 ### Minor Changes
