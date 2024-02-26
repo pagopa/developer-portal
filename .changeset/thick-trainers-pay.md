@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add heroSlider to homepage schema and callToAction and HeroSlide components on Strapi
+Add heroSlider to the homepage schema, CallToAction component and HeroSlide component to Strapi
