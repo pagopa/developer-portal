@@ -67,7 +67,7 @@ module "cms_ecs_service" {
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
   subnet_ids         = module.vpc.private_subnets
-  assign_public_ip   = true
+  assign_public_ip   = false
 
   load_balancer = {
     cms-target-group = {
