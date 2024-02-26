@@ -7,15 +7,15 @@ import React, { ReactNode } from 'react';
 
 export type CtaSlideProps = {
   readonly title: string;
-  readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
+  readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark' | null;
   readonly callToAction?: {
     readonly variant?: 'text' | 'contained' | 'outlined';
     readonly link: {
       readonly href: string;
       readonly text: string;
-      readonly target?: '_self' | '_blank' | '_parent' | '_top';
+      readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
     };
-  };
+  } | null;
   readonly child?: ReactNode;
   readonly backgroundImage?: {
     readonly name: string;
@@ -24,7 +24,7 @@ export type CtaSlideProps = {
     readonly ext: string;
     readonly mime: string;
     readonly url: string;
-  };
+  } | null;
 };
 
 const CtaSlide = ({
@@ -85,14 +85,16 @@ const CtaSlide = ({
           )}
         </Box>
       </Stack>
-      <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
-        <Image
-          style={{ objectFit: 'cover' }}
-          src={backgroundImage.url}
-          alt={title}
-          fill={true}
-        />
-      </Box>
+      {backgroundImage && (
+        <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
+          <Image
+            style={{ objectFit: 'cover' }}
+            src={backgroundImage.url}
+            alt={title}
+            fill={true}
+          />
+        </Box>
+      )}
     </Stack>
   );
 };

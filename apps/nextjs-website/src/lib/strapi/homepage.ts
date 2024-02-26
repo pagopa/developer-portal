@@ -9,6 +9,7 @@ const LinkHomepageCodec = t.intersection([
   }),
   t.partial({
     target: t.union([
+      t.null,
       t.literal('_self'),
       t.literal('_blank'),
       t.literal('_parent'),
@@ -43,6 +44,7 @@ const CtaCodec = t.intersection([
   }),
   t.partial({
     variant: t.union([
+      t.null,
       t.literal('text'),
       t.literal('contained'),
       t.literal('outlined'),
@@ -55,14 +57,15 @@ const HeroSlideCodec = t.intersection([
     title: t.string,
   }),
   t.partial({
-    callToAction: CtaCodec,
+    callToAction: t.union([t.null, CtaCodec]),
     titleColor: t.union([
+      t.null,
       t.literal('contrastText'),
       t.literal('main'),
       t.literal('light'),
       t.literal('dark'),
     ]),
-    backgroundImage: t.strict({ data: MediaCodec }),
+    backgroundImage: t.union([t.null, t.strict({ data: MediaCodec })]),
   }),
 ]);
 
