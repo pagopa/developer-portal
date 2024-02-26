@@ -105,12 +105,16 @@ const kitDiComunicazione: GuideDefinition = {
 const cartaGiovani: GuideDefinition = {
   product: appIo,
   guide: {
-    name: 'Carta Giovani - Documentazione Tecnica Portale Operatori',
+    name: 'Carta Giovani - Documentazione Tecnica',
     slug: 'carta-giovani-nazionale',
   },
   versions: [
     {
       main: true,
+      version: 'v1.2.0',
+      dirName: 'gduBdb7MgKReibHapP4x',
+    },
+    {
       version: 'v1.0',
       dirName: 'Vgh5yq561A3SOPVQrWes',
     },
