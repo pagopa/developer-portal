@@ -17,7 +17,8 @@
     "link": {
       "type": "component",
       "repeatable": false,
-      "component": "common.links"
+      "component": "common.links",
+      "required": true
     }
   }
 }
