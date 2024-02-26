@@ -34,10 +34,9 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
-import { companyRoles as configCompanyRoles } from '@/_contents/auth';
+import { companyRoles } from '@/_contents/auth';
 
 interface SignUpFormProps {
   userData: SignUpUserData;
@@ -161,8 +160,6 @@ const SignUpForm = ({
       setSubmitting(false);
     });
   }, [onSignUp, validateForm]);
-
-  const companyRoles = useMemo(() => configCompanyRoles, []);
 
   if (authStatus === 'authenticated') {
     redirect('/');
