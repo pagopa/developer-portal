@@ -42,7 +42,7 @@ const NewsItemCodec = t.strict({
     title: t.string,
     link: LinkCodec,
     publishedAt: t.string,
-    image: t.strict({ data: MediaCodec }),
+    image: t.strict({ data: t.union([t.null, MediaCodec]) }),
   }),
 });
 

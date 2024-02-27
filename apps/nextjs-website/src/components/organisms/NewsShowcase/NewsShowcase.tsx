@@ -20,7 +20,7 @@ type NewsShowcaseProps = {
     image: {
       url: string;
       alternativeText: string | null;
-    };
+    } | null;
     link: {
       url: string;
       text: string;
@@ -54,8 +54,8 @@ const NewsShowcase = ({
             },
             href: { link: item.link.url, label: item.link.text },
             img: {
-              alt: item.image.alternativeText || '',
-              src: item.image.url || '/images/news.png',
+              alt: (item.image && item.image.alternativeText) || '',
+              src: (item.image && item.image.url) || '/images/news.png',
             },
           }))}
         />

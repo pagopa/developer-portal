@@ -27,7 +27,7 @@ export type HomepageProps = {
         readonly ext: string;
         readonly mime: string;
         readonly url: string;
-      };
+      } | null;
     }[];
   };
   readonly productsShowcase: {
@@ -79,7 +79,8 @@ export const makeHomepageProps = (
             url: item.attributes.link.href,
             target: item.attributes.link.target,
           },
-          image: item.attributes.image.data.attributes,
+          image:
+            item.attributes.image.data && item.attributes.image.data.attributes,
         })
       ),
     },
