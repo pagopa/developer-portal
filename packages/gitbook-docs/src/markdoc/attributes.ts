@@ -21,7 +21,9 @@ const convertLink = (link: string): string =>
     .replace('/README.md', '')
     .replace('README.md', '')
     .replace('.md', '')
-    .replace(new RegExp('^(.*?)\\/?$'), '$1');
+    .replace(new RegExp('^(.*?)\\/?$'), '$1')
+    // uniform links like 'this/is/a/path/#fragment' to 'this/is/a/path#fragment'
+    .replace(new RegExp('/#'), '#');
 
 // eslint-disable-next-line functional/no-classes
 export class LinkAttr {
@@ -60,7 +62,8 @@ export class LinkAttr {
           )
         : value;
     } else if (value && rewriteKey) {
-      return value.replace(rewriteKey, urlReplaces[rewriteKey]);
+      const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
+      return convertLink(href);
     } else {
       return value;
     }
