@@ -96,10 +96,6 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     continue-on-error: false
-    strategy:
-      matrix:
-        environment: [ 'dev' ]
-    environment: ${{ matrix.environment }}
     
     steps:
       - name: Checkout
