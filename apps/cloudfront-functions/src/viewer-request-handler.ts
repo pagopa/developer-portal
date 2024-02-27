@@ -16,14 +16,14 @@ const handler = (
     // Check if the uri refers to a gitbook assets
     const isGitbookAssets = uri.startsWith('/gitbook/docs');
     const isWoff2 = uri.endsWith('.woff2'); // woff2 is a font format
+    const uriEndsWithSlash = uri.endsWith('/');
+
+    if (uriEndsWithSlash) {
+      request.uri = uri.replace(/\/$/, '');
+    }
 
     // Add the .html extension if missing
-    if (
-      !uri.endsWith('/') &&
-      !isGitbookAssets &&
-      !isWoff2 &&
-      !/\.[a-zA-Z]+$/.test(uri)
-    ) {
+    if (!isGitbookAssets && !isWoff2 && !/\.[a-zA-Z]+$/.test(uri)) {
       request.uri += '.html';
     }
 
