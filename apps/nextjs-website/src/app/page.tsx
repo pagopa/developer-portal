@@ -2,7 +2,7 @@ import { translations } from '@/_contents/translations';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import NewsShowcase from '@/components/organisms/News/NewsShowcase';
+import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';

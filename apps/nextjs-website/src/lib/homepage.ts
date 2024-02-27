@@ -106,10 +106,7 @@ export const makeHomepagePropsFromStatic = (
     boldTitle: staticHeader.boldTitle,
     cards: staticHomepage.heroItems,
   },
-  newsShowcase: {
-    title: staticHomepage.newsShowcase.title,
-    items: staticHomepage.newsShowcase.items,
-  },
+  newsShowcase: staticHomepage.newsShowcase,
   productsShowcase: staticHomepage.productsShowcase,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
 });
