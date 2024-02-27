@@ -18,7 +18,8 @@ resource "aws_route53_record" "devportal_delegate" {
 locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
-    aws_acm_certificate.auth.domain_validation_options
+    aws_acm_certificate.auth.domain_validation_options,
+    module.cms_ssl_certificate.acm_certificate_domain_validation_options
   )
 }
 
