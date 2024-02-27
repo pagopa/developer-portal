@@ -66,22 +66,24 @@ export const makeHomepageProps = (
   ...makeHomepagePropsFromStatic(staticHeader, staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
-  newsShowcase: {
-    title: strapiHomepage.data.attributes.newsShowcase.title,
-    items: strapiHomepage.data.attributes.newsShowcase.items.data.map(
-      (item) => ({
-        comingSoon: item.attributes.comingSoon || undefined,
-        title: item.attributes.title,
-        publishedAt: item.attributes.publishedAt,
-        link: {
-          text: item.attributes.link.text,
-          url: item.attributes.link.href,
-          target: item.attributes.link.target,
-        },
-        image: item.attributes.image.data.attributes,
-      })
-    ),
-  },
+  ...(strapiHomepage.data.attributes.newsShowcase && {
+    newsShowcase: {
+      title: strapiHomepage.data.attributes.newsShowcase.title,
+      items: strapiHomepage.data.attributes.newsShowcase.items.data.map(
+        (item) => ({
+          comingSoon: item.attributes.comingSoon || undefined,
+          title: item.attributes.title,
+          publishedAt: item.attributes.publishedAt,
+          link: {
+            text: item.attributes.link.text,
+            url: item.attributes.link.href,
+            target: item.attributes.link.target,
+          },
+          image: item.attributes.image.data.attributes,
+        })
+      ),
+    },
+  }),
   productsShowcase: {
     title: strapiHomepage.data.attributes.productsShowcase.title,
     products: strapiHomepage.data.attributes.productsShowcase.products.data.map(

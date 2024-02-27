@@ -53,12 +53,15 @@ export const StrapiHomepageCodec = t.strict({
         title: t.string,
         links: t.array(LinkCodec),
       }),
-      newsShowcase: t.strict({
-        title: t.string,
-        items: t.strict({
-          data: t.array(NewsItemCodec),
+      newsShowcase: t.union([
+        t.null,
+        t.strict({
+          title: t.string,
+          items: t.strict({
+            data: t.array(NewsItemCodec),
+          }),
         }),
-      }),
+      ]),
       productsShowcase: t.strict({
         title: t.string,
         products: t.strict({
