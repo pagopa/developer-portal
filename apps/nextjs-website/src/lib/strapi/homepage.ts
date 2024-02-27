@@ -65,7 +65,7 @@ const HeroSlideCodec = t.intersection([
       t.literal('light'),
       t.literal('dark'),
     ]),
-    backgroundImage: t.union([t.null, t.strict({ data: MediaCodec })]),
+    backgroundImage: t.strict({ data: t.union([t.null, MediaCodec]) }),
   }),
 ]);
 

@@ -179,7 +179,7 @@ const makeStrapiResponseWithNullsJson = () => ({
               target: '_self',
             },
           },
-          backgroundImage: null,
+          backgroundImage: { data: null },
         },
         {
           id: 1,

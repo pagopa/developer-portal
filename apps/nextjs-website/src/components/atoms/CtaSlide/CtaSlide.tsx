@@ -24,7 +24,7 @@ export type CtaSlideProps = {
     readonly ext: string;
     readonly mime: string;
     readonly url: string;
-  } | null;
+  };
 };
 
 const CtaSlide = ({

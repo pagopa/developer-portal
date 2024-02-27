@@ -36,14 +36,14 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
       modules={[Navigation, Pagination]}
     >
       {cards.length > 1 && (
-        <div onClick={() => previousSlide()}>
-          <NavigationArrow direction={'left'} hidden={false} />
-        </div>
-      )}
-      {cards.length > 1 && (
-        <div onClick={() => nextSlide()}>
-          <NavigationArrow direction={'right'} hidden={false} />
-        </div>
+        <>
+          <div onClick={() => previousSlide()}>
+            <NavigationArrow direction={'left'} hidden={false} />
+          </div>
+          <div onClick={() => nextSlide()}>
+            <NavigationArrow direction={'right'} hidden={false} />
+          </div>
+        </>
       )}
 
       {cards.map((props, index) => (
