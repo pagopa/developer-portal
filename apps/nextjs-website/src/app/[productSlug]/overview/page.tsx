@@ -89,7 +89,7 @@ export async function generateMetadata(
     title: product.name,
     description: product.description,
     url: path,
-    image: product.pngUrl,
+    image: product.logo.url,
   });
 }
 

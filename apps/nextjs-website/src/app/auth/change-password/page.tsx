@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Box, Grid, Snackbar } from '@mui/material';
+import { Grid } from '@mui/material';
 import PasswordChangedCard from '@/components/organisms/Auth/PasswordChangedCard';
 import ChangePasswordForm from '@/components/organisms/Auth/ChangePasswordForm';
 import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
@@ -7,13 +7,22 @@ import { useCallback, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
 import PageNotFound from '@/app/not-found';
-import { translations } from '@/_contents/translations';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { useTranslations } from 'next-intl';
+import Spinner from '@/components/atoms/Spinner/Spinner';
+import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
+import SingleCard from '@/components/atoms/SingleCard/SingleCard';
+import { IllusError } from '@pagopa/mui-italia/dist/illustrations/Error';
+
+enum State {
+  loading = 'loading',
+  error = 'error',
+  errorLink = 'errorLink',
+  success = 'success',
+}
 
 const ChangePassword = () => {
-  const {
-    auth: { resetPassword },
-  } = translations;
+  const confirmation = useTranslations('auth.confirmation');
+
   const searchParams = useSearchParams();
   const username = searchParams.get('username') || '';
   const code = searchParams.get('code') || '';
@@ -22,16 +31,15 @@ const ChangePassword = () => {
     ResetPasswordSteps.CHANGE_PASSWORD
   );
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isValidLink, setIsValidLink] = useState(false);
+  const [state, setState] = useState<State>(State.loading);
 
   const onChangePassword = useCallback(async () => {
     const success = await Auth.forgotPasswordSubmit(
       username,
       code,
       password
-    ).catch((err) => {
-      setError(err.message);
+    ).catch(() => {
+      setState(State.errorLink);
       return false;
     });
 
@@ -42,28 +50,24 @@ const ChangePassword = () => {
 
   useEffect(() => {
     if (username != '' && code != '') {
-      setIsValidLink(true);
+      setState(State.success);
     } else {
-      setError(resetPassword.invalidLinkError);
+      setState(State.errorLink);
     }
   }, []);
 
-  return (
-    <>
-      {isValidLink ? (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100vw',
-            minHeight: '70vh',
-            backgroundImage: 'url(/images/hero.jpg)',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'bottom right',
-          }}
-        >
+  switch (state) {
+    case State.error:
+      return <PageNotFound />;
+    case State.errorLink:
+      return (
+        <PageBackgroundWrapper>
+          <SingleCard icon={<IllusError />} title={confirmation('title')} />
+        </PageBackgroundWrapper>
+      );
+    case State.success:
+      return (
+        <PageBackgroundWrapper>
           <Grid
             container
             justifyContent='center'
@@ -80,19 +84,11 @@ const ChangePassword = () => {
               <PasswordChangedCard />
             )}
           </Grid>
-        </Box>
-      ) : (
-        <PageNotFound />
-      )}
-      <Snackbar
-        open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
-        onClose={() => setError(null)}
-      >
-        <Alert severity={'error'}>{error}</Alert>
-      </Snackbar>
-    </>
-  );
+        </PageBackgroundWrapper>
+      );
+    default:
+      return <Spinner />;
+  }
 };
 
 export default ChangePassword;
