@@ -112,6 +112,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
 
       - name: Build Push and Tag
+        # Enabling the "continue on error" option allows for a manual rollback
+        # to be performed in case of any issues. Without this option, the step
+        # will fail if the image already exists in the Elastic Container
+        # Registry (ECR). However, by activating this option, the deployment
+        # process will proceed to the next steps even if the ECR image already
+        # exists
+        continue-on-error: true
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
