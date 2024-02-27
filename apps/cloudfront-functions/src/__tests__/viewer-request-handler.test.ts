@@ -30,7 +30,7 @@ const makeEvent = (uri: string): AWSCloudFrontFunction.Event => ({
 describe('handler', () => {
   it('should append the html suffix', () => {
     expect(handler(makeEvent('/page')).uri).toBe('/page.html');
-    expect(handler(makeEvent('/page/')).uri).toBe('/page/');
+    expect(handler(makeEvent('/page/')).uri).toBe('/page.html');
     expect(handler(makeEvent('/image.jpg')).uri).toBe('/image.jpg');
     expect(handler(makeEvent('/font.woff2')).uri).toBe('/font.woff2');
     const example0 = '/i-s/g/mo/v1.0/i-p/p-i/v-d';
@@ -42,5 +42,9 @@ describe('handler', () => {
     expect(handler(makeEvent('/gitbook/docs/n/.gitbook/assets/0')).uri).toBe(
       '/gitbook/docs/n/.gitbook/assets/0'
     );
+  });
+
+  it('should not add the html suffix to homepage', () => {
+    expect(handler(makeEvent('/')).uri).toBe('/');
   });
 });
