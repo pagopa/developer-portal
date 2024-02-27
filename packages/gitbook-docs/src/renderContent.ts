@@ -32,7 +32,6 @@ import {
   TableRProps,
 } from './markdoc/schema/table';
 import { PageLinkProps } from './markdoc/schema/pageLink';
-import { BrProps } from './markdoc/schema/br';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
