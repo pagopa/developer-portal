@@ -117,16 +117,7 @@ module "cms_dns_records" {
 
   records = [
     {
-      name = ""
-      type = "A"
-      alias = {
-        name                   = module.cms_load_balancer.dns_name
-        zone_id                = module.cms_load_balancer.zone_id
-        evaluate_target_health = false
-      }
-    },
-    {
-      name = "www"
+      name = "cms"
       type = "A"
       alias = {
         name                   = module.cms_load_balancer.dns_name
