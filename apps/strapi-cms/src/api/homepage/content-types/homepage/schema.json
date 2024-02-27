@@ -16,6 +16,16 @@
     }
   },
   "attributes": {
+    "newsShowcase": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.news-showcase"
+    },
     "productsShowcase": {
       "type": "component",
       "repeatable": false,
