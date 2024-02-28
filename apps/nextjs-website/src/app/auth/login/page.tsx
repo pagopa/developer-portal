@@ -10,6 +10,7 @@ import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
+import AuthStatus from '@/components/organisms/Auth/AuthStatus';
 
 const Login = () => {
   const router = useRouter();
@@ -17,26 +18,29 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [submitting, setSubmitting] = useState(false);
   const [noAccountError, setNoAccountError] = useState<boolean>(false);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
+    setSubmitting(true);
     setNoAccountError(false);
     setUsername(username);
     setPassword(password);
 
-    const user = await Auth.signIn({
-      username,
-      password,
-    } as SignInOpts).catch((error) => {
-      if (error.code === 'UserNotConfirmedException') {
-        setUsername(username);
-        setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
-      } else {
-        setNoAccountError(true);
-      }
-      return false;
-    });
+    const opts: SignInOpts = { username, password };
+    const user = await Auth.signIn(opts)
+      .catch((error) => {
+        if (error.code === 'UserNotConfirmedException') {
+          setUsername(username);
+          setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
+        } else {
+          setNoAccountError(true);
+        }
+        return false;
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
 
     setUsername(username);
 
@@ -86,7 +90,13 @@ const Login = () => {
         spacing={6}
       >
         {logInStep === LoginSteps.LOG_IN && (
-          <LoginForm noAccount={noAccountError} onLogin={onLogin} />
+          <AuthStatus>
+            <LoginForm
+              submitting={submitting}
+              noAccount={noAccountError}
+              onLogin={onLogin}
+            />
+          </AuthStatus>
         )}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           <ConfirmLogIn

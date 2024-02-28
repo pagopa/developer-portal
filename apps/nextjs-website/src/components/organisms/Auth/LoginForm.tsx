@@ -1,6 +1,4 @@
-'use client';
 import { LoginFunction } from '@/lib/types/loginFunction';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
@@ -22,13 +20,19 @@ import {
 import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { validateEmail, validateField } from '@/helpers/auth.helpers';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
-  noAccount: boolean;
+  noAccount?: boolean;
+  submitting?: boolean;
 }
 
 interface LoginFieldsError {
@@ -36,28 +40,26 @@ interface LoginFieldsError {
   password: string | null;
 }
 
-const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
+const LoginForm = ({
+  onLogin,
+  noAccount = false,
+  submitting = false,
+}: LoginFormProps) => {
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
   const shared = useTranslations('shared');
-  const errors = useTranslations('errors');
 
   const { palette } = useTheme();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
   const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
-
   const [fieldErrors, setFieldErrors] = useState<LoginFieldsError>({
     email: null,
     password: null,
   });
-
-  if (authStatus === 'authenticated') {
-    redirect('/');
-  }
 
   const handleClickShowPassword = useCallback(
     () => setShowPassword((show) => !show),
@@ -71,17 +73,21 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
     []
   );
 
-  const validateForm = useCallback(() => {
-    const emailError = validateEmail(username);
+  const handleChangeInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
 
-    const passwordError = validateField(password);
+  const validateForm = useCallback(() => {
+    const emailError = validateEmail(formData.username);
+    const passwordError = validateField(formData.password);
+
     setFieldErrors({
       email: emailError ? shared(emailError) : null,
       password: passwordError ? shared(passwordError) : null,
     });
 
     return !emailError && !passwordError;
-  }, [username, shared, password]);
+  }, [shared, formData]);
 
   const setNotloggedOnError = useCallback(() => {
     if (noAccount) {
@@ -99,14 +105,11 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
 
   const onLoginHandler = useCallback(() => {
     const valid = validateForm();
-    if (!valid) {
-      return;
-    }
-    setSubmitting(true);
-    onLogin({ username, password }).finally(() => {
-      setSubmitting(false);
-    });
-  }, [validateForm, onLogin, username, password, errors]);
+
+    if (!valid) return;
+
+    onLogin(formData);
+  }, [validateForm, onLogin, formData]);
 
   return (
     <Box
@@ -130,32 +133,35 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
               </Typography>
               <Stack spacing={2} mb={4}>
                 <TextField
-                  label={shared('emailAddress')}
-                  variant='outlined'
-                  size='small'
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  helperText={fieldErrors.email}
+                  autoComplete={'username'}
                   error={!!fieldErrors.email || noAccount}
+                  helperText={fieldErrors.email}
+                  inputProps={{
+                    'aria-label': 'email',
+                    name: 'username',
+                  }}
+                  label={shared('emailAddress')}
                   required
+                  size='small'
                   sx={{
                     width: '100%',
                     backgroundColor: palette.background.paper,
                   }}
-                  autoComplete={'username'}
+                  value={formData.username}
+                  variant='outlined'
+                  onChange={handleChangeInput}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
                 <FormControl variant='outlined' size='small'>
                   <TextField
-                    id='password-input'
-                    type={showPassword ? 'text' : 'password'}
-                    onChange={(e) => setPassword(e.target.value)}
-                    label={`${shared('password')}`}
-                    variant='outlined'
-                    size='small'
+                    autoComplete={'current-password'}
                     error={!!fieldErrors.password || noAccount}
-                    required
+                    id='password-input'
+                    inputProps={{
+                      'aria-label': 'password',
+                      name: 'password',
+                    }}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position='end'>
@@ -170,7 +176,12 @@ const LoginForm = ({ onLogin, noAccount = false }: LoginFormProps) => {
                         </InputAdornment>
                       ),
                     }}
-                    autoComplete={'current-password'}
+                    label={`${shared('password')}`}
+                    required
+                    size='small'
+                    type={showPassword ? 'text' : 'password'}
+                    variant='outlined'
+                    onChange={handleChangeInput}
                   />
                   {(fieldErrors.password || noAccount) && (
                     <FormHelperText error>
