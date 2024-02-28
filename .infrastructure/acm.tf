@@ -7,7 +7,8 @@ resource "aws_acm_certificate" "website" {
     create_before_destroy = true
   }
 
-  provider = aws.us-east-1 # TLS certificate generated in us-east because it is related to the CDN which is a global resource
+  # TLS certificate generated in us-east because it is related to the CDN which is a global resource
+  provider = aws.us-east-1
 }
 
 resource "aws_acm_certificate" "auth" {
@@ -18,7 +19,8 @@ resource "aws_acm_certificate" "auth" {
     create_before_destroy = true
   }
 
-  provider = aws.us-east-1 # TLS certificate generated in us-east because it is related to the CDN which is a global resource
+  # TLS certificate generated in us-east because it is related to the CDN which is a global resource
+  provider = aws.us-east-1
 }
 
 ## Certificate HTTPS for CMS Strapi
