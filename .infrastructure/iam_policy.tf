@@ -234,3 +234,27 @@ data "aws_iam_policy_document" "s3_iam_policy_cms" {
     }
   }
 }
+
+data "aws_iam_policy_document" "authenticated_users_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = [aws_cognito_identity_pool.devportal.id]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["authenticated"]
+    }
+  }
+}
