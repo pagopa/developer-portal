@@ -16,7 +16,7 @@ type NewsShowcaseProps = {
   items: {
     comingSoon?: boolean;
     title: string;
-    publishedAt?: string;
+    publishedAt?: Date;
     image: {
       url: string;
       alternativeText: string | null;
@@ -46,11 +46,7 @@ const NewsShowcase = ({
             comingSoonLabel: !item.comingSoon ? undefined : coomingSoonLabel,
             title: item.title,
             date: {
-              date:
-                (item.publishedAt &&
-                  item.publishedAt !== '' &&
-                  new Date(item.publishedAt)) ||
-                undefined,
+              date: item.publishedAt,
             },
             href: { link: item.link.url, label: item.link.text },
             img: {

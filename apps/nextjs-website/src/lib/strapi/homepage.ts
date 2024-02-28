@@ -1,4 +1,5 @@
 import * as t from 'io-ts/lib';
+import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 
@@ -41,7 +42,7 @@ const NewsItemCodec = t.strict({
     comingSoon: t.boolean,
     title: t.string,
     link: LinkCodec,
-    publishedAt: t.string,
+    publishedAt: tt.DateFromISOString,
     image: t.strict({ data: t.union([t.null, MediaCodec]) }),
   }),
 });

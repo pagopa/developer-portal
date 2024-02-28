@@ -8,5 +8,5 @@ export type Tutorial = {
     readonly alternativeText: string;
   };
   readonly title: string;
-  readonly publishedAt?: string;
+  readonly publishedAt?: Date;
 } & Path;

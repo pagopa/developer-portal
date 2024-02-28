@@ -75,9 +75,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 : shared.comingSoon,
               title: tutorial.title,
               date: {
-                date: tutorial.publishedAt
-                  ? new Date(tutorial.publishedAt)
-                  : undefined,
+                date: tutorial.publishedAt,
               },
               href: {
                 label: shared.readTutorial,

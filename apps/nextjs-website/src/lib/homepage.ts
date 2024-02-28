@@ -13,7 +13,7 @@ export type HomepageProps = {
     readonly items: readonly {
       readonly comingSoon?: boolean;
       readonly title: string;
-      readonly publishedAt?: string;
+      readonly publishedAt?: Date;
       readonly link: {
         readonly text: string;
         readonly url: string;
