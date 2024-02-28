@@ -10,7 +10,8 @@ export const ioSignTutorials: readonly Tutorial[] = [
     path: `${ioSignTutorialListsPath.path}/come-creare-e-preparare-il-documento-da-firmare-digitalmente-con-firma-con-io`,
     name: 'Come creare e preparare il documento da firmare digitalmente',
     image: {
-      alt: 'Immagine: Come creare e preparare il documento da firmare digitalmente',
+      alternativeText:
+        'Immagine: Come creare e preparare il documento da firmare digitalmente',
       url: '/images/io-sign-firmare-documento.png',
     },
     showInOverview: true,
@@ -20,7 +21,8 @@ export const ioSignTutorials: readonly Tutorial[] = [
     path: `${ioSignTutorialListsPath.path}/come-creare-il-dossier-per-la-richiesta-di-firma`,
     name: 'Come creare il Dossier per la richiesta di firma',
     image: {
-      alt: 'Immagine: Come creare il Dossier per la richiesta di firma',
+      alternativeText:
+        'Immagine: Come creare il Dossier per la richiesta di firma',
       url: '/images/io-sign-creare-dossier.png',
     },
     showInOverview: true,
@@ -30,7 +32,7 @@ export const ioSignTutorials: readonly Tutorial[] = [
     path: `${ioSignTutorialListsPath.path}/upload-dei-documenti`,
     name: 'Come effettuare l’upload dei documenti',
     image: {
-      alt: 'Immagine: Come effettuare l’upload dei documenti',
+      alternativeText: 'Immagine: Come effettuare l’upload dei documenti',
       url: '/images/io-sign-effettuare-upload-documento.png',
     },
     showInOverview: true,
