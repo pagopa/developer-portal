@@ -1,5 +1,5 @@
 locals {
-  from_email_address = format("PagoPA DevPortal <noreply@%s>", var.dns_domain_name)
+  from_email_address                     = format("PagoPA DevPortal <noreply@%s>", var.dns_domain_name)
 }
 
 resource "aws_cognito_user_pool" "devportal" {
