@@ -61,6 +61,9 @@ module "iam_role_task_role" {
   role_requires_mfa = false
 }
 
+###############################################################################
+#                     IAM Role used with cognito user                         #
+###############################################################################
 resource "aws_iam_role" "devportal_authenticated_user" {
   name               = "DevPortalAuthenticatedUser"
   description        = "The role assumed by the authenticated devportal users"
