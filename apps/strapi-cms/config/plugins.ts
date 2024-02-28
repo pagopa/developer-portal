@@ -17,4 +17,14 @@ export default ({ env }: any) => ({
       },
     },
   },
+  'update-static-content': {
+    enabled: true,
+    config: {
+      githubToken: env('USC_GITHUB_PAT'),
+      owner: env('USC_REPO_OWNER', 'pagopa'),
+      repo: env('USC_REPO_NAME', 'developer-portal'),
+      workflowId: env('USC_WORKFLOW_ID', 'deploy_website.yaml'),
+      branch: env('USC_TARGET_BRANCH', 'main'),
+    },
+  },
 });
