@@ -60,3 +60,55 @@ module "iam_role_task_role" {
   ]
   role_requires_mfa = false
 }
+
+resource "aws_iam_role" "devportal_authenticated_user" {
+  name               = "DevPortalAuthenticatedUser"
+  description        = "The role assumed by the authenticated devportal users"
+  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
+}
+
+resource "aws_iam_role" "devportal_authenticated_host_user" {
+  name               = "DevPortalAuthenticatedHostUser"
+  description        = "The role assumed by the authenticated host devportal users"
+  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
+}
+
+resource "aws_iam_role_policy" "devportal_authenticated_user" {
+  name = "DevPortalAuthenticatedUserPolicy"
+  role = aws_iam_role.devportal_authenticated_user.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
+        ],
+        Resource = [
+          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "devportal_authenticated_host_user" {
+  name = "DevPortalAuthenticatedHostUserPolicy"
+  role = aws_iam_role.devportal_authenticated_host_user.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+        ],
+        Resource = [
+          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
+        ]
+      }
+    ]
+  })
+}
