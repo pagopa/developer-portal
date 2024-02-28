@@ -7,6 +7,11 @@ resource "aws_iam_role" "deploy_website" {
   assume_role_policy = data.aws_iam_policy_document.deploy_github.json
 }
 
+resource "aws_iam_role_policy_attachment" "deploy_website" {
+  role       = aws_iam_role.deploy_website.name
+  policy_arn = aws_iam_policy.deploy_website.arn
+}
+
 ###############################################################################
 #                Define IAM Role to use on strapi deploy                      #
 ###############################################################################
@@ -14,6 +19,11 @@ resource "aws_iam_role" "deploy_cms" {
   name               = "GitHubActionDeployCms"
   description        = "Role to assume to deploy the cms"
   assume_role_policy = data.aws_iam_policy_document.deploy_github.json
+}
+
+resource "aws_iam_role_policy_attachment" "deploy_cms" {
+  role       = aws_iam_role.deploy_cms.name
+  policy_arn = aws_iam_policy.deploy_cms.arn
 }
 
 module "iam_role_ecs_task_execution" {

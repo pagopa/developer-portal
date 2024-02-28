@@ -70,11 +70,6 @@ resource "aws_iam_policy" "deploy_website" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "deploy_website" {
-  role       = aws_iam_role.deploy_website.name
-  policy_arn = aws_iam_policy.deploy_website.arn
-}
-
 resource "aws_iam_policy" "deploy_cms" {
   name        = "DeployCms"
   description = "Policy to allow to deploy the cms"
@@ -112,11 +107,6 @@ resource "aws_iam_policy" "deploy_cms" {
       }
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "deploy_cms" {
-  role       = aws_iam_role.deploy_cms.name
-  policy_arn = aws_iam_policy.deploy_cms.arn
 }
 
 data "aws_iam_policy_document" "ecs_task_execution" {
