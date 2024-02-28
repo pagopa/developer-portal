@@ -66,7 +66,7 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Heading', { level: 2, id: 'h2-title' }, [
         'h2 title ',
-        new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page/#code' }, []),
+        new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page#code' }, []),
       ]),
     ]);
     expect(
@@ -83,11 +83,7 @@ describe('parseContent', () => {
             'h2 title within backticks',
           ]),
           '',
-          new Markdoc.Tag(
-            'Link',
-            { id: 'code', href: '/to/s0/page/#code' },
-            []
-          ),
+          new Markdoc.Tag('Link', { id: 'code', href: '/to/s0/page#code' }, []),
         ]
       ),
     ]);
@@ -149,6 +145,41 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should convert href as expected given a link with an anchor', () => {
+    expect(
+      parseContent(
+        'Fixed [#text-strings](./#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
+      ]),
+    ]);
+    expect(
+      parseContent(
+        'Fixed [#text-strings](/#text-strings "mention") are now in JSON format',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Fixed ',
+        new Markdoc.Tag(
+          'Link',
+          { title: 'mention', href: '/to/s0/page#text-strings' },
+          ['Text strings']
+        ),
+        ' are now in JSON format',
+      ]),
+    ]);
+  });
+
   it('should convert href as expected given an index page', () => {
     const customConfig = { ...config, isPageIndex: true };
     expect(parseContent('[Guida](b.md)', customConfig)).toStrictEqual([
@@ -174,7 +205,7 @@ describe('parseContent', () => {
         'Fixed ',
         new Markdoc.Tag(
           'Link',
-          { title: 'mention', href: '/to/s0/page/#text-strings' },
+          { title: 'mention', href: '/to/s0/page#text-strings' },
           ['Text strings']
         ),
         ' are now in JSON format',
@@ -299,7 +330,7 @@ describe('parseContent', () => {
         new Markdoc.Tag(
           'Link',
           {
-            href: '/send/guides/modello-di-integrazione/path/#fragment',
+            href: '/send/guides/modello-di-integrazione/path#fragment',
           },
           ['Modello di Integrazione']
         ),
