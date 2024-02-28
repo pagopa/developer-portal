@@ -45,45 +45,63 @@ export const translations = {
     onThisPage: 'In questa pagina',
   },
   homepage: {
-    news: {
+    newsShowcase: {
       title: 'In evidenza',
-      list: [
+      items: [
         {
+          comingSoon: false,
           title:
             'Usa il validatore di SEND per fare una verifica sull’integrazione',
-          href: {
-            label: 'Vai al validatore',
-            link: `${sendGuideListsPath.path}/validatore/v1.0`,
-            title: 'Vai al validatore',
+          link: {
+            url: `${sendGuideListsPath.path}/validatore/v1.0`,
+            text: 'Vai al validatore',
           },
           image: {
+            name: 'homepage-validatore.png',
+            alternativeText:
+              'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
+            width: 1156,
+            height: 580,
+            ext: '.svg',
+            mime: 'image/svg+xml',
             url: '/images/homepage-validatore.png',
-            alt: 'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
           },
         },
         {
+          comingSoon: false,
           title: 'Scopri i nuovi tutorial di Firma con IO',
-          href: {
-            label: 'Vai ai tutorial',
-            link: `${ioSignTutorialListsPath.path}`,
-            title: 'Vai ai tutorial',
+          link: {
+            url: `${ioSignTutorialListsPath.path}`,
+            text: 'Vai ai tutorial',
           },
           image: {
+            name: 'homepage-io-sign.png',
+            alternativeText:
+              'Immagine: Scopri i nuovi tutorial di Firma con IO',
+            width: 1156,
+            height: 580,
+            ext: '.svg',
+            mime: 'image/svg+xml',
             url: '/images/homepage-io-sign.png',
-            alt: 'Immagine: Scopri i nuovi tutorial di Firma con IO',
           },
         },
         {
+          comingSoon: false,
           title:
             'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
-          href: {
-            label: 'Vai alla guida',
-            link: `${pagoPaQuickStartGuidePath.path}`,
-            title: 'Vai alla guida',
+          link: {
+            url: `${pagoPaQuickStartGuidePath.path}`,
+            text: 'Vai alla guida',
           },
           image: {
+            name: 'homepage-pago-pa.png',
+            alternativeText:
+              'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
+            width: 1156,
+            height: 580,
+            ext: '.svg',
+            mime: 'image/svg+xml',
             url: '/images/homepage-pago-pa.png',
-            alt: 'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
           },
         },
       ],

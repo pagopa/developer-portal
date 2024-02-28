@@ -40,7 +40,6 @@ const LinkButton = ({
 
   return (
     <Stack
-      mt={2}
       direction='row'
       alignItems='center'
       color='primary.main'
