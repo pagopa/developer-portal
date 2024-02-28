@@ -376,18 +376,6 @@ data "aws_iam_policy_document" "authenticated_users_policy" {
   }
 }
 
-resource "aws_iam_role" "devportal_authenticated_user" {
-  name               = "DevPortalAuthenticatedUser"
-  description        = "The role assumed by the authenticated devportal users"
-  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
-}
-
-resource "aws_iam_role" "devportal_authenticated_host_user" {
-  name               = "DevPortalAuthenticatedHostUser"
-  description        = "The role assumed by the authenticated host devportal users"
-  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
-}
-
 resource "aws_cognito_identity_pool_roles_attachment" "main" {
   identity_pool_id = aws_cognito_identity_pool.devportal.id
 
@@ -409,44 +397,4 @@ resource "aws_cognito_user_group" "hosts" {
   name         = "hosts"
   user_pool_id = aws_cognito_user_pool.devportal.id
   role_arn     = aws_iam_role.devportal_authenticated_host_user.arn
-}
-
-resource "aws_iam_role_policy" "devportal_authenticated_user" {
-  name = "DevPortalAuthenticatedUserPolicy"
-  role = aws_iam_role.devportal_authenticated_user.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "dynamodb:PutItem",
-        ],
-        Resource = [
-          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy" "devportal_authenticated_host_user" {
-  name = "DevPortalAuthenticatedHostUserPolicy"
-  role = aws_iam_role.devportal_authenticated_host_user.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "dynamodb:PutItem",
-          "dynamodb:Query",
-          "dynamodb:UpdateItem",
-        ],
-        Resource = [
-          "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
-        ]
-      }
-    ]
-  })
 }
