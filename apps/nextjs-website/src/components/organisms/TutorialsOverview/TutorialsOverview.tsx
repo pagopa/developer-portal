@@ -3,7 +3,7 @@
 import React from 'react';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { Path } from '@/lib/types/path';
-import News from '@/components/organisms/News/News';
+import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { useTranslations } from 'next-intl';
 
 type TutorialsOverviewProps = {
@@ -24,7 +24,7 @@ const TutorialsOverview = ({
   const t = useTranslations('shared');
   const label = t('readTutorial');
   return (
-    <News
+    <NewsShowcase
       marginTop={8}
       title={title}
       subtitle={subtitle}
@@ -32,12 +32,11 @@ const TutorialsOverview = ({
         label: ctaLabel,
         href: tutorialPath.path,
       }}
-      cards={tutorials.map((tutorial) => ({
+      items={tutorials.map((tutorial) => ({
         ...tutorial,
-        href: {
-          label,
-          link: tutorial.path,
-          title: label,
+        link: {
+          url: tutorial.path,
+          text: label,
         },
       }))}
     />
