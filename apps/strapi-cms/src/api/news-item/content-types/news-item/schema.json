@@ -1,10 +1,10 @@
 {
-  "kind": "singleType",
-  "collectionName": "homepages",
+  "kind": "collectionType",
+  "collectionName": "news_items",
   "info": {
-    "singularName": "homepage",
-    "pluralName": "homepages",
-    "displayName": "Homepage",
+    "singularName": "news-item",
+    "pluralName": "news-items",
+    "displayName": "NewsItem",
     "description": ""
   },
   "options": {
@@ -16,7 +16,16 @@
     }
   },
   "attributes": {
-    "newsShowcase": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "link": {
       "type": "component",
       "repeatable": false,
       "pluginOptions": {
@@ -24,37 +33,29 @@
           "localized": true
         }
       },
-      "component": "common.news-showcase"
+      "component": "common.links",
+      "required": true
     },
-    "productsShowcase": {
-      "type": "component",
-      "repeatable": false,
-      "component": "products.products-showcase",
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "comingsoonDocumentation": {
-      "type": "component",
-      "repeatable": false,
-      "component": "common.related-links",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "heroSlider": {
-      "type": "component",
-      "repeatable": true,
+    "comingSoon": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "component": "common.hero-slide"
+      "type": "boolean",
+      "default": false
     }
   }
 }
