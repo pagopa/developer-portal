@@ -228,3 +228,33 @@ data "aws_iam_policy_document" "authenticated_users_policy" {
     }
   }
 }
+
+data "aws_iam_policy_document" "website_iam_policy" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      "${aws_s3_bucket.website.arn}",
+      "${aws_s3_bucket.website.arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_iam_policy_cms" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      "${module.s3_bucket_cms.s3_bucket_arn}",
+      "${module.s3_bucket_cms.s3_bucket_arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = module.cloudfront_cms.cloudfront_origin_access_identity_iam_arns
+    }
+  }
+}
