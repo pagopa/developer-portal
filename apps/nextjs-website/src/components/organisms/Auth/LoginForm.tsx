@@ -73,9 +73,19 @@ const LoginForm = ({
     []
   );
 
-  const handleChangeInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
+  const handleChangeInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (fieldErrors.email || fieldErrors.password) {
+        setFieldErrors({
+          email: null,
+          password: null,
+        });
+      }
+
+      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    },
+    [fieldErrors]
+  );
 
   const validateForm = useCallback(() => {
     const emailError = validateEmail(formData.username);
