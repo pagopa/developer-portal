@@ -61,6 +61,7 @@ export type RenderingComponents<A> = {
   readonly ExpandableDetails: (props: ExpandableDetailsProps<A>) => A;
   readonly Swagger: (props: SwaggerProps) => A;
   readonly PageLink: (props: PageLinkProps<A>) => A;
+  readonly Br: () => A;
 };
 
 export const renderContent = (
