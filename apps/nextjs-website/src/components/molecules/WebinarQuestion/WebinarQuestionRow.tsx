@@ -80,15 +80,13 @@ export default function WebinarQuestionRow({
       </TableCell>
       <TableCell>
         <Box display={'flex'} justifyContent={'space-between'}>
-          {!isHidden || (isHidden && hiddenBy === userName) ? (
+          {(!isHidden || (isHidden && hiddenBy === userName)) && (
             <IconButton
               onClick={() => onHide(!isHidden)}
               sx={{ color: tcColor }}
             >
               {!isHidden ? <VisibilityOffIcon /> : <Visibility />}
             </IconButton>
-          ) : (
-            <></>
           )}
 
           {!isHidden &&
