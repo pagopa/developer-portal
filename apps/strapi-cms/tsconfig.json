@@ -1,7 +1,6 @@
 {
   "extends": [
     "@strapi/typescript-utils/tsconfigs/server",
-    "../../tsconfig.json"
   ],
   "compilerOptions": {
     // with declaration to true strapi raises a runtime error
@@ -10,7 +9,14 @@
     // at /node_modules/@strapi/plugin-users-permissions/server/services/users-permissions.js:115:39
     "declaration": false,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "target": "es2021",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
   },
   "include": [
     "./",
