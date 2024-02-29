@@ -11,7 +11,7 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
   userName: string;
-  onHighlight: (highlight: boolean) => Promise<void>;
+  onHighlight: (highlighted: boolean) => Promise<void>;
   onHide: (hidden: boolean) => Promise<void>;
 };
 

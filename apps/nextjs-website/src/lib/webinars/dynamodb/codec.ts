@@ -3,6 +3,7 @@ import * as tt from 'io-ts-types';
 import { WebinarQuestion } from '../webinarQuestions';
 import { QueryCommandInput } from '@aws-sdk/client-dynamodb';
 
+const DynamodbAttrNull = t.strict({ NULL: t.boolean });
 const DynamodbAttrS = t.strict({
   S: t.string,
 });
@@ -14,12 +15,13 @@ export const WebinarQuestionDynamodbCodec = t.strict({
   webinarId: DynamodbAttrS,
   createdAt: DynamodbAttrISODate,
   question: DynamodbAttrS,
-  hiddenBy: DynamodbAttrS,
-  highlightedBy: DynamodbAttrS,
+  hiddenBy: t.union([t.undefined, DynamodbAttrS, DynamodbAttrNull]),
+  highlightedBy: t.union([t.undefined, DynamodbAttrS, DynamodbAttrNull]),
 });
 
+type DynamodbAttrNullType = t.TypeOf<typeof DynamodbAttrNull>;
+type DynamodbAttrSType = t.TypeOf<typeof DynamodbAttrS>;
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
-
 export const makeWebinarQuestionListQueryCondition = (
   webinarId: string
 ): Pick<
@@ -36,8 +38,16 @@ export const makeWebinarQuestionFromDynamodbItem = (
   webinarId: input.webinarId.S,
   question: input.question.S,
   createdAt: input.createdAt.S,
-  hiddenBy: input.hiddenBy.S,
-  highlightedBy: input.highlightedBy.S,
+  // The fields hiddenBy and highlightedBy can be undefined, { N: true } or { S: "string" }
+  hiddenBy:
+    !input.hiddenBy || (input.hiddenBy as unknown as DynamodbAttrNullType).NULL
+      ? undefined
+      : (input.hiddenBy as unknown as DynamodbAttrSType).S,
+  highlightedBy:
+    !input.highlightedBy ||
+    (input.highlightedBy as unknown as DynamodbAttrNullType).NULL
+      ? undefined
+      : (input.highlightedBy as unknown as DynamodbAttrSType).S,
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
@@ -45,6 +55,8 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     webinarId: { S: input.webinarId },
     createdAt: { S: input.createdAt },
     question: { S: input.question },
-    hiddenBy: { S: input.hiddenBy ?? '' },
-    highlightedBy: { S: input.highlightedBy ?? '' },
+    hiddenBy: input.hiddenBy ? { S: input.hiddenBy } : { NULL: true },
+    highlightedBy: input.highlightedBy
+      ? { S: input.highlightedBy }
+      : { NULL: true },
   });

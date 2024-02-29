@@ -42,13 +42,13 @@ const WebinarQuestionsTemplate = ({
   });
 
   const makeQuestionHighlighted = useCallback(
-    (question: WebinarQuestion, highlightedBy: string) =>
+    (question: WebinarQuestion, highlightedBy?: string) =>
       highlightQuestion(question, highlightedBy),
     []
   );
 
   const makeQuestionHidden = useCallback(
-    (question: WebinarQuestion, hiddenBy: string) =>
+    (question: WebinarQuestion, hiddenBy?: string) =>
       hideQuestion(question, hiddenBy),
     []
   );
@@ -91,12 +91,12 @@ const WebinarQuestionsTemplate = ({
                     question={row}
                     userName={userName}
                     onHide={async (hide) =>
-                      await makeQuestionHidden(row, hide ? userName : '')
+                      await makeQuestionHidden(row, hide ? userName : undefined)
                     }
                     onHighlight={async (highlight) =>
                       await makeQuestionHighlighted(
                         row,
-                        highlight ? userName : ''
+                        highlight ? userName : undefined
                       )
                     }
                   />

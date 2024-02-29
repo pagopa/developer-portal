@@ -43,14 +43,14 @@ export const getWebinarQuestionList = (webinarId: string) =>
 
 export const highlightQuestion = (
   question: WebinarQuestion,
-  highlightedBy: string
+  highlightedBy?: string
 ) =>
   pipe(
     highlightWebinarQuestion(question, highlightedBy)(browserEnv),
     makePromiseFromTE
   )();
 
-export const hideQuestion = (question: WebinarQuestion, hiddenBy: string) =>
+export const hideQuestion = (question: WebinarQuestion, hiddenBy?: string) =>
   pipe(
     hideWebinarQuestion(question, hiddenBy)(browserEnv),
     makePromiseFromTE

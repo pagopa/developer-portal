@@ -41,13 +41,19 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
       // create put command
+      const questionItem = makeDynamodbItemFromWebinarQuestion({
+        webinarId: question.webinarId,
+        createdAt: createdAt,
+        question: question.question,
+      });
+
       const putCommand = new PutItemCommand({
         TableName: 'WebinarQuestions',
-        Item: makeDynamodbItemFromWebinarQuestion({
-          webinarId: question.webinarId,
-          createdAt: createdAt,
-          question: question.question,
-        }),
+        Item: {
+          ...questionItem,
+          highlightedBy: { NULL: true },
+          hiddenBy: { NULL: true },
+        },
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
@@ -56,25 +62,34 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
 
 export const highlightWebinarQuestion = (
   question: WebinarQuestion,
-  highlightedByEmail: string
+  highlightedBy?: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
-      const updateCommand = new UpdateItemCommand({
+      const baseUpdateCommand = {
         TableName: 'WebinarQuestions',
         Key: {
           webinarId: { S: question.webinarId },
           createdAt: { S: question.createdAt.toISOString() },
         },
-        UpdateExpression: 'SET #highlightedBy = :highlightedBy',
         ExpressionAttributeNames: {
           '#highlightedBy': 'highlightedBy',
         },
-        ExpressionAttributeValues: {
-          ':highlightedBy': { S: highlightedByEmail },
-        },
-      });
+      };
+
+      const updateCommand = highlightedBy
+        ? new UpdateItemCommand({
+            ...baseUpdateCommand,
+            UpdateExpression: 'SET #highlightedBy = :highlightedBy',
+            ExpressionAttributeValues: {
+              ':highlightedBy': { S: highlightedBy },
+            },
+          })
+        : new UpdateItemCommand({
+            ...baseUpdateCommand,
+            UpdateExpression: 'REMOVE #highlightedBy',
+          });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
     RTE.map(() => void 0)
@@ -82,25 +97,34 @@ export const highlightWebinarQuestion = (
 
 export const hideWebinarQuestion = (
   question: WebinarQuestion,
-  hiddenByEmail: string
+  hiddenBy?: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
-      const updateCommand = new UpdateItemCommand({
+      const baseUpdateCommand = {
         TableName: 'WebinarQuestions',
         Key: {
           webinarId: { S: question.webinarId },
           createdAt: { S: question.createdAt.toISOString() },
         },
-        UpdateExpression: 'SET #hiddenBy = :hiddenBy',
         ExpressionAttributeNames: {
           '#hiddenBy': 'hiddenBy',
         },
-        ExpressionAttributeValues: {
-          ':hiddenBy': { S: hiddenByEmail },
-        },
-      });
+      };
+
+      const updateCommand = hiddenBy
+        ? new UpdateItemCommand({
+            ...baseUpdateCommand,
+            UpdateExpression: 'SET #hiddenBy = :hiddenBy',
+            ExpressionAttributeValues: {
+              ':hiddenBy': { S: hiddenBy },
+            },
+          })
+        : new UpdateItemCommand({
+            ...baseUpdateCommand,
+            UpdateExpression: 'REMOVE #hiddenBy',
+          });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
     RTE.map(() => void 0)
