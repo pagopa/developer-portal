@@ -1,8 +1,17 @@
 {
   "extends": [
-    "@strapi/typescript-utils/tsconfigs/admin",
-    "../../../../tsconfig.json"
+    "@strapi/typescript-utils/tsconfigs/admin"
   ],
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": true
+  },
   "include": [
     "../plugins/**/admin/src/**/*",
     "./"
