@@ -43,7 +43,9 @@ module "iam_role_ecs_task_execution" {
   ]
   role_requires_mfa = false
 }
-
+###############################################################################
+#                         IAM Role used by strapi                             #
+###############################################################################
 module "iam_role_task_role" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
