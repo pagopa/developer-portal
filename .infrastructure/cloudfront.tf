@@ -1,3 +1,4 @@
+# CSP entries
 locals {
   script_src  = "'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org/ https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com"
   style_src   = "'self' 'unsafe-inline' recaptcha.net https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/"
