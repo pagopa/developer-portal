@@ -1,8 +1,16 @@
 {
-  "extends": [
-    "@strapi/typescript-utils/tsconfigs/server",
-  ],
   "compilerOptions": {
+    // taken from @strapi/typescript-utils/tsconfigs/server
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2020"],
+    "target": "ES2019",
+
+    "incremental": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmitOnError": true,
+    "noImplicitThis": true,
     // with declaration to true strapi raises a runtime error
     // error: Cannot read properties of undefined (reading 'type')
     // TypeError: Cannot read properties of undefined (reading 'type')
@@ -10,8 +18,6 @@
     "declaration": false,
     "outDir": "dist",
     "rootDir": ".",
-    "target": "es2021",
-    "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
