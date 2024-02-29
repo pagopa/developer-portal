@@ -29,15 +29,6 @@ data "aws_iam_policy_document" "deploy_github" {
   }
 }
 
-###############################################################################
-#                Define IAM Role to use on website deploy                     #
-###############################################################################
-resource "aws_iam_role" "deploy_website" {
-  name               = "GitHubActionDeployWebsite"
-  description        = "Role to assume to deploy the website"
-  assume_role_policy = data.aws_iam_policy_document.deploy_github.json
-}
-
 resource "aws_iam_policy" "deploy_website" {
   name        = "DeployWebsite"
   description = "Policy to allow to deploy the website"
@@ -79,21 +70,6 @@ resource "aws_iam_policy" "deploy_website" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "deploy_website" {
-  role       = aws_iam_role.deploy_website.name
-  policy_arn = aws_iam_policy.deploy_website.arn
-}
-
-###############################################################################
-#                Define IAM Role to use on strapi deploy                      #
-###############################################################################
-
-resource "aws_iam_role" "deploy_cms" {
-  name               = "GitHubActionDeployCms"
-  description        = "Role to assume to deploy the cms"
-  assume_role_policy = data.aws_iam_policy_document.deploy_github.json
-}
-
 resource "aws_iam_policy" "deploy_cms" {
   name        = "DeployCms"
   description = "Policy to allow to deploy the cms"
@@ -133,12 +109,6 @@ resource "aws_iam_policy" "deploy_cms" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "deploy_cms" {
-  role       = aws_iam_role.deploy_cms.name
-  policy_arn = aws_iam_policy.deploy_cms.arn
-}
-
-## IAM Role and policy ECS for CMS Strapi
 data "aws_iam_policy_document" "ecs_task_execution" {
   statement {
     effect = "Allow"
@@ -172,7 +142,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       "s3:GetBucketLocation"
     ]
     resources = [
-      "${module.s3_bucket_cms.s3_bucket_arn}"
+      module.s3_bucket_cms.s3_bucket_arn
     ]
   }
 }
@@ -183,24 +153,6 @@ module "iam_policy_ecs_task_execution" {
   name   = "CMSTaskExecutionPolicies"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_execution.json
-}
-
-module "iam_role_ecs_task_execution" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
-
-  create_role = true
-  role_name   = "ecs-task-execution-role"
-
-  custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    module.iam_policy_ecs_task_execution.arn,
-  ]
-  number_of_custom_role_policy_arns = 3
-  trusted_role_services = [
-    "ecs-tasks.amazonaws.com"
-  ]
-  role_requires_mfa = false
 }
 
 data "aws_iam_policy_document" "ecs_task_role_s3" {
@@ -215,7 +167,7 @@ data "aws_iam_policy_document" "ecs_task_role_s3" {
       "s3:PutObjectAcl"
     ]
     resources = [
-      "${module.s3_bucket_cms.s3_bucket_arn}"
+      module.s3_bucket_cms.s3_bucket_arn
     ]
   }
 }
@@ -226,33 +178,6 @@ module "iam_policy_ecs_task_role_s3" {
   name   = "CMSTaskRolePoliciesS3"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_s3.json
-}
-
-module "iam_role_task_role" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
-
-  create_role = true
-  role_name   = "ecs-task-role"
-
-  custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
-    module.iam_policy_ecs_task_role_s3.arn,
-  ]
-  number_of_custom_role_policy_arns = 2
-  trusted_role_services = [
-    "ecs-tasks.amazonaws.com"
-  ]
-  role_requires_mfa = false
-}
-
-## IAM User Strapi with Access and Secret Key for CMS Strapi
-module "iam_user_cms" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
-
-  name                          = "strapi"
-  create_iam_user_login_profile = false
-  create_iam_access_key         = true
-  policy_arns                   = [module.iam_policy_cms.arn]
 }
 
 module "iam_policy_cms" {
@@ -278,4 +203,58 @@ module "iam_policy_cms" {
       },
     ]
   })
+}
+
+data "aws_iam_policy_document" "website_iam_policy" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      aws_s3_bucket.website.arn,
+      "${aws_s3_bucket.website.arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_iam_policy_cms" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      module.s3_bucket_cms.s3_bucket_arn,
+      "${module.s3_bucket_cms.s3_bucket_arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = module.cloudfront_cms.cloudfront_origin_access_identity_iam_arns
+    }
+  }
+}
+
+data "aws_iam_policy_document" "authenticated_users_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = [aws_cognito_identity_pool.devportal.id]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["authenticated"]
+    }
+  }
 }
