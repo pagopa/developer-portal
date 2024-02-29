@@ -43,70 +43,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "website" {
   }
 }
 
-data "aws_iam_policy_document" "website_iam_policy" {
-  statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "${aws_s3_bucket.website.arn}",
-      "${aws_s3_bucket.website.arn}/*"
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
-    }
-  }
-}
-
 resource "aws_s3_bucket_policy" "cloudfront" {
   bucket = aws_s3_bucket.website.id
   policy = data.aws_iam_policy_document.website_iam_policy.json
-}
-
-# Webinar questions database
-
-module "dynamodb_webinar_questions" {
-  source = "git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git?ref=715399dbe24f6443820bf5de80f6100b35d56355" # v4.0.0
-
-  billing_mode                = "PAY_PER_REQUEST"
-  deletion_protection_enabled = true
-
-  name                           = "WebinarQuestions"
-  hash_key                       = "webinarId"
-  range_key                      = "createdAt"
-  server_side_encryption_enabled = true
-
-  attributes = [
-    {
-      name = "webinarId"
-      type = "S"
-    },
-    {
-      name = "createdAt"
-      type = "S"
-    },
-  ]
 }
 
 ## Bucket S3 for CMS Strapi Medialibrary
 resource "random_integer" "bucket_random_integer" {
   min = 1
   max = 9999
-}
-
-data "aws_iam_policy_document" "s3_iam_policy_cms" {
-  statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "${module.s3_bucket_cms.s3_bucket_arn}",
-      "${module.s3_bucket_cms.s3_bucket_arn}/*"
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = module.cloudfront_cms.cloudfront_origin_access_identity_iam_arns
-    }
-  }
 }
 
 module "s3_bucket_cms" {

@@ -47,6 +47,7 @@ export const link: Schema = {
       : titleFromAnchor
       ? [titleFromAnchor]
       : childrenTreeNode;
+
     return new Tag('Link', attrs, children);
   },
 };

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_common_news_showcases",
+  "info": {
+    "displayName": "NewsShowcase",
+    "icon": "bell",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subTitle": {
+      "type": "text"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news-item.news-item"
+    }
+  }
+}

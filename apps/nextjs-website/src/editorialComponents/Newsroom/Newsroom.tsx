@@ -58,7 +58,7 @@ const Item = (props: INewsroomItem) => {
     >
       <Box
         position={'relative'}
-        sx={{ aspectRatio: '3/2', overflow: 'hidden' }}
+        sx={{ marginBottom: '16px', overflow: 'hidden' }}
       >
         {comingSoonLabel && (
           <Box
@@ -84,7 +84,12 @@ const Item = (props: INewsroomItem) => {
             width={0}
             height={0}
             sizes='100vw'
-            style={{ borderRadius: 16, width: '100%', height: 'auto' }}
+            style={{
+              borderRadius: 16,
+              width: '100%',
+              height: 'auto',
+              marginBottom: '16px',
+            }}
           />
         )}
       </Box>
@@ -93,7 +98,7 @@ const Item = (props: INewsroomItem) => {
           color='text.secondary'
           fontSize={16}
           fontWeight={400}
-          my={2}
+          mb={2}
         >
           {new Intl.DateTimeFormat(locale, options).format(date)}
         </Typography>

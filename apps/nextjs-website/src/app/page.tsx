@@ -2,7 +2,7 @@ import { translations } from '@/_contents/translations';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import News from '@/components/organisms/News/News';
+import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
@@ -49,10 +49,10 @@ const Home = async () => {
             ) : undefined,
         }))}
       />
-      <News
+      <NewsShowcase
         marginTop={5}
-        title={homepage.news.title}
-        cards={[...homepage.news.cards]}
+        title={homepage.newsShowcase.title}
+        items={[...homepage.newsShowcase.items]}
       />
       <ProductsShowcase
         title={homepage.productsShowcase.title}

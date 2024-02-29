@@ -7,6 +7,7 @@ resource "aws_acm_certificate" "website" {
     create_before_destroy = true
   }
 
+  # TLS certificate generated in us-east because it is related to the CDN which is a global resource
   provider = aws.us-east-1
 }
 
@@ -18,6 +19,7 @@ resource "aws_acm_certificate" "auth" {
     create_before_destroy = true
   }
 
+  # TLS certificate generated in us-east because it is related to the CDN which is a global resource
   provider = aws.us-east-1
 }
 
@@ -27,10 +29,6 @@ module "cms_ssl_certificate" {
 
   domain_name = keys(var.dns_domain_name_cms)[0]
   zone_id     = aws_route53_zone.dev_portal.id
-
-  providers = {
-    aws = aws.us-east-1
-  }
 
   subject_alternative_names = [
     "www.${keys(var.dns_domain_name_cms)[0]}"

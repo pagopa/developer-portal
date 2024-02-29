@@ -18,7 +18,8 @@ resource "aws_route53_record" "devportal_delegate" {
 locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
-    aws_acm_certificate.auth.domain_validation_options
+    aws_acm_certificate.auth.domain_validation_options,
+    module.cms_ssl_certificate.acm_certificate_domain_validation_options
   )
 }
 
@@ -106,4 +107,23 @@ resource "aws_route53_record" "devportal_google_site_verification_txt" {
   zone_id = aws_route53_zone.dev_portal.zone_id
   records = ["google-site-verification=Z94dFrXZD0YqP-r5BY5ODb4NsbQBAggTGRZM9fNtOj0"]
   ttl     = 3600
+}
+
+# Add DNS record for CMS Strapi
+module "cms_dns_records" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0"
+
+  zone_id = aws_route53_zone.dev_portal.id
+
+  records = [
+    {
+      name = "cms"
+      type = "A"
+      alias = {
+        name                   = module.cms_load_balancer.dns_name
+        zone_id                = module.cms_load_balancer.zone_id
+        evaluate_target_health = false
+      }
+    }
+  ]
 }
