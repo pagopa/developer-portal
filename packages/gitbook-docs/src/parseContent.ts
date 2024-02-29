@@ -15,6 +15,7 @@ import { blockquote } from './markdoc/schema/blockquote';
 import { tabs } from './markdoc/schema/tabs';
 import { details } from './markdoc/schema/details';
 import { embed } from './markdoc/schema/embed';
+import { br } from './markdoc/schema/br';
 import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
@@ -70,6 +71,7 @@ const schema: ConfigType = {
     htmlli: item,
     htmltable: table,
     htmla: link,
+    htmlbr: br,
     htmlstrong: styled.strong,
   },
   nodes: {
