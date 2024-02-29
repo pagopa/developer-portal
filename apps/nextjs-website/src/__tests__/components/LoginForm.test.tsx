@@ -60,12 +60,21 @@ describe('LoginForm', () => {
   });
 
   it('should display error messages when inputs are invalid', async () => {
-    const { getByLabelText, findByText, getByRole, findAllByText } = render(
+    const {
+      getByLabelText,
+      findByText,
+      getByRole,
+      findAllByText,
+      queryByText,
+      queryAllByText,
+    } = render(
       <Wrapper>
         <LoginForm onLogin={mockOnLogin} />
       </Wrapper>
     );
 
+    const errorsRegex = /Questo campo non può essere vuoto/i;
+    const emailErrorRegex = /Inserisci un indirizzo email valido/i;
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
     const passwordInput = getByLabelText(/^password$/i) as HTMLInputElement;
     const submitButton = getByRole('button', { name: /accedi/i });
@@ -74,20 +83,28 @@ describe('LoginForm', () => {
     fireEvent.change(passwordInput, { target: { value: '' } });
     fireEvent.click(submitButton);
 
-    const errors = await findAllByText(/Questo campo non può essere vuoto/i);
+    const errors = await findAllByText(errorsRegex);
 
     expect(errors).toHaveLength(2);
 
     fireEvent.change(usernameInput, { target: { value: 'invalid email' } });
     fireEvent.click(submitButton);
 
-    const emailError = await findByText(/Inserisci un indirizzo email valido/i);
-    const passwordError = await findByText(
-      /Questo campo non può essere vuoto/i
-    );
+    const emailError = await findByText(emailErrorRegex);
+    const passwordError = await findByText(errorsRegex);
 
     expect(emailError).toBeDefined();
     expect(passwordError).toBeDefined();
+
+    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+
+    const emailError1 = await queryByText(emailErrorRegex);
+    const errorsRegex1 = await queryAllByText(errorsRegex);
+
+    expect(emailError1).toBeNull();
+    expect(errorsRegex1).toHaveLength(0);
   });
 
   it('should display error messages when account not exists', async () => {
