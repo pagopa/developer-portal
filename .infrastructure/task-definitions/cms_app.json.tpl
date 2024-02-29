@@ -10,8 +10,7 @@
 	"logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-            "awslogs-create-group": "true",
-            "awslogs-group": "/ecs/cms-task-def",
+            "awslogs-group": "${log_group}",
             "awslogs-region": "eu-south-1",
             "awslogs-stream-prefix": "ecs"
             },
