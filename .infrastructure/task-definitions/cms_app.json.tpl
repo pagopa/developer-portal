@@ -10,7 +10,7 @@
 	"logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-            "awslogs-group": "strapi-cms",
+            "awslogs-group": "${log_group}",
             "awslogs-region": "eu-south-1",
             "awslogs-stream-prefix": "ecs"
             },
