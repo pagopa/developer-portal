@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import { useTranslations } from 'next-intl';
 
-type NewsProps = {
+type NewsShowcaseProps = {
   title: string;
   subtitle?: string;
   cta?: {
@@ -13,23 +13,28 @@ type NewsProps = {
     href: string;
   };
   marginTop?: number;
-  cards: {
+  items: {
     comingSoon?: boolean;
     title: string;
-    dateString?: string;
-    image?: {
+    publishedAt?: Date;
+    image: {
       url: string;
-      alt: string;
-    };
-    href: {
-      label: string;
-      link: string;
-      title: string;
+      alternativeText: string | null;
+    } | null;
+    link: {
+      url: string;
+      text: string;
     };
   }[];
 };
 
-const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
+const NewsShowcase = ({
+  title,
+  subtitle,
+  cta,
+  marginTop,
+  items,
+}: NewsShowcaseProps) => {
   const t = useTranslations('shared');
   const coomingSoonLabel = t('comingSoon');
   return (
@@ -37,16 +42,16 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
       <SectionTitle title={title} subtitle={subtitle} cta={cta} />
       <Box mt={2}>
         <Newsroom
-          items={cards.map((card) => ({
-            comingSoonLabel: !card.comingSoon ? undefined : coomingSoonLabel,
-            title: card.title,
+          items={items.map((item) => ({
+            comingSoonLabel: !item.comingSoon ? undefined : coomingSoonLabel,
+            title: item.title,
             date: {
-              date: card.dateString ? new Date(card.dateString) : undefined,
+              date: item.publishedAt,
             },
-            href: card.href,
+            href: { link: item.link.url, label: item.link.text },
             img: {
-              alt: card.image?.alt || '',
-              src: card.image?.url || '/images/news.png',
+              alt: (item.image && item.image.alternativeText) || '',
+              src: (item.image && item.image.url) || '/images/news.png',
             },
           }))}
         />
@@ -55,4 +60,4 @@ const News = ({ title, subtitle, cta, marginTop, cards }: NewsProps) => {
   );
 };
 
-export default News;
+export default NewsShowcase;

@@ -75,9 +75,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 : shared.comingSoon,
               title: tutorial.title,
               date: {
-                date: tutorial.dateString
-                  ? new Date(tutorial.dateString)
-                  : undefined,
+                date: tutorial.publishedAt,
               },
               href: {
                 label: shared.readTutorial,
@@ -85,7 +83,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 title: shared.readTutorial,
               },
               img: {
-                alt: tutorial.image?.alt || '',
+                alt: tutorial.image?.alternativeText || '',
                 src: tutorial.image?.url || '/images/news.png',
               },
             }))}

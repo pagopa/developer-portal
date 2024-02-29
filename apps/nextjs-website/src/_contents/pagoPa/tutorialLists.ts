@@ -11,7 +11,8 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     name: 'Come richiedere pagamenti che contengono marca da bollo digitale',
     image: {
       url: '/images/pago-pa-marca-bollo.png',
-      alt: 'Immagine: Come richiedere pagamenti che contengono marca da bollo digitale',
+      alternativeText:
+        'Immagine: Come richiedere pagamenti che contengono marca da bollo digitale',
     },
     showInOverview: true,
   },
@@ -21,7 +22,8 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     name: 'Come avviare un esercizio come Ente Creditore su pagoPA',
     image: {
       url: '/images/pago-pa-creare-esercizio-ente-creditore.png',
-      alt: 'Immagine: Come avviare un esercizio come Ente Creditore su pagoPA',
+      alternativeText:
+        'Immagine: Come avviare un esercizio come Ente Creditore su pagoPA',
     },
     showInOverview: true,
   },
@@ -31,7 +33,8 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     name: 'Come stampare un avviso di pagamento in formato PDF',
     image: {
       url: '/images/pago-pa-stampare-avviso-pagamento.png',
-      alt: 'Immagine: Come stampare un avviso di pagamento in formato PDF',
+      alternativeText:
+        'Immagine: Come stampare un avviso di pagamento in formato PDF',
     },
     showInOverview: true,
   },

@@ -69,6 +69,7 @@ export type RenderingComponents<A> = {
   readonly SwaggerResponse: (props: SwaggerResponseProps<A>) => A;
   readonly SwaggerDescription: (props: SwaggerDescriptionProps<A>) => A;
   readonly PageLink: (props: PageLinkProps<A>) => A;
+  readonly Br: () => A;
 };
 
 export const renderContent = (
