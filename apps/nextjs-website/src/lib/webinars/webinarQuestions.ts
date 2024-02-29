@@ -60,13 +60,16 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
     RTE.map(() => void 0)
   );
 
-export const highlightWebinarQuestion = (
+export const updateWebinarQuestion = (
   question: WebinarQuestion,
-  highlightedBy?: string
+  action: 'highlight' | 'hide',
+  by?: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
+      const field = action === 'highlight' ? 'highlightedBy' : 'hiddenBy';
+
       const baseUpdateCommand = {
         TableName: 'WebinarQuestions',
         Key: {
@@ -74,56 +77,21 @@ export const highlightWebinarQuestion = (
           createdAt: { S: question.createdAt.toISOString() },
         },
         ExpressionAttributeNames: {
-          '#highlightedBy': 'highlightedBy',
+          [`#${field}`]: field,
         },
       };
 
-      const updateCommand = highlightedBy
+      const updateCommand = by
         ? new UpdateItemCommand({
             ...baseUpdateCommand,
-            UpdateExpression: 'SET #highlightedBy = :highlightedBy',
+            UpdateExpression: `SET #${field} = :${field}`,
             ExpressionAttributeValues: {
-              ':highlightedBy': { S: highlightedBy },
+              [`:${field}`]: { S: by },
             },
           })
         : new UpdateItemCommand({
             ...baseUpdateCommand,
-            UpdateExpression: 'REMOVE #highlightedBy',
-          });
-      return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
-    }),
-    RTE.map(() => void 0)
-  );
-
-export const hideWebinarQuestion = (
-  question: WebinarQuestion,
-  hiddenBy?: string
-) =>
-  pipe(
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
-    R.map(({ dynamoDBClient }) => {
-      const baseUpdateCommand = {
-        TableName: 'WebinarQuestions',
-        Key: {
-          webinarId: { S: question.webinarId },
-          createdAt: { S: question.createdAt.toISOString() },
-        },
-        ExpressionAttributeNames: {
-          '#hiddenBy': 'hiddenBy',
-        },
-      };
-
-      const updateCommand = hiddenBy
-        ? new UpdateItemCommand({
-            ...baseUpdateCommand,
-            UpdateExpression: 'SET #hiddenBy = :hiddenBy',
-            ExpressionAttributeValues: {
-              ':hiddenBy': { S: hiddenBy },
-            },
-          })
-        : new UpdateItemCommand({
-            ...baseUpdateCommand,
-            UpdateExpression: 'REMOVE #hiddenBy',
+            UpdateExpression: `REMOVE #${field}`,
           });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),

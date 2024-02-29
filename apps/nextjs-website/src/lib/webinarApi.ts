@@ -10,8 +10,7 @@ import {
   WebinarQuestion,
   insertWebinarQuestion,
   listWebinarQuestions,
-  highlightWebinarQuestion,
-  hideWebinarQuestion,
+  updateWebinarQuestion,
 } from './webinars/webinarQuestions';
 import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
 
@@ -41,17 +40,12 @@ export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
 export const getWebinarQuestionList = (webinarId: string) =>
   pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();
 
-export const highlightQuestion = (
+export const updateQuestion = (
   question: WebinarQuestion,
-  highlightedBy?: string
+  action: 'highlight' | 'hide',
+  by?: string
 ) =>
   pipe(
-    highlightWebinarQuestion(question, highlightedBy)(browserEnv),
-    makePromiseFromTE
-  )();
-
-export const hideQuestion = (question: WebinarQuestion, hiddenBy?: string) =>
-  pipe(
-    hideWebinarQuestion(question, hiddenBy)(browserEnv),
+    updateWebinarQuestion(question, action, by)(browserEnv),
     makePromiseFromTE
   )();

@@ -12,12 +12,8 @@ import {
 import { Webinar } from '@/lib/types/webinar';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
-import { useCallback, useEffect } from 'react';
-import {
-  getWebinarQuestionList,
-  hideQuestion,
-  highlightQuestion,
-} from '@/lib/webinarApi';
+import { useEffect } from 'react';
+import { getWebinarQuestionList, updateQuestion } from '@/lib/webinarApi';
 import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
@@ -40,18 +36,6 @@ const WebinarQuestionsTemplate = ({
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
     refreshInterval: fetchWebinarsQuestionsIntervalMs,
   });
-
-  const makeQuestionHighlighted = useCallback(
-    (question: WebinarQuestion, highlightedBy?: string) =>
-      highlightQuestion(question, highlightedBy),
-    []
-  );
-
-  const makeQuestionHidden = useCallback(
-    (question: WebinarQuestion, hiddenBy?: string) =>
-      hideQuestion(question, hiddenBy),
-    []
-  );
 
   useEffect(() => {
     webinar && setWebinar(webinar);
@@ -91,11 +75,16 @@ const WebinarQuestionsTemplate = ({
                     question={row}
                     userName={userName}
                     onHide={async (hide) =>
-                      await makeQuestionHidden(row, hide ? userName : undefined)
+                      await updateQuestion(
+                        row,
+                        'hide',
+                        hide ? userName : undefined
+                      )
                     }
                     onHighlight={async (highlight) =>
-                      await makeQuestionHighlighted(
+                      await updateQuestion(
                         row,
+                        'highlight',
                         highlight ? userName : undefined
                       )
                     }
