@@ -35,7 +35,6 @@ const SignUp = () => {
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
 
   const goToConfirmSignUp = useCallback(() => {
-    router.replace(`/auth/sign-up?step=${SignUpSteps.CONFIRM_SIGN_UP}`);
     setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
   }, [router, userData.username]);
 
