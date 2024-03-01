@@ -1,6 +1,6 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
 import { fireEvent, render, act } from '@testing-library/react';
-import Wrapper from './Wrapper';
+import Wrapper from '../../../../__tests__/components/Wrapper';
 import React from 'react';
 
 describe('LoginForm', () => {
