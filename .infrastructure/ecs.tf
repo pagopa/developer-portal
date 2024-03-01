@@ -35,6 +35,7 @@ data "template_file" "cms_app" {
     workflow_id          = "deploy_website.yaml"
     target_branch        = "main"
     github_pat           = module.secret_cms_github_pat.ssm_parameter_arn
+    log_group            = module.cms_log_group.cloudwatch_log_group_name
   }
 }
 
@@ -54,7 +55,7 @@ module "cms_ecs_service" {
 
   name                      = "cms-ecs"
   cluster_arn               = module.cms_ecs_cluster.arn
-  desired_count             = 1
+  desired_count             = var.environment == "dev" ? 1 : 0
   create_task_definition    = false
   create_iam_role           = false
   create_task_exec_iam_role = false
