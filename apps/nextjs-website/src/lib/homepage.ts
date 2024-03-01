@@ -34,7 +34,7 @@ export type HomepageProps = {
     readonly title: string;
     readonly products: readonly {
       readonly name: string;
-      readonly description: string;
+      readonly description: string | null;
       readonly slug: string;
       readonly logo: {
         readonly name: string;
