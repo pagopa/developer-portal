@@ -11,7 +11,7 @@ const saci: GuideDefinition = {
   versions: [
     {
       main: true,
-      version: '3.2.1',
+      version: '3.2.0',
       dirName: 'PXEYBQEZ9LagztJLF89O',
     },
     {
@@ -107,7 +107,7 @@ const avvisi: GuideDefinition = {
   versions: [
     {
       main: true,
-      version: '3.2.0',
+      version: '3.2.1',
       dirName: 'WNT7oSWxH3PFe3AGG2zK',
     },
     {
