@@ -267,7 +267,6 @@ describe('StrapiHomepageCodec', () => {
   it('should decode strapi homepage with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseWithNullsJson();
     const actual = StrapiHomepageCodec.decode(jsonFromStrapi);
-    console.log((actual as any).left);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
