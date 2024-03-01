@@ -1,5 +1,20 @@
 # nextjs-website
 
+## 0.12.0
+
+### Minor Changes
+
+- 9cbc418: Allow fetching from the CMS the "In evidenza" section on the home page
+
+### Patch Changes
+
+- 8144e56: Remove email in url
+- 98530ba: Fix Product's description type
+- b2dedb0: Fix br parsing
+- Updated dependencies [f564577]
+- Updated dependencies [b2dedb0]
+  - gitbook-docs@0.0.2
+
 ## 0.11.0
 
 ### Minor Changes

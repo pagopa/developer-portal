@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 0.0.2
+
+### Patch Changes
+
+- f564577: Fix anchor links parsing
+- b2dedb0: Fix br parsing
+
 ## 0.0.1
 
 ### Patch Changes
