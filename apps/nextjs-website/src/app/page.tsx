@@ -58,7 +58,7 @@ const Home = async () => {
         title={homepage.productsShowcase.title}
         cards={homepage.productsShowcase.products.map((product) => ({
           title: product.name,
-          text: product.description,
+          text: product.description || '',
           href: `/${product.slug}/overview`,
           logoUrl: product.logo.url,
         }))}

@@ -31,7 +31,7 @@ const MediaCodec = t.strict({
 const ProductCodec = t.strict({
   attributes: t.strict({
     name: t.string,
-    description: t.string,
+    description: t.union([t.null, t.string]),
     slug: t.string,
     logo: t.strict({ data: MediaCodec }),
   }),
