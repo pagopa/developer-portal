@@ -104,7 +104,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.0`,
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.1`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
