@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import ConfirmLogin from '@/components/organisms/Auth/ConfirmLogin';
-import Wrapper from './Wrapper';
+import Wrapper from '../../../../__tests__/components/Wrapper';
 
 describe('ConfirmLogin', () => {
   const mockOnConfirmLogin = jest.fn(() => Promise.resolve());
