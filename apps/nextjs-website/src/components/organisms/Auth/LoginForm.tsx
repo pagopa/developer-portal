@@ -144,7 +144,7 @@ const LoginForm = ({
               <Stack spacing={2} mb={4}>
                 <TextField
                   autoComplete={'username'}
-                  error={!!fieldErrors.email || noAccount}
+                  error={!!fieldErrors.email}
                   helperText={fieldErrors.email}
                   inputProps={{
                     'aria-label': 'email',
@@ -166,7 +166,7 @@ const LoginForm = ({
                 <FormControl variant='outlined' size='small'>
                   <TextField
                     autoComplete={'current-password'}
-                    error={!!fieldErrors.password || noAccount}
+                    error={!!fieldErrors.password}
                     id='password-input'
                     inputProps={{
                       'aria-label': 'password',
@@ -193,7 +193,7 @@ const LoginForm = ({
                     variant='outlined'
                     onChange={handleChangeInput}
                   />
-                  {(fieldErrors.password || noAccount) && (
+                  {fieldErrors.password && (
                     <FormHelperText error>
                       {fieldErrors.password}
                     </FormHelperText>
