@@ -85,6 +85,12 @@ describe('LoginForm', () => {
 
     const errors = await findAllByText(errorsRegex);
 
+    expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'true'
+    );
+    expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'true'
+    );
     expect(errors).toHaveLength(2);
 
     fireEvent.change(usernameInput, { target: { value: 'invalid email' } });
@@ -95,6 +101,12 @@ describe('LoginForm', () => {
 
     expect(emailError).toBeDefined();
     expect(passwordError).toBeDefined();
+    expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'true'
+    );
+    expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'true'
+    );
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -105,6 +117,12 @@ describe('LoginForm', () => {
 
     expect(emailError1).toBeNull();
     expect(errorsRegex1).toHaveLength(0);
+    expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'false'
+    );
+    expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
+      'false'
+    );
   });
 
   it('should display error messages when account not exists', async () => {
