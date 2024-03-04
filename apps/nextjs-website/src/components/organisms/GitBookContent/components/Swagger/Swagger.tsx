@@ -14,6 +14,7 @@ import { Operations } from './Operations';
 import { OpenAPIV3 } from 'openapi-types';
 import { styled } from '@mui/material';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { theme } from '@pagopa/mui-italia';
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
@@ -47,10 +48,12 @@ const Swagger = ({
     );
   }
 
+  console.log(theme.palette);
+
   return (
     <Accordion
       sx={{
-        border: '1px solid LightGray',
+        border: `1px solid ${theme.palette.grey[300]}`,
         borderRadius: '4px',
         marginBottom: '16px',
       }}
@@ -66,7 +69,7 @@ const Swagger = ({
         >
           <Typography
             sx={{
-              backgroundColor: 'seagreen',
+              backgroundColor: theme.palette.success.dark,
               color: 'white',
               padding: '2px 8px',
               borderRadius: '40px',

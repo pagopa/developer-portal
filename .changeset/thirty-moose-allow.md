@@ -3,4 +3,4 @@
 "nextjs-website": minor
 ---
 
-Add support for various swagger tags, so that they are shown
+The purpose of this activity is to make sure that all the swagger blocks in the documentation are properly parsed and rendered in the Developer Portal, even if the baseUrl attribute is empty and the documentation is hardcoded inside the block.
