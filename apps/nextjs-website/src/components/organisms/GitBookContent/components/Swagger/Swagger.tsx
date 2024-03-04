@@ -50,7 +50,7 @@ const Swagger = ({
   return (
     <Accordion
       sx={{
-        border: '1px solid #ddd',
+        border: '1px solid LightGray',
         borderRadius: '4px',
         marginBottom: '16px',
       }}
@@ -66,7 +66,7 @@ const Swagger = ({
         >
           <Typography
             sx={{
-              backgroundColor: '#008847',
+              backgroundColor: 'seagreen',
               color: 'white',
               padding: '2px 8px',
               borderRadius: '40px',
