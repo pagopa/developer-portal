@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.12.1
+
+### Patch Changes
+
+- 6447620: [DPC-160] Fix pagoPA guides and manuals version
+
 ## 0.12.0
 
 ### Minor Changes
