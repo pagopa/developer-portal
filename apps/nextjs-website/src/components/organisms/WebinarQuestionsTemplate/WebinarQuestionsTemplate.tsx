@@ -13,7 +13,10 @@ import { Webinar } from '@/lib/types/webinar';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
 import { useEffect } from 'react';
-import { getWebinarQuestionList, updateQuestion } from '@/lib/webinarApi';
+import {
+  getWebinarQuestionList,
+  updateWebinarQuestion,
+} from '@/lib/webinarApi';
 import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
@@ -69,24 +72,28 @@ const WebinarQuestionsTemplate = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sortedQuestions.map((row) => (
+                {sortedQuestions.map((webinarQuestion) => (
                   <WebinarQuestionRow
-                    key={row.createdAt.toJSON()}
-                    question={row}
+                    key={webinarQuestion.createdAt.toJSON()}
+                    question={webinarQuestion}
                     userName={userName}
                     onHide={async (hide) =>
-                      await updateQuestion(
-                        row,
-                        'hide',
-                        hide ? userName : undefined
-                      )
+                      await updateWebinarQuestion({
+                        webinarId: webinarQuestion.webinarId,
+                        createdAt: webinarQuestion.createdAt,
+                        hiddenBy: hide
+                          ? { operation: 'update', value: userName }
+                          : { operation: 'remove' },
+                      })
                     }
                     onHighlight={async (highlight) =>
-                      await updateQuestion(
-                        row,
-                        'highlight',
-                        highlight ? userName : undefined
-                      )
+                      await updateWebinarQuestion({
+                        webinarId: webinarQuestion.webinarId,
+                        createdAt: webinarQuestion.createdAt,
+                        highlightedBy: highlight
+                          ? { operation: 'update', value: userName }
+                          : { operation: 'remove' },
+                      })
                     }
                   />
                 ))}

@@ -1,9 +1,15 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { WebinarQuestion } from '../webinarQuestions';
-import { QueryCommandInput } from '@aws-sdk/client-dynamodb';
+import {
+  UpdateExpression,
+  WebinarQuestion,
+  WebinarQuestionUpdate,
+} from '../webinarQuestions';
+import {
+  QueryCommandInput,
+  UpdateItemCommandInput,
+} from '@aws-sdk/client-dynamodb';
 
-const DynamodbAttrNull = t.strict({ NULL: t.boolean });
 const DynamodbAttrS = t.strict({
   S: t.string,
 });
@@ -11,17 +17,20 @@ const DynamodbAttrISODate = t.strict({
   S: tt.DateFromISOString,
 });
 
-export const WebinarQuestionDynamodbCodec = t.strict({
-  webinarId: DynamodbAttrS,
-  createdAt: DynamodbAttrISODate,
-  question: DynamodbAttrS,
-  hiddenBy: t.union([t.undefined, DynamodbAttrS, DynamodbAttrNull]),
-  highlightedBy: t.union([t.undefined, DynamodbAttrS, DynamodbAttrNull]),
-});
+export const WebinarQuestionDynamodbCodec = t.intersection([
+  t.strict({
+    webinarId: DynamodbAttrS,
+    createdAt: DynamodbAttrISODate,
+    question: DynamodbAttrS,
+  }),
+  t.partial({
+    hiddenBy: DynamodbAttrS,
+    highlightedBy: DynamodbAttrS,
+  }),
+]);
 
-type DynamodbAttrNullType = t.TypeOf<typeof DynamodbAttrNull>;
-type DynamodbAttrSType = t.TypeOf<typeof DynamodbAttrS>;
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
+
 export const makeWebinarQuestionListQueryCondition = (
   webinarId: string
 ): Pick<
@@ -38,16 +47,8 @@ export const makeWebinarQuestionFromDynamodbItem = (
   webinarId: input.webinarId.S,
   question: input.question.S,
   createdAt: input.createdAt.S,
-  // The fields hiddenBy and highlightedBy can be undefined, { N: true } or { S: "string" }
-  hiddenBy:
-    !input.hiddenBy || (input.hiddenBy as unknown as DynamodbAttrNullType).NULL
-      ? undefined
-      : (input.hiddenBy as unknown as DynamodbAttrSType).S,
-  highlightedBy:
-    !input.highlightedBy ||
-    (input.highlightedBy as unknown as DynamodbAttrNullType).NULL
-      ? undefined
-      : (input.highlightedBy as unknown as DynamodbAttrSType).S,
+  hiddenBy: input.hiddenBy?.S,
+  highlightedBy: input.highlightedBy?.S,
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
@@ -55,8 +56,48 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     webinarId: { S: input.webinarId },
     createdAt: { S: input.createdAt },
     question: { S: input.question },
-    hiddenBy: input.hiddenBy ? { S: input.hiddenBy } : { NULL: true },
-    highlightedBy: input.highlightedBy
-      ? { S: input.highlightedBy }
-      : { NULL: true },
+    ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
+    ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
   });
+
+const makeUpdateExpression = <T>(
+  fieldName: string,
+  expression?: UpdateExpression<T>
+) =>
+  expression?.operation === 'update'
+    ? [`SET #${fieldName} = :${fieldName}`]
+    : expression?.operation === 'remove'
+    ? [`REMOVE #${fieldName}`]
+    : [];
+
+export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
+  input: WebinarQuestionUpdate
+): Omit<UpdateItemCommandInput, 'TableName'> => {
+  const updateItemCommandInput = {
+    Key: {
+      webinarId: { S: input.webinarId },
+      createdAt: { S: input.createdAt.toISOString() },
+    },
+    ExpressionAttributeNames: {
+      ...(input.hiddenBy && { [`#hiddenBy`]: 'hiddenBy' }),
+      ...(input.highlightedBy && { [`#highlightedBy`]: 'highlightedBy' }),
+    },
+    UpdateExpression: [
+      ...makeUpdateExpression('hiddenBy', input.hiddenBy),
+      ...makeUpdateExpression('highlightedBy', input.highlightedBy),
+    ].join(' '),
+  };
+  const ExpressionAttributeValues = {
+    ...(input.hiddenBy?.operation === 'update' && {
+      [`:hiddenBy`]: { S: input.hiddenBy.value },
+    }),
+    ...(input.highlightedBy?.operation === 'update' && {
+      [`:highlightedBy`]: { S: input.highlightedBy.value },
+    }),
+  };
+  // ExpressionAttributeValues can not be empty, otherwise the system rise a
+  // runtime error
+  if (Object.keys(ExpressionAttributeValues).length !== 0)
+    return { ...updateItemCommandInput, ExpressionAttributeValues };
+  else return updateItemCommandInput;
+};
