@@ -60,15 +60,36 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
   });
 
+type UpdateExpressionItem<T> = {
+  readonly fieldName: string;
+  readonly expression?: UpdateExpression<T>;
+};
 const makeUpdateExpression = <T>(
-  fieldName: string,
-  expression?: UpdateExpression<T>
-) =>
-  expression?.operation === 'update'
-    ? [`SET #${fieldName} = :${fieldName}`]
-    : expression?.operation === 'remove'
-    ? [`REMOVE #${fieldName}`]
-    : [];
+  expressionList: ReadonlyArray<UpdateExpressionItem<T>>
+) => {
+  const zero = {
+    set: [] as readonly string[],
+    remove: [] as readonly string[],
+  };
+  const { set, remove } = expressionList.reduce((acc, curr) => {
+    // handle update operations
+    if (curr.expression?.operation === 'update') {
+      const set = [...acc.set, `${curr.fieldName} = :${curr.fieldName}`];
+      return { ...acc, set };
+    }
+    // handle remove operations
+    else if (curr.expression?.operation === 'remove') {
+      const remove = [...acc.remove, `${curr.fieldName}`];
+      return { ...acc, remove };
+    }
+    // handle no operations
+    else return acc;
+  }, zero);
+
+  const setStr = set.length > 0 ? 'SET ' + set.join(' ,') : '';
+  const removeStr = remove.length > 0 ? 'REMOVE ' + remove.join(' ,') : '';
+  return `${setStr} ${removeStr}`;
+};
 
 export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
   input: WebinarQuestionUpdate
@@ -78,14 +99,10 @@ export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
       webinarId: { S: input.webinarId },
       createdAt: { S: input.createdAt.toISOString() },
     },
-    ExpressionAttributeNames: {
-      ...(input.hiddenBy && { [`#hiddenBy`]: 'hiddenBy' }),
-      ...(input.highlightedBy && { [`#highlightedBy`]: 'highlightedBy' }),
-    },
-    UpdateExpression: [
-      ...makeUpdateExpression('hiddenBy', input.hiddenBy),
-      ...makeUpdateExpression('highlightedBy', input.highlightedBy),
-    ].join(' '),
+    UpdateExpression: makeUpdateExpression([
+      { fieldName: 'hiddenBy', expression: input.hiddenBy },
+      { fieldName: 'highlightedBy', expression: input.highlightedBy },
+    ]),
   };
   const ExpressionAttributeValues = {
     ...(input.hiddenBy?.operation === 'update' && {
