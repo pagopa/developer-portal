@@ -32,35 +32,38 @@ export const PasswordTextField = ({
     event.preventDefault();
   };
 
+  const endAdornment = (
+    <InputAdornment position='end'>
+      <IconButton
+        aria-label='toggle password visibility'
+        onClick={handleClickShowPassword}
+        onMouseDown={handleMouseDownPassword}
+        edge='end'
+      >
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+    </InputAdornment>
+  );
+
   return (
     <Stack spacing={2}>
       <FormControl variant='outlined' size={'small'}>
         <TextField
+          error={hasError}
           id={id}
+          inputProps={{ 'aria-label': id }}
+          InputProps={{ endAdornment }}
+          label={label}
           name={id}
           required
-          type={showPassword ? 'text' : 'password'}
-          onChange={onChange}
-          error={hasError}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton
-                  aria-label='toggle password visibility'
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge='end'
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          value={password}
-          label={label}
           size={'small'}
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={onChange}
         />
-        <FormHelperText error={hasError}>{helperText}</FormHelperText>
+        {hasError && (
+          <FormHelperText error={hasError}>{helperText}</FormHelperText>
+        )}
       </FormControl>
     </Stack>
   );
