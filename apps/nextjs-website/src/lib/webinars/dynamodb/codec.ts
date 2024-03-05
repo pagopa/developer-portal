@@ -64,28 +64,33 @@ type UpdateExpressionItem<T> = {
   readonly fieldName: string;
   readonly expression?: UpdateExpression<T>;
 };
-// create an UpdateExpression given a list of updates of string. The UpdateExpression has the following format:
-// SET fieldName0 = :fieldName0, fieldNameN = :fieldNameN REMOVE fieldName0, fieldNameN
+// Helper function to create UpdateExpression and ExpressionAttributeValues.
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
 const makeUpdateExpression = (
   expressionList: ReadonlyArray<UpdateExpressionItem<string>>
-) => {
+): Pick<
+  UpdateItemCommandInput,
+  'UpdateExpression' | 'ExpressionAttributeValues'
+> => {
+  // The type of the accumulator of the reduce function
   type Zero = {
+    // the set command; e.g.: set fieldName0 = :fieldName0
     readonly set?: string;
+    // the remove command; e.g.: remove fieldName0
     readonly remove?: string;
-    // ExpressionAttributeValues can not be empty, otherwise the system rise a
-    // runtime error
+    // if ExpressionAttributeValues is empty the system raises a runtime error
     readonly ExpressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
   };
   const zero: Zero = {};
-  // split and forma set and remove operations
+  // reduce the list of expression to an object that contains set, remove and
+  // ExpressionAttributeValues attribute
   const { set, remove, ExpressionAttributeValues } = expressionList.reduce(
     (acc, curr) => {
       // handle update operations
       if (curr.expression?.operation === 'update') {
         // if set is empty initialize the set command, otherwise append to the existing one
         const prefix = acc.set ? `${acc.set},` : 'set';
-        // the form is: set fieldName0 = :fieldName0, fieldNameN = :fieldNameN
+        // the syntax is: set fieldName0 = :fieldName0, fieldNameN = :fieldNameN
         const set = `${prefix} ${curr.fieldName} = :${curr.fieldName}`;
         const ExpressionAttributeValues = {
           ...acc.ExpressionAttributeValues,
@@ -97,7 +102,7 @@ const makeUpdateExpression = (
       else if (curr.expression?.operation === 'remove') {
         // if remove is empty initialize the remove command, otherwise append to the existing one
         const prefix = acc.remove ? `${acc.remove},` : 'remove';
-        // the form is: remove fieldName0, fieldNameN
+        // the syntax is: remove fieldName0, fieldNameN
         const remove = `${prefix} ${curr.fieldName}`;
         return { ...acc, remove };
       }
