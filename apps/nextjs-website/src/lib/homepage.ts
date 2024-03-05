@@ -61,6 +61,7 @@ export const makeHomepageProps = (
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
+    subhead: slide.subhead,
     title: slide.title,
     titleColor: slide.titleColor,
     backgroundImage: slide.backgroundImage?.data?.attributes,

@@ -28,6 +28,7 @@ export const fetchFromStrapi = <A, O, I>(
             () =>
               fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
                 method: 'GET',
+                cache: 'no-store',
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
                 },

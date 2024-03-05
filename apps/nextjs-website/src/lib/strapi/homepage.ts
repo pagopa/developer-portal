@@ -2,6 +2,7 @@ import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
+import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 
 const LinkCodec = t.intersection([
   t.strict({
@@ -60,6 +61,7 @@ const HeroSlideCodec = t.intersection([
     title: t.string,
   }),
   t.partial({
+    subhead: t.union([t.null, BlocksContentCodec]),
     callToAction: t.union([t.null, CallToActionCodec]),
     titleColor: t.union([
       t.null,

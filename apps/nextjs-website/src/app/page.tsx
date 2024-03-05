@@ -1,6 +1,5 @@
-import { translations } from '@/_contents/translations';
-import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
+import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
@@ -32,7 +31,6 @@ const NotSsrWebinarsSection = dynamic(
 
 const Home = async () => {
   const webinars = await getVisibleInHomeWebinars();
-  const { header } = translations;
 
   const homepage = await getHomepageProps();
 
@@ -41,12 +39,11 @@ const Home = async () => {
       <NotSsrWebinarHeaderBanner webinars={webinars} />
 
       <HeroSwiper
-        cards={homepage.hero.map((itemProp, index) => ({
+        cards={homepage.hero.map((itemProp) => ({
           ...itemProp,
-          child:
-            index === 0 ? (
-              <SiteLabel title={header.title} boldTitle={header.boldTitle} />
-            ) : undefined,
+          child: itemProp.subhead && (
+            <BlocksRendererClient content={itemProp.subhead} />
+          ),
         }))}
       />
       <NewsShowcase

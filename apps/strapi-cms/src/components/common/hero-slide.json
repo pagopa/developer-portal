@@ -9,6 +9,10 @@
     "title": {
       "type": "string"
     },
+    "subhead" : {
+      "type": "blocks",
+      "required": false
+    },
     "titleColor": {
       "type": "enumeration",
       "enum": [

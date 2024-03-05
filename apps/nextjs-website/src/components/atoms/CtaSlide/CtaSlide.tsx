@@ -1,12 +1,14 @@
 'use client';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
 export type CtaSlideProps = {
   readonly title: string;
+  readonly subhead?: BlocksContent | null;
   readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark' | null;
   readonly callToAction?: {
     readonly variant?: 'text' | 'contained' | 'outlined';
