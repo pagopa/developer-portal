@@ -23,10 +23,7 @@ export type WebinarEnv = {
   readonly nowDate: () => Date;
 };
 
-export type InsertWebinarQuestion = Omit<
-  WebinarQuestion,
-  'createdAt' | 'expireAt'
->;
+export type InsertWebinarQuestion = Omit<WebinarQuestion, 'createdAt'>;
 
 export type WebinarQuestion = {
   readonly webinarId: string;
