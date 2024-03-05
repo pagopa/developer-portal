@@ -64,57 +64,67 @@ type UpdateExpressionItem<T> = {
   readonly fieldName: string;
   readonly expression?: UpdateExpression<T>;
 };
-const makeUpdateExpression = <T>(
-  expressionList: ReadonlyArray<UpdateExpressionItem<T>>
+// create an UpdateExpression given a list of updates of string. The UpdateExpression has the following format:
+// SET fieldName0 = :fieldName0, fieldNameN = :fieldNameN REMOVE fieldName0, fieldNameN
+// https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
+const makeUpdateExpression = (
+  expressionList: ReadonlyArray<UpdateExpressionItem<string>>
 ) => {
-  const zero = {
-    set: [] as readonly string[],
-    remove: [] as readonly string[],
+  type Zero = {
+    readonly set?: string;
+    readonly remove?: string;
+    // ExpressionAttributeValues can not be empty, otherwise the system rise a
+    // runtime error
+    readonly ExpressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
   };
-  const { set, remove } = expressionList.reduce((acc, curr) => {
-    // handle update operations
-    if (curr.expression?.operation === 'update') {
-      const set = [...acc.set, `${curr.fieldName} = :${curr.fieldName}`];
-      return { ...acc, set };
-    }
-    // handle remove operations
-    else if (curr.expression?.operation === 'remove') {
-      const remove = [...acc.remove, `${curr.fieldName}`];
-      return { ...acc, remove };
-    }
-    // handle no operations
-    else return acc;
-  }, zero);
-
-  const setStr = set.length > 0 ? 'SET ' + set.join(' ,') : '';
-  const removeStr = remove.length > 0 ? 'REMOVE ' + remove.join(' ,') : '';
-  return `${setStr} ${removeStr}`;
+  const zero: Zero = {};
+  // split and forma set and remove operations
+  const { set, remove, ExpressionAttributeValues } = expressionList.reduce(
+    (acc, curr) => {
+      // handle update operations
+      if (curr.expression?.operation === 'update') {
+        // if set is empty initialize the set command, otherwise append to the existing one
+        const prefix = acc.set ? `${acc.set},` : 'set';
+        // the form is: set fieldName0 = :fieldName0, fieldNameN = :fieldNameN
+        const set = `${prefix} ${curr.fieldName} = :${curr.fieldName}`;
+        const ExpressionAttributeValues = {
+          ...acc.ExpressionAttributeValues,
+          [`:${curr.fieldName}`]: { S: curr.expression?.value },
+        };
+        return { ...acc, set, ExpressionAttributeValues };
+      }
+      // handle remove operations
+      else if (curr.expression?.operation === 'remove') {
+        // if remove is empty initialize the remove command, otherwise append to the existing one
+        const prefix = acc.remove ? `${acc.remove},` : 'remove';
+        // the form is: remove fieldName0, fieldNameN
+        const remove = `${prefix} ${curr.fieldName}`;
+        return { ...acc, remove };
+      }
+      // handle no operations
+      else return acc;
+    },
+    zero
+  );
+  return {
+    UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
+    ExpressionAttributeValues,
+  };
 };
 
 export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
   input: WebinarQuestionUpdate
 ): Omit<UpdateItemCommandInput, 'TableName'> => {
-  const updateItemCommandInput = {
+  const { UpdateExpression, ExpressionAttributeValues } = makeUpdateExpression([
+    { fieldName: 'hiddenBy', expression: input.hiddenBy },
+    { fieldName: 'highlightedBy', expression: input.highlightedBy },
+  ]);
+  return {
     Key: {
       webinarId: { S: input.webinarId },
       createdAt: { S: input.createdAt.toISOString() },
     },
-    UpdateExpression: makeUpdateExpression([
-      { fieldName: 'hiddenBy', expression: input.hiddenBy },
-      { fieldName: 'highlightedBy', expression: input.highlightedBy },
-    ]),
+    UpdateExpression,
+    ExpressionAttributeValues,
   };
-  const ExpressionAttributeValues = {
-    ...(input.hiddenBy?.operation === 'update' && {
-      [`:hiddenBy`]: { S: input.hiddenBy.value },
-    }),
-    ...(input.highlightedBy?.operation === 'update' && {
-      [`:highlightedBy`]: { S: input.highlightedBy.value },
-    }),
-  };
-  // ExpressionAttributeValues can not be empty, otherwise the system rise a
-  // runtime error
-  if (Object.keys(ExpressionAttributeValues).length !== 0)
-    return { ...updateItemCommandInput, ExpressionAttributeValues };
-  else return updateItemCommandInput;
 };

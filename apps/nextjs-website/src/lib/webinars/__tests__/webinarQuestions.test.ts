@@ -4,8 +4,13 @@ import {
   WebinarEnv,
   insertWebinarQuestion,
   listWebinarQuestions,
+  updateWebinarQuestion,
 } from '../webinarQuestions';
-import { PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
+import {
+  PutItemCommand,
+  QueryCommand,
+  UpdateItemCommand,
+} from '@aws-sdk/client-dynamodb';
 import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
 
 const aWebinarQuestion = {
@@ -26,6 +31,7 @@ const makeTestWebinarEnv = () => {
   // default mock behaviour
   dynamoDBClientMock.send.mockImplementation((cmd) => {
     if (cmd instanceof PutItemCommand) return Promise.resolve({});
+    else if (cmd instanceof UpdateItemCommand) return Promise.resolve({});
     else if (cmd instanceof QueryCommand)
       return Promise.resolve({ Items: [aDynamoDBItem] });
     // eslint-disable-next-line functional/no-promise-reject
@@ -63,6 +69,21 @@ describe('webinarQuestions', () => {
 
       expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(nowDateMock).toBeCalledTimes(1);
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
+  describe('updateWebinarQuestion', () => {
+    it('should send dynamodb update command', async () => {
+      const { env, dynamoDBClientMock } = makeTestWebinarEnv();
+      const actual = await updateWebinarQuestion({
+        webinarId: aWebinarQuestion.webinarId,
+        createdAt: aWebinarQuestion.createdAt,
+        highlightedBy: { operation: 'remove' },
+      })(env)();
+      const expected = E.right(undefined);
+
+      expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(actual).toStrictEqual(expected);
     });
   });
