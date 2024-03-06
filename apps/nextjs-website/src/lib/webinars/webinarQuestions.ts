@@ -52,6 +52,7 @@ export type WebinarQuestionUpdate = Pick<
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(
+    // take dynamoDBClient and nowDate properties from WebinarEnv
     R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
@@ -66,11 +67,13 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
+    // do not return (i.e., discard) the result if the operation succeded
     RTE.map(() => void 0)
   );
 
 export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
   pipe(
+    // take dynamoDBClient properties from WebinarEnv
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
       const updateCommand = new UpdateItemCommand({
@@ -79,6 +82,7 @@ export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
+    // do not return (i.e., discard) the result if the operation succeded
     RTE.map(() => void 0)
   );
 
