@@ -919,7 +919,7 @@ describe('parseContent', () => {
       new Markdoc.Tag('Image', {
         src: `${config.assetsPrefix}/img-src.jpg`,
         alt: 'anAlt',
-        'data-size': 'inline',
+        'data-size': 'line',
       }),
     ]);
   });
