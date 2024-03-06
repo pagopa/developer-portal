@@ -42,11 +42,11 @@ const sanp: GuideDefinition = {
   },
   versions: [
     {
+      main: true,
       version: '3.6.1',
       dirName: 'PiBduZS70S7Ae4WpWywl',
     },
     {
-      main: true,
       version: '3.6.0',
       dirName: 'MiKJPaFrEwpU051b68kr',
     },
@@ -107,7 +107,7 @@ const avvisi: GuideDefinition = {
   versions: [
     {
       main: true,
-      version: '3.2.0',
+      version: '3.2.1',
       dirName: 'WNT7oSWxH3PFe3AGG2zK',
     },
     {

@@ -10,8 +10,7 @@
 	"logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-            "awslogs-create-group": "true",
-            "awslogs-group": "/ecs/cms-task-def",
+            "awslogs-group": "${log_group}",
             "awslogs-region": "eu-south-1",
             "awslogs-stream-prefix": "ecs"
             },
@@ -79,11 +78,11 @@
         "value": "${repo_name}"
       },
       {
-        "name": "WORKFLOW_ID",
+        "name": "DEPLOY_WEBSITE_WORKFLOW_ID",
         "value": "${workflow_id}"
       },
       {
-        "name": "TARGET_BRANCH",
+        "name": "DEPLOY_WEBSITE_TARGET_BRANCH",
         "value": "${target_branch}"
       }
     ],
@@ -121,7 +120,7 @@
         "valueFrom": "${access_key_secret}"
       },
       {
-        "name": "GITHUB_PAT",
+        "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
         "valueFrom": "${github_pat}"
       }
     ]

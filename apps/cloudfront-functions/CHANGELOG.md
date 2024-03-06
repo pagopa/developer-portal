@@ -1,5 +1,11 @@
 # cloudfront-functions
 
+## 0.0.2
+
+### Patch Changes
+
+- 2f76678: [DEV-1406] Fix the trailing slash of the URL
+
 ## 0.0.1
 
 ### Patch Changes

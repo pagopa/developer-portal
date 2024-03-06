@@ -17,4 +17,14 @@ export default ({ env }: any) => ({
       },
     },
   },
+  'update-static-content': {
+    enabled: true,
+    config: {
+      githubToken: env('GITHUB_PERSONAL_ACCESS_TOKEN'),
+      owner: env('REPO_OWNER', 'pagopa'),
+      repo: env('REPO_NAME', 'developer-portal'),
+      workflowId: env('DEPLOY_WEBSITE_WORKFLOW_ID', 'deploy_website.yaml'),
+      branch: env('DEPLOY_WEBSITE_TARGET_BRANCH', 'main'),
+    },
+  },
 });

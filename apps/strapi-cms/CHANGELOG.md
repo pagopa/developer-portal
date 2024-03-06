@@ -1,5 +1,14 @@
 # strapi-cms
 
+## 0.3.0
+
+### Minor Changes
+
+- b9e82d4: Add news-item entity and news-showcase component to Strapi CMS
+- c981c40: Add Strapi configuration to accept PostgreSQL connections
+- ce00c1e: Add Update Static Content plugin to Strapi to trigger static site deployment
+- e435919: Add heroSlider to the homepage schema, CallToAction component and HeroSlide component to Strapi
+
 ## 0.2.0
 
 ### Minor Changes
