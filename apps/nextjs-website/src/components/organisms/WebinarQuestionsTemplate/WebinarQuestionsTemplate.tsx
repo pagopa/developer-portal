@@ -74,7 +74,7 @@ const WebinarQuestionsTemplate = ({
               <TableBody>
                 {sortedQuestions.map((webinarQuestion) => (
                   <WebinarQuestionRow
-                    key={webinarQuestion.createdAt.toJSON()}
+                    key={webinarQuestion.createdAt.toISOString()}
                     question={webinarQuestion}
                     userName={userName}
                     onHide={async (hide) =>
