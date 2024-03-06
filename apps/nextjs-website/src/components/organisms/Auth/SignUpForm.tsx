@@ -5,8 +5,6 @@ import {
   validatePassword,
 } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -15,10 +13,7 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
-  FormHelperText,
   Grid,
-  IconButton,
-  InputAdornment,
   MenuItem,
   Stack,
   TextField,
@@ -27,78 +22,51 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+
 import { companyRoles } from '@/_contents/auth';
+import { PasswordTextField } from './PasswordTextField';
+import Policy from './Policy';
+
+const defaults = {
+  username: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  mailinglistAccepted: false,
+  role: '',
+  company: '',
+  confirmPassword: '',
+};
 
 interface SignUpFormProps {
-  userData: SignUpUserData;
-  setUserData: Dispatch<SetStateAction<SignUpUserData>>;
-  onSignUp: () => Promise<boolean>;
+  // eslint-disable-next-line functional/no-return-void
+  onSignUp: (userData: SignUpUserData) => void;
   userAlreadyExist: boolean;
+  submitting?: boolean;
 }
 
 interface SignUpFieldsError {
-  name: string | null;
-  surname: string | null;
-  email: string | null;
-  password: string | null;
-  confirmPassword: string | null;
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
 const SignUpForm = ({
-  userData,
-  setUserData,
   onSignUp,
   userAlreadyExist,
+  submitting = false,
 }: SignUpFormProps) => {
   const login = useTranslations('auth.login');
   const signUp = useTranslations('auth.signUp');
   const shared = useTranslations('shared');
-
-  const {
-    company,
-    confirmPassword,
-    firstName,
-    lastName,
-    password,
-    role,
-    username,
-    mailinglistAccepted,
-  } = userData;
-
   const { palette } = useTheme();
-  const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  const [fieldErrors, setFieldErrors] = useState<SignUpFieldsError>({
-    name: null,
-    surname: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
-  });
-
-  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const handleMouseDownConfirmPassword = (
-    event: MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  const [userData, setUserData] = useState<SignUpUserData>(defaults);
+  const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
+    {}
+  );
 
   const validateForm = useCallback(() => {
     const { username, confirmPassword, firstName, lastName, password } =
@@ -111,19 +79,32 @@ const SignUpForm = ({
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
 
-    setFieldErrors({
-      name: nameError ? shared('requiredFieldError') : null,
-      surname: surnameError ? shared('requiredFieldError') : null,
-      email: emailEmptyError
-        ? shared('requiredFieldError')
-        : emailError
-        ? shared(emailError)
-        : null,
-      password: passwordError ? signUp('passwordPolicy') : null,
-      confirmPassword: confirmPasswordError
-        ? signUp('passwordMismatchError')
-        : null,
-    });
+    // eslint-disable-next-line functional/no-let
+    let errors = {};
+
+    if (nameError) {
+      errors = { ...errors, name: shared('requiredFieldError') };
+    }
+
+    if (surnameError) {
+      errors = { ...errors, surname: shared('requiredFieldError') };
+    }
+
+    if (emailEmptyError) {
+      errors = { ...errors, email: shared('requiredFieldError') };
+    } else if (emailError) {
+      errors = { ...errors, email: shared(emailError) };
+    }
+
+    if (passwordError) {
+      errors = { ...errors, password: signUp('passwordPolicy') };
+    }
+
+    if (confirmPasswordError) {
+      errors = { ...errors, confirmPassword: signUp('passwordMismatchError') };
+    }
+
+    setFieldErrors(errors);
 
     return (
       !nameError &&
@@ -143,27 +124,36 @@ const SignUpForm = ({
     }
   }, [userAlreadyExist, shared]);
 
+  const onSignUpClick = useCallback(() => {
+    if (validateForm()) {
+      onSignUp(userData);
+    }
+  }, [onSignUp, userData, validateForm]);
+
+  const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = ev.target;
+
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
     setEmailErrorIfUserExists();
   }, [userAlreadyExist, setEmailErrorIfUserExists]);
 
-  const onSignUpClick = useCallback(() => {
-    const valid = validateForm();
-
-    if (!valid) {
-      return;
-    }
-
-    setSubmitting(true);
-
-    onSignUp().finally(() => {
-      setSubmitting(false);
-    });
-  }, [onSignUp, validateForm]);
-
-  if (authStatus === 'authenticated') {
-    redirect('/');
-  }
+  const hasConfirmPasswordError = !!fieldErrors.confirmPassword;
+  const {
+    company,
+    confirmPassword,
+    firstName,
+    lastName,
+    password,
+    role,
+    username,
+    mailinglistAccepted,
+  } = userData;
 
   return (
     <Box component='section'>
@@ -176,182 +166,97 @@ const SignUpForm = ({
             <Typography variant='body2' mb={2}>
               {shared('requiredFields')}
             </Typography>
-            <form>
-              <Grid container spacing={2} mb={2}>
+            <Box component='form' display='flex' flexDirection='column' gap={2}>
+              <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
-                    size='small'
-                    label={shared('firstName')}
-                    value={firstName}
-                    onChange={({ target: { value } }) =>
-                      setUserData((prevData) => ({
-                        ...prevData,
-                        firstName: value,
-                      }))
-                    }
-                    helperText={fieldErrors.name}
                     error={!!fieldErrors.name}
+                    helperText={fieldErrors.name}
+                    inputProps={{ 'aria-label': 'firstname' }}
+                    label={shared('firstName')}
+                    name='firstName'
                     required
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
                     }}
+                    size='small'
+                    value={firstName}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    size='small'
-                    label={shared('lastName')}
-                    value={lastName}
-                    onChange={({ target: { value } }) =>
-                      setUserData((prevData) => ({
-                        ...prevData,
-                        lastName: value,
-                      }))
-                    }
-                    helperText={fieldErrors.surname}
                     error={!!fieldErrors.surname}
+                    helperText={fieldErrors.surname}
+                    inputProps={{ 'aria-label': 'lastname' }}
+                    label={shared('lastName')}
+                    name='lastName'
                     required
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
                     }}
+                    size='small'
+                    value={lastName}
+                    onChange={handleInputChange}
                   />
                 </Grid>
               </Grid>
-              <Stack spacing={2} mb={2}>
+              <Stack spacing={2}>
                 <TextField
-                  size='small'
-                  label={shared('emailAddress')}
-                  value={username}
                   autoComplete={'username'}
-                  onChange={({ target: { value } }) =>
-                    setUserData((prevData) => ({
-                      ...prevData,
-                      username: value,
-                    }))
-                  }
-                  helperText={fieldErrors.email}
                   error={!!fieldErrors.email}
+                  helperText={fieldErrors.email}
+                  inputProps={{ 'aria-label': 'email' }}
+                  label={shared('emailAddress')}
+                  name='username'
                   required
                   sx={{
                     backgroundColor: 'white',
                     width: '100%',
                   }}
+                  size='small'
+                  value={username}
+                  onChange={handleInputChange}
                 />
               </Stack>
-              <Stack spacing={2} mb={2}>
-                <FormControl
-                  variant='outlined'
-                  size='small'
-                  sx={{
-                    '& div.MuiFormControl-root:has(>label) + p': {
-                      display: 'none',
-                    },
-                    '& div.MuiFormControl-root:has(>label) + p.Mui-error': {
-                      display: 'block',
-                    },
-                    '& div.MuiFormControl-root:has(>label.Mui-focused) + p': {
-                      display: 'block',
-                    },
-                  }}
-                >
-                  <TextField
-                    id='password-input'
-                    required
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete={'new-password'}
-                    onChange={({ target: { value } }) =>
-                      setUserData((prevData) => ({
-                        ...prevData,
-                        password: value,
-                      }))
-                    }
-                    label={`${shared('password')}`}
-                    variant='outlined'
-                    size='small'
-                    error={!!fieldErrors.password}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            aria-label='toggle password visibility'
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge='end'
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    value={password}
-                  />
-                  <FormHelperText error={!!fieldErrors.password}>
+              <PasswordTextField
+                id='password'
+                label={`${shared('password')}`}
+                hasError={!!fieldErrors.password}
+                helperText={
+                  <>
                     {fieldErrors.password ? `${signUp('passwordError')} ` : ''}
-                    <Box component={'span'}>{signUp('passwordPolicy')}</Box>
-                  </FormHelperText>
-                </FormControl>
-              </Stack>
-              <Stack spacing={2} mb={2}>
-                <FormControl variant='outlined' size='small'>
-                  <TextField
-                    id='confirm-password-input'
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete={'new-password'}
-                    onChange={({ target: { value } }) =>
-                      setUserData((prevData) => ({
-                        ...prevData,
-                        confirmPassword: value,
-                      }))
-                    }
-                    label={`${shared('confirmPassword')}`}
-                    variant='outlined'
-                    size='small'
-                    error={!!fieldErrors.confirmPassword}
-                    required
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            aria-label='toggle confirm password visibility'
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownConfirmPassword}
-                            edge='end'
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    value={confirmPassword}
-                  />
-                  {fieldErrors.confirmPassword && (
-                    <FormHelperText error>
-                      {signUp('passwordMismatchError')}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Stack>
-              <Stack spacing={2} mb={2}>
+                    <Box component='span'>{signUp('passwordPolicy')}</Box>
+                  </>
+                }
+                value={password}
+                onChange={handleInputChange}
+              />
+              <PasswordTextField
+                id='confirmPassword'
+                label={`${shared('confirmPassword')}`}
+                hasError={hasConfirmPasswordError}
+                helperText={
+                  hasConfirmPasswordError ? signUp('passwordMismatchError') : ''
+                }
+                value={confirmPassword}
+                onChange={handleInputChange}
+              />
+              <Stack spacing={2}>
                 <FormControl fullWidth variant='outlined' size='small'>
                   <TextField
-                    size='small'
-                    select={true}
                     id='company-field-select'
-                    value={company}
-                    label={shared('company')}
-                    onChange={({ target: { value } }) =>
-                      setUserData((prevData) => ({
-                        ...prevData,
-                        company: value,
-                      }))
-                    }
                     inputProps={{
-                      sx: {
-                        padding: '8.5px 14px',
-                      },
+                      sx: { padding: '8.5px 14px' },
                     }}
+                    label={shared('company')}
+                    name='company'
+                    select={true}
+                    size='small'
+                    value={company}
+                    onChange={handleInputChange}
                   >
                     {companyRoles.map((role) => (
                       <MenuItem key={role} value={role}>
@@ -361,42 +266,33 @@ const SignUpForm = ({
                   </TextField>
                 </FormControl>
               </Stack>
-              <Stack spacing={2} mb={2}>
+              <Stack spacing={2}>
                 <TextField
                   label={shared('role')}
-                  variant='outlined'
-                  size='small'
-                  onChange={({ target: { value } }) =>
-                    setUserData((prevData) => ({
-                      ...prevData,
-                      role: value,
-                    }))
-                  }
-                  value={role}
+                  name='role'
                   sx={{
                     backgroundColor: palette.background.paper,
                   }}
+                  size='small'
+                  value={role}
+                  variant='outlined'
+                  onChange={handleInputChange}
                 />
               </Stack>
-              <Grid container mb={1}>
+              <Grid container>
                 <FormControlLabel
                   control={
                     <Checkbox
                       checked={mailinglistAccepted}
-                      onChange={({ target: { checked } }) =>
-                        setUserData((prevData) => ({
-                          ...prevData,
-                          mailinglistAccepted: checked,
-                        }))
-                      }
                       sx={{ marginTop: '-4px' }}
+                      onChange={handleInputChange}
                     />
                   }
                   label={signUp('confirmComunications')}
                   sx={{ alignItems: 'flex-start' }}
                 />
               </Grid>
-              <Stack spacing={4} pt={4} pb={2}>
+              <Stack pt={3}>
                 <Stack direction='row' justifyContent='center'>
                   <Button
                     variant='contained'
@@ -409,35 +305,10 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Typography variant='body2'>
-                    {signUp.rich('acceptPolicy', {
-                      terms: (chunks) => (
-                        <Typography
-                          component={Link}
-                          fontSize={16}
-                          href='/terms-of-service'
-                          variant='caption-semibold'
-                          color={palette.primary.main}
-                        >
-                          {chunks}
-                        </Typography>
-                      ),
-                      policy: (chunks) => (
-                        <Typography
-                          component={Link}
-                          fontSize={16}
-                          href='/privacy-policy'
-                          variant='caption-semibold'
-                          color={palette.primary.main}
-                        >
-                          {chunks}
-                        </Typography>
-                      ),
-                    })}
-                  </Typography>
+                  <Policy />
                 </Stack>
               </Stack>
-            </form>
+            </Box>
             <Divider />
             <Stack
               pt={4}

@@ -10,6 +10,8 @@ import { useCallback, useState } from 'react';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
 import { signUpAdvantages } from '@/_contents/auth';
+import AuthStatus from '@/components/organisms/Auth/AuthStatus';
+import { generateSignUpData } from '@/helpers/auth.helpers';
 
 const SignUp = () => {
   const params = useSearchParams();
@@ -17,81 +19,57 @@ const SignUp = () => {
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const signUp = useTranslations('auth.signUp');
 
-  const [userData, setUserData] = useState<SignUpUserData>({
-    username: decodeURIComponent(params.get('email') || ''),
-    password: '',
-    firstName: '',
-    lastName: '',
-    mailinglistAccepted: false,
-    role: '',
-    company: '',
-    confirmPassword: '',
-  });
-
+  const [submitting, setSubmitting] = useState(false);
+  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
   const [signUpStep, setSignUpStep] = useState(
     params.get('step') || SignUpSteps.SIGN_UP
   );
 
-  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
+  const email = params.get('email') || '';
 
-  const goToConfirmSignUp = useCallback(() => {
-    router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
-        SignUpSteps.CONFIRM_SIGN_UP
-      }`
-    );
-    setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
-  }, [router, userData.username]);
-
-  const onSignUp = useCallback(async () => {
-    setUserAlreadyExist(false);
-    const {
-      company,
-      firstName,
-      lastName,
-      password,
-      role,
-      username,
-      mailinglistAccepted,
-    } = userData;
-
-    const result = await Auth.signUp({
-      username: username,
-      password: password,
-      attributes: {
-        given_name: firstName,
-        family_name: lastName,
-        'custom:privacy_accepted': 'true',
-        'custom:mailinglist_accepted': mailinglistAccepted ? 'true' : 'false',
-        'custom:job_role': role,
-        'custom:company_type': company,
-      },
-    }).catch((error) => {
-      if (error.code === 'UsernameExistsException') {
-        setUserAlreadyExist(true);
-      } else {
-        setUserAlreadyExist(false);
-      }
-      return false;
-    });
-
-    if (typeof result === 'boolean') {
-      return result;
-    } else {
-      goToConfirmSignUp();
-      return !!result.user;
-    }
-  }, [userData, goToConfirmSignUp]);
+  const goToConfirmSignUp = useCallback(
+    (email: string) => {
+      router.replace(
+        `/auth/sign-up?email=${encodeURIComponent(email)}&step=${
+          SignUpSteps.CONFIRM_SIGN_UP
+        }`
+      );
+      setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
+    },
+    [router]
+  );
 
   const onBackStep = useCallback(() => {
     router.replace(
-      `/auth/sign-up?email=${encodeURIComponent(userData.username)}&step=${
+      `/auth/sign-up?email=${encodeURIComponent(email)}&step=${
         SignUpSteps.SIGN_UP
       }`
     );
     setSignUpStep(SignUpSteps.SIGN_UP);
     return null;
-  }, [router, userData.username]);
+  }, [router, email]);
+
+  const onSignUp = useCallback(
+    (userData: SignUpUserData) => {
+      setUserAlreadyExist(false);
+      setSubmitting(true);
+      Auth.signUp(generateSignUpData(userData))
+        .then(() => {
+          goToConfirmSignUp(userData.username);
+        })
+        .catch((error) => {
+          if (error.code === 'UsernameExistsException') {
+            setUserAlreadyExist(true);
+          } else {
+            setUserAlreadyExist(false);
+          }
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    },
+    [goToConfirmSignUp]
+  );
 
   return (
     <>
@@ -134,15 +112,16 @@ const SignUp = () => {
           </Grid>
           <Grid item xs={isSmallScreen ? 1 : 5}>
             {signUpStep === SignUpSteps.SIGN_UP && (
-              <SignUpForm
-                userData={userData}
-                setUserData={setUserData}
-                onSignUp={onSignUp}
-                userAlreadyExist={userAlreadyExist}
-              />
+              <AuthStatus>
+                <SignUpForm
+                  userAlreadyExist={userAlreadyExist}
+                  submitting={submitting}
+                  onSignUp={onSignUp}
+                />
+              </AuthStatus>
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
-              <ConfirmSignUp email={userData.username} onBack={onBackStep} />
+              <ConfirmSignUp email={email} onBack={onBackStep} />
             )}
           </Grid>
         </Grid>

@@ -8,13 +8,13 @@ import {
   TextField,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 
 type PasswordTextFieldProps = {
   id: string;
   label: string;
   hasError?: boolean;
-  helperText?: string;
+  helperText?: ReactNode;
 } & Pick<InputProps, 'onChange' | 'value'>;
 
 export const PasswordTextField = ({
@@ -45,9 +45,11 @@ export const PasswordTextField = ({
     </InputAdornment>
   );
 
+  const type = showPassword ? 'text' : 'password';
+
   return (
     <Stack spacing={2}>
-      <FormControl variant='outlined' size={'small'}>
+      <FormControl variant='outlined' size='small'>
         <TextField
           error={hasError}
           id={id}
@@ -56,8 +58,8 @@ export const PasswordTextField = ({
           label={label}
           name={id}
           required
-          size={'small'}
-          type={showPassword ? 'text' : 'password'}
+          size='small'
+          type={type}
           value={password}
           onChange={onChange}
         />
