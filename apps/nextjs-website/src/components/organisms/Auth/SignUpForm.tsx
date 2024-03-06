@@ -133,6 +133,8 @@ const SignUpForm = ({
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = ev.target;
 
+    setFieldErrors({});
+
     setUserData((prevData) => ({
       ...prevData,
       [name]: value,
