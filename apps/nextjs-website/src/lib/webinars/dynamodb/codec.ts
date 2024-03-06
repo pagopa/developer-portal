@@ -78,13 +78,13 @@ const makeUpdateExpression = (
     readonly set?: string;
     // the remove command; e.g.: remove fieldName0
     readonly remove?: string;
-    // if ExpressionAttributeValues is empty the system raises a runtime error
-    readonly ExpressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
+    // if expressionAttributeValues is empty the system raises a runtime error
+    readonly expressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
   };
   const zero: Zero = {};
   // reduce the list of expression to an object that contains set, remove and
   // ExpressionAttributeValues attribute
-  const { set, remove, ExpressionAttributeValues } = expressionList.reduce(
+  const { set, remove, expressionAttributeValues } = expressionList.reduce(
     (acc, curr) => {
       // handle update operations
       if (curr.expression?.operation === 'update') {
@@ -92,11 +92,11 @@ const makeUpdateExpression = (
         const prefix = acc.set ? `${acc.set},` : 'set';
         // the syntax is: set fieldName0 = :fieldName0, fieldNameN = :fieldNameN
         const set = `${prefix} ${curr.fieldName} = :${curr.fieldName}`;
-        const ExpressionAttributeValues = {
-          ...acc.ExpressionAttributeValues,
+        const expressionAttributeValues = {
+          ...acc.expressionAttributeValues,
           [`:${curr.fieldName}`]: { S: curr.expression?.value },
         };
-        return { ...acc, set, ExpressionAttributeValues };
+        return { ...acc, set, expressionAttributeValues };
       }
       // handle remove operations
       else if (curr.expression?.operation === 'remove') {
@@ -113,7 +113,7 @@ const makeUpdateExpression = (
   );
   return {
     UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
-    ExpressionAttributeValues,
+    ExpressionAttributeValues: expressionAttributeValues,
   };
 };
 
