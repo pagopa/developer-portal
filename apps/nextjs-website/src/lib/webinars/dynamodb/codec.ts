@@ -60,14 +60,14 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
   });
 
-type UpdateExpressionItem<T> = {
+type UpdateExpressionItem = {
   readonly fieldName: string;
-  readonly expression?: UpdateExpression<T>;
+  readonly expression?: UpdateExpression<string>;
 };
 // Helper function to create UpdateExpression and ExpressionAttributeValues.
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
 const makeUpdateExpression = (
-  expressionList: ReadonlyArray<UpdateExpressionItem<string>>
+  expressionList: ReadonlyArray<UpdateExpressionItem>
 ): Pick<
   UpdateItemCommandInput,
   'UpdateExpression' | 'ExpressionAttributeValues'
