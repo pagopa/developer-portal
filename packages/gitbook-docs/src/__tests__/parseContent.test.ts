@@ -914,7 +914,7 @@ describe('parseContent', () => {
   });
 
   it('should handle data-size attribute in image', () => {
-    const content = '<img src="img-src.jpg" alt="anAlt" data-size="inline">';
+    const content = '<img src="img-src.jpg" alt="anAlt" data-size="line">';
     expect(parseContent(content, config)).toStrictEqual([
       new Markdoc.Tag('Image', {
         src: `${config.assetsPrefix}/img-src.jpg`,
