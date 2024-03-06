@@ -72,16 +72,15 @@ const makeUpdateExpression = (
   UpdateItemCommandInput,
   'UpdateExpression' | 'ExpressionAttributeValues'
 > => {
-  // The type of the accumulator of the reduce function
-  type Zero = {
+  // define the initialValue of the reduce function
+  const initialValue: {
     // the set command; e.g.: set fieldName0 = :fieldName0
     readonly set?: string;
     // the remove command; e.g.: remove fieldName0
     readonly remove?: string;
     // if expressionAttributeValues is empty the system raises a runtime error
     readonly expressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
-  };
-  const zero: Zero = {};
+  } = {};
   // reduce the list of expression to an object that contains set, remove and
   // ExpressionAttributeValues attribute
   const { set, remove, expressionAttributeValues } = expressionList.reduce(
@@ -109,7 +108,7 @@ const makeUpdateExpression = (
       // handle no operations
       else return acc;
     },
-    zero
+    initialValue
   );
   return {
     UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
