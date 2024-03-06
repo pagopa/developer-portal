@@ -16,22 +16,19 @@ const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
   const [noAccountError, setNoAccountError] = useState<boolean>(false);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
     setSubmitting(true);
     setNoAccountError(false);
-    setUsername(username);
-    setPassword(password);
+    setLoginData({ username, password });
 
     const opts: SignInOpts = { username, password };
     const user = await Auth.signIn(opts)
       .catch((error) => {
         if (error.code === 'UserNotConfirmedException') {
-          setUsername(username);
           setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
         } else {
           setNoAccountError(true);
@@ -42,8 +39,6 @@ const Login = () => {
         setSubmitting(false);
       });
 
-    setUsername(username);
-
     if (user) {
       setUser(user);
       setLogInStep(LoginSteps.MFA_CHALLENGE);
@@ -51,12 +46,12 @@ const Login = () => {
   }, []);
 
   const resendCode = useCallback(async () => {
-    const result = await onLogin({ username, password })
+    const result = await onLogin(loginData)
       .then(() => true)
       .catch(() => false);
 
     return result;
-  }, [onLogin, password, username]);
+  }, [onLogin, loginData]);
 
   const searchParams = useSearchParams();
 
@@ -72,13 +67,13 @@ const Login = () => {
 
   const onBackStep = useCallback(() => {
     router.replace(
-      `/auth/login?email=${encodeURIComponent(username || '')}&step=${
+      `/auth/login?email=${encodeURIComponent(loginData.username || '')}&step=${
         LoginSteps.LOG_IN
       }`
     );
     setLogInStep(LoginSteps.LOG_IN);
     return null;
-  }, [router, username]);
+  }, [router, loginData.username]);
 
   return (
     <PageBackgroundWrapper>
@@ -100,13 +95,13 @@ const Login = () => {
         )}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           <ConfirmLogIn
-            email={username}
+            email={loginData.username}
             onConfirmLogin={confirmLogin}
             resendCode={resendCode}
           />
         )}
         {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
-          <ConfirmSignUp email={username || ''} onBack={onBackStep} />
+          <ConfirmSignUp email={loginData.username} onBack={onBackStep} />
         )}
       </Grid>
     </PageBackgroundWrapper>
