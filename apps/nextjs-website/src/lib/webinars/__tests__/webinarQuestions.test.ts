@@ -29,13 +29,12 @@ const makeTestWebinarEnv = () => {
   const dynamoDBClientMock = mock<WebinarEnv['dynamoDBClient']>();
   const nowDateMock = jest.fn();
   // default mock behaviour
-  dynamoDBClientMock.send.mockImplementation((cmd) => {
-    if (cmd instanceof PutItemCommand) return Promise.resolve({});
-    else if (cmd instanceof UpdateItemCommand) return Promise.resolve({});
-    else if (cmd instanceof QueryCommand)
-      return Promise.resolve({ Items: [aDynamoDBItem] });
-    // eslint-disable-next-line functional/no-promise-reject
-    else return Promise.reject(new Error('Unsupported command'));
+  dynamoDBClientMock.send.mockImplementation(async (cmd) => {
+    if (cmd instanceof PutItemCommand) return {};
+    else if (cmd instanceof UpdateItemCommand) return {};
+    else if (cmd instanceof QueryCommand) return { Items: [aDynamoDBItem] };
+    // eslint-disable-next-line functional/no-throw-statements
+    else throw new Error('Unsupported command');
   });
   nowDateMock.mockImplementation(() => nowDate);
   const env = {
