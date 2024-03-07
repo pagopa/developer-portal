@@ -13,12 +13,14 @@ export type webinarsSectionProps = {
   link?: { href?: string; label: string };
   title?: 'dontLoseNext' | 'next' | 'our' | 'participateTo';
   webinars: Webinar[];
+  shouldNavigateToWebinar?: boolean;
 };
 
 const WebinarsSection = ({
   link,
   title = 'our',
   webinars,
+  shouldNavigateToWebinar = false,
 }: webinarsSectionProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection');
@@ -71,6 +73,7 @@ const WebinarsSection = ({
                   key={index}
                   webinar={webinar}
                   userAligned={userAligned}
+                  shouldNavigateToWebinar={shouldNavigateToWebinar}
                   handleErrorMessage={(message: string) => {
                     setError(message);
                     return null;

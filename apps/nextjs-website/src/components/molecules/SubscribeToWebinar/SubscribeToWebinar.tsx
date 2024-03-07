@@ -23,6 +23,7 @@ export type SubscribeButtonProps = {
   setIsSubscribed: (isSubscribed: boolean) => null;
   handleErrorMessage?: (message: string) => null;
   webinarState: WebinarState;
+  shouldNavigateToWebinar?: boolean;
 };
 
 const SubscribeToWebinar = ({
@@ -34,6 +35,7 @@ const SubscribeToWebinar = ({
   setIsSubscribed,
   handleErrorMessage,
   webinarState,
+  shouldNavigateToWebinar = false,
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
@@ -116,6 +118,15 @@ const SubscribeToWebinar = ({
     return null;
   };
 
+  const onSubscribeClick = () => {
+    if (shouldNavigateToWebinar && webinarState === WebinarState.past) {
+      router.replace(`/webinars/${webinarSlug}`);
+      return null;
+    }
+
+    return userAttributes ? onSubscribe() : onSubscribeWithoutUser();
+  };
+
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
     [WebinarState.comingSoon]: 'default',
@@ -136,7 +147,7 @@ const SubscribeToWebinar = ({
       disabled={!userAligned || isLoading}
       isLoading={isLoading}
       isSubscribed={isSubscribed}
-      onSubscribe={userAttributes ? onSubscribe : onSubscribeWithoutUser}
+      onSubscribe={onSubscribeClick}
       onCancelSubscription={onUnsubscribe}
       subscribeLabel={subscribeLabelMap[webinarState]}
     />

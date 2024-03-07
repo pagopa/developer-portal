@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 type WebinarCardProps = {
   webinar: Webinar;
   userAligned?: boolean;
+  shouldNavigateToWebinar?: boolean;
   handleErrorMessage?: (message: string) => null;
 };
 
@@ -31,6 +32,7 @@ const WebinarCard = ({
   webinar,
   userAligned,
   handleErrorMessage,
+  shouldNavigateToWebinar = false,
 }: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
@@ -133,6 +135,7 @@ const WebinarCard = ({
                 }}
                 handleErrorMessage={handleErrorMessage}
                 webinarState={webinarState}
+                shouldNavigateToWebinar={shouldNavigateToWebinar}
               />
             )}
           </Box>
