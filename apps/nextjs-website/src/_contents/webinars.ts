@@ -37,7 +37,7 @@ export const webinars: readonly Webinar[] = [
         name: 'Jacopo Pompilii',
         jobTitle: 'UX Design Lead',
         description: '',
-        imagePath: '/images/speaker-pomipilii.png',
+        imagePath: '/images/speaker-pompilii.png',
       },
     ],
     startDateTime: '2024-03-20T09:00:00.000Z',
