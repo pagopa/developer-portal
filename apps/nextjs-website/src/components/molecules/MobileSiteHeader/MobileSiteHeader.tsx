@@ -204,28 +204,27 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-          {!isProduction && (
-            <MobileSiteHeaderStyledTreeItem
-              nodeId={'siteHeader.webinars'}
-              label={
-                <Typography
-                  component={NextLink}
-                  variant='body1'
-                  href={'/webinars'}
-                  onClick={handleClick}
-                  style={{
-                    color: palette.primary.dark,
-                    display: 'block',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                    padding: 0,
-                  }}
-                >
-                  {t('siteHeader.webinars')}
-                </Typography>
-              }
-            />
-          )}
+
+          <MobileSiteHeaderStyledTreeItem
+            nodeId={'siteHeader.webinars'}
+            label={
+              <Typography
+                component={NextLink}
+                variant='body1'
+                href={'/webinars'}
+                onClick={handleClick}
+                style={{
+                  color: palette.primary.dark,
+                  display: 'block',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  padding: 0,
+                }}
+              >
+                {t('siteHeader.webinars')}
+              </Typography>
+            }
+          />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
         </TreeView>
