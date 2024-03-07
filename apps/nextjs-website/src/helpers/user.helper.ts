@@ -10,6 +10,7 @@ export const useUser = () => {
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
   const checkUser = useCallback(() => {
+    /* eslint-disable functional/no-expression-statements */
     Auth.currentAuthenticatedUser()
       .then((user) => {
         setLoading(false);
@@ -71,7 +72,6 @@ export const useAuthenticatedUserRedirect = () => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
   if (authStatus === 'authenticated') {
-    /* eslint-disable functional/no-expression-statements */
     redirect('/');
   }
 
