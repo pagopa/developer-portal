@@ -65,15 +65,9 @@ const Login = () => {
     [router, searchParams, user]
   );
 
-  const onBackStep = useCallback(() => {
-    router.replace(
-      `/auth/login?email=${encodeURIComponent(loginData.username || '')}&step=${
-        LoginSteps.LOG_IN
-      }`
-    );
+  const onBackStep = () => {
     setLogInStep(LoginSteps.LOG_IN);
-    return null;
-  }, [router, loginData.username]);
+  };
 
   return (
     <PageBackgroundWrapper>
