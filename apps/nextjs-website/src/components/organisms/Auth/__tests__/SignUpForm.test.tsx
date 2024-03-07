@@ -81,6 +81,25 @@ describe('SignUpForm', () => {
     expect(mockOnSignUp).not.toHaveBeenCalled();
   });
 
+  it('should set user already exists error', () => {
+    const { getByRole } = render(
+      <Wrapper>
+        <SignUpForm onSignUp={mockOnSignUp} userAlreadyExist />
+      </Wrapper>
+    );
+
+    const usernameInput = getByRole('textbox', {
+      name: /email/i,
+    }) as HTMLInputElement;
+
+    const submitButton = getByRole('button', { name: /Iscriviti/i });
+
+    fireEvent.click(submitButton);
+
+    expect(usernameInput).toBeInvalid();
+    expect(mockOnSignUp).not.toHaveBeenCalled();
+  });
+
   it('should reset form fields errors', () => {
     const { getByRole, getAllByLabelText } = render(
       <Wrapper>
