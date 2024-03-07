@@ -2,6 +2,10 @@ import { fireEvent, render } from '@testing-library/react';
 import SignUpForm from '../SignUpForm';
 import Wrapper from '@/__tests__/components/Wrapper';
 
+import labels from '@/messages/it.json';
+
+const actionRegex = RegExp(labels.auth.signUp.action, 'i');
+
 function getPasswordInputs(inputs: HTMLElement[]) {
   const filtered = inputs.filter(
     (el) => el.getAttribute('type') === 'password'
@@ -64,7 +68,7 @@ describe('SignUpForm', () => {
     const { confirmPasswordInput, passwordInput } = getPasswordInputs(
       getAllByLabelText(/password/i)
     );
-    const submitButton = getByRole('button', { name: /Iscriviti/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.change(firstNameInput, { target: { value: '' } });
     fireEvent.change(lastNameInput, { target: { value: '' } });
@@ -92,7 +96,7 @@ describe('SignUpForm', () => {
       name: /email/i,
     }) as HTMLInputElement;
 
-    const submitButton = getByRole('button', { name: /Iscriviti/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.click(submitButton);
 
@@ -121,7 +125,7 @@ describe('SignUpForm', () => {
     const { confirmPasswordInput, passwordInput } = getPasswordInputs(
       getAllByLabelText(/password/i)
     );
-    const submitButton = getByRole('button', { name: /Iscriviti/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.change(firstNameInput, { target: { value: '' } });
     fireEvent.change(lastNameInput, { target: { value: '' } });
@@ -177,7 +181,7 @@ describe('SignUpForm', () => {
     const { confirmPasswordInput, passwordInput } = getPasswordInputs(
       getAllByLabelText(/password/i)
     );
-    const submitButton = getByRole('button', { name: /Iscriviti/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.change(firstNameInput, { target: { value: 'John' } });
     fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
