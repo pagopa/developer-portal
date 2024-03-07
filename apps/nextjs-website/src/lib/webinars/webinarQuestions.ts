@@ -23,12 +23,17 @@ export type WebinarEnv = {
   readonly nowDate: () => Date;
 };
 
-export type InsertWebinarQuestion = Omit<WebinarQuestion, 'createdAt'>;
+export type InsertWebinarQuestion = {
+  readonly slug: WebinarQuestion['id']['slug'];
+  readonly question: WebinarQuestion['question'];
+};
 
 export type WebinarQuestion = {
-  readonly webinarId: string;
+  readonly id: {
+    readonly slug: string;
+    readonly createdAt: Date;
+  };
   readonly question: string;
-  readonly createdAt: Date;
   readonly hiddenBy?: string;
   readonly highlightedBy?: string;
 };
@@ -42,12 +47,12 @@ export type UpdateExpression<T> =
       readonly operation: 'remove';
     };
 
-export type WebinarQuestionUpdate = Pick<
-  WebinarQuestion,
-  'webinarId' | 'createdAt'
-> & {
-  readonly hiddenBy?: UpdateExpression<string>;
-  readonly highlightedBy?: UpdateExpression<string>;
+export type WebinarQuestionUpdate = {
+  readonly id: WebinarQuestion['id'];
+  readonly updates: {
+    readonly hiddenBy?: UpdateExpression<string>;
+    readonly highlightedBy?: UpdateExpression<string>;
+  };
 };
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
@@ -60,8 +65,10 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
       const putCommand = new PutItemCommand({
         TableName: 'WebinarQuestions',
         Item: makeDynamodbItemFromWebinarQuestion({
-          webinarId: question.webinarId,
-          createdAt: createdAt,
+          id: {
+            slug: question.slug,
+            createdAt: createdAt,
+          },
           question: question.question,
         }),
       });

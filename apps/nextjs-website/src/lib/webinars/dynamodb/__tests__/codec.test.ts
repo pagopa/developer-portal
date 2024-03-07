@@ -1,30 +1,32 @@
 import { WebinarQuestionUpdate } from '../../webinarQuestions';
 import * as codec from '../codec';
 
-const aWebinarQuestionUpdate = {
-  webinarId: 'aWebinarId',
+const aWebinarQuestionId = {
+  slug: 'aWebinarId',
   createdAt: new Date(),
 };
 
 describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
   it('should return UpdateItemCommandInput given two update operation', () => {
     const update: WebinarQuestionUpdate = {
-      ...aWebinarQuestionUpdate,
-      hiddenBy: {
-        operation: 'update',
-        value: 'aNewHiddenValue',
-      },
-      highlightedBy: {
-        operation: 'update',
-        value: 'aNewHighlightedBy',
+      id: aWebinarQuestionId,
+      updates: {
+        hiddenBy: {
+          operation: 'update',
+          value: 'aNewHiddenValue',
+        },
+        highlightedBy: {
+          operation: 'update',
+          value: 'aNewHighlightedBy',
+        },
       },
     };
     const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {
-        webinarId: { S: update.webinarId },
-        createdAt: { S: update.createdAt.toISOString() },
+        webinarId: { S: update.id.slug },
+        createdAt: { S: update.id.createdAt.toISOString() },
       },
       UpdateExpression:
         'set hiddenBy = :hiddenBy, highlightedBy = :highlightedBy ',
@@ -37,21 +39,23 @@ describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
 
   it('should return UpdateItemCommandInput given a remove and update operation', () => {
     const update: WebinarQuestionUpdate = {
-      ...aWebinarQuestionUpdate,
-      hiddenBy: {
-        operation: 'update',
-        value: 'aNewHiddenValue',
-      },
-      highlightedBy: {
-        operation: 'remove',
+      id: aWebinarQuestionId,
+      updates: {
+        hiddenBy: {
+          operation: 'update',
+          value: 'aNewHiddenValue',
+        },
+        highlightedBy: {
+          operation: 'remove',
+        },
       },
     };
     const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {
-        webinarId: { S: update.webinarId },
-        createdAt: { S: update.createdAt.toISOString() },
+        webinarId: { S: update.id.slug },
+        createdAt: { S: update.id.createdAt.toISOString() },
       },
       UpdateExpression: 'set hiddenBy = :hiddenBy remove highlightedBy',
       ExpressionAttributeValues: {

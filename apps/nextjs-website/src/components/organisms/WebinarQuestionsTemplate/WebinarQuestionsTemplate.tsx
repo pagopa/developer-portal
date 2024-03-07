@@ -49,8 +49,7 @@ const WebinarQuestionsTemplate = ({
   else {
     const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
     const sortedQuestions = [...data].sort(
-      (a: WebinarQuestion, b: WebinarQuestion) =>
-        b.createdAt.getTime() - a.createdAt.getTime()
+      (a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime()
     );
 
     return (
@@ -74,25 +73,27 @@ const WebinarQuestionsTemplate = ({
               <TableBody>
                 {sortedQuestions.map((webinarQuestion) => (
                   <WebinarQuestionRow
-                    key={webinarQuestion.createdAt.toISOString()}
+                    key={webinarQuestion.id.createdAt.toISOString()}
                     question={webinarQuestion}
                     userName={userName}
                     onHide={async (hide) =>
                       await updateWebinarQuestion({
-                        webinarId: webinarQuestion.webinarId,
-                        createdAt: webinarQuestion.createdAt,
-                        hiddenBy: hide
-                          ? { operation: 'update', value: userName }
-                          : { operation: 'remove' },
+                        id: webinarQuestion.id,
+                        updates: {
+                          hiddenBy: hide
+                            ? { operation: 'update', value: userName }
+                            : { operation: 'remove' },
+                        },
                       })
                     }
                     onHighlight={async (highlight) =>
                       await updateWebinarQuestion({
-                        webinarId: webinarQuestion.webinarId,
-                        createdAt: webinarQuestion.createdAt,
-                        highlightedBy: highlight
-                          ? { operation: 'update', value: userName }
-                          : { operation: 'remove' },
+                        id: webinarQuestion.id,
+                        updates: {
+                          highlightedBy: highlight
+                            ? { operation: 'update', value: userName }
+                            : { operation: 'remove' },
+                        },
                       })
                     }
                   />

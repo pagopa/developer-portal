@@ -44,17 +44,20 @@ export const makeWebinarQuestionListQueryCondition = (
 export const makeWebinarQuestionFromDynamodbItem = (
   input: WebinarQuestionDynamoDB
 ): WebinarQuestion => ({
-  webinarId: input.webinarId.S,
+  id: {
+    slug: input.webinarId.S,
+    createdAt: input.createdAt.S,
+  },
   question: input.question.S,
-  createdAt: input.createdAt.S,
-  hiddenBy: input.hiddenBy?.S,
-  highlightedBy: input.highlightedBy?.S,
+  // use the short-circuit evaluation to omit the attribute if it is undefined
+  ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
+  ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
   WebinarQuestionDynamodbCodec.encode({
-    webinarId: { S: input.webinarId },
-    createdAt: { S: input.createdAt },
+    webinarId: { S: input.id.slug },
+    createdAt: { S: input.id.createdAt },
     question: { S: input.question },
     ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
     ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
@@ -120,13 +123,13 @@ export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
   input: WebinarQuestionUpdate
 ): Omit<UpdateItemCommandInput, 'TableName'> => {
   const { UpdateExpression, ExpressionAttributeValues } = makeUpdateExpression([
-    { fieldName: 'hiddenBy', expression: input.hiddenBy },
-    { fieldName: 'highlightedBy', expression: input.highlightedBy },
+    { fieldName: 'hiddenBy', expression: input.updates.hiddenBy },
+    { fieldName: 'highlightedBy', expression: input.updates.highlightedBy },
   ]);
   return {
     Key: {
-      webinarId: { S: input.webinarId },
-      createdAt: { S: input.createdAt.toISOString() },
+      webinarId: { S: input.id.slug },
+      createdAt: { S: input.id.createdAt.toISOString() },
     },
     UpdateExpression,
     ExpressionAttributeValues,

@@ -36,7 +36,7 @@ export default function WebinarQuestionRow({
   return (
     <TableRow
       hover
-      key={question.createdAt.toJSON()}
+      key={question.id.createdAt.toISOString()}
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
         '&.MuiTableRow-hover:hover': {
@@ -57,7 +57,7 @@ export default function WebinarQuestionRow({
         }}
       >
         {!isHidden
-          ? formatter.dateTime(question.createdAt, {
+          ? formatter.dateTime(question.id.createdAt, {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',

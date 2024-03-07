@@ -14,11 +14,15 @@ import {
 import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
 
 const aWebinarQuestion = {
-  webinarId: 'aWebinarId',
+  id: {
+    slug: 'aWebinarId',
+    createdAt: new Date(0),
+  },
   question: 'aQuestion',
-  createdAt: new Date(),
-  hiddenBy: 'aHiddenBy',
-  highlightedBy: 'aHighlightedBy',
+};
+const aInsertWebinarQuestion = {
+  slug: aWebinarQuestion.id.slug,
+  question: aWebinarQuestion.question,
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarQuestion({
   ...aWebinarQuestion,
@@ -48,7 +52,7 @@ describe('webinarQuestions', () => {
   describe('insertWebinarQuestion', () => {
     it('should send dynamodb put command', async () => {
       const { env, dynamoDBClientMock, nowDateMock } = makeTestWebinarEnv();
-      const actual = await insertWebinarQuestion(aWebinarQuestion)(env)();
+      const actual = await insertWebinarQuestion(aInsertWebinarQuestion)(env)();
       const expected = E.right(undefined);
 
       expect(dynamoDBClientMock.send).toBeCalledTimes(1);
@@ -63,7 +67,7 @@ describe('webinarQuestions', () => {
       // eslint-disable-next-line functional/no-promise-reject
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
-      const actual = await insertWebinarQuestion(aWebinarQuestion)(env)();
+      const actual = await insertWebinarQuestion(aInsertWebinarQuestion)(env)();
       const expected = E.left(error);
 
       expect(dynamoDBClientMock.send).toBeCalledTimes(1);
@@ -76,9 +80,10 @@ describe('webinarQuestions', () => {
     it('should send dynamodb update command', async () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const actual = await updateWebinarQuestion({
-        webinarId: aWebinarQuestion.webinarId,
-        createdAt: aWebinarQuestion.createdAt,
-        highlightedBy: { operation: 'remove' },
+        id: aWebinarQuestion.id,
+        updates: {
+          highlightedBy: { operation: 'remove' },
+        },
       })(env)();
       const expected = E.right(undefined);
 
@@ -90,8 +95,8 @@ describe('webinarQuestions', () => {
   describe('listWebinarQuestion', () => {
     it('should return a list of webinar questions', async () => {
       const { env } = makeTestWebinarEnv();
-      const { webinarId } = aWebinarQuestion;
-      const actual = await listWebinarQuestions(webinarId)(env)();
+      const { slug } = aWebinarQuestion.id;
+      const actual = await listWebinarQuestions(slug)(env)();
       const expected = E.right([aWebinarQuestion]);
 
       expect(actual).toStrictEqual(expected);
@@ -99,11 +104,11 @@ describe('webinarQuestions', () => {
 
     it('should return an empty list if questions are undefined', async () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
-      const { webinarId } = aWebinarQuestion;
+      const { slug } = aWebinarQuestion.id;
       dynamoDBClientMock.send.mockImplementation(() =>
         Promise.resolve({ Items: undefined })
       );
-      const actual = await listWebinarQuestions(webinarId)(env)();
+      const actual = await listWebinarQuestions(slug)(env)();
       const expected = E.right([]);
 
       expect(actual).toStrictEqual(expected);
