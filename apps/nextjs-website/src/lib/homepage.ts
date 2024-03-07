@@ -67,7 +67,6 @@ export const makeHomepageProps = (
     callToAction: slide.callToAction && {
       link: slide.callToAction.link,
     },
-    },
   })),
   ...(strapiHomepage.data.attributes.newsShowcase && {
     newsShowcase: {
