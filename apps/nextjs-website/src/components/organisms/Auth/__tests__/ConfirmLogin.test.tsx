@@ -2,9 +2,16 @@ import { render, fireEvent } from '@testing-library/react';
 import ConfirmLogin from '@/components/organisms/Auth/ConfirmLogin';
 import Wrapper from '../../../../__tests__/components/Wrapper';
 
+import labels from '@/messages/it.json';
+
+const continueRegex = new RegExp(labels.auth.confirmLogin.continue, 'i');
+const invalidCodeRegex = new RegExp(labels.auth.confirmLogin.invalidCode, 'i');
+const emptyCodeRegex = new RegExp(labels.auth.confirmLogin.emptyCode, 'i');
+
 describe('ConfirmLogin', () => {
-  const mockOnConfirmLogin = jest.fn(() => Promise.resolve());
-  const mockResendCode = jest.fn(() => Promise.resolve(true));
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const mockOnConfirmLogin = jest.fn(async () => {});
+  const mockResendCode = jest.fn(async () => true);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -50,7 +57,7 @@ describe('ConfirmLogin', () => {
       </Wrapper>
     );
     const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: /continua/i });
+    const continueButton = getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '123456' } });
     fireEvent.click(continueButton);
@@ -73,12 +80,12 @@ describe('ConfirmLogin', () => {
       </Wrapper>
     );
     const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: /continua/i });
+    const continueButton = getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '123456' } });
     fireEvent.click(continueButton);
 
-    const errorMessage = await findByText(/Il codice inserito non è corretto/i);
+    const errorMessage = await findByText(invalidCodeRegex);
 
     expect(errorMessage).toBeDefined();
   });
@@ -96,12 +103,12 @@ describe('ConfirmLogin', () => {
       </Wrapper>
     );
     const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: /continua/i });
+    const continueButton = getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '' } });
     fireEvent.click(continueButton);
 
-    const errorMessage = await findByText(/Il codice è obbligatorio/i);
+    const errorMessage = await findByText(emptyCodeRegex);
 
     expect(errorMessage).toBeDefined();
   });
