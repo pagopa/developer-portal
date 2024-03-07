@@ -23,7 +23,7 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
         },
         '.list-item-container, div.list-item-container > *': {
           fontSize: '1rem',
-        }
+        },
       }}
     >
       <div className='list-item-container'>{children}</div>
