@@ -7,10 +7,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { makeBrowserEnv } from '@/BrowserEnv';
 import {
   InsertWebinarQuestion,
-  WebinarQuestion,
+  WebinarQuestionUpdate,
   insertWebinarQuestion,
   listWebinarQuestions,
-  updateWebinarQuestion,
+  updateWebinarQuestion as _updateWebinarQuestion,
 } from './webinars/webinarQuestions';
 import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
 
@@ -40,12 +40,5 @@ export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
 export const getWebinarQuestionList = (webinarId: string) =>
   pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();
 
-export const updateQuestion = (
-  question: WebinarQuestion,
-  action: 'highlight' | 'hide',
-  by?: string
-) =>
-  pipe(
-    updateWebinarQuestion(question, action, by)(browserEnv),
-    makePromiseFromTE
-  )();
+export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
+  pipe(_updateWebinarQuestion(update)(browserEnv), makePromiseFromTE)();

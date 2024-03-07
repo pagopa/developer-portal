@@ -15,6 +15,7 @@ import {
   makeDynamodbItemFromWebinarQuestion,
   makeWebinarQuestionFromDynamodbItem,
   makeWebinarQuestionListQueryCondition,
+  makeDynamodbUpdateFromWebinarQuestionUpdate,
 } from './dynamodb/codec';
 
 export type WebinarEnv = {
@@ -22,79 +23,73 @@ export type WebinarEnv = {
   readonly nowDate: () => Date;
 };
 
-export type InsertWebinarQuestion = Omit<
-  WebinarQuestion,
-  'createdAt' | 'expireAt'
->;
+export type InsertWebinarQuestion = {
+  readonly slug: WebinarQuestion['id']['slug'];
+  readonly question: WebinarQuestion['question'];
+};
 
 export type WebinarQuestion = {
-  readonly webinarId: string;
+  readonly id: {
+    readonly slug: string;
+    readonly createdAt: Date;
+  };
   readonly question: string;
-  readonly createdAt: Date;
   readonly hiddenBy?: string;
   readonly highlightedBy?: string;
 };
 
+export type UpdateExpression<T> =
+  | {
+      readonly operation: 'update';
+      readonly value: T;
+    }
+  | {
+      readonly operation: 'remove';
+    };
+
+export type WebinarQuestionUpdate = {
+  readonly id: WebinarQuestion['id'];
+  readonly updates: {
+    readonly hiddenBy?: UpdateExpression<string>;
+    readonly highlightedBy?: UpdateExpression<string>;
+  };
+};
+
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(
+    // take dynamoDBClient and nowDate properties from WebinarEnv
     R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
       // create put command
-      const questionItem = makeDynamodbItemFromWebinarQuestion({
-        webinarId: question.webinarId,
-        createdAt: createdAt,
-        question: question.question,
-      });
-
       const putCommand = new PutItemCommand({
         TableName: 'WebinarQuestions',
-        Item: {
-          ...questionItem,
-          highlightedBy: { NULL: true },
-          hiddenBy: { NULL: true },
-        },
+        Item: makeDynamodbItemFromWebinarQuestion({
+          id: {
+            slug: question.slug,
+            createdAt: createdAt,
+          },
+          question: question.question,
+        }),
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
+    // do not return (i.e., discard) the result if the operation succeded
     RTE.map(() => void 0)
   );
 
-export const updateWebinarQuestion = (
-  question: WebinarQuestion,
-  action: 'highlight' | 'hide',
-  by?: string
-) =>
+export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
   pipe(
+    // take dynamoDBClient properties from WebinarEnv
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
     R.map(({ dynamoDBClient }) => {
-      const field = action === 'highlight' ? 'highlightedBy' : 'hiddenBy';
-
-      const baseUpdateCommand = {
+      const updateCommand = new UpdateItemCommand({
         TableName: 'WebinarQuestions',
-        Key: {
-          webinarId: { S: question.webinarId },
-          createdAt: { S: question.createdAt.toISOString() },
-        },
-        ExpressionAttributeNames: {
-          [`#${field}`]: field,
-        },
-      };
-
-      const updateCommand = by
-        ? new UpdateItemCommand({
-            ...baseUpdateCommand,
-            UpdateExpression: `SET #${field} = :${field}`,
-            ExpressionAttributeValues: {
-              [`:${field}`]: { S: by },
-            },
-          })
-        : new UpdateItemCommand({
-            ...baseUpdateCommand,
-            UpdateExpression: `REMOVE #${field}`,
-          });
+        ...makeDynamodbUpdateFromWebinarQuestionUpdate(update),
+      });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
+    // do not return (i.e., discard) the result if the operation succeded
     RTE.map(() => void 0)
   );
 

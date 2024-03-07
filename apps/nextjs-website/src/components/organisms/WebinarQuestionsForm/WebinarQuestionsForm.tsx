@@ -27,7 +27,7 @@ export const WebinarQuestionsForm = ({
 
     setFormState('submitting');
     return await sendWebinarQuestion({
-      webinarId: webinarSlug,
+      slug: webinarSlug,
       question: question,
     });
   }, [webinarSlug, question]);
