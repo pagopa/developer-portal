@@ -120,7 +120,8 @@ const SubscribeToWebinar = ({
 
   const onSubscribeClick = () => {
     if (shouldNavigateToWebinar && webinarState === WebinarState.past) {
-      router.replace(`/webinars/${webinarSlug}`);
+      // eslint-disable-next-line functional/immutable-data
+      router.push(`/webinars/${webinarSlug}`);
       return null;
     }
 
