@@ -14,7 +14,6 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
-import { isProduction } from '@/config';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {

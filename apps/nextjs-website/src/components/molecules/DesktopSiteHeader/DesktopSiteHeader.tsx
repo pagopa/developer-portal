@@ -5,7 +5,6 @@ import DesktopUserInfo from '@/components/atoms/DesktopUserInfo/DesktopUserInfo'
 import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
-import { isProduction } from '@/config';
 
 const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
