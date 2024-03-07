@@ -2,22 +2,36 @@ import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
+import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
 
-const LinkCodec = t.intersection([
-  t.strict({
-    text: t.string,
-    href: t.string,
-  }),
-  t.partial({
-    target: t.union([
-      t.null,
-      t.literal('_self'),
-      t.literal('_blank'),
-      t.literal('_parent'),
-      t.literal('_top'),
-    ]),
-  }),
-]);
+// converts null to undefined
+export const NullToUndefined = new t.Type<undefined, null, unknown>(
+  // name: a unique name for this codec
+  'NullToUndefined',
+  // is: a custom type guard
+  t.undefined.is,
+  // validate: succeeds if a value of type I can be decoded to a value of type A
+  (u, c) =>
+    pipe(
+      t.null.validate(u, c),
+      E.map(() => undefined)
+    ),
+  // encode: converts a value of type A to a value of type O
+  () => null
+);
+
+const LinkCodec = t.strict({
+  text: t.string,
+  href: t.string,
+  target: t.union([
+    NullToUndefined,
+    t.literal('_self'),
+    t.literal('_blank'),
+    t.literal('_parent'),
+    t.literal('_top'),
+  ]),
+});
 
 const MediaCodec = t.strict({
   attributes: t.strict({
@@ -41,36 +55,28 @@ const ProductCodec = t.strict({
   }),
 });
 
-const CallToActionCodec = t.intersection([
-  t.strict({
-    link: LinkCodec,
-  }),
-  t.partial({
-    variant: t.union([
-      t.null,
-      t.literal('text'),
-      t.literal('contained'),
-      t.literal('outlined'),
-    ]),
-  }),
-]);
+const CallToActionCodec = t.strict({
+  link: LinkCodec,
+  variant: t.union([
+    NullToUndefined,
+    t.literal('text'),
+    t.literal('contained'),
+    t.literal('outlined'),
+  ]),
+});
 
-const HeroSlideCodec = t.intersection([
-  t.strict({
-    title: t.string,
-  }),
-  t.partial({
-    callToAction: t.union([t.null, CallToActionCodec]),
-    titleColor: t.union([
-      t.null,
-      t.literal('contrastText'),
-      t.literal('main'),
-      t.literal('light'),
-      t.literal('dark'),
-    ]),
-    backgroundImage: t.strict({ data: t.union([t.null, MediaCodec]) }),
-  }),
-]);
+const HeroSlideCodec = t.strict({
+  title: t.string,
+  callToAction: t.union([NullToUndefined, CallToActionCodec]),
+  titleColor: t.union([
+    NullToUndefined,
+    t.literal('contrastText'),
+    t.literal('main'),
+    t.literal('light'),
+    t.literal('dark'),
+  ]),
+  backgroundImage: t.strict({ data: t.union([NullToUndefined, MediaCodec]) }),
+});
 
 const NewsItemCodec = t.strict({
   attributes: t.strict({
