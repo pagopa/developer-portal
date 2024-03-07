@@ -1,11 +1,18 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
-import { fireEvent, render, act } from '@testing-library/react';
-import Wrapper from '../../../../__tests__/components/Wrapper';
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
+import Wrapper from '../../../../__tests__/components/Wrapper';
+import labels from '@/messages/it.json';
+
+const errorsRegex = RegExp(labels.shared.requiredFieldError, 'i');
+const emailErrorRegex = RegExp(labels.shared.emailFieldError, 'i');
+const fieldsErrorsRegex = RegExp(labels.auth.login.noAccountError, 'i');
+const actionRegex = RegExp(labels.auth.login.action, 'i');
+
 describe('LoginForm', () => {
-  const promise = Promise.resolve();
-  const mockOnLogin = jest.fn(() => promise);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const mockOnLogin = jest.fn(async () => {});
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -45,7 +52,7 @@ describe('LoginForm', () => {
 
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
     const passwordInput = getByLabelText(/^password$/i) as HTMLInputElement;
-    const submitButton = getByRole('button', { name: /accedi/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -55,8 +62,6 @@ describe('LoginForm', () => {
       username: 'test@example.com',
       password: 'password123',
     });
-
-    await act(() => promise);
   });
 
   it('should display error messages when inputs are invalid', async () => {
@@ -73,11 +78,9 @@ describe('LoginForm', () => {
       </Wrapper>
     );
 
-    const errorsRegex = /Questo campo non può essere vuoto/i;
-    const emailErrorRegex = /Inserisci un indirizzo email valido/i;
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
     const passwordInput = getByLabelText(/^password$/i) as HTMLInputElement;
-    const submitButton = getByRole('button', { name: /accedi/i });
+    const submitButton = getByRole('button', { name: actionRegex });
 
     fireEvent.change(usernameInput, { target: { value: '' } });
     fireEvent.change(passwordInput, { target: { value: '' } });
@@ -132,7 +135,7 @@ describe('LoginForm', () => {
       </Wrapper>
     );
 
-    const errors = await findAllByText(/Nome utente o password non corretti./i);
+    const errors = await findAllByText(fieldsErrorsRegex);
 
     expect(errors).toHaveLength(2);
   });
