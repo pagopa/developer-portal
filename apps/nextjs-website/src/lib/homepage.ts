@@ -65,11 +65,8 @@ export const makeHomepageProps = (
     titleColor: slide.titleColor,
     backgroundImage: slide.backgroundImage?.data?.attributes,
     callToAction: slide.callToAction && {
-      link: {
-        href: slide.callToAction.link.href,
-        text: slide.callToAction.link.text,
-        target: slide.callToAction.link.target,
-      },
+      link: slide.callToAction.link,
+    },
     },
   })),
   ...(strapiHomepage.data.attributes.newsShowcase && {
