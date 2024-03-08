@@ -14,7 +14,6 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
-import { isProduction } from '@/config';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -204,28 +203,27 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-          {!isProduction && (
-            <MobileSiteHeaderStyledTreeItem
-              nodeId={'siteHeader.webinars'}
-              label={
-                <Typography
-                  component={NextLink}
-                  variant='body1'
-                  href={'/webinars'}
-                  onClick={handleClick}
-                  style={{
-                    color: palette.primary.dark,
-                    display: 'block',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                    padding: 0,
-                  }}
-                >
-                  {t('siteHeader.webinars')}
-                </Typography>
-              }
-            />
-          )}
+
+          <MobileSiteHeaderStyledTreeItem
+            nodeId={'siteHeader.webinars'}
+            label={
+              <Typography
+                component={NextLink}
+                variant='body1'
+                href={'/webinars'}
+                onClick={handleClick}
+                style={{
+                  color: palette.primary.dark,
+                  display: 'block',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  padding: 0,
+                }}
+              >
+                {t('siteHeader.webinars')}
+              </Typography>
+            }
+          />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
         </TreeView>

@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 0.12.3
+
+### Patch Changes
+
+- 9886edf: Replace images of pagopa-lab webinar
+
+## 0.12.2
+
+### Patch Changes
+
+- 89d164a: Add content for PagoPA LAB first Webinar
+
 ## 0.12.1
 
 ### Patch Changes
