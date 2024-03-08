@@ -89,6 +89,24 @@ Add to the package `<package>` the dependency `<dependency>` as `devDependencies
 npm -w <package> install <dependency> -D
 ```
 
+## Storybook
+To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
+```bash
+npm run storybook
+```
+and you will get a message like this:
+```bash
+╭────────────────────────────────────────────────────╮
+│                                                    │
+│   Storybook 7.6.17 for nextjs started              │
+│   584 ms for manager and 17 s for preview          │
+│                                                    │
+│    Local:            http://localhost:6006/        │
+│                                                    │
+╰────────────────────────────────────────────────────╯
+```
+Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
+
 ## Changelog
 This project utilizes [changesets](https://github.com/changesets/changesets) to generate the changelog. Here's how you can use it:
 
