@@ -14,12 +14,12 @@ export const webinars: readonly Webinar[] = [
       `<p>Come semplificare ed efficientare la gestione delle multe con PagoPA? </br> In questo appuntamento saranno illustrati tutti i passaggi utili per la costruzione di un servizio pienamente digitale ed efficiente attraverso l’utilizzo sinergico di pagoPA, IO e SEND. Il webinar ha l’obiettivo infatti di fornire tutti i chiarimenti e gli strumenti utili per una corretta e virtuosa gestione digitale del servizio multe attraverso l’utilizzo integrato delle piattaforme di PagoPA.
        </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/pago-pa-marca-bollo.png' /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-pago-pa-multe.jpg' /> \n` +
       `<br /> \n` +
       `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
     slug: 'PagoPA-multe',
     isVisibleInHome: true,
-    imagePath: '/images/pago-pa-marca-bollo.png',
+    imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
     speakers: [
       {
         name: 'Gloriana Cimmino',
