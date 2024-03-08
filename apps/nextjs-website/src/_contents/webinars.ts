@@ -4,6 +4,53 @@ import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
 export const webinars: readonly Webinar[] = [
   {
+    title:
+      'PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND ',
+    description:
+      'Come gestire al meglio le sanzioni per violazione del Codice della strada attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.',
+    playerSrc: 'https://vimeo.com/event/4135276/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;"> Gestione integrata del servizio multe da pagoPA e IO a SEND</h4> \n` +
+      `<p>Come semplificare ed efficientare la gestione delle multe con PagoPA? </br> In questo appuntamento saranno illustrati tutti i passaggi utili per la costruzione di un servizio pienamente digitale ed efficiente attraverso l’utilizzo sinergico di pagoPA, IO e SEND. Il webinar ha l’obiettivo infatti di fornire tutti i chiarimenti e gli strumenti utili per una corretta e virtuosa gestione digitale del servizio multe attraverso l’utilizzo integrato delle piattaforme di PagoPA.
+       </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-pago-pa-multe.jpg' /> \n` +
+      `<br /> \n` +
+      `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
+    slug: 'PagoPA-multe',
+    isVisibleInHome: true,
+    imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
+    speakers: [
+      {
+        name: 'Gloriana Cimmino',
+        jobTitle: 'Direttore Dipartimento Mercato PA e Imprese',
+        description: '',
+        imagePath: '/images/speaker-cimmino.png',
+      },
+      {
+        name: 'Federica Amoroso',
+        jobTitle: 'Senior Account Manager',
+        description: '',
+        imagePath: '/images/speaker-amoroso.png',
+      },
+      {
+        name: 'Jacopo Pompilii',
+        jobTitle: 'UX Design Lead',
+        description: '',
+        imagePath: '/images/speaker-pompilii.png',
+      },
+    ],
+    startDateTime: '2024-03-20T09:00:00.000Z',
+    endDateTime: '2024-03-20T09:45:00.000Z',
+    subscribeCtaLabel: '',
+    relatedLinks: [
+      {
+        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
+        name: 'I modelli dei servizi più frequenti: Multe per violazione codice della strada',
+      },
+    ],
+  },
+  {
     title: 'Esplorando App IO: Le nuove API dei Servizi',
     description:
       'Il mondo di IO è molto ampio, il primo passo è capire come integrarsi alle nuove API e con questo webinar vedremo le informazioni principali per farlo!',
@@ -16,7 +63,7 @@ export const webinars: readonly Webinar[] = [
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
-    isVisibleInHome: true,
+    isVisibleInHome: false,
     imagePath: '/images/webinar-cover-nuove-api-io.png',
     speakers: [
       {

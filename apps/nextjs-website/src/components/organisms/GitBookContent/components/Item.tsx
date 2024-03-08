@@ -16,7 +16,7 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
           width: 'initial',
           marginLeft: '1rem',
         },
-        '& div.list-item-container:has(img)': {
+        '& div.list-item-container:has(img.data-size-line)': {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'start',
