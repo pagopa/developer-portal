@@ -25,7 +25,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   );
   const { slug, title: text, endDateTime } = webinar || {};
   const storedDateTime =
-    (slug && window?.localStorage.getItem(slug)) || new Date().toISOString();
+    (slug && window?.localStorage.getItem(slug));
   const shouldShow = !storedDateTime || new Date(storedDateTime) < new Date();
   const [visible, setVisible] = useState(shouldShow);
 
