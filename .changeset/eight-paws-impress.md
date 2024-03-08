@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Webinar link visible on production environment
+Make the link to the webinar list page visible in the navigation menu also in the production environment
