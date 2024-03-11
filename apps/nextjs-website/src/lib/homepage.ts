@@ -61,12 +61,8 @@ export const makeHomepageProps = (
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
-    title: slide.title,
-    titleColor: slide.titleColor,
+    ...slide,
     backgroundImage: slide.backgroundImage?.data?.attributes,
-    callToAction: slide.callToAction && {
-      link: slide.callToAction.link,
-    },
   })),
   ...(strapiHomepage.data.attributes.newsShowcase && {
     newsShowcase: {
