@@ -48,7 +48,6 @@ const Swagger = ({
     );
   }
 
-  console.log(theme.palette);
 
   return (
     <Accordion
