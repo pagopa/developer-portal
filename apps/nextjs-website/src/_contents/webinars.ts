@@ -37,6 +37,12 @@ export const webinars: readonly Webinar[] = [
     endDateTime: '2024-03-13T14:00:00.000Z',
   },
   {
+    ...testWebinar,
+    startDateTime: '2024-03-10T13:00:00.000Z',
+    slug: 'test-3',
+    endDateTime: '2040-03-13T14:00:00.000Z',
+  },
+  {
     title:
       'PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND ',
     description:
