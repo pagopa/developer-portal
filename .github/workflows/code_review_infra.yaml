@@ -5,7 +5,7 @@ on:
     branches: '**'
     # Run only if there are at least one change matching the following paths
     paths:
-      - '.infrastructure/**'
+      - 'apps/infrastructure/src/**'
       - '.github/workflows/code_review_infra.yaml'
 
 permissions:
@@ -50,5 +50,5 @@ jobs:
           environment: ${{ matrix.environment }}
 
       - name: Terraform Plan
-        working-directory: .infrastructure
+        working-directory: apps/infrastructure/src
         run: ./terraform.sh plan ${{ matrix.environment }}
