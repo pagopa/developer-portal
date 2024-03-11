@@ -25,7 +25,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: .infrastructure
+    working-directory: apps/infrastructure/src
 
 permissions:
   id-token: write   # This is required for requesting the JWT
