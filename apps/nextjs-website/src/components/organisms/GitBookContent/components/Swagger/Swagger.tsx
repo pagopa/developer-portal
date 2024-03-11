@@ -48,7 +48,6 @@ const Swagger = ({
     );
   }
 
-
   return (
     <Accordion
       sx={{
