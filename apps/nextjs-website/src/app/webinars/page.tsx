@@ -1,4 +1,4 @@
-import { getWebinars } from '@/lib/api';
+import { getVisibleInWebinarsWebinars } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
@@ -23,7 +23,7 @@ const NotSsrWebinarsTemplate = dynamic(
 );
 
 const Webinars = async () => {
-  const webinars = await getWebinars();
+  const webinars = await getVisibleInWebinarsWebinars();
 
   return <NotSsrWebinarsTemplate webinars={webinars} />;
 };
