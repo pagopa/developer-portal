@@ -69,7 +69,7 @@ const Swagger = ({
         >
           <Typography
             sx={{
-              backgroundColor: theme.palette.success.dark,
+              backgroundColor: theme.palette.success.light,
               color: 'white',
               padding: '2px 8px',
               borderRadius: '40px',
