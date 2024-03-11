@@ -2,4 +2,4 @@
 "infrastructure": minor
 ---
 
-Create infrastructure application
+Move the infrastructure within the monorepo (`apps/infrastructure`)
