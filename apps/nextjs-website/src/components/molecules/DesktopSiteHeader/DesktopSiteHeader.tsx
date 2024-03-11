@@ -5,7 +5,6 @@ import DesktopUserInfo from '@/components/atoms/DesktopUserInfo/DesktopUserInfo'
 import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
-import { isProduction } from '@/config';
 
 const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
@@ -28,17 +27,15 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
           label: product.name,
         }))}
       />
-      {!isProduction && (
-        <LinkMui
-          component={Link}
-          color='primary.main'
-          underline='none'
-          href={'/webinars'}
-          sx={{ fontSize: '16px', fontWeight: 600 }}
-        >
-          {t('siteHeader.webinars')}
-        </LinkMui>
-      )}
+      <LinkMui
+        component={Link}
+        color='primary.main'
+        underline='none'
+        href={'/webinars'}
+        sx={{ fontSize: '16px', fontWeight: 600 }}
+      >
+        {t('siteHeader.webinars')}
+      </LinkMui>
       <DesktopUserInfo />
     </Box>
   );
