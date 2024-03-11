@@ -2,7 +2,7 @@ website: apps/nextjs-website/**/*
 packages: packages/**/*
 docs: docs/**/*
 workflows: .github/workflows/**/*
-infra: .infrastructure/**/*
+infra: apps/infrastructure/**/*
 changeset: .changeset/**/*
 cms: apps/strapi-cms/**/*
 cognito-functions: apps/cognito-functions/**/*
