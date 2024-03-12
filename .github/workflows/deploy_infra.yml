@@ -38,6 +38,10 @@ jobs:
     continue-on-error: false
     environment: ${{ inputs.environment }}
 
+    concurrency:
+      group: terraform-${{ inputs.environment }}
+      cancel-in-progress: false
+
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab

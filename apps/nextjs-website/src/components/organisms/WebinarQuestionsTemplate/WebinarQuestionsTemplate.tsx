@@ -13,14 +13,17 @@ import { Webinar } from '@/lib/types/webinar';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
 import { useEffect } from 'react';
-import { getWebinarQuestionList } from '@/lib/webinarApi';
-import { useFormatter, useTranslations } from 'next-intl';
-import { CopyToClipboardButton } from '@pagopa/mui-italia';
-import DOMPurify from 'isomorphic-dompurify';
+import {
+  getWebinarQuestionList,
+  updateWebinarQuestion,
+} from '@/lib/webinarApi';
+import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
+import { useUser } from '@/helpers/user.helper';
+import WebinarQuestionRow from '@/components/molecules/WebinarQuestion/WebinarQuestionRow';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -29,7 +32,7 @@ type WebinarQuestionsTemplateProps = {
 const WebinarQuestionsTemplate = ({
   webinar,
 }: WebinarQuestionsTemplateProps) => {
-  const formatter = useFormatter();
+  const { user, loading } = useUser();
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
 
@@ -41,12 +44,12 @@ const WebinarQuestionsTemplate = ({
     webinar && setWebinar(webinar);
   }, [webinar]);
 
-  if (error) return <PageNotFound />;
-  else if (!data) return <Spinner />;
+  if (error || (!loading && !user)) return <PageNotFound />;
+  else if (!data || loading || !user) return <Spinner />;
   else {
+    const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
     const sortedQuestions = [...data].sort(
-      (a: WebinarQuestion, b: WebinarQuestion) =>
-        b.createdAt.getTime() - a.createdAt.getTime()
+      (a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime()
     );
 
     return (
@@ -68,28 +71,32 @@ const WebinarQuestionsTemplate = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sortedQuestions.map((row) => (
-                  <TableRow
-                    hover
-                    key={row.createdAt.toJSON()}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell>
-                      {formatter.dateTime(row.createdAt, {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      })}
-                    </TableCell>
-                    <TableCell width='70%'>{row.question}</TableCell>
-                    <TableCell>
-                      <CopyToClipboardButton
-                        value={DOMPurify.sanitize(row.question)}
-                      ></CopyToClipboardButton>
-                    </TableCell>
-                  </TableRow>
+                {sortedQuestions.map((webinarQuestion) => (
+                  <WebinarQuestionRow
+                    key={webinarQuestion.id.createdAt.toISOString()}
+                    question={webinarQuestion}
+                    userName={userName}
+                    onHide={async (hide) =>
+                      await updateWebinarQuestion({
+                        id: webinarQuestion.id,
+                        updates: {
+                          hiddenBy: hide
+                            ? { operation: 'update', value: userName }
+                            : { operation: 'remove' },
+                        },
+                      })
+                    }
+                    onHighlight={async (highlight) =>
+                      await updateWebinarQuestion({
+                        id: webinarQuestion.id,
+                        updates: {
+                          highlightedBy: highlight
+                            ? { operation: 'update', value: userName }
+                            : { operation: 'remove' },
+                        },
+                      })
+                    }
+                  />
                 ))}
               </TableBody>
             </Table>
