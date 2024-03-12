@@ -27,7 +27,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/manuale-operativo/v1.1.1`,
+            href: `${sendGuideListsPath.path}/manuale-operativo`,
             label: 'Vai al manuale',
           },
           imagePath: '/images/manuale-operativo.png',
@@ -45,7 +45,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/knowledge-base/v2.1`,
+            href: `${sendGuideListsPath.path}/knowledge-base`,
             label: 'Vai al documento',
           },
           imagePath: '/images/approfondimenti-sull-integrazione.png',
@@ -64,7 +64,7 @@ export const sendGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${sendGuideListsPath.path}/modello-di-integrazione/v2.1`,
+            href: `${sendGuideListsPath.path}/modello-di-integrazione`,
             label: 'Vai al documento',
           },
           imagePath: '/images/modello-di-integrazione.png',

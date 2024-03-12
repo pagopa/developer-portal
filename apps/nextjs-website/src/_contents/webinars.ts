@@ -109,14 +109,14 @@ export const webinars: readonly Webinar[] = [
         {
           title: 'Guida tecnica',
           text: 'Cosa può fare il tuo ente con l’app IO? Seleziona il settore di appartenenza e approfondisci i principali casi d’uso dedicati.',
-          href: `${appIOGuideListsPath.path}/io-guida-tecnica/v5.0`,
+          href: `${appIOGuideListsPath.path}/io-guida-tecnica`,
           iconName: 'MenuBook',
         },
       ],
     },
     relatedLinks: [
       {
-        path: `${appIOGuideListsPath.path}/supporto-agli-enti/v1.0`,
+        path: `${appIOGuideListsPath.path}/supporto-agli-enti`,
         name: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
       },
       {
@@ -124,7 +124,7 @@ export const webinars: readonly Webinar[] = [
         name: 'Scarica il contratto di adesione a IO',
       },
       {
-        path: `${appIOGuideListsPath.path}/kit-comunicazione/v1.0`,
+        path: `${appIOGuideListsPath.path}/kit-comunicazione`,
         name: 'Leggi kit di comunicazione',
       },
     ],
