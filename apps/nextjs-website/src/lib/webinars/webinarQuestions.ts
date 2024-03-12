@@ -8,12 +8,14 @@ import {
   DynamoDBClient,
   PutItemCommand,
   QueryCommand,
+  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import {
   WebinarQuestionDynamodbCodec,
   makeDynamodbItemFromWebinarQuestion,
   makeWebinarQuestionFromDynamodbItem,
   makeWebinarQuestionListQueryCondition,
+  makeDynamodbUpdateFromWebinarQuestionUpdate,
 } from './dynamodb/codec';
 
 export type WebinarEnv = {
@@ -21,19 +23,41 @@ export type WebinarEnv = {
   readonly nowDate: () => Date;
 };
 
-export type InsertWebinarQuestion = Omit<
-  WebinarQuestion,
-  'createdAt' | 'expireAt'
->;
+export type InsertWebinarQuestion = {
+  readonly slug: WebinarQuestion['id']['slug'];
+  readonly question: WebinarQuestion['question'];
+};
 
 export type WebinarQuestion = {
-  readonly webinarId: string;
+  readonly id: {
+    readonly slug: string;
+    readonly createdAt: Date;
+  };
   readonly question: string;
-  readonly createdAt: Date;
+  readonly hiddenBy?: string;
+  readonly highlightedBy?: string;
+};
+
+export type UpdateExpression<T> =
+  | {
+      readonly operation: 'update';
+      readonly value: T;
+    }
+  | {
+      readonly operation: 'remove';
+    };
+
+export type WebinarQuestionUpdate = {
+  readonly id: WebinarQuestion['id'];
+  readonly updates: {
+    readonly hiddenBy?: UpdateExpression<string>;
+    readonly highlightedBy?: UpdateExpression<string>;
+  };
 };
 
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(
+    // take dynamoDBClient and nowDate properties from WebinarEnv
     R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
@@ -41,13 +65,31 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
       const putCommand = new PutItemCommand({
         TableName: 'WebinarQuestions',
         Item: makeDynamodbItemFromWebinarQuestion({
-          webinarId: question.webinarId,
-          createdAt: createdAt,
+          id: {
+            slug: question.slug,
+            createdAt: createdAt,
+          },
           question: question.question,
         }),
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
+    // do not return (i.e., discard) the result if the operation succeded
+    RTE.map(() => void 0)
+  );
+
+export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
+  pipe(
+    // take dynamoDBClient properties from WebinarEnv
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.map(({ dynamoDBClient }) => {
+      const updateCommand = new UpdateItemCommand({
+        TableName: 'WebinarQuestions',
+        ...makeDynamodbUpdateFromWebinarQuestionUpdate(update),
+      });
+      return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
+    }),
+    // do not return (i.e., discard) the result if the operation succeded
     RTE.map(() => void 0)
   );
 
