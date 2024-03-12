@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import ConfirmLogin from '@/components/organisms/Auth/ConfirmLogin';
 import Wrapper from '../../../../__tests__/components/Wrapper';
 
@@ -30,7 +30,7 @@ describe('ConfirmLogin', () => {
   });
 
   it('should handle code input', () => {
-    const { getByRole } = render(
+    render(
       <Wrapper>
         <ConfirmLogin
           email='test@example.com'
@@ -39,7 +39,7 @@ describe('ConfirmLogin', () => {
         />
       </Wrapper>
     );
-    const codeInput = getByRole('textbox') as HTMLInputElement;
+    const codeInput = screen.getByRole('textbox') as HTMLInputElement;
 
     fireEvent.change(codeInput, { target: { value: '123456' } });
 
@@ -47,7 +47,7 @@ describe('ConfirmLogin', () => {
   });
 
   it('should call onConfirmLogin when continue button is clicked', () => {
-    const { getByRole } = render(
+    render(
       <Wrapper>
         <ConfirmLogin
           email='test@example.com'
@@ -56,8 +56,8 @@ describe('ConfirmLogin', () => {
         />
       </Wrapper>
     );
-    const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: continueRegex });
+    const codeInput = screen.getByRole('textbox');
+    const continueButton = screen.getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '123456' } });
     fireEvent.click(continueButton);
@@ -70,7 +70,7 @@ describe('ConfirmLogin', () => {
       name: 'NotAuthorizedException',
     });
 
-    const { getByRole, findByText } = render(
+    render(
       <Wrapper>
         <ConfirmLogin
           email='test@example.com'
@@ -79,13 +79,13 @@ describe('ConfirmLogin', () => {
         />
       </Wrapper>
     );
-    const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: continueRegex });
+    const codeInput = screen.getByRole('textbox');
+    const continueButton = screen.getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '123456' } });
     fireEvent.click(continueButton);
 
-    const errorMessage = await findByText(invalidCodeRegex);
+    const errorMessage = await screen.findByText(invalidCodeRegex);
 
     expect(errorMessage).toBeDefined();
   });
@@ -93,7 +93,7 @@ describe('ConfirmLogin', () => {
   it('should display error message when code is empty', async () => {
     mockOnConfirmLogin.mockRejectedValueOnce({ name: 'AuthError' });
 
-    const { getByRole, findByText } = render(
+    render(
       <Wrapper>
         <ConfirmLogin
           email='test@example.com'
@@ -102,13 +102,13 @@ describe('ConfirmLogin', () => {
         />
       </Wrapper>
     );
-    const codeInput = getByRole('textbox');
-    const continueButton = getByRole('button', { name: continueRegex });
+    const codeInput = screen.getByRole('textbox');
+    const continueButton = screen.getByRole('button', { name: continueRegex });
 
     fireEvent.change(codeInput, { target: { value: '' } });
     fireEvent.click(continueButton);
 
-    const errorMessage = await findByText(emptyCodeRegex);
+    const errorMessage = await screen.findByText(emptyCodeRegex);
 
     expect(errorMessage).toBeDefined();
   });
