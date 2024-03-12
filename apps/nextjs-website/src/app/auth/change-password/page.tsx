@@ -27,26 +27,28 @@ const ChangePassword = () => {
   const username = searchParams.get('username') || '';
   const code = searchParams.get('code') || '';
 
+  const [state, setState] = useState<State>(State.loading);
+  const [submitting, setSubmitting] = useState(false);
   const [resetPasswordSteps, setResetPasswordSteps] = useState(
     ResetPasswordSteps.CHANGE_PASSWORD
   );
-  const [password, setPassword] = useState('');
-  const [state, setState] = useState<State>(State.loading);
 
-  const onChangePassword = useCallback(async () => {
-    const success = await Auth.forgotPasswordSubmit(
-      username,
-      code,
-      password
-    ).catch(() => {
-      setState(State.errorLink);
-      return false;
-    });
-
-    if (!success) return;
-
-    setResetPasswordSteps(ResetPasswordSteps.CHANGE_PASSWORD_SUCCESS);
-  }, [code, password, username]);
+  const onChangePassword = useCallback(
+    (password: string) => {
+      setSubmitting(true);
+      Auth.forgotPasswordSubmit(username, code, password)
+        .then(() => {
+          setResetPasswordSteps(ResetPasswordSteps.CHANGE_PASSWORD_SUCCESS);
+        })
+        .catch(() => {
+          setState(State.errorLink);
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    },
+    [code, username]
+  );
 
   useEffect(() => {
     if (username != '' && code != '') {
@@ -54,6 +56,7 @@ const ChangePassword = () => {
     } else {
       setState(State.errorLink);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   switch (state) {
@@ -76,9 +79,8 @@ const ChangePassword = () => {
           >
             {resetPasswordSteps === ResetPasswordSteps.CHANGE_PASSWORD ? (
               <ChangePasswordForm
-                onChangePassword={onChangePassword}
-                setPassword={setPassword}
-                password={password}
+                submitting={submitting}
+                onSubmit={onChangePassword}
               />
             ) : (
               <PasswordChangedCard />
