@@ -27,6 +27,7 @@ defaults:
     shell: bash
     working-directory: apps/infrastructure/src
 
+
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
@@ -37,6 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: false
     environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: terraform-${{ inputs.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
