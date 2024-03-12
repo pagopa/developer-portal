@@ -22,8 +22,8 @@ const testWebinar: Webinar = {
   subscribeCtaLabel: '',
   relatedLinks: [
     {
-      path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
-      name: 'I modelli dei servizi più frequenti: Multe per violazione codice della strada',
+      path: `#`,
+      name: 'Lorem ipsum dolor sit amet',
     },
   ],
 };
