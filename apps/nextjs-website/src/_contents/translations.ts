@@ -53,7 +53,7 @@ export const translations = {
           title:
             'Usa il validatore di SEND per fare una verifica sull’integrazione',
           link: {
-            url: `${sendGuideListsPath.path}/validatore/v1.0`,
+            url: `${sendGuideListsPath.path}/validatore`,
             text: 'Vai al validatore',
           },
           image: {
