@@ -39,7 +39,7 @@ export const webinars: readonly Webinar[] = [
   {
     ...testWebinar,
     startDateTime: '2024-03-10T13:00:00.000Z',
-    slug: 'test-3',
+    slug: 'always-live',
     endDateTime: '2040-03-13T14:00:00.000Z',
   },
   {
