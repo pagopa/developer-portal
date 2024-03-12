@@ -23,7 +23,7 @@ const NotSsrWebinarsTemplate = dynamic(
 );
 
 const Webinars = async () => {
-  const webinars = await getVisibleInWebinarsWebinars();
+  const webinars = await getVisibleInListWebinars();
 
   return <NotSsrWebinarsTemplate webinars={webinars} />;
 };
