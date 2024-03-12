@@ -1,6 +1,9 @@
 import { getWebinar, getWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { makeMetadata } from '@/helpers/metadata.helpers';
+import { Metadata } from 'next';
+import { baseUrl } from '@/config';
 
 type Params = {
   webinarSlug: string;
@@ -11,6 +14,20 @@ export async function generateStaticParams() {
   return [...webinars].map(({ slug }) => ({
     webinarSlug: slug,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const webinar = await getWebinar(params?.webinarSlug);
+
+  return makeMetadata({
+    title: 'PagoPA',
+    url: `${baseUrl}/webinars/${webinar.slug}`,
+    locale: 'it_IT',
+  });
 }
 
 const NotSsrWebinarDetailTemplate = dynamic(
