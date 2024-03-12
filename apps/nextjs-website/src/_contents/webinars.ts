@@ -3,7 +3,7 @@ import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
 const testWebinar: Webinar = {
-  title: 'PagoPA LAB - Test Webinar',
+  title: 'Test Webinar',
   description: 'Questo è un webinar di test',
   playerSrc: 'https://vimeo.com/event/4135276/embed',
   html:
