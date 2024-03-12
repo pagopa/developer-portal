@@ -1,6 +1,6 @@
-import { fireEvent, render } from '@testing-library/react';
-import SignUpForm from '../SignUpForm';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Wrapper from '@/__tests__/components/Wrapper';
+import SignUpForm from '../SignUpForm';
 
 import labels from '@/messages/it.json';
 
@@ -28,6 +28,30 @@ function getPasswordInputs(inputs: HTMLElement[]) {
   };
 }
 
+function getInputs() {
+  const firstNameInput = screen.getByRole('textbox', {
+    name: /firstname/i,
+  }) as HTMLInputElement;
+  const lastNameInput = screen.getByRole('textbox', {
+    name: /lastname/i,
+  }) as HTMLInputElement;
+  const usernameInput = screen.getByRole('textbox', {
+    name: /email/i,
+  }) as HTMLInputElement;
+  const passwordInputs = getPasswordInputs(
+    screen.getAllByLabelText(/password/i)
+  );
+  const submitButton = screen.getByRole('button', { name: actionRegex });
+
+  return {
+    ...passwordInputs,
+    firstNameInput,
+    lastNameInput,
+    submitButton,
+    usernameInput,
+  };
+}
+
 describe('SignUpForm', () => {
   const mockOnSignUp = jest.fn();
   const mockUserAlreadyExist = false;
@@ -48,7 +72,7 @@ describe('SignUpForm', () => {
   });
 
   it('should validate form fields and set errors', () => {
-    const { getByRole, getAllByLabelText } = render(
+    render(
       <Wrapper>
         <SignUpForm
           onSignUp={mockOnSignUp}
@@ -56,19 +80,15 @@ describe('SignUpForm', () => {
         />
       </Wrapper>
     );
-    const firstNameInput = getByRole('textbox', {
-      name: /firstname/i,
-    }) as HTMLInputElement;
-    const lastNameInput = getByRole('textbox', {
-      name: /lastname/i,
-    }) as HTMLInputElement;
-    const usernameInput = getByRole('textbox', {
-      name: /email/i,
-    }) as HTMLInputElement;
-    const { confirmPasswordInput, passwordInput } = getPasswordInputs(
-      getAllByLabelText(/password/i)
-    );
-    const submitButton = getByRole('button', { name: actionRegex });
+
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      submitButton,
+    } = getInputs();
 
     fireEvent.change(firstNameInput, { target: { value: '' } });
     fireEvent.change(lastNameInput, { target: { value: '' } });
@@ -86,17 +106,13 @@ describe('SignUpForm', () => {
   });
 
   it('should set user already exists error', () => {
-    const { getByRole } = render(
+    render(
       <Wrapper>
         <SignUpForm onSignUp={mockOnSignUp} userAlreadyExist />
       </Wrapper>
     );
 
-    const usernameInput = getByRole('textbox', {
-      name: /email/i,
-    }) as HTMLInputElement;
-
-    const submitButton = getByRole('button', { name: actionRegex });
+    const { usernameInput, submitButton } = getInputs();
 
     fireEvent.click(submitButton);
 
@@ -105,7 +121,7 @@ describe('SignUpForm', () => {
   });
 
   it('should reset form fields errors', () => {
-    const { getByRole, getAllByLabelText } = render(
+    render(
       <Wrapper>
         <SignUpForm
           onSignUp={mockOnSignUp}
@@ -113,19 +129,15 @@ describe('SignUpForm', () => {
         />
       </Wrapper>
     );
-    const firstNameInput = getByRole('textbox', {
-      name: /firstname/i,
-    }) as HTMLInputElement;
-    const lastNameInput = getByRole('textbox', {
-      name: /lastname/i,
-    }) as HTMLInputElement;
-    const usernameInput = getByRole('textbox', {
-      name: /email/i,
-    }) as HTMLInputElement;
-    const { confirmPasswordInput, passwordInput } = getPasswordInputs(
-      getAllByLabelText(/password/i)
-    );
-    const submitButton = getByRole('button', { name: actionRegex });
+
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      submitButton,
+    } = getInputs();
 
     fireEvent.change(firstNameInput, { target: { value: '' } });
     fireEvent.change(lastNameInput, { target: { value: '' } });
@@ -161,7 +173,7 @@ describe('SignUpForm', () => {
   });
 
   it('should call onSignUp when form is valid', () => {
-    const { getByRole, getAllByLabelText } = render(
+    render(
       <Wrapper>
         <SignUpForm
           onSignUp={mockOnSignUp}
@@ -169,19 +181,15 @@ describe('SignUpForm', () => {
         />
       </Wrapper>
     );
-    const firstNameInput = getByRole('textbox', {
-      name: /firstname/i,
-    }) as HTMLInputElement;
-    const lastNameInput = getByRole('textbox', {
-      name: /lastname/i,
-    }) as HTMLInputElement;
-    const usernameInput = getByRole('textbox', {
-      name: /email/i,
-    }) as HTMLInputElement;
-    const { confirmPasswordInput, passwordInput } = getPasswordInputs(
-      getAllByLabelText(/password/i)
-    );
-    const submitButton = getByRole('button', { name: actionRegex });
+
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      submitButton,
+    } = getInputs();
 
     fireEvent.change(firstNameInput, { target: { value: 'John' } });
     fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
