@@ -1,4 +1,4 @@
-import { getVisibleInWebinarsWebinars } from '@/lib/api';
+import { getVisibleInListWebinars } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';

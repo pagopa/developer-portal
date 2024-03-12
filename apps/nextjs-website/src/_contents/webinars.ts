@@ -14,7 +14,7 @@ const testWebinar: Webinar = {
     `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce auctor enim vel sem fringilla, vitae malesuada nisi malesuada. Sed euismod augue id mauris aliquam, at dapibus lectus laoreet. Sed vel nulla vel risus gravida malesuada ac id tortor. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi. Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi. Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi.</p>\n`,
   slug: 'test-2024-03-14',
   isVisibleInHome: false,
-  isVisibleInWebinars: false,
+  isVisibleInList: false,
   imagePath: '/images/webinar-cover-pago-pa-multe-14-marzo.jpg',
   speakers: [],
   startDateTime: '2024-03-14T08:30:00.000Z',
@@ -106,7 +106,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
     isVisibleInHome: false,
-    isVisibleInWebinars: true,
+    isVisibleInList: true,
     imagePath: '/images/webinar-cover-nuove-api-io.png',
     speakers: [
       {

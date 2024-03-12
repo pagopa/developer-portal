@@ -145,10 +145,8 @@ export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
   return webinars.filter((webinar) => webinar.isVisibleInHome);
 }
 
-export async function getVisibleInWebinarsWebinars(): Promise<
-  readonly Webinar[]
-> {
-  return webinars.filter((webinar) => webinar.isVisibleInWebinars);
+export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
+  return webinars.filter((webinar) => webinar.isVisibleInList);
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
