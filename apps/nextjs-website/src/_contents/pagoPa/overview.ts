@@ -84,7 +84,7 @@ export const pagoPaOverview: OverviewData = {
       name: 'Contribuisci al miglioramento della Tassonomia',
     },
     {
-      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa`,
+      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
       name: 'Consulta le linee guida brand pagoPA',
     },
     {
@@ -92,7 +92,7 @@ export const pagoPaOverview: OverviewData = {
       name: 'Consulta le linee Guida Gazzetta Ufficiale',
     },
     {
-      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni`,
+      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni/v4`,
       name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
     },
   ],
