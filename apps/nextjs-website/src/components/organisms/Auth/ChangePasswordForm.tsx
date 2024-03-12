@@ -47,6 +47,10 @@ const ChangePasswordForm = ({
   });
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    setFieldErrors({
+      passwordError: false,
+      confirmPasswordError: false,
+    });
     const { value, name } = ev.target;
     setPasswords((prev) => ({ ...prev, [name]: value }));
   };
