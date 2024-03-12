@@ -6,7 +6,7 @@ locals {
   form_action = "'self'"
   font_src    = "data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/"
   connect_src = "'self' https://cognito-identity.eu-south-1.amazonaws.com/ https://dynamodb.eu-south-1.amazonaws.com/ https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/"
-  img_src     = "data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net"
+  img_src     = "data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net  https://*.googleusercontent.com"
   frame_src   = "https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/"
 }
 
