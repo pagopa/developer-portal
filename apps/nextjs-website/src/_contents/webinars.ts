@@ -35,6 +35,7 @@ export const webinars: readonly Webinar[] = [
     startDateTime: '2024-03-13T13:00:00.000Z',
     slug: 'test-2024-03-13',
     endDateTime: '2024-03-13T14:00:00.000Z',
+    playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
     ...testWebinar,
