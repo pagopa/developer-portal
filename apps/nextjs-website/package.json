@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
+    "fetch-types": "node ./scripts/parseStrapiTypes.js",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
