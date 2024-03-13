@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 import {
@@ -9,7 +9,7 @@ import {
 } from '@/helpers/userPreferences.helpers';
 import { useTranslations } from 'next-intl';
 import { DevPortalUser } from '@/lib/types/auth';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
 
 export type SubscribeButtonProps = {
@@ -23,7 +23,6 @@ export type SubscribeButtonProps = {
   setIsSubscribed: (isSubscribed: boolean) => null;
   handleErrorMessage?: (message: string) => null;
   webinarState: WebinarState;
-  shouldNavigateToWebinar?: boolean;
 };
 
 const SubscribeToWebinar = ({
@@ -35,48 +34,47 @@ const SubscribeToWebinar = ({
   setIsSubscribed,
   handleErrorMessage,
   webinarState,
-  shouldNavigateToWebinar = false,
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (userAttributes && webinarSlug) {
       setIsSubscribed(webinarSubscriptionExists(webinarSlug, userAttributes));
     }
-  }, [userAttributes, webinarSlug]);
+  }, [setIsSubscribed, userAttributes, webinarSlug]);
 
-  if (!webinarSlug) {
-    return null;
-  }
+  const onUpdateAttributes = useCallback(
+    async (
+      generateNewAttributes: (
+        slug: string,
+        attributes: DevPortalUser['attributes']
+      ) => DevPortalUser['attributes'] | Error,
+      errorMessage: string
+    ): Promise<boolean> => {
+      if (!webinarSlug || !userAttributes || !setUserAttributes) {
+        handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
+        return false;
+      }
+      const subscriptionResponse = generateNewAttributes(
+        webinarSlug,
+        userAttributes
+      );
+      if (subscriptionResponse instanceof Error) {
+        handleErrorMessage && handleErrorMessage(errorMessage);
+        return false;
+      } else {
+        await setUserAttributes(subscriptionResponse);
+        return true;
+      }
+    },
+    [handleErrorMessage, setUserAttributes, t, userAttributes, webinarSlug]
+  );
 
-  const onUpdateAttributes = async (
-    generateNewAttributes: (
-      slug: string,
-      attributes: DevPortalUser['attributes']
-    ) => DevPortalUser['attributes'] | Error,
-    errorMessage: string
-  ): Promise<boolean> => {
-    if (!userAttributes || !setUserAttributes) {
-      handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
-      return false;
-    }
-    const subscriptionResponse = generateNewAttributes(
-      webinarSlug,
-      userAttributes
-    );
-    if (subscriptionResponse instanceof Error) {
-      handleErrorMessage && handleErrorMessage(errorMessage);
-      return false;
-    } else {
-      await setUserAttributes(subscriptionResponse);
-      return true;
-    }
-  };
-
-  const onSubscribe = () => {
+  const onSubscribe = useCallback(() => {
     setIsLoading(true);
     onUpdateAttributes(
       addWebinarSubscriptionToAttributes,
@@ -95,12 +93,23 @@ const SubscribeToWebinar = ({
       setIsLoading(false);
     });
     return null;
-  };
+  }, [
+    onUpdateAttributes,
+    router,
+    setIsSubscribed,
+    t,
+    webinarSlug,
+    webinarState,
+  ]);
 
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
+    const finalPath = !pathname.includes(`/webinars/${webinarSlug}`)
+      ? `/webinars/${webinarSlug}?action=subscribe`
+      : `${pathname}?action=subscribe`;
+
     // eslint-disable-next-line functional/immutable-data
-    router.push(`/auth/login?redirect=${pathname}`);
+    router.push(`/auth/login?redirect=${finalPath}`);
     return null;
   };
 
@@ -118,15 +127,15 @@ const SubscribeToWebinar = ({
     return null;
   };
 
-  const onSubscribeClick = () => {
-    if (shouldNavigateToWebinar && webinarState === WebinarState.past) {
-      // eslint-disable-next-line functional/immutable-data
-      router.push(`/webinars/${webinarSlug}`);
-      return null;
-    }
+  const onSubscribeClick = () =>
+    userAttributes ? onSubscribe() : onSubscribeWithoutUser();
 
-    return userAttributes ? onSubscribe() : onSubscribeWithoutUser();
-  };
+  useEffect(() => {
+    if (userAttributes && searchParams.get('action') === 'subscribe') {
+      onSubscribe();
+      router.replace(pathname);
+    }
+  }, [onSubscribe, pathname, router, searchParams, userAttributes]);
 
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
@@ -135,6 +144,10 @@ const SubscribeToWebinar = ({
     [WebinarState.future]: 'default',
     [WebinarState.unknown]: 'default',
   };
+
+  if (!webinarSlug) {
+    return null;
+  }
 
   if (
     isSubscribed &&
