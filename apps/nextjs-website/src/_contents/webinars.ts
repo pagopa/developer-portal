@@ -82,7 +82,7 @@ export const webinars: readonly Webinar[] = [
         imagePath: '/images/speaker-pompilii.png',
       },
       {
-        name: 'Gianpiero Zaffi Borgetti',
+        name: 'Giampiero Zaffi Borgetti',
         jobTitle:
           'Responsabile area ICT e Servizi ai Comuni, IFEL Fondazione ANCI',
         description: '',
