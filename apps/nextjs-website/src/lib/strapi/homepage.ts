@@ -3,32 +3,7 @@ import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-
-/**
- * This type is used to convert null to undefined when decoding.
- * This is useful becuase Strapi returns null for missing fields, so we want to convert those to undefined to be more consistent with the rest of our codebase.
- *
- * @example
- * const codec = t.union([NullToUndefined, t.string]);
- * const result = codec.decode(null);
- * // result will be Right(undefined)
- */
-export const NullToUndefined = new t.Type<undefined, null, unknown>(
-  // name: a unique name for this codec
-  'NullToUndefined',
-  // is: a custom type guard
-  t.undefined.is,
-  // validate: succeeds if a value of type I can be decoded to a value of type A
-  (u, c) =>
-    pipe(
-      t.null.validate(u, c),
-      E.map(() => undefined)
-    ),
-  // encode: converts a value of type A to a value of type O
-  () => null
-);
+import { NullToUndefined } from './codecs/NullToUndefined';
 
 const LinkCodec = t.strict({
   text: t.string,

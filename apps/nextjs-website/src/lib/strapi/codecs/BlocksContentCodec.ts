@@ -7,11 +7,11 @@ const TextInlineNodeCodec = t.intersection([
     text: t.string,
   }),
   t.partial({
-    bold: t.union([t.null, t.boolean]),
-    italic: t.union([t.null, t.boolean]),
-    underline: t.union([t.null, t.boolean]),
-    strikethrough: t.union([t.null, t.boolean]),
-    code: t.union([t.null, t.boolean]),
+    bold: t.boolean,
+    italic: t.boolean,
+    underline: t.boolean,
+    strikethrough: t.boolean,
+    code: t.boolean,
   }),
 ]);
 
@@ -93,11 +93,11 @@ export const ImageBlockNodeCodec = t.strict({
       updatedAt: t.string,
     }),
     t.partial({
-      alternativeText: t.union([t.null, t.string]),
-      caption: t.union([t.null, t.string]),
-      formats: t.union([t.null, t.record(t.unknown, t.string)]),
-      previewUrl: t.union([t.null, t.string]),
-      provider_metadata: t.union([t.null, t.unknown]),
+      alternativeText: t.string,
+      caption: t.string,
+      formats: t.record(t.unknown, t.string),
+      previewUrl: t.string,
+      provider_metadata: t.unknown,
     }),
   ]),
   children: t.array(ImageBlockChildCodec),
