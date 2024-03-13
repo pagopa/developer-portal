@@ -1,5 +1,5 @@
 ---
-"nextjs-website": patch
+"nextjs-website": minor
 ---
 
 Change webinars' subscribe button logic
