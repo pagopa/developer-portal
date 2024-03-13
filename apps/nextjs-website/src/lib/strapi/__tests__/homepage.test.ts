@@ -1,5 +1,6 @@
-import { NullToUndefined, StrapiHomepageCodec } from '@/lib/strapi/homepage';
+import { StrapiHomepageCodec } from '@/lib/strapi/homepage';
 import * as E from 'fp-ts/lib/Either';
+import { NullToUndefined } from '../codecs/NullToUndefined';
 
 const makeStrapiResponseJson = () => ({
   data: {
