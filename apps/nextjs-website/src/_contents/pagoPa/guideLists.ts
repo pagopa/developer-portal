@@ -93,6 +93,24 @@ export const pagoPaGuideLists: GuideListsData = {
           mobileImagePath: '/images/pago-pa-manuale-bo-psp-mobile.png',
         },
         {
+          title: 'Manuale Back Office - PT',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Come attivare e gestire il prodotto pagoPA',
+              "Come selezionare l'ambiente",
+              'Cosa trovi nella tua dashboard',
+              'Come utilizzare le funzionalità messe a disposizione',
+            ],
+          },
+          link: {
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-pt`,
+            label: 'Vai al documento',
+          },
+          imagePath: '/images/pago-pa-manuale-bo-pt.png',
+          mobileImagePath: '/images/pago-pa-manuale-bo-pt-mobile.png',
+        },
+        {
           title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
           description: {
             title: 'Argomenti trattati',
