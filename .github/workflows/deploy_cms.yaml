@@ -47,6 +47,10 @@ jobs:
         environment: [ 'dev' ]
     environment: ${{ matrix.environment }}
 
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.environment }}
+      cancel-in-progress: false
+
     steps:
       - name: Checkout
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
@@ -104,6 +108,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: false
     environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
