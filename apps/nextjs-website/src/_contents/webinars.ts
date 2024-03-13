@@ -2,7 +2,48 @@ import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
+const testWebinar: Webinar = {
+  title: 'Test Webinar',
+  description: 'Questo è un webinar di test',
+  playerSrc: 'https://vimeo.com/event/4135276/embed',
+  html:
+    `<h4 style="font-weight: 600; font-size: 24px;">Test Webinar</h4>\n` +
+    `<p>Questo è un webinar di test</p>\n` +
+    `<br />\n` +
+    `<br />\n` +
+    `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce auctor enim vel sem fringilla, vitae malesuada nisi malesuada. Sed euismod augue id mauris aliquam, at dapibus lectus laoreet. Sed vel nulla vel risus gravida malesuada ac id tortor. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi. Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi. Sed euismod, risus eget bibendum bibendum, quam nisi aliquam nisi, id congue lorem risus id nisi.</p>\n`,
+  slug: 'test-2024-03-14',
+  isVisibleInHome: false,
+  isVisibleInList: false,
+  imagePath: '/images/webinar-cover-pago-pa-multe-14-marzo.jpg',
+  speakers: [],
+  startDateTime: '2024-03-14T08:30:00.000Z',
+  endDateTime: '2024-03-14T09:30:00.000Z',
+  subscribeCtaLabel: '',
+  relatedLinks: [
+    {
+      path: `#`,
+      name: 'Lorem ipsum dolor sit amet',
+    },
+  ],
+};
+
 export const webinars: readonly Webinar[] = [
+  testWebinar,
+  {
+    ...testWebinar,
+    startDateTime: '2024-03-13T13:00:00.000Z',
+    slug: 'test-2024-03-13',
+    endDateTime: '2024-03-13T14:00:00.000Z',
+    playerSrc: 'https://vimeo.com/event/4153381/embed',
+  },
+  {
+    ...testWebinar,
+    startDateTime: '2024-03-10T13:00:00.000Z',
+    slug: 'always-live',
+    endDateTime: '2024-03-19T19:00:00.000Z',
+    playerSrc: 'https://vimeo.com/event/4153381/embed',
+  },
   {
     title:
       'PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND ',
@@ -19,6 +60,7 @@ export const webinars: readonly Webinar[] = [
       `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
     slug: 'PagoPA-multe',
     isVisibleInHome: true,
+    isVisibleInList: true,
     imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
     speakers: [
       {
@@ -64,6 +106,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
     isVisibleInHome: false,
+    isVisibleInList: true,
     imagePath: '/images/webinar-cover-nuove-api-io.png',
     speakers: [
       {

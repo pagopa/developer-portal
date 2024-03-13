@@ -1,5 +1,25 @@
 # nextjs-website
 
+## 0.13.0
+
+### Minor Changes
+
+- de9bbbe: Make the link to the webinar list page visible in the navigation menu also in the production environment
+- 1730ae3: Allow fetching from the CMS the hero section of the homepage
+- 458c58f: Add the highlight and hide action on webinars' questions list
+- 67c66bf: New guide for the use of pagoPA's BO by Technical Partners.
+
+### Patch Changes
+
+- 3bd5661: Handle data-size image attribute to support inline image rendering
+- 3c9fbe8: Add test events on webinars and isVisibleInList flag to hide them
+- 0db977b: Fix font size in list items
+- 6d8f876: Fix webinar banner visibility
+- b7ed47f: Removes version from all internal links to redirect to latest guides
+- ffde2ad: Reset login form errors on user changes
+- Updated dependencies [3bd5661]
+  - gitbook-docs@0.0.3
+
 ## 0.12.3
 
 ### Patch Changes
