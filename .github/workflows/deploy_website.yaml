@@ -40,6 +40,10 @@ jobs:
       fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
 
     environment: ${{ matrix.environment }}
+    
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
@@ -67,6 +71,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
     environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout

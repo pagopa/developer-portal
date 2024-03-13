@@ -25,7 +25,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: apps/infrastructure/src
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -37,6 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: false
     environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: terraform-${{ inputs.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
@@ -66,6 +69,7 @@ jobs:
           environment: ${{ inputs.environment }}
 
       - name: Terraform Apply
+        working-directory: apps/infrastructure/src
         env:
           # publish the cloudfront functions
           TF_VAR_publish_cloudfront_functions: true
