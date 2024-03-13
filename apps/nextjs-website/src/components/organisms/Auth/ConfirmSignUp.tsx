@@ -14,7 +14,8 @@ import { useTranslations } from 'next-intl';
 
 interface ConfirmSignUpProps {
   email: string;
-  onBack: () => null;
+  // eslint-disable-next-line functional/no-return-void
+  onBack: () => void;
 }
 
 const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {

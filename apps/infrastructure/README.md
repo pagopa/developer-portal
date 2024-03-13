@@ -7,11 +7,11 @@ The following tools are required to setup and manage a new environment.
 
 ## How set up a new environment
 
-Make sure you don't have a `*.tfstate` file within the `.infrastructure/.terraform` folder. If you have any, delete them.
+Make sure you don't have a `*.tfstate` file within the `apps/infrastructure/.terraform` folder. If you have any, delete them.
 
 ### Step 1: Disable the backend
 
-Comment the `backend "s3" {}` line from `00-main.tf` file:
+Comment the `backend "s3" {}` line from `main.tf` file:
 
 ``` sh
 terraform {
@@ -34,7 +34,7 @@ terraform {
 The following steps require a valid aws session
 
 ``` sh
-cd .infrastructure
+cd apps/infrastructure/src
 
 # create an empty terraform vars file
 touch env/<env_name>/terraform.tfvars
@@ -62,7 +62,7 @@ Copy the output provided by terraform, you need the following two outputs:
 
 ### Step 3: Add the backend and upload the local state
 
-Remove the comment from the line `backend "s3" {}` from `00-main.tf` file:
+Remove the comment from the line `backend "s3" {}` from `main.tf` file:
 
 ``` sh
 terraform {

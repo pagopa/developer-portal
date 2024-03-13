@@ -9,15 +9,15 @@ import React, { ReactNode } from 'react';
 export type CtaSlideProps = {
   readonly title: string;
   readonly subhead?: BlocksContent | null;
-  readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark' | null;
+  readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly callToAction?: {
     readonly variant?: 'text' | 'contained' | 'outlined';
     readonly link: {
       readonly href: string;
       readonly text: string;
-      readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
+      readonly target?: '_self' | '_blank' | '_parent' | '_top';
     };
-  } | null;
+  };
   readonly child?: ReactNode;
   readonly backgroundImage?: {
     readonly name: string;

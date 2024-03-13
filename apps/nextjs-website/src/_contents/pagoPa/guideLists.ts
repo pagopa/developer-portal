@@ -27,7 +27,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/saci/3.2.0`,
+            href: `${pagoPaGuideListsPath.path}/saci`,
             label: 'Vai al documento',
           },
           imagePath: '/images/saci.png',
@@ -45,7 +45,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/sanp/3.6.1`,
+            href: `${pagoPaGuideListsPath.path}/sanp`,
             label: 'Vai al documento',
           },
           imagePath: '/images/sanp.png',
@@ -68,7 +68,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-ec`,
             label: 'Vai al documento',
           },
           imagePath: '/images/pago-pa-manuale-bo-ec.png',
@@ -86,11 +86,29 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/manuale-bo-psp/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-psp`,
             label: 'Vai al documento',
           },
           imagePath: '/images/pago-pa-manuale-bo-psp.png',
           mobileImagePath: '/images/pago-pa-manuale-bo-psp-mobile.png',
+        },
+        {
+          title: 'Manuale Back Office - PT',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Come attivare e gestire il prodotto pagoPA',
+              "Come selezionare l'ambiente",
+              'Cosa trovi nella tua dashboard',
+              'Come utilizzare le funzionalità messe a disposizione',
+            ],
+          },
+          link: {
+            href: `${pagoPaGuideListsPath.path}/manuale-bo-pt`,
+            label: 'Vai al documento',
+          },
+          imagePath: '/images/pago-pa-manuale-bo-pt.png',
+          mobileImagePath: '/images/pago-pa-manuale-bo-pt-mobile.png',
         },
         {
           title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
@@ -104,7 +122,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/avviso-pagamento/3.2.1`,
+            href: `${pagoPaGuideListsPath.path}/avviso-pagamento`,
             label: 'Vai alla guida',
           },
           imagePath: '/images/guida-tecnica-sugli-avvisi-di-pagamento.png',
@@ -123,7 +141,7 @@ export const pagoPaGuideLists: GuideListsData = {
             ],
           },
           link: {
-            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa/v1.0`,
+            href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa`,
             label: 'Vai al documento',
           },
           imagePath: '/images/linee-guida-di-brand.png',
