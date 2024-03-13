@@ -61,7 +61,7 @@ const Login = () => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
       const redirect = searchParams.get('redirect');
-      router.replace(redirect ? redirect : '/');
+      router.replace(redirect ? atob(redirect) : '/');
     },
     [router, searchParams, user]
   );

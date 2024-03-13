@@ -40,6 +40,8 @@ const SubscribeToWebinar = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const action = searchParams.get('action');
+  const isSubscribeAction = action === 'subscribe';
 
   useEffect(() => {
     if (userAttributes && webinarSlug) {
@@ -109,7 +111,7 @@ const SubscribeToWebinar = ({
       : `${pathname}?action=subscribe`;
 
     // eslint-disable-next-line functional/immutable-data
-    router.push(`/auth/login?redirect=${finalPath}`);
+    router.push(`/auth/login?redirect=${btoa(finalPath)}`);
     return null;
   };
 
@@ -131,11 +133,11 @@ const SubscribeToWebinar = ({
     userAttributes ? onSubscribe() : onSubscribeWithoutUser();
 
   useEffect(() => {
-    if (userAttributes && searchParams.get('action') === 'subscribe') {
+    if (userAttributes && isSubscribeAction) {
       onSubscribe();
       router.replace(pathname);
     }
-  }, [onSubscribe, pathname, router, searchParams, userAttributes]);
+  }, [onSubscribe, pathname, router, isSubscribeAction, userAttributes]);
 
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
@@ -158,7 +160,7 @@ const SubscribeToWebinar = ({
 
   return (
     <SubscribeButton
-      disabled={!userAligned || isLoading}
+      disabled={isSubscribeAction || !userAligned || isLoading}
       isLoading={isLoading}
       isSubscribed={isSubscribed}
       onSubscribe={onSubscribeClick}
