@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.1.1
+
+### Patch Changes
+
+- 4742742: Fix deploy_infra workflow, moving working_directory to single step
+
 ## 0.1.0
 
 ### Minor Changes
