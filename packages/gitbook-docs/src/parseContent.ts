@@ -51,7 +51,6 @@ const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
 const markR = pairedHtmlTag('mark');
-const detailsR = pairedHtmlTag('details');
 const summaryR = pairedHtmlTag('summary');
 const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
@@ -72,7 +71,7 @@ const schema: ConfigType = {
     'figma-embed': embed,
     file,
     tabs,
-    details,
+    htmldetails: details,
     'content-ref': pageLink,
     htmlul: list,
     htmlol: list,
@@ -111,7 +110,6 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
-    .replaceAll(detailsR.regex, detailsR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
     .replaceAll(fileR.regex, fileR.replace);

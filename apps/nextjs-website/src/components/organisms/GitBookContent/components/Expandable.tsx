@@ -57,18 +57,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const Expandable = ({ children }: ExpandableProps<ReactNode>) => {
-  // if children is array and an item is string wrap it with paragraph
-  if (Array.isArray(children)) {
-    // eslint-disable-next-line no-param-reassign
-    children = children.map((child, index) =>
-      typeof child === 'string' ? (
-        <Paragraph key={index}>{child}</Paragraph>
-      ) : (
-        child
-      )
-    );
-  }
-
   return (
     children && (
       <Accordion
