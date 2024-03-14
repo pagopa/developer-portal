@@ -92,11 +92,9 @@ export default function WebinarQuestionRow({
               : ''}
           </Typography>
           <Typography>
-            {!isHidden
-              ? question.question
-              : isHiddenByMe
+            {isHiddenByMe
               ? `${t('hiddenByMe')}: (${question.question})`
-              : `${t('hiddenBy')}: ${hiddenBy}`}
+              : question.question}
           </Typography>
           <Box display={'flex'} justifyContent={'end'} mt={2}>
             {(!isHidden || (isHidden && isHiddenByMe)) && (

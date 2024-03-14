@@ -102,9 +102,8 @@
         "questionList": {
             "title": {
                 "highlightedQuestions": "Domande evidenziate",
-                "notHighlightedQuestions": "Domande"
+                "questions": "Domande"
             },
-            "hiddenBy": "Nascosta da",
             "hiddenByMe": "Hai nascosto questa domanda",
             "highlightedBy": "Evidenziata da"
         },

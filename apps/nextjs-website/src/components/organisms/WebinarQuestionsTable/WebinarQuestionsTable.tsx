@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import WebinarQuestionRow from '@/components/molecules/WebinarQuestion/WebinarQuestionRow';
 import { updateWebinarQuestion } from '@/lib/webinarApi';
-import { useTranslations } from 'next-intl';
 import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 
 type WebinarQuestionsTableProps = {
@@ -23,14 +22,12 @@ const WebinarQuestionsTable = ({
   questions,
   title,
 }: WebinarQuestionsTableProps) => {
-  const t = useTranslations('webinar.questionList');
-
   return (
     <TableContainer component={Paper} sx={{ marginY: 2 }}>
       <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
-            <TableCell>{t(`title.${title}`)}</TableCell>
+            <TableCell>{title}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -11,6 +11,7 @@ import PageNotFound from '@/app/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
 import { useUser } from '@/helpers/user.helper';
 import WebinarQuestionsTable from '@/components/organisms/WebinarQuestionsTable/WebinarQuestionsTable';
+import { useTranslations } from 'next-intl';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -21,6 +22,7 @@ const WebinarQuestionsTemplate = ({
 }: WebinarQuestionsTemplateProps) => {
   const { user, loading } = useUser();
   const { webinarState, setWebinar } = useWebinar();
+  const t = useTranslations('webinar.questionList');
 
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
     refreshInterval: fetchWebinarsQuestionsIntervalMs,
@@ -67,14 +69,14 @@ const WebinarQuestionsTemplate = ({
               <WebinarQuestionsTable
                 userName={userName}
                 questions={notHighlightedQuestions}
-                title={'notHighlightedQuestions'}
+                title={t('questions')}
               />
             </Grid>
             <Grid key={'highlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
                 userName={userName}
                 questions={highlightedQuestions}
-                title={'highlightedQuestions'}
+                title={t('highlightedQuestions')}
               />
             </Grid>
           </Box>

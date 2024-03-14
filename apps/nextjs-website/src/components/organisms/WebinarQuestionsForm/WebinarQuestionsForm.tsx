@@ -102,7 +102,7 @@ export const WebinarQuestionsForm = ({
               sx={{ display: 'flex', justifyContent: 'end' }}
             >
               {question.length > 0 &&
-                `${(question as string).length} / ${MAX_QUESTION_LENGTH}`}
+                `${question.length} / ${MAX_QUESTION_LENGTH}`}
             </Typography>
           }
         />
