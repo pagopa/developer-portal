@@ -9,12 +9,11 @@ import {
 } from '@mui/material';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'dompurify';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import { useTranslations } from 'next-intl';
-import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import { defaultLocale, timeOptions } from '@/config';
+import { ThumbUpAlt, ThumbUpOffAlt } from '@mui/icons-material';
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
@@ -97,7 +96,7 @@ export default function WebinarQuestionRow({
               : question.question}
           </Typography>
           <Box display={'flex'} justifyContent={'end'} mt={2}>
-            {(!isHidden || (isHidden && isHiddenByMe)) && (
+            {!isHighlighted && (!isHidden || isHiddenByMe) && (
               <IconButton
                 onClick={() => onHide(!isHidden)}
                 sx={{ color: tcColor }}
@@ -111,10 +110,10 @@ export default function WebinarQuestionRow({
                 onClick={() => onHighlight(!isHighlighted)}
                 sx={{ color: tcColor }}
               >
-                {!isHighlighted ? <AutoFixHighIcon /> : <AutoFixOffIcon />}
+                {!isHighlighted ? <ThumbUpAlt /> : <ThumbUpOffAlt />}
               </IconButton>
             )}
-            {!isHidden && (
+            {!isHidden && isHighlighted && (
               <CopyToClipboardButton
                 sx={{ color: tcColor }}
                 value={DOMPurify.sanitize(question.question)}

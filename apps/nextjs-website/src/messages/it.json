@@ -101,11 +101,11 @@
         "speakersTitle": "Ospiti",
         "questionList": {
             "title": {
-                "highlightedQuestions": "Domande evidenziate",
+                "highlightedQuestions": "Domande scelte",
                 "questions": "Domande"
             },
             "hiddenByMe": "Hai nascosto questa domanda",
-            "highlightedBy": "Evidenziata da"
+            "highlightedBy": "Scelta da"
         },
         "questionsForm": {
             "title": "Scrivi qui domande e commenti per la discussione finale (al massimo {maxLength} caratteri)",
