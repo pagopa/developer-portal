@@ -69,14 +69,14 @@ const WebinarQuestionsTemplate = ({
               <WebinarQuestionsTable
                 userName={userName}
                 questions={notHighlightedQuestions}
-                title={t('questions')}
+                title={t('title.questions')}
               />
             </Grid>
             <Grid key={'highlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
                 userName={userName}
                 questions={highlightedQuestions}
-                title={t('highlightedQuestions')}
+                title={t('title.highlightedQuestions')}
               />
             </Grid>
           </Box>
