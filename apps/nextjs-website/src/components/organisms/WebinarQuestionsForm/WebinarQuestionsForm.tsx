@@ -7,6 +7,8 @@ import { Alert, Card, Snackbar, TextField, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
+const MAX_QUESTION_LENGTH = 240;
+
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
   disabled?: boolean;
@@ -78,7 +80,7 @@ export const WebinarQuestionsForm = ({
             disabled ? theme.palette.text.disabled : theme.palette.text.primary
           }
         >
-          {t('questionsForm.title')}
+          {t('questionsForm.title', { maxLength: `${MAX_QUESTION_LENGTH}` })}
         </Typography>
 
         <TextField
@@ -90,9 +92,22 @@ export const WebinarQuestionsForm = ({
           value={question}
           variant='outlined'
           onChange={handleChange}
+          inputProps={{ maxLength: MAX_QUESTION_LENGTH }}
+          helperText={
+            <Typography
+              component='span'
+              color={(theme) => theme.palette.text.secondary}
+              fontSize={12}
+              fontWeight={400}
+              sx={{ display: 'flex', justifyContent: 'end' }}
+            >
+              {question.length > 0 &&
+                `${question.length} / ${MAX_QUESTION_LENGTH}`}
+            </Typography>
+          }
         />
         <LoadingButton
-          sx={{ alignSelf: 'start' }}
+          sx={{ alignSelf: 'end' }}
           color='primary'
           loadingPosition={hasFormState ? 'start' : undefined}
           loading={formState === 'submitting'}

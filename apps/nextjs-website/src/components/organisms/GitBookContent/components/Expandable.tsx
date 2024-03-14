@@ -56,12 +56,20 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   paddingRight: theme.spacing(2),
 }));
 
-const Expandable = ({ children }: ExpandableProps<ReactNode>) =>
-  children && (
-    <Accordion disableGutters variant='outlined' sx={{ my: 2 }}>
-      {children}
-    </Accordion>
+const Expandable = ({ children }: ExpandableProps<ReactNode>) => {
+  return (
+    children && (
+      <Accordion
+        disableGutters
+        variant='outlined'
+        id='expandable'
+        sx={{ my: 2 }}
+      >
+        {children}
+      </Accordion>
+    )
   );
+};
 
 export const ExpandableSummary = ({
   children,
