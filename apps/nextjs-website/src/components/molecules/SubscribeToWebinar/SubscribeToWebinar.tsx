@@ -92,14 +92,7 @@ const SubscribeToWebinar = ({
       setIsLoading(false);
     });
     return null;
-  }, [
-    onUpdateAttributes,
-    router,
-    setIsSubscribed,
-    t,
-    webinarSlug,
-    webinarState,
-  ]);
+  }, [onUpdateAttributes, pathname, router, setIsSubscribed, t, webinarSlug]);
 
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
