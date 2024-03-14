@@ -85,10 +85,7 @@ const SubscribeToWebinar = ({
       if (updateSuccess) {
         setIsSubscribed(true);
       }
-      if (
-        webinarState === WebinarState.past ||
-        webinarState === WebinarState.live
-      ) {
+      if (!pathname.includes(`/webinars/${webinarSlug}`)) {
         // eslint-disable-next-line functional/immutable-data
         router.push(`/webinars/${webinarSlug}`);
       }
