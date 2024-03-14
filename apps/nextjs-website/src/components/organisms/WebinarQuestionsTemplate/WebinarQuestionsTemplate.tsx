@@ -36,13 +36,17 @@ const WebinarQuestionsTemplate = ({
   else if (!data || loading || !user) return <Spinner />;
   else {
     const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
-    const sortedQuestions = [...data].sort(
-      (a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime()
-    );
-    const highlightedQuestions = sortedQuestions.filter(
+    const sortedVisibleQuestions = [...data]
+      .sort((a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime())
+      .filter((question) => {
+        const isHidden = !!question.hiddenBy;
+        const isHiddenByMe = question.hiddenBy === userName;
+        return !isHidden || isHiddenByMe;
+      });
+    const highlightedQuestions = sortedVisibleQuestions.filter(
       (question) => !!question.highlightedBy
     );
-    const notHighlightedQuestions = sortedQuestions.filter(
+    const notHighlightedQuestions = sortedVisibleQuestions.filter(
       (question) => !question.highlightedBy
     );
 

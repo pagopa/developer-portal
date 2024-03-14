@@ -41,87 +41,85 @@ export default function WebinarQuestionRow({
     isHighlighted && !isHidden ? palette.common.white : palette.text.primary;
 
   return (
-    (!isHidden || isHiddenByMe) && (
-      <TableRow
-        hover
-        key={question.id.createdAt.toISOString()}
-        sx={{
-          '&:last-child td, &:last-child th': { border: 0 },
-          '&.MuiTableRow-hover:hover': {
-            backgroundColor:
-              isHighlighted && !isHidden
-                ? palette.primary.dark
-                : palette.action.hover,
-          },
-          '& > .MuiTableCell-root': {
-            padding: '32px 16px 24px 16px',
-          },
+    <TableRow
+      hover
+      key={question.id.createdAt.toISOString()}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        '&.MuiTableRow-hover:hover': {
           backgroundColor:
-            isHighlighted && !isHidden ? palette.primary.light : '',
-          fontStyle: isHidden ? 'italic' : '',
-          position: 'relative',
+            isHighlighted && !isHidden
+              ? palette.primary.dark
+              : palette.action.hover,
+        },
+        '& > .MuiTableCell-root': {
+          padding: '32px 16px 24px 16px',
+        },
+        backgroundColor:
+          isHighlighted && !isHidden ? palette.primary.light : '',
+        fontStyle: isHidden ? 'italic' : '',
+        position: 'relative',
+      }}
+    >
+      <TableCell
+        width='100%'
+        sx={{
+          color: tcColor,
+          '& > .MuiTypography-root': {
+            color: tcColor,
+          },
         }}
       >
-        <TableCell
-          width='100%'
-          sx={{
-            color: tcColor,
-            '& > .MuiTypography-root': {
-              color: tcColor,
-            },
-          }}
-        >
-          {isHighlighted && !isHidden && (
-            <Box
-              sx={{
-                fontSize: 14,
-                color: palette.common.white,
-                marginBottom: 2,
-              }}
-            >
-              {t('highlightedBy')}: {highlightedBy}
-            </Box>
-          )}
-          <Typography fontStyle={'italic'} fontSize={14}>
-            {!isHidden
-              ? question.id.createdAt.toLocaleTimeString(
-                  defaultLocale,
-                  timeOptions
-                )
-              : ''}
-          </Typography>
-          <Typography>
-            {isHiddenByMe
-              ? `${t('hiddenByMe')}: (${question.question})`
-              : question.question}
-          </Typography>
-          <Box display={'flex'} justifyContent={'end'} mt={2}>
-            {!isHighlighted && (!isHidden || isHiddenByMe) && (
-              <IconButton
-                onClick={() => onHide(!isHidden)}
-                sx={{ color: tcColor }}
-              >
-                {!isHidden ? <VisibilityOffIcon /> : <Visibility />}
-              </IconButton>
-            )}
-
-            {!isHidden && (userName === highlightedBy || !isHighlighted) && (
-              <IconButton
-                onClick={() => onHighlight(!isHighlighted)}
-                sx={{ color: tcColor }}
-              >
-                {!isHighlighted ? <ThumbUpAlt /> : <ThumbUpOffAlt />}
-              </IconButton>
-            )}
-            {!isHidden && isHighlighted && (
-              <CopyToClipboardButton
-                sx={{ color: tcColor }}
-                value={DOMPurify.sanitize(question.question)}
-              ></CopyToClipboardButton>
-            )}
+        {isHighlighted && !isHidden && (
+          <Box
+            sx={{
+              fontSize: 14,
+              color: palette.common.white,
+              marginBottom: 2,
+            }}
+          >
+            {t('highlightedBy')}: {highlightedBy}
           </Box>
-        </TableCell>
-      </TableRow>
-    )
+        )}
+        <Typography fontStyle={'italic'} fontSize={14}>
+          {!isHidden
+            ? question.id.createdAt.toLocaleTimeString(
+                defaultLocale,
+                timeOptions
+              )
+            : ''}
+        </Typography>
+        <Typography>
+          {isHiddenByMe
+            ? `${t('hiddenByMe')}: (${question.question})`
+            : question.question}
+        </Typography>
+        <Box display={'flex'} justifyContent={'end'} mt={2}>
+          {!isHighlighted && (!isHidden || isHiddenByMe) && (
+            <IconButton
+              onClick={() => onHide(!isHidden)}
+              sx={{ color: tcColor }}
+            >
+              {!isHidden ? <VisibilityOffIcon /> : <Visibility />}
+            </IconButton>
+          )}
+
+          {!isHidden && (userName === highlightedBy || !isHighlighted) && (
+            <IconButton
+              onClick={() => onHighlight(!isHighlighted)}
+              sx={{ color: tcColor }}
+            >
+              {!isHighlighted ? <ThumbUpAlt /> : <ThumbUpOffAlt />}
+            </IconButton>
+          )}
+          {!isHidden && isHighlighted && (
+            <CopyToClipboardButton
+              sx={{ color: tcColor }}
+              value={DOMPurify.sanitize(question.question)}
+            ></CopyToClipboardButton>
+          )}
+        </Box>
+      </TableCell>
+    </TableRow>
   );
 }
