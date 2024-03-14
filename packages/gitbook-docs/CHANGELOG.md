@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.0.3
+
+### Patch Changes
+
+- 3bd5661: Handle data-size image attribute to support inline image rendering
+
 ## 0.0.2
 
 ### Patch Changes
