@@ -38,11 +38,7 @@ const WebinarQuestionsTemplate = ({
     const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
     const sortedVisibleQuestions = [...data]
       .sort((a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime())
-      .filter((question) => {
-        const isHidden = !!question.hiddenBy;
-        const isHiddenByMe = question.hiddenBy === userName;
-        return !isHidden || isHiddenByMe;
-      });
+      .filter(({ hiddenBy }) => !hiddenBy || userName === hiddenBy);
     const highlightedQuestions = sortedVisibleQuestions.filter(
       (question) => !!question.highlightedBy
     );
