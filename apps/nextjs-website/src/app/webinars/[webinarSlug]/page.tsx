@@ -27,6 +27,7 @@ export async function generateMetadata({
     title: 'PagoPA',
     url: `${baseUrl}/webinars/${webinar.slug}`,
     locale: 'it_IT',
+    image: webinar.imagePath,
   });
 }
 
