@@ -41,6 +41,7 @@ const makeStrapiResponseJson = () => ({
             id: 9,
             text: 'aText',
             href: 'aUrl',
+            target: null,
           },
         ],
       },
@@ -48,6 +49,42 @@ const makeStrapiResponseJson = () => ({
         {
           id: 1,
           title: 'aText',
+          subhead: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aText',
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  bold: true,
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  italic: true,
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  underline: true,
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  strikethrough: true,
+                },
+                {
+                  text: 'aText',
+                  type: 'text',
+                  code: true,
+                },
+              ],
+            },
+          ],
           titleColor: 'contrastText',
           callToAction: {
             id: 1,
@@ -174,6 +211,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           id: 1,
           title: 'aText',
           titleColor: 'contrastText',
+          subhead: null,
           callToAction: {
             id: 1,
             variant: 'text',
@@ -191,6 +229,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           title: 'aText',
           titleColor: null,
           callToAction: null,
+          subhead: null,
           backgroundImage: {
             data: {
               id: 2,
