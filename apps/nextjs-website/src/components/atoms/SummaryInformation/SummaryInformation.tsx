@@ -36,6 +36,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             alignContent: 'flex-start',
             paddingTop: 10,
             paddingBottom: 10,
+            width: '100%',
           }}
         >
           <Typography
