@@ -30,6 +30,9 @@ import Swagger from './components/Swagger/Swagger';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 import Cards, { Card, CardItem } from './components/Cards';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import SwaggerParameter from './components/Swagger/SwaggerParameter';
+import SwaggerResponse from './components/Swagger/SwaggerResponse';
+import SwaggerDescription from './components/Swagger/SwaggerDescription';
 
 type GitBookContentProps = {
   content: string;
@@ -39,6 +42,9 @@ type GitBookContentProps = {
 const components: RenderingComponents<ReactNode> = {
   StyledText: StyledText,
   Swagger: Swagger,
+  SwaggerParameter: SwaggerParameter,
+  SwaggerResponse: SwaggerResponse,
+  SwaggerDescription: SwaggerDescription,
   Link: Link,
   Hint: Hint,
   Quote: Quote,
