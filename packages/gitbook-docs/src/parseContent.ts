@@ -2,7 +2,12 @@ import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { document } from './markdoc/schema/document';
 import { hint } from './markdoc/schema/hint';
 import { figure, img } from './markdoc/schema/image';
-import { swagger } from './markdoc/schema/swagger';
+import {
+  swagger,
+  swaggerDescription,
+  swaggerParameter,
+  swaggerResponse,
+} from './markdoc/schema/swagger';
 import { paragraph } from './markdoc/schema/paragraph';
 import { heading } from './markdoc/schema/heading';
 import { link } from './markdoc/schema/link';
@@ -46,7 +51,6 @@ const imgR = unpairedHtmlTag('img');
 const figureR = pairedHtmlTag('figure');
 const figcaptionR = pairedHtmlTag('figcaption');
 const markR = pairedHtmlTag('mark');
-const detailsR = pairedHtmlTag('details');
 const summaryR = pairedHtmlTag('summary');
 const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
@@ -59,12 +63,15 @@ const schema: ConfigType = {
     img,
     figure,
     swagger,
+    'swagger-description': swaggerDescription,
+    'swagger-parameter': swaggerParameter,
+    'swagger-response': swaggerResponse,
     code,
     embed,
     'figma-embed': embed,
     file,
     tabs,
-    details,
+    htmldetails: details,
     'content-ref': pageLink,
     htmlul: list,
     htmlol: list,
@@ -103,7 +110,6 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
-    .replaceAll(detailsR.regex, detailsR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
     .replaceAll(fileR.regex, fileR.replace);
