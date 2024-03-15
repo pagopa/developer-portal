@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.1.0
+
+### Minor Changes
+
+- 5739492: Add SwaggerParameter, SwaggerResponse and SwaggerDescription components
+
 ## 0.0.3
 
 ### Patch Changes
