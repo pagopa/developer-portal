@@ -6,6 +6,7 @@ module "cms_rds" {
   engine                      = "aurora-postgresql"
   engine_mode                 = "provisioned"
   engine_version              = "14.6"
+  auto_minor_version_upgrade  = true
   database_name               = "strapidb"
   master_username             = "postgres"
   master_password             = module.secret_cms_database_password.value
