@@ -127,3 +127,39 @@ module "cms_dns_records" {
     }
   ]
 }
+
+# Active Campaign Records
+module "active_campaign_dns_records" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0"
+
+  zone_id = aws_route53_zone.dev_portal.id
+  # Create only on production environment
+  create = var.environment == "prod" ? "true" : "false"
+
+  records = [
+    {
+      name = "acdkim1._domainkey"
+      type = "CNAME"
+      records = ["dkim.acdkim1.acems1.com"]
+      ttl = 3600
+    },
+    {
+      name = "acdkim2._domainkey"
+      type = "CNAME"
+      records = ["dkim.acdkim2.acems1.com"]
+      ttl = 3600
+    },
+    {
+      name = "em-3628291"
+      type = "CNAME"
+      records = ["cmd.emsend1.com"]
+      ttl = 3600
+    },
+    {
+      name = "_dmarc"
+      type = "TXT"
+      records = ["v=DMARC1;p=none;"]
+      ttl = 3600
+    }
+  ]
+}
