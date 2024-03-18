@@ -152,7 +152,9 @@ module "cloudfront_cms" {
     }
 
     viewer_certificate = {
-      cloudfront_default_certificate = true
+      cloudfront_default_certificate = false
+      acm_certificate_arn            = module.strapi_media_library_ssl_certificate.acm_certificate_arn
+      ssl_support_method             = "sni-only"
     }
 
     geo_restriction = {
