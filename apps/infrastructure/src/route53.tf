@@ -138,28 +138,28 @@ module "active_campaign_dns_records" {
 
   records = [
     {
-      name = "acdkim1._domainkey"
-      type = "CNAME"
+      name    = "acdkim1._domainkey"
+      type    = "CNAME"
       records = ["dkim.acdkim1.acems1.com"]
-      ttl = 3600
+      ttl     = 3600
     },
     {
-      name = "acdkim2._domainkey"
-      type = "CNAME"
+      name    = "acdkim2._domainkey"
+      type    = "CNAME"
       records = ["dkim.acdkim2.acems1.com"]
-      ttl = 3600
+      ttl     = 3600
     },
     {
-      name = "em-3628291"
-      type = "CNAME"
+      name    = "em-3628291"
+      type    = "CNAME"
       records = ["cmd.emsend1.com"]
-      ttl = 3600
+      ttl     = 3600
     },
     {
-      name = "_dmarc"
-      type = "TXT"
+      name    = "_dmarc"
+      type    = "TXT"
       records = ["v=DMARC1;p=none;"]
-      ttl = 3600
+      ttl     = 3600
     }
   ]
 }
