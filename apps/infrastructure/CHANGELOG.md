@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.2.0
+
+### Minor Changes
+
+- 60e0be7: [DEV-1489] - Add Active Campaign records
+
 ## 0.1.2
 
 ### Patch Changes
