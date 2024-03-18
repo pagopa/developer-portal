@@ -112,13 +112,13 @@ resource "aws_cloudfront_distribution" "website" {
   }
 }
 
-## CDN to Medialibrary for CMS Strapi
+## CDN to Media Library for CMS Strapi
 module "cloudfront_cms" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudfront.git?ref=ed0f1f983f606304e00ad9f48399bd2fe0b79233" # v3.2.2
 
   create_origin_access_identity = true
   origin_access_identities = {
-    s3_cms = "Identity to access S3 bucket."
+    s3_cms = "Identity to access S3 bucket"
   }
 
   origin = {
@@ -132,7 +132,7 @@ module "cloudfront_cms" {
 
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "CloudFront distribution for the medialibrary cms."
+  comment         = "CloudFront distribution for the CMS Media Library"
 
   default_cache_behavior = {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
