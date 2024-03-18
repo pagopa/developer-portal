@@ -5,7 +5,7 @@ module "cms_rds" {
   name                        = "cms-database"
   engine                      = "aurora-postgresql"
   engine_mode                 = "provisioned"
-  engine_version              = "14.6"
+  engine_version              = "14"
   auto_minor_version_upgrade  = true
   database_name               = "strapidb"
   master_username             = "postgres"
