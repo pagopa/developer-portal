@@ -39,7 +39,7 @@ module "cms_ssl_certificate" {
   dns_ttl             = 3600
 }
 
-## Certificate HTTPS for Strapi Media Library CDN
+## SSL certificate for Strapi Media Library CDN
 module "strapi_media_library_ssl_certificate" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
 
