@@ -134,7 +134,7 @@ module "active_campaign_dns_records" {
 
   zone_id = aws_route53_zone.dev_portal.id
   # Create only on production environment
-  create = var.environment == "prod" ? "true" : "false"
+  create = var.environment == "prod"
 
   records = [
     {
