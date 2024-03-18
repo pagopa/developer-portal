@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.1.2
+
+### Patch Changes
+
+- fd08262: [DEV-1525] Enable auto_minor_version_upgrade to cms database
+
 ## 0.1.1
 
 ### Patch Changes
