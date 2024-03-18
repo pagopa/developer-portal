@@ -134,6 +134,12 @@ module "cloudfront_cms" {
   is_ipv6_enabled = true
   comment         = "CloudFront distribution for the CMS Media Library"
 
+  viewer_certificate = {
+    cloudfront_default_certificate = false
+    acm_certificate_arn            = module.strapi_media_library_ssl_certificate.acm_certificate_arn
+    ssl_support_method             = "sni-only"
+  }
+
   default_cache_behavior = {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
@@ -150,15 +156,9 @@ module "cloudfront_cms" {
         forward = "none"
       }
     }
+  }
 
-    viewer_certificate = {
-      cloudfront_default_certificate = false
-      acm_certificate_arn            = module.strapi_media_library_ssl_certificate.acm_certificate_arn
-      ssl_support_method             = "sni-only"
-    }
-
-    geo_restriction = {
-      restriction_type = "none"
-    }
+  geo_restriction = {
+    restriction_type = "none"
   }
 }
