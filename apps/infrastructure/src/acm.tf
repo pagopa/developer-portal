@@ -50,7 +50,9 @@ module "strapi_media_library_ssl_certificate" {
     aws = aws.us-east-1
   }
 
-  wait_for_validation = false # https://github.com/terraform-aws-modules/terraform-aws-acm/blob/8d0b22f1f242a1b36e29b8cb38aaeac9b887500d/README.md?plain=1#L174
+  # Because it is ran in an automated pipeline
+  # https://github.com/terraform-aws-modules/terraform-aws-acm/blob/8d0b22f1f242a1b36e29b8cb38aaeac9b887500d/README.md?plain=1#L174
+  wait_for_validation = false
   validation_method   = "DNS"
   dns_ttl             = 3600
 }
