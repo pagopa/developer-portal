@@ -3,7 +3,7 @@ import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInf
 import { Box, Grid } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import { useWebinar } from '@/helpers/webinar.helpers';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
@@ -12,6 +12,7 @@ import { fetchWebinarsQuestionsIntervalMs } from '@/config';
 import { useUser } from '@/helpers/user.helper';
 import WebinarQuestionsTable from '@/components/organisms/WebinarQuestionsTable/WebinarQuestionsTable';
 import { useTranslations } from 'next-intl';
+import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -23,6 +24,7 @@ const WebinarQuestionsTemplate = ({
   const { user, loading } = useUser();
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
+  const [questions, setQuestions] = useState<readonly WebinarQuestion[]>([]);
 
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
     refreshInterval: fetchWebinarsQuestionsIntervalMs,
@@ -32,19 +34,47 @@ const WebinarQuestionsTemplate = ({
     webinar && setWebinar(webinar);
   }, [webinar]);
 
+  useEffect(() => {
+    setQuestions(data ?? []);
+  }, [data]);
+
   if (error || (!loading && !user)) return <PageNotFound />;
   else if (!data || loading || !user) return <Spinner />;
   else {
     const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
-    const sortedVisibleQuestions = [...data]
+    const sortedVisibleQuestions = [...questions]
       .sort((a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime())
       .filter(({ hiddenBy }) => !hiddenBy || userName === hiddenBy);
+
     const highlightedQuestions = sortedVisibleQuestions.filter(
       (question) => !!question.highlightedBy
     );
+
     const notHighlightedQuestions = sortedVisibleQuestions.filter(
       (question) => !question.highlightedBy
     );
+
+    const updateLocalQuestions = (
+      createdAt: Date,
+      highlight: boolean,
+      hide: boolean
+    ) => {
+      setQuestions((oldQuestions) =>
+        oldQuestions.map((oldQuestion) => {
+          const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
+          return createdAt.toISOString() ===
+            oldQuestion.id.createdAt.toISOString()
+            ? {
+                ...oldQuestion,
+                hiddenBy: hide ? userName : undefined,
+                highlightedBy: highlight ? userName : undefined,
+              }
+            : oldQuestion;
+        })
+      );
+
+      return null;
+    };
 
     return (
       <>
@@ -67,6 +97,7 @@ const WebinarQuestionsTemplate = ({
           >
             <Grid key={'notHighlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
+                updateLocalQuestions={updateLocalQuestions}
                 userName={userName}
                 questions={notHighlightedQuestions}
                 title={t('title.questions')}
@@ -74,6 +105,7 @@ const WebinarQuestionsTemplate = ({
             </Grid>
             <Grid key={'highlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
+                updateLocalQuestions={updateLocalQuestions}
                 userName={userName}
                 questions={highlightedQuestions}
                 title={t('title.highlightedQuestions')}
