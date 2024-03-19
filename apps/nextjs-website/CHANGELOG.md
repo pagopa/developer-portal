@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.14.1
+
+### Patch Changes
+
+- 3effab5: [DEV-1534] Update webinar end time
+
 ## 0.14.0
 
 ### Minor Changes
