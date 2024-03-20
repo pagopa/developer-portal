@@ -19,7 +19,8 @@ locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
     aws_acm_certificate.auth.domain_validation_options,
-    module.cms_ssl_certificate.acm_certificate_domain_validation_options
+    module.cms_ssl_certificate.acm_certificate_domain_validation_options,
+    module.strapi_media_library_ssl_certificate.acm_certificate_domain_validation_options
   )
 }
 
