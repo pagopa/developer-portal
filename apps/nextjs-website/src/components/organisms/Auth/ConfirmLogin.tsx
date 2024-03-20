@@ -35,7 +35,7 @@ const ConfirmLogin = ({
   });
   const [submitting, setSubmitting] = useState(false);
 
-  const handleChangeCode = useCallback(
+  const handleCodeChanged = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (errors) {
         setErrors({ codeError: false, emptyCode: false });
@@ -108,7 +108,7 @@ const ConfirmLogin = ({
                   backgroundColor: palette.background.paper,
                 }}
                 variant='outlined'
-                onChange={handleChangeCode}
+                onChange={handleCodeChanged}
               />
             </Stack>
             <Stack spacing={4} pt={4} pb={4}>
