@@ -1,11 +1,5 @@
 # nextjs-website
 
-## 0.14.2
-
-### Patch Changes
-
-- 6b2075e: Update video on demand src
-
 ## 0.14.1
 
 ### Patch Changes
