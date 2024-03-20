@@ -45,7 +45,7 @@ const WebinarQuestionsTable = ({
               onHide={async (hide) => {
                 updateLocalQuestions(
                   question.id.createdAt,
-                  question.highlightedBy ? true : false,
+                  !!question.highlightedBy,
                   hide
                 );
                 await updateWebinarQuestion({
@@ -61,7 +61,7 @@ const WebinarQuestionsTable = ({
                 updateLocalQuestions(
                   question.id.createdAt,
                   highlight,
-                  question.hiddenBy ? true : false
+                  !!question.hiddenBy
                 );
                 await updateWebinarQuestion({
                   id: question.id,
