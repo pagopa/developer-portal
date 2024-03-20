@@ -97,7 +97,9 @@ const ChangePasswordForm = ({
               <PasswordTextField
                 id='password'
                 hasError={fieldErrors.passwordError}
-                helperText={signUp('passwordPolicy')}
+                helperText={
+                  fieldErrors.passwordError ? signUp('passwordPolicy') : ''
+                }
                 label={shared('password')}
                 value={passwords.password}
                 onChange={handleChange}
@@ -105,7 +107,11 @@ const ChangePasswordForm = ({
               <PasswordTextField
                 id='confirmPassword'
                 hasError={fieldErrors.confirmPasswordError}
-                helperText={signUp('passwordMismatchError')}
+                helperText={
+                  fieldErrors.confirmPasswordError
+                    ? signUp('passwordMismatchError')
+                    : ''
+                }
                 label={shared('confirmPassword')}
                 value={passwords.confirmPassword}
                 onChange={handleChange}
