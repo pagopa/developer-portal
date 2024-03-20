@@ -49,7 +49,7 @@ export const webinars: readonly Webinar[] = [
       'PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND ',
     description:
       'Come gestire al meglio le sanzioni per violazione del Codice della strada attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.',
-    playerSrc: 'https://vimeo.com/event/4135276/embed',
+    playerSrc: 'https://player.vimeo.com/video/925344827',
     html:
       `<h4 style="font-weight: 600; font-size: 24px;"> Gestione integrata del servizio multe da pagoPA e IO a SEND</h4> \n` +
       `<p>Come semplificare ed efficientare la gestione delle multe con PagoPA? </br> In questo appuntamento saranno illustrati tutti i passaggi utili per la costruzione di un servizio pienamente digitale ed efficiente attraverso l’utilizzo sinergico di pagoPA, IO e SEND. Il webinar ha l’obiettivo infatti di fornire tutti i chiarimenti e gli strumenti utili per una corretta e virtuosa gestione digitale del servizio multe attraverso l’utilizzo integrato delle piattaforme di PagoPA.
@@ -90,7 +90,7 @@ export const webinars: readonly Webinar[] = [
       },
     ],
     startDateTime: '2024-03-20T09:00:00.000Z',
-    endDateTime: '2024-03-20T09:45:00.000Z',
+    endDateTime: '2024-03-20T10:00:00.000Z',
     subscribeCtaLabel: '',
     relatedLinks: [
       {
