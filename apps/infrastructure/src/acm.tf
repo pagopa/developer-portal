@@ -38,3 +38,21 @@ module "cms_ssl_certificate" {
   validation_method   = "DNS"
   dns_ttl             = 3600
 }
+
+## SSL certificate for Strapi Media Library CDN
+module "strapi_media_library_ssl_certificate" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
+
+  domain_name = format("cdn.%s", var.dns_domain_name)
+  zone_id     = aws_route53_zone.dev_portal.id
+
+  providers = {
+    aws = aws.us-east-1
+  }
+
+  # Because it is ran in an automated pipeline
+  # https://github.com/terraform-aws-modules/terraform-aws-acm/blob/8d0b22f1f242a1b36e29b8cb38aaeac9b887500d/README.md?plain=1#L174
+  wait_for_validation = false
+  validation_method   = "DNS"
+  dns_ttl             = 3600
+}

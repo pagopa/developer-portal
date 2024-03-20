@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.3.0
+
+### Minor Changes
+
+- b4f0221: Create DNS for CMS Media Library and link it to the CDN
+
 ## 0.2.0
 
 ### Minor Changes
