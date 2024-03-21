@@ -141,6 +141,8 @@ module "cloudfront_cms" {
     minimum_protocol_version       = "TLSv1.2_2021"
   }
 
+  aliases = module.strapi_media_library_ssl_certificate.distinct_domain_names
+
   default_cache_behavior = {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]

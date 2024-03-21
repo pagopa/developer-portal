@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.14.3
+
+### Patch Changes
+
+- b699ba0: Revert "Update video on demand src"
+
 ## 0.14.2
 
 ### Patch Changes
