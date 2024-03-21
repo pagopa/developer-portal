@@ -24,7 +24,7 @@ export async function generateMetadata({
   const webinar = await getWebinar(params?.webinarSlug);
 
   return makeMetadata({
-    title: 'PagoPA',
+    title: webinar.title,
     url: `${baseUrl}/webinars/${webinar.slug}`,
     locale: 'it_IT',
     image: webinar.imagePath,
