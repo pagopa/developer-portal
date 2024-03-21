@@ -19,7 +19,8 @@ locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
     aws_acm_certificate.auth.domain_validation_options,
-    module.cms_ssl_certificate.acm_certificate_domain_validation_options
+    module.cms_ssl_certificate.acm_certificate_domain_validation_options,
+    module.strapi_media_library_ssl_certificate.acm_certificate_domain_validation_options
   )
 }
 
@@ -162,4 +163,17 @@ module "active_campaign_dns_records" {
       ttl     = 3600
     }
   ]
+}
+
+// This Route53 record will point at the Strapi Media Library CDN
+resource "aws_route53_record" "strapi_media_library" {
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  name    = format("cdn.%s", var.dns_domain_name)
+  type    = "A"
+
+  alias {
+    name                   = module.cloudfront_cms.cloudfront_distribution_domain_name
+    zone_id                = module.cloudfront_cms.cloudfront_distribution_hosted_zone_id
+    evaluate_target_health = false
+  }
 }
