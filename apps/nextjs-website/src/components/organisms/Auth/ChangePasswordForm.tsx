@@ -46,7 +46,7 @@ const ChangePasswordForm = ({
     confirmPasswordError: false,
   });
 
-  const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChanged = (ev: ChangeEvent<HTMLInputElement>) => {
     setFieldErrors({
       passwordError: false,
       confirmPasswordError: false,
@@ -102,7 +102,7 @@ const ChangePasswordForm = ({
                 }
                 label={shared('password')}
                 value={passwords.password}
-                onChange={handleChange}
+                onChange={handlePasswordChanged}
               />
               <PasswordTextField
                 id='confirmPassword'
@@ -114,7 +114,7 @@ const ChangePasswordForm = ({
                 }
                 label={shared('confirmPassword')}
                 value={passwords.confirmPassword}
-                onChange={handleChange}
+                onChange={handlePasswordChanged}
               />
             </Stack>
             <Stack

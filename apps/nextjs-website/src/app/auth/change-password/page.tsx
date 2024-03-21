@@ -33,7 +33,7 @@ const ChangePassword = () => {
     ResetPasswordSteps.CHANGE_PASSWORD
   );
 
-  const onChangePassword = useCallback(
+  const onPasswordChanged = useCallback(
     (password: string) => {
       setSubmitting(true);
       Auth.forgotPasswordSubmit(username, code, password)
@@ -80,7 +80,7 @@ const ChangePassword = () => {
             {resetPasswordSteps === ResetPasswordSteps.CHANGE_PASSWORD ? (
               <ChangePasswordForm
                 submitting={submitting}
-                onSubmit={onChangePassword}
+                onSubmit={onPasswordChanged}
               />
             ) : (
               <PasswordChangedCard />
