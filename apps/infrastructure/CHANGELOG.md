@@ -1,5 +1,12 @@
 # infrastructure
 
+## 0.3.1
+
+### Patch Changes
+
+- ecf2fc4: Update CDN url using the new DNS in task definition
+- 6be6508: Configure a CDN alias and add a DNS A record to ensure the DNS is accessible
+
 ## 0.3.0
 
 ### Minor Changes
