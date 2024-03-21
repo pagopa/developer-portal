@@ -2,4 +2,4 @@
 "infrastructure": patch
 ---
 
-Add developer.pagopa.it domains to the CSP
+Allow fetching assets from DevPortal subdomains
