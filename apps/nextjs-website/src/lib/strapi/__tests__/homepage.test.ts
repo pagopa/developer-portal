@@ -82,6 +82,185 @@ const makeStrapiResponseJson = () => ({
                   type: 'text',
                   code: true,
                 },
+                {
+                  text: 'aText',
+                  type: 'text',
+                },
+              ],
+            },
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  type: 'text',
+                  text: '',
+                },
+                {
+                  type: 'link',
+                  url: 'https://aLink.com',
+                  children: [
+                    {
+                      type: 'text',
+                      text: 'aText',
+                    },
+                  ],
+                },
+                {
+                  text: '',
+                  type: 'text',
+                },
+              ],
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 1,
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 2,
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 3,
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 4,
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 5,
+            },
+            {
+              type: 'heading',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aHeading',
+                },
+              ],
+              level: 6,
+            },
+            {
+              type: 'list',
+              format: 'ordered',
+              children: [
+                {
+                  type: 'list-item',
+                  children: [
+                    {
+                      type: 'text',
+                      text: 'aText',
+                    },
+                  ],
+                },
+                {
+                  type: 'list-item',
+                  children: [
+                    {
+                      type: 'text',
+                      text: 'aText',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'image',
+              image: {
+                name: 'a-image.jpg',
+                alternativeText: 'a-image.jpg',
+                url: 'http://localhost:1337/uploads/a-image.jpg',
+                caption: null,
+                width: 728,
+                height: 416,
+                formats: {
+                  thumbnail: {
+                    name: 'thumbnail_a-image.jpg',
+                    hash: 'thumbnail_a_image_db00b47553',
+                    ext: '.jpg',
+                    mime: 'image/jpeg',
+                    path: null,
+                    width: 245,
+                    height: 140,
+                    size: 5.18,
+                    url: '/uploads/thumbnail_a_image_db00b47553.jpg',
+                  },
+                  small: {
+                    name: 'small_a-image.jpg',
+                    hash: 'small_a_image_db00b47553',
+                    ext: '.jpg',
+                    mime: 'image/jpeg',
+                    path: null,
+                    width: 500,
+                    height: 286,
+                    size: 14.85,
+                    url: '/uploads/small_a_image_db00b47553.jpg',
+                  },
+                },
+                hash: 'a_image_db00b47553',
+                ext: '.jpg',
+                mime: 'image/jpeg',
+                size: 26.69,
+                previewUrl: null,
+                provider: 'local',
+                provider_metadata: null,
+                createdAt: '2024-03-21T17:11:46.709Z',
+                updatedAt: '2024-03-21T17:11:46.709Z',
+              },
+              children: [
+                {
+                  type: 'text',
+                  text: '',
+                },
+              ],
+            },
+            {
+              type: 'quote',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aText',
+                },
+              ],
+            },
+            {
+              type: 'code',
+              children: [
+                {
+                  type: 'text',
+                  text: 'aText',
+                },
               ],
             },
           ],
