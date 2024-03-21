@@ -131,13 +131,13 @@ const SignUpForm = ({
   }, [onSignUp, userData, validateForm]);
 
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = ev.target;
+    const { value, name, type, checked } = ev.target;
 
     setFieldErrors({});
 
     setUserData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -285,6 +285,7 @@ const SignUpForm = ({
                 <FormControlLabel
                   control={
                     <Checkbox
+                      name='mailinglistAccepted'
                       checked={mailinglistAccepted}
                       sx={{ marginTop: '-4px' }}
                       onChange={handleInputChange}
