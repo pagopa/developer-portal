@@ -2,4 +2,4 @@
 "infrastructure": patch
 ---
 
-Allow fetching assets from DevPortal subdomains
+Allow fetching images from DevPortal subdomains
