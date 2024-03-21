@@ -1,5 +1,37 @@
 # nextjs-website
 
+## 0.14.3
+
+### Patch Changes
+
+- b699ba0: Revert "Update video on demand src"
+
+## 0.14.2
+
+### Patch Changes
+
+- 6b2075e: Update video on demand src
+
+## 0.14.1
+
+### Patch Changes
+
+- 3effab5: [DEV-1534] Update webinar end time
+
+## 0.14.0
+
+### Minor Changes
+
+- 24e856a: Change webinars' subscribe button logic
+- 5739492: Add SwaggerParameter, SwaggerResponse and SwaggerDescription components
+
+### Patch Changes
+
+- 9bddc42: Fix webinar form and webinar questions page
+- 93327c8: Add new Speaker to the PagoPA LAB Webinar
+- Updated dependencies [5739492]
+  - gitbook-docs@0.1.0
+
 ## 0.13.0
 
 ### Minor Changes
