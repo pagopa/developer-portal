@@ -11,7 +11,7 @@ import * as E from 'fp-ts/lib/Either';
  * const result = codec.decode(null);
  * // result will be Right(undefined)
  */
-export const NullToUndefined = new t.Type<undefined, null, unknown>(
+export const NullToUndefinedCodec = new t.Type<undefined, null, unknown>(
   // name: a unique name for this codec
   'NullToUndefined',
   // is: a custom type guard

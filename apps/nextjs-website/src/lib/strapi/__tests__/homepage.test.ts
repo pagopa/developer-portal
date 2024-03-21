@@ -1,6 +1,6 @@
 import { StrapiHomepageCodec } from '@/lib/strapi/homepage';
 import * as E from 'fp-ts/lib/Either';
-import { NullToUndefined } from '../codecs/NullToUndefined';
+import { NullToUndefinedCodec } from '../codecs/NullToUndefinedCodec';
 
 const makeStrapiResponseJson = () => ({
   data: {
@@ -312,14 +312,14 @@ describe('StrapiHomepageCodec', () => {
   });
 });
 
-describe('NullToUndefined', () => {
+describe('NullToUndefinedCodec', () => {
   it('should decode null to undefined', () => {
-    const actual = NullToUndefined.decode(null);
+    const actual = NullToUndefinedCodec.decode(null);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should encode undefined to null', () => {
-    const actual = NullToUndefined.encode(undefined);
+    const actual = NullToUndefinedCodec.encode(undefined);
     expect(actual).toBeNull();
   });
 });

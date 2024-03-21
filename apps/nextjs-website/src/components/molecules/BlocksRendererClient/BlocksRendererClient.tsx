@@ -6,7 +6,7 @@ import Image from 'next/image';
 const BlocksRendererClient = ({
   content,
 }: {
-  readonly content: BlocksContent | undefined | null;
+  readonly content?: BlocksContent;
 }) => {
   if (!content) return null;
   return (

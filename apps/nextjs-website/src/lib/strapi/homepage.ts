@@ -3,13 +3,13 @@ import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { NullToUndefined } from './codecs/NullToUndefined';
+import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 
 const LinkCodec = t.strict({
   text: t.string,
   href: t.string,
   target: t.union([
-    NullToUndefined,
+    NullToUndefinedCodec,
     t.literal('_self'),
     t.literal('_blank'),
     t.literal('_parent'),
@@ -42,7 +42,7 @@ const ProductCodec = t.strict({
 const CallToActionCodec = t.strict({
   link: LinkCodec,
   variant: t.union([
-    NullToUndefined,
+    NullToUndefinedCodec,
     t.literal('text'),
     t.literal('contained'),
     t.literal('outlined'),
@@ -51,16 +51,18 @@ const CallToActionCodec = t.strict({
 
 const HeroSlideCodec = t.strict({
   title: t.string,
-  subhead: t.union([NullToUndefined, BlocksContentCodec]),
-  callToAction: t.union([NullToUndefined, CallToActionCodec]),
+  subhead: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+  callToAction: t.union([NullToUndefinedCodec, CallToActionCodec]),
   titleColor: t.union([
-    NullToUndefined,
+    NullToUndefinedCodec,
     t.literal('contrastText'),
     t.literal('main'),
     t.literal('light'),
     t.literal('dark'),
   ]),
-  backgroundImage: t.strict({ data: t.union([NullToUndefined, MediaCodec]) }),
+  backgroundImage: t.strict({
+    data: t.union([NullToUndefinedCodec, MediaCodec]),
+  }),
 });
 
 const NewsItemCodec = t.strict({
