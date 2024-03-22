@@ -1,5 +1,6 @@
 import * as t from 'io-ts/lib';
 import { type BlocksContent } from '@strapi/blocks-react-renderer';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
 const TextInlineNodeCodec = t.intersection([
   t.strict({
@@ -91,12 +92,12 @@ export const ImageBlockNodeCodec = t.strict({
       provider: t.string,
       createdAt: t.string,
       updatedAt: t.string,
+      caption: t.union([NullToUndefinedCodec, t.string]),
+      previewUrl: t.union([NullToUndefinedCodec, t.string]),
     }),
     t.partial({
       alternativeText: t.string,
-      caption: t.string,
-      formats: t.record(t.unknown, t.string),
-      previewUrl: t.string,
+      formats: t.record(t.string, t.unknown),
       provider_metadata: t.unknown,
     }),
   ]),
