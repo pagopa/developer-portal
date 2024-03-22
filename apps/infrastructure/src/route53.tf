@@ -19,7 +19,8 @@ locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
     aws_acm_certificate.auth.domain_validation_options,
-    module.cms_ssl_certificate.acm_certificate_domain_validation_options
+    module.cms_ssl_certificate.acm_certificate_domain_validation_options,
+    module.strapi_media_library_ssl_certificate.acm_certificate_domain_validation_options
   )
 }
 
@@ -126,4 +127,53 @@ module "cms_dns_records" {
       }
     }
   ]
+}
+
+# Active Campaign Records
+module "active_campaign_dns_records" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0"
+
+  zone_id = aws_route53_zone.dev_portal.id
+  # Create only on production environment
+  create = var.environment == "prod"
+
+  records = [
+    {
+      name    = "acdkim1._domainkey"
+      type    = "CNAME"
+      records = ["dkim.acdkim1.acems1.com"]
+      ttl     = 3600
+    },
+    {
+      name    = "acdkim2._domainkey"
+      type    = "CNAME"
+      records = ["dkim.acdkim2.acems1.com"]
+      ttl     = 3600
+    },
+    {
+      name    = "em-3628291"
+      type    = "CNAME"
+      records = ["cmd.emsend1.com"]
+      ttl     = 3600
+    },
+    {
+      name    = "_dmarc"
+      type    = "TXT"
+      records = ["v=DMARC1;p=none;"]
+      ttl     = 3600
+    }
+  ]
+}
+
+// This Route53 record will point at the Strapi Media Library CDN
+resource "aws_route53_record" "strapi_media_library" {
+  zone_id = aws_route53_zone.dev_portal.zone_id
+  name    = format("cdn.%s", var.dns_domain_name)
+  type    = "A"
+
+  alias {
+    name                   = module.cloudfront_cms.cloudfront_distribution_domain_name
+    zone_id                = module.cloudfront_cms.cloudfront_distribution_hosted_zone_id
+    evaluate_target_health = false
+  }
 }
