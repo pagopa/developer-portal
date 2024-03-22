@@ -109,7 +109,7 @@ describe('fetchFromStrapi', () => {
     });
     const actual = fetchFromStrapi('aPath', 'aPopulate', badCodec)(env);
     const expected = new Error(
-      'Invalid value 1 supplied to : {| data: {| id: string |} |}/data: {| id: string |}/id: string'
+      `Invalid value 1 supplied to '/data/id', expected type string`
     );
     await expect(actual).rejects.toStrictEqual(expected);
   });
