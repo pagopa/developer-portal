@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as R from 'fp-ts/lib/Reader';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as PR from 'io-ts/lib/PathReporter';
+import * as PR from './PathReporter';
 import { StrapiEnv } from '@/lib/strapi/StapiEnv';
 
 // Function to invoke in order to retrieve data from Strapi.
