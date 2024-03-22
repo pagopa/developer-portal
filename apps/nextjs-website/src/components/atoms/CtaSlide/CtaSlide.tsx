@@ -8,7 +8,7 @@ import React, { ReactNode } from 'react';
 
 export type CtaSlideProps = {
   readonly title: string;
-  readonly subhead?: BlocksContent | null;
+  readonly subhead?: BlocksContent;
   readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly callToAction?: {
     readonly variant?: 'text' | 'contained' | 'outlined';

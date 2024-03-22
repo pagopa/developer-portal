@@ -39,10 +39,10 @@ const Home = async () => {
       <NotSsrWebinarHeaderBanner webinars={webinars} />
 
       <HeroSwiper
-        cards={homepage.hero.map((itemProp) => ({
+        cards={homepage.hero.map((itemProp, index) => ({
           ...itemProp,
           child: itemProp.subhead && (
-            <BlocksRendererClient content={itemProp.subhead} />
+            <BlocksRendererClient key={index} content={itemProp.subhead} />
           ),
         }))}
       />
