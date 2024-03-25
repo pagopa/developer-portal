@@ -63,7 +63,7 @@ export const webinars: readonly Webinar[] = [
     slug: 'DevTalk-remote-content',
     isVisibleInHome: true,
     isVisibleInList: true,
-    imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
+    imagePath: '/images/webinar-cover-io-remote-content.jpg',
     speakers: [
       {
         name: 'Angelo Fiorillo',
