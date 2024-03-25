@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add metadata to webinar page
+Resize webinar images
