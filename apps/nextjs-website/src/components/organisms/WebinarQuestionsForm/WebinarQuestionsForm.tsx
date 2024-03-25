@@ -55,6 +55,7 @@ export const WebinarQuestionsForm = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!question) return;
+    // Submit question if user presses Enter + Shift
     if (e.key === 'Enter' && e.shiftKey) {
       e.preventDefault();
       handleSubmit();
