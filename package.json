@@ -11,6 +11,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "storybook": "turbo run storybook",
     "changeset": "changeset",
     "version": "changeset version && npm i",
     "tag": "changeset tag"
