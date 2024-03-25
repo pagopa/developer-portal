@@ -55,7 +55,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Esploriamo il nuovo modello di comunicazione su app IO, che consente nuovi scenari d’uso e nuove esperienze utente grazie alle tecniche di remotizzazione.
        </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-cover-io-remote-content.png' /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-remote-content.png' /> \n` +
       `<br /> \n` +
       `<p>Partendo dall’attuale modello di delivery dei messaggi su IO, analizziamo il nuovo paradigma che prevede la remotizzazione dei contenuti grazie al colloquio in tempo reale tra le infrastrutture di IO e quelle dell’Ente mittente.</br>
       Approfondiremo gli aspetti architetturali e di processo, focalizzandoci su come IO richiede informazioni all’Ente e su come questo metta a disposizione di IO le proprie risorse. Vedremo nel dettaglio quali componenti del messaggio possono essere remotizzate e in che modo.</br>
@@ -63,7 +63,7 @@ export const webinars: readonly Webinar[] = [
     slug: 'DevTalk-remote-content',
     isVisibleInHome: true,
     isVisibleInList: true,
-    imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
+    imagePath: '/images/webinar-cover-io-remote-content.png',
     speakers: [
       {
         name: 'Angelo Fiorillo',
