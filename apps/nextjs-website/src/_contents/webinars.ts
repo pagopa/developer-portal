@@ -45,8 +45,7 @@ export const webinars: readonly Webinar[] = [
     playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
-    title:
-      'Esplorando App IO: I messaggi a contenuto remoto',
+    title: 'Esplorando App IO: I messaggi a contenuto remoto',
     description:
       'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
     playerSrc: 'https://vimeo.com/event/3859248/embed',
