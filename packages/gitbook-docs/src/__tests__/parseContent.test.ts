@@ -498,7 +498,27 @@ describe('parseContent', () => {
     ];
 
     const parsed = parseContent(
-      '{% swagger src="index.yaml" path="/p" method="post" %}\n[index.yaml](index.yaml)\n{% endswagger %}',
+      '{% swagger src="index.yaml" path="/p" method="post" %}{% endswagger %}',
+      config
+    );
+    expect(parsed).toStrictEqual(result);
+  });
+
+  it('should parse swagger with children', () => {
+    const result = [
+      new Markdoc.Tag(
+        'Swagger',
+        {
+          src: '',
+          path: '/p',
+          method: 'post',
+        },
+        [new Markdoc.Tag('Paragraph', {}, ['Text'])]
+      ),
+    ];
+
+    const parsed = parseContent(
+      '{% swagger src="" path="/p" method="post" %}\nText\n{% endswagger %}',
       config
     );
     expect(parsed).toStrictEqual(result);
@@ -910,6 +930,17 @@ describe('parseContent', () => {
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('StyledText', { style: 'code' }, ['DELETE ']),
       ]),
+    ]);
+  });
+
+  it('should handle data-size attribute in image', () => {
+    const content = '<img src="img-src.jpg" alt="anAlt" data-size="line">';
+    expect(parseContent(content, config)).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${config.assetsPrefix}/img-src.jpg`,
+        alt: 'anAlt',
+        'data-size': 'line',
+      }),
     ]);
   });
 });

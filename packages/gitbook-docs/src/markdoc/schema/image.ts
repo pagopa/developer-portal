@@ -5,6 +5,7 @@ export type ImageProps = {
   readonly src: string;
   readonly alt?: string;
   readonly caption?: string;
+  readonly 'data-size'?: string;
 };
 
 export const img: Schema = {
@@ -12,6 +13,7 @@ export const img: Schema = {
   attributes: {
     src: { type: SrcAttr, required: true },
     alt: { type: String },
+    'data-size': { type: String },
   },
 };
 
@@ -19,6 +21,7 @@ export const figure: Schema = {
   attributes: {
     src: { type: SrcAttr, required: true },
     alt: { type: String },
+    'data-size': { type: String },
   },
   transform: (node, config) => {
     const caption = node.children

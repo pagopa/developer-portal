@@ -10,35 +10,34 @@ import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
+import AuthStatus from '@/components/organisms/Auth/AuthStatus';
 
 const Login = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [submitting, setSubmitting] = useState(false);
   const [noAccountError, setNoAccountError] = useState<boolean>(false);
 
   const onLogin: LoginFunction = useCallback(async ({ username, password }) => {
+    setSubmitting(true);
     setNoAccountError(false);
-    setUsername(username);
-    setPassword(password);
+    setLoginData({ username, password });
 
-    const user = await Auth.signIn({
-      username,
-      password,
-    } as SignInOpts).catch((error) => {
-      if (error.code === 'UserNotConfirmedException') {
-        setUsername(username);
-        setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
-      } else {
-        setNoAccountError(true);
-      }
-      return false;
-    });
-
-    setUsername(username);
+    const opts: SignInOpts = { username, password };
+    const user = await Auth.signIn(opts)
+      .catch((error) => {
+        if (error.code === 'UserNotConfirmedException') {
+          setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
+        } else {
+          setNoAccountError(true);
+        }
+        return false;
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
 
     if (user) {
       setUser(user);
@@ -47,12 +46,12 @@ const Login = () => {
   }, []);
 
   const resendCode = useCallback(async () => {
-    const result = await onLogin({ username, password })
+    const result = await onLogin(loginData)
       .then(() => true)
       .catch(() => false);
 
     return result;
-  }, [onLogin, password, username]);
+  }, [onLogin, loginData]);
 
   const searchParams = useSearchParams();
 
@@ -61,20 +60,14 @@ const Login = () => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
       const redirect = searchParams.get('redirect');
-      router.replace(redirect ? redirect : '/');
+      router.replace(redirect ? atob(redirect) : '/');
     },
     [router, searchParams, user]
   );
 
-  const onBackStep = useCallback(() => {
-    router.replace(
-      `/auth/login?email=${encodeURIComponent(username || '')}&step=${
-        LoginSteps.LOG_IN
-      }`
-    );
+  const onBackStep = () => {
     setLogInStep(LoginSteps.LOG_IN);
-    return null;
-  }, [router, username]);
+  };
 
   return (
     <PageBackgroundWrapper>
@@ -86,17 +79,23 @@ const Login = () => {
         spacing={6}
       >
         {logInStep === LoginSteps.LOG_IN && (
-          <LoginForm noAccount={noAccountError} onLogin={onLogin} />
+          <AuthStatus>
+            <LoginForm
+              submitting={submitting}
+              noAccount={noAccountError}
+              onLogin={onLogin}
+            />
+          </AuthStatus>
         )}
         {logInStep === LoginSteps.MFA_CHALLENGE && (
           <ConfirmLogIn
-            email={username}
+            email={loginData.username}
             onConfirmLogin={confirmLogin}
             resendCode={resendCode}
           />
         )}
         {logInStep === LoginSteps.CONFIRM_ACCOUNT && (
-          <ConfirmSignUp email={username || ''} onBack={onBackStep} />
+          <ConfirmSignUp email={loginData.username} onBack={onBackStep} />
         )}
       </Grid>
     </PageBackgroundWrapper>
