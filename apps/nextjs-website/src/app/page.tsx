@@ -31,8 +31,8 @@ const NotSsrWebinarsSection = dynamic(
 );
 
 const Home = async () => {
-  const { header } = translations;
   const webinars = await getVisibleInHomeWebinars();
+  const { header } = translations;
 
   const homepage = await getHomepageProps();
 

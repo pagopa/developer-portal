@@ -1,6 +1,5 @@
-import { StrapiHomepageCodec } from '@/lib/strapi/homepage';
+import { NullToUndefined, StrapiHomepageCodec } from '@/lib/strapi/homepage';
 import * as E from 'fp-ts/lib/Either';
-import { NullToUndefinedCodec } from '../codecs/NullToUndefinedCodec';
 
 const makeStrapiResponseJson = () => ({
   data: {
@@ -49,221 +48,6 @@ const makeStrapiResponseJson = () => ({
         {
           id: 1,
           title: 'aText',
-          subhead: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aText',
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                  bold: true,
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                  italic: true,
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                  underline: true,
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                  strikethrough: true,
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                  code: true,
-                },
-                {
-                  text: 'aText',
-                  type: 'text',
-                },
-              ],
-            },
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: '',
-                },
-                {
-                  type: 'link',
-                  url: 'https://aLink.com',
-                  children: [
-                    {
-                      type: 'text',
-                      text: 'aText',
-                    },
-                  ],
-                },
-                {
-                  text: '',
-                  type: 'text',
-                },
-              ],
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 1,
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 2,
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 3,
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 4,
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 5,
-            },
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aHeading',
-                },
-              ],
-              level: 6,
-            },
-            {
-              type: 'list',
-              format: 'ordered',
-              children: [
-                {
-                  type: 'list-item',
-                  children: [
-                    {
-                      type: 'text',
-                      text: 'aText',
-                    },
-                  ],
-                },
-                {
-                  type: 'list-item',
-                  children: [
-                    {
-                      type: 'text',
-                      text: 'aText',
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'image',
-              image: {
-                name: 'a-image.jpg',
-                alternativeText: 'a-image.jpg',
-                url: 'http://localhost:1337/uploads/a-image.jpg',
-                caption: null,
-                width: 728,
-                height: 416,
-                formats: {
-                  thumbnail: {
-                    name: 'thumbnail_a-image.jpg',
-                    hash: 'thumbnail_a_image_db00b47553',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    path: null,
-                    width: 245,
-                    height: 140,
-                    size: 5.18,
-                    url: '/uploads/thumbnail_a_image_db00b47553.jpg',
-                  },
-                  small: {
-                    name: 'small_a-image.jpg',
-                    hash: 'small_a_image_db00b47553',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    path: null,
-                    width: 500,
-                    height: 286,
-                    size: 14.85,
-                    url: '/uploads/small_a_image_db00b47553.jpg',
-                  },
-                },
-                hash: 'a_image_db00b47553',
-                ext: '.jpg',
-                mime: 'image/jpeg',
-                size: 26.69,
-                previewUrl: null,
-                provider: 'local',
-                provider_metadata: null,
-                createdAt: '2024-03-21T17:11:46.709Z',
-                updatedAt: '2024-03-21T17:11:46.709Z',
-              },
-              children: [
-                {
-                  type: 'text',
-                  text: '',
-                },
-              ],
-            },
-            {
-              type: 'quote',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aText',
-                },
-              ],
-            },
-            {
-              type: 'code',
-              children: [
-                {
-                  type: 'text',
-                  text: 'aText',
-                },
-              ],
-            },
-          ],
           titleColor: 'contrastText',
           callToAction: {
             id: 1,
@@ -390,7 +174,6 @@ const makeStrapiResponseWithNullsJson = () => ({
           id: 1,
           title: 'aText',
           titleColor: 'contrastText',
-          subhead: null,
           callToAction: {
             id: 1,
             variant: 'text',
@@ -408,7 +191,6 @@ const makeStrapiResponseWithNullsJson = () => ({
           title: 'aText',
           titleColor: null,
           callToAction: null,
-          subhead: null,
           backgroundImage: {
             data: {
               id: 2,
@@ -491,14 +273,14 @@ describe('StrapiHomepageCodec', () => {
   });
 });
 
-describe('NullToUndefinedCodec', () => {
+describe('NullToUndefined', () => {
   it('should decode null to undefined', () => {
-    const actual = NullToUndefinedCodec.decode(null);
+    const actual = NullToUndefined.decode(null);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should encode undefined to null', () => {
-    const actual = NullToUndefinedCodec.encode(undefined);
+    const actual = NullToUndefined.encode(undefined);
     expect(actual).toBeNull();
   });
 });
