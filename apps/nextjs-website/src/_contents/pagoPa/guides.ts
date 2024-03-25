@@ -195,6 +195,22 @@ const boPsp: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
+const boPT: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Manuale Back Office - PT',
+    slug: 'manuale-bo-pt',
+  },
+  versions: [
+    {
+      main: true,
+      version: 'v1.0',
+      dirName: 'BnqUVJHM26TaVUpNXC9J',
+    },
+  ],
+  bannerLinks: pagoPaBannerLinks,
+};
+
 const errori: GuideDefinition = {
   product: pagoPa,
   guide: {
@@ -251,6 +267,7 @@ export const pagoPaGuides = [
   pda,
   boEc,
   boPsp,
+  boPT,
   errori,
   metadata,
   redirect,

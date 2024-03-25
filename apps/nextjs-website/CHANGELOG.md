@@ -1,5 +1,57 @@
 # nextjs-website
 
+## 0.14.3
+
+### Patch Changes
+
+- b699ba0: Revert "Update video on demand src"
+
+## 0.14.2
+
+### Patch Changes
+
+- 6b2075e: Update video on demand src
+
+## 0.14.1
+
+### Patch Changes
+
+- 3effab5: [DEV-1534] Update webinar end time
+
+## 0.14.0
+
+### Minor Changes
+
+- 24e856a: Change webinars' subscribe button logic
+- 5739492: Add SwaggerParameter, SwaggerResponse and SwaggerDescription components
+
+### Patch Changes
+
+- 9bddc42: Fix webinar form and webinar questions page
+- 93327c8: Add new Speaker to the PagoPA LAB Webinar
+- Updated dependencies [5739492]
+  - gitbook-docs@0.1.0
+
+## 0.13.0
+
+### Minor Changes
+
+- de9bbbe: Make the link to the webinar list page visible in the navigation menu also in the production environment
+- 1730ae3: Allow fetching from the CMS the hero section of the homepage
+- 458c58f: Add the highlight and hide action on webinars' questions list
+- 67c66bf: New guide for the use of pagoPA's BO by Technical Partners.
+
+### Patch Changes
+
+- 3bd5661: Handle data-size image attribute to support inline image rendering
+- 3c9fbe8: Add test events on webinars and isVisibleInList flag to hide them
+- 0db977b: Fix font size in list items
+- 6d8f876: Fix webinar banner visibility
+- b7ed47f: Removes version from all internal links to redirect to latest guides
+- ffde2ad: Reset login form errors on user changes
+- Updated dependencies [3bd5661]
+  - gitbook-docs@0.0.3
+
 ## 0.12.3
 
 ### Patch Changes

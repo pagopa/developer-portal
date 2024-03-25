@@ -53,7 +53,7 @@ export const translations = {
           title:
             'Usa il validatore di SEND per fare una verifica sull’integrazione',
           link: {
-            url: `${sendGuideListsPath.path}/validatore/v1.0`,
+            url: `${sendGuideListsPath.path}/validatore`,
             text: 'Vai al validatore',
           },
           image: {
@@ -117,16 +117,20 @@ export const translations = {
       },
       {
         title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
-        cta: {
-          label: 'Vai a SEND',
-          href: '/send/overview',
+        callToAction: {
+          link: {
+            text: 'Vai a SEND',
+            href: '/send/overview',
+          },
         },
       },
       {
         title: 'Richiedi una firma su documenti e contratti',
-        cta: {
-          label: 'Vai a Firma con IO',
-          href: '/firma-con-io/overview',
+        callToAction: {
+          link: {
+            text: 'Vai a Firma con IO',
+            href: '/firma-con-io/overview',
+          },
         },
       },
     ],

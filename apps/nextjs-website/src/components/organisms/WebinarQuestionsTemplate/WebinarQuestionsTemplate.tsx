@@ -1,26 +1,17 @@
 'use client';
 import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
-import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 import { useWebinar } from '@/helpers/webinar.helpers';
 import { useEffect } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
-import { useFormatter, useTranslations } from 'next-intl';
-import { CopyToClipboardButton } from '@pagopa/mui-italia';
-import DOMPurify from 'isomorphic-dompurify';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
+import { useUser } from '@/helpers/user.helper';
+import WebinarQuestionsTable from '@/components/organisms/WebinarQuestionsTable/WebinarQuestionsTable';
+import { useTranslations } from 'next-intl';
 
 type WebinarQuestionsTemplateProps = {
   webinar: Webinar;
@@ -29,7 +20,7 @@ type WebinarQuestionsTemplateProps = {
 const WebinarQuestionsTemplate = ({
   webinar,
 }: WebinarQuestionsTemplateProps) => {
-  const formatter = useFormatter();
+  const { user, loading } = useUser();
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
 
@@ -41,12 +32,18 @@ const WebinarQuestionsTemplate = ({
     webinar && setWebinar(webinar);
   }, [webinar]);
 
-  if (error) return <PageNotFound />;
-  else if (!data) return <Spinner />;
+  if (error || (!loading && !user)) return <PageNotFound />;
+  else if (!data || loading || !user) return <Spinner />;
   else {
-    const sortedQuestions = [...data].sort(
-      (a: WebinarQuestion, b: WebinarQuestion) =>
-        b.createdAt.getTime() - a.createdAt.getTime()
+    const userName = `${user.attributes['given_name']} ${user.attributes['family_name']}`;
+    const sortedVisibleQuestions = [...data]
+      .sort((a, b) => b.id.createdAt.getTime() - a.id.createdAt.getTime())
+      .filter(({ hiddenBy }) => !hiddenBy || userName === hiddenBy);
+    const highlightedQuestions = sortedVisibleQuestions.filter(
+      (question) => !!question.highlightedBy
+    );
+    const notHighlightedQuestions = sortedVisibleQuestions.filter(
+      (question) => !question.highlightedBy
     );
 
     return (
@@ -58,42 +55,31 @@ const WebinarQuestionsTemplate = ({
           endDateTime={webinar.endDateTime}
           webinarState={webinarState}
         >
-          <TableContainer component={Paper} sx={{ marginY: 2 }}>
-            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{t('createdAt')}</TableCell>
-                  <TableCell>{t('text')}</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedQuestions.map((row) => (
-                  <TableRow
-                    hover
-                    key={row.createdAt.toJSON()}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell>
-                      {formatter.dateTime(row.createdAt, {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      })}
-                    </TableCell>
-                    <TableCell width='70%'>{row.question}</TableCell>
-                    <TableCell>
-                      <CopyToClipboardButton
-                        value={DOMPurify.sanitize(row.question)}
-                      ></CopyToClipboardButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Box
+            pb={4}
+            width={'100%'}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column-reverse', md: 'row' },
+              alignContent: 'space-between',
+              gap: 4,
+            }}
+          >
+            <Grid key={'notHighlightedQuestions'} item xs={12} md={6}>
+              <WebinarQuestionsTable
+                userName={userName}
+                questions={notHighlightedQuestions}
+                title={t('title.questions')}
+              />
+            </Grid>
+            <Grid key={'highlightedQuestions'} item xs={12} md={6}>
+              <WebinarQuestionsTable
+                userName={userName}
+                questions={highlightedQuestions}
+                title={t('title.highlightedQuestions')}
+              />
+            </Grid>
+          </Box>
         </SummaryInformation>
       </>
     );

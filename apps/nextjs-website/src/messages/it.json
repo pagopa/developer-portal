@@ -100,11 +100,15 @@
         "relatedLinksTitle": "Link utili",
         "speakersTitle": "Ospiti",
         "questionList": {
-            "createdAt": "Ora creazione",
-            "text": "Domanda"
+            "title": {
+                "highlightedQuestions": "Domande scelte",
+                "questions": "Domande"
+            },
+            "hiddenByMe": "Hai nascosto questa domanda",
+            "highlightedBy": "Scelta da"
         },
         "questionsForm": {
-            "title": "Scrivi qui domande e commenti per la discussione finale",
+            "title": "Scrivi qui domande e commenti per la discussione finale (al massimo {maxLength} caratteri)",
             "question": "Domanda",
             "submit": "Invia",
             "submitted": "Inviato",
