@@ -1,15 +1,24 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 
 const BlocksRendererClient = ({
   content,
+  color,
 }: {
   readonly content?: BlocksContent;
+  color?: 'contrastText' | 'main' | 'light' | 'dark';
 }) => {
+  const { palette } = useTheme();
+
   if (!content) return null;
+
+  const textColor = color
+    ? palette.primary[color]
+    : palette.primary.contrastText;
+
   return (
     <BlocksRenderer
       content={content}
@@ -23,10 +32,14 @@ const BlocksRendererClient = ({
           />
         ),
         paragraph: ({ children }) => (
-          <Typography variant='body1'>{children}</Typography>
+          <Typography variant='body1' color={textColor}>
+            {children}
+          </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography variant={`h${level}`}>{children}</Typography>
+          <Typography variant={`h${level}`} color={textColor}>
+            {children}
+          </Typography>
         ),
       }}
     />

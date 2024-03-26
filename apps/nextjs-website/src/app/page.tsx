@@ -42,7 +42,11 @@ const Home = async () => {
         cards={homepage.hero.map((itemProp, index) => ({
           ...itemProp,
           child: itemProp.subhead && (
-            <BlocksRendererClient key={index} content={itemProp.subhead} />
+            <BlocksRendererClient
+              key={index}
+              content={itemProp.subhead}
+              color={itemProp.subheadColor}
+            />
           ),
         }))}
       />
@@ -60,7 +64,7 @@ const Home = async () => {
           logoUrl: product.logo.url,
         }))}
       />
-      <NotSsrWebinarsSection webinars={[...webinars]} />
+      <NotSsrWebinarsSection title='dontLoseNext' webinars={[...webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={[...homepage.comingsoonDocumentation.links]}
