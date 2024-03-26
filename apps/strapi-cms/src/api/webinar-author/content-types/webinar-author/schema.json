@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "webinar_authors",
+  "info": {
+    "singularName": "webinar-author",
+    "pluralName": "webinar-authors",
+    "displayName": "WebinarAuthor"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "job_title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "avatar": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "webinars": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::webinar.webinar",
+      "mappedBy": "webinar_authors"
+    }
+  }
+}

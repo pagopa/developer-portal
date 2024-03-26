@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "webinars",
+  "info": {
+    "singularName": "webinar",
+    "pluralName": "webinars",
+    "displayName": "Webinar",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "cover_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "text_content": {
+      "type": "blocks"
+    },
+    "vimeo_video_id": {
+      "type": "string"
+    },
+    "start_datetime": {
+      "type": "datetime"
+    },
+    "end_datetime": {
+      "type": "datetime"
+    },
+    "webinar_authors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::webinar-author.webinar-author",
+      "inversedBy": "webinars"
+    }
+  }
+}
