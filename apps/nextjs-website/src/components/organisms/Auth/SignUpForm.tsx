@@ -26,7 +26,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { companyRoles } from '@/_contents/auth';
 import { PasswordTextField } from './PasswordTextField';
-import Policy from './Policy';
+import PoliciesParagraph from './PoliciesParagraph';
 
 const defaults = {
   username: '',
@@ -308,7 +308,7 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Policy />
+                  <PoliciesParagraph />
                 </Stack>
               </Stack>
             </Box>

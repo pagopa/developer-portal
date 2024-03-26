@@ -3,7 +3,7 @@ import { Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-const Policy = () => {
+const PoliciesParagraph = () => {
   const signUp = useTranslations('auth.signUp');
   const { palette } = useTheme();
 
@@ -37,4 +37,4 @@ const Policy = () => {
   );
 };
 
-export default Policy;
+export default PoliciesParagraph;
