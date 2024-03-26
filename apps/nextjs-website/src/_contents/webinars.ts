@@ -41,7 +41,7 @@ export const webinars: readonly Webinar[] = [
     ...testWebinar,
     startDateTime: '2024-03-10T13:00:00.000Z',
     slug: 'always-live',
-    endDateTime: '2024-03-19T19:00:00.000Z',
+    endDateTime: '2077-05-02T19:00:00.000Z',
     playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
@@ -63,7 +63,7 @@ export const webinars: readonly Webinar[] = [
     slug: 'DevTalk-remote-content',
     isVisibleInHome: true,
     isVisibleInList: true,
-    imagePath: '/images/webinar-cover-io-remote-content.png',
+    imagePath: '/images/webinar-cover-io-remote-content.jpg',
     speakers: [
       {
         name: 'Angelo Fiorillo',
