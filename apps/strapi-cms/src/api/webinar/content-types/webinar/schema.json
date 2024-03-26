@@ -49,6 +49,17 @@
       "relation": "manyToMany",
       "target": "api::webinar-speaker.webinar-speaker",
       "inversedBy": "webinars"
+    },
+    "isVisibleInList": {
+      "type": "boolean"
+    },
+    "relatedLinks": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.related-links"
+    },
+    "subscribeParagraphLabel": {
+      "type": "string"
     }
   }
 }
