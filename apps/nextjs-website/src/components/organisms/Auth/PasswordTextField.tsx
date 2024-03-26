@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { MouseEvent, ReactNode, useState } from 'react';
+import { MouseEvent, ReactNode, useMemo, useState } from 'react';
 
 type PasswordTextFieldProps = {
   id: string;
@@ -26,33 +26,22 @@ export const PasswordTextField = ({
   onChange,
 }: PasswordTextFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const endAdornment = useMemo ( () => (
+  const endAdornment = useMemo(
+    () => (
       <InputAdornment position='end'>
-      <IconButton
-        aria-label='toggle password visibility'
-        onClick={handleClickShowPassword}
-        onMouseDown={handleMouseDownPassword}
-        edge='end'
-      >
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-    </InputAdornment>), [showPassword, handleClickShowPassword, handleMouseDownPassword ])
-    <InputAdornment position='end'>
-      <IconButton
-        aria-label='toggle password visibility'
-        onClick={handleClickShowPassword}
-        onMouseDown={handleMouseDownPassword}
-        edge='end'
-      >
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-    </InputAdornment>
+        <IconButton
+          aria-label='toggle password visibility'
+          onClick={() => setShowPassword((show) => !show)}
+          onMouseDown={(event: MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault();
+          }}
+          edge='end'
+        >
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+    [showPassword]
   );
 
   const type = showPassword ? 'text' : 'password';
