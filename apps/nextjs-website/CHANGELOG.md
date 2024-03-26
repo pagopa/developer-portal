@@ -1,5 +1,22 @@
 # nextjs-website
 
+## 0.15.1
+
+### Patch Changes
+
+- 7229d3c: Resize webinar images
+
+## 0.15.0
+
+### Minor Changes
+
+- df04081: Add Webinar "DevTalk - IO Remote Content"
+
+### Patch Changes
+
+- 88c38bd: Add metadata to webinar page
+- 97d1679: [DEV-1545] Add custom PathReporter to improve readability of errors raised by decode
+
 ## 0.14.3
 
 ### Patch Changes
