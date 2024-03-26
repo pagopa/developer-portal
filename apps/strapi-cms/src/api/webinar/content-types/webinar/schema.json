@@ -44,11 +44,11 @@
     "endDatetime": {
       "type": "datetime"
     },
-    "webinarSpeakers": {
+    "webinar_speakers": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::webinar-speaker.webinar-speaker",
-      "mappedBy": "webinar"
+      "inversedBy": "webinars"
     }
   }
 }

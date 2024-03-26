@@ -32,11 +32,11 @@
         "audios"
       ]
     },
-    "webinar": {
+    "webinars": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::webinar.webinar",
-      "inversedBy": "webinarSpeakers"
+      "mappedBy": "webinar_speakers"
     }
   }
 }
