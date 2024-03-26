@@ -32,7 +32,17 @@ export const PasswordTextField = ({
     event.preventDefault();
   };
 
-  const endAdornment = (
+  const endAdornment = useMemo ( () => (
+      <InputAdornment position='end'>
+      <IconButton
+        aria-label='toggle password visibility'
+        onClick={handleClickShowPassword}
+        onMouseDown={handleMouseDownPassword}
+        edge='end'
+      >
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+    </InputAdornment>), [showPassword, handleClickShowPassword, handleMouseDownPassword ])
     <InputAdornment position='end'>
       <IconButton
         aria-label='toggle password visibility'
