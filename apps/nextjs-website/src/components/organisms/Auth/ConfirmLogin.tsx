@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material';
@@ -28,24 +28,41 @@ const ConfirmLogin = ({
   const confirmLogin = useTranslations('auth.confirmLogin');
 
   const { palette } = useTheme();
-  const [submitting, setSubmitting] = useState(false);
   const [code, setCode] = useState<string>('');
-  const [codeError, setCodeError] = useState<boolean>(false);
-  const [emptyCode, setEmptyCode] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Record<string, boolean>>({
+    codeError: false,
+    emptyCode: false,
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleCodeChanged = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (errors) {
+        setErrors({ codeError: false, emptyCode: false });
+      }
+      setCode(e.target.value);
+    },
+    [errors]
+  );
 
   const onConfirmLoginHandler = useCallback(() => {
-    setCodeError(false);
-    setEmptyCode(false);
     setSubmitting(true);
 
     onConfirmLogin(code).catch((e) => {
       if (e.name === 'AuthError') {
-        setEmptyCode(true);
+        setErrors((prev) => ({ ...prev, emptyCode: true }));
       } else if (e.name === 'NotAuthorizedException') {
-        setCodeError(true);
+        setErrors((prev) => ({ ...prev, codeError: true }));
       }
     });
   }, [onConfirmLogin, code]);
+
+  const hasErrors = Object.values(errors).some((error) => error);
+  const helperText = errors.codeError
+    ? confirmLogin('invalidCode')
+    : errors.emptyCode
+    ? confirmLogin('emptyCode')
+    : '';
 
   return (
     <Box
@@ -84,20 +101,14 @@ const ConfirmLogin = ({
             </Typography>
             <Stack spacing={2} mb={4}>
               <TextField
-                variant='outlined'
+                error={hasErrors}
+                helperText={helperText}
                 size='small'
-                onChange={(e) => setCode(e.target.value)}
-                helperText={
-                  codeError
-                    ? confirmLogin('invalidCode')
-                    : emptyCode
-                    ? confirmLogin('emptyCode')
-                    : ''
-                }
-                error={codeError || emptyCode}
                 sx={{
                   backgroundColor: palette.background.paper,
                 }}
+                variant='outlined'
+                onChange={handleCodeChanged}
               />
             </Stack>
             <Stack spacing={4} pt={4} pb={4}>
@@ -113,10 +124,10 @@ const ConfirmLogin = ({
             </Stack>
             {email && (
               <ResendEmail
+                email={email}
                 isLoginCTA={true}
                 resendCode={resendCode}
                 setSubmitting={setSubmitting}
-                email={email}
                 text={confirmLogin('checkJunkMail')}
               />
             )}
