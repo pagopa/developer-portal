@@ -45,6 +45,56 @@ export const webinars: readonly Webinar[] = [
     playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
+    title: 'Esplorando App IO: I messaggi a contenuto remoto',
+    description:
+      'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
+    playerSrc: 'https://vimeo.com/event/3859248/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;"> Esplorando App IO: I messaggi a contenuto remoto
+      </h4> \n` +
+      `<p>Esploriamo il nuovo modello di comunicazione su app IO, che consente nuovi scenari d’uso e nuove esperienze utente grazie alle tecniche di remotizzazione.
+       </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-remote-content.png' /> \n` +
+      `<br /> \n` +
+      `<p>Partendo dall’attuale modello di delivery dei messaggi su IO, analizziamo il nuovo paradigma che prevede la remotizzazione dei contenuti grazie al colloquio in tempo reale tra le infrastrutture di IO e quelle dell’Ente mittente.</br>
+      Approfondiremo gli aspetti architetturali e di processo, focalizzandoci su come IO richiede informazioni all’Ente e su come questo metta a disposizione di IO le proprie risorse. Vedremo nel dettaglio quali componenti del messaggio possono essere remotizzate e in che modo.</br>
+      Analizzeremo un caso d’uso reale, evidenziando i vantaggi per le due tipologie di utenti di IO, gli Enti e ovviamente i Cittadini, come la possibilità di veicolare informazioni sensibili nel pieno rispetto del GDPR e attualizzare il contenuto dei messaggi già inviati.</p>\n`,
+    slug: 'DevTalk-remote-content',
+    isVisibleInHome: true,
+    isVisibleInList: true,
+    imagePath: '/images/webinar-cover-io-remote-content.png',
+    speakers: [
+      {
+        name: 'Angelo Fiorillo',
+        jobTitle: 'Product Owner - IO Comunicazione',
+        description: '',
+        imagePath: '/images/speaker-fiorillo.png',
+      },
+      {
+        name: 'Lorenzo Franceschini',
+        jobTitle: 'Service Manager - Service Management App IO',
+        description: '',
+        imagePath: '/images/speaker-franceschini.png',
+      },
+      {
+        name: 'Demetrio Ferraro',
+        jobTitle: 'Service Manager - Service Management App IO ',
+        description: '',
+        imagePath: '/images/speaker-ferraro.png',
+      },
+    ],
+    startDateTime: '2024-04-02T09:00:00.000Z',
+    endDateTime: '2024-04-02T09:45:00.000Z',
+    subscribeCtaLabel: '',
+    relatedLinks: [
+      {
+        path: `${appIOGuideListsPath.path}/io-guida-tecnica/funzionalita/inviare-un-messaggio/inviare-un-messaggio-a-contenuto-remoto`,
+        name: 'Inviare un messaggio a contenuto remoto',
+      },
+    ],
+  },
+  {
     title:
       'PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND ',
     description:
