@@ -61,8 +61,6 @@ export const EditPasswordForm = ({
         (error) => {
           if (error.code === 'NotAuthorizedException') {
             setErrors({ currentPassword: t('changePassword.wrongPassword') });
-          } else {
-            console.error(error);
           }
         }
       );
