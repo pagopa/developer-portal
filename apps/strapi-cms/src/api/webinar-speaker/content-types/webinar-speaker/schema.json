@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "webinar_authors",
+  "collectionName": "webinar_speakers",
   "info": {
-    "singularName": "webinar-author",
-    "pluralName": "webinar-authors",
-    "displayName": "WebinarAuthor"
+    "singularName": "webinar-speaker",
+    "pluralName": "webinar-speakers",
+    "displayName": "WebinarSpeaker"
   },
   "options": {
     "draftAndPublish": true
@@ -30,11 +30,11 @@
       "type": "media",
       "multiple": false
     },
-    "webinars": {
+    "webinar": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::webinar.webinar",
-      "mappedBy": "webinar_authors"
+      "inversedBy": "webinar_speakers"
     }
   }
 }

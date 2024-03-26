@@ -35,7 +35,7 @@
     "text_content": {
       "type": "blocks"
     },
-    "vimeo_video_id": {
+    "player_src": {
       "type": "string"
     },
     "start_datetime": {
@@ -44,11 +44,11 @@
     "end_datetime": {
       "type": "datetime"
     },
-    "webinar_authors": {
+    "webinar_speakers": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::webinar-author.webinar-author",
-      "inversedBy": "webinars"
+      "relation": "oneToMany",
+      "target": "api::webinar-speaker.webinar-speaker",
+      "mappedBy": "webinar"
     }
   }
 }

@@ -1,9 +1,9 @@
 /**
- * webinar-author service
+ * webinar-speaker service
  */
 
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService(
-  'api::webinar-author.webinar-author'
+  'api::webinar-speaker.webinar-speaker'
 );
