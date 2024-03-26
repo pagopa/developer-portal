@@ -4,7 +4,8 @@
   "info": {
     "singularName": "webinar-speaker",
     "pluralName": "webinar-speakers",
-    "displayName": "WebinarSpeaker"
+    "displayName": "WebinarSpeaker",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -14,27 +15,28 @@
     "name": {
       "type": "string"
     },
-    "job_title": {
+    "jobTitle": {
       "type": "string"
     },
     "description": {
       "type": "blocks"
     },
     "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "webinar": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::webinar.webinar",
-      "inversedBy": "webinar_speakers"
+      "inversedBy": "webinarSpeakers"
     }
   }
 }

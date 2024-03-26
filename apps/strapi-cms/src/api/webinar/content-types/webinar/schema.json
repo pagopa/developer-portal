@@ -15,7 +15,7 @@
     "title": {
       "type": "string"
     },
-    "cover_image": {
+    "coverImage": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -32,19 +32,19 @@
     "slug": {
       "type": "string"
     },
-    "text_content": {
+    "textContent": {
       "type": "blocks"
     },
-    "player_src": {
+    "playerSrc": {
       "type": "string"
     },
-    "start_datetime": {
+    "startDatetime": {
       "type": "datetime"
     },
-    "end_datetime": {
+    "endDatetime": {
       "type": "datetime"
     },
-    "webinar_speakers": {
+    "webinarSpeakers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::webinar-speaker.webinar-speaker",
