@@ -13,6 +13,15 @@
       "type": "blocks",
       "required": false
     },
+    "subheadColor": {
+      "type": "enumeration",
+      "enum": [
+        "contrastText",
+        "main",
+        "light",
+        "dark"
+      ]
+    },
     "titleColor": {
       "type": "enumeration",
       "enum": [
