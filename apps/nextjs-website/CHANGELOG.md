@@ -1,5 +1,23 @@
 # nextjs-website
 
+## 0.15.3
+
+### Patch Changes
+
+- 9bd7fae: Add signup form tests
+- 61648ac: Reset change password form errors on user changes
+- 83fd73c: Reset signup form errors if user updates form
+- 83f9652: Reset change password form errors on user changes
+
+## 0.15.2
+
+### Patch Changes
+
+- 33ed5cd: Handle webinar questions form submit with a combination of keys
+- 6bb0719: Set endDateTime of 'always-live' webinar to year 2077
+- 4279732: Fix cover image of the webinar "Esplorando App IO: I messaggi a contenuto remoto"
+- fc8c838: Reset login code form errors on user changes
+
 ## 0.15.1
 
 ### Patch Changes
