@@ -1,5 +1,31 @@
 # nextjs-website
 
+## 0.15.2
+
+### Patch Changes
+
+- 33ed5cd: Handle webinar questions form submit with a combination of keys
+- 6bb0719: Set endDateTime of 'always-live' webinar to year 2077
+- 4279732: Fix cover image of the webinar "Esplorando App IO: I messaggi a contenuto remoto"
+- fc8c838: Reset login code form errors on user changes
+
+## 0.15.1
+
+### Patch Changes
+
+- 7229d3c: Resize webinar images
+
+## 0.15.0
+
+### Minor Changes
+
+- df04081: Add Webinar "DevTalk - IO Remote Content"
+
+### Patch Changes
+
+- 88c38bd: Add metadata to webinar page
+- 97d1679: [DEV-1545] Add custom PathReporter to improve readability of errors raised by decode
+
 ## 0.14.3
 
 ### Patch Changes
