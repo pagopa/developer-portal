@@ -9,8 +9,23 @@
     "title": {
       "type": "string"
     },
+    "subhead" : {
+      "type": "blocks",
+      "required": false
+    },
+    "subheadColor": {
+      "type": "enumeration",
+      "default": "contrastText",
+      "enum": [
+        "contrastText",
+        "main",
+        "light",
+        "dark"
+      ]
+    },
     "titleColor": {
       "type": "enumeration",
+      "default": "contrastText",
       "enum": [
         "contrastText",
         "main",

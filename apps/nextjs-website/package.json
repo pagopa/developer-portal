@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
@@ -46,6 +46,7 @@
     "swr": "^2.2.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.1",
     "@types/node": "18.16.*",
