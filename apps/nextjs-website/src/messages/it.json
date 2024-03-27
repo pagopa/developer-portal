@@ -123,7 +123,8 @@
             "description": "",
             "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
             "title": {
-                "dontLoseNext": "Non perderti {webinars, plural, =1 {il prossimo} other {i prossimi}} webinar",
+                "dontLoseNext": "Non perderti il prossimo webinar",
+                "dontLoseNextPlural": "Non perderti i prossimi webinar",
                 "next": "I prossimi appuntamenti",
                 "our": "I nostri webinar",
                 "participateTo": "Partecipa ai nostri webinar"

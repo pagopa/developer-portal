@@ -11,7 +11,12 @@ import { useTranslations } from 'next-intl';
 
 export type webinarsSectionProps = {
   link?: { href?: string; label: string };
-  title?: 'dontLoseNext' | 'next' | 'our' | 'participateTo';
+  title?:
+    | 'dontLoseNext'
+    | 'dontLoseNextPlural'
+    | 'next'
+    | 'our'
+    | 'participateTo';
   webinars: Webinar[];
 };
 

@@ -5,6 +5,7 @@ const jestConfig: JestConfigWithTsJest = {
   testMatch: ['**/__tests__/**/*test.+(ts|tsx)'],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
   testEnvironment: 'jsdom',
+  setupFiles: ['dotenv/config'],
   transform: {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
