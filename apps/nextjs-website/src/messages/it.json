@@ -123,13 +123,18 @@
             "description": "",
             "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
             "title": {
-                "dontLoseNext": "Non perderti il prossimo webinar",
+                "dontLoseNext": "Non perderti {webinars, plural, =1 {il prossimo} other {i prossimi}} webinar",
                 "next": "I prossimi appuntamenti",
                 "our": "I nostri webinar",
                 "participateTo": "Partecipa ai nostri webinar"
             }
         },
-        "view": "Visualizza"
+        "view": "Visualizza",
+        "pastWebinars": {
+            "title": "Esplora tutti i webinar",
+            "description": "Approfondisci argomenti legati all'integrazione con i nostri prodotti attraverso la guida e i consigli esperti dei professionisti PagoPA.",
+            "cta": "Vedi tutti"
+        }
     },
     "webinars": {
         "title": "Partecipa agli eventi live e guarda i webinar passati ",

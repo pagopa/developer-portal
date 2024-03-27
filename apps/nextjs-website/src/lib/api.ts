@@ -145,6 +145,37 @@ export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
   return webinars.filter((webinar) => webinar.isVisibleInHome);
 }
 
+export async function getVisibleInHomeFutureWebinars(): Promise<
+  readonly Webinar[]
+> {
+  return webinars.filter((webinar) => {
+    const startDateTimestamp =
+      webinar?.startDateTime && new Date(webinar.startDateTime).getTime();
+
+    return (
+      webinar.isVisibleInHome &&
+      (!startDateTimestamp || startDateTimestamp > new Date().getTime())
+    );
+  });
+}
+
+export async function getVisibleInHomePastWebinars(): Promise<
+  readonly Webinar[]
+> {
+  return webinars
+    .filter((webinar) => {
+      const endDateTimestamp =
+        webinar?.endDateTime && new Date(webinar.endDateTime).getTime();
+
+      return (
+        webinar.isVisibleInHome &&
+        endDateTimestamp &&
+        endDateTimestamp < new Date().getTime()
+      );
+    })
+    .slice(0, 3);
+}
+
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
   return webinars.filter((webinar) => webinar.isVisibleInList);
 }

@@ -6,10 +6,15 @@ import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getVisibleInHomeWebinars } from '@/lib/api';
+import {
+  getVisibleInHomeFutureWebinars,
+  getVisibleInHomePastWebinars,
+  getVisibleInHomeWebinars,
+} from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
+import PastWebinarsShowcase from '@/components/organisms/PastWebinarsShowcase/PastWebinarsShowcase';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -32,6 +37,8 @@ const NotSsrWebinarsSection = dynamic(
 
 const Home = async () => {
   const webinars = await getVisibleInHomeWebinars();
+  const futureWebinars = await getVisibleInHomeFutureWebinars();
+  const pastWebinars = await getVisibleInHomePastWebinars();
   const { header } = translations;
 
   const homepage = await getHomepageProps();
@@ -63,7 +70,13 @@ const Home = async () => {
           logoUrl: product.logo.url,
         }))}
       />
-      <NotSsrWebinarsSection webinars={[...webinars]} />
+
+      <NotSsrWebinarsSection
+        title={'dontLoseNext'}
+        webinars={[...futureWebinars]}
+      />
+      <PastWebinarsShowcase webinars={[...pastWebinars]} />
+
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={[...homepage.comingsoonDocumentation.links]}

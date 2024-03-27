@@ -50,7 +50,7 @@ const WebinarsSection = ({
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box mb={webinars.length ? 6 : 0}>
             <Typography variant='h4' mb={2} color={theme.palette.common.white}>
-              {t(`title.${title}`)}
+              {t(`title.${title}`, { webinars: webinars.length })}
             </Typography>
             <Typography variant='body2' color={theme.palette.common.white}>
               {t('description')}
