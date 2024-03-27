@@ -52,7 +52,7 @@ const FutureWebinarsShowcase = ({
       }}
     >
       <EContainer>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box mb={webinars.length ? 6 : 0}>
             <Typography variant='h4' mb={2} color={theme.palette.common.white}>
               {t(`title.${title}`, { webinars: webinars.length })}
