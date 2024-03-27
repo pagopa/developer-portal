@@ -16,6 +16,7 @@ import { snackbarAutoHideDurationMs } from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
+import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -42,6 +43,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     [webinar.html]
   );
 
+  const textContent = useMemo(
+    () =>
+      webinar.textContent ? (
+        <BlocksRendererClient content={webinar.textContent} />
+      ) : null,
+    [webinar.textContent]
+  );
+
   const speakerList = useMemo(
     () => webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />,
     [webinar.speakers]
@@ -59,17 +68,13 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     [webinar.startInfo]
   );
   const relatedLinks = useMemo(
-    () => (
-      <RelatedLinks
-        title={t('relatedLinksTitle')}
-        links={
-          webinar.relatedLinks?.map(({ path, name }) => ({
-            text: name,
-            href: path,
-          })) || []
-        }
-      />
-    ),
+    () =>
+      webinar.relatedLinks?.title && (
+        <RelatedLinks
+          title={webinar.relatedLinks?.title}
+          links={[...(webinar.relatedLinks?.links || [])]}
+        />
+      ),
     [webinar.relatedLinks]
   );
 
@@ -146,6 +151,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         </SubscribeCta>
       )}
       {html}
+      {textContent}
       {speakerList}
       {startInfo}
       {relatedLinks}
