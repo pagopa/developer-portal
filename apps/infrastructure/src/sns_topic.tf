@@ -1,6 +1,6 @@
 resource "aws_sns_topic" "metric_alarm" {
   name         = "cloudwatch_metric_alarms"
-  display_name = "DevPortal Alarms Topic"
+  display_name = "DevPortal Alarms"
 }
 
 resource "aws_sns_topic_subscription" "metric_alarm" {
