@@ -4,9 +4,9 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
+import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
-import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 
 const ProductCodec = t.strict({
   attributes: t.strict({
