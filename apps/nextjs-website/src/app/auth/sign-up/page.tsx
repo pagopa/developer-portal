@@ -40,11 +40,7 @@ const SignUp = () => {
         setSignUpStep(SignUpSteps.CONFIRM_SIGN_UP);
       })
       .catch((error) => {
-        if (error.code === 'UsernameExistsException') {
-          setUserAlreadyExist(true);
-        } else {
-          setUserAlreadyExist(false);
-        }
+        setUserAlreadyExist(error.code === 'UsernameExistsException');
       })
       .finally(() => {
         setSubmitting(false);

@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Reset signup form errors on user changes
+Reset signup form errors if user updates form

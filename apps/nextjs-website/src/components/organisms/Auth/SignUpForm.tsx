@@ -26,7 +26,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { companyRoles } from '@/_contents/auth';
 import { PasswordTextField } from './PasswordTextField';
-import Policy from './Policy';
+import PoliciesParagraph from './PoliciesParagraph';
 
 const defaults = {
   username: '',
@@ -131,13 +131,13 @@ const SignUpForm = ({
   }, [onSignUp, userData, validateForm]);
 
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = ev.target;
+    const { value, name, type, checked } = ev.target;
 
     setFieldErrors({});
 
     setUserData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -285,6 +285,7 @@ const SignUpForm = ({
                 <FormControlLabel
                   control={
                     <Checkbox
+                      name='mailinglistAccepted'
                       checked={mailinglistAccepted}
                       sx={{ marginTop: '-4px' }}
                       onChange={handleInputChange}
@@ -307,7 +308,7 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={4} pt={2} pb={4}>
                 <Stack direction='row' justifyContent='center'>
-                  <Policy />
+                  <PoliciesParagraph />
                 </Stack>
               </Stack>
             </Box>
