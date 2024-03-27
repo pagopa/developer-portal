@@ -6,14 +6,11 @@ import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import {
-  getFutureWebinars,
-  getPastWebinars,
-  getVisibleInHomeWebinars,
-} from '@/lib/api';
+import { getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl, maxPastWebinarsInHome } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
+import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({

@@ -1,13 +1,5 @@
-import { webinars as contentWebinars } from '@/_contents/webinars';
-import {
-  getFutureWebinars,
-  getPastWebinars,
-  getVisibleInHomeWebinars,
-  getVisibleInListWebinars,
-  getWebinar,
-  getWebinars,
-} from '../api';
-import { Webinar } from '../types/webinar';
+import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import { Webinar } from '@/lib/types/webinar';
 
 const testWebinar: Webinar = {
   title: 'Test Webinar',
@@ -50,24 +42,7 @@ const webinars: readonly Webinar[] = [
   },
 ];
 
-xdescribe('getWebinars', () => {
-  it('should return all webinars', async () => {
-    expect(await getWebinars()).toStrictEqual(contentWebinars);
-  });
-});
-
-xdescribe('getVisibleInHomeWebinars', () => {
-  it('should return only webinars visible in home', async () => {
-    const visibleInHomeWebinars = contentWebinars.filter(
-      (webinar) => webinar.isVisibleInHome
-    );
-    expect(await getVisibleInHomeWebinars()).toStrictEqual(
-      visibleInHomeWebinars
-    );
-  });
-});
-
-xdescribe('getFutureWebinars', () => {
+describe('getFutureWebinars', () => {
   it('should return only future webinars', () => {
     expect(getFutureWebinars(webinars)).toStrictEqual([
       {
@@ -78,7 +53,7 @@ xdescribe('getFutureWebinars', () => {
   });
 });
 
-xdescribe('getPastWebinars', () => {
+describe('getPastWebinars', () => {
   it('should return only past webinars', () => {
     expect(getPastWebinars(webinars)).toStrictEqual([
       {
@@ -90,29 +65,5 @@ xdescribe('getPastWebinars', () => {
         startDateTime: '2022-01-01T08:30:00.000Z',
       },
     ]);
-  });
-});
-
-xdescribe('getVisibleInListWebinars', () => {
-  it('should return only webinars visible in list', async () => {
-    const visibleInListWebinars = contentWebinars.filter(
-      (webinar) => webinar.isVisibleInList
-    );
-    expect(await getVisibleInListWebinars()).toStrictEqual(
-      visibleInListWebinars
-    );
-  });
-});
-
-xdescribe('getWebinar', () => {
-  it('should return a webinar by slug', async () => {
-    const webinar = contentWebinars[0];
-    const slug = webinar.slug;
-    expect(await getWebinar(slug)).toStrictEqual(webinar);
-  });
-
-  it('should throw an error if the webinar does not exist', async () => {
-    const slug = 'not-exist';
-    expect(await getWebinar(slug)).toThrow('Failed to fetch data');
   });
 });
