@@ -54,10 +54,10 @@ const WebinarQuestionsTemplate = ({
       (question) => !question.highlightedBy
     );
 
-    const updateLocalQuestions = (
+    const updateLocalQuestionsByDate = (
       createdAt: Date,
-      highlight: boolean,
-      hide: boolean
+      updateHighlight: boolean,
+      updateHide: boolean
     ) => {
       setQuestions((oldQuestions) =>
         oldQuestions.map((oldQuestion) => {
@@ -66,8 +66,8 @@ const WebinarQuestionsTemplate = ({
             oldQuestion.id.createdAt.toISOString()
             ? {
                 ...oldQuestion,
-                hiddenBy: hide ? userName : undefined,
-                highlightedBy: highlight ? userName : undefined,
+                hiddenBy: updateHide ? userName : undefined,
+                highlightedBy: updateHighlight ? userName : undefined,
               }
             : oldQuestion;
         })
@@ -97,7 +97,7 @@ const WebinarQuestionsTemplate = ({
           >
             <Grid key={'notHighlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
-                updateLocalQuestions={updateLocalQuestions}
+                updateLocalQuestions={updateLocalQuestionsByDate}
                 userName={userName}
                 questions={notHighlightedQuestions}
                 title={t('title.questions')}
@@ -105,7 +105,7 @@ const WebinarQuestionsTemplate = ({
             </Grid>
             <Grid key={'highlightedQuestions'} item xs={12} md={6}>
               <WebinarQuestionsTable
-                updateLocalQuestions={updateLocalQuestions}
+                updateLocalQuestions={updateLocalQuestionsByDate}
                 userName={userName}
                 questions={highlightedQuestions}
                 title={t('title.highlightedQuestions')}
