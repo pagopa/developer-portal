@@ -52,6 +52,13 @@ const CallToActionCodec = t.strict({
 const HeroSlideCodec = t.strict({
   title: t.string,
   subhead: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+  subheadColor: t.union([
+    NullToUndefinedCodec,
+    t.literal('contrastText'),
+    t.literal('main'),
+    t.literal('light'),
+    t.literal('dark'),
+  ]),
   callToAction: t.union([NullToUndefinedCodec, CallToActionCodec]),
   titleColor: t.union([
     NullToUndefinedCodec,

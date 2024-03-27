@@ -49,6 +49,7 @@ const makeStrapiResponseJson = () => ({
         {
           id: 1,
           title: 'aText',
+          subheadColor: 'contrastText',
           subhead: [
             {
               type: 'paragraph',
@@ -391,6 +392,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           title: 'aText',
           titleColor: 'contrastText',
           subhead: null,
+          subheadColor: null,
           callToAction: {
             id: 1,
             variant: 'text',
@@ -409,6 +411,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           titleColor: null,
           callToAction: null,
           subhead: null,
+          subheadColor: null,
           backgroundImage: {
             data: {
               id: 2,
