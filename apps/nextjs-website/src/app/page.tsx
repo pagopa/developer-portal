@@ -64,7 +64,7 @@ const Home = async () => {
         }))}
       />
 
-      <NotSsrWebinarsSection webinars={webinars} />
+      <NotSsrWebinarsSection webinars={[...webinars]} />
 
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}

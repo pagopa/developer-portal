@@ -4,7 +4,7 @@ import PastWebinarsShowcase from '../PastWebinarsShowcase/PastWebinarsShowcase';
 import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
 
 type WebinarsSectionProps = {
-  readonly webinars: Webinar[];
+  webinars: Webinar[];
 };
 
 const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
