@@ -41,15 +41,6 @@
         }
       }
     },
-    "description": {
-      "type": "blocks",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": true
-    },
     "slug": {
       "type": "string",
       "pluginOptions": {
@@ -124,6 +115,15 @@
           "localized": true
         }
       }
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text",
+      "required": true
     }
   }
 }
