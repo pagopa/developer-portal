@@ -31,14 +31,17 @@ const webinars: readonly Webinar[] = [
   {
     ...testWebinar,
     startDateTime: '2022-01-01T08:30:00.000Z',
+    endDateTime: '2022-01-01T09:30:00.000Z',
   },
   {
     ...testWebinar,
     startDateTime: '2024-03-04T08:30:00.000Z',
+    endDateTime: '2024-03-04T09:30:00.000Z',
   },
   {
     ...testWebinar,
     startDateTime: '2099-01-01T08:30:00.000Z',
+    endDateTime: '2099-01-01T09:30:00.000Z',
   },
 ];
 
@@ -48,6 +51,7 @@ describe('getFutureWebinars', () => {
       {
         ...testWebinar,
         startDateTime: '2099-01-01T08:30:00.000Z',
+        endDateTime: '2099-01-01T09:30:00.000Z',
       },
     ]);
   });
@@ -59,10 +63,12 @@ describe('getPastWebinars', () => {
       {
         ...testWebinar,
         startDateTime: '2024-03-04T08:30:00.000Z',
+        endDateTime: '2024-03-04T09:30:00.000Z',
       },
       {
         ...testWebinar,
         startDateTime: '2022-01-01T08:30:00.000Z',
+        endDateTime: '2022-01-01T09:30:00.000Z',
       },
     ]);
   });

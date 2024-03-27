@@ -8,9 +8,8 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
-import { baseUrl, maxPastWebinarsInHome } from '@/config';
+import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
-import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -31,19 +30,8 @@ const NotSsrWebinarsSection = dynamic(
   { ssr: false }
 );
 
-const NotSsrPastWebinarsShowcase = dynamic(
-  () =>
-    import('@/components/organisms/PastWebinarsShowcase/PastWebinarsShowcase'),
-  { ssr: false }
-);
-
 const Home = async () => {
   const webinars = await getVisibleInHomeWebinars();
-  const futureWebinars = getFutureWebinars(webinars);
-  const pastWebinars = getPastWebinars(webinars).slice(
-    0,
-    maxPastWebinarsInHome
-  );
   const { header } = translations;
 
   const homepage = await getHomepageProps();
@@ -76,13 +64,7 @@ const Home = async () => {
         }))}
       />
 
-      <NotSsrWebinarsSection
-        title={
-          futureWebinars.length > 1 ? 'dontLoseNextPlural' : 'dontLoseNext'
-        }
-        webinars={[...futureWebinars]}
-      />
-      <NotSsrPastWebinarsShowcase webinars={[...pastWebinars]} />
+      <NotSsrWebinarsSection webinars={webinars} />
 
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
