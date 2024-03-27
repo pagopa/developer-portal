@@ -2,6 +2,7 @@ import type { JestConfigWithTsJest } from 'ts-jest';
 
 const jestConfig: JestConfigWithTsJest = {
   roots: ['<rootDir>/src'],
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testMatch: ['**/__tests__/**/*test.+(ts|tsx)'],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
   testEnvironment: 'jsdom',
