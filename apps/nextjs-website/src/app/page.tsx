@@ -63,9 +63,7 @@ const Home = async () => {
           logoUrl: product.logo.url,
         }))}
       />
-
       <NotSsrWebinarsSection webinars={[...webinars]} />
-
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
         links={[...homepage.comingsoonDocumentation.links]}
