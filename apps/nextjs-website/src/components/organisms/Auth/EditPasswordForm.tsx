@@ -1,15 +1,15 @@
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { Stack, Typography } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { PasswordTextField } from './PasswordTextField';
 import { useTranslations } from 'next-intl';
 import { passwordMatcher } from '@/helpers/auth.helpers';
 
 type EditPasswordFormProps = {
-  onSave: (oldPassword: string, newPassword: string) => Promise<void>;
   // eslint-disable-next-line functional/no-return-void
   onCancel: () => void;
+  onSave: (oldPassword: string, newPassword: string) => Promise<void>;
 };
 
 type Passwords = {
@@ -30,7 +30,7 @@ export const EditPasswordForm = ({
     passwordConfirm: '',
   });
 
-  const validateForm = useCallback(() => {
+  const validateForm = () => {
     const { currentPassword, newPassword, passwordConfirm } = passwords;
     // eslint-disable-next-line functional/no-let
     let err = {};
@@ -46,27 +46,25 @@ export const EditPasswordForm = ({
     }
 
     setErrors(err);
-    const hasErrors = Object.keys(err).length > 0;
-    return !hasErrors;
-  }, [passwords, t]);
+    return Object.keys(err).length === 0;
+  };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value, name },
-    } = event;
-
+    const { value, name } = event.target;
+    setErrors({});
     setPasswords((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = () => {
-    if (!validateForm()) return;
-    onSave(passwords.currentPassword, passwords.newPassword).catch((error) => {
-      if (error.code === 'NotAuthorizedException') {
-        setErrors({ currentPassword: t('changePassword.wrongPassword') });
-      } else {
-        console.error(error);
-      }
-    });
+    if (validateForm()) {
+      onSave(passwords.currentPassword, passwords.newPassword).catch(
+        (error) => {
+          if (error.code === 'NotAuthorizedException') {
+            setErrors({ currentPassword: t('changePassword.wrongPassword') });
+          }
+        }
+      );
+    }
   };
 
   const actions = (
