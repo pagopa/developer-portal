@@ -57,7 +57,8 @@
           "localized": true
         }
       },
-      "required": true
+      "required": true,
+      "regex": "^[a-zA-Z0-9-]+$"
     },
     "textContent": {
       "type": "blocks",
