@@ -10,8 +10,8 @@ import {
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
-import { webinars } from '@/_contents/webinars';
 import { GuidePage } from './types/guideData';
+import { getWebinarsProps } from './cmsApi';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -137,18 +137,22 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
+//TODO: remove this fallback when both of this tasks https://pagopa.atlassian.net/browse/DEV-1557 and https://pagopa.atlassian.net/browse/DEV-1524 are resolved
 export async function getWebinars(): Promise<readonly Webinar[]> {
-  return webinars;
+  return await getWebinarsProps();
 }
 
+//TODO: should be removed when this task https://pagopa.atlassian.net/browse/DEV-1524
 export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
-  return webinars.filter((webinar) => webinar.isVisibleInHome);
+  return (await getWebinars()).filter((webinar) => webinar.isVisibleInHome);
 }
 
+//TODO: should filter webinar when fetching data like suggest in this task https://pagopa.atlassian.net/browse/DEV-1557
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
-  return webinars.filter((webinar) => webinar.isVisibleInList);
+  return (await getWebinars()).filter((webinar) => webinar.isVisibleInList);
 }
 
+//TODO: Strapi should allow to get single webinar using :slug instead of :id https://pagopa.atlassian.net/browse/DEV-1558
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
     (await getWebinars()).find(({ slug }) => slug === webinarSlug)
