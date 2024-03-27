@@ -15,9 +15,7 @@ const BlocksRendererClient = ({
 
   if (!content) return null;
 
-  const textColor = color
-    ? palette.primary[color]
-    : palette.primary.contrastText;
+  const textColor = color ? palette.primary[color] : palette.text.primary;
 
   return (
     <BlocksRenderer
