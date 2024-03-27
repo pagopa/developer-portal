@@ -23,6 +23,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
+    "strapi-plugin-sso": "^0.4.4",
     "strapi-plugin-update-static-content": "^1.0.8",
     "styled-components": "^5.3.11"
   },
