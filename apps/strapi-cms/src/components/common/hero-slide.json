@@ -25,6 +25,7 @@
     },
     "titleColor": {
       "type": "enumeration",
+      "default": "contrastText",
       "enum": [
         "contrastText",
         "main",
