@@ -36,6 +36,9 @@ data "template_file" "cms_app" {
     target_branch        = "main"
     github_pat           = module.secret_cms_github_pat.ssm_parameter_arn
     log_group            = module.cms_log_group.cloudwatch_log_group_name
+    google_gsuite_hd           = module.secret_cms_google_gsuite_hd.ssm_parameter_arn
+    google_oauth_client_id     = module.secret_cms_google_oauth_client_id.ssm_parameter_arn
+    google_oauth_client_secret = module.secret_cms_google_oauth_client_secret.ssm_parameter_arn
   }
 }
 
