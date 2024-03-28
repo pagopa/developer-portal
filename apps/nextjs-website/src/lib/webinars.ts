@@ -21,6 +21,7 @@ export function makeWebinarsProps(
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
       endDateTime: webinar.attributes.endDatetime?.toISOString(),
       subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
+      //TODO: should be removed when this task https://pagopa.atlassian.net/browse/DEV-1524
       isVisibleInHome: false,
       imagePath: webinar.attributes.coverImage.data.attributes.url,
     })),
