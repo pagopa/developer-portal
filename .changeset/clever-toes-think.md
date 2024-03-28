@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Change in subtitle for webinar
+Change the subtitle of "Esplorando App IO: I messaggi a contenuto remoto" webinar
