@@ -10,8 +10,8 @@ import {
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
-import { webinars } from '@/_contents/webinars';
 import { GuidePage } from './types/guideData';
+import { getWebinarsProps } from './cmsApi';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -137,21 +137,21 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-export async function getWebinars(): Promise<readonly Webinar[]> {
-  return webinars;
-}
-
 export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
-  return webinars.filter((webinar) => webinar.isVisibleInHome);
+  return (await getWebinarsProps()).filter(
+    (webinar) => webinar.isVisibleInHome
+  );
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
-  return webinars.filter((webinar) => webinar.isVisibleInList);
+  return (await getWebinarsProps()).filter(
+    (webinar) => webinar.isVisibleInList
+  );
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinars()).find(({ slug }) => slug === webinarSlug)
+    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
   );
   return props;
 }

@@ -4,31 +4,9 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-
-const LinkCodec = t.strict({
-  text: t.string,
-  href: t.string,
-  target: t.union([
-    NullToUndefinedCodec,
-    t.literal('_self'),
-    t.literal('_blank'),
-    t.literal('_parent'),
-    t.literal('_top'),
-  ]),
-});
-
-const MediaCodec = t.strict({
-  attributes: t.strict({
-    name: t.string,
-    alternativeText: t.union([t.null, t.string]),
-    caption: t.union([t.null, t.string]),
-    width: t.number,
-    height: t.number,
-    ext: t.string,
-    mime: t.string,
-    url: t.string,
-  }),
-});
+import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
+import { MediaCodec } from './codecs/MediaCodec';
+import { LinkCodec } from './codecs/LinkCodec';
 
 const ProductCodec = t.strict({
   attributes: t.strict({
@@ -85,10 +63,7 @@ const NewsItemCodec = t.strict({
 export const StrapiHomepageCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
-      comingsoonDocumentation: t.type({
-        title: t.string,
-        links: t.array(LinkCodec),
-      }),
+      comingsoonDocumentation: RelatedLinksCodec,
       heroSlider: t.array(HeroSlideCodec),
       newsShowcase: t.union([
         t.null,
