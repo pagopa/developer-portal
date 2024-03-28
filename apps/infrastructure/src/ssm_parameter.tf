@@ -117,8 +117,8 @@ module "secret_cms_github_pat" {
 module "secret_cms_google_oauth_client_id" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
-  name                 = "/cms/google_oauth_client_id"
-  value                = "update-me"
+  name  = "/cms/google_oauth_client_id"
+  value = "update-me"
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
 }
@@ -126,9 +126,9 @@ module "secret_cms_google_oauth_client_id" {
 module "secret_cms_google_oauth_client_secret" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
-  name                 = "/cms/google_oauth_client_secret"
-  value                = ""
-  secure_type          = true
+  name        = "/cms/google_oauth_client_secret"
+  value       = ""
+  secure_type = true
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
 }
@@ -136,8 +136,8 @@ module "secret_cms_google_oauth_client_secret" {
 module "secret_cms_google_gsuite_hd" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
-  name                 = "/cms/google_gsuite_hd"
-  value                = ""
+  name  = "/cms/google_gsuite_hd"
+  value = ""
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
 }
