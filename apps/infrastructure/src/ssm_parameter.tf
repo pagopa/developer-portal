@@ -138,8 +138,10 @@ module "secret_cms_google_oauth_client_secret" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
   name                 = "/cms/google_oauth_client_secret"
-  value                = random_password.cms_google_oauth_client_secret.result
+  value                = ""
   secure_type          = true
+  # Ignore changes to value, because the value is updated manually
+  ignore_value_changes = "true"
 }
 
 resource "random_password" "cms_google_gsuite_hd" {
