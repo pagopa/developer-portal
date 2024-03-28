@@ -55,6 +55,11 @@
         }
       },
       "component": "common.hero-slide"
+    },
+    "pinned_webinars": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::webinar.webinar"
     }
   }
 }
