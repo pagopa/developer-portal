@@ -1,6 +1,8 @@
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
+import { Webinar } from './types/webinar';
+import { webinars } from '@/_contents/webinars';
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
@@ -49,6 +51,7 @@ export type HomepageProps = {
       readonly href: string;
     }[];
   };
+  readonly webinars: readonly Webinar[];
 };
 
 type StaticHomepage = typeof translations.homepage;
@@ -94,6 +97,15 @@ export const makeHomepageProps = (
       })
     ),
   },
+  webinars: strapiHomepage.data.attributes.webinars.map((webinar) => ({
+    ...webinar.attributes,
+    isVisibleInHome: true,
+    imagePath: webinar.attributes.coverImage.data.attributes.url,
+    speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
+      ...speaker.attributes,
+      avatar: speaker.attributes.avatar.data?.attributes,
+    })),
+  })),
 });
 
 export const makeHomepagePropsFromStatic = (
@@ -103,4 +115,5 @@ export const makeHomepagePropsFromStatic = (
   newsShowcase: staticHomepage.newsShowcase,
   productsShowcase: staticHomepage.productsShowcase,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
+  webinars: webinars.filter((webinar) => webinar.isVisibleInHome),
 });

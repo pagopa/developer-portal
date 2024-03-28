@@ -18,7 +18,7 @@ const WebinarSpeakerCodec = t.strict({
   }),
 });
 
-const WebinarCodec = t.strict({
+export const WebinarCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,

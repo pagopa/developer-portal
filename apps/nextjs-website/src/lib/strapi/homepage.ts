@@ -7,6 +7,7 @@ import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
+import { WebinarCodec } from './webinars';
 
 const ProductCodec = t.strict({
   attributes: t.strict({
@@ -80,6 +81,7 @@ export const StrapiHomepageCodec = t.strict({
           data: t.array(ProductCodec),
         }),
       }),
+      webinars: t.array(WebinarCodec),
     }),
   }),
 });
@@ -100,6 +102,13 @@ const makeStrapiHomepagePopulate = () =>
       },
       productsShowcase: {
         populate: ['products.logo'],
+      },
+      webinars: {
+        populate: [
+          'coverImage.image',
+          'relatedLinks.links',
+          'webinarSpeakers.avatar',
+        ],
       },
     },
   });
