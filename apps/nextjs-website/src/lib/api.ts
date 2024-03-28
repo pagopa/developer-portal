@@ -137,22 +137,21 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-//TODO: remove this fallback when both of this tasks https://pagopa.atlassian.net/browse/DEV-1557 and https://pagopa.atlassian.net/browse/DEV-1524 are resolved
-export async function getWebinars(): Promise<readonly Webinar[]> {
-  return await getWebinarsProps();
-}
-
 export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinars()).filter((webinar) => webinar.isVisibleInHome);
+  return (await getWebinarsProps()).filter(
+    (webinar) => webinar.isVisibleInHome
+  );
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinars()).filter((webinar) => webinar.isVisibleInList);
+  return (await getWebinarsProps()).filter(
+    (webinar) => webinar.isVisibleInList
+  );
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinars()).find(({ slug }) => slug === webinarSlug)
+    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
   );
   return props;
 }
