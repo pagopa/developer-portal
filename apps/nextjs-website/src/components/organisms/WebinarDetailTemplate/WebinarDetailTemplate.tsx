@@ -43,12 +43,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     [webinar.html]
   );
 
-  const textContent = useMemo(
+  const bodyContent = useMemo(
     () =>
-      webinar.textContent ? (
-        <BlocksRendererClient content={webinar.textContent} />
+      webinar.bodyContent ? (
+        <BlocksRendererClient content={webinar.bodyContent} />
       ) : null,
-    [webinar.textContent]
+    [webinar.bodyContent]
   );
 
   const speakerList = useMemo(
@@ -151,7 +151,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         </SubscribeCta>
       )}
       {html}
-      {textContent}
+      {bodyContent}
       {speakerList}
       {startInfo}
       {relatedLinks}
