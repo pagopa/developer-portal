@@ -55,7 +55,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Esploriamo il nuovo modello di comunicazione su app IO, che consente nuovi scenari d’uso e nuove esperienze utente grazie alle tecniche di remotizzazione.
        </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-remote-content.png' /> \n` +
+      `<img style="height: auto;max-width: 820px" src='/images/webinar-io-remote-content.png' /> \n` +
       `<br /> \n` +
       `<p>Partendo dall’attuale modello di delivery dei messaggi su IO, analizziamo il nuovo paradigma che prevede la remotizzazione dei contenuti grazie al colloquio in tempo reale tra le infrastrutture di IO e quelle dell’Ente mittente.</br>
       Approfondiremo gli aspetti architetturali e di processo, focalizzandoci su come IO richiede informazioni all’Ente e su come questo metta a disposizione di IO le proprie risorse. Vedremo nel dettaglio quali componenti del messaggio possono essere remotizzate e in che modo.</br>
@@ -105,7 +105,7 @@ export const webinars: readonly Webinar[] = [
       `<p>Come semplificare ed efficientare la gestione delle multe con PagoPA? </br> In questo appuntamento saranno illustrati tutti i passaggi utili per la costruzione di un servizio pienamente digitale ed efficiente attraverso l’utilizzo sinergico di pagoPA, IO e SEND. Il webinar ha l’obiettivo infatti di fornire tutti i chiarimenti e gli strumenti utili per una corretta e virtuosa gestione digitale del servizio multe attraverso l’utilizzo integrato delle piattaforme di PagoPA.
        </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-pago-pa-multe.jpg' /> \n` +
+      `<img style="height: auto;max-width: 820px" src='/images/webinar-pago-pa-multe.jpg' /> \n` +
       `<br /> \n` +
       `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
     slug: 'PagoPA-multe',
@@ -158,13 +158,13 @@ export const webinars: readonly Webinar[] = [
       `<h4 style="font-weight: 600; font-size: 24px;">Tutto quello che serve per integrarsi con le nuove API</h4> \n` +
       `<p>Durante il webinar, approfondiremo la creazione, l'invio di un servizio e la gestione di scenari comuni, come "Ho creato un servizio e lo vedo in stato di bozza. Cosa devo fare?". Partecipate a questo webinar per ottenere una comprensione approfondita e per imparare a gestire in modo efficace il ciclo di vita dei vostri servizi su IO. </p> \n` +
       `<br /> \n` +
-      `<img style="height: auto;max-width: 100%" src='/images/webinar-io-sm.png' /> \n` +
+      `<img style="height: auto;max-width: 820px" src='/images/webinar-io-sm.jpg' /> \n` +
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
     isVisibleInHome: false,
     isVisibleInList: true,
-    imagePath: '/images/webinar-cover-nuove-api-io.png',
+    imagePath: '/images/webinar-cover-nuove-api-io.jpg',
     speakers: [
       {
         name: 'Ivan Diana',
