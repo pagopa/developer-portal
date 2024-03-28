@@ -97,7 +97,7 @@ export const makeHomepageProps = (
       })
     ),
   },
-  webinars: strapiHomepage.data.attributes.webinars.map((webinar) => ({
+  webinars: strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
     ...webinar.attributes,
     isVisibleInHome: true,
     imagePath: webinar.attributes.coverImage.data.attributes.url,

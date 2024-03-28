@@ -81,7 +81,7 @@ export const StrapiHomepageCodec = t.strict({
           data: t.array(ProductCodec),
         }),
       }),
-      webinars: t.array(WebinarCodec),
+      webinars: t.strict({ data: t.array(WebinarCodec) }),
     }),
   }),
 });
