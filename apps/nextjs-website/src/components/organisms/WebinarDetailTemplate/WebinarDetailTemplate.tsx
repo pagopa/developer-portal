@@ -46,7 +46,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const bodyContent = useMemo(
     () =>
       webinar.bodyContent ? (
-        <BlocksRendererClient content={webinar.bodyContent} />
+        <EContainer>
+          <BlocksRendererClient content={webinar.bodyContent} />
+        </EContainer>
       ) : null,
     [webinar.bodyContent]
   );
