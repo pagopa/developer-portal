@@ -3,13 +3,13 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type Webinar = {
   readonly description: string;
-  // Use textContent instead, remove when webinars will be managed by Strapi
+  // Use bodyContent instead, remove when webinars will be managed by Strapi
   // (remove it when both of this tasks
   // https://pagopa.atlassian.net/browse/DEV-1557 and
   // https://pagopa.atlassian.net/browse/DEV-1524 are resolved)
   /** @deprecated */
   readonly html?: string;
-  readonly textContent?: BlocksContent;
+  readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
   readonly speakers: readonly Speaker[];
   readonly startDateTime?: string;
