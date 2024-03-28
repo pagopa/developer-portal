@@ -56,7 +56,7 @@
       },
       "component": "common.hero-slide"
     },
-    "pinned_webinars": {
+    "webinars": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::webinar.webinar"
