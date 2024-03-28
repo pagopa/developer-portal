@@ -32,7 +32,7 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
               name={speaker.name}
               description={speaker.description}
               jobTitle={speaker.jobTitle}
-              imagePath={speaker.imagePath}
+              avatar={speaker.avatar}
               compactMode={false}
             />
           ))}

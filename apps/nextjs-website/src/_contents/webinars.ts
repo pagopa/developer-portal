@@ -2,6 +2,22 @@ import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
+function imageFromPath(
+  imagePath: string
+): Required<Webinar['speakers'][0]['avatar']> {
+  // eslint-disable-next-line functional/immutable-data
+  const ext = imagePath.split('.').pop();
+  return {
+    name: imagePath,
+    alternativeText: null,
+    width: 400,
+    height: 400,
+    ext: `.${ext}`,
+    mime: `image/${ext}`,
+    url: imagePath,
+  };
+}
+
 const testWebinar: Webinar = {
   title: 'Test Webinar',
   description: 'Questo è un webinar di test',
@@ -20,12 +36,6 @@ const testWebinar: Webinar = {
   startDateTime: '2024-03-14T08:30:00.000Z',
   endDateTime: '2024-03-14T09:30:00.000Z',
   subscribeCtaLabel: '',
-  relatedLinks: [
-    {
-      path: `#`,
-      name: 'Lorem ipsum dolor sit amet',
-    },
-  ],
 };
 
 export const webinars: readonly Webinar[] = [
@@ -50,7 +60,7 @@ export const webinars: readonly Webinar[] = [
       'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
     playerSrc: 'https://vimeo.com/event/3859248/embed',
     html:
-      `<h4 style="font-weight: 600; font-size: 24px;"> Esplorando App IO: I messaggi a contenuto remoto
+      `<h4 style="font-weight: 600; font-size: 24px;"> Un nuovo modello di comunicazione su App IO: I messaggi a contenuto remoto
       </h4> \n` +
       `<p>Esploriamo il nuovo modello di comunicazione su app IO, che consente nuovi scenari d’uso e nuove esperienze utente grazie alle tecniche di remotizzazione.
        </p> \n` +
@@ -68,31 +78,31 @@ export const webinars: readonly Webinar[] = [
       {
         name: 'Angelo Fiorillo',
         jobTitle: 'Product Owner - IO Comunicazione',
-        description: '',
-        imagePath: '/images/speaker-fiorillo.png',
+        avatar: imageFromPath('/images/speaker-fiorillo.png'),
       },
       {
         name: 'Lorenzo Franceschini',
         jobTitle: 'Service Manager - Service Management App IO',
-        description: '',
-        imagePath: '/images/speaker-franceschini.png',
+        avatar: imageFromPath('/images/speaker-franceschini.png'),
       },
       {
         name: 'Demetrio Ferraro',
         jobTitle: 'Service Manager - Service Management App IO ',
-        description: '',
-        imagePath: '/images/speaker-ferraro.png',
+        avatar: imageFromPath('/images/speaker-ferraro.png'),
       },
     ],
     startDateTime: '2024-04-02T09:00:00.000Z',
     endDateTime: '2024-04-02T09:45:00.000Z',
     subscribeCtaLabel: '',
-    relatedLinks: [
-      {
-        path: `${appIOGuideListsPath.path}/io-guida-tecnica/funzionalita/inviare-un-messaggio/inviare-un-messaggio-a-contenuto-remoto`,
-        name: 'Inviare un messaggio a contenuto remoto',
-      },
-    ],
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'Inviare un messaggio a contenuto remoto',
+          href: `${appIOGuideListsPath.path}/io-guida-tecnica/funzionalita/inviare-un-messaggio/inviare-un-messaggio-a-contenuto-remoto`,
+        },
+      ],
+    },
   },
   {
     title:
@@ -116,38 +126,37 @@ export const webinars: readonly Webinar[] = [
       {
         name: 'Gloriana Cimmino',
         jobTitle: 'Direttore Dipartimento Mercato PA e Imprese',
-        description: '',
-        imagePath: '/images/speaker-cimmino.png',
+        avatar: imageFromPath('/images/speaker-cimmino.png'),
       },
       {
         name: 'Federica Amoroso',
         jobTitle: 'Senior Account Manager',
-        description: '',
-        imagePath: '/images/speaker-amoroso.png',
+        avatar: imageFromPath('/images/speaker-amoroso.png'),
       },
       {
         name: 'Jacopo Pompilii',
         jobTitle: 'UX Design Lead',
-        description: '',
-        imagePath: '/images/speaker-pompilii.png',
+        avatar: imageFromPath('/images/speaker-pompilii.png'),
       },
       {
         name: 'Gianpiero Zaffi Borgetti',
         jobTitle:
           'Responsabile area ICT e Servizi ai Comuni, IFEL Fondazione ANCI',
-        description: '',
-        imagePath: '/images/speaker-zaffi-borgetti.png',
+        avatar: imageFromPath('/images/speaker-zaffi-borgetti.png'),
       },
     ],
     startDateTime: '2024-03-20T09:00:00.000Z',
     endDateTime: '2024-03-20T10:00:00.000Z',
     subscribeCtaLabel: '',
-    relatedLinks: [
-      {
-        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
-        name: 'I modelli dei servizi più frequenti: Multe per violazione codice della strada',
-      },
-    ],
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'I modelli dei servizi più frequenti: Multe per violazione codice della strada',
+          href: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
+        },
+      ],
+    },
   },
   {
     title: 'Esplorando App IO: Le nuove API dei Servizi',
@@ -169,23 +178,50 @@ export const webinars: readonly Webinar[] = [
       {
         name: 'Ivan Diana',
         jobTitle: 'Engineering Manager',
-        description:
-          'Engineering leader appassionato, metto al primo posto le persone e poi la tecnologia',
-        imagePath: '/images/speaker-diana.png',
+        description: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Engineering leader appassionato, metto al primo posto le persone e poi la tecnologia',
+              },
+            ],
+          },
+        ],
+        avatar: imageFromPath('/images/speaker-diana.png'),
       },
       {
         name: 'Lorenzo Franceschini',
         jobTitle: 'Software Engineer - Service Management App IO',
-        description:
-          'Sviluppatore con esperienza decennale, formatore per passione. Mi piace il confronto costruttivo e la possibilità di insegnare e apprendere dagli altri',
-        imagePath: '/images/speaker-franceschini.png',
+        description: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Sviluppatore con esperienza decennale, formatore per passione. Mi piace il confronto costruttivo e la possibilità di insegnare e apprendere dagli altri',
+              },
+            ],
+          },
+        ],
+        avatar: imageFromPath('/images/speaker-franceschini.png'),
       },
       {
         name: 'Demetrio Ferraro',
         jobTitle: 'Operations Specialist - Service Management App IO ',
-        description:
-          'Customer specialist execution ho fatto della trasversalità e complementarità il mio punto forte',
-        imagePath: '/images/speaker-ferraro.png',
+        description: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Customer specialist execution ho fatto della trasversalità e complementarità il mio punto forte',
+              },
+            ],
+          },
+        ],
+        avatar: imageFromPath('/images/speaker-ferraro.png'),
       },
     ],
     startDateTime: '2023-12-14T10:00:00.000Z',
@@ -214,19 +250,22 @@ export const webinars: readonly Webinar[] = [
         },
       ],
     },
-    relatedLinks: [
-      {
-        path: `${appIOGuideListsPath.path}/supporto-agli-enti`,
-        name: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
-      },
-      {
-        path: 'https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FKkqRR4GLnQtJ04He1afT%2FAccordo%20Base%20di%20Adesione%20App%20IO_Standard_Ver.2.4.16_1_2023.docx.pdf?alt=media',
-        name: 'Scarica il contratto di adesione a IO',
-      },
-      {
-        path: `${appIOGuideListsPath.path}/kit-comunicazione`,
-        name: 'Leggi kit di comunicazione',
-      },
-    ],
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
+          href: `${appIOGuideListsPath.path}/supporto-agli-enti`,
+        },
+        {
+          text: 'Scarica il contratto di adesione a IO',
+          href: 'https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FKkqRR4GLnQtJ04He1afT%2FAccordo%20Base%20di%20Adesione%20App%20IO_Standard_Ver.2.4.16_1_2023.docx.pdf?alt=media',
+        },
+        {
+          text: 'Leggi kit di comunicazione',
+          href: `${appIOGuideListsPath.path}/kit-comunicazione`,
+        },
+      ],
+    },
   },
 ];
