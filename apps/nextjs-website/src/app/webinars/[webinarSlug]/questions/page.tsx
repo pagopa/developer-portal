@@ -1,13 +1,14 @@
 import React from 'react';
-import { getWebinar, getWebinars } from '@/lib/api';
+import { getWebinar } from '@/lib/api';
 import WebinarQuestionsTemplate from '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate';
+import { getWebinarsProps } from '@/lib/cmsApi';
 
 type Params = {
   webinarSlug: string;
 };
 
 export async function generateStaticParams() {
-  const webinars = await getWebinars();
+  const webinars = await getWebinarsProps();
   return [...webinars].map(({ slug }) => ({
     webinarSlug: slug,
   }));
