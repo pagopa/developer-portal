@@ -2,15 +2,9 @@ import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
-function imageFromPath(imagePath: string): {
-  readonly name: string;
-  readonly alternativeText: string | null;
-  readonly width: number;
-  readonly height: number;
-  readonly ext: string;
-  readonly mime: string;
-  readonly url: string;
-} {
+function imageFromPath(
+  imagePath: string
+): Required<Webinar['speakers'][0]['avatar']> {
   // eslint-disable-next-line functional/immutable-data
   const ext = imagePath.split('.').pop();
   return {
