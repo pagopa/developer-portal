@@ -113,3 +113,45 @@ module "secret_cms_github_pat" {
   secure_type          = true
   ignore_value_changes = "true" # Ignore changes to value, because the value is updated manually
 }
+
+resource "random_password" "cms_google_oauth_client_id" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+module "secret_cms_google_oauth_client_id" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/cms/google_oauth_client_id"
+  value                = random_password.cms_google_oauth_client_id.result
+  secure_type          = true
+}
+
+resource "random_password" "cms_google_oauth_client_secret" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+module "secret_cms_google_oauth_client_secret" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/cms/google_oauth_client_secret"
+  value                = random_password.cms_google_oauth_client_secret.result
+  secure_type          = true
+}
+
+resource "random_password" "cms_google_gsuite_hd" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+module "secret_cms_google_gsuite_hd" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/cms/google_gsuite_hd"
+  value                = random_password.cms_google_gsuite_hd.result
+  secure_type          = true
+}
