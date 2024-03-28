@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add pinned webinars to homepage strapi-side
+Add webinars to homepage in Strapi
