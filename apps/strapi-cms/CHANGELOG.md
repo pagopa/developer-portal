@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 0.5.0
+
+### Minor Changes
+
+- c0c2a65: Add subhead to hero slide
+
 ## 0.4.0
 
 ### Minor Changes
