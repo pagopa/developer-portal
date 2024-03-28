@@ -15,12 +15,18 @@ type WebinarQuestionsTableProps = {
   userName: string;
   questions: WebinarQuestion[];
   title: string;
+  updateLocalQuestions: (
+    createdAt: Date,
+    highlight: boolean,
+    hidden: boolean
+  ) => null;
 };
 
 const WebinarQuestionsTable = ({
   userName,
   questions,
   title,
+  updateLocalQuestions,
 }: WebinarQuestionsTableProps) => {
   return (
     <TableContainer component={Paper} sx={{ marginY: 2 }}>
@@ -36,7 +42,12 @@ const WebinarQuestionsTable = ({
               key={question.id.createdAt.toISOString()}
               question={question}
               userName={userName}
-              onHide={async (hide) =>
+              onHide={async (hide) => {
+                updateLocalQuestions(
+                  question.id.createdAt,
+                  !!question.highlightedBy,
+                  hide
+                );
                 await updateWebinarQuestion({
                   id: question.id,
                   updates: {
@@ -44,9 +55,14 @@ const WebinarQuestionsTable = ({
                       ? { operation: 'update', value: userName }
                       : { operation: 'remove' },
                   },
-                })
-              }
-              onHighlight={async (highlight) =>
+                });
+              }}
+              onHighlight={async (highlight) => {
+                updateLocalQuestions(
+                  question.id.createdAt,
+                  highlight,
+                  !!question.hiddenBy
+                );
                 await updateWebinarQuestion({
                   id: question.id,
                   updates: {
@@ -54,8 +70,8 @@ const WebinarQuestionsTable = ({
                       ? { operation: 'update', value: userName }
                       : { operation: 'remove' },
                   },
-                })
-              }
+                });
+              }}
             />
           ))}
         </TableBody>
