@@ -1,16 +1,17 @@
-import { getWebinar, getWebinars } from '@/lib/api';
+import { getWebinar } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
+import { getWebinarsProps } from '@/lib/cmsApi';
 
 type Params = {
   webinarSlug: string;
 };
 
 export async function generateStaticParams() {
-  const webinars = await getWebinars();
+  const webinars = await getWebinarsProps();
   return [...webinars].map(({ slug }) => ({
     webinarSlug: slug,
   }));
