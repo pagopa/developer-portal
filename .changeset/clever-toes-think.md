@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": patch
 ---
 
 Change in subtitle for webinar
