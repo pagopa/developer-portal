@@ -1,5 +1,14 @@
 # nextjs-website
 
+## 0.15.3
+
+### Patch Changes
+
+- 9bd7fae: Add signup form tests
+- 61648ac: Reset change password form errors on user changes
+- 83fd73c: Reset signup form errors if user updates form
+- 83f9652: Reset change password form errors on user changes
+
 ## 0.15.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.4.0
+
+### Minor Changes
+
+- 726ff18: Create SNS topic and subscription for cloudwatch metric alarms
+
 ## 0.3.2
 
 ### Patch Changes

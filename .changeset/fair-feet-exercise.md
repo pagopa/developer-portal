@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add support for webinars
+Add subhead to hero slide

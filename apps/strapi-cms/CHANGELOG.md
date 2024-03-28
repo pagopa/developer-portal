@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 0.4.0
+
+### Minor Changes
+
+- 1ed75ad: Add support for webinars
+
 ## 0.3.0
 
 ### Minor Changes
