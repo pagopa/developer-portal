@@ -19,12 +19,15 @@ const testWebinar: Webinar = {
   startDateTime: '2024-03-14T08:30:00.000Z',
   endDateTime: '2024-03-14T09:30:00.000Z',
   subscribeCtaLabel: '',
-  relatedLinks: [
-    {
-      path: `#`,
-      name: 'Lorem ipsum dolor sit amet',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link Utili',
+    links: [
+      {
+        href: `#`,
+        text: 'Lorem ipsum dolor sit amet',
+      },
+    ],
+  },
 };
 
 const webinars: readonly Webinar[] = [
