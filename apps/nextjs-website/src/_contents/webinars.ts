@@ -60,7 +60,7 @@ export const webinars: readonly Webinar[] = [
       'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
     playerSrc: 'https://vimeo.com/event/3859248/embed',
     html:
-      `<h4 style="font-weight: 600; font-size: 24px;"> Esplorando App IO: I messaggi a contenuto remoto
+      `<h4 style="font-weight: 600; font-size: 24px;"> Un nuovo modello di comunicazione su App IO: I messaggi a contenuto remoto
       </h4> \n` +
       `<p>Esploriamo il nuovo modello di comunicazione su app IO, che consente nuovi scenari d’uso e nuove esperienze utente grazie alle tecniche di remotizzazione.
        </p> \n` +
