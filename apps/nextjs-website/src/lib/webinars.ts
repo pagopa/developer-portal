@@ -13,23 +13,15 @@ export function makeWebinarsProps(
   return [
     ...staticWebinars,
     ...strapiWebinars.data.map((webinar) => ({
-      title: webinar.attributes.title,
-      slug: webinar.attributes.slug,
-      description: webinar.attributes.description,
-      textContent: webinar.attributes.textContent,
-      playerSrc: webinar.attributes.playerSrc,
+      ...webinar.attributes,
       speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
-        name: speaker.attributes.name,
-        jobTitle: speaker.attributes.jobTitle,
-        description: speaker.attributes.description,
+        ...speaker.attributes,
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
       endDateTime: webinar.attributes.endDatetime?.toISOString(),
-      relatedLinks: webinar.attributes.relatedLinks,
       subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
       isVisibleInHome: false,
-      isVisibleInList: webinar.attributes.isVisibleInList,
       imagePath: webinar.attributes.coverImage.data.attributes.url,
     })),
   ];
