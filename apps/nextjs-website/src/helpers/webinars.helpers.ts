@@ -19,5 +19,8 @@ export const getPastWebinars = (
         startDateTime &&
         new Date(endDateTime).getTime() <= new Date().getTime()
     )
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1));
+    .sort((a, b) =>
+      a.startDateTime && b.startDateTime && a.startDateTime < b.startDateTime
+        ? 1
+        : -1
+    );
