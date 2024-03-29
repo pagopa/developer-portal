@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.1
+
+### Patch Changes
+
+- df5ee9e: [DEV-1562] Add cms*google*\* parameters to ecs_task_execution role
+
 ## 0.5.0
 
 ### Minor Changes
