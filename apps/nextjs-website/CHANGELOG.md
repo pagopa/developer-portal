@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 0.16.0
+
+### Minor Changes
+
+- ea340e9: Add fetch from Strapi for webinars
+
+### Patch Changes
+
+- fb3692b: Update webinars images
+- b842990: Add BlocksRendererClient component to render the blocks content coming from Strapi
+- 7f7ea27: Change the subtitle of "Esplorando App IO: I messaggi a contenuto remoto" webinar
+
 ## 0.15.3
 
 ### Patch Changes
