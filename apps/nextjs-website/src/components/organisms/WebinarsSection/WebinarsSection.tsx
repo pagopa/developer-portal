@@ -2,6 +2,7 @@ import { Webinar } from '@/lib/types/webinar';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 import PastWebinarsShowcase from '../PastWebinarsShowcase/PastWebinarsShowcase';
 import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import { maxPastWebinarsInHome } from '@/config';
 
 type WebinarsSectionProps = {
   webinars: Webinar[];
@@ -9,7 +10,10 @@ type WebinarsSectionProps = {
 
 const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
   const futureWebinars = getFutureWebinars(webinars);
-  const pastWebinars = getPastWebinars(webinars).slice(0, 3);
+  const pastWebinars = getPastWebinars(webinars).slice(
+    0,
+    maxPastWebinarsInHome
+  );
 
   return (
     <>
