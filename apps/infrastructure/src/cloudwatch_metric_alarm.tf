@@ -17,6 +17,7 @@ module "ses_bounce_rate_alarm" {
   period              = 300 # 5 minutes
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 ## Reputation complaint rate alarm
@@ -36,6 +37,7 @@ module "ses_reputation_complaint_rate_alarm" {
   period              = 300 # 5 minutes
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 ## Daily sending quota alarm
@@ -54,6 +56,7 @@ module "ses_daily_sending_quota_alarm" {
   unit                = "Count"
   period              = 3600 # 1 hour
   evaluation_periods  = 1
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 ## Send rate limit alarm
@@ -73,6 +76,7 @@ module "ses_sending_rate_limit_alarm" {
   period              = 10 # 10 seconds
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 # Cognito
@@ -95,6 +99,7 @@ module "cognito_user_pool_sign_up_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -120,6 +125,7 @@ module "cognito_user_pool_sign_in_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -145,6 +151,7 @@ module "cognito_user_pool_token_refresh_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -171,6 +178,7 @@ module "cognito_custom_message_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -194,6 +202,7 @@ module "cognito_custom_message_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -217,6 +226,7 @@ module "cognito_custom_message_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -240,6 +250,7 @@ module "cognito_custom_message_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -263,6 +274,7 @@ module "cognito_post_confirmation_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -286,6 +298,7 @@ module "cognito_post_confirmation_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -309,6 +322,7 @@ module "cognito_post_confirmation_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -332,6 +346,7 @@ module "cognito_post_confirmation_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -355,6 +370,7 @@ module "cognito_define_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -378,6 +394,7 @@ module "cognito_define_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -401,6 +418,7 @@ module "cognito_define_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -424,6 +442,7 @@ module "cognito_define_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -447,6 +466,7 @@ module "cognito_create_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -469,6 +489,7 @@ module "cognito_create_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -492,6 +513,7 @@ module "cognito_create_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -515,6 +537,7 @@ module "cognito_create_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -538,6 +561,7 @@ module "cognito_verify_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -561,6 +585,7 @@ module "cognito_verify_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -584,6 +609,7 @@ module "cognito_verify_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -607,6 +633,7 @@ module "cognito_verify_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -632,6 +659,7 @@ module "cloudfront_5xx_error_rate_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     DistributionId = aws_cloudfront_distribution.website.id
@@ -656,6 +684,7 @@ module "cloudfront_origin_latency_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     DistributionId = aws_cloudfront_distribution.website.id
@@ -680,6 +709,7 @@ module "cloudfront_function_validation_errors_alarm" {
   evaluation_periods  = 2
   datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     DistributionId = aws_cloudfront_distribution.website.id
@@ -705,6 +735,7 @@ module "cloudfront_function_execution_errors_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     DistributionId = aws_cloudfront_distribution.website.id
@@ -730,6 +761,7 @@ module "cloudfront_function_throttled_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     DistributionId = aws_cloudfront_distribution.website.id
@@ -757,6 +789,7 @@ module "dynamodb_read_capacity_utilization_alarm" {
   evaluation_periods  = 2
   datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 ## Write capacity utilization
@@ -776,6 +809,7 @@ module "dynamodb_write_capacity_utilization_alarm" {
   evaluation_periods  = 2
   datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 ## Read throttle event
@@ -795,6 +829,7 @@ module "dynamodb_read_throttle_events_webinar_questions_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -818,6 +853,7 @@ module "dynamodb_write_throttle_events_webinar_questions_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -841,7 +877,7 @@ module "dynamodb_user_errors_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 }
 
 module "dynamodb_system_errors_webinar_questions_alarm" {
@@ -860,6 +896,7 @@ module "dynamodb_system_errors_webinar_questions_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -882,6 +919,7 @@ module "dynamodb_successful_request_latency_put_item_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -905,6 +943,7 @@ module "dynamodb_successful_request_latency_query_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
