@@ -125,11 +125,11 @@
       },
       {
         "name": "GOOGLE_GSUITE_HD",
-        "value": "${google_gsuite_hd}"
+        "valueFrom": "${google_gsuite_hd}"
       },
       {
         "name": "GOOGLE_OAUTH_CLIENT_ID",
-        "value": "${google_oauth_client_id}"
+        "valueFrom": "${google_oauth_client_id}"
       },
       {
         "name": "GOOGLE_OAUTH_CLIENT_SECRET",
