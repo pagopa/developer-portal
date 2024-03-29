@@ -1,5 +1,12 @@
 # infrastructure
 
+## 0.5.0
+
+### Minor Changes
+
+- 2ba6415: Add OAuth parameters to allow login using Google accounts
+- d966a41: Link metric alarms to a SNS topic
+
 ## 0.4.0
 
 ### Minor Changes
