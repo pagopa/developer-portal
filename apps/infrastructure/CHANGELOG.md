@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.3
+
+### Patch Changes
+
+- aa4766a: [DEV-1562] Fix cms task definition template secret values about login with google on the cms
+
 ## 0.5.2
 
 ### Patch Changes
