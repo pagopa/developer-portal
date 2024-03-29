@@ -338,6 +338,135 @@ const makeStrapiResponseJson = () => ({
         },
       },
       newsShowcase: null,
+      webinars: {
+        data: [
+          {
+            id: 1,
+            attributes: {
+              title: 'aText',
+              slug: 'a-slug',
+              textContent: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      text: 'aText',
+                    },
+                  ],
+                },
+              ],
+              playerSrc: 'https://a-url.com',
+              startDatetime: '2024-03-30T23:00:00.000Z',
+              endDatetime: '2024-03-31T22:00:00.000Z',
+              isVisibleInList: true,
+              subscribeParagraphLabel: null,
+              description: 'aText',
+              createdAt: '2024-03-28T17:04:44.854Z',
+              updatedAt: '2024-03-28T17:35:59.322Z',
+              publishedAt: '2024-03-28T17:05:00.681Z',
+              locale: 'en',
+              coverImage: {
+                data: {
+                  id: 1,
+                  attributes: {
+                    name: 'a-image.jpg',
+                    alternativeText: null,
+                    caption: null,
+                    width: 728,
+                    height: 416,
+                    formats: {
+                      thumbnail: {
+                        name: 'thumbnail_a-image.jpg',
+                        hash: 'thumbnail_a_image_db00b47553',
+                        ext: '.jpg',
+                        mime: 'image/jpeg',
+                        path: null,
+                        width: 245,
+                        height: 140,
+                        size: 5.18,
+                        url: '/uploads/thumbnail_a_image_db00b47553.jpg',
+                      },
+                    },
+                    hash: 'a_image_db00b47553',
+                    ext: '.jpg',
+                    mime: 'image/jpeg',
+                    size: 26.69,
+                    url: '/uploads/a_image_db00b47553.jpg',
+                    previewUrl: null,
+                    provider: 'local',
+                    provider_metadata: null,
+                    createdAt: '2024-03-21T17:11:46.709Z',
+                    updatedAt: '2024-03-28T17:04:29.926Z',
+                  },
+                },
+              },
+              relatedLinks: null,
+              webinarSpeakers: {
+                data: [
+                  {
+                    id: 1,
+                    attributes: {
+                      name: 'aText',
+                      jobTitle: 'aText',
+                      description: [
+                        {
+                          type: 'paragraph',
+                          children: [
+                            {
+                              type: 'text',
+                              text: 'aText',
+                            },
+                          ],
+                        },
+                      ],
+                      createdAt: '2024-03-28T17:28:42.733Z',
+                      updatedAt: '2024-03-28T17:28:46.140Z',
+                      publishedAt: '2024-03-28T17:28:46.125Z',
+                      locale: 'en',
+                      avatar: {
+                        data: {
+                          id: 1,
+                          attributes: {
+                            name: 'a-image.jpg',
+                            alternativeText: null,
+                            caption: null,
+                            width: 728,
+                            height: 416,
+                            formats: {
+                              thumbnail: {
+                                name: 'thumbnail_a-image.jpg',
+                                hash: 'thumbnail_a_image_db00b47553',
+                                ext: '.jpg',
+                                mime: 'image/jpeg',
+                                path: null,
+                                width: 245,
+                                height: 140,
+                                size: 5.18,
+                                url: '/uploads/thumbnail_a_image_db00b47553.jpg',
+                              },
+                            },
+                            hash: 'webinar_a_image_db00b47553',
+                            ext: '.jpg',
+                            mime: 'image/jpeg',
+                            size: 26.69,
+                            url: '/uploads/a_image_db00b47553.jpg',
+                            previewUrl: null,
+                            provider: 'local',
+                            provider_metadata: null,
+                            createdAt: '2024-03-21T17:11:46.709Z',
+                            updatedAt: '2024-03-28T17:04:29.926Z',
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
     },
   },
   meta: {},
@@ -474,6 +603,7 @@ const makeStrapiResponseWithNullsJson = () => ({
         },
       },
       newsShowcase: null,
+      webinars: { data: [] },
     },
   },
   meta: {},
