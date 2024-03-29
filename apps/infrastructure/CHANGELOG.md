@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.2
+
+### Patch Changes
+
+- 93deedc: [DEV-1562] Move parameters to secrets section to fix issue about login with google on strapi
+
 ## 0.5.1
 
 ### Patch Changes
