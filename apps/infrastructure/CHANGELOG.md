@@ -1,5 +1,23 @@
 # infrastructure
 
+## 0.5.3
+
+### Patch Changes
+
+- aa4766a: [DEV-1562] Fix cms task definition template secret values about login with google on the cms
+
+## 0.5.2
+
+### Patch Changes
+
+- 93deedc: [DEV-1562] Move parameters to secrets section to fix issue about login with google on strapi
+
+## 0.5.1
+
+### Patch Changes
+
+- df5ee9e: [DEV-1562] Add cms*google*\* parameters to ecs_task_execution role
+
 ## 0.5.0
 
 ### Minor Changes
