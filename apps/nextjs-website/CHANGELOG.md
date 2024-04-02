@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.16.1
+
+### Patch Changes
+
+- d727662: Update id of 'Esplorando App IO: I messaggi a contenuto remoto' webinar
+
 ## 0.16.0
 
 ### Minor Changes
