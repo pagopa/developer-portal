@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 0.17.0
+
+### Minor Changes
+
+- 9aab500: Update of SANP version from 3.6.1 to 3.7.0.
+
+### Patch Changes
+
+- e496be4: Fix the rendering of a single tab in a group of tabs
+
 ## 0.16.1
 
 ### Patch Changes
