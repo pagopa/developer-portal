@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.4
+
+### Patch Changes
+
+- a7f9bc5: [DEV-1574] Increase `desired_count` of cms-ecs in production
+
 ## 0.5.3
 
 ### Patch Changes
