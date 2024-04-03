@@ -68,7 +68,7 @@ module "cms_ecs_service" {
   task_definition_arn            = aws_ecs_task_definition.cms_task_def.arn
   tasks_iam_role_arn             = module.iam_role_task_role.iam_role_arn
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
-  ignore_task_definition_changes = true
+  ignore_task_definition_changes = true # CMS Deployment is managed by the "Deploy CMS" GitHub Action
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
   subnet_ids         = module.vpc.private_subnets
