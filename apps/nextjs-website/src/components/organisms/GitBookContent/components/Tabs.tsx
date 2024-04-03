@@ -3,6 +3,7 @@ import MuiTab from '@mui/material/Tab';
 import { TabsProps } from 'gitbook-docs/markdoc/schema/tabs';
 import React, { ReactNode } from 'react';
 import { useTheme } from '@mui/material';
+import Tab from '@/components/organisms/GitBookContent/components/Tab';
 
 const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
   const { palette } = useTheme();
@@ -58,21 +59,15 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
           />
         ))}
       </MuiTabs>
-      {children.map((child, index) => (
-        <div
-          key={index}
-          hidden={value !== index}
-          style={{
-            border: `1px solid ${palette.divider}`,
-            borderTopRightRadius: 4,
-            borderBottomRightRadius: 4,
-            borderBottomLeftRadius: 4,
-            padding: 16,
-          }}
-        >
-          {child}
-        </div>
-      ))}
+      {Array.isArray(children) ? (
+        children.map((child, index) => (
+          <Tab key={index} hidden={value !== index}>
+            {child}
+          </Tab>
+        ))
+      ) : (
+        <Tab hidden={false}>{children}</Tab>
+      )}
     </>
   );
 };
