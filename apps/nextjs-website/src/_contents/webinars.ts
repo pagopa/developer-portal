@@ -55,6 +55,56 @@ export const webinars: readonly Webinar[] = [
     playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
+    title: 'Esplorando pagoPA: Gestione Posizioni Debitorie',
+    description:
+      "Esploriamo come è possibile per un ente creditore gestire l'Archivio delle Posizioni Attese usando la Gestione Posizioni Debitorie/Integrazione asincrona in-house di pagoPA",
+    playerSrc: 'https://vimeo.com/event/4203954/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;"> Gestione Posizioni Debitorie e Integrazione asincrona
+      </h4> \n` +
+      `<p>In questo webinar esaminiamo il processo di caricamento su GDP delle posizioni debitorie relative agli avvisi di pagamento emessi dagli enti creditori ai cittadini o ad altri debitori.
+       </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;width: 100%;max-width: 820px" src='/images/webinar-pagoPA-gpd.png' /> \n` +
+      `<br /> \n` +
+      `<p>Ecco gli argomenti che tratteremo:
+      <ul>
+      <li>cos'è una posizione debitoria e come è stata strutturata in GPD</li>
+      <li>gli stati che può assumere durante il suo ciclo di vita</li>
+      <li>come l’ente creditore può interagire su un posizione debitoria</li>
+      <li>e i vantaggi a runtime dell’integrazione asincrona</li>
+      </ul>
+      </p>\n`,
+    slug: 'DevTalk-pagoPA-gpd',
+    isVisibleInHome: true,
+    isVisibleInList: true,
+    imagePath: '/images/webinar-cover-pagoPA.png',
+    speakers: [
+      {
+        name: 'Andrea Ferracci',
+        jobTitle: 'Technical Project Manager - pagoPA Core',
+        avatar: imageFromPath('/images/speaker-ferracci.png'),
+      },
+      {
+        name: 'Pasquale Spica',
+        jobTitle: 'Software Engineer - pagoPA Core',
+        avatar: imageFromPath('/images/speaker-spica.png'),
+      },
+    ],
+    startDateTime: '2024-04-12T09:00:00.000Z',
+    endDateTime: '2024-04-12T10:00:00.000Z',
+    subscribeCtaLabel: '',
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'SANP - Posizioni Debitorie',
+          href: `${pagoPaGuideListsPath.path}/sanp/appendici/posizioni-debitorie/`,
+        },
+      ],
+    },
+  },
+  {
     title: 'Esplorando App IO: I messaggi a contenuto remoto',
     description:
       'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
@@ -119,7 +169,7 @@ export const webinars: readonly Webinar[] = [
       `<br /> \n` +
       `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
     slug: 'PagoPA-multe',
-    isVisibleInHome: true,
+    isVisibleInHome: false,
     isVisibleInList: true,
     imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
     speakers: [
