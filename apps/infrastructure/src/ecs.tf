@@ -39,6 +39,7 @@ data "template_file" "cms_app" {
     google_gsuite_hd           = module.secret_cms_google_gsuite_hd.ssm_parameter_arn
     google_oauth_client_id     = module.secret_cms_google_oauth_client_id.ssm_parameter_arn
     google_oauth_client_secret = module.secret_cms_google_oauth_client_secret.ssm_parameter_arn
+    google_oauth_redirect_uri  = format("https://cms.%s/strapi-plugin-sso/google/callback", var.dns_domain_name)
   }
 }
 
@@ -56,19 +57,18 @@ resource "aws_ecs_task_definition" "cms_task_def" {
 module "cms_ecs_service" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
 
-  name                           = "cms-ecs"
-  cluster_arn                    = module.cms_ecs_cluster.arn
-  desired_count                  = 1
-  create_task_definition         = false
-  create_iam_role                = false
-  create_task_exec_iam_role      = false
-  create_security_group          = false
-  launch_type                    = "FARGATE"
-  force_new_deployment           = true
-  task_definition_arn            = aws_ecs_task_definition.cms_task_def.arn
-  tasks_iam_role_arn             = module.iam_role_task_role.iam_role_arn
-  task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
-  ignore_task_definition_changes = true # CMS Deployment is managed by the "Deploy CMS" GitHub Action
+  name                      = "cms-ecs"
+  cluster_arn               = module.cms_ecs_cluster.arn
+  desired_count             = var.environment == "dev" ? 1 : 0
+  create_task_definition    = false
+  create_iam_role           = false
+  create_task_exec_iam_role = false
+  create_security_group     = false
+  launch_type               = "FARGATE"
+  force_new_deployment      = true
+  task_definition_arn       = aws_ecs_task_definition.cms_task_def.arn
+  tasks_iam_role_arn        = module.iam_role_task_role.iam_role_arn
+  task_exec_iam_role_arn    = module.iam_role_ecs_task_execution.iam_role_arn
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
   subnet_ids         = module.vpc.private_subnets
