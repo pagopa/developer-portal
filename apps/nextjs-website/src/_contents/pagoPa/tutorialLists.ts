@@ -11,8 +11,7 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     name: 'Come migrare alla Nuova Connettività',
     image: {
       url: '/images/pagopa-nuova-connetivita.png',
-      alternativeText:
-        'Immagine: Come migrare alla Nuova Connettività',
+      alternativeText: 'Immagine: Come migrare alla Nuova Connettività',
     },
     showInOverview: true,
   },
@@ -55,8 +54,7 @@ export const pagoPaTutorials: readonly Tutorial[] = [
     name: 'Come diventare Partner Tecnologico di PagoPA',
     image: {
       url: '/images/pagopa-pt.png',
-      alternativeText:
-        'Immagine: Come diventare Partner Tecnologico di PagoPA',
+      alternativeText: 'Immagine: Come diventare Partner Tecnologico di PagoPA',
     },
     showInOverview: false,
   },
