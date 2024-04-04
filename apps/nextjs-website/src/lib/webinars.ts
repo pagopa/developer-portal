@@ -18,7 +18,7 @@ export function makeWebinarsProps(
         ...speaker.attributes,
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
-      bodyContent: webinar.attributes.textContent,
+      bodyContent: webinar.attributes.bodyContent,
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
       endDateTime: webinar.attributes.endDatetime?.toISOString(),
       subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
