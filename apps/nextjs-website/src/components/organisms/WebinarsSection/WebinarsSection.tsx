@@ -17,12 +17,14 @@ const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
 
   return (
     <>
-      <FutureWebinarsShowcase
-        title={
-          futureWebinars.length > 1 ? 'dontLoseNextPlural' : 'dontLoseNext'
-        }
-        webinars={[...futureWebinars]}
-      />
+      {futureWebinars.length > 0 && (
+        <FutureWebinarsShowcase
+          title={
+            futureWebinars.length > 1 ? 'dontLoseNextPlural' : 'dontLoseNext'
+          }
+          webinars={[...futureWebinars]}
+        />
+      )}
       <PastWebinarsShowcase webinars={[...pastWebinars]} />
     </>
   );
