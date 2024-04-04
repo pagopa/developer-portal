@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.5
+
+### Patch Changes
+
+- 54224ae: [DEV-1464] Ignore changes on task definition
+
 ## 0.5.4
 
 ### Patch Changes
