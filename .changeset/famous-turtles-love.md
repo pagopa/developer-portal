@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Update Version for  "Manuale dei Servizi" app IO from 2.0 to 2.1
+Add version 2.1 for "Manuale dei Servizi" of app IO
