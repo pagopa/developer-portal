@@ -137,12 +137,6 @@ export async function getTutorialLists(productSlug?: string) {
   return manageUndefinedAndAddProduct(props);
 }
 
-export async function getVisibleInHomeWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinarsProps()).filter(
-    (webinar) => webinar.isVisibleInHome
-  );
-}
-
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
   return (await getWebinarsProps()).filter(
     (webinar) => webinar.isVisibleInList

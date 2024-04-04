@@ -4,7 +4,6 @@ import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getVisibleInHomeWebinars } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
@@ -30,13 +29,11 @@ const NotSsrWebinarsSection = dynamic(
 );
 
 const Home = async () => {
-  const webinars = await getVisibleInHomeWebinars();
-
   const homepage = await getHomepageProps();
 
   return (
     <>
-      <NotSsrWebinarHeaderBanner webinars={webinars} />
+      <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
 
       <HeroSwiper
         cards={homepage.hero.map((itemProp, index) => ({
