@@ -1,6 +1,7 @@
 import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
+import { pagoPaGuideListsPath } from './pagoPa/guideListsPath';
 
 function imageFromPath(
   imagePath: string
