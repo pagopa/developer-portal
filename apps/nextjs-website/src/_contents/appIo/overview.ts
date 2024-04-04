@@ -84,7 +84,7 @@ export const appIoOverview: OverviewData = {
     ],
   },
   relatedLinks: [
-     {
+    {
       path: `${appIOGuideListsPath.path}/modelli-servizi`,
       name: 'Consulta alcuni dei modelli utili per configurare i servizi su IO',
     },
