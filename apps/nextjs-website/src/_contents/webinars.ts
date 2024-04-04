@@ -1,10 +1,10 @@
-import { Webinar } from '@/lib/types/webinar';
+import { StaticWebinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 
 function imageFromPath(
   imagePath: string
-): Required<Webinar['speakers'][0]['avatar']> {
+): Required<StaticWebinar['speakers'][0]['avatar']> {
   // eslint-disable-next-line functional/immutable-data
   const ext = imagePath.split('.').pop();
   return {
@@ -18,7 +18,7 @@ function imageFromPath(
   };
 }
 
-const testWebinar: Webinar = {
+const testWebinar: StaticWebinar = {
   title: 'Test Webinar',
   description: 'Questo è un webinar di test',
   playerSrc: 'https://vimeo.com/event/4135276/embed',
@@ -38,7 +38,7 @@ const testWebinar: Webinar = {
   subscribeCtaLabel: '',
 };
 
-export const webinars: readonly Webinar[] = [
+export const webinars: readonly StaticWebinar[] = [
   testWebinar,
   {
     ...testWebinar,
