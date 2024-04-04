@@ -57,33 +57,37 @@ export const appIoOverview: OverviewData = {
         title: 'Tassa sui rifiuti (TARI)',
         description:
           'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI)',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/tassa-sui-rifiuti-tari`,
+        path: `${appIOGuideListsPath.path}/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari`,
         name: 'Tassa sui rifiuti',
       },
       {
         title: "Carta d'Identità Elettronica",
         description:
           "Scheda e modelli di messaggi del servizio che riguarda la richiesta e l'emissione della Carta d'Identità Elettronica",
-        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/carta-didentita-elettronica`,
+        path: `${appIOGuideListsPath.path}/modelli-servizi/servizi-anagrafici-e-civici/carta-didentita-elettronica`,
         name: 'CIE',
       },
       {
-        title: 'Rimozione veicoli',
+        title: 'Asilo Nido',
         description:
-          'Scheda e modelli di messaggi del servizio che riguarda la rimozione, il deposito e il ritorno alla circolazione dei veicoli',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/rimozione-veicoli`,
+          'Scheda e modelli di messaggi del servizio che riguarda a ricezione delle comunicazioni riguardanti il sistema scolastico frequentato dai figli a carico ',
+        path: `${appIOGuideListsPath.path}/modelli-servizi/educazione-e-formazione/asilo-nido`,
         name: 'Rimozione veicoli',
       },
       {
         title: 'Multe per violazioni codice della strada',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda le violazioni al Codice della Strada',
-        path: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
+        path: `${appIOGuideListsPath.path}/modelli-servizi/mobilita-e-trasporti/multe-per-violazioni-al-codice-della-strada`,
         name: 'Violazioni codice della strada',
       },
     ],
   },
   relatedLinks: [
+     {
+      path: `${appIOGuideListsPath.path}/modelli-servizi`,
+      name: 'Consulta alcuni dei modelli utili per configurare i servizi su IO',
+    },
     {
       path: `${appIOGuideListsPath.path}/supporto-agli-enti`,
       name: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
