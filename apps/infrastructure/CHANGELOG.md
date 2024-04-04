@@ -1,5 +1,17 @@
 # infrastructure
 
+## 0.5.5
+
+### Patch Changes
+
+- 54224ae: [DEV-1464] Ignore changes on task definition
+
+## 0.5.4
+
+### Patch Changes
+
+- a7f9bc5: [DEV-1574] Increase `desired_count` of cms-ecs in production
+
 ## 0.5.3
 
 ### Patch Changes
