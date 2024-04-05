@@ -21,6 +21,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
       md={4}
       mb={6}
       minWidth={{ xs: '80vw', sm: 'auto' }}
+      sx={{ display: 'flex', flexDirection: 'column' }}
     >
       <Box position={'relative'} sx={{ overflow: 'hidden' }}>
         <Image
@@ -49,12 +50,14 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
           )}
         </Typography>
       )}
-      <Typography variant='h6'>{webinar.title}</Typography>
-      <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
-        <LinkButton
-          href={`/webinars/${webinar.slug}`}
-          label={t('webinar.goToWebinar')}
-        />
+      <Stack justifyContent='space-between' flexGrow={1}>
+        <Typography variant='h6'>{webinar.title}</Typography>
+        <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
+          <LinkButton
+            href={`/webinars/${webinar.slug}`}
+            label={t('webinar.goToWebinar')}
+          />
+        </Stack>
       </Stack>
     </Grid>
   );
