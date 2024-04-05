@@ -39,6 +39,7 @@ data "template_file" "cms_app" {
     google_gsuite_hd           = module.secret_cms_google_gsuite_hd.ssm_parameter_arn
     google_oauth_client_id     = module.secret_cms_google_oauth_client_id.ssm_parameter_arn
     google_oauth_client_secret = module.secret_cms_google_oauth_client_secret.ssm_parameter_arn
+    google_oauth_redirect_uri  = format("https://cms.%s/strapi-plugin-sso/google/callback", var.dns_domain_name)
   }
 }
 
