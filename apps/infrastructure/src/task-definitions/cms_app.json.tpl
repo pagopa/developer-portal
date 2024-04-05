@@ -34,6 +34,10 @@
         "value": "${db_name}"
       },
       {
+        "name": "GOOGLE_OAUTH_REDIRECT_URI",
+        "value": "${google_oauth_redirect_uri}"
+      },
+      {
         "name": "AWS_BUCKET_NAME",
         "value": "${bucket_name}"
       },
