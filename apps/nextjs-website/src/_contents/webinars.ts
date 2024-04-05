@@ -1,6 +1,7 @@
 import { Webinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
+import { pagoPaGuideListsPath } from './pagoPa/guideListsPath';
 
 function imageFromPath(
   imagePath: string
@@ -104,6 +105,56 @@ export const webinars: readonly Webinar[] = [
         {
           text: 'I modelli dei servizi più frequenti: Tassa sui rifiuti TARI',
           href: `${appIOGuideListsPath.path}/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari`,
+        },
+      ],
+    },
+  },
+  {
+    title: 'Esplorando pagoPA: Gestione Posizioni Debitorie',
+    description:
+      "Esploriamo come è possibile per un ente creditore gestire l'Archivio delle Posizioni Attese usando la Gestione Posizioni Debitorie/Integrazione asincrona in-house di pagoPA",
+    playerSrc: 'https://vimeo.com/event/4203954/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;"> Gestione Posizioni Debitorie e Integrazione asincrona
+      </h4> \n` +
+      `<p>In questo webinar esaminiamo il processo di caricamento su GDP delle posizioni debitorie relative agli avvisi di pagamento emessi dagli enti creditori ai cittadini o ad altri debitori.
+       </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;width: 100%;max-width: 820px" src='/images/webinar-pagoPA-gpd.png' /> \n` +
+      `<br /> \n` +
+      `<p>Ecco gli argomenti che tratteremo:
+      <ul>
+      <li>cos'è una posizione debitoria e come è stata strutturata in GPD</li>
+      <li>gli stati che può assumere durante il suo ciclo di vita</li>
+      <li>come l’ente creditore può interagire su un posizione debitoria</li>
+      <li>i vantaggi a runtime dell’integrazione asincrona</li>
+      </ul>
+      </p>\n`,
+    slug: 'DevTalk-pagoPA-gpd',
+    isVisibleInHome: true,
+    isVisibleInList: true,
+    imagePath: '/images/webinar-cover-pagoPA-gpd.png',
+    speakers: [
+      {
+        name: 'Andrea Ferracci',
+        jobTitle: 'Technical Project Manager - pagoPA Core',
+        avatar: imageFromPath('/images/speaker-ferracci.png'),
+      },
+      {
+        name: 'Pasquale Spica',
+        jobTitle: 'Software Engineer - pagoPA Core',
+        avatar: imageFromPath('/images/speaker-spica.png'),
+      },
+    ],
+    startDateTime: '2024-04-12T09:00:00.000Z',
+    endDateTime: '2024-04-12T10:00:00.000Z',
+    subscribeCtaLabel: '',
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'SANP - Posizioni Debitorie',
+          href: `${pagoPaGuideListsPath.path}/sanp/appendici/posizioni-debitorie/`,
         },
       ],
     },
