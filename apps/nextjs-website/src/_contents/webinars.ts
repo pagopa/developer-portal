@@ -55,6 +55,60 @@ export const webinars: readonly Webinar[] = [
     playerSrc: 'https://vimeo.com/event/4153381/embed',
   },
   {
+    title:
+      'PagoPA LAB - Approfondiamo la gestione integrata del servizio TARI da pagoPA e IO a SEND',
+    description:
+      'Come gestire al meglio il servizio TARI attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.',
+    playerSrc: 'https://vimeo.com/event/4173771/embed',
+    html:
+      `<h4 style="font-weight: 600; font-size: 24px;"> Gestione integrata del servizio TARI da pagoPA e IO a  SEND</h4> \n` +
+      `<p>Gestire la riscossione della TARI con un processo totalmente digitale permette alle Amministrazioni di avere una maggiore efficienza in termini di tempi e costi. Quali sono le buone pratiche per implementare al meglio un approccio automatizzato e integrato per ottenere questi vantaggi? Nel secondo appuntamento di PagoPA LAB saranno delineate tutte le fasi di  una virtuosa gestione del servizio TARI, attraverso l'utilizzo  sinergico di app IO, pagoPA e SEND.
+       </p> \n` +
+      `<br /> \n` +
+      `<img style="height: auto;width: 100%;max-width: 820px" src='/images/webinar-pagopalab-tari.png' /> \n` +
+      `<br /> \n` +
+      `<p>La TARI è un tributo che tutti i Comuni si trovano a riscuotere ogni anno. Gestire l'erogazione di questo servizio con un processo totalmente digitale permette alle Amministrazioni di avere una maggiore efficienza in termini di tempi e costi. Nel secondo appuntamento di PagoPA LAB saranno delineate tutte le fasi relative alla riscossione della TARI, dall'emissione del ruolo fino all'invio dell'atto di ingiunzione in caso di mancato pagamento nei termini. Durante l'incontro saranno rappresentate anche le buone pratiche e i vantaggi derivanti da un utilizzo integrato e sinergico di app IO, pagoPA e SEND, con lo scopo di fornire ai Comuni gli strumenti utili per beneficiare appieno della  gestione digitale del servizio.</p>\n`,
+    slug: 'PagoPALab-tari',
+    isVisibleInHome: true,
+    isVisibleInList: true,
+    imagePath: '/images/webinar-cover-pagopalab-tari.png',
+    speakers: [
+      {
+        name: 'Gloriana Cimmino',
+        jobTitle: 'Direttore Dipartimento Mercato PA e Imprese',
+        avatar: imageFromPath('/images/speaker-cimmino.png'),
+      },
+      {
+        name: 'Federica Amoroso',
+        jobTitle: 'Senior Account Manager',
+        avatar: imageFromPath('/images/speaker-amoroso.png'),
+      },
+      {
+        name: 'Jacopo Pompilii',
+        jobTitle: 'UX Design Lead',
+        avatar: imageFromPath('/images/speaker-pompilii.png'),
+      },
+      {
+        name: 'Gianpiero Zaffi Borgetti',
+        jobTitle:
+          'Responsabile area ICT e Servizi ai Comuni, IFEL Fondazione ANCI',
+        avatar: imageFromPath('/images/speaker-zaffi-borgetti.png'),
+      },
+    ],
+    startDateTime: '2024-04-23T08:30:00.000Z',
+    endDateTime: '2024-04-23T09:30:00.000Z',
+    subscribeCtaLabel: '',
+    relatedLinks: {
+      title: 'Link utili',
+      links: [
+        {
+          text: 'I modelli dei servizi più frequenti: Tassa sui rifiuti TARI',
+          href: `${appIOGuideListsPath.path}/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari`,
+        },
+      ],
+    },
+  },
+  {
     title: 'Esplorando App IO: I messaggi a contenuto remoto',
     description:
       'Tutto sulla nuova funzionalità di remotizzazione dei contenuti',
