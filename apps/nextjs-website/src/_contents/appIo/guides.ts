@@ -55,6 +55,10 @@ const manualeDeiServizi: GuideDefinition = {
   versions: [
     {
       main: true,
+      version: 'v2.1',
+      dirName: '0IqiQFqMyBnjVC53SNSi',
+    },
+    {
       version: 'v2.0',
       dirName: 'xWONfJmawghGo2ekuaKh',
     },
