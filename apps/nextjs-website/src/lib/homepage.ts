@@ -97,14 +97,19 @@ export const makeHomepageProps = (
       })
     ),
   },
-  webinars: strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
-    ...webinar.attributes,
-    imagePath: webinar.attributes.coverImage.data.attributes.url,
-    speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
-      ...speaker.attributes,
-      avatar: speaker.attributes.avatar.data?.attributes,
+  webinars: [
+    ...webinars.filter((webinar) => webinar.isVisibleInHome),
+    ...strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
+      ...webinar.attributes,
+      startDateTime: webinar.attributes.startDatetime?.toISOString(),
+      endDateTime: webinar.attributes.endDatetime?.toISOString(),
+      imagePath: webinar.attributes.coverImage.data.attributes.url,
+      speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
+        ...speaker.attributes,
+        avatar: speaker.attributes.avatar.data?.attributes,
+      })),
     })),
-  })),
+  ],
 });
 
 export const makeHomepagePropsFromStatic = (
