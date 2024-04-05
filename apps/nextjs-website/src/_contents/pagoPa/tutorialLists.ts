@@ -6,6 +6,16 @@ import { pagoPaBannerLinks } from '@/_contents/pagoPa/bannerLinks';
 
 export const pagoPaTutorials: readonly Tutorial[] = [
   {
+    title: 'Come migrare alla Nuova Connettività',
+    path: `${pagoPaTutorialListsPath.path}/come-migrare-alla-nuova-connettivita`,
+    name: 'Come migrare alla Nuova Connettività',
+    image: {
+      url: '/images/pagopa-nuova-connetivita.png',
+      alternativeText: 'Immagine: Come migrare alla Nuova Connettività',
+    },
+    showInOverview: true,
+  },
+  {
     title: 'Come richiedere pagamenti che contengono marca da bollo digitale',
     path: `${pagoPaTutorialListsPath.path}/come-richiedere-pagamenti-che-contengono-marca-da-bollo-digitale`,
     name: 'Come richiedere pagamenti che contengono marca da bollo digitale',
@@ -25,7 +35,7 @@ export const pagoPaTutorials: readonly Tutorial[] = [
       alternativeText:
         'Immagine: Come avviare un esercizio come Ente Creditore su pagoPA',
     },
-    showInOverview: true,
+    showInOverview: false,
   },
   {
     title: 'Come stampare un avviso di pagamento in formato PDF',
@@ -37,6 +47,16 @@ export const pagoPaTutorials: readonly Tutorial[] = [
         'Immagine: Come stampare un avviso di pagamento in formato PDF',
     },
     showInOverview: true,
+  },
+  {
+    title: 'Come diventare Partner Tecnologico di PagoPA',
+    path: `${pagoPaTutorialListsPath.path}/come-diventare-partner-tecnologico-di-pagopa`,
+    name: 'Come diventare Partner Tecnologico di PagoPA',
+    image: {
+      url: '/images/pagopa-pt.png',
+      alternativeText: 'Immagine: Come diventare Partner Tecnologico di PagoPA',
+    },
+    showInOverview: false,
   },
 ];
 
