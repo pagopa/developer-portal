@@ -79,7 +79,7 @@ export const webinars: readonly Webinar[] = [
     slug: 'DevTalk-pagoPA-gpd',
     isVisibleInHome: true,
     isVisibleInList: true,
-    imagePath: '/images/webinar-cover-pagoPA.png',
+    imagePath: '/images/webinar-cover-pagoPA-gpd.png',
     speakers: [
       {
         name: 'Andrea Ferracci',
