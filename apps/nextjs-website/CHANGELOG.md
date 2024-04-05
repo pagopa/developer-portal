@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 0.19.0
+
+### Minor Changes
+
+- 6661cf5: Add new DevTalks pagoPA - GDP
+- 54f276b: Add contents for next PagoPA Lab about TARI
+
 ## 0.18.0
 
 ### Minor Changes
