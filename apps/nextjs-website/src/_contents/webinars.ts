@@ -73,7 +73,7 @@ export const webinars: readonly Webinar[] = [
       <li>cos'è una posizione debitoria e come è stata strutturata in GPD</li>
       <li>gli stati che può assumere durante il suo ciclo di vita</li>
       <li>come l’ente creditore può interagire su un posizione debitoria</li>
-      <li>e i vantaggi a runtime dell’integrazione asincrona</li>
+      <li>i vantaggi a runtime dell’integrazione asincrona</li>
       </ul>
       </p>\n`,
     slug: 'DevTalk-pagoPA-gpd',
