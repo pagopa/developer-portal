@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.7
+
+### Patch Changes
+
+- abb1bd6: Add player.vimeo.com domain to CSP
+
 ## 0.5.6
 
 ### Patch Changes
