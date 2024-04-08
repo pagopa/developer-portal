@@ -1,5 +1,17 @@
 # infrastructure
 
+## 0.5.7
+
+### Patch Changes
+
+- abb1bd6: Add player.vimeo.com domain to CSP
+
+## 0.5.6
+
+### Patch Changes
+
+- d8c8e9e: Add GOOGLE_OAUTH_REDIRECT_URI env
+
 ## 0.5.5
 
 ### Patch Changes
