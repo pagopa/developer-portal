@@ -55,6 +55,10 @@ const manualeDeiServizi: GuideDefinition = {
   versions: [
     {
       main: true,
+      version: 'v2.1',
+      dirName: '0IqiQFqMyBnjVC53SNSi',
+    },
+    {
       version: 'v2.0',
       dirName: 'xWONfJmawghGo2ekuaKh',
     },
@@ -138,6 +142,22 @@ const accordiAdesione: GuideDefinition = {
   bannerLinks: appIoBannerLinks,
 };
 
+const modelliServizi: GuideDefinition = {
+  product: appIo,
+  guide: {
+    name: 'I Modelli dei Servizi',
+    slug: 'modelli-servizi',
+  },
+  versions: [
+    {
+      main: true,
+      version: 'v1.0',
+      dirName: '0OMsoqOg9GiJ2xusVHMv',
+    },
+  ],
+  bannerLinks: appIoBannerLinks,
+};
+
 export const appIoGuides = [
   guidaTecnica,
   manualeDeiServizi,
@@ -145,4 +165,5 @@ export const appIoGuides = [
   kitDiComunicazione,
   cartaGiovani,
   accordiAdesione,
+  modelliServizi,
 ];
