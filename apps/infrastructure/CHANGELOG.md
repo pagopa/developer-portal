@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.5.6
+
+### Patch Changes
+
+- d8c8e9e: Add GOOGLE_OAUTH_REDIRECT_URI env
+
 ## 0.5.5
 
 ### Patch Changes

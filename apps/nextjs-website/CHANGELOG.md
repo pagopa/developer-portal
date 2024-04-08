@@ -1,5 +1,26 @@
 # nextjs-website
 
+## 0.19.0
+
+### Minor Changes
+
+- 6661cf5: Add new DevTalks pagoPA - GDP
+- 54f276b: Add contents for next PagoPA Lab about TARI
+
+## 0.18.0
+
+### Minor Changes
+
+- 91c56ea: Add version 2.1 for "Manuale dei Servizi" of app IO
+- 4479996: New guide "Modelli dei Servizi" for app IO
+- 7d4b800: Add 2 new tutorials to the pagoPA tutorial page:
+  - "Come diventare Partner Tecnologico di PagoPA"
+  - "Come migrare alla Nuova Connettività"
+
+### Patch Changes
+
+- 5852a9a: Update the local state of the webinar's questions page when an user highlight or hide a question to show the changes in real time.
+
 ## 0.17.0
 
 ### Minor Changes
