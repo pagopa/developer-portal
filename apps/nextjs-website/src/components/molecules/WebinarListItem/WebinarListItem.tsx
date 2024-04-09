@@ -52,12 +52,12 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
       )}
       <Stack justifyContent='space-between' flexGrow={1}>
         <Typography variant='h6'>{webinar.title}</Typography>
-        <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
+        <Box mt={2} color='primary.main'>
           <LinkButton
             href={`/webinars/${webinar.slug}`}
             label={t('webinar.goToWebinar')}
           />
-        </Stack>
+        </Box>
       </Stack>
     </Grid>
   );
