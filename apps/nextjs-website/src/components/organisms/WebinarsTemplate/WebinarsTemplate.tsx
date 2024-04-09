@@ -19,15 +19,15 @@ type WebinarsTemplateProps = {
 const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [nextWebinars, setNextWebinars] = useState<readonly Webinar[]>([]);
+  const [futureWebinars, setFutureWebinars] = useState<readonly Webinar[]>([]);
   const [pastWebinars, setPastWebinars] = useState<readonly Webinar[]>([]);
 
   useEffect(() => {
-    setNextWebinars(getFutureWebinars(webinars));
+    setFutureWebinars(getFutureWebinars(webinars));
     setPastWebinars(getPastWebinars(webinars));
 
     const intervalId = setInterval(() => {
-      setNextWebinars(getFutureWebinars(webinars));
+      setFutureWebinars(getFutureWebinars(webinars));
       setPastWebinars(getPastWebinars(webinars));
     }, CHECK_WEBINARS_INTERVAL_MS);
 
@@ -46,7 +46,9 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
         useHoverlay={false}
         theme='light'
       />
-      {nextWebinars && <FutureWebinarsShowcase webinars={[...nextWebinars]} />}
+      {futureWebinars && (
+        <FutureWebinarsShowcase webinars={[...futureWebinars]} />
+      )}
       {pastWebinars.length > 0 && (
         <>
           <Box pt={8} pb={2}>

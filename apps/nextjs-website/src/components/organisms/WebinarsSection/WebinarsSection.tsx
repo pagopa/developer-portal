@@ -25,7 +25,9 @@ const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
           webinars={[...futureWebinars]}
         />
       )}
-      <PastWebinarsShowcase webinars={[...pastWebinars]} />
+      {pastWebinars.length > 0 && (
+        <PastWebinarsShowcase webinars={[...pastWebinars]} />
+      )}
     </>
   );
 };
