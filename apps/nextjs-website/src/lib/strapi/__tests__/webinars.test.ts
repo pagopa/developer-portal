@@ -9,13 +9,13 @@ const makeStrapiResponseJson = () => ({
         title: 'title',
         description: 'description',
         slug: 'slug-1',
-        textContent: [
+        bodyContent: [
           {
             type: 'paragraph',
             children: [
               {
                 type: 'text',
-                text: 'textContent',
+                text: 'bodyContent',
               },
             ],
           },
@@ -120,7 +120,7 @@ const makeStrapiResponseWithNullsJson = () => ({
         title: 'title',
         description: 'description',
         slug: 'slug-1',
-        textContent: null,
+        bodyContent: null,
         playerSrc: null,
         startDatetime: null,
         endDatetime: null,
