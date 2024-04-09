@@ -25,7 +25,7 @@ const validateDates = (event: IWebinarEvent) => {
     );
   }
 
-  if (startDateTime && endDateTime && endDateTime < startDateTime) {
+  if (startDateTime && endDateTime && endDateTime <= startDateTime) {
     throw new errors.ApplicationError('End date must be after start date');
   }
 };
