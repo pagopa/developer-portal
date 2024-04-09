@@ -1,3 +1,5 @@
+import { SignUpUserData } from '@/lib/types/sign-up';
+
 export const passwordMatcher =
   /(?=(.*[0-9]))(?=.*[!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
 
@@ -23,3 +25,16 @@ export const validatePassword = (value: string): string | null => {
 
   return !passwordMatcher.test(value) ? 'passwordError' : null;
 };
+
+export const generateSignUpData = (userData: SignUpUserData) => ({
+  username: userData.username,
+  password: userData.password,
+  attributes: {
+    given_name: userData.firstName,
+    family_name: userData.lastName,
+    'custom:privacy_accepted': 'true',
+    'custom:mailinglist_accepted': `${userData.mailinglistAccepted}`,
+    'custom:job_role': userData.role,
+    'custom:company_type': userData.company,
+  },
+});

@@ -8,13 +8,13 @@ import {
   TextField,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, ReactNode, useMemo, useState } from 'react';
 
 type PasswordTextFieldProps = {
   id: string;
   label: string;
   hasError?: boolean;
-  helperText?: string;
+  helperText?: ReactNode;
 } & Pick<InputProps, 'onChange' | 'value'>;
 
 export const PasswordTextField = ({
@@ -26,41 +26,45 @@ export const PasswordTextField = ({
   onChange,
 }: PasswordTextFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const endAdornment = useMemo(
+    () => (
+      <InputAdornment position='end'>
+        <IconButton
+          aria-label='toggle password visibility'
+          onClick={() => setShowPassword((show) => !show)}
+          onMouseDown={(event: MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault();
+          }}
+          edge='end'
+        >
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+    [showPassword]
+  );
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  const type = showPassword ? 'text' : 'password';
 
   return (
     <Stack spacing={2}>
-      <FormControl variant='outlined' size={'small'}>
+      <FormControl variant='outlined' size='small'>
         <TextField
+          error={hasError}
           id={id}
+          inputProps={{ 'aria-label': id }}
+          InputProps={{ endAdornment }}
+          label={label}
           name={id}
           required
-          type={showPassword ? 'text' : 'password'}
-          onChange={onChange}
-          error={hasError}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton
-                  aria-label='toggle password visibility'
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge='end'
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          size='small'
+          type={type}
           value={password}
-          label={label}
-          size={'small'}
+          onChange={onChange}
         />
-        <FormHelperText error={hasError}>{helperText}</FormHelperText>
+        {hasError && (
+          <FormHelperText error={hasError}>{helperText}</FormHelperText>
+        )}
       </FormControl>
     </Stack>
   );

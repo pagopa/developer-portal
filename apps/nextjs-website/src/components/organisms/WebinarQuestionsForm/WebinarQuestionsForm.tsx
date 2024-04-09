@@ -53,6 +53,15 @@ export const WebinarQuestionsForm = ({
     setQuestion(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!question) return;
+    // Submit question if user presses Enter + Shift
+    if (e.key === 'Enter' && e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
   const hasFormState = formState === 'submitting' || formState === 'submitted';
   const btnDisabled = !question || hasFormState || disabled;
   const startIcon = hasFormState ? <Done /> : null;
@@ -92,6 +101,7 @@ export const WebinarQuestionsForm = ({
           value={question}
           variant='outlined'
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           inputProps={{ maxLength: MAX_QUESTION_LENGTH }}
           helperText={
             <Typography

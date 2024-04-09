@@ -1,6 +1,8 @@
 /* eslint-disable functional/no-expression-statements */
 import { DevPortalUser } from '@/lib/types/auth';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
+import { redirect } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
@@ -63,4 +65,15 @@ export const useUser = () => {
   }, []);
 
   return { user, loading: isLoaded, setUserAttributes, aligned };
+};
+
+// We need a middleware to check if the user is authenticated and redirect to the home page if so
+export const useAuthenticatedUserRedirect = () => {
+  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
+
+  if (authStatus === 'authenticated') {
+    redirect('/');
+  }
+
+  return authStatus !== 'unauthenticated';
 };

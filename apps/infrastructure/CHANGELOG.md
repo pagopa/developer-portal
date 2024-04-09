@@ -1,5 +1,60 @@
 # infrastructure
 
+## 0.5.7
+
+### Patch Changes
+
+- abb1bd6: Add player.vimeo.com domain to CSP
+
+## 0.5.6
+
+### Patch Changes
+
+- d8c8e9e: Add GOOGLE_OAUTH_REDIRECT_URI env
+
+## 0.5.5
+
+### Patch Changes
+
+- 54224ae: [DEV-1464] Ignore changes on task definition
+
+## 0.5.4
+
+### Patch Changes
+
+- a7f9bc5: [DEV-1574] Increase `desired_count` of cms-ecs in production
+
+## 0.5.3
+
+### Patch Changes
+
+- aa4766a: [DEV-1562] Fix cms task definition template secret values about login with google on the cms
+
+## 0.5.2
+
+### Patch Changes
+
+- 93deedc: [DEV-1562] Move parameters to secrets section to fix issue about login with google on strapi
+
+## 0.5.1
+
+### Patch Changes
+
+- df5ee9e: [DEV-1562] Add cms*google*\* parameters to ecs_task_execution role
+
+## 0.5.0
+
+### Minor Changes
+
+- 2ba6415: Add OAuth parameters to allow login using Google accounts
+- d966a41: Link metric alarms to a SNS topic
+
+## 0.4.0
+
+### Minor Changes
+
+- 726ff18: Create SNS topic and subscription for cloudwatch metric alarms
+
 ## 0.3.2
 
 ### Patch Changes

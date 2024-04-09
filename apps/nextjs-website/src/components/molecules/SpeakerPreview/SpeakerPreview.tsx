@@ -4,21 +4,22 @@ import { PersonOutline } from '@mui/icons-material';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
+import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 
 type SpeakerPreviewProps = { compactMode?: boolean } & Speaker;
 
 type SpeakerAvatarProps = SpeakerPreviewProps;
 
 const SpeakerAvatar = ({
-  imagePath,
+  avatar,
   name,
   compactMode = true,
 }: SpeakerAvatarProps) => {
   const { palette } = useTheme();
-  return imagePath ? (
+  return avatar ? (
     <Image
-      src={imagePath}
-      alt={name}
+      src={avatar.url}
+      alt={avatar.alternativeText || name}
       width={0}
       height={0}
       sizes='100vw'
@@ -84,9 +85,9 @@ const SpeakerInfo = ({
           >
             {jobTitle}
           </Typography>
-          <Typography variant='body2' mt={2}>
-            {description}
-          </Typography>
+          <Box mt={2}>
+            <BlocksRendererClient content={description} />
+          </Box>
         </>
       )}
     </Box>
