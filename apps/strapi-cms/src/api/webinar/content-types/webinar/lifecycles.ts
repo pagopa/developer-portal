@@ -21,7 +21,7 @@ const validateDates = (event: IWebinarEvent) => {
 
   if ((startDateTime && !endDateTime) || (!startDateTime && endDateTime)) {
     throw new errors.ApplicationError(
-      'Both start and end dates must be provided'
+      'Both start and end dates must be provided, or none should be set'
     );
   }
 
