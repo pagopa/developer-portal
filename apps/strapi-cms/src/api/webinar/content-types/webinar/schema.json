@@ -48,7 +48,7 @@
       "required": true,
       "regex": "^[a-zA-Z0-9-]+$"
     },
-    "textContent": {
+    "bodyContent": {
       "type": "blocks",
       "pluginOptions": {
         "i18n": {
