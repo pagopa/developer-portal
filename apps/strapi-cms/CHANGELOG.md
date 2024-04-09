@@ -1,5 +1,25 @@
 # strapi-cms
 
+## 0.5.1
+
+### Patch Changes
+
+- d8c8e9e: Add GOOGLE_OAUTH_REDIRECT_URI env
+
+## 0.5.0
+
+### Minor Changes
+
+- c0c2a65: Add subhead to hero slide
+- 2ba6415: Enable login to Strapi with Google accounts
+- 4bb1086: Add webinars to homepage in Strapi
+
+## 0.4.0
+
+### Minor Changes
+
+- 1ed75ad: Add support for webinars
+
 ## 0.3.0
 
 ### Minor Changes

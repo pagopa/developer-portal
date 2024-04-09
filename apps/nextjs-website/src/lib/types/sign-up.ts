@@ -6,5 +6,5 @@ export type SignUpUserData = {
   readonly lastName: string;
   readonly company: string;
   readonly role: string;
-  readonly mailinglistAccepted?: boolean;
+  readonly mailinglistAccepted: boolean;
 };

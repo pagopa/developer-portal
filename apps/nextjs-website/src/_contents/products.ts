@@ -152,6 +152,8 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/kit-di-comunicazione-per-gli-enti':
     '/app-io/guides/kit-comunicazione',
   'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
+  'https://docs.pagopa.it/i-modelli-dei-servizi':
+    '/app-io/guides/modelli-servizi',
 
   // Firma con IO
   'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':

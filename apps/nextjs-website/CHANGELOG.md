@@ -1,5 +1,89 @@
 # nextjs-website
 
+## 0.19.0
+
+### Minor Changes
+
+- 6661cf5: Add new DevTalks pagoPA - GDP
+- 54f276b: Add contents for next PagoPA Lab about TARI
+
+## 0.18.0
+
+### Minor Changes
+
+- 91c56ea: Add version 2.1 for "Manuale dei Servizi" of app IO
+- 4479996: New guide "Modelli dei Servizi" for app IO
+- 7d4b800: Add 2 new tutorials to the pagoPA tutorial page:
+  - "Come diventare Partner Tecnologico di PagoPA"
+  - "Come migrare alla Nuova Connettività"
+
+### Patch Changes
+
+- 5852a9a: Update the local state of the webinar's questions page when an user highlight or hide a question to show the changes in real time.
+
+## 0.17.0
+
+### Minor Changes
+
+- 9aab500: Update of SANP version from 3.6.1 to 3.7.0.
+
+### Patch Changes
+
+- e496be4: Fix the rendering of a single tab in a group of tabs
+
+## 0.16.1
+
+### Patch Changes
+
+- d727662: Update id of 'Esplorando App IO: I messaggi a contenuto remoto' webinar
+
+## 0.16.0
+
+### Minor Changes
+
+- ea340e9: Add fetch from Strapi for webinars
+
+### Patch Changes
+
+- fb3692b: Update webinars images
+- b842990: Add BlocksRendererClient component to render the blocks content coming from Strapi
+- 7f7ea27: Change the subtitle of "Esplorando App IO: I messaggi a contenuto remoto" webinar
+
+## 0.15.3
+
+### Patch Changes
+
+- 9bd7fae: Add signup form tests
+- 61648ac: Reset change password form errors on user changes
+- 83fd73c: Reset signup form errors if user updates form
+- 83f9652: Reset change password form errors on user changes
+
+## 0.15.2
+
+### Patch Changes
+
+- 33ed5cd: Handle webinar questions form submit with a combination of keys
+- 6bb0719: Set endDateTime of 'always-live' webinar to year 2077
+- 4279732: Fix cover image of the webinar "Esplorando App IO: I messaggi a contenuto remoto"
+- fc8c838: Reset login code form errors on user changes
+
+## 0.15.1
+
+### Patch Changes
+
+- 7229d3c: Resize webinar images
+
+## 0.15.0
+
+### Minor Changes
+
+- df04081: Add Webinar "DevTalk - IO Remote Content"
+
+### Patch Changes
+
+- 88c38bd: Add metadata to webinar page
+- 97d1679: [DEV-1545] Add custom PathReporter to improve readability of errors raised by decode
+
 ## 0.14.3
 
 ### Patch Changes

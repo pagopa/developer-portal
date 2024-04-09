@@ -181,7 +181,7 @@ const WebinarCard = ({
                   name={speaker.name}
                   description={speaker.description}
                   jobTitle={speaker.jobTitle}
-                  imagePath={speaker.imagePath}
+                  avatar={speaker.avatar}
                 />
               ))}
             </Stack>
