@@ -1,13 +1,14 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
 import { Box, Grid, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import WebinarListItem from '@/components/molecules/WebinarListItem/WebinarListItem';
+import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
@@ -18,40 +19,15 @@ type WebinarsTemplateProps = {
 const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [nextWebinars, setNextWebinars] = useState<Webinar[]>([]);
-  const [pastWebinars, setPastWebinars] = useState<Webinar[]>([]);
-
-  const getNextWebinars = useCallback(
-    (currentWebinars: readonly Webinar[]) =>
-      currentWebinars.filter(
-        ({ startDateTime, endDateTime }) =>
-          (!startDateTime && !endDateTime) ||
-          (endDateTime &&
-            new Date(endDateTime).getTime() > new Date().getTime())
-      ),
-    []
-  );
-
-  const getPastWebinars = useCallback(
-    (currentWebinars: readonly Webinar[]) =>
-      currentWebinars
-        .filter(
-          ({ endDateTime, startDateTime }) =>
-            endDateTime &&
-            startDateTime &&
-            new Date(endDateTime).getTime() <= new Date().getTime()
-        )
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        .sort((a, b) => (a.startDateTime! < b.startDateTime! ? 1 : -1)),
-    []
-  );
+  const [futureWebinars, setFutureWebinars] = useState<readonly Webinar[]>([]);
+  const [pastWebinars, setPastWebinars] = useState<readonly Webinar[]>([]);
 
   useEffect(() => {
-    setNextWebinars(getNextWebinars(webinars));
+    setFutureWebinars(getFutureWebinars(webinars));
     setPastWebinars(getPastWebinars(webinars));
 
     const intervalId = setInterval(() => {
-      setNextWebinars(getNextWebinars(webinars));
+      setFutureWebinars(getFutureWebinars(webinars));
       setPastWebinars(getPastWebinars(webinars));
     }, CHECK_WEBINARS_INTERVAL_MS);
 
@@ -70,8 +46,8 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
         useHoverlay={false}
         theme='light'
       />
-      {nextWebinars && (
-        <WebinarsSection title={'next'} webinars={[...nextWebinars]} />
+      {futureWebinars && (
+        <FutureWebinarsShowcase webinars={[...futureWebinars]} />
       )}
       {pastWebinars.length > 0 && (
         <>
