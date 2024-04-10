@@ -1,7 +1,7 @@
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
-import { StaticWebinar, Webinar } from './types/webinar';
+import { Webinar } from './types/webinar';
 import { webinars } from '@/_contents/webinars';
 
 export type HomepageProps = {
@@ -51,7 +51,7 @@ export type HomepageProps = {
       readonly href: string;
     }[];
   };
-  readonly webinars: readonly Webinar[] | readonly StaticWebinar[];
+  readonly webinars: readonly Webinar[];
 };
 
 type StaticHomepage = typeof translations.homepage;
