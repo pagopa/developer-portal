@@ -345,7 +345,7 @@ const makeStrapiResponseJson = () => ({
             attributes: {
               title: 'aText',
               slug: 'a-slug',
-              textContent: [
+              bodyContent: [
                 {
                   type: 'paragraph',
                   children: [
