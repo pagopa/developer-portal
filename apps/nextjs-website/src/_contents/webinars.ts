@@ -176,7 +176,7 @@ export const webinars: readonly StaticWebinar[] = [
       Approfondiremo gli aspetti architetturali e di processo, focalizzandoci su come IO richiede informazioni all’Ente e su come questo metta a disposizione di IO le proprie risorse. Vedremo nel dettaglio quali componenti del messaggio possono essere remotizzate e in che modo.</br>
       Analizzeremo un caso d’uso reale, evidenziando i vantaggi per le due tipologie di utenti di IO, gli Enti e ovviamente i Cittadini, come la possibilità di veicolare informazioni sensibili nel pieno rispetto del GDPR e attualizzare il contenuto dei messaggi già inviati.</p>\n`,
     slug: 'DevTalk-remote-content',
-    isVisibleInHome: false,
+    isVisibleInHome: true,
     isVisibleInList: true,
     imagePath: '/images/webinar-cover-io-remote-content.jpg',
     speakers: [
@@ -224,7 +224,7 @@ export const webinars: readonly StaticWebinar[] = [
       `<br /> \n` +
       `<p>La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.</p>\n`,
     slug: 'PagoPA-multe',
-    isVisibleInHome: false,
+    isVisibleInHome: true,
     isVisibleInList: true,
     imagePath: '/images/webinar-cover-pago-pa-multe.jpg',
     speakers: [
@@ -276,7 +276,7 @@ export const webinars: readonly StaticWebinar[] = [
       `<br /> \n` +
       `<p>Gli interventi dei nostri esperti saranno intervallati da momenti di Q&A per condividere le migliori pratiche per un'esperienza fluida e di successo nella gestione dei vostri servizi. </p> \n`,
     slug: 'nuove-api-io',
-    isVisibleInHome: false,
+    isVisibleInHome: true,
     isVisibleInList: true,
     imagePath: '/images/webinar-cover-nuove-api-io.jpg',
     speakers: [
