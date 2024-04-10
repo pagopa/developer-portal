@@ -24,7 +24,6 @@ export type Webinar = {
     }[];
   };
   readonly subscribeCtaLabel?: string;
-  readonly isVisibleInHome: boolean;
   readonly isVisibleInList: boolean;
   readonly imagePath: string;
   readonly startInfo?: {
@@ -38,3 +37,5 @@ export type Webinar = {
     }[];
   };
 };
+
+export type StaticWebinar = Webinar & { readonly isVisibleInHome: boolean };
