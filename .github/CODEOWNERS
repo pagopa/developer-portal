@@ -18,4 +18,10 @@ packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
 
 .changeset/README.md @pagopa/devportal-maintain
 .changeset/config.json @pagopa/devportal-maintain
+
+# No owner is required for changeset files
 .changeset/*
+
+# Required to merge Push next releases PR
+package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
