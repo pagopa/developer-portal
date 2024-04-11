@@ -25,3 +25,4 @@ packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
 # Required to merge Push next releases PR
 package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
 **/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
