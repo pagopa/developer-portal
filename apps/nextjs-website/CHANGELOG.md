@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 0.20.0
+
+### Minor Changes
+
+- 119f576: Display webinars coming from Strapi in the homepage
+- 59c69ed: Rename webinar's field from textContent to bodyContent
+
+### Patch Changes
+
+- 31991a7: Update homepage webinars' sections to display future and past webinars
+- a064905: Sort webinars list to show the upcoming webinar on banner
+- 0580401: Align "Go to webinar" buttons
+- 1cf5c18: Update "Messaggi a contenuto remoto" webinar src
+
 ## 0.19.0
 
 ### Minor Changes
