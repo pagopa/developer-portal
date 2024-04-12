@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Sorted webinars on banner
+Sort webinars list to show the upcoming webinar on banner
