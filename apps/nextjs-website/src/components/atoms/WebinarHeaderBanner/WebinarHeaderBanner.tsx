@@ -22,8 +22,8 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   // eslint-disable-next-line functional/immutable-data
   webinars.sort((a, b) => {
     return (
-      new Date(a.endDateTime ?? 0).getTime() -
-      new Date(b.endDateTime ?? 0).getTime()
+      new Date(a.startDateTime ?? 0).getTime() -
+      new Date(b.startDateTime ?? 0).getTime()
     );
   });
 
