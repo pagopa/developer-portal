@@ -1,5 +1,16 @@
 # strapi-cms
 
+## 0.6.0
+
+### Minor Changes
+
+- 04c921f: Rename webinar's field from textContent to bodyContent
+
+### Patch Changes
+
+- d5e8946: Add custom validator on webinar dates
+- 813dc35: Add Strapi custom CSP rules
+
 ## 0.5.1
 
 ### Patch Changes
