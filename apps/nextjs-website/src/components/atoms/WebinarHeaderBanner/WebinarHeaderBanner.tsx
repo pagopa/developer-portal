@@ -15,12 +15,20 @@ import { Webinar } from '@/lib/types/webinar';
 import { useTranslations } from 'next-intl';
 
 export type WebinarHeaderBannerProps = {
-  webinars: readonly Webinar[];
+  webinars: Webinar[];
 };
 
 const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
+  // eslint-disable-next-line functional/immutable-data
+  webinars.sort((a, b) => {
+    return (
+      new Date(a.startDateTime ?? 0).getTime() -
+      new Date(b.startDateTime ?? 0).getTime()
+    );
+  });
+
   const webinar = webinars.find(
-    ({ endDateTime }) =>
+    ({ endDateTime }: Webinar) =>
       endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
   const { slug, title: text, endDateTime } = webinar || {};
