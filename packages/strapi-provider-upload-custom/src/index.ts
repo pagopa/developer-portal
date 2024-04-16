@@ -14,15 +14,11 @@ export const init: typeof ProviderLocal.init = (options) => {
   return {
     ...fns,
     async uploadStream(file) {
-      // eslint-disable-next-line functional/no-expression-statements
       await fns.uploadStream(file);
-      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data, @typescript-eslint/no-non-null-assertion
       file.url = prefixFileUrlWithBackendUrl(file.url)!;
     },
     async upload(file) {
-      // eslint-disable-next-line functional/no-expression-statements
       await fns.upload(file);
-      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data, @typescript-eslint/no-non-null-assertion
       file.url = prefixFileUrlWithBackendUrl(file.url)!;
     },
   };
