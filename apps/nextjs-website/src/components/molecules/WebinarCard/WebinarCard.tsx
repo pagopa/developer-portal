@@ -164,7 +164,7 @@ const WebinarCard = ({
           )}
         </Box>
         {webinar.speakers && (
-          <Box>
+          <Box width={{ md: '45%' }}>
             <Typography
               mb={2}
               color={theme.palette.text.primary}
