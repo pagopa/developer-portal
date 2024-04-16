@@ -6,6 +6,7 @@ apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1
 
 # CMS
 apps/strapi-cms/ @MarcoPonchia @marcobottaro @tommaso1
+packages/strapi-provider-upload-custom/ @MarcoPonchia @marcobottaro @tommaso1 @jeremygordillo
 
 # Email templates
 apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1
