@@ -7,7 +7,7 @@ export type AlertPartProps = {
   alertStyle?: SxProps;
   severity: AlertColor;
   text?: string;
-  title: string;
+  title?: string;
 };
 
 const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {
@@ -18,7 +18,7 @@ const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {
       severity={severity}
       sx={{ borderRadius: '4px', marginBottom: spacing(5), ...alertStyle }}
     >
-      <AlertTitle>{title}</AlertTitle>
+      {title && <AlertTitle>{title}</AlertTitle>}
       {text}
     </Alert>
   );

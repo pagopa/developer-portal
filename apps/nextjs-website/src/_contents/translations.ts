@@ -6,6 +6,7 @@ import { send } from '@/_contents/send/send';
 import { appIo } from '@/_contents/appIo/appIo';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
+import { pdnd } from '@/_contents/pdnd/pdnd';
 
 export const translations = {
   header: {
@@ -109,7 +110,7 @@ export const translations = {
     webinarBannerButtonContent: 'Scopri',
     productsShowcase: {
       title: 'Scopri il nostro ecosistema',
-      products: [appIo, ioSign, pagoPa, send],
+      products: [appIo, ioSign, pagoPa, send, pdnd],
     },
     heroItems: [
       {
