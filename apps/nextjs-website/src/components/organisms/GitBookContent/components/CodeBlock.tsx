@@ -1,12 +1,17 @@
 import { CodeBlockProps } from 'gitbook-docs/markdoc/schema/code';
 import { ReactNode } from 'react';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import MermaidDiagram from '@/components/atoms/MermaidDiagram/MermaidDiagram';
 
 const CodeBlock = ({
   language,
   lineNumbers,
   children,
 }: CodeBlockProps<ReactNode>) => {
+  if (language === 'mermaid' && typeof children === 'string') {
+    return <MermaidDiagram chart={children} />;
+  }
+
   if (typeof children === 'string') {
     return (
       <CodeBlockPart
