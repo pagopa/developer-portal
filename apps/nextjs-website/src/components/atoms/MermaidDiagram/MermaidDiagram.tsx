@@ -10,7 +10,13 @@ interface MermaidDiagramProps {
 mermaid.initialize({});
 
 const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
-  const id = chart;
+  // Generate a unique id for the diagram based on the chart content
+  const id = chart
+    .split('')
+    .map((s) => s.charCodeAt(0))
+    .reduce((a, b) => a + b)
+    .toString();
+
   useEffect(() => {
     document.getElementById(id)?.removeAttribute('data-processed');
     mermaid.contentLoaded();
