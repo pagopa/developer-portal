@@ -62,7 +62,7 @@ const DesktopUserInfo: FC = () => {
         <MuiLink
           href={
             pathname !== '/'
-              ? `/auth/login?redirect=${pathname}`
+              ? `/auth/login?redirect=${btoa(pathname)}`
               : '/auth/login'
           }
           component={Link}
