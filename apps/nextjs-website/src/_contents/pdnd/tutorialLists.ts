@@ -18,7 +18,7 @@ export const pdndTutorials: readonly Tutorial[] = [
   },
   {
     title: "Cos'è e come si crea una finalità in PDND",
-    path: `${pdndTutorialListsPath.path}/README(1)`,
+    path: `${pdndTutorialListsPath.path}/cose-e-come-si-crea-una-finalita-in-pdnd`,
     name: "Cos'è e come si crea una finalità in PDND",
     image: {
       url: '/images/pdnd-tutorial-1.png',

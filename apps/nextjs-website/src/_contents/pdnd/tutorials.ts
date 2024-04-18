@@ -4,6 +4,6 @@ import { TutorialsDefinition } from '../makeDocs';
 
 export const pdndTutorials: TutorialsDefinition = {
   product: pdnd,
-  dirName: 'UsyMcDAgvstcAzkFAXiA',
+  dirName: 'idydkwHwhMHETEWuWkje',
   bannerLinks: pdndBannerLinks,
 };
