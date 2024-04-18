@@ -196,6 +196,16 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/pago-pa/guides/portale-delle-adesioni',
   'https://docs.pagopa.it/gestionedeglierrori': '/pago-pa/guides/errori',
   'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
+
+  // PDND
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/guida-alladesione':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/guida-alladesione',
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/utilizzare-i-voucher#verifica-di-un-voucher-da-parte-di-un-erogatore-di-e-service':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/utilizzare-i-voucher#verifica-di-un-voucher-da-parte-di-un-erogatore-di-e-service',
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/e-service':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/e-service',
+  'https://docs.pagopa.it/interoperabilita-1/funzionamento-generale':
+    '/pdnd-interoperabilita/guides/manuale-operativo/funzionamento-generale',
 };
 
 export const products = [appIo, ioSign, send, pagoPa, pdnd];
