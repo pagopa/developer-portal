@@ -139,10 +139,6 @@ export const translations = {
       title: 'Documentazione in arrivo',
       links: [
         {
-          text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
-          href: 'https://www.interop.pagopa.it/',
-        },
-        {
           text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
           href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
         },
