@@ -311,56 +311,81 @@ export const sendQuickStartGuide: QuickStartGuideData = {
           apiRequest: {
             code:
               `{ \n` +
-              `  "idempotenceToken":"1ab23c45-6789-1234-d5ef-6a789b12cde3", \n` +
-              `  "paProtocolNumber": "Prot_001", \n` +
-              `  "subject": "Prova Notifica 001", \n` +
-              `  "recipients": [ \n` +
+              ` "idempotenceToken": "1ab23c45-6789-1234-d5ef-6a789b12cde3", \n` +
+              ` "paProtocolNumber": "Prot_001", \n` +
+              ` "subject": "Prova Notifica 001", \n` +
+              ` "recipients": [ \n` +
               `    { \n` +
-              `      "recipientType": "PF|PG", \n` +
-              `      "taxId": "HVUEQP09U6QMNN5Z", \n` +
-              `      "denomination": "Rossi Mario", \n` +
-              `      "physicalAddress": { \n` +
+              `        "recipientType": "PF|PG", \n` +
+              `        "taxId": "HVUEQP09U6QMNN5Z", \n` +
+              `        "denomination": "Rossi Mario", \n` +
+              `        "physicalAddress": { \n` +
               `        "address": "Via Larga 10", \n` +
               `        "zip": "00100", \n` +
-              `        "municipality": "Roma" \n` +
-              `      }, \n` +
-              `      "payment": { \n` +
-              `        "noticeCode": "302000100000019421", \n` +
-              `        "creditorTaxId": "77777777777", \n` +
-              `        "noticeCodeAlternative": "302000100000019421", \n` +
-              `        "pagoPaForm": { \n` +
-              `          "digests": { \n` +
-              `            "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=" \n` +
-              `          }, \n` +
-              `          "contentType": "application/pdf", \n` +
-              `          "ref": { \n` +
-              `            "key": "BK45PS23", \n` +
-              `            "versionToken": "y8T2_G46HFMJv3gnthXYpNeIV8qgR85E" \n` +
-              `          } \n` +
+              `        "municipality": "Roma", \n` +
+              `        "province": "RM" \n` +
+              `     }, \n` +
+              ` "payments": [ \n` +
+              `     { \n` +
+              `        "pagoPa": { \n` +
+              `             "noticeCode": "302000100000019421", \n` +
+              `             "creditorTaxId": "77777777777", \n` +
+              `             "applyCost": false, \n` +
+              `             "attachment": { \n` +
+              `                 "digests": { \n` +
+              `                      "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI" \n` +
+              `                            }, \n` +
+              `             "contentType": "application/pdf", \n` +
+              `                  "ref": { \n` +
+              `                      "key": "BK45PS23", \n` +
+              `                      "versionToken": "y8T2_G46HFMJv3gnthXYpNeIV8qgR85E" \n` +
+              `                         } \n` +
+              `                         } \n` +
+              `                   } \n` +
+              `     }, \n` +
+              `     { \n` +
+              `        "pagoPa": { \n` +
+              `             "noticeCode": "302000100000019422", \n` +
+              `              "creditorTaxId": "77777777777", \n` +
+              `               "applyCost": true, \n` +
+              `               "attachment": { \n` +
+              `               "digests": { \n` +
+              `                  "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI" \n` +
+              `                          }, \n` +
+              `               "contentType": "application/pdf", \n` +
+              `               "ref": { \n` +
+              `                   "key": "BK45PS23", \n` +
+              `                   "versionToken": "y8T2_G46HFMJv3gnthXYpNeIV8qgR85E" \n` +
+              `                      } \n` +
+              `                      } \n` +
+              `                 } \n` +
+              `             } \n` +
+              `            ] \n` +
               `        } \n` +
-              `      } \n` +
-              `    } \n` +
-              `  ], \n` +
-              `  "documents": [ \n` +
-              `    { \n` +
-              `      "digests": { \n` +
-              `        "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=" \n` +
-              `      }, \n` +
-              `      "contentType": "application/pdf", \n` +
-              `      "ref": { \n` +
-              `        "key": "safestorage://BK45PS23", \n` +
-              `        "versionToken": "x-amz-version-id" \n` +
-              `      }, \n` +
-              `    } \n` +
-              `  ], \n` +
-              `  "notificationFeePolicy": "FLAT_RATE|DELIVERY_MODE", \n` +
-              `  "physicalCommunicationType": "AR_REGISTERED_LETTER|REGISTERED_LETTER_890", \n` +
-              `  "senderDenomination": "MittenteCF", \n` +
-              `  "senderTaxId": "PA_CF", \n` +
-              `  "amount": 0, \n` +
-              `  "paymentExpirationDate": "2023-11-28", \n` +
-              `  "taxonomyCode": "010101P" \n` +
-              `} \n`,
+              `    ], \n` +
+              `    "documents": [ \n` +
+              `        { \n` +
+              `            "digests": { \n` +
+              `                "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=" \n` +
+              `           }, \n` +
+              `            "contentType": "application/pdf", \n` +
+              `            "ref": { \n` +
+              `                "key": "BK45PS23", \n` +
+              `                "versionToken": "x-amz-version-id" \n` +
+              `            } \n` +
+              `        } \n` +
+              `    ], \n` +
+              `    "notificationFeePolicy": "FLAT_RATE|DELIVERY_MODE", \n` +
+              `    "physicalCommunicationType": "AR_REGISTERED_LETTER|REGISTERED_LETTER_890", \n` +
+              `    "senderDenomination": "MittenteCF", \n` +
+              `    "senderTaxId": "PA_CF", \n` +
+              `    "amount": 0, \n` +
+              `    "paymentExpirationDate": "2024-12-27", \n` +
+              `    "taxonomyCode": "010101P", \n` +
+              `    "paFee": 100, \n` +
+              `    "vat":220, \n` +
+              `    "pagoPaIntMode": "SYNC|ASYNC|NONE" \n` +
+              `  } \n`,
             language: 'json',
             parts: [
               {
