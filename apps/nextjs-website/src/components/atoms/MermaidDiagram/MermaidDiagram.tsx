@@ -20,7 +20,7 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
   useEffect(() => {
     document.getElementById(id)?.removeAttribute('data-processed');
     mermaid.contentLoaded();
-  }, [chart, id]);
+  }, [id]);
 
   return (
     <div className='mermaid' id={id}>
