@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Preserve scroll position of guide menu
+Scroll the guide menu to the selected item
