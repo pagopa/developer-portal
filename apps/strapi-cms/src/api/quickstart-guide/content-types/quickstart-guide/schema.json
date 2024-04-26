@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quickstart_guides",
+  "info": {
+    "singularName": "quickstart-guide",
+    "pluralName": "quickstart-guides",
+    "displayName": "QuickstartGuide"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "quickstart_guides"
+    },
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "blocks",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "quickstart_guide_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quickstart-guide-item.quickstart-guide-item",
+      "mappedBy": "quickstart_guide"
+    }
+  }
+}
