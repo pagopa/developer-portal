@@ -112,7 +112,7 @@ const Page = async ({ params }: { params: Params }) => {
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: 'calc(78px + 80px)',
+              paddingTop: '158px',
               paddingLeft: '64px',
               width: { lg: '270px' },
             }}
