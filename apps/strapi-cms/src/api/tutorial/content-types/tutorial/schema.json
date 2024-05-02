@@ -29,7 +29,9 @@
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "regex": "^[a-zA-Z0-9-]+$"
     },
     "folder": {
       "pluginOptions": {
