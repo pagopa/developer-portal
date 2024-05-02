@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_banner_links_banner_links",
+  "info": {
+    "displayName": "bannerLinks",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "blocks"
+    },
+    "theme": {
+      "type": "json"
+    }
+  }
+}

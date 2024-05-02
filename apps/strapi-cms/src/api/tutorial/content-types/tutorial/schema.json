@@ -82,6 +82,7 @@
       "target": "api::product.product"
     },
     "bannerLinks": {
+      "displayName": "bannerLinks",
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
@@ -89,7 +90,7 @@
           "localized": true
         }
       },
-      "component": "common.related-links"
+      "component": "banner-links.banner-links"
     }
   }
 }
