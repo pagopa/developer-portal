@@ -97,7 +97,7 @@ const Page = async ({ params }: { params: Params }) => {
           <Box
             sx={{
               // 78px is the height of the header, 80px is the height of the product header, 24 is the title padding
-              paddingTop: 'calc(78px + 80px - 24px)',
+              paddingTop: '182px',
               flexGrow: { lg: 1 },
               maxWidth: {
                 xs: '100%',
