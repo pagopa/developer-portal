@@ -6,6 +6,7 @@ apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1
 
 # CMS
 apps/strapi-cms/ @MarcoPonchia @marcobottaro @tommaso1
+packages/strapi-provider-upload-custom/ @MarcoPonchia @marcobottaro @tommaso1 @jeremygordillo
 
 # Email templates
 apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1
@@ -18,4 +19,11 @@ packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
 
 .changeset/README.md @pagopa/devportal-maintain
 .changeset/config.json @pagopa/devportal-maintain
+
+# No owner is required for changeset files
 .changeset/*
+
+# Required to merge Push next releases PR
+package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1

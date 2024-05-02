@@ -1,0 +1,29 @@
+{
+    "name": "strapi-provider-upload-custom",
+    "version": "0.1.0",
+    "description": "Custom Local provider for strapi upload",
+    "main": "./dist/index.js",
+    "private": true,
+    "files": [
+      "dist"
+    ],
+    "scripts": {
+      "clean": "shx rm -rf dist/",
+      "compile": "npm run clean && tsc",
+      "lint": "eslint src"
+    },
+    "dependencies": {
+      "@strapi/helper-plugin": "4.22.1",
+      "@strapi/provider-upload-local": "4.22.1"
+    },
+    "devDependencies": {
+      "eslint": "^8.40.0",
+      "eslint-config-custom": "*",
+      "typescript": "^5.0.2"
+    },
+    "engines": {
+      "node": ">=18.0.0 <=20.x.x",
+      "npm": ">=6.0.0"
+    }
+  }
+  

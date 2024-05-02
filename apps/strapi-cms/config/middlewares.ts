@@ -1,6 +1,16 @@
-export default [
+// @ts-expect-error
+export default ({ env }) => [
   'strapi::errors',
-  'strapi::security',
+  {
+    name: 'strapi::security',
+    config: {
+      contentSecurityPolicy: {
+        directives: {
+          'img-src': ["'self'", 'data:', 'blob:', 'strapi.io', env("CDN_URL")],
+        },
+      }
+    },
+  },
   'strapi::cors',
   'strapi::logger',
   'strapi::query',

@@ -18,7 +18,7 @@ const WebinarSpeakerCodec = t.strict({
   }),
 });
 
-const WebinarCodec = t.strict({
+export const WebinarCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
@@ -27,7 +27,7 @@ const WebinarCodec = t.strict({
     publishedAt: tt.DateFromISOString,
     isVisibleInList: t.boolean,
     coverImage: t.strict({ data: MediaCodec }),
-    textContent: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+    bodyContent: t.union([NullToUndefinedCodec, BlocksContentCodec]),
     playerSrc: t.union([NullToUndefinedCodec, t.string]),
     startDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     endDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),

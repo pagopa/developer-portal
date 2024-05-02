@@ -1,35 +1,42 @@
 import { appIo } from '@/_contents/appIo/appIo';
 import { appIoApi } from '@/_contents/appIo/api';
-import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoGuideLists } from '@/_contents/appIo/guideLists';
+import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoOverview } from '@/_contents/appIo/overview';
 import { appIoQuickStartGuide } from '@/_contents/appIo/quickStartGuide';
-import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { appIoTutorialLists } from '@/_contents/appIo/tutorialLists';
+import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { ioSignApi } from '@/_contents/ioSign/api';
-import { ioSignGuides } from '@/_contents/ioSign/guides';
 import { ioSignGuideLists } from '@/_contents/ioSign/guideLists';
+import { ioSignGuides } from '@/_contents/ioSign/guides';
 import { ioSignOverview } from '@/_contents/ioSign/overview';
+import { ioSignQuickStartGuide } from '@/_contents/ioSign/quickStartGuide';
 import { ioSignTutorialLists } from '@/_contents/ioSign/tutorialLists';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorials';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { pagoPaApi } from '@/_contents/pagoPa/api';
-import { pagoPaGuides } from '@/_contents/pagoPa/guides';
 import { pagoPaGuideLists } from '@/_contents/pagoPa/guideLists';
+import { pagoPaGuides } from '@/_contents/pagoPa/guides';
 import { pagoPaOverview } from '@/_contents/pagoPa/overview';
-import { pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
 import { pagoPaTutorialLists } from '@/_contents/pagoPa/tutorialLists';
+import { pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
+import { pdnd } from '@/_contents/pdnd/pdnd';
+import { pdndGuideLists } from '@/_contents/pdnd/guideLists';
+import { pdndGuides } from '@/_contents/pdnd/guides';
+import { pdndOverview } from '@/_contents/pdnd/overview';
+import { pdndQuickStartGuide } from '@/_contents/pdnd/quickStartGuide';
+import { pdndTutorialLists } from '@/_contents/pdnd/tutorialLists';
+import { pdndTutorials } from '@/_contents/pdnd/tutorials';
 import { send } from '@/_contents/send/send';
 import { sendApi } from '@/_contents/send/api';
-import { sendGuides } from '@/_contents/send/guides';
 import { sendGuideLists } from '@/_contents/send/guideLists';
+import { sendGuides } from '@/_contents/send/guides';
 import { sendOverview } from '@/_contents/send/overview';
+import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
 import { sendTutorialLists } from '@/_contents/send/tutorialLists';
 import { sendTutorials } from '@/_contents/send/tutorials';
-import { sendQuickStartGuide } from '@/_contents/send/quickStartGuide';
-import { ioSignQuickStartGuide } from '@/_contents/ioSign/quickStartGuide';
-import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
 import { makeGuide, makeTutorials } from './makeDocs';
 import { pipe } from 'fp-ts/lib/function';
 import * as s from 'fp-ts/lib/string';
@@ -41,6 +48,7 @@ export const overviews = [
   ioSignOverview,
   pagoPaOverview,
   sendOverview,
+  pdndOverview,
 ];
 
 export const quickStartGuides = [
@@ -48,6 +56,7 @@ export const quickStartGuides = [
   sendQuickStartGuide,
   ioSignQuickStartGuide,
   pagoPaQuickStartGuide,
+  pdndQuickStartGuide,
 ];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
@@ -57,6 +66,7 @@ export const tutorialLists = [
   ioSignTutorialLists,
   pagoPaTutorialLists,
   sendTutorialLists,
+  pdndTutorialLists,
 ];
 
 const tutorialsDefinitions = [
@@ -64,6 +74,7 @@ const tutorialsDefinitions = [
   ioSignTutorials,
   pagoPaTutorials,
   sendTutorials,
+  pdndTutorials,
 ];
 export const tutorials = tutorialsDefinitions.flatMap(makeTutorials);
 
@@ -72,12 +83,14 @@ export const guideLists = [
   ioSignGuideLists,
   pagoPaGuideLists,
   sendGuideLists,
+  pdndGuideLists,
 ];
 const guidesDefinitions = [
   ...appIoGuides,
   ...ioSignGuides,
   ...pagoPaGuides,
   ...sendGuides,
+  ...pdndGuides,
 ];
 export const guides = guidesDefinitions.flatMap(makeGuide);
 
@@ -183,6 +196,16 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/pago-pa/guides/portale-delle-adesioni',
   'https://docs.pagopa.it/gestionedeglierrori': '/pago-pa/guides/errori',
   'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
+
+  // PDND
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/guida-alladesione':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/guida-alladesione',
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/utilizzare-i-voucher#verifica-di-un-voucher-da-parte-di-un-erogatore-di-e-service':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/utilizzare-i-voucher#verifica-di-un-voucher-da-parte-di-un-erogatore-di-e-service',
+  'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/e-service':
+    '/pdnd-interoperabilita/guides/manuale-operativo/manuale-operativo/e-service',
+  'https://docs.pagopa.it/interoperabilita-1/funzionamento-generale':
+    '/pdnd-interoperabilita/guides/manuale-operativo/funzionamento-generale',
 };
 
-export const products = [appIo, ioSign, send, pagoPa];
+export const products = [appIo, ioSign, send, pagoPa, pdnd];
