@@ -90,7 +90,7 @@ const Page = async ({ params }: { params: Params }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
-            maxWidth: 'calc(822px + 64px + 270px)',
+            maxWidth: '1156px',
             margin: '0 auto',
           }}
         >
