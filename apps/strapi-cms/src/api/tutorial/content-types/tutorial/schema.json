@@ -33,7 +33,7 @@
       "required": true,
       "regex": "^[a-zA-Z0-9-]+$"
     },
-    "folder": {
+    "dirName": {
       "pluginOptions": {
         "i18n": {
           "localized": true
