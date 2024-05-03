@@ -117,8 +117,8 @@ const Page = async ({ params }: { params: Params }) => {
           />
           <Box
             sx={{
-              margin: '0 auto',
-              padding: '56px 40px',
+              margin: `75px auto`,
+              padding: '88px 0px 24px',
               flexGrow: { lg: 1 },
               maxWidth: {
                 xs: '100%',
@@ -126,7 +126,13 @@ const Page = async ({ params }: { params: Params }) => {
               },
             }}
           >
-            <GitBookContent content={props.body} config={props.bodyConfig} />
+            <Box
+              sx={{
+                padding: '56px 40px',
+              }}
+            >
+              <GitBookContent content={props.body} config={props.bodyConfig} />
+            </Box>
           </Box>
           <Box
             sx={{
