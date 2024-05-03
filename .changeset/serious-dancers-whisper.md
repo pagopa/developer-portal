@@ -1,5 +1,4 @@
 ---
-"nextjs-website": patch
 "storybook-app": patch
 ---
 
