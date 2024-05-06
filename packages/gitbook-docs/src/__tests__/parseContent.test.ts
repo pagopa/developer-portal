@@ -303,6 +303,16 @@ describe('parseContent', () => {
         new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
       ]),
     ]);
+    expect(
+      parseContent(
+        '[Page](https://app.gitbook.com/o/xY/s/s1/ "mention")',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
+      ]),
+    ]);
   });
 
   it('should convert 127.0.0.1 URL to other gitbook space', () => {
