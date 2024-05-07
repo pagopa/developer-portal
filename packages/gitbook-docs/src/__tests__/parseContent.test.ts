@@ -303,16 +303,6 @@ describe('parseContent', () => {
         new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
       ]),
     ]);
-    expect(
-      parseContent(
-        '[Page](https://app.gitbook.com/o/xY/s/s1/ "mention")',
-        config
-      )
-    ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, [
-        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
-      ]),
-    ]);
   });
 
   it('should convert 127.0.0.1 URL to other gitbook space', () => {
@@ -332,6 +322,33 @@ describe('parseContent', () => {
     ]);
     expect(
       parseContent('[Page](http://127.0.0.1:5000/s/s0/page/1)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['Page']),
+      ]),
+    ]);
+  });
+
+  it('should convert app.gitbook.com URL to other gitbook space', () => {
+    expect(
+      parseContent(
+        '[Page](https://app.gitbook.com/o/xY/s/s1/ "mention")',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { title: 'mention', href: '/to/s1' }, ['Page']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](https://app.gitbook.com/o/KXY/s/s1/)', config)
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/to/s1' }, ['Page']),
+      ]),
+    ]);
+    expect(
+      parseContent('[Page](https://app.gitbook.com/s/s0/page/1)', config)
     ).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
         new Markdoc.Tag('Link', { href: '/to/s0/page/1' }, ['Page']),
