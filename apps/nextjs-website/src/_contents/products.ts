@@ -22,13 +22,6 @@ import { pagoPaOverview } from '@/_contents/pagoPa/overview';
 import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
 import { pagoPaTutorialLists } from '@/_contents/pagoPa/tutorialLists';
 import { pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
-import { pdnd } from '@/_contents/pdnd/pdnd';
-import { pdndGuideLists } from '@/_contents/pdnd/guideLists';
-import { pdndGuides } from '@/_contents/pdnd/guides';
-import { pdndOverview } from '@/_contents/pdnd/overview';
-import { pdndQuickStartGuide } from '@/_contents/pdnd/quickStartGuide';
-import { pdndTutorialLists } from '@/_contents/pdnd/tutorialLists';
-import { pdndTutorials } from '@/_contents/pdnd/tutorials';
 import { send } from '@/_contents/send/send';
 import { sendApi } from '@/_contents/send/api';
 import { sendGuideLists } from '@/_contents/send/guideLists';
@@ -48,7 +41,6 @@ export const overviews = [
   ioSignOverview,
   pagoPaOverview,
   sendOverview,
-  pdndOverview,
 ];
 
 export const quickStartGuides = [
@@ -56,7 +48,6 @@ export const quickStartGuides = [
   sendQuickStartGuide,
   ioSignQuickStartGuide,
   pagoPaQuickStartGuide,
-  pdndQuickStartGuide,
 ];
 
 export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
@@ -66,7 +57,6 @@ export const tutorialLists = [
   ioSignTutorialLists,
   pagoPaTutorialLists,
   sendTutorialLists,
-  pdndTutorialLists,
 ];
 
 const tutorialsDefinitions = [
@@ -74,7 +64,6 @@ const tutorialsDefinitions = [
   ioSignTutorials,
   pagoPaTutorials,
   sendTutorials,
-  pdndTutorials,
 ];
 export const tutorials = tutorialsDefinitions.flatMap(makeTutorials);
 
@@ -83,14 +72,12 @@ export const guideLists = [
   ioSignGuideLists,
   pagoPaGuideLists,
   sendGuideLists,
-  pdndGuideLists,
 ];
 const guidesDefinitions = [
   ...appIoGuides,
   ...ioSignGuides,
   ...pagoPaGuides,
   ...sendGuides,
-  ...pdndGuides,
 ];
 export const guides = guidesDefinitions.flatMap(makeGuide);
 
@@ -208,4 +195,4 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/pdnd-interoperabilita/guides/manuale-operativo/funzionamento-generale',
 };
 
-export const products = [appIo, ioSign, send, pagoPa, pdnd];
+export const products = [appIo, ioSign, send, pagoPa];
