@@ -16,7 +16,7 @@ export const pagoPaGuideLists: GuideListsData = {
       title: "Per l'integrazione",
       guides: [
         {
-          title: 'SACI 3.2.0',
+          title: 'SACI 3.2.1',
           description: {
             title: 'Argomenti trattati',
             listItems: [
