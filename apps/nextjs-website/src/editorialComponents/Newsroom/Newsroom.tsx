@@ -3,6 +3,7 @@ import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo } from 'react';
+import EContainer from '../EContainer/EContainer';
 
 interface INewsroomItem {
   comingSoonLabel?: string;
@@ -133,7 +134,7 @@ const Newsroom = (props: INewsroom) => {
   );
 
   return (
-    <Box ml={{ sm: 4, md: 3, xl: 6 }}>
+    <EContainer>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
@@ -142,9 +143,8 @@ const Newsroom = (props: INewsroom) => {
           flexWrap: { xs: 'nowrap', md: 'wrap' },
           maxWidth: { md: '1280px', lg: '1310px' },
           mx: 'auto',
-          marginLeft: { sm: '-32px', md: '-16px', lg: 'auto' },
-          'div.MuiGrid-item:first-of-type': {
-            marginLeft: { xs: '32px', sm: '16px', md: '0px' },
+          '&.MuiGrid-container': {
+            marginLeft: { md: '-24px' },
           },
           overflowX: 'scroll',
           paddingRight: '32px',
@@ -156,7 +156,7 @@ const Newsroom = (props: INewsroom) => {
       >
         {news}
       </Grid>
-    </Box>
+    </EContainer>
   );
 };
 
