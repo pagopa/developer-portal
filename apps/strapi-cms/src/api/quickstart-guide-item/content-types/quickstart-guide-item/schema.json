@@ -4,7 +4,8 @@
   "info": {
     "singularName": "quickstart-guide-item",
     "pluralName": "quickstart-guide-items",
-    "displayName": "QuickstartGuideItem"
+    "displayName": "QuickstartGuideItem",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -37,13 +38,53 @@
       },
       "type": "string"
     },
-    "content": {
+    "type": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "blocks"
+      "type": "string"
+    },
+    "alertPartProps": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "apiTesterPartProps": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "codeBlockPartProps": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "typographyPartProps": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "innerHtmlLazyLoadedPartProps": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
     }
   }
 }
