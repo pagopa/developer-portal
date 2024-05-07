@@ -11,6 +11,10 @@ const saci: GuideDefinition = {
   versions: [
     {
       main: true,
+      version: '3.2.1',
+      dirName: 'QdpcBdgV6Vin3SHiZyFM',
+    },
+    {
       version: '3.2.0',
       dirName: 'PXEYBQEZ9LagztJLF89O',
     },
