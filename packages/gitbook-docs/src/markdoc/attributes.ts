@@ -55,12 +55,17 @@ export class LinkAttr {
       const spacePrefix = parseContentConfig.spaceToPrefix.find((elem) =>
         sanitizedSpacePagePath.startsWith(elem.spaceId)
       );
-      return spacePrefix
-        ? sanitizedSpacePagePath.replace(
-            spacePrefix.spaceId,
-            spacePrefix.pathPrefix
-          )
-        : value;
+      if (spacePrefix) {
+        return sanitizedSpacePagePath.replace(
+          spacePrefix.spaceId,
+          spacePrefix.pathPrefix
+        );
+      } else if (rewriteKey) {
+        const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
+        return convertLink(href);
+      } else {
+        return value;
+      }
     } else if (value && rewriteKey) {
       const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
       return convertLink(href);
