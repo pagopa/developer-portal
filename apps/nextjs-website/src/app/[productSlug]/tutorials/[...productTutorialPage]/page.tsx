@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getOverview, getTutorial, getTutorialPaths } from '@/lib/api';
+import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
@@ -17,6 +17,7 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import { useTranslations } from 'next-intl';
 
 type Params = {
   productSlug: string;
@@ -36,6 +37,7 @@ type ProductTutorialPageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
+  relatedLinks?: Array<{ path: string; name: string }>;
 } & ProductLayoutProps;
 
 export async function generateMetadata({
@@ -60,11 +62,12 @@ const Page = async ({ params }: { params: Params }) => {
   const tutorialPath = params?.productTutorialPage?.join('/');
 
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  const { product, page, bannerLinks, source } = tutorialProps;
+  const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {
     ...page,
     product,
     bannerLinks,
+    relatedLinks,
     bodyConfig: {
       isPageIndex: false,
       pagePath: page.path,
@@ -74,9 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
       urlReplaces: urlReplacesMap,
     },
   };
-
-  const { relatedLinks } = await getOverview(productSlug);
-  const { overview } = translations;
+  const t = useTranslations('shared');
 
   return (
     <ProductLayout
@@ -134,9 +135,9 @@ const Page = async ({ params }: { params: Params }) => {
           </Box>
         </Box>
       </FragmentProvider>
-      {relatedLinks && (
+      {relatedLinks?.length > 0 && (
         <RelatedLinks
-          title={overview.relatedLinks.title}
+          title={t('relatedLinks')}
           links={relatedLinks.map(({ path, name }) => ({
             text: name,
             href: path,
