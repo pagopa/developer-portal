@@ -1,5 +1,5 @@
 ---
-"nextjs-website": Minor
+"nextjs-website": minor
 ---
 
 Update SANP version
