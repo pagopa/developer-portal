@@ -10,17 +10,6 @@ const meta: Meta<typeof CtaCard> = {
 
 export default meta;
 
-export const Showcase: StoryObj<typeof CtaCard> = {
-  args: {
-    title: 'Title',
-    text: 'Text',
-    cta: {
-      label: 'Label',
-      href: 'https://example.com',
-    },
-  },
-};
-
 export const ShowcaseWithIcon: StoryObj<typeof CtaCard> = {
   args: {
     title: 'Title',
