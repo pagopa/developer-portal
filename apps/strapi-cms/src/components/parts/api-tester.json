@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_parts_api_testers",
+  "info": {
+    "displayName": "apiTester"
+  },
+  "options": {},
+  "attributes": {
+    "request": {
+      "type": "component",
+      "repeatable": true,
+      "component": "parts.typography"
+    },
+    "response": {
+      "type": "component",
+      "repeatable": false,
+      "component": "parts.html"
+    }
+  }
+}

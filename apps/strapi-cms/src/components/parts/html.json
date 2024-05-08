@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_parts_htmls",
+  "info": {
+    "displayName": "html"
+  },
+  "options": {},
+  "attributes": {
+    "html": {
+      "type": "blocks"
+    }
+  }
+}

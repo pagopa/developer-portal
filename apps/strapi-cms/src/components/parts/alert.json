@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_parts_alerts",
+  "info": {
+    "displayName": "alert",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "severity": {
+      "type": "enumeration",
+      "enum": [
+        "success",
+        "info",
+        "warning",
+        "error"
+      ]
+    }
+  }
+}

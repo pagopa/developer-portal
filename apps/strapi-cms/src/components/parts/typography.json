@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_parts_typographies",
+  "info": {
+    "displayName": "typography"
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "string"
+    },
+    "fontSize": {
+      "type": "string"
+    },
+    "fontWeight": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

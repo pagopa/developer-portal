@@ -38,53 +38,21 @@
       },
       "type": "string"
     },
-    "type": {
+    "parts": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
-    },
-    "alertPartProps": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
-    },
-    "apiTesterPartProps": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
-    },
-    "codeBlockPartProps": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
-    },
-    "typographyPartProps": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
-    },
-    "innerHtmlLazyLoadedPartProps": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
+      "type": "dynamiczone",
+      "components": [
+        "parts.html",
+        "parts.typography",
+        "parts.code-block",
+        "parts.alert",
+        "parts.api-tester"
+      ],
+      "required": true
     }
   }
 }
