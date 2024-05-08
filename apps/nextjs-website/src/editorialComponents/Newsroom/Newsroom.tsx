@@ -134,7 +134,7 @@ const Newsroom = (props: INewsroom) => {
   );
 
   return (
-    <EContainer>
+    <EContainer containerSx={{ px: { xs: 0 } }}>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
@@ -142,15 +142,12 @@ const Newsroom = (props: INewsroom) => {
         sx={{
           flexWrap: { xs: 'nowrap', md: 'wrap' },
           maxWidth: { md: '1280px', lg: '1310px' },
-          mx: 'auto',
           '&.MuiGrid-container': {
             marginLeft: { md: '-24px' },
           },
           overflowX: 'scroll',
-          paddingRight: '32px',
           width: {
             xs: 'auto',
-            md: '100%',
           },
         }}
       >
