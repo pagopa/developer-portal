@@ -6,7 +6,6 @@ import { send } from '@/_contents/send/send';
 import { appIo } from '@/_contents/appIo/appIo';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
-import { pdnd } from '@/_contents/pdnd/pdnd';
 
 export const translations = {
   header: {
@@ -110,7 +109,7 @@ export const translations = {
     webinarBannerButtonContent: 'Scopri',
     productsShowcase: {
       title: 'Scopri il nostro ecosistema',
-      products: [appIo, ioSign, pagoPa, send, pdnd],
+      products: [appIo, ioSign, pagoPa, send],
     },
     heroItems: [
       {
@@ -138,6 +137,10 @@ export const translations = {
     comingsoonDocumentation: {
       title: 'Documentazione in arrivo',
       links: [
+        {
+          text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
+          href: 'https://www.interop.pagopa.it/',
+        },
         {
           text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
           href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
