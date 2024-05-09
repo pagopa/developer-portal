@@ -2,7 +2,8 @@
   "collectionName": "components_banner_links_banner_links",
   "info": {
     "displayName": "bannerLinks",
-    "icon": "file"
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -14,9 +15,6 @@
     },
     "body": {
       "type": "blocks"
-    },
-    "theme": {
-      "type": "json"
     }
   }
 }

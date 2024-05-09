@@ -91,6 +91,16 @@
         }
       },
       "component": "banner-links.banner-links"
+    },
+    "relatedLinks": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.related-links"
     }
   }
 }
