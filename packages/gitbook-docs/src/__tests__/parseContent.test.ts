@@ -33,6 +33,8 @@ const config = {
   urlReplaces: {
     'https://docs.pagopa.it/modello-di-integrazione-di-piattaforma-notifiche':
       '/send/guides/modello-di-integrazione',
+    'https://app.gitbook.com/s/axttcUGV65V2IVRggmvR/area-riservata/come-aderire':
+      'https://docs.pagopa.it/area-riservata/area-riservata',
   },
 };
 
@@ -370,6 +372,22 @@ describe('parseContent', () => {
             href: '/send/guides/modello-di-integrazione/path#fragment',
           },
           ['Modello di Integrazione']
+        ),
+      ]),
+    ]);
+    expect(
+      parseContent(
+        '[Manuale onboarding: sezione Processo di adesione](https://app.gitbook.com/s/axttcUGV65V2IVRggmvR/area-riservata/come-aderire)',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag(
+          'Link',
+          {
+            href: 'https://docs.pagopa.it/area-riservata/area-riservata',
+          },
+          ['Manuale onboarding: sezione Processo di adesione']
         ),
       ]),
     ]);

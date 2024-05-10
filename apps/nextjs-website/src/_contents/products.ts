@@ -183,6 +183,8 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
     '/pago-pa/guides/portale-delle-adesioni',
   'https://docs.pagopa.it/gestionedeglierrori': '/pago-pa/guides/errori',
   'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
+  'https://app.gitbook.com/s/axttcUGV65V2IVRggmvR/area-riservata/come-aderire':
+    'https://docs.pagopa.it/area-riservata/area-riservata',
 
   // PDND
   'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/guida-alladesione':
