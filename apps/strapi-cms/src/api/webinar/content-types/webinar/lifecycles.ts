@@ -1,5 +1,3 @@
-// The only way to make this code work is to do side effects, and throwing exceptions and creating functions
-/*eslint-disable*/
 import { errors } from '@strapi/utils';
 
 interface IWebinarEvent {
@@ -20,12 +18,14 @@ const validateDates = (event: IWebinarEvent) => {
   const endDateTime = data.endDatetime ? new Date(data.endDatetime) : null;
 
   if ((startDateTime && !endDateTime) || (!startDateTime && endDateTime)) {
+    // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError(
       'Both start and end dates must be provided, or none should be set'
     );
   }
 
   if (startDateTime && endDateTime && endDateTime <= startDateTime) {
+    // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError('End date must be after start date');
   }
 };
