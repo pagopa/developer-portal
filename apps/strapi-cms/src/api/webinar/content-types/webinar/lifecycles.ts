@@ -1,6 +1,4 @@
-// The only way to make this code work is to do side effects, and throwing exceptions and creating functions
-/*eslint-disable*/
-import { errors } from "@strapi/utils";
+import { errors } from '@strapi/utils';
 
 interface IWebinar {
   readonly id?: string;
@@ -27,12 +25,13 @@ const validateDates = (event: IWebinarEvent): boolean => {
   if ((startDateTime && !endDateTime) || (!startDateTime && endDateTime)) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError(
-      "Both start and end dates must be provided, or none should be set"
+      'Both start and end dates must be provided, or none should be set'
     );
   }
 
   if (startDateTime && endDateTime && endDateTime <= startDateTime) {
-    throw new errors.ApplicationError("End date must be after start date");
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new errors.ApplicationError('End date must be after start date');
   }
   return true;
 };
@@ -42,9 +41,9 @@ const getLocale = async (event: IWebinarEvent): Promise<string> => {
     return event.params.data.locale;
   } else {
     const webinar: IWebinar | undefined = await strapi
-      .service("api::webinar.webinar")
+      .service('api::webinar.webinar')
       .findOne(event.params.data.id);
-    return webinar?.locale || "it";
+    return webinar?.locale || 'it';
   }
 };
 
@@ -55,8 +54,8 @@ const validateSlugUniqByLocale = async (
 
   const query: { where: Record<string, unknown> } = {
     where: {
-      slug: event.params.data.slug,
       locale: currentLocale,
+      slug: event.params.data.slug,
     },
   };
   if (event.params.data.id) {
@@ -68,13 +67,13 @@ const validateSlugUniqByLocale = async (
     };
   }
   const webinarWithSameSlug: IWebinar | undefined = await strapi.db
-    .query("api::webinar.webinar")
+    .query('api::webinar.webinar')
     .findOne(query);
 
   if (webinarWithSameSlug) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError(
-      "Webinar with the same slug already exists for the current locale"
+      'Webinar with the same slug already exists for the current locale'
     );
   }
   return true;
