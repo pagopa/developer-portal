@@ -14,6 +14,7 @@ interface Props {
   px?: BoxProps['px'];
   spacing?: GridProps['spacing'];
   sx?: GridProps['sx'];
+  containerSx?: BoxProps['sx'];
 }
 
 const EContainer = (props: Props) => {
@@ -26,13 +27,19 @@ const EContainer = (props: Props) => {
     px,
     spacing,
     sx,
+    containerSx,
   } = props;
   const backgroundIsJSX = isJSX(background);
 
   return (
     <Box
       component='section'
-      sx={{ px: { xs: 4 }, position: 'relative', overflow: 'hidden' }}
+      sx={{
+        px: { xs: 4 },
+        position: 'relative',
+        overflow: 'hidden',
+        ...containerSx,
+      }}
       py={py}
       px={px}
       bgcolor={!backgroundIsJSX ? background : undefined}
