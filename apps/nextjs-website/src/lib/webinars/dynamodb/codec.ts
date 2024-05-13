@@ -9,6 +9,7 @@ import {
   QueryCommandInput,
   UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
+import { WebinarSubscription } from '../webinarSubscriptions';
 
 const DynamodbAttrS = t.strict({
   S: t.string,
@@ -29,7 +30,15 @@ export const WebinarQuestionDynamodbCodec = t.intersection([
   }),
 ]);
 
+export const WebinarSubscriptionDynamodbCodec = t.strict({
+  webinarId: DynamodbAttrS,
+  username: DynamodbAttrS,
+});
+
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
+type WebinarSubscriptionDynamoDB = t.TypeOf<
+  typeof WebinarSubscriptionDynamodbCodec
+>;
 
 export const makeWebinarQuestionListQueryCondition = (
   webinarId: string
@@ -52,6 +61,13 @@ export const makeWebinarQuestionFromDynamodbItem = (
   // use the short-circuit evaluation to omit the attribute if it is undefined
   ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
   ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
+});
+
+export const makeWebinarSubscriptionFromDynamodbItem = (
+  input: WebinarSubscriptionDynamoDB
+): WebinarSubscription => ({
+  webinarId: input.webinarId.S,
+  username: input.username.S,
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>

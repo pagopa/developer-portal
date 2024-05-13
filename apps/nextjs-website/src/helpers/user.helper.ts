@@ -1,5 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { DevPortalUser } from '@/lib/types/auth';
+import { getUserWebinarSubscriptions } from '@/lib/webinarApi';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
 import { redirect } from 'next/navigation';
@@ -11,17 +12,27 @@ export const useUser = () => {
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
   const checkUser = useCallback(() => {
-    Auth.currentAuthenticatedUser()
-      .then((user) => {
+    const run = async () => {
+      const user = await Auth.currentAuthenticatedUser().catch(() => {
         setLoading(false);
-        setAligned(true);
-        setUser(user);
-      })
-      .catch(() => {
-        setLoading(false);
-        setAligned(true);
         setUser(null);
+        return null;
       });
+
+      if (!user) {
+        return;
+      }
+
+      const subscriptions = await getUserWebinarSubscriptions(
+        user.attributes.email
+      ).catch(() => []);
+
+      setLoading(false);
+      setAligned(true);
+      setUser({ ...user, webinarSubscriptions: subscriptions });
+    };
+
+    run();
   }, []);
 
   const setUserAttributes = async (
@@ -41,6 +52,11 @@ export const useUser = () => {
         setAligned(true);
       });
   };
+
+  const reloadUser = useCallback(() => {
+    setLoading(true);
+    checkUser();
+  }, [checkUser]);
 
   useEffect(() => {
     checkUser();
@@ -64,7 +80,7 @@ export const useUser = () => {
     return () => cancel();
   }, []);
 
-  return { user, loading: isLoaded, setUserAttributes, aligned };
+  return { user, loading: isLoaded, setUserAttributes, aligned, reloadUser };
 };
 
 // We need a middleware to check if the user is authenticated and redirect to the home page if so

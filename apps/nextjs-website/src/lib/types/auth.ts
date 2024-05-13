@@ -1,4 +1,5 @@
 import { CognitoUser } from '@aws-amplify/auth';
+import { WebinarSubscription } from '../webinars/webinarSubscriptions';
 
 export type DevPortalUser = CognitoUser & {
   readonly attributes: {
@@ -13,6 +14,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:privacy_accepted': boolean;
     readonly 'custom:user_preferences'?: string;
   };
+  readonly webinarSubscriptions?: readonly WebinarSubscription[];
 };
 
 export type UserPreferences = {
