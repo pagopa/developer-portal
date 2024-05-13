@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add tutorials stapi side
+Add tutorials Strapi side
