@@ -17,7 +17,6 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { useTranslations } from 'next-intl';
 
 type Params = {
   productSlug: string;
@@ -77,7 +76,6 @@ const Page = async ({ params }: { params: Params }) => {
       urlReplaces: urlReplacesMap,
     },
   };
-  const t = useTranslations('shared');
 
   return (
     <ProductLayout
@@ -137,7 +135,6 @@ const Page = async ({ params }: { params: Params }) => {
       </FragmentProvider>
       {relatedLinks?.length > 0 && (
         <RelatedLinks
-          title={t('relatedLinks')}
           links={relatedLinks.map(({ path, name }) => ({
             text: name,
             href: path,

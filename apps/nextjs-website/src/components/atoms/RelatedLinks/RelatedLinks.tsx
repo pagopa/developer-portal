@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import { Box } from '@mui/material';
 import Listing from '@/editorialComponents/Listing/Listing';
+import { useTranslations } from 'next-intl';
 
 type RelatedLinksProps = {
-  title: string;
+  title?: string;
   links: {
     text: string;
     href: string;
@@ -13,7 +13,8 @@ type RelatedLinksProps = {
 };
 
 const RelatedLinks = ({ title, links }: RelatedLinksProps) => {
-  return <Listing items={links} name={title} />;
+  const t = useTranslations('shared');
+  return <Listing items={links} name={title ?? t('relatedLinks')} />;
 };
 
 export default RelatedLinks;
