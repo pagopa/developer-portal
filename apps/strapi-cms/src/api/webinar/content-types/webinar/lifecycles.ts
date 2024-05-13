@@ -1,8 +1,7 @@
 import { errors } from '@strapi/utils';
 
 interface IWebinar {
-  readonly id?: string;
-  readonly slug: string;
+  readonly slug?: string;
   readonly locale?: string;
   readonly startDatetime?: string;
   readonly endDatetime?: string;
@@ -11,6 +10,9 @@ interface IWebinar {
 interface IWebinarEvent {
   readonly params: {
     readonly data: IWebinar;
+    readonly where?: {
+      readonly id?: string;
+    };
   };
 }
 
@@ -37,14 +39,17 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 const getLocale = async (event: IWebinarEvent): Promise<string> => {
+  // eslint-disable-next-line functional/no-let
+  let currentLocale: string | undefined;
   if (event.params.data.locale) {
-    return event.params.data.locale;
-  } else {
+    currentLocale = event.params.data.locale;
+  } else if (event.params.where?.id) {
     const webinar: IWebinar | undefined = await strapi
       .service('api::webinar.webinar')
-      .findOne(event.params.data.id);
-    return webinar?.locale || 'it';
+      .findOne(event.params.where?.id);
+    currentLocale = webinar?.locale;
   }
+  return currentLocale || 'it';
 };
 
 const validateSlugUniqByLocale = async (
@@ -58,14 +63,15 @@ const validateSlugUniqByLocale = async (
       slug: event.params.data.slug,
     },
   };
-  if (event.params.data.id) {
+  if (event.params.where?.id) {
     query.where = {
       id: {
-        $notIn: [event.params.data.id],
+        $notIn: [event.params.where.id],
       },
       ...query.where,
     };
   }
+
   const webinarWithSameSlug: IWebinar | undefined = await strapi.db
     .query('api::webinar.webinar')
     .findOne(query);
