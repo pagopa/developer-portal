@@ -11,6 +11,9 @@ packages/strapi-provider-upload-custom/ @MarcoPonchia @marcobottaro @tommaso1 @j
 # Email templates
 apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1
 
+# Storybook
+apps/storybook-app/ @MarcoPonchia @marcobottaro @tommaso1
+
 # GitBook docs
 packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
 

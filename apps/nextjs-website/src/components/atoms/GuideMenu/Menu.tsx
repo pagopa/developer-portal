@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import NextLink from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -87,8 +87,17 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
 
 const components: RenderingComponents<React.ReactNode> = {
   Item: ({ href, title, children }) => {
+    const ref = React.useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+      if (ref.current && ref.current.href === window.location.href) {
+        ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
+      }
+    }, []);
+
     const label = (
       <Typography
+        ref={ref}
         variant='sidenav'
         component={NextLink}
         href={href}
