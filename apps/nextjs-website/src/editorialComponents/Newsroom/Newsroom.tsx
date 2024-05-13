@@ -143,6 +143,7 @@ const Newsroom = (props: INewsroom) => {
           flexWrap: { xs: 'nowrap', md: 'wrap' },
           maxWidth: { md: '1280px', lg: '1310px' },
           '&.MuiGrid-container': {
+            padding: { xs: '0 32px', lg: 0 },
             marginLeft: { md: '-24px' },
           },
           overflowX: 'scroll',
