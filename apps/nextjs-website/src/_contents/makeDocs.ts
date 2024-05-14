@@ -52,7 +52,9 @@ export const makeTutorials = ({
           spaceId: dirName,
         },
         bannerLinks: bannerLinks,
-        relatedLinks: [],
+        relatedLinks: {
+          links: [],
+        },
       },
     ],
     parseDocOrThrow,

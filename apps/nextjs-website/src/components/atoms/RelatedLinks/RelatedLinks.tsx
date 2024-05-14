@@ -3,7 +3,7 @@ import React from 'react';
 import Listing from '@/editorialComponents/Listing/Listing';
 import { useTranslations } from 'next-intl';
 
-type RelatedLinksProps = {
+export type RelatedLinksProps = {
   title?: string;
   links: {
     text: string;

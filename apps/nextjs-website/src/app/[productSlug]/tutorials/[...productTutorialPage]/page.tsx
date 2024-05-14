@@ -15,7 +15,9 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { translations } from '@/_contents/translations';
-import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import RelatedLinks, {
+  RelatedLinksProps,
+} from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 type Params = {
@@ -36,7 +38,7 @@ type ProductTutorialPageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
-  relatedLinks?: Array<{ path: string; name: string }>;
+  relatedLinks?: RelatedLinksProps;
 } & ProductLayoutProps;
 
 export async function generateMetadata({
@@ -133,12 +135,10 @@ const Page = async ({ params }: { params: Params }) => {
           </Box>
         </Box>
       </FragmentProvider>
-      {relatedLinks?.length > 0 && (
+      {(props.relatedLinks?.links?.length ?? 0) > 0 && (
         <RelatedLinks
-          links={relatedLinks.map(({ path, name }) => ({
-            text: name,
-            href: path,
-          }))}
+          title={props.relatedLinks?.title}
+          links={props.relatedLinks?.links ?? []}
         />
       )}
     </ProductLayout>
