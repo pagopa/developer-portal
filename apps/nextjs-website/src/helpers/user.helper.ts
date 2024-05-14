@@ -11,28 +11,24 @@ export const useUser = () => {
   const [aligned, setAligned] = useState<boolean>(false);
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
-  const checkUser = useCallback(() => {
-    const run = async () => {
-      const user = await Auth.currentAuthenticatedUser().catch(() => {
-        setLoading(false);
-        setUser(null);
-        return null;
-      });
-
-      if (!user) {
-        return;
-      }
-
-      const subscriptions = await getUserWebinarSubscriptions(
-        user.attributes.email
-      ).catch(() => []);
-
+  const checkUser = useCallback(async () => {
+    const user = await Auth.currentAuthenticatedUser().catch(() => {
       setLoading(false);
-      setAligned(true);
-      setUser({ ...user, webinarSubscriptions: subscriptions });
-    };
+      setUser(null);
+      return null;
+    });
 
-    run();
+    if (!user) {
+      return;
+    }
+
+    const subscriptions = await getUserWebinarSubscriptions(
+      user.attributes.email
+    ).catch(() => []);
+
+    setLoading(false);
+    setAligned(true);
+    setUser({ ...user, webinarSubscriptions: subscriptions });
   }, []);
 
   const setUserAttributes = async (

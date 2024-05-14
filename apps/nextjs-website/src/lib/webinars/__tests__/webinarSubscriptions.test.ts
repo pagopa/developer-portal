@@ -86,6 +86,24 @@ describe('webinarSubscriptions', () => {
       expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(actual).toStrictEqual(expected);
     });
+
+    it('should return error if send returns an error', async () => {
+      const error = new Error();
+      const { env, dynamoDBClientMock } = makeTestWebinarEnv();
+
+      // override the mock to simulate a rejection
+      // eslint-disable-next-line functional/no-promise-reject
+      dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
+
+      const actual = await deleteWebinarSubscription(
+        aInsertWebinarSubscription.webinarId,
+        aInsertWebinarSubscription.username
+      )(env)();
+      const expected = E.left(error);
+
+      expect(dynamoDBClientMock.send).toBeCalledTimes(1);
+      expect(actual).toStrictEqual(expected);
+    });
   });
 
   describe('listUserWebinarSubscriptions', () => {
@@ -109,6 +127,23 @@ describe('webinarSubscriptions', () => {
       )(env)();
       const expected = E.right([]);
 
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('should return error if send returns an error', async () => {
+      const error = new Error();
+      const { env, dynamoDBClientMock } = makeTestWebinarEnv();
+
+      // override the mock to simulate a rejection
+      // eslint-disable-next-line functional/no-promise-reject
+      dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
+
+      const actual = await listUserWebinarSubscriptions(
+        aInsertWebinarSubscription.username
+      )(env)();
+      const expected = E.left(error);
+
+      expect(dynamoDBClientMock.send).toBeCalledTimes(1);
       expect(actual).toStrictEqual(expected);
     });
   });
