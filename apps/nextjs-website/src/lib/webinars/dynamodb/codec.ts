@@ -79,6 +79,14 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
   });
 
+export const makeDynamodbItemFromWebinarSubscription = (
+  input: WebinarSubscription
+) =>
+  WebinarSubscriptionDynamodbCodec.encode({
+    webinarId: { S: input.webinarId },
+    username: { S: input.username },
+  });
+
 type UpdateExpressionItem = {
   readonly fieldName: string;
   readonly expression?: UpdateExpression<string>;
