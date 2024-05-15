@@ -79,6 +79,8 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
+
   return (
     <ProductLayout
       product={props.product}
@@ -93,7 +95,7 @@ const Page = async ({ params }: { params: Params }) => {
             flexDirection: { xs: 'column', lg: 'row' },
             maxWidth: '1156px',
             margin: '0 auto',
-            paddingBottom: '56px',
+            paddingBottom: !hasRelatedLinks ? '56px' : 0,
           }}
         >
           <Box
@@ -136,7 +138,7 @@ const Page = async ({ params }: { params: Params }) => {
           </Box>
         </Box>
       </FragmentProvider>
-      {(props.relatedLinks?.links?.length ?? 0) > 0 && (
+      {hasRelatedLinks && (
         <RelatedLinks
           title={props.relatedLinks?.title}
           links={props.relatedLinks?.links ?? []}
