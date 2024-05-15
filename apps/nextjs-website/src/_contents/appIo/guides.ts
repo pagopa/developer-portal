@@ -11,6 +11,10 @@ const guidaTecnica: GuideDefinition = {
   versions: [
     {
       main: true,
+      version: 'v5.1',
+      dirName: 'aBQM7h48Vhhg8le4VIK8',
+    },
+    {
       version: 'v5.0',
       dirName: 'UAvruCMPsowDKZMH1jNr',
     },
