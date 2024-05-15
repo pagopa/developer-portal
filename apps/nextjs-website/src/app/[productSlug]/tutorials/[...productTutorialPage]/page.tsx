@@ -93,6 +93,7 @@ const Page = async ({ params }: { params: Params }) => {
             flexDirection: { xs: 'column', lg: 'row' },
             maxWidth: '1156px',
             margin: '0 auto',
+            paddingBottom: '56px',
           }}
         >
           <Box
