@@ -53,29 +53,18 @@ const SubscribeToWebinar = ({
     setIsLoading(true);
     subscribeToWebinar(webinarSlug, email)
       .then(() => {
-        setIsSubscribed(true);
+        reloadUser().then(() => setIsLoading(false));
         if (!pathname.includes(`/webinars/${webinarSlug}`)) {
           // eslint-disable-next-line functional/immutable-data
           router.push(`/webinars/${webinarSlug}`);
         }
-        setIsLoading(false);
-        reloadUser();
       })
       .catch((error) => {
         handleErrorMessage && handleErrorMessage(error.message);
         setIsLoading(false);
       });
     return null;
-  }, [
-    webinarSlug,
-    email,
-    handleErrorMessage,
-    t,
-    setIsSubscribed,
-    pathname,
-    reloadUser,
-    router,
-  ]);
+  }, [webinarSlug, email, handleErrorMessage, t, pathname, reloadUser, router]);
 
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
@@ -97,9 +86,7 @@ const SubscribeToWebinar = ({
     setIsLoading(true);
     unsubscribeToWebinar(webinarSlug, email)
       .then(() => {
-        setIsSubscribed(false);
-        setIsLoading(false);
-        reloadUser();
+        reloadUser().then(() => setIsLoading(false));
       })
       .catch((error) => {
         handleErrorMessage && handleErrorMessage(error.message);

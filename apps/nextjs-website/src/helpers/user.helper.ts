@@ -49,9 +49,9 @@ export const useUser = () => {
       });
   };
 
-  const reloadUser = useCallback(() => {
+  const reloadUser = useCallback(async () => {
     setLoading(true);
-    checkUser();
+    await checkUser();
   }, [checkUser]);
 
   useEffect(() => {
