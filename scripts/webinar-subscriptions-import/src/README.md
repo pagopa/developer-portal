@@ -1,6 +1,6 @@
-# Webinar subscriptions importer
+# Webinar Subscriptions Importer
 
-This script fetches users subscriptions to webinars from Amazon Cognito based on the specified environment (dev or prod) and saves the data to DynamoDB.
+This script fetches users subscriptions to webinars from Amazon Cognito based on the specified environment (dev or prod) and saves the data to DynamoDB. The script is idempotent, so it can be run incrementally at any time without data disruption.
 
 ## Running the Script
 
@@ -10,7 +10,7 @@ To run the script, follow these steps:
 
 2. Navigate to the project directory:
 
-```cd scripts/```
+```cd scripts/webinar-subscriptions-import```
 
 3. Install the necessary dependencies:
 
