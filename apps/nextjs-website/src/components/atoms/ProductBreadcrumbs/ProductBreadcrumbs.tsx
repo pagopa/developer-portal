@@ -9,16 +9,16 @@ import {
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslations } from 'next-intl';
+import { BreadCrumbSegment } from '@/lib/types/path';
 
 type ProductBreadcrumbsProps = {
-  breadcrumbs: {
-    name: string;
-    path: string;
-  }[];
+  breadcrumbs: BreadCrumbSegment[];
 };
 
 const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
   const theme = useTheme();
+  const t = useTranslations('breadcrumbs');
   return (
     <EContainer>
       <Box
@@ -30,7 +30,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
           {breadcrumbs.map((breadcrumb, index) => {
             return index === breadcrumbs.length - 1 ? (
               <Typography key={index} fontSize={16} fontWeight={600}>
-                {breadcrumb.name}
+                {breadcrumb.translate ? t(breadcrumb.name) : breadcrumb.name}
               </Typography>
             ) : (
               <MuiLink
@@ -45,7 +45,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
                 }
                 href={breadcrumb.path}
               >
-                {breadcrumb.name}
+                {breadcrumb.translate ? t(breadcrumb.name) : breadcrumb.name}
               </MuiLink>
             );
           })}

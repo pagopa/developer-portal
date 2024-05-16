@@ -6,10 +6,13 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { Box } from '@mui/material';
+import { Path } from '@/lib/types/path';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
   readonly path?: string;
+  readonly paths?: Path[];
   readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
 };
@@ -20,6 +23,7 @@ type LayoutPropsWithChildren = {
 
 const ProductLayout: FC<LayoutPropsWithChildren> = ({
   path,
+  paths,
   product,
   bannerLinks,
   children,
@@ -29,9 +33,11 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
     <>
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
-        <ProductBreadcrumbs
-          breadcrumbs={[...productPageToBreadcrumbs(product, path)]}
-        />
+        <Box marginTop={11}>
+          <ProductBreadcrumbs
+            breadcrumbs={[...productPageToBreadcrumbs(product, path, paths)]}
+          />
+        </Box>
       )}
       {children}
       {bannerLinks && <BannerLinks banners={bannerLinks} />}
