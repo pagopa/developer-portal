@@ -7,9 +7,6 @@
   },
   "options": {},
   "attributes": {
-    "name": {
-      "type": "string"
-    },
     "title": {
       "type": "string"
     },
