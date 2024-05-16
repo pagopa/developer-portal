@@ -91,7 +91,7 @@ export const listUserWebinarSubscriptions = (username: string) =>
         RA.map(WebinarSubscriptionDynamodbCodec.decode),
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
-        // map errors to error and dynamodb item to WebinarQuestion
+        // map errors to error and dynamodb item to WebinarSubscription
         E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem))
       )
     )
