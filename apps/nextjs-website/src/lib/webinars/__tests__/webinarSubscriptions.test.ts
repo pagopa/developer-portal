@@ -17,17 +17,21 @@ import { makeDynamodbItemFromWebinarSubscription } from '../dynamodb/codec';
 const aWebinarSubscription: WebinarSubscription = {
   username: 'aUsername@mail.com',
   webinarId: 'a-webinar-id',
+  createdAt: new Date(0),
 };
 const aInsertWebinarSubscription: WebinarSubscription = {
   username: aWebinarSubscription.username,
   webinarId: aWebinarSubscription.webinarId,
+  createdAt: aWebinarSubscription.createdAt,
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarSubscription({
   ...aWebinarSubscription,
 });
 
 const makeTestWebinarEnv = () => {
+  const nowDate = new Date(0);
   const dynamoDBClientMock = mock<WebinarEnv['dynamoDBClient']>();
+  const nowDateMock = jest.fn();
   // default mock behaviour
   dynamoDBClientMock.send.mockImplementation(async (cmd) => {
     if (cmd instanceof PutItemCommand) return {};
@@ -36,8 +40,10 @@ const makeTestWebinarEnv = () => {
     // eslint-disable-next-line functional/no-throw-statements
     else throw new Error('Unsupported command');
   });
+  nowDateMock.mockImplementation(() => nowDate);
   const env = {
     dynamoDBClient: dynamoDBClientMock,
+    nowDate: nowDateMock,
   };
   return { env, dynamoDBClientMock };
 };

@@ -33,6 +33,7 @@ export const WebinarQuestionDynamodbCodec = t.intersection([
 export const WebinarSubscriptionDynamodbCodec = t.strict({
   webinarId: DynamodbAttrS,
   username: DynamodbAttrS,
+  createdAt: DynamodbAttrISODate,
 });
 
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
@@ -68,6 +69,7 @@ export const makeWebinarSubscriptionFromDynamodbItem = (
 ): WebinarSubscription => ({
   webinarId: input.webinarId.S,
   username: input.username.S,
+  createdAt: new Date(input.createdAt.S),
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
@@ -85,6 +87,7 @@ export const makeDynamodbItemFromWebinarSubscription = (
   WebinarSubscriptionDynamodbCodec.encode({
     webinarId: { S: input.webinarId },
     username: { S: input.username },
+    createdAt: { S: input.createdAt },
   });
 
 type UpdateExpressionItem = {

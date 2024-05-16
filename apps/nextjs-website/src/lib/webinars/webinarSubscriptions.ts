@@ -17,11 +17,13 @@ import {
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
+  readonly nowDate: () => Date;
 };
 
 export type WebinarSubscription = {
   readonly webinarId: string;
   readonly username: string;
+  readonly createdAt: Date;
 };
 
 export const insertWebinarSubscription = (
@@ -30,14 +32,16 @@ export const insertWebinarSubscription = (
 ) =>
   pipe(
     // take dynamoDBClient and nowDate properties from WebinarEnv
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
-    R.map(({ dynamoDBClient }) => {
+    R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
+    R.map(({ dynamoDBClient, nowDate }) => {
+      const createdAt = nowDate();
       // create put command
       const putCommand = new PutItemCommand({
         TableName: 'WebinarSubscriptions',
         Item: {
           webinarId: { S: webinarId },
           username: { S: username },
+          createdAt: { S: createdAt.toISOString() },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
