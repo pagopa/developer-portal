@@ -14,6 +14,7 @@ export const useUser = () => {
   const fetchUserAndSubscriptions = useCallback(async () => {
     const user = await Auth.currentAuthenticatedUser().catch(() => {
       setLoading(false);
+      setAligned(true);
       setUser(null);
       return null;
     });
