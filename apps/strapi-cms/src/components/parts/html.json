@@ -1,12 +1,14 @@
 {
   "collectionName": "components_parts_htmls",
   "info": {
-    "displayName": "html"
+    "displayName": "html",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "html": {
-      "type": "blocks"
+      "type": "blocks",
+      "required": true
     }
   }
 }

@@ -1,19 +1,36 @@
 {
   "collectionName": "components_parts_api_testers",
   "info": {
-    "displayName": "apiTester"
+    "displayName": "apiTester",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "request": {
+    "requestDescription": {
+      "type": "text",
+      "required": false
+    },
+    "requestAttributes": {
       "type": "component",
       "repeatable": true,
-      "component": "parts.typography"
+      "component": "parts.api-tester-attribute",
+      "required": true
     },
-    "response": {
+    "requestCode": {
       "type": "component",
       "repeatable": false,
-      "component": "parts.html"
+      "component": "parts.code-block",
+      "required": true
+    },
+    "responseDescription": {
+      "type": "text",
+      "required": false
+    },
+    "responseCode": {
+      "type": "component",
+      "repeatable": false,
+      "component": "parts.code-block",
+      "required": true
     }
   }
 }

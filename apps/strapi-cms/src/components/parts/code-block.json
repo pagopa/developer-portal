@@ -13,13 +13,7 @@
     "language": {
       "type": "string"
     },
-    "title": {
-      "type": "string"
-    },
     "showLineNumbers": {
-      "type": "boolean"
-    },
-    "wrapLines": {
       "type": "boolean"
     }
   }

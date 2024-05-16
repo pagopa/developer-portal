@@ -21,7 +21,9 @@
         "info",
         "warning",
         "error"
-      ]
+      ],
+      "required": true,
+      "default": "info"
     }
   }
 }

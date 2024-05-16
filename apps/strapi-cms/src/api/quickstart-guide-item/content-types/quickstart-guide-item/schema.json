@@ -16,27 +16,23 @@
     }
   },
   "attributes": {
-    "quickstart_guide": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::quickstart-guide.quickstart-guide",
-      "inversedBy": "quickstart_guide_items"
-    },
     "title": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
-    "index": {
+    "anchor": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "parts": {
       "pluginOptions": {
@@ -47,12 +43,18 @@
       "type": "dynamiczone",
       "components": [
         "parts.html",
-        "parts.typography",
         "parts.code-block",
         "parts.alert",
-        "parts.api-tester"
+        "parts.api-tester",
+        "parts.embed-html"
       ],
       "required": true
+    },
+    "quickstartGuide": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quickstart-guide.quickstart-guide",
+      "inversedBy": "quickstartGuideItems"
     }
   }
 }

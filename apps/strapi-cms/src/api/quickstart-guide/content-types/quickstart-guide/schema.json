@@ -4,7 +4,8 @@
   "info": {
     "singularName": "quickstart-guide",
     "pluralName": "quickstart-guides",
-    "displayName": "QuickstartGuide"
+    "displayName": "QuickstartGuide",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -37,11 +38,11 @@
         }
       }
     },
-    "quickstart_guide_items": {
+    "quickstartGuideItems": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::quickstart-guide-item.quickstart-guide-item",
-      "mappedBy": "quickstart_guide"
+      "mappedBy": "quickstartGuide"
     }
   }
 }
