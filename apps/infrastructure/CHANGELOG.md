@@ -1,5 +1,12 @@
 # infrastructure
 
+## 0.5.8
+
+### Patch Changes
+
+- dde3033: [DEV-1616] Created dynamodb table containing webinar subscriptions
+- f45acd8: Update devportal_authenticated_user IAM role
+
 ## 0.5.7
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 0.2.0
+
+### Minor Changes
+
+- c84b885: Fix links to Selfcare backoffice
+- d16d58b: Add app.gitbook.com domain to regular expression during GitBook docs parsing
+
 ## 0.1.0
 
 ### Minor Changes
