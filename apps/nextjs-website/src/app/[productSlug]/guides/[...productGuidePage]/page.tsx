@@ -96,7 +96,7 @@ const Page = async ({ params }: { params: Params }) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs={false}
+      showBreadcrumbs
     >
       <FragmentProvider>
         <Box

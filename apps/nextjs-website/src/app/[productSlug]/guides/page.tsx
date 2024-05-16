@@ -51,7 +51,7 @@ const GuidesPage = async ({ params }: ProductParams) => {
     <ProductLayout
       product={product}
       path={path}
-      showBreadcrumbs={false}
+      showBreadcrumbs
       bannerLinks={bannerLinks}
     >
       {abstract && (
