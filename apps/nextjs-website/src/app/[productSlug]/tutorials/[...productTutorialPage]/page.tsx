@@ -1,7 +1,6 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
@@ -14,6 +13,12 @@ import {
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
+import { translations } from '@/_contents/translations';
+import RelatedLinks, {
+  RelatedLinksProps,
+} from '@/components/atoms/RelatedLinks/RelatedLinks';
+import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 type Params = {
   productSlug: string;
@@ -30,8 +35,10 @@ export async function generateStaticParams() {
 type ProductTutorialPageProps = {
   product: Product;
   path: string;
+  menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
+  relatedLinks?: RelatedLinksProps;
 } & ProductLayoutProps;
 
 export async function generateMetadata({
@@ -56,11 +63,12 @@ const Page = async ({ params }: { params: Params }) => {
   const tutorialPath = params?.productTutorialPage?.join('/');
 
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  const { product, page, bannerLinks, source } = tutorialProps;
+  const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {
     ...page,
     product,
     bannerLinks,
+    relatedLinks,
     bodyConfig: {
       isPageIndex: false,
       pagePath: page.path,
@@ -71,6 +79,8 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
+
   return (
     <ProductLayout
       product={props.product}
@@ -78,11 +88,62 @@ const Page = async ({ params }: { params: Params }) => {
       bannerLinks={props.bannerLinks}
       showBreadcrumbs={false}
     >
-      <EContainer>
-        <Box sx={{ padding: '56px 0' }}>
-          <GitBookContent content={props.body} config={props.bodyConfig} />
+      <FragmentProvider>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            maxWidth: '1156px',
+            margin: '0 auto',
+            paddingBottom: !hasRelatedLinks ? '56px' : 0,
+          }}
+        >
+          <Box
+            sx={{
+              // 78px is the height of the header, 80px is the height of the product header, 24 is the title padding
+              paddingTop: '182px',
+              flexGrow: { lg: 1 },
+              maxWidth: {
+                xs: '100%',
+                lg: '822px',
+              },
+            }}
+          >
+            <GitBookContent content={props.body} config={props.bodyConfig} />
+          </Box>
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              // 78px is the height of the header, 80px is the height of the product header
+              paddingTop: '158px',
+              paddingLeft: '64px',
+              width: { lg: '270px' },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '270px',
+                top: 144,
+              }}
+            >
+              <GuideInPageMenu
+                assetsPrefix={props.bodyConfig.assetsPrefix}
+                pagePath={props.path}
+                inPageMenu={props.body}
+                title={translations.productGuidePage.onThisPage}
+              />
+            </Box>
+          </Box>
         </Box>
-      </EContainer>
+      </FragmentProvider>
+      {hasRelatedLinks && (
+        <RelatedLinks
+          title={props.relatedLinks?.title}
+          links={props.relatedLinks?.links ?? []}
+        />
+      )}
     </ProductLayout>
   );
 };

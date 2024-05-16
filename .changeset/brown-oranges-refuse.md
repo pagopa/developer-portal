@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Align webinars speakers' box
+Fix tutorial templage page
