@@ -11,7 +11,7 @@ export const useUser = () => {
   const [aligned, setAligned] = useState<boolean>(false);
   const [user, setUser] = useState<DevPortalUser | null>(null);
 
-  const checkUser = useCallback(async () => {
+  const fetchUserAndSubscriptions = useCallback(async () => {
     const user = await Auth.currentAuthenticatedUser().catch(() => {
       setLoading(false);
       setUser(null);
@@ -23,7 +23,7 @@ export const useUser = () => {
     }
 
     const subscriptions = await getUserWebinarSubscriptions(
-      user.attributes.email
+      user.username
     ).catch(() => []);
 
     setLoading(false);
@@ -39,7 +39,7 @@ export const useUser = () => {
     setAligned(false);
     return await Auth.updateUserAttributes(user, attributes)
       .then(() => {
-        checkUser();
+        fetchUserAndSubscriptions();
         onSuccess && onSuccess();
         setAligned(true);
       })
@@ -51,11 +51,11 @@ export const useUser = () => {
 
   const reloadUser = useCallback(async () => {
     setLoading(true);
-    await checkUser();
-  }, [checkUser]);
+    await fetchUserAndSubscriptions();
+  }, [fetchUserAndSubscriptions]);
 
   useEffect(() => {
-    checkUser();
+    fetchUserAndSubscriptions();
   }, []);
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { CognitoUser } from '@aws-amplify/auth';
 import { WebinarSubscription } from '../webinars/webinarSubscriptions';
 
 export type DevPortalUser = CognitoUser & {
+  readonly username: string;
   readonly attributes: {
     readonly email: string;
     readonly email_verified: boolean;

@@ -32,26 +32,25 @@ const SubscribeToWebinar = ({
   const isSubscribeAction = action === 'subscribe';
 
   const { user, reloadUser, aligned } = useUser();
-
-  const email = user?.attributes.email;
+  const username = user?.username;
 
   useEffect(() => {
-    if (email && webinarSlug) {
+    if (username && webinarSlug) {
       setIsSubscribed(
-        user.webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ??
+        user?.webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ??
           false
       );
     }
-  }, [setIsSubscribed, email, user?.webinarSubscriptions, webinarSlug]);
+  }, [setIsSubscribed, username, user?.webinarSubscriptions, webinarSlug]);
 
   const onSubscribe = useCallback(() => {
-    if (!webinarSlug || !email) {
+    if (!webinarSlug || !username) {
       handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
       return null;
     }
 
     setIsLoading(true);
-    subscribeToWebinar(webinarSlug, email)
+    subscribeToWebinar(webinarSlug, username)
       .then(() => {
         reloadUser().then(() => setIsLoading(false));
         if (!pathname.includes(`/webinars/${webinarSlug}`)) {
@@ -64,7 +63,15 @@ const SubscribeToWebinar = ({
         setIsLoading(false);
       });
     return null;
-  }, [webinarSlug, email, handleErrorMessage, t, pathname, reloadUser, router]);
+  }, [
+    webinarSlug,
+    username,
+    handleErrorMessage,
+    t,
+    pathname,
+    reloadUser,
+    router,
+  ]);
 
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
@@ -78,13 +85,13 @@ const SubscribeToWebinar = ({
   };
 
   const onUnsubscribe = () => {
-    if (!webinarSlug || !email) {
+    if (!webinarSlug || !username) {
       handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
       return null;
     }
 
     setIsLoading(true);
-    unsubscribeToWebinar(webinarSlug, email)
+    unsubscribeToWebinar(webinarSlug, username)
       .then(() => {
         reloadUser().then(() => setIsLoading(false));
       })
@@ -97,14 +104,14 @@ const SubscribeToWebinar = ({
   };
 
   const onSubscribeClick = () =>
-    email ? onSubscribe() : onSubscribeWithoutUser();
+    username ? onSubscribe() : onSubscribeWithoutUser();
 
   useEffect(() => {
-    if (email && isSubscribeAction) {
+    if (username && isSubscribeAction) {
       onSubscribe();
       router.replace(pathname);
     }
-  }, [onSubscribe, pathname, router, isSubscribeAction, email]);
+  }, [onSubscribe, pathname, router, isSubscribeAction, username]);
 
   const subscribeLabelMap = {
     [WebinarState.past]: 'view',
