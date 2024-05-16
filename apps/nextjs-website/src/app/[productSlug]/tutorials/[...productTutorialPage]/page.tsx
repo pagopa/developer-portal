@@ -85,8 +85,9 @@ const Page = async ({ params }: { params: Params }) => {
     <ProductLayout
       product={props.product}
       path={props.path}
+      paths={[{ name: tutorialProps.page.title, path: props.path }]}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs={false}
+      showBreadcrumbs
     >
       <FragmentProvider>
         <Box
