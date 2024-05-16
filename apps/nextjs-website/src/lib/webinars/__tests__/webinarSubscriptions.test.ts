@@ -123,7 +123,7 @@ describe('webinarSubscriptions', () => {
       expect(actual).toStrictEqual(expected);
     });
 
-    it('should return an empty list if questions are undefined', async () => {
+    it('should return an empty list if subscriptions are undefined', async () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       dynamoDBClientMock.send.mockImplementation(() =>
         Promise.resolve({ Items: undefined })
