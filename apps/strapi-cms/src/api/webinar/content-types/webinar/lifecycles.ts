@@ -75,7 +75,6 @@ const validateSlugUniqByLocale = async (
     .findOne(query);
 
   if (webinarWithSameSlug) {
-    // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError(
       'Webinar with the same slug already exists for the current locale'
     );
