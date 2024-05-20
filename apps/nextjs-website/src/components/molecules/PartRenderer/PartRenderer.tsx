@@ -6,6 +6,7 @@ import InnerHtmlLazyLoadedPart from '@/components/atoms/InnerHtmlLazyLoadedPart/
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
+import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
 
 type PartRendererProps = {
   part: Part;
@@ -17,6 +18,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
       return <AlertPart {...part} />;
     case 'apiTester':
       return <ApiTesterPart {...part} />;
+    case 'blockRenderer':
+      return <BlocksRendererPart {...part} />;
     case 'codeBlock':
       return <CodeBlockPart {...part} />;
     case 'innerHTMLLazyLoaded':

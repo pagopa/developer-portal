@@ -9,7 +9,7 @@ import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
 
 type ApiPhaseDescription = {
   code: string;
-  language: string;
+  language?: string;
   description: string;
   attributes?: {
     label?: string;
