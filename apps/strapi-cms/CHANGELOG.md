@@ -1,5 +1,16 @@
 # strapi-cms
 
+## 0.7.0
+
+### Minor Changes
+
+- 3bfcac4: Use absolute urls for media saved on Strapi
+
+### Patch Changes
+
+- Updated dependencies [3bfcac4]
+  - strapi-provider-upload-custom@0.2.0
+
 ## 0.6.0
 
 ### Minor Changes

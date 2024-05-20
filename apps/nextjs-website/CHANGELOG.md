@@ -1,5 +1,37 @@
 # nextjs-website
 
+## 0.22.0
+
+### Minor Changes
+
+- d080679: Version Update for Guida Tecnica IO
+- ffc7a6b: Add version 2.2 for "Manuale dei Servizi" of app IO
+- f1e20f8: Replacement of placeholder images with definitive ones
+
+## 0.21.0
+
+### Minor Changes
+
+- 08924f8: Scroll the guide menu to the selected item
+- 0800051: SACI version update
+- 49057cd: Update SANP version
+- acca28c: Add PDND product
+- c84b885: Fix links to Selfcare backoffice
+- e931eb7: Add versions 2.3 and 2.4 to the SEND Knowledge Base and change the main in 2.4
+- 593d521: Change step 05 in "Guida Rapida" SEND
+- da40035: Hide PDND product
+
+### Patch Changes
+
+- 5168bff: Redirect after successful login if redirect query string is present
+- 2bb4795: Fix news showcase alignment on homepage
+- e56b342: Add mermaid support
+- ea1b31e: Align webinars speakers' box
+- b515ada: Increase the distance between the menu and title of guides and manuals pages
+- Updated dependencies [c84b885]
+- Updated dependencies [d16d58b]
+  - gitbook-docs@0.2.0
+
 ## 0.20.0
 
 ### Minor Changes

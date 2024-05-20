@@ -25,14 +25,12 @@ const validateDates = (event: IWebinarEvent): boolean => {
   const endDateTime = data.endDatetime ? new Date(data.endDatetime) : null;
 
   if ((startDateTime && !endDateTime) || (!startDateTime && endDateTime)) {
-    // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError(
       'Both start and end dates must be provided, or none should be set'
     );
   }
 
   if (startDateTime && endDateTime && endDateTime <= startDateTime) {
-    // eslint-disable-next-line functional/no-throw-statements
     throw new errors.ApplicationError('End date must be after start date');
   }
   return true;
