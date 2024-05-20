@@ -1,39 +1,63 @@
 import * as t from 'io-ts/lib';
-import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { MediaCodec } from './codecs/MediaCodec';
-import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
+import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString';
 
-const WebinarSpeakerCodec = t.strict({
+const NullToUndefinedCodec = <C extends t.Mixed>(codec: C) =>
+  t.union([codec, t.null, t.undefined]);
+
+const BlocksContentCodec = t.array(
+  t.strict({
+    type: t.string,
+    children: t.array(
+      t.strict({
+        type: t.string,
+        text: t.string,
+      })
+    ),
+  })
+);
+
+const BannerLinkCodec = t.strict({
+  id: t.number,
+  title: NullToUndefinedCodec(t.string),
+  body: NullToUndefinedCodec(BlocksContentCodec),
+});
+
+const RelatedLinksCodec = t.strict({
+  id: t.number,
+  title: t.string,
+});
+
+const ProductCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     name: t.string,
-    jobTitle: t.string,
-    description: t.union([NullToUndefinedCodec, BlocksContentCodec]),
-    avatar: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
-    publishedAt: tt.DateFromISOString,
+    description: t.string,
+    slug: t.string,
+    createdAt: DateFromISOString,
+    updatedAt: DateFromISOString,
+    publishedAt: NullToUndefinedCodec(DateFromISOString),
+    locale: t.string,
   }),
 });
 
-export const WebinarCodec = t.strict({
+export const TutorialCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
-    // description: t.string,
-    // slug: t.string,
-    // publishedAt: tt.DateFromISOString,
-    // isVisibleInList: t.boolean,
-    // coverImage: t.strict({ data: MediaCodec }),
-    // bodyContent: t.union([NullToUndefinedCodec, BlocksContentCodec]),
-    // playerSrc: t.union([NullToUndefinedCodec, t.string]),
-    // startDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
-    // endDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
-    // subscribeParagraphLabel: t.union([NullToUndefinedCodec, t.string]),
-    // relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-    // webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
+    slug: t.string,
+    content: BlocksContentCodec,
+    createdAt: DateFromISOString,
+    updatedAt: DateFromISOString,
+    publishedAt: NullToUndefinedCodec(DateFromISOString),
+    locale: t.string,
+    dirName: t.string,
+    name: t.string,
+    image: t.strict({ data: NullToUndefinedCodec(t.unknown) }),
+    bannerLinks: t.array(BannerLinkCodec),
+    relatedLinks: RelatedLinksCodec,
+    product: t.strict({ data: ProductCodec }),
   }),
 });
 
@@ -47,7 +71,7 @@ const PaginationCodec = t.strict({
 });
 
 export const StrapiTutorialsCodec = t.strict({
-  data: t.array(WebinarCodec),
+  data: t.array(TutorialCodec),
   meta: PaginationCodec,
 });
 
