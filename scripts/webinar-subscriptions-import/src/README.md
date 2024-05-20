@@ -6,7 +6,7 @@ This script fetches users subscriptions to webinars from Amazon Cognito based on
 
 To run the script, follow these steps:
 
-1. Ensure you have Python installed on your system. You can download it from [python.org](https://www.python.org/).
+1. Ensure you have Python installed on your system. You can download it from [python.org](https://www.python.org/). Python version >= 3.9 is required.
 
 2. Navigate to the project directory:
 
