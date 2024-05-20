@@ -2,16 +2,19 @@
 import React, { useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import { Part } from '@/lib/types/part';
-import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import Button from '@mui/material/Button';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
+import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
 
 type ApiPhaseDescription = {
   code: string;
   language: string;
-  parts: Part[];
+  description: string;
+  attributes?: {
+    label?: string;
+    value: string;
+  }[];
 };
 
 export type ApiTesterPartProps = {
@@ -24,7 +27,9 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const t = useTranslations('quickStartGuide.content.apiPhases');
   const boxBorder = `1px solid ${palette.grey[300]}`;
-  const parts = isLifeCycleCallPhase ? apiRequest.parts : apiResponse.parts;
+  const { attributes, description } = isLifeCycleCallPhase
+    ? apiRequest
+    : apiResponse;
 
   return (
     <Box
@@ -47,9 +52,28 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
         }}
       >
         <Stack width={{ xs: 'auto', md: '200px' }}>
-          {parts.map((part, index) => (
-            <PartRenderer key={index} part={part} />
-          ))}
+          <Box flexDirection={'column'} display={'flex'}>
+            <TypographyPart variant='body2' text={description} asHtml={true} />
+            {attributes?.map((attribute, index) => (
+              <div key={index}>
+                {attribute.label && (
+                  <TypographyPart
+                    fontSize={'12px'}
+                    sx={{ marginBottom: '0' }}
+                    color={palette.text.secondary}
+                    variant={'subtitle1'}
+                    text={attribute.label}
+                  />
+                )}
+                <TypographyPart
+                  fontSize={'16px'}
+                  fontWeight={'600'}
+                  text={attribute.value}
+                  asHtml={true}
+                />
+              </div>
+            ))}
+          </Box>
           {isLifeCycleCallPhase ? (
             <Button
               onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
