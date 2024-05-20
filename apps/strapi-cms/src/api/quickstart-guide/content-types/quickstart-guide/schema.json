@@ -30,19 +30,20 @@
         }
       }
     },
-    "description": {
-      "type": "blocks",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "quickstartGuideItems": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::quickstart-guide-item.quickstart-guide-item",
       "mappedBy": "quickstartGuide"
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text",
+      "required": true
     }
   }
 }
