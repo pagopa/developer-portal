@@ -82,7 +82,7 @@ export const QuickStartCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
-    description: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+    description: t.string,
     product: t.strict({ data: ProductCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartItemCodec) }),
   }),

@@ -90,17 +90,7 @@ const makeStrapiResponseJson = () => ({
       id: 1,
       attributes: {
         title: 'Test quick start',
-        description: [
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                text: 'test',
-              },
-            ],
-          },
-        ],
+        description: 'Some description',
         createdAt: '2024-05-15T13:50:06.837Z',
         updatedAt: '2024-05-16T10:00:31.762Z',
         publishedAt: '2024-05-15T14:35:57.031Z',
@@ -234,7 +224,7 @@ const makeStrapiResponseWithNullsJson = () => ({
       id: 1,
       attributes: {
         title: 'Test quick start',
-        description: null,
+        description: 'Some description',
         createdAt: '2024-05-15T13:50:06.837Z',
         updatedAt: '2024-05-16T10:00:31.762Z',
         publishedAt: '2024-05-15T14:35:57.031Z',
