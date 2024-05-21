@@ -1,0 +1,19 @@
+# Byte-compiled files
+__pycache__/
+*.pyc
+
+# Environment / Dependency
+venv/
+.env
+
+# Compiled Python files
+*.pyc
+
+# macOS system files
+.DS_Store
+
+# Pytest cache and temporary files
+pytest_cache/
+.pytest_cache/
+*.pytest_cache/
+pytestdebug.log
