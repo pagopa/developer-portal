@@ -1,7 +1,7 @@
 {
   "root": true,
   "extends": [
-    "custom/eslint-strong"
+    "custom/eslint-strapi"
   ],
   "ignorePatterns": ["/config/**"]
 }

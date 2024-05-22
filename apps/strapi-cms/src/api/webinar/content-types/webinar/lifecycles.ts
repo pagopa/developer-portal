@@ -1,5 +1,3 @@
-// The only way to make this code work is to do side effects, and throwing exceptions and creating functions
-/*eslint-disable*/
 import { errors } from '@strapi/utils';
 
 interface IWebinarEvent {
