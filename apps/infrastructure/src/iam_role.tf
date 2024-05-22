@@ -95,6 +95,17 @@ resource "aws_iam_role_policy" "devportal_authenticated_user" {
         ],
         Resource = [
           "${module.dynamodb_webinar_questions.dynamodb_table_arn}",
+          "${module.dynamodb_webinar_subscriptions.dynamodb_table_arn}",
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:Query",
+          "dynamodb:DeleteItem",
+        ],
+        Resource = [
+          "${module.dynamodb_webinar_subscriptions.dynamodb_table_arn}",
         ]
       }
     ]
