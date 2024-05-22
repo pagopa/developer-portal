@@ -13,6 +13,11 @@ import {
   updateWebinarQuestion as _updateWebinarQuestion,
 } from './webinars/webinarQuestions';
 import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
+import {
+  deleteWebinarSubscription,
+  insertWebinarSubscription,
+  listUserWebinarSubscriptions,
+} from './webinars/webinarSubscriptions';
 
 // a BrowserEnv instance ready to be used
 const browserEnv = pipe(
@@ -42,3 +47,18 @@ export const getWebinarQuestionList = (webinarId: string) =>
 
 export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
   pipe(_updateWebinarQuestion(update)(browserEnv), makePromiseFromTE)();
+
+export const subscribeToWebinar = (webinarId: string, username: string) =>
+  pipe(
+    insertWebinarSubscription(webinarId, username)(browserEnv),
+    makePromiseFromTE
+  )();
+
+export const unsubscribeToWebinar = (webinarId: string, username: string) =>
+  pipe(
+    deleteWebinarSubscription(webinarId, username)(browserEnv),
+    makePromiseFromTE
+  )();
+
+export const getUserWebinarSubscriptions = (username: string) =>
+  pipe(listUserWebinarSubscriptions(username)(browserEnv), makePromiseFromTE)();

@@ -10,7 +10,6 @@ import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/Subscr
 import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
 import { useEffect, useMemo, useState } from 'react';
-import { DevPortalUser } from '@/lib/types/auth';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
@@ -25,7 +24,7 @@ type WebinarDetailTemplateProps = {
 const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
-  const { user, aligned: userAligned, setUserAttributes } = useUser();
+  const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { webinarState, setWebinar } = useWebinar();
 
@@ -83,12 +82,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const subscribeToWebinarButton = (
     <SubscribeToWebinar
       webinarSlug={webinar.slug}
-      userAttributes={user?.attributes}
-      userAligned={userAligned}
-      setUserAttributes={async (attributes: DevPortalUser['attributes']) => {
-        await setUserAttributes(attributes);
-        return null;
-      }}
       isSubscribed={isSubscribed}
       setIsSubscribed={(bool: boolean) => {
         setIsSubscribed(bool);

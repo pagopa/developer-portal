@@ -287,7 +287,8 @@
             },
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
-        }
+        },
+        "relatedLinks": "Link utili"
     },
     "pageNotFound": {
         "overline": "404",

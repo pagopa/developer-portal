@@ -115,6 +115,7 @@ export async function getTutorial(
     assetsPrefix: props.source.assetsPrefix,
     products: [...(await getProducts())],
     bannerLinks: props.bannerLinks,
+    relatedLinks: props.relatedLinks,
   };
 }
 
