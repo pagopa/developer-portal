@@ -14,8 +14,6 @@ import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
 import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
-import { DevPortalUser } from '@/lib/types/auth';
-import { useUser } from '@/helpers/user.helper';
 import { useTranslations } from 'next-intl';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
@@ -23,20 +21,14 @@ import { useRouter } from 'next/navigation';
 
 type WebinarCardProps = {
   webinar: Webinar;
-  userAligned?: boolean;
   handleErrorMessage?: (message: string) => null;
 };
 
-const WebinarCard = ({
-  webinar,
-  userAligned,
-  handleErrorMessage,
-}: WebinarCardProps) => {
+const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { user, setUserAttributes } = useUser();
 
   const { webinarState, setWebinar } = useWebinar();
 
@@ -118,14 +110,6 @@ const WebinarCard = ({
             ) : (
               <SubscribeToWebinar
                 webinarSlug={webinar.slug}
-                userAttributes={user?.attributes}
-                userAligned={userAligned}
-                setUserAttributes={async (
-                  attributes: DevPortalUser['attributes']
-                ) => {
-                  await setUserAttributes(attributes);
-                  return null;
-                }}
                 isSubscribed={isSubscribed}
                 setIsSubscribed={(bool: boolean) => {
                   setIsSubscribed(bool);
