@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
-    "update-docs": "git submodule init && git submodule update && cd docs && git checkout docs/from-gitbook && git pull",
+    "update-docs": "./scripts/fetch-local-docs.sh",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",

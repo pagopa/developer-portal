@@ -19,6 +19,15 @@ npm i
 npm run download-docs -w nextjs-website
 ```
 
+#### How to speed up local docs fetch time
+
+Initialize a git submoudule on docs directory:  
+`git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/docs`  
+
+Run the script to checkout docs to the right branch
+`npm run update-docs -w nextjs-website` 
+
+
 Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 - in the `strapi-cms` app (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
