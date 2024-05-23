@@ -36,6 +36,11 @@ module "identity" {
 module "website" {
   source = "./_modules/website"
 
+  providers = {
+    aws = aws
+    us-east-1 = aws.us-east-1
+  }
+
   environment       = var.environment
   github_repository = var.github_repository
   tags              = var.tags
@@ -49,6 +54,11 @@ module "website" {
 
 module "cms" {
   source = "./_modules/cms"
+
+  providers = {
+    aws = aws
+    us-east-1 = aws.us-east-1
+  }
 
   environment     = var.environment
   tags            = var.tags
