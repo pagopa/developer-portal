@@ -60,7 +60,7 @@ const ApisPage = async ({ params }: ProductParams) => {
       product={product}
       path={path}
       bannerLinks={bannerLinks}
-      showBreadcrumbs={false}
+      showBreadcrumbs
     >
       <ApiSection
         specURLs={specURLs}
