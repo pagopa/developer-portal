@@ -37,8 +37,8 @@ module "website" {
   source = "./_modules/website"
 
   providers = {
-    aws       = aws
-    us-east-1 = aws.us-east-1
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
   }
 
   environment       = var.environment
@@ -56,8 +56,8 @@ module "cms" {
   source = "./_modules/cms"
 
   providers = {
-    aws       = aws
-    us-east-1 = aws.us-east-1
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
   }
 
   environment     = var.environment
