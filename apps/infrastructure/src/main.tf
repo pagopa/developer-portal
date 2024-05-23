@@ -37,7 +37,7 @@ module "website" {
   source = "./_modules/website"
 
   providers = {
-    aws = aws
+    aws       = aws
     us-east-1 = aws.us-east-1
   }
 
@@ -56,7 +56,7 @@ module "cms" {
   source = "./_modules/cms"
 
   providers = {
-    aws = aws
+    aws       = aws
     us-east-1 = aws.us-east-1
   }
 
