@@ -3,7 +3,7 @@ import ProductLayout, {
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import React from 'react';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
@@ -18,6 +18,8 @@ import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 type Params = {
   productSlug: string;
@@ -96,7 +98,6 @@ const Page = async ({ params }: { params: Params }) => {
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs
     >
       <FragmentProvider>
         <Box
@@ -115,10 +116,10 @@ const Page = async ({ params }: { params: Params }) => {
             versionName={props.version.name}
             versions={props.versions}
           />
-          <Box
+          <Stack
             sx={{
               margin: `75px auto`,
-              padding: '88px 0px 24px',
+              paddingTop: 3,
               flexGrow: { lg: 1 },
               maxWidth: {
                 xs: '100%',
@@ -126,14 +127,19 @@ const Page = async ({ params }: { params: Params }) => {
               },
             }}
           >
-            <Box
-              sx={{
-                padding: '56px 40px',
-              }}
-            >
+            <Box sx={{ paddingX: '40px' }}>
+              <ProductBreadcrumbs
+                breadcrumbs={[
+                  ...productPageToBreadcrumbs(product, props.path, [
+                    { name: guide.name, path: props.path },
+                  ]),
+                ]}
+              />
+            </Box>
+            <Box sx={{ padding: '32px 40px' }}>
               <GitBookContent content={props.body} config={props.bodyConfig} />
             </Box>
-          </Box>
+          </Stack>
           <Box
             sx={{
               display: { xs: 'none', lg: 'initial' },
