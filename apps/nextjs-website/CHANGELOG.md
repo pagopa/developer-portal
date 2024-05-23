@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 0.23.0
+
+### Minor Changes
+
+- 5d8ef2a: Move webinars subscriptions to Dynamo DB
+
+### Patch Changes
+
+- f1442cb: Fix tutorial templage page
+
 ## 0.22.0
 
 ### Minor Changes
