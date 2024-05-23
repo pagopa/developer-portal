@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.cms_app_cpu
   memory                   = var.cms_app_memory
-  container_definitions    = templatefile(
+  container_definitions = templatefile(
     "./task-definitions/cms_app.json.tpl",
     {
       image                      = module.ecr.repository_url

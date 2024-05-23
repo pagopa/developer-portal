@@ -36,29 +36,29 @@ module "identity" {
 module "website" {
   source = "./_modules/website"
 
-  environment = var.environment
+  environment       = var.environment
   github_repository = var.github_repository
-  tags       = var.tags
+  tags              = var.tags
 
-  cdn_custom_headers = var.cdn_custom_headers
+  cdn_custom_headers           = var.cdn_custom_headers
   publish_cloudfront_functions = var.publish_cloudfront_functions
-  dns_domain_name = var.dns_domain_name
-  dns_delegate_records = var.dns_delegate_records
-  use_custom_certificate = var.use_custom_certificate
+  dns_domain_name              = var.dns_domain_name
+  dns_delegate_records         = var.dns_delegate_records
+  use_custom_certificate       = var.use_custom_certificate
 }
 
 module "cms" {
   source = "./_modules/cms"
 
-  environment = var.environment
-  tags       = var.tags
+  environment     = var.environment
+  tags            = var.tags
   dns_domain_name = var.dns_domain_name
 }
 
 module "ai" {
   source = "./_modules/ai"
 
-  aws_region = "eu-west-3"
+  aws_region  = "eu-west-3"
   environment = var.environment
-  tags       = var.tags
+  tags        = var.tags
 }
