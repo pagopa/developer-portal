@@ -19,6 +19,8 @@ import RelatedLinks, {
   RelatedLinksProps,
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 type Params = {
   productSlug: string;
@@ -85,11 +87,26 @@ const Page = async ({ params }: { params: Params }) => {
     <ProductLayout
       product={props.product}
       path={props.path}
-      paths={[{ name: tutorialProps.page.title, path: props.path }]}
       bannerLinks={props.bannerLinks}
-      showBreadcrumbs
     >
       <FragmentProvider>
+        <Box
+          sx={{
+            maxWidth: '1156px',
+            // 80px is the height of the product header
+            marginTop: '80px',
+            marginX: 'auto',
+            paddingTop: 3,
+          }}
+        >
+          <ProductBreadcrumbs
+            breadcrumbs={[
+              ...productPageToBreadcrumbs(product, props.path, [
+                { name: tutorialProps.page.title, path: props.path },
+              ]),
+            ]}
+          />
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -97,12 +114,11 @@ const Page = async ({ params }: { params: Params }) => {
             maxWidth: '1156px',
             margin: '0 auto',
             paddingBottom: !hasRelatedLinks ? '56px' : 0,
+            paddingTop: '56px',
           }}
         >
           <Box
             sx={{
-              // 78px is the height of the header, 80px is the height of the product header, 24 is the title padding
-              paddingTop: '182px',
               flexGrow: { lg: 1 },
               maxWidth: {
                 xs: '100%',
