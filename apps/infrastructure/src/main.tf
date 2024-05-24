@@ -34,7 +34,7 @@ module "identity" {
 }
 
 module "core" {
-  source = "./_modules/core"
+  source = "./modules/core"
 
   environment = var.environment
   tags        = var.tags
@@ -44,7 +44,7 @@ module "core" {
 }
 
 module "website" {
-  source = "./_modules/website"
+  source = "./modules/website"
 
   providers = {
     aws           = aws
@@ -65,7 +65,7 @@ module "website" {
 }
 
 module "cms" {
-  source = "./_modules/cms"
+  source = "./modules/cms"
 
   providers = {
     aws           = aws
@@ -82,7 +82,7 @@ module "cms" {
 }
 
 module "chatbot" {
-  source = "./_modules/chatbot"
+  source = "./modules/chatbot"
 
   aws_region  = "eu-west-3"
   environment = var.environment
