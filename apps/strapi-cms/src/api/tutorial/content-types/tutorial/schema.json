@@ -35,14 +35,6 @@
       "required": true,
       "regex": "^[a-zA-Z0-9-]+$"
     },
-    "dirName": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
-    },
     "image": {
       "type": "media",
       "multiple": false,
@@ -66,15 +58,6 @@
         }
       },
       "type": "blocks"
-    },
-    "name": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": true
     },
     "product": {
       "type": "relation",
