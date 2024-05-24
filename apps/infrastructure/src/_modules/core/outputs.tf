@@ -8,5 +8,5 @@ output "hosted_zone_id" {
 }
 
 output "ses_domain_identity_arn" {
-    value = module.ses_developer_pagopa_it.ses_domain_identity_arn
+  value = module.ses_developer_pagopa_it.ses_domain_identity_arn
 }
