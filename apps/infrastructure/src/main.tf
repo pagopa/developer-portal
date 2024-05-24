@@ -33,6 +33,16 @@ module "identity" {
   github_repository = var.github_repository
 }
 
+module "core" {
+  source = "./_modules/core"
+
+  environment = var.environment
+  tags        = var.tags
+
+  dns_domain_name      = var.dns_domain_name
+  dns_delegate_records = var.dns_delegate_records
+}
+
 module "website" {
   source = "./_modules/website"
 
@@ -50,6 +60,8 @@ module "website" {
   dns_domain_name              = var.dns_domain_name
   dns_delegate_records         = var.dns_delegate_records
   use_custom_certificate       = var.use_custom_certificate
+  hosted_zone_id               = module.core.hosted_zone_id
+  ses_domain_identity_arn      = module.core.ses_domain_identity_arn
 }
 
 module "cms" {
@@ -60,13 +72,17 @@ module "cms" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  environment     = var.environment
-  tags            = var.tags
-  dns_domain_name = var.dns_domain_name
+  environment       = var.environment
+  github_repository = var.github_repository
+  tags              = var.tags
+
+  dns_domain_name     = var.dns_domain_name
+  dns_domain_name_cms = var.dns_domain_name_cms
+  hosted_zone_id      = module.core.hosted_zone_id
 }
 
-module "ai" {
-  source = "./_modules/ai"
+module "chatbot" {
+  source = "./_modules/chatbot"
 
   aws_region  = "eu-west-3"
   environment = var.environment

@@ -61,3 +61,12 @@ variable "log_retention_days" {
   default     = 90
 }
 
+variable "hosted_zone_id" {
+  type        = string
+  description = "The ID of the hosted zone to create the public DNS records in"
+}
+
+variable "ses_domain_identity_arn" {
+  type        = string
+  description = "The ARN of the SES domain identity"
+}

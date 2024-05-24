@@ -9,6 +9,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "github_repository" {
+  type        = string
+  description = "The repository where the IaC workflows will run"
+}
+
 variable "tags" {
   type = map(any)
   default = {
@@ -44,4 +49,9 @@ variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"
   type        = map(any)
   default     = null
+}
+
+variable "hosted_zone_id" {
+  type        = string
+  description = "The ID of the hosted zone to create the public DNS records in"
 }
