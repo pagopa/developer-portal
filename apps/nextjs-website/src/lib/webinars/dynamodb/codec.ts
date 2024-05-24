@@ -9,6 +9,7 @@ import {
   QueryCommandInput,
   UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
+import { WebinarSubscription } from '../webinarSubscriptions';
 
 const DynamodbAttrS = t.strict({
   S: t.string,
@@ -29,7 +30,16 @@ export const WebinarQuestionDynamodbCodec = t.intersection([
   }),
 ]);
 
+export const WebinarSubscriptionDynamodbCodec = t.strict({
+  webinarId: DynamodbAttrS,
+  username: DynamodbAttrS,
+  createdAt: DynamodbAttrISODate,
+});
+
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
+type WebinarSubscriptionDynamoDB = t.TypeOf<
+  typeof WebinarSubscriptionDynamodbCodec
+>;
 
 export const makeWebinarQuestionListQueryCondition = (
   webinarId: string
@@ -54,6 +64,14 @@ export const makeWebinarQuestionFromDynamodbItem = (
   ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
 });
 
+export const makeWebinarSubscriptionFromDynamodbItem = (
+  input: WebinarSubscriptionDynamoDB
+): WebinarSubscription => ({
+  webinarId: input.webinarId.S,
+  username: input.username.S,
+  createdAt: new Date(input.createdAt.S),
+});
+
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
   WebinarQuestionDynamodbCodec.encode({
     webinarId: { S: input.id.slug },
@@ -61,6 +79,15 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     question: { S: input.question },
     ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
     ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
+  });
+
+export const makeDynamodbItemFromWebinarSubscription = (
+  input: WebinarSubscription
+) =>
+  WebinarSubscriptionDynamodbCodec.encode({
+    webinarId: { S: input.webinarId },
+    username: { S: input.username },
+    createdAt: { S: input.createdAt },
   });
 
 type UpdateExpressionItem = {

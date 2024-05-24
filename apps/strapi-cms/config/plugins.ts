@@ -37,4 +37,7 @@ export default ({ env }: any) => ({
       GOOGLE_GSUITE_HD: env('GOOGLE_GSUITE_HD', ''), // G Suite Primary Domain
     }
   },
+  seo: {
+    enabled: true,
+  },
 });
