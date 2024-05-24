@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-fix quickstarts' icons colors
+Fix quickstarts' icons colors
