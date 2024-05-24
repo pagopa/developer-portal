@@ -60,6 +60,16 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::webinar.webinar"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

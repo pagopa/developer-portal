@@ -258,7 +258,7 @@ export const webinars: readonly StaticWebinar[] = [
       links: [
         {
           text: 'I modelli dei servizi più frequenti: Multe per violazione codice della strada',
-          href: `${appIOGuideListsPath.path}/manuale-servizi/catalogo-dei-servizi-e-modelli/i-modelli-dei-servizi-piu-frequenti/multe-per-violazione-codice-della-strada`,
+          href: `${appIOGuideListsPath.path}/modelli-servizi/mobilita-e-trasporti/multe-per-violazioni-al-codice-della-strada`,
         },
       ],
     },

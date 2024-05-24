@@ -28,7 +28,6 @@ const FutureWebinarsShowcase = ({
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection');
   const [error, setError] = useState<string | null>(null);
-  const { aligned: userAligned } = useUser();
 
   return (
     <Box
@@ -76,7 +75,6 @@ const FutureWebinarsShowcase = ({
                 <WebinarCard
                   key={index}
                   webinar={webinar}
-                  userAligned={userAligned}
                   handleErrorMessage={(message: string) => {
                     setError(message);
                     return null;

@@ -1,5 +1,23 @@
 # nextjs-website
 
+## 0.23.0
+
+### Minor Changes
+
+- 5d8ef2a: Move webinars subscriptions to Dynamo DB
+
+### Patch Changes
+
+- f1442cb: Fix tutorial templage page
+
+## 0.22.0
+
+### Minor Changes
+
+- d080679: Version Update for Guida Tecnica IO
+- ffc7a6b: Add version 2.2 for "Manuale dei Servizi" of app IO
+- f1e20f8: Replacement of placeholder images with definitive ones
+
 ## 0.21.0
 
 ### Minor Changes
