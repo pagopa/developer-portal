@@ -160,6 +160,21 @@ moved {
 }
 
 moved {
+  from = aws_route53_record.certificate["auth.developer.pagopa.it"]
+  to   = module.website.aws_route53_record.certificate["auth.developer.pagopa.it"]
+}
+
+moved {
+  from = aws_route53_record.certificate["developer.pagopa.it"]
+  to   = module.website.aws_route53_record.certificate["developer.pagopa.it"]
+}
+
+moved {
+  from = aws_route53_record.certificate["www.developer.pagopa.it"]
+  to   = module.website.aws_route53_record.certificate["www.developer.pagopa.it"]
+}
+
+moved {
   from = aws_route53_record.devportal_cognito_A
   to   = module.website.aws_route53_record.devportal_cognito_A
 }
