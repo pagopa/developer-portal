@@ -1153,3 +1153,18 @@ moved {
   from = module.cms_dns_records.aws_route53_record.this
   to   = module.cms.module.cms_dns_records.aws_route53_record.this
 }
+
+moved {
+    from = aws_route53_record.devportal_delegate
+    to = module.core.aws_route53_record.devportal_delegate
+}
+
+moved {
+    from = aws_route53_record.devportal_google_site_verification_txt
+    to = module.core.aws_route53_record.devportal_google_site_verification_txt
+}
+
+moved {
+    from = module.active_campaign_dns_records.aws_route53_record.this
+    to = module.core.module.active_campaign_dns_records.aws_route53_record.this
+}
