@@ -17,7 +17,6 @@ variable "tags" {
     CostCenter     = "BD110 - PORTALS E TOOLS"
     Owner          = "CloudGaaP-AI"
     ManagementTeam = "team_cloudgaap_ai"
-    Environment    = var.environment
   }
 }
 
