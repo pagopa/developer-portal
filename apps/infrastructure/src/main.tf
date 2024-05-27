@@ -93,11 +93,11 @@ module "cms" {
 module "chatbot" {
   source = "./modules/chatbot"
   providers = {
-    aws           = aws
+    aws                = aws
     aws.chatbot_region = aws.chatbot_region
   }
 
   aws_chatbot_region = var.aws_chatbot_region
-  environment = var.environment
-  tags        = var.tags
+  environment        = var.environment
+  tags               = var.tags
 }
