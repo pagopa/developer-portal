@@ -20,6 +20,9 @@ inputs:
   bucket:
     description: "The AWS S3 Bucket's name selected as destination"
     required: true
+  chatbot_bucket:
+    description: "The AWS S3 Bucket's name selected as destination for the chatbot KB"
+    required: true
   cloudfront_distribution_id:
     description: 'The ID of the Cloudfront distribution to invalidate'
     required: true
@@ -97,6 +100,10 @@ runs:
     - name: Deploy to S3 Bucket
       shell: bash
       run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete
+    
+    - name: Deploy to Chatbot S3 Bucket
+      shell: bash
+      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.chatbot_bucket }}/website --delete --exclude "*" --include "*.html" --exclude "*/[0-9].[0-9]*/**" --exclude "*/v[0-9]*/**" --exclude "*/[0-9].[0-9]*.html" --exclude "*/v[0-9]*.html
 
     - name: Create AWS Cloudfront Invalidation
       shell: bash
