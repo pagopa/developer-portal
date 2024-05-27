@@ -25,9 +25,7 @@ module "notifications" {
   source  = "terraform-aws-modules/s3-bucket/aws//modules/notification"
   version = "4.1.0"
 
-  bucket = module.s3_bucket_kb.s3_bucket_id
-
-  eventbridge = true
+  bucket = var.website_bucket_name
 
   sqs_notifications = {
     sqs1 = {

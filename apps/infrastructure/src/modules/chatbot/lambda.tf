@@ -1,5 +1,8 @@
 module "website_kb_sync_lambda" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
+  providers = {
+    aws = aws.chatbot_region
+  }
 
   function_name = "${local.prefix}-website-kb-sync-lambda"
   description   = "The Lambda function that manages the sync of website s3 bucket to chatbot kb s3 bucket"
