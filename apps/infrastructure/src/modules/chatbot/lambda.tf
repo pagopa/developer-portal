@@ -11,8 +11,8 @@ module "website_kb_sync_lambda" {
   cloudwatch_logs_retention_in_days = var.log_retention_days
 
   environment_variables = {
-    CHATBOT_REGION = var.aws_chatbot_region
-    CHATBOT_BUCKET = module.s3_bucket_kb.s3_bucket_id
+    CHATBOT_REGION     = var.aws_chatbot_region
+    CHATBOT_BUCKET     = module.s3_bucket_kb.s3_bucket_id
     DESTINATION_PREFIX = "website/"
   }
 
