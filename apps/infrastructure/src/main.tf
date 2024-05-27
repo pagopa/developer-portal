@@ -32,3 +32,59 @@ module "identity" {
   source            = "./identity"
   github_repository = var.github_repository
 }
+
+module "core" {
+  source = "./modules/core"
+
+  environment = var.environment
+  tags        = var.tags
+
+  dns_domain_name      = var.dns_domain_name
+  dns_delegate_records = var.dns_delegate_records
+}
+
+module "website" {
+  source = "./modules/website"
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment       = var.environment
+  github_repository = var.github_repository
+  tags              = var.tags
+
+  cdn_custom_headers           = var.cdn_custom_headers
+  publish_cloudfront_functions = var.publish_cloudfront_functions
+  dns_domain_name              = var.dns_domain_name
+  dns_delegate_records         = var.dns_delegate_records
+  use_custom_certificate       = var.use_custom_certificate
+  hosted_zone_id               = module.core.hosted_zone_id
+  ses_domain_identity_arn      = module.core.ses_domain_identity_arn
+}
+
+module "cms" {
+  source = "./modules/cms"
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment       = var.environment
+  github_repository = var.github_repository
+  tags              = var.tags
+
+  dns_domain_name     = var.dns_domain_name
+  dns_domain_name_cms = var.dns_domain_name_cms
+  hosted_zone_id      = module.core.hosted_zone_id
+}
+
+module "chatbot" {
+  source = "./modules/chatbot"
+
+  aws_region  = "eu-west-3"
+  environment = var.environment
+  tags        = var.tags
+}
