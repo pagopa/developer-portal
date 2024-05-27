@@ -85,3 +85,9 @@ variable "dns_domain_name_cms" {
   type        = map(any)
   default     = null
 }
+
+variable "aws_chatbot_region" {
+  type        = string
+  description = "AWS region to create AI chatbot's resources"
+  default     = "eu-west-3"
+}

@@ -15,3 +15,8 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+
+variable "aws_chatbot_region" {
+  type        = string
+  description = "AWS region to create AI chatbot's resources"
+}

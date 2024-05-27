@@ -27,6 +27,15 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias  = "chatbot_region"
+  region = var.aws_chatbot_region
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
 # Init IaC resources ##########################################################
 module "identity" {
   source            = "./identity"
@@ -83,8 +92,12 @@ module "cms" {
 
 module "chatbot" {
   source = "./modules/chatbot"
+  providers = {
+    aws           = aws
+    aws.chatbot_region = aws.chatbot_region
+  }
 
-  aws_region  = "eu-west-3"
+  aws_chatbot_region = var.aws_chatbot_region
   environment = var.environment
   tags        = var.tags
 }
