@@ -91,6 +91,7 @@ module "cms" {
 }
 
 module "chatbot" {
+  count = var.environment == "dev" ? 1 : 0
   source = "./modules/chatbot"
   providers = {
     aws                = aws
