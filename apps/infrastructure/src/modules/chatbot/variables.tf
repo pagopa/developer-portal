@@ -12,7 +12,12 @@ variable "environment" {
 variable "tags" {
   type = map(any)
   default = {
-    CreatedBy = "Terraform"
+    CreatedBy      = "Terraform",
+    Wbs            = "BD110 - PORTALS E TOOLS"
+    CostCenter     = "BD110 - PORTALS E TOOLS"
+    Owner          = "CloudGaaP-AI"
+    ManagementTeam = "team_cloudgaap_ai"
+    Environment    = var.environment
   }
 }
 
