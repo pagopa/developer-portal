@@ -1,36 +1,13 @@
-data "aws_iam_policy_document" "lambda_policy" {
+data "aws_iam_policy_document" "sqs_external" {
   statement {
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
-    ]
+    effect  = "Allow"
+    actions = ["sqs:SendMessage"]
 
-    resources = [
-      "arn:aws:s3:::${var.website_bucket_name}",
-      "arn:aws:s3:::${var.website_bucket_name}/*"
-    ]
-  }
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
 
-  statement {
-    actions = [
-      "s3:PutObject"
-    ]
-
-    resources = [
-      "arn:aws:s3:::${module.s3_bucket_kb.name}",
-      "arn:aws:s3:::${module.s3_bucket_kb.name}/*"
-    ]
-  }
-
-  statement {
-    actions = [
-      "sqs:ReceiveMessage",
-      "sqs:DeleteMessage",
-      "sqs:GetQueueAttributes"
-    ]
-
-    resources = [
-      aws_sqs_queue.this.arn
-    ]
+    resources = [aws_sqs_queue.this.arn]
   }
 }

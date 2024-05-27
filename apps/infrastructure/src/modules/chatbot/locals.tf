@@ -1,4 +1,4 @@
 locals {
-    prefix = "${var.module}-${var.environment}"
-    lambda_timeout = "900"
+  prefix         = "${var.module}-${var.environment}"
+  lambda_timeout = "900"
 }

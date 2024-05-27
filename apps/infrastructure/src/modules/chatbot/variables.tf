@@ -23,7 +23,7 @@ variable "tags" {
 variable "module" {
   type        = string
   description = "Prefix for resources"
-  default = "chatbot"
+  default     = "chatbot"
 }
 
 variable "aws_chatbot_region" {

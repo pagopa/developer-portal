@@ -6,6 +6,7 @@ import urllib.parse
 s3_client_src = boto3.client('s3')
 s3_client_dst = boto3.client('s3', region_name=os.getenv("CHATBOT_REGION"))  # Replace 'destination-region' with the actual region
 destination_bucket = os.getenv("CHATBOT_BUCKET")
+destination_prefix = os.getenv("DESTINATION_PREFIX")
 
 def lambda_handler(event, context):
     failed_records = []
@@ -31,7 +32,7 @@ def lambda_handler(event, context):
                         s3_client_dst.copy_object(
                             CopySource=copy_source,
                             Bucket=destination_bucket,
-                            Key=destination_key
+                            Key=destination_prefix + destination_key
                         )
                         print(f"Successfully copied {object_key} from {source_bucket} to {destination_bucket}")
                     except Exception as e:
