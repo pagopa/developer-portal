@@ -31,12 +31,6 @@ variable "aws_chatbot_region" {
   description = "AWS region to create AI chatbot's resources"
 }
 
-variable "log_retention_days" {
-  type        = number
-  description = "The number of days logs should be retained. Default is 90 days."
-  default     = 90
-}
-
 variable "website_bucket_name" {
   type        = string
   description = "The name of the website bucket"
