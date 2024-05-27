@@ -52,8 +52,6 @@ export const TutorialCodec = t.strict({
     updatedAt: DateFromISOString,
     publishedAt: NullToUndefinedCodec(DateFromISOString),
     locale: t.string,
-    dirName: t.string,
-    name: t.string,
     image: t.strict({ data: NullToUndefinedCodec(t.unknown) }),
     bannerLinks: t.array(BannerLinkCodec),
     relatedLinks: RelatedLinksCodec,
@@ -83,7 +81,7 @@ const makeStrapiTutorialsPopulate = () =>
   });
 
 export const fetchTutorials = fetchFromStrapi(
-  'webinars',
+  'tutorials',
   makeStrapiTutorialsPopulate(),
   StrapiTutorialsCodec
 );

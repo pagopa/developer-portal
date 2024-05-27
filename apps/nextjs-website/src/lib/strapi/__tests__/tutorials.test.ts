@@ -23,8 +23,6 @@ const makeStrapiResponseJson = () => ({
         updatedAt: '2024-05-20T09:12:13.509Z',
         publishedAt: null,
         locale: 'en',
-        dirName: 'dddddd',
-        name: 'aaaaa',
         image: {
           data: null,
         },
@@ -82,7 +80,7 @@ const makeStrapiResponseJson = () => ({
 });
 
 describe('StrapiTutorialCodec', () => {
-  it('should decode strapi webinars', () => {
+  it('should decode strapi tutorials', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiTutorialsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();

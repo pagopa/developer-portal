@@ -20,16 +20,26 @@ import RelatedLinks, {
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
+import { BlocksRenderer } from '@strapi/blocks-react-renderer';
+import { fetchTutorials } from '@/lib/strapi/tutorial';
+import { CMSTutorial, fetchCmsTutorials } from '@/lib/cmsApi';
+
+
 type Params = {
   productSlug: string;
   productTutorialPage: Array<string>;
 };
 
 export async function generateStaticParams() {
-  return [...getTutorialPaths()].map(({ slug, tutorialPaths }) => ({
-    productSlug: slug,
-    productTutorialPage: tutorialPaths,
+
+  const cmsTutorials = await fetchCmsTutorials()
+
+  const cmsTutorialsSlugAndPage = cmsTutorials.map((cmsTutorial) => ({
+    productSlug: cmsTutorial.attributes.product.data.attributes.slug,
+    productTutorialPage: `/${cmsTutorial.attributes.product.data.attributes.slug}/tutorials/${cmsTutorial.attributes.slug}`,
   }));
+
+  return [...getTutorialPaths(), ...cmsTutorialsSlugAndPage];
 }
 
 type ProductTutorialPageProps = {
@@ -62,6 +72,15 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
+  // in base a questi productSlug  tutorialPath
+
+  // o scarico dal cms, oppure se non trovo nel cms vado a cercare in gitbook
+  const cmsTutorial = await fetchCmsTutorials(productSlug, tutorialPath);
+
+  if(cmsTutorial.length > 0) {
+    return <CMSTutorialDetail cmsTutorial={cmsTutorial[0]} />
+  }
+  
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {
@@ -78,7 +97,7 @@ const Page = async ({ params }: { params: Params }) => {
       urlReplaces: urlReplacesMap,
     },
   };
-
+  
   const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
 
   return (
@@ -149,3 +168,7 @@ const Page = async ({ params }: { params: Params }) => {
 };
 
 export default Page;
+
+const CMSTutorialDetail = ({cmsTutorial}: {cmsTutorial: CMSTutorial}) => {
+  return <p>{cmsTutorial.attributes.title}</p>
+}
