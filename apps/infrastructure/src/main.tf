@@ -100,4 +100,6 @@ module "chatbot" {
   aws_chatbot_region = var.aws_chatbot_region
   environment        = var.environment
   tags               = var.tags
+
+  website_bucket_name = module.website.website_bucket_name
 }

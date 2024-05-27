@@ -20,3 +20,19 @@ module "s3_bucket_kb" {
     enabled = true
   }
 }
+
+module "notifications" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git/modules/notification?ref=3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14" # v4.1.0
+
+  bucket = module.s3_bucket_kb.s3_bucket_id
+
+  eventbridge = true
+
+  sqs_notifications = {
+    sqs1 = {
+      queue_arn     = aws_sqs_queue.this.arn
+      events        = ["s3:ObjectCreated:*"]
+      filter_suffix = ".html"
+    }
+  }
+}
