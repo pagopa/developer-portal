@@ -9,7 +9,7 @@ module "s3_bucket_kb" {
     aws = aws.chatbot_region
   }
 
-  bucket                  = "chatbot-knowledge-base-${random_integer.ai_kb_bucket_random_integer.result}"
+  bucket                  = "${var.module}-knowledge-base-${random_integer.ai_kb_bucket_random_integer.result}"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
