@@ -49,7 +49,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     () =>
       webinar.bodyContent ? (
         <EContainer direction='column'>
-          <BlocksRendererClient content={webinar.bodyContent} />
+          <BlocksRendererClient
+            content={webinar.bodyContent}
+            imageStyle={{
+              height: 'auto',
+              width: '100%',
+              maxWidth: '820px',
+            }}
+          />
         </EContainer>
       ) : null,
     [webinar.bodyContent]
