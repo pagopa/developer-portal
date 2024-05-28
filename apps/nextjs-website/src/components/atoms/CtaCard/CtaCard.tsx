@@ -1,5 +1,7 @@
 'use client';
+import { Product } from '@/lib/types/product';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -7,6 +9,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
@@ -22,6 +25,7 @@ export type CtaCardProps = {
   readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
+  readonly products?: Pick<Product, 'name' | 'path'>[];
 };
 
 const CtaCard = ({
@@ -32,6 +36,7 @@ const CtaCard = ({
   comingSoon = false,
   icon,
   children,
+  products,
 }: CtaCardProps) => {
   return (
     <Card
@@ -51,6 +56,13 @@ const CtaCard = ({
             {title}
           </Typography>
           <Typography variant='body2'>{text}</Typography>
+          {products &&
+            products.length > 0 &&
+            products.map((product) => (
+              <Box key={product.path} mt={1} mr={1}>
+                <Tag value={product.name} color='primary' variant='light' />
+              </Box>
+            ))}
         </CardContent>
       </div>
       <CardActions style={{ bottom: 0 }}>
