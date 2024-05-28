@@ -15,11 +15,18 @@ export interface FeatureItem {
 interface FeatureStackItemProps {
   item: FeatureItem;
   theme: 'dark' | 'light';
+  useDarkTheme?: boolean;
 }
 
-export const FeatureStackItem = ({ item, theme }: FeatureStackItemProps) => {
-  const textStyle = theme === 'light' ? 'text.primary' : 'background.paper';
-  const imageStyle = theme === 'light' ? 'primary.main' : 'background.paper';
+export const FeatureStackItem = ({
+  item,
+  theme,
+  useDarkTheme,
+}: FeatureStackItemProps) => {
+  const textStyle =
+    !useDarkTheme && theme === 'light' ? 'text.primary' : 'background.paper';
+  const imageStyle =
+    !useDarkTheme && theme === 'light' ? 'primary.main' : 'background.paper';
 
   return (
     <Stack
