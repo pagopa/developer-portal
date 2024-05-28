@@ -1,7 +1,9 @@
 {
   "collectionName": "components_parts_api_tester_attributes",
   "info": {
-    "displayName": "apiTesterAttribute"
+    "displayName": "apiTesterAttribute",
+    "icon": "connector",
+    "description": ""
   },
   "options": {},
   "attributes": {
