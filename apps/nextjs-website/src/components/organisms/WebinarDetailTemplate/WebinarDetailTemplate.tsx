@@ -38,7 +38,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const html = useMemo(
     () =>
       webinar.html ? (
-        <EContainer>
+        <EContainer direction='column'>
           <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
         </EContainer>
       ) : null,
@@ -48,7 +48,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const bodyContent = useMemo(
     () =>
       webinar.bodyContent ? (
-        <EContainer>
+        <EContainer direction='column'>
           <BlocksRendererClient content={webinar.bodyContent} />
         </EContainer>
       ) : null,
