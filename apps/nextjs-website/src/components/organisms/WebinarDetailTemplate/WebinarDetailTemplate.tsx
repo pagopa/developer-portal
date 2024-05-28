@@ -100,17 +100,19 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
 
   return (
     <>
-      <Box marginTop={11} style={{ backgroundColor: palette.grey[50] }}>
-        <ProductBreadcrumbs
-          breadcrumbs={[
-            ...webinarPageToBreadcrumbs([
-              {
-                name: webinar.title,
-                path: webinar.slug,
-              },
-            ]),
-          ]}
-        />
+      <Box paddingTop={5} style={{ backgroundColor: palette.grey[50] }}>
+        <EContainer>
+          <ProductBreadcrumbs
+            breadcrumbs={[
+              ...webinarPageToBreadcrumbs([
+                {
+                  name: webinar.title,
+                  path: webinar.slug,
+                },
+              ]),
+            ]}
+          />
+        </EContainer>
       </Box>
       <SummaryInformation
         title={webinar.title}
