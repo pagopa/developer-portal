@@ -10,7 +10,7 @@ import { makeWebinarsProps, makeWebinarsPropsFromStatic } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
 import { tutorialLists } from '@/_contents/products';
 import { fetchTutorials } from './strapi/tutorial';
-
+import { makeTutorialsProps } from './tutorials';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -50,70 +50,15 @@ export const getWebinarsProps = async () => {
   }
 };
 
+export const getTutorialsProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
 
-type CMSTutorials = {
-  "data": 
-  CMSTutorial[],
-  "meta": {
-    "pagination": {
-      "page": 1,
-      "pageSize": 25,
-      "pageCount": 1,
-      "total": 1
-    }
+  if (fetchFromStrapi) {
+    const strapiTutorials = await fetchTutorials(buildEnv);
+    return makeTutorialsProps(strapiTutorials);
+  } else {
+    return [];
   }
-}
-
-type CMSTutorial = {
-  id: number;
-  attributes: {
-    title: string;
-    slug: string;
-    content: {
-      type: string;
-      children?: {
-        type: string;
-        text: string;
-      }[];
-    }[];
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    locale: string;
-    image: {
-      data: null;
-    };
-    bannerLinks: {
-      id: number;
-      title: string | null;
-      body?: {
-        type: string;
-        children?: {
-          type: string;
-          text: string;
-        }[];
-      }[];
-    }[];
-    relatedLinks: {
-      id: number;
-      title: string;
-    };
-    product: {
-      data: null;
-    };
-  };
 };
-
-
-export async function fetchCmsTutorials(productSlug: string = '', tutorialSlug: string = ''): Promise<CMSTutorial[]> {
-
-  //const tutorials = await fetchTutorials(buildEnv);
-
-  const t: CMSTutorials = await fetch(`${process.env.STRAPI_ENDPOINT}/api/tutorials/?populate=image%2CbannerLinks%2CrelatedLinks%2Cproduct`
-    , { headers: { 'Authorization': `Bearer ${process.env.STRAPI_API_TOKEN}` } }
-  ).then((res) => res.json());
-
-  console.log(JSON.stringify(t));
-
-  return t.data.filter((tutorial) => tutorial.attributes.product.data.slug.includes(productSlug) && tutorial.attributes.slug.includes(tutorialSlug)) as CMSTutorial[];
-}

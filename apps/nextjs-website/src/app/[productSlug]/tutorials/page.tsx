@@ -1,6 +1,10 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getTutorialLists, getProductsSlugs } from '@/lib/api';
+import {
+  getProductsSlugs,
+  getTutorialListPageProps,
+  getTutorials,
+} from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -12,7 +16,6 @@ import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { fetchCmsTutorials } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -34,7 +37,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path } = await getTutorialLists(
+  const { product, abstract, path } = await getTutorialListPageProps(
     params.productSlug
   );
 
@@ -49,12 +52,10 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials } =
-    await getTutorialLists(productSlug);
+  const { abstract, bannerLinks, path, product } =
+    await getTutorialListPageProps(productSlug);
 
-  const cmsTutorials = await fetchCmsTutorials(productSlug);
-
-  console.log(cmsTutorials);
+  const tutorials = await getTutorials(productSlug);
 
   const { shared } = translations;
 
@@ -75,7 +76,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
       {product.subpaths.tutorials && tutorials && (
         <Box>
           <Newsroom
-            items={[...tutorials.map((tutorial) => ({
+            items={tutorials.map((tutorial) => ({
               comingSoonLabel: !tutorial.comingSoon
                 ? undefined
                 : shared.comingSoon,
@@ -92,24 +93,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 alt: tutorial.image?.alternativeText || '',
                 src: tutorial.image?.url || '/images/news.png',
               },
-            })), 
-            ...cmsTutorials.map((tutorial) => ({
-              comingSoonLabel: undefined,
-              title: tutorial.attributes.title,
-              date: {
-                date: tutorial.attributes.publishedAt!,
-              },
-              href: {
-                label: shared.readTutorial,
-                link: tutorial.attributes.slug,
-                title: shared.readTutorial,
-              },
-              img: {
-                alt: '',
-                src: '/images/news.png',
-              },
-            }))
-          ]}
+            }))}
           />
         </Box>
       )}

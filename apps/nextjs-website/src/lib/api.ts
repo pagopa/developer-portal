@@ -11,7 +11,8 @@ import {
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
-import { getWebinarsProps } from './cmsApi';
+import { getTutorialsProps, getWebinarsProps } from './cmsApi';
+import { Tutorial } from './types/tutorialData';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -104,23 +105,46 @@ export async function getTutorial(
 ) {
   const tutorialPath = productTutorialPage?.join('/');
   const path = `/${productSlug}/tutorials/${tutorialPath}`;
-  const props = manageUndefined(
-    tutorials.find(({ page }) => page.path === path)
-  );
 
-  return {
-    ...props,
-    product: props.product,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
-    bannerLinks: props.bannerLinks,
-    relatedLinks: props.relatedLinks,
-  };
+  const tutorialFromGitbook = tutorials.find(({ page }) => page.path === path);
+
+  if (tutorialFromGitbook) {
+    const props = tutorialFromGitbook;
+    return {
+      tutorialType: 'gitbook',
+      props: {
+        ...props,
+        product: props.product,
+        pathPrefix: props.source.pathPrefix,
+        assetsPrefix: props.source.assetsPrefix,
+        products: [...(await getProducts())],
+        bannerLinks: props.bannerLinks,
+        relatedLinks: props.relatedLinks,
+      },
+    };
+  }
+
+  const tutorialsFromCMS = await getTutorialsProps();
+
+  const tutorialFromCMS = tutorialsFromCMS.find(({ path }) => path === path);
+  if (tutorialFromCMS) {
+    return {
+      tutorialType: 'strapi',
+      ...tutorialFromCMS,
+    };
+  }
+
+  return manageUndefined(null);
 }
 
-export function getTutorialPaths() {
-  return tutorials.map((tutorial) => ({
+export async function getTutorialPaths() {
+  const tutorialsFromCMS = await getTutorialsProps();
+  const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
+    slug: path.split('/')[1],
+    tutorialPaths: path.split('/'),
+  }));
+
+  const tutorialPaths = tutorials.map((tutorial) => ({
     slug: tutorial.product.slug,
     tutorialPaths: tutorial.page.path
       .split('/')
@@ -128,14 +152,23 @@ export function getTutorialPaths() {
       // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
       .filter((p, index) => index > 2),
   }));
+  return [...tutorialPaths, ...tutorialPathsFromCMS];
 }
 
-export async function getTutorialLists(productSlug?: string) {
+export async function getTutorialListPageProps(productSlug?: string) {
   const props =
     tutorialLists.find(
       (tutorialList) => tutorialList.product.path === `/${productSlug}`
     ) || null;
   return manageUndefinedAndAddProduct(props);
+}
+
+export async function getTutorials(
+  productSlug?: string
+): Promise<readonly Tutorial[]> {
+  const { tutorials } = await getTutorialListPageProps(productSlug);
+  const tutorialsFromCMS = await getTutorialsProps();
+  return [...tutorials, ...tutorialsFromCMS];
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {

@@ -1,27 +1,16 @@
 import * as t from 'io-ts/lib';
+import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString';
-
-const NullToUndefinedCodec = <C extends t.Mixed>(codec: C) =>
-  t.union([codec, t.null, t.undefined]);
-
-const BlocksContentCodec = t.array(
-  t.strict({
-    type: t.string,
-    children: t.array(
-      t.strict({
-        type: t.string,
-        text: t.string,
-      })
-    ),
-  })
-);
+import { MediaCodec } from './codecs/MediaCodec';
+import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
+import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 
 const BannerLinkCodec = t.strict({
   id: t.number,
-  title: NullToUndefinedCodec(t.string),
-  body: NullToUndefinedCodec(BlocksContentCodec),
+  title: t.union([NullToUndefinedCodec, t.string]),
+  body: t.union([NullToUndefinedCodec, BlocksContentCodec]),
 });
 
 const RelatedLinksCodec = t.strict({
@@ -37,7 +26,7 @@ const ProductCodec = t.strict({
     slug: t.string,
     createdAt: DateFromISOString,
     updatedAt: DateFromISOString,
-    publishedAt: NullToUndefinedCodec(DateFromISOString),
+    publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     locale: t.string,
   }),
 });
@@ -47,12 +36,12 @@ export const TutorialCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     slug: t.string,
-    content: BlocksContentCodec,
+    content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
     createdAt: DateFromISOString,
     updatedAt: DateFromISOString,
-    publishedAt: NullToUndefinedCodec(DateFromISOString),
+    publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     locale: t.string,
-    image: t.strict({ data: NullToUndefinedCodec(t.unknown) }),
+    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
     bannerLinks: t.array(BannerLinkCodec),
     relatedLinks: RelatedLinksCodec,
     product: t.strict({ data: ProductCodec }),
