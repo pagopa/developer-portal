@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 0.8.0
+
+### Minor Changes
+
+- 9376540: Add Strapi SEO Plugin
+
+### Patch Changes
+
+- b62267e: Add specific eslint config for strapi
+- 1871794: Add custom validator for slug uniqueness
+- 8bb93da: Update Strapi to version 4.24.2
+
 ## 0.7.0
 
 ### Minor Changes

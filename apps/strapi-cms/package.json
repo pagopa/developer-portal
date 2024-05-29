@@ -1,7 +1,7 @@
 {
   "name": "strapi-cms",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "scripts": {
     "clean": "shx rm -rf dist/",
     "generate": "strapi ts:generate-types",
@@ -14,13 +14,13 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.19.0",
+    "@strapi/plugin-i18n": "4.24.2",
     "@strapi/plugin-seo": "^1.9.8",
-    "@strapi/plugin-users-permissions": "4.19.0",
-    "@strapi/provider-upload-aws-s3": "^4.20.1",
-    "@strapi/strapi": "4.19.0",
+    "@strapi/plugin-users-permissions": "4.24.2",
+    "@strapi/provider-upload-aws-s3": "^4.24.2",
+    "@strapi/strapi": "4.24.2",
     "better-sqlite3": "8.6.0",
-    "pg": "^8.11.3",
+    "pg": "^8.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
@@ -38,7 +38,7 @@
     "uuid": "1ae9c07f-4fbf-400a-9d32-bba36247aed0"
   },
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=18.0.0 <=20.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"

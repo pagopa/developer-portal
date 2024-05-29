@@ -56,7 +56,7 @@ module "cognito_post_confirmation_function" {
     ses = {
       effect    = "Allow",
       actions   = ["ses:SendEmail", "ses:SendRawEmail"],
-      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+      resources = [var.ses_domain_identity_arn]
     },
   }
 
@@ -113,7 +113,7 @@ module "cognito_create_auth_challenge_function" {
     ses = {
       effect    = "Allow",
       actions   = ["ses:SendEmail", "ses:SendRawEmail"],
-      resources = [module.ses_developer_pagopa_it.ses_domain_identity_arn]
+      resources = [var.ses_domain_identity_arn]
     },
   }
 
