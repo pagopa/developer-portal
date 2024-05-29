@@ -549,5 +549,9 @@
             "header": "Nessuna operazione",
             "message": "Non ci sono operazioni disponibili per questo endpoint."
         }
+    },
+    "breadcrumbs": {
+        "home": "DevPortal",
+        "webinars": "Webinar"
     }
 }
