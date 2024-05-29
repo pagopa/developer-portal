@@ -7,9 +7,11 @@ import Image from 'next/image';
 const BlocksRendererClient = ({
   content,
   color,
+  imageStyle = {},
 }: {
   readonly content?: BlocksContent;
   color?: 'contrastText' | 'main' | 'light' | 'dark';
+  imageStyle?: React.CSSProperties;
 }) => {
   const { palette } = useTheme();
 
@@ -23,7 +25,10 @@ const BlocksRendererClient = ({
       blocks={{
         image: ({ image }) => (
           <Image
-            style={{ marginBottom: '16px' }}
+            style={{
+              marginBottom: '16px',
+              ...imageStyle,
+            }}
             src={image.url}
             width={image.width}
             height={image.height}
