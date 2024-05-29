@@ -30,19 +30,6 @@ function partFromStrapiPart(part: StrapiPart): Part | null {
         component: 'alert',
         ...part,
       };
-    case 'parts.api-tester':
-      return {
-        component: 'apiTester',
-        apiRequest: {
-          ...part.requestCode,
-          description: part.requestDescription,
-          attributes: part.requestAttributes,
-        },
-        apiResponse: {
-          ...part.responseCode,
-          description: part.responseDescription,
-        },
-      };
     case 'parts.code-block':
       return {
         component: 'codeBlock',
