@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.23.1
+
+### Patch Changes
+
+- e3e55d5: Fix webinars' paragraphs
+
 ## 0.23.0
 
 ### Minor Changes
