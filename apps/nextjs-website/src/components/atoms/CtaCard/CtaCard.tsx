@@ -1,5 +1,4 @@
 'use client';
-import { Product } from '@/lib/types/product';
 import {
   Box,
   Button,
@@ -25,7 +24,7 @@ export type CtaCardProps = {
   readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
-  readonly products?: Pick<Product, 'name' | 'path'>[];
+  readonly tags?: { readonly label: string; readonly path?: string }[];
 };
 
 const CtaCard = ({
@@ -36,7 +35,7 @@ const CtaCard = ({
   comingSoon = false,
   icon,
   children,
-  products,
+  tags,
 }: CtaCardProps) => {
   return (
     <Card
@@ -56,11 +55,11 @@ const CtaCard = ({
             {title}
           </Typography>
           <Typography variant='body2'>{text}</Typography>
-          {products &&
-            products.length > 0 &&
-            products.map((product) => (
-              <Box key={product.path} mt={1} mr={1}>
-                <Tag value={product.name} color='primary' variant='light' />
+          {tags &&
+            tags.length > 0 &&
+            tags.map((tag) => (
+              <Box key={tag.label} mt={1} mr={1}>
+                <Tag value={tag.label} color='primary' variant='light' />
               </Box>
             ))}
         </CardContent>
