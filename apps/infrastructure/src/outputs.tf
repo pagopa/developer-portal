@@ -7,5 +7,5 @@ output "terraform_lock_dynamodb_table" {
 }
 
 output "name_servers_records" {
-  value = aws_route53_zone.dev_portal.name_servers
+  value = module.core.name_servers_records
 }

@@ -45,7 +45,7 @@ resource "aws_cognito_user_pool" "devportal" {
   email_configuration {
     email_sending_account = "DEVELOPER"
     from_email_address    = local.from_email_address
-    source_arn            = module.ses_developer_pagopa_it.ses_domain_identity_arn
+    source_arn            = var.ses_domain_identity_arn
   }
 
   verification_message_template {
