@@ -75,39 +75,12 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
                 value: 'SPNDNL80R13C555X',
               },
             ],
-            // parts: [
-            //   {
-            //     component: 'typography',
-            //     text: 'Invia la richiesta per vedere la risposta del server.',
-            //     variant: 'body2',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Codice Fiscale',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'SPNDNL80R13C555X',
-            //   },
-            // ],
           },
           apiResponse: {
             code: '{\n' + '  "sender_allowed": true\n' + '}',
             language: 'json',
             description:
               'Ecco la simulazione della risposta del server, che contiene l’esito sull’esistenza dell’utente desiderato.',
-            // parts: [
-            //   {
-            //     component: 'innerHTMLLazyLoaded',
-            //     html: 'Ecco la simulazione della risposta del server, che contiene l’esito sull’esistenza dell’utente desiderato.',
-            //   },
-            // ],
           },
         },
       ],
@@ -170,109 +143,12 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
                 value: 'STANDARD',
               },
             ],
-            // parts: [
-            //   {
-            //     component: 'typography',
-            //     text: 'Invia la richiesta per vedere la simulazione della risposta del server',
-            //     variant: 'body2',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Tempo di vita del messaggio:',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: '3600',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Titolo del messaggio:',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'Welcome new user!',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Testo del messaggio (markdown, 80-100 caratteri):',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: '# Titolo \\n testo del messaggio',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Mail utente:',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'example@example.com',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Codice Fiscale',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'SPNDNL80R13C555X',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Tipo di iscrizione usata:',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'STANDARD',
-            //   },
-            // ],
           },
           apiResponse: {
             code: '{\n' + '  "id": "01EM6X4JB9VSZTQ8H16KMQFCEJ"\n' + '}',
             language: 'json',
             description:
               'Ecco la simulazione della risposta del server, che contiene l’identificato del messaggio.',
-            // parts: [
-            //   {
-            //     component: 'innerHTMLLazyLoaded',
-            //     html: 'Ecco la simulazione della risposta del server, che contiene l’identificato del messaggio.',
-            //   },
-            // ],
           },
         },
       ],
@@ -314,58 +190,6 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
                 value: 'SPNDNL80R13C555X/01EM6X4JB9VSZTQ8H16KMQFCEJ',
               },
             ],
-            // parts: [
-            //   {
-            //     component: 'typography',
-            //     text: 'Invia la richiesta per vedere la risposta del server.',
-            //     variant: 'body2',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'APIM Key (ottenuto da step 2):',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: '__YOUR_API_KEY__',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'Codice Fiscale',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     text: 'SPNDNL80R13C555X',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     color: '#5C6F82',
-            //     fontSize: '12px',
-            //     sx: { marginBottom: '0' },
-            //     text: 'identificativo (ottenuto da step 4):',
-            //     variant: 'subtitle1',
-            //   },
-            //   {
-            //     component: 'typography',
-            //     fontSize: '16px',
-            //     fontWeight: '600',
-            //     style: {
-            //       overflowWrap: 'anywhere',
-            //     },
-            //     text: 'SPNDNL80R13C555X/01EM6X4JB9VSZTQ8H16KMQFCEJ',
-            //   },
-            // ],
           },
           apiResponse: {
             code:
@@ -389,12 +213,6 @@ export const appIoQuickStartGuide: QuickStartGuideData = {
             language: 'json',
             description:
               'Ecco la simulazione della risposta del server, che contiene tutte le informazioni relative allo stato di notifica del messaggio.',
-            // parts: [
-            //   {
-            //     component: 'innerHTMLLazyLoaded',
-            //     html: 'Ecco la simulazione della risposta del server, che contiene tutte le informazioni relative allo stato di notifica del messaggio.',
-            //   },
-            // ],
           },
         },
       ],
