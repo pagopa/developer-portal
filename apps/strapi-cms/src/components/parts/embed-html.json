@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_parts_embed_htmls",
+  "info": {
+    "displayName": "embedHtml"
+  },
+  "options": {},
+  "attributes": {
+    "html": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
