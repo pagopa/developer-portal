@@ -82,99 +82,15 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
               `  ] \n` +
               `} \n`,
             language: 'json',
-            parts: [
-              {
-                component: 'typography',
-                text: 'Invia la richiesta per vedere la simulazione della risposta del server',
-                variant: 'body2',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Nome del Dossier',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Contratto 150 ore',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Titolo del documento',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Contratto',
-              },
-
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Titolo della firma',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Firma contratto',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                variant: 'subtitle1',
-                text: 'Tipo di clausola associata',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Obbligatoria',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                variant: 'subtitle1',
-                text: 'Coordinate della firma',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                asHtml: true,
-                text: 'X: 120 </br>Y: 2340',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                variant: 'subtitle1',
-                text: 'Dimensioni della firma',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                asHtml: true,
-                text: 'W: 120 </br>H: 120',
-              },
+            description:
+              'Invia la richiesta per vedere la simulazione della risposta del server',
+            attributes: [
+              { label: 'Nome del Dossier', value: 'Contratto 150 ore' },
+              { label: 'Titolo del documento', value: 'Contratto' },
+              { label: 'Titolo della firma', value: 'Firma contratto' },
+              { label: 'Tipo di clausola associata', value: 'Obbligatoria' },
+              { label: 'Coordinate della firma', value: 'X: 120 </br>Y: 2340' },
+              { label: 'Dimensioni della firma', value: 'W: 120 </br>H: 120' },
             ],
           },
           apiResponse: {
@@ -200,12 +116,8 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
               `  "updated_at": "aaaa-mm-ddT00:00:00.000Z" \n` +
               `} \n`,
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la risposta del server che conferma i dati inviati e fornisce l’ID di Firma',
-              },
-            ],
+            description:
+              'Ecco la risposta del server che conferma i dati inviati e fornisce l’ID di Firma',
           },
         },
       ],
@@ -234,37 +146,15 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
           apiRequest: {
             code: '{\n' + '  "fiscal_code": "AAABBB00A00A000"\n' + '}',
             language: 'json',
-            parts: [
-              {
-                component: 'typography',
-                text: 'Invia la richiesta per vedere la simulazione della risposta del server',
-                variant: 'body2',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Codice Fiscale',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'AAABBB00A00A000',
-              },
-            ],
+            description:
+              'Invia la richiesta per vedere la simulazione della risposta del server',
+            attributes: [{ label: 'Codice Fiscale', value: 'AAABBB00A00A000' }],
           },
           apiResponse: {
             code: '{ "id":"01GG4TG9FP2D3JPWFTAM0WEFTG" }',
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la risposta del server che fornisce l’ID del cittadino corrispondente al codice fiscale fornito',
-              },
-            ],
+            description:
+              'Ecco la risposta del server che fornisce l’ID del cittadino corrispondente al codice fiscale fornito',
           },
         },
       ],
@@ -298,39 +188,16 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
               `  "expires_at": "2023-01-01T00:00:00.000Z"\n` +
               `}\n`,
             language: 'json',
-            parts: [
+            description:
+              'Invia la richiesta con i dati ottenuti dagli step precedenti, per vedere la simulazione della risposta del server',
+            attributes: [
               {
-                component: 'typography',
-                text: 'Invia la richiesta con i dati ottenuti dagli step precedenti, per vedere la simulazione della risposta del server',
-                variant: 'body2',
+                label: 'Identificativo del dossier',
+                value: '01GG4NFBCN4ZH8ETCCKX3766KX',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Identificativo del dossier',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: '01GG4NFBCN4ZH8ETCCKX3766KX',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Identificativo del cittadino',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: '01GG4TG9FP2D3JPWFTAM0WEFTG',
+                label: 'Identificativo del cittadino',
+                value: '01GG4TG9FP2D3JPWFTAM0WEFTG',
               },
             ],
           },
@@ -368,12 +235,8 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
               `  "signed_at": "2018-10-13T00:00:00.000Z"\n` +
               `}\n`,
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la risposta del server che contiene l’ID della Signature request',
-              },
-            ],
+            description:
+              'Ecco la risposta del server che contiene l’ID della Signature request',
           },
         },
       ],
@@ -438,25 +301,12 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
           apiRequest: {
             code: `PUT /api/v1/sign/signature-requests/{signature_request_id}/notification`,
             language: 'txt',
-            parts: [
+            description:
+              'Invia la richiesta con il valore ricavato dallo step 4 per vedere la simulazione della risposta del server',
+            attributes: [
               {
-                component: 'typography',
-                text: 'Invia la richiesta con il valore ricavato dallo step 4 per vedere la simulazione della risposta del server',
-                variant: 'body2',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Identificativo della richiesta:',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+                label: 'Identificativo della richiesta:',
+                value: '01ARZ3NDEKTSV4RRFFQ69G5FAV',
               },
             ],
           },
@@ -464,12 +314,8 @@ export const ioSignQuickStartGuide: QuickStartGuideData = {
             code:
               '{\n' + '  "io_message_id": "01G7VBM888NDGCMA84ZVZYJGZQ"\n' + '}',
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la risposta del server che contiene l’ID del messaggio ricevuto dall’utente',
-              },
-            ],
+            description:
+              'Ecco la risposta del server che contiene l’ID del messaggio ricevuto dall’utente',
           },
         },
         {
