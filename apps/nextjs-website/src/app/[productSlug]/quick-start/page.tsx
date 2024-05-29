@@ -10,6 +10,7 @@ import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { Box, Divider } from '@mui/material';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -52,7 +53,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     <ProductLayout
       product={product}
       path={path}
-      showBreadcrumbs={false}
+      showBreadcrumbs
       bannerLinks={bannerLinks}
     >
       {abstract && (
