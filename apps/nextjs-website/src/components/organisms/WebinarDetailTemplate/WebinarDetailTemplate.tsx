@@ -5,7 +5,7 @@ import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
 import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Alert, Box, Snackbar } from '@mui/material';
+import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 import { Webinar } from '@/lib/types/webinar';
 import { useUser } from '@/helpers/user.helper';
@@ -16,6 +16,8 @@ import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/We
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
+import { webinarPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -23,6 +25,7 @@ type WebinarDetailTemplateProps = {
 
 const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const t = useTranslations('webinar');
+  const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -46,7 +49,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     () =>
       webinar.bodyContent ? (
         <EContainer direction='column'>
-          <BlocksRendererClient content={webinar.bodyContent} />
+          <BlocksRendererClient
+            content={webinar.bodyContent}
+            imageStyle={{
+              height: 'auto',
+              width: '100%',
+              maxWidth: '820px',
+            }}
+          />
         </EContainer>
       ) : null,
     [webinar.bodyContent]
@@ -97,6 +107,20 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
 
   return (
     <>
+      <Box paddingTop={5} style={{ backgroundColor: palette.grey[50] }}>
+        <EContainer>
+          <ProductBreadcrumbs
+            breadcrumbs={[
+              ...webinarPageToBreadcrumbs([
+                {
+                  name: webinar.title,
+                  path: webinar.slug,
+                },
+              ]),
+            ]}
+          />
+        </EContainer>
+      </Box>
       <SummaryInformation
         title={webinar.title}
         description={webinar.description}
