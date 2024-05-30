@@ -7,6 +7,7 @@ import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
+import Quote from '@/components/atoms/Quote/Quote';
 
 type PartRendererProps = {
   part: Part;
@@ -16,6 +17,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.component) {
     case 'alert':
       return <AlertPart {...part} />;
+    case 'quote':
+      return <Quote {...part} />;
     case 'apiTester':
       return <ApiTesterPart {...part} />;
     case 'blockRenderer':
