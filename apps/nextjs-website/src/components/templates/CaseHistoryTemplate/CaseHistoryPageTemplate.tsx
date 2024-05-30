@@ -70,7 +70,7 @@ const CaseHistoryPageTemplate = ({
           <Box
             key={index}
             sx={{
-              paddingBottom: spacing(10),
+              paddingBottom: spacing(20),
             }}
           >
             <PartRenderer part={part} />
