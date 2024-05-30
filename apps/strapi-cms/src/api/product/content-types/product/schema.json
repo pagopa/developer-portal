@@ -62,6 +62,12 @@
       "relation": "oneToMany",
       "target": "api::quickstart-guide.quickstart-guide",
       "mappedBy": "product"
+    },
+    "case_history": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::case-history.case-history",
+      "inversedBy": "products"
     }
   }
 }

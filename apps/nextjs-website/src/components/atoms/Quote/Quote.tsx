@@ -48,13 +48,23 @@ const Quote = ({
           // TODO: Check with design team
           sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
         >
-          <FormatQuote sx={{ color: textColor, rotate: '180deg' }} />
+          <FormatQuote
+            fontSize='large'
+            sx={{
+              color: palette.grey[300],
+              rotate: '180deg',
+              position: 'relative',
+              left: '4px',
+              bottom: '8px',
+            }}
+          />
           <Typography color={textColor} variant='h6'>
             {quote}
           </Typography>
           <FormatQuote
+            fontSize='large'
             sx={{
-              color: textColor,
+              color: palette.grey[300],
               alignSelf: 'flex-end',
               position: 'relative',
               left: '24px',
