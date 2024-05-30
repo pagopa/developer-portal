@@ -39,6 +39,7 @@ const CaseHistoryPageTemplate = ({
         <Box sx={{ marginTop: 10, paddingTop: 3, paddingBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
+              // TODO: maybe change 'solutions' to 'case-history'?
               ...pageToBreadcrumbs('solutions', [
                 {
                   name: title,
