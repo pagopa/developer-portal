@@ -19,6 +19,7 @@ type CardsGridProps = {
     text: string;
     href?: string;
     icon: string;
+    iconColor?: string;
   }[];
 };
 
@@ -35,34 +36,36 @@ const CardsGrid = ({
     <EContainer>
       <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
-          {cards.map(({ title, text, href, icon, comingSoon }, index) => {
-            return (
-              <Grid
-                key={index}
-                item
-                xs={cardSize?.xs || 12}
-                md={cardSize?.md || 6}
-              >
-                <CtaCard
-                  comingSoon={comingSoon}
-                  title={title}
-                  text={text}
-                  cta={{
-                    label: t(comingSoon ? 'comingSoon' : 'moreInfo'),
-                    href,
-                    variant: cardVariant,
-                  }}
-                  icon={
-                    <IconWrapper
-                      color={palette.text.primary}
-                      icon={icon}
-                      isSvg={cardSvg}
-                    />
-                  }
-                />
-              </Grid>
-            );
-          })}
+          {cards.map(
+            ({ title, text, href, icon, comingSoon, iconColor }, index) => {
+              return (
+                <Grid
+                  key={index}
+                  item
+                  xs={cardSize?.xs || 12}
+                  md={cardSize?.md || 6}
+                >
+                  <CtaCard
+                    comingSoon={comingSoon}
+                    title={title}
+                    text={text}
+                    cta={{
+                      label: t(comingSoon ? 'comingSoon' : 'moreInfo'),
+                      href,
+                      variant: cardVariant,
+                    }}
+                    icon={
+                      <IconWrapper
+                        color={iconColor || palette.text.primary}
+                        icon={icon}
+                        isSvg={cardSvg}
+                      />
+                    }
+                  />
+                </Grid>
+              );
+            }
+          )}
         </Grid>
       </Box>
     </EContainer>
