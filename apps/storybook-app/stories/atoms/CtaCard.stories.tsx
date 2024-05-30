@@ -23,6 +23,12 @@ export const ShowcaseWithIcon: StoryObj<typeof CtaCard> = {
         icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
         isSvg={true}
       />,
+    tags: [
+      {
+        label: 'Product',
+        path: '/product',
+      },
+    ]
   },
 };
 
