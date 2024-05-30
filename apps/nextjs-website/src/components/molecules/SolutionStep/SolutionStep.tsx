@@ -1,4 +1,5 @@
-import { Stack, Typography, Box, Chip } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
+import { Tag } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -33,15 +34,7 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
         <Box display='flex' gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
-              <Chip
-                label={product.label}
-                variant='filled'
-                sx={{
-                  color: '#215C76',
-                  background: '#E1F5FE',
-                  borderRadius: 1,
-                }}
-              />
+              <Tag value={product.label} color='primary' variant='light' />
             </Link>
           ))}
         </Box>
