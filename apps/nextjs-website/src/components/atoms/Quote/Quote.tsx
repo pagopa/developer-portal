@@ -45,10 +45,11 @@ const Quote = ({
           direction={'column'}
           justifyContent={'start'}
           zIndex={10}
-          sx={{ width: 'fit-content', maxWidth: '40%' }}
+          // TODO: Check with design team
+          sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
         >
           <FormatQuote sx={{ color: textColor, rotate: '180deg' }} />
-          <Typography color={textColor} variant='body1'>
+          <Typography color={textColor} variant='h6'>
             {quote}
           </Typography>
           <FormatQuote
@@ -61,16 +62,14 @@ const Quote = ({
           />
         </Stack>
       </Stack>
-      {backgroundImage && (
-        <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
-          <Image
-            style={{ objectFit: 'cover' }}
-            src={backgroundImage.url}
-            alt={quote}
-            fill={true}
-          />
-        </Box>
-      )}
+      <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
+        <Image
+          style={{ objectFit: 'cover' }}
+          src={backgroundImage.url}
+          alt={quote}
+          fill={true}
+        />
+      </Box>
     </Stack>
   );
 };
