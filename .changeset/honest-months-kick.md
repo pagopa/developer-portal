@@ -3,4 +3,4 @@
 "storybook-app": patch
 ---
 
-Refactor CtaCard to allow an array of products in input
+Refactor CtaCard to allow an array of tags in input
