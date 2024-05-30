@@ -16,11 +16,10 @@ const Feature = (props: FeatureProps) => {
   const { title, subtitle, items, background, useDarkTheme = false } = props;
   const { palette } = useTheme();
   const theme = palette.mode;
+  const isDarkMode = useDarkTheme || theme !== 'light';
 
-  const themeStyle =
-    !useDarkTheme && theme === 'light' ? 'text.primary' : 'background.paper';
-  const themeStyleBg =
-    !useDarkTheme && theme === 'light' ? 'background.paper' : 'primary.dark';
+  const themeStyle = isDarkMode ? 'background.paper' : 'text.primary';
+  const themeStyleBg = isDarkMode ? 'primary.dark' : 'background.paper';
 
   return (
     <EContainer

@@ -23,10 +23,9 @@ export const FeatureStackItem = ({
   theme,
   useDarkTheme,
 }: FeatureStackItemProps) => {
-  const textStyle =
-    !useDarkTheme && theme === 'light' ? 'text.primary' : 'background.paper';
-  const imageStyle =
-    !useDarkTheme && theme === 'light' ? 'primary.main' : 'background.paper';
+  const isDarkMode = useDarkTheme || theme !== 'light';
+  const textStyle = isDarkMode ? 'background.paper' : 'text.primary';
+  const imageStyle = isDarkMode ? 'background.paper' : 'primary.main';
 
   return (
     <Stack
@@ -63,7 +62,7 @@ export const FeatureStackItem = ({
             </Typography>
           ) : (
             <Subtitle
-              theme={theme}
+              isDarkMode={isDarkMode}
               subtitle={item.subtitle}
               textLink={item.link.text}
               url={item.link.url}
