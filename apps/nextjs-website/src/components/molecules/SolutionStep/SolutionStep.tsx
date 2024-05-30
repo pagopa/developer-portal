@@ -13,14 +13,18 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
   return (
     <Stack flexBasis={{ lg: '334px' }} gap={2} justifyContent='space-between'>
       <Stack gap={2}>
-        <Typography color='#5C6F82' sx={{ fontWeight: 700 }} variant='caption'>
+        <Typography
+          color={(theme) => theme.palette.action.active}
+          sx={{ fontWeight: 700 }}
+          variant='caption'
+        >
           {title}
         </Typography>
         <Typography variant='body1'>{content}</Typography>
       </Stack>
       <Stack gap={2}>
         <Typography
-          color='#5C6F82'
+          color={(theme) => theme.palette.action.active}
           sx={{ textTransform: 'uppercase' }}
           variant='subtitle2'
         >
