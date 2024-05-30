@@ -552,11 +552,15 @@
     },
     "breadcrumbs": {
         "home": "DevPortal",
-        "webinars": "Webinar"
+        "webinars": "Webinar",
+        "solutions": "Soluzioni"
     },
     "solution": {
         "steps" : {
             "platforms": "Piattaforme Abilitanti"
         }
+    },
+    "caseHistory": {
+        "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     }
 }

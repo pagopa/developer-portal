@@ -8,15 +8,7 @@ import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec } from './webinars';
-
-const ProductCodec = t.strict({
-  attributes: t.strict({
-    name: t.string,
-    description: t.union([t.null, t.string]),
-    slug: t.string,
-    logo: t.strict({ data: MediaCodec }),
-  }),
-});
+import { ProductCodec } from './codecs/ProductCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
