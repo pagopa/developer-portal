@@ -2,7 +2,8 @@
   "collectionName": "components_parts_api_testers",
   "info": {
     "displayName": "apiTester",
-    "description": ""
+    "description": "",
+    "icon": "cog"
   },
   "options": {},
   "attributes": {
