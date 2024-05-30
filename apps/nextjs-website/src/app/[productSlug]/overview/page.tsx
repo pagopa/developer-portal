@@ -53,6 +53,7 @@ export type OverviewPageProps = {
       readonly text: string;
       readonly href?: string;
       readonly iconName: string;
+      readonly iconColor?: string;
     }[];
   };
   readonly tutorials: {

@@ -21,7 +21,7 @@ const IconWrapper = ({
 }: IconWrapperProps) => {
   if (isSvg) {
     return (
-      <Icon sx={{ width: size, height: size }}>
+      <Icon sx={{ width: size, height: size, color }}>
         <Image alt={icon} src={icon} height={size} width={size} />
       </Icon>
     );
