@@ -552,6 +552,10 @@
     },
     "breadcrumbs": {
         "home": "DevPortal",
-        "webinars": "Webinar"
+        "webinars": "Webinar",
+        "solutions": "Soluzioni"
+    },
+    "caseHistory": {
+        "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     }
 }
