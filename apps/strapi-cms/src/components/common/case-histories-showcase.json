@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_common_case_histories_showcases",
+  "info": {
+    "displayName": "CaseHistoriesShowcase",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "case_histories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::case-history.case-history"
+    }
+  }
+}
