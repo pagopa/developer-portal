@@ -82,19 +82,29 @@ export const Showcase: StoryObj<typeof SolutionsTemplate> = {
       title: "I benefici della trasformazione digitale dei servizi",
     },
     successStories: {
-        title: "Storie di successo",
-        subtitle: "Le testimonianze di come gli enti hanno dato forma a servizi efficienti e accessibili, ottimizzando i processi grazie all’integrazione con le piattaforme PagoPA.",
-        stories: [
-            {
-                title: "Il processo di riscossione della TARI del Comune di Cagliari",
-                image: {
-                    url: "https://developer.pagopa.it/images/io-sign-firmare-documento.png",
-                    alternativeText: "alternativeText",
-                },
-                publishedAt: new Date(),
-                path: "/solutions/tari-comune-di-cagliari",
-            }
-        ],
-    }
+      title: "Storie di successo",
+      subtitle:
+        "Le testimonianze di come gli enti hanno dato forma a servizi efficienti e accessibili, ottimizzando i processi grazie all’integrazione con le piattaforme PagoPA.",
+      stories: [
+        {
+          title: "Il processo di riscossione della TARI del Comune di Cagliari",
+          image: {
+            url: "https://developer.pagopa.it/images/io-sign-firmare-documento.png",
+            alternativeText: "alternativeText",
+          },
+          publishedAt: new Date(),
+          path: "/solutions/tari-comune-di-cagliari",
+        },
+        // {
+        //   title: "Il processo di riscossione della TARI del Comune di Cagliari",
+        //   image: {
+        //     url: "https://developer.pagopa.it/images/io-sign-firmare-documento.png",
+        //     alternativeText: "alternativeText",
+        //   },
+        //   publishedAt: new Date(),
+        //   path: "/solutions/tari-comune-di-cagliari",
+        // },
+      ],
+    },
   },
 };

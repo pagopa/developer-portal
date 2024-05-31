@@ -1,7 +1,6 @@
-'use client';
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
 type SolutionsShowcaseProps = {
@@ -16,9 +15,8 @@ type SolutionsShowcaseProps = {
 };
 
 const SolutionsShowcase = ({ title, cards }: SolutionsShowcaseProps) => {
-  const theme = useTheme();
   return (
-    <Box py={5} sx={{ backgroundColor: theme.palette.grey[50] }}>
+    <Box py={5}>
       {title && <SectionTitle title={title} />}
       <CardsGrid
         cardVariant={'contained'}

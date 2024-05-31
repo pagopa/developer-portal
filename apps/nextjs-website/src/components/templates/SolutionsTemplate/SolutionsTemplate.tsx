@@ -91,6 +91,7 @@ const SolutionsTemplate = ({
       {successStories && (
         <NewsShowcase
           marginTop={8}
+          newsMarginTop={4}
           title={successStories.title}
           subtitle={successStories.subtitle}
           items={successStories.stories.map((story) => ({
