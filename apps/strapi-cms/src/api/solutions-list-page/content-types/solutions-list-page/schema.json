@@ -38,8 +38,8 @@
       "relation": "oneToMany",
       "target": "api::solution.solution"
     },
-    "caseHistoriesShowcase": {
-      "displayName": "CaseHistoriesShowcase",
+    "caseHistories": {
+      "displayName": "CaseHistories",
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
@@ -47,7 +47,7 @@
           "localized": true
         }
       },
-      "component": "common.case-histories-showcase"
+      "component": "common.case-histories"
     }
   }
 }
