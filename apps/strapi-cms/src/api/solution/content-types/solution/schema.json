@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "webinars",
+  "collectionName": "solutions",
   "info": {
-    "singularName": "webinar",
-    "pluralName": "webinars",
-    "displayName": "Webinar",
+    "singularName": "solution",
+    "pluralName": "solutions",
+    "displayName": "Solution",
     "description": ""
   },
   "options": {
@@ -16,16 +16,16 @@
     }
   },
   "attributes": {
-    "title": {
-      "type": "string",
+    "slug": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
+      "type": "string",
       "required": true
     },
-    "coverImage": {
+    "icon": {
       "type": "media",
       "multiple": false,
       "required": true,
@@ -34,84 +34,27 @@
       ],
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       }
     },
-    "slug": {
-      "type": "string",
+    "kickerTitle": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "required": true,
-      "regex": "^[a-zA-Z0-9-]+$"
-    },
-    "bodyContent": {
-      "type": "blocks",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "playerSrc": {
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "startDatetime": {
-      "type": "datetime",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "endDatetime": {
-      "type": "datetime",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "webinarSpeakers": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::webinar-speaker.webinar-speaker",
-      "inversedBy": "webinars"
-    },
-    "isVisibleInList": {
-      "type": "boolean",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
       "required": true
     },
-    "relatedLinks": {
-      "type": "component",
-      "repeatable": false,
-      "component": "common.related-links",
+    "title": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
-    },
-    "subscribeParagraphLabel": {
+      },
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "required": true
     },
     "description": {
       "pluginOptions": {
@@ -119,14 +62,70 @@
           "localized": true
         }
       },
-      "type": "text",
+      "type": "text"
+    },
+    "step": {
+      "displayName": "SolutionStep",
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.solution-step"
+    },
+    "dirName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
       "required": true
     },
-    "solution": {
+    "landingUseCaseFile": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "default": "README.md"
+    },
+    "stats": {
+      "displayName": "SolutionStat",
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.solution-stat"
+    },
+    "webinars": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::solution.solution",
-      "inversedBy": "webinars"
+      "relation": "oneToMany",
+      "target": "api::webinar.webinar",
+      "mappedBy": "solution"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "solution"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.banner-link"
     }
   }
 }
