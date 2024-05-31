@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.6.0
+
+### Minor Changes
+
+- 0d7a50b: Fix hosts iam role to allow subscription to webinars (dynamodb permissions)
+
 ## 0.5.8
 
 ### Patch Changes
