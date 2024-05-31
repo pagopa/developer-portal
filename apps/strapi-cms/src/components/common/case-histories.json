@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_common_case_histories_showcases",
+  "collectionName": "components_common_case_histories",
   "info": {
-    "displayName": "CaseHistoriesShowcase",
+    "displayName": "CaseHistories",
     "icon": "bulletList"
   },
   "options": {},
