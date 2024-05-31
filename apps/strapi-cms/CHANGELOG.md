@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 0.9.0
+
+### Minor Changes
+
+- 658e9e3: Add solution to Strapi
+- b00f56f: Add support for quickstart guide to Strapi
+- 293f5cc: Add solutions list Page
+
+### Patch Changes
+
+- af00272: Add case history to Strapi
+
 ## 0.8.0
 
 ### Minor Changes
