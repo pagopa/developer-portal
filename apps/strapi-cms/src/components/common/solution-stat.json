@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_common_solution_stats",
+  "info": {
+    "displayName": "SolutionStat",
+    "icon": "chartPie"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}
