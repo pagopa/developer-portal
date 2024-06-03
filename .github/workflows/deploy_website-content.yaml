@@ -1,4 +1,4 @@
-name: Deploy Website
+name: Deploy Website Content Only
 
 on:
   workflow_dispatch:
