@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 0.9.1
+
+### Patch Changes
+
+- 9892f6b: Fix Strapi relations naming
+
 ## 0.9.0
 
 ### Minor Changes
