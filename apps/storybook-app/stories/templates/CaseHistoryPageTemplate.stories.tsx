@@ -2,11 +2,11 @@ import React from "react";
 import { Meta, StoryObj } from '@storybook/react';
 import { NextIntlProvider } from "next-intl";
 import CaseHistoryPageTemplate from '../../../nextjs-website/src/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-import { mockImageBlock, mockText, mockTextBlock } from "../mock-content.helper";
+import { mockImageBlock, mockTextBlock } from "../mock-content.helper";
 import { quoteMockProps } from "../atoms/Quote.stories";
 
 const meta: Meta<typeof CaseHistoryPageTemplate> = {
-  title: 'Template/CaseHistoryPageTemplate',
+  title: 'Templates/CaseHistoryPageTemplate',
   component: CaseHistoryPageTemplate,
 };
 
