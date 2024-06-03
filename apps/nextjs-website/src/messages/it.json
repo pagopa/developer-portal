@@ -557,5 +557,10 @@
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
+    },
+    "solution": {
+        "steps" : {
+            "platforms": "Piattaforme Abilitanti"
+        }
     }
 }
