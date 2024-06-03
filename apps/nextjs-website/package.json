@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "0.23.1",
+  "version": "0.24.0",
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
