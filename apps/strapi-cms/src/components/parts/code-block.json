@@ -2,7 +2,8 @@
   "collectionName": "components_parts_code_blocks",
   "info": {
     "displayName": "codeBlock",
-    "description": ""
+    "description": "",
+    "icon": "code"
   },
   "options": {},
   "attributes": {

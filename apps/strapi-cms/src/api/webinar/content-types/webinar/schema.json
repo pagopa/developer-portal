@@ -121,6 +121,12 @@
       },
       "type": "text",
       "required": true
+    },
+    "solution": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::solution.solution",
+      "inversedBy": "webinars"
     }
   }
 }
