@@ -1,0 +1,57 @@
+name: Deploy Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: prod
+        options:
+          - dev
+          - prod
+
+  # Allows external webhook trigger
+  repository_dispatch:
+    types:
+      - webhook
+
+# These permissions are needed to interact with GitHub's OIDC Token endpoint.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  manual_deploy:
+    name: Deploy to S3 (manual on ${{ inputs.environment }})
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: 'ubuntu-latest'
+    environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          ref: nextjs-website@latest
+
+      - name: Deploy website
+        uses: ./.github/actions/deploy
+        with:
+          environment: ${{ inputs.environment }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
+          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          bucket: ${{ vars.S3_BUCKET_NAME }}
+          cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
+          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
