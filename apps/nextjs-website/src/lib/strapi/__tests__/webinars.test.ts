@@ -174,7 +174,7 @@ const makeStrapiResponseWithNullsJson = () => ({
   },
 });
 
-describe('StrapiHomepageCodec', () => {
+describe('StrapiWebinarsCodec', () => {
   it('should decode strapi webinars', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiWebinarsCodec.decode(jsonFromStrapi);

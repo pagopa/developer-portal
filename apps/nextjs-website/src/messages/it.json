@@ -553,5 +553,10 @@
     "breadcrumbs": {
         "home": "DevPortal",
         "webinars": "Webinar"
+    },
+    "solution": {
+        "steps" : {
+            "platforms": "Piattaforme Abilitanti"
+        }
     }
 }

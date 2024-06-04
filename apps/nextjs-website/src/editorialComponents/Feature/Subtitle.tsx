@@ -5,14 +5,14 @@ export interface SubtitleProps {
   subtitle: string;
   textLink?: string;
   url?: string;
-  theme: 'dark' | 'light';
+  isDarkMode?: boolean;
 }
 
-const Subtitle = ({ subtitle, textLink, url, theme }: SubtitleProps) => {
+const Subtitle = ({ subtitle, textLink, url, isDarkMode }: SubtitleProps) => {
   return (
     <Stack spacing={3} justifyContent='center' alignItems='center'>
       <Typography
-        color={theme === 'light' ? 'text.primary' : 'background.paper'}
+        color={isDarkMode ? 'background.paper' : 'text.primary'}
         variant='body2'
         textAlign='center'
       >
@@ -24,7 +24,7 @@ const Subtitle = ({ subtitle, textLink, url, theme }: SubtitleProps) => {
           justifyContent='center'
           alignItems='center'
           direction='row'
-          color={theme === 'light' ? 'primary' : 'background.paper'}
+          color={isDarkMode ? 'background.paper' : 'primary'}
         >
           <Link
             color='inherit'
