@@ -31,23 +31,33 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
       alignItems={'center'}
       gap={4}
       paddingY={8}
-      paddingX={{ xs: 4, sm: 8, md: 18 }}
+      paddingX={{ xs: 4, sm: 8, md: 24 }}
     >
       {items.map(({ title, subtitle, description }, index) => (
         <Stack
           key={index}
           flex={1}
-          gap={2}
+          gap={1}
           flexDirection={'column'}
           textAlign={'center'}
           justifyContent={'start'}
           maxWidth={maxWidth}
         >
-          <Typography fontWeight={700} color={titleColor} variant='h2'>
+          <Typography
+            marginBottom={3}
+            fontWeight={700}
+            color={titleColor}
+            variant='h3'
+          >
             {title}
           </Typography>
           {subtitle && (
-            <Typography color={textColor} component={'p'} variant='h6'>
+            <Typography
+              fontWeight={700}
+              color={textColor}
+              component={'p'}
+              variant='h6'
+            >
               {subtitle}
             </Typography>
           )}
