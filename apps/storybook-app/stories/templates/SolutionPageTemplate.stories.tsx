@@ -1,14 +1,11 @@
 import React from "react";
 import { Decorator, Meta, StoryObj } from '@storybook/react';
-import { NextIntlProvider } from "next-intl";
 import SolutionPageTemplate from '../../../nextjs-website/src/components/templates/SolutionPageTemplate/SolutionPageTemplate';
-import { mockImageBlock, mockText, mockTextBlock } from "../mock-content.helper";
-import { quoteMockProps } from "../atoms/Quote.stories";
 import NextIntlContext from "../../../nextjs-website/src/components/atoms/NextIntlContext/NextIntlContext";
 import messages from '../../../nextjs-website/src/messages/it.json';
 
 const meta: Meta<typeof SolutionPageTemplate> = {
-  title: 'Template/SolutionPageTemplate',
+  title: 'Templates/SolutionPageTemplate',
   component: SolutionPageTemplate,
 };
 
@@ -92,15 +89,15 @@ export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
     stats: [
       {
         title: '+50%',
-        description: mockText(4),
+        description: 'dei verbali viene pagato entro 5 giorni',
       },
       {
         title: '15%',
-        description: mockText(5),
+        description: 'dei quali vengono pagati entro 1 giorno',
       },
       {
         title: '2 mesi',
-        description: mockText(4),
+        description: 'di riduzione effettiva dei tempi di incasso',
       }
     ],
     products: products,

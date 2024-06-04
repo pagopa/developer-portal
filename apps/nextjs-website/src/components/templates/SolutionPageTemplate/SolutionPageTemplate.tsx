@@ -11,6 +11,7 @@ import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
+import Stats from '@/components/atoms/Stats/Stats';
 
 export type SolutionPageTemplateProps = {
   slug: string;
@@ -98,40 +99,15 @@ const SolutionPageTemplate = ({
         />
       </ItemContainer>
       {bannerLinks && <BannerLinks banners={bannerLinks} />}
-      <Stack
-        flexDirection={'row'}
-        justifyContent={'space-between'}
-        spacing={5}
-        paddingY={10}
-        paddingX={50}
-      >
-        {stats.map((stat, index) => (
-          <Box
-            flexDirection={'column'}
-            textAlign={'center'}
-            key={index}
-            gap={10}
-            maxWidth={150}
-          >
-            <Typography
-              fontWeight={700}
-              color={palette.primary.main}
-              variant='h2'
-            >
-              {stat.title}
-            </Typography>
-            {stat.description && (
-              <Typography
-                component={'p'}
-                color={palette.text.primary}
-                variant='body1'
-              >
-                {stat.description}
-              </Typography>
-            )}
-          </Box>
-        ))}
-      </Stack>
+      {stats && (
+        <Stats
+          maxWidth={200}
+          items={stats.map((stat) => ({
+            title: stat.title,
+            description: stat.description,
+          }))}
+        />
+      )}
       {/* // TODO: need mock auth provider to add this*/}
       {/* {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />} */}
       <ItemContainer>
