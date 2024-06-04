@@ -108,8 +108,7 @@ const SolutionPageTemplate = ({
           }))}
         />
       )}
-      {/* // TODO: need mock auth provider to add this*/}
-      {/* {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />} */}
+      {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />}
       <ItemContainer>
         <ProductsShowcase
           cardSize={{ xs: 12, md: 4 }}

@@ -7,6 +7,11 @@ import messages from '../../../nextjs-website/src/messages/it.json';
 const meta: Meta<typeof SolutionPageTemplate> = {
   title: 'Templates/SolutionPageTemplate',
   component: SolutionPageTemplate,
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    }
+  }
 };
 
 export default meta;
