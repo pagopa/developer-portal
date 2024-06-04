@@ -103,28 +103,12 @@ export async function getQuickStartGuide(productSlug?: string) {
   return manageUndefinedAndAddProducts(props);
 }
 
-export async function getTutorial(
+export async function getStrapiTutorial(
   productSlug?: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
-
-  // const tutorialFromGitbook = tutorials.find(({ page }) => page.path === path);
-
-  // if (tutorialFromGitbook) {
-  //   const props = tutorialFromGitbook;
-  //   return {
-  //     tutorialType: 'gitbook',
-  //     ...props,
-  //     product: props.product,
-  //     pathPrefix: props.source.pathPrefix,
-  //     assetsPrefix: props.source.assetsPrefix,
-  //     products: [...(await getProducts())],
-  //     bannerLinks: props.bannerLinks,
-  //     relatedLinks: props.relatedLinks,
-  //   };
-  // }
 
   const tutorialsFromCMS = await getTutorialsProps();
 
@@ -132,11 +116,33 @@ export async function getTutorial(
     ({ path }) => path === tutorialPath
   );
 
-  const props = {
-    ...tutorialFromCMS,
-    product: products.find(({ slug }) => slug === productSlug),
+  return tutorialFromCMS
+    ? {
+        ...tutorialFromCMS,
+        product: products.find(({ slug }) => slug === productSlug),
+      }
+    : undefined;
+}
+
+export async function getStaticTutorial(
+  productSlug?: string,
+  productTutorialPage?: ReadonlyArray<string>
+) {
+  const tutorialPath = productTutorialPage?.join('/');
+  const path = `/${productSlug}/tutorials/${tutorialPath}`;
+  const props = manageUndefined(
+    tutorials.find(({ page }) => page.path === path)
+  );
+
+  return {
+    ...props,
+    product: props.product,
+    pathPrefix: props.source.pathPrefix,
+    assetsPrefix: props.source.assetsPrefix,
+    products: [...(await getProducts())],
+    bannerLinks: props.bannerLinks,
+    relatedLinks: props.relatedLinks,
   };
-  return manageUndefined(props);
 }
 
 export async function getTutorialPaths() {

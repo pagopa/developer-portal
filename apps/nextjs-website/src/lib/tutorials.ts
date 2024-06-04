@@ -12,7 +12,7 @@ export function makeTutorialsProps(
 ): TutorialsProps {
   return strapiTutorials.data.map(({ attributes }) => ({
     comingSoon: false, // TODO: add this field to the Strapi model
-    showInOverview: true, // TODO: add this field to the Strapi model
+    showInOverview: true,
     image: attributes.image.data
       ? {
           url: attributes.image.data.attributes.url,

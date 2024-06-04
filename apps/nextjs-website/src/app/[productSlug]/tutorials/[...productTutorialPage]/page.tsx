@@ -1,7 +1,11 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getTutorial, getTutorialPaths } from '@/lib/api';
+import {
+  getStaticTutorial,
+  getStrapiTutorial,
+  getTutorialPaths,
+} from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
@@ -19,7 +23,6 @@ import RelatedLinks, {
   RelatedLinksProps,
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { Tutorial } from '@/lib/types/tutorialData';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
@@ -38,26 +41,14 @@ export async function generateStaticParams() {
   }));
 }
 
-type GitbookTutorial = {
+type ProductTutorialPageProps = {
   product: Product;
   path: string;
   menu: string;
   body: string;
-  source: { assetsPrefix: string };
-  relatedLinks?: RelatedLinksProps;
-  page: { path: string; title: string };
-} & ProductLayoutProps;
-
-type ProductTutorialPageProps = {
-  product: Product;
   bodyConfig: ParseContentConfig;
-  body: string;
   relatedLinks?: RelatedLinksProps;
 } & ProductLayoutProps;
-
-// export type TutorialPageProps =
-//   | (GitbookTutorial & { readonly tutorialType: 'gitbook' })
-//   | (Tutorial & { readonly tutorialType: 'strapi' });
 
 export async function generateMetadata({
   params,
@@ -66,8 +57,20 @@ export async function generateMetadata({
 }): Promise<Metadata | undefined> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  const { title, path } = tutorialProps;
+  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
+    tutorialPath,
+  ]);
+  if (strapiTutorialProps) {
+    const { title, path } = strapiTutorialProps;
+    return makeMetadata({
+      title,
+      url: path,
+    });
+  }
+  const {
+    page: { path, title },
+  } = await getStaticTutorial(productSlug, [tutorialPath]);
+
   return makeMetadata({
     title,
     url: path,
@@ -78,131 +81,132 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
+    tutorialPath,
+  ]);
+
+  if (strapiTutorialProps) {
+    return (
+      <ProductLayout
+        product={strapiTutorialProps.product}
+        path={strapiTutorialProps.path}
+        // bannerLinks={strapiTutorialProps.bannerLinks} // TODO: refactor bannerLinks
+      >
+        <Box mt={5}>
+          {strapiTutorialProps.title && (
+            <Abstract title={strapiTutorialProps.title} />
+          )}
+          <BlocksRendererClient content={strapiTutorialProps.content} />
+        </Box>
+        {strapiTutorialProps.relatedLinks && (
+          <RelatedLinks
+            title={strapiTutorialProps.relatedLinks?.title}
+            links={strapiTutorialProps.relatedLinks?.links ?? []}
+          />
+        )}
+      </ProductLayout>
+    );
+  }
+
+  const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
+  const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
+  const props: ProductTutorialPageProps = {
+    ...page,
+    product,
+    bannerLinks,
+    relatedLinks,
+    bodyConfig: {
+      isPageIndex: false,
+      pagePath: page.path,
+      assetsPrefix: source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix: spaceToPrefixMap,
+      urlReplaces: urlReplacesMap,
+    },
+  };
+
+  const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
 
   return (
     <ProductLayout
-      product={tutorialProps.product}
-      path={tutorialProps.path}
-      // bannerLinks={tutorialProps.bannerLinks} // TODO: refactor bannerLinks
+      product={props.product}
+      path={props.path}
+      bannerLinks={props.bannerLinks}
     >
-      <Box mt={5}>
-        {tutorialProps.title && <Abstract title={tutorialProps.title} />}
-        <BlocksRendererClient content={tutorialProps.content} />
-      </Box>
-      {tutorialProps.relatedLinks && (
+      <FragmentProvider>
+        <Box
+          sx={{
+            maxWidth: '1156px',
+            // 80px is the height of the product header
+            marginTop: '80px',
+            marginX: 'auto',
+            paddingTop: 3,
+          }}
+        >
+          <ProductBreadcrumbs
+            breadcrumbs={[
+              ...productPageToBreadcrumbs(product, props.path, [
+                { name: tutorialProps.page.title, path: props.path },
+              ]),
+            ]}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            maxWidth: '1156px',
+            margin: '0 auto',
+            paddingBottom: !hasRelatedLinks ? '56px' : 0,
+            paddingTop: '56px',
+          }}
+        >
+          <Box
+            sx={{
+              flexGrow: { lg: 1 },
+              maxWidth: {
+                xs: '100%',
+                lg: '822px',
+              },
+            }}
+          >
+            <GitBookContent content={props.body} config={props.bodyConfig} />
+          </Box>
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              // 78px is the height of the header, 80px is the height of the product header
+              paddingTop: '158px',
+              paddingLeft: '64px',
+              width: { lg: '270px' },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '270px',
+                top: 144,
+              }}
+            >
+              <GuideInPageMenu
+                assetsPrefix={props.bodyConfig.assetsPrefix}
+                pagePath={props.path}
+                inPageMenu={props.body}
+                title={translations.productGuidePage.onThisPage}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </FragmentProvider>
+      {hasRelatedLinks && (
         <RelatedLinks
-          title={tutorialProps.relatedLinks?.title}
-          links={tutorialProps.relatedLinks?.links ?? []}
+          title={props.relatedLinks?.title}
+          links={props.relatedLinks?.links ?? []}
         />
       )}
     </ProductLayout>
   );
-  // if (tutorialProps.tutorialType === 'strapi') {
-  //   // TODO: add blockContent
-  // }
-  // // TODO: unknown is needed because dynamic types from Parse library would not match requested static
-  // const { product, page, bannerLinks, source, relatedLinks, body } =
-  //   tutorialProps as unknown as GitbookTutorial;
-
-  // const props: ProductTutorialPageProps = {
-  //   ...page,
-  //   product,
-  //   bannerLinks,
-  //   relatedLinks,
-  //   body,
-  //   bodyConfig: {
-  //     isPageIndex: false,
-  //     pagePath: 'page.path',
-  //     assetsPrefix: source.assetsPrefix,
-  //     gitBookPagesWithTitle,
-  //     spaceToPrefix: spaceToPrefixMap,
-  //     urlReplaces: urlReplacesMap,
-  //   },
-  // };
-
-  // const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
-
-  // return (
-  //   <ProductLayout
-  //     product={props.product}
-  //     path={props.path}
-  //     bannerLinks={props.bannerLinks}
-  //   >
-  //     <FragmentProvider>
-  //       <Box
-  //         sx={{
-  //           maxWidth: '1156px',
-  //           // 80px is the height of the product header
-  //           marginTop: '80px',
-  //           marginX: 'auto',
-  //           paddingTop: 3,
-  //         }}
-  //       >
-  //         <ProductBreadcrumbs
-  //           breadcrumbs={[
-  //             ...productPageToBreadcrumbs(product, props.path, [
-  //               { name: tutorialProps.page.title, path: props.path },
-  //             ]),
-  //           ]}
-  //         />
-  //       </Box>
-  //       <Box
-  //         sx={{
-  //           display: 'flex',
-  //           flexDirection: { xs: 'column', lg: 'row' },
-  //           maxWidth: '1156px',
-  //           margin: '0 auto',
-  //           paddingBottom: !hasRelatedLinks ? '56px' : 0,
-  //           paddingTop: '56px',
-  //         }}
-  //       >
-  //         <Box
-  //           sx={{
-  //             flexGrow: { lg: 1 },
-  //             maxWidth: {
-  //               xs: '100%',
-  //               lg: '822px',
-  //             },
-  //           }}
-  //         >
-  //           <GitBookContent content={props.body} config={props.bodyConfig} />
-  //         </Box>
-  //         <Box
-  //           sx={{
-  //             display: { xs: 'none', lg: 'initial' },
-  //             position: 'relative',
-  //             // 78px is the height of the header, 80px is the height of the product header
-  //             paddingTop: '158px',
-  //             paddingLeft: '64px',
-  //             width: { lg: '270px' },
-  //           }}
-  //         >
-  //           <Box
-  //             sx={{
-  //               position: 'sticky',
-  //               maxWidth: '270px',
-  //               top: 144,
-  //             }}
-  //           >
-  //             <GuideInPageMenu
-  //               assetsPrefix={props.bodyConfig.assetsPrefix}
-  //               pagePath={props.path}
-  //               inPageMenu={props.body}
-  //               title={translations.productGuidePage.onThisPage}
-  //             />
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     </FragmentProvider>
-  //     {hasRelatedLinks && (
-  //       <RelatedLinks
-  //         title={props.relatedLinks?.title}
-  //         links={props.relatedLinks?.links ?? []}
-  //       />
-  //     )}
-  //   </ProductLayout>
-  // );
 };
 
 export default Page;
