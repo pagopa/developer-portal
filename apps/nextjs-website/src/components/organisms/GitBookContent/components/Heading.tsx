@@ -36,18 +36,19 @@ const asLineHeight = (level: number) =>
   level === 1 || level === 2 ? '42px' : '24px';
 
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
-  <Typography
-    id={id}
-    variant={asVariant(level)}
-    sx={{
-      py: 3,
-      fontSize: { xs: asFontSize(level) },
-      fontWeight: { xs: asFontWeight(level) },
-      lineHeight: { xs: asLineHeight(level) },
-    }}
-  >
-    {children}
-  </Typography>
+  <div id={id} style={{ marginTop: '-125px', paddingTop: '125px' }}>
+    <Typography
+      variant={asVariant(level)}
+      sx={{
+        py: 3,
+        fontSize: { xs: asFontSize(level) },
+        fontWeight: { xs: asFontWeight(level) },
+        lineHeight: { xs: asLineHeight(level) },
+      }}
+    >
+      {children}
+    </Typography>
+  </div>
 );
 
 export default Heading;
