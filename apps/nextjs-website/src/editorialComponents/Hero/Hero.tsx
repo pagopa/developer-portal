@@ -11,6 +11,7 @@ import {
 import { type CommonProps, type Generic } from '../types/components';
 import { isJSX } from '../utils';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import Image from 'next/image';
 
 export interface HeroProps extends CommonProps, HeroTextProps {
   image?: string | Generic;
@@ -143,7 +144,7 @@ const Hero = (props: HeroProps) => {
           {isJSX(image) ? (
             image
           ) : (
-            <img
+            <Image
               alt={altText}
               src={image}
               style={{
