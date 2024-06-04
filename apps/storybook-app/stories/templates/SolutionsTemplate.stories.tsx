@@ -95,15 +95,6 @@ export const Showcase: StoryObj<typeof SolutionsTemplate> = {
           publishedAt: new Date(),
           path: "/solutions/tari-comune-di-cagliari",
         },
-        // {
-        //   title: "Il processo di riscossione della TARI del Comune di Cagliari",
-        //   image: {
-        //     url: "https://developer.pagopa.it/images/io-sign-firmare-documento.png",
-        //     alternativeText: "alternativeText",
-        //   },
-        //   publishedAt: new Date(),
-        //   path: "/solutions/tari-comune-di-cagliari",
-        // },
       ],
     },
   },
