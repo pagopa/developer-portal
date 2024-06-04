@@ -25,7 +25,7 @@ function manageUndefined<T>(props: undefined | null | T) {
   return props;
 }
 
-async function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
+async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
 }
 
@@ -33,7 +33,7 @@ export async function getApi(productSlug?: string) {
   const props =
     apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
 
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getGuide(
@@ -71,7 +71,7 @@ export async function getGuideLists(productSlug?: string) {
     guideLists.find(
       (guideList) => guideList.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getOverview(productSlug?: string) {
@@ -79,7 +79,7 @@ export async function getOverview(productSlug?: string) {
     overviews.find(
       (overviewData) => overviewData.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export function getProductsSlugs(
@@ -100,45 +100,43 @@ export async function getQuickStartGuide(productSlug?: string) {
       ({ product }) => product.slug === productSlug
     )
   );
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getTutorial(
   productSlug?: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
-  const tutorialPath = productTutorialPage?.join('/');
-  const path = `/${productSlug}/tutorials/${tutorialPath}`;
+  const tutorialSubPath = productTutorialPage?.join('/');
+  const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialFromGitbook = tutorials.find(({ page }) => page.path === path);
+  // const tutorialFromGitbook = tutorials.find(({ page }) => page.path === path);
 
-  if (tutorialFromGitbook) {
-    const props = tutorialFromGitbook;
-    return {
-      tutorialType: 'gitbook',
-      props: {
-        ...props,
-        product: props.product,
-        pathPrefix: props.source.pathPrefix,
-        assetsPrefix: props.source.assetsPrefix,
-        products: [...(await getProducts())],
-        bannerLinks: props.bannerLinks,
-        relatedLinks: props.relatedLinks,
-      },
-    };
-  }
+  // if (tutorialFromGitbook) {
+  //   const props = tutorialFromGitbook;
+  //   return {
+  //     tutorialType: 'gitbook',
+  //     ...props,
+  //     product: props.product,
+  //     pathPrefix: props.source.pathPrefix,
+  //     assetsPrefix: props.source.assetsPrefix,
+  //     products: [...(await getProducts())],
+  //     bannerLinks: props.bannerLinks,
+  //     relatedLinks: props.relatedLinks,
+  //   };
+  // }
 
   const tutorialsFromCMS = await getTutorialsProps();
 
-  const tutorialFromCMS = tutorialsFromCMS.find(({ path }) => path === path);
-  if (tutorialFromCMS) {
-    return {
-      tutorialType: 'strapi',
-      ...tutorialFromCMS,
-    };
-  }
+  const tutorialFromCMS = tutorialsFromCMS.find(
+    ({ path }) => path === tutorialPath
+  );
 
-  return manageUndefined(null);
+  const props = {
+    ...tutorialFromCMS,
+    product: products.find(({ slug }) => slug === productSlug),
+  };
+  return manageUndefined(props);
 }
 
 export async function getTutorialPaths() {
@@ -164,7 +162,7 @@ export async function getTutorialListPageProps(productSlug?: string) {
     tutorialLists.find(
       (tutorialList) => tutorialList.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getTutorials(

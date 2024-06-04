@@ -22,6 +22,8 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import { Tutorial } from '@/lib/types/tutorialData';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
+import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 
 type Params = {
   productSlug: string;
@@ -53,9 +55,9 @@ type ProductTutorialPageProps = {
   relatedLinks?: RelatedLinksProps;
 } & ProductLayoutProps;
 
-export type TutorialPageProps =
-  | (GitbookTutorial & { readonly tutorialType: 'gitbook' })
-  | (Tutorial & { readonly tutorialType: 'strapi' });
+// export type TutorialPageProps =
+//   | (GitbookTutorial & { readonly tutorialType: 'gitbook' })
+//   | (Tutorial & { readonly tutorialType: 'strapi' });
 
 export async function generateMetadata({
   params,
@@ -65,13 +67,11 @@ export async function generateMetadata({
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  if (tutorialProps.tutorialType === 'strapi') {
-    const { title, path } = tutorialProps as Tutorial;
-    return makeMetadata({
-      title,
-      url: path,
-    });
-  }
+  const { title, path } = tutorialProps;
+  return makeMetadata({
+    title,
+    url: path,
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -80,12 +80,27 @@ const Page = async ({ params }: { params: Params }) => {
 
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
 
-  if (tutorialProps.tutorialType === 'strapi') {
-    // TODO: add blockContent
-    return null;
-  }
-
-  return <>ciao</>;
+  return (
+    <ProductLayout
+      product={tutorialProps.product}
+      path={tutorialProps.path}
+      // bannerLinks={tutorialProps.bannerLinks} // TODO: refactor bannerLinks
+    >
+      <Box mt={5}>
+        {tutorialProps.title && <Abstract title={tutorialProps.title} />}
+        <BlocksRendererClient content={tutorialProps.content} />
+      </Box>
+      {tutorialProps.relatedLinks && (
+        <RelatedLinks
+          title={tutorialProps.relatedLinks?.title}
+          links={tutorialProps.relatedLinks?.links ?? []}
+        />
+      )}
+    </ProductLayout>
+  );
+  // if (tutorialProps.tutorialType === 'strapi') {
+  //   // TODO: add blockContent
+  // }
   // // TODO: unknown is needed because dynamic types from Parse library would not match requested static
   // const { product, page, bannerLinks, source, relatedLinks, body } =
   //   tutorialProps as unknown as GitbookTutorial;

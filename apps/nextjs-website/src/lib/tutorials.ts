@@ -1,7 +1,11 @@
 import { StrapiTutorials } from './strapi/tutorial';
 import { Tutorial } from './types/tutorialData';
 
-export type TutorialsProps = readonly Tutorial[];
+export type TutorialsProps = readonly (Tutorial & {
+  readonly productSlug: string;
+  readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
+  readonly bannerLinks?: StrapiTutorials['data'][0]['attributes']['bannerLinks'];
+})[];
 
 export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials
@@ -21,5 +25,8 @@ export function makeTutorialsProps(
     name: attributes.title,
     path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
     content: attributes.content,
+    productSlug: attributes.product.data.attributes.slug,
+    relatedLinks: attributes.relatedLinks,
+    bannerLinks: attributes.bannerLinks,
   }));
 }
