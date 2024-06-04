@@ -8,9 +8,14 @@ import { translations } from '@/_contents/translations';
 import { webinars } from '@/_contents/webinars';
 import { makeWebinarsProps, makeWebinarsPropsFromStatic } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
-import { tutorialLists } from '@/_contents/products';
 import { fetchTutorials } from './strapi/tutorial';
 import { makeTutorialsProps } from './tutorials';
+import { fetchQuickStarts } from './strapi/quickStarts';
+import {
+  makeQuickStartsProps,
+  makeQuickStartsPropsFromStatic,
+} from './quickStarts';
+import { quickStartGuides } from '@/_contents/products';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -60,5 +65,18 @@ export const getTutorialsProps = async () => {
     return makeTutorialsProps(strapiTutorials);
   } else {
     return [];
+  }
+};
+
+export const getQuickStartsProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiQuickStart = await fetchQuickStarts(buildEnv);
+    return makeQuickStartsProps(strapiQuickStart, quickStartGuides);
+  } else {
+    return makeQuickStartsPropsFromStatic(quickStartGuides);
   }
 };

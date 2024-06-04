@@ -1,5 +1,25 @@
 # nextjs-website
 
+## 0.24.0
+
+### Minor Changes
+
+- 25b28b1: Add breadcrumbs to website pages
+
+### Patch Changes
+
+- 413e10a: Fix webinars' images responsiveness
+- fe05e70: Refactor CtaCard to allow an array of tags in input
+- ce380cf: Refactor Feature component to use dark style programmatically
+- 088eadf: Fix quickstart icon colors
+- c7eb7c7: Add quote component
+
+## 0.23.1
+
+### Patch Changes
+
+- e3e55d5: Fix webinars' paragraphs
+
 ## 0.23.0
 
 ### Minor Changes

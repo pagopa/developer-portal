@@ -63,8 +63,8 @@ const TutorialsPage = async ({ params }: ProductParams) => {
     <ProductLayout
       product={product}
       path={path}
-      showBreadcrumbs={false}
       bannerLinks={bannerLinks}
+      showBreadcrumbs
     >
       {abstract && (
         <Abstract

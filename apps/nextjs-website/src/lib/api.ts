@@ -4,14 +4,17 @@ import {
   guides,
   overviews,
   products,
-  quickStartGuides,
   tutorialLists,
   tutorials,
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
-import { getTutorialsProps, getWebinarsProps } from './cmsApi';
+import {
+  getTutorialsProps,
+  getQuickStartsProps,
+  getWebinarsProps,
+} from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 
 function manageUndefined<T>(props: undefined | null | T) {
@@ -92,10 +95,11 @@ export async function getProducts(): Promise<readonly Product[]> {
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
-  const props =
-    quickStartGuides.find(
-      (overviewData) => overviewData.product.path === `/${productSlug}`
-    ) || null;
+  const props = manageUndefined(
+    (await getQuickStartsProps()).find(
+      ({ product }) => product.slug === productSlug
+    )
+  );
   return manageUndefinedAndAddProduct(props);
 }
 

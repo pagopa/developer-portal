@@ -15,6 +15,7 @@ type StartInfoProps = {
     text: string;
     href?: string;
     iconName: string;
+    iconColor?: string;
   }[];
   cta?: {
     text: string;
@@ -49,6 +50,7 @@ const StartInfo = ({
             text: card.text,
             href: card.href,
             icon: card.iconName,
+            iconColor: card.iconColor,
           }))}
         />
       </Box>
