@@ -26,7 +26,7 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
       <Stack gap={2}>
         <Typography
           color={(theme) => theme.palette.action.active}
-          sx={{ textTransform: 'uppercase' }}
+          sx={{ textTransform: 'uppercase', fontWeight: 700 }}
           variant='subtitle2'
         >
           {t('steps.platforms')}

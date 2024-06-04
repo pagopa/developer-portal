@@ -353,13 +353,13 @@ const makeStrapiResponseWithNullsJson = () => ({
 });
 
 describe('StrapiQuickStartsCodec', () => {
-  it('should decode strapi webinars', () => {
+  it('should decode strapi quickStarts', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiQuickStartsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
-  it('should decode strapi webinars with nulls', () => {
+  it('should decode strapi quickStarts with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseWithNullsJson();
     const actual = StrapiQuickStartsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
