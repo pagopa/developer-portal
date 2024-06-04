@@ -10,12 +10,12 @@ import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { notFound } from 'next/navigation';
-import { NextIntlClientProvider } from 'next-intl';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
 import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
+import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -83,7 +83,7 @@ export default async function RootLayout({
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <NextIntlClientProvider
+        <NextIntlContext
           locale={'it'}
           messages={messages}
           timeZone='Europe/Rome'
@@ -96,7 +96,7 @@ export default async function RootLayout({
               <SiteFooter />
             </AuthProvider>
           </BodyWrapper>
-        </NextIntlClientProvider>
+        </NextIntlContext>
       </ThemeRegistry>
     </html>
   );
