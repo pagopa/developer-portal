@@ -10,7 +10,7 @@ const meta: Meta<typeof TabComponent> = {
 
 export default meta;
 
-export const ShowcaseWithIcon: StoryObj<typeof TabComponent> = {
+export const TabsComponent: StoryObj<typeof TabComponent> = {
   args: {
     items: [
         {
