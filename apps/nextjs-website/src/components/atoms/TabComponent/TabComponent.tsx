@@ -8,14 +8,13 @@ export type TabPanelProps = {
   readonly value: number;
 };
 
-const TabPanel: FC<TabPanelProps> = ({ children, value, index, ...other }) => {
+const TabPanel: FC<TabPanelProps> = ({ children, value, index }) => {
   return (
     <div
       role='tabpanel'
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
     </div>
@@ -32,14 +31,14 @@ export type TabsProps = {
 };
 
 export const TabComponent: FC<TabsProps> = ({ items }: TabsProps) => {
-  const [value, setValue] = React.useState(0);
+  const [currentTab, setCurrentTab] = React.useState(0);
 
   return (
     <div>
       <Tabs
-        value={value}
+        value={currentTab}
         onChange={(event, newValue: number) => {
-          setValue(newValue);
+          setCurrentTab(newValue);
         }}
       >
         {items.map((item, index) => (
@@ -47,7 +46,7 @@ export const TabComponent: FC<TabsProps> = ({ items }: TabsProps) => {
         ))}
       </Tabs>
       {items.map((item, index) => (
-        <TabPanel key={index} value={value} index={index}>
+        <TabPanel key={index} value={currentTab} index={index}>
           {item.content}
         </TabPanel>
       ))}
