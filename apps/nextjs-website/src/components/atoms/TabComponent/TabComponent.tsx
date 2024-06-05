@@ -34,7 +34,7 @@ export const TabComponent: FC<TabsProps> = ({ items }: TabsProps) => {
   const [currentTab, setCurrentTab] = React.useState(0);
 
   return (
-    <div>
+    <>
       <Tabs
         value={currentTab}
         onChange={(event, newValue: number) => {
