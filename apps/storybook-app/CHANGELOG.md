@@ -1,5 +1,12 @@
 # storybook-app
 
+## 0.1.0
+
+### Minor Changes
+
+- 2f2ef37: Add Solution Preview Card
+- 2f2ef37: Add SolutionStep component
+
 ## 0.0.3
 
 ### Patch Changes
