@@ -1,5 +1,18 @@
 # nextjs-website
 
+## 0.25.0
+
+### Minor Changes
+
+- 32f7b14: Add quickstart codec and manage fetch
+- 2f2ef37: Add Solution Preview Card
+- 2f2ef37: Add SolutionStep component
+- ffd196b: Manage quickstart from CMS and refactor static content
+
+### Patch Changes
+
+- 28118e1: Fix anchor position on scroll
+
 ## 0.24.0
 
 ### Minor Changes
