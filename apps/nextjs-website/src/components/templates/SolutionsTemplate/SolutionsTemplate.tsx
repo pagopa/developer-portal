@@ -66,6 +66,7 @@ const SolutionsTemplate = ({
         title={hero.title}
         subtitle={hero.subtitle}
         size='small'
+        smallHeight='fit-content'
         useHoverlay={false}
         altText={hero.altText}
         theme='light'
@@ -73,6 +74,7 @@ const SolutionsTemplate = ({
       />
       {solutionsShowcase && (
         <SolutionsShowcase
+          py={4}
           cards={solutionsShowcase.solutions.map((solution) => ({
             title: solution.name,
             text: solution.description || '',

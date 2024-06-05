@@ -12,11 +12,16 @@ type SolutionsShowcaseProps = {
     logoUrl: string;
     tags?: { readonly label: string; readonly path?: string }[];
   }[];
+  py?: number;
 };
 
-const SolutionsShowcase = ({ title, cards }: SolutionsShowcaseProps) => {
+const SolutionsShowcase = ({
+  title,
+  cards,
+  py = 5,
+}: SolutionsShowcaseProps) => {
   return (
-    <Box py={5}>
+    <Box py={py}>
       {title && <SectionTitle title={title} />}
       <CardsGrid
         cardVariant={'contained'}
