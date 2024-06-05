@@ -11,9 +11,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-          fetch-depth: 0
-          ref: $GITHUB_REF_NAME
       
     - name: Get commit hash associated with the new tag
       id: get-commit
@@ -30,6 +27,6 @@ jobs:
     - name: Move the latest tag to new tag
       id: move-latest-tag
       run: |
-        PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f2)
+        PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f1)
         git tag -f $PACKAGE_NAME@latest ${{steps.get-commit.outputs.commit}}
         git push --tags --force
