@@ -50,7 +50,7 @@ export const TabComponent: FC<TabsProps> = ({ items }: TabsProps) => {
           {item.content}
         </TabPanel>
       ))}
-    </div>
+    </>
   );
 };
 
