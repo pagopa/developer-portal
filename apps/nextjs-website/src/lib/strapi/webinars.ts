@@ -6,6 +6,7 @@ import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
+import { PaginationCodec } from './codecs/PaginationCodec';
 
 const WebinarSpeakerCodec = t.strict({
   id: t.number,
@@ -34,15 +35,6 @@ export const WebinarCodec = t.strict({
     subscribeParagraphLabel: t.union([NullToUndefinedCodec, t.string]),
     relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
-  }),
-});
-
-const PaginationCodec = t.strict({
-  pagination: t.strict({
-    page: t.number,
-    pageSize: t.number,
-    pageCount: t.number,
-    total: t.number,
   }),
 });
 

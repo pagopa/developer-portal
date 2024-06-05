@@ -108,40 +108,17 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `  "sha256": "wSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI="\n` +
               `}]\n`,
             language: 'json',
-            parts: [
+            description:
+              'Invia la richiesta per vedere la simulazione della risposta del server',
+            attributes: [
               {
-                component: 'typography',
-                text: 'Invia la richiesta per vedere la simulazione della risposta del server',
-                variant: 'body2',
+                label: 'Stringhe sha256 ( ottenute dallo step 2)',
+                value:
+                  'MuYRoTokYa80bZiASArg7zohUgU61QzS4EJ+ihYgwss=\n<br /><br />\nwSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Stringhe sha256 ( ottenute dallo step 2)',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                asHtml: true,
-                text: 'MuYRoTokYa80bZiASArg7zohUgU61QzS4EJ+ihYgwss=\n<br /><br />\nwSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Indice di caricamento delle richieste',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Notifica_001\nPagamento_001',
+                label: 'Indice di caricamento delle richieste',
+                value: 'Notifica_001\nPagamento_001',
               },
             ],
           },
@@ -162,12 +139,8 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `  "key": "PN_NOTIFICATION_ATTACHMENTS-0002-302W-B9DC-9U88-WIKD" \n` +
               `}]\n`,
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la simulazione della risposta del server, che contiene l’URL di caricamento, e le stringhe <code style="background-color: #F4F5F7; font-size: 0.875em;">key</code> e <code style="background-color: #F4F5F7; font-size: 0.875em;">secret</code> associate al documento.',
-              },
-            ],
+            description:
+              'Ecco la simulazione della risposta del server, che contiene l’URL di caricamento, e le stringhe <code style="background-color: #F4F5F7; font-size: 0.875em;">key</code> e <code style="background-color: #F4F5F7; font-size: 0.875em;">secret</code> associate al documento.',
           },
         },
         {
@@ -216,40 +189,17 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `--verbose --data-binary '@Pagamento.pdf' \\ \n` +
               `https://preloadpn.aws.amazon....... --verbose \n`,
             language: 'txt',
-            parts: [
+            description:
+              'Invia la richiesta per vedere la simulazione della risposta del server',
+            attributes: [
               {
-                component: 'typography',
-                text: 'Invia la richiesta per vedere la simulazione della risposta del server',
-                variant: 'body2',
+                label: 'Stringhe secret (ottenute da step 3)',
+                value: 'AZ23RF12 \nBK45PS23',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Stringhe secret (ottenute da step 3)',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'AZ23RF12 \nBK45PS23',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Stringhe sha256 ( ottenute dallo step 2)',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                asHtml: true,
-                text: 'MuYRoTokYa80bZiASArg7zohUgU61QzS4EJ+ihYgwss=\n<br /><br />\nwSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=',
+                label: 'Stringhe sha256 ( ottenute dallo step 2)',
+                value:
+                  'MuYRoTokYa80bZiASArg7zohUgU61QzS4EJ+ihYgwss=\n<br /><br />\nwSg/ClStSKF9m2A3ULlS7mqNndVln1+1xr3XZfZ1gVI=',
               },
             ],
           },
@@ -282,12 +232,8 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `100  179k    0     0  100  179k      0   431k --:--:-- --:--:-- --:--:--  433k \n` +
               `* Connection #0 to host s3.eu-south-1.amazonaws.com left intact \n`,
             language: 'txt',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la simulazione della risposta del server di caricamento per il file Notifica.pdf, che contiene  il campo  <b>x-amz-version-id</b> da utilizzare nello step successivo',
-              },
-            ],
+            description:
+              'Ecco la simulazione della risposta del server di caricamento per il file Notifica.pdf, che contiene  il campo  <b>x-amz-version-id</b> da utilizzare nello step successivo',
           },
         },
       ],
@@ -387,68 +333,24 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `    "pagoPaIntMode": "SYNC|ASYNC|NONE" \n` +
               `  } \n`,
             language: 'json',
-            parts: [
+            description:
+              'Di seguito si riportano, a titolo esemplificativo, una parte dei campi presenti nel payload. Invia la richiesta di esempio per vedere la risposta del server.',
+            attributes: [
               {
-                component: 'typography',
-                text: 'Di seguito si riportano, a titolo esemplificativo, una parte dei campi presenti nel payload. Invia la richiesta di esempio per vedere la risposta del server.',
-                variant: 'body2',
+                label: 'Numero di protocollo',
+                value: 'Prot_001',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Numero di protocollo',
-                variant: 'subtitle1',
+                label: 'Titolo della notifica',
+                value: 'Prova Notifica 001',
               },
               {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Prot_001',
+                label: 'Token di disambiguazione',
+                value: '1ab23c45-6789-1234-d5ef-6a789b12cde3',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Titolo della notifica',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'Prova Notifica 001',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Token di disambiguazione',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: '1ab23c45-6789-1234-d5ef-6a789b12cde3',
-              },
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Dati del destinatario',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                asHtml: true,
-                text:
+                label: 'Dati del destinatario',
+                value:
                   `Tipo: PF (persona fisica) \n<br />` +
                   `Codice Fiscale: HVUEQP09U6QMNN5Z \n<br />` +
                   `Denominazione: Rossi Mario \n<br />` +
@@ -457,47 +359,16 @@ export const sendQuickStartGuide: QuickStartGuideData = {
                   `Città: Roma \n<br />`,
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Token di versione: (ottenute da step 4)',
-                variant: 'subtitle1',
+                label: 'Token di versione: (ottenute da step 4)',
+                value: 'y8T2_G46HFMJv3gnthXYpNeIV8qgR85E',
               },
               {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'y8T2_G46HFMJv3gnthXYpNeIV8qgR85E',
+                label: 'Politica di addebitamento dei costi di notifica:',
+                value: 'FLAT_RATE',
               },
               {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Politica di addebitamento dei costi di notifica:',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'FLAT_RATE',
-              },
-
-              {
-                component: 'typography',
-                color: '#5C6F82',
-                fontSize: '12px',
-                sx: { marginBottom: '0' },
-                text: 'Tipologia comunicazione fisica',
-                variant: 'subtitle1',
-              },
-              {
-                component: 'typography',
-                fontSize: '16px',
-                fontWeight: '600',
-                text: 'AR_REGISTERED_LETTER',
+                label: 'Tipologia comunicazione fisica',
+                value: 'AR_REGISTERED_LETTER',
               },
             ],
           },
@@ -509,12 +380,8 @@ export const sendQuickStartGuide: QuickStartGuideData = {
               `  "paProtocolNumber": "Prot_001" \n` +
               `} \n`,
             language: 'json',
-            parts: [
-              {
-                component: 'innerHTMLLazyLoaded',
-                html: 'Ecco la simulazione della risposta del server , che contiene l’ID della notifica e il numero di protocollo che hai scelto.',
-              },
-            ],
+            description:
+              'Ecco la simulazione della risposta del server, che contiene l’ID della notifica e il numero di protocollo che hai scelto.',
           },
         },
       ],

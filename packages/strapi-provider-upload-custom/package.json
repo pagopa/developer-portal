@@ -1,6 +1,6 @@
 {
   "name": "strapi-provider-upload-custom",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Custom Local provider for strapi upload",
   "main": "./dist/index.js",
   "private": true,
@@ -19,6 +19,7 @@
   "devDependencies": {
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
+    "shx": "^0.3.4",
     "typescript": "^5.0.2"
   },
   "engines": {

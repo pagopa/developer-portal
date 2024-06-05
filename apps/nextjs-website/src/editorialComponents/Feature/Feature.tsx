@@ -9,15 +9,17 @@ export interface FeatureProps {
   subtitle?: string;
   items: FeatureItem[];
   background?: string;
+  useDarkTheme?: boolean;
 }
 
 const Feature = (props: FeatureProps) => {
-  const { title, subtitle, items, background } = props;
+  const { title, subtitle, items, background, useDarkTheme = false } = props;
   const { palette } = useTheme();
   const theme = palette.mode;
+  const isDarkMode = useDarkTheme || theme !== 'light';
 
-  const themeStyle = theme === 'light' ? 'text.primary' : 'background.paper';
-  const themeStyleBg = theme === 'light' ? 'background.paper' : 'primary.dark';
+  const themeStyle = isDarkMode ? 'background.paper' : 'text.primary';
+  const themeStyleBg = isDarkMode ? 'primary.dark' : 'background.paper';
 
   return (
     <EContainer
@@ -53,7 +55,11 @@ const Feature = (props: FeatureProps) => {
               item
               key={index}
             >
-              <FeatureStackItem theme={theme} item={item} />
+              <FeatureStackItem
+                theme={theme}
+                item={item}
+                useDarkTheme={useDarkTheme}
+              />
             </Grid>
           ))}
         </Grid>

@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_parts_api_testers",
+  "info": {
+    "displayName": "apiTester",
+    "description": "",
+    "icon": "cog"
+  },
+  "options": {},
+  "attributes": {
+    "requestDescription": {
+      "type": "text",
+      "required": false
+    },
+    "requestAttributes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "parts.api-tester-attribute",
+      "required": true
+    },
+    "requestCode": {
+      "type": "component",
+      "repeatable": false,
+      "component": "parts.code-block",
+      "required": true
+    },
+    "responseDescription": {
+      "type": "text",
+      "required": false
+    },
+    "responseCode": {
+      "type": "component",
+      "repeatable": false,
+      "component": "parts.code-block",
+      "required": true
+    }
+  }
+}

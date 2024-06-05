@@ -4,14 +4,13 @@ import {
   guides,
   overviews,
   products,
-  quickStartGuides,
   tutorialLists,
   tutorials,
 } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
-import { getWebinarsProps } from './cmsApi';
+import { getQuickStartsProps, getWebinarsProps } from './cmsApi';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -91,10 +90,11 @@ export async function getProducts(): Promise<readonly Product[]> {
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
-  const props =
-    quickStartGuides.find(
-      (overviewData) => overviewData.product.path === `/${productSlug}`
-    ) || null;
+  const props = manageUndefined(
+    (await getQuickStartsProps()).find(
+      ({ product }) => product.slug === productSlug
+    )
+  );
   return manageUndefinedAndAddProduct(props);
 }
 

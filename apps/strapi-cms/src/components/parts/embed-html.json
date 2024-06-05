@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_parts_embed_htmls",
+  "info": {
+    "displayName": "embedHtml",
+    "icon": "slideshow",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "html": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

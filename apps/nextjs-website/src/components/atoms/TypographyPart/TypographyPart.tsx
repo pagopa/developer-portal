@@ -2,6 +2,7 @@
 import React from 'react';
 import { SxProps, Theme, Typography, useTheme } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
+import DOMPurify from 'dompurify';
 
 export type TypographyPartProps = {
   color?: string;
@@ -33,7 +34,9 @@ const TypographyPart = (props: TypographyPartProps) => {
       }}
     >
       {props.asHtml === true ? (
-        <div dangerouslySetInnerHTML={{ __html: props.text }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.text) }}
+        />
       ) : (
         props.text
       )}
