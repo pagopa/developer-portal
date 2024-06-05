@@ -94,9 +94,23 @@ runs:
         aws_region: ${{ inputs.aws_region }}
         role_to_assume: ${{ inputs.iam_role }}
 
-    - name: Deploy to S3 Bucket
+    - name: Deploy to S3 Bucket with parallel sync commands
       shell: bash
-      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete --max-concurrent-requests 200 --max-queue-size 10000
+      env:
+        OUT_DIR: ./apps/nextjs-website/out
+        S3_BUCKET: s3://${{ inputs.bucket }}
+      run: |
+        # Sync files in the root of the out directory
+        aws s3 sync "$OUT_DIR" "$S3_BUCKET" --exclude "*/*" --delete
+        # Sync subdirectories in the out directory
+        for subdir in "$OUT_DIR"/*/; do
+          if [ -d "$subdir" ]; then
+            subdir_name=$(basename "$subdir")
+            aws s3 sync "$subdir" "$S3_BUCKET/$subdir_name" --delete &
+          fi
+        done
+        # Wait for all sync operations to complete
+        wait
 
     - name: Create AWS Cloudfront Invalidation
       shell: bash
