@@ -11,8 +11,7 @@ export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials
 ): TutorialsProps {
   return strapiTutorials.data.map(({ attributes }) => ({
-    comingSoon: false, // TODO: add this field to the Strapi model
-    showInOverview: true,
+    showInOverview: false, // TODO: remove this when overview data are fetched from Strapi
     image: attributes.image.data
       ? {
           url: attributes.image.data.attributes.url,
