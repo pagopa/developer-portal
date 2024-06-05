@@ -96,7 +96,7 @@ runs:
 
     - name: Deploy to S3 Bucket
       shell: bash
-      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete
+      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete --max-concurrent-requests 200 --max-queue-size 10000
 
     - name: Create AWS Cloudfront Invalidation
       shell: bash
