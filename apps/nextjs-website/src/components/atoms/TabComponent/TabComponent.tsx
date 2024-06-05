@@ -21,7 +21,7 @@ const TabPanel: FC<TabPanelProps> = ({ children, value, index }) => {
   );
 };
 
-export type TabItem = {
+type TabItem = {
   readonly title: string;
   readonly content: ReactNode;
 };
