@@ -2,7 +2,7 @@
 import React, { FC, ReactNode } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 
-export type TabPanelProps = {
+type TabPanelProps = {
   readonly children?: ReactNode;
   readonly index: number;
   readonly value: number;
