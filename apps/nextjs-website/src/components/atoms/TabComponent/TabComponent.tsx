@@ -1,6 +1,6 @@
 'use client';
 import React, { FC, ReactNode } from 'react';
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 export type TabPanelProps = {
   readonly children?: ReactNode;
