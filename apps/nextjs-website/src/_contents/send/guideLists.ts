@@ -73,5 +73,28 @@ export const sendGuideLists: GuideListsData = {
       ],
     },
   ],
+      {
+      title: "Per l'utilizzo",
+      guides: [
+        {
+          title: 'Kit Comunicazione',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              "Informa i cittadini dell'adesione del tuo ente a SEND",
+              'Trova un supporto al tuo piano di comunicazione',
+              'Personalizza i materiali grafici già pronti per le tue campagne',
+              'Ottieni indicazioni sul corretto utilizzo dei loghi',
+            ],
+          },
+          link: {
+            href: `${sendGuideListsPath.path}/toolkit-comunicazione`,
+            label: 'Vai al manuale',
+          },
+          imagePath: '/images/kit-di-comunicazione.png',
+          mobileImagePath: '/images/kit-di-comunicazione.png',
+        },
+      ],
+    },
   bannerLinks: sendBannerLinks,
 };
