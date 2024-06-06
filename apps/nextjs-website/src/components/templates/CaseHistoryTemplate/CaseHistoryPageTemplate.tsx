@@ -13,7 +13,7 @@ export type CaseHistoryPageTemplateProps = {
   slug: string;
   title: string;
   description?: string;
-  products: Product[];
+  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];
 };
 
