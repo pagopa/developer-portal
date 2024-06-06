@@ -1,3 +1,4 @@
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { FormatQuote } from '@mui/icons-material';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -33,44 +34,42 @@ const Quote = ({
     : palette.primary.contrastText;
 
   return (
-    <Stack
-      height={{ xs: 468, sm: 560 }}
-      justifyContent={'start'}
-      position={'relative'}
-      alignItems={'center'}
-      direction={'row'}
-    >
-      <Stack
-        px={{ xs: 4, md: 18 }}
-        direction={'column'}
-        justifyContent={'start'}
-        zIndex={10}
-        // TODO: Check with design team
-        sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
+    <Stack height={{ xs: 468, sm: 560 }} position={'relative'}>
+      <EContainer
+        containerSx={{
+          margin: 'auto',
+        }}
       >
-        <FormatQuote
-          fontSize='large'
-          sx={{
-            color: palette.grey[300],
-            rotate: '180deg',
-            position: 'relative',
-            left: '4px',
-            bottom: '8px',
-          }}
-        />
-        <Typography color={textColor} variant='h6'>
-          {quote}
-        </Typography>
-        <FormatQuote
-          fontSize='large'
-          sx={{
-            color: palette.grey[300],
-            alignSelf: 'flex-end',
-            position: 'relative',
-            left: '24px',
-          }}
-        />
-      </Stack>
+        <Stack
+          direction={'column'}
+          justifyContent={'start'}
+          zIndex={10}
+          sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
+        >
+          <FormatQuote
+            fontSize='large'
+            sx={{
+              color: palette.grey[300],
+              rotate: '180deg',
+              position: 'relative',
+              left: '4px',
+              bottom: '8px',
+            }}
+          />
+          <Typography color={textColor} variant='h6'>
+            {quote}
+          </Typography>
+          <FormatQuote
+            fontSize='large'
+            sx={{
+              color: palette.grey[300],
+              alignSelf: 'flex-end',
+              position: 'relative',
+              left: '24px',
+            }}
+          />
+        </Stack>
+      </EContainer>
       <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
         <Image
           style={{ objectFit: 'cover' }}
