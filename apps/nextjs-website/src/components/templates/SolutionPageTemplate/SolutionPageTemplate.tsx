@@ -5,13 +5,14 @@ import { useTranslations } from 'next-intl';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { Box, Stack, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
 import Stats from '@/components/atoms/Stats/Stats';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type SolutionPageTemplateProps = {
   slug: string;
@@ -53,20 +54,10 @@ const SolutionPageTemplate = ({
 
   const solutionDetailPath = `/${dirName}/${slug}/${landingUseCaseFile}/detail`; // TODO: check if this is correct
 
-  const ItemContainer = ({ children }: { children: React.ReactNode }) => (
-    <Stack
-      flexDirection={'row'}
-      justifyContent={'center'}
-      marginBottom={spacing(5)}
-    >
-      <Box maxWidth={1200}>{children}</Box>
-    </Stack>
-  );
-
   return (
     <>
-      <ItemContainer>
-        <Box sx={{ marginTop: 10, paddingTop: 3, paddingBottom: spacing(10) }}>
+      <EContainer>
+        <Box marginY={spacing(10)}>
           <ProductBreadcrumbs
             breadcrumbs={[
               ...pageToBreadcrumbs('solutions', [
@@ -78,8 +69,8 @@ const SolutionPageTemplate = ({
             ]}
           />
         </Box>
-      </ItemContainer>
-      <ItemContainer>
+      </EContainer>
+      <EContainer sx={{ marginBottom: spacing(10) }}>
         <SolutionPreviewCard
           header={kickerTitle}
           title={title}
@@ -97,7 +88,7 @@ const SolutionPageTemplate = ({
             })),
           }))}
         />
-      </ItemContainer>
+      </EContainer>
       {bannerLinks && <BannerLinks banners={bannerLinks} />}
       {stats && (
         <Stats
@@ -109,19 +100,17 @@ const SolutionPageTemplate = ({
         />
       )}
       {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />}
-      <ItemContainer>
-        <ProductsShowcase
-          cardSize={{ xs: 12, md: 4 }}
-          backgroundColor={palette.background.paper}
-          title={t('caseHistory.productShowcaseLabel')}
-          cards={products.map((product) => ({
-            title: product.name,
-            text: product.description || '',
-            href: `/${product.slug}/overview`,
-            logoUrl: product.logo.url,
-          }))}
-        />
-      </ItemContainer>
+      <ProductsShowcase
+        cardSize={{ xs: 12, md: 4 }}
+        backgroundColor={palette.background.paper}
+        title={t('caseHistory.productShowcaseLabel')}
+        cards={products.map((product) => ({
+          title: product.name,
+          text: product.description || '',
+          href: `/${product.slug}/overview`,
+          logoUrl: product.logo.url,
+        }))}
+      />
     </>
   );
 };
