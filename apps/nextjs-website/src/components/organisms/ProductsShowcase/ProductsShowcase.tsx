@@ -31,7 +31,7 @@ const ProductsShowcase = ({
       py={5}
       sx={{ backgroundColor: backgroundColor || theme.palette.grey[50] }}
     >
-      <SectionTitle title={title} />
+      <SectionTitle margin={'0 0 1.75rem 0'} title={title} />
       <CardsGrid
         cardSize={cardSize}
         cardVariant={'outlined'}

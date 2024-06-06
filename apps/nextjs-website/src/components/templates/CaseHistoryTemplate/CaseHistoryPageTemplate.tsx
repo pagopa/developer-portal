@@ -8,6 +8,7 @@ import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsSh
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 export type CaseHistoryPageTemplateProps = {
   slug: string;
@@ -27,15 +28,9 @@ const CaseHistoryPageTemplate = ({
   const { palette, spacing } = useTheme();
   const t = useTranslations();
 
-  const ItemContainer = ({ children }: { children: React.ReactNode }) => (
-    <Box paddingBottom={spacing(10)} paddingX={{ xs: '2rem', md: '20rem' }}>
-      <Box maxWidth={1200}>{children}</Box>
-    </Box>
-  );
-
   return (
     <>
-      <ItemContainer>
+      <EContainer>
         <Box sx={{ marginTop: 10, paddingTop: 3, paddingBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
@@ -60,36 +55,34 @@ const CaseHistoryPageTemplate = ({
             {description}
           </Typography>
         )}
-      </ItemContainer>
+      </EContainer>
       {parts.map((part: Part, index: number) =>
         part.component !== 'quote' ? (
-          <ItemContainer key={index}>
+          <EContainer key={index}>
             <PartRenderer part={part} />
-          </ItemContainer>
+          </EContainer>
         ) : (
           <Box
             key={index}
             sx={{
-              marginBottom: 6,
+              marginY: 3,
             }}
           >
             <PartRenderer part={part} />
           </Box>
         )
       )}
-      <ItemContainer>
-        <ProductsShowcase
-          cardSize={{ xs: 12, md: 4 }}
-          backgroundColor={palette.background.paper}
-          title={t('caseHistory.productShowcaseLabel')}
-          cards={products.map((product) => ({
-            title: product.name,
-            text: product.description || '',
-            href: `/${product.slug}/overview`,
-            logoUrl: product.logo.url,
-          }))}
-        />
-      </ItemContainer>
+      <ProductsShowcase
+        cardSize={{ xs: 12, md: 4 }}
+        backgroundColor={palette.background.paper}
+        title={t('caseHistory.productShowcaseLabel')}
+        cards={products.map((product) => ({
+          title: product.name,
+          text: product.description || '',
+          href: `/${product.slug}/overview`,
+          logoUrl: product.logo.url,
+        }))}
+      />
     </>
   );
 };
