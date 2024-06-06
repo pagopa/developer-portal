@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import SolutionPageTemplate from "../../../nextjs-website/src/components/templates/SolutionPageTemplate/SolutionPageTemplate";
 import { nextIntlContextDecorator } from "../next-intl-context.helper";
+import { authProviderDecorator } from "../auth-provider.helper";
 
 const meta: Meta<typeof SolutionPageTemplate> = {
   title: "Templates/SolutionPageTemplate",
@@ -128,5 +129,5 @@ export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
       },
     ],
   },
-  decorators: [nextIntlContextDecorator],
+  decorators: [authProviderDecorator, nextIntlContextDecorator],
 };
