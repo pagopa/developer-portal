@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add SolutionStep component
+Add SolutionsTemplate component

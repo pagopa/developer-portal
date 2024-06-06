@@ -20,6 +20,7 @@ type CardsGridProps = {
     href?: string;
     icon: string;
     iconColor?: string;
+    tags?: { readonly label: string; readonly path?: string }[];
   }[];
 };
 
@@ -37,7 +38,10 @@ const CardsGrid = ({
       <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(
-            ({ title, text, href, icon, comingSoon, iconColor }, index) => {
+            (
+              { title, text, href, icon, comingSoon, iconColor, tags },
+              index
+            ) => {
               return (
                 <Grid
                   key={index}
@@ -61,6 +65,7 @@ const CardsGrid = ({
                         isSvg={cardSvg}
                       />
                     }
+                    tags={tags}
                   />
                 </Grid>
               );

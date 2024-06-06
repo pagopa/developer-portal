@@ -55,13 +55,15 @@ const CtaCard = ({
             {title}
           </Typography>
           <Typography variant='body2'>{text}</Typography>
-          {tags &&
-            tags.length > 0 &&
-            tags.map((tag) => (
-              <Box key={tag.label} mt={1} mr={1}>
-                <Tag value={tag.label} color='primary' variant='light' />
-              </Box>
-            ))}
+          {tags && tags.length > 0 && (
+            <Box mt={1} mr={1}>
+              {tags.map((tag) => (
+                <Box key={tag.label} mr={1} display='inline'>
+                  <Tag value={tag.label} color='primary' variant='light' />
+                </Box>
+              ))}
+            </Box>
+          )}
         </CardContent>
       </div>
       <CardActions style={{ bottom: 0 }}>

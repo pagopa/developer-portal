@@ -1,11 +1,8 @@
-import React from "react";
-import { Decorator, Meta, StoryObj } from '@storybook/react';
-import { NextIntlProvider } from "next-intl";
+import { Meta, StoryObj } from '@storybook/react';
 import CaseHistoryPageTemplate from '../../../nextjs-website/src/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { mockImageBlock, mockTextBlock } from "../mock-content.helper";
 import { quoteMockProps } from "../atoms/Quote.stories";
-import NextIntlContext from "../../../nextjs-website/src/components/atoms/NextIntlContext/NextIntlContext";
-import messages from '../../../nextjs-website/src/messages/it.json';
+import { nextIntlContextDecorator } from "../next-intl-context.helper";
 
 const meta: Meta<typeof CaseHistoryPageTemplate> = {
   title: 'Templates/CaseHistoryPageTemplate',
@@ -13,15 +10,6 @@ const meta: Meta<typeof CaseHistoryPageTemplate> = {
 };
 
 export default meta;
-
-const decorator: Decorator = (story) => (
-  <NextIntlContext   
-    locale={'it'}
-    messages={messages}
-    timeZone='Europe/Rome'>
-      {story()}
-  </NextIntlContext>
-);
 
 export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
   args: {
@@ -81,5 +69,5 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
       },
     ],
   },
-  decorators: [decorator],
+  decorators: [nextIntlContextDecorator]
 };

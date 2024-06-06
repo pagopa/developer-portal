@@ -259,6 +259,7 @@
     "shared": {
         "comingSoon": "In Arrivo",
         "readTutorial": "Leggi il tutorial",
+        "readStory": "Leggi la storia",
         "moreInfo": "Scopri di più",
         "version": "Versione",
         "copiedTooltip": "Copiato",
@@ -563,10 +564,5 @@
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
-    },
-    "solution": {
-        "steps" : {
-            "platforms": "Piattaforme Abilitanti"
-        }
     }
 }
