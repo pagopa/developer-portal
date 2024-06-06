@@ -1,21 +1,26 @@
-// import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-// import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-// import { Part } from './types/part';
-// import { StrapiSolutions } from './strapi/solutionsCodec';
+import { StrapiSolutions } from './strapi/solutionsCodec';
+import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
 
-// export function makeSolutionsProps(
-//   srapiSolutions: StrapiSolutions
-// ): ReadonlyArray<> {
-//   return srapiSolutions.data.map(({ attributes }) => ({
-//     ...attributes,
-//     parts: [
-//       ...(attributes.parts
-//         .map((part) => partFromStrapiPart(part))
-//         .filter((part) => !!part) as ReadonlyArray<Part>),
-//     ],
-//     products: attributes.products.data.map(({ attributes }) => ({
-//       ...attributes,
-//       logo: attributes.logo.data.attributes,
-//     })),
-//   }));
-// }
+export function makeSolutionsProps(
+  strapiSolutions: StrapiSolutions
+): ReadonlyArray<SolutionPageTemplateProps> {
+  return strapiSolutions.data.map(({ attributes }) => ({
+    ...attributes,
+    steps: [],
+    products: attributes.products.data.map(({ attributes }) => ({
+      ...attributes,
+      logo: attributes.logo.data.attributes,
+    })),
+    webinars: attributes.webinars.data.map((webinar) => ({
+      ...webinar.attributes,
+      startDateTime: webinar.attributes.startDatetime?.toISOString(),
+      endDateTime: webinar.attributes.endDatetime?.toISOString(),
+      imagePath: webinar.attributes.coverImage.data.attributes.url,
+      speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
+        ...speaker.attributes,
+        avatar: speaker.attributes.avatar.data?.attributes,
+      })),
+    })),
+    bannerLinks: [], // TODO: refactor bannerLinks before populating
+  }));
+}
