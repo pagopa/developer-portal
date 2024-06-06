@@ -101,6 +101,21 @@ const modelloDiIntegrazione: GuideDefinition = {
   ],
   bannerLinks: sendBannerLinks,
 };
+const toolkitCom: GuideDefinition = {
+  product: send,
+  guide: {
+    name: 'Kit di Comunicazione',
+    slug: `toolkit-comunicazione`,
+  },
+  versions: [
+    {
+      main: true,
+      version: 'v1.0',
+      dirName: 'xnuIxHY93w6yrtKccqEM',
+    },
+  ],
+  bannerLinks: sendBannerLinks,
+};
 
 export const sendGuides = [
   validatore,
