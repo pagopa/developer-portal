@@ -43,18 +43,20 @@ const CaseHistoryPageTemplate = ({
             ]}
           />
         </Box>
-        <Typography color={'text.primary'} variant='h4'>
-          {title}
-        </Typography>
-        {description && (
-          <Typography
-            component={typeof description === 'string' ? 'p' : 'div'}
-            color={'text.primary'}
-            variant='body1'
-          >
-            {description}
+        <Box sx={{ paddingBottom: spacing(10) }}>
+          <Typography color={'text.primary'} variant='h4'>
+            {title}
           </Typography>
-        )}
+          {description && (
+            <Typography
+              component={typeof description === 'string' ? 'p' : 'div'}
+              color={'text.primary'}
+              variant='body1'
+            >
+              {description}
+            </Typography>
+          )}
+        </Box>
       </EContainer>
       {parts.map((part: Part, index: number) =>
         part.component !== 'quote' ? (
