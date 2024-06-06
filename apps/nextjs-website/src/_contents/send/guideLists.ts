@@ -72,8 +72,7 @@ export const sendGuideLists: GuideListsData = {
         },
       ],
     },
-  ],
-      {
+    {
       title: "Per l'utilizzo",
       guides: [
         {
@@ -96,5 +95,6 @@ export const sendGuideLists: GuideListsData = {
         },
       ],
     },
+  ],
   bannerLinks: sendBannerLinks,
 };
