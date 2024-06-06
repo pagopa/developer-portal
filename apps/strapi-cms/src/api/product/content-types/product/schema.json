@@ -56,6 +56,24 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "quickstart_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quickstart-guide.quickstart-guide",
+      "mappedBy": "product"
+    },
+    "case_history": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::case-history.case-history",
+      "inversedBy": "products"
+    },
+    "solution": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::solution.solution",
+      "inversedBy": "products"
     }
   }
 }

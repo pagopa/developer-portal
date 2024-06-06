@@ -149,6 +149,7 @@ const Newsroom = (props: INewsroom) => {
           overflowX: 'scroll',
           width: {
             xs: 'auto',
+            md: '100%',
           },
         }}
       >

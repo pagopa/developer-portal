@@ -1,5 +1,6 @@
 'use client';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -7,6 +8,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
@@ -22,6 +24,7 @@ export type CtaCardProps = {
   readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
+  readonly tags?: { readonly label: string; readonly path?: string }[];
 };
 
 const CtaCard = ({
@@ -32,6 +35,7 @@ const CtaCard = ({
   comingSoon = false,
   icon,
   children,
+  tags,
 }: CtaCardProps) => {
   return (
     <Card
@@ -51,6 +55,15 @@ const CtaCard = ({
             {title}
           </Typography>
           <Typography variant='body2'>{text}</Typography>
+          {tags && tags.length > 0 && (
+            <Box mt={1} mr={1}>
+              {tags.map((tag) => (
+                <Box key={tag.label} mr={1} display='inline'>
+                  <Tag value={tag.label} color='primary' variant='light' />
+                </Box>
+              ))}
+            </Box>
+          )}
         </CardContent>
       </div>
       <CardActions style={{ bottom: 0 }}>

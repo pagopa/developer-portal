@@ -1,5 +1,48 @@
 # nextjs-website
 
+## 0.25.0
+
+### Minor Changes
+
+- 32f7b14: Add quickstart codec and manage fetch
+- 2f2ef37: Add Solution Preview Card
+- 2f2ef37: Add SolutionStep component
+- ffd196b: Manage quickstart from CMS and refactor static content
+
+### Patch Changes
+
+- 28118e1: Fix anchor position on scroll
+
+## 0.24.0
+
+### Minor Changes
+
+- 25b28b1: Add breadcrumbs to website pages
+
+### Patch Changes
+
+- 413e10a: Fix webinars' images responsiveness
+- fe05e70: Refactor CtaCard to allow an array of tags in input
+- ce380cf: Refactor Feature component to use dark style programmatically
+- 088eadf: Fix quickstart icon colors
+- c7eb7c7: Add quote component
+
+## 0.23.1
+
+### Patch Changes
+
+- e3e55d5: Fix webinars' paragraphs
+
+## 0.23.0
+
+### Minor Changes
+
+- 5d8ef2a: Move webinars subscriptions to Dynamo DB
+
+### Patch Changes
+
+- f1442cb: Fix tutorial templage page
+
 ## 0.22.0
 
 ### Minor Changes

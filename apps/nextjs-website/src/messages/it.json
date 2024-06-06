@@ -259,6 +259,7 @@
     "shared": {
         "comingSoon": "In Arrivo",
         "readTutorial": "Leggi il tutorial",
+        "readStory": "Leggi la storia",
         "moreInfo": "Scopri di più",
         "version": "Versione",
         "copiedTooltip": "Copiato",
@@ -548,6 +549,15 @@
         "emptyOperations": {
             "header": "Nessuna operazione",
             "message": "Non ci sono operazioni disponibili per questo endpoint."
+        }
+    },
+    "breadcrumbs": {
+        "home": "DevPortal",
+        "webinars": "Webinar"
+    },
+    "solution": {
+        "steps" : {
+            "platforms": "Piattaforme Abilitanti"
         }
     }
 }
