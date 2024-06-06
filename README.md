@@ -22,7 +22,7 @@ npm run download-docs -w nextjs-website
 #### How to speed up local docs fetch time
 
 Initialize a git submoudule on docs directory:  
-`git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/docs`  
+`rm -R apps/nextjs-website/docs && git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/docs`  
 
 Run the script to checkout docs to the right branch
 `npm run update-docs -w nextjs-website` 
