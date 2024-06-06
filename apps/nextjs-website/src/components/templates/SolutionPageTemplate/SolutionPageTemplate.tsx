@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import { BannerLinkProps } from '@/editorialComponents/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
