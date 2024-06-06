@@ -31,7 +31,7 @@ const CaseHistoryPageTemplate = ({
   return (
     <>
       <EContainer>
-        <Box sx={{ marginTop: 10, paddingTop: 3, paddingBottom: spacing(10) }}>
+        <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
               ...pageToBreadcrumbs('solutions', [
