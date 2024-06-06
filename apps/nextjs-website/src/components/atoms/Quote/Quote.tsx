@@ -1,3 +1,4 @@
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { FormatQuote } from '@mui/icons-material';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -33,19 +34,16 @@ const Quote = ({
     : palette.primary.contrastText;
 
   return (
-    <Stack>
-      <Stack
-        height={{ xs: 468, sm: 560 }}
-        justifyContent={'start'}
-        alignItems={'center'}
-        direction={'row'}
+    <Stack height={{ xs: 468, sm: 560 }} position={'relative'}>
+      <EContainer
+        containerSx={{
+          margin: 'auto',
+        }}
       >
         <Stack
-          px={{ xs: 4, md: 18 }}
           direction={'column'}
           justifyContent={'start'}
           zIndex={10}
-          // TODO: Check with design team
           sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
         >
           <FormatQuote
@@ -71,7 +69,7 @@ const Quote = ({
             }}
           />
         </Stack>
-      </Stack>
+      </EContainer>
       <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
         <Image
           style={{ objectFit: 'cover' }}
