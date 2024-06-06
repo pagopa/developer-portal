@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
+    "update-docs": "./scripts/fetch-local-docs.sh",
     "compile": "tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
