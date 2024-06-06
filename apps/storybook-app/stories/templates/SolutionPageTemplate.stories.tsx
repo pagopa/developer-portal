@@ -1,9 +1,6 @@
-import React from "react";
-import { Decorator, Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import SolutionPageTemplate from "../../../nextjs-website/src/components/templates/SolutionPageTemplate/SolutionPageTemplate";
-import NextIntlContext from "../../../nextjs-website/src/components/atoms/NextIntlContext/NextIntlContext";
-import messages from "../../../nextjs-website/src/messages/it.json";
-import AuthProvider from "../../../nextjs-website/src/components/organisms/Auth/AuthProvider";
+import { nextIntlContextDecorator } from "../next-intl-context.helper";
 
 const meta: Meta<typeof SolutionPageTemplate> = {
   title: "Templates/SolutionPageTemplate",
@@ -43,12 +40,6 @@ const products = [
     },
   },
 ];
-
-const decorator: Decorator = (story) => (
-  <NextIntlContext locale={"it"} messages={messages} timeZone="Europe/Rome">
-    <AuthProvider>{story()}</AuthProvider>
-  </NextIntlContext>
-);
 
 export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
   args: {
@@ -137,5 +128,5 @@ export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
       },
     ],
   },
-  decorators: [decorator],
+  decorators: [nextIntlContextDecorator],
 };
