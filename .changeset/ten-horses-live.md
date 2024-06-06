@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add Solution Preview Card
+Add CaseHistoryPageTemplate and related story
