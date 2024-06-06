@@ -57,7 +57,7 @@ const SolutionPageTemplate = ({
   return (
     <>
       <EContainer>
-        <Box marginY={spacing(10)}>
+        <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
               ...pageToBreadcrumbs('solutions', [
