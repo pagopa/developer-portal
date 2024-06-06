@@ -35,14 +35,14 @@ export const SolutionCodec = t.strict({
     publishedAt: tt.DateFromISOString,
     icon: t.strict({ data: MediaCodec }),
     steps: t.array(StepCodec),
-    // stats: t.array(StatCodec),
-    // bannerLinks: t.array(BannerLinkCodec),
-    // webinars: t.strict({
-    //   data: t.array(WebinarCodec),
-    // }),
-    // products: t.strict({
-    //   data: t.array(ProductCodec),
-    // }),
+    stats: t.array(StatCodec),
+    bannerLinks: t.array(BannerLinkCodec),
+    webinars: t.strict({
+      data: t.array(WebinarCodec),
+    }),
+    products: t.strict({
+      data: t.array(ProductCodec),
+    }),
   }),
 });
 
