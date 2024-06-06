@@ -1,7 +1,6 @@
-import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { NextIntlProvider } from "next-intl";
 import SolutionsTemplate from "../../../nextjs-website/src/components/templates/SolutionsTemplate/SolutionsTemplate";
+import { nextIntlContextDecorator } from "../next-intl-context.helper";
 
 const meta: Meta<typeof SolutionsTemplate> = {
   title: "Templates/SolutionsTemplate",
@@ -11,11 +10,7 @@ const meta: Meta<typeof SolutionsTemplate> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof SolutionsTemplate> = {
-  render: (props) => (
-    <NextIntlProvider messages={{}} locale="it">
-      <SolutionsTemplate {...props} />
-    </NextIntlProvider>
-  ),
+  decorators: [nextIntlContextDecorator],
   args: {
     hero: {
       backgroundImage: "https://developer.pagopa.it/images/hero.jpg",
