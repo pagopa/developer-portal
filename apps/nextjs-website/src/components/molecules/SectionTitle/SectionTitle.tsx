@@ -12,7 +12,7 @@ type SectionTitleProps = {
     href: string;
   };
   children?: ReactNode | ReactNode[];
-  margin?: number;
+  margin?: number | string;
 };
 
 const SectionTitle = ({

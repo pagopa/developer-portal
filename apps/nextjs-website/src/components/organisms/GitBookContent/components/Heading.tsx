@@ -1,6 +1,8 @@
 import Typography from '@mui/material/Typography';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import { ReactNode } from 'react';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
 
 const asVariant = (level: number) => {
   switch (level) {
@@ -35,19 +37,25 @@ const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 const asLineHeight = (level: number) =>
   level === 1 || level === 2 ? '42px' : '24px';
 
+const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
+
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
-  <Typography
+  <div
     id={id}
-    variant={asVariant(level)}
-    sx={{
-      py: 3,
-      fontSize: { xs: asFontSize(level) },
-      fontWeight: { xs: asFontWeight(level) },
-      lineHeight: { xs: asLineHeight(level) },
-    }}
+    style={{ marginTop: `-${scrollOffset}px`, paddingTop: `${scrollOffset}px` }}
   >
-    {children}
-  </Typography>
+    <Typography
+      variant={asVariant(level)}
+      sx={{
+        py: 3,
+        fontSize: { xs: asFontSize(level) },
+        fontWeight: { xs: asFontWeight(level) },
+        lineHeight: { xs: asLineHeight(level) },
+      }}
+    >
+      {children}
+    </Typography>
+  </div>
 );
 
 export default Heading;

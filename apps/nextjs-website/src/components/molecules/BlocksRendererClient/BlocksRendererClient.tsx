@@ -4,15 +4,21 @@ import { Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 
+type BlocksRendererClientProps = {
+  content?: BlocksContent;
+  color?: 'contrastText' | 'main' | 'light' | 'dark';
+  imageStyle?: React.CSSProperties;
+};
+
 const BlocksRendererClient = ({
   content,
   color,
-  imageStyle = {},
-}: {
-  readonly content?: BlocksContent;
-  color?: 'contrastText' | 'main' | 'light' | 'dark';
-  imageStyle?: React.CSSProperties;
-}) => {
+  imageStyle = {
+    height: 'auto',
+    width: '100%',
+    maxWidth: '820px',
+  },
+}: BlocksRendererClientProps) => {
   const { palette } = useTheme();
 
   if (!content) return null;
