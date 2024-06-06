@@ -122,4 +122,5 @@ export const sendGuides = [
   manualeOperativo,
   knowledgeBase,
   modelloDiIntegrazione,
+  toolkitCom,
 ];
