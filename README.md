@@ -21,12 +21,14 @@ npm i
 You have 2 ways of accomplish it, the first one consists in downloading the whole docs as zip, using 
 `npm run download-docs -w nextjs-website`  
 
-Or you can initialize a git submoudule on docs directory:  
-`rm -R apps/nextjs-website/docs && git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/docs`  
-
-Run the script to checkout docs to the right branch
+Or you can initialize a git submoudule on .tmp-docs directory:  
+`mkdir -p .tmp-docs && git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs`  
+and then run the script to checkout docs to the right branch
 `npm run update-docs -w nextjs-website` 
 
+#### Update documentation
+You can update the doc by downloading it again or, if you chose the submodule way, by running again the update command:
+`npm run update-docs -w nextjs-website`
 
 Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.

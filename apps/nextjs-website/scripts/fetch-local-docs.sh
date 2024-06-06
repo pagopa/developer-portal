@@ -1,10 +1,13 @@
 git submodule init
 git submodule update
-cd  docs 
+mkdir -p .tmp-docs
+cd .tmp-docs
 # discard all untracked changes
 git clean -fd
 git checkout docs/from-gitbook 
 git pull
-# copy all files to root ovveriding existing files
-mv docs/* .
-rm -R docs/
+cd ..
+# remove old docs if any
+rm -r docs/*
+# copy all necessary files to the docs folder
+cp .tmp-docs/docs/* docs/ -r
