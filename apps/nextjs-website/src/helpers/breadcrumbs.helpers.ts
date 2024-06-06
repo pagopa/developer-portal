@@ -41,3 +41,22 @@ export function webinarPageToBreadcrumbs(
     ...(paths || []),
   ];
 }
+
+export function pageToBreadcrumbs(
+  pagePath: string,
+  paths?: readonly Path[]
+): readonly BreadCrumbSegment[] {
+  return [
+    {
+      name: 'home',
+      path: '/',
+      translate: true,
+    },
+    {
+      name: pagePath,
+      path: `/${pagePath}`,
+      translate: true,
+    },
+    ...(paths || []),
+  ];
+}
