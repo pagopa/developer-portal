@@ -16,7 +16,7 @@ import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/We
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
-import { webinarPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 
 type WebinarDetailTemplateProps = {
@@ -49,14 +49,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     () =>
       webinar.bodyContent ? (
         <EContainer direction='column'>
-          <BlocksRendererClient
-            content={webinar.bodyContent}
-            imageStyle={{
-              height: 'auto',
-              width: '100%',
-              maxWidth: '820px',
-            }}
-          />
+          <BlocksRendererClient content={webinar.bodyContent} />
         </EContainer>
       ) : null,
     [webinar.bodyContent]
@@ -111,7 +104,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         <EContainer>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...webinarPageToBreadcrumbs([
+              ...pageToBreadcrumbs('webinars', [
                 {
                   name: webinar.title,
                   path: webinar.slug,

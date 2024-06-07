@@ -6,6 +6,16 @@ import { appIoBannerLinks } from '@/_contents/appIo/bannerLinks';
 
 export const appIoTutorials: readonly Tutorial[] = [
   {
+    title: 'Come utilizzare correttamente servizi e messaggi in app IO',
+    path: `${appIoTutorialListsPath.path}/come-utilizzare-correttamente-servizi-e-messaggi-in-app-io`,
+    name: 'Come utilizzare correttamente servizi e messaggi in app IO',
+    image: {
+      url: '/images/app-io-messaggi.png',
+      alternativeText: 'Immagine: Servizi e messaggi in app IO',
+    },
+    showInOverview: true,
+  },
+  {
     title: 'Quali sono i possibili accordi di adesione all’app IO',
     path: `${appIoTutorialListsPath.path}/quale-accordo-di-adesione-scegliere`,
     name: 'Quale accordo di adesione scegliere',
@@ -35,7 +45,7 @@ export const appIoTutorials: readonly Tutorial[] = [
       alternativeText:
         'Immagine: Come sapere se un cittadino può ricevere messaggi da un servizio',
     },
-    showInOverview: true,
+    showInOverview: false,
   },
   {
     title: 'Come spedire un avviso di pagamento in un messaggio',
