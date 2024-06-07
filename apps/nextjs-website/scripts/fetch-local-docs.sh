@@ -10,4 +10,4 @@ cd ..
 # remove old docs if any
 rm -r -f docs/*
 # copy all necessary files to the docs folder
-cp .tmp-docs/docs/* docs/ -r
+cp -r .tmp-docs/docs/* docs/
