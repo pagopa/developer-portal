@@ -14,10 +14,19 @@ Before you start, make sure you have complete the following steps:
 ``` bash
 # install dependencies
 npm i
-
-# Download the static documentation that come from GitBook. It may take a while.
-npm run download-docs -w nextjs-website
 ```
+
+### Download the static documentation that come from GitBook. It may take a while.
+
+You have 2 ways of accomplish it, the first one consists in downloading the whole docs as zip, using 
+`npm run download-docs -w nextjs-website`  
+
+Or you can initialize a git submoudule on docs directory:  
+`rm -R apps/nextjs-website/docs && git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/docs`  
+
+Run the script to checkout docs to the right branch
+`npm run update-docs -w nextjs-website` 
+
 
 Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
