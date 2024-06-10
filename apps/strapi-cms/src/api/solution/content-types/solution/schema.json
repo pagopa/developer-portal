@@ -64,7 +64,7 @@
       },
       "type": "text"
     },
-    "step": {
+    "steps": {
       "displayName": "SolutionStep",
       "type": "component",
       "repeatable": true,
