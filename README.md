@@ -32,6 +32,21 @@ Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 - in the `strapi-cms` app (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
+### docker and windows setup
+
+Due to the use of turbo it is difficult to dockerize this project, but to allow developer to use it on windows machines as well you can run a development docker-compose file to run everything needed
+
+steps 
+``` bash
+docker-compose build app
+docker-compose run app bash # this will open a shell on the container
+```
+now run every step of the local setup (download docs, etc)
+
+once this is done boot up the environment with 
+`docker-compose up`
+
+
 ### Run the developer portal locally
 
 Run the following command from the root folder.
