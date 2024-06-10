@@ -32,7 +32,6 @@ export async function generateMetadata({
 
 const Page = async ({ params }: { params: Params }) => {
   const solution = await getSolution(params?.solutionSlug);
-  console.log('aaaaaaaaaaaaaa', solution.steps);
 
   return <SolutionPageTemplate {...solution} />;
 };
