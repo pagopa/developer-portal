@@ -3,6 +3,7 @@ import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
@@ -28,21 +29,20 @@ export type HomepageProps = {
       } | null;
     }[];
   };
-  readonly productsShowcase: {
+  readonly ecosystem: {
     readonly title: string;
-    readonly products: readonly {
-      readonly name: string;
-      readonly description: string | null;
-      readonly slug: string;
-      readonly logo: {
-        readonly name: string;
-        readonly width: number;
-        readonly height: number;
-        readonly ext: string;
-        readonly mime: string;
-        readonly url: string;
+    readonly productsTabName: string;
+    readonly products: CardsGridProps['cards'];
+    readonly solutionsTabName: string;
+    readonly solutions: CardsGridProps['cards'];
+    readonly solutionsCta?: {
+      readonly variant?: 'text' | 'contained' | 'outlined';
+      readonly link: {
+        readonly href: string;
+        readonly text: string;
+        readonly target?: '_self' | '_blank' | '_parent' | '_top';
       };
-    }[];
+    };
   };
   readonly comingsoonDocumentation: {
     readonly title: string;
@@ -86,16 +86,30 @@ export const makeHomepageProps = (
       ),
     },
   }),
-  productsShowcase: {
-    title: strapiHomepage.data.attributes.productsShowcase.title,
-    products: strapiHomepage.data.attributes.productsShowcase.products.data.map(
+  ecosystem: {
+    title: strapiHomepage.data.attributes.ecosystem.title,
+    productsTabName: strapiHomepage.data.attributes.ecosystem.productsTabName,
+    products: strapiHomepage.data.attributes.ecosystem.products.data.map(
       (product) => ({
-        name: product.attributes.name,
-        description: product.attributes.description,
-        slug: product.attributes.slug,
-        logo: product.attributes.logo.data.attributes,
+        title: product.attributes.name,
+        text: product.attributes.description ?? '',
+        href: product.attributes.slug,
+        icon: product.attributes.logo.data.attributes.url,
       })
     ),
+    solutionsTabName: strapiHomepage.data.attributes.ecosystem.solutionsTabName,
+    solutions: strapiHomepage.data.attributes.ecosystem.solutions.data.map(
+      (solution) => ({
+        title: solution.attributes.title,
+        text: solution.attributes.description ?? '',
+        href: solution.attributes.slug,
+        icon: solution.attributes.icon.data.attributes.url,
+      })
+    ),
+    solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
+      variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
+      link: strapiHomepage.data.attributes.ecosystem.solutionsCta.link,
+    },
   },
   webinars: [
     ...webinars.filter((webinar) => webinar.isVisibleInHome),
@@ -117,7 +131,7 @@ export const makeHomepagePropsFromStatic = (
 ): HomepageProps => ({
   hero: staticHomepage.heroItems,
   newsShowcase: staticHomepage.newsShowcase,
-  productsShowcase: staticHomepage.productsShowcase,
+  ecosystem: staticHomepage.ecosystem,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
   webinars: webinars.filter((webinar) => webinar.isVisibleInHome),
 });

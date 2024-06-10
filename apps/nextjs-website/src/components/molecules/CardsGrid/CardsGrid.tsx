@@ -6,13 +6,14 @@ import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
 
-type CardsGridProps = {
+export type CardsGridProps = {
   cardVariant?: 'text' | 'contained' | 'outlined';
   cardSvg?: boolean;
   cardSize?: {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
+  containerPx?: number;
   cards: {
     comingSoon?: boolean;
     title: string;
@@ -29,12 +30,13 @@ const CardsGrid = ({
   cardVariant,
   cardSvg,
   cardSize,
+  containerPx,
 }: CardsGridProps) => {
   const { palette } = useTheme();
   const t = useTranslations('shared');
 
   return (
-    <EContainer>
+    <EContainer px={containerPx} containerSx={{ px: containerPx }}>
       <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(
