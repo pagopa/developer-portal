@@ -39,7 +39,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
       aws_bucket_endpoint        = "https://s3.${var.aws_region}.amazonaws.com"
       repo_owner                 = "pagopa"
       repo_name                  = "developer-portal"
-      workflow_id                = "deploy_website.yaml"
+      workflow_id                = var.environment == "prod" ? "deploy_website_content.yaml" : "deploy_website.yaml"
       target_branch              = "main"
       github_pat                 = module.secret_cms_github_pat.ssm_parameter_arn
       log_group                  = module.cms_log_group.cloudwatch_log_group_name
