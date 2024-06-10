@@ -24,16 +24,16 @@ export const fetchFromStrapi = <A, O, I>(
       }) =>
         pipe(
           // handle any promise result
-          TE.tryCatch(() => {
-            console.log(`${strapiEndpoint}/api/${path}/?${populate}`);
-            return fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
-              method: 'GET',
-              cache: 'no-cache',
-              headers: {
-                Authorization: `Bearer ${strapiApiToken}`,
-              },
-            });
-          }, E.toError),
+          TE.tryCatch(
+            () =>
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${strapiApiToken}`,
+                },
+              }),
+            E.toError
+          ),
           TE.chain((response) => {
             if (response.status === 200) {
               return TE.tryCatch(() => response.json(), E.toError);
