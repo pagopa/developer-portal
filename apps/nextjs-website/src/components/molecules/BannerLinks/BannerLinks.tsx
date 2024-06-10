@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import {
   BannerLink,
   BannerLinkProps,
-} from '@/editorialComponents/BannerLink/BannerLink';
+} from '@/components/atoms/BannerLink/BannerLink';
 
 type BannerLinksProps = {
   banners?: readonly BannerLinkProps[];

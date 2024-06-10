@@ -1,7 +1,8 @@
 import { useTheme } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { type CommonProps } from '../types/components';
+import { type CommonProps } from '../../../editorialComponents/types/components';
+import React from 'react';
 
 export interface BannerLinkContentProps extends CommonProps {
   title: string;

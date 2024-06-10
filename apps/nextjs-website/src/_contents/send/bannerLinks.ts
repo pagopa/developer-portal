@@ -1,4 +1,4 @@
-import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 export const sendBannerLinks: readonly BannerLinkProps[] = [
   {
