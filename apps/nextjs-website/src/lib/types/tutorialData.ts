@@ -5,7 +5,7 @@ export type Tutorial = {
   readonly showInOverview?: boolean;
   readonly image: {
     readonly url: string;
-    readonly alternativeText: string;
+    readonly alternativeText?: string;
   };
   readonly title: string;
   readonly publishedAt?: Date;
