@@ -25,7 +25,7 @@ npm run download-docs -w nextjs-website
 
 Or you can initialize a git submoudule on .tmp-docs directory:  
 ```bash
-mkdir -p apps/nextjs-website/.tmp-docs && git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs
+git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs
 ``` 
 and then run the script to checkout docs to the right branch
 ```bash
