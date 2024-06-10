@@ -6,6 +6,7 @@ import { send } from '@/_contents/send/send';
 import { appIo } from '@/_contents/appIo/appIo';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
+import { HomepageProps } from '@/lib/homepage';
 
 export const translations = {
   header: {
@@ -107,10 +108,52 @@ export const translations = {
       ],
     },
     webinarBannerButtonContent: 'Scopri',
-    productsShowcase: {
+    ecosystem: {
       title: 'Scopri il nostro ecosistema',
-      products: [appIo, ioSign, pagoPa, send],
-    },
+      productsTabName: 'Per prodotti',
+      products: [
+        {
+          title: appIo.name,
+          text: appIo.description,
+          href: appIo.slug,
+          icon: appIo.logo.url,
+        },
+        {
+          title: ioSign.name,
+          text: ioSign.description,
+          href: ioSign.slug,
+          icon: ioSign.logo.url,
+        },
+        {
+          title: pagoPa.name,
+          text: pagoPa.description,
+          href: pagoPa.slug,
+          icon: pagoPa.logo.url,
+        },
+        {
+          title: send.name,
+          text: send.description,
+          href: send.slug,
+          icon: send.logo.url,
+        },
+      ],
+      solutionsTabName: 'Per soluzioni',
+      solutions: [
+        {
+          title: send.name,
+          text: send.description,
+          href: send.slug,
+          icon: send.logo.url,
+        },
+      ],
+      solutionsCta: {
+        variant: 'text',
+        link: {
+          text: 'Vai a soluzioni',
+          href: '/solutions',
+        },
+      },
+    } as HomepageProps['ecosystem'],
     heroItems: [
       {
         title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',

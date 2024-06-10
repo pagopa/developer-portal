@@ -9,6 +9,7 @@ import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
+import { SolutionCodec } from './codecs/SolutionCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -67,11 +68,17 @@ export const StrapiHomepageCodec = t.strict({
           }),
         }),
       ]),
-      productsShowcase: t.strict({
+      ecosystem: t.strict({
         title: t.string,
+        productsTabName: t.string,
         products: t.strict({
           data: t.array(ProductCodec),
         }),
+        solutionsTabName: t.string,
+        solutions: t.strict({
+          data: t.array(SolutionCodec),
+        }),
+        solutionsCta: t.union([NullToUndefinedCodec, CallToActionCodec]),
       }),
       webinars: t.strict({ data: t.array(WebinarCodec) }),
     }),
@@ -100,6 +107,24 @@ const makeStrapiHomepagePopulate = () =>
           'coverImage.image',
           'relatedLinks.links',
           'webinarSpeakers.avatar',
+        ],
+      },
+      ecosystem: {
+        populate: [
+          'products.logo',
+          'solutions.icon',
+          'solutions.step',
+          'solutions.step.products',
+          'solutions.stats',
+          'solutions.webinars',
+          'solutions.webinars.coverImage.image',
+          'solutions.webinars.relatedLinks.link',
+          'solutions.webinars.webinarSpeakers.avatar',
+          'solutions.bannerLinks',
+          'solutions.bannerLinks.icon',
+          'solutions.products',
+          'solutions.products.logo',
+          'solutionsCta.link',
         ],
       },
     },
