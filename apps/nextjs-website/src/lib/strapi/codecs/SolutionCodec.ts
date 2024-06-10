@@ -14,7 +14,7 @@ export const SolutionCodec = t.strict({
     kickerTitle: t.string,
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
-    step: t.array(SolutionStepCodec),
+    steps: t.array(SolutionStepCodec),
     dirName: t.string,
     landingUseCaseFile: t.string,
     stats: t.array(SolutionStatCodec),

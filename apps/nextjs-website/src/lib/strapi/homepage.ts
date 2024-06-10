@@ -113,8 +113,9 @@ const makeStrapiHomepagePopulate = () =>
         populate: [
           'products.logo',
           'solutions.icon',
-          'solutions.step',
-          'solutions.step.products',
+          'solutions.steps',
+          'solutions.steps.products',
+          'solutions.steps.products.logo',
           'solutions.stats',
           'solutions.webinars',
           'solutions.webinars.coverImage.image',
