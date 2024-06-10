@@ -32,7 +32,8 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           justifyContent={'space-between'}
           alignItems={'center'}
           gap={4}
-          paddingY={8}
+          paddingTop={{ xs: '2.5rem', sm: 12 }}
+          paddingBottom={{ xs: '2.5rem', sm: 13 }}
           width={'100%'}
         >
           {items.map(({ title, subtitle, description }, index) => (
