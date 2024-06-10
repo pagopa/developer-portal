@@ -110,15 +110,15 @@ export async function getStrapiTutorial(
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialsFromCMS = await getTutorialsProps();
+  const tutorialsFromStrapi = await getTutorialsProps();
 
-  const tutorialFromCMS = tutorialsFromCMS.find(
+  const tutorialFromStrapi = tutorialsFromStrapi.find(
     ({ path }) => path === tutorialPath
   );
 
-  return tutorialFromCMS
+  return tutorialFromStrapi
     ? {
-        ...tutorialFromCMS,
+        ...tutorialFromStrapi,
         product: products.find(({ slug }) => slug === productSlug),
       }
     : undefined;
