@@ -26,15 +26,15 @@
       },
       "component": "common.news-showcase"
     },
-    "productsShowcase": {
+    "ecosystem": {
       "type": "component",
       "repeatable": false,
-      "component": "products.products-showcase",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "component": "common.ecosysyem"
     },
     "comingsoonDocumentation": {
       "type": "component",
