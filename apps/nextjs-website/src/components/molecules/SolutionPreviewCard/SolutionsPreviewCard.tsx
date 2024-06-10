@@ -43,6 +43,7 @@ const SolutionPreviewCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        width: '100%',
         justifyContent: 'space-between',
         height: '100%',
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
