@@ -4,32 +4,23 @@ import SolutionsShowcase from '@/components/organisms/SolutionsShowcase/Solution
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import Hero from '@/editorialComponents/Hero/Hero';
+import { Media } from '@/lib/types/media';
 import { useTranslations } from 'next-intl';
 
-type SolutionsTemplateProps = {
+export type SolutionsTemplateProps = {
   readonly hero: {
-    readonly backgroundImage: string;
-    readonly altText: string;
+    readonly backgroundImage?: string;
+    readonly altText?: string;
     readonly title: string;
     readonly subtitle: string;
   };
-  readonly solutionsShowcase: {
-    readonly title?: string;
-    readonly solutions: readonly {
-      readonly name: string;
-      readonly description: string | null;
-      readonly slug: string;
-      readonly tags?: { readonly label: string; readonly path?: string }[];
-      readonly logo: {
-        readonly name: string;
-        readonly width: number;
-        readonly height: number;
-        readonly ext: string;
-        readonly mime: string;
-        readonly url: string;
-      };
-    }[];
-  };
+  readonly solutions: readonly {
+    readonly name: string;
+    readonly description?: string;
+    readonly slug: string;
+    readonly tags?: { readonly label: string; readonly path?: string }[];
+    readonly logo: Media;
+  }[];
   readonly feature: {
     readonly title: string;
     readonly subtitle?: string;
@@ -37,12 +28,12 @@ type SolutionsTemplateProps = {
   };
   readonly successStories: {
     readonly title: string;
-    readonly subtitle: string;
+    readonly subtitle?: string;
     readonly stories: {
       readonly title: string;
       readonly publishedAt?: Date;
       readonly path: string;
-      readonly image: {
+      readonly image?: {
         readonly url: string;
         readonly alternativeText?: string;
       };
@@ -52,7 +43,7 @@ type SolutionsTemplateProps = {
 
 const SolutionsTemplate = ({
   hero,
-  solutionsShowcase,
+  solutions,
   feature,
   successStories,
 }: SolutionsTemplateProps) => {
@@ -72,10 +63,10 @@ const SolutionsTemplate = ({
         theme='light'
         gridTextSx={{ marginTop: { xs: '62px', md: '77px' } }}
       />
-      {solutionsShowcase && (
+      {solutions && solutions.length > 0 && (
         <SolutionsShowcase
           py={4}
-          cards={solutionsShowcase.solutions.map((solution) => ({
+          cards={solutions.map((solution) => ({
             title: solution.name,
             text: solution.description || '',
             href: `/solutions/${solution.slug}`,

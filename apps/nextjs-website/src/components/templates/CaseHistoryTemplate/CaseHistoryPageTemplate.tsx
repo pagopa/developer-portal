@@ -9,10 +9,12 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Media } from '@/lib/types/media';
 
 export type CaseHistoryPageTemplateProps = {
   slug: string;
   title: string;
+  image?: Media;
   description?: string;
   products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];
