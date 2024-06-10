@@ -5,7 +5,7 @@ import { fetchFromStrapi } from './fetchFromStrapi';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { PaginationCodec } from './codecs/PaginationCodec';
-import { ProductCodec } from './codecs/ProductCodec';
+import { BaseProductCodec, ProductCodec } from './codecs/ProductCodec';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { BannerLinkCodec } from './codecs/BannerLinkCodec';
 import { WebinarCodec } from './webinars';
@@ -14,7 +14,7 @@ const StepCodec = t.strict({
   title: t.string,
   content: BlocksContentCodec,
   products: t.strict({
-    data: t.array(ProductCodec),
+    data: t.array(BaseProductCodec),
   }),
 });
 

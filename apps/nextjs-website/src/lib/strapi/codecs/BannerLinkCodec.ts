@@ -7,5 +7,5 @@ export const BannerLinkCodec = t.strict({
   id: t.number,
   title: t.union([NullToUndefinedCodec, t.string]),
   body: t.union([NullToUndefinedCodec, BlocksContentCodec]),
-  icon: t.union([NullToUndefinedCodec, MediaCodec]),
+  icon: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
 });
