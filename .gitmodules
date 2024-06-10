@@ -1,0 +1,3 @@
+[submodule "apps/nextjs-website/docs"]
+	path = apps/nextjs-website/docs
+	url = https://github.com/pagopa/devportal-docs.git
