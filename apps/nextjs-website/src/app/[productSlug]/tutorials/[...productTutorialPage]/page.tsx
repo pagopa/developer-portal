@@ -8,7 +8,7 @@ import {
 } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import {
   gitBookPagesWithTitle,
   spaceToPrefixMap,
@@ -27,6 +27,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import BlocksRendererMenu from '@/components/molecules/BlocksRendererMenu/BlocksRendererMenu';
 
 type Params = {
   productSlug: string;
@@ -87,24 +88,41 @@ const Page = async ({ params }: { params: Params }) => {
 
   if (strapiTutorialProps) {
     return (
-      <ProductLayout
-        product={strapiTutorialProps.product}
-        path={strapiTutorialProps.path}
-        // bannerLinks={strapiTutorialProps.bannerLinks} // TODO: refactor bannerLinks
-      >
+<ProductLayout
+  product={strapiTutorialProps.product}
+  path={strapiTutorialProps.path}
+>
+  <FragmentProvider>
+    <Grid container>
+      <Grid item xs={12} lg={8}>
         <Box mt={5}>
           {strapiTutorialProps.title && (
             <Abstract title={strapiTutorialProps.title} />
           )}
           <BlocksRendererClient content={strapiTutorialProps.content} />
         </Box>
-        {strapiTutorialProps.relatedLinks && (
-          <RelatedLinks
-            title={strapiTutorialProps.relatedLinks?.title}
-            links={strapiTutorialProps.relatedLinks?.links ?? []}
-          />
-        )}
-      </ProductLayout>
+      </Grid>
+      <Grid item xs={false} lg={4}>
+        <Box
+          sx={{
+            position: 'sticky',
+            top: 144,
+            maxWidth: '270px',
+          }}
+        >
+          <BlocksRendererMenu content={strapiTutorialProps.content} title={strapiTutorialProps.title} />
+        </Box>
+      </Grid>
+    </Grid>
+  </FragmentProvider>
+
+  {strapiTutorialProps.relatedLinks && (
+    <RelatedLinks
+      title={strapiTutorialProps.relatedLinks?.title}
+      links={strapiTutorialProps.relatedLinks?.links ?? []}
+    />
+  )}
+</ProductLayout>
     );
   }
 

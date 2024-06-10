@@ -3,6 +3,7 @@
 import { Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
+import { ReactNode } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -47,7 +48,7 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor}>
+          <Typography marginY={4} variant={`h${level}`} color={textColor} id={computeId(children)}>
             {children}
           </Typography>
         ),
@@ -55,5 +56,24 @@ const BlocksRendererClient = ({
     />
   );
 };
+
+export function computeId(children: ReactNode): string {
+
+  if(!Array.isArray(children)) {
+    console.log(children);
+
+    // if children is react element and has props text return that
+    if(children.props?.text) {
+      return children.props.text;
+    }
+
+    return children?.toString() ?? '';
+  }
+
+  return children.map((child: ReactNode) => { 
+    return computeId(child);
+  }).join('');
+
+}
 
 export default BlocksRendererClient;
