@@ -22,13 +22,14 @@ export function mockTextBlock(args?: {
   type?: 'paragraph' | 'heading';
   text?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  wordCount?: number;
 }): BlocksContent[0] {
   let content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
       {
         type: 'text',
-        text: args?.text || mockText(),
+        text: args?.text || mockText(args?.wordCount),
       },
     ],
   };
@@ -40,18 +41,20 @@ export function mockTextBlock(args?: {
 
 const DEFAUTL_IMAGE_URL = 'https://dev.developer.pagopa.it/images/webinars.png';
 
-export function mockImageBlock(
-  url: string = DEFAUTL_IMAGE_URL
+export function mockImageBlock(args?:{
+  url?: string,
+  width?: number,
+  height?: number}
 ): BlocksContent[0] {
   return {
     type: 'image',
     image: {
       name: 'a-image.jpg',
       alternativeText: 'a-image.jpg',
-      url,
+      url: args?.url || DEFAUTL_IMAGE_URL,
       caption: null,
-      width: 728,
-      height: 416,
+      width: args?.width || 728,
+      height: args?.height || 416,
       formats: {
         thumbnail: {
           name: 'thumbnail_a-image.jpg',
