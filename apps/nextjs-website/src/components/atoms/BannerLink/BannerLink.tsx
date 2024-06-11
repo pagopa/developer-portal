@@ -37,26 +37,22 @@ export const BannerLink = (props: BannerLinkProps) => {
           />
           ),
           paragraph: ({ children }) => (
-            <Typography variant='body2' color={textColor}>
+            <Typography variant='body2' color={textColor} style={{marginBottom: '8px'}} textAlign={'center'}>
               {children}
             </Typography>
           ),
           heading: ({ children, level }) => (
-            <Typography variant={`h${level}`} color={textColor}>
+            <Typography variant={`h${level}`} color={textColor} style={{marginBottom: '8px'}} textAlign={'center'}>
               {children}
             </Typography>
           ),
           list: ({ children }) => {
             return (
+                    <Typography variant='body2' color={textColor} textAlign={'center'} maxWidth={448}>
               <ul>
-                
-                  <li >
-                    <Typography variant='body2' color={textColor}>
                       {children}
+                      </ul>
                     </Typography>
-                  </li>
-                
-              </ul>
             );
           }
         }}
