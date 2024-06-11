@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 0.10.0
+
+### Minor Changes
+
+- 75c2a06: Update solution steps attribute
+- 004b483: Add tutorials Strapi side
+
 ## 0.9.1
 
 ### Patch Changes
