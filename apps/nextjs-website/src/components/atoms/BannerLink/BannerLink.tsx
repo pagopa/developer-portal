@@ -6,7 +6,7 @@ import IconWrapper from '../IconWrapper/IconWrapper';
 export type BannerLinkProps = {
   content?: BlocksContent;
   title: string;
-  icon: string; //forse è un'image
+  icon: string;
   theme: 'light' | 'dark';
 };
 
