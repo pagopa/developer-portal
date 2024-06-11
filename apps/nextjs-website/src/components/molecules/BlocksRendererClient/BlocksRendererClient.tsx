@@ -48,7 +48,12 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor} id={computeId(children)}>
+          <Typography
+            marginY={4}
+            variant={`h${level}`}
+            color={textColor}
+            id={computeId(children)}
+          >
             {children}
           </Typography>
         ),
@@ -58,22 +63,20 @@ const BlocksRendererClient = ({
 };
 
 export function computeId(children: ReactNode): string {
-
-  if(!Array.isArray(children)) {
-    console.log(children);
-
+  if (!Array.isArray(children)) {
     // if children is react element and has props text return that
-    if(children.props?.text) {
-      return children.props.text;
+    if (children && typeof children === 'object' && 'props' in children) {
+      const text = children.props.text;
     }
 
     return children?.toString() ?? '';
   }
 
-  return children.map((child: ReactNode) => { 
-    return computeId(child);
-  }).join('');
-
+  return children
+    .map((child: ReactNode) => {
+      return computeId(child);
+    })
+    .join('');
 }
 
 export default BlocksRendererClient;

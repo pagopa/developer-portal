@@ -15,7 +15,7 @@ const BlocksRendererMenu = ({
   readonly content?: BlocksContent;
   color?: 'contrastText' | 'main' | 'light' | 'dark';
   imageStyle?: React.CSSProperties;
-  title: string
+  title: string;
 }) => {
   const { palette } = useTheme();
 
@@ -23,42 +23,37 @@ const BlocksRendererMenu = ({
 
   const textColor = color ? palette.primary[color] : palette.text.primary;
 
-  return (      
-  <div style={{display: 'flex', flexDirection: 'column'}}>
-    <Typography
-      color={palette.text.secondary}
-      fontSize={14}
-      fontWeight={700}
-      textTransform={'uppercase'}
-      marginBottom={'18px'}
-    >
-      {title}
-    </Typography>
-    <BlocksRenderer
-      content={content}
-      blocks={{
-        image: ({ image }) => (
-          null
-        ),
-        paragraph: ({ children }) => (
-          null
-        ),
-        heading: ({ children, level }) => (
-          level == 3 || level == 2 ?
-          <a href={`#${computeId(children)}`}>
-            <Typography marginY={4}  color={textColor} id={computeId(children)}>
-              {children}
-            </Typography>
-          </a> : null
-        ),
-      }}
-    />
-    
-  </div>
-    
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Typography
+        color={palette.text.secondary}
+        fontSize={14}
+        fontWeight={700}
+        textTransform={'uppercase'}
+        marginBottom={'18px'}
+      >
+        {title}
+      </Typography>
+      <BlocksRenderer
+        content={content}
+        blocks={{
+          image: ({ image }) => null,
+          paragraph: ({ children }) => null,
+          heading: ({ children, level }) =>
+            level == 3 || level == 2 ? (
+              <a
+                href={`#${computeId(children)}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <Typography color={textColor} id={computeId(children)}>
+                  {children}
+                </Typography>
+              </a>
+            ) : null,
+        }}
+      />
+    </div>
   );
 };
-
-
 
 export default BlocksRendererMenu;

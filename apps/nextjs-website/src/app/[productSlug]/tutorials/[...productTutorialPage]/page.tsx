@@ -88,41 +88,51 @@ const Page = async ({ params }: { params: Params }) => {
 
   if (strapiTutorialProps) {
     return (
-<ProductLayout
-  product={strapiTutorialProps.product}
-  path={strapiTutorialProps.path}
->
-  <FragmentProvider>
-    <Grid container>
-      <Grid item xs={12} lg={8}>
-        <Box mt={5}>
-          {strapiTutorialProps.title && (
-            <Abstract title={strapiTutorialProps.title} />
-          )}
-          <BlocksRendererClient content={strapiTutorialProps.content} />
-        </Box>
-      </Grid>
-      <Grid item xs={false} lg={4}>
+      <ProductLayout
+        product={strapiTutorialProps.product}
+        path={strapiTutorialProps.path}
+      >
         <Box
           sx={{
-            position: 'sticky',
-            top: 144,
-            maxWidth: '270px',
+            maxWidth: '1156px',
+            // 80px is the height of the product header
+            marginTop: '80px',
+            marginX: 'auto',
+            paddingTop: 3,
           }}
         >
-          <BlocksRendererMenu content={strapiTutorialProps.content} title={strapiTutorialProps.title} />
+          <FragmentProvider>
+            <Grid container>
+              <Grid item xs={12} lg={8}>
+                <Box mt={1}>
+                  <BlocksRendererClient content={strapiTutorialProps.content} />
+                </Box>
+              </Grid>
+              <Grid item xs={false} lg={4}>
+                <Box
+                  sx={{
+                    position: 'sticky',
+                    top: 200,
+                    maxWidth: '270px',
+                  }}
+                >
+                  <BlocksRendererMenu
+                    content={strapiTutorialProps.content}
+                    title={translations.productGuidePage.onThisPage}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </FragmentProvider>
         </Box>
-      </Grid>
-    </Grid>
-  </FragmentProvider>
 
-  {strapiTutorialProps.relatedLinks && (
-    <RelatedLinks
-      title={strapiTutorialProps.relatedLinks?.title}
-      links={strapiTutorialProps.relatedLinks?.links ?? []}
-    />
-  )}
-</ProductLayout>
+        {strapiTutorialProps.relatedLinks && (
+          <RelatedLinks
+            title={strapiTutorialProps.relatedLinks?.title}
+            links={strapiTutorialProps.relatedLinks?.links ?? []}
+          />
+        )}
+      </ProductLayout>
     );
   }
 
