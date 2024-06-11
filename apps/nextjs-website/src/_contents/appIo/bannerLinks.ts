@@ -1,16 +1,39 @@
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import {
+  mockTextBlock,
+  mockImageBlock,
+} from '@/../../apps/storybook-app/stories/mock-content.helper';
 
 export const appIoBannerLinks: readonly BannerLinkProps[] = [
   {
     theme: 'dark',
-    title: 'Hai bisogno di aiuto?',
-    decoration: 'HeadsetMic',
-    body: 'Scrivi un’email in cui descrivi il tuo problema o dubbio all’indirizzo <a href="mailto:onboarding@io.italia.it">onboarding@io.italia.it</a>',
+    icon: 'HeadsetMic',
+    content: [
+      { ...mockTextBlock({ type: 'heading', text: 'Hai bisogno di aiuto?' }) },
+      {
+        ...mockTextBlock({
+          type: 'paragraph',
+          text: 'Scrivi un’email in cui descrivi il tuo problema o dubbio all’indirizzo',
+        }),
+      },
+    ],
   },
   {
     theme: 'light',
-    title: 'Dicci cosa ne pensi',
-    decoration: 'Feedback',
-    body: 'Per segnalare problemi o dare feedback, lascia un commento nello <a href="https://github.com/pagopa/io-app/issues/new/choose">spazio Github</a> dell’app IO',
+    icon: 'Feedback',
+    content: [
+      {
+        ...mockTextBlock({
+          type: 'heading',
+          text: 'Dicci cosa ne pensi',
+        }),
+      },
+      {
+        ...mockTextBlock({
+          type: 'paragraph',
+          text: 'Per segnalare problemi o dare feedback, lascia un commento nello <a href="https://github.com/pagopa/io-app/issues/new/choose">spazio Github</a> dell’app IO',
+        }),
+      },
+    ],
   },
 ];

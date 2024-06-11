@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { BannerLink } from '../../../nextjs-website/src/components/atoms/BannerLink/BannerLink';
-import { mockTextBlock, mockImageBlock } from '../mock-content.helper';
+import { mockTextBlock, mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof BannerLink> = {
   title: 'Atoms/BannerLink',
@@ -13,9 +13,9 @@ export default meta;
 export const Showcase: StoryObj<typeof BannerLink> = {
   args: {
     theme: 'light',
+    icon: 'HeadsetMic',
+    title: 'Titolo',
     content: [
-      {...mockImageBlock({url: 'https://dev.developer.pagopa.it/icons/pagoPa.png', width: 60, height: 60})},
-      {...mockTextBlock({type: 'heading', wordCount: 3})},
       {...mockTextBlock({type: 'paragraph', wordCount: 10})},
       {
         'type': 'list',

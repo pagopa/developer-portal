@@ -19,13 +19,13 @@ const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
       width: '100%',
     }}
   >
-    {banners?.map((banner) => (
+    {banners?.map((banner, index) => (
       <BannerLink
-        key={banner.title}
+        key={index}
         title={banner.title}
+        icon={banner.icon}
+        content={banner.content}
         theme={banner.theme}
-        body={banner.body}
-        decoration={banner.decoration}
       />
     ))}
   </Stack>
