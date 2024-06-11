@@ -6,7 +6,7 @@ import IconWrapper from '../IconWrapper/IconWrapper';
 export type BannerLinkProps = {
   content?: BlocksContent;
   title: string;
-  icon: string;
+  icon: string | object;
   theme: 'light' | 'dark';
 };
 
@@ -17,6 +17,9 @@ export const BannerLink = (props: BannerLinkProps) => {
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
 
+  const jsonIcon = JSON.stringify(icon)
+    .split('"')
+    .find((word) => word.startsWith('http'));
   if (!content) return null;
   const textColor = palette.primary.contrastText;
   return (
@@ -29,7 +32,12 @@ export const BannerLink = (props: BannerLinkProps) => {
           padding: { md: '64px 80px', xs: '32px 24px' },
         }}
       >
-        <IconWrapper icon={icon} color={textColor} size={60} />
+        <IconWrapper
+          icon={typeof icon === 'string' ? icon : jsonIcon ? jsonIcon : ''}
+          isSvg={typeof icon !== 'string'}
+          color={textColor}
+          size={60}
+        />
         <Typography
           variant={`h5`}
           color={textColor}

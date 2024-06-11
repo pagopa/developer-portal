@@ -13,7 +13,28 @@ export default meta;
 export const Showcase: StoryObj<typeof BannerLink> = {
   args: {
     theme: 'light',
-    icon: 'HeadsetMic',
+    icon: {
+      "data": {
+"id": 3,
+"attributes": {
+"name": "HeadsetMic.svg",
+"alternativeText": null,
+"caption": null,
+"width": 46,
+"height": 56,
+"formats": null,
+"hash": "Headset_Mic_b52813c3e1",
+"ext": ".svg",
+"mime": "image/svg+xml",
+"size": 0.36,
+"url": "http://localhost:1337/uploads/Headset_Mic_b52813c3e1.svg",
+"previewUrl": null,
+"provider": "strapi-provider-upload-custom",
+"provider_metadata": null,
+"createdAt": "2024-06-11T16:34:18.514Z",
+"updatedAt": "2024-06-11T16:34:18.514Z"
+}
+}},
     title: 'Titolo',
     content: [
       {...mockTextBlock({type: 'paragraph', wordCount: 10})},

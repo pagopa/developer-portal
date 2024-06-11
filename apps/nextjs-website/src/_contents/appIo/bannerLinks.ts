@@ -1,5 +1,8 @@
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { mockTextBlock } from '@/../../apps/storybook-app/stories/mock-content.helper';
+import {
+  mockTextBlock,
+  mockUrlBlock,
+} from '@/../../apps/storybook-app/stories/mock-content.helper';
 
 export const appIoBannerLinks: readonly BannerLinkProps[] = [
   {
@@ -22,7 +25,19 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
       {
         ...mockTextBlock({
           type: 'paragraph',
-          text: 'Per segnalare problemi o dare feedback, lascia un commento nello <a href="https://github.com/pagopa/io-app/issues/new/choose">spazio Github</a> dell’app IO',
+          text: 'Per segnalare problemi o dare feedback, lascia un commento nello',
+        }),
+      },
+      {
+        ...mockUrlBlock({
+          url: 'https://github.com/pagopa/io-app/issues/new/choose',
+          text: 'spazio Github',
+        }),
+      },
+      {
+        ...mockTextBlock({
+          type: 'paragraph',
+          text: 'dell’app IO',
         }),
       },
     ],

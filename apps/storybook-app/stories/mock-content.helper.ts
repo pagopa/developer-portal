@@ -18,6 +18,22 @@ export function mockText(wordCount?: number): string {
   return result.slice(0, count).join(' ');
 }
 
+export function mockUrlBlock(args?: {
+  text?: string;
+  url?: string;
+  wordCount?: number;
+}): BlocksContent[0] {
+  let content: Partial<BlocksContent[0]> = {
+    type: 'link',
+    url: args?.url,
+    children: [{
+      type: 'text',
+      text: args?.text || mockText(args?.wordCount)
+    },],
+  };
+  return content as BlocksContent[0];
+}
+
 export function mockTextBlock(args?: {
   type?: 'paragraph' | 'heading';
   text?: string;
