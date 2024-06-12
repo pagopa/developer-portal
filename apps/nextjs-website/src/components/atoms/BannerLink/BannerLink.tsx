@@ -7,7 +7,7 @@ import { ICON_MAP } from '../IconWrapper/IconMap';
 export type BannerLinkProps = {
   content?: BlocksContent;
   title: string;
-  icon: string;
+  icon: string; //MEDIACODEC and string (mui)
   theme: 'light' | 'dark';
 };
 
@@ -15,14 +15,12 @@ export const BannerLink = (props: BannerLinkProps) => {
   const { theme, content, icon, title } = props;
   const { palette } = useTheme();
 
-  type IconName = keyof typeof ICON_MAP;
+  if (!content) return null;
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
+  type IconName = keyof typeof ICON_MAP;
   const Icon = icon && ICON_MAP[icon as IconName];
-  const jsonIcon = JSON.parse(icon);
-  const iconUrl = jsonIcon.data.attributes.url;
-  //todo Update this part without using object
-  if (!content) return null;
+  const jsonIcon = Icon ? '' : JSON.parse(icon);
   const textColor = palette.primary.contrastText;
   return (
     <Box
@@ -31,24 +29,21 @@ export const BannerLink = (props: BannerLinkProps) => {
       sx={{ width: '100%', direction: 'column' }}
       style={{
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
-        alignContent: 'center',
         textAlign: 'center',
-        alignmentBaseline: 'central',
       }}
     >
       <Stack
         spacing={'8px'}
         sx={{
-          width: '448px',
-          padding: { md: '64px 0px', xs: '32px 24px' },
+          maxWidth: '448px',
+          padding: { xs: '40px 32px', md: '64px 0px' },
         }}
       >
         <div style={{ marginBottom: '26px' }}>
           <IconWrapper
-            icon={Icon ? icon : iconUrl ? iconUrl : ''}
-            isSvg={Icon !== null}
+            icon={Icon ? icon : jsonIcon ? jsonIcon.data.attributes.url : ''}
+            isSvg={!!jsonIcon}
             color={textColor}
             size={60}
           />
