@@ -34,7 +34,7 @@ const makeStrapiSolutionsListPopulate = () =>
       },
       caseHistories: {
         populate: {
-          case_histories: ['image'],
+          case_histories: '*',
         },
       },
     },
