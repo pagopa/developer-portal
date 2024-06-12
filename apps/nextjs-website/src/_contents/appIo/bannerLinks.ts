@@ -1,8 +1,4 @@
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import {
-  mockTextBlock,
-  mockUrlBlock,
-} from '@/../../apps/storybook-app/stories/mock-content.helper';
 
 export const appIoBannerLinks: readonly BannerLinkProps[] = [
   {
@@ -10,10 +6,23 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
     icon: 'HeadsetMic',
     content: [
       {
-        ...mockTextBlock({
-          type: 'paragraph',
-          text: 'Scrivi un’email in cui descrivi il tuo problema o dubbio all’indirizzo',
-        }),
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'Scrivi un’email in cui descrivi il tuo problema o dubbio all’indirizzo ',
+          },
+          {
+            type: 'link',
+            url: 'mailto:onboarding@io.italia.it',
+            children: [
+              {
+                type: 'text',
+                text: 'onboarding@io.italia.it',
+              },
+            ],
+          },
+        ],
       },
     ],
     title: 'Hai bisogno di aiuto?',
@@ -23,22 +32,42 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
     icon: 'Feedback',
     content: [
       {
-        ...mockTextBlock({
-          type: 'paragraph',
-          text: 'Per segnalare problemi o dare feedback, lascia un commento nello',
-        }),
-      },
-      {
-        ...mockUrlBlock({
-          url: 'https://github.com/pagopa/io-app/issues/new/choose',
-          text: 'spazio Github',
-        }),
-      },
-      {
-        ...mockTextBlock({
-          type: 'paragraph',
-          text: 'dell’app IO',
-        }),
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'Per segnalare problemi o dare feedback, lascia un commento nello ',
+          },
+          {
+            type: 'link',
+            url: 'https://github.com/pagopa/io-app/issues/new/choose',
+            children: [
+              {
+                type: 'text',
+                text: 'spazio Github',
+                bold: true,
+              },
+            ],
+          },
+          {
+            type: 'text',
+            text: " dell'app IO",
+          },
+          {
+            type: 'link',
+            url: 'https://www.google.com',
+            children: [
+              {
+                type: 'text',
+                text: '',
+              },
+            ],
+          },
+          {
+            text: '',
+            type: 'text',
+          },
+        ],
       },
     ],
     title: 'Dicci cosa ne pensi',

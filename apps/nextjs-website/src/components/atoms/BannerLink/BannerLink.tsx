@@ -17,34 +17,43 @@ export const BannerLink = (props: BannerLinkProps) => {
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
 
+  //todo Update this part without using object
   const jsonIcon = JSON.stringify(icon)
     .split('"')
     .find((word) => word.startsWith('http'));
   if (!content) return null;
   const textColor = palette.primary.contrastText;
   return (
-    <Box bgcolor={backgroundColor} component='section' sx={{ width: '100%' }}>
+    <Box
+      bgcolor={backgroundColor}
+      component='section'
+      sx={{ width: '100%', direction: 'column' }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        textAlign: 'center',
+        alignmentBaseline: 'central',
+      }}
+    >
       <Stack
         spacing={'8px'}
         sx={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: { md: '64px 80px', xs: '32px 24px' },
+          width: '448px',
+          padding: { md: '64px 0px', xs: '32px 24px' },
         }}
       >
-        <IconWrapper
-          icon={typeof icon === 'string' ? icon : jsonIcon ? jsonIcon : ''}
-          isSvg={typeof icon !== 'string'}
-          color={textColor}
-          size={60}
-        />
-        <Typography
-          variant={`h5`}
-          color={textColor}
-          style={{ marginBottom: '8px' }}
-          textAlign={'center'}
-          alignContent={'center'}
-        >
+        <div style={{ marginBottom: '26px' }}>
+          <IconWrapper
+            icon={typeof icon === 'string' ? icon : jsonIcon ? jsonIcon : ''}
+            isSvg={typeof icon !== 'string'}
+            color={textColor}
+            size={60}
+          />
+        </div>
+
+        <Typography variant={`h6`} color={textColor}>
           {title}
         </Typography>
         <BlocksRenderer
@@ -52,9 +61,6 @@ export const BannerLink = (props: BannerLinkProps) => {
           blocks={{
             image: ({ image }) => (
               <Image
-                style={{
-                  marginBottom: '4px',
-                }}
                 src={image.url}
                 width={image.width}
                 height={image.height}
@@ -62,43 +68,35 @@ export const BannerLink = (props: BannerLinkProps) => {
               />
             ),
             paragraph: ({ children }) => (
-              <Typography
-                variant='body2'
-                color={textColor}
-                style={{ marginBottom: '8px' }}
-                textAlign={'center'}
-                alignContent={'center'}
-              >
+              <Typography variant='body2' color={textColor}>
                 {children}
               </Typography>
             ),
             link: ({ children, url }) => (
-              <a href={url}>
+              <a
+                href={url}
+                style={{ color: textColor, textDecorationLine: 'none' }}
+              >
                 <b>{children}</b>
               </a>
             ),
             heading: ({ children, level }) => (
-              <Typography
-                variant={`h${level}`}
-                color={textColor}
-                style={{ marginBottom: '8px' }}
-                textAlign={'center'}
-                alignContent={'center'}
-              >
+              <Typography variant={`h${level}`} color={textColor}>
                 {children}
               </Typography>
             ),
             list: ({ children }) => {
               return (
-                <Typography
-                  variant='body2'
-                  color={textColor}
-                  textAlign={'center'}
-                  maxWidth={'448px'} //sposta nel box
-                  alignContent={'center'}
+                <ul
+                  style={{
+                    listStyleType: 'square',
+                    listStylePosition: 'inside',
+                    color: textColor,
+                    padding: 0,
+                  }}
                 >
-                  <ul style={{ listStyleType: 'square' }}>{children}</ul>
-                </Typography>
+                  {children}
+                </ul>
               );
             },
           }}
