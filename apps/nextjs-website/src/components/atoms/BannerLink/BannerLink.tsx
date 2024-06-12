@@ -2,11 +2,12 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
+import { ICON_MAP } from '../IconWrapper/IconMap';
 
 export type BannerLinkProps = {
   content?: BlocksContent;
   title: string;
-  icon: string | object;
+  icon: string;
   theme: 'light' | 'dark';
 };
 
@@ -14,13 +15,13 @@ export const BannerLink = (props: BannerLinkProps) => {
   const { theme, content, icon, title } = props;
   const { palette } = useTheme();
 
+  type IconName = keyof typeof ICON_MAP;
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
-
+  const Icon = icon && ICON_MAP[icon as IconName];
+  const jsonIcon = JSON.parse(icon);
+  const iconUrl = jsonIcon.data.attributes.url;
   //todo Update this part without using object
-  const jsonIcon = JSON.stringify(icon)
-    .split('"')
-    .find((word) => word.startsWith('http'));
   if (!content) return null;
   const textColor = palette.primary.contrastText;
   return (
@@ -46,8 +47,8 @@ export const BannerLink = (props: BannerLinkProps) => {
       >
         <div style={{ marginBottom: '26px' }}>
           <IconWrapper
-            icon={typeof icon === 'string' ? icon : jsonIcon ? jsonIcon : ''}
-            isSvg={typeof icon !== 'string'}
+            icon={Icon ? icon : iconUrl ? iconUrl : ''}
+            isSvg={Icon !== null}
             color={textColor}
             size={60}
           />
