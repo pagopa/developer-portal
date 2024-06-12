@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { BannerLink } from '../../../nextjs-website/src/components/atoms/BannerLink/BannerLink';
 import { mockTextBlock, mockText } from '../mock-content.helper';
 

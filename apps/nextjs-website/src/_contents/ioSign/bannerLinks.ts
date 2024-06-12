@@ -1,5 +1,4 @@
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { mockTextBlock } from '@/../../apps/storybook-app/stories/mock-content.helper';
 
 export const ioSignBannerLinks: readonly BannerLinkProps[] = [
   {
