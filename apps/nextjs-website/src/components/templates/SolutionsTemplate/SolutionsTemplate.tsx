@@ -26,7 +26,7 @@ export type SolutionsTemplateProps = {
     readonly subtitle?: string;
     readonly items: FeatureItem[];
   };
-  readonly successStories: {
+  readonly successStories?: {
     readonly title: string;
     readonly subtitle?: string;
     readonly stories: {

@@ -6,7 +6,7 @@ export function makeSolutionsProps(
 ): ReadonlyArray<SolutionPageTemplateProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
-    steps: attributes.steps.map((step) => ({
+    steps: attributes.steps?.map((step) => ({
       ...step,
       products: attributes.products.data.map((product) => ({
         name: product.attributes.name,

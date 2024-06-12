@@ -10,13 +10,16 @@ export const StrapiSolutionsListCodec = t.strict({
     attributes: t.strict({
       title: t.string,
       description: t.string,
-      caseHistories: t.strict({
-        title: t.string,
-        description: t.union([NullToUndefinedCodec, t.string]),
-        case_histories: t.strict({
-          data: t.array(CaseHistoryCodec),
+      caseHistories: t.union([
+        NullToUndefinedCodec,
+        t.strict({
+          title: t.string,
+          description: t.union([NullToUndefinedCodec, t.string]),
+          case_histories: t.strict({
+            data: t.array(CaseHistoryCodec),
+          }),
         }),
-      }),
+      ]),
       solutions: t.strict({
         data: t.array(SolutionCodec),
       }),
@@ -28,16 +31,7 @@ export type StrapiSolutionsList = t.TypeOf<typeof StrapiSolutionsListCodec>;
 
 const makeStrapiSolutionsListPopulate = () =>
   qs.stringify({
-    populate: {
-      solutions: {
-        populate: ['icon'],
-      },
-      caseHistories: {
-        populate: {
-          case_histories: '*',
-        },
-      },
-    },
+    populate: 'deep',
   });
 
 export const fetchSolutionsList = fetchFromStrapi(
