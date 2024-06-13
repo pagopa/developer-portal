@@ -14,9 +14,28 @@ Before you start, make sure you have complete the following steps:
 ``` bash
 # install dependencies
 npm i
+```
 
-# Download the static documentation that come from GitBook. It may take a while.
+### Download the static documentation that come from GitBook. It may take a while.
+
+You have 2 ways of accomplish it, the first one consists in downloading the whole docs as zip, using 
+```bash
 npm run download-docs -w nextjs-website
+```
+
+Or you can initialize a git submoudule on .tmp-docs directory:  
+```bash
+git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs
+``` 
+and then run the script to checkout docs to the right branch
+```bash
+npm run update-docs -w nextjs-website
+``` 
+
+#### Update documentation
+You can update the doc by downloading it again or, if you chose the submodule way, by running again the update command:
+```bash
+npm run update-docs -w nextjs-website
 ```
 
 Finally:

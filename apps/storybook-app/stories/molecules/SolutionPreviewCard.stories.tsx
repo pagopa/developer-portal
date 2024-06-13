@@ -1,8 +1,7 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
 import SolutionPreviewCard from '../../../nextjs-website/src/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
-import NextIntlContext from '../../../nextjs-website/src/components/atoms/NextIntlContext/NextIntlContext';
 import React from 'react';
-import messages from '../../../nextjs-website/src/messages/it.json';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof SolutionPreviewCard> = {
   title: 'Molecules/SolutionPreviewCard',
@@ -12,14 +11,9 @@ const meta: Meta<typeof SolutionPreviewCard> = {
 export default meta;
 
 const decorator: Decorator = (story) => (
-  <NextIntlContext           
-    locale={'it'}
-    messages={messages}
-    timeZone='Europe/Rome'>
-      <div style={{ padding: '40px 140px'  }}>
-        {story()}
-      </div>
-  </NextIntlContext>
+  <div style={{ padding: '40px 140px'  }}>
+    {story()}
+  </div>
 );
 
 export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
@@ -54,6 +48,6 @@ export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
       }
     ],
   },
-  decorators: [decorator],
+  decorators: [nextIntlContextDecorator, decorator],
 };
 

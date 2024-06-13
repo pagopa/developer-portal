@@ -13,6 +13,7 @@ type NewsShowcaseProps = {
     href: string;
   };
   marginTop?: number;
+  newsMarginTop?: number;
   items: {
     comingSoon?: boolean;
     title: string;
@@ -34,13 +35,14 @@ const NewsShowcase = ({
   cta,
   marginTop,
   items,
+  newsMarginTop = 2,
 }: NewsShowcaseProps) => {
   const t = useTranslations('shared');
   const coomingSoonLabel = t('comingSoon');
   return (
     <Box marginTop={marginTop}>
       <SectionTitle title={title} subtitle={subtitle} cta={cta} />
-      <Box mt={2}>
+      <Box mt={newsMarginTop}>
         <Newsroom
           items={items.map((item) => ({
             comingSoonLabel: !item.comingSoon ? undefined : coomingSoonLabel,

@@ -259,6 +259,7 @@
     "shared": {
         "comingSoon": "In Arrivo",
         "readTutorial": "Leggi il tutorial",
+        "readStory": "Leggi la storia",
         "moreInfo": "Scopri di più",
         "version": "Versione",
         "copiedTooltip": "Copiato",
@@ -552,11 +553,16 @@
     },
     "breadcrumbs": {
         "home": "DevPortal",
-        "webinars": "Webinar"
+        "webinars": "Webinar",
+        "solutions": "Soluzioni"
     },
     "solution": {
         "steps" : {
             "platforms": "Piattaforme Abilitanti"
-        }
+        },
+        "ctaDetailLabel": "Leggi la guida completa"
+    },
+    "caseHistory": {
+        "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     }
 }

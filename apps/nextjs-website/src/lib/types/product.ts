@@ -2,7 +2,7 @@ import { Path } from '@/lib/types/path';
 
 export type Product = {
   readonly slug: string;
-  readonly description: string;
+  readonly description: string | undefined;
   readonly logo: {
     readonly name: string;
     readonly width: number;

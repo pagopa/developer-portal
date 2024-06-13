@@ -1,0 +1,32 @@
+name: Move Latest Tag to New Commit
+
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  move-latest-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Get commit hash associated with the new tag
+      id: get-commit
+      run: |
+        COMMIT_HASH=$(git rev-list -n 1 $GITHUB_REF_NAME)
+        echo "Commit hash for tag $GITHUB_REF_NAME is $COMMIT_HASH"
+        echo "::set-output name=commit::$COMMIT_HASH"
+    
+    - name: Set up Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Move the latest tag to new tag
+      id: move-latest-tag
+      run: |
+        PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f1)
+        git tag -f $PACKAGE_NAME@latest ${{steps.get-commit.outputs.commit}}
+        git push --tags --force

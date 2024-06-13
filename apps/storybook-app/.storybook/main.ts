@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs';
 import path from 'path';
+import Dotenv from 'dotenv-webpack';
 
 const config: StorybookConfig = {
     stories: ['../**/*.stories.@(js|jsx|ts|tsx)', '../**/*.mdx'],
@@ -26,6 +27,9 @@ const config: StorybookConfig = {
             config.resolve!.alias = {};
         }
         config.resolve!.alias['@'] = path.resolve(__dirname, '../../nextjs-website/src');
+        config.plugins!.push(new Dotenv({
+            path: path.resolve(__dirname, '../../nextjs-website/.env'),
+        }));
         return config;
     },
 };
