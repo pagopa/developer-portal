@@ -101,12 +101,12 @@ runs:
         S3_BUCKET: s3://${{ inputs.bucket }}
       run: |
         # Sync files in the root of the out directory
-        aws s3 sync "$OUT_DIR" "$S3_BUCKET" --exclude "*/*" --delete
+        aws s3 sync "$OUT_DIR" "$S3_BUCKET" --exclude "*/*" --delete --only-show-errors
         # Sync subdirectories in the out directory
         for subdir in "$OUT_DIR"/*/; do
           if [ -d "$subdir" ]; then
             subdir_name=$(basename "$subdir")
-            aws s3 sync "$subdir" "$S3_BUCKET/$subdir_name" --delete &
+            aws s3 sync "$subdir" "$S3_BUCKET/$subdir_name" --delete --only-show-errors &
           fi
         done
         # Wait for all sync operations to complete
