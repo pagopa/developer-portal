@@ -1,25 +1,16 @@
-import ProductLayout, {
-  ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
+import { ProductLayoutProps } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
-import { Box, Stack } from '@mui/material';
 import React from 'react';
-import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
-import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import {
   gitBookPagesWithTitle,
   spaceToPrefixMap,
   urlReplacesMap,
 } from '@/_contents/products';
-import { translations } from '@/_contents/translations';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 
 type Params = {
   productSlug: string;
@@ -33,7 +24,7 @@ export async function generateStaticParams() {
   }));
 }
 
-type ProductGuidePageProps = {
+export type ProductGuidePageProps = {
   product: Product;
   guide: { name: string; path: string };
   version: {
@@ -93,80 +84,7 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
-  return (
-    <ProductLayout
-      product={props.product}
-      path={props.path}
-      bannerLinks={props.bannerLinks}
-    >
-      <FragmentProvider>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
-            margin: '0 auto',
-            maxWidth: '1900px',
-          }}
-        >
-          <GuideMenu
-            menu={props.menu}
-            assetsPrefix={props.bodyConfig.assetsPrefix}
-            linkPrefix={props.pathPrefix}
-            guideName={props.guide.name}
-            versionName={props.version.name}
-            versions={props.versions}
-          />
-          <Stack
-            sx={{
-              margin: `75px auto`,
-              paddingTop: 3,
-              flexGrow: { lg: 1 },
-              maxWidth: {
-                xs: '100%',
-                lg: '1008px',
-              },
-            }}
-          >
-            <Box sx={{ paddingX: '40px' }}>
-              <ProductBreadcrumbs
-                breadcrumbs={[
-                  ...productPageToBreadcrumbs(product, props.path, [
-                    { name: guide.name, path: props.path },
-                  ]),
-                ]}
-              />
-            </Box>
-            <Box sx={{ padding: '32px 40px' }}>
-              <GitBookContent content={props.body} config={props.bodyConfig} />
-            </Box>
-          </Stack>
-          <Box
-            sx={{
-              display: { xs: 'none', lg: 'initial' },
-              position: 'relative',
-              padding: { lg: '80px 64px' },
-              width: { lg: '270px' },
-            }}
-          >
-            <Box
-              sx={{
-                position: 'sticky',
-                maxWidth: '270px',
-                top: 144,
-              }}
-            >
-              <GuideInPageMenu
-                assetsPrefix={props.bodyConfig.assetsPrefix}
-                pagePath={props.path}
-                inPageMenu={props.body}
-                title={translations.productGuidePage.onThisPage}
-              />
-            </Box>
-          </Box>
-        </Box>
-      </FragmentProvider>
-    </ProductLayout>
-  );
+  return <GitBookTemplate {...props} isProductPage />;
 };
 
 export default Page;
