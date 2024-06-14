@@ -1,0 +1,17 @@
+name: Clear all GitHub actions caches
+on:
+  schedule:
+    - cron: "0 4 * * 0"  # run automatically each Sunday 4:00 UTC
+  workflow_dispatch:     # allow to run manually 
+
+jobs:
+  clear-github-caches:
+    name: Clear devportal-docs-repo cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clear all caches
+        run: gh actions-cache delete devportal-docs-repo -R $REPO -B $BRANCH --confirm
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            REPO: ${{ github.repository }}
+            BRANCH: ${{ env.GITHUB_REF }}

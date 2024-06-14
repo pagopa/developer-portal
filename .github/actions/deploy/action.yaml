@@ -71,7 +71,7 @@ runs:
         id: restore-cache
         with:
           path: checkout_path
-          key: devportal-docs-git-repo
+          key: devportal-docs-repo
 
     - name: Download GitBook docs
       uses: actions/checkout@v4
