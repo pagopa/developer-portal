@@ -84,6 +84,8 @@ runs:
     - name: Copy Assets
       shell: bash
       run: |
+        # remove old docs if any
+        rm -r ./docs
         mv ./checkout_path/docs .
         # copy all the gitbook assets to public assets of nextjs-website
         dest='public/gitbook/'
