@@ -68,24 +68,22 @@ runs:
 
     - name: Checkout Cache
       uses: actions/cache@v4
-      working-directory: ./apps/nextjs-website
       id: cache
       with:
-        path: checkout_path
+        path: apps/nextjs-website/checkout_path
         key: devportal-docs-repo
 
     - name: Download GitBook docs
       uses: actions/checkout@v4
-      working-directory: ./apps/nextjs-website
       with:
         repository: pagopa/devportal-docs
         ref: docs/from-gitbook
-        path: checkout_path
+        path: apps/nextjs-website/checkout_path
         fetch-depth: 1
     
     - name: Copy Assets
       shell: bash
-      working-directory: ./apps/nextjs-website
+      working-directory: apps/nextjs-website
       run: |
         # remove old docs if any
         rm -r ./docs
@@ -96,7 +94,6 @@ runs:
         find docs -type d -path '*/.gitbook/assets' -exec mkdir -p $dest'{}' ';'
         # copy all the assets from docs to public assets of nextjs-website
         find docs -type f -path '*/.gitbook/*' -exec cp '{}' $dest'{}' ';'
-        ls ./docs
 
     - name: Build static website
       env:
