@@ -86,7 +86,7 @@ runs:
       working-directory: apps/nextjs-website
       run: |
         # remove old docs if any
-        rm -r ./docs
+        rm -rf ./docs
         mv ./checkout_path/docs .
         # copy all the gitbook assets to public assets of nextjs-website
         dest='public/gitbook/'
