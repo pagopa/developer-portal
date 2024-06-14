@@ -13,7 +13,11 @@ jobs:
         cancel-in-progress: false
     steps:
       - name: Clear all caches
-        run: gh actions-cache delete devportal-docs-repo -R $REPO -B $BRANCH --confirm
+        run: |
+            set +e
+            echo "Deleting devportal-docs-repo cache on $REPO at branch $BRANCH..."
+            gh actions-cache delete devportal-docs-repo -R $REPO -B $BRANCH --confirm
+            echo "Cache deleted correctly"
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REPO: ${{ github.repository }}
