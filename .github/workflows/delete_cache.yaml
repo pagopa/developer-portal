@@ -8,6 +8,9 @@ jobs:
   clear-github-caches:
     name: Clear devportal-docs-repo cache
     runs-on: ubuntu-latest
+    concurrency:
+        group: cache-deletion
+        cancel-in-progress: false
     steps:
       - name: Clear all caches
         run: gh actions-cache delete devportal-docs-repo -R $REPO -B $BRANCH --confirm
