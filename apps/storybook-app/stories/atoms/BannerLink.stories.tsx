@@ -12,7 +12,7 @@ export default meta;
 export const Showcase: StoryObj<typeof BannerLink> = {
   args: {
     theme: 'light',
-    icon: '{"data": {"id": 4,"attributes": {"name": "Business.svg","alternativeText": null,"caption": null,"width": 60,"height": 60,"formats": null,"hash": "Business_cada225ef4","ext": ".svg","mime": "image/svg+xml","size": 0.47,"url": "http://localhost:1337/uploads/Business_cada225ef4.svg","previewUrl": null,"provider": "strapi-provider-upload-custom","provider_metadata": null,"createdAt": "2024-06-12T10:56:56.199Z","updatedAt": "2024-06-12T10:56:56.199Z"}}}',
+    icon: 'Feedback',
     title: 'Titolo',
     content: [
       {...mockTextBlock({type: 'paragraph', wordCount: 10})},

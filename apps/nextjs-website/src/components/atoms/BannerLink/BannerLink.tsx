@@ -3,11 +3,12 @@ import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { ICON_MAP } from '../IconWrapper/IconMap';
+import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
 
 export type BannerLinkProps = {
   content?: BlocksContent;
   title: string;
-  icon: string; //MEDIACODEC and string (mui)
+  icon: string | typeof MediaCodec;
   theme: 'light' | 'dark';
 };
 
@@ -20,7 +21,7 @@ export const BannerLink = (props: BannerLinkProps) => {
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   type IconName = keyof typeof ICON_MAP;
   const Icon = icon && ICON_MAP[icon as IconName];
-  const jsonIcon = Icon ? '' : JSON.parse(icon);
+  const mediaIcon = icon as typeof MediaCodec;
   const textColor = palette.primary.contrastText;
   return (
     <Box
@@ -42,8 +43,8 @@ export const BannerLink = (props: BannerLinkProps) => {
       >
         <div style={{ marginBottom: '26px' }}>
           <IconWrapper
-            icon={Icon ? icon : jsonIcon ? jsonIcon.data.attributes.url : ''}
-            isSvg={!!jsonIcon}
+            icon={Icon ? (icon as string) : mediaIcon._A.attributes.url}
+            isSvg={!Icon}
             color={textColor}
             size={60}
           />
