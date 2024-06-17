@@ -28,7 +28,7 @@ const makeStrapiResponseJson = () => ({
 });
 
 describe('StrapiSolutionsListCodec', () => {
-  it('should decode strapi homepage', () => {
+  it('should decode strapi solutionsList', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiSolutionsListCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
