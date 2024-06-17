@@ -27,6 +27,8 @@ export const ioSignBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Serve aiuto durante l’integrazione?',
+    maxWidth: 448,
+    justify: 'right',
   },
   {
     theme: 'light',
@@ -54,5 +56,7 @@ export const ioSignBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Assistenza continua',
+    maxWidth: 448,
+    justify: 'left',
   },
 ];

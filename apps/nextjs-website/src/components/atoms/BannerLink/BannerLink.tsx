@@ -6,6 +6,8 @@ import { ICON_MAP } from '../IconWrapper/IconMap';
 import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
 
 export type BannerLinkProps = {
+  maxWidth: number;
+  justify: string;
   content?: BlocksContent;
   title: string;
   icon: string | typeof MediaCodec;
@@ -13,7 +15,7 @@ export type BannerLinkProps = {
 };
 
 export const BannerLink = (props: BannerLinkProps) => {
-  const { theme, content, icon, title } = props;
+  const { theme, content, icon, title, maxWidth, justify } = props;
   const { palette } = useTheme();
 
   if (!content) return null;
@@ -28,77 +30,88 @@ export const BannerLink = (props: BannerLinkProps) => {
       bgcolor={backgroundColor}
       component='section'
       sx={{ width: '100%', direction: 'column' }}
+      justifyContent={{ xs: 'center', md: justify }}
       style={{
         display: 'flex',
-        justifyContent: 'center',
         textAlign: 'center',
       }}
     >
-      <Stack
-        spacing={'8px'}
+      <Box
         sx={{
-          maxWidth: '448px',
-          padding: { xs: '40px 32px', md: '64px 0px' },
+          padding: { xs: '0px 0px', md: '0px 150px' },
+        }}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          textAlign: 'center',
         }}
       >
-        <div style={{ marginBottom: '26px' }}>
-          <IconWrapper
-            icon={Icon ? (icon as string) : mediaIcon._A.attributes.url}
-            isSvg={!Icon}
-            color={textColor}
-            size={60}
-          />
-        </div>
-
-        <Typography variant={`h6`} color={textColor}>
-          {title}
-        </Typography>
-        <BlocksRenderer
-          content={content}
-          blocks={{
-            image: ({ image }) => (
-              <Image
-                src={image.url}
-                width={image.width}
-                height={image.height}
-                alt={image.alternativeText || ''}
-              />
-            ),
-            paragraph: ({ children }) => (
-              <Typography variant='body2' color={textColor}>
-                {children}
-              </Typography>
-            ),
-            link: ({ children, url }) => (
-              <a
-                href={url}
-                style={{ color: textColor, textDecorationLine: 'none' }}
-              >
-                <b>{children}</b>
-              </a>
-            ),
-            heading: ({ children, level }) => (
-              <Typography variant={`h${level}`} color={textColor}>
-                {children}
-              </Typography>
-            ),
-            list: ({ children }) => {
-              return (
-                <ul
-                  style={{
-                    listStyleType: 'square',
-                    listStylePosition: 'inside',
-                    color: textColor,
-                    padding: 0,
-                  }}
-                >
-                  {children}
-                </ul>
-              );
-            },
+        <Stack
+          spacing={'8px'}
+          sx={{
+            maxWidth: maxWidth,
+            padding: { xs: '40px 32px', md: '64px 0px' },
           }}
-        />
-      </Stack>
+        >
+          <div style={{ marginBottom: '26px' }}>
+            <IconWrapper
+              icon={Icon ? (icon as string) : mediaIcon._A.attributes.url}
+              isSvg={!Icon}
+              color={textColor}
+              size={60}
+            />
+          </div>
+
+          <Typography variant={`h6`} color={textColor}>
+            {title}
+          </Typography>
+          <BlocksRenderer
+            content={content}
+            blocks={{
+              image: ({ image }) => (
+                <Image
+                  src={image.url}
+                  width={image.width}
+                  height={image.height}
+                  alt={image.alternativeText || ''}
+                />
+              ),
+              paragraph: ({ children }) => (
+                <Typography variant='body2' color={textColor}>
+                  {children}
+                </Typography>
+              ),
+              link: ({ children, url }) => (
+                <a
+                  href={url}
+                  style={{ color: textColor, textDecorationLine: 'none' }}
+                >
+                  <b>{children}</b>
+                </a>
+              ),
+              heading: ({ children, level }) => (
+                <Typography variant={`h${level}`} color={textColor}>
+                  {children}
+                </Typography>
+              ),
+              list: ({ children }) => {
+                return (
+                  <ul
+                    style={{
+                      listStyleType: 'square',
+                      listStylePosition: 'inside',
+                      color: textColor,
+                      padding: 0,
+                    }}
+                  >
+                    {children}
+                  </ul>
+                );
+              },
+            }}
+          />
+        </Stack>
+      </Box>
     </Box>
   );
 };
