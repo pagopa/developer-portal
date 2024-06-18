@@ -26,7 +26,7 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Hai bisogno di aiuto?',
-    maxWidth: 448,
+    contentMaxWidth: 450,
     justify: 'right',
   },
   {
@@ -73,7 +73,7 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Dicci cosa ne pensi',
-    maxWidth: 448,
+    contentMaxWidth: 450,
     justify: 'left',
   },
 ];

@@ -31,7 +31,7 @@ export const pdndBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Dicci cosa ne pensi',
-    maxWidth: 448,
+    contentMaxWidth: 450,
     justify: 'center',
   },
 ];

@@ -27,7 +27,7 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Serve aiuto?',
-    maxWidth: 448,
+    contentMaxWidth: 450,
     justify: 'right',
   },
   {
@@ -71,7 +71,7 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Dicci cosa ne pensi',
-    maxWidth: 448,
+    contentMaxWidth: 450,
     justify: 'left',
   },
 ];
