@@ -1,10 +1,11 @@
 import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
 export const ProductCodec = t.strict({
   attributes: t.strict({
     name: t.string,
-    description: t.union([t.null, t.string]),
+    description: t.union([NullToUndefinedCodec, t.string]),
     slug: t.string,
     logo: t.strict({ data: MediaCodec }),
   }),
