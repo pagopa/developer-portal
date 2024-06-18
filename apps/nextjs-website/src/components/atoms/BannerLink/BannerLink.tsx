@@ -4,6 +4,7 @@ import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { ICON_MAP } from '../IconWrapper/IconMap';
 import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
+import { FC } from 'react';
 
 export type BannerLinkProps = {
   maxWidth: number;
@@ -12,10 +13,18 @@ export type BannerLinkProps = {
   title: string;
   icon: string | typeof MediaCodec;
   theme: 'light' | 'dark';
+  mediumPadding?: string;
 };
 
-export const BannerLink = (props: BannerLinkProps) => {
-  const { theme, content, icon, title, maxWidth, justify } = props;
+export const BannerLink: FC<BannerLinkProps> = ({
+  maxWidth,
+  theme,
+  content,
+  icon,
+  title,
+  justify,
+  mediumPadding = '0px 130px',
+}) => {
   const { palette } = useTheme();
 
   if (!content) return null;
@@ -25,10 +34,12 @@ export const BannerLink = (props: BannerLinkProps) => {
   const Icon = icon && ICON_MAP[icon as IconName];
   const mediaIcon = icon as typeof MediaCodec;
   const textColor = palette.primary.contrastText;
+  const width = justify === 'center' ? maxWidth : '100%';
   return (
     <Box
       bgcolor={backgroundColor}
       component='section'
+      maxWidth={{ xs: '100%', md: width }}
       sx={{ width: '100%', direction: 'column' }}
       justifyContent={{ xs: 'center', md: justify }}
       style={{
@@ -38,7 +49,7 @@ export const BannerLink = (props: BannerLinkProps) => {
     >
       <Box
         sx={{
-          padding: { xs: '0px 0px', md: '0px 150px' },
+          padding: { xs: '0px 32px', md: mediumPadding },
         }}
         style={{
           display: 'flex',
@@ -50,7 +61,7 @@ export const BannerLink = (props: BannerLinkProps) => {
           spacing={'8px'}
           sx={{
             maxWidth: maxWidth,
-            padding: { xs: '40px 32px', md: '64px 0px' },
+            padding: { xs: '40px 0px', md: '64px 0px' },
           }}
         >
           <div style={{ marginBottom: '26px' }}>

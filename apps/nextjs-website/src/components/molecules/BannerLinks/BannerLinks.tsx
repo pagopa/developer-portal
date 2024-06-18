@@ -8,21 +8,22 @@ import {
 
 type BannerLinksProps = {
   banners?: readonly BannerLinkProps[];
+  bannerLinkMaxWidth?: number;
 };
 
 function CalculateJustify(index: number, length: number) {
-  return index == 0
-    ? length === 1
-      ? 'center'
-      : 'right'
-    : length <= 2
-    ? 'left'
-    : index > 1
-    ? 'left'
-    : 'center';
+  return (
+    (length === 1 && 'center') ||
+    (index === 0 && 'right') ||
+    (index === length - 1 && 'left') ||
+    'center'
+  );
 }
 
-const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
+export const BannerLinks: FC<BannerLinksProps> = ({
+  banners,
+  bannerLinkMaxWidth = 450,
+}) => (
   <Stack
     direction={{ xs: 'column', md: 'row' }}
     justifyContent='space-between'
@@ -33,7 +34,7 @@ const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
   >
     {banners?.map((banner, index) => (
       <BannerLink
-        maxWidth={448}
+        maxWidth={bannerLinkMaxWidth}
         justify={CalculateJustify(index, banners.length)}
         key={index}
         title={banner.title}
