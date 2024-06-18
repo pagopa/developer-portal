@@ -34,12 +34,13 @@ export const BannerLinks: FC<BannerLinksProps> = ({
   >
     {banners?.map((banner, index) => (
       <BannerLink
-        maxWidth={bannerLinkMaxWidth}
+        contentMaxWidth={bannerLinkMaxWidth}
         justify={CalculateJustify(index, banners.length)}
         key={index}
         title={banner.title}
         icon={banner.icon}
         content={banner.content}
+        count={banners.length}
         theme={banner.theme}
       />
     ))}

@@ -13,134 +13,32 @@ export const Showcase: StoryObj<typeof BannerLinks> = {
     args:{
         banners:[
             {
-                maxWidth: 448,
-                justify: 'center',
+                contentMaxWidth: 450,
+                justify: 'right',
                 theme: 'light',
                 icon: 'Feedback',
                 title: 'Titolo',
                 content: [
-                  {...mockTextBlock({type: 'paragraph', wordCount: 6})},
-                  {
-                    'type': 'list',
-                    'format': 'unordered',
-                    'children': [
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'Le comunicazioni in tempo reale',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' consentono al cittadino di agire con tempestività sul pagamento di sanzioni'
-                          }
-                        ]
-                      },
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'La scadenza sugli avvisi di pagamento',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' riduce la possibilità di incorrere in sanzioni aggiuntive'
-                          }
-                        ]
-                      }
-                    ]
-                  },
+                  {...mockTextBlock({type: 'paragraph', wordCount: 30})},
                 ],
               },
               {
-                maxWidth: 448,
+                contentMaxWidth: 450,
                 justify: 'center',
                 theme: 'dark',
                 icon: 'Feedback',
                 title: 'Titolo',
                 content: [
-                  {...mockTextBlock({type: 'paragraph', wordCount: 6})},
-                  {
-                    'type': 'list',
-                    'format': 'unordered',
-                    'children': [
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'Le comunicazioni in tempo reale',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' consentono al cittadino di agire con tempestività sul pagamento di sanzioni'
-                          }
-                        ]
-                      },
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'La scadenza sugli avvisi di pagamento',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' riduce la possibilità di incorrere in sanzioni aggiuntive'
-                          }
-                        ]
-                      }
-                    ]
-                  },
+                  {...mockTextBlock({type: 'paragraph', wordCount: 28})},
                 ],
               },{
-                maxWidth: 448,
-                justify: 'center',
+                contentMaxWidth: 450,
+                justify: 'left',
                 theme: 'light',
                 icon: 'Feedback',
                 title: 'Titolo',
                 content: [
-                  {...mockTextBlock({type: 'paragraph', wordCount: 6})},
-                  {
-                    'type': 'list',
-                    'format': 'unordered',
-                    'children': [
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'Le comunicazioni in tempo reale',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' consentono al cittadino di agire con tempestività sul pagamento di sanzioni'
-                          }
-                        ]
-                      },
-                      {
-                        'type': 'list-item',
-                        'children': [
-                          {
-                            'type': 'text',
-                            'text': 'La scadenza sugli avvisi di pagamento',
-                            'bold': true
-                          },
-                          {
-                            'type': 'text',
-                            'text': ' riduce la possibilità di incorrere in sanzioni aggiuntive'
-                          }
-                        ]
-                      }
-                    ]
-                  },
+                  {...mockTextBlock({type: 'paragraph', wordCount: 32})},
                 ],
               }
         ]

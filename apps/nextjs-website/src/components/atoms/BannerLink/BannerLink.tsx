@@ -7,23 +7,27 @@ import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 
 export type BannerLinkProps = {
-  maxWidth: number;
+  contentMaxWidth: number;
   justify: string;
   content?: BlocksContent;
   title: string;
   icon: string | typeof MediaCodec;
   theme: 'light' | 'dark';
-  mediumPadding?: string;
+  count?: number;
+  boxMediumPadding?: string;
+  centerBannerWidth?: number;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
-  maxWidth,
+  contentMaxWidth,
   theme,
   content,
   icon,
   title,
   justify,
-  mediumPadding = '0px 130px',
+  count = 2,
+  boxMediumPadding = '0px 130px',
+  centerBannerWidth = count <= 2 ? 700 : 466,
 }) => {
   const { palette } = useTheme();
 
@@ -34,7 +38,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
   const Icon = icon && ICON_MAP[icon as IconName];
   const mediaIcon = icon as typeof MediaCodec;
   const textColor = palette.primary.contrastText;
-  const width = justify === 'center' ? maxWidth : '100%';
+  const width = justify === 'center' && count > 1 ? centerBannerWidth : '100%';
   return (
     <Box
       bgcolor={backgroundColor}
@@ -48,8 +52,9 @@ export const BannerLink: FC<BannerLinkProps> = ({
       }}
     >
       <Box
+        maxWidth={centerBannerWidth}
         sx={{
-          padding: { xs: '0px 32px', md: mediumPadding },
+          padding: { xs: '0px 32px', md: boxMediumPadding },
         }}
         style={{
           display: 'flex',
@@ -60,7 +65,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
         <Stack
           spacing={'8px'}
           sx={{
-            maxWidth: maxWidth,
+            maxWidth: contentMaxWidth,
             padding: { xs: '40px 0px', md: '64px 0px' },
           }}
         >
