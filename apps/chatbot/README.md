@@ -2,18 +2,20 @@
 
 This folder contains all the details to run a RAG using the documentation provided in [PagoPA DevPortal](https://developer.pagopa.it/).
 
-This chatbot uses [AWS Bedrock](https://aws.amazon.com/bedrock/) as provider and all the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `params.yaml`. The main library used to buid the rad is [llama-index](https://docs.llamaindex.ai/en/).
+This chatbot uses [AWS Bedrock](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
+
+All the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `params.yaml`.
 
 ## Virtual environment
+
+Create your virtual environment as:
 
     conda create -n chatbot python=3.12 -y
     conda activate chatbot
 
-Sucessively, install the requirements:
+and install [Poetry](https://python-poetry.org/docs/main#installation) on it. Sucessively, install the requirements simply doing:
 
-    pip install -r requirements.txt
-
-Be sure you have all the keys to access AWS Bedrock.
+    poetry install
 
 ## Set python path
 
