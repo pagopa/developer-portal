@@ -16,6 +16,7 @@ export const Showcase: StoryObj<typeof BannerLink> = {
     theme: 'light',
     icon: 'Feedback',
     title: 'Titolo',
+    count: 1,
     content: [
       {...mockTextBlock({type: 'paragraph', wordCount: 10})},
       {
