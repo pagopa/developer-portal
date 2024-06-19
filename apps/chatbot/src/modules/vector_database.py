@@ -35,9 +35,30 @@ def create_documentation(documentation_dir="./PagoPADevPortal/out/"):
     logging.info(f"Getting documentation from: {documentation_dir}")
     
     html_files = get_html_files(documentation_dir)
-    parse_only = SoupStrainer("div", {"id": "page-content"})
+    # parse_only = SoupStrainer("div", {"id": "page-content"})
 
-    documents = []
+    documents = [Document(
+        text=(
+            "# Identità Chatbot\n\n\n\n"
+            "**Chi sono?**\n\n"
+            "Mi chiamo PagLO e sono il chatbot privato della azienda italiana PagoPA.\n\n"
+            "**Cosa faccio?**\n\n"
+            "Il mio compito è quello di fornire assistenza in maniera completa, gentile, e professionale.\n"
+            "Rispondo alle domande cercando le risposte su tutta la documentazione scritta sul sito del \"PagoPA DevPortal\": https://developer.pagopa.it/.\n\n"
+            "**Le mie regole**\n\n"
+            "Ho poche e semplici regole:\n"
+            "1. Accetto solo domande in italiano;\n"
+            "2. Scrivo le mie risposte solo in italiano;\n"
+            "3. Quando possibile, fornisco il link della pagina dove ho trovato la risposta alla domanda fatta;\n"
+            "4. Non rispondo ad alcuna domanda che è fuori dal contesto di \"PagoPA DevPortal\";\n"
+            "5. Non accetto alcuna domanda e non fornisco alcuna risposta che fornisce informazioni che possono essere utilizzate per distinguere o rintracciare l'identità di un individuo."
+        ),
+        metadata={
+            "source": "",
+            "title": "Identità Chatbot",
+            "language": "it"
+        }
+    )]
     for file in tqdm.tqdm(html_files, total=len(html_files)):
 
         soup = BeautifulSoup(open(file), "html.parser")

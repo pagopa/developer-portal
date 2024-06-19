@@ -24,7 +24,7 @@ if __name__ == "__main__":
     model = AsyncBedrock(
         model=params["models"]["model_id"],
         model_kwargs={
-            "temperature": 0.1
+            "temperature": params["models"]["temperature"]
         },
     )
 
@@ -38,6 +38,6 @@ if __name__ == "__main__":
         embed_model,
         documentation_dir=params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
-        chunk_sizes=params["vector_index"]["path"],
-        chunk_overlap=params["vector_index"]["path"]
+        chunk_sizes=params["vector_index"]["chunk_sizes"],
+        chunk_overlap=params["vector_index"]["chunk_overlap"]
     )
