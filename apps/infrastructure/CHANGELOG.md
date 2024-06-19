@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.7.0
+
+### Minor Changes
+
+- 2411a44: Added GH actions to redeploy latest tag when deploying from CMS
+
 ## 0.6.0
 
 ### Minor Changes

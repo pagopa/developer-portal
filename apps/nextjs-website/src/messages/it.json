@@ -556,12 +556,13 @@
         "webinars": "Webinar",
         "solutions": "Soluzioni"
     },
-    "caseHistory": {
-        "productShowcaseLabel": "Come integrarsi? Inizia da qui"
-    },
     "solution": {
         "steps" : {
             "platforms": "Piattaforme Abilitanti"
-        }
+        },
+        "ctaDetailLabel": "Leggi la guida completa"
+    },
+    "caseHistory": {
+        "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     }
 }
