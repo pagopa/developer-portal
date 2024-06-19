@@ -1,9 +1,5 @@
 name: Deploy Website
 
-concurrency:
-  group: cache-deletion
-  cancel-in-progress: false
-
 on:
   pull_request:
     types:
