@@ -66,13 +66,6 @@ runs:
       shell: bash
       run: npm run compile
 
-    - name: Checkout Cache
-      uses: actions/cache@v4
-      id: cache
-      with:
-        path: apps/nextjs-website/checkout_path
-        key: devportal-docs-repo
-
     - name: Download GitBook docs
       uses: actions/checkout@v4
       with:
