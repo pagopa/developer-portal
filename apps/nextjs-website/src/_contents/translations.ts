@@ -127,7 +127,7 @@ export const translations = {
       ],
       solutionsTabName: 'Per soluzioni',
       solutions: [],
-    },
+    } as HomepageProps['ecosystem'],
     heroItems: [
       {
         title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
