@@ -3,7 +3,16 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 export const ioSignBannerLinks: readonly BannerLinkProps[] = [
   {
     theme: 'dark',
-    icon: 'LiveHelp',
+    icon: {
+      name: 'livehelp.svg',
+      alternativeText: null,
+      caption: null,
+      width: 60,
+      height: 61,
+      ext: '.svg',
+      mime: 'image/svg+xml',
+      url: '/icons/livehelp.svg',
+    },
     content: [
       {
         type: 'paragraph',
@@ -30,7 +39,16 @@ export const ioSignBannerLinks: readonly BannerLinkProps[] = [
   },
   {
     theme: 'light',
-    icon: 'HeadsetMic',
+    icon: {
+      name: 'headset.svg',
+      alternativeText: null,
+      caption: null,
+      width: 60,
+      height: 61,
+      ext: '.svg',
+      mime: 'image/svg+xml',
+      url: '/icons/headset.svg',
+    },
     content: [
       {
         type: 'paragraph',

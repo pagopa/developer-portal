@@ -3,7 +3,16 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 export const sendBannerLinks: readonly BannerLinkProps[] = [
   {
     theme: 'dark',
-    icon: 'HeadsetMic',
+    icon: {
+      name: 'headset.svg',
+      alternativeText: null,
+      caption: null,
+      width: 60,
+      height: 61,
+      ext: '.svg',
+      mime: 'image/svg+xml',
+      url: '/icons/headset.svg',
+    },
     content: [
       {
         type: 'paragraph',

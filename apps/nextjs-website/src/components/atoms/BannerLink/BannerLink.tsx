@@ -1,9 +1,9 @@
+import * as t from 'io-ts/lib';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
-import { ICON_MAP } from '../IconWrapper/IconMap';
-import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
+import { Media } from '../../../lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 
 export type BannerLinkProps = {
@@ -11,7 +11,7 @@ export type BannerLinkProps = {
   justify?: string;
   content?: BlocksContent;
   title: string;
-  icon: string | typeof MediaCodec;
+  icon: Media;
   theme: 'light' | 'dark';
   count?: number;
   boxMediumPadding?: string;
@@ -34,9 +34,6 @@ export const BannerLink: FC<BannerLinkProps> = ({
   if (!content) return null;
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
-  type IconName = keyof typeof ICON_MAP;
-  const Icon = icon && ICON_MAP[icon as IconName];
-  const mediaIcon = icon as typeof MediaCodec;
   const textColor = palette.primary.contrastText;
   const width = justify === 'center' && count > 1 ? centerBannerWidth : '100%';
   return (
@@ -71,8 +68,8 @@ export const BannerLink: FC<BannerLinkProps> = ({
         >
           <div style={{ marginBottom: '26px' }}>
             <IconWrapper
-              icon={Icon ? (icon as string) : mediaIcon._A.attributes.url}
-              isSvg={!Icon}
+              icon={icon.url}
+              isSvg={true}
               color={textColor}
               size={60}
             />

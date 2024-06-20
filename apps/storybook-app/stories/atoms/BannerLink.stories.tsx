@@ -14,7 +14,16 @@ export const Showcase: StoryObj<typeof BannerLink> = {
     contentMaxWidth: 448,
     justify: 'center',
     theme: 'light',
-    icon: 'Feedback',
+    icon: {
+      name: 'feedback.svg',
+      alternativeText: null,
+      caption: null,
+      width: 60,
+      height: 61,
+      ext: '.svg',
+      mime: 'image/svg+xml',
+      url: 'https://developer.pagopa.it/icons/feddback.svg',
+    },
     title: 'Titolo',
     count: 1,
     content: [
