@@ -14,7 +14,7 @@ export type CaseHistoryPageTemplateProps = {
   slug: string;
   title: string;
   description?: string;
-  products: Product[];
+  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];
 };
 
@@ -30,7 +30,7 @@ const CaseHistoryPageTemplate = ({
 
   return (
     <>
-      <EContainer>
+      <EContainer direction={'column'}>
         <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
