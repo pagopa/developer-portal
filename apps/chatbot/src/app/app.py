@@ -5,7 +5,7 @@ import logging
 import gradio as gr
 from src.modules.chatbot import Chatbot
 
-# nest_asyncio.apply()
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -24,7 +24,6 @@ def add_message(history, message):
 def bot(history):
 
     response_str = chatbot.generate(history[-1][0])
-    print(chatbot.get_chat_history())
     history[-1][1] = ""
     for character in response_str:
         history[-1][1] += character

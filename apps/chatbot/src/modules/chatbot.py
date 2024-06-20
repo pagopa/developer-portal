@@ -1,4 +1,6 @@
 import logging
+import asyncio
+
 from langdetect import detect as detect_language
 
 from llama_index.core import PromptTemplate
@@ -29,15 +31,18 @@ LANGUAGES = {
 
 QA_PROMPT_STR = (
     "You are the chatbot for the Italian company PagoPA. Your name is PagLO.\n"
-    "Given the context information here below:\n"
+    "Given the context:\n"
     "---------------------\n"
     "{context_str}\n"
     "---------------------\n"
-    "Given the conversation between you and the User:\n"
+    "Given the rules:\n"
     "---------------------\n"
-    "{messages_str}\n"
+    "1. Do not accept any question that provides information that can be used to distinguish or trace an individual's identity.\n"
+    "2. Accept only questions in italian.\n"
     "---------------------\n"
-    "Use the following pieces of retrieved context and not prior knowledge to answer the question: {query_str}\n"
+    "Given the question: {query_str}. "
+    "If any of the above rule is broken, your answer must be somenthing like: \"I cannot reply to such question because\" followed by a comma-separated list of violated rules.\n"
+    "Otherwise, use the pieces of retrieved context, and not prior knowledge, to answer the question."
     "Use three sentences maximum and keep the answer concise."
     "If you don't know the answer, just say that you cannot provide an answer and ask for another question.\n"
     "Always translate the answer to Italian."
@@ -46,27 +51,16 @@ QA_PROMPT_STR = (
 
 
 REFINE_PROMPT_STR = (
-    "The original <question> is as follows: {query_str}\n"
-    "We have provided an <existing answer>: {existing_answer}\n"
-    "We have the opportunity to refine the existing answer following the rules below:\n"
+    "Given the question: {query_str}"
+    "Given the answer: {existing_answer}\n"
+    "Given the rules:\n"
     "---------------------\n"
-    "{rules_str}\n"
+    "1. Do not provide any answer that provides information that can be used to distinguish or trace an human being's identity."
+    "2. The answer must be in Italian."
     "---------------------\n"
-    "Given such rules, refine the <existing answer> to better answer the <question>.\n"
+    "Given such rules, refine the existing answer to better answer the question.\n"
     "Refined Answer: "
 )
-
-
-def rules_fn(**kwargs):
-    
-    rules_str = (
-        "1. Accetto solo domande in italiano;\n"
-        "2. Scrivo le mie risposte solo in italiano;\n"
-        "3. Quando possibile, fornisco il link della pagina dove ho trovato la risposta alla domanda fatta;\n"
-        "4. Non rispondo ad alcuna domanda che è fuori dal contesto di \"PagoPA DevPortal\";\n"
-        "5. Non accetto alcuna domanda e non fornisco alcuna risposta che fornisce informazioni che possono essere utilizzate per distinguere o rintracciare l'identità di un individuo."
-    )
-    return rules_str
 
 
 class Chatbot():
@@ -79,9 +73,8 @@ class Chatbot():
 
         self.model = AsyncBedrock(
             model=params["models"]["model_id"],
-            model_kwargs={
-                "temperature": params["models"]["temperature"]
-            }
+            temperature=params["models"]["temperature"],
+            max_tokens=params["models"]["max_tokens"]
         )
         self.embed_model = BedrockEmbedding(
             model_name=params["models"]["emded_model_id"],
@@ -117,20 +110,21 @@ class Chatbot():
                 "context_str": "context_str",
                 "query_str": "query_str"
             },
-            function_mappings = {
-                "messages_str": self._messages_to_str
-            }
+            # function_mappings = {
+            #     "messages_str": self._messages_to_str
+            # }
         )
 
         ref_prompt_tmpl = PromptTemplate(
-            REFINE_PROMPT_STR, 
+            REFINE_PROMPT_STR,
+            prompt_type="refine",
             template_var_mappings = {
                 "existing_answer": "existing_answer",
                 "query_str": "query_str"
             },
-            function_mappings = {
-                "rules_str": rules_fn
-            }
+            # function_mappings = {
+            #     "rules_str": rules_fn
+            # }
         )
 
         return qa_prompt_tmpl, ref_prompt_tmpl
@@ -153,10 +147,17 @@ class Chatbot():
         return self.messages
 
 
+    def _check_language(self, message_str, role):
+        
+        lang = LANGUAGES[detect_language(message_str)]
+        logging.info(f"Detected {lang} at the last {role}'s message.")
+
+        return lang
+
+
     def generate(self, query_str):
 
-        query_lang = LANGUAGES[detect_language(query_str)]
-        logging.info(f"Detected {query_lang} language at the last user's query.")
+        query_lang = self._check_language(query_str, "User")
         if query_lang != "Italian":
             # query = model.acomplete(f"Traslate to Italian: {query_str}")
             # query = asyncio.run(asyncio.gather(query))
@@ -179,12 +180,11 @@ class Chatbot():
                 )
 
             else:
-                response_lang = LANGUAGES[detect_language(response_str)]
-                logging.info(f"Detected {response_lang} for the generated answer.")
+                response_lang = self._check_language(response_str, "Assistant")
                 if response_lang != "Italian":
-                    logging.info(f"Detected {response_lang} at the generated response. Translating it to Italian..")
-                    response = self.model.complete(f"Traslate to Italian: {response_str}")
-                    response_str = response.text()
+                    logging.info(f"Translating it to Italian..")
+                    translation = self.model.complete(f"Traslate to Italian: {response_str}")
+                    response_str = translation.text
 
                 if len(nodes) > 0:
                     metadata = nodes[0].metadata
@@ -193,6 +193,54 @@ class Chatbot():
 
             # update messages
             self._update_messages("User", query_str)
-            self._update_messages("PagLO", response_str)
+            self._update_messages("Assistant", response_str)
+
+        return response_str
+    
+
+    def agenerate(self, query_str):
+
+        query_lang = self._check_language(query_str, "User")
+        if query_lang != "Italian":
+            # query = model.acomplete(f"Traslate to Italian: {query_str}")
+            # query = asyncio.run(asyncio.gather(query))
+            # query_str = query[0].response.strip()
+            response_str = (
+                f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
+                "Chiedimi la prossima domanda in italiano."
+            )
+
+        else:
+
+            response = asyncio.run(asyncio.gather(
+                self.engine.aquery(query_str)
+            ))[0]
+            print(response)
+            nodes = response.source_nodes
+            response_str = response.response.strip()
+
+            if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
+                response_str = (
+                    "Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.\n"
+                    "Chiedimi una nuova domanda."
+                )
+
+            else:
+                response_lang = self._check_language(response_str, "Assistant")
+                if response_lang != "Italian":
+                    logging.info(f"Translating it to Italian..")
+                    translation = asyncio.run(asyncio.gather(
+                        self.model.acomplete(f"Traslate to Italian: {response_str}")
+                    ))[0]
+                    response_str = translation.text
+
+                if len(nodes) > 0:
+                    metadata = nodes[0].metadata
+                    if metadata['source'] != "" and metadata['title'] != "":
+                        response_str += f"\n\n**Link:** [{metadata['title']}]({metadata['source']})"
+
+            # update messages
+            self._update_messages("User", query_str)
+            self._update_messages("Assistant", response_str)
 
         return response_str

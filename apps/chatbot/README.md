@@ -8,12 +8,16 @@ All the parameters used to build the Retrieval-Augmented Generation (RAG) arem s
 
 ## Virtual environment
 
+Before creating your virtual environment, install [Poetry](https://python-poetry.org/docs/main#installation):
+
+    curl -sSL https://install.python-poetry.org | python3 -
+
 Create your virtual environment as:
 
     conda create -n chatbot python=3.12 -y
     conda activate chatbot
 
-and install [Poetry](https://python-poetry.org/docs/main#installation) on it. Sucessively, install the requirements simply doing:
+Now you can install the reqirements doing:
 
     poetry install
 
