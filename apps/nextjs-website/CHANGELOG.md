@@ -1,5 +1,25 @@
 # nextjs-website
 
+## 0.26.0
+
+### Minor Changes
+
+- 4a477d0: Add SolutionsTemplate component
+- 6b31e7c: Add Stats component
+- 40977c4: Add case history page
+- 2411a44: Added GH actions to redeploy latest tag when deploying from CMS
+- e35778c: Add new tutorial IO and change sorting and display of tutorials on the "Panoramica" page
+- 330590a: Add new guide "Kit Comunicazione" to SEND
+- fa708e2: Add solution page template
+- 34be742: Add CaseHistoryPageTemplate and related story
+
+### Patch Changes
+
+- fa708e2: Fix Storybook .env error
+- f20337c: Add different optimized command to download docs from gitbook
+- d8a564e: Add TabComponent to handle tabs
+- 76913d2: Fix update-docs script
+
 ## 0.25.0
 
 ### Minor Changes

@@ -1,5 +1,18 @@
 # storybook-app
 
+## 0.2.0
+
+### Minor Changes
+
+- 4a477d0: Add SolutionsTemplate component
+- 6b31e7c: Add Stats component
+- 34be742: Add CaseHistoryPageTemplate and related story
+
+### Patch Changes
+
+- fa708e2: Fix Storybook .env error
+- d8a564e: Add TabComponent to handle tabs
+
 ## 0.1.0
 
 ### Minor Changes
