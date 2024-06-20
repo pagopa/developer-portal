@@ -53,20 +53,6 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
             type: 'text',
             text: " dell'app IO",
           },
-          {
-            type: 'link',
-            url: 'https://www.google.com',
-            children: [
-              {
-                type: 'text',
-                text: '',
-              },
-            ],
-          },
-          {
-            text: '',
-            type: 'text',
-          },
         ],
       },
     ],
