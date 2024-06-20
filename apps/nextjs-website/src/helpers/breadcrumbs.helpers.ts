@@ -60,3 +60,21 @@ export function pageToBreadcrumbs(
     ...(paths || []),
   ];
 }
+
+export function solutionPageToBreadcrumbs(
+  paths?: readonly Path[]
+): readonly BreadCrumbSegment[] {
+  return [
+    {
+      name: 'home',
+      path: '/',
+      translate: true,
+    },
+    {
+      name: 'solutions',
+      path: '/solutions',
+      translate: true,
+    },
+    ...(paths || []),
+  ];
+}
