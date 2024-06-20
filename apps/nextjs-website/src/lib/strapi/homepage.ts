@@ -68,18 +68,21 @@ export const StrapiHomepageCodec = t.strict({
           }),
         }),
       ]),
-      ecosystem: t.strict({
-        title: t.string,
-        productsTabName: t.string,
-        products: t.strict({
-          data: t.array(ProductCodec),
+      ecosystem: t.union([
+        NullToUndefinedCodec,
+        t.strict({
+          title: t.string,
+          productsTabName: t.string,
+          products: t.strict({
+            data: t.array(ProductCodec),
+          }),
+          solutionsTabName: t.string,
+          solutions: t.strict({
+            data: t.array(SolutionCodec),
+          }),
+          solutionsCta: t.union([NullToUndefinedCodec, CallToActionCodec]),
         }),
-        solutionsTabName: t.string,
-        solutions: t.strict({
-          data: t.array(SolutionCodec),
-        }),
-        solutionsCta: t.union([NullToUndefinedCodec, CallToActionCodec]),
-      }),
+      ]),
       webinars: t.strict({ data: t.array(WebinarCodec) }),
     }),
   }),

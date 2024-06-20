@@ -66,7 +66,7 @@ const Home = async () => {
                 cardVariant={'outlined'}
                 cardSvg
                 cards={homepage.ecosystem.products}
-                containerPx={0}
+                containerSx={{ px: 0, pb: '22px' }}
               />
             ),
           },

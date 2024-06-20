@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Box, Grid, GridSize, useTheme } from '@mui/material';
+import { Box, Grid, GridSize, SxProps, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
@@ -13,7 +13,7 @@ export type CardsGridProps = {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
-  containerPx?: number;
+  containerSx?: SxProps;
   cards: {
     comingSoon?: boolean;
     title: string;
@@ -30,13 +30,13 @@ const CardsGrid = ({
   cardVariant,
   cardSvg,
   cardSize,
-  containerPx,
+  containerSx,
 }: CardsGridProps) => {
   const { palette } = useTheme();
   const t = useTranslations('shared');
 
   return (
-    <EContainer px={containerPx} containerSx={{ px: containerPx }}>
+    <EContainer containerSx={containerSx}>
       <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(

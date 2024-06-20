@@ -1,21 +1,21 @@
 'use client';
 import React, { FC, ReactNode } from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs, SxProps } from '@mui/material';
 
 type TabPanelProps = {
   readonly children?: ReactNode;
   readonly index: number;
   readonly value: number;
-  readonly px?: number;
-  readonly py?: number;
+  readonly sx?: SxProps;
 };
 
 const TabPanel: FC<TabPanelProps> = ({
   children,
   value,
   index,
-  px = 3,
-  py = 3,
+  sx = {
+    px: 3,
+  },
 }) => {
   return (
     <div
@@ -24,11 +24,7 @@ const TabPanel: FC<TabPanelProps> = ({
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
     >
-      {value === index && (
-        <Box px={px} py={py}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={sx}>{children}</Box>}
     </div>
   );
 };
@@ -42,16 +38,14 @@ export type TabsProps = {
   readonly items: ReadonlyArray<TabItem>;
   readonly centered?: boolean;
   readonly variant?: 'standard' | 'scrollable' | 'fullWidth';
-  px?: number;
-  py?: number;
+  sx?: SxProps;
 };
 
 export const TabComponent: FC<TabsProps> = ({
   items,
   variant,
   centered = false,
-  px,
-  py,
+  sx,
 }: TabsProps) => {
   const [currentTab, setCurrentTab] = React.useState(0);
 
@@ -64,13 +58,14 @@ export const TabComponent: FC<TabsProps> = ({
         onChange={(event, newValue: number) => {
           setCurrentTab(newValue);
         }}
+        sx={{ marginBottom: 6 }}
       >
         {items.map((item, index) => (
           <Tab key={index} label={item.title} />
         ))}
       </Tabs>
       {items.map((item, index) => (
-        <TabPanel key={index} value={currentTab} index={index} px={px} py={py}>
+        <TabPanel key={index} value={currentTab} index={index} sx={sx}>
           {item.content}
         </TabPanel>
       ))}
