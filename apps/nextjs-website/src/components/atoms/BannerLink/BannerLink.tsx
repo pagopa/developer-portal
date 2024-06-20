@@ -7,8 +7,8 @@ import { MediaCodec } from '../../../lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 
 export type BannerLinkProps = {
-  contentMaxWidth: number;
-  justify: string;
+  contentMaxWidth?: number;
+  justify?: string;
   content?: BlocksContent;
   title: string;
   icon: string | typeof MediaCodec;
@@ -19,12 +19,12 @@ export type BannerLinkProps = {
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
-  contentMaxWidth,
+  contentMaxWidth = 450,
   theme,
   content,
   icon,
   title,
-  justify,
+  justify = 'center',
   count = 2,
   boxMediumPadding = '0px 130px',
   centerBannerWidth = count <= 2 ? 700 : 466,

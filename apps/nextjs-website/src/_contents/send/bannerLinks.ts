@@ -27,7 +27,5 @@ export const sendBannerLinks: readonly BannerLinkProps[] = [
       },
     ],
     title: 'Hai bisogno di aiuto?',
-    contentMaxWidth: 448,
-    justify: 'center',
   },
 ];
