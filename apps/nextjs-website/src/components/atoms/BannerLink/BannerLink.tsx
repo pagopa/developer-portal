@@ -1,4 +1,3 @@
-import * as t from 'io-ts/lib';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
