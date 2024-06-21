@@ -4,7 +4,7 @@ This folder contains all the details to run a RAG using the documentation provid
 
 This chatbot uses [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
-The documentation is read from ~750 HTML files by [`BeautifulSoup`](https://pypi.org/project/beautifulsoup4/). Check out `src/modules/vector_database.py`.
+The documentation is made by ~750 HTML files and each file is loaded and read by [`BeautifulSoup`](https://pypi.org/project/beautifulsoup4/). Check out `src/modules/vector_database.py`.
 
 The retriver chosen is the `Auto Merging Retriver` one and it was implemented using [`llama-index`](https://docs.llamaindex.ai/en/stable/). Check out `src/modules/retriever.py`.
 
