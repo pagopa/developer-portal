@@ -158,7 +158,7 @@
         },
         "confirmation": {
             "title": "Verifica la tua identità",
-            "body": "Abbiamo inviato un codice di verifica a <b>{email}</b><br>Il codice scade tra 3 minuti.",
+            "body": "Abbiamo inviato un codice di verifica a <b>{email}</b><br>Il codice scade tra 15 minuti.",
             "code": "Codice di verifica",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
@@ -222,7 +222,7 @@
             "title": "Verifica la tua identità",
             "code": "Codice di verifica",
             "confirmationCodeSent": "Abbiamo inviato un codice di verifica a ",
-            "confirmationCodeExpires": "Il codice scade tra 3 minuti.",
+            "confirmationCodeExpires": "Il codice scade tra 15 minuti.",
             "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
             "continue": "Continua",
             "resendEmail": "Reinvia email",
