@@ -51,7 +51,7 @@ type CreateAuthChallengeEnv = {
 
 // FIXME: we could get this parameter from the app client configuration
 // https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html
-export const OTP_DURATION_MINUTES = 3;
+export const OTP_DURATION_MINUTES = 15;
 
 export const makeHandler =
   (env: CreateAuthChallengeEnv) =>
