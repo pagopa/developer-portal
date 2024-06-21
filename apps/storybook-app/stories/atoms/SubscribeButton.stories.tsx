@@ -1,10 +1,10 @@
-import React from "react";
-import { Meta, StoryObj } from "@storybook/react";
-import { NextIntlProvider } from "next-intl";
-import SubscribeButton from "../../../nextjs-website/src/components/atoms/SubscribeButton/SubscribeButton";
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import SubscribeButton from '../../../nextjs-website/src/components/atoms/SubscribeButton/SubscribeButton';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof SubscribeButton> = {
-  title: "Atoms/SubscribeButton",
+  title: 'Atoms/SubscribeButton',
   component: SubscribeButton,
 };
 
@@ -16,11 +16,8 @@ export const Showcase: StoryObj<typeof SubscribeButton> = {
     onCancelSubscription: () => null,
     onSubscribe: () => null,
   },
-  render: (props) => (
-    <NextIntlProvider messages={{}} locale="it">
-      <SubscribeButton {...props} />
-    </NextIntlProvider>
-  ),
+  render: (props) => <SubscribeButton {...props} />,
+  decorators: [nextIntlContextDecorator],
 };
 
 export const LoadingShowcase: StoryObj<typeof SubscribeButton> = {
@@ -29,9 +26,6 @@ export const LoadingShowcase: StoryObj<typeof SubscribeButton> = {
     onCancelSubscription: () => null,
     onSubscribe: () => null,
   },
-  render: (props) => (
-    <NextIntlProvider messages={{}} locale="it">
-      <SubscribeButton {...props} />
-    </NextIntlProvider>
-  ),
+  render: (props) => <SubscribeButton {...props} />,
+  decorators: [nextIntlContextDecorator],
 };

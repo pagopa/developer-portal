@@ -13,7 +13,8 @@ export default meta;
 export const Showcase: StoryObj<typeof LiveWebinarChip> = {
   args: {},
   render: () => (
-    <NextIntlClientProvider locale="it" messages={{}}>
+    <NextIntlClientProvider locale='it' messages={{}}>
       <LiveWebinarChip />
-    </NextIntlClientProvider>)
+    </NextIntlClientProvider>
+  ),
 };
