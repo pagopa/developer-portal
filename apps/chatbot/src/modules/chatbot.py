@@ -149,8 +149,8 @@ class Chatbot():
 
     def _check_language(self, message_str, role):
         
-        lang = LANGUAGES[detect_language(message_str)]
-        logging.info(f"Detected {lang} at the last {role}'s message.")
+        lang = detect_language(message_str)
+        logging.info(f"Detected '{lang}' at the last {role}'s message.")
 
         return lang
 
@@ -158,7 +158,7 @@ class Chatbot():
     def generate(self, query_str):
 
         query_lang = self._check_language(query_str, "User")
-        if query_lang != "Italian":
+        if query_lang != "it":
             # query = model.acomplete(f"Traslate to Italian: {query_str}")
             # query = asyncio.run(asyncio.gather(query))
             # query_str = query[0].response.strip()
@@ -181,8 +181,8 @@ class Chatbot():
 
             else:
                 response_lang = self._check_language(response_str, "Assistant")
-                if response_lang != "Italian":
-                    logging.info(f"Translating it to Italian..")
+                if response_lang != "it":
+                    logging.info(f"Translating response to Italian..")
                     translation = self.model.complete(f"Traslate to Italian: {response_str}")
                     response_str = translation.text.strip()
 
@@ -198,7 +198,9 @@ class Chatbot():
         return response_str
     
 
-    # async def agenerate(self, query_str):
+    async def agenerate(self, query_str):
+        # TO DO
+        return None
 
     #     query_lang = self._check_language(query_str, "User")
     #     if query_lang != "Italian":
