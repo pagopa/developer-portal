@@ -2,4 +2,4 @@ index
 src/*/__pycache__
 *.ipynb
 
-/results_*
+/results
