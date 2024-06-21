@@ -1,4 +1,6 @@
-import { ProductLayoutProps } from '@/components/organisms/ProductLayout/ProductLayout';
+import ProductLayout, {
+  ProductLayoutProps,
+} from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuide, getGuidePaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
@@ -11,6 +13,7 @@ import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 type Params = {
   productSlug: string;
@@ -84,7 +87,27 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
-  return <GitBookTemplate {...props} isProductPage />;
+  return (
+    <ProductLayout
+      product={props.product}
+      path={props.path}
+      bannerLinks={props.bannerLinks}
+    >
+      <GitBookTemplate
+        menuName={props.guide.name}
+        breadcrumbs={[
+          ...productPageToBreadcrumbs(props.product, props.path, [
+            {
+              name: props.guide.name,
+              path: props.guide.path,
+            },
+          ]),
+        ]}
+        versionName={props.version.name}
+        {...props}
+      />
+    </ProductLayout>
+  );
 };
 
 export default Page;
