@@ -11,8 +11,6 @@ export default meta;
 
 export const Showcase: StoryObj<typeof BannerLink> = {
   args: {
-    contentMaxWidth: 448,
-    justify: 'center',
     theme: 'light',
     icon: {
       name: 'feedback.svg',

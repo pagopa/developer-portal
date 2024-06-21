@@ -10,7 +10,7 @@ export function mockText(wordCount?: number): string {
     return '';
   }
 
-  let result: string[] = [];
+  let result: readonly string[] = [];
   while (result.length < count) {
     result = result.concat(loremWords);
   }
@@ -19,28 +19,30 @@ export function mockText(wordCount?: number): string {
 }
 
 export function mockUrlBlock(args?: {
-  text?: string;
-  url?: string;
-  wordCount?: number;
+  readonly text?: string;
+  readonly url?: string;
+  readonly wordCount?: number;
 }): BlocksContent[0] {
-  let content: Partial<BlocksContent[0]> = {
+  const content: Partial<BlocksContent[0]> = {
     type: 'link',
     url: args?.url,
-    children: [{
-      type: 'text',
-      text: args?.text || mockText(args?.wordCount)
-    },],
+    children: [
+      {
+        type: 'text',
+        text: args?.text || mockText(args?.wordCount),
+      },
+    ],
   };
   return content as BlocksContent[0];
 }
 
 export function mockTextBlock(args?: {
-  type?: 'paragraph' | 'heading';
-  text?: string;
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
-  wordCount?: number;
+  readonly type?: 'paragraph' | 'heading';
+  readonly text?: string;
+  readonly level?: 1 | 2 | 3 | 4 | 5 | 6;
+  readonly wordCount?: number;
 }): BlocksContent[0] {
-  let content: Partial<BlocksContent[0]> = {
+  const content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
       {
@@ -57,20 +59,18 @@ export function mockTextBlock(args?: {
 
 const DEFAUTL_IMAGE_URL = 'https://dev.developer.pagopa.it/images/webinars.png';
 
-export function mockImageBlock(args?:{
-  url?: string,
-  width?: number,
-  height?: number}
+export function mockImageBlock(
+  url: string = DEFAUTL_IMAGE_URL
 ): BlocksContent[0] {
   return {
     type: 'image',
     image: {
       name: 'a-image.jpg',
       alternativeText: 'a-image.jpg',
-      url: args?.url || DEFAUTL_IMAGE_URL,
+      url,
       caption: null,
-      width: args?.width || 728,
-      height: args?.height || 416,
+      width: 728,
+      height: 416,
       formats: {
         thumbnail: {
           name: 'thumbnail_a-image.jpg',
