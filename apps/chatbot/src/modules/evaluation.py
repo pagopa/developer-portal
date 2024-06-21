@@ -21,7 +21,7 @@ from llama_index.core.evaluation.eval_utils import aget_responses
 
 from llama_index.core.evaluation import (
     AnswerRelevancyEvaluator,
-    ContextRelevancyEvaluator,
+    ContextRelevancyEvaluator
 )
 
 from src.modules.chatbot import Chatbot
@@ -138,7 +138,8 @@ Original Query: {query_str}
 Retrieved Context: {context_str}
 Existing answer: {existing_answer}
 ---------------------
-- Criteria for Refinement:
+Criteria for Refinement:
+- Completeness: a numerical score and feedback must be present.
 - Clarity: Ensure the feedback is clear and easily understandable.
 - Detail: Add any missing details that can provide a more comprehensive evaluation.
 - Balance: Make sure the feedback fairly represents both strengths and weaknesses of the context.
@@ -149,7 +150,8 @@ Score: 0.85
 Feedback: The context is highly relevant and accurate, providing detailed information that directly addresses the query. However, it could be improved by including specific examples or additional details about [specific aspect]. There is also a minor inaccuracy in [specific part], which slightly reduces the overall faithfulness.
 ---------------------
 Your Task:
-Refine the initial evaluation of the faithfulness of the given retrieved context based on the criteria above. Provide an updated score if necessary and a detailed, clear, and comprehensive feedback.
+Refine the existing answer of the given the retrieved context and the criteria above.
+Provide a score if this is missing in the existing answer, or updated it if necessary, with a detailed, clear, and comprehensive feedback.
 """
 
 
