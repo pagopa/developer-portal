@@ -18,34 +18,26 @@ export function mockText(wordCount?: number): string {
   return result.slice(0, count).join(' ');
 }
 
-export function mockUrlBlock(args?: {
-  readonly text?: string;
-  readonly url?: string;
-  readonly wordCount?: number;
-}): BlocksContent[0] {
-  const content: Partial<BlocksContent[0]> = {
-    type: 'link',
-    url: args?.url,
-    children: [
-      {
-        type: 'text',
-        text: args?.text || mockText(args?.wordCount),
-      },
-    ],
-  };
-  return content as BlocksContent[0];
-}
-
 export function mockTextBlock(args?: {
   readonly type?: 'paragraph' | 'heading';
   readonly text?: string;
   readonly level?: 1 | 2 | 3 | 4 | 5 | 6;
   readonly wordCount?: number;
+  readonly url?: string;
 }): BlocksContent[0] {
   const content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
-      {
+      args?.url ? {
+        type: 'link',
+        url: args.url,
+        children: [
+          {
+            type: 'text',
+            text: args?.text || mockText(args?.wordCount),
+          },
+        ],
+      } : {
         type: 'text',
         text: args?.text || mockText(args?.wordCount),
       },
