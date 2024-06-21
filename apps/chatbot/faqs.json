@@ -1,0 +1,98 @@
+[
+    {
+        "query": "GPD gestisce gi\u00e0 i pagamenti rateali multipli?",
+        "reference": "Non ancora, come illustrato nel webinar al momento \u00e8 gestita soltanto la casistica relativa alle opzioni di pagamento parziali (pagamento rateale unico), \u00e8 appena partita l'iniziativa Opzioni di Pagamento che andr\u00e0 a definire ed implementare ulteriori use case tra cui i pagamenti rateali multipli."
+    },
+    {
+        "query": "\u00c8 possibile pagare una posizione debitoria una volta scaduta?",
+        "reference": "Si \u00e8 possibile fare in modo che la posizione debitoria, seppur scaduta, risulti ancora pagabile utilizzando la property retentionDate, soltanto al sopraggiungere di quest'ulteriore data di scadenza la posizione debitoria entrer\u00e0 nello stato EXPIRED."
+    },
+    {
+        "query": "\u00c8 previsto un inserimento massivo delle posizioni debitorie?",
+        "reference": "Si \u00e8 stata messa a disposizione la gestione massiva delle posizioni debitorie la cui documentazione \u00e8 reperibile alla pagina \"Introduzione | Gestione massiva Posizioni Debitorie\" e che sar\u00e0 oggetto di un webinar dedicato nel corso delle prossime settimane."
+    },
+    {
+        "query": "Nel caso di ente multi intermediato attivando la stazione broadcast tutti gli PT riceveranno tutte le notifiche anche di Posizioni debitorie anche quelle non di loro competenza? Se si come vengono rispettate le regole della privacy /gdpr?",
+        "reference": "Corretto, in questo momento il funzionamento della stazione di broadcast \u00e8 quello descritto nella domanda, sono in corso le analisi per l'inserimento di un filtro nell'invio delle receipt."
+    },
+    {
+        "query": "GPD gestisce i pagamenti spontanei?",
+        "reference": "La piattaforma \u00e8 predisposta per la gestione dei pagamenti spontanei, le modalit\u00e0 di attivazione saranno rese note nelle prossime settimane."
+    },
+    {
+        "query": "Tra i modelli degli avvisi di pagamento \u00e8 prevista una variante \"Avviso senza scadenza\", \u00e8 possibile quindi creare una PD senza data di scadenza?",
+        "reference": "Attualmente la data di scadenza \u00e8 obbligatoria, \u00e8 possibile agire sulla dueDate (data scadenza) o sulla retentionDate (data entro la quale seppur scaduta la posizione \u00e8 ancora pagabile) impostando scadenze sufficientemente lunghe."
+    },
+    {
+        "query": "L'ente in che modo deve dare evidenza del passaggio alla rendicontazione asincrona? Qual \u00e8 la end date per il passaggio? Che costi deve sostenere?",
+        "reference": "Gli Enti Creditori dovranno comunicare a PagoPA S.p.A. la modalit\u00e0 di integrazione prescelta entro e non oltre il 30 giugno 2024.\nL'integrazione asincrona non prevede costi aggiuntivi per gli enti e/o i partner, per quanto riguarda l'integrazione sincrona, in caso di pagamento in standin (indisponibilit\u00e0 dell'ente creditore a runtime) sono previste delle commissioni."
+    },
+    {
+        "query": "L'ente in che modo deve comunicare la scelta e a chi?",
+        "reference": "Gli Enti Creditori aderenti dovranno comunicare (direttamente o per il tramite dei Partner/Intermediari tecnologici) il proprio piano di migrazione alla modalit\u00e0 di integrazione prescelta  (sincrona e/o asincrona)  cos\u00ec come da comunicazione trasmessa in data 20 marzo 2024."
+    },
+    {
+        "query": "Quali possono essere i vantaggi sostanziali dell'utilizzo della modalit\u00e0 asincrona per l'ente, rispetto a quella sincrona?",
+        "reference": "Per tutti i vantaggi derivanti dall'integrazione asincrona invito a rivedere l'ultima sezione del webinar pubblicato sul Developer Portal PagoPA."
+    },
+    {
+        "query": "ci sono delle scadenze per gli enti per scegliere la modalit\u00e0 asincrona?",
+        "reference": "Si, Gli Enti Creditori dovranno comunicare a PagoPA S.p.A. la modalit\u00e0 di integrazione prescelta entro e non oltre il 30 giugno 2024."
+    },
+    {
+        "query": "la gestione \u00e8 onerosa nei casi in cui vi sia un numero elevato di posizioni debitorie di cui occorre attualizzare l'importo nel tempo, questo aspetto \u00e8 stato valutato? Se si come?",
+        "reference": "Per venire incontro a questa esigenza \u00e8 stata implementata la gestione massiva delle posizioni debitorie."
+    },
+    {
+        "query": "Caso d'uso \"Portale dell'EC: erogazione di un servizio contestualemente al pagamento\" nel caso si debba far riferimento all'url di redirect al termine del processo di pagamento, l'url \u00e8 securizzata in modo da garantirne l'integrit\u00e0?",
+        "reference": "Le tempistiche sono le stesse di un normale pagamento, a valle della chiusura con esito positivo viene inviata la receipt."
+    },
+    {
+        "query": "Le due modalit\u00e0 di integrazione sincrona e asincrona possono coesistere per il medesimo ente?",
+        "reference": "Si, \u00e8 possibile configurare contestualmente una o pi\u00f9 tipologia di pagamento in asincrono e una o pi\u00f9 tipologie di pagamento in sincrono, le configurazioni delle stazioni sono per codice segregazione del pagamento."
+    },
+    {
+        "query": "Come vantaggi si pu\u00f2 esplicitare l'integrazione con SEND?",
+        "reference": "Si, l'integrazione con SEND per l'aggiornamento dei costi di notifica viene gestita internamente a PagoPA in caso di integrazione asincrona."
+    },
+    {
+        "query": "Si pu\u00f2 considerare il GPD come uno strumento per mantenere la disponibilit\u00e0 al pagamento anche durante disservizi dell'EC per tipologie di pagamento che non richiedono un processo di pagamento particolarmente personalizzato?",
+        "reference": "Si, come illustrato nel webinar l'integrazione asincrona non prevede il colloquio con l'infrastruttura dell'ente/partner durante il processo di pagamento."
+    },
+    {
+        "query": "Cosa succede alle Posizioni Debitorie invalidate? vengono eliminate o possono essere recuperate per ripetere l'operazione?",
+        "reference": "Attualmente le posizioni debitorie nello stato INVALID non possono subire altri cambi di stato, rimangono comunque nell'archivio e possono essere consultate. Ad ogni modo qualora il cambio di stato INVALID->DRAFT/VALID risultasse particolarmente utile ai fini della gestione lato ente/partner, potremmo anche analizzare la possibilit\u00e0 di modificare la macchina a stati."
+    },
+    {
+        "query": "Il GPD gestisce il caricamento di rate che presentano un doppio importo pagabile? ad esempio, un importo scontato e uno intero facendo in modo che al pagamento di uno si escluda il pagamento dell'altra soluzione per una rata specifica?",
+        "reference": "Si, GPD consente ad esempio di inserire due posizioni debitorie, la prima con importo ridotto con scadenza breve ed una con scadenza pi\u00f9 lunga con importo maggiorato, il pagamento di una delle due chiude la posizione debitoria PAID."
+    },
+    {
+        "query": "In merito al GPD, l'onere di mantenere le informazioni specifiche della tipologia di pagamento rimane al sistema dell'ente creditore?",
+        "reference": "Si, l'onere di tenere aggiornati i dati presenti all'interno dell'archivio rimane dell'ente/partner."
+    },
+    {
+        "query": "Il GPD gestisce il caso di posizioni debitorie con l'importo da aggiornare al momento del pagamento?",
+        "reference": "Si, come visto nel webinar, fin quando la posizione si trova in stato VALID \u00e8 sempre possibile aggiornare l'importo come."
+    },
+    {
+        "query": "Se utilizzo GPD per caricare le posizioni debitorie. Ho la possibilit\u00e0 di utilizzare il carrello?",
+        "reference": "Si, il ruolo di GPD nel processo di pagamento prescinde dal fatto che si stia pagando un singolo avviso o un carrello di avvisi."
+    },
+    {
+        "query": "Nelle SANP il GPD viene indicato che le informazioni sono segregate per EC. Questo significa che vari PT che interagiscono con GPD per conto dell'EC hanno accesso a tutto l'APA dell'EC? ",
+        "reference": "No, hanno accesso soltanto alle posizioni debitorie afferenti alle tipologie di pagamento configurate sulle proprie stazioni, non hanno accesso alle tipologie configurate sulle stazioni di altri PT, la distinzione avviene mediante codice segregazione dello IUV."
+    },
+    {
+        "query": "La posizione debitoria ha la data di creazione?",
+        "reference": "Si, la data di creazione coincide con la insertedDate che ancora non esponiamo a livello di api ma che possiamo aggiungere tranquillamente alle varie interfacce."
+    },
+    {
+        "query": "Ci sono diversi Partner che gestiscono ed espongono WS per la gestione dei pagamenti (carica posizione, check stato, ecc.). Questa chiamate sono diverse in base al Partner, esiste ed \u00e8 possibile usare quelle generiche di PagoPA?",
+        "reference": "Le api esposte dalla piattaforma GPD possono essere utilizzate sia dai partner che dagli enti per gestire l'archivio delle posizioni debitorie sui sistemi PagoPA, la piattaforma GPD non interviene nell'interlocuzione tra enti creditori e partner tecnologici."
+    },
+    {
+        "query": "GPD fornir\u00e0 un'API per avere evidenza delle posizioni debitorie in carico a una persona fisica (tramite suo CF), per un ente creditore ed eventualmente voce tassonomica? \u00c8 necessario per mostrare tali dovuti nell'Area personale dei siti PA",
+        "reference": "Questa \u00e8 una feature che verr\u00e0 messa a disposizione prossimamente dalla piattaforma pagoPA (non direttamente da GPD), l'iniziativa si chiama Pagamenti Pull."
+    }
+]
