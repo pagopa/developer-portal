@@ -12,6 +12,6 @@ export const Showcase: StoryObj<typeof SiteLabel> = {
   args: {
     title: 'This is the title',
     boldTitle: 'This is the bold title',
-    color: 'contrastText'
+    color: 'contrastText',
   },
 };

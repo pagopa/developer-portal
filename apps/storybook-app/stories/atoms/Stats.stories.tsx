@@ -14,18 +14,18 @@ export const Showcase: StoryObj<typeof Stats> = {
       {
         title: '+50%',
         subtitle: 'Some Subtitle',
-        description: "Some very long text description",
+        description: 'Some very long text description',
       },
       {
         title: '15%',
         subtitle: 'Some Subtitle',
-        description: "Some very long text description",
+        description: 'Some very long text description',
       },
       {
         title: '2 mesi',
         subtitle: 'Some Subtitle',
-        description: "Some very long text description",
-      }
+        description: 'Some very long text description',
+      },
     ],
   },
 };
