@@ -38,16 +38,30 @@ with gr.Blocks() as demo:
     gr_chatbot = gr.Chatbot(
         [],
         elem_id="chatbot",
+        avatar_images=(
+            "src/app/user.png",
+            "src/app/chatbot.png"
+        ),
         bubble_full_width=False
     )
 
-    chat_input = gr.MultimodalTextbox(interactive=True, file_types=["image"], placeholder="Enter message or upload file...", show_label=False)
+    chat_input = gr.MultimodalTextbox(
+        interactive=True,
+        file_types=None,
+        placeholder="Enter message..",
+        show_label=False
+    )
 
     chat_msg = chat_input.submit(add_message, [gr_chatbot, chat_input], [gr_chatbot, chat_input])
     bot_msg = chat_msg.then(bot, gr_chatbot, gr_chatbot, api_name="bot_response")
     bot_msg.then(lambda: gr.MultimodalTextbox(interactive=True), None, [chat_input])
 
     gr_chatbot.like(print_like_dislike, None, None)
+
+    clear = gr.ClearButton(
+        value="Clear chat",
+        components=[chat_input, gr_chatbot]
+    )
 
 demo.queue()
 
