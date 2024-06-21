@@ -44,7 +44,7 @@ type EcosystemProps = {
   readonly productsTabName: string;
   readonly products: CardsGridProps['cards'];
   readonly solutionsTabName: string;
-  readonly solutions: CardsGridProps['cards'];
+  readonly solutions?: CardsGridProps['cards'];
   readonly solutionsCta?: EcosystemSolutionsCtaProps;
 };
 

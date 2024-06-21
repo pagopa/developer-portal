@@ -6,12 +6,11 @@ import { send } from '@/_contents/send/send';
 import { appIo } from '@/_contents/appIo/appIo';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
-import { HomepageProps } from '@/lib/homepage';
 import { Product } from '@/lib/types/product';
 
 const productToEcosystemProduct = (product: Product) => ({
   title: product.name,
-  text: product.description,
+  text: product.description ?? '',
   href: product.slug,
   icon: product.logo.url,
 });
@@ -127,7 +126,7 @@ export const translations = {
       ],
       solutionsTabName: 'Per soluzioni',
       solutions: [],
-    } as HomepageProps['ecosystem'],
+    },
     heroItems: [
       {
         title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
