@@ -184,7 +184,7 @@ class Chatbot():
                 if response_lang != "Italian":
                     logging.info(f"Translating it to Italian..")
                     translation = self.model.complete(f"Traslate to Italian: {response_str}")
-                    response_str = translation.text
+                    response_str = translation.text.strip()
 
                 if len(nodes) > 0:
                     metadata = nodes[0].metadata
@@ -198,49 +198,52 @@ class Chatbot():
         return response_str
     
 
-    def agenerate(self, query_str):
+    # async def agenerate(self, query_str):
 
-        query_lang = self._check_language(query_str, "User")
-        if query_lang != "Italian":
-            # query = model.acomplete(f"Traslate to Italian: {query_str}")
-            # query = asyncio.run(asyncio.gather(query))
-            # query_str = query[0].response.strip()
-            response_str = (
-                f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
-                "Chiedimi la prossima domanda in italiano."
-            )
+    #     query_lang = self._check_language(query_str, "User")
+    #     if query_lang != "Italian":
+    #         # query = model.acomplete(f"Traslate to Italian: {query_str}")
+    #         # query = asyncio.run(asyncio.gather(query))
+    #         # query_str = query[0].response.strip()
+    #         response_str = (
+    #             f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
+    #             "Chiedimi la prossima domanda in italiano."
+    #         )
 
-        else:
+    #     else:
 
-            response = asyncio.run(asyncio.gather(
-                self.engine.aquery(query_str)
-            ))[0]
-            print(response)
-            nodes = response.source_nodes
-            response_str = response.response.strip()
+    #         response = self.engine.aquery(query_str)
 
-            if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-                response_str = (
-                    "Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.\n"
-                    "Chiedimi una nuova domanda."
-                )
+    #         return response
+    
 
-            else:
-                response_lang = self._check_language(response_str, "Assistant")
-                if response_lang != "Italian":
-                    logging.info(f"Translating it to Italian..")
-                    translation = asyncio.run(asyncio.gather(
-                        self.model.acomplete(f"Traslate to Italian: {response_str}")
-                    ))[0]
-                    response_str = translation.text
+    # async def apost_processing(self):
 
-                if len(nodes) > 0:
-                    metadata = nodes[0].metadata
-                    if metadata['source'] != "" and metadata['title'] != "":
-                        response_str += f"\n\n**Link:** [{metadata['title']}]({metadata['source']})"
+    #     nodes = response.source_nodes
+    #     response_str = response.response.strip()
 
-            # update messages
-            self._update_messages("User", query_str)
-            self._update_messages("Assistant", response_str)
+    #     if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
+    #         response_str = (
+    #             "Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.\n"
+    #             "Chiedimi una nuova domanda."
+    #         )
 
-        return response_str
+    #     else:
+    #         response_lang = self._check_language(response_str, "Assistant")
+    #         if response_lang != "Italian":
+    #             logging.info(f"Translating it to Italian..")
+    #             translation = asyncio.run(asyncio.gather(
+    #                 self.model.acomplete(f"Traslate to Italian: {response_str}")
+    #             ))[0]
+    #             response_str = translation.text
+
+    #         if len(nodes) > 0:
+    #             metadata = nodes[0].metadata
+    #             if metadata['source'] != "" and metadata['title'] != "":
+    #                 response_str += f"\n\n**Link:** [{metadata['title']}]({metadata['source']})"
+
+    #     # update messages
+    #     self._update_messages("User", query_str)
+    #     self._update_messages("Assistant", response_str)
+
+    # return response_str
