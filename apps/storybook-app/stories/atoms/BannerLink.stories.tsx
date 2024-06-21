@@ -25,7 +25,13 @@ export const Showcase: StoryObj<typeof BannerLink> = {
     title: 'Titolo',
     count: 1,
     content: [
-      { ...mockTextBlock({ type: 'paragraph', wordCount: 2, url: "https://www.google.com" }) },
+      {
+        ...mockTextBlock({
+          type: 'paragraph',
+          wordCount: 2,
+          url: 'https://www.google.com',
+        }),
+      },
       {
         type: 'list',
         format: 'unordered',
