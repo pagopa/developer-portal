@@ -67,8 +67,26 @@ runs:
       run: npm run compile
 
     - name: Download GitBook docs
+      uses: actions/checkout@v4
+      with:
+        repository: pagopa/devportal-docs
+        ref: docs/from-gitbook
+        path: apps/nextjs-website/checkout_path
+        fetch-depth: 1
+    
+    - name: Copy Assets
       shell: bash
-      run: npm run download-docs -w nextjs-website
+      working-directory: apps/nextjs-website
+      run: |
+        # remove old docs if any
+        rm -rf ./docs
+        mv ./checkout_path/docs .
+        # copy all the gitbook assets to public assets of nextjs-website
+        dest='public/gitbook/'
+        # create all the assets folder otherwise the copy will fail
+        find docs -type d -path '*/.gitbook/assets' -exec mkdir -p $dest'{}' ';'
+        # copy all the assets from docs to public assets of nextjs-website
+        find docs -type f -path '*/.gitbook/*' -exec cp '{}' $dest'{}' ';'
 
     - name: Build static website
       env:
@@ -94,9 +112,23 @@ runs:
         aws_region: ${{ inputs.aws_region }}
         role_to_assume: ${{ inputs.iam_role }}
 
-    - name: Deploy to S3 Bucket
+    - name: Deploy to S3 Bucket with parallel sync commands
       shell: bash
-      run: aws s3 sync ./apps/nextjs-website/out s3://${{ inputs.bucket }} --delete
+      env:
+        OUT_DIR: ./apps/nextjs-website/out
+        S3_BUCKET: s3://${{ inputs.bucket }}
+      run: |
+        # Sync files in the root of the out directory
+        aws s3 sync "$OUT_DIR" "$S3_BUCKET" --exclude "*/*" --delete --only-show-errors
+        # Sync subdirectories in the out directory
+        for subdir in "$OUT_DIR"/*/; do
+          if [ -d "$subdir" ]; then
+            subdir_name=$(basename "$subdir")
+            aws s3 sync "$subdir" "$S3_BUCKET/$subdir_name" --delete --only-show-errors &
+          fi
+        done
+        # Wait for all sync operations to complete
+        wait
 
     - name: Create AWS Cloudfront Invalidation
       shell: bash
