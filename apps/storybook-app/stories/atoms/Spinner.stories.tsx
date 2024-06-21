@@ -9,5 +9,5 @@ const meta: Meta<typeof Spinner> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof Spinner> = {
-    args: {},
+  args: {},
 };

@@ -10,8 +10,11 @@ export function mockText(wordCount?: number): string {
     return '';
   }
 
+  // eslint-disable-next-line functional/no-let
   let result: readonly string[] = [];
+  // eslint-disable-next-line functional/no-loop-statements
   while (result.length < count) {
+    // eslint-disable-next-line functional/no-expression-statements
     result = result.concat(loremWords);
   }
 
@@ -28,22 +31,25 @@ export function mockTextBlock(args?: {
   const content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
-      args?.url ? {
-        type: 'link',
-        url: args.url,
-        children: [
-          {
+      args?.url
+        ? {
+            type: 'link',
+            url: args.url,
+            children: [
+              {
+                type: 'text',
+                text: args?.text || mockText(args?.wordCount),
+              },
+            ],
+          }
+        : {
             type: 'text',
             text: args?.text || mockText(args?.wordCount),
           },
-        ],
-      } : {
-        type: 'text',
-        text: args?.text || mockText(args?.wordCount),
-      },
     ],
   };
   if (content.type === 'heading') {
+    // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
     content.level = args?.level || 5;
   }
   return content as BlocksContent[0];
