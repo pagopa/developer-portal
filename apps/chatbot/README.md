@@ -4,7 +4,9 @@ This folder contains all the details to run a RAG using the documentation provid
 
 This chatbot uses [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
-The documentation is read from ~750 HTML files by [`BeautifulSoup`](https://pypi.org/project/beautifulsoup4/). The retriver chosen is the `Auto Merging Retriver` implemented with [`llama-index`](https://docs.llamaindex.ai/en/stable/).
+The documentation is read from ~750 HTML files by [`BeautifulSoup`](https://pypi.org/project/beautifulsoup4/). Check out `src/modules/vector_database.py`.
+
+The retriver chosen is the `Auto Merging Retriver` one and it was implemented using [`llama-index`](https://docs.llamaindex.ai/en/stable/). Check out `src/modules/retriever.py`.
 
 All the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `params.yaml`.
 
@@ -12,18 +14,18 @@ All the parameters used to build the Retrieval-Augmented Generation (RAG) arem s
 
 Before creating your virtual environment, install [Miniconda](https://docs.anaconda.com/miniconda/#quick-command-line-install) and [Poetry](https://python-poetry.org/docs/main#installation) on your device.
 
-Successively, create your virtual conda environment as:
+Once you are ready, create your virtual conda environment:
 
     conda create -n chatbot python=3.12 -y
     conda activate chatbot
 
-In the end, install the requirements doing:
+In the end, install the requirements:
 
     poetry install
 
 ## Set python path
 
-The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHONPATH` to the workdirectory, simply do:
+The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHONPATH` to the such path, simply do:
 
     export PYTHONPATH=$PWD
 
@@ -39,6 +41,4 @@ This script reads the documentation, split it into chucks with gerarchical organ
 
     python src/app/app.py
 
-This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the created RAG. 
-
-Here you can interact with the implemented chatbot.
+This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the created chatbot.
