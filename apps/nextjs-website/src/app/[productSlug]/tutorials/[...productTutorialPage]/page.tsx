@@ -25,8 +25,7 @@ import RelatedLinks, {
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
-import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import TutorialPageTemplate from '@/components/templates/TutorialPageTemplate/TutorialPageTemplate';
 
 type Params = {
   productSlug: string;
@@ -87,24 +86,14 @@ const Page = async ({ params }: { params: Params }) => {
 
   if (strapiTutorialProps) {
     return (
-      <ProductLayout
-        product={strapiTutorialProps.product}
+      <TutorialPageTemplate
+        bannerLinks={strapiTutorialProps.bannerLinks}
+        content={strapiTutorialProps.content}
         path={strapiTutorialProps.path}
-        // bannerLinks={strapiTutorialProps.bannerLinks} // TODO: refactor bannerLinks
-      >
-        <Box mt={5}>
-          {strapiTutorialProps.title && (
-            <Abstract title={strapiTutorialProps.title} />
-          )}
-          <BlocksRendererClient content={strapiTutorialProps.content} />
-        </Box>
-        {strapiTutorialProps.relatedLinks && (
-          <RelatedLinks
-            title={strapiTutorialProps.relatedLinks?.title}
-            links={strapiTutorialProps.relatedLinks?.links ?? []}
-          />
-        )}
-      </ProductLayout>
+        product={strapiTutorialProps.product}
+        relatedLinks={strapiTutorialProps.relatedLinks}
+        title={strapiTutorialProps.title}
+      />
     );
   }
 

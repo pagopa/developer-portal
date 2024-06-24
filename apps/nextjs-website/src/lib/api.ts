@@ -11,11 +11,12 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
-  getTutorialsProps,
   getQuickStartsProps,
+  getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
+import { TutorialsProps } from '@/lib/tutorials';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -110,7 +111,7 @@ export async function getStrapiTutorial(
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialsFromStrapi = await getTutorialsProps();
+  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps();
 
   const tutorialFromStrapi = tutorialsFromStrapi.find(
     ({ path }) => path === tutorialPath
