@@ -3,6 +3,7 @@ import { StrapiQuickStarts } from './strapi/quickStarts';
 import { products, quickStartGuides } from '@/_contents/products';
 import { Part } from './types/part';
 import { Step } from './types/step';
+import { partFromStrapiPart } from './strapi/codecs/PartCodec';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -10,8 +11,6 @@ type StaticQuickStarts = typeof quickStartGuides;
 
 type QuickstartGuideItem =
   StrapiQuickStarts['data'][0]['attributes']['quickstartGuideItems']['data'][0];
-
-type StrapiPart = QuickstartGuideItem['attributes']['parts'][0];
 
 function stepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
   return {
@@ -21,46 +20,6 @@ function stepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
       .map((part) => partFromStrapiPart(part))
       .filter((part) => !!part) as ReadonlyArray<Part>,
   };
-}
-
-function partFromStrapiPart(part: StrapiPart): Part | null {
-  switch (part.__component) {
-    case 'parts.alert':
-      return {
-        component: 'alert',
-        ...part,
-      };
-    case 'parts.api-tester':
-      return {
-        component: 'apiTester',
-        apiRequest: {
-          ...part.requestCode,
-          description: part.requestDescription,
-          attributes: part.requestAttributes,
-        },
-        apiResponse: {
-          ...part.responseCode,
-          description: part.responseDescription,
-        },
-      };
-    case 'parts.code-block':
-      return {
-        component: 'codeBlock',
-        ...part,
-      };
-    case 'parts.html':
-      return {
-        component: 'blockRenderer',
-        html: part.html,
-      };
-    case 'parts.embed-html':
-      return {
-        component: 'innerHTMLLazyLoaded',
-        html: part.html,
-      };
-    default:
-      return null;
-  }
 }
 
 export function makeQuickStartsProps(

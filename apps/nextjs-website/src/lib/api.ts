@@ -11,6 +11,7 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
+  getCaseHistoriesProps,
   getQuickStartsProps,
   getTutorialsProps,
   getWebinarsProps,
@@ -189,6 +190,13 @@ export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
     (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
+  );
+  return props;
+}
+
+export async function getCaseHistory(caseHistorySlug?: string) {
+  const props = manageUndefined(
+    (await getCaseHistoriesProps()).find(({ slug }) => slug === caseHistorySlug)
   );
   return props;
 }

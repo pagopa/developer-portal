@@ -1,6 +1,6 @@
 {
   "name": "storybook-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "storybook": "storybook dev -p 6006 --no-open",
@@ -16,7 +16,12 @@
     "@storybook/nextjs": "^7.6.17",
     "@storybook/react": "^7.6.17",
     "@storybook/test": "^7.6.17",
+    "@types/dotenv-webpack": "^7.0.7",
+    "dotenv-webpack": "^8.1.0",
     "lazy-universal-dotenv": "^4.0.0",
+    "eslint": "8.47.0",
+    "eslint-config-custom": "*",
+    "eslint-config-next": "13.4.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.6.17"
