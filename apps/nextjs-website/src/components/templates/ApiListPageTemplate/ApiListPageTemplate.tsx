@@ -8,7 +8,6 @@ import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import BannerLinks, {
   BannerLinksProps,
 } from '@/components/molecules/BannerLinks/BannerLinks';
-import { Padding } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 export type ApiListPageTemplateProps = {
@@ -30,7 +29,6 @@ export type ApiListPageTemplateProps = {
     tags?: { readonly label: string }[];
   }[];
   readonly bannerLinks: BannerLinksProps;
-  //Add banner links
 };
 
 const ApiListPageTemplate = ({
@@ -58,6 +56,7 @@ const ApiListPageTemplate = ({
         subtitle={hero.subtitle}
         theme={'light'}
         smallHeight='272px'
+        titleVariant='h4'
         gridTextSx={{
           justifyContent: 'center',
         }}
