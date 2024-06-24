@@ -195,8 +195,9 @@ export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
 }
 
 export async function getCaseHistory(caseHistorySlug?: string) {
-  const props = manageUndefined(
-    (await getCaseHistoriesProps()).find(({ slug }) => slug === caseHistorySlug)
+  return manageUndefined(
+    (await getCaseHistoriesProps()).find(
+      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
+    )
   );
-  return props;
 }
