@@ -5,7 +5,11 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import { AlignVerticalCenter } from '@mui/icons-material';
+import BannerLinks, {
+  BannerLinksProps,
+} from '@/components/molecules/BannerLinks/BannerLinks';
+import { Padding } from '@mui/icons-material';
+import { Box } from '@mui/material';
 
 export type ApiListPageTemplateProps = {
   readonly breadcrumbs: {
@@ -25,6 +29,7 @@ export type ApiListPageTemplateProps = {
     icon: string;
     tags?: { readonly label: string }[];
   }[];
+  readonly bannerLinks: BannerLinksProps;
   //Add banner links
 };
 
@@ -32,6 +37,7 @@ const ApiListPageTemplate = ({
   breadcrumbs,
   hero,
   cards,
+  bannerLinks,
 }: ApiListPageTemplateProps) => {
   console.log(breadcrumbs.product.name);
   return (
@@ -56,11 +62,17 @@ const ApiListPageTemplate = ({
           justifyContent: 'center',
         }}
       />
-      <CardsGrid
-        cardVariant='outlined'
-        cards={cards}
-        cardSvg={true}
-        cardSize={{ xs: 12, md: 16 / cards.length }}
+      <Box paddingBottom={'80px'}>
+        <CardsGrid
+          cardVariant='outlined'
+          cards={cards}
+          cardSvg={true}
+          cardSize={{ xs: 12, md: 16 / cards.length }}
+        />
+      </Box>
+      <BannerLinks
+        bannerLinkMaxWidth={bannerLinks.bannerLinkMaxWidth}
+        banners={bannerLinks.banners}
       />
     </>
   );
