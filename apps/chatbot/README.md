@@ -33,6 +33,8 @@ In this way, `PYTHONPATH` points to where the Python packages and modules are, n
 
 ## Create the knowledge vector database
 
+First of all, verify that the HTM files that compose the Developer Portal documentation exist in `apps/nextjs-website/out`. If it exist, then create the vector index with:
+
     python src/modules/create_vector_index.py --params params.yaml
 
 This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index`. Have a look at the parameters in `params.yaml` for more details.
