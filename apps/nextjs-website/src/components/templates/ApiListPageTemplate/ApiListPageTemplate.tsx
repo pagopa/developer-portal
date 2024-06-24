@@ -5,6 +5,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import { AlignVerticalCenter } from '@mui/icons-material';
 
 export type ApiListPageTemplateProps = {
   readonly breadcrumbs: {
@@ -17,13 +18,12 @@ export type ApiListPageTemplateProps = {
     readonly subtitle: string;
   };
   readonly cards: {
-    comingSoon?: boolean;
     title: string;
     text: string;
+    ctaLabel?: string;
     href?: string;
     icon: string;
-    iconColor?: string;
-    tags?: { readonly label: string; readonly path?: string }[];
+    tags?: { readonly label: string }[];
   }[];
   //Add banner links
 };
@@ -47,8 +47,21 @@ const ApiListPageTemplate = ({
           ]}
         />
       </EContainer>
-      <Hero title={hero.title} subtitle={hero.subtitle} theme={'light'} />
-      <CardsGrid cards={cards} cardSize={{ xs: true, md: false }} />
+      <Hero
+        title={hero.title}
+        subtitle={hero.subtitle}
+        theme={'light'}
+        smallHeight='272px'
+        gridTextSx={{
+          justifyContent: 'center',
+        }}
+      />
+      <CardsGrid
+        cardVariant='outlined'
+        cards={cards}
+        cardSvg={true}
+        cardSize={{ xs: 12, md: 16 / cards.length }}
+      />
     </>
   );
 };
