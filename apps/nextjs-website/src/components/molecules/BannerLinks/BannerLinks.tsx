@@ -4,13 +4,26 @@ import { Stack } from '@mui/material';
 import {
   BannerLink,
   BannerLinkProps,
-} from '@/editorialComponents/BannerLink/BannerLink';
+} from '@/components/atoms/BannerLink/BannerLink';
 
 type BannerLinksProps = {
   banners?: readonly BannerLinkProps[];
+  bannerLinkMaxWidth?: number;
 };
 
-const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
+function CalculateJustify(index: number, length: number) {
+  return (
+    (length === 1 && 'center') ||
+    (index === 0 && 'right') ||
+    (index === length - 1 && 'left') ||
+    'center'
+  );
+}
+
+export const BannerLinks: FC<BannerLinksProps> = ({
+  banners,
+  bannerLinkMaxWidth = 450,
+}) => (
   <Stack
     direction={{ xs: 'column', md: 'row' }}
     justifyContent='space-between'
@@ -19,13 +32,16 @@ const BannerLinks: FC<BannerLinksProps> = ({ banners }) => (
       width: '100%',
     }}
   >
-    {banners?.map((banner) => (
+    {banners?.map((banner, index) => (
       <BannerLink
-        key={banner.title}
+        contentMaxWidth={bannerLinkMaxWidth}
+        justify={CalculateJustify(index, banners.length)}
+        key={index}
         title={banner.title}
+        icon={banner.icon}
+        content={banner.content}
+        count={banners.length}
         theme={banner.theme}
-        body={banner.body}
-        decoration={banner.decoration}
       />
     ))}
   </Stack>
