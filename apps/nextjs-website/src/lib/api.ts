@@ -112,7 +112,9 @@ export async function getStrapiTutorial(
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps();
+  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps(
+    productSlug
+  );
 
   const tutorialFromStrapi = tutorialsFromStrapi.find(
     ({ path }) => path === tutorialPath
@@ -177,7 +179,7 @@ export async function getTutorials(
   productSlug?: string
 ): Promise<readonly Tutorial[]> {
   const { tutorials } = await getTutorialListPageProps(productSlug);
-  const tutorialsFromCMS = await getTutorialsProps();
+  const tutorialsFromCMS = await getTutorialsProps(productSlug);
   return [...tutorials, ...tutorialsFromCMS];
 }
 

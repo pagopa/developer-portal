@@ -8,9 +8,10 @@ export type TutorialsProps = readonly (Tutorial & {
 })[];
 
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials
+  strapiTutorials: StrapiTutorials,
+  productSlug?: string
 ): TutorialsProps {
-  return strapiTutorials.data.map(({ attributes }) => ({
+  const tutorialsProps = strapiTutorials.data.map(({ attributes }) => ({
     showInOverview: false, // TODO: remove this when overview data are fetched from Strapi
     image: attributes.image.data
       ? {
@@ -28,4 +29,8 @@ export function makeTutorialsProps(
     relatedLinks: attributes.relatedLinks,
     bannerLinks: attributes.bannerLinks,
   }));
+
+  return productSlug
+    ? tutorialsProps.filter((tutorial) => tutorial.productSlug === productSlug)
+    : tutorialsProps;
 }

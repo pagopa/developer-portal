@@ -57,14 +57,14 @@ export const getWebinarsProps = async () => {
   }
 };
 
-export const getTutorialsProps = async () => {
+export const getTutorialsProps = async (productSlug?: string) => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
     const strapiTutorials = await fetchTutorials(buildEnv);
-    return makeTutorialsProps(strapiTutorials);
+    return makeTutorialsProps(strapiTutorials, productSlug);
   } else {
     return [];
   }
