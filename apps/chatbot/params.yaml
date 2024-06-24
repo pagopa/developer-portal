@@ -1,5 +1,5 @@
 documentation:
-  path: PagoPADevPortal/out/
+  path: apps/nextjs-website/out
 
 vector_index:
   path: index
