@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { BannerLink } from '../../../nextjs-website/src/components/atoms/BannerLink/BannerLink';
-import { mockTextBlock } from '../mock-content.helper';
+import { mockText, mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof BannerLink> = {
   title: 'Atoms/BannerLink',
@@ -20,52 +20,19 @@ export const Showcase: StoryObj<typeof BannerLink> = {
       height: 61,
       ext: '.svg',
       mime: 'image/svg+xml',
-      url: 'https://developer.pagopa.it/icons/feddback.svg',
+      url: 'https://developer.pagopa.it/icons/feedback.svg',
     },
-    title: 'Titolo',
+    title: mockText(2),
     count: 1,
     content: [
       {
         ...mockTextBlock({
           type: 'paragraph',
           wordCount: 2,
-          url: 'https://www.google.com',
+          url: '#',
         }),
       },
-      {
-        type: 'list',
-        format: 'unordered',
-        children: [
-          {
-            type: 'list-item',
-            children: [
-              {
-                type: 'text',
-                text: 'Le comunicazioni in tempo reale',
-                bold: true,
-              },
-              {
-                type: 'text',
-                text: ' consentono al cittadino di agire con tempestività sul pagamento di sanzioni',
-              },
-            ],
-          },
-          {
-            type: 'list-item',
-            children: [
-              {
-                type: 'text',
-                text: 'La scadenza sugli avvisi di pagamento',
-                bold: true,
-              },
-              {
-                type: 'text',
-                text: ' riduce la possibilità di incorrere in sanzioni aggiuntive',
-              },
-            ],
-          },
-        ],
-      },
+      { ...mockTextBlock({ type: 'paragraph', wordCount: 30 }) },
     ],
   },
 };
