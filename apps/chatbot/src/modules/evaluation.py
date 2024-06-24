@@ -14,15 +14,14 @@ from llama_index.core.schema import Document
 from llama_index.core.indices import SummaryIndex
 from llama_index.core.prompts import BasePromptTemplate, PromptTemplate
 
-from llama_index.core.evaluation import BatchEvalRunner
-from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses
-
-
 from llama_index.core.evaluation import (
+    BatchEvalRunner,
     AnswerRelevancyEvaluator,
     ContextRelevancyEvaluator
 )
+from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
+from llama_index.core.evaluation.eval_utils import aget_responses
+
 
 from src.modules.chatbot import Chatbot
 
@@ -54,10 +53,20 @@ Output Format:
 Provide a numerical score between 0 and 1.
 Include a brief feedback for the score, highlighting key factors that influenced the assessment.
 ---------------------
-Example Output:
+Output Examples:
 Score: 0.80
 Feedback: The response is largely relevant, addressing the main points of the query with specific and pertinent information.
 However, it includes some extraneous details that are not directly related to the query, which slightly reduces the relevance.
+
+Score: 0.85
+Feedback: The response is highly relevant to the query, providing detailed information and examples that directly address the question.
+It includes all the necessary criteria for evaluation and provides a comprehensive analysis of the topic.
+
+Score: 0.20
+Feedback: The provided answer is largely irrelevant to the query.
+It fails to directly address the specific question and includes information that is off-topic.
+The response lacks focus on the main points needed to answer the query and does not provide specific or pertinent details.
+To improve, the answer should be more aligned with the query and provide relevant and specific information directly related to the question.
 ---------------------
 Your Task:
 Evaluate the relevance of the provided response based on the above criteria and provide a score with a feedback.
@@ -87,10 +96,20 @@ Output Format:
 Provide a numerical score between 0 and 1.
 Include a brief feedback for the score, highlighting key factors that influenced the assessment.
 ---------------------
-Example Output:
+Output Examples:
 Score: 0.90
 Feedback: The context is highly relevant, directly addressing the main points of the query with specific and pertinent information.
 A minor portion of the context includes tangential details, preventing a perfect score.
+
+Example 2:
+Score: 0.70
+Feedback: The context provides some relevant information about the query's topic. However, it lacks detailed explanations or specific examples.
+
+Score: 0.20
+Feedback: The retrieved context is largely irrelevant to the query.
+It does not directly address the key aspects of the query and instead includes information that is unrelated and not pertinent.
+The context should focus on providing relevant information that directly supports the query's subject.
+Improvements are needed to ensure that the context is directly related to and adequately addresses the query.
 ---------------------
 Your Task:
 Evaluate the relevance of the given retrieved context based on the above criteria and provide a score with an feedback.
@@ -121,9 +140,19 @@ Output Format:
 Provide a numerical score between 0 and 1.
 Include a brief feedback for the score, highlighting key factors that influenced the assessment.
 ---------------------
-Example Output:
+Output Examples:
 Score: 0.85
 Feedback: The context is mostly relevant and accurate, providing detailed and correct information that directly addresses the query. However, it lacks some minor details that would make it fully comprehensive.
+
+Score: 0.75
+Feedback: The context provides relevant information about different scenarios for the query's topic, including examples and recommendations.
+However, there are some inconsistencies and omissions that could be improved. Specifically, ...
+
+Score: 0.2
+Feedback: The provided context is not faithful to the query.
+It includes information that is either inaccurate or misleading and fails to comprehensively address the core aspects of the query.
+The response omits critical details and contains extraneous content that detracts from its accuracy.
+To enhance faithfulness, the context should provide accurate, complete, and directly relevant information that truthfully reflects and supports the query.
 ---------------------
 Your Task:
 Evaluate the faithfulness of the given retrieved context based on the above criteria and provide a score with a feedback.
@@ -158,7 +187,7 @@ Provide a score if this is missing in the existing answer, or updated it if nece
 def parser_function(output_str: str):
     
     # Extracting the score
-    score_match = re.search(r"Score:\s*(\d+\.\d+)", output_str)
+    score_match = re.search(r"Score:\s*(\d+(\.\d+)?)", output_str)
     score = float(score_match.group(1)) if score_match else None
 
     # Extracting the feedback
@@ -262,43 +291,43 @@ class MyFaithfulnessEvaluator(BaseEvaluator):
 
 if __name__ == "__main__":
 
+    # load chatbot
     params = yaml.safe_load(open("params.yaml", "r"))
     bot = Chatbot(params)
 
+    # load FAQs
     faqs = json.load(open("faqs.json", "r"))
     questions = [sample["query"] for sample in faqs]
     ref_responses = [sample["reference"] for sample in faqs]
-
-    answer_relevancy = AnswerRelevancyEvaluator(
-        llm=bot.model,
-        eval_template=ANSWER_RELEVACY_PROMPT_STR,
-        parser_function=parser_function,
-        score_threshold=1.
-    )
-    context_relevancy=ContextRelevancyEvaluator(
-        llm=bot.model,
-        eval_template=CONTEXT_RELEVANCY_PROMPT_STR,
-        parser_function=parser_function,
-        score_threshold=1.
-    )
-    faithfulness = MyFaithfulnessEvaluator(
-        llm=bot.model,
-        eval_template=FAITHFULNESS_PROMPT_STR,
-        refine_template=FAITHFULNESS_REFINE_PROMPT_STR,
-        parser_function=parser_function
-    )
 
     logging.info(f"Generating {len(questions)} answers..")
     pred_responses = asyncio.run(asyncio.gather(
         aget_responses(questions, bot.engine, show_progress=True)
     ))[0]
 
-    logging.info("Making evaluation..")
+    # evaluation   
     evaluator_dict = {
-        "answer_relevancy": answer_relevancy,
-        "context_relevancy": context_relevancy,
-        "faithfulness": faithfulness
+        "answer_relevancy": AnswerRelevancyEvaluator(
+            llm=bot.model,
+            eval_template=ANSWER_RELEVACY_PROMPT_STR,
+            parser_function=parser_function,
+            score_threshold=1.
+        ),
+        "context_relevancy": ContextRelevancyEvaluator(
+            llm=bot.model,
+            eval_template=CONTEXT_RELEVANCY_PROMPT_STR,
+            parser_function=parser_function,
+            score_threshold=1.
+        ),
+        "faithfulness": MyFaithfulnessEvaluator(
+            llm=bot.model,
+            eval_template=FAITHFULNESS_PROMPT_STR,
+            refine_template=FAITHFULNESS_REFINE_PROMPT_STR,
+            parser_function=parser_function
+        )
     }
+
+    logging.info("Making evaluation..")
     batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
 
     eval_results = asyncio.run(asyncio.gather(

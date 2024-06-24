@@ -29,39 +29,76 @@ LANGUAGES = {
 }
 
 
-QA_PROMPT_STR = (
-    "You are the chatbot for the Italian company PagoPA. Your name is PagLO.\n"
-    "Given the context:\n"
-    "---------------------\n"
-    "{context_str}\n"
-    "---------------------\n"
-    "Given the rules:\n"
-    "---------------------\n"
-    "1. Do not accept any question that provides information that can be used to distinguish or trace an individual's identity.\n"
-    "2. Accept only questions in italian.\n"
-    "---------------------\n"
-    "Given the question: {query_str}. "
-    "If any of the above rule is broken, your answer must be somenthing like: \"I cannot reply to such question because\" followed by a comma-separated list of violated rules.\n"
-    "Otherwise, use the pieces of retrieved context, and not prior knowledge, to answer the question."
-    "Use three sentences maximum and keep the answer concise."
-    "If you don't know the answer, just say that you cannot provide an answer and ask for another question.\n"
-    "Always translate the answer to Italian."
-    "Answer: "
-)
+# QA_PROMPT_STR = (
+#     "You are the chatbot for the Italian company PagoPA. Your name is PagLO.\n"
+#     "Given the context:\n"
+#     "---------------------\n"
+#     "{context_str}\n"
+#     "---------------------\n"
+#     "Given the rules:\n"
+#     "---------------------\n"
+#     "1. Do not accept any question that provides information that can be used to distinguish or trace an individual's identity.\n"
+#     "2. Accept only questions in italian.\n"
+#     "---------------------\n"
+#     "Given the question: {query_str}. "
+#     "If any of the above rule is broken, your answer must be somenthing like: \"I cannot reply to such question because\" followed by a comma-separated list of violated rules.\n"
+#     "Otherwise, use the pieces of retrieved context, and not prior knowledge, to answer the question."
+#     "Use three sentences maximum and keep the answer concise."
+#     "If you don't know the answer, just say that you cannot provide an answer and ask for another question.\n"
+#     "Always translate the answer to Italian.\n"
+#     "Answer: "
+# )
 
 
-REFINE_PROMPT_STR = (
-    "Given the question: {query_str}"
-    "Given the answer: {existing_answer}\n"
-    "Given the rules:\n"
-    "---------------------\n"
-    "1. Do not provide any answer that provides information that can be used to distinguish or trace an human being's identity."
-    "2. The answer must be in Italian."
-    "---------------------\n"
-    "Given such rules, refine the existing answer to better answer the question.\n"
-    "Refined Answer: "
-)
+# REFINE_PROMPT_STR = (
+#     "Given the question: {query_str}"
+#     "Given the answer: {existing_answer}\n"
+#     "Given the rules:\n"
+#     "---------------------\n"
+#     "1. Do not provide any answer that provides information that can be used to distinguish or trace an human being's identity."
+#     "2. The answer must be in Italian."
+#     "---------------------\n"
+#     "Given such rules, refine the existing answer to better answer the question.\n"
+#     "Refined Answer: "
+# )
 
+
+QA_PROMPT_STR = """
+Given the context:
+---------------------
+{context_str}
+---------------------
+Given the query rules:
+1. Do not accept any query that requests or involves information that could identify an human being.
+2. You must give information abut yourself, your tasks, etc when a user asks.
+3. Detect the language of the user's query as 'Italian' or 'Other language'. If the detection returns 'Other language' do not answer, apologize, and ask for a new question in Italian.
+---------------------
+Task:
+Given the query rules listed above and the following guidlines:
+- If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a commented comma-separated list of the violated rules.
+- If the retrivied context is empty, reply something similar: "Non posso fornire una risposta alla tua domanda. Per piacere, riformula la domanda in maniera piu' dettagliata o chiedimene una nuova."
+- If the query complies with the rules, generate an answer using only the retrieved context, not any prior knowledge.
+- Keep the response to three sentences maximum and ensure it is concise.
+- Provide the reference link of the generated answer. If the link is missing, provide the source.
+- Provide an answer only in Italian.
+
+Reply to the query: {query_str}
+Answer:
+"""
+
+REFINE_PROMPT_STR = """
+Query: {query_str}
+Existing Answer: {existing_answer}
+---------------------
+Refinement Guidelines:
+- Refine the existing answer to better address the question while ensuring compliance with the rules.
+- Use retrieved context only; do not introduce new information.
+- Provide the improved answer in three sentences or less.
+---------------------
+Task:
+Refine the original answer to better answer the query according to the guidlines listed above. 
+Refined Answer:
+"""
 
 class Chatbot():
     def __init__(
@@ -109,10 +146,7 @@ class Chatbot():
             template_var_mappings={
                 "context_str": "context_str",
                 "query_str": "query_str"
-            },
-            # function_mappings = {
-            #     "messages_str": self._messages_to_str
-            # }
+            }
         )
 
         ref_prompt_tmpl = PromptTemplate(
@@ -121,10 +155,7 @@ class Chatbot():
             template_var_mappings = {
                 "existing_answer": "existing_answer",
                 "query_str": "query_str"
-            },
-            # function_mappings = {
-            #     "rules_str": rules_fn
-            # }
+            }
         )
 
         return qa_prompt_tmpl, ref_prompt_tmpl
@@ -159,12 +190,9 @@ class Chatbot():
 
         query_lang = self._check_language(query_str, "User")
         if query_lang != "it":
-            # query = model.acomplete(f"Traslate to Italian: {query_str}")
-            # query = asyncio.run(asyncio.gather(query))
-            # query_str = query[0].response.strip()
             response_str = (
                 f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
-                "Chiedimi la prossima domanda in italiano."
+                "Riformula la domanda in italiano oppure chiedimene una nuova."
             )
 
         else:
@@ -183,17 +211,12 @@ class Chatbot():
                 response_lang = self._check_language(response_str, "Assistant")
                 if response_lang != "it":
                     logging.info(f"Translating response to Italian..")
-                    translation = self.model.complete(f"Traslate to Italian: {response_str}")
+                    translation = self.model.complete(f"Translate to Italian: {response_str}")
                     response_str = translation.text.strip()
 
-                if len(nodes) > 0:
-                    metadata = nodes[0].metadata
-                    if metadata['source'] != "" and metadata['title'] != "":
-                        response_str += f"\n\n**Link:** [{metadata['title']}]({metadata['source']})"
-
-            # update messages
-            self._update_messages("User", query_str)
-            self._update_messages("Assistant", response_str)
+                # update messages
+                self._update_messages("User", query_str)
+                self._update_messages("Assistant", response_str)
 
         return response_str
     
@@ -204,7 +227,7 @@ class Chatbot():
 
     #     query_lang = self._check_language(query_str, "User")
     #     if query_lang != "Italian":
-    #         # query = model.acomplete(f"Traslate to Italian: {query_str}")
+    #         # query = model.acomplete(f"Translate to Italian: {query_str}")
     #         # query = asyncio.run(asyncio.gather(query))
     #         # query_str = query[0].response.strip()
     #         response_str = (
