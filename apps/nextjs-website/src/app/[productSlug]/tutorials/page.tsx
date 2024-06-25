@@ -1,6 +1,10 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getTutorialLists, getProductsSlugs } from '@/lib/api';
+import {
+  getProductsSlugs,
+  getTutorialListPageProps,
+  getTutorials,
+} from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -33,7 +37,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path } = await getTutorialLists(
+  const { product, abstract, path } = await getTutorialListPageProps(
     params.productSlug
   );
 
@@ -48,8 +52,11 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials } =
-    await getTutorialLists(productSlug);
+  const { abstract, bannerLinks, path, product } =
+    await getTutorialListPageProps(productSlug);
+
+  const tutorials = await getTutorials(productSlug);
+
   const { shared } = translations;
 
   return (
@@ -70,9 +77,6 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
-              comingSoonLabel: !tutorial.comingSoon
-                ? undefined
-                : shared.comingSoon,
               title: tutorial.title,
               date: {
                 date: tutorial.publishedAt,

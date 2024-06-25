@@ -20,7 +20,7 @@ export const Showcase: StoryObj<typeof BannerLink> = {
       height: 61,
       ext: '.svg',
       mime: 'image/svg+xml',
-      url: 'https://developer.pagopa.it/icons/feedback.svg',
+      url: '/icons/feedback.svg',
     },
     title: mockText(2),
     count: 1,
