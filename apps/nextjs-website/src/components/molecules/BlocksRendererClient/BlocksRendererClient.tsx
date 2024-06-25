@@ -1,18 +1,22 @@
 'use client';
-
-import { Typography, useTheme } from '@mui/material';
+import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
+import { SxProps } from '@mui/system';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
   color?: 'contrastText' | 'main' | 'light' | 'dark';
+  paragraphSx?: SxProps<Theme>;
+  listStyle?: React.CSSProperties;
   imageStyle?: React.CSSProperties;
 };
 
 const BlocksRendererClient = ({
   content,
   color,
+  paragraphSx,
+  listStyle,
   imageStyle = {
     height: 'auto',
     width: '100%',
@@ -42,7 +46,12 @@ const BlocksRendererClient = ({
           />
         ),
         paragraph: ({ children }) => (
-          <Typography marginBottom={2} variant='body1' color={textColor}>
+          <Typography
+            marginBottom={2}
+            variant='body1'
+            color={textColor}
+            sx={paragraphSx}
+          >
             {children}
           </Typography>
         ),
@@ -51,6 +60,9 @@ const BlocksRendererClient = ({
             {children}
           </Typography>
         ),
+        list: ({ children }) => {
+          return <ul style={listStyle}>{children}</ul>;
+        },
       }}
     />
   );
