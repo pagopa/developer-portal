@@ -4,6 +4,7 @@ import Dotenv from 'dotenv-webpack';
 
 const config: StorybookConfig = {
     stories: ['../**/*.stories.@(js|jsx|ts|tsx)', '../**/*.mdx'],
+    staticDirs: ['../public'],
     addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
     framework: {
         name: '@storybook/nextjs',
