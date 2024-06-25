@@ -8,6 +8,8 @@ import { translations } from '@/_contents/translations';
 import { webinars } from '@/_contents/webinars';
 import { makeWebinarsProps, makeWebinarsPropsFromStatic } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
+import { fetchTutorials } from './strapi/tutorial';
+import { makeTutorialsProps } from './tutorials';
 import { fetchQuickStarts } from './strapi/quickStarts';
 import {
   makeQuickStartsProps,
@@ -56,6 +58,19 @@ export const getWebinarsProps = async () => {
     return makeWebinarsProps(strapiWebinars, webinars);
   } else {
     return makeWebinarsPropsFromStatic(webinars);
+  }
+};
+
+export const getTutorialsProps = async (productSlug?: string) => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiTutorials = await fetchTutorials(buildEnv);
+    return makeTutorialsProps(strapiTutorials, productSlug);
+  } else {
+    return [];
   }
 };
 

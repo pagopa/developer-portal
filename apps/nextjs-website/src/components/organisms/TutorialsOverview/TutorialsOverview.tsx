@@ -34,6 +34,7 @@ const TutorialsOverview = ({
       }}
       items={tutorials.map((tutorial) => ({
         ...tutorial,
+        image: tutorial.image,
         link: {
           url: tutorial.path,
           text: label,
