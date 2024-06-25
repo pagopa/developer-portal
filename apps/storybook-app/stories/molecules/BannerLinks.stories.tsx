@@ -42,21 +42,6 @@ export const Showcase: StoryObj<typeof BannerLinks> = {
         title: 'Titolo',
         content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 28 }) }],
       },
-      {
-        theme: 'light',
-        icon: {
-          name: 'headset.svg',
-          alternativeText: null,
-          caption: null,
-          width: 60,
-          height: 61,
-          ext: '.svg',
-          mime: 'image/svg+xml',
-          url: 'https://developer.pagopa.it/icons/headset.svg',
-        },
-        title: 'Titolo',
-        content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 32 }) }],
-      },
     ],
   },
 };

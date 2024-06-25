@@ -12,12 +12,7 @@ type BannerLinksProps = {
 };
 
 function CalculateJustify(index: number, length: number) {
-  return (
-    (length === 1 && 'center') ||
-    (index === 0 && 'right') ||
-    (index === length - 1 && 'left') ||
-    'center'
-  );
+  return length == 1 ? 'center' : index === 0 ? 'right' : 'left';
 }
 
 export const BannerLinks: FC<BannerLinksProps> = ({
@@ -32,7 +27,8 @@ export const BannerLinks: FC<BannerLinksProps> = ({
       width: '100%',
     }}
   >
-    {banners?.map((banner, index) => (
+    {banners?.slice(0, 2).map((banner, index) => (
+      //TODO: Remove the slice once introduced a validator BE side to limit the number of bannerLink items
       <BannerLink
         contentMaxWidth={bannerLinkMaxWidth}
         justify={CalculateJustify(index, banners.length)}
@@ -40,7 +36,6 @@ export const BannerLinks: FC<BannerLinksProps> = ({
         title={banner.title}
         icon={banner.icon}
         content={banner.content}
-        count={banners.length}
         theme={banner.theme}
       />
     ))}

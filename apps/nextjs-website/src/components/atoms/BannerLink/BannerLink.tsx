@@ -24,9 +24,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
   icon,
   title,
   justify = 'center',
-  count = 2,
   boxMediumPadding = '0px 130px',
-  centerBannerWidth = count <= 2 ? 700 : 466,
 }) => {
   const { palette } = useTheme();
 
@@ -34,8 +32,6 @@ export const BannerLink: FC<BannerLinkProps> = ({
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
-  const backgroundBoxwidth =
-    justify === 'center' && count > 1 ? centerBannerWidth : '100%';
   return (
     <Box
       bgcolor={backgroundColor}
@@ -44,14 +40,14 @@ export const BannerLink: FC<BannerLinkProps> = ({
         direction: 'column',
         display: 'flex',
         justifyContent: { xs: 'center', md: justify },
-        maxWidth: { xs: '100%', md: backgroundBoxwidth },
+        maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
         width: '100%',
       }}
     >
       <Box
         sx={{
-          maxWidth: { centerBannerWidth },
+          maxWidth: '100%',
           padding: { xs: '0px 32px', md: boxMediumPadding },
           display: 'flex',
           justifyContent: 'center',
