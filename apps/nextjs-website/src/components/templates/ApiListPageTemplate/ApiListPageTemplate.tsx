@@ -9,6 +9,7 @@ import BannerLinks, {
   BannerLinksProps,
 } from '@/components/molecules/BannerLinks/BannerLinks';
 import { Box } from '@mui/material';
+import { Theme } from '@/editorialComponents/types/components';
 
 export type ApiListPageTemplateProps = {
   readonly breadcrumbs: {
@@ -19,6 +20,7 @@ export type ApiListPageTemplateProps = {
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
+    readonly heigth?: string;
   };
   readonly cards: {
     title: string;
@@ -29,6 +31,7 @@ export type ApiListPageTemplateProps = {
     tags?: { readonly label: string }[];
   }[];
   readonly bannerLinks: BannerLinksProps;
+  readonly theme: Theme;
 };
 
 const ApiListPageTemplate = ({
@@ -36,6 +39,7 @@ const ApiListPageTemplate = ({
   hero,
   cards,
   bannerLinks,
+  theme,
 }: ApiListPageTemplateProps) => {
   console.log(breadcrumbs.product.name);
   return (
@@ -54,8 +58,8 @@ const ApiListPageTemplate = ({
       <Hero
         title={hero.title}
         subtitle={hero.subtitle}
-        theme={'light'}
-        smallHeight='272px'
+        theme={theme}
+        smallHeight={hero.heigth || '272px'}
         titleVariant='h4'
         gridTextSx={{
           justifyContent: 'center',

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import ApiListPageTemplate from '../../../nextjs-website/src/components/templates/ApiListPageTemplate/ApiListPageTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-import { mockTextBlock } from '../mock-content.helper';
+import { mockText, mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof ApiListPageTemplate> = {
   title: 'Templates/ApiListPageTemplate',
@@ -43,10 +43,11 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
     },
     cards: [
       {
-        title: 'Gestione posizioni debitorie',
-        text: 'API per la creazione, aggiornamento e cancellazione delle posizioni debitorie ad uso di Partner Tecnologici, Intermediari Tecnologici ed Enti Creditori.',
+        title: mockText(3),
+        text: mockText(10),
         icon: 'https://developer.pagopa.it/icons/code.svg',
         ctaLabel: 'Esplora le API',
+        href: '#',
         tags: [
           {
             label: 'REST',
@@ -54,10 +55,11 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
         ],
       },
       {
-        title: 'Documentazione SOAP',
-        text: 'La documentazione in cui è possibile consultare tutti gli schemi XSD e WSDL che seguono le diverse release SANP.',
+        title: mockText(3),
+        text: mockText(10),
         icon: 'https://developer.pagopa.it/icons/code.svg',
         ctaLabel: 'Esplora le API',
+        href: '#',
         tags: [
           {
             label: 'SOAP',
@@ -65,10 +67,11 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
         ],
       },
       {
-        title: 'Stampa Avvisi di Pagamento',
-        text: 'API native della piattaforma pagoPA per permettere ad Enti / Intermediari / Partner Tecnologici la stampa in self service degli avvisi di pagamento',
+        title: mockText(3),
+        text: mockText(10),
         icon: 'https://developer.pagopa.it/icons/code.svg',
         ctaLabel: 'Esplora le API',
+        href: '#',
         tags: [
           {
             label: 'REST',
@@ -76,10 +79,11 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
         ],
       },
       {
-        title: 'Flussi di rendicontazione',
-        text: 'API REST .... , creare un servizio, verificare l’esistenza di un utente, inviare un messaggio e molto altro.',
+        title: mockText(3),
+        text: mockText(10),
         icon: 'https://developer.pagopa.it/icons/code.svg',
         ctaLabel: 'Esplora le API',
+        href: '#',
         tags: [
           {
             label: 'REST',
@@ -101,7 +105,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
             mime: 'image/svg+xml',
             url: 'https://developer.pagopa.it/icons/headset.svg',
           },
-          title: 'Titolo',
+          title: mockText(2),
           content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 30 }) }],
         },
         {
@@ -116,7 +120,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
             mime: 'image/svg+xml',
             url: 'https://developer.pagopa.it/icons/headset.svg',
           },
-          title: 'Titolo',
+          title: mockText(2),
           content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 28 }) }],
         },
       ],
