@@ -16,8 +16,8 @@ export const RightShowcase: StoryObj<typeof NavigationArrow> = {
 };
 
 export const LeftShowcase: StoryObj<typeof NavigationArrow> = {
-    args: {
-      direction: 'left',
-      hidden: false,
-    },
-  };
+  args: {
+    direction: 'left',
+    hidden: false,
+  },
+};
