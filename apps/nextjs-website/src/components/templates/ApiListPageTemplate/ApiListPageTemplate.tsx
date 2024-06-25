@@ -73,10 +73,7 @@ const ApiListPageTemplate = ({
           cardSize={{ xs: 12, md: 16 / cards.length }}
         />
       </Box>
-      <BannerLinks
-        bannerLinkMaxWidth={bannerLinks.bannerLinkMaxWidth}
-        banners={bannerLinks.banners}
-      />
+      <BannerLinks bannerLinks={bannerLinks.bannerLinks} />
     </>
   );
 };

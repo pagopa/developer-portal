@@ -2,44 +2,40 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
-import { Media } from '../../../lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 
 export type BannerLinkProps = {
-  contentMaxWidth?: number;
-  justify?: string;
   content?: BlocksContent;
-  title: string;
+  contentJustification?: string;
   icon: Media;
   theme: 'light' | 'dark';
-  count?: number;
-  boxMediumPadding?: string;
-  centerBannerWidth?: number;
+  title: string;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
-  contentMaxWidth = 450,
-  theme,
   content,
+  contentJustification = 'center',
   icon,
+  theme,
   title,
-  justify = 'center',
-  boxMediumPadding = '0px 130px',
 }) => {
   const { palette } = useTheme();
 
-  if (!content) return null;
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
+
+  if (!content) return null;
+
   return (
     <Box
-      bgcolor={backgroundColor}
       component='section'
       sx={{
+        backgroundColor: backgroundColor,
         direction: 'column',
         display: 'flex',
-        justifyContent: { xs: 'center', md: justify },
+        justifyContent: { xs: 'center', md: contentJustification },
         maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
         width: '100%',
@@ -47,18 +43,18 @@ export const BannerLink: FC<BannerLinkProps> = ({
     >
       <Box
         sx={{
-          maxWidth: '100%',
-          padding: { xs: '0px 32px', md: boxMediumPadding },
           display: 'flex',
           justifyContent: 'center',
+          maxWidth: '100%',
+          padding: { xs: '0px 32px', md: '0px 130px' },
           textAlign: 'center',
         }}
       >
         <Stack
-          spacing={'8px'}
           sx={{
-            maxWidth: contentMaxWidth,
+            maxWidth: 450,
             padding: { xs: '40px 0px', md: '64px 0px' },
+            spacing: '8px',
           }}
         >
           <div style={{ marginBottom: '26px' }}>

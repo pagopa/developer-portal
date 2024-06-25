@@ -89,7 +89,7 @@ const SolutionPageTemplate = ({
           }))}
         />
       </EContainer>
-      {bannerLinks && <BannerLinks banners={bannerLinks} />}
+      {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
       {stats && (
         <Stats
           maxWidth={200}

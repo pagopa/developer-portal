@@ -40,7 +40,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
         </EContainer>
       )}
       {children}
-      {bannerLinks && <BannerLinks banners={bannerLinks} />}
+      {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
     </>
   );
 };

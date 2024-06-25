@@ -7,38 +7,36 @@ import {
 } from '@/components/atoms/BannerLink/BannerLink';
 
 export type BannerLinksProps = {
-  banners?: readonly BannerLinkProps[];
-  bannerLinkMaxWidth?: number;
+  bannerLinks?: readonly BannerLinkProps[];
 };
 
 function CalculateJustify(index: number, length: number) {
   return length == 1 ? 'center' : index === 0 ? 'right' : 'left';
 }
 
-export const BannerLinks: FC<BannerLinksProps> = ({
-  banners,
-  bannerLinkMaxWidth = 450,
-}) => (
+export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
   <Stack
-    direction={{ xs: 'column', md: 'row' }}
-    justifyContent='space-between'
-    alignItems='stretch'
     sx={{
+      display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
+      alignItems: 'stretch',
+      justifyContent: 'space-between',
       width: '100%',
     }}
   >
-    {banners?.slice(0, 2).map((banner, index) => (
+    {
       //TODO: Remove the slice once introduced a validator BE side to limit the number of bannerLink items
-      <BannerLink
-        contentMaxWidth={bannerLinkMaxWidth}
-        justify={CalculateJustify(index, banners.length)}
-        key={index}
-        title={banner.title}
-        icon={banner.icon}
-        content={banner.content}
-        theme={banner.theme}
-      />
-    ))}
+      bannerLinks?.slice(0, 2).map((bannerLink, index) => (
+        <BannerLink
+          contentJustification={CalculateJustify(index, bannerLinks.length)}
+          key={index}
+          title={bannerLink.title}
+          icon={bannerLink.icon}
+          content={bannerLink.content}
+          theme={bannerLink.theme}
+        />
+      ))
+    }
   </Stack>
 );
 

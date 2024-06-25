@@ -92,7 +92,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
       },
     ],
     bannerLinks: {
-      banners: [
+      bannerLinks: [
         {
           theme: 'light',
           icon: {
