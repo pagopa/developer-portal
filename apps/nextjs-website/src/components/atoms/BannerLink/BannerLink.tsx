@@ -6,7 +6,7 @@ import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 
 export type BannerLinkProps = {
-  content?: BlocksContent;
+  body?: BlocksContent;
   contentJustification?: string;
   icon: Media;
   theme: 'light' | 'dark';
@@ -14,7 +14,7 @@ export type BannerLinkProps = {
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
-  content,
+  body,
   contentJustification = 'center',
   icon,
   theme,
@@ -26,7 +26,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
 
-  if (!content) return null;
+  if (!body) return null;
 
   return (
     <Box
@@ -70,7 +70,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
             {title}
           </Typography>
           <BlocksRenderer
-            content={content}
+            content={body}
             blocks={{
               image: ({ image }) => (
                 <Image

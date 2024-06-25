@@ -27,6 +27,10 @@ export function makeSolutionsProps(
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
     })),
-    bannerLinks: [], // TODO: refactor bannerLinks before populating
+    bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+      ...bannerLink,
+      title: bannerLink.title || '',
+      icon: bannerLink.icon?.data?.attributes,
+    })),
   }));
 }
