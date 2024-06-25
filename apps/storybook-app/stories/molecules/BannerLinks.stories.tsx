@@ -11,7 +11,7 @@ export default meta;
 
 export const Showcase: StoryObj<typeof BannerLinks> = {
   args: {
-    banners: [
+    bannerLinks: [
       {
         theme: 'light',
         icon: {
