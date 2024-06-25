@@ -13,8 +13,11 @@ import { GuidePage } from './types/guideData';
 import {
   getCaseHistoriesProps,
   getQuickStartsProps,
+  getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
+import { Tutorial } from './types/tutorialData';
+import { TutorialsProps } from '@/lib/tutorials';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -24,7 +27,7 @@ function manageUndefined<T>(props: undefined | null | T) {
   return props;
 }
 
-async function manageUndefinedAndAddProduct<T>(props: undefined | null | T) {
+async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
 }
 
@@ -32,7 +35,7 @@ export async function getApi(productSlug?: string) {
   const props =
     apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
 
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getGuide(
@@ -70,7 +73,7 @@ export async function getGuideLists(productSlug?: string) {
     guideLists.find(
       (guideList) => guideList.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getOverview(productSlug?: string) {
@@ -78,7 +81,7 @@ export async function getOverview(productSlug?: string) {
     overviews.find(
       (overviewData) => overviewData.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
 export function getProductsSlugs(
@@ -99,10 +102,33 @@ export async function getQuickStartGuide(productSlug?: string) {
       ({ product }) => product.slug === productSlug
     )
   );
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
 }
 
-export async function getTutorial(
+export async function getStrapiTutorial(
+  productSlug?: string,
+  productTutorialPage?: ReadonlyArray<string>
+) {
+  const tutorialSubPath = productTutorialPage?.join('/');
+  const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
+
+  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps(
+    productSlug
+  );
+
+  const tutorialFromStrapi = tutorialsFromStrapi.find(
+    ({ path }) => path === tutorialPath
+  );
+
+  return tutorialFromStrapi
+    ? {
+        ...tutorialFromStrapi,
+        product: products.find(({ slug }) => slug === productSlug),
+      }
+    : undefined;
+}
+
+export async function getStaticTutorial(
   productSlug?: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
@@ -123,8 +149,14 @@ export async function getTutorial(
   };
 }
 
-export function getTutorialPaths() {
-  return tutorials.map((tutorial) => ({
+export async function getTutorialPaths() {
+  const tutorialsFromCMS = await getTutorialsProps();
+  const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
+    slug: path.split('/')[1],
+    tutorialPaths: path.split('/'),
+  }));
+
+  const tutorialPaths = tutorials.map((tutorial) => ({
     slug: tutorial.product.slug,
     tutorialPaths: tutorial.page.path
       .split('/')
@@ -132,14 +164,23 @@ export function getTutorialPaths() {
       // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
       .filter((p, index) => index > 2),
   }));
+  return [...tutorialPaths, ...tutorialPathsFromCMS];
 }
 
-export async function getTutorialLists(productSlug?: string) {
+export async function getTutorialListPageProps(productSlug?: string) {
   const props =
     tutorialLists.find(
       (tutorialList) => tutorialList.product.path === `/${productSlug}`
     ) || null;
-  return manageUndefinedAndAddProduct(props);
+  return manageUndefinedAndAddProducts(props);
+}
+
+export async function getTutorials(
+  productSlug?: string
+): Promise<readonly Tutorial[]> {
+  const { tutorials } = await getTutorialListPageProps(productSlug);
+  const tutorialsFromCMS = await getTutorialsProps(productSlug);
+  return [...tutorials, ...tutorialsFromCMS];
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
@@ -156,8 +197,9 @@ export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
 }
 
 export async function getCaseHistory(caseHistorySlug?: string) {
-  const props = manageUndefined(
-    (await getCaseHistoriesProps()).find(({ slug }) => slug === caseHistorySlug)
+  return manageUndefined(
+    (await getCaseHistoriesProps()).find(
+      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
+    )
   );
-  return props;
 }
