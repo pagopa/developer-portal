@@ -67,7 +67,7 @@
       },
       "component": "api.spec-urls"
     },
-    "tags": {
+    "tag": {
       "pluginOptions": {
         "i18n": {
           "localized": true
