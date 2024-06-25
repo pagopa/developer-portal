@@ -1,7 +1,7 @@
 'use client';
 import Fab from '@mui/material/Fab';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-import { Badge, Box, useTheme } from '@mui/material';
+import { Badge, Box } from '@mui/material';
 
 type ChatButtonProps = {
   disabled?: boolean;
@@ -14,7 +14,6 @@ const ChatButton = ({
   label,
   onOpenChat,
 }: ChatButtonProps) => {
-  const { palette } = useTheme();
   return (
     <Badge
       badgeContent={1}
