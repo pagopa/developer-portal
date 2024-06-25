@@ -4,9 +4,9 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Generic } from '@/editorialComponents/types/components';
 
 export interface AbstractProps {
-  overline: string;
+  overline?: string;
   title: string;
-  description: string | Generic;
+  description?: string | Generic;
   background?: string | Generic;
   layout?: 'left' | 'center' | 'right';
   containerStyle?: SxProps;
@@ -86,19 +86,23 @@ export const Abstract: React.FC<AbstractProps> = ({
           color={textColor}
           gap={spacing(2)}
         >
-          <Typography color={eyeletColor} variant={'overline'}>
-            {overline}
-          </Typography>
+          {overline && (
+            <Typography color={eyeletColor} variant={'overline'}>
+              {overline}
+            </Typography>
+          )}
           <Typography color={textColor} variant='h4'>
             {title}
           </Typography>
-          <Typography
-            component={typeof description === 'string' ? 'p' : 'div'}
-            color={textColor}
-            variant='body1'
-          >
-            {description}
-          </Typography>
+          {description && (
+            <Typography
+              component={typeof description === 'string' ? 'p' : 'div'}
+              color={textColor}
+              variant='body1'
+            >
+              {description}
+            </Typography>
+          )}
         </Box>
       </Stack>
     </EContainer>
