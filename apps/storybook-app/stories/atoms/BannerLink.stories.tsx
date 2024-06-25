@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { BannerLink } from '../../../nextjs-website/src/components/atoms/BannerLink/BannerLink';
+import { BannerLink } from 'nextjs-website/src/components/atoms/BannerLink/BannerLink';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof BannerLink> = {
@@ -23,7 +23,6 @@ export const Showcase: StoryObj<typeof BannerLink> = {
       url: '/icons/feedback.svg',
     },
     title: mockText(2),
-    count: 1,
     content: [
       {
         ...mockTextBlock({

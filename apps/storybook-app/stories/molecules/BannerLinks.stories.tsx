@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { BannerLinks } from '../../../nextjs-website/src/components/molecules/BannerLinks/BannerLinks';
+import { BannerLinks } from 'nextjs-website/src/components/molecules/BannerLinks/BannerLinks';
 import { mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof BannerLinks> = {
