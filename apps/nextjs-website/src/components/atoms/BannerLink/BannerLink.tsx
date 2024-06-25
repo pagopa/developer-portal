@@ -24,9 +24,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
   icon,
   title,
   justify = 'center',
-  count = 2,
   boxMediumPadding = '0px 130px',
-  centerBannerWidth = count <= 2 ? 700 : 466,
 }) => {
   const { palette } = useTheme();
 
@@ -34,25 +32,23 @@ export const BannerLink: FC<BannerLinkProps> = ({
   const backgroundColor =
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
-  const width = justify === 'center' && count > 1 ? centerBannerWidth : '100%';
   return (
     <Box
       bgcolor={backgroundColor}
       component='section'
-      maxWidth={{ xs: '100%', md: width }}
-      sx={{ width: '100%', direction: 'column' }}
-      justifyContent={{ xs: 'center', md: justify }}
-      style={{
+      sx={{
+        direction: 'column',
         display: 'flex',
+        justifyContent: { xs: 'center', md: justify },
+        maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
+        width: '100%',
       }}
     >
       <Box
-        maxWidth={centerBannerWidth}
         sx={{
+          maxWidth: '100%',
           padding: { xs: '0px 32px', md: boxMediumPadding },
-        }}
-        style={{
           display: 'flex',
           justifyContent: 'center',
           textAlign: 'center',
@@ -106,20 +102,18 @@ export const BannerLink: FC<BannerLinkProps> = ({
                   {children}
                 </Typography>
               ),
-              list: ({ children }) => {
-                return (
-                  <ul
-                    style={{
-                      listStyleType: 'square',
-                      listStylePosition: 'inside',
-                      color: textColor,
-                      padding: 0,
-                    }}
-                  >
-                    {children}
-                  </ul>
-                );
-              },
+              list: ({ children }) => (
+                <ul
+                  style={{
+                    listStyleType: 'square',
+                    listStylePosition: 'inside',
+                    color: textColor,
+                    padding: 0,
+                  }}
+                >
+                  {children}
+                </ul>
+              ),
             }}
           />
         </Stack>
