@@ -7,7 +7,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
-import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
@@ -89,7 +89,7 @@ const SolutionPageTemplate = ({
           }))}
         />
       </EContainer>
-      {bannerLinks && <BannerLinks banners={bannerLinks} />}
+      {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
       {stats && (
         <Stats
           maxWidth={200}
