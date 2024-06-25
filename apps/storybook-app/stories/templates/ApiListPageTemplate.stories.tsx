@@ -45,7 +45,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
       {
         title: mockText(3),
         text: mockText(10),
-        icon: 'https://developer.pagopa.it/icons/code.svg',
+        icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
         tags: [
@@ -57,7 +57,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
       {
         title: mockText(3),
         text: mockText(10),
-        icon: 'https://developer.pagopa.it/icons/code.svg',
+        icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
         tags: [
@@ -69,7 +69,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
       {
         title: mockText(3),
         text: mockText(10),
-        icon: 'https://developer.pagopa.it/icons/code.svg',
+        icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
         tags: [
@@ -81,7 +81,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
       {
         title: mockText(3),
         text: mockText(10),
-        icon: 'https://developer.pagopa.it/icons/code.svg',
+        icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
         tags: [
@@ -103,7 +103,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
             height: 61,
             ext: '.svg',
             mime: 'image/svg+xml',
-            url: 'https://developer.pagopa.it/icons/headset.svg',
+            url: '/icons/headset.svg',
           },
           title: mockText(2),
           content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 30 }) }],
@@ -118,7 +118,7 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
             height: 61,
             ext: '.svg',
             mime: 'image/svg+xml',
-            url: 'https://developer.pagopa.it/icons/headset.svg',
+            url: '/icons/headset.svg',
           },
           title: mockText(2),
           content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 28 }) }],

@@ -31,7 +31,7 @@ export type ApiListPageTemplateProps = {
     tags?: { readonly label: string }[];
   }[];
   readonly bannerLinks: BannerLinksProps;
-  readonly theme: Theme;
+  readonly theme?: Theme;
 };
 
 const ApiListPageTemplate = ({
@@ -39,7 +39,7 @@ const ApiListPageTemplate = ({
   hero,
   cards,
   bannerLinks,
-  theme,
+  theme = 'light',
 }: ApiListPageTemplateProps) => {
   console.log(breadcrumbs.product.name);
   return (
