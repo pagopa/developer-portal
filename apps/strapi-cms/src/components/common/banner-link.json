@@ -10,7 +10,7 @@
     "title": {
       "type": "string"
     },
-    "body": {
+    "content": {
       "type": "blocks"
     },
     "icon": {
