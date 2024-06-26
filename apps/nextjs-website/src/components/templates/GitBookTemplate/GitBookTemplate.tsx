@@ -7,12 +7,12 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { BreadCrumbSegment } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 
 type GitBookTemplateProps = {
   menuName: string;
-  breadcrumbs: BreadCrumbSegment[];
+  breadcrumbs: BreadcrumbSegment[];
   versions: GuideMenuItemsProps['versions'];
   versionName: GuideMenuItemsProps['versionName'];
 } & Pick<
