@@ -12,18 +12,18 @@ export default meta;
 
 export const TabsComponent: StoryObj<typeof TabComponent> = {
   args: {
-     items: [
+    items: [
       {
-        title: "Title",
+        title: 'Title',
         content: (
           <IconWrapper
-            icon="https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg"
+            icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
             isSvg={true}
           />
         ),
       },
       {
-        title: "Title of the second page",
+        title: 'Title of the second page',
         content: (
           <div>
             <h1>Second Page</h1>
@@ -34,4 +34,3 @@ export const TabsComponent: StoryObj<typeof TabComponent> = {
     ],
   },
 };
-
