@@ -13,7 +13,7 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/headset.svg',
     },
-    content: [
+    body: [
       {
         type: 'paragraph',
         children: [
@@ -48,7 +48,7 @@ export const appIoBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/feedback.svg',
     },
-    content: [
+    body: [
       {
         type: 'paragraph',
         children: [
