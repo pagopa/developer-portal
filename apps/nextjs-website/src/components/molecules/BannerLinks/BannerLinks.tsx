@@ -30,7 +30,7 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
         key={index}
         title={bannerLink.title}
         icon={bannerLink.icon}
-        body={bannerLink.body}
+        content={bannerLink.content}
         theme={bannerLink.theme}
       />
     ))}

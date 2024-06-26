@@ -13,7 +13,7 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/headset.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [
@@ -49,7 +49,7 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/feedback.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [

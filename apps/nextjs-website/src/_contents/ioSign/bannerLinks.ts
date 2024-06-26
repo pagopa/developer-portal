@@ -13,7 +13,7 @@ export const ioSignBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/livehelp.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [
@@ -49,7 +49,7 @@ export const ioSignBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/headset.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [

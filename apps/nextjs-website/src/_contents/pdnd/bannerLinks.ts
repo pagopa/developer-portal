@@ -13,7 +13,7 @@ export const pdndBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/feedback.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [

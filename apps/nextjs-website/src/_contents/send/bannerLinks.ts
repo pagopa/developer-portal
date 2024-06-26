@@ -13,7 +13,7 @@ export const sendBannerLinks: readonly BannerLinkProps[] = [
       mime: 'image/svg+xml',
       url: '/icons/headset.svg',
     },
-    body: [
+    content: [
       {
         type: 'paragraph',
         children: [
