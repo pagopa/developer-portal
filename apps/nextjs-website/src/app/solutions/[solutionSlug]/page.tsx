@@ -19,6 +19,7 @@ import { getSolution } from '@/lib/solutions';
 import { Solution } from '@/lib/types/solutionData';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 
 type Params = {
   solutionSlug: string;
@@ -93,10 +94,11 @@ const Page = async ({ params }: { params: Params }) => {
           assetsPrefix={props.bodyConfig.assetsPrefix}
           linkPrefix={props.pathPrefix}
           guideName={props.solution.title}
+          productHeaderHeight={0}
         />
         <Stack
           sx={{
-            margin: `75px auto`,
+            margin: `auto`,
             paddingTop: 3,
             flexGrow: { lg: 1 },
             maxWidth: {
