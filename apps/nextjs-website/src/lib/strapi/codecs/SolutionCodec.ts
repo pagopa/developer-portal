@@ -14,12 +14,22 @@ export const SolutionCodec = t.strict({
     kickerTitle: t.string,
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
-    steps: t.array(SolutionStepCodec),
     dirName: t.string,
     landingUseCaseFile: t.string,
-    stats: t.array(SolutionStatCodec),
+  }),
+});
+
+const WithRelationCodec = t.strict({
+  attributes: t.strict({
     webinars: t.strict({ data: t.array(WebinarCodec) }),
     products: t.strict({ data: t.array(ProductCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
+    steps: t.array(SolutionStepCodec),
+    stats: t.array(SolutionStatCodec),
   }),
 });
+
+export const SolutionWithRelationCodec = t.intersection([
+  SolutionCodec,
+  WithRelationCodec,
+]);
