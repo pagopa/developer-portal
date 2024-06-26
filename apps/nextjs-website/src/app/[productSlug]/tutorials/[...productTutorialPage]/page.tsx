@@ -1,7 +1,11 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getTutorial, getTutorialPaths } from '@/lib/api';
+import {
+  getStaticTutorial,
+  getStrapiTutorial,
+  getTutorialPaths,
+} from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
@@ -21,6 +25,7 @@ import RelatedLinks, {
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import TutorialPageTemplate from '@/components/templates/TutorialPageTemplate/TutorialPageTemplate';
 
 type Params = {
   productSlug: string;
@@ -28,7 +33,8 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return [...getTutorialPaths()].map(({ slug, tutorialPaths }) => ({
+  const tutorialPaths = await getTutorialPaths();
+  return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({
     productSlug: slug,
     productTutorialPage: tutorialPaths,
   }));
@@ -47,12 +53,22 @@ export async function generateMetadata({
   params,
 }: {
   params: Params;
-}): Promise<Metadata> {
+}): Promise<Metadata | undefined> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
+  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
+    tutorialPath,
+  ]);
+  if (strapiTutorialProps) {
+    const { title, path } = strapiTutorialProps;
+    return makeMetadata({
+      title,
+      url: path,
+    });
+  }
   const {
     page: { path, title },
-  } = await getTutorial(productSlug, [tutorialPath]);
+  } = await getStaticTutorial(productSlug, [tutorialPath]);
 
   return makeMetadata({
     title,
@@ -64,7 +80,24 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
+    tutorialPath,
+  ]);
+
+  if (strapiTutorialProps) {
+    return (
+      <TutorialPageTemplate
+        bannerLinks={strapiTutorialProps.bannerLinks}
+        content={strapiTutorialProps.content}
+        path={strapiTutorialProps.path}
+        product={strapiTutorialProps.product}
+        relatedLinks={strapiTutorialProps.relatedLinks}
+        title={strapiTutorialProps.title}
+      />
+    );
+  }
+
+  const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {
     ...page,

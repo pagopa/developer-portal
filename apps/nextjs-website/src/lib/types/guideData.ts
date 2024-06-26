@@ -1,4 +1,4 @@
-import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import { DocPage } from 'gitbook-docs/parseDoc';
 import { Product } from './product';

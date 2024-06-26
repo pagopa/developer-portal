@@ -179,6 +179,7 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
   allowed_oauth_scopes                 = ["openid"]
   supported_identity_providers         = ["COGNITO"]
   explicit_auth_flows                  = ["ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
+  auth_session_validity                = var.mfa_code_duration_in_minutes
 }
 
 resource "aws_cognito_user_pool_domain" "devportal" {
