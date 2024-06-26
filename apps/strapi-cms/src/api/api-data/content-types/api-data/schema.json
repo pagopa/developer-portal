@@ -22,7 +22,8 @@
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
       "pluginOptions": {
@@ -54,7 +55,8 @@
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "specUrls": {
       "displayName": "specUrls",
@@ -65,7 +67,8 @@
           "localized": true
         }
       },
-      "component": "api.spec-urls"
+      "component": "api.spec-urls",
+      "required": true
     },
     "tag": {
       "pluginOptions": {
