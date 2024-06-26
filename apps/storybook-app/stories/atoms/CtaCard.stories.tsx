@@ -18,17 +18,17 @@ export const ShowcaseWithIcon: StoryObj<typeof CtaCard> = {
       label: 'Label',
       href: 'https://example.com',
     },
-    icon:
+    icon: (
       <IconWrapper
         icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
         isSvg={true}
-      />,
+      />
+    ),
     tags: [
       {
         label: 'Product',
         path: '/product',
       },
-    ]
+    ],
   },
 };
-

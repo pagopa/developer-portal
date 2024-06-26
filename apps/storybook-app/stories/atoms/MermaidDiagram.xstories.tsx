@@ -12,10 +12,11 @@ export default meta;
 
 export const Showcase: StoryObj<typeof MermaidDiagram> = {
   args: {
-    chart: ''
+    chart: '',
   },
   render: (props) => (
-    <NextIntlClientProvider locale="it" messages={{}}>
+    <NextIntlClientProvider locale='it' messages={{}}>
       <MermaidDiagram {...props} />
-    </NextIntlClientProvider>)
+    </NextIntlClientProvider>
+  ),
 };

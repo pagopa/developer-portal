@@ -5,7 +5,7 @@ import React, { ReactNode, FC } from 'react';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { BannerLinkProps } from '@/editorialComponents/BannerLink';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
@@ -40,7 +40,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
         </EContainer>
       )}
       {children}
-      {bannerLinks && <BannerLinks banners={bannerLinks} />}
+      {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
     </>
   );
 };
