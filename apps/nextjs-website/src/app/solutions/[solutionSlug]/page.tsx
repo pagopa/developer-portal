@@ -15,6 +15,10 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { solutionPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { getSolutionsProps } from '@/lib/cmsApi';
+import { getSolution } from '@/lib/solutions';
+import { Solution } from '@/lib/types/solutionData';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 type Params = {
   solutionSlug: string;
@@ -22,14 +26,20 @@ type Params = {
 
 export async function generateStaticParams() {
   const solutions = await getSolutionsProps();
-  return solutions.map(({ slug }) => ({
-    solutionSlug: slug,
+  return solutions.map(({ solutionSlug }) => ({
+    solutionSlug,
   }));
 }
 
 export type SolutionDetailsPageProps = {
-  solution: { name: string; path: string };
+  solution: Solution;
+  bannerLinks: readonly BannerLinkProps[];
   path: string;
+  pathPrefix: string;
+  isIndex: boolean;
+  menu: string;
+  body: string;
+  bodyConfig: ParseContentConfig;
 };
 
 export async function generateMetadata({
@@ -37,26 +47,25 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const {
-    page: { path, title },
-  } = await getSolution(params?.solutionSlug);
+  const props = await getSolution(params?.solutionSlug);
 
   return makeMetadata({
-    title,
-    url: path,
+    title: props?.solution?.title,
+    url: `/solutions/${props?.solution?.slug}`,
   });
 }
 
 const Page = async ({ params }: { params: Params }) => {
   const solutionProps = await getSolution(params?.solutionSlug);
 
-  const { page, solution, version, versions, source, bannerLinks } =
-    solutionProps;
+  if (!solutionProps) {
+    return null;
+  }
+
+  const { page, solution, source, bannerLinks } = solutionProps;
   const props: SolutionDetailsPageProps = {
     ...page,
     solution,
-    version,
-    versions: Array.from(versions),
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
@@ -83,7 +92,7 @@ const Page = async ({ params }: { params: Params }) => {
           menu={props.menu}
           assetsPrefix={props.bodyConfig.assetsPrefix}
           linkPrefix={props.pathPrefix}
-          guideName={props.solution.name}
+          guideName={props.solution.title}
         />
         <Stack
           sx={{
@@ -101,8 +110,8 @@ const Page = async ({ params }: { params: Params }) => {
               breadcrumbs={[
                 ...solutionPageToBreadcrumbs([
                   {
-                    name: solution.name,
-                    path: solution.path,
+                    name: solution.title,
+                    path: solution.slug,
                   },
                 ]),
               ]}
