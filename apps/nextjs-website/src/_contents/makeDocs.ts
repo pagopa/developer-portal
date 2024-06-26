@@ -5,6 +5,7 @@ import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Solution } from '@/lib/types/solutionData';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -23,6 +24,11 @@ export type GuideDefinition = {
     readonly version: string;
     readonly dirName: string;
   }>;
+  readonly bannerLinks: readonly BannerLinkProps[];
+};
+
+export type SolutionDefinition = {
+  readonly solution: Solution;
   readonly bannerLinks: readonly BannerLinkProps[];
 };
 
@@ -106,4 +112,20 @@ export const makeGuide = ({
     // parse docs files
     parseDocOrThrow
   );
+};
+
+export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) => {
+  const solutionPath = `/solutions/${solution.slug}`;
+  return parseDocOrThrow([
+    {
+      solution,
+      source: {
+        pathPrefix: solutionPath,
+        assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
+        dirPath: `${docsPath}/${solution.dirName}`,
+        spaceId: solution.dirName,
+      },
+      bannerLinks: bannerLinks,
+    },
+  ])[0];
 };
