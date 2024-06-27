@@ -115,7 +115,7 @@ export const makeGuide = ({
 };
 
 export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) => {
-  const solutionPath = `/solutions/${solution.slug}`;
+  const solutionPath = `/solutions/${solution.slug}/details`;
   return parseDocOrThrow([
     {
       solution,

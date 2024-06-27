@@ -8,12 +8,26 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolutionsProps } from '@/lib/cmsApi';
 import { getSolution } from '@/lib/solutions';
-import SolutionDetailsPageTemplate, {
-  SolutionDetailsPageTemplateProps,
-} from '@/components/templates/SolutionDetailsPageTemplate/SolutionDetailsPageTemplate';
+import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { Solution } from '@/lib/types/solutionData';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
+
+type SolutionDetailsPageTemplateProps = {
+  solution: Solution;
+  bannerLinks: readonly BannerLinkProps[];
+  path: string;
+  pathPrefix: string;
+  isIndex: boolean;
+  menu: string;
+  body: string;
+  bodyConfig: ParseContentConfig;
+};
 
 type Params = {
   solutionSlug: string;
+  solutionDetailsPage: Array<string>;
 };
 
 export async function generateStaticParams() {
@@ -32,7 +46,7 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: props?.solution?.title,
-    url: `/solutions/${props?.solution.landingUseCaseFile}/${props?.solution?.slug}`,
+    url: `/solutions/${props?.solution.slug}/details`,
   });
 }
 
@@ -59,7 +73,21 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
-  return <SolutionDetailsPageTemplate {...props} />;
+  return (
+    <GitBookTemplate
+      menuName={props.solution.title}
+      breadcrumbs={[
+        ...pageToBreadcrumbs('solutions', [
+          {
+            name: props.solution.title,
+            path: props.solution.slug,
+          },
+        ]),
+      ]}
+      menuDistanceFromTop={0}
+      {...props}
+    />
+  );
 };
 
 export default Page;

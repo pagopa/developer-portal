@@ -19,7 +19,7 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 
-type GuideMenuProps = GuideMenuItemsProps & { productHeaderHeight?: number };
+type GuideMenuProps = GuideMenuItemsProps & { distanceFromTop?: number };
 
 export const PRODUCT_HEADER_HEIGHT = 75;
 
@@ -35,7 +35,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
   const productHeaderHeight =
-    menuProps.productHeaderHeight ?? PRODUCT_HEADER_HEIGHT;
+    menuProps.distanceFromTop ?? PRODUCT_HEADER_HEIGHT;
 
   const top = scrollUp
     ? SITE_HEADER_HEIGHT + productHeaderHeight

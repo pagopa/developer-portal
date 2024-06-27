@@ -10,11 +10,12 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 
-type GitBookTemplateProps = {
+export type GitBookTemplateProps = {
   menuName: string;
   breadcrumbs: BreadcrumbSegment[];
-  versions: GuideMenuItemsProps['versions'];
-  versionName: GuideMenuItemsProps['versionName'];
+  menuDistanceFromTop?: number;
+  versions?: GuideMenuItemsProps['versions'];
+  versionName?: GuideMenuItemsProps['versionName'];
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -30,6 +31,7 @@ const GitBookTemplate = ({
   versionName,
   versions,
   breadcrumbs,
+  menuDistanceFromTop,
 }: GitBookTemplateProps) => {
   return (
     <FragmentProvider>
@@ -49,6 +51,7 @@ const GitBookTemplate = ({
             name={menuName}
             versionName={versionName}
             versions={versions}
+            distanceFromTop={menuDistanceFromTop}
           />
         )}
         <Stack
