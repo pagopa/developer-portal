@@ -20,8 +20,8 @@ type NewsShowcaseProps = {
     publishedAt?: Date;
     image?: {
       url: string;
-      alternativeText?: string | null;
-    } | null;
+      alternativeText?: string;
+    };
     link: {
       url: string;
       text: string;

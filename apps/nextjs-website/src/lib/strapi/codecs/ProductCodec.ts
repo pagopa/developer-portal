@@ -10,3 +10,10 @@ export const ProductCodec = t.strict({
     logo: t.strict({ data: MediaCodec }),
   }),
 });
+
+export const BaseProductCodec = t.strict({
+  attributes: t.strict({
+    name: t.string,
+    slug: t.string,
+  }),
+});

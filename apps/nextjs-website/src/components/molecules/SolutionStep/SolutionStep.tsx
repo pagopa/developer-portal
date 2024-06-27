@@ -1,11 +1,13 @@
 import { Stack, Typography, Box } from '@mui/material';
 import { Tag } from '@pagopa/mui-italia';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 
 type SolutionStepProps = {
   title: string;
-  content: string;
+  content: BlocksContent;
   products: { label: string; href: string }[];
 };
 
@@ -21,7 +23,7 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
         >
           {title}
         </Typography>
-        <Typography variant='body1'>{content}</Typography>
+        <BlocksRendererClient content={content} />
       </Stack>
       <Stack gap={2}>
         <Typography
