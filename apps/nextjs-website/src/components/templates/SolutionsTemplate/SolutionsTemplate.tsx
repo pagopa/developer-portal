@@ -69,7 +69,7 @@ const SolutionsTemplate = ({
           cards={solutions.map((solution) => ({
             title: solution.name,
             text: solution.description || '',
-            href: `/solutions/${solution.slug}`,
+            href: solution.slug,
             logoUrl: solution.logo.url,
             tags: solution.tags,
           }))}

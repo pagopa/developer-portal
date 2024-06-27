@@ -18,13 +18,13 @@ const Page = async () => {
             title: 'Comunicazione tempestiva e trasparente',
           },
           {
-            iconName: 'MarkEmailRead',
+            iconName: 'ChangeCircle',
             subtitle:
               'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
             title: 'Comunicazione tempestiva e trasparente',
           },
           {
-            iconName: 'MarkEmailRead',
+            iconName: 'Timer',
             subtitle:
               'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
             title: 'Comunicazione tempestiva e trasparente',
