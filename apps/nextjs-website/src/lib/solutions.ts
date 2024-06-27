@@ -17,11 +17,6 @@ export function makeSolutionsProps(
 ): ReadonlyArray<SolutionsProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
-    // parts: [
-    //   ...(attributes.parts
-    //     .map((part) => partFromStrapiPart(part))
-    //     .filter((part) => !!part) as ReadonlyArray<Part>),
-    // ],
     products: attributes.products.data.map(({ attributes }) => ({
       ...attributes,
       logo: attributes.logo.data.attributes,
