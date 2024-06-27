@@ -21,19 +21,38 @@ export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
     description:
       'In questa guida trovi i consigli utili per erogare in maniera virtuosa il servizio di sanzioni per violazione al Codice della strada, con approfondimenti sulla gestione delle diverse fasi.',
     cta: {
-      label: 'Leggi la guida completa',
+      label: 'Scopri di più',
       href: 'https://example.com',
     },
     steps: [
       {
         title: '01',
-        content:
-          'Violazione commessa dal cittadino e generazione dell’avviso pagoPA',
+        content: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Violazione commessa dal cittadino e generazione dell’avviso pagoPA',
+              },
+            ],
+          },
+        ],
         products: [{ label: 'PagoPA', href: 'https://example.com' }],
       },
       {
         title: '02',
-        content: 'Emissione e pagamento del preavviso di accertamento',
+        content: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Emissione e pagamento del preavviso di accertamento',
+              },
+            ],
+          },
+        ],
         products: [
           { label: 'PagoPA', href: 'https://example.com' },
           { label: 'IO', href: 'https://example.com' },
@@ -41,7 +60,17 @@ export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
       },
       {
         title: '03',
-        content: 'Emissione, consegna e pagamento del verbale di contestazione',
+        content: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Emissione, consegna e pagamento del verbale di contestazione',
+              },
+            ],
+          },
+        ],
         products: [
           { label: 'PagoPA', href: 'https://example.com' },
           { label: 'IO', href: 'https://example.com' },
@@ -50,7 +79,17 @@ export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
       },
       {
         title: '04',
-        content: 'Emissione, consegna e pagamento del verbale di contestazione',
+        content: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Emissione, consegna e pagamento del verbale di contestazione',
+              },
+            ],
+          },
+        ],
         products: [
           { label: 'PagoPA', href: 'https://example.com' },
           { label: 'IO', href: 'https://example.com' },

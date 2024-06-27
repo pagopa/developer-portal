@@ -8,16 +8,16 @@ import { FC } from 'react';
 export type BannerLinkProps = {
   content?: BlocksContent;
   contentJustification?: string;
-  icon: Media;
-  theme: 'light' | 'dark';
-  title: string;
+  icon?: Media;
+  theme?: 'light' | 'dark';
+  title?: string;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
   content,
   contentJustification = 'center',
   icon,
-  theme,
+  theme = 'light',
   title,
 }) => {
   const { palette } = useTheme();
@@ -57,18 +57,22 @@ export const BannerLink: FC<BannerLinkProps> = ({
             spacing: '8px',
           }}
         >
-          <div style={{ marginBottom: '26px' }}>
-            <IconWrapper
-              icon={icon.url}
-              isSvg={true}
-              color={textColor}
-              size={60}
-            />
-          </div>
+          {icon && (
+            <div style={{ marginBottom: '26px' }}>
+              <IconWrapper
+                icon={icon.url}
+                isSvg={true}
+                color={textColor}
+                size={60}
+              />
+            </div>
+          )}
 
-          <Typography variant={`h6`} color={textColor}>
-            {title}
-          </Typography>
+          {title && (
+            <Typography variant={`h6`} color={textColor}>
+              {title}
+            </Typography>
+          )}
           <BlocksRenderer
             content={content}
             blocks={{
