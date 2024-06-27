@@ -59,7 +59,6 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  console.log(params);
   const solutionProps = await getSolution(params?.solutionSlug);
 
   if (!solutionProps) {
