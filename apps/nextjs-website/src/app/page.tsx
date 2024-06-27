@@ -1,13 +1,13 @@
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
-import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
+import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -52,15 +52,7 @@ const Home = async () => {
         title={homepage.newsShowcase.title}
         items={[...homepage.newsShowcase.items]}
       />
-      <ProductsShowcase
-        title={homepage.productsShowcase.title}
-        cards={homepage.productsShowcase.products.map((product) => ({
-          title: product.name,
-          text: product.description || '',
-          href: `/${product.slug}/overview`,
-          logoUrl: product.logo.url,
-        }))}
-      />
+      <Ecosystem {...homepage.ecosystem} />
       <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
       <RelatedLinks
         title={homepage.comingsoonDocumentation.title}
