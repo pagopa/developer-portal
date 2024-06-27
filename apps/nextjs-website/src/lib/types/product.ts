@@ -1,16 +1,10 @@
 import { Path } from '@/lib/types/path';
+import { Media } from './media';
 
 export type Product = {
   readonly slug: string;
   readonly description: string | undefined;
-  readonly logo: {
-    readonly name: string;
-    readonly width: number;
-    readonly height: number;
-    readonly ext: string;
-    readonly mime: string;
-    readonly url: string;
-  };
+  readonly logo: Media;
   readonly subpaths: Subpaths;
 } & Path;
 

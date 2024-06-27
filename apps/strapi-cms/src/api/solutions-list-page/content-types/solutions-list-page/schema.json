@@ -4,7 +4,8 @@
   "info": {
     "singularName": "solutions-list-page",
     "pluralName": "solutions-list-pages",
-    "displayName": "SolutionsListPage"
+    "displayName": "SolutionsListPage",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -41,7 +42,7 @@
     "caseHistories": {
       "displayName": "CaseHistories",
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
