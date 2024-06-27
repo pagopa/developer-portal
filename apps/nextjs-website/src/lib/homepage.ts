@@ -3,6 +3,7 @@ import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
 import { webinars } from '@/_contents/webinars';
+import { Media } from './types/media';
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
@@ -15,17 +16,9 @@ export type HomepageProps = {
       readonly link: {
         readonly text: string;
         readonly url: string;
-        readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
+        readonly target?: '_self' | '_blank' | '_parent' | '_top';
       };
-      readonly image: {
-        readonly name: string;
-        readonly alternativeText: string | null;
-        readonly width: number;
-        readonly height: number;
-        readonly ext: string;
-        readonly mime: string;
-        readonly url: string;
-      } | null;
+      readonly image?: Media;
     }[];
   };
   readonly productsShowcase: {

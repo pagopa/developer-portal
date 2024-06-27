@@ -13,6 +13,7 @@ import { GuidePage } from './types/guideData';
 import {
   getCaseHistoriesProps,
   getQuickStartsProps,
+  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -202,4 +203,11 @@ export async function getCaseHistory(caseHistorySlug?: string) {
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
+}
+
+export async function getSolution(solutionSlug?: string) {
+  const props = manageUndefined(
+    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+  );
+  return props;
 }
