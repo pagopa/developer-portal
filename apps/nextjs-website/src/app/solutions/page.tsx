@@ -24,7 +24,7 @@ const Page = async () => {
             title: 'Comunicazione tempestiva e trasparente',
           },
           {
-            iconName: 'Timer',
+            iconName: 'TimerOutlined',
             subtitle:
               'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
             title: 'Comunicazione tempestiva e trasparente',
