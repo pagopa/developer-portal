@@ -34,7 +34,7 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
         p: '4px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: '100%',
+        width: 'auto',
       }}
     >
       <InputBase

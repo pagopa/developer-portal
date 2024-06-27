@@ -1,4 +1,11 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 
@@ -10,7 +17,8 @@ type ChatMessageProps = {
 
 const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
-  const bgColor = sender ? palette.background.paper : palette.info.light;
+  console.log(palette);
+  const bgColor = sender ? palette.background.paper : `${palette.info.light}80`;
   const titleColor = palette.text.primary;
   const textColor = palette.text.primary;
   const senderLabel = sender || 'AI ChatBot';
@@ -18,9 +26,8 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
     <Box
       bgcolor={bgColor}
       borderRadius={{ xs: '0.75rem' }}
-      margin={{ xs: '0.5rem' }}
-      padding={{ xs: '1.5rem' }}
-      sx={{ flexGrow: 1 }}
+      padding={{ xs: '1rem' }}
+      sx={{ width: '66.6%' }}
     >
       <Stack
         justifyContent={'space-between'}

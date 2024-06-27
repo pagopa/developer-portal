@@ -1,9 +1,9 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
-import ChatMessage from '../../../nextjs-website/src/components/molecules/ChatMessage/ChatMessage';
+import ChatMessage from '../../../nextjs-website/src/components/atoms/ChatMessage/ChatMessage';
 import React from 'react';
 
 const meta: Meta<typeof ChatMessage> = {
-  title: 'Molecules/ChatMessage',
+  title: 'Atoms/ChatMessage',
   component: ChatMessage,
 };
 
