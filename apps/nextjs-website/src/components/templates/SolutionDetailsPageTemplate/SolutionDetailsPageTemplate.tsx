@@ -1,38 +1,18 @@
-import { Box, Stack } from '@mui/material';
+'use client';
 import React from 'react';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { Box, Stack } from '@mui/material';
+import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
-import { translations } from '@/_contents/translations';
-import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
-import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
-import { solutionPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getSolutionsProps } from '@/lib/cmsApi';
-import { getSolution } from '@/lib/solutions';
-import { Solution } from '@/lib/types/solutionData';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Solution } from '@/lib/types/solutionData';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { translations } from '@/_contents/translations';
 
-type Params = {
-  solutionSlug: string;
-};
-
-export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
-  return solutions.map(({ solutionSlug }) => ({
-    solutionSlug,
-  }));
-}
-
-export type SolutionDetailsPageProps = {
+export type SolutionDetailsPageTemplateProps = {
   solution: Solution;
   bannerLinks: readonly BannerLinkProps[];
   path: string;
@@ -43,42 +23,9 @@ export type SolutionDetailsPageProps = {
   bodyConfig: ParseContentConfig;
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
-  const props = await getSolution(params?.solutionSlug);
-
-  return makeMetadata({
-    title: props?.solution?.title,
-    url: `/solutions/${props?.solution?.slug}`,
-  });
-}
-
-const Page = async ({ params }: { params: Params }) => {
-  const solutionProps = await getSolution(params?.solutionSlug);
-
-  if (!solutionProps) {
-    return null;
-  }
-
-  const { page, solution, source, bannerLinks } = solutionProps;
-  const props: SolutionDetailsPageProps = {
-    ...page,
-    solution,
-    bannerLinks,
-    pathPrefix: source.pathPrefix,
-    bodyConfig: {
-      isPageIndex: page.isIndex,
-      pagePath: page.path,
-      assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
-    },
-  };
-
+const SolutionDetailsPageTemplate = (
+  props: SolutionDetailsPageTemplateProps
+) => {
   return (
     <FragmentProvider>
       <Box
@@ -110,10 +57,10 @@ const Page = async ({ params }: { params: Params }) => {
           <Box sx={{ paddingX: '40px' }}>
             <ProductBreadcrumbs
               breadcrumbs={[
-                ...solutionPageToBreadcrumbs([
+                ...pageToBreadcrumbs('solutions', [
                   {
-                    name: solution.title,
-                    path: solution.slug,
+                    name: props.solution.title,
+                    path: props.solution.slug,
                   },
                 ]),
               ]}
@@ -151,4 +98,4 @@ const Page = async ({ params }: { params: Params }) => {
   );
 };
 
-export default Page;
+export default SolutionDetailsPageTemplate;
