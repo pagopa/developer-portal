@@ -14,6 +14,7 @@ export type GitBookTemplateProps = {
   menuName: string;
   breadcrumbs: BreadcrumbSegment[];
   menuDistanceFromTop?: number;
+  contentMarginTop?: number;
   versions?: GuideMenuItemsProps['versions'];
   versionName?: GuideMenuItemsProps['versionName'];
 } & Pick<
@@ -32,6 +33,7 @@ const GitBookTemplate = ({
   versions,
   breadcrumbs,
   menuDistanceFromTop,
+  contentMarginTop = 75,
 }: GitBookTemplateProps) => {
   return (
     <FragmentProvider>
@@ -56,7 +58,7 @@ const GitBookTemplate = ({
         )}
         <Stack
           sx={{
-            margin: `75px auto`,
+            margin: `${contentMarginTop} auto`,
             paddingTop: 3,
             flexGrow: { lg: 1 },
             maxWidth: {

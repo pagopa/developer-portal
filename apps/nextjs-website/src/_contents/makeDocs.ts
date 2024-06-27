@@ -114,18 +114,35 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) => {
-  const solutionPath = `/solutions/${solution.slug}/details`;
-  return parseDocOrThrow([
-    {
-      solution,
-      source: {
-        pathPrefix: solutionPath,
-        assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
-        dirPath: `${docsPath}/${solution.dirName}`,
-        spaceId: solution.dirName,
+export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) =>
+  pipe(
+    [
+      {
+        solution,
+        source: {
+          pathPrefix: `/solutions/${solution.slug}/details`,
+          assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
+          dirPath: `${docsPath}/${solution.dirName}`,
+          spaceId: solution.dirName,
+        },
+        bannerLinks: bannerLinks,
       },
-      bannerLinks: bannerLinks,
-    },
-  ])[0];
-};
+    ],
+    parseDocOrThrow
+  );
+
+//   {
+//   const solutionPath = `/solutions/${solution.slug}/details`;
+//   return parseDocOrThrow([
+//     {
+//       solution,
+//       source: {
+//         pathPrefix: solutionPath,
+//         assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
+//         dirPath: `${docsPath}/${solution.dirName}`,
+//         spaceId: solution.dirName,
+//       },
+//       bannerLinks: bannerLinks,
+//     },
+//   ])[0];
+// };

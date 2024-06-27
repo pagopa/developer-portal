@@ -10,6 +10,7 @@ export type SolutionsProps = Solution & {
   readonly stats?: StrapiSolutions['data'][0]['attributes']['stats'];
   readonly webinars?: StrapiSolutions['data'][0]['attributes']['webinars'];
   readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly path?: string;
 };
 
 export function makeSolutionsProps(
@@ -27,20 +28,34 @@ export function makeSolutionsProps(
       ...bannerLink,
       icon: bannerLink.icon.data?.attributes,
     })),
+    path: `/solutions/${attributes.slug}/details`,
   }));
 }
 
-export async function getSolution(solutionSlug?: string) {
+export async function getSolution(
+  solutionSlug?: string,
+  solutionDetailsPage?: ReadonlyArray<string>
+) {
   const solutionsFromStrapi = await getSolutionsProps();
 
   const solutionFromStrapi = solutionsFromStrapi.find(
     ({ slug }) => slug === solutionSlug
   );
 
-  return solutionFromStrapi
-    ? makeSolution({
-        solution: solutionFromStrapi,
-        bannerLinks: solutionFromStrapi.bannerLinks ?? [],
-      })
-    : undefined;
+  if (!solutionFromStrapi) {
+    return undefined;
+  }
+
+  const parsedSolutions = makeSolution({
+    solution: solutionFromStrapi,
+    bannerLinks: solutionFromStrapi?.bannerLinks ?? [],
+  });
+
+  return solutionDetailsPage
+    ? parsedSolutions.find(
+        ({ page }) =>
+          page.path ===
+          `/solutions/${solutionSlug}/details/${solutionDetailsPage.join('/')}`
+      )
+    : parsedSolutions.find(({ page }) => page.isIndex);
 }
