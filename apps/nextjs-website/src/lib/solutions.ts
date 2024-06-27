@@ -17,6 +17,7 @@ export function makeSolutionsProps(
       ...attributes,
       logo: attributes.logo.data.attributes,
     })),
+
     icon: attributes.icon.data.attributes,
     webinars: attributes.webinars.data.map((webinar) => ({
       ...webinar.attributes,
@@ -28,6 +29,10 @@ export function makeSolutionsProps(
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
     })),
-    bannerLinks: [], // TODO: refactor bannerLinks before populating
+    bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+      ...bannerLink,
+      title: bannerLink.title || '',
+      icon: bannerLink.icon?.data?.attributes,
+    })),
   }));
 }
