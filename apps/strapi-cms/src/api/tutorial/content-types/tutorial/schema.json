@@ -64,17 +64,6 @@
       "relation": "oneToOne",
       "target": "api::product.product"
     },
-    "bannerLinks": {
-      "displayName": "bannerLinks",
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "banner-links.banner-links"
-    },
     "relatedLinks": {
       "type": "component",
       "repeatable": false,
@@ -84,6 +73,17 @@
         }
       },
       "component": "common.related-links"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.banner-link",
+      "max": 2
     }
   }
 }

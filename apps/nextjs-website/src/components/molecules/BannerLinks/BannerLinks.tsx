@@ -24,19 +24,16 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
       width: '100%',
     }}
   >
-    {
-      //TODO: Remove the slice once introduced a validator BE side to limit the number of bannerLink items
-      bannerLinks?.slice(0, 2).map((bannerLink, index) => (
-        <BannerLink
-          contentJustification={CalculateJustify(index, bannerLinks.length)}
-          key={index}
-          title={bannerLink.title}
-          icon={bannerLink.icon}
-          content={bannerLink.content}
-          theme={bannerLink.theme}
-        />
-      ))
-    }
+    {bannerLinks?.map((bannerLink, index) => (
+      <BannerLink
+        contentJustification={CalculateJustify(index, bannerLinks.length)}
+        key={index}
+        title={bannerLink.title}
+        icon={bannerLink.icon}
+        content={bannerLink.content}
+        theme={bannerLink.theme}
+      />
+    ))}
   </Stack>
 );
 

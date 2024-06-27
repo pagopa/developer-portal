@@ -44,7 +44,7 @@ type SolutionsTemplateProps = {
       readonly path: string;
       readonly image: {
         readonly url: string;
-        readonly alternativeText: string;
+        readonly alternativeText?: string;
       };
     }[];
   };
