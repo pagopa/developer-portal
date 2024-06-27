@@ -6,13 +6,13 @@ import {
 } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolutionsProps } from '@/lib/cmsApi';
 import { getSolution } from '@/lib/solutions';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Solution } from '@/lib/types/solutionData';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { getDetailSolutionsProps } from '@/lib/cmsApi';
 
 type SolutionDetailsPageTemplateProps = {
   solution: Solution;
@@ -31,7 +31,7 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
+  const solutions = await getDetailSolutionsProps();
   return solutions.map(({ solutionSlug }) => ({
     solutionSlug,
   }));

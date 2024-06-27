@@ -1,10 +1,11 @@
 import { makeSolution } from '@/_contents/makeDocs';
-import { getSolutionsProps } from './cmsApi';
+import { getDetailSolutionsProps } from './cmsApi';
 import { StrapiSolutions } from './strapi/solutions';
 import { Solution } from './types/solutionData';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
 
-export type SolutionsProps = Solution & {
+export type DetailSolutionsProps = Solution & {
   readonly solutionSlug: string;
   readonly steps?: StrapiSolutions['data'][0]['attributes']['steps'];
   readonly stats?: StrapiSolutions['data'][0]['attributes']['stats'];
@@ -13,9 +14,43 @@ export type SolutionsProps = Solution & {
   readonly path?: string;
 };
 
-export function makeSolutionsProps(
+export function makeFullSolutionsProps(
   strapiSolutions: StrapiSolutions
-): ReadonlyArray<SolutionsProps> {
+): ReadonlyArray<SolutionPageTemplateProps> {
+  return strapiSolutions.data.map(({ attributes }) => ({
+    ...attributes,
+    steps: attributes.steps.map((step) => ({
+      ...step,
+      products: attributes.products.data.map((product) => ({
+        name: product.attributes.name,
+        slug: product.attributes.slug,
+      })),
+    })),
+    products: attributes.products.data.map(({ attributes }) => ({
+      ...attributes,
+      logo: attributes.logo.data.attributes,
+    })),
+    webinars: attributes.webinars.data.map((webinar) => ({
+      ...webinar.attributes,
+      startDateTime: webinar.attributes.startDatetime?.toISOString(),
+      endDateTime: webinar.attributes.endDatetime?.toISOString(),
+      imagePath: webinar.attributes.coverImage.data.attributes.url,
+      speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
+        ...speaker.attributes,
+        avatar: speaker.attributes.avatar.data?.attributes,
+      })),
+    })),
+    bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+      ...bannerLink,
+      title: bannerLink.title || '',
+      icon: bannerLink.icon?.data?.attributes,
+    })),
+  }));
+}
+
+export function makeDetailSolutionsProps(
+  strapiSolutions: StrapiSolutions
+): ReadonlyArray<DetailSolutionsProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
     products: attributes.products.data.map(({ attributes }) => ({
@@ -36,7 +71,7 @@ export async function getSolution(
   solutionSlug?: string,
   solutionDetailsPage?: ReadonlyArray<string>
 ) {
-  const solutionsFromStrapi = await getSolutionsProps();
+  const solutionsFromStrapi = await getDetailSolutionsProps();
 
   const solutionFromStrapi = solutionsFromStrapi.find(
     ({ slug }) => slug === solutionSlug
