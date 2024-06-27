@@ -12,6 +12,7 @@ import {
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import SolutionStep from '../SolutionStep/SolutionStep';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type SolutionPreviewCard = {
   readonly header: string;
@@ -24,7 +25,7 @@ export type SolutionPreviewCard = {
   };
   readonly steps?: {
     title: string;
-    content: string;
+    content: BlocksContent;
     products: { label: string; href: string }[];
   }[];
 };
@@ -42,6 +43,7 @@ const SolutionPreviewCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        width: '100%',
         justifyContent: 'space-between',
         height: '100%',
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',

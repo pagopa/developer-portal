@@ -5,8 +5,8 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
     theme: 'dark',
     icon: {
       name: 'headset.svg',
-      alternativeText: null,
-      caption: null,
+      alternativeText: undefined,
+      caption: undefined,
       width: 60,
       height: 61,
       ext: '.svg',
@@ -41,8 +41,8 @@ export const pagoPaBannerLinks: readonly BannerLinkProps[] = [
     theme: 'light',
     icon: {
       name: 'feedback.svg',
-      alternativeText: null,
-      caption: null,
+      alternativeText: undefined,
+      caption: undefined,
       width: 60,
       height: 61,
       ext: '.svg',
