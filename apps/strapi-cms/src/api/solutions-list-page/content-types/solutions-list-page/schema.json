@@ -4,7 +4,8 @@
   "info": {
     "singularName": "solutions-list-page",
     "pluralName": "solutions-list-pages",
-    "displayName": "SolutionsListPage"
+    "displayName": "SolutionsListPage",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -48,6 +49,17 @@
         }
       },
       "component": "common.case-histories"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "max": 2,
+      "component": "common.banner-link"
     }
   }
 }
