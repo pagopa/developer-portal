@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add solution page
+Add Solution page

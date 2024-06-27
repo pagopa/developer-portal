@@ -6,7 +6,7 @@ export function makeSolutionsProps(
 ): ReadonlyArray<SolutionPageTemplateProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
-    steps: attributes.steps?.map((step) => ({
+    steps: attributes.steps.map((step) => ({
       ...step,
       products: attributes.products.data.map((product) => ({
         name: product.attributes.name,
@@ -28,6 +28,10 @@ export function makeSolutionsProps(
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
     })),
-    bannerLinks: [], // TODO: refactor bannerLinks before populating
+    bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+      ...bannerLink,
+      title: bannerLink.title || '',
+      icon: bannerLink.icon?.data?.attributes,
+    })),
   }));
 }

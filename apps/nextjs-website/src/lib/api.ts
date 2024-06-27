@@ -155,7 +155,7 @@ export async function getTutorialPaths() {
   const tutorialsFromCMS = await getTutorialsProps();
   const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
     slug: path.split('/')[1],
-    tutorialPaths: path.split('/'),
+    tutorialPaths: [path.split('/').at(-1)],
   }));
 
   const tutorialPaths = tutorials.map((tutorial) => ({

@@ -25,14 +25,27 @@ export function mockTextBlock(args?: {
   readonly type?: 'paragraph' | 'heading';
   readonly text?: string;
   readonly level?: 1 | 2 | 3 | 4 | 5 | 6;
+  readonly wordCount?: number;
+  readonly url?: string;
 }): BlocksContent[0] {
   const content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
-      {
-        type: 'text',
-        text: args?.text || mockText(),
-      },
+      args?.url
+        ? {
+            type: 'link',
+            url: args.url,
+            children: [
+              {
+                type: 'text',
+                text: args?.text || mockText(args?.wordCount),
+              },
+            ],
+          }
+        : {
+            type: 'text',
+            text: args?.text || mockText(args?.wordCount),
+          },
     ],
   };
   if (content.type === 'heading') {
