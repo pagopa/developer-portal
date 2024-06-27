@@ -49,17 +49,6 @@
         }
       },
       "component": "common.case-histories"
-    },
-    "bannerLinks": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "max": 2,
-      "component": "common.banner-link"
     }
   }
 }
