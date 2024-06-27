@@ -2,4 +2,4 @@
 "strapi-cms": patch
 ---
 
-Remove bannerLinks from SolutionsListPage schema
+Remove bannerLinks and fix CaseHistory type in SolutionsListPage schema
