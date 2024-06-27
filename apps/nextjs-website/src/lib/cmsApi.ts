@@ -18,7 +18,7 @@ import {
 import { quickStartGuides } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
-import { fetchSolutions } from './strapi/solutions';
+import { fetchSolutions } from './strapi/solutionsCodec';
 import { makeSolutionsProps } from './solutions';
 
 // a BuildEnv instance ready to be used
