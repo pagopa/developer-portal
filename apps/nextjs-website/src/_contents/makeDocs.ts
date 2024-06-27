@@ -130,19 +130,3 @@ export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) =>
     ],
     parseDocOrThrow
   );
-
-//   {
-//   const solutionPath = `/solutions/${solution.slug}/details`;
-//   return parseDocOrThrow([
-//     {
-//       solution,
-//       source: {
-//         pathPrefix: solutionPath,
-//         assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
-//         dirPath: `${docsPath}/${solution.dirName}`,
-//         spaceId: solution.dirName,
-//       },
-//       bannerLinks: bannerLinks,
-//     },
-//   ])[0];
-// };
