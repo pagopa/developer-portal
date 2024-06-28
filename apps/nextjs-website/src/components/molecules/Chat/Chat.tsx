@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
 import MenuIcon from '@mui/icons-material/Menu';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Delete, History } from '@mui/icons-material';
 
 type ChatProps = {
@@ -20,8 +20,16 @@ type ChatProps = {
 
 const Chat = ({ chatMessages }: ChatProps) => {
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatMessages]);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -30,7 +38,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
   };
 
   return (
-    <Stack direction={'column'} height={'100%'}>
+    <Stack direction={'column'}>
       <Box
         bgcolor={palette.grey[200]}
         width={'auto'}
@@ -42,7 +50,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
           paddingX={'0.75rem'}
           paddingY={'0.25rem'}
         >
-          <IconButton 
+          <IconButton
             aria-controls='chat-menu'
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
@@ -56,7 +64,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
             open={open}
             onClose={handleClose}
             MenuListProps={{
-              'aria-labelledby': 'basic-button',
+              'aria-labelledby': 'chat-button',
             }}
             anchorOrigin={{
               vertical: 'bottom',
@@ -84,14 +92,17 @@ const Chat = ({ chatMessages }: ChatProps) => {
       </Box>
       <Box
         bgcolor={palette.grey[300]}
-        sx={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}
+        sx={{
+          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: 4,
+          padding: 2,
+        }}
       >
         <Stack
           direction={'column'}
-          height={'500px'}
-          sx={{
-            padding: '1rem',
-          }}
+          minHeight='50vh'
+          maxHeight='50vh'
+          justifyContent='space-between'
         >
           <Stack
             direction={'column'}
@@ -103,6 +114,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
             {chatMessages.map((chatMessage, index) => (
               <Stack
                 key={index}
+                ref={index === chatMessages.length - 1 ? scrollRef : null}
                 direction={'row'}
                 width={'100%'}
                 justifyContent={chatMessage.sender ? 'flex-end' : 'flex-start'}

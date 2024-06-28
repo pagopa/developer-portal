@@ -4,43 +4,40 @@ import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlin
 import { Badge, Box } from '@mui/material';
 
 type ChatButtonProps = {
-  disabled?: boolean;
-  label: string;
-  onOpenChat: () => null;
+  chatOpen: boolean;
+  hasNewMessages: boolean;
+  onOpenChat: (event: React.MouseEvent<HTMLButtonElement>) => null;
 };
 
 const ChatButton = ({
-  disabled = false,
-  label,
+  chatOpen,
+  hasNewMessages,
   onOpenChat,
 }: ChatButtonProps) => {
   return (
-    <Badge
-      badgeContent={1}
-      color='success'
-      overlap='circular'
-      variant='dot'
-      sx={{
-        '& .MuiBadge-badge': {
-          fontSize: 9,
-          height: 15,
-          minWidth: 15,
-          borderRadius: 20,
-          zIndex: 1051,
-        },
-      }}
-    >
-      <Box bgcolor={'black'} borderRadius={100} padding={'3px'}>
-        <Fab
-          disabled={disabled}
-          aria-label={label}
-          color={'primary'}
-          onClick={onOpenChat}
-        >
-          <QuestionAnswerOutlinedIcon />
-        </Fab>
-      </Box>
-    </Badge>
+    <Box sx={{ opacity: chatOpen ? 0 : 1 }}>
+      <Badge
+        badgeContent={hasNewMessages ? 1 : 0}
+        color='success'
+        overlap='circular'
+        variant='dot'
+        sx={{
+          '& .MuiBadge-badge': {
+            fontSize: 9,
+            height: 15,
+            minWidth: 15,
+            borderRadius: 20,
+            zIndex: 1051,
+          },
+        }}
+      >
+        <Box bgcolor={'black'} borderRadius={100} padding={'3px'}>
+          <Fab aria-label={'chat'} color={'primary'} onClick={onOpenChat}>
+            <QuestionAnswerOutlinedIcon />
+          </Fab>
+        </Box>
+      </Badge>
+    </Box>
   );
 };
 

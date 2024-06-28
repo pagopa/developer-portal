@@ -10,7 +10,15 @@ export default meta;
 
 export const Showcase: StoryObj<typeof ChatButton> = {
   args: {
-    label: 'ChatBot',
+    chatOpen: false,
+    onOpenChat: () => null,
+  },
+};
+
+export const ChatButtonNewMessages: StoryObj<typeof ChatButton> = {
+  args: {
+    chatOpen: false,
+    hasNewMessages: true,
     onOpenChat: () => null,
   },
 };
