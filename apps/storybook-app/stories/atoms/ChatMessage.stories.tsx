@@ -15,7 +15,15 @@ const decorator: Decorator = (story) => (
 
 export default meta;
 
-export const Showcase: StoryObj<typeof ChatMessage> = {
+export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
+  args: {
+    message: 'Hello I\'m a ChatBot',
+    timestamp: '11:22',
+  },
+  decorators: [decorator],
+};
+
+export const UserMessage: StoryObj<typeof ChatMessage> = {
   args: {
     message: 'Hello World',
     sender: 'John Doe',
