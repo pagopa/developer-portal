@@ -76,7 +76,6 @@ Given the response: {response}
 Evaluate the relevance of the provided response based on the above criteria and provide a score with a feedback.
 Evaluation:
 """
-# You are tasked with evaluating the relevance of a provided response in relation to a given query.
 
 
 CONTEXT_RELEVANCY_PROMPT_STR = """

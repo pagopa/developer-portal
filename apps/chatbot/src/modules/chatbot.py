@@ -35,22 +35,25 @@ Given the context:
 {context_str}
 ---------------------
 Query Rules:
-1. Do not accept any query that requests or involves information that could identify a human being.
+1. Block any query that requests or involves information that could identify a human being. 
 2. You must give information about yourself, your tasks, etc., when a user asks.
 3. Block queries that are not in Italian.
 4. Block queries containing offensive language, hate speech, or discriminatory content.
-5. Do not accept queries that request speculative or unverified information.
+5. Block queries that request speculative or unverified information.
 ---------------------
-Response Guidelines:
-- If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a comma-separated list of the violated rules.
-- If the retrieved context is empty, reply with: "Mi dispiace, ma non posso fornire una risposta a questa domanda. Per piacere, riformula la domanda in maniera più dettagliata o chiedimene una nuova."
-- If the query complies with the query rules listed above, generate an answer using only the retrieved context and not any prior knowledge.
-- Keep the answer to three sentences maximum and ensure it is concise.
-- Ensure the answer is respectful and does not disclose any sensitive or personal information.
-- Ensure the answer has a reference link. If it is not possible, provide title of the source retrivied context.
-- Translate the answer to Italian if it is not.
-
-Reply to the query: {query_str}
+Answer Rules:
+1. If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a comma-separated list of the violated query rules.
+2. If the retrieved context is empty, reply with: "Mi dispiace, ma non posso fornire una risposta a questa domanda. Per piacere, riformula la domanda in maniera più dettagliata o chiedimene una nuova."
+3. If the query complies with the query rules listed above, generate an answer using only the retrieved context and not any prior knowledge.
+4. Keep the answer to three sentences maximum and ensure it is concise.
+5. Ensure to not repeat sentences or to not have any redundancy in the answer.
+6. Ensure the answer is respectful and does not disclose any sensitive or personal information.
+7. Add at the end of the answer the source reference link.
+8. Translate the answer to Italian if it is not.
+---------------------
+Task:
+Given the user's query: {query_str}
+Generate an answer according to the query and answer rules listed above.
 Answer:
 """
 
@@ -58,24 +61,21 @@ REFINE_PROMPT_STR = """
 Query: {query_str}
 Existing Answer: {existing_answer}
 ---------------------
-Refinement Guidelines:
-- Refine the existing answer to better address the question while ensuring compliance with the rules.
-- Use retrieved context only; do not introduce new information.
-- Ensure the refined answer is concise and relevant, limited to three sentences.
-- Ensure the refined answer does not disclose personal or sensitive information.
-- Ensure the refined answer is respectful, accurate, and does not contain offensive or discriminatory content.
-- Ensure the refined answer has a reference link. If it is not possible, provide title of the source retrivied context.
-- Translate the refined answer to Italian if it is not.
+Refinement Rules:
+1. Refine the existing answer to better address the question while ensuring compliance with the query rules.
+2. Use retrieved context only and do not introduce new information.
+3. Refine the existing answer to be concise, relevant, and composed by maximum three sentences.
+4. Do not disclose personal or sensitive information.
+5. Be respectful and accurate.
+6. Remove and do not include any offensive or discriminatory content from the existing answer.
+7. Ensure the existing answer has a source reference.
+8. Translate the existing answer to Italian.
 ---------------------
 Task:
-Refine the original answer to better answer the query according to the refinement guidlines listed above.
+Refine the existing answer to better answer the query according to the refinement rules listed above.
 Refined Answer:
 """
 
-# Refinement Guidelines:
-# - Refine the existing answer to better address the question while ensuring compliance with the rules.
-# - Use retrieved context only; do not introduce new information.
-# - Provide the improved answer in three sentences or less.
 
 class Chatbot():
     def __init__(
@@ -163,6 +163,13 @@ class Chatbot():
         return lang
 
 
+    async def agenerate(self, query_str: str) -> str:
+
+        response = await self.engine.aquery(query_str)
+
+        return response
+
+
     def generate(self, query_str: str) -> str:
 
         query_lang = self._check_language(query_str, "User")
@@ -194,56 +201,3 @@ class Chatbot():
                 self._update_messages("Assistant", response_str)
 
         return response_str
-
-
-    async def agenerate(self, query_str: str) -> str:
-        # TO DO
-        return None
-
-    #     query_lang = self._check_language(query_str, "User")
-    #     if query_lang != "Italian":
-    #         # query = model.acomplete(f"Translate to Italian: {query_str}")
-    #         # query = asyncio.run(asyncio.gather(query))
-    #         # query_str = query[0].response.strip()
-    #         response_str = (
-    #             f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
-    #             "Chiedimi la prossima domanda in italiano."
-    #         )
-
-    #     else:
-
-    #         response = self.engine.aquery(query_str)
-
-    #         return response
-    
-
-    # async def apost_processing(self):
-
-    #     nodes = response.source_nodes
-    #     response_str = response.response.strip()
-
-    #     if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-    #         response_str = (
-    #             "Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.\n"
-    #             "Chiedimi una nuova domanda."
-    #         )
-
-    #     else:
-    #         response_lang = self._check_language(response_str, "Assistant")
-    #         if response_lang != "Italian":
-    #             logging.info(f"Translating it to Italian..")
-    #             translation = asyncio.run(asyncio.gather(
-    #                 self.model.acomplete(f"Traslate to Italian: {response_str}")
-    #             ))[0]
-    #             response_str = translation.text
-
-    #         if len(nodes) > 0:
-    #             metadata = nodes[0].metadata
-    #             if metadata['source'] != "" and metadata['title'] != "":
-    #                 response_str += f"\n\n**Link:** [{metadata['title']}]({metadata['source']})"
-
-    #     # update messages
-    #     self._update_messages("User", query_str)
-    #     self._update_messages("Assistant", response_str)
-
-    # return response_str
