@@ -1,5 +1,4 @@
 import logging
-import asyncio
 
 from langdetect import detect as detect_language
 
@@ -29,58 +28,27 @@ LANGUAGES = {
 }
 
 
-# QA_PROMPT_STR = (
-#     "You are the chatbot for the Italian company PagoPA. Your name is PagLO.\n"
-#     "Given the context:\n"
-#     "---------------------\n"
-#     "{context_str}\n"
-#     "---------------------\n"
-#     "Given the rules:\n"
-#     "---------------------\n"
-#     "1. Do not accept any question that provides information that can be used to distinguish or trace an individual's identity.\n"
-#     "2. Accept only questions in italian.\n"
-#     "---------------------\n"
-#     "Given the question: {query_str}. "
-#     "If any of the above rule is broken, your answer must be somenthing like: \"I cannot reply to such question because\" followed by a comma-separated list of violated rules.\n"
-#     "Otherwise, use the pieces of retrieved context, and not prior knowledge, to answer the question."
-#     "Use three sentences maximum and keep the answer concise."
-#     "If you don't know the answer, just say that you cannot provide an answer and ask for another question.\n"
-#     "Always translate the answer to Italian.\n"
-#     "Answer: "
-# )
-
-
-# REFINE_PROMPT_STR = (
-#     "Given the question: {query_str}"
-#     "Given the answer: {existing_answer}\n"
-#     "Given the rules:\n"
-#     "---------------------\n"
-#     "1. Do not provide any answer that provides information that can be used to distinguish or trace an human being's identity."
-#     "2. The answer must be in Italian."
-#     "---------------------\n"
-#     "Given such rules, refine the existing answer to better answer the question.\n"
-#     "Refined Answer: "
-# )
-
-
 QA_PROMPT_STR = """
+You are an Italian customer services chatbot.
 Given the context:
 ---------------------
 {context_str}
 ---------------------
-Given the query rules:
-1. Do not accept any query that requests or involves information that could identify an human being.
-2. You must give information abut yourself, your tasks, etc when a user asks.
-3. Detect the language of the user's query as 'Italian' or 'Other language'. If the detection returns 'Other language' do not answer, apologize, and ask for a new question in Italian.
+Query Rules:
+1. Do not accept any query that requests or involves information that could identify a human being.
+2. You must give information about yourself, your tasks, etc., when a user asks.
+3. Block queries that are not in Italian.
+4. Block queries containing offensive language, hate speech, or discriminatory content.
+5. Do not accept queries that request speculative or unverified information.
 ---------------------
-Task:
-Given the query rules listed above and the following guidlines:
-- If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a commented comma-separated list of the violated rules.
-- If the retrivied context is empty, reply something similar: "Non posso fornire una risposta alla tua domanda. Per piacere, riformula la domanda in maniera piu' dettagliata o chiedimene una nuova."
-- If the query complies with the rules, generate an answer using only the retrieved context, not any prior knowledge.
-- Keep the response to three sentences maximum and ensure it is concise.
-- Provide the reference link of the generated answer. If the link is missing, provide the source.
-- Provide an answer only in Italian.
+Response Guidelines:
+- If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a comma-separated list of the violated rules.
+- If the retrieved context is empty, reply with: "Mi dispiace, ma non posso fornire una risposta a questa domanda. Per piacere, riformula la domanda in maniera più dettagliata o chiedimene una nuova."
+- If the query complies with the query rules listed above, generate an answer using only the retrieved context and not any prior knowledge.
+- Keep the answer to three sentences maximum and ensure it is concise.
+- Ensure the answer is respectful and does not disclose any sensitive or personal information.
+- Ensure the answer has a reference link. If it is not possible, provide title of the source retrivied context.
+- Translate the answer to Italian if it is not.
 
 Reply to the query: {query_str}
 Answer:
@@ -93,19 +61,28 @@ Existing Answer: {existing_answer}
 Refinement Guidelines:
 - Refine the existing answer to better address the question while ensuring compliance with the rules.
 - Use retrieved context only; do not introduce new information.
-- Provide the improved answer in three sentences or less.
+- Ensure the refined answer is concise and relevant, limited to three sentences.
+- Ensure the refined answer does not disclose personal or sensitive information.
+- Ensure the refined answer is respectful, accurate, and does not contain offensive or discriminatory content.
+- Ensure the refined answer has a reference link. If it is not possible, provide title of the source retrivied context.
+- Translate the refined answer to Italian if it is not.
 ---------------------
 Task:
-Refine the original answer to better answer the query according to the guidlines listed above. 
+Refine the original answer to better answer the query according to the refinement guidlines listed above.
 Refined Answer:
 """
+
+# Refinement Guidelines:
+# - Refine the existing answer to better address the question while ensuring compliance with the rules.
+# - Use retrieved context only; do not introduce new information.
+# - Provide the improved answer in three sentences or less.
 
 class Chatbot():
     def __init__(
             self,
             params
         ):
-        
+
         self.params = params
 
         self.model = AsyncBedrock(
@@ -137,7 +114,7 @@ class Chatbot():
             verbose=self.params["retriever"]["verbose"]
         )
 
-    
+
     def _get_prompt_templates(self):
 
         # create templates
@@ -159,12 +136,12 @@ class Chatbot():
         )
 
         return qa_prompt_tmpl, ref_prompt_tmpl
-    
-    
+
+
     def _update_messages(self, role, message):
         self.messages.append({"role": role, "text": message})
 
-    
+
     def _messages_to_str(self, **kwargs):
         text = ""
         if len(self.messages) > 0:
@@ -179,21 +156,20 @@ class Chatbot():
 
 
     def _check_language(self, message_str, role):
-        
+
         lang = detect_language(message_str)
         logging.info(f"Detected '{lang}' at the last {role}'s message.")
 
         return lang
 
 
-    def generate(self, query_str):
+    def generate(self, query_str: str) -> str:
 
         query_lang = self._check_language(query_str, "User")
         if query_lang != "it":
-            response_str = (
-                f"Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.\n"
-                "Riformula la domanda in italiano oppure chiedimene una nuova."
-            )
+            response_str = """Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.
+            Riformula la domanda in italiano oppure chiedimene una nuova.
+            """
 
         else:
 
@@ -202,10 +178,9 @@ class Chatbot():
             response_str = response.response.strip()
 
             if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-                response_str = (
-                    "Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.\n"
-                    "Chiedimi una nuova domanda."
-                )
+                response_str = """Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.
+                Chiedimi una nuova domanda.
+                """
 
             else:
                 response_lang = self._check_language(response_str, "Assistant")
@@ -219,9 +194,9 @@ class Chatbot():
                 self._update_messages("Assistant", response_str)
 
         return response_str
-    
 
-    async def agenerate(self, query_str):
+
+    async def agenerate(self, query_str: str) -> str:
         # TO DO
         return None
 

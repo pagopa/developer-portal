@@ -12,7 +12,7 @@
         "reference": "Si \u00e8 stata messa a disposizione la gestione massiva delle posizioni debitorie la cui documentazione \u00e8 reperibile alla pagina \"Introduzione | Gestione massiva Posizioni Debitorie\" e che sar\u00e0 oggetto di un webinar dedicato nel corso delle prossime settimane."
     },
     {
-        "query": "Nel caso di ente multi intermediato attivando la stazione broadcast tutti gli PT riceveranno tutte le notifiche anche di Posizioni debitorie anche quelle non di loro competenza? Se si come vengono rispettate le regole della privacy /gdpr?",
+        "query": "Nel caso di ente multi intermediato attivando la stazione broadcast tutti gli PT riceveranno tutte le notifiche anche di Posizioni debitorie anche quelle non di loro competenza? Se si come vengono rispettate le regole della privacy GDPR?",
         "reference": "Corretto, in questo momento il funzionamento della stazione di broadcast \u00e8 quello descritto nella domanda, sono in corso le analisi per l'inserimento di un filtro nell'invio delle receipt."
     },
     {
@@ -40,7 +40,7 @@
         "reference": "Si, Gli Enti Creditori dovranno comunicare a PagoPA S.p.A. la modalit\u00e0 di integrazione prescelta entro e non oltre il 30 giugno 2024."
     },
     {
-        "query": "la gestione \u00e8 onerosa nei casi in cui vi sia un numero elevato di posizioni debitorie di cui occorre attualizzare l'importo nel tempo, questo aspetto \u00e8 stato valutato? Se si come?",
+        "query": "la gestione \u00e8 onerosa nei casi in cui vi sia un numero elevato di posizioni debitorie di cui occorre attualizzare l'importo nel tempo, questo aspetto \u00e8 stato valutato? Se si, come?",
         "reference": "Per venire incontro a questa esigenza \u00e8 stata implementata la gestione massiva delle posizioni debitorie."
     },
     {
