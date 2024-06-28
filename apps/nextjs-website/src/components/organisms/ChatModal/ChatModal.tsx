@@ -33,6 +33,7 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
         aria-describedby={id}
         chatOpen={open}
         onOpenChat={handleClick}
+        hasNewMessages={false}
       />
       <Popover
         id={id}
