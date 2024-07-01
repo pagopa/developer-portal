@@ -93,7 +93,7 @@ export const appIoOverview: OverviewData = {
       name: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
     },
     {
-      path: 'https://28648410-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FygbXW3iAtEO4zjdRaFKr%2FAccordo%20di%20Adesione%20IO_v.2.4_30_giugno_2024.pdf?alt=media&token=77b2144a-0696-417b-99de-6a7cd95fb01b',
+      path: 'https://28648410-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FygbXW3iAtEO4zjdRaFKr%2FAccordo%20di%20Adesione%20IO_v.2.4_30_giugno_2024.pdf?alt=media',
       name: 'Scarica il contratto di adesione a IO',
     },
     {
