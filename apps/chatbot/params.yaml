@@ -1,0 +1,19 @@
+documentation:
+  path: apps/nextjs-website/out
+
+vector_index:
+  path: index
+  chunk_sizes: [2816, 704, 176]
+  chunk_overlap: 20
+
+models:
+  model_id: amazon.titan-text-express-v1
+  emded_model_id: cohere.embed-multilingual-v3
+  temperature: 0.1
+  max_tokens: 512
+
+retriever:
+  similarity_top_k: 5
+  similarity_cutoff: 0.45
+  response_mode: compact
+  verbose: False
