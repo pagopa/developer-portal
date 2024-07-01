@@ -1,5 +1,12 @@
 # infrastructure
 
+## 0.8.0
+
+### Minor Changes
+
+- 4028890: Removed DGS developers IAM users
+- 4f58966: Set the validity duration of the MFA code
+
 ## 0.7.0
 
 ### Minor Changes
