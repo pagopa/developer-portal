@@ -1,5 +1,15 @@
 # strapi-cms
 
+## 0.11.0
+
+### Minor Changes
+
+- b4b7c2b: Add bannerLinks to solution entity in Strapi
+
+### Patch Changes
+
+- efabae1: Remove bannerLinks and fix CaseHistory type in SolutionsListPage schema
+
 ## 0.10.0
 
 ### Minor Changes
