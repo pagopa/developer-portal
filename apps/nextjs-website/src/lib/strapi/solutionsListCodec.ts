@@ -48,9 +48,13 @@ const makeStrapiSolutionsListPopulate = () =>
         ],
       },
       caseHistories: {
-        populate: {
-          case_histories: '*',
-        },
+        populate: [
+          'case_histories',
+          'case_histories.image',
+          'case_histories.parts',
+          'case_histories.products',
+          'case_histories.products.logo',
+        ],
       },
       features: {
         populate: ['bannerLinks', 'items.icon'],
