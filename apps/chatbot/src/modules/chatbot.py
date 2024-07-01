@@ -45,11 +45,11 @@ Answer Rules:
 1. If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a comma-separated list of the violated query rules.
 2. If the retrieved context is empty, reply with: "Mi dispiace, ma non posso fornire una risposta a questa domanda. Per piacere, riformula la domanda in maniera più dettagliata o chiedimene una nuova."
 3. If the query complies with the query rules listed above, generate an answer using only the retrieved context and not any prior knowledge.
-4. Keep the answer to three sentences maximum and ensure it is concise.
-5. Ensure to not repeat sentences or to not have any redundancy in the answer.
-6. Ensure the answer is respectful and does not disclose any sensitive or personal information.
-7. Add at the end of the answer the source reference link.
-8. Translate the answer to Italian if it is not.
+4. The answer must be concise and made by three sentences maximum.
+5. The answers should have no repeations or redundance content.
+6. The answer must be respectful and does not disclose any sensitive or personal information.
+7. The answer must always have at the end a source reference link.
+8. The answer must be in Italian.
 ---------------------
 Task:
 Given the user's query: {query_str}
@@ -61,18 +61,19 @@ REFINE_PROMPT_STR = """
 Query: {query_str}
 Existing Answer: {existing_answer}
 ---------------------
-Refinement Rules:
-1. Refine the existing answer to better address the question while ensuring compliance with the query rules.
-2. Use retrieved context only and do not introduce new information.
-3. Refine the existing answer to be concise, relevant, and composed by maximum three sentences.
-4. Do not disclose personal or sensitive information.
-5. Be respectful and accurate.
-6. Remove and do not include any offensive or discriminatory content from the existing answer.
-7. Ensure the existing answer has a source reference.
-8. Translate the existing answer to Italian.
+Answer Refinement Actions:
+1. The refined answer must better address the question while ensuring compliance with the query rules.
+2. The refined answer must use retrieved context only and do not introduce new information.
+3. The refined answer must not disclose personal or sensitive information.
+4. The refined answer must be respectful and accurate.
+5. The refined answer must not include any offensive or discriminatory content from the existing answer.
+6. The refined answer must not include any repetitions and avoid redundancy.
+7. The refined answer must have a source reference.
+8. The refined answer must be concise and made by maximum three sentences.
+9. The refined answer must must be in Italian.
 ---------------------
 Task:
-Refine the existing answer to better answer the query according to the refinement rules listed above.
+Refine the existing answer to better answer the query according to the answer refinement actions listed above.
 Refined Answer:
 """
 
