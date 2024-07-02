@@ -5,11 +5,10 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import BannerLinks, {
-  BannerLinksProps,
-} from '@/components/molecules/BannerLinks/BannerLinks';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 
 export type ApiListPageTemplateProps = {
   readonly breadcrumbs: {
@@ -30,7 +29,7 @@ export type ApiListPageTemplateProps = {
     icon: string;
     tags?: { readonly label: string }[];
   }[];
-  readonly bannerLinks: BannerLinksProps;
+  readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
 };
 
@@ -73,7 +72,7 @@ const ApiListPageTemplate = ({
           cardSize={{ xs: 12, md: 16 / cards.length }}
         />
       </Box>
-      <BannerLinks bannerLinks={bannerLinks.bannerLinks} />
+      <BannerLinks bannerLinks={bannerLinks} />
     </>
   );
 };
