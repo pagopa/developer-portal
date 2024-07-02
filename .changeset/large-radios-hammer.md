@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add ApiData to strapi
+Add ApiData to Strapi
