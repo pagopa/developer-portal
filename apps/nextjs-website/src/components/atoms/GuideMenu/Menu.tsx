@@ -137,8 +137,8 @@ const components: RenderingComponents<React.ReactNode> = {
   ),
 };
 
-export type GuideMenuItemsProps = GuideVersionSelectorProps & {
-  guideName: string;
+export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
+  name: string;
   assetsPrefix: string;
   currentPath?: string;
   expanded?: string[];
@@ -150,7 +150,7 @@ const GuideMenuItems = ({
   assetsPrefix,
   currentPath,
   expanded = [],
-  guideName,
+  name,
   linkPrefix,
   menu,
   versionName,
@@ -171,9 +171,11 @@ const GuideMenuItems = ({
           fontWeight: { xs: 700, md: 600 },
         }}
       >
-        {guideName}
+        {name}
       </Typography>
-      <GuideVersionSelector versions={versions} versionName={versionName} />
+      {versions && versionName && (
+        <GuideVersionSelector versions={versions} versionName={versionName} />
+      )}
       <TreeView
         defaultCollapseIcon={<ExpandLessIcon />}
         defaultExpanded={expanded}
