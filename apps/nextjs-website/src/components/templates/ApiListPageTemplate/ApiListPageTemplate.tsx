@@ -40,7 +40,6 @@ const ApiListPageTemplate = ({
   bannerLinks,
   theme = 'light',
 }: ApiListPageTemplateProps) => {
-  console.log(breadcrumbs.product.name);
   return (
     <>
       <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
