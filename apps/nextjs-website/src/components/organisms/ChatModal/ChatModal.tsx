@@ -48,6 +48,7 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
           vertical: 'bottom',
           horizontal: 'right',
         }}
+        sx={{ maxWidth: '60%' }}
       >
         <Box
           bgcolor={'black'}
