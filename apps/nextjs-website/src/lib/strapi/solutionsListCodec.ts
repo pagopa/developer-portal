@@ -31,7 +31,34 @@ export type StrapiSolutionsList = t.TypeOf<typeof StrapiSolutionsListCodec>;
 
 const makeStrapiSolutionsListPopulate = () =>
   qs.stringify({
-    populate: 'deep',
+    populate: {
+      solutions: {
+        populate: [
+          'bannerLinks',
+          'bannerLinks.icon',
+          'products.logo',
+          'icon',
+          'icon.name',
+          'stats',
+          'steps',
+          'steps.products',
+          'webinars',
+          'webinars.coverImage',
+          'webinars.webinarSpeakers',
+          'webinars.webinarSpeakers.avatar',
+        ],
+      },
+      caseHistories: {
+        populate: [
+          'case_histories',
+          'case_histories.image',
+          'case_histories.parts',
+          'case_histories.parts.backgroundImage',
+          'case_histories.products',
+          'case_histories.products.logo',
+        ],
+      },
+    },
   });
 
 export const fetchSolutionsList = fetchFromStrapi(
