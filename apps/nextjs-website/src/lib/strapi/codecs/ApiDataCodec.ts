@@ -1,5 +1,6 @@
 import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
 const UrlCodec = t.strict({
   id: t.number,
@@ -9,9 +10,9 @@ const UrlCodec = t.strict({
 export const ApiDataCodec = t.strict({
   id: t.number,
   title: t.string,
-  description: t.string,
-  icon: MediaCodec,
+  description: t.union([NullToUndefinedCodec, t.string]),
+  icon: t.union([NullToUndefinedCodec, MediaCodec]),
   slug: t.string,
   specUrls: t.array(UrlCodec),
-  tag: t.string,
+  tag: t.union([NullToUndefinedCodec, t.string]),
 });

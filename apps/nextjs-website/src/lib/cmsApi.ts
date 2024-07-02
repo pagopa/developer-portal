@@ -20,6 +20,8 @@ import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
 import { fetchSolutions } from './strapi/solutionsCodec';
 import { makeSolutionsProps } from './solutions';
+import { fetchApiListPages } from './strapi/ApiListPageCodec';
+import build from 'next/dist/build';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -83,6 +85,17 @@ export const getQuickStartsProps = async () => {
   } else {
     return makeQuickStartsPropsFromStatic(quickStartGuides);
   }
+};
+
+export const getApiListPageProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const apiListPage = await fetchApiListPages(buildEnv);
+    return [];
+  } else return [];
 };
 
 export const getCaseHistoriesProps = async () => {
