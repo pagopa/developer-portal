@@ -49,6 +49,17 @@
         }
       },
       "component": "common.case-histories"
+    },
+    "features": {
+      "displayName": "Features",
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.features"
     }
   }
 }
