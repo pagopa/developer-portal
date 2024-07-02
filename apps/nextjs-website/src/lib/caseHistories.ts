@@ -17,5 +17,6 @@ export function makeCaseHistoriesProps(
       ...attributes,
       logo: attributes.logo.data.attributes,
     })),
+    image: attributes.image?.data?.attributes,
   }));
 }

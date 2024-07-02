@@ -13,6 +13,7 @@ import { GuidePage } from './types/guideData';
 import {
   getCaseHistoriesProps,
   getQuickStartsProps,
+  getSolutionsListProps,
   getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
@@ -210,4 +211,9 @@ export async function getSolution(solutionSlug?: string) {
     (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
+}
+
+export async function getSolutionsList() {
+  const solutionsListProps = await getSolutionsListProps();
+  return manageUndefined(solutionsListProps);
 }
