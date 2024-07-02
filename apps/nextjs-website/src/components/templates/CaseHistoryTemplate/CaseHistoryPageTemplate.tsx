@@ -76,17 +76,19 @@ const CaseHistoryPageTemplate = ({
           </Box>
         )
       )}
-      <ProductsShowcase
-        cardSize={{ xs: 12, md: 4 }}
-        backgroundColor={palette.background.paper}
-        title={t('caseHistory.productShowcaseLabel')}
-        cards={products.map((product) => ({
-          title: product.name,
-          text: product.description || '',
-          href: `/${product.slug}/overview`,
-          logoUrl: product.logo.url,
-        }))}
-      />
+      {products.length > 0 && (
+        <ProductsShowcase
+          cardSize={{ xs: 12, md: 4 }}
+          backgroundColor={palette.background.paper}
+          title={t('caseHistory.productShowcaseLabel')}
+          cards={products.map((product) => ({
+            title: product.name,
+            text: product.description || '',
+            href: `/${product.slug}/overview`,
+            logoUrl: product.logo.url,
+          }))}
+        />
+      )}
     </>
   );
 };
