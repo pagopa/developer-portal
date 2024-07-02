@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "chatbot"
+version = "0.1.0"
+description = "Chatbot repository for PagoPA"
+authors = ["Marco Cirillo <marco.cirillo@uqido.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+matplotlib = "^3.9.0"
+aioboto3 = "^13.0.1"
+llama-index = "^0.10.46"
+llama-index-cli = "^0.1.12"
+llama-index-core = "^0.10.46"
+llama-index-embeddings-bedrock = "^0.2.1"
+llama-index-llms-bedrock = "^0.1.9"
+langchain = "^0.2.5"
+langchain-aws = "^0.1.6"
+langchain-community = "^0.2.5"
+langchainhub = "^0.1.20"
+langdetect = "^1.0.9"
+langchain-core = "^0.2.9"
+jupyter = "^1.0.0"
+toml = "^0.10.2"
+asyncio = "^3.4.3"
+gradio = "^4.36.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
