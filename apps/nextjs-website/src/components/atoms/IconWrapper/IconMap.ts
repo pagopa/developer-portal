@@ -23,10 +23,12 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
 import { MediumIcon } from '@pagopa/mui-italia/dist/icons/MediumIcon';
+import { ChangeCircle, TimerOutlined } from '@mui/icons-material';
 
 export const ICON_MAP = {
   AccountBalance: AccountBalance,
   Approval: Approval,
+  ChangeCircle: ChangeCircle,
   CreateRounded: CreateRounded,
   ExitToApp: ExitToApp,
   Feedback: Feedback,
@@ -46,6 +48,7 @@ export const ICON_MAP = {
   PeopleAlt: PeopleAlt,
   QueryStats: QueryStats,
   Replay: Replay,
+  TimerOutlined: TimerOutlined,
   TimerSharp: TimerSharp,
   TrendingUp: TrendingUp,
   Twitter: Twitter,

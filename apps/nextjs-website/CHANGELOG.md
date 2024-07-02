@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 0.27.0
+
+### Minor Changes
+
+- ce71269: Add Solution page
+- cba50f2: Update BannerLinks layout and BannerLink input props and layout
+- 131e95e: Version update "Manuale Operativo" SEND
+
+### Patch Changes
+
+- bc752c2: Fix relatedLink in appIO's overview
+- 021b82b: Fetch tutorial from strapi and add codecs
+- e3a57a4: Fix getTutorialPaths output
+- 4f58966: Set the validity duration of the MFA code
+- 757ddc5: Remove DOMPurify.sanitize from TypographyPart component
+
 ## 0.26.0
 
 ### Minor Changes
