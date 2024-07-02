@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.3.1
+
+### Patch Changes
+
+- ff1e3e8: Add solutions list page
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 0.28.0
+
+### Minor Changes
+
+- ff1e3e8: Add solutions list page
+
 ## 0.27.0
 
 ### Minor Changes

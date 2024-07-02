@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 0.12.0
+
+### Minor Changes
+
+- 5202a75: Create ApiListPage model
+- d21b4d9: Add ApiData to Strapi
+
 ## 0.11.0
 
 ### Minor Changes
