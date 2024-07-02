@@ -19,40 +19,38 @@ export const Showcase: StoryObj<typeof SolutionsTemplate> = {
       subtitle:
         'Scopri le soluzioni, guide pratiche realizzate per supportarti nella trasformazione digitale dei tuoi servizi attraverso l’utilizzo integrato delle piattaforme PagoPA.',
     },
-    solutionsShowcase: {
-      solutions: [
-        {
-          name: 'Multe per violazioni al Codice della Strada',
-          description:
-            "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
-          slug: 'multe-per-violazioni-al-codice-della-strada',
-          logo: {
-            url: 'https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg',
-            name: 'logo-pagopa',
-            width: 200,
-            height: 200,
-            ext: '.svg',
-            mime: 'image/svg',
-          },
-          tags: [{ label: 'IO' }, { label: 'PagoPA' }, { label: 'SEND' }],
+    solutions: [
+      {
+        name: "Multe per violazioni al Codice della Strada",
+        description:
+          "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
+        slug: "multe-per-violazioni-al-codice-della-strada",
+        logo: {
+          url: "https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg",
+          name: "logo-pagopa",
+          width: 200,
+          height: 200,
+          ext: ".svg",
+          mime: "image/svg",
         },
-        {
-          name: 'Multe per violazioni al Codice della Strada',
-          description:
-            "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
-          slug: 'multe-per-violazioni-al-codice-della-strada',
-          logo: {
-            url: 'https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg',
-            name: 'logo-pagopa',
-            width: 200,
-            height: 200,
-            ext: '.svg',
-            mime: 'image/svg',
-          },
-          tags: [{ label: 'IO' }, { label: 'PagoPA' }, { label: 'SEND' }],
+        tags: [{ label: "IO" }, { label: "PagoPA" }, { label: "SEND" }],
+      },
+      {
+        name: "Multe per violazioni al Codice della Strada",
+        description:
+          "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
+        slug: "multe-per-violazioni-al-codice-della-strada",
+        logo: {
+          url: "https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg",
+          name: "logo-pagopa",
+          width: 200,
+          height: 200,
+          ext: ".svg",
+          mime: "image/svg",
         },
-      ],
-    },
+        tags: [{ label: "IO" }, { label: "PagoPA" }, { label: "SEND" }],
+      },
+    ],
     feature: {
       items: [
         {

@@ -17,6 +17,7 @@ export function makeSolutionsProps(
       ...attributes,
       logo: attributes.logo.data.attributes,
     })),
+    icon: attributes.icon.data.attributes,
     webinars: attributes.webinars.data.map((webinar) => ({
       ...webinar.attributes,
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
