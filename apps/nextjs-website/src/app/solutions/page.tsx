@@ -8,29 +8,7 @@ const Page = async () => {
     <SolutionsTemplate
       hero={solutionsList.hero}
       solutions={solutionsList.solutions}
-      feature={{
-        title: 'I benefici della trasformazione digitale dei servizi',
-        items: [
-          {
-            iconName: 'MarkEmailRead',
-            subtitle:
-              'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
-            title: 'Comunicazione tempestiva e trasparente',
-          },
-          {
-            iconName: 'ChangeCircle',
-            subtitle:
-              'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
-            title: 'Comunicazione tempestiva e trasparente',
-          },
-          {
-            iconName: 'TimerOutlined',
-            subtitle:
-              'I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare',
-            title: 'Comunicazione tempestiva e trasparente',
-          },
-        ],
-      }}
+      features={solutionsList.features}
       successStories={solutionsList.successStories}
     />
   );

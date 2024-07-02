@@ -4,6 +4,7 @@ import { fetchFromStrapi } from './fetchFromStrapi';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { SolutionCodec } from './solutionsCodec';
 import { CaseHistoryCodec } from './caseHistoriesCodec';
+import { FeaturesCodec } from './codecs/FeaturesCodec';
 
 export const StrapiSolutionsListCodec = t.strict({
   data: t.strict({
@@ -23,6 +24,7 @@ export const StrapiSolutionsListCodec = t.strict({
       solutions: t.strict({
         data: t.array(SolutionCodec),
       }),
+      features: FeaturesCodec,
     }),
   }),
 });
@@ -57,6 +59,9 @@ const makeStrapiSolutionsListPopulate = () =>
           'case_histories.products',
           'case_histories.products.logo',
         ],
+      },
+      features: {
+        populate: ['bannerLinks', 'items.icon'],
       },
     },
   });

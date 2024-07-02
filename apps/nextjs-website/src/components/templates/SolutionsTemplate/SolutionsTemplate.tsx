@@ -21,7 +21,7 @@ export type SolutionsTemplateProps = {
     readonly tags?: { readonly label: string; readonly path?: string }[];
     readonly logo: Media;
   }[];
-  readonly feature: {
+  readonly features: {
     readonly title: string;
     readonly subtitle?: string;
     readonly items: FeatureItem[];
@@ -44,7 +44,7 @@ export type SolutionsTemplateProps = {
 const SolutionsTemplate = ({
   hero,
   solutions,
-  feature,
+  features,
   successStories,
 }: SolutionsTemplateProps) => {
   const t = useTranslations('shared');
@@ -75,12 +75,7 @@ const SolutionsTemplate = ({
           }))}
         />
       )}
-      <Feature
-        items={feature.items}
-        title={feature.title}
-        subtitle={feature.subtitle}
-        useDarkTheme
-      />
+      <Feature items={features.items} title={features.title} useDarkTheme />
       {successStories && (
         <NewsShowcase
           marginTop={8}
