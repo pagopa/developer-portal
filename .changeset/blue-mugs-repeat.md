@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Fix user can't change password
+Fix user password change on personal data
