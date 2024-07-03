@@ -3,9 +3,9 @@ import ApiDataListPageTemplate from '../../../nextjs-website/src/components/temp
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
-const meta: Meta<typeof ApiListPageTemplate> = {
-  title: 'Templates/ApiListPageTemplate',
-  component: ApiListPageTemplate,
+const meta: Meta<typeof ApiDataListPageTemplate> = {
+  title: 'Templates/ApiDataListPageTemplate',
+  component: ApiDataListPageTemplate,
 };
 
 export default meta;
