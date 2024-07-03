@@ -3,6 +3,6 @@ export type Path = {
   readonly path: string;
 };
 
-export type BreadCrumbSegment = Path & {
+export type BreadcrumbSegment = Path & {
   readonly translate?: boolean;
 };
