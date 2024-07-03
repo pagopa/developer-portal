@@ -11,7 +11,7 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
-  getApiListPageProps,
+  getApiDataListPageProps,
   getCaseHistoriesProps,
   getQuickStartsProps,
   getSolutionsListProps,
@@ -208,9 +208,9 @@ export async function getCaseHistory(caseHistorySlug?: string) {
   );
 }
 
-export async function getApiListPages(productSlug: string) {
-  const props = (await getApiListPageProps()).find(
-    (apiPageData) => apiPageData.product === productSlug
+export async function getApiDataListPages(productSlug: string) {
+  const props = (await getApiDataListPageProps()).find(
+    (apiPageData) => apiPageData.breadcrumbs.product.slug === productSlug
   );
   return await props;
 }

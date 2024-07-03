@@ -28,7 +28,7 @@ const makeApiListPagePopulate = () =>
     populate: '*',
   });
 
-export const fetchApiListPages = fetchFromStrapi(
+export const fetchApiDataListPages = fetchFromStrapi(
   'api-list-pages',
   makeApiListPagePopulate(),
   ApiListPagesCodec

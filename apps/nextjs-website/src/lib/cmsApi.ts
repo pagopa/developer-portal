@@ -22,8 +22,8 @@ import { fetchSolutions } from './strapi/solutionsCodec';
 import { makeSolutionsProps } from './solutions';
 import { makeSolutionsListProps } from './solutionsList';
 import { fetchSolutionsList } from './strapi/solutionsListCodec';
-import { fetchApiListPages } from './strapi/ApiListPageCodec';
-import { makeApiListPageProps } from './apiListPages';
+import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { makeApiDataListPageProps } from './apiDataListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -89,14 +89,14 @@ export const getQuickStartsProps = async () => {
   }
 };
 
-export const getApiListPageProps = async () => {
+export const getApiDataListPageProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apiListPages = await fetchApiListPages(buildEnv);
-    return makeApiListPageProps(apiListPages);
+    const apiDataListPages = await fetchApiDataListPages(buildEnv);
+    return makeApiDataListPageProps(apiDataListPages);
   } else return [];
 };
 

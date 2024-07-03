@@ -1,16 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ApiListPageTemplate from '../../../nextjs-website/src/components/templates/ApiListPageTemplate/ApiListPageTemplate';
+import ApiDataListPageTemplate from '../../../nextjs-website/src/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
-const meta: Meta<typeof ApiListPageTemplate> = {
-  title: 'Templates/ApiListPageTemplate',
-  component: ApiListPageTemplate,
+const meta: Meta<typeof ApiDataListPageTemplate> = {
+  title: 'Templates/ApiDataListPageTemplate',
+  component: ApiDataListPageTemplate,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
+export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
   decorators: [nextIntlContextDecorator],
   args: {
     breadcrumbs: {
@@ -91,39 +91,37 @@ export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
         ],
       },
     ],
-    bannerLinks: {
-      bannerLinks: [
-        {
-          theme: 'light',
-          icon: {
-            name: 'headset.svg',
-            alternativeText: null,
-            caption: null,
-            width: 60,
-            height: 61,
-            ext: '.svg',
-            mime: 'image/svg+xml',
-            url: '/icons/headset.svg',
-          },
-          title: mockText(2),
-          content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 30 }) }],
+    bannerLinks: [
+      {
+        theme: 'light',
+        icon: {
+          name: 'headset.svg',
+          alternativeText: null,
+          caption: null,
+          width: 60,
+          height: 61,
+          ext: '.svg',
+          mime: 'image/svg+xml',
+          url: '/icons/headset.svg',
         },
-        {
-          theme: 'dark',
-          icon: {
-            name: 'headset.svg',
-            alternativeText: null,
-            caption: null,
-            width: 60,
-            height: 61,
-            ext: '.svg',
-            mime: 'image/svg+xml',
-            url: '/icons/headset.svg',
-          },
-          title: mockText(2),
-          content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 28 }) }],
+        title: mockText(2),
+        content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 30 }) }],
+      },
+      {
+        theme: 'dark',
+        icon: {
+          name: 'headset.svg',
+          alternativeText: null,
+          caption: null,
+          width: 60,
+          height: 61,
+          ext: '.svg',
+          mime: 'image/svg+xml',
+          url: '/icons/headset.svg',
         },
-      ],
-    },
+        title: mockText(2),
+        content: [{ ...mockTextBlock({ type: 'paragraph', wordCount: 28 }) }],
+      },
+    ],
   },
 };

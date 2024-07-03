@@ -5,25 +5,23 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import BannerLinks, {
-  BannerLinksProps,
-} from '@/components/molecules/BannerLinks/BannerLinks';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 
-export type ApiListPageTemplateProps = {
-  /*breadcrumbs: {
-    product: Product;
-    path: string;
-    paths: Path[];
-  };*/
-  product: string;
+export type ApiDataListPageTemplateProps = {
+  readonly breadcrumbs: {
+    readonly product: Product;
+    readonly path: string;
+    readonly paths: readonly Path[];
+  };
   hero: {
     title: string;
     subtitle: string;
     heigth?: string;
   };
-  /*cards: {
+  cards: {
     title: string;
     text: string;
     ctaLabel?: string;
@@ -31,20 +29,20 @@ export type ApiListPageTemplateProps = {
     icon: string;
     tags?: { label: string }[];
   }[];
-  bannerLinks: BannerLinksProps;
-  theme?: Theme;*/
+  readonly bannerLinks: BannerLinkProps[];
+  readonly theme?: Theme;
 };
 
-const ApiListPageTemplate = ({
-  //breadcrumbs,
-  //cards,
-  //bannerLinks,
-  //theme = 'light',
+const ApiDataListPageTemplate = ({
+  breadcrumbs,
   hero,
-}: ApiListPageTemplateProps) => {
+  cards,
+  bannerLinks,
+  theme = 'light',
+}: ApiDataListPageTemplateProps) => {
   return (
     <>
-      {/*<EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
+      <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
         <ProductBreadcrumbs
           breadcrumbs={[
             ...productPageToBreadcrumbs(
@@ -54,18 +52,18 @@ const ApiListPageTemplate = ({
             ),
           ]}
         />
-      </EContainer>*/}
+      </EContainer>
       <Hero
         title={hero.title}
         subtitle={hero.subtitle}
-        theme='dark' //{theme}
+        theme={theme}
         smallHeight={hero.heigth || '272px'}
         titleVariant='h4'
         gridTextSx={{
           justifyContent: 'center',
         }}
       />
-      {/*<Box paddingBottom={'80px'}>
+      <Box paddingBottom={6}>
         <CardsGrid
           cardVariant='outlined'
           cards={cards}
@@ -73,9 +71,9 @@ const ApiListPageTemplate = ({
           cardSize={{ xs: 12, md: 16 / cards.length }}
         />
       </Box>
-      <BannerLinks bannerLinks={bannerLinks.bannerLinks} />*/}
+      <BannerLinks bannerLinks={bannerLinks} />
     </>
   );
 };
 
-export default ApiListPageTemplate;
+export default ApiDataListPageTemplate;

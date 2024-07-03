@@ -1,8 +1,8 @@
-import ApiListPageTemplate from '@/components/templates/ApiListPageTemplate/ApiListPageTemplate';
+import ApiListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getApiListPages } from '@/lib/api';
-import { getApiListPageProps } from '@/lib/cmsApi';
+import { getApiDataListPages } from '@/lib/api';
+import { getApiDataListPageProps } from '@/lib/cmsApi';
 import { Typography } from '@mui/material';
 import { Metadata } from 'next';
 
@@ -11,9 +11,9 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  const caseHistories = await getApiListPageProps();
-  return [...caseHistories].map(({ product }) => ({
-    slug: product,
+  const apiDataList = await getApiDataListPageProps();
+  return [...apiDataList].map(({ breadcrumbs }) => ({
+    slug: breadcrumbs.product.slug,
   }));
 }
 
@@ -22,17 +22,17 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const apiListPage = await getApiListPages(params?.slug);
+  const apiListPage = await getApiDataListPages(params?.slug);
 
   return makeMetadata({
     title: apiListPage?.hero.title,
-    url: `${baseUrl}/${apiListPage?.product}/api-list-page`,
+    url: `${baseUrl}/${apiListPage?.breadcrumbs.product.slug}/api-list-page`,
     locale: 'it_IT',
   });
 }
 
 const ApiListPage = async ({ params }: { params: Params }) => {
-  const ApiListPageProps = await getApiListPages(params.slug);
+  const ApiListPageProps = await getApiDataListPages(params.slug);
   if (ApiListPageProps)
     return (
       <>

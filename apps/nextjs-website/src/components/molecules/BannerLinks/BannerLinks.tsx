@@ -6,7 +6,7 @@ import {
   BannerLinkProps,
 } from '@/components/atoms/BannerLink/BannerLink';
 
-export type BannerLinksProps = {
+type BannerLinksProps = {
   bannerLinks?: readonly BannerLinkProps[];
 };
 
