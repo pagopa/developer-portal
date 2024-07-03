@@ -6,22 +6,22 @@ import { ApiDataCodec } from './codecs/ApiDataCodec';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 
-export const ApiListPageCodec = t.strict({
+export const ApiDataListPageCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
-    product: t.union([NullToUndefinedCodec, ProductCodec]),
+    product: ProductCodec,
     api_data: t.array(ApiDataCodec),
     bannerLinks: t.array(BannerLinkCodec),
   }),
 });
 
-export const ApiListPagesCodec = t.strict({
-  data: t.array(ApiListPageCodec),
+export const ApiDataListPagesCodec = t.strict({
+  data: t.array(ApiDataListPageCodec),
 });
 
-export type ApiListPages = t.TypeOf<typeof ApiListPagesCodec>;
+export type ApiDataListPages = t.TypeOf<typeof ApiDataListPagesCodec>;
 
 const makeApiListPagePopulate = () =>
   qs.stringify({
@@ -31,5 +31,5 @@ const makeApiListPagePopulate = () =>
 export const fetchApiDataListPages = fetchFromStrapi(
   'api-list-pages',
   makeApiListPagePopulate(),
-  ApiListPagesCodec
+  ApiDataListPagesCodec
 );

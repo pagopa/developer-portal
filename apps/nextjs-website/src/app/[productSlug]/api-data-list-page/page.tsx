@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 import { Metadata } from 'next';
 
 type Params = {
-  slug: string;
+  productSlug: string;
 };
 
 export async function generateStaticParams() {
@@ -22,17 +22,18 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const apiListPage = await getApiDataListPages(params?.slug);
+  const apiDataListPage = await getApiDataListPages(params?.productSlug);
 
   return makeMetadata({
-    title: apiListPage?.hero.title,
-    url: `${baseUrl}/${apiListPage?.breadcrumbs.product.slug}/api-list-page`,
+    title: apiDataListPage?.hero.title,
+    url: `${baseUrl}/${apiDataListPage?.breadcrumbs.product.slug}/api-list-page`,
     locale: 'it_IT',
   });
 }
 
 const ApiListPage = async ({ params }: { params: Params }) => {
-  const ApiListPageProps = await getApiDataListPages(params.slug);
+  console.log(params.productSlug);
+  const ApiListPageProps = await getApiDataListPages(params.productSlug);
   if (ApiListPageProps)
     return (
       <>
@@ -40,6 +41,7 @@ const ApiListPage = async ({ params }: { params: Params }) => {
         <ApiListPageTemplate {...ApiListPageProps} />
       </>
     );
+  else return <Typography>BUBBA</Typography>;
 };
 
 export default ApiListPage;

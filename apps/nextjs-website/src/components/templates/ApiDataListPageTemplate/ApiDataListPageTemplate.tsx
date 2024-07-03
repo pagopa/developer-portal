@@ -16,18 +16,18 @@ export type ApiDataListPageTemplateProps = {
     readonly path: string;
     readonly paths: readonly Path[];
   };
-  hero: {
-    title: string;
-    subtitle: string;
-    heigth?: string;
+  readonly hero: {
+    readonly title: string;
+    readonly subtitle: string;
+    readonly heigth?: string;
   };
-  cards: {
-    title: string;
-    text: string;
-    ctaLabel?: string;
-    href?: string;
-    icon: string;
-    tags?: { label: string }[];
+  readonly cards: {
+    readonly title: string;
+    readonly text: string;
+    readonly ctaLabel?: string;
+    readonly href?: string;
+    readonly icon: string;
+    readonly tags?: { label: string }[];
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;

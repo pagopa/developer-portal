@@ -212,7 +212,7 @@ export async function getApiDataListPages(productSlug: string) {
   const props = (await getApiDataListPageProps()).find(
     (apiPageData) => apiPageData.breadcrumbs.product.slug === productSlug
   );
-  return await props;
+  return props;
 }
 
 export async function getSolution(solutionSlug?: string) {
