@@ -76,4 +76,4 @@ const ApiDataListPageTemplate = ({
   );
 };
 
-export default ApiListPageTemplate;
+export default ApiDataListPageTemplate;
