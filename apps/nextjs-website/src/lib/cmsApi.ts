@@ -23,6 +23,7 @@ import { makeSolutionsProps } from './solutions';
 import { makeSolutionsListProps } from './solutionsList';
 import { fetchSolutionsList } from './strapi/solutionsListCodec';
 import { fetchApiListPages } from './strapi/ApiListPageCodec';
+import { makeApiListPageProps } from './apiListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -94,8 +95,8 @@ export const getApiListPageProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apiListPage = await fetchApiListPages(buildEnv);
-    return [];
+    const apiListPages = await fetchApiListPages(buildEnv);
+    return makeApiListPageProps(apiListPages);
   } else return [];
 };
 

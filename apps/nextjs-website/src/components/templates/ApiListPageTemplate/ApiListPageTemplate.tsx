@@ -12,39 +12,39 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 
 export type ApiListPageTemplateProps = {
-  readonly breadcrumbs: {
-    readonly product: Product;
-    readonly path: string;
-    readonly paths: readonly Path[];
+  /*breadcrumbs: {
+    product: Product;
+    path: string;
+    paths: Path[];
+  };*/
+  product: string;
+  hero: {
+    title: string;
+    subtitle: string;
+    heigth?: string;
   };
-  readonly hero: {
-    readonly title: string;
-    readonly subtitle: string;
-    readonly heigth?: string;
-  };
-  readonly cards: {
+  /*cards: {
     title: string;
     text: string;
     ctaLabel?: string;
     href?: string;
     icon: string;
-    tags?: { readonly label: string }[];
+    tags?: { label: string }[];
   }[];
-  readonly bannerLinks: BannerLinksProps;
-  readonly theme?: Theme;
+  bannerLinks: BannerLinksProps;
+  theme?: Theme;*/
 };
 
 const ApiListPageTemplate = ({
-  breadcrumbs,
+  //breadcrumbs,
+  //cards,
+  //bannerLinks,
+  //theme = 'light',
   hero,
-  cards,
-  bannerLinks,
-  theme = 'light',
 }: ApiListPageTemplateProps) => {
-  console.log(breadcrumbs.product.name);
   return (
     <>
-      <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
+      {/*<EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
         <ProductBreadcrumbs
           breadcrumbs={[
             ...productPageToBreadcrumbs(
@@ -54,18 +54,18 @@ const ApiListPageTemplate = ({
             ),
           ]}
         />
-      </EContainer>
+      </EContainer>*/}
       <Hero
         title={hero.title}
         subtitle={hero.subtitle}
-        theme={theme}
+        theme='dark' //{theme}
         smallHeight={hero.heigth || '272px'}
         titleVariant='h4'
         gridTextSx={{
           justifyContent: 'center',
         }}
       />
-      <Box paddingBottom={'80px'}>
+      {/*<Box paddingBottom={'80px'}>
         <CardsGrid
           cardVariant='outlined'
           cards={cards}
@@ -73,7 +73,7 @@ const ApiListPageTemplate = ({
           cardSize={{ xs: 12, md: 16 / cards.length }}
         />
       </Box>
-      <BannerLinks bannerLinks={bannerLinks.bannerLinks} />
+      <BannerLinks bannerLinks={bannerLinks.bannerLinks} />*/}
     </>
   );
 };

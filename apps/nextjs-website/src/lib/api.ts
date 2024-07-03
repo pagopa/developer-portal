@@ -11,6 +11,7 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
+  getApiListPageProps,
   getCaseHistoriesProps,
   getQuickStartsProps,
   getSolutionsListProps,
@@ -20,6 +21,7 @@ import {
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/tutorials';
+import { readonly } from 'io-ts';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -204,6 +206,13 @@ export async function getCaseHistory(caseHistorySlug?: string) {
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
+}
+
+export async function getApiListPages(productSlug: string) {
+  const props = (await getApiListPageProps()).find(
+    (apiPageData) => apiPageData.product === productSlug
+  );
+  return await props;
 }
 
 export async function getSolution(solutionSlug?: string) {
