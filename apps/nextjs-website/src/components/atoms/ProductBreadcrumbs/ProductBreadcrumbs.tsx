@@ -9,10 +9,10 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { BreadCrumbSegment } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/types/path';
 
 type ProductBreadcrumbsProps = {
-  breadcrumbs: BreadCrumbSegment[];
+  breadcrumbs: BreadcrumbSegment[];
 };
 
 const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
