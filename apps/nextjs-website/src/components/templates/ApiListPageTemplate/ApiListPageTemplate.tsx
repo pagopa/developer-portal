@@ -63,7 +63,7 @@ const ApiListPageTemplate = ({
           justifyContent: 'center',
         }}
       />
-      <Box paddingBottom={'80px'}>
+      <Box paddingBottom={6}>
         <CardsGrid
           cardVariant='outlined'
           cards={cards}
