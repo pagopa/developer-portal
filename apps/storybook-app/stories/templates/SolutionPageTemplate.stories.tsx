@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import SolutionPageTemplate from '../../../nextjs-website/src/components/templates/SolutionPageTemplate/SolutionPageTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { authProviderDecorator } from '../auth-provider.helper';
+import { mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof SolutionPageTemplate> = {
   title: 'Templates/SolutionPageTemplate',
@@ -52,18 +53,29 @@ export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
     steps: [
       {
         title: '01',
-        content:
-          'Violazione commessa dal cittadino e generazione dell’avviso pagoPA',
+        content: [
+          mockTextBlock({
+            text: 'Violazione commessa dal cittadino e generazione dell’avviso pagoPA',
+          }),
+        ],
         products: [products[1]],
       },
       {
         title: '02',
-        content: 'Emissione e pagamento del preavviso di accertamento',
+        content: [
+          mockTextBlock({
+            text: 'Emissione e pagamento del preavviso di accertamento',
+          }),
+        ],
         products: [products[0], products[2]],
       },
       {
         title: '03',
-        content: 'Emissione, consegna e pagamento del verbale di contestazione',
+        content: [
+          mockTextBlock({
+            text: 'Emissione, consegna e pagamento del verbale di contestazione',
+          }),
+        ],
         products: products,
       },
     ],

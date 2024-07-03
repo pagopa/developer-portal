@@ -1,9 +1,10 @@
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
-import { webinars } from '@/_contents/webinars';
-import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { Webinar } from './types/webinar';
+import { webinars } from '@/_contents/webinars';
+import { Media } from './types/media';
+import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -12,17 +13,9 @@ type NewsShowcaseItemProps = {
   readonly link: {
     readonly text: string;
     readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top' | null;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
   };
-  readonly image: {
-    readonly name: string;
-    readonly alternativeText: string | null;
-    readonly width: number;
-    readonly height: number;
-    readonly ext: string;
-    readonly mime: string;
-    readonly url: string;
-  } | null;
+  readonly image?: Media;
 };
 
 type NewsShowcaseProps = {

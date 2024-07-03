@@ -13,17 +13,19 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
 import Stats from '@/components/atoms/Stats/Stats';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { Media } from '@/lib/types/media';
 
 export type SolutionPageTemplateProps = {
   slug: string;
   kickerTitle: string;
   title: string;
   description?: string;
+  icon: Media;
   steps: {
     title: string;
-    // content: BlocksContent; TODO: uncomment when blocks are ready
-    content: string;
-    products: Product[];
+    content: BlocksContent;
+    products: Pick<Product, 'name' | 'slug'>[];
   }[];
   dirName: string;
   landingUseCaseFile: string;
@@ -31,7 +33,7 @@ export type SolutionPageTemplateProps = {
     title: string;
     description?: string;
   }[];
-  products: Product[];
+  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   webinars: Webinar[];
   bannerLinks: BannerLinkProps[];
 };

@@ -31,17 +31,16 @@ const SubscribeToWebinar = ({
   const action = searchParams.get('action');
   const isSubscribeAction = action === 'subscribe';
 
-  const { user, reloadUser, aligned } = useUser();
+  const { user, webinarSubscriptions, reloadUser, aligned } = useUser();
   const username = user?.username;
 
   useEffect(() => {
     if (username && webinarSlug) {
       setIsSubscribed(
-        user?.webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ??
-          false
+        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false
       );
     }
-  }, [setIsSubscribed, username, user?.webinarSubscriptions, webinarSlug]);
+  }, [setIsSubscribed, username, webinarSubscriptions, webinarSlug]);
 
   const onSubscribe = useCallback(() => {
     if (!webinarSlug || !username) {

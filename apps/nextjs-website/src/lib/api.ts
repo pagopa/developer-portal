@@ -13,6 +13,8 @@ import { GuidePage } from './types/guideData';
 import {
   getCaseHistoriesProps,
   getQuickStartsProps,
+  getSolutionsListProps,
+  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -153,7 +155,7 @@ export async function getTutorialPaths() {
   const tutorialsFromCMS = await getTutorialsProps();
   const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
     slug: path.split('/')[1],
-    tutorialPaths: path.split('/'),
+    tutorialPaths: [path.split('/').at(-1)],
   }));
 
   const tutorialPaths = tutorials.map((tutorial) => ({
@@ -202,4 +204,16 @@ export async function getCaseHistory(caseHistorySlug?: string) {
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
+}
+
+export async function getSolution(solutionSlug?: string) {
+  const props = manageUndefined(
+    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+  );
+  return props;
+}
+
+export async function getSolutionsList() {
+  const solutionsListProps = await getSolutionsListProps();
+  return manageUndefined(solutionsListProps);
 }

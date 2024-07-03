@@ -50,7 +50,7 @@ const NewsItemCodec = t.strict({
     title: t.string,
     link: LinkCodec,
     publishedAt: tt.DateFromISOString,
-    image: t.strict({ data: t.union([t.null, MediaCodec]) }),
+    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
   }),
 });
 
@@ -60,7 +60,7 @@ export const StrapiHomepageCodec = t.strict({
       comingsoonDocumentation: RelatedLinksCodec,
       heroSlider: t.array(HeroSlideCodec),
       newsShowcase: t.union([
-        t.null,
+        NullToUndefinedCodec,
         t.strict({
           title: t.string,
           items: t.strict({
