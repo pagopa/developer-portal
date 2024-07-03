@@ -10,7 +10,7 @@ import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 
-export type ApiListPageTemplateProps = {
+export type ApiDataListPageTemplateProps = {
   readonly breadcrumbs: {
     readonly product: Product;
     readonly path: string;
