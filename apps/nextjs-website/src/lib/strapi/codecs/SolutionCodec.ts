@@ -7,7 +7,7 @@ import { SolutionStepCodec } from './SolutionStepCodec';
 import { SolutionStatCodec } from './SolutionStatCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
-export const SolutionCodec = t.strict({
+export const SolutionBaseAttributesCodec = t.strict({
   attributes: t.strict({
     slug: t.string,
     icon: t.strict({ data: MediaCodec }),
@@ -19,7 +19,7 @@ export const SolutionCodec = t.strict({
   }),
 });
 
-const WithRelationCodec = t.strict({
+const SolutionRelationsCodec = t.strict({
   attributes: t.strict({
     webinars: t.strict({ data: t.array(WebinarCodec) }),
     products: t.strict({ data: t.array(ProductCodec) }),
@@ -29,7 +29,7 @@ const WithRelationCodec = t.strict({
   }),
 });
 
-export const SolutionWithRelationCodec = t.intersection([
-  SolutionCodec,
-  WithRelationCodec,
+export const SolutionCodec = t.intersection([
+  SolutionBaseAttributesCodec,
+  SolutionRelationsCodec,
 ]);
