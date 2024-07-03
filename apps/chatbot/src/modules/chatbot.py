@@ -169,9 +169,11 @@ class Chatbot():
         return lang
 
 
-    async def agenerate(self, query_str: str) -> str:
+    def agenerate(self, query_str: str) -> str:
 
-        return self.generate(query_str)
+        response = self.engine.aquery(query_str)
+
+        return response
 
 
     def generate(self, query_str: str) -> str:
