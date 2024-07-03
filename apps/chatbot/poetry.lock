@@ -2,17 +2,17 @@
 
 [[package]]
 name = "aioboto3"
-version = "13.0.1"
+version = "13.1.0"
 description = "Async boto3 wrapper"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "aioboto3-13.0.1-py3-none-any.whl", hash = "sha256:74d14d6a422348957d4f8b6dcc67e6721274e81bb7ca9c12f27e0edf1bc105c4"},
-    {file = "aioboto3-13.0.1.tar.gz", hash = "sha256:168a7dc7af2f682600a2b71c715bb2f7bee1ee93d1e8b694760a270eaf04fc49"},
+    {file = "aioboto3-13.1.0-py3-none-any.whl", hash = "sha256:daaeab5466b25a31b7b4fedfcc5d21ea2129f84c2d7ebab1ec3a299286c6f8c4"},
+    {file = "aioboto3-13.1.0.tar.gz", hash = "sha256:485b4daeaf93759e0bbf2f6dcf46a27eb68eb79f0452983d4d4f2283fc8a4086"},
 ]
 
 [package.dependencies]
-aiobotocore = {version = "2.13.0", extras = ["boto3"]}
+aiobotocore = {version = "2.13.1", extras = ["boto3"]}
 aiofiles = ">=23.2.1"
 
 [package.extras]
@@ -21,25 +21,25 @@ s3cse = ["cryptography (>=2.3.1)"]
 
 [[package]]
 name = "aiobotocore"
-version = "2.13.0"
+version = "2.13.1"
 description = "Async client for aws services using botocore and aiohttp"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "aiobotocore-2.13.0-py3-none-any.whl", hash = "sha256:f812afc678d71b0038fd1ce712ff111ab7f47bab81ce5b4c7d222d4b83bc0cb2"},
-    {file = "aiobotocore-2.13.0.tar.gz", hash = "sha256:4badf5cab6ad400216319d14278e2c99ad9b708e28a0f231605a412e632de401"},
+    {file = "aiobotocore-2.13.1-py3-none-any.whl", hash = "sha256:1bef121b99841ee3cc788e4ed97c332ba32353b1f00e886d1beb3aae95520858"},
+    {file = "aiobotocore-2.13.1.tar.gz", hash = "sha256:134f9606c2f91abde38cbc61c3241113e26ff244633e0c31abb7e09da3581c9b"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.9.2,<4.0.0"
 aioitertools = ">=0.5.1,<1.0.0"
-boto3 = {version = ">=1.34.70,<1.34.107", optional = true, markers = "extra == \"boto3\""}
-botocore = ">=1.34.70,<1.34.107"
+boto3 = {version = ">=1.34.70,<1.34.132", optional = true, markers = "extra == \"boto3\""}
+botocore = ">=1.34.70,<1.34.132"
 wrapt = ">=1.10.10,<2.0.0"
 
 [package.extras]
-awscli = ["awscli (>=1.32.70,<1.32.107)"]
-boto3 = ["boto3 (>=1.34.70,<1.34.107)"]
+awscli = ["awscli (>=1.32.70,<1.33.14)"]
+boto3 = ["boto3 (>=1.34.70,<1.34.132)"]
 
 [[package]]
 name = "aiofiles"
@@ -455,17 +455,17 @@ css = ["tinycss2 (>=1.1.0,<1.3)"]
 
 [[package]]
 name = "boto3"
-version = "1.34.106"
+version = "1.34.131"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.34.106-py3-none-any.whl", hash = "sha256:d3be4e1dd5d546a001cd4da805816934cbde9d395316546e9411fec341ade5cf"},
-    {file = "boto3-1.34.106.tar.gz", hash = "sha256:6165b8cf1c7e625628ab28b32f9027064c8f5e5fca1c38d7fc228cd22069a19f"},
+    {file = "boto3-1.34.131-py3-none-any.whl", hash = "sha256:05e388cb937e82be70bfd7eb0c84cf8011ff35cf582a593873ac21675268683b"},
+    {file = "boto3-1.34.131.tar.gz", hash = "sha256:dab8f72a6c4e62b4fd70da09e08a6b2a65ea2115b27dd63737142005776ef216"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.106,<1.35.0"
+botocore = ">=1.34.131,<1.35.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -474,13 +474,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.106"
+version = "1.34.131"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.34.106-py3-none-any.whl", hash = "sha256:4baf0e27c2dfc4f4d0dee7c217c716e0782f9b30e8e1fff983fce237d88f73ae"},
-    {file = "botocore-1.34.106.tar.gz", hash = "sha256:921fa5202f88c3e58fdcb4b3acffd56d65b24bca47092ee4b27aa988556c0be6"},
+    {file = "botocore-1.34.131-py3-none-any.whl", hash = "sha256:13b011d7b206ce00727dcee26548fa3b550db9046d5a0e90ac25a6e6c8fde6ef"},
+    {file = "botocore-1.34.131.tar.gz", hash = "sha256:502ddafe1d627fcf1e4c007c86454e5dd011dba7c58bd8e8a5368a79f3e387dc"},
 ]
 
 [package.dependencies]
@@ -489,7 +489,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.20.9)"]
+crt = ["awscrt (==0.20.11)"]
 
 [[package]]
 name = "certifi"
@@ -2209,18 +2209,18 @@ files = [
 
 [[package]]
 name = "langchain"
-version = "0.2.5"
+version = "0.2.6"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langchain-0.2.5-py3-none-any.whl", hash = "sha256:9aded9a65348254e1c93dcdaacffe4d1b6a5e7f74ef80c160c88ff78ad299228"},
-    {file = "langchain-0.2.5.tar.gz", hash = "sha256:ffdbf4fcea46a10d461bcbda2402220fcfd72a0c70e9f4161ae0510067b9b3bd"},
+    {file = "langchain-0.2.6-py3-none-any.whl", hash = "sha256:f86e8a7afd3e56f8eb5ba47f01dd00144fb9fc2f1db9873bd197347be2857aa4"},
+    {file = "langchain-0.2.6.tar.gz", hash = "sha256:867f6add370c1e3911b0e87d3dd0e36aec1e8f513bf06131340fe8f151d89dc5"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.3,<4.0.0"
-langchain-core = ">=0.2.7,<0.3.0"
+langchain-core = ">=0.2.10,<0.3.0"
 langchain-text-splitters = ">=0.2.0,<0.3.0"
 langsmith = ">=0.1.17,<0.2.0"
 numpy = {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""}
@@ -2228,56 +2228,56 @@ pydantic = ">=1,<3"
 PyYAML = ">=5.3"
 requests = ">=2,<3"
 SQLAlchemy = ">=1.4,<3"
-tenacity = ">=8.1.0,<9.0.0"
+tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<9.0.0"
 
 [[package]]
 name = "langchain-aws"
-version = "0.1.7"
+version = "0.1.9"
 description = "An integration package connecting AWS and LangChain"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langchain_aws-0.1.7-py3-none-any.whl", hash = "sha256:413f88cbb120cc1d6ca0e9f6d72b89c1d930b78ce071fef5b03e1595fc4d6029"},
-    {file = "langchain_aws-0.1.7.tar.gz", hash = "sha256:aa0bbd3e530e21fdc1d0459e97ee14fa387ce9bb2d00d721cf526e9c3ecea78f"},
+    {file = "langchain_aws-0.1.9-py3-none-any.whl", hash = "sha256:74f8942b684ab5e2c86ae611e8db58f4902996acbc88293f66f420d9f4f713e1"},
+    {file = "langchain_aws-0.1.9.tar.gz", hash = "sha256:2648f2a8e90813780a51b085704002df8e8fe9f4145ad768cd2d750b77e7ad5c"},
 ]
 
 [package.dependencies]
-boto3 = ">=1.34.51,<1.35.0"
-langchain-core = ">=0.2.2,<0.3"
+boto3 = ">=1.34.131,<1.35.0"
+langchain-core = ">=0.2.6,<0.3"
 numpy = ">=1,<2"
 
 [[package]]
 name = "langchain-community"
-version = "0.2.5"
+version = "0.2.6"
 description = "Community contributed LangChain integrations."
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langchain_community-0.2.5-py3-none-any.whl", hash = "sha256:bf37a334952e42c7676d083cf2d2c4cbfbb7de1949c4149fe19913e2b06c485f"},
-    {file = "langchain_community-0.2.5.tar.gz", hash = "sha256:476787b8c8c213b67e7b0eceb53346e787f00fbae12d8e680985bd4f93b0bf64"},
+    {file = "langchain_community-0.2.6-py3-none-any.whl", hash = "sha256:758cc800acfe5dd396bf8ba1b57c4792639ead0eab48ed0367f0732ec6ee1f68"},
+    {file = "langchain_community-0.2.6.tar.gz", hash = "sha256:40ce09a50ed798aa651ddb34c8978200fa8589b9813c7a28ce8af027bbf249f0"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.3,<4.0.0"
 dataclasses-json = ">=0.5.7,<0.7"
-langchain = ">=0.2.5,<0.3.0"
-langchain-core = ">=0.2.7,<0.3.0"
+langchain = ">=0.2.6,<0.3.0"
+langchain-core = ">=0.2.10,<0.3.0"
 langsmith = ">=0.1.0,<0.2.0"
 numpy = {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""}
 PyYAML = ">=5.3"
 requests = ">=2,<3"
 SQLAlchemy = ">=1.4,<3"
-tenacity = ">=8.1.0,<9.0.0"
+tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<9.0.0"
 
 [[package]]
 name = "langchain-core"
-version = "0.2.9"
+version = "0.2.11"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langchain_core-0.2.9-py3-none-any.whl", hash = "sha256:426a5a4fea95a5db995ba5ab560b76edd4998fb6fe52ccc28ac987092a4cbfcd"},
-    {file = "langchain_core-0.2.9.tar.gz", hash = "sha256:f1c59082642921727844e1cd0eb36d451edd1872c20e193aa3142aac03495986"},
+    {file = "langchain_core-0.2.11-py3-none-any.whl", hash = "sha256:c7ca4dc4d88e3c69fd7916c95a7027c2b1a11c2db5a51141c3ceb8afac212208"},
+    {file = "langchain_core-0.2.11.tar.gz", hash = "sha256:7a4661b50604eeb20c3373fbfd8a4f1b74482a6ab4e0f9df11e96821ead8ef0c"},
 ]
 
 [package.dependencies]
@@ -2293,20 +2293,17 @@ tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<9.0.0"
 
 [[package]]
 name = "langchain-text-splitters"
-version = "0.2.1"
+version = "0.2.2"
 description = "LangChain text splitting utilities"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langchain_text_splitters-0.2.1-py3-none-any.whl", hash = "sha256:c2774a85f17189eaca50339629d2316d13130d4a8d9f1a1a96f3a03670c4a138"},
-    {file = "langchain_text_splitters-0.2.1.tar.gz", hash = "sha256:06853d17d7241ecf5c97c7b6ef01f600f9b0fb953dd997838142a527a4f32ea4"},
+    {file = "langchain_text_splitters-0.2.2-py3-none-any.whl", hash = "sha256:1c80d4b11b55e2995f02d2a326c0323ee1eeff24507329bb22924e420c782dff"},
+    {file = "langchain_text_splitters-0.2.2.tar.gz", hash = "sha256:a1e45de10919fa6fb080ef0525deab56557e9552083600455cb9fa4238076140"},
 ]
 
 [package.dependencies]
-langchain-core = ">=0.2.0,<0.3.0"
-
-[package.extras]
-extended-testing = ["beautifulsoup4 (>=4.12.3,<5.0.0)", "lxml (>=4.9.3,<6.0)"]
+langchain-core = ">=0.2.10,<0.3.0"
 
 [[package]]
 name = "langchainhub"
@@ -2340,13 +2337,13 @@ six = "*"
 
 [[package]]
 name = "langsmith"
-version = "0.1.82"
+version = "0.1.83"
 description = "Client library to connect to the LangSmith LLM Tracing and Evaluation Platform."
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "langsmith-0.1.82-py3-none-any.whl", hash = "sha256:9b3653e7d316036b0c60bf0bc3e280662d660f485a4ebd8e5c9d84f9831ae79c"},
-    {file = "langsmith-0.1.82.tar.gz", hash = "sha256:c02e2bbc488c10c13b52c69d271eb40bd38da078d37b6ae7ae04a18bd48140be"},
+    {file = "langsmith-0.1.83-py3-none-any.whl", hash = "sha256:f54d8cd8479b648b6339f3f735d19292c3516d080f680933ecdca3eab4b67ed3"},
+    {file = "langsmith-0.1.83.tar.gz", hash = "sha256:5cdd947212c8ad19adb992c06471c860185a777daa6859bb47150f90daf64bf3"},
 ]
 
 [package.dependencies]
@@ -5627,4 +5624,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "c83541d22399701e5a5c7c49a3555d1379dcb4d7b00e67b62a293dc2c44a0325"
+content-hash = "1088b363169eda79db605b9487c5144d5dfc8aec50584edd79358714704dd08c"

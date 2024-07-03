@@ -69,12 +69,14 @@ demo.queue()
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--params", type=str, default="params.yaml", help="params path")
+    parser.add_argument("--params", type=str, default="config/params.yaml", help="params path")
+    parser.add_argument("--prompts", type=str, default="config/prompts.yaml", help="prompts path")
     args = parser.parse_args()
 
     # load parameters
     params = yaml.safe_load(open(args.params, "r"))
+    prompts = yaml.safe_load(open(args.prompts, "r"))
 
-    chatbot = Chatbot(params)
+    chatbot = Chatbot(params, prompts)
 
     demo.launch()

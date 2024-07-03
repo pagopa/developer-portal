@@ -28,6 +28,7 @@ LANGUAGES = {
 }
 
 
+<<<<<<< HEAD
 QA_PROMPT_STR = """
 You are an Italian customer services chatbot.
 Given the context:
@@ -78,13 +79,17 @@ Refined Answer:
 """
 
 
+=======
+>>>>>>> 21b8214 (add config folder and update files)
 class Chatbot():
     def __init__(
             self,
-            params
+            params,
+            prompts
         ):
 
         self.params = params
+        self.prompts = prompts
 
         self.model = AsyncBedrock(
             model=params["models"]["model_id"],
@@ -120,7 +125,7 @@ class Chatbot():
 
         # create templates
         qa_prompt_tmpl = PromptTemplate(
-            QA_PROMPT_STR, 
+            self.prompts["qa_prompt_str"], 
             template_var_mappings={
                 "context_str": "context_str",
                 "query_str": "query_str"
@@ -128,7 +133,7 @@ class Chatbot():
         )
 
         ref_prompt_tmpl = PromptTemplate(
-            REFINE_PROMPT_STR,
+            self.prompts["refine_prompt_str"],
             prompt_type="refine",
             template_var_mappings = {
                 "existing_answer": "existing_answer",
@@ -166,9 +171,7 @@ class Chatbot():
 
     async def agenerate(self, query_str: str) -> str:
 
-        response = await self.engine.aquery(query_str)
-
-        return response
+        return self.generate(query_str)
 
 
     def generate(self, query_str: str) -> str:
@@ -186,8 +189,8 @@ class Chatbot():
             response_str = response.response.strip()
 
             if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-                response_str = """Mi dispiace, ma non posso aiutarti perché la tua domanda è fuori contesto.
-                Chiedimi una nuova domanda.
+                response_str = """Mi dispiace, posso rispondere solo a domande relative alla documentazione del [PagoPA DevPortal](https://developer.pagopa.it/).
+                Prova a riformulare la domanda.
                 """
 
             else:

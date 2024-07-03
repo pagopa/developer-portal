@@ -4,7 +4,7 @@ This folder contains all the details to build a RAG using the documentation prov
 
 This chatbot uses [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
-All the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `params.yaml`.
+All the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `config/params.yaml`.
 
 ## Virtual environment
 
@@ -31,9 +31,9 @@ In this way, `PYTHONPATH` points to where the Python packages and modules are, n
 
 First of all, verify that the HTM files that compose the Developer Portal documentation exist in `apps/nextjs-website/out`. If it exist, then create the vector index with:
 
-    python src/modules/create_vector_index.py --params params.yaml
+    python src/modules/create_vector_index.py --params config/params.yaml
 
-This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index`. Have a look at the parameters in `params.yaml` for more details.
+This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index`.
 
 ## Web App
 

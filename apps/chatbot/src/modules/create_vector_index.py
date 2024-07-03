@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--params", type=str, default="params.yaml", help="params path")
+    parser.add_argument("--params", type=str, default="config/params.yaml", help="params path")
     args = parser.parse_args()
 
     # load parameters
