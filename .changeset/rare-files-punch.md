@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add ApiListPageTemplate to the project
+Add ApiDataListPageTemplate to the project
