@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ApiListPageTemplate from '../../../nextjs-website/src/components/templates/ApiListPageTemplate/ApiListPageTemplate';
+import ApiDataListPageTemplate from '../../../nextjs-website/src/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
