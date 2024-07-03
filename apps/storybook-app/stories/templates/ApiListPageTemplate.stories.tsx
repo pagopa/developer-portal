@@ -10,7 +10,7 @@ const meta: Meta<typeof ApiDataListPageTemplate> = {
 
 export default meta;
 
-export const Showcase: StoryObj<typeof ApiListPageTemplate> = {
+export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
   decorators: [nextIntlContextDecorator],
   args: {
     breadcrumbs: {
