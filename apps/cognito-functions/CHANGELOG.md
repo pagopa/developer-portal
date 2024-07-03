@@ -1,5 +1,11 @@
 # cognito-functions
 
+## 0.1.2
+
+### Patch Changes
+
+- 4f58966: Set the validity duration of the MFA code
+
 ## 0.1.1
 
 ### Patch Changes
