@@ -33,7 +33,7 @@ export type ApiDataListPageTemplateProps = {
   readonly theme?: Theme;
 };
 
-const ApiListPageTemplate = ({
+const ApiDataListPageTemplate = ({
   breadcrumbs,
   hero,
   cards,
