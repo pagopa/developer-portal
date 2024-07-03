@@ -4,4 +4,6 @@
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreRouter('api::api-data-list-page.api-data-list-page');
+export default factories.createCoreRouter(
+  'api::api-data-list-page.api-data-list-page'
+);
