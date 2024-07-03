@@ -39,7 +39,7 @@ const ApiDataListPageTemplate = ({
   cards,
   bannerLinks,
   theme = 'light',
-}: ApiListPageTemplateProps) => {
+}: ApiDataListPageTemplateProps) => {
   return (
     <>
       <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
