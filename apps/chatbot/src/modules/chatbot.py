@@ -1,8 +1,12 @@
 import logging
+from typing import Any, Dict, List, Optional, Union, Tuple
 
 from langdetect import detect as detect_language
 
 from llama_index.core import PromptTemplate
+from llama_index.core.base.response.schema import (
+    Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
+)
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
 from src.modules.async_bedrock import AsyncBedrock
@@ -11,76 +15,28 @@ from src.modules.retriever import get_automerging_query_engine
 
 
 LANGUAGES = {
-    "it": "Italian",
-    "en": "English",
-    "de": "German",
-    "es": "Spanish",
-    "fr": "French",
-    "pt": "Portuguese",
-    "hr": "Croatian",
-    "sr": "Serbian",
-    "sv": "Swedish",
-    "da": "Danish",
-    "no": "Norwegian",	
-    "fi": "Finnish",
-    "ru": "Russian",
-    "uk": "Ukrainian"
+    'af': 'Afrikaans', 'ar': 'Arabo', 'bg': 'Bulgaro', 'bn': 'Bengalese',
+    'ca': 'Catalano', 'cs': 'Ceco', 'cy': 'Gallese', 'da': 'Danese',
+    'de': 'Tedesco', 'el': 'Greco', 'en': 'Inglese', 'es': 'Spagnolo',
+    'et': 'Estone', 'fa': 'Persiano (Farsi)', 'fi': 'Finlandese', 'fr': 'Francese',
+    'gu': 'Gujarati', 'he': 'Ebraico', 'hi': 'Hindi', 'hr': 'Croato',
+    'hu': 'Ungherese', 'id': 'Indonesiano', 'it': 'Italiano', 'ja': 'Giapponese',
+    'kn': 'Kannada', 'ko': 'Coreano', 'lt': 'Lituano', 'lv': 'Lettone',
+    'mk': 'Macedone', 'ml': 'Malayalam', 'mr': 'Marathi', 'ne': 'Nepalese',
+    'nl': 'Olandese', 'no': 'Norvegese', 'pa': 'Punjabi', 'pl': 'Polacco',
+    'pt': 'Portoghese', 'ro': 'Rumeno', 'ru': 'Russo', 'sk': 'Slovacco',
+    'sl': 'Sloveno', 'so': 'Somalo', 'sq': 'Albanese', 'sv': 'Svedese',
+    'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thailandese',
+    'tl': 'Tagalog (Filippino)', 'tr': 'Turco', 'uk': 'Ucraino', 'ur': 'Urdu',
+    'vi': 'Vietnamita', 'zh-cn': 'Cinese Semplificato', 'zh-tw': 'Cinese Tradizionale'
 }
 
 
-<<<<<<< HEAD
-QA_PROMPT_STR = """
-You are an Italian customer services chatbot.
-Given the context:
----------------------
-{context_str}
----------------------
-Query Rules:
-1. Block any query that requests or involves information that could identify a human being. 
-2. You must give information about yourself, your tasks, etc., when a user asks.
-3. Block queries that are not in Italian.
-4. Block queries containing offensive language, hate speech, or discriminatory content.
-5. Block queries that request speculative or unverified information.
----------------------
-Answer Rules:
-1. If any of the rules listed above are broken, respond with: "Non posso rispondere a questa domanda perché," followed by a comma-separated list of the violated query rules.
-2. If the retrieved context is empty, reply with: "Mi dispiace, ma non posso fornire una risposta a questa domanda. Per piacere, riformula la domanda in maniera più dettagliata o chiedimene una nuova."
-3. If the query complies with the query rules listed above, generate an answer using only the retrieved context and not any prior knowledge.
-4. The answer must be concise and made by three sentences maximum.
-5. The answers should have no repeations or redundance content.
-6. The answer must be respectful and does not disclose any sensitive or personal information.
-7. The answer must always have at the end a source reference link.
-8. The answer must be in Italian.
----------------------
-Task:
-Given the user's query: {query_str}
-Generate an answer according to the query and answer rules listed above.
-Answer:
-"""
-
-REFINE_PROMPT_STR = """
-Query: {query_str}
-Existing Answer: {existing_answer}
----------------------
-Answer Refinement Actions:
-1. The refined answer must better address the question while ensuring compliance with the query rules.
-2. The refined answer must use retrieved context only and do not introduce new information.
-3. The refined answer must not disclose personal or sensitive information.
-4. The refined answer must be respectful and accurate.
-5. The refined answer must not include any offensive or discriminatory content from the existing answer.
-6. The refined answer must not include any repetitions and avoid redundancy.
-7. The refined answer must have a source reference.
-8. The refined answer must be concise and made by maximum three sentences.
-9. The refined answer must be in Italian.
----------------------
-Task:
-Refine the existing answer to better answer the query according to the answer refinement actions listed above.
-Refined Answer:
-"""
+RESPONSE_TYPE = Union[
+    Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
+]
 
 
-=======
->>>>>>> 21b8214 (add config folder and update files)
 class Chatbot():
     def __init__(
             self,
@@ -121,7 +77,7 @@ class Chatbot():
         )
 
 
-    def _get_prompt_templates(self):
+    def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 
         # create templates
         qa_prompt_tmpl = PromptTemplate(
@@ -144,11 +100,11 @@ class Chatbot():
         return qa_prompt_tmpl, ref_prompt_tmpl
 
 
-    def _update_messages(self, role, message):
+    def _update_messages(self, role: str, message: str):
         self.messages.append({"role": role, "text": message})
 
 
-    def _messages_to_str(self, **kwargs):
+    def _messages_to_str(self, **kwargs) -> str:
         text = ""
         if len(self.messages) > 0:
             for speach in self.messages:
@@ -157,53 +113,71 @@ class Chatbot():
         return text
 
 
-    def get_chat_history(self):
+    def get_chat_history(self) -> List[Dict[str, str]]:
         return self.messages
 
 
-    def _check_language(self, message_str, role):
+    def _check_language(self, message_str):
 
         lang = detect_language(message_str)
-        logging.info(f"Detected '{lang}' at the last {role}'s message.")
+        logging.info(f"Detected {LANGUAGES[lang]} ('{lang}') at the last user's message.")
 
         return lang
+    
 
+    def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
-    def agenerate(self, query_str: str) -> str:
+        nodes = engine_response.source_nodes
 
-        response = self.engine.aquery(query_str)
+        if isinstance(engine_response, StreamingResponse):
+            typed_response = engine_response.get_response()
+        else:
+            typed_response = engine_response
+        
+        response_str = typed_response.response.strip()
 
-        return response
+        if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
+            response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal](https://developer.pagopa.it/).
+            Prova a riformulare la domanda.
+            """
+        
+        return response_str
 
 
     def generate(self, query_str: str) -> str:
 
-        query_lang = self._check_language(query_str, "User")
+        query_lang = self._check_language(query_str)
         if query_lang != "it":
-            response_str = """Mi dispiace, ma non posso aiutarti. Accetto solo domande in italiano.
-            Riformula la domanda in italiano oppure chiedimene una nuova.
+            response_str = f"""Scusa, io non parlo {LANGUAGES[query_lang]}.
+            Per piacere, riformula la tua domanda oppure chiedimene una nuova in italiano.
             """
 
         else:
 
-            response = self.engine.query(query_str)
-            nodes = response.source_nodes
-            response_str = response.response.strip()
+            engine_response = self.engine.query(query_str)
+            response_str = self._get_response_str(engine_response)
 
-            if response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-                response_str = """Mi dispiace, posso rispondere solo a domande relative alla documentazione del [PagoPA DevPortal](https://developer.pagopa.it/).
-                Prova a riformulare la domanda.
-                """
+        # update messages
+        self._update_messages("User", query_str)
+        self._update_messages("Assistant", response_str)
 
-            else:
-                response_lang = self._check_language(response_str, "Assistant")
-                if response_lang != "it":
-                    logging.info(f"Translating response to Italian..")
-                    translation = self.model.complete(f"Translate to Italian: {response_str}")
-                    response_str = translation.text.strip()
+        return response_str
+    
 
-                # update messages
-                self._update_messages("User", query_str)
-                self._update_messages("Assistant", response_str)
+    async def agenerate(self, query_str: str) -> str:
+
+        query_lang = self._check_language(query_str)
+        if query_lang != "it":
+            response_str = f"""Mi dispiace, non parlo {LANGUAGES[query_lang]}.
+            Per piacere, riformula la tua domanda oppure chiedimene una nuova in italiano.
+            """
+        else:
+
+            engine_response = self.engine.aquery(query_str)
+            response_str = self._get_response_str(engine_response)
+
+        # update messages
+        self._update_messages("User", query_str)
+        self._update_messages("Assistant", response_str)
 
         return response_str
