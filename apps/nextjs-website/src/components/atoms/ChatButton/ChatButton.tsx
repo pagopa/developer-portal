@@ -4,18 +4,18 @@ import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlin
 import { Badge, Box } from '@mui/material';
 
 type ChatButtonProps = {
-  chatOpen: boolean;
+  isChatOpen: boolean;
   hasNewMessages: boolean;
   onOpenChat: (event: React.MouseEvent<HTMLButtonElement>) => null;
 };
 
 const ChatButton = ({
-  chatOpen,
+  isChatOpen,
   hasNewMessages,
   onOpenChat,
 }: ChatButtonProps) => {
   return (
-    <Box sx={{ opacity: chatOpen ? 0 : 1 }}>
+    <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
       <Badge
         badgeContent={hasNewMessages ? 1 : 0}
         color='success'
