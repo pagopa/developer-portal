@@ -24,7 +24,7 @@ export const StrapiSolutionsListCodec = t.strict({
       solutions: t.strict({
         data: t.array(SolutionCodec),
       }),
-      features: FeaturesCodec,
+      features: t.union([NullToUndefinedCodec, FeaturesCodec]),
     }),
   }),
 });
