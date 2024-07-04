@@ -10,7 +10,7 @@ models:
   model_id: amazon.titan-text-express-v1
   emded_model_id: cohere.embed-multilingual-v3
   temperature: 0.5
-  max_tokens: 512
+  max_tokens: 784
 
 retriever:
   similarity_top_k: 5
