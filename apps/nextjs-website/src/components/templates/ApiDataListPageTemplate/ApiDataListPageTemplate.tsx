@@ -1,9 +1,4 @@
-import { Product } from '@/lib/types/product';
 import Hero from '@/editorialComponents/Hero/Hero';
-import { Path } from '@/lib/types/path';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';

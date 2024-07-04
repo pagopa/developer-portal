@@ -2,8 +2,6 @@ import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTempl
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
-import { getApiDataListPageProps } from '@/lib/cmsApi';
-import { Typography } from '@mui/material';
 import { Metadata } from 'next';
 
 type Params = {
@@ -25,7 +23,6 @@ export async function generateMetadata({
 }
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
-  console.log(params.productSlug);
   const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
   if (ApiDataListPageProps)
     return (
