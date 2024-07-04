@@ -75,7 +75,9 @@ const SolutionsTemplate = ({
           }))}
         />
       )}
-      <Feature items={features.items} title={features.title} useDarkTheme />
+      {features && (
+        <Feature items={features.items} title={features.title} useDarkTheme />
+      )}
       {successStories && (
         <NewsShowcase
           marginTop={8}
