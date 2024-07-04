@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "api_list_pages",
+  "collectionName": "api_data_list_pages",
   "info": {
-    "singularName": "api-list-page",
-    "pluralName": "api-list-pages",
-    "displayName": "ApiListPage",
-    "description": ""
+    "singularName": "api-data-list-page",
+    "pluralName": "api-data-list-pages",
+    "displayName": "ApiDataListPage"
   },
   "options": {
     "draftAndPublish": true
@@ -33,7 +32,7 @@
       },
       "type": "text"
     },
-    "api_data": {
+    "apiData": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::api-data.api-data"
@@ -51,7 +50,8 @@
           "localized": true
         }
       },
-      "component": "common.banner-link"
+      "component": "common.banner-link",
+      "max": 2
     }
   }
 }
