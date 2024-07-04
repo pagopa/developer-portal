@@ -2,15 +2,14 @@ import { StaticWebinar } from '@/lib/types/webinar';
 import { appIOGuideListsPath } from './appIo/guideListsPath';
 import { appIoQuickStartGuidePath } from './appIo/quickStartGuidePath';
 import { pagoPaGuideListsPath } from './pagoPa/guideListsPath';
+import { Media } from '@/lib/types/media';
 
-function imageFromPath(
-  imagePath: string
-): Required<StaticWebinar['speakers'][0]['avatar']> {
+function imageFromPath(imagePath: string): Media {
   // eslint-disable-next-line functional/immutable-data
   const ext = imagePath.split('.').pop();
   return {
     name: imagePath,
-    alternativeText: null,
+    alternativeText: undefined,
     width: 400,
     height: 400,
     ext: `.${ext}`,

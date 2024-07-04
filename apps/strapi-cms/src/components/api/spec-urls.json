@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_api_spec_urls",
+  "info": {
+    "displayName": "specUrls"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    }
+  }
+}

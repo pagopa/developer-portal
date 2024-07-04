@@ -4,10 +4,11 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
 jobs:
   move-latest-tag:
     runs-on: ubuntu-latest
-
+    if: ${{ startsWith(github.ref, 'refs/tags/') && !endsWith(github.ref, '@latest') }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4

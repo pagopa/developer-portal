@@ -10,8 +10,11 @@ export function mockText(wordCount?: number): string {
     return '';
   }
 
-  let result: string[] = [];
+  // eslint-disable-next-line functional/no-let
+  let result: readonly string[] = [];
+  // eslint-disable-next-line functional/no-loop-statements
   while (result.length < count) {
+    // eslint-disable-next-line functional/no-expression-statements
     result = result.concat(loremWords);
   }
 
@@ -19,20 +22,34 @@ export function mockText(wordCount?: number): string {
 }
 
 export function mockTextBlock(args?: {
-  type?: 'paragraph' | 'heading';
-  text?: string;
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  readonly type?: 'paragraph' | 'heading';
+  readonly text?: string;
+  readonly level?: 1 | 2 | 3 | 4 | 5 | 6;
+  readonly wordCount?: number;
+  readonly url?: string;
 }): BlocksContent[0] {
-  let content: Partial<BlocksContent[0]> = {
+  const content: Partial<BlocksContent[0]> = {
     type: args?.type || 'paragraph',
     children: [
-      {
-        type: 'text',
-        text: args?.text || mockText(),
-      },
+      args?.url
+        ? {
+            type: 'link',
+            url: args.url,
+            children: [
+              {
+                type: 'text',
+                text: args?.text || mockText(args?.wordCount),
+              },
+            ],
+          }
+        : {
+            type: 'text',
+            text: args?.text || mockText(args?.wordCount),
+          },
     ],
   };
   if (content.type === 'heading') {
+    // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
     content.level = args?.level || 5;
   }
   return content as BlocksContent[0];

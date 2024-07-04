@@ -70,3 +70,9 @@ variable "ses_domain_identity_arn" {
   type        = string
   description = "The ARN of the SES domain identity"
 }
+
+variable "mfa_code_duration_in_minutes" {
+  type        = number
+  description = "The duration for which the MFA code is valid in minutes"
+  default     = 15
+}
