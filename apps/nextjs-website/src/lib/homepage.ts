@@ -91,7 +91,7 @@ export const makeHomepageProps = (
   }),
   ...(strapiHomepage.data.attributes.ecosystem && {
     ecosystem: {
-      title: strapiHomepage.data.attributes.ecosystem.title,
+      title: strapiHomepage.data.attributes.ecosystem.title || '',
       productsTabName: strapiHomepage.data.attributes.ecosystem.productsTabName,
       products: strapiHomepage.data.attributes.ecosystem.products.data.map(
         (product) => ({
@@ -107,7 +107,7 @@ export const makeHomepageProps = (
         (solution) => ({
           title: solution.attributes.title,
           text: solution.attributes.description ?? '',
-          href: solution.attributes.slug,
+          href: `/solutions/${solution.attributes.slug}`,
           icon: solution.attributes.icon.data.attributes.url,
         })
       ),

@@ -9,7 +9,7 @@ import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
-import { SolutionCodec } from './codecs/SolutionCodec';
+import { SolutionBaseAttributesCodec } from './codecs/SolutionCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -71,14 +71,14 @@ export const StrapiHomepageCodec = t.strict({
       ecosystem: t.union([
         NullToUndefinedCodec,
         t.strict({
-          title: t.string,
+          title: t.union([NullToUndefinedCodec, t.string]),
           productsTabName: t.string,
           products: t.strict({
             data: t.array(ProductCodec),
           }),
           solutionsTabName: t.string,
           solutions: t.strict({
-            data: t.array(SolutionCodec),
+            data: t.array(SolutionBaseAttributesCodec),
           }),
           solutionsCta: t.union([NullToUndefinedCodec, CallToActionCodec]),
         }),
