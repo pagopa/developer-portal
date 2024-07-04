@@ -21,7 +21,7 @@ export type SolutionsTemplateProps = {
     readonly tags?: { readonly label: string; readonly path?: string }[];
     readonly logo: Media;
   }[];
-  readonly features: {
+  readonly features?: {
     readonly title: string;
     readonly subtitle?: string;
     readonly items: FeatureItem[];
