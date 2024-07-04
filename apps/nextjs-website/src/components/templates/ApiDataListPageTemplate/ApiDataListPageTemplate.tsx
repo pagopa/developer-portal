@@ -50,7 +50,7 @@ const ApiDataListPageTemplate = ({
           cardVariant='outlined'
           cards={cards}
           cardSvg={true}
-          cardSize={{ xs: 12, md: 16 / cards.length }}
+          cardSize={{ xs: 12, md: 16 / Math.max(cards.length, 3) }}
         />
       </Box>
       <BannerLinks bannerLinks={bannerLinks} />
