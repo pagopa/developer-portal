@@ -1,4 +1,4 @@
-import ApiListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
+import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
@@ -31,17 +31,17 @@ export async function generateMetadata({
   });
 }
 
-const ApiListPage = async ({ params }: { params: Params }) => {
+const ApiDataListPage = async ({ params }: { params: Params }) => {
   console.log(params.productSlug);
-  const ApiListPageProps = await getApiDataListPages(params.productSlug);
-  if (ApiListPageProps)
+  const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
+  if (ApiDataListPageProps)
     return (
       <>
         <Typography>{'ciao'}</Typography>
-        <ApiListPageTemplate {...ApiListPageProps} />
+        <ApiDataListPageTemplate {...ApiDataListPageProps} />
       </>
     );
   else return <Typography>BUBBA</Typography>;
 };
 
-export default ApiListPage;
+export default ApiDataListPage;

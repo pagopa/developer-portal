@@ -2,9 +2,9 @@ import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataList
 import { ApiDataListPages } from './strapi/ApiDataListPageCodec';
 
 export function makeApiDataListPageProps(
-  apiListPages: ApiDataListPages
+  apiDataListPages: ApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
-  return apiListPages.data.map(({ attributes }) => ({
+  return apiDataListPages.data.map(({ attributes }) => ({
     ...attributes,
     hero: {
       title: attributes.title,

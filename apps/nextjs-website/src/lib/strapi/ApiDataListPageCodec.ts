@@ -23,13 +23,13 @@ export const ApiDataListPagesCodec = t.strict({
 
 export type ApiDataListPages = t.TypeOf<typeof ApiDataListPagesCodec>;
 
-const makeApiListPagePopulate = () =>
+const makeApiDataListPagePopulate = () =>
   qs.stringify({
     populate: '*',
   });
 
 export const fetchApiDataListPages = fetchFromStrapi(
   'api-list-pages',
-  makeApiListPagePopulate(),
+  makeApiDataListPagePopulate(),
   ApiDataListPagesCodec
 );
