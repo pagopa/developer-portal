@@ -3,7 +3,7 @@ import { StrapiSolutionsList } from './strapi/solutionsListCodec';
 
 export function makeSolutionsListProps(
   strapiSolutionsList: StrapiSolutionsList
-): Omit<SolutionsTemplateProps, 'feature'> {
+): SolutionsTemplateProps {
   const {
     data: { attributes },
   } = strapiSolutionsList;
@@ -33,6 +33,14 @@ export function makeSolutionsListProps(
           image: caseHistory.attributes.image?.data?.attributes,
         })
       ),
+    },
+    features: attributes.features && {
+      title: attributes.features.title,
+      items: attributes.features.items.map((item) => ({
+        title: item.title ?? '',
+        content: item.content,
+        iconUrl: item.icon.data.attributes.url,
+      })),
     },
   };
 }
