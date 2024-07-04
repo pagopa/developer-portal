@@ -10,13 +10,6 @@ type Params = {
   productSlug: string;
 };
 
-export async function generateStaticParams() {
-  const apiDataList = await getApiDataListPageProps();
-  return [...apiDataList].map(({ breadcrumbs }) => ({
-    slug: breadcrumbs.product.slug,
-  }));
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -26,7 +19,7 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: apiDataListPage?.hero.title,
-    url: `${baseUrl}/${apiDataListPage?.breadcrumbs.product.slug}/api-list-page`,
+    url: `${baseUrl}/${apiDataListPage?.product.slug}/api-list-page`,
     locale: 'it_IT',
   });
 }
@@ -37,11 +30,9 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
   if (ApiDataListPageProps)
     return (
       <>
-        <Typography>{'ciao'}</Typography>
         <ApiDataListPageTemplate {...ApiDataListPageProps} />
       </>
     );
-  else return <Typography>BUBBA</Typography>;
 };
 
 export default ApiDataListPage;

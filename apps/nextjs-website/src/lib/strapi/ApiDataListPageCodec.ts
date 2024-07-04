@@ -1,6 +1,6 @@
 import * as t from 'io-ts/lib';
 import * as qs from 'qs';
-import { ProductCodec } from './codecs/ProductCodec';
+import { BaseProductCodec } from './codecs/ProductCodec';
 import { BannerLinkCodec } from './codecs/BannerLinkCodec';
 import { ApiDataCodec } from './codecs/ApiDataCodec';
 import { fetchFromStrapi } from './fetchFromStrapi';
@@ -11,8 +11,10 @@ export const ApiDataListPageCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
-    product: ProductCodec,
-    api_data: t.array(ApiDataCodec),
+    product: t.strict({
+      data: t.union([NullToUndefinedCodec, BaseProductCodec]),
+    }),
+    apiData: t.strict({ data: t.array(ApiDataCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
   }),
 });
@@ -25,11 +27,21 @@ export type ApiDataListPages = t.TypeOf<typeof ApiDataListPagesCodec>;
 
 const makeApiDataListPagePopulate = () =>
   qs.stringify({
-    populate: '*',
+    populate: {
+      apiData: {
+        populate: ['icon', 'specUrls'],
+      },
+      product: {
+        populate: ['logo'],
+      },
+      bannerLinks: {
+        populate: ['icon'],
+      },
+    },
   });
 
 export const fetchApiDataListPages = fetchFromStrapi(
-  'api-list-pages',
+  'api-data-list-pages',
   makeApiDataListPagePopulate(),
   ApiDataListPagesCodec
 );

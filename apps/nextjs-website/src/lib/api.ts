@@ -210,7 +210,7 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 
 export async function getApiDataListPages(productSlug: string) {
   const props = (await getApiDataListPageProps()).find(
-    (apiPageData) => apiPageData.breadcrumbs.product.slug === productSlug
+    (apiPageData) => apiPageData.product.slug === productSlug
   );
   return props;
 }

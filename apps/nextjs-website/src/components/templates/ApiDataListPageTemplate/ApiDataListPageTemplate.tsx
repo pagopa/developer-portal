@@ -11,15 +11,14 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 
 export type ApiDataListPageTemplateProps = {
-  readonly breadcrumbs: {
-    readonly product: Product;
-    readonly path: string;
-    readonly paths: readonly Path[];
-  };
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
     readonly heigth?: string;
+  };
+  readonly product: {
+    readonly name: string;
+    readonly slug: string;
   };
   readonly cards: {
     readonly title: string;
@@ -34,7 +33,6 @@ export type ApiDataListPageTemplateProps = {
 };
 
 const ApiDataListPageTemplate = ({
-  breadcrumbs,
   hero,
   cards,
   bannerLinks,
@@ -42,17 +40,6 @@ const ApiDataListPageTemplate = ({
 }: ApiDataListPageTemplateProps) => {
   return (
     <>
-      <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
-        <ProductBreadcrumbs
-          breadcrumbs={[
-            ...productPageToBreadcrumbs(
-              breadcrumbs.product,
-              breadcrumbs.path,
-              breadcrumbs.paths
-            ),
-          ]}
-        />
-      </EContainer>
       <Hero
         title={hero.title}
         subtitle={hero.subtitle}

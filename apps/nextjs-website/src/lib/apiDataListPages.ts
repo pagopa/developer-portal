@@ -10,23 +10,7 @@ export function makeApiDataListPageProps(
       title: attributes.title,
       subtitle: attributes.description || '',
     },
-    breadcrumbs: {
-      product: {
-        name: '',
-        description: attributes.product.attributes.description ?? '',
-        slug: attributes.product?.attributes.slug ?? '',
-        logo: attributes.product?.attributes.logo.data.attributes,
-        subpaths: {
-          overview: {
-            name: '',
-            path: '',
-          },
-        },
-        path: '',
-      },
-      path: '',
-      paths: [],
-    },
+    product: attributes.product.data?.attributes || { name: '', slug: '' },
     cards: [],
     bannerLinks: [],
   }));
