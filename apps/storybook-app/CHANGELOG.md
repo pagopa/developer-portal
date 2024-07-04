@@ -1,5 +1,12 @@
 # storybook-app
 
+## 0.3.1
+
+### Patch Changes
+
+- ff1e3e8: Add solutions list page
+- 4150e3b: Add TutorialPageTemplate story
+
 ## 0.3.0
 
 ### Minor Changes
