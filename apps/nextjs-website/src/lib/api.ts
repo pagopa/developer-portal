@@ -15,7 +15,6 @@ import {
   getFullSolutionsProps,
   getQuickStartsProps,
   getSolutionsListProps,
-  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
