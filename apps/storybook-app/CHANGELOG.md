@@ -1,5 +1,22 @@
 # storybook-app
 
+## 0.3.1
+
+### Patch Changes
+
+- ff1e3e8: Add solutions list page
+- 4150e3b: Add TutorialPageTemplate story
+
+## 0.3.0
+
+### Minor Changes
+
+- cba50f2: Update BannerLinks layout and BannerLink input props and layout
+
+### Patch Changes
+
+- 5cfb0e6: Add linter to Storybook workspace
+
 ## 0.2.0
 
 ### Minor Changes

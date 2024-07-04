@@ -14,6 +14,8 @@ import {
   getCaseHistoriesProps,
   getFullSolutionsProps,
   getQuickStartsProps,
+  getSolutionsListProps,
+  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -210,4 +212,9 @@ export async function getSolution(solutionSlug?: string) {
     (await getFullSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
+}
+
+export async function getSolutionsList() {
+  const solutionsListProps = await getSolutionsListProps();
+  return manageUndefined(solutionsListProps);
 }

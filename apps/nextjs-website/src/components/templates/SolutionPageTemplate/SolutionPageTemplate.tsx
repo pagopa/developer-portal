@@ -14,12 +14,14 @@ import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcas
 import Stats from '@/components/atoms/Stats/Stats';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { Media } from '@/lib/types/media';
 
 export type SolutionPageTemplateProps = {
   slug: string;
   kickerTitle: string;
   title: string;
   description?: string;
+  icon: Media;
   steps: {
     title: string;
     content: BlocksContent;

@@ -42,7 +42,7 @@
     "caseHistories": {
       "displayName": "CaseHistories",
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -50,16 +50,16 @@
       },
       "component": "common.case-histories"
     },
-    "bannerLinks": {
+    "features": {
+      "displayName": "Features",
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "max": 2,
-      "component": "common.banner-link"
+      "component": "common.features"
     }
   }
 }

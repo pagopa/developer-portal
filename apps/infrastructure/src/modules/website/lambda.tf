@@ -1,5 +1,6 @@
 locals {
-  cognito_lambda_functions_artifact_path = "../apps/cognito-functions/out/cognito-functions.zip"
+  cognito_lambda_functions_artifact_path = "${path.root}/../../cognito-functions/out/cognito-functions.zip"
+  package_json                           = jsondecode(file("${path.root}/../../cognito-functions/package.json"))
   /* FIXME: at the moment we need to add all the env variables required to all Lambda functions
    * because of a runtime error during the env parsing.
    * We should find a way to add only the variables required to the Lambda.
@@ -22,6 +23,7 @@ module "cognito_custom_message_function" {
 
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  hash_extra                              = local.package_json.version
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -46,6 +48,7 @@ module "cognito_post_confirmation_function" {
 
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  hash_extra                              = local.package_json.version
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -79,6 +82,7 @@ module "cognito_define_auth_challenge_function" {
 
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  hash_extra                              = local.package_json.version
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -103,6 +107,7 @@ module "cognito_create_auth_challenge_function" {
 
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  hash_extra                              = local.package_json.version
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -136,6 +141,7 @@ module "cognito_verify_auth_challenge_function" {
 
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
+  hash_extra                              = local.package_json.version
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
