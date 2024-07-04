@@ -70,7 +70,7 @@ Answer Refinement Actions:
 6. The refined answer must not include any repetitions and avoid redundancy.
 7. The refined answer must have a source reference.
 8. The refined answer must be concise and made by maximum three sentences.
-9. The refined answer must must be in Italian.
+9. The refined answer must be in Italian.
 ---------------------
 Task:
 Refine the existing answer to better answer the query according to the answer refinement actions listed above.
