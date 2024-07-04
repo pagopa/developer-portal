@@ -25,6 +25,7 @@ langchain-community = "^0.2.6"
 langchain-aws = "^0.1.9"
 langchainhub = "^0.1.20"
 langchain-core = "^0.2.11"
+llama-index-postprocessor-presidio = "^0.1.1"
 
 
 [build-system]
