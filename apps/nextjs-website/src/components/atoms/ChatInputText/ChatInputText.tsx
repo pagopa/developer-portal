@@ -17,11 +17,10 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(message);
-    setMessage('');
+    submit();
   };
 
-  const handleSend = () => {
+  const submit = () => {
     onSubmit(message);
     setMessage('');
   };
@@ -46,7 +45,7 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
       />
       <IconButton
         aria-label='send'
-        onClick={handleSend}
+        onClick={submit}
         sx={{ p: '10px', color: iconColor, cursor: 'pointer' }}
       >
         <SendOutlined />
