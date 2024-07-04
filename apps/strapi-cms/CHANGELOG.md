@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 0.12.0
+
+### Minor Changes
+
+- 5202a75: Create ApiListPage model
+- d21b4d9: Add ApiData to Strapi
+
+### Patch Changes
+
+- 00dfd43: Add features field on SolutionsListPage
+- 9b1c6b8: Rename ApiListPage to ApiDataListPage
+
 ## 0.11.0
 
 ### Minor Changes
