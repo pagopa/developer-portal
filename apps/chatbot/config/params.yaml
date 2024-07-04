@@ -9,8 +9,8 @@ vector_index:
 models:
   model_id: amazon.titan-text-express-v1
   emded_model_id: cohere.embed-multilingual-v3
-  temperature: 0.1
-  max_tokens: 512
+  temperature: 0.2
+  max_tokens: 784
 
 retriever:
   similarity_top_k: 5
