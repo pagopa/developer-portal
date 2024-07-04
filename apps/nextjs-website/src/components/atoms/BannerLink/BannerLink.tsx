@@ -8,8 +8,8 @@ import { FC } from 'react';
 export type BannerLinkProps = {
   content?: BlocksContent;
   contentJustification?: string;
-  icon?: Media;
-  theme?: 'light' | 'dark';
+  icon: Media;
+  theme: 'light' | 'dark';
   title?: string;
 };
 
@@ -57,16 +57,14 @@ export const BannerLink: FC<BannerLinkProps> = ({
             spacing: '8px',
           }}
         >
-          {icon && (
-            <div style={{ marginBottom: '26px' }}>
-              <IconWrapper
-                icon={icon.url}
-                isSvg={true}
-                color={textColor}
-                size={60}
-              />
-            </div>
-          )}
+          <div style={{ marginBottom: '26px' }}>
+            <IconWrapper
+              icon={icon.url}
+              isSvg={true}
+              color={textColor}
+              size={60}
+            />
+          </div>
 
           {title && (
             <Typography variant={`h6`} color={textColor}>

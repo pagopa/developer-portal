@@ -9,7 +9,7 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolution } from '@/lib/solutions';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { Solution } from '@/lib/types/solutionData';
+import { Solution } from '@/lib/types/solution';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { getDetailSolutionsProps } from '@/lib/cmsApi';

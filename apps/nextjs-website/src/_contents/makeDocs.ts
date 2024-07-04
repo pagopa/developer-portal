@@ -5,7 +5,7 @@ import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Solution } from '@/lib/types/solutionData';
+import { Solution } from '@/lib/types/solution';
 
 export type TutorialsDefinition = {
   readonly product: Product;

@@ -1,7 +1,7 @@
 import { makeSolution } from '@/_contents/makeDocs';
 import { getDetailSolutionsProps } from './cmsApi';
 import { StrapiSolutions } from './strapi/solutionsCodec';
-import { Solution } from './types/solutionData';
+import { Solution } from './types/solution';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
 
