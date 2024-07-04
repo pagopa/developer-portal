@@ -564,5 +564,8 @@
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
+    },
+    "chatBot": {
+        "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio"
     }
 }

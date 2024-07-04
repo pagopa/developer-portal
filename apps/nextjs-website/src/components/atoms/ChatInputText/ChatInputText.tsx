@@ -1,5 +1,6 @@
 import { SendOutlined } from '@mui/icons-material';
 import { IconButton, InputBase, Paper, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 type ChatInputTextProps = {
@@ -7,6 +8,7 @@ type ChatInputTextProps = {
 };
 
 const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
+  const t = useTranslations();
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
   const iconColor = palette.grey[700];
@@ -38,7 +40,7 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
     >
       <InputBase
         fullWidth
-        placeholder='Scrivi un nuovo messaggio'
+        placeholder={t('chatBot.writeNewMessagePlaceholder')}
         value={message}
         onChange={handleChange}
         sx={{ ml: 1 }}
