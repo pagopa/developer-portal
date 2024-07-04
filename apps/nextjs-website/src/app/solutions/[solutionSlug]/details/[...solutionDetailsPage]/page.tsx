@@ -51,9 +51,11 @@ export async function generateMetadata({
     {} ||
     makeMetadata({
       title: props?.solution.title,
-      url: `/solutions/${
-        props?.solution.slug
-      }/details/${params.solutionDetailsPage.join('/')}`,
+      url: props
+        ? `/solutions/${
+            props?.solution.slug
+          }/details/${params.solutionDetailsPage.join('/')}`
+        : '',
     })
   );
 }
