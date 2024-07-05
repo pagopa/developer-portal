@@ -36,6 +36,15 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
       >
         {t('siteHeader.webinars')}
       </LinkMui>
+      <LinkMui
+        component={Link}
+        color='primary.main'
+        underline='none'
+        href={'/solutions'}
+        sx={{ fontSize: '16px', fontWeight: 600 }}
+      >
+        {t('siteHeader.solutions')}
+      </LinkMui>
       <DesktopUserInfo />
     </Box>
   );
