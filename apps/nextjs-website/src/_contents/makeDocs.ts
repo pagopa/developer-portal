@@ -5,6 +5,7 @@ import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Solution } from '@/lib/types/solution';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -107,3 +108,19 @@ export const makeGuide = ({
     parseDocOrThrow
   );
 };
+
+export const makeSolution = (solution: Solution) =>
+  pipe(
+    [
+      {
+        solution,
+        source: {
+          pathPrefix: `/solutions/${solution.slug}/details`,
+          assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
+          dirPath: `${docsPath}/${solution.dirName}`,
+          spaceId: solution.dirName,
+        },
+      },
+    ],
+    parseDocOrThrow
+  );

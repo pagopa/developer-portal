@@ -12,9 +12,9 @@ import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
   getCaseHistoriesProps,
+  getFullSolutionsProps,
   getQuickStartsProps,
   getSolutionsListProps,
-  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -208,7 +208,7 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 
 export async function getSolution(solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getFullSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }

@@ -33,7 +33,7 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
         >
           {t('steps.platforms')}
         </Typography>
-        <Box display='flex' gap={1}>
+        <Box display='flex' flexWrap={'wrap'} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
               <Tag value={product.label} color='primary' variant='light' />

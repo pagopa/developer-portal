@@ -1,14 +1,27 @@
+import { makeSolution } from '@/_contents/makeDocs';
+import { getDetailSolutionsProps } from './cmsApi';
 import { StrapiSolutions } from './strapi/solutionsCodec';
+import { Solution } from './types/solution';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
 
-export function makeSolutionsProps(
+export type DetailSolutionsProps = Solution & {
+  readonly solutionSlug: string;
+  readonly steps?: StrapiSolutions['data'][0]['attributes']['steps'];
+  readonly stats?: StrapiSolutions['data'][0]['attributes']['stats'];
+  readonly webinars?: StrapiSolutions['data'][0]['attributes']['webinars'];
+  readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly path?: string;
+};
+
+export function makeFullSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionPageTemplateProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
     steps: attributes.steps.map((step) => ({
       ...step,
-      products: attributes.products.data.map((product) => ({
+      products: step.products.data.map((product) => ({
         name: product.attributes.name,
         slug: product.attributes.slug,
       })),
@@ -34,4 +47,48 @@ export function makeSolutionsProps(
       icon: bannerLink.icon?.data?.attributes,
     })),
   }));
+}
+
+export function makeDetailSolutionsProps(
+  strapiSolutions: StrapiSolutions
+): ReadonlyArray<DetailSolutionsProps> {
+  return strapiSolutions.data.map(({ attributes }) => ({
+    ...attributes,
+    products: attributes.products.data.map(({ attributes }) => ({
+      ...attributes,
+      logo: attributes.logo.data.attributes,
+    })),
+    icon: attributes.icon.data.attributes.url,
+    solutionSlug: attributes.slug,
+    bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+      ...bannerLink,
+      icon: bannerLink.icon.data?.attributes,
+    })),
+    path: `/solutions/${attributes.slug}/details`,
+  }));
+}
+
+export async function getSolution(
+  solutionSlug?: string,
+  solutionDetailsPage?: ReadonlyArray<string>
+) {
+  const solutionsFromStrapi = await getDetailSolutionsProps();
+
+  const solutionFromStrapi = solutionsFromStrapi.find(
+    ({ slug }) => slug === solutionSlug
+  );
+
+  if (!solutionFromStrapi) {
+    return undefined;
+  }
+
+  const parsedSolutions = makeSolution(solutionFromStrapi);
+
+  return solutionDetailsPage
+    ? parsedSolutions.find(
+        ({ page }) =>
+          page.path ===
+          `/solutions/${solutionSlug}/details/${solutionDetailsPage.join('/')}`
+      )
+    : parsedSolutions.find(({ page }) => page.isIndex);
 }

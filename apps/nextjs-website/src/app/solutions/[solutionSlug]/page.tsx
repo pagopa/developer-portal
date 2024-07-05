@@ -3,14 +3,14 @@ import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
 import SolutionPageTemplate from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
-import { getSolutionsProps } from '@/lib/cmsApi';
+import { getFullSolutionsProps } from '@/lib/cmsApi';
 
 type Params = {
   solutionSlug: string;
 };
 
 export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
+  const solutions = await getFullSolutionsProps();
   return [...solutions].map(({ slug }) => ({
     solutionSlug: slug,
   }));
