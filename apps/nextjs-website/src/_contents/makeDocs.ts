@@ -27,11 +27,6 @@ export type GuideDefinition = {
   readonly bannerLinks: readonly BannerLinkProps[];
 };
 
-export type SolutionDefinition = {
-  readonly solution: Solution;
-  readonly bannerLinks: readonly BannerLinkProps[];
-};
-
 const parseDocOrThrow = flow(
   RA.traverse(E.Applicative)(parseDoc),
   E.fold((e) => {
@@ -114,7 +109,7 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) =>
+export const makeSolution = (solution: Solution) =>
   pipe(
     [
       {
@@ -125,7 +120,6 @@ export const makeSolution = ({ solution, bannerLinks }: SolutionDefinition) =>
           dirPath: `${docsPath}/${solution.dirName}`,
           spaceId: solution.dirName,
         },
-        bannerLinks: bannerLinks,
       },
     ],
     parseDocOrThrow

@@ -82,10 +82,7 @@ export async function getSolution(
     return undefined;
   }
 
-  const parsedSolutions = makeSolution({
-    solution: solutionFromStrapi,
-    bannerLinks: solutionFromStrapi?.bannerLinks ?? [],
-  });
+  const parsedSolutions = makeSolution(solutionFromStrapi);
 
   return solutionDetailsPage
     ? parsedSolutions.find(

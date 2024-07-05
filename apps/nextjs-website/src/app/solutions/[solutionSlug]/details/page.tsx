@@ -10,13 +10,11 @@ import { getSolution } from '@/lib/solutions';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Solution } from '@/lib/types/solution';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { getDetailSolutionsProps } from '@/lib/cmsApi';
 
 type SolutionDetailsPageTemplateProps = {
   solution: Solution;
-  bannerLinks: readonly BannerLinkProps[];
   path: string;
   pathPrefix: string;
   isIndex: boolean;
@@ -67,11 +65,10 @@ const Page = async ({ params }: { params: Params }) => {
     return null;
   }
 
-  const { page, solution, source, bannerLinks } = solutionProps;
+  const { page, solution, source } = solutionProps;
   const props: SolutionDetailsPageTemplateProps = {
     ...page,
     solution,
-    bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
       isPageIndex: page.isIndex,
