@@ -1,5 +1,13 @@
 # nextjs-website
 
+## 0.28.0
+
+### Minor Changes
+
+- de59d44: Fix user password change on profile page
+- ff1e3e8: Add solutions list page
+- 401ee16: Create a common template for guides and solutions pages
+
 ## 0.27.0
 
 ### Minor Changes
