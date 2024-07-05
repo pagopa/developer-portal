@@ -10,14 +10,14 @@ export type BannerLinkProps = {
   contentJustification?: string;
   icon: Media;
   theme: 'light' | 'dark';
-  title: string;
+  title?: string;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
   content,
   contentJustification = 'center',
   icon,
-  theme,
+  theme = 'light',
   title,
 }) => {
   const { palette } = useTheme();
@@ -66,9 +66,11 @@ export const BannerLink: FC<BannerLinkProps> = ({
             />
           </div>
 
-          <Typography variant={`h6`} color={textColor}>
-            {title}
-          </Typography>
+          {title && (
+            <Typography variant={`h6`} color={textColor}>
+              {title}
+            </Typography>
+          )}
           <BlocksRenderer
             content={content}
             blocks={{
