@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 0.29.0
+
+### Minor Changes
+
+- 9124dc1: Create a common template for guides and solutions pages
+
+### Patch Changes
+
+- 62bcc36: Add features field on SolutionsListPage
+
 ## 0.28.0
 
 ### Minor Changes
