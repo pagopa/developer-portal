@@ -1,0 +1,190 @@
+answer_relevacy_prompt_str: |
+  You are tasked with evaluating the relevance of a provided response in relation to a given query.
+  Relevance is defined as the degree to which the response directly addresses and pertains to the query.
+  ---------------------
+  Evaluation Criteria:
+  - Directness: How directly does the response address the specific question posed by the query?
+  - Pertinence: Is the information in the response pertinent to the query without including unrelated or extraneous details?
+  - Specificity: Does the response provide specific information relevant to the query rather than general or vague information?
+  - Language: Is the answer provided with the same language as the query?
+  ---------------------
+  Scoring Criteria:
+  Score the answer relevance on a scale from 0.0 to 1.0, where:
+  - 0.0 indicates the response is completely irrelevant to the query.
+  - 1.0 indicates the response is perfectly relevant to the query.
+  Scores in between should reflect partial relevance based on the evaluation criteria above.
+  ---------------------
+  Output Format:
+  Provide a numerical score between 0.0 and 1.0.
+  Include a brief feedback for the score, highlighting key factors that influenced the assessment.
+  ---------------------
+  Output Examples:
+  **High Score Example:**
+  Query: What is PagoPA and how does it benefit users?
+  Answer: PagoPA is an electronic payment system developed by the Italian government that allows citizens and businesses to make payments to public administrations and other entities.
+  It benefits users by providing a secure, transparent, and efficient method of making payments, reducing the need for physical paperwork and queues.
+
+  Evaluation:
+  Score: 0.95
+  Feedback: The answer is highly relevant to the query, providing a clear definition of PagoPA and directly addressing the benefits to users.
+  It focuses on the main points of the query without deviating into unrelated areas. Moreover, the answer was generate with the same language of the query.
+
+  **Low Score Example:**
+  Query: What is PagoPA and how does it benefit users?
+  Answer: PagoPA is a new initiative by the government. People use it for various transactions.
+  The government has many initiatives to improve services.
+
+  Evaluation:
+  Score: 0.2
+  Feedback: The answer is largely irrelevant to the query.
+  It provides a vague description of PagoPA and fails to address how it benefits users.
+  The response lacks specific details and does not directly answer the question.
+  ---------------------
+  Your Task:
+  Given the query: {query}
+  Given the response: {response}
+  Evaluate the relevance of the provided response based on the above criteria and provide a score with a feedback.
+  Evaluation:
+
+
+context_relevacy_prompt_str: |
+  You are tasked with evaluating the relevance of the provided context in relation to the given query.
+  Relevance is defined as the degree to which the information in the context directly addresses and pertains to the query.
+  ---------------------
+  Evaluation Criteria:
+  - Directness: How directly does the context address the query?
+  - Pertinence: Is the information in the context pertinent to the query without deviating into unrelated areas?
+  - Specificity: Does the context provide specific information relevant to the query rather than general or tangential details?
+  ---------------------
+  Scoring Criteria:
+  Score the relevance on a scale from 0.0 to 1.0, where:
+  - 0.0 indicates the context is completely irrelevant to the query.
+  - 1.0 indicates the context is perfectly relevant to the query.
+  Scores in between should reflect partial relevance based on the evaluation criteria above.
+  ---------------------
+  Output Format:
+  Provide a numerical score between 0.0 and 1.0.
+  Include a brief feedback for the score, highlighting key factors that influenced the assessment.
+  ---------------------
+  Output Examples:
+  **High Score Example:**
+  Query: How does PagoPA ensure transaction security?
+  Retrieved Context: PagoPA employs advanced encryption methods and secure authentication processes to ensure that all transactions are safe.
+  It also adheres to strict regulatory standards and undergoes regular security audits to maintain a high level of security.
+
+  Evaluation:
+  Score: 0.9
+  Feedback: The context is highly relevant, directly addressing the query about transaction security with specific details about the methods used by PagoPA to ensure safety.
+  The information is pertinent and specific to the query.
+
+  **Low Score Example:**
+  Query: How does PagoPA ensure transaction security?
+  Retrieved Context: PagoPA is a digital payment system used by many people in Italy.
+  It was created by the government to make payments easier. Many people find it convenient.
+
+  Evaluation:
+  Score: 0.2
+  Feedback: The context is largely irrelevant to the query. It provides general information about PagoPA without addressing the specific question about transaction security. The response lacks details on security measures, making it unhelpful for the query.
+  ---------------------
+  Your Task:
+  Given the query: {query_str}
+  Given the retrieved context: {context_str}
+  Evaluate the relevance of the given retrieved context based on the above criteria and provide a score with an feedback.
+  Evaluation:
+
+
+faithfulness_prompt_str: |
+  You are tasked with evaluating the faithfulness of the provided context in relation to the given query.
+  Faithfulness is defined as the degree to which the information in the context accurately reflects and supports the query, without adding extraneous or misleading details.
+  ---------------------
+  Evaluation Criteria:
+  - Relevance: How relevant is the information in the context to the query?
+  - Accuracy: Does the context accurately reflect the information needed to address the query?
+  - Completeness: Does the context provide sufficient information to comprehensively answer the query without omitting critical details?
+  - Consistency: Is the information consistent with known facts and logical reasoning?
+  ---------------------
+  Scoring Criteria:
+  Score the faithfulness on a scale from 0.0 to 1.0, where:
+  - 0.0 indicates the context is entirely unfaithful to the query.
+  - 1.0 indicates the context is perfectly faithful to the query.
+  Scores in between should reflect partial faithfulness based on the criteria above.
+  ---------------------
+  Output Format:
+  Provide a numerical score between 0.0 and 1.0.
+  Include a brief feedback for the score, highlighting key factors that influenced the assessment.
+  ---------------------
+  Output Examples:
+  **High Score Example:**
+  Query: What features does PagoPA offer to public administrations?
+  Retrieved Context: PagoPA offers public administrations a range of features including real-time transaction tracking, integration with existing financial systems, customizable payment options, and detailed reporting tools.
+  These features enhance the efficiency and transparency of financial operations.
+
+  Evaluation:
+  Score: 0.95
+  Feedback: The context is highly faithful to the query, accurately describing the features offered by PagoPA to public administrations.
+  The information is specific, relevant, and provides a comprehensive answer to the query.
+
+  **Low Score Example:**
+  Query: What features does PagoPA offer to public administrations?
+  Retrieved Context: PagoPA is used by many people to make payments. It was designed to improve the payment process and is supported by the government.
+  Users can pay for a variety of services.
+
+  Evaluation:
+  Score: 0.25
+  Feedback: The context is not faithful to the query. It provides general information about PagoPA's use and purpose but fails to describe the specific features offered to public administrations.
+  The response is inaccurate and incomplete, lacking the necessary details to answer the query properly.
+  ---------------------
+  Your Task:
+  Given the query: {query_str}
+  Given the retrieved context: {context_str}
+  Evaluate the faithfulness of the given retrieved context based on the above criteria and provide a score with a feedback.
+
+
+faithfulness_refine_prompt_str: |
+  You are tasked with refining the faithfulness evaluation of the provided context in relation to the given query.
+  Ensure the feedback is detailed, clear, and covers all relevant aspects of the evaluation criteria.
+  ---------------------
+  Instructions:
+  Original Query: {query_str}
+  Retrieved Context: {context_str}
+  Existing answer: {existing_answer}
+  ---------------------
+  Criteria for Refinement:
+  - Completeness: a numerical score between 0.0 and 1.0 and a feedback must be in the refined answer.
+  - Clarity: Ensure the feedback is clear and easily understandable.
+  - Detail: Add any missing details that can provide a more comprehensive evaluation.
+  - Balance: Make sure the feedback fairly represents both strengths and weaknesses of the context.
+  - Specificity: Include specific examples or aspects of the context that influenced the evaluation.
+  ---------------------
+  Example Refined Evaluation:
+  **High Score Example:**
+  Query: What is PagoPA?
+  Retrieved Context: PagoPA is an Italian digital payment platform developed to streamline and secure payments between citizens, businesses, and public administrations. 
+  It was launched by the Agency for Digital Italy to facilitate electronic transactions. The system aims to provide a more efficient and transparent payment process.
+  Existing answer: PagoPA is an Italian digital payment platform developed to streamline and secure payments between citizens, businesses, and public administrations.
+  It was launched by the Agency for Digital Italy to facilitate electronic transactions. According to the official PagoPA documentation, the system aims to provide a more efficient and transparent payment process.
+
+  Refined Evaluation:
+  Score: 0.95
+  Feedback: The response accurately describes PagoPA's purpose and origin based on the official documentation.
+  It correctly mentions the involvement of the Agency for Digital Italy and the goal of improving payment efficiency and transparency.
+  The details provided align well with the source material, ensuring a high level of faithfulness.
+
+  **Low Score Example:**
+  Query: What is PagoPA?
+  Retrieved Context: PagoPA is an Italian digital payment platform developed to streamline and secure payments between citizens, businesses, and public administrations. 
+  It was launched by the Agency for Digital Italy to facilitate electronic transactions. The system aims to provide a more efficient and transparent payment process.
+  Existing answer: PagoPA is an Italian digital payment platform developed to streamline and secure payments between citizens, businesses, and public administrations.
+  It was launched by the Agency for Digital Italy to facilitate electronic transactions. According to the official PagoPA documentation, the system aims to provide a more efficient and transparent payment process.
+
+  Existing Response: PagoPA is a new cryptocurrency created by the Italian government to promote cashless transactions.
+  It aims to replace traditional banking methods entirely and is mandatory for all payments in Italy.
+
+  Refined Evaluation:
+  Score: 0.2
+  Feedback: The response is largely inaccurate and misleading. PagoPA is not a cryptocurrency but a digital payment platform. It does not aim to replace traditional banking methods entirely, nor is it mandatory for all payments in Italy. The response does not align with the official documentation and significantly misrepresents the facts.
+  ---------------------
+  Your Task:
+  Refine the existing answer of the given the retrieved context and the criteria above.
+  Provide a score if this is missing in the existing answer, or updated it if necessary, with a detailed, clear, and comprehensive feedback.
+  Refined Evaluation:
