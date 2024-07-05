@@ -46,9 +46,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Fetch docs from GitBook
+    - name: Download GitBook docs
+      uses: actions/checkout@v4
+      with:
+        repository: pagopa/devportal-docs
+        ref: docs/from-gitbook
+        path: apps/nextjs-website/checkout_path
+        fetch-depth: 1
+    
+    - name: Copy Assets
       shell: bash
-      run: npm run download-docs -w nextjs-website
+      working-directory: apps/nextjs-website
+      run: |
+        # remove old docs if any
+        rm -rf ./docs
+        mv ./checkout_path/docs .
+        # copy all the gitbook assets to public assets of nextjs-website
+        dest='public/gitbook/'
+        # create all the assets folder otherwise the copy will fail
+        find docs -type d -path '*/.gitbook/assets' -exec mkdir -p $dest'{}' ';'
+        # copy all the assets from docs to public assets of nextjs-website
+        find docs -type f -path '*/.gitbook/*' -exec cp '{}' $dest'{}' ';'
 
     - name: Restore NextJS cache
       uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
