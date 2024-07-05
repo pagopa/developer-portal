@@ -396,3 +396,10 @@ apps/nextjs-website/.tmp-docs/
 apps/nextjs-website/docs/
 # Ignore static assets provided by the gitbook-export script
 apps/nextjs-website/public/gitbook/
+
+# chatbot
+apps/chatbot/index
+apps/chatbot/src/*/__pycache__
+apps/chatbot/*.ipynb
+
+/results
