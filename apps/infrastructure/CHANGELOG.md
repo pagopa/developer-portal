@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.10.0
+
+### Minor Changes
+
+- afd99d2: create AWS S3 bucket for LLamaIndex
+
 ## 0.9.0
 
 ### Minor Changes

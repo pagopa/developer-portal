@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.3.2
+
+### Patch Changes
+
+- 62bcc36: Add features field on SolutionsListPage
+
 ## 0.3.1
 
 ### Patch Changes

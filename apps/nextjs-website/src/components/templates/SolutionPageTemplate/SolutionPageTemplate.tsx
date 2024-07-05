@@ -44,8 +44,6 @@ const SolutionPageTemplate = ({
   title,
   description,
   steps,
-  dirName,
-  landingUseCaseFile,
   stats,
   products,
   webinars,
@@ -54,7 +52,7 @@ const SolutionPageTemplate = ({
   const { palette, spacing } = useTheme();
   const t = useTranslations();
 
-  const solutionDetailPath = `/${dirName}/${slug}/${landingUseCaseFile}/detail`; // TODO: check if this is correct
+  const solutionDetailPath = `/solutions/${slug}/details`;
 
   return (
     <>
