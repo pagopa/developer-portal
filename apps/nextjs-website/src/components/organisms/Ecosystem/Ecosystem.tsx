@@ -46,6 +46,7 @@ const Ecosystem = ({
                       cardVariant={'outlined'}
                       cardSvg
                       cards={solutions}
+                      containerSx={{ px: 0, pb: '22px' }}
                     />
                   )}
                   {solutionsCta && (
