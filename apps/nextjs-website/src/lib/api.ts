@@ -12,7 +12,9 @@ import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
   getApiDataListPageProps,
+  getApisDataPageProps,
   getCaseHistoriesProps,
+  getProductsProps,
   getQuickStartsProps,
   getSolutionsListProps,
   getSolutionsProps,
@@ -21,7 +23,6 @@ import {
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/tutorials';
-import { readonly } from 'io-ts';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -37,7 +38,7 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
 
 export async function getApi(productSlug?: string) {
   const props =
-    apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
+    apis.find((apiData) => apiData.product?.path === `/${productSlug}`) || null;
 
   return manageUndefinedAndAddProducts(props);
 }
@@ -211,6 +212,20 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 export async function getApiDataListPages(productSlug: string) {
   const props = (await getApiDataListPageProps()).find(
     (apiPageData) => apiPageData.product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getProduct(productSlug: string) {
+  const props = (await getProductsProps()).find(
+    (product) => product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getApisDataPages(apiDataSlug: string) {
+  const props = (await getApisDataPageProps()).find(
+    (apisData) => apisData.apiDataSlug === apiDataSlug
   );
   return props;
 }

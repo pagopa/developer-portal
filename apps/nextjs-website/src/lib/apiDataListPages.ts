@@ -1,5 +1,6 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { ApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { baseUrl } from '@/config';
 
 export function makeApiDataListPageProps(
   apiDataListPages: ApiDataListPages
@@ -12,12 +13,11 @@ export function makeApiDataListPageProps(
     },
     product: attributes.product.data?.attributes || { name: '', slug: '' },
     cards: [
-      ...attributes.apiData.data.map((apidata) => ({
+      ...attributes.apiData.data.map((apidata, index) => ({
         title: apidata?.attributes?.title,
         text: apidata?.attributes?.description || '',
         icon: apidata?.attributes?.icon?.data?.attributes.url || '',
-        //todo Add url to api page
-        href: '#',
+        href: `${baseUrl}/${attributes.product.data?.attributes.slug}/api/${attributes.apiData.data[index].attributes.slug}`,
       })),
     ],
     bannerLinks: [

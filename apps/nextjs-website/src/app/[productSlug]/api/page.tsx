@@ -1,75 +1,35 @@
-import { getApi, getProductsSlugs } from '@/lib/api';
-import ProductLayout, {
-  ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
-import { ProductParams } from '@/lib/types/productParams';
-import { Product } from '@/lib/types/product';
-import ApiSection from '@/components/molecules/ApiSection/ApiSection';
-import { Metadata, ResolvingMetadata } from 'next';
+import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
+import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { getApiDataListPages } from '@/lib/api';
+import { Metadata } from 'next';
 
-export async function generateStaticParams() {
-  return getProductsSlugs('api').map((productSlug) => ({
-    productSlug,
-  }));
-}
+type Params = {
+  productSlug: string;
+};
 
-export type ApiPageProps = {
-  readonly product: Product;
-  readonly soapDocumentation?: {
-    title: string;
-    url: string;
-    buttonLabel: string;
-    icon: string;
-  };
-  readonly specURLsName?: string;
-  readonly specURLs: {
-    name?: string;
-    url: string;
-    hideTryIt?: boolean;
-  }[];
-} & ProductLayoutProps;
-
-export const generateMetadata = async (
-  { params }: ProductParams,
-  parent: ResolvingMetadata
-): Promise<Metadata> => {
-  const resolvedParent = await parent;
-  const { product } = await getApi(params.productSlug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const apiDataListPage = await getApiDataListPages(params?.productSlug);
 
   return makeMetadata({
-    title: product.name,
-    description: product.description,
-    url: product.path,
-    parent: resolvedParent,
+    title: apiDataListPage?.hero.title,
+    url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
+    locale: 'it_IT',
   });
+}
+
+const ApiDataListPage = async ({ params }: { params: Params }) => {
+  const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
+  if (ApiDataListPageProps)
+    return (
+      <>
+        <ApiDataListPageTemplate {...ApiDataListPageProps} />
+      </>
+    );
 };
 
-const ApisPage = async ({ params }: ProductParams) => {
-  const {
-    path,
-    product,
-    specURLs,
-    bannerLinks,
-    soapDocumentation,
-    specURLsName,
-  } = await getApi(params.productSlug);
-
-  return (
-    <ProductLayout
-      product={product}
-      path={path}
-      bannerLinks={bannerLinks}
-      showBreadcrumbs
-    >
-      <ApiSection
-        specURLs={specURLs}
-        product={product}
-        specURLsName={specURLsName}
-        soapDocumentation={soapDocumentation}
-      />
-    </ProductLayout>
-  );
-};
-
-export default ApisPage;
+export default ApiDataListPage;

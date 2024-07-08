@@ -24,6 +24,10 @@ import { makeSolutionsListProps } from './solutionsList';
 import { fetchSolutionsList } from './strapi/solutionsListCodec';
 import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
 import { makeApiDataListPageProps } from './apiDataListPages';
+import { makeApisDataPageProps } from './apiDataPages';
+import { fetchApisDataPages } from './strapi/codecs/ApiDataCodec';
+import { fetchProducts } from './strapi/codecs/ProductCodec';
+import { makeProductProps } from './products';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -63,6 +67,17 @@ export const getWebinarsProps = async () => {
   }
 };
 
+export const getProductsProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const products = await fetchProducts(buildEnv);
+    return makeProductProps(products);
+  } else return [];
+};
+
 export const getTutorialsProps = async (productSlug?: string) => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
@@ -97,6 +112,17 @@ export const getApiDataListPageProps = async () => {
   if (fetchFromStrapi) {
     const apiDataListPages = await fetchApiDataListPages(buildEnv);
     return makeApiDataListPageProps(apiDataListPages);
+  } else return [];
+};
+
+export const getApisDataPageProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const apisDataPages = await fetchApisDataPages(buildEnv);
+    return makeApisDataPageProps(apisDataPages);
   } else return [];
 };
 
