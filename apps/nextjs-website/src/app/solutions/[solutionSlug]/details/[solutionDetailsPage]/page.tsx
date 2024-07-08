@@ -6,7 +6,7 @@ import {
 } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolution } from '@/lib/solutions';
+import { getSolution, getSolutionSubPath } from '@/lib/solutions';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Solution } from '@/lib/types/solution';
@@ -25,14 +25,12 @@ type SolutionDetailsPageTemplateProps = {
 
 type Params = {
   solutionSlug: string;
-  solutionDetailsPage: Array<string>;
+  solutionDetailsPage: string;
 };
 
 export async function generateStaticParams() {
   const solutions = await getDetailSolutionsProps();
-  return solutions.map(({ solutionSlug }) => ({
-    solutionSlug,
-  }));
+  return solutions.flatMap(getSolutionSubPath);
 }
 
 export async function generateMetadata({
@@ -42,7 +40,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const props = await getSolution(
     params?.solutionSlug,
-    params?.solutionDetailsPage ?? ['']
+    params?.solutionDetailsPage
   );
 
   return (
@@ -50,9 +48,7 @@ export async function generateMetadata({
     makeMetadata({
       title: props?.solution.title,
       url: props
-        ? `/solutions/${
-            props?.solution.slug
-          }/details/${params.solutionDetailsPage.join('/')}`
+        ? `/solutions/${props?.solution.slug}/details/${params.solutionDetailsPage}`
         : '',
     })
   );
@@ -61,7 +57,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solutionProps = await getSolution(
     params?.solutionSlug,
-    params?.solutionDetailsPage ?? ['']
+    params?.solutionDetailsPage
   );
 
   if (!solutionProps) {
@@ -91,6 +87,14 @@ const Page = async ({ params }: { params: Params }) => {
           {
             name: props.solution.title,
             path: props.solution.slug,
+          },
+          {
+            name: 'Dettagli',
+            path: 'details',
+          },
+          {
+            name: page.title,
+            path: params.solutionDetailsPage,
           },
         ]),
       ]}
