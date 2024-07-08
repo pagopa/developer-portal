@@ -6,7 +6,7 @@ import {
 } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolution, getSolutionSubPath } from '@/lib/solutions';
+import { getSolution, getSolutionSubPaths } from '@/lib/solutions';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Solution } from '@/lib/types/solution';
@@ -25,12 +25,12 @@ type SolutionDetailsPageTemplateProps = {
 
 type Params = {
   solutionSlug: string;
-  solutionDetailsPage: string;
+  solutionSubPathSlug: string;
 };
 
 export async function generateStaticParams() {
   const solutions = await getDetailSolutionsProps();
-  return solutions.flatMap(getSolutionSubPath);
+  return solutions.flatMap(getSolutionSubPaths);
 }
 
 export async function generateMetadata({
@@ -40,7 +40,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const props = await getSolution(
     params?.solutionSlug,
-    params?.solutionDetailsPage
+    params?.solutionSubPathSlug
   );
 
   return (
@@ -48,7 +48,7 @@ export async function generateMetadata({
     makeMetadata({
       title: props?.solution.title,
       url: props
-        ? `/solutions/${props?.solution.slug}/details/${params.solutionDetailsPage}`
+        ? `/solutions/${props?.solution.slug}/details/${params.solutionSubPathSlug}`
         : '',
     })
   );
@@ -57,7 +57,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solutionProps = await getSolution(
     params?.solutionSlug,
-    params?.solutionDetailsPage
+    params?.solutionSubPathSlug
   );
 
   if (!solutionProps) {
@@ -86,15 +86,11 @@ const Page = async ({ params }: { params: Params }) => {
         ...pageToBreadcrumbs('solutions', [
           {
             name: props.solution.title,
-            path: props.solution.slug,
-          },
-          {
-            name: 'Dettagli',
-            path: 'details',
+            path: `/solutions/${props.solution.slug}`,
           },
           {
             name: page.title,
-            path: params.solutionDetailsPage,
+            path: `/solutions/${props.solution.slug}/details/${params.solutionSubPathSlug}`,
           },
         ]),
       ]}
