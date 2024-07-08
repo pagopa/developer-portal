@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix solutions details pages routing
+Fix solution detail pages routing
