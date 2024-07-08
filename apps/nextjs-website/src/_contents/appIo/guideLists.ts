@@ -71,8 +71,8 @@ export const appIoGuideLists: GuideListsData = {
             href: `${appIOGuideListsPath.path}/modelli-servizi`,
             label: 'Vai al manuale',
           },
-          imagePath: '/images/modello-dei-servizi.png',
-          mobileImagePath: '/images/modello-dei-servizi-mobile.png',
+          imagePath: '/images/modelli-dei-servizi.png',
+          mobileImagePath: '/images/modelli-dei-servizi-mobile.png',
         },
         {
           title: 'Supporto agli Enti',
