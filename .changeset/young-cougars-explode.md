@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-[DPC-208] Add "Modelli dei Servizi" to the list of manuals
+Add "I modelli dei servizi" to the list of appIO's manuals
