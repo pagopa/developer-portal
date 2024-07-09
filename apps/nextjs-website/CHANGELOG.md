@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 1.0.0
+
+### Major Changes
+
+- e8e3ef3: Refactor homepage to include the new Ecosystem component
+
+### Patch Changes
+
+- bb29d68: Fix solution build error
+- 60664b4: Add test to homepage
+- a5152a9: Show introductionToSteps field in Solution's preview card
+
 ## 0.30.0
 
 ### Minor Changes
