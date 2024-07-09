@@ -25,7 +25,7 @@ type SolutionDetailsPageTemplateProps = {
 
 type Params = {
   solutionSlug: string;
-  solutionSubPathSlug: string;
+  solutionSubPathSlugs: string[];
 };
 
 export async function generateStaticParams() {
@@ -40,7 +40,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const props = await getSolution(
     params?.solutionSlug,
-    params?.solutionSubPathSlug
+    params?.solutionSubPathSlugs
   );
 
   return (
@@ -48,7 +48,9 @@ export async function generateMetadata({
     makeMetadata({
       title: props?.solution.title,
       url: props
-        ? `/solutions/${props?.solution.slug}/details/${params.solutionSubPathSlug}`
+        ? `/solutions/${
+            props?.solution.slug
+          }/${params.solutionSubPathSlugs.join('/')}`
         : '',
     })
   );
@@ -57,7 +59,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solutionProps = await getSolution(
     params?.solutionSlug,
-    params?.solutionSubPathSlug
+    params?.solutionSubPathSlugs
   );
 
   if (!solutionProps) {
@@ -90,7 +92,9 @@ const Page = async ({ params }: { params: Params }) => {
           },
           {
             name: page.title,
-            path: `/solutions/${props.solution.slug}/details/${params.solutionSubPathSlug}`,
+            path: `/solutions/${
+              props.solution.slug
+            }/details/${params.solutionSubPathSlugs.join('/')}`,
           },
         ]),
       ]}
