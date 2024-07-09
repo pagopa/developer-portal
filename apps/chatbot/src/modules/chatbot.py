@@ -1,7 +1,7 @@
 import logging
 from typing import Any, Dict, List, Union, Tuple
 
-from langdetect import detect as detect_language
+from langdetect import detect_langs
 
 from llama_index.core import PromptTemplate
 from llama_index.core.base.response.schema import (
@@ -31,6 +31,7 @@ LANGUAGES = {
     'vi': 'Vietnamita', 'zh-cn': 'Cinese Semplificato', 'zh-tw': 'Cinese Tradizionale'
 }
 
+ITALIAN_THRESHOLD = 0.85
 
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
@@ -120,10 +121,15 @@ class Chatbot():
 
     def _check_language(self, message_str):
 
-        lang = detect_language(message_str)
-        logging.info(f"Detected {LANGUAGES[lang]} ('{lang}') at the last user's message.")
+        langs = detect_langs(message_str)
+        it_score = 0.0
+        for lang in langs:
+            if lang.lang == "it":
+                it_score = lang.prob
 
-        return lang
+        logging.info(f"Detected {langs[0].lang} with score {langs[0].prob} at the last user's message.")
+
+        return langs, it_score
     
 
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
@@ -147,9 +153,10 @@ class Chatbot():
 
     def generate(self, query_str: str) -> str:
 
-        query_lang = self._check_language(query_str)
-        if query_lang != "it":
-            response_str = f"""Scusa, io non parlo {LANGUAGES[query_lang]}.
+        langs, it_score = self._check_language(query_str)
+        if it_score < ITALIAN_THRESHOLD:
+            detect_lang = LANGUAGES[langs[0].lang] if langs[0].lang != "it" else LANGUAGES[langs[1].lang]
+            response_str = f"""Scusa, io non parlo {detect_lang}.
             Per piacere, riformula la tua domanda oppure chiedimene una nuova in italiano.
             """
 
@@ -167,9 +174,10 @@ class Chatbot():
 
     async def agenerate(self, query_str: str) -> str:
 
-        query_lang = self._check_language(query_str)
-        if query_lang != "it":
-            response_str = f"""Mi dispiace, non parlo {LANGUAGES[query_lang]}.
+        langs, it_score = self._check_language(query_str)
+        if it_score < ITALIAN_THRESHOLD:
+            detect_lang = LANGUAGES[langs[0].lang] if langs[0].lang != "it" else LANGUAGES[langs[1].lang]
+            response_str = f"""Scusa, io non parlo {detect_lang}.
             Per piacere, riformula la tua domanda oppure chiedimene una nuova in italiano.
             """
         else:

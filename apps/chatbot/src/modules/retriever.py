@@ -9,7 +9,7 @@ def get_automerging_query_engine(
     llm,
     similarity_top_k: int,
     similarity_cutoff: float,
-    response_mode: str,
+    response_mode: str = "compact",
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
     verbose: bool = True
