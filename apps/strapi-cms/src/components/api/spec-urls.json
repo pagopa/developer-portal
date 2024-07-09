@@ -1,12 +1,19 @@
 {
   "collectionName": "components_api_spec_urls",
   "info": {
-    "displayName": "specUrls"
+    "displayName": "specUrls",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "url": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "hideTryIt": {
+      "type": "boolean"
     }
   }
 }

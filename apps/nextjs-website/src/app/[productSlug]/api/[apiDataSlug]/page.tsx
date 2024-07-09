@@ -51,19 +51,19 @@ const ApisPage = async ({ params }: ApiParams) => {
   const product = await getProduct(params.productSlug);
   if (ApisDataPageProps && product)
     return (
-      /*<ProductLayout
+      <ProductLayout
         product={product}
         path={ApisDataPageProps.path}
         bannerLinks={ApisDataPageProps.bannerLinks}
         showBreadcrumbs
-      >*/
-      <ApiSection
-        specURLs={ApisDataPageProps.specURLs}
-        product={product}
-        specURLsName={ApisDataPageProps.specURLsName}
-        soapDocumentation={ApisDataPageProps.soapDocumentation}
-      />
-      //</ProductLayout>
+      >
+        <ApiSection
+          specURLs={ApisDataPageProps.specURLs}
+          product={product}
+          specURLsName={ApisDataPageProps.specURLsName}
+          soapDocumentation={ApisDataPageProps.soapDocumentation}
+        />
+      </ProductLayout>
     );
 };
 

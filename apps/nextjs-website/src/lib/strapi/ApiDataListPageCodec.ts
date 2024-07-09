@@ -29,7 +29,13 @@ const makeApiDataListPagePopulate = () =>
   qs.stringify({
     populate: {
       apiData: {
-        populate: ['icon', 'specUrls'],
+        populate: {
+          specUrls: {
+            populate: '*',
+          },
+          icon: { populate: '*' },
+          soapDocumentation: { populate: '*' },
+        },
       },
       product: {
         populate: ['logo'],

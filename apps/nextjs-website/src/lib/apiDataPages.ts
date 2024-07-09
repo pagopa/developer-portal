@@ -7,12 +7,13 @@ export function makeApisDataPageProps(
   return apiDataPages.data.map(({ attributes }) => ({
     ...attributes,
     apiDataSlug: attributes.slug,
-    specURLs: [
-      ...attributes.specUrls.map((spec) => ({
-        url: spec.url,
-        name: 'bubbo',
-      })),
-    ],
+    specURLs: [...attributes.specUrls.map((spec) => ({ ...spec }))],
     specURLsName: attributes.title,
+    soapDocumentation: {
+      title: attributes.soapDocumentation?.title || '',
+      url: attributes.soapDocumentation?.url || '',
+      buttonLabel: attributes.soapDocumentation?.buttonLabel || '',
+      icon: attributes.soapDocumentation?.icon?.data?.attributes?.url || '',
+    },
   }));
 }
