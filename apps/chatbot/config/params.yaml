@@ -3,6 +3,7 @@ documentation:
 
 vector_index:
   path: index
+  s3_bucket_name: chatbot-llamaindex-5086
   chunk_sizes: [2816, 704, 176]
   chunk_overlap: 20
 
