@@ -5,8 +5,7 @@ import { makeBuildEnv } from '@/BuildEnv';
 import { makeHomepageProps, makeHomepagePropsFromStatic } from './homepage';
 import { fetchHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
-import { webinars } from '@/_contents/webinars';
-import { makeWebinarsProps, makeWebinarsPropsFromStatic } from './webinars';
+import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
 import { fetchTutorials } from './strapi/tutorial';
 import { makeTutorialsProps } from './tutorials';
@@ -55,9 +54,9 @@ export const getWebinarsProps = async () => {
 
   if (fetchFromStrapi) {
     const strapiWebinars = await fetchWebinars(buildEnv);
-    return makeWebinarsProps(strapiWebinars, webinars);
+    return makeWebinarsProps(strapiWebinars);
   } else {
-    return makeWebinarsPropsFromStatic(webinars);
+    return [];
   }
 };
 

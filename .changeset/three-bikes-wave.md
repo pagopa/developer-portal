@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add solutions link
+Add test to homepage

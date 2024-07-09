@@ -1,17 +1,12 @@
 import { StrapiWebinars } from '@/lib/strapi/webinars';
-import { webinars } from '@/_contents/webinars';
 import { Webinar } from './types/webinar';
 
 export type WebinarsProps = readonly Webinar[];
 
-type StaticWebinars = typeof webinars;
-
 export function makeWebinarsProps(
-  strapiWebinars: StrapiWebinars,
-  staticWebinars: StaticWebinars
+  strapiWebinars: StrapiWebinars
 ): WebinarsProps {
   return [
-    ...staticWebinars,
     ...strapiWebinars.data.map((webinar) => ({
       ...webinar.attributes,
       speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
@@ -27,7 +22,3 @@ export function makeWebinarsProps(
     })),
   ];
 }
-
-export const makeWebinarsPropsFromStatic = (
-  staticWebinars: StaticWebinars
-): WebinarsProps => staticWebinars;
