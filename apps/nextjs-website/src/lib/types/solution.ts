@@ -7,4 +7,5 @@ export type Solution = {
   readonly landingUseCaseFile: string;
   readonly publishedAt: Date;
   readonly icon: string;
+  readonly introductionToSteps?: string;
 };

@@ -34,6 +34,7 @@ export const SolutionCodec = t.strict({
     landingUseCaseFile: t.string,
     publishedAt: tt.DateFromISOString,
     icon: t.strict({ data: MediaCodec }),
+    introductionToSteps: t.union([NullToUndefinedCodec, t.string]),
     steps: t.array(StepCodec),
     stats: t.array(StatCodec),
     bannerLinks: t.array(BannerLinkCodec),
