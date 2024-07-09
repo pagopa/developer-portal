@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Union, Tuple
 
 from langdetect import detect as detect_language
 
@@ -60,6 +60,7 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
+            s3_bucket_name=params["vector_index"]["s3_bucket_name"],
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )

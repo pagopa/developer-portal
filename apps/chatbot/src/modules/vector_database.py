@@ -2,32 +2,41 @@ import os
 import re
 import tqdm
 import logging
+from typing import List
 
-from bs4 import BeautifulSoup, SoupStrainer
-from langchain_community.document_loaders import BSHTMLLoader
+import s3fs
+from bs4 import BeautifulSoup
 
-from llama_index.core import Document, load_index_from_storage
+from llama_index.core import (
+    Document,
+    ServiceContext,
+    VectorStoreIndex,
+    StorageContext,
+    load_index_from_storage
+)
+from llama_index.core.base.llms.base import BaseLLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
-from llama_index.core import ServiceContext, VectorStoreIndex, StorageContext
 
 
-def filter_html_files(html_files):
+
+def filter_html_files(html_files: List[str]):
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
     return filtered_files
 
 
-def get_html_files(root_folder):
+def get_html_files(root_folder: str):
     html_files = []
-    for root, dirs, files in os.walk(root_folder):
+    for root, _, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
     return sorted(filter_html_files(html_files))
 
 
-def create_documentation(documentation_dir="./PagoPADevPortal/out/"):
+def create_documentation(documentation_dir: str ="./PagoPADevPortal/out/"):
 
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
@@ -94,12 +103,13 @@ def create_documentation(documentation_dir="./PagoPADevPortal/out/"):
 
 
 def build_automerging_index(
-        llm,
-        embed_model,
-        documentation_dir="./PagoPADevPortal/out/",
-        save_dir="automerging_index",
-        chunk_sizes=[2816, 704, 176],
-        chunk_overlap=20
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        documentation_dir: str,
+        save_dir: str,
+        s3_bucket_name: str | None,
+        chunk_sizes: List[int],
+        chunk_overlap: int
     ):
     
     node_parser = HierarchicalNodeParser.from_defaults(
@@ -134,20 +144,30 @@ def build_automerging_index(
         storage_context=storage_context, 
         service_context=merging_context
     )
-    automerging_index.storage_context.persist(
-        persist_dir=save_dir
-    )
+    if s3_bucket_name:
+        automerging_index.storage_context.persist(
+            persist_dir=f"{s3_bucket_name}/{save_dir}",
+            fs = s3fs.S3FileSystem(
+                endpoint_url="https://s3.eu-west-3.amazonaws.com",
+            )
+        )
+    else:
+        automerging_index.storage_context.persist(
+            persist_dir=save_dir
+        )
+
     logging.info(f"Created index successfully and stored in {save_dir}!")
 
     return automerging_index
 
 
 def load_automerging_index(
-        llm,
-        embed_model,
-        save_dir="automerging_index",
-        chunk_sizes=[2048, 512, 128],
-        chunk_overlap=20,
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        save_dir: str,
+        s3_bucket_name: str,
+        chunk_sizes: List[int],
+        chunk_overlap: int,
     ):
     
     node_parser = HierarchicalNodeParser.from_defaults(
@@ -162,12 +182,26 @@ def load_automerging_index(
     )
 
     logging.info(f"{save_dir} exists! Loading index...")
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir=save_dir
-        ),
-        service_context=merging_context,
-    )
+    if s3_bucket_name:
+
+        automerging_index = load_index_from_storage(
+            StorageContext.from_defaults(
+                persist_dir = f"{s3_bucket_name}/{save_dir}",
+                fs = s3fs.S3FileSystem(
+                    endpoint_url="https://s3.eu-west-3.amazonaws.com",
+                )
+            ),
+            service_context=merging_context
+        )
+    
+    else:
+        automerging_index = load_index_from_storage(
+            StorageContext.from_defaults(
+                persist_dir=save_dir
+            ),
+            service_context=merging_context,
+        )
+
     logging.info(f"Loaded index from {save_dir} successfully!")
 
     return automerging_index
