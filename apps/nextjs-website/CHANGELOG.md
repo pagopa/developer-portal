@@ -1,5 +1,38 @@
 # nextjs-website
 
+## 0.30.0
+
+### Minor Changes
+
+- d049206: Update version of "Manuale Servizi" from v2.2 to v2.3
+- f309b42: Reduce text in topics for "I modelli dei servizi"
+- 0bda017: Add "I modelli dei servizi" to the list of appIO's manuals
+
+### Patch Changes
+
+- 6ef79e2: Fix product list data and layout in Solution page
+- 81bb7f1: Remove hardcoded webinars
+- 801e21f: Fix solution detail pages routing
+- caa48f5: Add solutions link
+
+## 0.29.0
+
+### Minor Changes
+
+- 9124dc1: Create a common template for guides and solutions pages
+
+### Patch Changes
+
+- 62bcc36: Add features field on SolutionsListPage
+
+## 0.28.0
+
+### Minor Changes
+
+- de59d44: Fix user password change on profile page
+- ff1e3e8: Add solutions list page
+- 401ee16: Create a common template for guides and solutions pages
+
 ## 0.27.0
 
 ### Minor Changes

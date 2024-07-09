@@ -5,7 +5,8 @@
             "label": "Menu",
             "products": "Prodotti",
             "profile": "Profilo",
-            "webinars": "Webinar"
+            "webinars": "Webinar",
+            "solutions": "Soluzioni"
         },
         "title": "DevPortal"
     },
@@ -560,7 +561,7 @@
         "steps" : {
             "platforms": "Piattaforme Abilitanti"
         },
-        "ctaDetailLabel": "Leggi la guida completa"
+        "ctaDetailLabel": "Scopri di più"
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"

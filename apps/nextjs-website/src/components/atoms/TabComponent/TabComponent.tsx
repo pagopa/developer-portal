@@ -51,19 +51,29 @@ export const TabComponent: FC<TabsProps> = ({
 
   return (
     <>
-      <Tabs
-        value={currentTab}
-        variant={variant}
-        centered={centered}
-        onChange={(event, newValue: number) => {
-          setCurrentTab(newValue);
+      <Box
+        sx={{
+          borderBottom: 2,
+          borderColor: 'divider',
+          marginBottom: 6,
+          position: 'relative',
+          top: '2px',
         }}
-        sx={{ marginBottom: 6 }}
       >
-        {items.map((item, index) => (
-          <Tab key={index} label={item.title} />
-        ))}
-      </Tabs>
+        <Tabs
+          value={currentTab}
+          variant={variant}
+          centered={centered}
+          onChange={(event, newValue: number) => {
+            setCurrentTab(newValue);
+          }}
+          sx={{ position: 'relative', top: '2px' }}
+        >
+          {items.map((item, index) => (
+            <Tab key={index} label={item.title} />
+          ))}
+        </Tabs>
+      </Box>
       {items.map((item, index) => (
         <TabPanel key={index} value={currentTab} index={index} sx={sx}>
           {item.content}

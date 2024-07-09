@@ -1,5 +1,21 @@
 # infrastructure
 
+## 0.10.0
+
+### Minor Changes
+
+- afd99d2: create AWS S3 bucket for LLamaIndex
+
+## 0.9.0
+
+### Minor Changes
+
+- b542b9a: Fix otp duration issue
+
+### Patch Changes
+
+- 49afb3f: Changed cognito-functions deployment parameters
+
 ## 0.8.0
 
 ### Minor Changes

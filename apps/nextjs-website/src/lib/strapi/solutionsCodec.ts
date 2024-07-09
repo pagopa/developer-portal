@@ -70,7 +70,11 @@ const makeStrapiSolutionsPopulate = () =>
         populate: ['icon'],
       },
       webinars: {
-        populate: ['coverImage', 'webinarSpeakers.avatar'],
+        populate: [
+          'coverImage',
+          'webinarSpeakers.avatar',
+          'relatedLinks.links',
+        ],
       },
     },
   });
