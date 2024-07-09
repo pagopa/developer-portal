@@ -2,7 +2,6 @@ import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
-import { webinars } from '@/_contents/webinars';
 import { Media } from './types/media';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
@@ -118,7 +117,6 @@ export const makeHomepageProps = (
     },
   }),
   webinars: [
-    ...webinars.filter((webinar) => webinar.isVisibleInHome),
     ...strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
       ...webinar.attributes,
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
@@ -139,5 +137,5 @@ export const makeHomepagePropsFromStatic = (
   newsShowcase: staticHomepage.newsShowcase,
   ecosystem: staticHomepage.ecosystem,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
-  webinars: webinars.filter((webinar) => webinar.isVisibleInHome),
+  webinars: [],
 });
