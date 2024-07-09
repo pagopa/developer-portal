@@ -62,9 +62,9 @@ export const appIoGuideLists: GuideListsData = {
             title: 'Argomenti trattati',
             listItems: [
               'Scopri i template dei servizi più diffusi su IO',
-              'Consulta il ciclo di vita dei servizi e relativi punti di contatto con il cittadino',
-              'Utilizza le schede servizio per descrivere in modo coerente e corretto il servizio',
-              'Utilizza i template dei messaggi presenti per ogni servizio, già pronti all’uso',
+              'Il ciclo di vita dei servizi e i punti di contatto con il cittadino',
+              'Utilizza le schede per descrivere in modo corretto il servizio',
+              'Utilizza i template dei messaggi presenti per ogni servizio',
             ],
           },
           link: {
