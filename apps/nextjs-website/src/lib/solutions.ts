@@ -69,8 +69,8 @@ export function makeDetailSolutionsProps(
 }
 
 export async function getSolution(
-  solutionSlug?: string,
-  solutionDetailsPage?: ReadonlyArray<string>
+  solutionSlug: string,
+  solutionSubPathSlugs: readonly string[]
 ) {
   const solutionsFromStrapi = await getDetailSolutionsProps();
 
@@ -84,11 +84,22 @@ export async function getSolution(
 
   const parsedSolutions = makeSolution(solutionFromStrapi);
 
-  return solutionDetailsPage
-    ? parsedSolutions.find(
-        ({ page }) =>
-          page.path ===
-          `/solutions/${solutionSlug}/details/${solutionDetailsPage.join('/')}`
-      )
-    : parsedSolutions.find(({ page }) => page.isIndex);
+  return parsedSolutions.find(
+    ({ page }) =>
+      page.path ===
+      `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+  );
+}
+
+export function getSolutionSubPaths(
+  detailSolutionsProps: DetailSolutionsProps
+) {
+  return makeSolution(detailSolutionsProps).map(({ page, solution }) => {
+    const path = page.path.split('/').filter((_, index) => index > 2);
+
+    return {
+      solutionSlug: solution.slug,
+      solutionSubPathSlugs: path,
+    };
+  });
 }
