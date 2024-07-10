@@ -28,6 +28,7 @@ export type SolutionPreviewCard = {
     content: BlocksContent;
     products: { label: string; href: string }[];
   }[];
+  readonly maxSteps?: number;
 };
 
 const SolutionPreviewCard = ({
@@ -36,8 +37,9 @@ const SolutionPreviewCard = ({
   description,
   cta,
   steps,
+  maxSteps = 4,
 }: SolutionPreviewCard) => {
-  const firstSteps = steps?.slice(0, 3);
+  const firstSteps = steps?.slice(0, maxSteps);
   return (
     <Card
       sx={{
