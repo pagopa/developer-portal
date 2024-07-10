@@ -23,6 +23,7 @@ export function makeFullSolutionsProps(
       ...step,
       products: step.products.data.map((product) => ({
         name: product.attributes.name,
+        shortName: product.attributes.shortName,
         slug: product.attributes.slug,
       })),
     })),
