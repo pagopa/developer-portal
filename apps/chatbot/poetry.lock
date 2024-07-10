@@ -4897,6 +4897,26 @@ files = [
 ]
 
 [[package]]
+name = "s3fs"
+version = "2024.6.1"
+description = "Convenient Filesystem interface over S3"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "s3fs-2024.6.1-py3-none-any.whl", hash = "sha256:ecd20863437409eec1cbfff0b7df5e9772cf7c1926008efab2e17e46f6d52c63"},
+    {file = "s3fs-2024.6.1.tar.gz", hash = "sha256:6c2106d6c34fbfbb88e3d20c6f3572896d5ee3d3512896696301c21a3c541bea"},
+]
+
+[package.dependencies]
+aiobotocore = ">=2.5.4,<3.0.0"
+aiohttp = "<4.0.0a0 || >4.0.0a0,<4.0.0a1 || >4.0.0a1"
+fsspec = "==2024.6.1.*"
+
+[package.extras]
+awscli = ["aiobotocore[awscli] (>=2.5.4,<3.0.0)"]
+boto3 = ["aiobotocore[boto3] (>=2.5.4,<3.0.0)"]
+
+[[package]]
 name = "s3transfer"
 version = "0.10.2"
 description = "An Amazon S3 Transfer Manager"
@@ -6435,4 +6455,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "3e8f3198d38e88cbff6f8f74607a83fc2dad468d8959c5386fa99cd4c33511c3"
+content-hash = "e26bf3619bd303d1992c0caca2bd928bc99fafc7e23c6670a3b66b812576d254"
