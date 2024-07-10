@@ -30,11 +30,10 @@ const makeApiDataListPagePopulate = () =>
     populate: {
       apiData: {
         populate: {
-          specUrls: {
-            populate: '*',
+          apiRestDetail: {
+            populate: ['slug', 'specUrls'],
           },
           icon: { populate: '*' },
-          soapDocumentation: { populate: '*' },
         },
       },
       product: {

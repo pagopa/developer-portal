@@ -17,12 +17,6 @@ export async function generateStaticParams() {
 export type ApiPageProps = {
   readonly product?: Product;
   readonly apiDataSlug: string;
-  readonly soapDocumentation?: {
-    title: string;
-    url: string;
-    buttonLabel: string;
-    icon: string;
-  };
   readonly specURLsName?: string;
   readonly specURLs: {
     name?: string;
@@ -62,7 +56,6 @@ const ApisPage = async ({ params }: ApiParams) => {
           specURLs={ApisDataPageProps.specURLs}
           product={product}
           specURLsName={ApisDataPageProps.specURLsName}
-          soapDocumentation={ApisDataPageProps.soapDocumentation}
         />
       </ProductLayout>
     );

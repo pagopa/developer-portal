@@ -4,16 +4,14 @@ import { ApiDataPages } from './strapi/codecs/ApiDataCodec';
 export function makeApisDataPageProps(
   apiDataPages: ApiDataPages
 ): ReadonlyArray<ApiPageProps> {
-  return apiDataPages.data.map(({ attributes }) => ({
-    ...attributes,
-    apiDataSlug: attributes.slug,
-    specURLs: [...attributes.specUrls.map((spec) => ({ ...spec }))],
-    specURLsName: attributes.title,
-    soapDocumentation: {
-      title: attributes.soapDocumentation?.title || '',
-      url: attributes.soapDocumentation?.url || '',
-      buttonLabel: attributes.soapDocumentation?.buttonLabel || '',
-      icon: attributes.soapDocumentation?.icon?.data?.attributes?.url || '',
-    },
-  }));
+  return apiDataPages.data
+    .filter((apiPage) => apiPage.attributes.apiRestDetail)
+    .map(({ attributes }) => ({
+      ...attributes,
+      apiDataSlug: attributes.apiRestDetail?.slug || '',
+      specURLs: attributes.apiRestDetail
+        ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
+        : [],
+      specURLsName: attributes.title,
+    }));
 }
