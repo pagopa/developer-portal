@@ -6,6 +6,14 @@ import { send } from '@/_contents/send/send';
 import { appIo } from '@/_contents/appIo/appIo';
 import { ioSign } from '@/_contents/ioSign/ioSign';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
+import { Product } from '@/lib/types/product';
+
+const productToEcosystemProduct = (product: Product) => ({
+  title: product.name,
+  text: product.description ?? '',
+  href: product.slug,
+  icon: product.logo.url,
+});
 
 export const translations = {
   header: {
@@ -107,9 +115,17 @@ export const translations = {
       ],
     },
     webinarBannerButtonContent: 'Scopri',
-    productsShowcase: {
+    ecosystem: {
       title: 'Scopri il nostro ecosistema',
-      products: [appIo, ioSign, pagoPa, send],
+      productsTabName: 'Per prodotti',
+      products: [
+        productToEcosystemProduct(appIo),
+        productToEcosystemProduct(ioSign),
+        productToEcosystemProduct(pagoPa),
+        productToEcosystemProduct(send),
+      ],
+      solutionsTabName: 'Per soluzioni',
+      solutions: [],
     },
     heroItems: [
       {

@@ -22,6 +22,7 @@ export type SolutionPageTemplateProps = {
   title: string;
   description?: string;
   icon: Media;
+  introductionToSteps?: string;
   steps: {
     title: string;
     content: BlocksContent;
@@ -43,6 +44,7 @@ const SolutionPageTemplate = ({
   kickerTitle,
   title,
   description,
+  introductionToSteps,
   steps,
   stats,
   products,
@@ -74,7 +76,7 @@ const SolutionPageTemplate = ({
         <SolutionPreviewCard
           header={kickerTitle}
           title={title}
-          description={description || ''}
+          description={introductionToSteps || description || ''}
           cta={{
             label: t('solution.ctaDetailLabel'),
             href: solutionDetailPath,

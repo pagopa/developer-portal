@@ -1,5 +1,15 @@
 # strapi-cms
 
+## 1.0.0
+
+### Major Changes
+
+- 2c05ca2: Refactor homepage schema
+
+### Patch Changes
+
+- 49bc1aa: Add introductionToSteps field to Solution's schema
+
 ## 0.12.0
 
 ### Minor Changes
