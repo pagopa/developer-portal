@@ -117,7 +117,7 @@ const avvisi: GuideDefinition = {
     slug: 'avviso-pagamento',
   },
   versions: [
-     {
+    {
       main: true,
       version: '3.3.0',
       dirName: 'SMV4ff0TIOG51OY8nENy',
