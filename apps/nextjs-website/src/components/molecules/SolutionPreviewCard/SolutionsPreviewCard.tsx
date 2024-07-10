@@ -73,7 +73,7 @@ const SolutionPreviewCard = ({
         >
           {steps?.map((step, index) => (
             <Fragment key={index}>
-              <SolutionStep {...step} />
+              <SolutionStep {...step} width={`${100 / steps.length}%`} />
               {index !== steps.length - 1 && (
                 <Divider orientation='vertical' flexItem />
               )}
