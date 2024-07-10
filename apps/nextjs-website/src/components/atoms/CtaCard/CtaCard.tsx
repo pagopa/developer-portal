@@ -56,7 +56,7 @@ const CtaCard = ({
           </Typography>
           <Typography variant='body2'>{text}</Typography>
           {tags && tags.length > 0 && (
-            <Box mt={1} mr={1}>
+            <Box mt={1} mr={1} mb={-1}>
               {tags.map((tag) => (
                 <Box
                   key={tag.label}
