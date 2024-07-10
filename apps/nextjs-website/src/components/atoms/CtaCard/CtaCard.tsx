@@ -60,8 +60,11 @@ const CtaCard = ({
               {tags.map((tag) => (
                 <Box
                   key={tag.label}
-                  display='inline'
-                  sx={{ marginRight: 1, '& > span': { marginBottom: 1 } }}
+                  sx={{
+                    display: 'inline',
+                    marginRight: 1,
+                    '& > span': { marginBottom: 1 },
+                  }}
                 >
                   <Tag value={tag.label} color='primary' variant='light' />
                 </Box>
