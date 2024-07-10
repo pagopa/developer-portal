@@ -10,6 +10,7 @@ vector_index:
 models:
   model_id: amazon.titan-text-express-v1
   emded_model_id: cohere.embed-multilingual-v3
+  region: eu-west-3
   temperature: 0.2
   max_tokens: 784
 

@@ -62,6 +62,7 @@ class Chatbot():
             self.embed_model,
             save_dir=params["vector_index"]["path"],
             s3_bucket_name=params["vector_index"]["s3_bucket_name"],
+            region=params["models"]["region"],
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )

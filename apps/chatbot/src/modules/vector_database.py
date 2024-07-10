@@ -108,6 +108,7 @@ def build_automerging_index(
         documentation_dir: str,
         save_dir: str,
         s3_bucket_name: str | None,
+        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int
     ):
@@ -145,10 +146,11 @@ def build_automerging_index(
         service_context=merging_context
     )
     if s3_bucket_name:
+        assert region is not None
         automerging_index.storage_context.persist(
             persist_dir=f"{s3_bucket_name}/{save_dir}",
             fs = s3fs.S3FileSystem(
-                endpoint_url="https://s3.eu-west-3.amazonaws.com",
+                endpoint_url=f"https://{region}.amazonaws.com",
             )
         )
     else:
@@ -165,7 +167,8 @@ def load_automerging_index(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         save_dir: str,
-        s3_bucket_name: str,
+        s3_bucket_name: str | None,
+        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ):
@@ -188,7 +191,7 @@ def load_automerging_index(
             StorageContext.from_defaults(
                 persist_dir = f"{s3_bucket_name}/{save_dir}",
                 fs = s3fs.S3FileSystem(
-                    endpoint_url="https://s3.eu-west-3.amazonaws.com",
+                    endpoint_url=f"https://s3.{region}.amazonaws.com",
                 )
             ),
             service_context=merging_context
