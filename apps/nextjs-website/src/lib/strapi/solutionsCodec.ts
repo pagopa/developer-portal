@@ -38,6 +38,7 @@ export const SolutionCodec = t.strict({
     steps: t.array(StepCodec),
     stats: t.array(StatCodec),
     bannerLinks: t.array(BannerLinkCodec),
+    maxSteps: t.union([NullToUndefinedCodec, t.number]),
     webinars: t.strict({
       data: t.array(WebinarCodec),
     }),

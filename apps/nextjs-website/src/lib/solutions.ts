@@ -7,6 +7,7 @@ import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTe
 
 export type DetailSolutionsProps = Solution & {
   readonly solutionSlug: string;
+  readonly maxSteps?: number;
   readonly steps?: StrapiSolutions['data'][0]['attributes']['steps'];
   readonly stats?: StrapiSolutions['data'][0]['attributes']['stats'];
   readonly webinars?: StrapiSolutions['data'][0]['attributes']['webinars'];
