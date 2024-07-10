@@ -38,6 +38,7 @@ const NotSsrApiViewer = dynamic(
 export type ApiPageProps = {
   readonly product: Product;
   readonly specURLsName?: string;
+  readonly apiSlug: string;
   readonly specURLs: {
     name?: string;
     url: string;
@@ -64,6 +65,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
 }));
 
 const ApiSection = ({
+  apiSlug,
   product,
   specURLs,
   specURLsName,
@@ -96,7 +98,9 @@ const ApiSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `${product.subpaths.api?.path}?spec=${encodeURIComponent(spec.name)}`
+        `${product.subpaths.api?.path}/${apiSlug}?spec=${encodeURIComponent(
+          spec.name
+        )}`
       );
     }
   };

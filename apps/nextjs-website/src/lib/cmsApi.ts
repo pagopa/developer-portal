@@ -15,7 +15,7 @@ import {
   makeQuickStartsProps,
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
-import { quickStartGuides } from '@/_contents/products';
+import { products, quickStartGuides } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
 import { fetchSolutions } from './strapi/solutionsCodec';
@@ -73,9 +73,9 @@ export const getProductsProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const products = await fetchProducts(buildEnv);
-    return makeProductProps(products);
-  } else return [];
+    const strapiProducts = await fetchProducts(buildEnv);
+    return makeProductProps(strapiProducts, products);
+  } else return products;
 };
 
 export const getTutorialsProps = async (productSlug?: string) => {

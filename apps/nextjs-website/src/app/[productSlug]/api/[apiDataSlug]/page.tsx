@@ -58,6 +58,7 @@ const ApisPage = async ({ params }: ApiParams) => {
         showBreadcrumbs
       >
         <ApiSection
+          apiSlug={params.apiDataSlug}
           specURLs={ApisDataPageProps.specURLs}
           product={product}
           specURLsName={ApisDataPageProps.specURLsName}
