@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add maxSteps on SolutionPreviewCard component
+Show all available steps in the SolutionPreviewCard component

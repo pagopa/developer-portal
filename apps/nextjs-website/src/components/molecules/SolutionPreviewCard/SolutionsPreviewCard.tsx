@@ -28,7 +28,6 @@ export type SolutionPreviewCard = {
     content: BlocksContent;
     products: { label: string; href: string }[];
   }[];
-  readonly maxSteps?: number;
 };
 
 const SolutionPreviewCard = ({
@@ -37,9 +36,7 @@ const SolutionPreviewCard = ({
   description,
   cta,
   steps,
-  maxSteps = 4,
 }: SolutionPreviewCard) => {
-  const firstSteps = steps?.slice(0, maxSteps);
   return (
     <Card
       sx={{
@@ -74,10 +71,10 @@ const SolutionPreviewCard = ({
           gap={3}
           width='100%'
         >
-          {firstSteps?.map((step, index) => (
+          {steps?.map((step, index) => (
             <Fragment key={index}>
               <SolutionStep {...step} />
-              {index !== firstSteps.length - 1 && (
+              {index !== steps.length - 1 && (
                 <Divider orientation='vertical' flexItem />
               )}
             </Fragment>

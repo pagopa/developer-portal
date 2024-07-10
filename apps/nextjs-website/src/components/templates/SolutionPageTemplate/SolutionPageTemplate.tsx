@@ -37,7 +37,6 @@ export type SolutionPageTemplateProps = {
   products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   webinars: Webinar[];
   bannerLinks: BannerLinkProps[];
-  maxSteps?: number;
 };
 
 const SolutionPageTemplate = ({
@@ -51,7 +50,6 @@ const SolutionPageTemplate = ({
   products,
   webinars,
   bannerLinks,
-  maxSteps,
 }: SolutionPageTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
@@ -79,7 +77,6 @@ const SolutionPageTemplate = ({
           header={kickerTitle}
           title={title}
           description={introductionToSteps || description || ''}
-          maxSteps={maxSteps}
           cta={{
             label: t('solution.ctaDetailLabel'),
             href: solutionDetailPath,
