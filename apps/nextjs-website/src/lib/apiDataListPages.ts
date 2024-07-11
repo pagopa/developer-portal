@@ -11,18 +11,23 @@ export function makeApiDataListPageProps(
       subtitle: attributes.description || '',
     },
     product: attributes.product.data?.attributes || { name: '', slug: '' },
-    cards: [
-      ...attributes.apiData.data.map((apidata, index) => ({
-        target: (attributes.apiData.data[index].attributes.apiSoapUrl
-          ? '_blank'
-          : '_self') as '_blank' | '_self',
-        tags: [
-          {
-            label: attributes.apiData.data[index].attributes.apiSoapUrl
-              ? 'SOAP'
-              : 'REST',
-          },
-        ],
+    cards: attributes.apiData.data.map((item) => ({
+      target: (item.attributes.apiSoapUrl ? '_blank' : '_self') as
+        | '_blank'
+        | '_self',
+      tags: [
+        {
+          label: item.attributes.apiSoapUrl ? 'SOAP' : 'REST',
+        },
+      ],
+      title: item?.attributes?.title,
+      text: item?.attributes?.description || '',
+      icon: item?.attributes?.icon?.data?.attributes.url || '',
+      externalUrl: !!item.attributes.apiSoapUrl,
+      href:
+        item.attributes.apiSoapUrl ||
+        `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
+    })),
         title: apidata?.attributes?.title,
         text: apidata?.attributes?.description || '',
         icon: apidata?.attributes?.icon?.data?.attributes.url || '',
