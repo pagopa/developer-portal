@@ -11,7 +11,7 @@ import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
   getApiDataListPageProps,
-  getApisDataPageProps,
+  getApiDataProps,
   getCaseHistoriesProps,
   getProductsProps,
   getFullSolutionsProps,
@@ -215,9 +215,9 @@ export async function getProduct(productSlug: string) {
   return props;
 }
 
-export async function getApisDataPages(apiDataSlug: string) {
-  const props = (await getApisDataPageProps()).find(
-    (apisData) => apisData.apiDataSlug === apiDataSlug
+export async function getApiData(apiDataSlug: string) {
+  const props = (await getApiDataProps()).find(
+    (apiData) => apiData.apiDataSlug === apiDataSlug
   );
   return props;
 }

@@ -1,4 +1,4 @@
-import { getApisDataPages, getProduct, getProductsSlugs } from '@/lib/api';
+import { getApiData, getProduct, getProductsSlugs } from '@/lib/api';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
@@ -31,33 +31,33 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const ApisDataPageProps = await getApisDataPages(params.apiDataSlug);
+  const ApiDataProps = await getApiData(params.apiDataSlug);
 
   return makeMetadata({
-    title: ApisDataPageProps?.specURLsName,
-    description: ApisDataPageProps?.product?.description,
-    url: ApisDataPageProps?.path,
+    title: ApiDataProps?.specURLsName,
+    description: ApiDataProps?.product?.description,
+    url: ApiDataProps?.path,
     parent: resolvedParent,
   });
 };
 
 const ApisPage = async ({ params }: ApiParams) => {
-  const ApisDataPageProps = await getApisDataPages(params.apiDataSlug);
+  const ApiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
-  if (ApisDataPageProps && product) {
+  if (ApiDataProps && product) {
     const bannerLink = productsBannerLinks[products.indexOf(product)];
     return (
       <ProductLayout
         product={product}
         path={product.path.concat('/api')}
-        bannerLinks={bannerLink || ApisDataPageProps.bannerLinks}
+        bannerLinks={bannerLink || ApiDataProps.bannerLinks}
         showBreadcrumbs
       >
         <ApiSection
           apiSlug={params.apiDataSlug}
-          specURLs={ApisDataPageProps.specURLs}
+          specURLs={ApiDataProps.specURLs}
           product={product}
-          specURLsName={ApisDataPageProps.specURLsName}
+          specURLsName={ApiDataProps.specURLsName}
         />
       </ProductLayout>
     );

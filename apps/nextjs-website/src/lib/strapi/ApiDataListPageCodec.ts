@@ -23,9 +23,9 @@ export const ApiDataListPagesCodec = t.strict({
   data: t.array(ApiDataListPageCodec),
 });
 
-export type ApiDataListPages = t.TypeOf<typeof ApiDataListPagesCodec>;
+export type StrapiApiDataListPages = t.TypeOf<typeof ApiDataListPagesCodec>;
 
-const makeApiDataListPagePopulate = () =>
+const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
     populate: {
       apiData: {
@@ -47,6 +47,6 @@ const makeApiDataListPagePopulate = () =>
 
 export const fetchApiDataListPages = fetchFromStrapi(
   'api-data-list-pages',
-  makeApiDataListPagePopulate(),
+  makeStrapiApiDataListPagePopulate(),
   ApiDataListPagesCodec
 );

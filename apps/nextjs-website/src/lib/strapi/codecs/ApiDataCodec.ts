@@ -28,13 +28,13 @@ export const ApiDataCodec = t.strict({
   }),
 });
 
-export const ApisDataCodec = t.strict({
+export const StrapiApiDataCodec = t.strict({
   data: t.array(ApiDataCodec),
 });
 
-export type ApiDataPages = t.TypeOf<typeof ApisDataCodec>;
+export type StrapiApiData = t.TypeOf<typeof StrapiApiDataCodec>;
 
-const makeApisDataPagePopulate = () =>
+const makeStrapiApiDataPopulate = () =>
   qs.stringify({
     populate: {
       apiRestDetail: {
@@ -44,8 +44,8 @@ const makeApisDataPagePopulate = () =>
     },
   });
 
-export const fetchApisDataPages = fetchFromStrapi(
+export const fetchApiData = fetchFromStrapi(
   'apis-data',
-  makeApisDataPagePopulate(),
-  ApisDataCodec
+  makeStrapiApiDataPopulate(),
+  StrapiApiDataCodec
 );

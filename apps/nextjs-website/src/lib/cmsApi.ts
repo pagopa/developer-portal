@@ -23,8 +23,8 @@ import { makeSolutionsListProps } from './solutionsList';
 import { fetchSolutionsList } from './strapi/solutionsListCodec';
 import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
 import { makeApiDataListPageProps } from './apiDataListPages';
-import { makeApisDataPageProps } from './apiDataPages';
-import { fetchApisDataPages } from './strapi/codecs/ApiDataCodec';
+import { makeApiDataProps } from './apiDataPages';
+import { fetchApiData } from './strapi/codecs/ApiDataCodec';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductProps } from './products';
 
@@ -114,14 +114,14 @@ export const getApiDataListPageProps = async () => {
   } else return [];
 };
 
-export const getApisDataPageProps = async () => {
+export const getApiDataProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apisDataPages = await fetchApisDataPages(buildEnv);
-    return makeApisDataPageProps(apisDataPages);
+    const apiDataPages = await fetchApiData(buildEnv);
+    return makeApiDataProps(apiDataPages);
   } else return [];
 };
 
