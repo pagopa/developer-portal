@@ -61,13 +61,13 @@ const makeStrapiSolutionsListPopulate = () =>
         ],
       },
       features: {
-        populate: ['bannerLinks', 'items.icon'],
+        populate: ['items.icon'],
       },
     },
   });
 
 export const fetchSolutionsList = fetchFromStrapi(
-  'solutions-list-page',
+  'solution-list-page',
   makeStrapiSolutionsListPopulate(),
   StrapiSolutionsListCodec
 );
