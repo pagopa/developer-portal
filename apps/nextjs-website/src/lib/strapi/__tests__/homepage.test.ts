@@ -305,6 +305,7 @@ const makeStrapiResponseJson = () => ({
               id: 1,
               attributes: {
                 name: 'IO',
+                shortName: 'IO',
                 description: null,
                 slug: 'app-io',
                 createdAt: '2024-05-24T07:45:13.658Z',
@@ -371,6 +372,7 @@ const makeStrapiResponseJson = () => ({
                       id: 1,
                       attributes: {
                         name: 'IO',
+                        shortName: 'IO',
                         description: null,
                         slug: 'app-io',
                         createdAt: '2024-05-24T07:45:13.658Z',
@@ -732,6 +734,7 @@ const makeStrapiResponseJson = () => ({
                           id: 1,
                           attributes: {
                             name: 'IO',
+                            shortName: 'IO',
                             description: null,
                             slug: 'app-io',
                             createdAt: '2024-05-24T07:45:13.658Z',
@@ -1027,6 +1030,7 @@ const makeStrapiResponseWithNullsJson = () => ({
               id: 1,
               attributes: {
                 name: 'IO',
+                shortName: 'IO',
                 description: null,
                 slug: 'app-io',
                 createdAt: '2024-05-24T07:45:13.658Z',
