@@ -2,4 +2,4 @@
 "strapi-cms": patch
 ---
 
-Add maximum value on solution's steps
+Add minimum and maximum values on solution's steps
