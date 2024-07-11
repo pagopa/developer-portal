@@ -12,7 +12,7 @@ const meta: Meta<typeof SolutionPreviewCard> = {
 export default meta;
 
 const decorator: Decorator = (story) => (
-  <Box sx={{ padding: { m: '40px 140px' } }}>{story()}</Box>
+  <Box sx={{ padding: { md: '40px 140px' } }}>{story()}</Box>
 );
 
 export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
