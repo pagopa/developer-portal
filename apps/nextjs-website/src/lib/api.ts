@@ -14,9 +14,9 @@ import {
   getApisDataPageProps,
   getCaseHistoriesProps,
   getProductsProps,
+  getFullSolutionsProps,
   getQuickStartsProps,
   getSolutionsListProps,
-  getSolutionsProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -224,7 +224,7 @@ export async function getApisDataPages(apiDataSlug: string) {
 
 export async function getSolution(solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getFullSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }

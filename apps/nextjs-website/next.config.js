@@ -13,7 +13,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-	modularizeImports: {
+  modularizeImports: {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },

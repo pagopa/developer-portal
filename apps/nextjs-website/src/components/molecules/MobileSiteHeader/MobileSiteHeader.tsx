@@ -205,6 +205,26 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           </MobileSiteHeaderStyledTreeItem>
 
           <MobileSiteHeaderStyledTreeItem
+            nodeId={'siteHeader.solutions'}
+            label={
+              <Typography
+                component={NextLink}
+                variant='body1'
+                href={'/solutions'}
+                onClick={handleClick}
+                style={{
+                  color: palette.primary.dark,
+                  display: 'block',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  padding: 0,
+                }}
+              >
+                {t('siteHeader.solutions')}
+              </Typography>
+            }
+          />
+          <MobileSiteHeaderStyledTreeItem
             nodeId={'siteHeader.webinars'}
             label={
               <Typography
@@ -224,6 +244,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               </Typography>
             }
           />
+
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
         </TreeView>
