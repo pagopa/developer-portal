@@ -4,4 +4,6 @@
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::solution-list-page.solution-list-page');
+export default factories.createCoreService(
+  'api::solution-list-page.solution-list-page'
+);
