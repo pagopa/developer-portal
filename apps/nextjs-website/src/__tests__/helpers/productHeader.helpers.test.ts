@@ -3,6 +3,7 @@ import { Product } from '@/lib/types/product';
 
 const product: Product = {
   name: 'test',
+  shortName: 'test',
   description: 'test',
   logo: {
     name: 'test',
