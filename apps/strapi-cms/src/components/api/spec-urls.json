@@ -1,8 +1,7 @@
 {
   "collectionName": "components_api_spec_urls",
   "info": {
-    "displayName": "specUrls",
-    "description": ""
+    "displayName": "specUrls"
   },
   "options": {},
   "attributes": {

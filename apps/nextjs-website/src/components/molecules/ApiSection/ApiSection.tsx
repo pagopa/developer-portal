@@ -44,12 +44,6 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
-  readonly soapDocumentation?: {
-    title: string;
-    url: string;
-    buttonLabel: string;
-    icon: string;
-  };
 };
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
@@ -69,7 +63,6 @@ const ApiSection = ({
   product,
   specURLs,
   specURLsName,
-  soapDocumentation,
 }: ApiPageProps) => {
   const { palette, spacing } = useTheme();
 
@@ -140,44 +133,6 @@ const ApiSection = ({
               ))}
             </Select>
           </StyledFormControl>
-        </Stack>
-      )}
-      {soapDocumentation && (
-        <Stack
-          sx={styles.soapContainer}
-          alignItems='center'
-          justifyContent='flex-end'
-          direction='row'
-          height={spacing(8)}
-          gap={spacing(2)}
-        >
-          <Typography variant='body2' color={textColor}>
-            {soapDocumentation.title}
-          </Typography>
-          <Stack
-            alignItems='center'
-            justifyContent='flex-end'
-            direction='row'
-            gap={spacing(1)}
-          >
-            <ButtonNaked
-              sx={{
-                color: textColor,
-                '&:hover': {
-                  color: textColor,
-                },
-              }}
-              component={Link}
-              aria-label={soapDocumentation.buttonLabel}
-              href={soapDocumentation.url}
-              title={soapDocumentation.buttonLabel}
-              endIcon={
-                <IconWrapper icon={soapDocumentation.icon} color={textColor} />
-              }
-            >
-              {soapDocumentation.buttonLabel}
-            </ButtonNaked>
-          </Stack>
         </Stack>
       )}
       <NotSsrApiViewer
