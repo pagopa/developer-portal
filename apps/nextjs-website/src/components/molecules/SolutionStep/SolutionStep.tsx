@@ -20,7 +20,7 @@ const SolutionStep = ({
 }: SolutionStepProps) => {
   const t = useTranslations('solution');
   return (
-    <Stack sx={{ width }} gap={2} justifyContent='space-between'>
+    <Stack sx={{ width: { md: width } }} gap={2} justifyContent='space-between'>
       <Stack gap={2}>
         <Typography
           color={(theme) => theme.palette.action.active}
