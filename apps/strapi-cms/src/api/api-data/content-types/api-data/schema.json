@@ -49,38 +49,24 @@
         }
       }
     },
-    "slug": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": true
-    },
-    "specUrls": {
-      "displayName": "specUrls",
+    "apiRestDetail": {
+      "displayName": "ApiRestDetail",
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "component": "api.spec-urls",
-      "required": true
+      "component": "api.api-rest-detail"
     },
-    "tag": {
+    "apiSoapUrl": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "enumeration",
-      "enum": [
-        "REST",
-        "SOAP"
-      ]
+      "type": "string"
     }
   }
 }
