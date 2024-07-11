@@ -117,15 +117,15 @@
     },
     "webinars": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::webinar.webinar",
-      "mappedBy": "solution"
+      "mappedBy": "solutions"
     },
     "products": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::product.product",
-      "mappedBy": "solution"
+      "mappedBy": "solutions"
     },
     "bannerLinks": {
       "type": "component",
