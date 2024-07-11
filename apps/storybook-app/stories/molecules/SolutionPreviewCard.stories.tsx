@@ -2,6 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/react';
 import SolutionPreviewCard from '../../../nextjs-website/src/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import React from 'react';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
+import { Box } from '@mui/material';
 
 const meta: Meta<typeof SolutionPreviewCard> = {
   title: 'Molecules/SolutionPreviewCard',
@@ -11,7 +12,7 @@ const meta: Meta<typeof SolutionPreviewCard> = {
 export default meta;
 
 const decorator: Decorator = (story) => (
-  <div style={{ padding: '40px 140px' }}>{story()}</div>
+  <Box sx={{ padding: { md: '40px 140px' } }}>{story()}</Box>
 );
 
 export const Showcase: StoryObj<typeof SolutionPreviewCard> = {

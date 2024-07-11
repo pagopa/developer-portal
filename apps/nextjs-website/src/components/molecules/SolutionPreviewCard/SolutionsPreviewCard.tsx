@@ -37,7 +37,6 @@ const SolutionPreviewCard = ({
   cta,
   steps,
 }: SolutionPreviewCard) => {
-  const firstSteps = steps?.slice(0, 3);
   return (
     <Card
       sx={{
@@ -72,10 +71,10 @@ const SolutionPreviewCard = ({
           gap={3}
           width='100%'
         >
-          {firstSteps?.map((step, index) => (
+          {steps?.map((step, index) => (
             <Fragment key={index}>
-              <SolutionStep {...step} />
-              {index !== firstSteps.length - 1 && (
+              <SolutionStep {...step} width={`${100 / steps.length}%`} />
+              {index !== steps.length - 1 && (
                 <Divider orientation='vertical' flexItem />
               )}
             </Fragment>

@@ -81,7 +81,9 @@
           "localized": true
         }
       },
-      "component": "common.solution-step"
+      "component": "common.solution-step",
+      "max": 4,
+      "min": 3
     },
     "dirName": {
       "pluginOptions": {
@@ -115,15 +117,15 @@
     },
     "webinars": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::webinar.webinar",
-      "mappedBy": "solution"
+      "mappedBy": "solutions"
     },
     "products": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::product.product",
-      "mappedBy": "solution"
+      "mappedBy": "solutions"
     },
     "bannerLinks": {
       "type": "component",
