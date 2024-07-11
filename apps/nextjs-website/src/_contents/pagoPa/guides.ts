@@ -119,6 +119,10 @@ const avvisi: GuideDefinition = {
   versions: [
     {
       main: true,
+      version: '3.3.0',
+      dirName: 'SMV4ff0TIOG51OY8nENy',
+    },
+    {
       version: '3.2.1',
       dirName: 'WNT7oSWxH3PFe3AGG2zK',
     },
