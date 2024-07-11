@@ -35,6 +35,10 @@ import { pipe } from 'fp-ts/lib/function';
 import * as s from 'fp-ts/lib/string';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as Eq from 'fp-ts/lib/Eq';
+import { appIoBannerLinks } from './appIo/bannerLinks';
+import { ioSignBannerLinks } from './ioSign/bannerLinks';
+import { sendBannerLinks } from './send/bannerLinks';
+import { pagoPaBannerLinks } from './pagoPa/bannerLinks';
 
 export const overviews = [
   appIoOverview,
@@ -198,3 +202,10 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
 };
 
 export const products = [appIo, ioSign, send, pagoPa];
+
+export const productsBannerLinks = [
+  appIoBannerLinks,
+  ioSignBannerLinks,
+  sendBannerLinks,
+  pagoPaBannerLinks,
+];

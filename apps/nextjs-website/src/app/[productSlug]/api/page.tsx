@@ -1,7 +1,8 @@
+import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getApiDataListPages } from '@/lib/api';
+import { getApiDataListPages, getProduct } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
@@ -24,10 +25,14 @@ export async function generateMetadata({
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
   const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
-  if (ApiDataListPageProps)
+  const product = await getProduct(params.productSlug);
+
+  if (ApiDataListPageProps && product)
     return (
       <>
-        <ApiDataListPageTemplate {...ApiDataListPageProps} />
+        <ProductLayout product={product} path={product.path} showBreadcrumbs>
+          <ApiDataListPageTemplate {...ApiDataListPageProps} />
+        </ProductLayout>
       </>
     );
 };
