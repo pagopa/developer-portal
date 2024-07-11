@@ -28,15 +28,6 @@ export function makeApiDataListPageProps(
         item.attributes.apiSoapUrl ||
         `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
     })),
-        title: apidata?.attributes?.title,
-        text: apidata?.attributes?.description || '',
-        icon: apidata?.attributes?.icon?.data?.attributes.url || '',
-        externalUrl: !!attributes.apiData.data[index].attributes.apiSoapUrl,
-        href:
-          attributes.apiData.data[index].attributes.apiSoapUrl ||
-          `/${attributes.product.data?.attributes.slug}/api/${attributes.apiData.data[index].attributes.apiRestDetail?.slug}`,
-      })),
-    ],
     bannerLinks: [
       ...attributes.bannerLinks.map((bannerLink) => ({
         content: bannerLink.content,
