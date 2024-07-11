@@ -82,7 +82,8 @@
         }
       },
       "component": "common.solution-step",
-      "max": 4
+      "max": 4,
+      "min": 3
     },
     "dirName": {
       "pluginOptions": {
