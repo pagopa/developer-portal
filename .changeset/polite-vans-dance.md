@@ -1,5 +1,4 @@
 ---
 "nextjs-website": minor
 ---
-
-Update api page to show content from CMS
+Add ApiDataListPage and update api page to show content from CMS
