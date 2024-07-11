@@ -1,6 +1,5 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { ApiDataListPages } from './strapi/ApiDataListPageCodec';
-import { tags } from '@markdoc/markdoc';
 
 export function makeApiDataListPageProps(
   apiDataListPages: ApiDataListPages
@@ -14,6 +13,9 @@ export function makeApiDataListPageProps(
     product: attributes.product.data?.attributes || { name: '', slug: '' },
     cards: [
       ...attributes.apiData.data.map((apidata, index) => ({
+        target: (attributes.apiData.data[index].attributes.apiSoapUrl
+          ? '_blank'
+          : '_self') as '_blank' | '_self',
         tags: [
           {
             label: attributes.apiData.data[index].attributes.apiSoapUrl

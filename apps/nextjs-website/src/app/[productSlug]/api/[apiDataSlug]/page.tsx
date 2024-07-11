@@ -7,9 +7,7 @@ import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { ApiParams } from '@/lib/types/apiParams';
-import { pdndBannerLinks } from '@/_contents/pdnd/bannerLinks';
 import { products, productsBannerLinks } from '@/_contents/products';
-import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 
 export async function generateStaticParams() {
   return getProductsSlugs('api').map((productSlug) => ({
@@ -51,7 +49,7 @@ const ApisPage = async ({ params }: ApiParams) => {
     return (
       <ProductLayout
         product={product}
-        path={product.path}
+        path={product.path.concat('/api')}
         bannerLinks={bannerLink || ApisDataPageProps.bannerLinks}
         showBreadcrumbs
       >

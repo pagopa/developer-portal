@@ -17,6 +17,7 @@ export type CtaCardProps = {
   readonly text: string;
   readonly minHeight?: number;
   readonly cta?: {
+    readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly label: string;
     readonly href?: string;
     readonly variant?: 'text' | 'contained' | 'outlined';
@@ -68,15 +69,15 @@ const CtaCard = ({
       </div>
       <CardActions style={{ bottom: 0 }}>
         {cta && (
-          <Button
-            disabled={comingSoon}
-            href={cta.href}
-            variant={cta.variant || 'contained'}
-            LinkComponent={Link}
-            size='small'
-          >
-            {cta.label}
-          </Button>
+          <Link href={cta.href || '#'} target={cta.target || '_self'}>
+            <Button
+              disabled={comingSoon}
+              variant={cta.variant || 'contained'}
+              size='small'
+            >
+              {cta.label}
+            </Button>
+          </Link>
         )}
       </CardActions>
     </Card>

@@ -27,14 +27,19 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
   const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
   const product = await getProduct(params.productSlug);
 
-  if (ApiDataListPageProps && product)
+  if (ApiDataListPageProps && product) {
     return (
       <>
-        <ProductLayout product={product} path={product.path} showBreadcrumbs>
+        <ProductLayout
+          product={product}
+          path={product.path.concat('/api')}
+          showBreadcrumbs
+        >
           <ApiDataListPageTemplate {...ApiDataListPageProps} />
         </ProductLayout>
       </>
     );
+  }
 };
 
 export default ApiDataListPage;

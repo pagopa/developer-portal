@@ -16,6 +16,7 @@ export type ApiDataListPageTemplateProps = {
     readonly slug: string;
   };
   readonly cards: {
+    readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly title: string;
     readonly text: string;
     readonly ctaLabel?: string;
