@@ -31,7 +31,6 @@ export const fetchFromStrapi = <A, O, I>(
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
                 },
-                cache: 'no-store',
               }),
             E.toError
           ),
