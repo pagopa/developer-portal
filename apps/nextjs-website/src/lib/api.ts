@@ -1,5 +1,4 @@
 import {
-  apis,
   guideLists,
   guides,
   overviews,
@@ -34,13 +33,6 @@ function manageUndefined<T>(props: undefined | null | T) {
 
 async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
-}
-
-export async function getApi(productSlug?: string) {
-  const props =
-    apis.find((apiData) => apiData.product?.path === `/${productSlug}`) || null;
-
-  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getGuide(

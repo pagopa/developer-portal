@@ -1,5 +1,4 @@
 import { appIo } from '@/_contents/appIo/appIo';
-import { appIoApi } from '@/_contents/appIo/api';
 import { appIoGuideLists } from '@/_contents/appIo/guideLists';
 import { appIoGuides } from '@/_contents/appIo/guides';
 import { appIoOverview } from '@/_contents/appIo/overview';
@@ -7,7 +6,6 @@ import { appIoQuickStartGuide } from '@/_contents/appIo/quickStartGuide';
 import { appIoTutorialLists } from '@/_contents/appIo/tutorialLists';
 import { appIoTutorials } from '@/_contents/appIo/tutorials';
 import { ioSign } from '@/_contents/ioSign/ioSign';
-import { ioSignApi } from '@/_contents/ioSign/api';
 import { ioSignGuideLists } from '@/_contents/ioSign/guideLists';
 import { ioSignGuides } from '@/_contents/ioSign/guides';
 import { ioSignOverview } from '@/_contents/ioSign/overview';
@@ -15,7 +13,6 @@ import { ioSignQuickStartGuide } from '@/_contents/ioSign/quickStartGuide';
 import { ioSignTutorialLists } from '@/_contents/ioSign/tutorialLists';
 import { ioSignTutorials } from '@/_contents/ioSign/tutorials';
 import { pagoPa } from '@/_contents/pagoPa/pagoPa';
-import { pagoPaApi } from '@/_contents/pagoPa/api';
 import { pagoPaGuideLists } from '@/_contents/pagoPa/guideLists';
 import { pagoPaGuides } from '@/_contents/pagoPa/guides';
 import { pagoPaOverview } from '@/_contents/pagoPa/overview';
@@ -23,7 +20,6 @@ import { pagoPaQuickStartGuide } from '@/_contents/pagoPa/quickStartGuide';
 import { pagoPaTutorialLists } from '@/_contents/pagoPa/tutorialLists';
 import { pagoPaTutorials } from '@/_contents/pagoPa/tutorials';
 import { send } from '@/_contents/send/send';
-import { sendApi } from '@/_contents/send/api';
 import { sendGuideLists } from '@/_contents/send/guideLists';
 import { sendGuides } from '@/_contents/send/guides';
 import { sendOverview } from '@/_contents/send/overview';
@@ -53,8 +49,6 @@ export const quickStartGuides = [
   ioSignQuickStartGuide,
   pagoPaQuickStartGuide,
 ];
-
-export const apis = [appIoApi, ioSignApi, pagoPaApi, sendApi];
 
 export const tutorialLists = [
   appIoTutorialLists,
