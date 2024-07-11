@@ -18,15 +18,4 @@ export function makeProductProps(
       };
     }),
   ];
-  /*return product.data.map(({ attributes }) => ({
-    ...attributes,
-    logo: attributes.logo.data.attributes,
-    path: '',
-    subpaths: {
-      overview: {
-        name: '',
-        path: '',
-      },
-    },
-  }));*/
 }
