@@ -10,7 +10,11 @@ export function makeApiDataListPageProps(
       title: attributes.title,
       subtitle: attributes.description || '',
     },
-    product: attributes.product.data?.attributes || { name: '', slug: '' },
+    product: attributes.product.data?.attributes || {
+      name: '',
+      slug: '',
+      shortName: '',
+    },
     cards: attributes.apiData.data.map((item) => ({
       target: (item.attributes.apiSoapUrl ? '_blank' : '_self') as
         | '_blank'
