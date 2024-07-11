@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiSolutionsListCodec } from '../solutionsListCodec';
+import { StrapiSolutionListCodec } from '../solutionListCodec';
 
 const makeStrapiResponseJson = () => ({
   data: {
@@ -128,7 +128,7 @@ const makeStrapiResponseJson = () => ({
 describe('StrapiSolutionsListCodec', () => {
   it('should decode strapi homepage', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiSolutionsListCodec.decode(jsonFromStrapi);
+    const actual = StrapiSolutionListCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

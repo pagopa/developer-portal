@@ -3,7 +3,7 @@ import { getDetailSolutionsProps } from './cmsApi';
 import { StrapiSolutions } from './strapi/solutionsCodec';
 import { Solution } from './types/solution';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { SolutionPageTemplateProps } from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 export type DetailSolutionsProps = Solution & {
   readonly solutionSlug: string;
@@ -16,7 +16,7 @@ export type DetailSolutionsProps = Solution & {
 
 export function makeFullSolutionsProps(
   strapiSolutions: StrapiSolutions
-): ReadonlyArray<SolutionPageTemplateProps> {
+): ReadonlyArray<SolutionTemplateProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
     steps: attributes.steps.map((step) => ({

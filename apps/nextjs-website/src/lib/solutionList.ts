@@ -1,9 +1,9 @@
-import { SolutionsTemplateProps } from '@/components/templates/SolutionsTemplate/SolutionsTemplate';
-import { StrapiSolutionsList } from './strapi/solutionsListCodec';
+import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
+import { StrapiSolutionList } from './strapi/solutionListCodec';
 
-export function makeSolutionsListProps(
-  strapiSolutionsList: StrapiSolutionsList
-): SolutionsTemplateProps {
+export function makeSolutionListProps(
+  strapiSolutionsList: StrapiSolutionList
+): SolutionListTemplateProps {
   const {
     data: { attributes },
   } = strapiSolutionsList;

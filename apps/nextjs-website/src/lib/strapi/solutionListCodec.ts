@@ -6,7 +6,7 @@ import { SolutionCodec } from './solutionsCodec';
 import { CaseHistoryCodec } from './caseHistoriesCodec';
 import { FeaturesCodec } from './codecs/FeaturesCodec';
 
-export const StrapiSolutionsListCodec = t.strict({
+export const StrapiSolutionListCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
       title: t.string,
@@ -29,9 +29,9 @@ export const StrapiSolutionsListCodec = t.strict({
   }),
 });
 
-export type StrapiSolutionsList = t.TypeOf<typeof StrapiSolutionsListCodec>;
+export type StrapiSolutionList = t.TypeOf<typeof StrapiSolutionListCodec>;
 
-const makeStrapiSolutionsListPopulate = () =>
+const makeStrapiSolutionListPopulate = () =>
   qs.stringify({
     populate: {
       solutions: {
@@ -66,8 +66,8 @@ const makeStrapiSolutionsListPopulate = () =>
     },
   });
 
-export const fetchSolutionsList = fetchFromStrapi(
+export const fetchSolutionList = fetchFromStrapi(
   'solution-list-page',
-  makeStrapiSolutionsListPopulate(),
-  StrapiSolutionsListCodec
+  makeStrapiSolutionListPopulate(),
+  StrapiSolutionListCodec
 );

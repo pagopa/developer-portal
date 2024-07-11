@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import SolutionPageTemplate from '../../../nextjs-website/src/components/templates/SolutionPageTemplate/SolutionPageTemplate';
+import SolutionTemplate from '../../../nextjs-website/src/components/templates/SolutionTemplate/SolutionTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { authProviderDecorator } from '../auth-provider.helper';
 import { mockTextBlock } from '../mock-content.helper';
 
-const meta: Meta<typeof SolutionPageTemplate> = {
-  title: 'Templates/SolutionPageTemplate',
-  component: SolutionPageTemplate,
+const meta: Meta<typeof SolutionTemplate> = {
+  title: 'Templates/SolutionTemplate',
+  component: SolutionTemplate,
   parameters: {
     nextjs: {
       appDirectory: true,
@@ -43,7 +43,7 @@ const products = [
   },
 ];
 
-export const Showcase: StoryObj<typeof SolutionPageTemplate> = {
+export const Showcase: StoryObj<typeof SolutionTemplate> = {
   args: {
     slug: 'multe-per-violazioni-al-codice-della-strada',
     kickerTitle: 'Soluzioni PagoPA',
