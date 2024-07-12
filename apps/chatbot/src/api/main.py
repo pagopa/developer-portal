@@ -46,3 +46,17 @@ async def query_fetching(id):
     "queriedAt": ""
   }
   return body
+
+# retrieve sessions of current user
+@app.get("/sessions")
+async def sessions_fetching():
+  # TODO: dynamoDB integration
+  # TODO: get current user from cognito
+  body = [
+    {
+      "id": "",
+      "title": "",
+      "createdAt": ""
+    }
+  ]
+  return body
