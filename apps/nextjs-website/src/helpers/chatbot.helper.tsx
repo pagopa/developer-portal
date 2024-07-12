@@ -29,7 +29,7 @@ export const useChatbot = () => {
     setIsAwaitingResponse(true);
     sendChatbotQuery({
       sessionId: sessionId || '',
-      query: queryMessage,
+      question: queryMessage,
       queriedAt: new Date().toISOString(),
     }).then((response) => {
       setIsAwaitingResponse(false);

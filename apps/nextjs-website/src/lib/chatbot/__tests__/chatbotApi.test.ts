@@ -1,5 +1,3 @@
-import * as t from 'io-ts';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { getQueries, postQuery } from '../chatbotApi';
 
 const makeTestEnv = () => {
@@ -48,7 +46,7 @@ const getQueriesResponses = {
     {
       sessionId: 'sessionId',
       queriedAt: '2024-02-08T11:12:02.142Z',
-      query: 'query',
+      question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
     },
@@ -77,7 +75,7 @@ const badResponse = {
   200: {
     sessionId: 1234,
     queriedAt: '2024-02-08T11:12:02.142Z',
-    query: 'query',
+    question: 'question',
     answer: 'answer',
     createdAt: '2024-02-08T11:12:02.438Z',
   },
@@ -94,7 +92,7 @@ describe('chatbotApi', () => {
     const actual = postQuery({
       sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
-      query: 'aQuery',
+      question: 'aQuery',
     })(env);
     const expected = {
       answer: 'answer',
@@ -114,7 +112,7 @@ describe('chatbotApi', () => {
       {
         sessionId: 'sessionId',
         queriedAt: '2024-02-08T11:12:02.142Z',
-        query: 'query',
+        question: 'query',
         answer: 'answer',
         createdAt: '2024-02-08T11:12:02.438Z',
       },
@@ -131,7 +129,7 @@ describe('chatbotApi', () => {
     const actual = postQuery({
       sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
-      query: 'aQuery',
+      question: 'aQuery',
     })(env);
     const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
@@ -153,7 +151,7 @@ describe('chatbotApi', () => {
     const actual = postQuery({
       sessionId: 'aWrongSessionId',
       queriedAt: 'aQueriedAt',
-      query: 'aQuery',
+      question: 'aQuery',
     })(env);
     const expected = new Error('[object Object]');
     await expect(actual).rejects.toStrictEqual(expected);
@@ -168,7 +166,7 @@ describe('chatbotApi', () => {
     const actual = postQuery({
       sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
-      query: 'aQuery',
+      question: 'aQuery',
     })(env);
     const expected = new Error(
       `Invalid value 1 supplied to '/sessionId', expected type string`
