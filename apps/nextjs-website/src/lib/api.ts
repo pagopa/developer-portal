@@ -10,7 +10,7 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
-  getApiDataListPageProps,
+  getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
   getProductsProps,
@@ -201,9 +201,23 @@ export async function getCaseHistory(caseHistorySlug?: string) {
   );
 }
 
+export async function getApiDataParams() {
+  const props = (await getApiDataListPagesProps()).flatMap(
+    (apiDataListPageProps) =>
+      apiDataListPageProps.apiData.data
+        .filter((apiData) => !!apiData.attributes.apiRestDetail)
+        .map((apiData) => ({
+          productSlug: apiDataListPageProps.product.slug,
+          apiDataSlug: apiData.attributes.apiRestDetail?.slug || '',
+        }))
+  );
+
+  return props || [];
+}
+
 export async function getApiDataListPages(productSlug: string) {
-  const props = (await getApiDataListPageProps()).find(
-    (apiPageData) => apiPageData.product.slug === productSlug
+  const props = (await getApiDataListPagesProps()).find(
+    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
   );
   return props;
 }

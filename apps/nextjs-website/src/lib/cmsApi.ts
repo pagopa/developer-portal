@@ -103,7 +103,7 @@ export const getQuickStartsProps = async () => {
   }
 };
 
-export const getApiDataListPageProps = async () => {
+export const getApiDataListPagesProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
