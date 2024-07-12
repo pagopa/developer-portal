@@ -14,6 +14,7 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { useChatbot } from '@/helpers/chatbot.helper';
 
 type Params = {
   productSlug: string;
@@ -86,6 +87,8 @@ const Page = async ({ params }: { params: Params }) => {
       urlReplaces: urlReplacesMap,
     },
   };
+
+  const { isLoaded } = useChatbot();
 
   return (
     <ProductLayout
