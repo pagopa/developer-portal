@@ -2,12 +2,18 @@ import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getApiDataListPages, getProduct } from '@/lib/api';
+import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
   productSlug: string;
 };
+
+export async function generateStaticParams() {
+  return getProductsSlugs('api').map((productSlug) => ({
+    productSlug,
+  }));
+}
 
 export async function generateMetadata({
   params,
@@ -24,10 +30,10 @@ export async function generateMetadata({
 }
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
-  const ApiDataListPageProps = await getApiDataListPages(params.productSlug);
+  const apiDataListPageProps = await getApiDataListPages(params.productSlug);
   const product = await getProduct(params.productSlug);
 
-  if (ApiDataListPageProps && product) {
+  if (apiDataListPageProps && product) {
     return (
       <>
         <ProductLayout
@@ -35,7 +41,7 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
           path={product.path.concat('/api')}
           showBreadcrumbs
         >
-          <ApiDataListPageTemplate {...ApiDataListPageProps} />
+          <ApiDataListPageTemplate {...apiDataListPageProps} />
         </ProductLayout>
       </>
     );
