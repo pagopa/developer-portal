@@ -1,4 +1,4 @@
-import { getQueries, postQuery } from '../chatbotApi';
+import { getQueries, postQuery } from '@/lib/chatbot/chatbotApi';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -8,6 +8,7 @@ const makeTestEnv = () => {
       config: {
         CHATBOT_HOST: 'chatbotHost',
       },
+      getAuthToken: async () => 'authToken',
       fetch: fetchMock,
     },
   };
@@ -17,7 +18,7 @@ const postQueryResponses = {
   200: {
     sessionId: 'sessionId',
     queriedAt: '2024-02-08T11:12:02.142Z',
-    query: 'query',
+    question: 'question',
     answer: 'answer',
     createdAt: '2024-02-08T11:12:02.438Z',
   },
@@ -95,6 +96,9 @@ describe('chatbotApi', () => {
       question: 'aQuery',
     })(env);
     const expected = {
+      sessionId: 'sessionId',
+      queriedAt: '2024-02-08T11:12:02.142Z',
+      question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
     };
@@ -112,12 +116,12 @@ describe('chatbotApi', () => {
       {
         sessionId: 'sessionId',
         queriedAt: '2024-02-08T11:12:02.142Z',
-        question: 'query',
+        question: 'question',
         answer: 'answer',
         createdAt: '2024-02-08T11:12:02.438Z',
       },
     ];
-    await expect(actual).rejects.toStrictEqual(expected);
+    expect(await actual).toStrictEqual(expected);
   });
   it('chatbotApi::postQuery should return error given a 401 response', async () => {
     const { env, fetchMock } = makeTestEnv();
@@ -153,7 +157,7 @@ describe('chatbotApi', () => {
       queriedAt: 'aQueriedAt',
       question: 'aQuery',
     })(env);
-    const expected = new Error('[object Object]');
+    const expected = {};
     await expect(actual).rejects.toStrictEqual(expected);
   });
   it('chatbotAp::postQuery should return error given a decode error', async () => {
@@ -169,7 +173,7 @@ describe('chatbotApi', () => {
       question: 'aQuery',
     })(env);
     const expected = new Error(
-      `Invalid value 1 supplied to '/sessionId', expected type string`
+      `Invalid value 1234 supplied to '/sessionId', expected type string`
     );
     await expect(actual).rejects.toStrictEqual(expected);
   });
