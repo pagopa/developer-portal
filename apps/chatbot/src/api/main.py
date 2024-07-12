@@ -15,9 +15,9 @@ class Query(BaseModel):
 
 app = FastAPI()
 
-@app.get("/")
-async def root ():
-  return {"message": "Hello World"}
+@app.get("/healthz")
+async def healthz ():
+  return {"message": "OK"}
 
 @app.post("/queries")
 async def queryCreation (query: Query):
