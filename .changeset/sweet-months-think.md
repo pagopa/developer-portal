@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix ApiPage generateStaticParams
+Fix ApiDataPage generateStaticParams function
