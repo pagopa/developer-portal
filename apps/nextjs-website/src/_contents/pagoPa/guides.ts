@@ -45,7 +45,7 @@ const sanp: GuideDefinition = {
     slug: 'sanp',
   },
   versions: [
-     {
+    {
       main: true,
       version: '3.8.0',
       dirName: 'zAhhg91nnC8aY3hDkMJu',
