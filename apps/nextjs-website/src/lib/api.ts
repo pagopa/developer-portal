@@ -1,5 +1,4 @@
 import {
-  apis,
   guideLists,
   guides,
   overviews,
@@ -11,7 +10,10 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
+  getApiDataListPageProps,
+  getApiDataProps,
   getCaseHistoriesProps,
+  getProductsProps,
   getFullSolutionsProps,
   getQuickStartsProps,
   getSolutionsListProps,
@@ -31,13 +33,6 @@ function manageUndefined<T>(props: undefined | null | T) {
 
 async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
-}
-
-export async function getApi(productSlug?: string) {
-  const props =
-    apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
-
-  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getGuide(
@@ -204,6 +199,27 @@ export async function getCaseHistory(caseHistorySlug?: string) {
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
+}
+
+export async function getApiDataListPages(productSlug: string) {
+  const props = (await getApiDataListPageProps()).find(
+    (apiPageData) => apiPageData.product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getProduct(productSlug: string) {
+  const props = (await getProductsProps()).find(
+    (product) => product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getApiData(apiDataSlug: string) {
+  const props = (await getApiDataProps()).find(
+    (apiData) => apiData.apiDataSlug === apiDataSlug
+  );
+  return props;
 }
 
 export async function getSolution(solutionSlug?: string) {

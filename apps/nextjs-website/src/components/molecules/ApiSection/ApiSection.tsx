@@ -38,17 +38,12 @@ const NotSsrApiViewer = dynamic(
 export type ApiPageProps = {
   readonly product: Product;
   readonly specURLsName?: string;
+  readonly apiSlug: string;
   readonly specURLs: {
     name?: string;
     url: string;
     hideTryIt?: boolean;
   }[];
-  readonly soapDocumentation?: {
-    title: string;
-    url: string;
-    buttonLabel: string;
-    icon: string;
-  };
 };
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
@@ -64,10 +59,10 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
 }));
 
 const ApiSection = ({
+  apiSlug,
   product,
   specURLs,
   specURLsName,
-  soapDocumentation,
 }: ApiPageProps) => {
   const { palette, spacing } = useTheme();
 
@@ -96,7 +91,9 @@ const ApiSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `${product.subpaths.api?.path}?spec=${encodeURIComponent(spec.name)}`
+        `${product.subpaths.api?.path}/${apiSlug}?spec=${encodeURIComponent(
+          spec.name
+        )}`
       );
     }
   };
@@ -136,44 +133,6 @@ const ApiSection = ({
               ))}
             </Select>
           </StyledFormControl>
-        </Stack>
-      )}
-      {soapDocumentation && (
-        <Stack
-          sx={styles.soapContainer}
-          alignItems='center'
-          justifyContent='flex-end'
-          direction='row'
-          height={spacing(8)}
-          gap={spacing(2)}
-        >
-          <Typography variant='body2' color={textColor}>
-            {soapDocumentation.title}
-          </Typography>
-          <Stack
-            alignItems='center'
-            justifyContent='flex-end'
-            direction='row'
-            gap={spacing(1)}
-          >
-            <ButtonNaked
-              sx={{
-                color: textColor,
-                '&:hover': {
-                  color: textColor,
-                },
-              }}
-              component={Link}
-              aria-label={soapDocumentation.buttonLabel}
-              href={soapDocumentation.url}
-              title={soapDocumentation.buttonLabel}
-              endIcon={
-                <IconWrapper icon={soapDocumentation.icon} color={textColor} />
-              }
-            >
-              {soapDocumentation.buttonLabel}
-            </ButtonNaked>
-          </Stack>
         </Stack>
       )}
       <NotSsrApiViewer

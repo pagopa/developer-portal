@@ -15,10 +15,12 @@ export type CardsGridProps = {
   };
   containerSx?: SxProps;
   cards: {
+    target?: '_blank' | '_self' | '_parent' | '_top';
     comingSoon?: boolean;
     title: string;
     text: string;
     href?: string;
+    ctaLabel?: string;
     icon: string;
     iconColor?: string;
     tags?: { readonly label: string; readonly path?: string }[];
@@ -41,7 +43,17 @@ const CardsGrid = ({
         <Grid container spacing={3}>
           {cards.map(
             (
-              { title, text, href, icon, comingSoon, iconColor, tags },
+              {
+                target,
+                title,
+                text,
+                href,
+                icon,
+                comingSoon,
+                iconColor,
+                tags,
+                ctaLabel,
+              },
               index
             ) => {
               return (
@@ -56,7 +68,10 @@ const CardsGrid = ({
                     title={title}
                     text={text}
                     cta={{
-                      label: t(comingSoon ? 'comingSoon' : 'moreInfo'),
+                      target: target || '_self',
+                      label: ctaLabel
+                        ? ctaLabel
+                        : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
                       variant: cardVariant,
                     }}
