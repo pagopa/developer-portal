@@ -63,7 +63,7 @@ export const pagoPaOverview: OverviewData = {
       {
         title: 'Documentazione API',
         text: 'Esplora le API REST e SOAP di pagoPA',
-        href: `${pagoPa.subpaths.api?.path}`,
+        href: pagoPa.subpaths.api?.path,
         iconName: 'FolderOutlined',
         iconColor: 'primary.dark',
       },
