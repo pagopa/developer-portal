@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { getChatbotQueries, sendChatbotQuery } from '@/lib/chatbot';
 import { ChatbotQueries } from '@/lib/chatbot/queries';

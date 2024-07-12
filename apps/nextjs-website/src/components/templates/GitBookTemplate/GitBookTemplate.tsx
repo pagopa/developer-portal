@@ -7,6 +7,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
+import { useChatbot } from '@/helpers/chatbot.helper';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 
@@ -35,6 +36,7 @@ const GitBookTemplate = ({
   menuDistanceFromTop,
   contentMarginTop = 75,
 }: GitBookTemplateProps) => {
+  const { isLoaded } = useChatbot();
   return (
     <FragmentProvider>
       <Box
