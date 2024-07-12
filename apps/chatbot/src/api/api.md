@@ -43,8 +43,13 @@ response:
 GET /sessions
 
 response:
-
-# TODO
+[
+  {
+    "id": string,
+    "title": string,
+    "createdAt": string
+  }
+]
 
 ---------------------------------------------
 
