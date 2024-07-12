@@ -21,6 +21,15 @@ async def healthz ():
 
 @app.post("/queries")
 async def queryCreation (query: Query):
-  response = chatbot.generate(query.question)
+  answer = chatbot.generate(query.question)
 
-  return {"response": response}
+  # TODO: dynamoDB integration
+  body = {
+    "id": "",
+    "sessionId": "",
+    "question": query.question,
+    "answer": answer,
+    "createdAt": "",
+    "queriedAt": ""
+  }
+  return body

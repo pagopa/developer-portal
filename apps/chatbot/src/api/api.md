@@ -19,6 +19,11 @@ response:
 
 GET /healthz
 
+response:
+{
+  "message": "OK"
+}
+
 ---------------------------------------------
 
 GET /queries/{id}
