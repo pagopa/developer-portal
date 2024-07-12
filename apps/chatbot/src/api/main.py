@@ -35,7 +35,7 @@ async def query_creation (query: Query):
   return body
 
 @app.get("/queries/{id}")
-async def query_fetching(id):
+async def query_fetching(id: str):
   # TODO: dynamoDB integration
   body = {
     "id": id,
@@ -60,3 +60,19 @@ async def sessions_fetching():
     }
   ]
   return body
+
+@app.get("/queries")
+async def queries_fetching(sessionId: str):
+  # TODO: dynamoDB integration
+  body = [
+    {
+      "id": "",
+      "sessionId": sessionId,
+      "question": "",
+      "answer": "",
+      "createdAt": "",
+      "queriedAt": ""
+    }
+  ]
+  return body
+
