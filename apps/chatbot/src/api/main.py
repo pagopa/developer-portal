@@ -76,3 +76,16 @@ async def queries_fetching(sessionId: str):
   ]
   return body
 
+@app.patch("/queries/{id}")
+async def query_feedback (badAnswer: bool):
+  # TODO: dynamoDB integration
+  body = {
+    "id": "",
+    "sessionId": "",
+    "question": "",
+    "answer": "",
+    "badAnswer": badAnswer,
+    "createdAt": "",
+    "queriedAt": ""
+  }
+  return body
