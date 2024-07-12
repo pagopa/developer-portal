@@ -53,6 +53,17 @@ response:
 
 ---------------------------------------------
 
+POST /sessions
+
+response:
+{
+  "id": string,
+  "title": string,
+  "createdAt": string
+}
+
+---------------------------------------------
+
 GET /queries?sessionId={sessionId}
 
 response:

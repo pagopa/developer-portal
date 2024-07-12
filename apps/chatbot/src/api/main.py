@@ -34,6 +34,17 @@ async def query_creation (query: Query):
   }
   return body
 
+@app.post("/sessions")
+async def sessions_creation ():
+  # TODO: dynamoDB integration
+  # TODO: get current user from cognito
+  body = {
+    "id": "",
+    "title": "",
+    "createdAt": ""
+  }
+  return body
+
 @app.get("/queries/{id}")
 async def query_fetching(id: str):
   # TODO: dynamoDB integration
