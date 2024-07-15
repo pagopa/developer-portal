@@ -565,5 +565,8 @@
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
+    },
+    "apiDataListPage": {
+        "explore": "Esplora le API"
     }
 }
