@@ -15,7 +15,6 @@ export const useChatbot = () => {
 
     // Request sessionID form chatbotAPI
     setSessionId('sessionID');
-    sendQuery('cosa vuole die GPD?');
   }, [sessionId]);
 
   useEffect(() => {

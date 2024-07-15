@@ -36,7 +36,6 @@ const GitBookTemplate = ({
   menuDistanceFromTop,
   contentMarginTop = 75,
 }: GitBookTemplateProps) => {
-  const { isLoaded } = useChatbot();
   return (
     <FragmentProvider>
       <Box
