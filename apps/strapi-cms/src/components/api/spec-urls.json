@@ -6,7 +6,15 @@
   "options": {},
   "attributes": {
     "url": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
       "type": "string"
+    },
+    "hideTryIt": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

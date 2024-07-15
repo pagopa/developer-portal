@@ -7,6 +7,7 @@ import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
 
 export const appIo: Product = {
   name: 'IO, l’app dei servizi pubblici',
+  shortName: 'IO',
   description:
     'Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.',
   slug: 'app-io',

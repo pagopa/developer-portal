@@ -2,49 +2,58 @@ import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
-import { webinars } from '@/_contents/webinars';
 import { Media } from './types/media';
+import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
+
+type NewsShowcaseItemProps = {
+  readonly comingSoon?: boolean;
+  readonly title: string;
+  readonly publishedAt?: Date;
+  readonly link: {
+    readonly text: string;
+    readonly url: string;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+  };
+  readonly image?: Media;
+};
+
+type NewsShowcaseProps = {
+  readonly title: string;
+  readonly items: readonly NewsShowcaseItemProps[];
+};
+
+type EcosystemSolutionsCtaProps = {
+  readonly variant?: 'text' | 'contained' | 'outlined';
+  readonly link: {
+    readonly href: string;
+    readonly text: string;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+  };
+};
+
+type EcosystemProps = {
+  readonly title: string;
+  readonly productsTabName: string;
+  readonly products: CardsGridProps['cards'];
+  readonly solutionsTabName: string;
+  readonly solutions?: CardsGridProps['cards'];
+  readonly solutionsCta?: EcosystemSolutionsCtaProps;
+};
+
+type ComingSoonDocumentationProps = {
+  readonly title: string;
+  readonly links: readonly {
+    readonly text: string;
+    readonly href: string;
+  }[];
+};
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
-  readonly newsShowcase: {
-    readonly title: string;
-    readonly items: readonly {
-      readonly comingSoon?: boolean;
-      readonly title: string;
-      readonly publishedAt?: Date;
-      readonly link: {
-        readonly text: string;
-        readonly url: string;
-        readonly target?: '_self' | '_blank' | '_parent' | '_top';
-      };
-      readonly image?: Media;
-    }[];
-  };
-  readonly productsShowcase: {
-    readonly title: string;
-    readonly products: readonly {
-      readonly name: string;
-      readonly description?: string;
-      readonly slug: string;
-      readonly logo: {
-        readonly name: string;
-        readonly width: number;
-        readonly height: number;
-        readonly ext: string;
-        readonly mime: string;
-        readonly url: string;
-      };
-    }[];
-  };
-  readonly comingsoonDocumentation: {
-    readonly title: string;
-    readonly links: readonly {
-      readonly text: string;
-      readonly href: string;
-    }[];
-  };
+  readonly newsShowcase: NewsShowcaseProps;
+  readonly ecosystem: EcosystemProps;
   readonly webinars: readonly Webinar[];
+  readonly comingsoonDocumentation: ComingSoonDocumentationProps;
 };
 
 type StaticHomepage = typeof translations.homepage;
@@ -79,19 +88,35 @@ export const makeHomepageProps = (
       ),
     },
   }),
-  productsShowcase: {
-    title: strapiHomepage.data.attributes.productsShowcase.title,
-    products: strapiHomepage.data.attributes.productsShowcase.products.data.map(
-      (product) => ({
-        name: product.attributes.name,
-        description: product.attributes.description,
-        slug: product.attributes.slug,
-        logo: product.attributes.logo.data.attributes,
-      })
-    ),
-  },
+  ...(strapiHomepage.data.attributes.ecosystem && {
+    ecosystem: {
+      title: strapiHomepage.data.attributes.ecosystem.title || '',
+      productsTabName: strapiHomepage.data.attributes.ecosystem.productsTabName,
+      products: strapiHomepage.data.attributes.ecosystem.products.data.map(
+        (product) => ({
+          title: product.attributes.name,
+          text: product.attributes.description ?? '',
+          href: product.attributes.slug,
+          icon: product.attributes.logo.data.attributes.url,
+        })
+      ),
+      solutionsTabName:
+        strapiHomepage.data.attributes.ecosystem.solutionsTabName,
+      solutions: strapiHomepage.data.attributes.ecosystem.solutions.data.map(
+        (solution) => ({
+          title: solution.attributes.title,
+          text: solution.attributes.description ?? '',
+          href: `/solutions/${solution.attributes.slug}`,
+          icon: solution.attributes.icon.data.attributes.url,
+        })
+      ),
+      solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
+        variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
+        link: strapiHomepage.data.attributes.ecosystem.solutionsCta.link,
+      },
+    },
+  }),
   webinars: [
-    ...webinars.filter((webinar) => webinar.isVisibleInHome),
     ...strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
       ...webinar.attributes,
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
@@ -110,7 +135,7 @@ export const makeHomepagePropsFromStatic = (
 ): HomepageProps => ({
   hero: staticHomepage.heroItems,
   newsShowcase: staticHomepage.newsShowcase,
-  productsShowcase: staticHomepage.productsShowcase,
+  ecosystem: staticHomepage.ecosystem,
   comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
-  webinars: webinars.filter((webinar) => webinar.isVisibleInHome),
+  webinars: [],
 });

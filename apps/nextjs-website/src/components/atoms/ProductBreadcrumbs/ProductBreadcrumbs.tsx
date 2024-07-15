@@ -24,6 +24,8 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
       sx={{
         display: { xs: 'none', md: 'block' },
         paddingY: '20px',
+        zIndex: 50,
+        position: 'relative',
       }}
     >
       <Breadcrumbs aria-label='breadcrumb'>

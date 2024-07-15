@@ -69,11 +69,20 @@
       "target": "api::case-history.case-history",
       "inversedBy": "products"
     },
-    "solution": {
+    "solutions": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::solution.solution",
       "inversedBy": "products"
+    },
+    "shortName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
     }
   }
 }

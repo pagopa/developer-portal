@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_api_api_rest_details",
+  "info": {
+    "displayName": "ApiRestDetail",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "specUrls": {
+      "type": "component",
+      "repeatable": true,
+      "component": "api.spec-urls",
+      "min": 1,
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

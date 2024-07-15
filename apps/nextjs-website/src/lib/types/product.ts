@@ -3,6 +3,7 @@ import { Media } from './media';
 
 export type Product = {
   readonly slug: string;
+  readonly shortName: string;
   readonly description: string | undefined;
   readonly logo: Media;
   readonly subpaths: Subpaths;

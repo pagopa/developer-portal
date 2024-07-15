@@ -12,6 +12,7 @@ import { type CommonProps, type Generic } from '../types/components';
 import { isJSX } from '../utils';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Image from 'next/image';
+import { Variant } from '@mui/material/styles/createTypography';
 
 export interface HeroProps extends CommonProps, HeroTextProps {
   image?: string | Generic;
@@ -32,6 +33,7 @@ interface HeroTextProps extends CommonProps {
   title: string;
   subtitle?: string | Generic;
   ctaButtons?: Array<CtaButton | Generic>;
+  titleVariant?: Variant;
 }
 
 const HeroTextContent = ({
@@ -39,6 +41,7 @@ const HeroTextContent = ({
   subtitle,
   ctaButtons,
   theme,
+  titleVariant = 'h1',
 }: HeroTextProps) => {
   const textColor = theme === 'dark' ? 'primary.contrastText' : 'text.primary';
   return (
@@ -50,7 +53,7 @@ const HeroTextContent = ({
     >
       <Box mb={{ xs: 6, md: 4 }}>
         <>
-          <Typography variant='h1' color={textColor} mb={2}>
+          <Typography variant={titleVariant} color={textColor} mb={2}>
             {title}
           </Typography>
           {isJSX(subtitle) ? (

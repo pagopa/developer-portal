@@ -22,10 +22,11 @@ export type SolutionPageTemplateProps = {
   title: string;
   description?: string;
   icon: Media;
+  introductionToSteps?: string;
   steps: {
     title: string;
     content: BlocksContent;
-    products: Pick<Product, 'name' | 'slug'>[];
+    products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
   dirName: string;
   landingUseCaseFile: string;
@@ -43,9 +44,8 @@ const SolutionPageTemplate = ({
   kickerTitle,
   title,
   description,
+  introductionToSteps,
   steps,
-  dirName,
-  landingUseCaseFile,
   stats,
   products,
   webinars,
@@ -54,7 +54,7 @@ const SolutionPageTemplate = ({
   const { palette, spacing } = useTheme();
   const t = useTranslations();
 
-  const solutionDetailPath = `/${dirName}/${slug}/${landingUseCaseFile}/detail`; // TODO: check if this is correct
+  const solutionDetailPath = `/solutions/${slug}/details`;
 
   return (
     <>
@@ -76,7 +76,7 @@ const SolutionPageTemplate = ({
         <SolutionPreviewCard
           header={kickerTitle}
           title={title}
-          description={description || ''}
+          description={introductionToSteps || description || ''}
           cta={{
             label: t('solution.ctaDetailLabel'),
             href: solutionDetailPath,
@@ -85,7 +85,7 @@ const SolutionPageTemplate = ({
             title: step.title,
             content: step.content,
             products: step.products.map((product) => ({
-              label: product.name,
+              label: product.shortName,
               href: `/${product.slug}/overview`,
             })),
           }))}
