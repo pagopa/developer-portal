@@ -10,7 +10,9 @@ type ChatMessageProps = {
 
 const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
-  const bgColor = sender ? palette.background.paper : `${palette.info.light}80`;
+  const bgColor = sender
+    ? palette.background.paper
+    : alpha(palette.info.light, 0.5);
   const titleColor = palette.text.primary;
   const textColor = palette.text.primary;
   const senderLabel = sender || 'AI ChatBot';
