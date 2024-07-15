@@ -20,7 +20,7 @@ type TutorialPageTemplateProps = {
   readonly title: string;
 };
 
-const TutorialPageTemplate = ({
+const TutorialTemplate = ({
   bannerLinks,
   content,
   path,
@@ -112,4 +112,4 @@ const TutorialPageTemplate = ({
   );
 };
 
-export default TutorialPageTemplate;
+export default TutorialTemplate;

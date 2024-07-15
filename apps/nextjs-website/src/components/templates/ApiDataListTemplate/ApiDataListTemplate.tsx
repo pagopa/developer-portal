@@ -8,7 +8,7 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataCodec';
 import { useTranslations } from 'next-intl';
 
-export type ApiDataListPageTemplateProps = {
+export type ApiDataListTemplateProps = {
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
@@ -33,12 +33,12 @@ export type ApiDataListPageTemplateProps = {
   readonly apiData: StrapiApiData;
 };
 
-const ApiDataListPageTemplate = ({
+const ApiDataListTemplate = ({
   hero,
   cards,
   bannerLinks,
   theme = 'light',
-}: ApiDataListPageTemplateProps) => {
+}: ApiDataListTemplateProps) => {
   const t = useTranslations('');
 
   return (
@@ -69,4 +69,4 @@ const ApiDataListPageTemplate = ({
   );
 };
 
-export default ApiDataListPageTemplate;
+export default ApiDataListTemplate;
