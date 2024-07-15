@@ -13,9 +13,8 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
   const bgColor = sender
     ? palette.background.paper
     : alpha(palette.info.light, 0.5);
-  const titleColor = palette.text.primary;
   const textColor = palette.text.primary;
-  const senderLabel = sender || 'AI ChatBot';
+  const senderLabel = sender || 'AI ChatBot'; // TO-BE-REMOVED: This line will be remove in the next iteration of the component - the translation is not needed here
   return (
     <Box
       bgcolor={bgColor}
@@ -33,7 +32,7 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
           <Typography
             marginLeft={'0.5rem'}
             fontWeight={600}
-            color={titleColor}
+            color={palette.text.primary}
             component={'span'}
           >
             {senderLabel}
