@@ -22,7 +22,7 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
   const textColor = useDarkTheme ? palette.common.white : palette.text.primary;
   const bgColor = useDarkTheme
     ? palette.primary.main
-    : palette.background.paper;
+    : palette.background.default;
 
   return (
     <Box bgcolor={bgColor}>
@@ -32,40 +32,39 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           justifyContent={'space-between'}
           alignItems={'center'}
           gap={4}
-          paddingTop={{ xs: '2.5rem', sm: 12 }}
-          paddingBottom={{ xs: '2.5rem', sm: 13 }}
+          paddingTop={{ xs: '2.5rem', sm: '75px' }}
+          paddingBottom={{ xs: '2.5rem', sm: '104px' }}
           width={'100%'}
         >
           {items.map(({ title, subtitle, description }, index) => (
             <Stack
               key={index}
               flex={1}
-              gap={1}
               flexDirection={'column'}
               textAlign={'center'}
               justifyContent={'start'}
               maxWidth={maxWidth}
             >
               <Typography
-                marginBottom={3}
+                marginBottom={'.7rem'}
+                fontSize={50}
                 fontWeight={700}
                 color={titleColor}
-                variant='h3'
               >
                 {title}
               </Typography>
               {subtitle && (
-                <Typography
-                  fontWeight={700}
-                  color={textColor}
-                  component={'p'}
-                  variant='h6'
-                >
+                <Typography fontWeight={700} color={textColor} variant='h6'>
                   {subtitle}
                 </Typography>
               )}
               {description && (
-                <Typography color={textColor} component={'p'} variant='body1'>
+                <Typography
+                  color={textColor}
+                  fontWeight={600}
+                  fontSize={24}
+                  lineHeight={1.2}
+                >
                   {description}
                 </Typography>
               )}

@@ -94,7 +94,7 @@ const SolutionPageTemplate = ({
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
       {stats && (
         <Stats
-          maxWidth={200}
+          maxWidth={265}
           items={stats.map((stat) => ({
             title: stat.title,
             description: stat.description,
