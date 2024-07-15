@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 1.1.0
+
+### Minor Changes
+
+- 2400316: Add ApiDataListPageTemplate to the project
+
+### Patch Changes
+
+- 456ca42: Version update from 3.2.1 to 3.3.0 of the "Payment Notices" manual
+- 8f036cd: Show all available steps in the SolutionPreviewCard component
+- e713faa: Fix margin on solution list card labels
+
 ## 1.0.0
 
 ### Major Changes

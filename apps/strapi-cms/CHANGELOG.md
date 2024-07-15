@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 1.1.0
+
+### Minor Changes
+
+- ca97805: Update ApiData model
+- 3578c57: Add shortName to Product schema
+
+### Patch Changes
+
+- 9eaa93f: Fix the type of the relations between solutions-products and solutions-webinars
+- bc120e3: Add minimum and maximum values on solution's steps
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,58 +1,48 @@
-import { Product } from '@/lib/types/product';
+'use client';
 import Hero from '@/editorialComponents/Hero/Hero';
-import { Path } from '@/lib/types/path';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
+import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataCodec';
+import { useTranslations } from 'next-intl';
 
 export type ApiDataListPageTemplateProps = {
-  readonly breadcrumbs: {
-    readonly product: Product;
-    readonly path: string;
-    readonly paths: readonly Path[];
-  };
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
     readonly heigth?: string;
   };
+  readonly product: {
+    readonly name: string;
+    readonly slug: string;
+  };
   readonly cards: {
-    title: string;
-    text: string;
-    ctaLabel?: string;
-    href?: string;
-    icon: string;
-    tags?: { readonly label: string }[];
+    readonly target?: '_blank' | '_self' | '_parent' | '_top';
+    readonly title: string;
+    readonly text: string;
+    readonly ctaLabel?: string;
+    readonly href?: string;
+    readonly externalUrl: boolean;
+    readonly icon: string;
+    readonly tags?: { label: string }[];
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
+  readonly apiData: StrapiApiData;
 };
 
 const ApiDataListPageTemplate = ({
-  breadcrumbs,
   hero,
   cards,
   bannerLinks,
   theme = 'light',
 }: ApiDataListPageTemplateProps) => {
+  const t = useTranslations('');
+
   return (
     <>
-      <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
-        <ProductBreadcrumbs
-          breadcrumbs={[
-            ...productPageToBreadcrumbs(
-              breadcrumbs.product,
-              breadcrumbs.path,
-              breadcrumbs.paths
-            ),
-          ]}
-        />
-      </EContainer>
       <Hero
         title={hero.title}
         subtitle={hero.subtitle}
@@ -66,7 +56,10 @@ const ApiDataListPageTemplate = ({
       <Box paddingBottom={6}>
         <CardsGrid
           cardVariant='outlined'
-          cards={cards}
+          cards={cards.map((card) => ({
+            ...card,
+            ctaLabel: t('apiDataListPage.explore'),
+          }))}
           cardSvg={true}
           cardSize={{ xs: 12, md: 4 }}
         />
