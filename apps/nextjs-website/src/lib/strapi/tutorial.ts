@@ -9,6 +9,7 @@ import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { PaginationCodec } from './codecs/PaginationCodec';
 import { ProductCodec } from './codecs/ProductCodec';
 import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
+import { PartCodec } from './codecs/PartCodec';
 
 const BannerLinkCodec = t.strict({
   id: t.number,
@@ -21,7 +22,7 @@ export const TutorialCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     slug: t.string,
-    content: BlocksContentCodec,
+    parts: t.array(PartCodec),
     createdAt: DateFromISOString,
     updatedAt: DateFromISOString,
     publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
@@ -48,6 +49,14 @@ const makeStrapiTutorialsPopulate = () =>
       },
       image: {
         populate: ['image'],
+      },
+      parts: {
+        populate: [
+          'responseCode',
+          'requestCode',
+          'requestAttributes',
+          'backgroundImage',
+        ],
       },
       product: { populate: 'logo' },
       bannerLinks: '*',
