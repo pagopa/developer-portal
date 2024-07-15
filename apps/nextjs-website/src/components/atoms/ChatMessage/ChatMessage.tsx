@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 
