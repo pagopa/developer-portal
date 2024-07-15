@@ -11,7 +11,6 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
   const t = useTranslations();
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
-  const iconColor = palette.grey[700];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -48,7 +47,7 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
       <IconButton
         aria-label='send'
         onClick={submit}
-        sx={{ p: '10px', color: iconColor, cursor: 'pointer' }}
+        sx={{ p: '10px', color: palette.grey[700], cursor: 'pointer' }}
       >
         <SendOutlined />
       </IconButton>
