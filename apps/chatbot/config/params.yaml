@@ -1,0 +1,21 @@
+documentation:
+  path: apps/nextjs-website/out
+
+vector_index:
+  path: index
+  s3_bucket_name: chatbot-llamaindex-5086
+  chunk_sizes: [2816, 704, 176]
+  chunk_overlap: 20
+
+models:
+  model_id: amazon.titan-text-express-v1
+  emded_model_id: cohere.embed-multilingual-v3
+  region: eu-west-3
+  temperature: 0.2
+  max_tokens: 784
+
+retriever:
+  similarity_top_k: 5
+  similarity_cutoff: 0.45
+  response_mode: compact
+  verbose: False

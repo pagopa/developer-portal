@@ -57,6 +57,24 @@ export const appIoGuideLists: GuideListsData = {
           mobileImagePath: '/images/manuale-dei-servizi-mobile.png',
         },
         {
+          title: 'I modelli dei servizi',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Scopri i template dei servizi più diffusi su IO',
+              'Il ciclo di vita dei servizi e i punti di contatto con il cittadino',
+              'Utilizza le schede per descrivere in modo corretto il servizio',
+              'Utilizza i template dei messaggi presenti per ogni servizio',
+            ],
+          },
+          link: {
+            href: `${appIOGuideListsPath.path}/modelli-servizi`,
+            label: 'Vai al manuale',
+          },
+          imagePath: '/images/modelli-dei-servizi.png',
+          mobileImagePath: '/images/modelli-dei-servizi-mobile.png',
+        },
+        {
           title: 'Supporto agli Enti',
           description: {
             title: 'Argomenti trattati',

@@ -37,6 +37,7 @@ const baseSolutionJson = {
         },
       },
     },
+    introductionToSteps: null,
     steps: [],
     stats: [],
     bannerLinks: [],
