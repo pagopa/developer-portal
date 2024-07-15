@@ -6,6 +6,7 @@ import { pdndTutorialListsPath } from '@/_contents/pdnd/tutorialListsPath';
 
 export const pdnd: Product = {
   name: 'PDND Interoperabilità',
+  shortName: 'PDND',
   description:
     'Integra i tuoi servizi tramite PDND Interoperabiltà, la piattaforma che abilita lo scambio di informazioni tra gli enti. ',
   slug: 'pdnd-interoperabilita',

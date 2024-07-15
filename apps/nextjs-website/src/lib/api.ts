@@ -1,5 +1,4 @@
 import {
-  apis,
   guideLists,
   guides,
   overviews,
@@ -11,7 +10,10 @@ import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
+  getApiDataListPagesProps,
+  getApiDataProps,
   getCaseHistoriesProps,
+  getProductsProps,
   getFullSolutionsProps,
   getQuickStartsProps,
   getSolutionsListProps,
@@ -31,13 +33,6 @@ function manageUndefined<T>(props: undefined | null | T) {
 
 async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
-}
-
-export async function getApi(productSlug?: string) {
-  const props =
-    apis.find((apiData) => apiData.product.path === `/${productSlug}`) || null;
-
-  return manageUndefinedAndAddProducts(props);
 }
 
 export async function getGuide(
@@ -204,6 +199,41 @@ export async function getCaseHistory(caseHistorySlug?: string) {
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
+}
+
+export async function getApiDataParams() {
+  const props = (await getApiDataListPagesProps()).flatMap(
+    (apiDataListPageProps) =>
+      apiDataListPageProps.apiData.data
+        .filter((apiData) => !!apiData.attributes.apiRestDetail)
+        .map((apiData) => ({
+          productSlug: apiDataListPageProps.product.slug,
+          apiDataSlug: apiData.attributes.apiRestDetail?.slug || '',
+        }))
+  );
+
+  return props || [];
+}
+
+export async function getApiDataListPages(productSlug: string) {
+  const props = (await getApiDataListPagesProps()).find(
+    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getProduct(productSlug: string) {
+  const props = (await getProductsProps()).find(
+    (product) => product.slug === productSlug
+  );
+  return props;
+}
+
+export async function getApiData(apiDataSlug: string) {
+  const props = (await getApiDataProps()).find(
+    (apiData) => apiData.apiDataSlug === apiDataSlug
+  );
+  return props;
 }
 
 export async function getSolution(solutionSlug?: string) {
