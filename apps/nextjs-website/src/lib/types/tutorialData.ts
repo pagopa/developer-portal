@@ -9,5 +9,5 @@ export type Tutorial = {
   };
   readonly title: string;
   readonly publishedAt?: Date;
-  readonly parts: readonly Part[];
+  readonly parts?: readonly Part[];
 } & Path;

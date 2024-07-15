@@ -13,7 +13,7 @@ import { Part } from '@/lib/types/part';
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: StrapiTutorials['data'][0]['attributes']['bannerLinks'];
-  readonly parts: readonly Part[];
+  readonly parts?: readonly Part[];
   readonly path: string;
   readonly product?: Product;
   readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
@@ -70,11 +70,13 @@ const TutorialPageTemplate = ({
               >
                 {title}
               </Typography>
-              <Box mt={1}>
-                {parts.map((part, index) => (
-                  <PartRenderer key={index} part={part} />
-                ))}
-              </Box>
+              {parts && (
+                <Box mt={1}>
+                  {parts.map((part, index) => (
+                    <PartRenderer key={index} part={part} />
+                  ))}
+                </Box>
+              )}
             </Grid>
             <Grid item xs={false} lg={3}>
               <Box
