@@ -23,7 +23,7 @@ You have 2 ways of accomplish it, the first one consists in downloading the whol
 npm run download-docs -w nextjs-website
 ```
 
-Or you can initialize a git submoudule on .tmp-docs directory:  
+Or you can initialize a git submodule on .tmp-docs directory:  
 ```bash
 git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs
 ``` 

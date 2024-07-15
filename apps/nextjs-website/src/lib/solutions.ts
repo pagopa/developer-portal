@@ -22,8 +22,7 @@ export function makeFullSolutionsProps(
     steps: attributes.steps.map((step) => ({
       ...step,
       products: step.products.data.map((product) => ({
-        name: product.attributes.name,
-        slug: product.attributes.slug,
+        ...product.attributes,
       })),
     })),
     products: attributes.products.data.map(({ attributes }) => ({

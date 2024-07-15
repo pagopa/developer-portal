@@ -26,7 +26,7 @@ export type SolutionTemplateProps = {
   steps: {
     title: string;
     content: BlocksContent;
-    products: Pick<Product, 'name' | 'slug'>[];
+    products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
   dirName: string;
   landingUseCaseFile: string;
@@ -85,7 +85,7 @@ const SolutionTemplate = ({
             title: step.title,
             content: step.content,
             products: step.products.map((product) => ({
-              label: product.name,
+              label: product.shortName,
               href: `/${product.slug}/overview`,
             })),
           }))}

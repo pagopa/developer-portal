@@ -14,13 +14,19 @@ import {
   makeQuickStartsProps,
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
-import { quickStartGuides } from '@/_contents/products';
+import { products, quickStartGuides } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
 import { fetchSolutions } from './strapi/solutionsCodec';
 import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
 import { makeSolutionListProps } from './solutionList';
 import { fetchSolutionList } from './strapi/solutionListCodec';
+import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { makeApiDataListPageProps } from './apiDataListPages';
+import { makeApiDataProps } from './apiDataPages';
+import { fetchApiData } from './strapi/codecs/ApiDataCodec';
+import { fetchProducts } from './strapi/codecs/ProductCodec';
+import { makeProductProps } from './products';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -60,6 +66,17 @@ export const getWebinarsProps = async () => {
   }
 };
 
+export const getProductsProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiProducts = await fetchProducts(buildEnv);
+    return makeProductProps(strapiProducts, products);
+  } else return products;
+};
+
 export const getTutorialsProps = async (productSlug?: string) => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
@@ -84,6 +101,28 @@ export const getQuickStartsProps = async () => {
   } else {
     return makeQuickStartsPropsFromStatic(quickStartGuides);
   }
+};
+
+export const getApiDataListPagesProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const apiDataListPages = await fetchApiDataListPages(buildEnv);
+    return makeApiDataListPageProps(apiDataListPages);
+  } else return [];
+};
+
+export const getApiDataProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const apiDataPages = await fetchApiData(buildEnv);
+    return makeApiDataProps(apiDataPages);
+  } else return [];
 };
 
 export const getCaseHistoriesProps = async () => {

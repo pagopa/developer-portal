@@ -15,6 +15,7 @@ export type CardsGridProps = {
   };
   containerSx?: SxProps;
   cards: {
+    target?: '_blank' | '_self' | '_parent' | '_top';
     comingSoon?: boolean;
     title: string;
     text: string;
@@ -43,6 +44,7 @@ const CardsGrid = ({
           {cards.map(
             (
               {
+                target,
                 title,
                 text,
                 href,
@@ -66,6 +68,7 @@ const CardsGrid = ({
                     title={title}
                     text={text}
                     cta={{
+                      target: target || '_self',
                       label: ctaLabel
                         ? ctaLabel
                         : t(comingSoon ? 'comingSoon' : 'moreInfo'),

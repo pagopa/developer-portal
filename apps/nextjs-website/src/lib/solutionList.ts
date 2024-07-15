@@ -19,7 +19,7 @@ export function makeSolutionListProps(
       logo: attributes.icon.data.attributes,
       slug: `solutions/${attributes.slug}`,
       tags: attributes.products.data.map((products) => ({
-        label: products.attributes.name,
+        label: products.attributes.shortName,
         path: `/${products.attributes.slug}`,
       })),
     })),
