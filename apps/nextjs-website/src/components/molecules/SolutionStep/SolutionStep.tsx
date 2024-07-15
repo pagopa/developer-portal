@@ -9,12 +9,18 @@ type SolutionStepProps = {
   title: string;
   content: BlocksContent;
   products: { label: string; href: string }[];
+  width?: string;
 };
 
-const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
+const SolutionStep = ({
+  title,
+  content,
+  products,
+  width,
+}: SolutionStepProps) => {
   const t = useTranslations('solution');
   return (
-    <Stack flexBasis={{ lg: '334px' }} gap={2} justifyContent='space-between'>
+    <Stack sx={{ width: { md: width } }} gap={2} justifyContent='space-between'>
       <Stack gap={2}>
         <Typography
           color={(theme) => theme.palette.action.active}
@@ -33,7 +39,7 @@ const SolutionStep = ({ title, content, products }: SolutionStepProps) => {
         >
           {t('steps.platforms')}
         </Typography>
-        <Box display='flex' gap={1}>
+        <Box display='flex' flexWrap={'wrap'} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
               <Tag value={product.label} color='primary' variant='light' />
