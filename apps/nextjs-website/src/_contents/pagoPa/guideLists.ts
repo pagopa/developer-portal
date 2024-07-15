@@ -34,7 +34,7 @@ export const pagoPaGuideLists: GuideListsData = {
           mobileImagePath: '/images/saci-mobile.png',
         },
         {
-          title: 'SANP 3.7.1',
+          title: 'SANP 3.8.0',
           description: {
             title: 'Argomenti trattati',
             listItems: [

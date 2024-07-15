@@ -5,7 +5,8 @@
             "label": "Menu",
             "products": "Prodotti",
             "profile": "Profilo",
-            "webinars": "Webinar"
+            "webinars": "Webinar",
+            "solutions": "Soluzioni"
         },
         "title": "DevPortal"
     },
@@ -564,6 +565,9 @@
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
+    },
+    "apiDataListPage": {
+        "explore": "Esplora le API"
     },
     "chatBot": {
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio"
