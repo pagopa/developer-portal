@@ -30,9 +30,9 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           flexDirection={{ xs: 'column', sm: 'row' }}
           justifyContent={'space-between'}
           alignItems={'center'}
-          gap={4}
-          paddingTop={{ xs: '2.5rem', sm: '75px' }}
-          paddingBottom={{ xs: '2.5rem', sm: '104px' }}
+          gap={4.2}
+          paddingTop={{ xs: '2.2rem', sm: '75px' }}
+          paddingBottom={{ xs: '2.6rem', sm: '104px' }}
           width={'100%'}
         >
           {items.map(({ title, description }, index) => (
@@ -42,11 +42,11 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
               flexDirection={'column'}
               textAlign={'center'}
               justifyContent={'start'}
-              maxWidth={maxWidth}
+              maxWidth={{ xs: 311, sm: maxWidth }}
             >
               <Typography
-                marginBottom={'.7rem'}
-                fontSize={50}
+                marginBottom={{ xs: '.3rem', sm: '.7rem' }}
+                fontSize={{ xs: 32, sm: 50 }}
                 fontWeight={700}
                 color={titleColor}
               >
@@ -55,9 +55,9 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
               {description && (
                 <Typography
                   color={textColor}
-                  fontWeight={600}
-                  fontSize={24}
-                  lineHeight={1.2}
+                  fontWeight={{ xs: 700, sm: 600 }}
+                  fontSize={{ xs: 22, sm: 24 }}
+                  lineHeight={{ xs: 1.3, sm: 1.2 }}
                 >
                   {description}
                 </Typography>
