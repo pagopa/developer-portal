@@ -14,7 +14,7 @@ import { PartCodec } from './codecs/PartCodec';
 const BannerLinkCodec = t.strict({
   id: t.number,
   title: t.union([NullToUndefinedCodec, t.string]),
-  body: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+  content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
 });
 
 export const TutorialCodec = t.strict({
