@@ -101,7 +101,13 @@ const SolutionPageTemplate = ({
           }))}
         />
       )}
-      {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />}
+      {webinars.length > 0 && (
+        <FutureWebinarsShowcase
+          webinars={webinars}
+          title='dedicatedWebinar'
+          description='solutionDescription'
+        />
+      )}
       <ProductsShowcase
         cardSize={{ xs: 12, md: 4 }}
         backgroundColor={palette.background.paper}
