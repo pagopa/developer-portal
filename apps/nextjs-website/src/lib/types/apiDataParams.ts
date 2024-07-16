@@ -1,4 +1,4 @@
-export type ApiParams = {
+export type ApiDataParams = {
   readonly params: {
     readonly productSlug: string;
     readonly apiDataSlug: string;

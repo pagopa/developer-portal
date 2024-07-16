@@ -1,9 +1,12 @@
+'use client';
 import Hero from '@/editorialComponents/Hero/Hero';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
+import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataCodec';
+import { useTranslations } from 'next-intl';
 
 export type ApiDataListPageTemplateProps = {
   readonly hero: {
@@ -27,6 +30,7 @@ export type ApiDataListPageTemplateProps = {
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
+  readonly apiData: StrapiApiData;
 };
 
 const ApiDataListPageTemplate = ({
@@ -35,6 +39,8 @@ const ApiDataListPageTemplate = ({
   bannerLinks,
   theme = 'light',
 }: ApiDataListPageTemplateProps) => {
+  const t = useTranslations('');
+
   return (
     <>
       <Hero
@@ -50,7 +56,10 @@ const ApiDataListPageTemplate = ({
       <Box paddingBottom={6}>
         <CardsGrid
           cardVariant='outlined'
-          cards={cards}
+          cards={cards.map((card) => ({
+            ...card,
+            ctaLabel: t('apiDataListPage.explore'),
+          }))}
           cardSvg={true}
           cardSize={{ xs: 12, md: 4 }}
         />
