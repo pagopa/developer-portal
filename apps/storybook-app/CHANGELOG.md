@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.4.0
+
+### Minor Changes
+
+- 2400316: Add ApiDataListPageTemplate to the project
+
 ## 0.3.2
 
 ### Patch Changes

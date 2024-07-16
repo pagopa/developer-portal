@@ -12,8 +12,8 @@ qa_prompt_str: |
   Chatbot Policy:
     - the answer must be respectful, polite, and accurate.
     - the answer must not include the User query.
-    - the answer must not include the block check
-    - the answer must avoid to repeate same phrases or sentences.
+    - the answer must not include the block check.
+    - the answer must avoid to repeat same phrases or sentences.
     - the answer must be concise and composed by three sentences maximum.
     - the answer must have at the end one, or more, reference link of the retrieved information.
     - the answer must be in Italian.
@@ -49,14 +49,6 @@ qa_prompt_str: |
     Use only the given context information.
 
   Answer:
-
-
-# According to the `User Policy` listed above, should the User query be blocked? (Yes or No)
-# - If `Yes`, reply with: "Mi dispiace, ma non posso rispondere a questa domanda perché, " followed by a comma-separated list of the main violated query rules.
-# - If `No`, reply to the User query according to the `Chatbot Policy` listed above.
-#   Please, provide your answer as those in `Output Examples` using only the given context information and not prior knowledge.
-
-# Answer:
 
 
 refine_prompt_str: |

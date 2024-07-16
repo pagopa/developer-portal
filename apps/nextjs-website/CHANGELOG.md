@@ -1,5 +1,44 @@
 # nextjs-website
 
+## 1.1.0
+
+### Minor Changes
+
+- 2400316: Add ApiDataListPageTemplate to the project
+
+### Patch Changes
+
+- 456ca42: Version update from 3.2.1 to 3.3.0 of the "Payment Notices" manual
+- 8f036cd: Show all available steps in the SolutionPreviewCard component
+- e713faa: Fix margin on solution list card labels
+
+## 1.0.0
+
+### Major Changes
+
+- e8e3ef3: Refactor homepage to include the new Ecosystem component
+
+### Patch Changes
+
+- bb29d68: Fix solution build error
+- 60664b4: Add test to homepage
+- a5152a9: Show introductionToSteps field in Solution's preview card
+
+## 0.30.0
+
+### Minor Changes
+
+- d049206: Update version of "Manuale Servizi" from v2.2 to v2.3
+- f309b42: Reduce text in topics for "I modelli dei servizi"
+- 0bda017: Add "I modelli dei servizi" to the list of appIO's manuals
+
+### Patch Changes
+
+- 6ef79e2: Fix product list data and layout in Solution page
+- 81bb7f1: Remove hardcoded webinars
+- 801e21f: Fix solution detail pages routing
+- caa48f5: Add solutions link
+
 ## 0.29.0
 
 ### Minor Changes
