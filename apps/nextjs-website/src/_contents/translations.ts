@@ -11,7 +11,7 @@ import { Product } from '@/lib/types/product';
 const productToEcosystemProduct = (product: Product) => ({
   title: product.name,
   text: product.description ?? '',
-  href: product.slug + '/overview',
+  href: `${product.slug}/overview`,
   icon: product.logo.url,
 });
 
