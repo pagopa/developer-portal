@@ -5,7 +5,6 @@ import React from 'react';
 
 type StatItem = {
   title: string;
-  subtitle?: string;
   description?: string;
 };
 
@@ -36,7 +35,7 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           paddingBottom={{ xs: '2.5rem', sm: '104px' }}
           width={'100%'}
         >
-          {items.map(({ title, subtitle, description }, index) => (
+          {items.map(({ title, description }, index) => (
             <Stack
               key={index}
               flex={1}
@@ -53,11 +52,6 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
               >
                 {title}
               </Typography>
-              {subtitle && (
-                <Typography fontWeight={700} color={textColor} variant='h6'>
-                  {subtitle}
-                </Typography>
-              )}
               {description && (
                 <Typography
                   color={textColor}
