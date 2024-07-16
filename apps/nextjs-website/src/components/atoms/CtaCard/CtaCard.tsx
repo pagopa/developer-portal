@@ -17,6 +17,7 @@ export type CtaCardProps = {
   readonly text: string;
   readonly minHeight?: number;
   readonly cta?: {
+    readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly label: string;
     readonly href?: string;
     readonly variant?: 'text' | 'contained' | 'outlined';
@@ -56,9 +57,16 @@ const CtaCard = ({
           </Typography>
           <Typography variant='body2'>{text}</Typography>
           {tags && tags.length > 0 && (
-            <Box mt={1} mr={1}>
+            <Box mt={1} mr={1} mb={-1}>
               {tags.map((tag) => (
-                <Box key={tag.label} mr={1} display='inline'>
+                <Box
+                  key={tag.label}
+                  sx={{
+                    display: 'inline',
+                    marginRight: 1,
+                    '& > span': { marginBottom: 1 },
+                  }}
+                >
                   <Tag value={tag.label} color='primary' variant='light' />
                 </Box>
               ))}
@@ -68,15 +76,15 @@ const CtaCard = ({
       </div>
       <CardActions style={{ bottom: 0 }}>
         {cta && (
-          <Button
-            disabled={comingSoon}
-            href={cta.href}
-            variant={cta.variant || 'contained'}
-            LinkComponent={Link}
-            size='small'
-          >
-            {cta.label}
-          </Button>
+          <Link href={cta.href || '#'} target={cta.target || '_self'}>
+            <Button
+              disabled={comingSoon}
+              variant={cta.variant || 'contained'}
+              size='small'
+            >
+              {cta.label}
+            </Button>
+          </Link>
         )}
       </CardActions>
     </Card>
