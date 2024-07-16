@@ -51,12 +51,7 @@ const makeStrapiTutorialsPopulate = () =>
         populate: ['image'],
       },
       parts: {
-        populate: [
-          'responseCode',
-          'requestCode',
-          'requestAttributes',
-          'backgroundImage',
-        ],
+        populate: ['backgroundImage'],
       },
       product: { populate: 'logo' },
       bannerLinks: '*',
