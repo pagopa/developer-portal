@@ -31,8 +31,8 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           justifyContent={'space-between'}
           alignItems={'center'}
           gap={4.2}
-          paddingTop={{ xs: '2.2rem', sm: '75px' }}
-          paddingBottom={{ xs: '2.6rem', sm: '104px' }}
+          paddingTop={{ xs: '2.2rem', sm: '4.688rem' }}
+          paddingBottom={{ xs: '2.6rem', sm: '6.5rem' }}
           width={'100%'}
         >
           {items.map(({ title, description }, index) => (
@@ -46,7 +46,7 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
             >
               <Typography
                 marginBottom={{ xs: '.3rem', sm: '.7rem' }}
-                fontSize={{ xs: 32, sm: 50 }}
+                fontSize={{ xs: '2rem', sm: '3.125rem' }}
                 fontWeight={700}
                 color={titleColor}
               >
@@ -56,7 +56,7 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
                 <Typography
                   color={textColor}
                   fontWeight={{ xs: 700, sm: 600 }}
-                  fontSize={{ xs: 22, sm: 24 }}
+                  fontSize={{ xs: '1.375rem', sm: '1.5rem' }}
                   lineHeight={{ xs: 1.3, sm: 1.2 }}
                 >
                   {description}
