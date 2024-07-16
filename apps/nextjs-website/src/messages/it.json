@@ -561,9 +561,12 @@
         "steps" : {
             "platforms": "Piattaforme Abilitanti"
         },
-        "ctaDetailLabel": "Scopri di più"
+        "ctaDetailLabel": "Leggi la guida completa"
     },
     "caseHistory": {
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
+    },
+    "apiDataListPage": {
+        "explore": "Esplora le API"
     }
 }
