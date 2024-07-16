@@ -60,7 +60,6 @@
       "type": "dynamiczone",
       "components": [
         "parts.alert",
-        "parts.api-tester",
         "parts.code-block",
         "parts.embed-html",
         "parts.html",
