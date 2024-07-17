@@ -21,7 +21,7 @@ import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
-import ChatbotProvider from '@/components/organisms/Auth/ChatbotProvider';
+import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
