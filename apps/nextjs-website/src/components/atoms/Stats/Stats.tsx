@@ -5,7 +5,6 @@ import React from 'react';
 
 type StatItem = {
   title: string;
-  subtitle?: string;
   description?: string;
 };
 
@@ -22,7 +21,7 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
   const textColor = useDarkTheme ? palette.common.white : palette.text.primary;
   const bgColor = useDarkTheme
     ? palette.primary.main
-    : palette.background.paper;
+    : palette.background.default;
 
   return (
     <Box bgcolor={bgColor}>
@@ -31,41 +30,35 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
           flexDirection={{ xs: 'column', sm: 'row' }}
           justifyContent={'space-between'}
           alignItems={'center'}
-          gap={4}
-          paddingTop={{ xs: '2.5rem', sm: 12 }}
-          paddingBottom={{ xs: '2.5rem', sm: 13 }}
+          gap={4.2}
+          paddingTop={{ xs: '2.2rem', sm: '4.688rem' }}
+          paddingBottom={{ xs: '2.6rem', sm: '6.5rem' }}
           width={'100%'}
         >
-          {items.map(({ title, subtitle, description }, index) => (
+          {items.map(({ title, description }, index) => (
             <Stack
               key={index}
               flex={1}
-              gap={1}
               flexDirection={'column'}
               textAlign={'center'}
               justifyContent={'start'}
-              maxWidth={maxWidth}
+              maxWidth={{ xs: 311, sm: maxWidth }}
             >
               <Typography
-                marginBottom={3}
+                marginBottom={{ xs: '.3rem', sm: '.7rem' }}
+                fontSize={{ xs: '2rem', sm: '3.125rem' }}
                 fontWeight={700}
                 color={titleColor}
-                variant='h3'
               >
                 {title}
               </Typography>
-              {subtitle && (
-                <Typography
-                  fontWeight={700}
-                  color={textColor}
-                  component={'p'}
-                  variant='h6'
-                >
-                  {subtitle}
-                </Typography>
-              )}
               {description && (
-                <Typography color={textColor} component={'p'} variant='body1'>
+                <Typography
+                  color={textColor}
+                  fontWeight={{ xs: 700, sm: 600 }}
+                  fontSize={{ xs: '1.375rem', sm: '1.5rem' }}
+                  lineHeight={{ xs: 1.3, sm: 1.2 }}
+                >
                   {description}
                 </Typography>
               )}

@@ -1,5 +1,26 @@
 # nextjs-website
 
+## 2.0.0
+
+### Major Changes
+
+- 093cc4b: Add ApiDataListPage and update api page to show content from CMS
+
+### Minor Changes
+
+- 2b0f3cf: Fix the CTA in solution page
+- 258a19d: Fix stats layout
+- b01d5eb: fix href for ecosystem
+- 2984b84: Add shortName to Product and use it in labels
+- 73c7dc1: Update SANP version from 3.7.1 to 3.8.0
+
+### Patch Changes
+
+- 9af4032: Remove the link to the SOAP API from pagoPA overview page
+- a5f506b: Fix solution webinars title
+- 818c087: Fix label "Esplora le API" in ApiDataListPage
+- 5c3949c: Fix ApiDataPage generateStaticParams function
+
 ## 1.1.0
 
 ### Minor Changes
