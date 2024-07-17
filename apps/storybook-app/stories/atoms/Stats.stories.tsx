@@ -10,20 +10,18 @@ export default meta;
 
 export const Showcase: StoryObj<typeof Stats> = {
   args: {
+    maxWidth: 265,
     items: [
       {
         title: '+50%',
-        subtitle: 'Some Subtitle',
         description: 'Some very long text description',
       },
       {
         title: '15%',
-        subtitle: 'Some Subtitle',
         description: 'Some very long text description',
       },
       {
         title: '2 mesi',
-        subtitle: 'Some Subtitle',
         description: 'Some very long text description',
       },
     ],
