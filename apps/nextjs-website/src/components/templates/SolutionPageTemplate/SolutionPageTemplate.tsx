@@ -94,14 +94,20 @@ const SolutionPageTemplate = ({
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
       {stats && (
         <Stats
-          maxWidth={200}
+          maxWidth={265}
           items={stats.map((stat) => ({
             title: stat.title,
             description: stat.description,
           }))}
         />
       )}
-      {webinars.length > 0 && <FutureWebinarsShowcase webinars={webinars} />}
+      {webinars.length > 0 && (
+        <FutureWebinarsShowcase
+          webinars={webinars}
+          title='dedicatedWebinar'
+          description='solutionDescription'
+        />
+      )}
       <ProductsShowcase
         cardSize={{ xs: 12, md: 4 }}
         backgroundColor={palette.background.paper}
