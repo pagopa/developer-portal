@@ -15,7 +15,7 @@ export default meta;
 
 export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    message: 'Hello I\'m a ChatBot',
+    message: "Hello I'm a ChatBot",
     timestamp: '11:22',
   },
   decorators: [decorator],
