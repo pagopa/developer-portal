@@ -127,6 +127,16 @@
       "relation": "manyToMany",
       "target": "api::solution.solution",
       "inversedBy": "webinars"
+    },
+    "relatedResources": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "webinar.related-resources"
     }
   }
 }
