@@ -127,7 +127,6 @@ const Chat = ({ chatMessages }: ChatProps) => {
           <Box sx={{ paddingTop: '1rem' }}>
             <ChatInputText
               onSubmit={(message) => {
-                console.log(message);
                 return null;
               }}
             />
