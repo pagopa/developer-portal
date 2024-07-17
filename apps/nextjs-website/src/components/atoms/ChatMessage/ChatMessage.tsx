@@ -1,6 +1,20 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
+import { defaultLocale } from '@/config';
+
+type DateFormatOptions = {
+  locale?: string;
+  options?: Intl.DateTimeFormatOptions;
+};
+
+const DEFAULT_DATE_FORMAT = {
+  locale: defaultLocale,
+  options: {
+    timeStyle: 'short',
+    hourCycle: 'h23',
+  },
+} satisfies DateFormatOptions;
 
 export type Message = {
   text: string;
@@ -16,6 +30,12 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
     ? palette.background.paper
     : `${palette.info.light}80`;
   const textColor = palette.text.primary;
+
+  const timeLabel = new Intl.DateTimeFormat(
+    DEFAULT_DATE_FORMAT.locale,
+    DEFAULT_DATE_FORMAT.options
+  ).format(new Date(timestamp));
+
   return (
     <Box
       bgcolor={bgColor}
@@ -25,8 +45,8 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
     >
       <Stack alignItems={'center'} direction={'row'}>
         {isQuestion ? <PersonOutlineIcon /> : <AdbOutlinedIcon />}
-        <Typography color={textColor} component={'span'}>
-          {timestamp}
+        <Typography color={textColor} component={'span'} marginLeft={1}>
+          {timeLabel}
         </Typography>
       </Stack>
       <Typography
