@@ -1,4 +1,9 @@
-import { baseUrl, cookieDomainScript, isProduction } from '@/config';
+import {
+  baseUrl,
+  cookieDomainScript,
+  isChatbotActive,
+  isProduction,
+} from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -16,6 +21,7 @@ import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
 import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
+import ChatbotProvider from '@/components/organisms/Auth/ChatbotProvider';
 
 const MATOMO_SCRIPT = `
 var _paq = (window._paq = window._paq || []);
@@ -91,9 +97,11 @@ export default async function RootLayout({
           <BodyWrapper>
             <CookieBannerScript cookieDomainScript={cookieDomainScript} />
             <AuthProvider>
-              <SiteHeader products={products} />
-              <main>{children}</main>
-              <SiteFooter />
+              <ChatbotProvider isChatbotVisible={isChatbotActive}>
+                <SiteHeader products={products} />
+                <main>{children}</main>
+                <SiteFooter />
+              </ChatbotProvider>
             </AuthProvider>
           </BodyWrapper>
         </NextIntlContext>
