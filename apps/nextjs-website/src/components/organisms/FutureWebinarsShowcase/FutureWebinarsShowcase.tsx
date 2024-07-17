@@ -15,13 +15,16 @@ export type FutureWebinarsShowcaseProps = {
     | 'dontLoseNextPlural'
     | 'next'
     | 'our'
-    | 'participateTo';
+    | 'participateTo'
+    | 'dedicatedWebinar';
+  description?: 'description' | 'solutionDescription';
   webinars: Webinar[];
 };
 
 const FutureWebinarsShowcase = ({
   link,
   title = 'our',
+  description = 'description',
   webinars,
 }: FutureWebinarsShowcaseProps) => {
   const theme = useTheme();
@@ -57,7 +60,7 @@ const FutureWebinarsShowcase = ({
               {t(`title.${title}`, { webinars: webinars.length })}
             </Typography>
             <Typography variant='body2' color={theme.palette.common.white}>
-              {t('description')}
+              {t(description)}
             </Typography>
             {link && (
               <LinkButton

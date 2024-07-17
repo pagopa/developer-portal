@@ -1,6 +1,6 @@
 ---
-"nextjs-website": patch
-"storybook-app": patch
+"nextjs-website": minor
+"storybook-app": minor
 ---
 
 Add new atom component ChatInputText

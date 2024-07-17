@@ -1,5 +1,6 @@
 import { SendOutlined } from '@mui/icons-material';
 import { IconButton, InputBase, Paper, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 type ChatInputTextProps = {
@@ -7,9 +8,9 @@ type ChatInputTextProps = {
 };
 
 const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
+  const t = useTranslations();
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
-  const iconColor = palette.grey[700];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -17,11 +18,10 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(message);
-    setMessage('');
+    submit();
   };
 
-  const handleSend = () => {
+  const submit = () => {
     onSubmit(message);
     setMessage('');
   };
@@ -39,15 +39,15 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
     >
       <InputBase
         fullWidth
-        placeholder='Scrivi un nuovo messaggio'
+        placeholder={t('chatBot.writeNewMessagePlaceholder')}
         value={message}
         onChange={handleChange}
         sx={{ ml: 1 }}
       />
       <IconButton
         aria-label='send'
-        onClick={handleSend}
-        sx={{ p: '10px', color: iconColor, cursor: 'pointer' }}
+        onClick={submit}
+        sx={{ p: '10px', color: palette.grey[700], cursor: 'pointer' }}
       >
         <SendOutlined />
       </IconButton>
