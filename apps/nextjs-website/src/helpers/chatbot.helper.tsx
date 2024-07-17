@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { getChatbotQueries, sendChatbotQuery } from '@/lib/chatbot';
 import { Query } from '@/lib/chatbot/queries';
+import { set } from 'fp-ts';
 
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,13 +30,24 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
 
   const sendQuery = (queryMessage: string) => {
     setIsAwaitingResponse(true);
+    const queriedAt = new Date().toISOString();
+    setQueries([
+      ...queries,
+      {
+        sessionId: '',
+        question: queryMessage,
+        queriedAt: queriedAt,
+        answer: null,
+        createdAt: null,
+      },
+    ]);
     sendChatbotQuery({
       sessionId: sessionId || '',
       question: queryMessage,
-      queriedAt: new Date().toISOString(),
+      queriedAt: queriedAt,
     }).then((response) => {
       setIsAwaitingResponse(false);
-      setQueries([...queries, response]);
+      setQueries([...queries.slice(0, queries.length - 2), response]);
     });
     return null;
   };
