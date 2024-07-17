@@ -1,16 +1,16 @@
 import Chat from '@/components/molecules/Chat/Chat';
 import ChatButton from '@/components/atoms/ChatButton/ChatButton';
 import { Close } from '@mui/icons-material';
-// import { useUser } from '@/helpers/user.helper';
 import { Box, IconButton, Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { Query } from '@/lib/chatbot/queries';
 
-type ChatModalProps = {
-  chatMessages: { message: string; sender?: string; timestamp: string }[];
+type ChatbotLayoutProps = {
+  queries: Query[];
+  onSendQuery: (query: string) => null;
 };
 
-const ChatModal = ({ chatMessages }: ChatModalProps) => {
-  // const { user, loading } = useUser(); // PENDING: Uncomment this line when chatbot APIs are ready
+const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -28,7 +28,14 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
   const id = open ? 'chat-modal' : undefined;
 
   return (
-    <div>
+    <Box
+      sx={{
+        position: 'fixed',
+        bottom: '2rem',
+        right: '2rem',
+        zIndex: 1000,
+      }}
+    >
       <ChatButton
         aria-describedby={id}
         chatOpen={open}
@@ -48,7 +55,16 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
           vertical: 'bottom',
           horizontal: 'right',
         }}
-        sx={{ maxWidth: '60%' }}
+        disableScrollLock
+        slotProps={{
+          paper: {
+            sx: {
+              backgroundColor: 'transparent',
+              borderRadius: 3,
+              width: '40%',
+            },
+          },
+        }}
       >
         <Box
           bgcolor={'black'}
@@ -73,11 +89,11 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
               <Close sx={{ color: 'white' }} />
             </IconButton>
           </Stack>
-          <Chat chatMessages={chatMessages} />
+          <Chat queries={queries} onSendQuery={onSendQuery} />
         </Box>
       </Popover>
-    </div>
+    </Box>
   );
 };
 
-export default ChatModal;
+export default ChatbotLayout;
