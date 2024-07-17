@@ -1,4 +1,6 @@
-import ChatMessage from '@/components/atoms/ChatMessage/ChatMessage';
+import ChatMessage, {
+  Message,
+} from '@/components/atoms/ChatMessage/ChatMessage';
 import {
   Box,
   IconButton,
@@ -14,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Delete, History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
+import { compact } from 'lodash';
 
 type ChatProps = {
   queries: Query[];
@@ -25,8 +28,8 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const messages = useMemo(
     () =>
-      queries.flatMap((q) =>
-        [
+      compact(
+        queries.flatMap((q) => [
           q.question && q.queriedAt
             ? {
                 text: q.question,
@@ -41,10 +44,10 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
                 timestamp: q.createdAt,
               }
             : null,
-        ].filter((message) => !!message)
+        ])
       ),
     [queries]
-  );
+  ) satisfies Message[];
   const open = Boolean(anchorEl);
 
   const scrollRef = useRef<HTMLDivElement>(null);

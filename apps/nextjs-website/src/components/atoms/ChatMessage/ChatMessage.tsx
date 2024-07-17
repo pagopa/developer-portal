@@ -2,11 +2,13 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 
-type ChatMessageProps = {
+export type Message = {
   text: string;
   isQuestion: boolean;
   timestamp: string;
 };
+
+type ChatMessageProps = Message;
 
 const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
