@@ -13,12 +13,14 @@ import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useRef, useState } from 'react';
 import { Delete, History } from '@mui/icons-material';
+import { useTranslations } from 'next-intl';
 
 type ChatProps = {
   chatMessages: { message: string; sender?: string; timestamp: string }[];
 };
 
 const Chat = ({ chatMessages }: ChatProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -30,7 +32,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
     }
   }, [chatMessages]);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChatMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -54,7 +56,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
             aria-controls='chat-menu'
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={handleChatMenuClick}
           >
             <MenuIcon />
           </IconButton>
@@ -79,13 +81,13 @@ const Chat = ({ chatMessages }: ChatProps) => {
               <ListItemIcon>
                 <Delete fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Delete</ListItemText>
+              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <History fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Cronologia Chat</ListItemText>
+              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
             </MenuItem>
           </Menu>
         </Stack>
