@@ -11,16 +11,40 @@ import {
 } from '@mui/material';
 import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
 import MenuIcon from '@mui/icons-material/Menu';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Delete, History } from '@mui/icons-material';
+import { Query } from '@/lib/chatbot/queries';
 
 type ChatProps = {
-  chatMessages: { message: string; sender?: string; timestamp: string }[];
+  queries: Query[];
+  onSendQuery: (query: string) => null;
 };
 
-const Chat = ({ chatMessages }: ChatProps) => {
+const Chat = ({ queries, onSendQuery }: ChatProps) => {
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const messages = useMemo(
+    () =>
+      queries.flatMap((q) =>
+        [
+          q.question && q.queriedAt
+            ? {
+                text: q.question,
+                isQuestion: true,
+                timestamp: q.queriedAt,
+              }
+            : null,
+          q.answer && q.createdAt
+            ? {
+                text: q.answer,
+                isQuestion: false,
+                timestamp: q.createdAt,
+              }
+            : null,
+        ].filter((message) => !!message)
+      ),
+    [queries]
+  );
   const open = Boolean(anchorEl);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -28,7 +52,7 @@ const Chat = ({ chatMessages }: ChatProps) => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [chatMessages]);
+  }, [queries]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -111,26 +135,21 @@ const Chat = ({ chatMessages }: ChatProps) => {
               paddingRight: '0.5rem',
             }}
           >
-            {chatMessages.map((chatMessage, index) => (
+            {messages.map((message, index) => (
               <Stack
                 key={index}
-                ref={index === chatMessages.length - 1 ? scrollRef : null}
+                ref={index === message.text.length - 1 ? scrollRef : null}
                 direction={'row'}
                 width={'100%'}
-                justifyContent={chatMessage.sender ? 'flex-end' : 'flex-start'}
+                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
                 marginBottom={'1rem'}
               >
-                <ChatMessage {...chatMessage} />
+                <ChatMessage {...message} />
               </Stack>
             ))}
           </Stack>
           <Box sx={{ paddingTop: '1rem' }}>
-            <ChatInputText
-              onSubmit={(message) => {
-                console.log(message);
-                return null;
-              }}
-            />
+            <ChatInputText onSubmit={onSendQuery} />
           </Box>
         </Stack>
       </Box>

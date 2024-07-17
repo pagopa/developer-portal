@@ -3,17 +3,17 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 
 type ChatMessageProps = {
-  message: string;
-  sender?: string;
+  text: string;
+  isQuestion: boolean;
   timestamp: string;
 };
 
-const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
+const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
-  const bgColor = sender ? palette.background.paper : `${palette.info.light}80`;
-  const titleColor = palette.text.primary;
+  const bgColor = isQuestion
+    ? palette.background.paper
+    : `${palette.info.light}80`;
   const textColor = palette.text.primary;
-  const senderLabel = sender || 'AI ChatBot';
   return (
     <Box
       bgcolor={bgColor}
@@ -21,22 +21,8 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
       padding={{ xs: '1rem' }}
       sx={{ width: '66.6%' }}
     >
-      <Stack
-        justifyContent={'space-between'}
-        alignItems={'center'}
-        direction={'row'}
-      >
-        <Stack alignItems={'center'} direction={'row'}>
-          {sender ? <PersonOutlineIcon /> : <AdbOutlinedIcon />}
-          <Typography
-            marginLeft={'0.5rem'}
-            fontWeight={600}
-            color={titleColor}
-            component={'span'}
-          >
-            {senderLabel}
-          </Typography>
-        </Stack>
+      <Stack alignItems={'center'} direction={'row'}>
+        {isQuestion ? <PersonOutlineIcon /> : <AdbOutlinedIcon />}
         <Typography color={textColor} component={'span'}>
           {timestamp}
         </Typography>
@@ -47,7 +33,7 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
         marginTop={'1rem'}
         paragraph
       >
-        {message}
+        {text}
       </Typography>
     </Box>
   );
