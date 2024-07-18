@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-Add relatedResources to Strapi's Webinar entity
+Add RelatedResources component and add relatedResources attribute to Strapi's Webinar entity

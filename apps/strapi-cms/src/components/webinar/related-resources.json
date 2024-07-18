@@ -7,6 +7,10 @@
   },
   "options": {},
   "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
     "resources": {
       "type": "component",
       "repeatable": true,
