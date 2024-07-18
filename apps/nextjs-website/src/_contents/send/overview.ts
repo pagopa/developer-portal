@@ -82,7 +82,7 @@ export const sendOverview: OverviewData = {
         title: 'API B2B per le PA',
         text: 'Esplora le API per per capire come inviare richieste di notifiche e ottenere informazioni',
         href: sendApiPath.path ?? '#',
-        iconName: 'FolderOutlined',
+        iconName: 'Code',
         iconColor: 'primary.dark',
       },
     ],
