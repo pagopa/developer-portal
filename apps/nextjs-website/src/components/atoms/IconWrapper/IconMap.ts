@@ -22,6 +22,7 @@ import TimerSharp from '@mui/icons-material/TimerSharp';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
+import Code from '@mui/icons-material/Code';
 import { MediumIcon } from '@pagopa/mui-italia/dist/icons/MediumIcon';
 import { ChangeCircle, TimerOutlined } from '@mui/icons-material';
 
@@ -33,6 +34,7 @@ export const ICON_MAP = {
   ExitToApp: ExitToApp,
   Feedback: Feedback,
   FlagOutlined: FlagOutlined,
+  Code: Code,
   FolderOutlined: FolderOutlined,
   HeadsetMic: HeadsetMic,
   Instagram: Instagram,

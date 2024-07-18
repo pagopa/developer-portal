@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 2.0.0
+
+### Major Changes
+
+- c24410c: Add parts on tutorial on CMS
+- fc67e9c: Remove incorrect plural from SolutionsListPage on CMS
+
 ## 1.1.0
 
 ### Minor Changes

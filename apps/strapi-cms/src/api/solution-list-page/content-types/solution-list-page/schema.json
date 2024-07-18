@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "solutions_list_pages",
+  "collectionName": "solution_list_pages",
   "info": {
-    "singularName": "solutions-list-page",
-    "pluralName": "solutions-list-pages",
-    "displayName": "SolutionsListPage",
+    "singularName": "solution-list-page",
+    "pluralName": "solution-list-pages",
+    "displayName": "SolutionListPage",
     "description": ""
   },
   "options": {
@@ -51,7 +51,6 @@
       "component": "common.case-histories"
     },
     "features": {
-      "displayName": "Features",
       "type": "component",
       "repeatable": false,
       "pluginOptions": {

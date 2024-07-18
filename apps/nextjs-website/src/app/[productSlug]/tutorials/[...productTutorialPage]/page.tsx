@@ -88,7 +88,7 @@ const Page = async ({ params }: { params: Params }) => {
     return (
       <TutorialTemplate
         bannerLinks={strapiTutorialProps.bannerLinks}
-        content={strapiTutorialProps.content}
+        parts={strapiTutorialProps.parts}
         path={strapiTutorialProps.path}
         product={strapiTutorialProps.product}
         relatedLinks={strapiTutorialProps.relatedLinks}

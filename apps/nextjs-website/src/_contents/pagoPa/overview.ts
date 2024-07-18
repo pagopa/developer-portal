@@ -64,7 +64,7 @@ export const pagoPaOverview: OverviewData = {
         title: 'Documentazione API',
         text: 'Esplora le API REST e SOAP di pagoPA',
         href: pagoPa.subpaths.api?.path,
-        iconName: 'FolderOutlined',
+        iconName: 'Code',
         iconColor: 'primary.dark',
       },
     ],
