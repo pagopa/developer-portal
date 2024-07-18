@@ -102,11 +102,16 @@ const ApiSection = ({
     () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
     [selectedItemURL, specURLs]
   );
-  const textColor = palette.primary.contrastText;
+  const borderColor = palette.divider;
   const styles = getStyles(palette);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        borderTop: { md: `1px solid ${borderColor}` },
+        marginTop: { xs: '-42px', sm: '-22px', md: 0 },
+      }}
+    >
       {specURLs.length > 1 && specURLsName && (
         <Stack
           sx={styles.selectContainer}
