@@ -3,6 +3,7 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
+import { computeId } from '../PartRendererMenu/PartRendererMenu';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -56,7 +57,12 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor}>
+          <Typography
+            marginY={4}
+            variant={`h${level}`}
+            color={textColor}
+            id={computeId('blockRenderer', children)}
+          >
             {children}
           </Typography>
         ),

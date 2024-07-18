@@ -9,6 +9,7 @@ import { StrapiTutorials } from '@/lib/strapi/tutorial';
 import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
+import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
@@ -21,7 +22,6 @@ type TutorialPageTemplateProps = {
 };
 
 const TutorialPageTemplate = ({
-  bannerLinks,
   parts,
   path,
   product,
@@ -77,6 +77,17 @@ const TutorialPageTemplate = ({
                   ))}
                 </Box>
               )}
+            </Grid>
+            <Grid item xs={false} lg={4}>
+              <Box
+                sx={{
+                  position: 'sticky',
+                  top: 200,
+                  maxWidth: '270px',
+                }}
+              >
+                <PartRendererMenu parts={parts ?? []} />
+              </Box>
             </Grid>
             <Grid item xs={false} lg={3}>
               <Box
