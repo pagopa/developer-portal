@@ -1,16 +1,9 @@
 import yaml
 import mangum
 import uvicorn
-import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
-
-print('---------------- env ---------------')
-print(os.getenv('ARG AWS_ACCESS_KEY_ID'))
-print(os.getenv('ARG AWS_SECRET_ACCESS_KEY'))
-print(os.getenv('ARG AWS_REGION'))
-print('------------------------------------')
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
