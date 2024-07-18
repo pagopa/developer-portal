@@ -570,5 +570,8 @@
     },
     "apiDataListPage": {
         "explore": "Esplora le API"
+    },
+    "chatBot": {
+        "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio"
     }
 }

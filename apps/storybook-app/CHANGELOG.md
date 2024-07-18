@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.4.1
+
+### Patch Changes
+
+- 258a19d: Fix stats layout
+
 ## 0.4.0
 
 ### Minor Changes

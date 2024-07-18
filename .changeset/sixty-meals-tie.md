@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix solution webinars title
+Replace icons in startInfo
