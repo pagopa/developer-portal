@@ -106,7 +106,12 @@ const ApiSection = ({
   const styles = getStyles(palette);
 
   return (
-    <Box sx={{ borderTop: '1px solid', borderColor: { borderColor } }}>
+    <Box
+      sx={{
+        borderTop: { md: `1px solid ${borderColor}` },
+        marginTop: { xs: '-42px', sm: '-22px', md: 0 },
+      }}
+    >
       {specURLs.length > 1 && specURLsName && (
         <Stack
           sx={styles.selectContainer}
