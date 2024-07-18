@@ -6,7 +6,10 @@ import Image from 'next/image';
 import React from 'react';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 
-type SpeakerPreviewProps = { compactMode?: boolean } & Speaker;
+type SpeakerPreviewProps = {
+  compactMode?: boolean;
+  flexDirection?: 'column' | 'row';
+} & Speaker;
 
 type SpeakerAvatarProps = SpeakerPreviewProps;
 
@@ -25,8 +28,8 @@ const SpeakerAvatar = ({
       sizes='100vw'
       style={{
         borderRadius: '100%',
-        width: compactMode ? '64px' : '145px',
-        height: 'auto',
+        width: compactMode ? '64px' : '124px',
+        height: compactMode ? '64px' : '124px',
       }}
     />
   ) : (
@@ -64,6 +67,7 @@ const SpeakerInfo = ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        gap: '6px',
       }}
     >
       {compactMode ? (
@@ -75,7 +79,7 @@ const SpeakerInfo = ({
         </>
       ) : (
         <>
-          <Typography variant='h5' fontWeight={700}>
+          <Typography fontWeight={700} fontSize={'24px'} lineHeight={'32px'}>
             {name}
           </Typography>
           <Typography
@@ -94,12 +98,15 @@ const SpeakerInfo = ({
   );
 };
 
-const SpeakerPreview = ({ compactMode, ...speaker }: SpeakerPreviewProps) => {
-  const flexDirection = compactMode ? 'row' : { xs: 'column', md: 'row' };
-
+const SpeakerPreview = ({
+  compactMode,
+  flexDirection = 'column',
+  ...speaker
+}: SpeakerPreviewProps) => {
   return (
     <Box
       sx={{
+        width: compactMode ? '250px' : '265px',
         display: 'flex',
         flexDirection,
         gap: 3,

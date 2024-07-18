@@ -166,6 +166,8 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
                   description={speaker.description}
                   jobTitle={speaker.jobTitle}
                   avatar={speaker.avatar}
+                  flexDirection='row'
+                  compactMode={true}
                 />
               ))}
             </Stack>
