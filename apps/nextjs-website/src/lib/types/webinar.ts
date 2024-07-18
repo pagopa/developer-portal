@@ -1,6 +1,11 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
+export type QuestionsAndAnswers = {
+  readonly question: string;
+  readonly answer: BlocksContent;
+};
+
 export type Webinar = {
   readonly description: string;
   // Use bodyContent instead, remove when webinars will be managed by Strapi
@@ -36,6 +41,7 @@ export type Webinar = {
       readonly iconName: string;
     }[];
   };
+  readonly questionsAndAnswers?: readonly QuestionsAndAnswers[];
 };
 
 export type StaticWebinar = Webinar & { readonly isVisibleInHome: boolean };
