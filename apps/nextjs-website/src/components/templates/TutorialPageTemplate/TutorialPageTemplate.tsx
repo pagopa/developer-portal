@@ -3,17 +3,17 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { Box, Grid, Typography } from '@mui/material';
-import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { StrapiTutorials } from '@/lib/strapi/tutorial';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Product } from '@/lib/types/product';
+import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
+import { Part } from '@/lib/types/part';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: StrapiTutorials['data'][0]['attributes']['bannerLinks'];
-  readonly content?: BlocksContent;
+  readonly parts?: readonly Part[];
   readonly path: string;
   readonly product?: Product;
   readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
@@ -22,7 +22,7 @@ type TutorialPageTemplateProps = {
 
 const TutorialPageTemplate = ({
   bannerLinks,
-  content,
+  parts,
   path,
   product,
   relatedLinks,
@@ -70,25 +70,13 @@ const TutorialPageTemplate = ({
               >
                 {title}
               </Typography>
-              <Box mt={1}>
-                <BlocksRendererClient
-                  content={content}
-                  listStyle={{
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    lineHeight: '24px',
-                    listStylePosition: 'outside',
-                    listStyleType: 'disc',
-                    paddingLeft: '40px',
-                  }}
-                  paragraphSx={{
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    lineHeight: '24px',
-                    my: 2,
-                  }}
-                />
-              </Box>
+              {parts && (
+                <Box mt={1}>
+                  {parts.map((part, index) => (
+                    <PartRenderer key={index} part={part} />
+                  ))}
+                </Box>
+              )}
             </Grid>
             <Grid item xs={false} lg={3}>
               <Box

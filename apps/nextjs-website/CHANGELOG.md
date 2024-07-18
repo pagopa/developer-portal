@@ -1,5 +1,22 @@
 # nextjs-website
 
+## 3.0.0
+
+### Major Changes
+
+- 046d050: Add parts on tutorial on FE
+
+### Minor Changes
+
+- 0689ebb: Add ChatBot FAB
+- bf211f4: Add ChatMessage atom component
+- 5a64300: Add new atom component ChatInputText
+
+### Patch Changes
+
+- 78343e2: Replace icons in startInfo
+- 23dc5cf: Add BorderTop to ApiSection
+
 ## 2.0.0
 
 ### Major Changes

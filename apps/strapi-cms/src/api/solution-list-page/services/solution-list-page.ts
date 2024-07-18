@@ -1,9 +1,9 @@
 /**
- * solutions-list-page service
+ * solution-list-page service
  */
 
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService(
-  'api::solutions-list-page.solutions-list-page'
+  'api::solution-list-page.solution-list-page'
 );
