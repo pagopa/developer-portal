@@ -39,7 +39,6 @@ const StartInfo = ({
           <SectionTitle title={title} />
         </Box>
         <CardsGrid
-          cardSvg={true}
           cardVariant={cardVariant}
           cardSize={{
             xs: 12,
