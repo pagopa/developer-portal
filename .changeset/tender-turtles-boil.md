@@ -1,5 +1,5 @@
 ---
-"strapi-cms": patch
+"strapi-cms": major
 ---
 
 Remove incorrect plural from SolutionsListPage on CMS
