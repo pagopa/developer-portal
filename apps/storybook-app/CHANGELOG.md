@@ -1,5 +1,13 @@
 # storybook-app
 
+## 0.5.0
+
+### Minor Changes
+
+- 0689ebb: Add ChatBot FAB
+- bf211f4: Add ChatMessage atom component
+- 5a64300: Add new atom component ChatInputText
+
 ## 0.4.1
 
 ### Patch Changes
