@@ -31,8 +31,8 @@ const SpeakerAvatar = ({
       sizes='100vw'
       style={{
         borderRadius: '100%',
-        width: compactMode ? '64px' : isSmallScreen ? '80px' : '124px',
-        height: compactMode ? '64px' : isSmallScreen ? '80px' : '124px',
+        width: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
+        height: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
       }}
     />
   ) : (
@@ -46,8 +46,8 @@ const SpeakerAvatar = ({
         borderWidth: '1px',
         borderRadius: '100%',
         borderColor: palette.divider,
-        width: compactMode ? '64px' : '145px',
-        height: compactMode ? '64px' : '145px',
+        width: compactMode ? '4rem' : '9.063rem',
+        height: compactMode ? '4rem' : '9.063rem',
       }}
     >
       <PersonOutline fontSize={compactMode ? 'medium' : 'large'} />
@@ -67,20 +67,20 @@ const SpeakerInfo = ({
   return (
     <Box
       sx={{
-        maxHeight: '80px',
-        maxWidth: '250px',
+        maxHeight: '5rem',
+        maxWidth: '15.625rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        gap: '6px',
+        gap: '0.375rem',
       }}
     >
       {compactMode ? (
         <>
-          <Typography fontSize={'18px'} fontWeight={600}>
+          <Typography fontSize={'1.125rem'} fontWeight={600}>
             {name}
           </Typography>
-          <Typography fontSize={'18px'} fontWeight={400}>
+          <Typography fontSize={'1.125rem'} fontWeight={400}>
             {jobTitle}
           </Typography>
         </>
@@ -88,13 +88,13 @@ const SpeakerInfo = ({
         <>
           <Typography
             fontWeight={700}
-            fontSize={{ xs: '22px', md: '24px' }}
-            lineHeight={{ xs: '29px', md: '32px' }}
+            fontSize={{ xs: '1.375rem', md: '1.5rem' }}
+            lineHeight={{ xs: '1.813rem', md: '2rem' }}
           >
             {name}
           </Typography>
           <Typography
-            fontSize={{ xs: '16px', md: '18px' }}
+            fontSize={{ xs: '1rem', md: '1.125rem' }}
             fontWeight={400}
             color={palette.text.secondary}
           >
@@ -120,7 +120,11 @@ const SpeakerPreview = ({
   return (
     <Box
       sx={{
-        width: compactMode ? '250px' : isSmallScreen ? '312px' : '265px',
+        width: compactMode
+          ? '15.625rem'
+          : isSmallScreen
+          ? '19.5rem'
+          : '16.563rem',
         display: 'flex',
         flexDirection: { sm: 'row', md: flexDirection },
         gap: 3,
