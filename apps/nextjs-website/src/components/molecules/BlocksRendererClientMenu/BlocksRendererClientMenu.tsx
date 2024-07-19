@@ -1,10 +1,10 @@
 'use client';
 import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
-import Image from 'next/image';
 import { SxProps } from '@mui/system';
-import { ReactNode } from 'react';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
+import { ReactElement, ReactNode } from 'react';
+import React from 'react';
 
 type BlocksRendererClientMenuProps = {
   content?: BlocksContent;
@@ -17,13 +17,6 @@ type BlocksRendererClientMenuProps = {
 const BlocksRendererClientMenu = ({
   content,
   color,
-  paragraphSx,
-  listStyle,
-  imageStyle = {
-    height: 'auto',
-    width: '100%',
-    maxWidth: '820px',
-  },
 }: BlocksRendererClientMenuProps) => {
   const { palette } = useTheme();
 
@@ -35,24 +28,22 @@ const BlocksRendererClientMenu = ({
     <BlocksRenderer
       content={content}
       blocks={{
-        image: ({ image }) => null,
-        paragraph: ({ children }) => null,
-        heading: ({ children, level }) => (
+        image: () => null,
+        paragraph: () => null,
+        heading: ({ children }) => (
           <a
             href={`#${computeId('blockRenderer', children)}`}
-            style={{ textDecoration: 'none' }}
+            style={{
+              textDecoration: 'none',
+              margin: 0,
+              padding: 0,
+              marginBottom: '16px',
+            }}
           >
-            <Typography
-              marginY={4}
-              variant={`h${level}`}
-              color={textColor}
-              id={computeId('blockRenderer', children)}
-            >
-              {children}
-            </Typography>
+            <Typography color={textColor}>{children}</Typography>
           </a>
         ),
-        list: ({ children }) => null,
+        list: () => null,
       }}
     />
   );

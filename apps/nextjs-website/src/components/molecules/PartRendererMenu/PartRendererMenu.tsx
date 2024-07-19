@@ -2,9 +2,10 @@
 import { Part } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import BlocksRendererClientMenu from '../BlocksRendererClientMenu/BlocksRendererClientMenu';
+import { translations } from '@/_contents/translations';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
@@ -12,18 +13,18 @@ type PartRendererMenuProps = {
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   return (
-    <div>
+    <Box
+      sx={{
+        '& > br': {
+          display: 'none',
+        },
+      }}
+    >
+      <Typography variant='h6' sx={{ marginBottom: '16px' }}>
+        {translations.productGuidePage.onThisPage}
+      </Typography>
       {props.parts.map((part) => {
         switch (part.component) {
-          case 'alert':
-            return (
-              <a
-                href={`#${computeId('alert', `${part.title}${part.text}`)}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <Typography>{part.title}</Typography>
-              </a>
-            );
           case 'blockRenderer':
             return <BlocksRendererClientMenu content={part.html} />;
           case 'codeBlock':
@@ -36,7 +37,8 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               </a>
             );
           case 'typography':
-            if (!part.variant?.includes('h')) return null;
+            if (['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
+              return null;
 
             return (
               <a
@@ -50,7 +52,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
             return null;
         }
       })}
-    </div>
+    </Box>
   );
 };
 
@@ -63,6 +65,7 @@ export function computeId(type: string, children: ReactNode | string): string {
     // if children is react element and has props text return that
     if (children && typeof children === 'object' && 'props' in children) {
       const text = children.props.text;
+      return `${type}-${text}`;
     }
 
     return children?.toString() ?? '';

@@ -78,14 +78,18 @@ const TutorialPageTemplate = ({
                 </Box>
               )}
             </Grid>
-            <Grid item xs={false} lg={4}>
-              <Box
-                sx={{
-                  position: 'sticky',
-                  top: 200,
-                  maxWidth: '270px',
-                }}
-              >
+            <Grid
+              item
+              xs={false}
+              lg={4}
+              sx={{
+                position: 'sticky',
+                top: 200,
+                maxWidth: '270px !important',
+              }}
+              id='lateral-menu'
+            >
+              <Box>
                 <PartRendererMenu parts={parts ?? []} />
               </Box>
             </Grid>
