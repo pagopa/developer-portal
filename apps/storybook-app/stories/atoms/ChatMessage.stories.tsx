@@ -8,16 +8,14 @@ const meta: Meta<typeof ChatMessage> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ backgroundColor: '#D9D9D9', padding: '2rem' }}>
-    {story()}
-  </div>
+  <div style={{ backgroundColor: '#D9D9D9', padding: '2rem' }}>{story()}</div>
 );
 
 export default meta;
 
 export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    message: 'Hello I\'m a ChatBot',
+    message: "Hello I'm a ChatBot",
     timestamp: '11:22',
   },
   decorators: [decorator],

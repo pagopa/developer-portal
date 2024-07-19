@@ -31,6 +31,15 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
+        href={'/solutions'}
+        sx={{ fontSize: '16px', fontWeight: 600 }}
+      >
+        {t('siteHeader.solutions')}
+      </LinkMui>
+      <LinkMui
+        component={Link}
+        color='primary.main'
+        underline='none'
         href={'/webinars'}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >

@@ -2,15 +2,15 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
-import SolutionPageTemplate from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
-import { getSolutionsProps } from '@/lib/cmsApi';
+import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { getFullSolutionsProps } from '@/lib/cmsApi';
 
 type Params = {
   solutionSlug: string;
 };
 
 export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
+  const solutions = await getFullSolutionsProps();
   return [...solutions].map(({ slug }) => ({
     solutionSlug: slug,
   }));
@@ -33,7 +33,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solution = await getSolution(params?.solutionSlug);
 
-  return <SolutionPageTemplate {...solution} />;
+  return <SolutionTemplate {...solution} />;
 };
 
 export default Page;

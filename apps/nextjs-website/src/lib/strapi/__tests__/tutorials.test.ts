@@ -6,15 +6,127 @@ const baseTutorialJson = {
   attributes: {
     title: 'title',
     slug: 'tut-1',
-    content: [
+    parts: [
       {
-        type: 'paragraph',
-        children: [
+        id: 1,
+        __component: 'parts.alert',
+        text: 'test',
+        title: 'test',
+        severity: 'warning',
+      },
+      {
+        id: 1,
+        __component: 'parts.api-tester',
+        requestDescription: 'test',
+        responseDescription: 'res',
+        responseCode: {
+          id: 3,
+          code: 'code res',
+          showLineNumbers: true,
+          language: null,
+        },
+        requestCode: {
+          id: 2,
+          code: 'code',
+          showLineNumbers: false,
+          language: 'xml',
+        },
+        requestAttributes: [
           {
-            type: 'text',
-            text: 'dafdafafa',
+            id: 1,
+            label: 'att',
+            value: '1',
           },
         ],
+      },
+      {
+        id: 1,
+        __component: 'parts.code-block',
+        code: 'code block',
+        showLineNumbers: true,
+        language: 'shell',
+      },
+      {
+        id: 1,
+        __component: 'parts.embed-html',
+        html: '<div>test <u>test</u></div>',
+      },
+      {
+        id: 1,
+        __component: 'parts.html',
+        html: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'fsdfdsf sfsdf sdf sdf sd',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 1,
+        __component: 'parts.quote',
+        text: 'quote',
+        backgroundImage: {
+          data: {
+            id: 2,
+            attributes: {
+              name: 'Screenshot from 2024-03-27 19-29-53.png',
+              alternativeText: null,
+              caption: null,
+              width: 889,
+              height: 451,
+              formats: {
+                thumbnail: {
+                  name: 'thumbnail_Screenshot from 2024-03-27 19-29-53.png',
+                  hash: 'thumbnail_Screenshot_from_2024_03_27_19_29_53_29fe2538e2',
+                  ext: '.png',
+                  mime: 'image/png',
+                  path: null,
+                  width: 245,
+                  height: 124,
+                  size: 18.49,
+                  url: '/uploads/thumbnail_Screenshot_from_2024_03_27_19_29_53_29fe2538e2.png',
+                },
+                small: {
+                  name: 'small_Screenshot from 2024-03-27 19-29-53.png',
+                  hash: 'small_Screenshot_from_2024_03_27_19_29_53_29fe2538e2',
+                  ext: '.png',
+                  mime: 'image/png',
+                  path: null,
+                  width: 500,
+                  height: 254,
+                  size: 56.07,
+                  url: '/uploads/small_Screenshot_from_2024_03_27_19_29_53_29fe2538e2.png',
+                },
+                medium: {
+                  name: 'medium_Screenshot from 2024-03-27 19-29-53.png',
+                  hash: 'medium_Screenshot_from_2024_03_27_19_29_53_29fe2538e2',
+                  ext: '.png',
+                  mime: 'image/png',
+                  path: null,
+                  width: 750,
+                  height: 380,
+                  size: 111.47,
+                  url: '/uploads/medium_Screenshot_from_2024_03_27_19_29_53_29fe2538e2.png',
+                },
+              },
+              hash: 'Screenshot_from_2024_03_27_19_29_53_29fe2538e2',
+              ext: '.png',
+              mime: 'image/png',
+              size: 36.89,
+              url: '/uploads/Screenshot_from_2024_03_27_19_29_53_29fe2538e2.png',
+              previewUrl: null,
+              provider: 'local',
+              provider_metadata: null,
+              createdAt: '2024-03-27T18:30:15.884Z',
+              updatedAt: '2024-05-29T07:47:23.515Z',
+            },
+          },
+        },
       },
     ],
     createdAt: '2024-06-04T12:34:13.309Z',
@@ -26,6 +138,7 @@ const baseTutorialJson = {
         id: 1,
         attributes: {
           name: 'CMS APP IO',
+          shortName: 'IO',
           description: 'Test desc ',
           slug: 'app-io',
           createdAt: '2024-02-15T09:57:22.179Z',
@@ -178,17 +291,7 @@ const makeStrapiResponseJsonWithNull = () => ({
       attributes: {
         title: 'title',
         slug: 'tut-1',
-        content: [
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                text: 'dafdafafa',
-              },
-            ],
-          },
-        ],
+        parts: [],
         createdAt: '2024-06-04T12:34:13.309Z',
         updatedAt: '2024-06-04T12:42:01.642Z',
         publishedAt: '2024-06-04T12:34:38.692Z',
@@ -198,6 +301,7 @@ const makeStrapiResponseJsonWithNull = () => ({
             id: 1,
             attributes: {
               name: 'CMS APP IO',
+              shortName: 'IO',
               description: 'Test desc ',
               slug: 'app-io',
               createdAt: '2024-02-15T09:57:22.179Z',

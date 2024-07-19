@@ -1,5 +1,100 @@
 # nextjs-website
 
+## 3.0.0
+
+### Major Changes
+
+- 046d050: Add parts on tutorial on FE
+
+### Minor Changes
+
+- 0689ebb: Add ChatBot FAB
+- bf211f4: Add ChatMessage atom component
+- 5a64300: Add new atom component ChatInputText
+
+### Patch Changes
+
+- 78343e2: Replace icons in startInfo
+- 23dc5cf: Add BorderTop to ApiSection
+
+## 2.0.0
+
+### Major Changes
+
+- 093cc4b: Add ApiDataListPage and update api page to show content from CMS
+
+### Minor Changes
+
+- 2b0f3cf: Fix the CTA in solution page
+- 258a19d: Fix stats layout
+- b01d5eb: fix href for ecosystem
+- 2984b84: Add shortName to Product and use it in labels
+- 73c7dc1: Update SANP version from 3.7.1 to 3.8.0
+
+### Patch Changes
+
+- 9af4032: Remove the link to the SOAP API from pagoPA overview page
+- a5f506b: Fix solution webinars title
+- 818c087: Fix label "Esplora le API" in ApiDataListPage
+- 5c3949c: Fix ApiDataPage generateStaticParams function
+
+## 1.1.0
+
+### Minor Changes
+
+- 2400316: Add ApiDataListPageTemplate to the project
+
+### Patch Changes
+
+- 456ca42: Version update from 3.2.1 to 3.3.0 of the "Payment Notices" manual
+- 8f036cd: Show all available steps in the SolutionPreviewCard component
+- e713faa: Fix margin on solution list card labels
+
+## 1.0.0
+
+### Major Changes
+
+- e8e3ef3: Refactor homepage to include the new Ecosystem component
+
+### Patch Changes
+
+- bb29d68: Fix solution build error
+- 60664b4: Add test to homepage
+- a5152a9: Show introductionToSteps field in Solution's preview card
+
+## 0.30.0
+
+### Minor Changes
+
+- d049206: Update version of "Manuale Servizi" from v2.2 to v2.3
+- f309b42: Reduce text in topics for "I modelli dei servizi"
+- 0bda017: Add "I modelli dei servizi" to the list of appIO's manuals
+
+### Patch Changes
+
+- 6ef79e2: Fix product list data and layout in Solution page
+- 81bb7f1: Remove hardcoded webinars
+- 801e21f: Fix solution detail pages routing
+- caa48f5: Add solutions link
+
+## 0.29.0
+
+### Minor Changes
+
+- 9124dc1: Create a common template for guides and solutions pages
+
+### Patch Changes
+
+- 62bcc36: Add features field on SolutionsListPage
+
+## 0.28.0
+
+### Minor Changes
+
+- de59d44: Fix user password change on profile page
+- ff1e3e8: Add solutions list page
+- 401ee16: Create a common template for guides and solutions pages
+
 ## 0.27.0
 
 ### Minor Changes

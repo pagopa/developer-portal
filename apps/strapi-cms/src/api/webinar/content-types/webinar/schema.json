@@ -122,11 +122,32 @@
       "type": "text",
       "required": true
     },
-    "solution": {
+    "solutions": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::solution.solution",
       "inversedBy": "webinars"
+    },
+    "questionsAndAnswers": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.question-and-answer",
+      "max": 10
+    },
+    "relatedResources": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "webinar.related-resources"
     }
   }
 }

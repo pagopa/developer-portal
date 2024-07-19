@@ -1,5 +1,38 @@
 # storybook-app
 
+## 0.5.0
+
+### Minor Changes
+
+- 0689ebb: Add ChatBot FAB
+- bf211f4: Add ChatMessage atom component
+- 5a64300: Add new atom component ChatInputText
+
+## 0.4.1
+
+### Patch Changes
+
+- 258a19d: Fix stats layout
+
+## 0.4.0
+
+### Minor Changes
+
+- 2400316: Add ApiDataListPageTemplate to the project
+
+## 0.3.2
+
+### Patch Changes
+
+- 62bcc36: Add features field on SolutionsListPage
+
+## 0.3.1
+
+### Patch Changes
+
+- ff1e3e8: Add solutions list page
+- 4150e3b: Add TutorialPageTemplate story
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 
@@ -10,10 +10,11 @@ type ChatMessageProps = {
 
 const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
-  const bgColor = sender ? palette.background.paper : `${palette.info.light}80`;
-  const titleColor = palette.text.primary;
+  const bgColor = sender
+    ? palette.background.paper
+    : alpha(palette.info.light, 0.5);
   const textColor = palette.text.primary;
-  const senderLabel = sender || 'AI ChatBot';
+  const senderLabel = sender || 'AI ChatBot'; // TO-BE-REMOVED: This line will be remove in the next iteration of the component - the translation is not needed here
   return (
     <Box
       bgcolor={bgColor}
@@ -31,7 +32,7 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
           <Typography
             marginLeft={'0.5rem'}
             fontWeight={600}
-            color={titleColor}
+            color={palette.text.primary}
             component={'span'}
           >
             {senderLabel}

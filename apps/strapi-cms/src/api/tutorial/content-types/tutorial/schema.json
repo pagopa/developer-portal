@@ -51,13 +51,21 @@
         }
       }
     },
-    "content": {
+    "parts": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "blocks"
+      "type": "dynamiczone",
+      "components": [
+        "parts.alert",
+        "parts.code-block",
+        "parts.embed-html",
+        "parts.html",
+        "parts.quote"
+      ],
+      "required": true
     },
     "product": {
       "type": "relation",

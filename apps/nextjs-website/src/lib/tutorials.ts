@@ -1,4 +1,6 @@
+import { partFromStrapiPart } from './strapi/codecs/PartCodec';
 import { StrapiTutorials } from './strapi/tutorial';
+import { Part } from './types/part';
 import { Tutorial } from './types/tutorialData';
 
 export type TutorialsProps = readonly (Tutorial & {
@@ -24,7 +26,11 @@ export function makeTutorialsProps(
     publishedAt: attributes.publishedAt,
     name: attributes.title,
     path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
-    content: attributes.content,
+    parts: [
+      ...(attributes.parts
+        .map((part) => partFromStrapiPart(part))
+        .filter((part) => !!part) as ReadonlyArray<Part>),
+    ],
     productSlug: attributes.product.data.attributes.slug,
     relatedLinks: attributes.relatedLinks,
     bannerLinks: attributes.bannerLinks,

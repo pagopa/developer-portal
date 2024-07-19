@@ -1,5 +1,46 @@
 # strapi-cms
 
+## 2.0.0
+
+### Major Changes
+
+- c24410c: Add parts on tutorial on CMS
+- fc67e9c: Remove incorrect plural from SolutionsListPage on CMS
+
+## 1.1.0
+
+### Minor Changes
+
+- ca97805: Update ApiData model
+- 3578c57: Add shortName to Product schema
+
+### Patch Changes
+
+- 9eaa93f: Fix the type of the relations between solutions-products and solutions-webinars
+- bc120e3: Add minimum and maximum values on solution's steps
+
+## 1.0.0
+
+### Major Changes
+
+- 2c05ca2: Refactor homepage schema
+
+### Patch Changes
+
+- 49bc1aa: Add introductionToSteps field to Solution's schema
+
+## 0.12.0
+
+### Minor Changes
+
+- 5202a75: Create ApiListPage model
+- d21b4d9: Add ApiData to Strapi
+
+### Patch Changes
+
+- 00dfd43: Add features field on SolutionsListPage
+- 9b1c6b8: Rename ApiListPage to ApiDataListPage
+
 ## 0.11.0
 
 ### Minor Changes

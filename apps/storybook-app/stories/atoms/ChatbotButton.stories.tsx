@@ -10,14 +10,14 @@ export default meta;
 
 export const Showcase: StoryObj<typeof ChatButton> = {
   args: {
-    chatOpen: false,
+    isChatOpen: false,
     onOpenChat: () => null,
   },
 };
 
 export const ChatButtonNewMessages: StoryObj<typeof ChatButton> = {
   args: {
-    chatOpen: false,
+    isChatOpen: false,
     hasNewMessages: true,
     onOpenChat: () => null,
   },
