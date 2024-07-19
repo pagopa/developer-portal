@@ -4,12 +4,14 @@ import { Close } from '@mui/icons-material';
 // import { useUser } from '@/helpers/user.helper';
 import { Box, IconButton, Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 type ChatModalProps = {
   chatMessages: { message: string; sender?: string; timestamp: string }[];
 };
 
 const ChatModal = ({ chatMessages }: ChatModalProps) => {
+  const t = useTranslations();
   // const { user, loading } = useUser(); // PENDING: Uncomment this line when chatbot APIs are ready
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -31,7 +33,7 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
     <div>
       <ChatButton
         aria-describedby={id}
-        chatOpen={open}
+        isChatOpen={open}
         onOpenChat={handleClick}
         hasNewMessages={false}
       />
@@ -67,7 +69,7 @@ const ChatModal = ({ chatMessages }: ChatModalProps) => {
               fontWeight='normal'
               sx={{ color: 'white' }}
             >
-              [Nome Chatbot]
+              {t('chatBot.title')}
             </Typography>
             <IconButton onClick={handleClose}>
               <Close sx={{ color: 'white' }} />

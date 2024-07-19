@@ -572,6 +572,7 @@
         "explore": "Esplora le API"
     },
     "chatBot": {
+        "title": "Chatbot",
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio"
     }
 }
