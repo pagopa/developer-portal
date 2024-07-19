@@ -138,6 +138,16 @@
       },
       "component": "common.question-and-answer",
       "max": 10
+    },
+    "relatedResources": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "webinar.related-resources"
     }
   }
 }

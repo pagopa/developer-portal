@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import SolutionsTemplate from '../../../nextjs-website/src/components/templates/SolutionsTemplate/SolutionsTemplate';
+import SolutionListTemplate from '../../../nextjs-website/src/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
-const meta: Meta<typeof SolutionsTemplate> = {
-  title: 'Templates/SolutionsTemplate',
-  component: SolutionsTemplate,
+const meta: Meta<typeof SolutionListTemplate> = {
+  title: 'Templates/SolutionListTemplate',
+  component: SolutionListTemplate,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof SolutionsTemplate> = {
+export const Showcase: StoryObj<typeof SolutionListTemplate> = {
   decorators: [nextIntlContextDecorator],
   args: {
     hero: {
@@ -51,7 +51,7 @@ export const Showcase: StoryObj<typeof SolutionsTemplate> = {
         tags: [{ label: 'IO' }, { label: 'PagoPA' }, { label: 'SEND' }],
       },
     ],
-    feature: {
+    features: {
       items: [
         {
           iconName: 'MarkEmailRead',

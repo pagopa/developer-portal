@@ -54,7 +54,7 @@ export const ioSignOverview: OverviewData = {
         title: 'Documentazione API',
         text: "Esplora le API Rest per l'invio delle richieste di firma e per la raccolta dei documenti firmati",
         href: ioSign.subpaths.api?.path ?? '#',
-        iconName: 'FolderOutlined',
+        iconName: 'Code',
         iconColor: 'primary.dark',
       },
     ],

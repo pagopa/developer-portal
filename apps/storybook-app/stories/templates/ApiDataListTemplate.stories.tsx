@@ -1,41 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ApiDataListPageTemplate from '../../../nextjs-website/src/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
+import ApiDataListTemplate from 'nextjs-website/src/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
-const meta: Meta<typeof ApiDataListPageTemplate> = {
-  title: 'Templates/ApiDataListPageTemplate',
-  component: ApiDataListPageTemplate,
+const meta: Meta<typeof ApiDataListTemplate> = {
+  title: 'Templates/ApiDataListTemplate',
+  component: ApiDataListTemplate,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
+export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
   decorators: [nextIntlContextDecorator],
   args: {
-    breadcrumbs: {
-      product: {
-        name: 'Piattaforma pagoPA',
-        description: 'Il portale per gli sviluppatori di PagoPA',
-        slug: 'pagopa',
-        logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
-        },
-        subpaths: {
-          overview: {
-            name: 'api',
-            path: 'api',
-          },
-        },
-      },
-      path: 'PagoPA',
-      paths: [
-        {
-          name: 'API',
-          path: 'API',
-        },
-      ],
-    },
     hero: {
       title: 'API',
       subtitle:
@@ -48,6 +25,7 @@ export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
+        externalUrl: false,
         tags: [
           {
             label: 'REST',
@@ -60,6 +38,7 @@ export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
+        externalUrl: true,
         tags: [
           {
             label: 'SOAP',
@@ -72,6 +51,7 @@ export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
+        externalUrl: false,
         tags: [
           {
             label: 'REST',
@@ -84,6 +64,7 @@ export const Showcase: StoryObj<typeof ApiDataListPageTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
+        externalUrl: false,
         tags: [
           {
             label: 'REST',
