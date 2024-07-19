@@ -2,7 +2,7 @@
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Speaker } from '@/lib/types/speaker';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 type SpeakerListProps = {
