@@ -2,7 +2,7 @@
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Speaker } from '@/lib/types/speaker';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 type SpeakerListProps = {
@@ -14,18 +14,23 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
 
   return (
     <EContainer>
-      <Box mt={5} mb={10}>
+      <Box ml={{ xs: -1, md: 0 }} mt={5} mb={10}>
         <Typography
           variant='subtitle1'
           fontWeight={700}
-          fontSize={{ xs: 20, md: 32 }}
+          fontSize={{ xs: 28, md: 32 }}
           style={{ marginTop: 0, marginBottom: 32 }}
           marginBottom={2}
           width={{ xs: '100%', md: '60%' }}
         >
           {t('speakersTitle')}
         </Typography>
-        <Stack direction='row' gap={'2rem'}>
+        <Grid
+          container={true}
+          direction={{ sm: 'column', md: 'row' }}
+          gap={'2rem'}
+          columns={4}
+        >
           {speakers?.map((speaker, index) => (
             <SpeakerPreview
               key={index}
@@ -36,7 +41,7 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
               compactMode={false}
             />
           ))}
-        </Stack>
+        </Grid>
       </Box>
     </EContainer>
   );

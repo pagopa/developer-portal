@@ -5,10 +5,12 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import { useMediaQuery } from '@mui/material';
 
 type SpeakerPreviewProps = {
   compactMode?: boolean;
   flexDirection?: 'column' | 'row';
+  isSmallScreen?: boolean;
 } & Speaker;
 
 type SpeakerAvatarProps = SpeakerPreviewProps;
@@ -17,6 +19,7 @@ const SpeakerAvatar = ({
   avatar,
   name,
   compactMode = true,
+  isSmallScreen = false,
 }: SpeakerAvatarProps) => {
   const { palette } = useTheme();
   return avatar ? (
@@ -28,8 +31,8 @@ const SpeakerAvatar = ({
       sizes='100vw'
       style={{
         borderRadius: '100%',
-        width: compactMode ? '64px' : '124px',
-        height: compactMode ? '64px' : '124px',
+        width: compactMode ? '64px' : isSmallScreen ? '80px' : '124px',
+        height: compactMode ? '64px' : isSmallScreen ? '80px' : '124px',
       }}
     />
   ) : (
@@ -64,6 +67,8 @@ const SpeakerInfo = ({
   return (
     <Box
       sx={{
+        maxHeight: '80px',
+        maxWidth: '250px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -72,26 +77,34 @@ const SpeakerInfo = ({
     >
       {compactMode ? (
         <>
-          <Typography variant='body2' fontWeight={600}>
+          <Typography fontSize={'18px'} fontWeight={600}>
             {name}
           </Typography>
-          <Typography variant='body2'>{jobTitle}</Typography>
+          <Typography fontSize={'18px'} fontWeight={400}>
+            {jobTitle}
+          </Typography>
         </>
       ) : (
         <>
-          <Typography fontWeight={700} fontSize={'24px'} lineHeight={'32px'}>
+          <Typography
+            fontWeight={700}
+            fontSize={{ xs: '22px', md: '24px' }}
+            lineHeight={{ xs: '29px', md: '32px' }}
+          >
             {name}
           </Typography>
           <Typography
-            fontSize={18}
+            fontSize={{ xs: '16px', md: '18px' }}
             fontWeight={400}
             color={palette.text.secondary}
           >
             {jobTitle}
           </Typography>
-          <Box mt={2}>
-            <BlocksRendererClient content={description} />
-          </Box>
+          {description != undefined && description.toString.length > 0 && (
+            <Box mt={2}>
+              <BlocksRendererClient content={description} />
+            </Box>
+          )}
         </>
       )}
     </Box>
@@ -103,17 +116,22 @@ const SpeakerPreview = ({
   flexDirection = 'column',
   ...speaker
 }: SpeakerPreviewProps) => {
+  const isSmallScreen = useMediaQuery('(max-width: 900px)');
   return (
     <Box
       sx={{
-        width: compactMode ? '250px' : '265px',
+        width: compactMode ? '250px' : isSmallScreen ? '312px' : '265px',
         display: 'flex',
-        flexDirection,
+        flexDirection: { sm: 'row', md: flexDirection },
         gap: 3,
         alignContent: 'center',
       }}
     >
-      <SpeakerAvatar {...speaker} compactMode={compactMode} />
+      <SpeakerAvatar
+        {...speaker}
+        compactMode={compactMode}
+        isSmallScreen={isSmallScreen}
+      />
       <SpeakerInfo {...speaker} compactMode={compactMode} />
     </Box>
   );
