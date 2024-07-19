@@ -923,6 +923,7 @@ const makeStrapiResponseJson = () => ({
                   },
                 ],
               },
+              questionsAndAnswers: [],
             },
           },
         ],
