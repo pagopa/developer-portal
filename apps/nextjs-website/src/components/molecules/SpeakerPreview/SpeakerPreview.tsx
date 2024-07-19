@@ -6,6 +6,7 @@ import Image from 'next/image';
 import React from 'react';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import { useMediaQuery } from '@mui/material';
+import { none } from 'fp-ts/lib/Option';
 
 type SpeakerPreviewProps = {
   compactMode?: boolean;
@@ -62,6 +63,7 @@ const SpeakerInfo = ({
   name,
   jobTitle,
   description,
+  isSmallScreen = false,
 }: SpeakerInfoProps) => {
   const { palette } = useTheme();
   return (
@@ -100,7 +102,7 @@ const SpeakerInfo = ({
           >
             {jobTitle}
           </Typography>
-          {description != undefined && description.toString.length > 0 && (
+          {!isSmallScreen && description && (
             <Box mt={2}>
               <BlocksRendererClient content={description} />
             </Box>
@@ -136,7 +138,11 @@ const SpeakerPreview = ({
         compactMode={compactMode}
         isSmallScreen={isSmallScreen}
       />
-      <SpeakerInfo {...speaker} compactMode={compactMode} />
+      <SpeakerInfo
+        {...speaker}
+        compactMode={compactMode}
+        isSmallScreen={isSmallScreen}
+      />
     </Box>
   );
 };
