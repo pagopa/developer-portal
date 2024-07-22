@@ -158,7 +158,7 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
             >
               {t('speakers')}
             </Typography>
-            <Stack direction='column' gap={2}>
+            <Stack width='100%' direction='column' gap={2}>
               {webinar.speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}

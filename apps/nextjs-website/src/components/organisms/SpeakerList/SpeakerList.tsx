@@ -14,22 +14,21 @@ const SpeakerList = ({ speakers }: SpeakerListProps) => {
 
   return (
     <EContainer>
-      <Box ml={{ xs: -1, md: 0 }} mt={5} mb={10}>
+      <Box mr={0} ml={{ xs: -1, md: 0 }} mt={5} mb={10} width={'100%'}>
         <Typography
           variant='subtitle1'
           fontWeight={700}
           fontSize={{ xs: 28, md: 32 }}
           style={{ marginTop: 0, marginBottom: 32 }}
-          marginBottom={2}
           width={{ xs: '100%', md: '60%' }}
         >
           {t('speakersTitle')}
         </Typography>
         <Grid
+          flexDirection={{ xs: 'column', md: 'row' }}
           container={true}
-          direction={{ sm: 'column', md: 'row' }}
-          gap={'2rem'}
           columns={4}
+          gap={'2rem'}
         >
           {speakers?.map((speaker, index) => (
             <SpeakerPreview

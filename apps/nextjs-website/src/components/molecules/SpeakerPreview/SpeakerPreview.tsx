@@ -69,8 +69,7 @@ const SpeakerInfo = ({
   return (
     <Box
       sx={{
-        maxHeight: '5rem',
-        maxWidth: '15.625rem',
+        maxWidth: '20.625rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -122,13 +121,14 @@ const SpeakerPreview = ({
   return (
     <Box
       sx={{
-        width: compactMode
-          ? '15.625rem'
-          : isSmallScreen
-          ? '19.5rem'
-          : '16.563rem',
+        width: compactMode ? '100%' : isSmallScreen ? '20.5rem' : '16.563rem',
+        flex: 1,
         display: 'flex',
-        flexDirection: { sm: 'row', md: flexDirection },
+        flexDirection: { xs: 'row', md: flexDirection },
+        alignItems: {
+          xs: 'center',
+          md: compactMode ? 'center' : '  flex-start',
+        },
         gap: 3,
         alignContent: 'center',
       }}
