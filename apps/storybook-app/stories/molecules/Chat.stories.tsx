@@ -1,6 +1,7 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
 import Chat from '../../../nextjs-website/src/components/molecules/Chat/Chat';
 import React from 'react';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof Chat> = {
   title: 'Molecules/Chat',
@@ -38,5 +39,5 @@ export const Showcase: StoryObj<typeof Chat> = {
       },
     ],
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };

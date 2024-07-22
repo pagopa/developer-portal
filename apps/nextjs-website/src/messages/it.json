@@ -573,6 +573,8 @@
     },
     "chatBot": {
         "title": "Chatbot",
-        "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio"
+        "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
+        "chatHistory": "Cronologia chat",
+        "delete": "Elimina"
     }
 }

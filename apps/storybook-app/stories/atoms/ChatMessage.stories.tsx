@@ -1,6 +1,7 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
 import ChatMessage from '../../../nextjs-website/src/components/atoms/ChatMessage/ChatMessage';
 import React from 'react';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Atoms/ChatMessage',
@@ -18,7 +19,7 @@ export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
     message: "Hello I'm a ChatBot",
     timestamp: '11:22',
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };
 
 export const UserMessage: StoryObj<typeof ChatMessage> = {
@@ -27,5 +28,5 @@ export const UserMessage: StoryObj<typeof ChatMessage> = {
     sender: 'John Doe',
     timestamp: '11:22',
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };
