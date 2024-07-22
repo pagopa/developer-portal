@@ -27,9 +27,13 @@ export const useChatbot = () => {
   }, [sessionId]);
 
   const sendQuery = (queryMessage: string) => {
+    if (!sessionId) {
+      return;
+    }
+
     setIsAwaitingResponse(true);
     sendChatbotQuery({
-      sessionId: sessionId || '',
+      sessionId: sessionId,
       question: queryMessage,
       queriedAt: new Date().toISOString(),
     }).then((response) => {
