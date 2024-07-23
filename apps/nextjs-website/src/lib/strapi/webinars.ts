@@ -67,6 +67,7 @@ const makeStrapiWebinarsPopulate = () =>
       relatedLinks: {
         populate: ['links'],
       },
+      questionsAndAnswers: '*',
     },
   });
 

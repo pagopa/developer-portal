@@ -110,6 +110,7 @@ const makeStrapiHomepagePopulate = () =>
           'coverImage.image',
           'relatedLinks.links',
           'webinarSpeakers.avatar',
+          'questionsAndAnswers',
         ],
       },
       ecosystem: {
