@@ -1,5 +1,5 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
-import ApiDataListPageTemplate from '@/components/templates/ApiDataListPageTemplate/ApiDataListPageTemplate';
+import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
@@ -41,7 +41,7 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
           path={product.path.concat('/api')}
           showBreadcrumbs
         >
-          <ApiDataListPageTemplate {...apiDataListPageProps} />
+          <ApiDataListTemplate {...apiDataListPageProps} />
         </ProductLayout>
       </>
     );
