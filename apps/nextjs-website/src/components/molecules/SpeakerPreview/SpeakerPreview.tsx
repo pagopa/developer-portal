@@ -6,7 +6,6 @@ import Image from 'next/image';
 import React from 'react';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import { useMediaQuery } from '@mui/material';
-import { none } from 'fp-ts/lib/Option';
 
 type SpeakerPreviewProps = {
   compactMode?: boolean;
