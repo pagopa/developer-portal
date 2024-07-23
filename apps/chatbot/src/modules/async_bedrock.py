@@ -37,7 +37,7 @@ class AsyncBedrock(Bedrock):
             profile_name=self.profile_name,
         )
 
-
+    @llm_completion_callback()
     def complete(
         self, prompt: str, formatted: bool = False, **kwargs: Any
     ) -> CompletionResponse:
