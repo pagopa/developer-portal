@@ -46,8 +46,8 @@ async def query_creation (query: Query):
     "sessionId": "",
     "question": query.question,
     "answer": answer,
-    "createdAt": query.createdAt,
-    "queriedAt": query.createdAt
+    "createdAt": query.queriedAt,
+    "queriedAt": query.queriedAt
   }
   return body
 
