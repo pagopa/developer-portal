@@ -29,7 +29,7 @@ export const Showcase: StoryObj<typeof TutorialTemplate> = {
         },
       ],
     },
-    content: [
+    parts: [
       {
         ...mockTextBlock({
           type: 'heading',
