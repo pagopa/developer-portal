@@ -7,7 +7,7 @@ import Hero from '@/editorialComponents/Hero/Hero';
 import { Media } from '@/lib/types/media';
 import { useTranslations } from 'next-intl';
 
-export type SolutionsTemplateProps = {
+export type SolutionListTemplateProps = {
   readonly hero: {
     readonly backgroundImage?: string;
     readonly altText?: string;
@@ -41,12 +41,12 @@ export type SolutionsTemplateProps = {
   };
 };
 
-const SolutionsTemplate = ({
+const SolutionListTemplate = ({
   hero,
   solutions,
   features,
   successStories,
-}: SolutionsTemplateProps) => {
+}: SolutionListTemplateProps) => {
   const t = useTranslations('shared');
   const label = t('readStory');
 
@@ -97,4 +97,4 @@ const SolutionsTemplate = ({
   );
 };
 
-export default SolutionsTemplate;
+export default SolutionListTemplate;

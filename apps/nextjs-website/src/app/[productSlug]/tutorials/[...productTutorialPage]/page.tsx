@@ -25,7 +25,7 @@ import RelatedLinks, {
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import TutorialPageTemplate from '@/components/templates/TutorialPageTemplate/TutorialPageTemplate';
+import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
 
 type Params = {
   productSlug: string;
@@ -86,7 +86,7 @@ const Page = async ({ params }: { params: Params }) => {
 
   if (strapiTutorialProps) {
     return (
-      <TutorialPageTemplate
+      <TutorialTemplate
         bannerLinks={strapiTutorialProps.bannerLinks}
         parts={strapiTutorialProps.parts}
         path={strapiTutorialProps.path}

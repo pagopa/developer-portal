@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_webinar_related_resources",
+  "info": {
+    "displayName": "RelatedResources",
+    "icon": "folder",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "resources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.resource"
+    },
+    "downloadableDocuments": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

@@ -16,7 +16,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '@/lib/types/media';
 
-export type SolutionPageTemplateProps = {
+export type SolutionTemplateProps = {
   slug: string;
   kickerTitle: string;
   title: string;
@@ -39,7 +39,7 @@ export type SolutionPageTemplateProps = {
   bannerLinks: BannerLinkProps[];
 };
 
-const SolutionPageTemplate = ({
+const SolutionTemplate = ({
   slug,
   kickerTitle,
   title,
@@ -50,7 +50,7 @@ const SolutionPageTemplate = ({
   products,
   webinars,
   bannerLinks,
-}: SolutionPageTemplateProps) => {
+}: SolutionTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
 
@@ -123,4 +123,4 @@ const SolutionPageTemplate = ({
   );
 };
 
-export default SolutionPageTemplate;
+export default SolutionTemplate;
