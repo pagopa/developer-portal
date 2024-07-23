@@ -10,8 +10,7 @@ qa_prompt_str: |
     - the answer must not include the User query.
     - the answer must be concise and composed by three sentences maximum.
     - the answer must avoid to repeat same phrases or sentences.
-    - the answer must always have at the end one, or more, reference URL of the retrieved information.
-    - the answer must not have masked URLs.
+    - the answer must always have at the end one, or more, reference URL in a clickable format without masking it.
     - the answer must be in Italian.
   ---------------------
   Output Examples:
