@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import SectionTitle from '../SectionTitle/SectionTitle';
 import {
   Accordion,
   AccordionDetails,
@@ -15,6 +14,9 @@ import { useTranslations } from 'next-intl';
 import { QuestionsAndAnswers } from '@/lib/types/webinar';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 
+const MIN_QUESTIONS_TO_SHOW = 5;
+const MAX_QUESTIONS_TO_SHOW = 10;
+
 export type QuestionsAndAnswersProps = {
   readonly questions: QuestionsAndAnswers[];
 };
@@ -25,7 +27,16 @@ const QuestionsAndAnswersComponent = ({
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection.questionsAndAnswers');
   const [showMore, toggleShowMore] = useState(false);
-  const questionsToShow = showMore ? 10 : 5;
+  const questionsToShow = showMore
+    ? MAX_QUESTIONS_TO_SHOW
+    : MIN_QUESTIONS_TO_SHOW;
+
+  const [expanded, setExpanded] = React.useState<number | false>(false);
+
+  const handleChange =
+    (panel: number) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false);
+    };
 
   return (
     <Box pt={10} pb={10} sx={{ backgroundColor: theme.palette.grey[50] }}>
@@ -33,11 +44,13 @@ const QuestionsAndAnswersComponent = ({
         <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
           {t('title')}
         </Typography>
-        {[...questions].splice(0, questionsToShow).map((question) => (
+        {[...questions].splice(0, questionsToShow).map((question, index) => (
           <Accordion
             sx={{ marginBottom: 2, borderTop: 'none' }}
             key={question.question}
             disableGutters
+            expanded={expanded === index}
+            onChange={handleChange(index)}
           >
             <AccordionSummary expandIcon={<ExpandMore color='primary' />}>
               <Typography>{question.question}</Typography>
