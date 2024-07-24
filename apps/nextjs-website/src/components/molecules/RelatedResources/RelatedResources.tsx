@@ -12,7 +12,7 @@ const RelatedResources = ({ guide }: RelatedResourcesProps) => {
 
   return (
     <EContainer>
-      <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
+      <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
         {t('title')}
       </Typography>
       <GuideCard {...guide} />
