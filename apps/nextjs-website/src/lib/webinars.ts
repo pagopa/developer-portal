@@ -13,6 +13,23 @@ export function makeWebinarsProps(
         ...speaker.attributes,
         avatar: speaker.attributes.avatar.data?.attributes,
       })),
+      relatedResources: {
+        title: webinar.attributes.relatedResources?.title || '',
+        resources: (webinar.attributes.relatedResources?.resources || []).map(
+          (resource) => ({
+            ...resource,
+            image: resource.image.data?.attributes,
+          })
+        ),
+        downloadableDocuments: (
+          webinar.attributes.relatedResources?.downloadableDocuments.data || []
+        ).map(({ attributes }) => ({
+          title: attributes.name,
+          downloadLink: attributes.url,
+          size: attributes.size,
+          extension: attributes.ext.replace('.', '').toUpperCase(),
+        })),
+      },
       startDateTime: webinar.attributes.startDatetime?.toISOString(),
       endDateTime: webinar.attributes.endDatetime?.toISOString(),
       subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
