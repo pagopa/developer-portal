@@ -13,8 +13,8 @@ import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
 export type CtaCardProps = {
-  readonly title: string;
-  readonly text: string;
+  readonly title?: string;
+  readonly text?: string;
   readonly minHeight?: number;
   readonly cta?: {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
@@ -51,11 +51,13 @@ const CtaCard = ({
       <div style={{ opacity: comingSoon ? 0.5 : 1 }}>
         {children && <CardMedia>{children}</CardMedia>}
         <CardContent sx={{ minHeight: minHeight || 'auto' }}>
-          {icon}
-          <Typography mt={2} variant='h6' gutterBottom>
-            {title}
-          </Typography>
-          <Typography variant='body2'>{text}</Typography>
+          {icon && icon}
+          {title && (
+            <Typography mt={2} variant='h6' gutterBottom>
+              {title}
+            </Typography>
+          )}
+          {text && <Typography variant='body2'>{text}</Typography>}
           {tags && tags.length > 0 && (
             <Box mt={1} mr={1} mb={-1}>
               {tags.map((tag) => (
