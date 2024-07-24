@@ -1,5 +1,5 @@
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { GuideCard, GuideCardProps } from '../GuideCard/GuideCard';
 import DownloadableDocuments, {
@@ -22,8 +22,10 @@ const RelatedResources = ({
       <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
         {t('title')}
       </Typography>
-      {resources &&
+      <Box>
+        {resources &&
           resources.map((props, index) => <GuideCard key={index} {...props} />)}
+      </Box>
       <DownloadableDocuments documents={downloadableDocuments} />
     </EContainer>
   );
