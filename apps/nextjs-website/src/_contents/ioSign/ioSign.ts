@@ -13,6 +13,8 @@ export const ioSign: Product = {
   slug: 'firma-con-io',
   path: '/firma-con-io',
   logo: {
+    alternativeText: 'Firma con IO',
+    caption: undefined,
     name: '',
     width: 60,
     height: 61,
