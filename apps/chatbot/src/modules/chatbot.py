@@ -1,5 +1,8 @@
+import os
 import logging
-from typing import Any, Dict, List, Union, Tuple
+from dotenv import load_dotenv
+
+from typing import Dict, List, Union, Tuple
 
 from langdetect import detect_langs
 
@@ -12,6 +15,9 @@ from llama_index.embeddings.bedrock import BedrockEmbedding
 from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index
 from src.modules.retriever import get_automerging_query_engine
+
+
+load_dotenv()
 
 
 LANGUAGES = {
@@ -42,16 +48,22 @@ class Chatbot():
     def __init__(
             self,
             params,
-            prompts
+            prompts,
+            use_guardrail: bool = True
         ):
 
         self.params = params
         self.prompts = prompts
+        self.use_guardrail = use_guardrail
 
         self.model = AsyncBedrock(
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("AWS_DEFAULT_REGION"),
             model=params["models"]["model_id"],
             temperature=params["models"]["temperature"],
-            max_tokens=params["models"]["max_tokens"]
+            max_tokens=params["models"]["max_tokens"],
+            use_guardrail=use_guardrail
         )
         self.embed_model = BedrockEmbedding(
             model_name=params["models"]["emded_model_id"],
@@ -61,8 +73,8 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
-            s3_bucket_name=params["vector_index"]["s3_bucket_name"],
-            region=params["models"]["region"],
+            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+            region=os.getenv("AWS_DEFAULT_REGION"),
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
@@ -128,7 +140,7 @@ class Chatbot():
             if lang.lang == "it":
                 it_score = lang.prob
 
-        logging.info(f"Detected {langs[0].lang} with score {langs[0].prob} at the last user's message.")
+        logging.info(f"Detected '{langs[0].lang}' with score {langs[0].prob:.4f} at the last user's message.")
 
         return langs, it_score
     
