@@ -17,11 +17,11 @@ export type CardsGridProps = {
   cards: {
     target?: '_blank' | '_self' | '_parent' | '_top';
     comingSoon?: boolean;
-    title?: string;
-    text?: string;
+    title: string;
+    text: string;
     href?: string;
     ctaLabel?: string;
-    icon?: string;
+    icon: string;
     iconColor?: string;
     tags?: { readonly label: string; readonly path?: string }[];
   }[];
@@ -76,13 +76,11 @@ const CardsGrid = ({
                       variant: cardVariant,
                     }}
                     icon={
-                      icon && (
-                        <IconWrapper
-                          color={iconColor || palette.text.primary}
-                          icon={icon}
-                          isSvg={cardSvg}
-                        />
-                      )
+                      <IconWrapper
+                        color={iconColor || palette.text.primary}
+                        icon={icon}
+                        isSvg={cardSvg}
+                      />
                     }
                     tags={tags}
                   />
