@@ -5,19 +5,16 @@ import Download from '@mui/icons-material/Download';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { useTranslations } from 'next-intl';
 
-const getReadableFileSizeString = (fileSizeInBytes: number) => {
-  // eslint-disable-next-line functional/no-let
-  let i = -1;
-  // eslint-disable-next-line functional/no-let
-  let size = fileSizeInBytes;
-  const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
-  // eslint-disable-next-line functional/no-loop-statements
-  do {
-    size /= 1024;
-    i++;
-  } while (size > 1024);
+const getReadableFileSizeString = (kilobytes: number) => {
+  if (kilobytes <= 0) {
+    return '0 KB';
+  }
 
-  return Math.max(size, 0.1).toFixed(1) + byteUnits[i];
+  const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const unitIndex = Math.floor(Math.log(kilobytes) / Math.log(1024));
+  const size = kilobytes / Math.pow(1024, unitIndex);
+  const formattedSize = size.toFixed(2);
+  return `${formattedSize} ${units[unitIndex]}`;
 };
 
 export type DownloadableDocumentsProps = {
@@ -30,7 +27,7 @@ export type DownloadableDocumentsProps = {
 };
 
 const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
-  const t = useTranslations('shared');
+  const t = useTranslations();
 
   return (
     <Box width='100%'>
@@ -41,7 +38,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
         mb={4}
         textTransform='uppercase'
       >
-        {t('downloadableDocuments')}
+        {t('shared.downloadableDocuments')}
       </Typography>
 
       <Box pb={4} width={'100%'}>
@@ -60,8 +57,11 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                           fontWeight={700}
                           fontSize={16}
                         >
-                          {t('download')} -{' '}
-                          {size && getReadableFileSizeString(size)}{' '}
+                          {size
+                            ? `${t(
+                                'shared.download'
+                              )} - ${getReadableFileSizeString(size)}`
+                            : t('shared.download')}{' '}
                         </Typography>
                         <Download
                           color='primary'
