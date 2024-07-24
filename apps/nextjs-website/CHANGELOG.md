@@ -1,5 +1,20 @@
 # nextjs-website
 
+## 4.0.0
+
+### Major Changes
+
+- 5ee06d5: Remove incorrect plural from SolutionsListPage on FE
+
+### Minor Changes
+
+- 82fe16d: Add Chat molecule component
+
+### Patch Changes
+
+- b3d75ad: Remove "page" word from template files
+- dfc223a: Hide the entire statistics section on the Solution page when there are no values ​​to show
+
 ## 3.0.0
 
 ### Major Changes
