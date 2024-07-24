@@ -150,10 +150,10 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
         {webinar.speakers && (
           <Box width={{ md: '45%' }}>
             <Typography
-              mb={2}
+              my={2}
               color={theme.palette.text.primary}
-              fontSize={18}
-              fontWeight={600}
+              fontSize={14}
+              fontWeight={700}
               textTransform={'uppercase'}
             >
               {t('speakers')}
