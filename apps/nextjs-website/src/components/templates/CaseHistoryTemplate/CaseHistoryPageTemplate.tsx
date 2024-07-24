@@ -32,8 +32,8 @@ const CaseHistoryPageTemplate = ({
 
   return (
     <>
-      <EContainer direction={'column'}>
-        <Box sx={{ marginBottom: spacing(10) }}>
+      <EContainer direction={'column'} sx={{marginBottom: 12}}>
+        <Box sx={{ marginBottom: 10 }}>
           <ProductBreadcrumbs
             breadcrumbs={[
               ...pageToBreadcrumbs('solutions', [
@@ -45,8 +45,8 @@ const CaseHistoryPageTemplate = ({
             ]}
           />
         </Box>
-        <Box sx={{ paddingBottom: spacing(10) }}>
-          <Typography color={'text.primary'} variant='h4'>
+        <Box >
+          <Typography color={'text.primary'} variant='h4' marginBottom={2}>
             {title}
           </Typography>
           {description && (
@@ -69,7 +69,6 @@ const CaseHistoryPageTemplate = ({
           <Box
             key={index}
             sx={{
-              marginY: 3,
             }}
           >
             <PartRenderer part={part} />
