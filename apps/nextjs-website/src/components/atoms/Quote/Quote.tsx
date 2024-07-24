@@ -16,6 +16,7 @@ const Quote = ({
   backgroundImage = {
     name: 'hero-swiper.png',
     caption: undefined,
+    size: 10,
     alternativeText: undefined,
     width: 1920,
     height: 1080,
