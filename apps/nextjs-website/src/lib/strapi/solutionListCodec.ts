@@ -46,6 +46,7 @@ const makeStrapiSolutionListPopulate = () =>
           'steps.products',
           'webinars',
           'webinars.coverImage',
+          'webinars.questionsAndAnswers',
           'webinars.webinarSpeakers',
           'webinars.webinarSpeakers.avatar',
           'webinars.relatedResources.resources.image',

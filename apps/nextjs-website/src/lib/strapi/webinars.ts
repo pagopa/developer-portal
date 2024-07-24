@@ -36,6 +36,11 @@ const RelatedResources = t.strict({
   }),
 });
 
+const QuestionAndAnswerCodec = t.strict({
+  question: t.string,
+  answer: BlocksContentCodec,
+});
+
 export const WebinarCodec = t.strict({
   id: t.number,
   attributes: t.strict({
@@ -57,6 +62,7 @@ export const WebinarCodec = t.strict({
     ]),
     relatedResources: t.union([NullToUndefinedCodec, RelatedResources]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
+    questionsAndAnswers: t.array(QuestionAndAnswerCodec),
   }),
 });
 
@@ -87,6 +93,7 @@ export const webinarPopulate = {
           populate: '*',
         },
       },
+      questionsAndAnswers: '*',
     },
   },
 };

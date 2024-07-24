@@ -215,6 +215,46 @@ const makeStrapiResponseJson = () => ({
             ],
           },
         },
+        questionsAndAnswers: [
+          {
+            id: 2,
+            question: 'question',
+            answer: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                    bold: true,
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                  {
+                    type: 'link',
+                    url: '/',
+                    children: [
+                      {
+                        type: 'text',
+                        text: 'answer',
+                      },
+                    ],
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     },
   ],
@@ -278,6 +318,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           ],
         },
         relatedResources: null,
+        questionsAndAnswers: [],
       },
     },
   ],
