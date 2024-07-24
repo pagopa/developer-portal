@@ -19,6 +19,23 @@ const WebinarSpeakerCodec = t.strict({
   }),
 });
 
+const Resource = t.strict({
+  title: t.string,
+  subtitle: t.union([NullToUndefinedCodec, t.string]),
+  description: t.union([NullToUndefinedCodec, BlocksContentCodec]),
+  linkText: t.string,
+  linkHref: t.string,
+  image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+});
+
+const RelatedResources = t.strict({
+  title: t.string,
+  resources: t.union([NullToUndefinedCodec, t.array(Resource)]),
+  downloadableDocuments: t.strict({
+    data: t.union([NullToUndefinedCodec, t.array(MediaCodec)]),
+  }),
+});
+
 export const WebinarCodec = t.strict({
   id: t.number,
   attributes: t.strict({
@@ -38,6 +55,7 @@ export const WebinarCodec = t.strict({
       RelatedLinksCodec,
       t.undefined,
     ]),
+    relatedResources: t.union([NullToUndefinedCodec, RelatedResources]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
   }),
 });
@@ -49,20 +67,31 @@ export const StrapiWebinarsCodec = t.strict({
 
 export type StrapiWebinars = t.TypeOf<typeof StrapiWebinarsCodec>;
 
-const makeStrapiWebinarsPopulate = () =>
-  qs.stringify({
-    populate: {
-      coverImage: {
-        populate: ['image'],
-      },
-      webinarSpeakers: {
-        populate: ['avatar'],
-      },
-      relatedLinks: {
-        populate: ['links'],
+export const webinarPopulate = {
+  populate: {
+    coverImage: {
+      populate: ['image'],
+    },
+    webinarSpeakers: {
+      populate: ['avatar'],
+    },
+    relatedLinks: {
+      populate: ['links'],
+    },
+    relatedResources: {
+      populate: {
+        resources: {
+          populate: ['image'],
+        },
+        downloadableDocuments: {
+          populate: '*',
+        },
       },
     },
-  });
+  },
+};
+
+const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
 export const fetchWebinars = fetchFromStrapi(
   'webinars',
