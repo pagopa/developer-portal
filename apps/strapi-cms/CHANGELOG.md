@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 2.1.0
+
+### Minor Changes
+
+- d6eff42: Quotes removed from tutorials model, fix issue with tutorial storybook
+- fda7539: Add RelatedResources component and add relatedResources attribute to Strapi's Webinar entity
+- 280feb7: Add QuestionAndAnswer component and add questionsAndAnswers field to Webinar schema
+
+### Patch Changes
+
+- 6023f15: Set title and text attributes as optional in Alert schema
+
 ## 2.0.0
 
 ### Major Changes

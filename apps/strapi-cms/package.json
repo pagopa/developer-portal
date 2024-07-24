@@ -1,7 +1,7 @@
 {
   "name": "strapi-cms",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "clean": "shx rm -rf dist/",
     "generate": "strapi ts:generate-types",
