@@ -37,7 +37,7 @@ const products = [
   },
   {
     name: 'SEND',
-    shortName: 'pago-pa',
+    shortName: 'SEND',
     description: 'Il portale per gli sviluppatori di Send',
     slug: 'send',
     logo: {
