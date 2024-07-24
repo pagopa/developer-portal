@@ -18,7 +18,7 @@ export default meta;
 
 const products = [
   {
-    name: 'PagoPA',
+    name: 'pagoPA',
     shortName: 'pago-pa',
     description: 'Il portale per gli sviluppatori di PagoPA',
     slug: 'pagopa',
