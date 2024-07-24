@@ -22,13 +22,17 @@ def get_automerging_query_engine(
         index.storage_context, 
         verbose=verbose
     )
-    postprocessor = SimilarityPostprocessor(similarity_cutoff=similarity_cutoff)
+    similarity_postprocessor = SimilarityPostprocessor(
+        similarity_cutoff=similarity_cutoff
+    )
 
     automerging_engine = RetrieverQueryEngine.from_args(
         retriever, 
         llm=llm, 
         response_mode=response_mode,
-        node_postprocessors=[postprocessor],
+        node_postprocessors=[
+            similarity_postprocessor
+        ],
         text_qa_template=text_qa_template,
         refine_template=refine_template
     )
