@@ -27,12 +27,12 @@ const CaseHistoryPageTemplate = ({
   products,
   parts,
 }: CaseHistoryPageTemplateProps) => {
-  const { palette, spacing } = useTheme();
+  const { palette } = useTheme();
   const t = useTranslations();
 
   return (
     <>
-      <EContainer direction={'column'} sx={{marginBottom: 12}}>
+      <EContainer direction={'column'} sx={{ marginBottom: 12 }}>
         <Box sx={{ marginBottom: 10 }}>
           <ProductBreadcrumbs
             breadcrumbs={[
@@ -45,7 +45,7 @@ const CaseHistoryPageTemplate = ({
             ]}
           />
         </Box>
-        <Box >
+        <Box>
           <Typography color={'text.primary'} variant='h4' marginBottom={2}>
             {title}
           </Typography>
@@ -66,11 +66,7 @@ const CaseHistoryPageTemplate = ({
             <PartRenderer part={part} />
           </EContainer>
         ) : (
-          <Box
-            key={index}
-            sx={{
-            }}
-          >
+          <Box key={index} sx={{}}>
             <PartRenderer part={part} />
           </Box>
         )
