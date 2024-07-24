@@ -29,25 +29,45 @@ export const Showcase: StoryObj<typeof TutorialTemplate> = {
         },
       ],
     },
-    content: [
+    parts: [
       {
-        ...mockTextBlock({
-          type: 'heading',
-          level: 2,
-          text: 'Sottotitolo',
-        }),
+        component: 'blockRenderer',
+        html: [
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+          { ...mockImageBlock() },
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+        ],
       },
-      { ...mockTextBlock() },
-      { ...mockTextBlock() },
-      { ...mockImageBlock() },
       {
-        ...mockTextBlock({
-          type: 'heading',
-          level: 2,
-          text: 'Sottotitolo',
-        }),
+        component: 'blockRenderer',
+        html: [
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+        ],
       },
-      { ...mockTextBlock() },
     ],
     product: appIo,
   },
