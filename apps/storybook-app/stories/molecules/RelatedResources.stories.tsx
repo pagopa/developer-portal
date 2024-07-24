@@ -25,5 +25,13 @@ export const Showcase: StoryObj<typeof RelatedResources> = {
       mobileImagePath: 'https://via.placeholder.com/150',
       title: 'Guida pratica',
     },
+    downloadableDocuments: [
+      {
+        title: 'Documento 1',
+        downloadLink: '#',
+        size: 100,
+        tags: [{ label: 'PDF' }],
+      },
+    ],
   },
 };

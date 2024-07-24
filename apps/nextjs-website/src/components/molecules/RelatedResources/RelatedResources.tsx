@@ -2,12 +2,19 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { GuideCard, GuideCardProps } from '../GuideCard/GuideCard';
+import DownloadableDocuments, {
+  DownloadableDocumentsProps,
+} from '../DownloadableDocuments/DownloadableDocuments';
 
 interface RelatedResourcesProps {
   guide: GuideCardProps;
+  downloadableDocuments: DownloadableDocumentsProps['documents'];
 }
 
-const RelatedResources = ({ guide }: RelatedResourcesProps) => {
+const RelatedResources = ({
+  guide,
+  downloadableDocuments,
+}: RelatedResourcesProps) => {
   const t = useTranslations('webinar.webinarsSection.relatedResources');
 
   return (
@@ -16,6 +23,8 @@ const RelatedResources = ({ guide }: RelatedResourcesProps) => {
         {t('title')}
       </Typography>
       <GuideCard {...guide} />
+
+      <DownloadableDocuments documents={downloadableDocuments} />
     </EContainer>
   );
 };
