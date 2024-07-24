@@ -62,7 +62,8 @@
         "parts.alert",
         "parts.code-block",
         "parts.embed-html",
-        "parts.html"
+        "parts.html",
+        "parts.quote"
       ],
       "required": true
     },
