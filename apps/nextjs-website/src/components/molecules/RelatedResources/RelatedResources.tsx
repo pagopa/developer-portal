@@ -7,12 +7,12 @@ import DownloadableDocuments, {
 } from '../DownloadableDocuments/DownloadableDocuments';
 
 interface RelatedResourcesProps {
-  guide: GuideCardProps;
+  resources: GuideCardProps[];
   downloadableDocuments: DownloadableDocumentsProps['documents'];
 }
 
 const RelatedResources = ({
-  guide,
+  resources,
   downloadableDocuments,
 }: RelatedResourcesProps) => {
   const t = useTranslations('webinar.webinarsSection.relatedResources');
@@ -22,8 +22,8 @@ const RelatedResources = ({
       <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
         {t('title')}
       </Typography>
-      <GuideCard {...guide} />
-
+      {resources &&
+          resources.map((props, index) => <GuideCard key={index} {...props} />)}
       <DownloadableDocuments documents={downloadableDocuments} />
     </EContainer>
   );
