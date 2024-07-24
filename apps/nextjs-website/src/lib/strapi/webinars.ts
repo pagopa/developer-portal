@@ -93,8 +93,8 @@ export const webinarPopulate = {
           populate: '*',
         },
       },
-      questionsAndAnswers: '*',
     },
+    questionsAndAnswers: '*',
   },
 };
 

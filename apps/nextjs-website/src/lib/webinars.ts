@@ -24,7 +24,7 @@ export function makeWebinarsProps(
         downloadableDocuments: (
           webinar.attributes.relatedResources?.downloadableDocuments.data || []
         ).map(({ attributes }) => ({
-          title: attributes.name,
+          title: attributes.caption || attributes.name,
           downloadLink: attributes.url,
           size: attributes.size,
           extension: attributes.ext.replace('.', '').toUpperCase(),
