@@ -120,7 +120,6 @@ const SpeakerPreview = ({
   return (
     <Box
       sx={{
-        width: compactMode ? '100%' : isSmallScreen ? '20.5rem' : '16.563rem',
         flex: 1,
         display: 'flex',
         flexDirection: { xs: 'row', md: flexDirection },
