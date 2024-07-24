@@ -924,6 +924,7 @@ const makeStrapiResponseJson = () => ({
                   },
                 ],
               },
+              questionsAndAnswers: [],
               relatedResources: null,
             },
           },
