@@ -1,7 +1,6 @@
 ---
 "strapi-cms": minor
-"nextjs-website": patch
 "storybook-app": patch
 ---
 
-Quotes removed from tutorials
+Quotes removed from tutorials model, fix issue with tutorial storybook

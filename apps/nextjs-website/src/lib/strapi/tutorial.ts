@@ -50,11 +50,11 @@ const makeStrapiTutorialsPopulate = () =>
       image: {
         populate: ['image'],
       },
-      parts: '*',
-      product: { populate: 'logo' },
-      bannerLinks: {
-        populate: ['icon'],
+      parts: {
+        populate: ['backgroundImage'],
       },
+      product: { populate: 'logo' },
+      bannerLinks: '*',
     },
   });
 

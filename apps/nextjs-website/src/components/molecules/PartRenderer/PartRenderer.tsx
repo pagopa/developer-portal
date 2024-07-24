@@ -17,6 +17,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.component) {
     case 'alert':
       return <AlertPart {...part} />;
+    case 'quote':
+      return <Quote {...part} />;
     case 'apiTester':
       return <ApiTesterPart {...part} />;
     case 'blockRenderer':
