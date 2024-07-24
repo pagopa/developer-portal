@@ -2,6 +2,7 @@ import os
 import yaml
 import argparse
 import logging
+from dotenv import load_dotenv
 
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
@@ -10,6 +11,7 @@ from src.modules.vector_database import build_automerging_index
 
 
 logging.basicConfig(level=logging.INFO)
+load_dotenv()
 
 
 if __name__ == "__main__":
@@ -38,8 +40,8 @@ if __name__ == "__main__":
         embed_model,
         documentation_dir=params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
-        s3_bucket_name=params["vector_index"]["s3_bucket_name"],
-        region=params["models"]["region"],
+        s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+        region=os.getenv("AWS_DEFAULT_REGION"),
         chunk_sizes=params["vector_index"]["chunk_sizes"],
         chunk_overlap=params["vector_index"]["chunk_overlap"]
     )

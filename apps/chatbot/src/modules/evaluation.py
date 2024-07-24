@@ -22,6 +22,7 @@ from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
 from llama_index.core.evaluation.eval_utils import aget_responses
 
 from src.modules.chatbot import Chatbot
+from src.modules.async_bedrock import AsyncBedrock
 
 
 nest_asyncio.apply()
@@ -181,6 +182,12 @@ if __name__ == "__main__":
     prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
     eval_prompts = yaml.safe_load(open("config/eval_prompts.yaml", "r"))
     bot = Chatbot(params, prompts)
+    eval_model = AsyncBedrock(
+        model=params["models"]["model_id"],
+        temperature=params["models"]["temperature"],
+        max_tokens=params["models"]["max_tokens"],
+        use_guardrail=False
+    )
 
     # load FAQs
     faqs = json.load(open("faqs.json", "r"))
@@ -190,19 +197,19 @@ if __name__ == "__main__":
     # evaluation metrics
     evaluator_dict = {
         "answer_relevancy": AnswerRelevancyEvaluator(
-            llm=bot.model,
+            llm=eval_model,
             eval_template=eval_prompts["answer_relevacy_prompt_str"],
             parser_function=parser_function,
             score_threshold=1.
         ),
         "context_relevancy": ContextRelevancyEvaluator(
-            llm=bot.model,
+            llm=eval_model,
             eval_template=eval_prompts["context_relevacy_prompt_str"],
             parser_function=parser_function,
             score_threshold=1.
         ),
         "faithfulness": MyFaithfulnessEvaluator(
-            llm=bot.model,
+            llm=eval_model,
             eval_template=eval_prompts["faithfulness_prompt_str"],
             refine_template=eval_prompts["faithfulness_refine_prompt_str"],
             parser_function=parser_function
