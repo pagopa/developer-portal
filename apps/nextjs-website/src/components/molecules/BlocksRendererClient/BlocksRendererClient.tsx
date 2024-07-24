@@ -57,14 +57,18 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography
-            marginY={4}
-            variant={`h${level}`}
-            color={textColor}
-            id={computeId('blockRenderer', children)}
+          <div
+              id={computeId('blockRenderer', children)}
+              style={{ marginTop: `-${scrollOffset}px`, paddingTop: `${scrollOffset}px` }}
           >
-            {children}
-          </Typography>
+                    <Typography
+                      marginY={4}
+                      variant={`h${level}`}
+                      color={textColor}
+                    >
+                      {children}
+                    </Typography>
+          </div>
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
