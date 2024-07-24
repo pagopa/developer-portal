@@ -8,7 +8,7 @@ import { PaginationCodec } from './codecs/PaginationCodec';
 import { BaseProductCodec, ProductCodec } from './codecs/ProductCodec';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { BannerLinkCodec } from './codecs/BannerLinkCodec';
-import { WebinarCodec } from './webinars';
+import { WebinarCodec, webinarPopulate } from './webinars';
 
 const StepCodec = t.strict({
   title: t.string,
@@ -70,13 +70,7 @@ const makeStrapiSolutionsPopulate = () =>
       bannerLinks: {
         populate: ['icon'],
       },
-      webinars: {
-        populate: [
-          'coverImage',
-          'webinarSpeakers.avatar',
-          'relatedLinks.links',
-        ],
-      },
+      webinars: webinarPopulate,
     },
   });
 
