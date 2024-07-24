@@ -19,6 +19,11 @@ const WebinarSpeakerCodec = t.strict({
   }),
 });
 
+const QuestionAndAnswerCodec = t.strict({
+  question: t.string,
+  answer: BlocksContentCodec,
+});
+
 export const WebinarCodec = t.strict({
   id: t.number,
   attributes: t.strict({
@@ -39,6 +44,7 @@ export const WebinarCodec = t.strict({
       t.undefined,
     ]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
+    questionsAndAnswers: t.array(QuestionAndAnswerCodec),
   }),
 });
 
@@ -61,6 +67,7 @@ const makeStrapiWebinarsPopulate = () =>
       relatedLinks: {
         populate: ['links'],
       },
+      questionsAndAnswers: '*',
     },
   });
 
