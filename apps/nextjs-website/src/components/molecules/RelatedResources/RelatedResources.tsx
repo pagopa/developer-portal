@@ -1,13 +1,13 @@
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { GuideCard, GuideCardProps } from '../GuideCard/GuideCard';
 
 interface RelatedResourcesProps {
-  guide: GuideCardProps;
+  resources: GuideCardProps[];
 }
 
-const RelatedResources = ({ guide }: RelatedResourcesProps) => {
+const RelatedResources = ({ resources }: RelatedResourcesProps) => {
   const t = useTranslations('webinar.webinarsSection.relatedResources');
 
   return (
@@ -15,7 +15,10 @@ const RelatedResources = ({ guide }: RelatedResourcesProps) => {
       <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
         {t('title')}
       </Typography>
-      <GuideCard {...guide} />
+      <Box>
+        {resources &&
+          resources.map((props, index) => <GuideCard key={index} {...props} />)}
+      </Box>
     </EContainer>
   );
 };

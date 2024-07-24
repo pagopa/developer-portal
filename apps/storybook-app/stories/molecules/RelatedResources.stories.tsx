@@ -12,18 +12,20 @@ export default meta;
 export const Showcase: StoryObj<typeof RelatedResources> = {
   decorators: [nextIntlContextDecorator],
   args: {
-    guide: {
-      description: {
-        title: 'Multe per violazioni al Codice della Strada',
-        listItems: ['Item1', 'Item2'],
+    resources: [
+      {
+        description: {
+          title: 'Multe per violazioni al Codice della Strada',
+          listItems: ['Item1', 'Item2'],
+        },
+        imagePath: 'https://via.placeholder.com/2000x1000',
+        link: {
+          href: '#',
+          label: 'Vai alla guida',
+        },
+        mobileImagePath: 'https://via.placeholder.com/150',
+        title: 'Guida pratica',
       },
-      imagePath: 'https://via.placeholder.com/2000x1000',
-      link: {
-        href: '#',
-        label: 'Vai alla guida',
-      },
-      mobileImagePath: 'https://via.placeholder.com/150',
-      title: 'Guida pratica',
-    },
+    ],
   },
 };
