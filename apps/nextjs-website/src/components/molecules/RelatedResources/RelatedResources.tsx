@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { GuideCard, GuideCardProps } from '../GuideCard/GuideCard';
 import DownloadableDocuments, {
   DownloadableDocumentsProps,
-} from '../DownloadableDocuments/DownloadableDocuments';
+} from '@/components/molecules/DownloadableDocuments/DownloadableDocuments';
 
 interface RelatedResourcesProps {
   resources: GuideCardProps[];
