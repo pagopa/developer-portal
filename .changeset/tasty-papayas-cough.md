@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Update speaker list and preview in webinar
+Update speaker list layout in webinar page and in its preview card
