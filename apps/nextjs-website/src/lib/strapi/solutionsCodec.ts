@@ -75,6 +75,7 @@ const makeStrapiSolutionsPopulate = () =>
           'coverImage',
           'webinarSpeakers.avatar',
           'relatedLinks.links',
+          'questionsAndAnswers',
         ],
       },
     },
