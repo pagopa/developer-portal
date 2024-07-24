@@ -1,5 +1,5 @@
 import { Path } from '@/lib/types/path';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { Part } from './part';
 
 export type Tutorial = {
   readonly showInOverview?: boolean;
@@ -9,5 +9,5 @@ export type Tutorial = {
   };
   readonly title: string;
   readonly publishedAt?: Date;
-  readonly content?: BlocksContent;
+  readonly parts?: readonly Part[];
 } & Path;

@@ -127,8 +127,10 @@
                 "dontLoseNextPlural": "Non perderti i prossimi webinar",
                 "next": "I prossimi appuntamenti",
                 "our": "I nostri webinar",
-                "participateTo": "Partecipa ai nostri webinar"
-            }
+                "participateTo": "Partecipa ai nostri webinar",
+                "dedicatedWebinar": "Guarda il webinar dedicato"
+            },
+            "solutionDescription": "I webinar PagoPA LAB sono incontri formativi in cui gli specialisti del nostro team illustrano tutti i passaggi del processo di gestione di un servizio pubblico digitale, approfondendo i benefici di un approccio integrato delle piattaforme gestite da PagoPA."
         },
         "view": "Visualizza",
         "pastWebinars": {
@@ -568,5 +570,10 @@
     },
     "apiDataListPage": {
         "explore": "Esplora le API"
+    },
+    "chatBot": {
+        "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
+        "chatHistory": "Cronologia chat",
+        "delete": "Elimina"
     }
 }
