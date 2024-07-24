@@ -28,7 +28,7 @@ const products = [
   },
   {
     name: 'App IO',
-    shortName: 'pago-pa',
+    shortName: 'App IO',
     description: 'Il portale per gli sviluppatori di App IO',
     slug: 'app-io',
     logo: {
