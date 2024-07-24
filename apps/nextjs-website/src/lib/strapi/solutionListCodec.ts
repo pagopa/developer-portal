@@ -49,6 +49,8 @@ const makeStrapiSolutionListPopulate = () =>
           'webinars.questionsAndAnswers',
           'webinars.webinarSpeakers',
           'webinars.webinarSpeakers.avatar',
+          'webinars.relatedResources.resources.image',
+          'webinars.relatedResources.downloadableDocuments',
         ],
       },
       caseHistories: {
