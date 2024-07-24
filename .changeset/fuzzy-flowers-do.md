@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Remove quotes from nextjs
+Remove quotes from Tutorial pages
