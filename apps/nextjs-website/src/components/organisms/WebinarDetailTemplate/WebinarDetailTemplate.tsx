@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -166,6 +167,29 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {bodyContent}
       {speakerList}
       {startInfo}
+      {webinar.relatedResources && (
+        <RelatedResources
+          title={webinar.relatedResources.title}
+          resources={webinar.relatedResources.resources.map((resource) => ({
+            description: { title: resource.subtitle || '', listItems: [] }, // TODO: remove and use description when PR is fixed
+            imagePath: resource.image?.url || '',
+            link: {
+              label: resource.linkText,
+              href: resource.linkHref,
+            },
+            mobileImagePath: resource.image?.url || '',
+            title: resource.title,
+          }))}
+          downloadableDocuments={(
+            webinar.relatedResources.downloadableDocuments || []
+          ).map((doc) => ({
+            title: doc.title,
+            size: doc.size,
+            downloadLink: doc.downloadLink,
+            tags: [{ label: doc.extension }],
+          }))}
+        />
+      )}
       {relatedLinks}
       <Snackbar
         open={!!error}
