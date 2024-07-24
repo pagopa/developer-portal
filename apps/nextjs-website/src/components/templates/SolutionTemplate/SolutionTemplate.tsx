@@ -92,7 +92,7 @@ const SolutionTemplate = ({
         />
       </EContainer>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
-      {stats && (
+      {stats.length > 0 && (
         <Stats
           maxWidth={265}
           items={stats.map((stat) => ({
