@@ -1,5 +1,5 @@
 import { Path } from '@/lib/types/path';
-import { Media } from './media';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 
 export type Product = {
   readonly slug: string;
