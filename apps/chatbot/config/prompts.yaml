@@ -23,7 +23,8 @@ qa_prompt_str: |
       - il monitoraggio dei livelli di servizio di ciascun soggetto coinvolto, come definito in indicatori-di-qualita-per-i-soggetti-aderenti;
       - la gestione della funzionalità di "stand In" in caso di indisponibilità o mancata risposta da parte dell'EC.
 
-      Link: [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+      Rif: 
+      [PagoPA DevPortal | Overview delle componenti](b937c329a4207291f7cf0b5a3f020036c349ea19e502238d3621b4ea26dff096)
 
     User query: Cos'è Firma con IO?
     Answer: Firma con IO è un servizio che consente ai cittadini di firmare documenti tramite l'App IO in maniera semplice, veloce e sicura, e agli enti di gestire tutto il processo di firma attraverso un unico canale.
@@ -31,7 +32,8 @@ qa_prompt_str: |
       Questa firma è generata da un dispositivo qualificato di creazione di firme elettroniche e si basa su un certificato qualificato per firme elettroniche rilasciato da un QTSP (Fornitore Qualificato di Servizi Fiduciari). 
       Tale QTSP è iscritto all'elenco dei prestatori di servizi digitali qualificati, mantenuto da AgID secondo l'art. 29 del Codice dell'Amministrazione Digitale.
 
-      Link: [PagoPA DevPortal | Guida alla scelta di Firma con IO](https://developer.pagopa.it/firma-con-io/guides/guida-scelta-firma)
+      Rif: 
+      [PagoPA DevPortal | Guida alla scelta di Firma con IO](e9a8fb644acd3121faa2b169f17cf44ee2a7514ef4aa0e757c88751ac2daeb13)
   ---------------------
   Task:
   Given the User query: {query_str}
