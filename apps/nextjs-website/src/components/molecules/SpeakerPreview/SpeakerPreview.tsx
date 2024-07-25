@@ -5,8 +5,13 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import { useMediaQuery } from '@mui/material';
 
-type SpeakerPreviewProps = { compactMode?: boolean } & Speaker;
+type SpeakerPreviewProps = {
+  compactMode?: boolean;
+  flexDirection?: 'column' | 'row';
+  isSmallScreen?: boolean;
+} & Speaker;
 
 type SpeakerAvatarProps = SpeakerPreviewProps;
 
@@ -14,6 +19,7 @@ const SpeakerAvatar = ({
   avatar,
   name,
   compactMode = true,
+  isSmallScreen = false,
 }: SpeakerAvatarProps) => {
   const { palette } = useTheme();
   return avatar ? (
@@ -25,8 +31,8 @@ const SpeakerAvatar = ({
       sizes='100vw'
       style={{
         borderRadius: '100%',
-        width: compactMode ? '64px' : '145px',
-        height: 'auto',
+        width: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
+        height: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
       }}
     />
   ) : (
@@ -40,8 +46,8 @@ const SpeakerAvatar = ({
         borderWidth: '1px',
         borderRadius: '100%',
         borderColor: palette.divider,
-        width: compactMode ? '64px' : '145px',
-        height: compactMode ? '64px' : '145px',
+        width: compactMode ? '4rem' : '9.063rem',
+        height: compactMode ? '4rem' : '9.063rem',
       }}
     >
       <PersonOutline fontSize={compactMode ? 'medium' : 'large'} />
@@ -56,58 +62,85 @@ const SpeakerInfo = ({
   name,
   jobTitle,
   description,
+  isSmallScreen = false,
 }: SpeakerInfoProps) => {
   const { palette } = useTheme();
   return (
     <Box
       sx={{
+        maxWidth: '20.625rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        gap: '0.375rem',
       }}
     >
       {compactMode ? (
         <>
-          <Typography variant='body2' fontWeight={600}>
+          <Typography fontSize={'1.125rem'} fontWeight={600}>
             {name}
           </Typography>
-          <Typography variant='body2'>{jobTitle}</Typography>
+          <Typography fontSize={'1.125rem'} fontWeight={400}>
+            {jobTitle}
+          </Typography>
         </>
       ) : (
         <>
-          <Typography variant='h5' fontWeight={700}>
+          <Typography
+            fontWeight={700}
+            fontSize={{ xs: '1.375rem', md: '1.5rem' }}
+            lineHeight={{ xs: '1.813rem', md: '2rem' }}
+          >
             {name}
           </Typography>
           <Typography
-            fontSize={18}
+            fontSize={{ xs: '1rem', md: '1.125rem' }}
             fontWeight={400}
             color={palette.text.secondary}
           >
             {jobTitle}
           </Typography>
-          <Box mt={2}>
-            <BlocksRendererClient content={description} />
-          </Box>
+          {!isSmallScreen && description && (
+            <Box mt={2}>
+              <BlocksRendererClient content={description} />
+            </Box>
+          )}
         </>
       )}
     </Box>
   );
 };
 
-const SpeakerPreview = ({ compactMode, ...speaker }: SpeakerPreviewProps) => {
-  const flexDirection = compactMode ? 'row' : { xs: 'column', md: 'row' };
-
+const SpeakerPreview = ({
+  compactMode,
+  flexDirection = 'column',
+  ...speaker
+}: SpeakerPreviewProps) => {
+  const isSmallScreen = useMediaQuery('(max-width: 900px)');
   return (
     <Box
       sx={{
+        flex: 1,
         display: 'flex',
-        flexDirection,
+        flexDirection: { xs: 'row', md: flexDirection },
+        alignItems: {
+          xs: 'center',
+          md: compactMode ? 'center' : '  flex-start',
+        },
         gap: 3,
         alignContent: 'center',
       }}
     >
-      <SpeakerAvatar {...speaker} compactMode={compactMode} />
-      <SpeakerInfo {...speaker} compactMode={compactMode} />
+      <SpeakerAvatar
+        {...speaker}
+        compactMode={compactMode}
+        isSmallScreen={isSmallScreen}
+      />
+      <SpeakerInfo
+        {...speaker}
+        compactMode={compactMode}
+        isSmallScreen={isSmallScreen}
+      />
     </Box>
   );
 };

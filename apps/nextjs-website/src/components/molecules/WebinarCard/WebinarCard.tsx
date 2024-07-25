@@ -150,15 +150,15 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
         {webinar.speakers && (
           <Box width={{ md: '45%' }}>
             <Typography
-              mb={2}
+              my={2}
               color={theme.palette.text.primary}
-              fontSize={18}
-              fontWeight={600}
+              fontSize={14}
+              fontWeight={700}
               textTransform={'uppercase'}
             >
               {t('speakers')}
             </Typography>
-            <Stack direction='column' gap={2}>
+            <Stack width='100%' direction='column' gap={2}>
               {webinar.speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}
@@ -166,6 +166,8 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
                   description={speaker.description}
                   jobTitle={speaker.jobTitle}
                   avatar={speaker.avatar}
+                  flexDirection='row'
+                  compactMode={true}
                 />
               ))}
             </Stack>
