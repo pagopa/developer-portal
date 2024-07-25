@@ -41,7 +41,7 @@ export type Webinar = {
       readonly iconName: string;
     }[];
   };
-  readonly questionsAndAnswers?: readonly QuestionsAndAnswers[];
+  readonly questionsAndAnswers?: readonly QuestionsAndAnswersItem[];
 };
 
 export type StaticWebinar = Webinar & { readonly isVisibleInHome: boolean };
