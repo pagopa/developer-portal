@@ -27,7 +27,7 @@ The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHO
 
 In this way, `PYTHONPATH` points to where the Python packages and modules are, not where your checkouts are.
 
-## Files for Environment Variables
+## File for Environment Variables
 
 Create a `.env` file inside the folder and write to the file the following environment variables:
 
