@@ -168,6 +168,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {bodyContent}
       {speakerList}
       {startInfo}
+      {webinar.questionsAndAnswers && (
+        <QuestionsAndAnswers items={[...webinar.questionsAndAnswers]} />
+      )}
       {webinar.relatedResources && (
         <RelatedResources
           title={webinar.relatedResources.title}
@@ -193,9 +196,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             tags: [{ label: doc.extension }],
           }))}
         />
-      )}
-      {webinar.questionsAndAnswers && (
-        <QuestionsAndAnswers items={[...webinar.questionsAndAnswers]} />
       )}
       {relatedLinks}
       <Snackbar
