@@ -30,7 +30,7 @@ resource "aws_cognito_user_pool" "devportal" {
 
   admin_create_user_config {
     # allow user to create via signup page
-    allow_admin_create_user_only = false
+    allow_admin_create_user_only = var.environment == "dev" ? true : false
   }
 
   password_policy {
