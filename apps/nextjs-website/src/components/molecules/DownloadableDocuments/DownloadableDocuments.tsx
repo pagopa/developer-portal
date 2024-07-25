@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 
 const getReadableFileSizeString = (kilobytes: number) => {
   if (kilobytes <= 0) {
-    return '0 KB';
+    return '0KB';
   }
 
   const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

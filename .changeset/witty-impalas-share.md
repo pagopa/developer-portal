@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add DownloadableDocuments component
+Add RelatedResources and DownloadableDocuments components
