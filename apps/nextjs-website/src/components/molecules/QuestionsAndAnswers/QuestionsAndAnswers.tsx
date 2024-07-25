@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { QuestionsAndAnswers } from '@/lib/types/webinar';
+import { QuestionsAndAnswersItem } from '@/lib/types/webinar';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
@@ -19,10 +19,10 @@ const MIN_QUESTIONS_TO_SHOW = 5;
 const MAX_QUESTIONS_TO_SHOW = 10;
 
 export type QuestionsAndAnswersProps = {
-  readonly items: QuestionsAndAnswers[];
+  readonly items: QuestionsAndAnswersItem[];
 };
 
-const QuestionsAndAnswersComponent = ({ items }: QuestionsAndAnswersProps) => {
+const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection.questionsAndAnswers');
   const [showMore, toggleShowMore] = useState(false);
@@ -104,4 +104,4 @@ const QuestionsAndAnswersComponent = ({ items }: QuestionsAndAnswersProps) => {
   );
 };
 
-export default QuestionsAndAnswersComponent;
+export default QuestionsAndAnswers;
