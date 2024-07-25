@@ -36,7 +36,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: 3,
+              marginBottom: 5,
               ...imageStyle,
             }}
             src={image.url}
