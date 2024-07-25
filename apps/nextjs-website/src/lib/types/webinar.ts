@@ -55,5 +55,3 @@ export type Webinar = {
     }[];
   };
 };
-
-export type StaticWebinar = Webinar & { readonly isVisibleInHome: boolean };
