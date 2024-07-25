@@ -22,7 +22,7 @@ const RelatedResources = ({
   return (
     <EContainer>
       <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
-        {title || t('webinar.webinarsSection.relatedResources')}
+        {title || t('webinar.webinarsSection.relatedResources.title')}
       </Typography>
       <Box>
         {resources &&
