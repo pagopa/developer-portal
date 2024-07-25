@@ -80,7 +80,7 @@ def create_documentation(documentation_dir: str = "./PagoPADevPortal/out/"):
         documents.append(Document(
             text=text,
             metadata={
-                "source": masked_url,
+                "filename": masked_url,
                 "title": title,
                 "language": "it"
             }

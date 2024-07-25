@@ -140,13 +140,12 @@ async def evaluate(
         engine,
         questions: List[str],
         evaluator_dict: Dict[str, BaseEvaluator]
-    ) -> pd.DataFrame:
+    ):
 
     # generete responses
-    logging.info(f"Generating {len(questions)} answers..")
+    logging.info(f"Making evaluation: Generating {len(questions)} answers..")
     pred_responses = await aget_responses(questions, engine, show_progress=True)
 
-    logging.info("Making evaluation..")
     batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
     eval_results = await batch_runner.aevaluate_responses(
         questions,
@@ -157,19 +156,19 @@ async def evaluate(
     return pred_responses, eval_results
 
 
-def table_results(eval_results):
+def table_results(chatbot : Chatbot, eval_results):
 
     table = {
         "ID": list(range(1, len(questions)+1)),
         "query": [a.query for a in eval_results["answer_relevancy"]],
-        "response": [a.response.strip() for a in eval_results["answer_relevancy"]],
+        "response": [chatbot._unmask_urls(a.response.strip()) for a in eval_results["answer_relevancy"]],
         "contexts": [f.contexts for f in eval_results["faithfulness"]],
         "answer_relevancy_score": [a.score for a in eval_results["answer_relevancy"]],
-        "answer_relevancy_feedback": [a.feedback for a in eval_results["answer_relevancy"]],
+        "answer_relevancy_feedback": [chatbot._unmask_urls(a.feedback) for a in eval_results["answer_relevancy"]],
         "context_relevancy_score": [c.score for c in eval_results["context_relevancy"]],
-        "context_relevancy_feedback": [c.feedback for c in eval_results["context_relevancy"]],
+        "context_relevancy_feedback": [chatbot._unmask_urls(c.feedback) for c in eval_results["context_relevancy"]],
         "faithfulness_score": [f.score for f in eval_results["faithfulness"]],
-        "faithfulness_feedback": [f.feedback for f in eval_results["faithfulness"]]
+        "faithfulness_feedback": [chatbot._unmask_urls(f.feedback) for f in eval_results["faithfulness"]]
     }
 
     return pd.DataFrame.from_dict(table)
@@ -226,7 +225,7 @@ if __name__ == "__main__":
     results_dir = f"results/{now_str}"
     os.makedirs(results_dir, exist_ok=True)
 
-    df = table_results(eval_results)
+    df = table_results(bot, eval_results)
     avg_scores = {
         "answer_relevancy": df["answer_relevancy_score"].mean(skipna=True),
         "context_relevancy": df["context_relevancy_score"].mean(skipna=True),
@@ -237,9 +236,6 @@ if __name__ == "__main__":
         os.path.join(results_dir, "evaluation_table.csv"),
         index=False
     )
-    json.dump(
-        avg_scores,
-        open(os.path.join(results_dir, "avg_scores.json"), "w"),
-        indent=4
-    )
+    with open(os.path.join(results_dir, "avg_scores.json"), "w") as f:
+        json.dump(avg_scores, f, indent=4)
     logging.info(f"Results stored in {results_dir}")

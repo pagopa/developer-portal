@@ -170,7 +170,11 @@ class Chatbot():
         hashed_urls = re.findall(pattern, response_str)
 
         for hashed_url in hashed_urls:
-            response_str = response_str.replace(hashed_url, self.hash_table[hashed_url])
+            if hashed_url in self.hash_table.keys():
+                url = self.hash_table[hashed_url]
+            else:
+                url = "{URL}"
+            response_str = response_str.replace(hashed_url, url)
 
         return response_str
 
@@ -213,7 +217,7 @@ class Chatbot():
             response_str = self._get_response_str(engine_response)
 
         response_str = self._unmask_urls(response_str)
-        
+
         self._update_messages("User", query_str)
         self._update_messages("Assistant", response_str)
 
