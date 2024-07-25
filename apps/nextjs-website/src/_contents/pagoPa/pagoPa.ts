@@ -13,6 +13,8 @@ export const pagoPa: Product = {
   path: '/pago-pa',
   slug: 'pago-pa',
   logo: {
+    alternativeText: 'Piattaforma pagoPA',
+    caption: undefined,
     name: '',
     width: 60,
     height: 61,

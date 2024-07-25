@@ -1,9 +1,10 @@
 {
   "name": "nextjs-website",
-  "version": "1.1.0",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
+    "update-docs-ci": "./scripts/update-docs-ci.sh",
     "update-docs": "./scripts/fetch-local-docs.sh",
     "compile": "tsc --noEmit",
     "dev": "next dev",

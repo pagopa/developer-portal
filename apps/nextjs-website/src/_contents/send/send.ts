@@ -13,6 +13,8 @@ export const send: Product = {
   slug: 'send',
   path: '/send',
   logo: {
+    alternativeText: 'SEND - Servizio Notifiche Digitali',
+    caption: undefined,
     name: '',
     width: 60,
     height: 61,

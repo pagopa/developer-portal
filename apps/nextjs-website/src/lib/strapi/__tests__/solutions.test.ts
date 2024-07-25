@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { StrapiSolutionsCodec } from '../solutionsCodec';
 
-const baseSolutionJson = {
+export const baseSolutionJson = {
   id: 1,
   attributes: {
     slug: 'solution-1',
@@ -349,6 +349,7 @@ const makeStrapiResponseJson = () => ({
                   },
                 ],
               },
+              relatedResources: null,
             },
           },
         ],

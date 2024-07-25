@@ -46,9 +46,17 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Fetch docs from GitBook
+    - name: Download GitBook docs
+      uses: actions/checkout@v4
+      with:
+        repository: pagopa/devportal-docs
+        ref: docs/from-gitbook
+        path: apps/nextjs-website/checkout_path
+        fetch-depth: 1
+    
+    - name: Update docs folder
       shell: bash
-      run: npm run download-docs -w nextjs-website
+      run: npm run update-docs-ci -w nextjs-website
 
     - name: Restore NextJS cache
       uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
