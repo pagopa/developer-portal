@@ -47,7 +47,7 @@ const BlocksRendererClient = ({
         ),
         paragraph: ({ children }) => (
           <Typography
-            marginBottom={4}
+            marginBottom={5}
             variant='body1'
             color={textColor}
             sx={paragraphSx}
@@ -55,7 +55,7 @@ const BlocksRendererClient = ({
             {children}
           </Typography>
         ),
-        heading: ({ children, level }) => (
+        heading: ({ children }) => (
           <Typography
             marginBottom={2}
             component={'h2'}
