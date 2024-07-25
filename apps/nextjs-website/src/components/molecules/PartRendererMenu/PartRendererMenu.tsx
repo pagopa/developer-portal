@@ -56,26 +56,38 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   );
 };
 
+export function refactorId(id: string | undefined): string {
+  if (id === undefined) return '';
+  return id
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
+    .replace(/^\s*/, '')
+    .normalize('NFD') // Split an accented letter in the base letter and the accent
+    .replace(/[\u0300-\u036f]/g, '') // Remove all accents
+    .replace(/ /g, '-'); // Replace spaces with -
+}
+
 export function computeId(type: string, children: ReactNode | string): string {
   if (typeof children === 'string') {
-    return `${type} ${children}`;
+    return `${type}-${refactorId(children)}`;
   }
 
   if (!Array.isArray(children)) {
     // if children is react element and has props text return that
     if (children && typeof children === 'object' && 'props' in children) {
-      const text = children.props.text;
+      const text = refactorId(children.props.text);
       return `${type}-${text}`;
     }
 
-    return children?.toString() ?? '';
+    return refactorId(children?.toString()) ?? '';
   }
 
   return children
     .map((child: ReactNode) => {
       return computeId(type, child);
     })
-    .join('');
+    .join('-');
 }
 
 export default PartRendererMenu;

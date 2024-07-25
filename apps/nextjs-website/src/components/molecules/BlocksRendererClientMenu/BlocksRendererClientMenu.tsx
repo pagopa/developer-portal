@@ -3,7 +3,6 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
-import { ReactElement, ReactNode } from 'react';
 import React from 'react';
 
 type BlocksRendererClientMenuProps = {
