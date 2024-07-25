@@ -15,6 +15,7 @@ export const pagoPa: Product = {
   logo: {
     alternativeText: 'Piattaforma pagoPA',
     caption: undefined,
+    size: 10,
     name: '',
     width: 60,
     height: 61,

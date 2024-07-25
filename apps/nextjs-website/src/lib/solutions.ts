@@ -4,6 +4,7 @@ import { StrapiSolutions } from './strapi/solutionsCodec';
 import { Solution } from './types/solution';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { makeWebinarFromStrapi } from './webinars';
 
 export type DetailSolutionsProps = Solution & {
   readonly solutionSlug: string;
@@ -30,16 +31,9 @@ export function makeFullSolutionsProps(
       logo: attributes.logo.data.attributes,
     })),
     icon: attributes.icon.data.attributes,
-    webinars: attributes.webinars.data.map((webinar) => ({
-      ...webinar.attributes,
-      startDateTime: webinar.attributes.startDatetime?.toISOString(),
-      endDateTime: webinar.attributes.endDatetime?.toISOString(),
-      imagePath: webinar.attributes.coverImage.data.attributes.url,
-      speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
-        ...speaker.attributes,
-        avatar: speaker.attributes.avatar.data?.attributes,
-      })),
-    })),
+    webinars: attributes.webinars.data.map((webinar) =>
+      makeWebinarFromStrapi(webinar)
+    ),
     bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
       ...bannerLink,
       title: bannerLink.title || '',
