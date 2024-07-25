@@ -50,6 +50,7 @@ const QuestionsAndAnswersComponent = ({ items }: QuestionsAndAnswersProps) => {
               borderTop: 'none',
               borderRadius: '4px',
               '::before': { display: 'none' },
+              width: '100%',
             }}
             key={question.question}
             disableGutters
