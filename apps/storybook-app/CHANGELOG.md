@@ -1,5 +1,16 @@
 # storybook-app
 
+## 0.6.0
+
+### Minor Changes
+
+- 82fe16d: Add Chat molecule component
+
+### Patch Changes
+
+- d6eff42: Quotes removed from tutorials model, fix issue with tutorial storybook
+- b3d75ad: Remove "page" word from template files
+
 ## 0.5.0
 
 ### Minor Changes

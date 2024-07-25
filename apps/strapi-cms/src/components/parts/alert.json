@@ -9,11 +9,11 @@
   "attributes": {
     "text": {
       "type": "text",
-      "required": true
+      "required": false
     },
     "title": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "severity": {
       "type": "enumeration",

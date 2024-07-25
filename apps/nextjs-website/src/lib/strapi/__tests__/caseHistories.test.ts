@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { StrapiCaseHistoriesCodec } from '../caseHistoriesCodec';
 
-const baseCaseHistoryJson = {
+export const baseCaseHistoryJson = {
   id: 1,
   attributes: {
     slug: 'case-history-1',

@@ -135,6 +135,9 @@
                 "title": "Le risposte alle vostre domande",
                 "showMore": "Mostra più domande",
                 "showLess": "Mostra meno domande"
+            },
+            "relatedResources": {
+                "title": "Risorse correlate"
             }
         },
         "view": "Visualizza",
@@ -297,7 +300,9 @@
             "subscribedLabel": "Iscrizione confermata",
             "unsubscribeLabel": "Annulla iscrizione"
         },
-        "relatedLinks": "Link utili"
+        "relatedLinks": "Link utili",
+        "downloadableDocuments": "Materiali scaricabili",
+        "download": "Scarica"
     },
     "pageNotFound": {
         "overline": "404",
