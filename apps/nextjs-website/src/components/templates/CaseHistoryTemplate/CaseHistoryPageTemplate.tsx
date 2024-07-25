@@ -9,7 +9,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Media } from '@/lib/types/media';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 
 export type CaseHistoryPageTemplateProps = {
   slug: string;

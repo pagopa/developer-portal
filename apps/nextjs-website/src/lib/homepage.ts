@@ -2,8 +2,8 @@ import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
-import { Media } from './types/media';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;

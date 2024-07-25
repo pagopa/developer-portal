@@ -14,7 +14,7 @@ import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcas
 import Stats from '@/components/atoms/Stats/Stats';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { Media } from '@/lib/types/media';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 
 export type SolutionTemplateProps = {
   slug: string;
