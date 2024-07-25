@@ -73,7 +73,7 @@ const CaseHistoryPageTemplate = ({
       )}
       {products.length > 0 && (
         <ProductsShowcase
-          verticalPadding={12.5}
+          verticalPadding={10}
           cardSize={{ xs: 12, md: 4 }}
           backgroundColor={palette.background.paper}
           title={t('caseHistory.productShowcaseLabel')}
