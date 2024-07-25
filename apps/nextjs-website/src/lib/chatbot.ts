@@ -19,4 +19,3 @@ export const sendChatbotQuery = (query: QueryInput) =>
 
 export const getChatbotQueries = (sessionId: string) =>
   getQueries(sessionId)(chatbotApiEnv);
-
