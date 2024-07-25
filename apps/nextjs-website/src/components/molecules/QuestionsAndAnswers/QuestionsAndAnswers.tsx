@@ -58,7 +58,12 @@ const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
             onChange={handleChange(index)}
           >
             <AccordionSummary
-              expandIcon={<ExpandMore color='primary' sx={{ mr: 1.5 }} />}
+              expandIcon={
+                <ExpandMore
+                  color='primary'
+                  sx={expanded === index ? { ml: 1.5 } : { mr: 1.5 }}
+                />
+              }
             >
               <Typography
                 sx={{
