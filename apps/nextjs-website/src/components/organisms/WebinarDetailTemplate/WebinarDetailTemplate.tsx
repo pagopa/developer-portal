@@ -19,6 +19,7 @@ import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/Bl
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
+import QuestionsAndAnswersComponent from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -188,6 +189,11 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             downloadLink: doc.downloadLink,
             tags: [{ label: doc.extension }],
           }))}
+        />
+      )}
+      {webinar.questionsAndAnswers && (
+        <QuestionsAndAnswersComponent
+          questions={[...webinar.questionsAndAnswers]}
         />
       )}
       {relatedLinks}
