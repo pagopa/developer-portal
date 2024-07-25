@@ -66,7 +66,7 @@ const CaseHistoryPageTemplate = ({
             <PartRenderer part={part} />
           </EContainer>
         ) : (
-          <Box key={index} sx={{}}>
+          <Box key={index}>
             <PartRenderer part={part} />
           </Box>
         )
