@@ -62,6 +62,7 @@ const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
               backgroundColor: 'transparent',
               borderRadius: 3,
               width: '40%',
+              minWidth: '48rem',
             },
           },
         }}
