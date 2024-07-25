@@ -60,10 +60,7 @@ const QuestionsAndAnswers = ({
           >
             <AccordionSummary
               expandIcon={
-                <ExpandMore
-                  color='primary'
-                  sx={expanded === index ? { ml: 1.5 } : { mr: 1.5 }}
-                />
+                <ExpandMore color='primary' sx={{ mr: 1.5, ml: 1.5 }} />
               }
             >
               <Typography
