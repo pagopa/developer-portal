@@ -330,7 +330,7 @@ const makeStrapiResponseJsonWithNull = () => ({
               ext: '.jpg',
               mime: 'image/jpeg',
               size: 30.06,
-              url: 'http://localhost:1337/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
+              url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
               previewUrl: null,
               provider: 'strapi-provider-upload-custom',
               provider_metadata: null,
