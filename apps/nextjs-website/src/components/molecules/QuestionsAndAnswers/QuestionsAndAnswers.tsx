@@ -13,6 +13,7 @@ import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { QuestionsAndAnswers } from '@/lib/types/webinar';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 const MIN_QUESTIONS_TO_SHOW = 5;
 const MAX_QUESTIONS_TO_SHOW = 10;
@@ -40,29 +41,53 @@ const QuestionsAndAnswersComponent = ({
 
   return (
     <Box pt={10} pb={10} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <Box sx={{ maxWidth: '1200px', margin: 'auto' }}>
+      <EContainer>
         <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
           {t('title')}
         </Typography>
         {[...questions].splice(0, questionsToShow).map((question, index) => (
           <Accordion
-            sx={{ marginBottom: 2, borderTop: 'none' }}
+            sx={{
+              marginBottom: 2,
+              borderTop: 'none',
+              borderRadius: '4px',
+              '::before': { display: 'none' },
+            }}
             key={question.question}
             disableGutters
             expanded={expanded === index}
             onChange={handleChange(index)}
           >
-            <AccordionSummary expandIcon={<ExpandMore color='primary' />}>
-              <Typography>{question.question}</Typography>
+            <AccordionSummary
+              expandIcon={<ExpandMore color='primary' sx={{ mr: 1.5 }} />}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  lineHeight: '21px',
+                  my: 2,
+                }}
+              >
+                {question.question}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <BlocksRendererClient content={question.answer} />
+              <BlocksRendererClient
+                content={question.answer}
+                paragraphSx={{ mb: 0, fontSize: '16px', lineHeight: '21px' }}
+              />
             </AccordionDetails>
           </Accordion>
         ))}
         <Box sx={{ width: '100%', textAlign: 'center' }}>
           <Button
-            sx={{ mx: 'auto' }}
+            sx={{
+              mx: 'auto',
+              fontWeight: 700,
+              fontSize: '16px',
+              lineHeight: '21px',
+            }}
             onClick={() => toggleShowMore((prev) => !prev)}
           >
             {showMore ? t('showLess') : t('showMore')}
@@ -73,7 +98,7 @@ const QuestionsAndAnswersComponent = ({
             )}
           </Button>
         </Box>
-      </Box>
+      </EContainer>
     </Box>
   );
 };
