@@ -7,14 +7,14 @@ import { useTranslations } from 'next-intl';
 
 const getReadableFileSizeString = (kilobytes: number) => {
   if (kilobytes <= 0) {
-    return '0 KB';
+    return '0KB';
   }
 
   const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const unitIndex = Math.floor(Math.log(kilobytes) / Math.log(1024));
-  const size = kilobytes / Math.pow(1024, unitIndex);
-  const formattedSize = size.toFixed(2);
-  return `${formattedSize} ${units[unitIndex]}`;
+  const unitIndex = Math.ceil(Math.log(kilobytes) / Math.log(1024));
+  const size = Math.ceil(kilobytes / Math.pow(1024, unitIndex));
+  const formattedSize = size.toFixed(0);
+  return `${formattedSize}${units[unitIndex]}`;
 };
 
 export type DownloadableDocumentsProps = {
