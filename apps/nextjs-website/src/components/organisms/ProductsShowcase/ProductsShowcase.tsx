@@ -6,6 +6,7 @@ import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
 type ProductsShowcaseProps = {
   title: string;
+  verticalPadding?: number;
   backgroundColor?: string;
   cards: {
     title: string;
@@ -21,6 +22,7 @@ type ProductsShowcaseProps = {
 
 const ProductsShowcase = ({
   title,
+  verticalPadding = 5,
   backgroundColor,
   cards,
   cardSize,
@@ -28,8 +30,10 @@ const ProductsShowcase = ({
   const theme = useTheme();
   return (
     <Box
-      py={5}
-      sx={{ backgroundColor: backgroundColor || theme.palette.grey[50] }}
+      sx={{
+        backgroundColor: backgroundColor || theme.palette.grey[50],
+        marginY: verticalPadding,
+      }}
     >
       <SectionTitle margin={'0 0 1.75rem 0'} title={title} />
       <CardsGrid

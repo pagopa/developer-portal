@@ -36,7 +36,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: '16px',
+              marginBottom: 5,
               ...imageStyle,
             }}
             src={image.url}
@@ -47,7 +47,7 @@ const BlocksRendererClient = ({
         ),
         paragraph: ({ children }) => (
           <Typography
-            marginBottom={2}
+            marginBottom={5}
             variant='body1'
             color={textColor}
             sx={paragraphSx}
@@ -55,8 +55,14 @@ const BlocksRendererClient = ({
             {children}
           </Typography>
         ),
-        heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor}>
+        heading: ({ children }) => (
+          <Typography
+            marginBottom={2}
+            component={'h2'}
+            fontSize={'24px'}
+            fontWeight={600}
+            color={textColor}
+          >
             {children}
           </Typography>
         ),
