@@ -2,7 +2,7 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
-import SolutionPageTemplate from '@/components/templates/SolutionPageTemplate/SolutionPageTemplate';
+import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { getFullSolutionsProps } from '@/lib/cmsApi';
 
 type Params = {
@@ -33,7 +33,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solution = await getSolution(params?.solutionSlug);
 
-  return <SolutionPageTemplate {...solution} />;
+  return <SolutionTemplate {...solution} />;
 };
 
 export default Page;

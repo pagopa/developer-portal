@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
-import TutorialPageTemplate from '../../../nextjs-website/src/components/templates/TutorialPageTemplate/TutorialPageTemplate';
+import TutorialTemplate from 'nextjs-website/src/components/templates/TutorialTemplate/TutorialTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-import { appIo } from '../../../nextjs-website/src/_contents/appIo/appIo';
+import { appIo } from 'nextjs-website/src/_contents/appIo/appIo';
 
-const meta: Meta<typeof TutorialPageTemplate> = {
+const meta: Meta<typeof TutorialTemplate> = {
   title: 'Templates/TutorialPageTemplate',
-  component: TutorialPageTemplate,
+  component: TutorialTemplate,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof TutorialPageTemplate> = {
+export const Showcase: StoryObj<typeof TutorialTemplate> = {
   args: {
     title: 'Tutorial',
     path: 'tutorial',
@@ -29,25 +29,45 @@ export const Showcase: StoryObj<typeof TutorialPageTemplate> = {
         },
       ],
     },
-    content: [
+    parts: [
       {
-        ...mockTextBlock({
-          type: 'heading',
-          level: 2,
-          text: 'Sottotitolo',
-        }),
+        component: 'blockRenderer',
+        html: [
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+          { ...mockImageBlock() },
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+        ],
       },
-      { ...mockTextBlock() },
-      { ...mockTextBlock() },
-      { ...mockImageBlock() },
       {
-        ...mockTextBlock({
-          type: 'heading',
-          level: 2,
-          text: 'Sottotitolo',
-        }),
+        component: 'blockRenderer',
+        html: [
+          {
+            ...mockTextBlock({
+              type: 'heading',
+              level: 2,
+              text: 'Sottotitolo',
+            }),
+          },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+          { ...mockTextBlock() },
+        ],
       },
-      { ...mockTextBlock() },
     ],
     product: appIo,
   },
