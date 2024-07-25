@@ -2,7 +2,6 @@ import os
 import yaml
 import argparse
 import logging
-from dotenv import load_dotenv
 
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
@@ -11,7 +10,6 @@ from src.modules.vector_database import build_automerging_index
 
 
 logging.basicConfig(level=logging.INFO)
-load_dotenv()
 
 
 if __name__ == "__main__":
@@ -38,7 +36,7 @@ if __name__ == "__main__":
     index = build_automerging_index(
         model,
         embed_model,
-        documentation_dir=params["documentation"]["path"],
+        documentation_dir="./PagoPADevPortal/out/", #params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
         s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
         region=os.getenv("AWS_DEFAULT_REGION"),

@@ -1,7 +1,6 @@
 import os
+import re
 import logging
-from dotenv import load_dotenv
-
 from typing import Dict, List, Union, Tuple
 
 from langdetect import detect_langs
@@ -13,11 +12,8 @@ from llama_index.core.base.response.schema import (
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
 from src.modules.async_bedrock import AsyncBedrock
-from src.modules.vector_database import load_automerging_index
+from src.modules.vector_database import load_automerging_index, load_url_hash_table
 from src.modules.retriever import get_automerging_query_engine
-
-
-load_dotenv()
 
 
 LANGUAGES = {
@@ -36,9 +32,7 @@ LANGUAGES = {
     'tl': 'Tagalog (Filippino)', 'tr': 'Turco', 'uk': 'Ucraino', 'ur': 'Urdu',
     'vi': 'Vietnamita', 'zh-cn': 'Cinese Semplificato', 'zh-tw': 'Cinese Tradizionale'
 }
-
 ITALIAN_THRESHOLD = 0.85
-
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -55,6 +49,10 @@ class Chatbot():
         self.params = params
         self.prompts = prompts
         self.use_guardrail = use_guardrail
+        self.hash_table = load_url_hash_table(
+            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+            region=os.getenv("AWS_DEFAULT_REGION")
+        )
 
         self.model = AsyncBedrock(
             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -162,6 +160,19 @@ class Chatbot():
             """
         
         return response_str
+    
+
+    def _unmask_urls(self, response_str):
+
+        pattern = r'[a-fA-F0-9]{64}'
+
+        # Find all matches in the text
+        hashed_urls = re.findall(pattern, response_str)
+
+        for hashed_url in hashed_urls:
+            response_str = response_str.replace(hashed_url, self.hash_table[hashed_url])
+
+        return response_str
 
 
     def generate(self, query_str: str) -> str:
@@ -177,6 +188,9 @@ class Chatbot():
 
             engine_response = self.engine.query(query_str)
             response_str = self._get_response_str(engine_response)
+
+        # unmask the URLs in the response
+        response_str = self._unmask_urls(response_str)
 
         # update messages
         self._update_messages("User", query_str)
@@ -198,7 +212,8 @@ class Chatbot():
             engine_response = self.engine.aquery(query_str)
             response_str = self._get_response_str(engine_response)
 
-        # update messages
+        response_str = self._unmask_urls(response_str)
+        
         self._update_messages("User", query_str)
         self._update_messages("Assistant", response_str)
 
