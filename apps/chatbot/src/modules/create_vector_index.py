@@ -36,7 +36,7 @@ if __name__ == "__main__":
     index = build_automerging_index(
         model,
         embed_model,
-        documentation_dir="./PagoPADevPortal/out/", #params["documentation"]["path"],
+        documentation_dir=params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
         s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
         region=os.getenv("AWS_DEFAULT_REGION"),
