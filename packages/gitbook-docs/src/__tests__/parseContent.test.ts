@@ -629,7 +629,6 @@ describe('parseContent', () => {
         src: `${prefix}/p/a-src.jpg`,
         filename: 'a-src',
         caption: undefined,
-        size: 10,
       }),
     ]);
     expect(
@@ -757,7 +756,6 @@ describe('parseContent', () => {
       src: `${config.assetsPrefix}/p/a-src.jpg`,
       filename: 'a-src',
       caption: undefined,
-      size: 10,
     };
 
     expect(
