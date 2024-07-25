@@ -24,7 +24,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
         sessionId: 'sessionID',
         answer:
           "Ciao, sono [Nome Chatbot], il chatbot di DevPortal.\nPrima di incominciare ti invito a leggere l'Informativa sulla Privacy.\nScrivi Accetto per proseguire.",
-        createdAt: '11:21',
+        createdAt: '2024-07-24T17:14:07.129Z',
       },
     ],
     onSendQuery: (query: string) => {
@@ -42,20 +42,20 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
         sessionId: 'sessionID',
         answer:
           "Ciao, sono [Nome Chatbot], il chatbot di DevPortal.\nPrima di incominciare ti invito a leggere l'Informativa sulla Privacy.\nScrivi Accetto per proseguire.",
-        createdAt: '11:21',
+        createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
         sessionId: 'sessionID',
         question: 'Accetto',
-        queriedAt: '11:22',
+        queriedAt: '2024-07-24T17:14:07.129Z',
         answer: 'Ottimo! Adesso possiamo incominciare. Come posso aiutarti?',
-        createdAt: '11:22',
+        createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
         sessionId: 'sessionID',
         question:
           "E' possibile pagare una posizione debitoria una volta scaduta?",
-        queriedAt: '11:22',
+        queriedAt: '2024-07-24T17:14:07.129Z',
       },
     ],
     onSendQuery: (query: string) => {
