@@ -13,7 +13,7 @@ export default meta;
 export const Showcase: StoryObj<typeof QuestionsAndAnswers> = {
   decorators: [nextIntlContextDecorator],
   args: {
-    questions: [
+    items: [
       {
         question: 'Question 1?',
         answer: [mockTextBlock({ type: 'paragraph', wordCount: 30 })],
@@ -65,6 +65,27 @@ export const Showcase: StoryObj<typeof QuestionsAndAnswers> = {
       },
       {
         question: 'Question 12?',
+        answer: [mockTextBlock({ type: 'paragraph', wordCount: 30 })],
+      },
+    ],
+  },
+};
+
+export const FewQuestionsShowcase: StoryObj<typeof QuestionsAndAnswers> = {
+  decorators: [nextIntlContextDecorator],
+  args: {
+    items: [
+      {
+        question: 'Question 1?',
+        answer: [mockTextBlock({ type: 'paragraph', wordCount: 30 })],
+      },
+      {
+        question: 'Question 2?',
+        answer: [mockTextBlock({ type: 'paragraph', wordCount: 30 })],
+      },
+
+      {
+        question: 'Question 3?',
         answer: [mockTextBlock({ type: 'paragraph', wordCount: 30 })],
       },
     ],

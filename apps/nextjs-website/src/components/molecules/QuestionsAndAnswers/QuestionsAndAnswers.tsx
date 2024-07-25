@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { QuestionsAndAnswers } from '@/lib/types/webinar';
+import { QuestionsAndAnswersItem } from '@/lib/types/webinar';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
@@ -19,12 +19,10 @@ const MIN_QUESTIONS_TO_SHOW = 5;
 const MAX_QUESTIONS_TO_SHOW = 10;
 
 export type QuestionsAndAnswersProps = {
-  readonly questions: QuestionsAndAnswers[];
+  readonly items: QuestionsAndAnswersItem[];
 };
 
-const QuestionsAndAnswersComponent = ({
-  questions,
-}: QuestionsAndAnswersProps) => {
+const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection.questionsAndAnswers');
   const [showMore, toggleShowMore] = useState(false);
@@ -45,13 +43,14 @@ const QuestionsAndAnswersComponent = ({
         <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
           {t('title')}
         </Typography>
-        {[...questions].splice(0, questionsToShow).map((question, index) => (
+        {[...items].splice(0, questionsToShow).map((question, index) => (
           <Accordion
             sx={{
               marginBottom: 2,
               borderTop: 'none',
               borderRadius: '4px',
               '::before': { display: 'none' },
+              width: '100%',
             }}
             key={question.question}
             disableGutters
@@ -80,27 +79,29 @@ const QuestionsAndAnswersComponent = ({
             </AccordionDetails>
           </Accordion>
         ))}
-        <Box sx={{ width: '100%', textAlign: 'center' }}>
-          <Button
-            sx={{
-              mx: 'auto',
-              fontWeight: 700,
-              fontSize: '16px',
-              lineHeight: '21px',
-            }}
-            onClick={() => toggleShowMore((prev) => !prev)}
-          >
-            {showMore ? t('showLess') : t('showMore')}
-            {showMore ? (
-              <Compress sx={{ ml: 1, height: '20px', width: '20px' }} />
-            ) : (
-              <Expand sx={{ ml: 1, height: '20px', width: '20px' }} />
-            )}
-          </Button>
-        </Box>
+        {items.length > 5 && (
+          <Box sx={{ width: '100%', textAlign: 'center' }}>
+            <Button
+              sx={{
+                mx: 'auto',
+                fontWeight: 700,
+                fontSize: '16px',
+                lineHeight: '21px',
+              }}
+              onClick={() => toggleShowMore((prev) => !prev)}
+            >
+              {showMore ? t('showLess') : t('showMore')}
+              {showMore ? (
+                <Compress sx={{ ml: 1, height: '20px', width: '20px' }} />
+              ) : (
+                <Expand sx={{ ml: 1, height: '20px', width: '20px' }} />
+              )}
+            </Button>
+          </Box>
+        )}
       </EContainer>
     </Box>
   );
 };
 
-export default QuestionsAndAnswersComponent;
+export default QuestionsAndAnswers;
