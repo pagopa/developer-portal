@@ -7,6 +7,11 @@ export type QuestionsAndAnswersItem = {
   readonly answer: BlocksContent;
 };
 
+export type QuestionsAndAnswer = {
+  readonly question: string;
+  readonly answer: BlocksContent;
+};
+
 export type Webinar = {
   readonly description: string;
   // Use bodyContent instead, remove when webinars will be managed by Strapi
@@ -59,5 +64,5 @@ export type Webinar = {
       readonly iconName: string;
     }[];
   };
-  readonly questionsAndAnswers?: readonly QuestionsAndAnswersItem[];
+  readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
 };

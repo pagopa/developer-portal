@@ -11,24 +11,25 @@ import {
 } from '@mui/material';
 import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { QuestionsAndAnswersItem } from '@/lib/types/webinar';
+import { QuestionsAndAnswer } from '@/lib/types/webinar';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
-const MIN_QUESTIONS_TO_SHOW = 5;
-const MAX_QUESTIONS_TO_SHOW = 10;
-
 export type QuestionsAndAnswersProps = {
-  readonly items: QuestionsAndAnswersItem[];
+  readonly items: QuestionsAndAnswer[];
+  readonly minQuestionsToShow?: number;
+  readonly maxQuestionsToShow?: number;
 };
 
-const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
+const QuestionsAndAnswers = ({
+  items,
+  minQuestionsToShow = 5,
+  maxQuestionsToShow = 10,
+}: QuestionsAndAnswersProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection.questionsAndAnswers');
   const [showMore, toggleShowMore] = useState(false);
-  const questionsToShow = showMore
-    ? MAX_QUESTIONS_TO_SHOW
-    : MIN_QUESTIONS_TO_SHOW;
+  const questionsToShow = showMore ? maxQuestionsToShow : minQuestionsToShow;
 
   const [expanded, setExpanded] = React.useState<number | false>(false);
 
@@ -43,7 +44,7 @@ const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
         <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
           {t('title')}
         </Typography>
-        {[...items].splice(0, questionsToShow).map((question, index) => (
+        {[...items].splice(0, questionsToShow).map((item, index) => (
           <Accordion
             sx={{
               marginBottom: 2,
@@ -52,13 +53,15 @@ const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
               '::before': { display: 'none' },
               width: '100%',
             }}
-            key={question.question}
+            key={item.question}
             disableGutters
             expanded={expanded === index}
             onChange={handleChange(index)}
           >
             <AccordionSummary
-              expandIcon={<ExpandMore color='primary' sx={{ mr: 1.5 }} />}
+              expandIcon={
+                <ExpandMore color='primary' sx={{ mr: 1.5, ml: 1.5 }} />
+              }
             >
               <Typography
                 sx={{
@@ -68,18 +71,18 @@ const QuestionsAndAnswers = ({ items }: QuestionsAndAnswersProps) => {
                   my: 2,
                 }}
               >
-                {question.question}
+                {item.question}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <BlocksRendererClient
-                content={question.answer}
+                content={item.answer}
                 paragraphSx={{ mb: 0, fontSize: '16px', lineHeight: '21px' }}
               />
             </AccordionDetails>
           </Accordion>
         ))}
-        {items.length > 5 && (
+        {items.length > minQuestionsToShow && (
           <Box sx={{ width: '100%', textAlign: 'center' }}>
             <Button
               sx={{
