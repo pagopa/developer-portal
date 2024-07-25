@@ -172,14 +172,17 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         <RelatedResources
           title={webinar.relatedResources.title}
           resources={webinar.relatedResources.resources.map((resource) => ({
-            description: { title: resource.subtitle || '', listItems: [] }, // TODO: remove and use description when PR is fixed
-            imagePath: resource.image?.url || '',
+            title: resource.title,
+            description: {
+              title: resource.subtitle || '',
+              content: resource.description,
+            },
+            imagePath: resource.image?.url || '/images/hero.jpg',
             link: {
               label: resource.linkText,
               href: resource.linkHref,
             },
-            mobileImagePath: resource.image?.url || '',
-            title: resource.title,
+            mobileImagePath: resource.image?.url || '/images/hero.jpg',
           }))}
           downloadableDocuments={(
             webinar.relatedResources.downloadableDocuments || []
