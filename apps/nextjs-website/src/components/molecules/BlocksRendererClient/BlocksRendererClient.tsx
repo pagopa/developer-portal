@@ -3,6 +3,8 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
+import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import React, { ReactElement } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -36,7 +38,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: '16px',
+              marginBottom: 5,
               ...imageStyle,
             }}
             src={image.url}
@@ -47,7 +49,7 @@ const BlocksRendererClient = ({
         ),
         paragraph: ({ children }) => (
           <Typography
-            marginBottom={2}
+            marginBottom={5}
             variant='body1'
             color={textColor}
             sx={paragraphSx}
@@ -55,13 +57,29 @@ const BlocksRendererClient = ({
             {children}
           </Typography>
         ),
-        heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor}>
+        heading: ({ children }) => (
+          <Typography
+            marginBottom={2}
+            component={'h2'}
+            fontSize={'24px'}
+            fontWeight={600}
+            color={textColor}
+          >
             {children}
           </Typography>
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
+        },
+      }}
+      modifiers={{
+        code: ({ children }) => {
+          return (
+            <CodeBlockPart
+              code={(children as ReactElement).props.children}
+              showLineNumbers={false}
+            />
+          );
         },
       }}
     />
