@@ -6,6 +6,8 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  styled,
+  SxProps,
   Typography,
 } from '@mui/material';
 import { Tag } from '@pagopa/mui-italia';
@@ -14,6 +16,7 @@ import React, { ReactNode } from 'react';
 
 export type CtaCardProps = {
   readonly title: string;
+  readonly titleStyle?: SxProps;
   readonly text?: string;
   readonly minHeight?: number;
   readonly cta?: {
@@ -28,8 +31,14 @@ export type CtaCardProps = {
   readonly tags?: { readonly label: string; readonly path?: string }[];
 };
 
+const StyledCardContent = styled(CardContent)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
 const CtaCard = ({
   title,
+  titleStyle,
   text,
   minHeight,
   cta,
@@ -48,14 +57,17 @@ const CtaCard = ({
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
       }}
     >
-      <div style={{ opacity: comingSoon ? 0.5 : 1 }}>
+      <div style={{ opacity: comingSoon ? 0.5 : 1, flexGrow: 1 }}>
         {children && <CardMedia>{children}</CardMedia>}
-        <CardContent sx={{ minHeight: minHeight || 'auto' }}>
+        <StyledCardContent
+          sx={{ minHeight: minHeight || 'auto', height: '100%' }}
+        >
           {icon}
-          <Typography mt={2} variant='h6' gutterBottom>
+          <Typography sx={titleStyle} mt={2} variant='h6' gutterBottom>
             {title}
           </Typography>
           {text && <Typography variant='body2'>{text}</Typography>}
+          <Box flexGrow={1} />
           {tags && tags.length > 0 && (
             <Box mt={1} mr={1} mb={-1}>
               {tags.map((tag) => (
@@ -72,7 +84,7 @@ const CtaCard = ({
               ))}
             </Box>
           )}
-        </CardContent>
+        </StyledCardContent>
       </div>
       <CardActions style={{ bottom: 0 }}>
         {cta && (

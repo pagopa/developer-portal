@@ -7,20 +7,22 @@ import DownloadableDocuments, {
 } from '@/components/molecules/DownloadableDocuments/DownloadableDocuments';
 
 interface RelatedResourcesProps {
+  title?: string;
   resources: GuideCardProps[];
   downloadableDocuments: DownloadableDocumentsProps['documents'];
 }
 
 const RelatedResources = ({
+  title,
   resources,
   downloadableDocuments,
 }: RelatedResourcesProps) => {
-  const t = useTranslations('webinar.webinarsSection.relatedResources');
+  const t = useTranslations();
 
   return (
     <EContainer>
       <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
-        {t('title')}
+        {title || t('webinar.webinarsSection.relatedResources.title')}
       </Typography>
       <Box>
         {resources &&
