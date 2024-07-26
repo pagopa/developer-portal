@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add codeblock to blockrenderer
+Add code modifier to BlockRendererClient to render code tag with CodeBlockPart
