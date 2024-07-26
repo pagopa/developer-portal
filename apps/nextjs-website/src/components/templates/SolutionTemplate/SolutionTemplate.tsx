@@ -15,6 +15,7 @@ import Stats from '@/components/atoms/Stats/Stats';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 
 export type SolutionTemplateProps = {
   slug: string;
@@ -37,6 +38,19 @@ export type SolutionTemplateProps = {
   products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   webinars: Webinar[];
   bannerLinks: BannerLinkProps[];
+  successStories?: {
+    title: string;
+    subtitle?: string;
+    stories: {
+      title: string;
+      publishedAt?: Date;
+      path: string;
+      image?: {
+        url: string;
+        alternativeText?: string;
+      };
+    }[];
+  };
 };
 
 const SolutionTemplate = ({
@@ -50,6 +64,7 @@ const SolutionTemplate = ({
   products,
   webinars,
   bannerLinks,
+  successStories,
 }: SolutionTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
@@ -98,6 +113,21 @@ const SolutionTemplate = ({
           items={stats.map((stat) => ({
             title: stat.title,
             description: stat.description,
+          }))}
+        />
+      )}
+      {successStories && (
+        <NewsShowcase
+          marginTop={8}
+          newsMarginTop={4}
+          title={successStories.title}
+          subtitle={successStories.subtitle}
+          items={successStories.stories.map((story) => ({
+            ...story,
+            link: {
+              url: story.path,
+              text: t('shared.readStory'),
+            },
           }))}
         />
       )}

@@ -39,6 +39,17 @@ export function makeFullSolutionsProps(
       title: bannerLink.title || '',
       icon: bannerLink.icon?.data?.attributes,
     })),
+    successStories: attributes.caseHistories && {
+      title: attributes.caseHistories.title,
+      subtitle: attributes.caseHistories.description,
+      stories: attributes.caseHistories.case_histories.data.map(
+        (caseHistory) => ({
+          title: caseHistory.attributes.title,
+          path: `case-histories/${caseHistory.attributes.slug}`,
+          image: caseHistory.attributes.image?.data?.attributes,
+        })
+      ),
+    },
   }));
 }
 
