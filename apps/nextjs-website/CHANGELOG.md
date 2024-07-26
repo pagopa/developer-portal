@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 4.2.1
+
+### Patch Changes
+
+- 8931efc: Fix case histories path
+
 ## 4.2.0
 
 ### Minor Changes
