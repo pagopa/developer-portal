@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 2.2.0
+
+### Minor Changes
+
+- f910297: Add caseHistories to Solution schema in Strapi
+
 ## 2.1.0
 
 ### Minor Changes
