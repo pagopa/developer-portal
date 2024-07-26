@@ -48,6 +48,11 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
               <Grid key={index} item xs={12} md={3}>
                 <CtaCard
                   title={title}
+                  titleStyle={{
+                    wordWrap: 'break-word',
+                    fontSize: '22px !important',
+                    fontWeight: 700,
+                  }}
                   cta={{
                     variant: 'outlined',
                     label: (

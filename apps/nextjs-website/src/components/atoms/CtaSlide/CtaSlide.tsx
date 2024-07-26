@@ -33,6 +33,7 @@ const CtaSlide = ({
     name: 'hero-swiper.png',
     alternativeText: undefined,
     caption: undefined,
+    size: 10,
     width: 1920,
     height: 1080,
     ext: '.png',
