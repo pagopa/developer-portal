@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix case histories slug
+Fix case histories path
