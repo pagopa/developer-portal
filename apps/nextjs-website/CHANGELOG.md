@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 4.2.0
+
+### Minor Changes
+
+- dea108c: Add CaseHistories to Solution template
+
 ## 4.1.0
 
 ### Minor Changes
