@@ -57,9 +57,9 @@ class Chatbot():
         self.use_guardrail = use_guardrail
 
         self.model = AsyncBedrock(
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-            region_name=os.getenv("AWS_DEFAULT_REGION"),
+            aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
             model=params["models"]["model_id"],
             temperature=params["models"]["temperature"],
             max_tokens=params["models"]["max_tokens"],
@@ -73,8 +73,8 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
-            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
-            region=os.getenv("AWS_DEFAULT_REGION"),
+            s3_bucket_name=os.getenv("CHB_AWS_S3_BUCKET"),
+            region=os.getenv("CHB_AWS_DEFAULT_REGION"),
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )

@@ -54,8 +54,8 @@ class AsyncBedrock(Bedrock):
                 accept='application/json',
                 contentType='application/json',
                 trace='ENABLED',
-                guardrailIdentifier=os.getenv("AWS_GUARDRAIL_ID"),
-                guardrailVersion=os.getenv("AWS_GUARDRAIL_VERSION")
+                guardrailIdentifier=os.getenv("CHB_AWS_GUARDRAIL_ID"),
+                guardrailVersion=os.getenv("CHB_AWS_GUARDRAIL_VERSION")
             )
         else:
             response = self._client.invoke_model(
@@ -100,8 +100,8 @@ class AsyncBedrock(Bedrock):
                     accept='application/json',
                     contentType='application/json',
                     trace='ENABLED',
-                    guardrailIdentifier=os.getenv("AWS_GUARDRAIL_ID"),
-                    guardrailVersion=os.getenv("AWS_GUARDRAIL_VERSION")
+                    guardrailIdentifier=os.getenv("CHB_AWS_GUARDRAIL_ID"),
+                    guardrailVersion=os.getenv("CHB_AWS_GUARDRAIL_VERSION")
                 )
             else:
                 response = await client.invoke_model(
