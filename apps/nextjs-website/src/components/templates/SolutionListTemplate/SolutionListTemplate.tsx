@@ -4,38 +4,38 @@ import SolutionsShowcase from '@/components/organisms/SolutionsShowcase/Solution
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import Hero from '@/editorialComponents/Hero/Hero';
-import { Media } from '@/lib/types/media';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { useTranslations } from 'next-intl';
 
 export type SolutionListTemplateProps = {
-  readonly hero: {
-    readonly backgroundImage?: string;
-    readonly altText?: string;
-    readonly title: string;
-    readonly subtitle: string;
+  hero: {
+    backgroundImage?: string;
+    altText?: string;
+    title: string;
+    subtitle: string;
   };
-  readonly solutions: readonly {
-    readonly name: string;
-    readonly description?: string;
-    readonly slug: string;
-    readonly tags?: { readonly label: string; readonly path?: string }[];
-    readonly logo: Media;
+  solutions: {
+    name: string;
+    description?: string;
+    slug: string;
+    tags?: { label: string; path?: string }[];
+    logo: Media;
   }[];
-  readonly features?: {
-    readonly title: string;
-    readonly subtitle?: string;
-    readonly items: FeatureItem[];
+  features?: {
+    title: string;
+    subtitle?: string;
+    items: FeatureItem[];
   };
-  readonly successStories?: {
-    readonly title: string;
-    readonly subtitle?: string;
-    readonly stories: {
-      readonly title: string;
-      readonly publishedAt?: Date;
-      readonly path: string;
-      readonly image?: {
-        readonly url: string;
-        readonly alternativeText?: string;
+  successStories?: {
+    title: string;
+    subtitle?: string;
+    stories: {
+      title: string;
+      publishedAt?: Date;
+      path: string;
+      image?: {
+        url: string;
+        alternativeText?: string;
       };
     }[];
   };
@@ -47,8 +47,7 @@ const SolutionListTemplate = ({
   features,
   successStories,
 }: SolutionListTemplateProps) => {
-  const t = useTranslations('shared');
-  const label = t('readStory');
+  const t = useTranslations();
 
   return (
     <>
@@ -88,7 +87,7 @@ const SolutionListTemplate = ({
             ...story,
             link: {
               url: story.path,
-              text: label,
+              text: t('shared.readStory'),
             },
           }))}
         />

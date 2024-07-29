@@ -7,6 +7,7 @@ export const pdndBannerLinks: readonly BannerLinkProps[] = [
       name: 'feedback.svg',
       alternativeText: undefined,
       caption: undefined,
+      size: 10,
       width: 60,
       height: 61,
       ext: '.svg',

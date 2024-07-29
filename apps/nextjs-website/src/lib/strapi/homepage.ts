@@ -7,7 +7,7 @@ import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
-import { WebinarCodec } from './webinars';
+import { WebinarCodec, webinarPopulate } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
 import { SolutionBaseAttributesCodec } from './codecs/SolutionCodec';
 
@@ -105,13 +105,7 @@ const makeStrapiHomepagePopulate = () =>
       productsShowcase: {
         populate: ['products.logo'],
       },
-      webinars: {
-        populate: [
-          'coverImage.image',
-          'relatedLinks.links',
-          'webinarSpeakers.avatar',
-        ],
-      },
+      webinars: webinarPopulate,
       ecosystem: {
         populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
       },

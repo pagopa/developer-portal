@@ -2,8 +2,9 @@ import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { StrapiHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { Webinar } from './types/webinar';
-import { Media } from './types/media';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { makeWebinarFromStrapi } from './webinars';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -117,16 +118,9 @@ export const makeHomepageProps = (
     },
   }),
   webinars: [
-    ...strapiHomepage.data.attributes.webinars.data.map((webinar) => ({
-      ...webinar.attributes,
-      startDateTime: webinar.attributes.startDatetime?.toISOString(),
-      endDateTime: webinar.attributes.endDatetime?.toISOString(),
-      imagePath: webinar.attributes.coverImage.data.attributes.url,
-      speakers: webinar.attributes.webinarSpeakers.data.map((speaker) => ({
-        ...speaker.attributes,
-        avatar: speaker.attributes.avatar.data?.attributes,
-      })),
-    })),
+    ...strapiHomepage.data.attributes.webinars.data.map((webinar) =>
+      makeWebinarFromStrapi(webinar)
+    ),
   ],
 });
 

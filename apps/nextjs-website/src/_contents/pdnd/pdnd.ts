@@ -12,6 +12,9 @@ export const pdnd: Product = {
   slug: 'pdnd-interoperabilita',
   path: '/pdnd-interoperabilita',
   logo: {
+    alternativeText: 'PDND Interoperabilità',
+    caption: undefined,
+    size: 10,
     name: '',
     width: 60,
     height: 61,

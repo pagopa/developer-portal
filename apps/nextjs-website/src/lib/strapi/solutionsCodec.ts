@@ -8,7 +8,8 @@ import { PaginationCodec } from './codecs/PaginationCodec';
 import { BaseProductCodec, ProductCodec } from './codecs/ProductCodec';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { BannerLinkCodec } from './codecs/BannerLinkCodec';
-import { WebinarCodec } from './webinars';
+import { WebinarCodec, webinarPopulate } from './webinars';
+import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
 
 const StepCodec = t.strict({
   title: t.string,
@@ -44,6 +45,7 @@ export const SolutionCodec = t.strict({
     products: t.strict({
       data: t.array(ProductCodec),
     }),
+    caseHistories: t.union([NullToUndefinedCodec, CaseHistoriesComponentCodec]),
   }),
 });
 
@@ -70,11 +72,15 @@ const makeStrapiSolutionsPopulate = () =>
       bannerLinks: {
         populate: ['icon'],
       },
-      webinars: {
+      webinars: webinarPopulate,
+      caseHistories: {
         populate: [
-          'coverImage',
-          'webinarSpeakers.avatar',
-          'relatedLinks.links',
+          'case_histories',
+          'case_histories.image',
+          'case_histories.parts',
+          'case_histories.parts.backgroundImage',
+          'case_histories.products',
+          'case_histories.products.logo',
         ],
       },
     },
