@@ -54,6 +54,7 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    console.log('Queries', queries);
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -143,7 +144,7 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
             {messages.map((message, index) => (
               <Stack
                 key={index}
-                ref={index === message.text.length - 1 ? scrollRef : null}
+                ref={index === messages.length - 1 ? scrollRef : null}
                 direction={'row'}
                 width={'100%'}
                 justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
