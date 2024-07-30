@@ -48,7 +48,7 @@ This script reads the documentation, split it into chucks with gerarchical organ
 
 ## Web App
 
-    python src/app/app.py
+    python src/webapp/app.py
 
 This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the chatbot.
 
