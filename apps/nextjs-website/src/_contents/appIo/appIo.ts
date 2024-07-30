@@ -13,6 +13,9 @@ export const appIo: Product = {
   slug: 'app-io',
   path: '/app-io',
   logo: {
+    alternativeText: 'IO, l’app dei servizi pubblici',
+    caption: undefined,
+    size: 10,
     name: '',
     width: 60,
     height: 61,

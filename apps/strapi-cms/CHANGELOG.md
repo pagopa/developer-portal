@@ -1,5 +1,30 @@
 # strapi-cms
 
+## 2.2.0
+
+### Minor Changes
+
+- f910297: Add caseHistories to Solution schema in Strapi
+
+## 2.1.0
+
+### Minor Changes
+
+- d6eff42: Quotes removed from tutorials model, fix issue with tutorial storybook
+- fda7539: Add RelatedResources component and add relatedResources attribute to Strapi's Webinar entity
+- 280feb7: Add QuestionAndAnswer component and add questionsAndAnswers field to Webinar schema
+
+### Patch Changes
+
+- 6023f15: Set title and text attributes as optional in Alert schema
+
+## 2.0.0
+
+### Major Changes
+
+- c24410c: Add parts on tutorial on CMS
+- fc67e9c: Remove incorrect plural from SolutionsListPage on CMS
+
 ## 1.1.0
 
 ### Minor Changes

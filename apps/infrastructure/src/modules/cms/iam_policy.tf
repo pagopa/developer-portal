@@ -169,9 +169,8 @@ module "iam_policy_cms" {
 
 data "aws_iam_policy_document" "s3_iam_policy_cms" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    actions = ["s3:GetObject"]
     resources = [
-      module.s3_bucket_cms.s3_bucket_arn,
       "${module.s3_bucket_cms.s3_bucket_arn}/*"
     ]
 

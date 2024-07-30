@@ -1,4 +1,5 @@
 'use client';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
@@ -20,14 +21,7 @@ export type CtaSlideProps = {
     };
   };
   readonly child?: ReactNode;
-  readonly backgroundImage?: {
-    readonly name: string;
-    readonly width: number;
-    readonly height: number;
-    readonly ext: string;
-    readonly mime: string;
-    readonly url: string;
-  };
+  readonly backgroundImage?: Media;
 };
 
 const CtaSlide = ({
@@ -37,6 +31,9 @@ const CtaSlide = ({
   child,
   backgroundImage = {
     name: 'hero-swiper.png',
+    alternativeText: undefined,
+    caption: undefined,
+    size: 10,
     width: 1920,
     height: 1080,
     ext: '.png',

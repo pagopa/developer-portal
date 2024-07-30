@@ -1,5 +1,87 @@
 # nextjs-website
 
+## 4.2.1
+
+### Patch Changes
+
+- 8931efc: Fix case histories path
+
+## 4.2.0
+
+### Minor Changes
+
+- dea108c: Add CaseHistories to Solution template
+
+## 4.1.0
+
+### Minor Changes
+
+- 6275174: Add and connect RelatedResources and QuestionsAndAnswers to webinar
+- f5d06c4: Add code modifier to BlockRendererClient to render code tag with CodeBlockPart
+- 53d26d1: Add QuestionsAndAnswers component
+- 83175b4: Add questionsAndAnswers attribute to Webinar codec
+- 6d518da: Add related resources to webinar
+- ed77bbf: Add RelatedResources and DownloadableDocuments components
+
+### Patch Changes
+
+- 4daeff5: Remove quotes from Tutorial pages
+- 4a56ca6: Update speaker list layout in webinar page and in its preview card
+- 34a1706: Fix spacing in case history page
+
+## 4.0.0
+
+### Major Changes
+
+- 5ee06d5: Remove incorrect plural from SolutionsListPage on FE
+
+### Minor Changes
+
+- 82fe16d: Add Chat molecule component
+
+### Patch Changes
+
+- b3d75ad: Remove "page" word from template files
+- dfc223a: Hide the entire statistics section on the Solution page when there are no values ​​to show
+
+## 3.0.0
+
+### Major Changes
+
+- 046d050: Add parts on tutorial on FE
+
+### Minor Changes
+
+- 0689ebb: Add ChatBot FAB
+- bf211f4: Add ChatMessage atom component
+- 5a64300: Add new atom component ChatInputText
+
+### Patch Changes
+
+- 78343e2: Replace icons in startInfo
+- 23dc5cf: Add BorderTop to ApiSection
+
+## 2.0.0
+
+### Major Changes
+
+- 093cc4b: Add ApiDataListPage and update api page to show content from CMS
+
+### Minor Changes
+
+- 2b0f3cf: Fix the CTA in solution page
+- 258a19d: Fix stats layout
+- b01d5eb: fix href for ecosystem
+- 2984b84: Add shortName to Product and use it in labels
+- 73c7dc1: Update SANP version from 3.7.1 to 3.8.0
+
+### Patch Changes
+
+- 9af4032: Remove the link to the SOAP API from pagoPA overview page
+- a5f506b: Fix solution webinars title
+- 818c087: Fix label "Esplora le API" in ApiDataListPage
+- 5c3949c: Fix ApiDataPage generateStaticParams function
+
 ## 1.1.0
 
 ### Minor Changes

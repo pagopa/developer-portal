@@ -6,6 +6,9 @@ const product: Product = {
   shortName: 'test',
   description: 'test',
   logo: {
+    alternativeText: undefined,
+    caption: undefined,
+    size: 10,
     name: 'test',
     width: 60,
     height: 61,

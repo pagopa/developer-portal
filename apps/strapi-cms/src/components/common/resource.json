@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_common_resources",
+  "info": {
+    "displayName": "Resource",
+    "icon": "arrowRight",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "linkText": {
+      "type": "string",
+      "required": true
+    },
+    "linkHref": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

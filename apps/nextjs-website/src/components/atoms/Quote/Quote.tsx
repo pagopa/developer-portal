@@ -1,4 +1,5 @@
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { FormatQuote } from '@mui/icons-material';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -6,14 +7,7 @@ import Image from 'next/image';
 export type QuoteProps = {
   readonly quote: string;
   readonly color?: 'contrastText' | 'main' | 'light' | 'dark';
-  readonly backgroundImage?: {
-    readonly name: string;
-    readonly width: number;
-    readonly height: number;
-    readonly ext: string;
-    readonly mime: string;
-    readonly url: string;
-  };
+  readonly backgroundImage?: Media;
 };
 
 const Quote = ({
@@ -21,6 +15,9 @@ const Quote = ({
   color,
   backgroundImage = {
     name: 'hero-swiper.png',
+    caption: undefined,
+    size: 10,
+    alternativeText: undefined,
     width: 1920,
     height: 1080,
     ext: '.png',

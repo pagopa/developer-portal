@@ -17,6 +17,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Delete, History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
+import { useTranslations } from 'next-intl';
 
 type ChatProps = {
   queries: Query[];
@@ -24,6 +25,7 @@ type ChatProps = {
 };
 
 const Chat = ({ queries, onSendQuery }: ChatProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const messages = useMemo(
@@ -57,7 +59,7 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
     }
   }, [queries]);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChatMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -81,7 +83,7 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
             aria-controls='chat-menu'
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={handleChatMenuClick}
           >
             <MenuIcon />
           </IconButton>
@@ -106,13 +108,13 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
               <ListItemIcon>
                 <Delete fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Delete</ListItemText>
+              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <History fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Cronologia Chat</ListItemText>
+              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
             </MenuItem>
           </Menu>
         </Stack>

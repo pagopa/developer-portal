@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 import { defaultLocale } from '@/config';
@@ -28,7 +28,7 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
   const bgColor = isQuestion
     ? palette.background.paper
-    : `${palette.info.light}80`;
+    : alpha(palette.info.light, 0.5);
   const textColor = palette.text.primary;
 
   const timeLabel = new Intl.DateTimeFormat(

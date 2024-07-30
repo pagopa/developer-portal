@@ -66,6 +66,8 @@ export const translations = {
           },
           image: {
             name: 'homepage-validatore.png',
+            caption: undefined,
+            size: 10,
             alternativeText:
               'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
             width: 1156,
@@ -84,6 +86,8 @@ export const translations = {
           },
           image: {
             name: 'homepage-io-sign.png',
+            caption: undefined,
+            size: 10,
             alternativeText:
               'Immagine: Scopri i nuovi tutorial di Firma con IO',
             width: 1156,
@@ -103,6 +107,8 @@ export const translations = {
           },
           image: {
             name: 'homepage-pago-pa.png',
+            caption: undefined,
+            size: 10,
             alternativeText:
               'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
             width: 1156,

@@ -6,13 +6,63 @@ const baseTutorialJson = {
   attributes: {
     title: 'title',
     slug: 'tut-1',
-    content: [
+    parts: [
       {
-        type: 'paragraph',
-        children: [
+        id: 1,
+        __component: 'parts.alert',
+        text: 'test',
+        title: 'test',
+        severity: 'warning',
+      },
+      {
+        id: 1,
+        __component: 'parts.api-tester',
+        requestDescription: 'test',
+        responseDescription: 'res',
+        responseCode: {
+          id: 3,
+          code: 'code res',
+          showLineNumbers: true,
+          language: null,
+        },
+        requestCode: {
+          id: 2,
+          code: 'code',
+          showLineNumbers: false,
+          language: 'xml',
+        },
+        requestAttributes: [
           {
-            type: 'text',
-            text: 'dafdafafa',
+            id: 1,
+            label: 'att',
+            value: '1',
+          },
+        ],
+      },
+      {
+        id: 1,
+        __component: 'parts.code-block',
+        code: 'code block',
+        showLineNumbers: true,
+        language: 'shell',
+      },
+      {
+        id: 1,
+        __component: 'parts.embed-html',
+        html: '<div>test <u>test</u></div>',
+      },
+      {
+        id: 1,
+        __component: 'parts.html',
+        html: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'fsdfdsf sfsdf sdf sdf sd',
+              },
+            ],
           },
         ],
       },
@@ -179,17 +229,7 @@ const makeStrapiResponseJsonWithNull = () => ({
       attributes: {
         title: 'title',
         slug: 'tut-1',
-        content: [
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                text: 'dafdafafa',
-              },
-            ],
-          },
-        ],
+        parts: [],
         createdAt: '2024-06-04T12:34:13.309Z',
         updatedAt: '2024-06-04T12:42:01.642Z',
         publishedAt: '2024-06-04T12:34:38.692Z',
@@ -281,15 +321,21 @@ const makeStrapiResponseJsonWithNull = () => ({
           data: {
             id: 1,
             attributes: {
-              name: 'a-image.png',
+              name: 'webinar-cover-io-remote-content.jpg',
               alternativeText: null,
               caption: null,
-              width: 1440,
-              height: 495,
-              hash: 'image_52d70c707f',
-              ext: '.png',
-              mime: 'image/png',
-              url: '/uploads/image_52d70c707f.png',
+              width: 728,
+              height: 416,
+              hash: 'webinar_cover_io_remote_content_62f1f615b5',
+              ext: '.jpg',
+              mime: 'image/jpeg',
+              size: 30.06,
+              url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
+              previewUrl: null,
+              provider: 'strapi-provider-upload-custom',
+              provider_metadata: null,
+              createdAt: '2024-04-15T14:25:47.773Z',
+              updatedAt: '2024-04-15T14:25:47.773Z',
             },
           },
         },
