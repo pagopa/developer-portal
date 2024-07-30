@@ -10,8 +10,7 @@ qa_prompt_str: |
     - the answer must not include the User query.
     - the answer must be concise and composed by three sentences maximum.
     - the answer must avoid to repeat same phrases or sentences.
-    - the answer must always include at the end one, or more, the title and the filename of the retrieved context information in a clickable format.
-    - The answer should look like those in `Output Examples`.
+    - the answer must always have at the end one, or more, reference in a clickable format.
     - the answer must be in Italian.
     ---------------------
     Output Examples:
@@ -51,14 +50,9 @@ refine_prompt_str: |
     - the refined answer must not have any repetition or redundancy.
     - the refined answer must be respectful and accurate.
     - the refined answer must not include any offensive or discriminatory content.
-    - the refined answer must include a reference title and filename of the retrieved information if it is missing in the existing answer.
     - the refined answer must be only in Italian.
   ---------------------
   Given the User query: {query_str}
   Given the existing answer: {existing_answer}
   Provide either the existing answer or a refined answer to better answer the uesr query according to the `Chatbot Policy` listed above.
   Answer:
-
-
-# [PagoPA DevPortal | Overview delle componenti](b937c329a4207291f7cf0b5a3f020036c349ea19e502238d3621b4ea26dff096)
-# [PagoPA DevPortal | Guida alla scelta di Firma con IO](e9a8fb644acd3121faa2b169f17cf44ee2a7514ef4aa0e757c88751ac2daeb13)
