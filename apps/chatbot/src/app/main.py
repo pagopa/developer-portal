@@ -9,6 +9,7 @@ from src.modules.chatbot import Chatbot
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
+logger.info(f"os.getenv('CHB_AWS_ACCESS_KEY_ID') -------------->>>> {os.getenv('CHB_AWS_ACCESS_KEY_ID')}")
 chatbot = Chatbot(params, prompts)
 
 class Query(BaseModel):

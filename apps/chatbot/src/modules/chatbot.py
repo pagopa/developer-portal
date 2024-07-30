@@ -67,6 +67,9 @@ class Chatbot():
         )
         self.embed_model = BedrockEmbedding(
             model_name=params["models"]["emded_model_id"],
+            aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("CHB_AWS_DEFAULT_REGION")
         )
 
         self.index = load_automerging_index(
