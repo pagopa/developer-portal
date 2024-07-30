@@ -1,6 +1,8 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
 import ChatbotLayout from 'nextjs-website/src/components/organisms/ChatbotLayout/ChatbotLayout';
 import React from 'react';
+import { mockText } from '../mock-content.helper';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotLayout> = {
   title: 'Organisms/ChatbotLayout',
@@ -22,8 +24,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
     queries: [
       {
         sessionId: 'sessionID',
-        answer:
-          "Ciao, sono [Nome Chatbot], il chatbot di DevPortal.\nPrima di incominciare ti invito a leggere l'Informativa sulla Privacy.\nScrivi Accetto per proseguire.",
+        answer: mockText(25),
         createdAt: '2024-07-24T17:14:07.129Z',
       },
     ],
@@ -32,7 +33,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };
 
 export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
@@ -40,21 +41,19 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
     queries: [
       {
         sessionId: 'sessionID',
-        answer:
-          "Ciao, sono [Nome Chatbot], il chatbot di DevPortal.\nPrima di incominciare ti invito a leggere l'Informativa sulla Privacy.\nScrivi Accetto per proseguire.",
+        answer: mockText(25),
         createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
         sessionId: 'sessionID',
         question: 'Accetto',
         queriedAt: '2024-07-24T17:14:07.129Z',
-        answer: 'Ottimo! Adesso possiamo incominciare. Come posso aiutarti?',
+        answer: mockText(10),
         createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
         sessionId: 'sessionID',
-        question:
-          "E' possibile pagare una posizione debitoria una volta scaduta?",
+        question: mockText(50),
         queriedAt: '2024-07-24T17:14:07.129Z',
       },
     ],
@@ -63,5 +62,5 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };
