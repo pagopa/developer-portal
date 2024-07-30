@@ -19,7 +19,7 @@ from llama_index.core.evaluation import (
     ContextRelevancyEvaluator
 )
 from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses
+from llama_index.core.evaluation.eval_utils import aget_responses, get_responses
 
 from src.modules.chatbot import Chatbot
 from src.modules.async_bedrock import AsyncBedrock
@@ -146,6 +146,9 @@ async def evaluate(
     logging.info(f"Making evaluation: Generating {len(questions)} answers..")
     pred_responses = await aget_responses(questions, engine, show_progress=True)
 
+    for i, pr in enumerate(pred_responses):
+        pred_responses[i].respose = bot._get_response_str(pr)
+
     batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
     eval_results = await batch_runner.aevaluate_responses(
         questions,
@@ -161,14 +164,14 @@ def table_results(chatbot : Chatbot, eval_results):
     table = {
         "ID": list(range(1, len(questions)+1)),
         "query": [a.query for a in eval_results["answer_relevancy"]],
-        "response": [chatbot._unmask_urls(a.response.strip()) for a in eval_results["answer_relevancy"]],
+        "response": [a.response.strip() for a in eval_results["answer_relevancy"]],
         "contexts": [f.contexts for f in eval_results["faithfulness"]],
         "answer_relevancy_score": [a.score for a in eval_results["answer_relevancy"]],
-        "answer_relevancy_feedback": [chatbot._unmask_urls(a.feedback) for a in eval_results["answer_relevancy"]],
+        "answer_relevancy_feedback": [a.feedback for a in eval_results["answer_relevancy"]],
         "context_relevancy_score": [c.score for c in eval_results["context_relevancy"]],
-        "context_relevancy_feedback": [chatbot._unmask_urls(c.feedback) for c in eval_results["context_relevancy"]],
+        "context_relevancy_feedback": [c.feedback for c in eval_results["context_relevancy"]],
         "faithfulness_score": [f.score for f in eval_results["faithfulness"]],
-        "faithfulness_feedback": [chatbot._unmask_urls(f.feedback) for f in eval_results["faithfulness"]]
+        "faithfulness_feedback": [f.feedback for f in eval_results["faithfulness"]]
     }
 
     return pd.DataFrame.from_dict(table)
@@ -214,6 +217,9 @@ if __name__ == "__main__":
             parser_function=parser_function
         )
     }
+
+    # pred_responses = get_responses(questions, bot.engine, show_progress=True)
+    # print(pred_responses)
 
     pred_responses, eval_results = asyncio.run(asyncio.gather(
         evaluate(bot.engine, questions, evaluator_dict)

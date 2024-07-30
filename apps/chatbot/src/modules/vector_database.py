@@ -21,6 +21,11 @@ from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
 
+FS = s3fs.S3FileSystem(
+    endpoint_url=f"https://s3.{os.getenv('AWS_DEFAULT_REGION')}.amazonaws.com" if os.getenv('AWS_DEFAULT_REGION') else None
+)
+
+
 def hash_url(url):
     return hashlib.sha256(url.encode()).hexdigest()
 
@@ -97,7 +102,6 @@ def build_automerging_index(
         documentation_dir: str,
         save_dir: str,
         s3_bucket_name: str | None,
-        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int
     ):
@@ -135,20 +139,16 @@ def build_automerging_index(
     )
     logging.info(f"Created index successfully.")
     if s3_bucket_name:
-        assert region is not None
-        fs = s3fs.S3FileSystem(
-            endpoint_url=f"https://s3.{region}.amazonaws.com",
-        )
 
         # store hash table
-        with fs.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
+        with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
             json.dump(hash_table, f, indent=4)
         logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
         # store vector index
         automerging_index.storage_context.persist(
             persist_dir=f"{s3_bucket_name}/{save_dir}",
-            fs = fs
+            fs = FS
         )
         logging.info(f"Uploaded index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
     else:
@@ -165,15 +165,10 @@ def build_automerging_index(
 
 def load_url_hash_table(
     s3_bucket_name: str | None,
-    region: str | None
     ):
 
     if s3_bucket_name:
-        assert region is not None
-        fs = s3fs.S3FileSystem(
-            endpoint_url=f"https://s3.{region}.amazonaws.com",
-        )
-        with fs.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
+        with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
             hash_table = json.load(f)
 
     else:
@@ -189,7 +184,6 @@ def load_automerging_index(
         embed_model: BaseEmbedding,
         save_dir: str,
         s3_bucket_name: str | None,
-        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ):
@@ -205,15 +199,13 @@ def load_automerging_index(
         node_parser=node_parser
     )
 
-    logging.info(f"{save_dir} exists! Loading index...")
+    logging.info(f"{save_dir} directory exists! Loading index...")
     if s3_bucket_name:
 
         automerging_index = load_index_from_storage(
             StorageContext.from_defaults(
                 persist_dir = f"{s3_bucket_name}/{save_dir}",
-                fs = s3fs.S3FileSystem(
-                    endpoint_url=f"https://s3.{region}.amazonaws.com",
-                )
+                fs = FS
             ),
             service_context=merging_context
         )

@@ -1,11 +1,15 @@
 import os
 import json
+import sys
+import logging
 import aioboto3
 from botocore.config import Config
-from typing import Any, Sequence
+from typing import Any, Union, List, Sequence, Literal
 
 from llama_index.llms.bedrock import Bedrock
-from llama_index.llms.bedrock.utils import _create_retry_decorator
+from llama_index.core.base.embeddings.base import Embedding
+from llama_index.embeddings.bedrock.base import BedrockEmbedding, PROVIDER_SPECIFIC_IDENTIFIERS
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError, NoRegionError
 from llama_index.core.base.llms.types import (
     ChatMessage,
     ChatResponse,
@@ -65,7 +69,7 @@ class AsyncBedrock(Bedrock):
                 contentType='application/json',
                 trace='ENABLED',
             )
-
+        
         if 'body' in response:
             response_body_str = response['body'].read()
             response_body = json.loads(response_body_str)
@@ -73,7 +77,7 @@ class AsyncBedrock(Bedrock):
                 text=self._provider.get_text_from_response(response_body), raw=response_body
             )
         else:
-            raise ValueError("Unexpected response format")
+            logging.error("Unexpected response format")
 
 
     @llm_completion_callback()
@@ -121,6 +125,7 @@ class AsyncBedrock(Bedrock):
             else:
                 raise ValueError("Unexpected response format")
 
+
     @llm_chat_callback()
     async def achat(
         self, messages: Sequence[ChatMessage], **kwargs: Any
@@ -128,3 +133,59 @@ class AsyncBedrock(Bedrock):
         prompt = self.messages_to_prompt(messages)
         completion_response = await self.acomplete(prompt, formatted=True, **kwargs)
         return completion_response
+
+
+# class MyBedrockEmbedding(BedrockEmbedding):
+
+#     _session: Any = PrivateAttr()
+#     _client: Any = PrivateAttr()
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+
+#         self._session = aioboto3.Session(
+#             aws_access_key_id=self.aws_access_key_id,
+#             aws_secret_access_key=self.aws_secret_access_key,
+#             aws_session_token=self.aws_session_token,
+#             region_name=self.region_name,
+#             profile_name=self.profile_name,
+#         )
+
+#     def _get_embedding(
+#         self, payload: Union[str, List[str]], type: Literal["text", "query"]
+#     ) -> Union[Embedding, List[Embedding]]:
+
+#         if self._client is None:
+#             logging.error("Client not set")
+
+#         provider = self.model_name.split(".")[0]
+#         request_body = self._get_request_body(provider, payload, type)
+
+#         try:
+#             response = self._client.invoke_model(
+#                 body=request_body,
+#                 modelId=self.model_name,
+#                 accept="application/json",
+#                 contentType="application/json",
+#             )
+#         except NoCredentialsError:
+#             logging.error(f"NoCredentialsError: {e}.")
+#             sys.exit(1)
+#         except PartialCredentialsError:
+#             logging.error(f"PartialCredentialsError: {e}")
+#             sys.exit(1)
+#         except ClientError as e:
+#             logging.error(f"ClientError: {e}")
+#             sys.exit(1)
+#         except NoRegionError as e:
+#             logging.error(f"NoRegionError: {e}.")
+#             sys.exit(1)
+#         except Exception as e:
+#             logging.error(f"An unexpected error occurred: {e}")
+#             sys.exit(1)
+
+#         resp = json.loads(response.get("body").read().decode("utf-8"))
+#         identifiers = PROVIDER_SPECIFIC_IDENTIFIERS.get(provider, None)
+#         if identifiers is None:
+#             logging.error("Provider not supported")
+#         return identifiers["get_embeddings_func"](resp, isinstance(payload, list))
