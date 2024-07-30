@@ -23,8 +23,8 @@ export type Answer = Pick<RemoteQuery, 'answer' | 'createdAt'>;
 
 export type Query = {
   readonly sessionId: string;
-  readonly question: string | null;
-  readonly queriedAt: string | null;
+  readonly question: string;
+  readonly queriedAt: string;
   readonly answer: string | null;
   readonly createdAt: string | null;
 };
