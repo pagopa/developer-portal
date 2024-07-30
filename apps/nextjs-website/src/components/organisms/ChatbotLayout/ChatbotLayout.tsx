@@ -1,7 +1,14 @@
 import Chat from '@/components/molecules/Chat/Chat';
 import ChatButton from '@/components/atoms/ChatButton/ChatButton';
 import { Close } from '@mui/icons-material';
-import { Box, IconButton, Popover, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Popover,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
 
@@ -11,6 +18,7 @@ type ChatbotLayoutProps = {
 };
 
 const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
+  const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -82,12 +90,12 @@ const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
             <Typography
               variant='h5'
               fontWeight='normal'
-              sx={{ color: 'white' }}
+              sx={{ color: palette.primary.contrastText }}
             >
               [Nome Chatbot]
             </Typography>
             <IconButton onClick={handleClose}>
-              <Close sx={{ color: 'white' }} />
+              <Close sx={{ color: palette.primary.contrastText }} />
             </IconButton>
           </Stack>
           <Chat queries={queries} onSendQuery={onSendQuery} />
