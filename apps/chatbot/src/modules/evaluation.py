@@ -19,7 +19,7 @@ from llama_index.core.evaluation import (
     ContextRelevancyEvaluator
 )
 from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses
+from llama_index.core.evaluation.eval_utils import aget_responses, get_responses
 
 from src.modules.chatbot import Chatbot
 from src.modules.async_bedrock import AsyncBedrock
@@ -140,13 +140,15 @@ async def evaluate(
         engine,
         questions: List[str],
         evaluator_dict: Dict[str, BaseEvaluator]
-    ) -> pd.DataFrame:
+    ):
 
     # generete responses
-    logging.info(f"Generating {len(questions)} answers..")
+    logging.info(f"Making evaluation: Generating {len(questions)} answers..")
     pred_responses = await aget_responses(questions, engine, show_progress=True)
 
-    logging.info("Making evaluation..")
+    for i, pr in enumerate(pred_responses):
+        pred_responses[i].respose = bot._get_response_str(pr)
+
     batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
     eval_results = await batch_runner.aevaluate_responses(
         questions,
@@ -157,7 +159,7 @@ async def evaluate(
     return pred_responses, eval_results
 
 
-def table_results(eval_results):
+def table_results(chatbot : Chatbot, eval_results):
 
     table = {
         "ID": list(range(1, len(questions)+1)),
@@ -216,6 +218,9 @@ if __name__ == "__main__":
         )
     }
 
+    # pred_responses = get_responses(questions, bot.engine, show_progress=True)
+    # print(pred_responses)
+
     pred_responses, eval_results = asyncio.run(asyncio.gather(
         evaluate(bot.engine, questions, evaluator_dict)
     ))[0]
@@ -226,7 +231,7 @@ if __name__ == "__main__":
     results_dir = f"results/{now_str}"
     os.makedirs(results_dir, exist_ok=True)
 
-    df = table_results(eval_results)
+    df = table_results(bot, eval_results)
     avg_scores = {
         "answer_relevancy": df["answer_relevancy_score"].mean(skipna=True),
         "context_relevancy": df["context_relevancy_score"].mean(skipna=True),
@@ -237,9 +242,6 @@ if __name__ == "__main__":
         os.path.join(results_dir, "evaluation_table.csv"),
         index=False
     )
-    json.dump(
-        avg_scores,
-        open(os.path.join(results_dir, "avg_scores.json"), "w"),
-        indent=4
-    )
+    with open(os.path.join(results_dir, "avg_scores.json"), "w") as f:
+        json.dump(avg_scores, f, indent=4)
     logging.info(f"Results stored in {results_dir}")

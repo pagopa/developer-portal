@@ -1,7 +1,9 @@
 import os
 import re
+import json
 import tqdm
 import logging
+import hashlib
 from typing import List
 
 import s3fs
@@ -18,6 +20,14 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
+
+FS = s3fs.S3FileSystem(
+    endpoint_url=f"https://s3.{os.getenv('AWS_DEFAULT_REGION')}.amazonaws.com" if os.getenv('AWS_DEFAULT_REGION') else None
+)
+
+
+def hash_url(url):
+    return hashlib.sha256(url.encode()).hexdigest()
 
 
 def filter_html_files(html_files: List[str]):
@@ -36,7 +46,7 @@ def get_html_files(root_folder: str):
     return sorted(filter_html_files(html_files))
 
 
-def create_documentation(documentation_dir: str ="./PagoPADevPortal/out/"):
+def create_documentation(documentation_dir: str = "./PagoPADevPortal/out/"):
 
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
@@ -44,31 +54,10 @@ def create_documentation(documentation_dir: str ="./PagoPADevPortal/out/"):
     logging.info(f"Getting documentation from: {documentation_dir}")
     
     html_files = get_html_files(documentation_dir)
-    # parse_only = SoupStrainer("div", {"id": "page-content"})
+    documents = []
+    hash_table = {}
 
-    documents = [Document(
-        text=(
-            "# Identità Chatbot\n\n\n\n"
-            "**Chi sono?**\n\n"
-            "Mi chiamo PagLO e sono il chatbot privato della azienda italiana PagoPA.\n\n"
-            "**Cosa faccio?**\n\n"
-            "Il mio compito è quello di fornire assistenza in maniera completa, gentile, e professionale.\n"
-            "Rispondo alle domande cercando le risposte su tutta la documentazione scritta sul sito del \"PagoPA DevPortal\": https://developer.pagopa.it/.\n\n"
-            "**Le mie regole**\n\n"
-            "Ho poche e semplici regole:\n"
-            "1. Accetto solo domande in italiano;\n"
-            "2. Scrivo le mie risposte solo in italiano;\n"
-            "3. Quando possibile, fornisco il link della pagina dove ho trovato la risposta alla domanda fatta;\n"
-            "4. Non rispondo ad alcuna domanda che è fuori dal contesto di \"PagoPA DevPortal\";\n"
-            "5. Non accetto alcuna domanda e non fornisco alcuna risposta che fornisce informazioni che possono essere utilizzate per distinguere o rintracciare l'identità di un individuo."
-        ),
-        metadata={
-            "source": "",
-            "title": "Identità Chatbot",
-            "language": "it"
-        }
-    )]
-    for file in tqdm.tqdm(html_files, total=len(html_files)):
+    for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         soup = BeautifulSoup(open(file), "html.parser")
         soup_text = soup.find(attrs={"id": "page-content"})
@@ -77,29 +66,34 @@ def create_documentation(documentation_dir: str ="./PagoPADevPortal/out/"):
         else:
             text = ""
         
-        link = file.replace(
+        url = file.replace(
             documentation_dir, 
             "https://developer.pagopa.it/"
         ).replace(
             ".html", 
             ""
         )
+        masked_url = hash_url(url)
+        if masked_url not in hash_table.keys():
+            hash_table[masked_url] = url
 
         if soup.title and soup.title.string:
             title = str(soup.title.string)
         else:
-            title = f"PagoPA DevPortal | {os.path.basename(link)}"
+            title = f"PagoPA DevPortal | {os.path.basename(url)}"
 
         documents.append(Document(
             text=text,
             metadata={
-                "source": link,
+                "filename": masked_url,
                 "title": title,
                 "language": "it"
             }
         ))
 
-    return documents
+    assert len(hash_table) == len(documents)
+    
+    return documents, hash_table
 
 
 def build_automerging_index(
@@ -108,7 +102,6 @@ def build_automerging_index(
         documentation_dir: str,
         save_dir: str,
         s3_bucket_name: str | None,
-        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int
     ):
@@ -131,8 +124,7 @@ def build_automerging_index(
 
     assert documentation_dir is not None
 
-    documents = create_documentation(documentation_dir)
-    # document = Document(text=full_text)
+    documents, hash_table = create_documentation(documentation_dir)
     
     nodes = node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
@@ -145,22 +137,46 @@ def build_automerging_index(
         storage_context=storage_context, 
         service_context=merging_context
     )
+    logging.info(f"Created index successfully.")
     if s3_bucket_name:
-        assert region is not None
+
+        # store hash table
+        with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
+            json.dump(hash_table, f, indent=4)
+        logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
+
+        # store vector index
         automerging_index.storage_context.persist(
             persist_dir=f"{s3_bucket_name}/{save_dir}",
-            fs = s3fs.S3FileSystem(
-                endpoint_url=f"https://{region}.amazonaws.com",
-            )
+            fs = FS
         )
+        logging.info(f"Uploaded index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
     else:
         automerging_index.storage_context.persist(
             persist_dir=save_dir
         )
+        with open("hash_table.json", "w") as f:
+            json.dump(hash_table, f, indent=4)
 
-    logging.info(f"Created index successfully and stored in {save_dir}!")
+        logging.info(f"Saved index successfully to {save_dir}.")
 
     return automerging_index
+
+
+def load_url_hash_table(
+    s3_bucket_name: str | None,
+    ):
+
+    if s3_bucket_name:
+        with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
+            hash_table = json.load(f)
+
+    else:
+        with open("hash_table.json", "r") as f:
+            hash_table = json.load(f)
+
+    logging.info("Loaded URLs hash table successfully.")
+    return hash_table
 
 
 def load_automerging_index(
@@ -168,7 +184,6 @@ def load_automerging_index(
         embed_model: BaseEmbedding,
         save_dir: str,
         s3_bucket_name: str | None,
-        region: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ):
@@ -184,15 +199,13 @@ def load_automerging_index(
         node_parser=node_parser
     )
 
-    logging.info(f"{save_dir} exists! Loading index...")
+    logging.info(f"{save_dir} directory exists! Loading index...")
     if s3_bucket_name:
 
         automerging_index = load_index_from_storage(
             StorageContext.from_defaults(
                 persist_dir = f"{s3_bucket_name}/{save_dir}",
-                fs = s3fs.S3FileSystem(
-                    endpoint_url=f"https://s3.{region}.amazonaws.com",
-                )
+                fs = FS
             ),
             service_context=merging_context
         )
@@ -205,6 +218,6 @@ def load_automerging_index(
             service_context=merging_context,
         )
 
-    logging.info(f"Loaded index from {save_dir} successfully!")
+    logging.info("Loaded vector index successfully!")
 
     return automerging_index

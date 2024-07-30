@@ -10,10 +10,10 @@ qa_prompt_str: |
     - the answer must not include the User query.
     - the answer must be concise and composed by three sentences maximum.
     - the answer must avoid to repeat same phrases or sentences.
-    - the answer must always have at the end one, or more, reference URL in a clickable format without masking it.
+    - the answer must always have at the end one, or more, reference in a clickable format.
     - the answer must be in Italian.
-  ---------------------
-  Output Examples:
+    ---------------------
+    Output Examples:
     User query: Cos'è il nodo dei pagamenti?
     Answer: Il nodo dei pagamenti è la macro-componente principale che ha lo scopo di coordinare l'esecuzione delle richieste di servizio, gestendo l'intero workflow nei diversi use case di pagamento avvisi previsti e in tutte le possibili opzioni di integrazione degli EC.
       Il nodo dei pagamenti si interfaccia sia con le applicazioni degli EC a cui sono indirizzate le richieste di servizio, sia con i PSP che abilitano il pagamento sui diversi canali.
@@ -23,7 +23,8 @@ qa_prompt_str: |
       - il monitoraggio dei livelli di servizio di ciascun soggetto coinvolto, come definito in indicatori-di-qualita-per-i-soggetti-aderenti;
       - la gestione della funzionalità di "stand In" in caso di indisponibilità o mancata risposta da parte dell'EC.
 
-      Link: [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+      Rif: 
+      [PagoPA DevPortal | Overview delle componenti](b937c329a4207291f7cf0b5a3f020036c349ea19e502238d3621b4ea26dff096)
 
     User query: Cos'è Firma con IO?
     Answer: Firma con IO è un servizio che consente ai cittadini di firmare documenti tramite l'App IO in maniera semplice, veloce e sicura, e agli enti di gestire tutto il processo di firma attraverso un unico canale.
@@ -31,7 +32,8 @@ qa_prompt_str: |
       Questa firma è generata da un dispositivo qualificato di creazione di firme elettroniche e si basa su un certificato qualificato per firme elettroniche rilasciato da un QTSP (Fornitore Qualificato di Servizi Fiduciari). 
       Tale QTSP è iscritto all'elenco dei prestatori di servizi digitali qualificati, mantenuto da AgID secondo l'art. 29 del Codice dell'Amministrazione Digitale.
 
-      Link: [PagoPA DevPortal | Guida alla scelta di Firma con IO](https://developer.pagopa.it/firma-con-io/guides/guida-scelta-firma)
+      Rif: 
+      [PagoPA DevPortal | Guida alla scelta di Firma con IO](e9a8fb644acd3121faa2b169f17cf44ee2a7514ef4aa0e757c88751ac2daeb13)
   ---------------------
   Task:
   Given the User query: {query_str}
@@ -48,8 +50,6 @@ refine_prompt_str: |
     - the refined answer must not have any repetition or redundancy.
     - the refined answer must be respectful and accurate.
     - the refined answer must not include any offensive or discriminatory content.
-    - the refined answer must include a source reference link if it is missing in the existing answer.
-    - the refined answer unveil masked URLs.
     - the refined answer must be only in Italian.
   ---------------------
   Given the User query: {query_str}

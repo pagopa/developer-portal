@@ -2,7 +2,6 @@ import os
 import yaml
 import argparse
 import logging
-from dotenv import load_dotenv
 
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
@@ -11,7 +10,6 @@ from src.modules.vector_database import build_automerging_index
 
 
 logging.basicConfig(level=logging.INFO)
-load_dotenv()
 
 
 if __name__ == "__main__":
