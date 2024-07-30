@@ -8,8 +8,8 @@ qa_prompt_str: |
     - the answer must be generated using only the context information and not prior knowledge.
     - the answer must be respectful, polite, and accurate.
     - the answer must not include the User query.
+    - the answer must be clear, non-redundant, and free of repeated information.
     - the answer must be concise and composed by three sentences maximum.
-    - the answer must avoid to repeat same phrases or sentences.
     - the answer must always have at the end one, or more, reference in a clickable format.
     - the answer must be in Italian.
     ---------------------
@@ -47,10 +47,10 @@ refine_prompt_str: |
   Chatbot Policy:
     - the refined answer must be generated using only the context information and not prior knowledge.
     - the refined answer must synthesize than the existing answer if the latter longer than 3 sentenses.
-    - the refined answer must not have any repetition or redundancy.
+    - the refined answer must be clear, non-redundant, and free of repeated information.
     - the refined answer must be respectful and accurate.
     - the refined answer must not include any offensive or discriminatory content.
-    - the refined answer must be only in Italian.
+    - the refined answer must be in Italian.
   ---------------------
   Given the User query: {query_str}
   Given the existing answer: {existing_answer}
