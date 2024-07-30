@@ -22,7 +22,7 @@ from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
 
 FS = s3fs.S3FileSystem(
-    endpoint_url=f"https://s3.{os.getenv('AWS_DEFAULT_REGION')}.amazonaws.com" if os.getenv('AWS_DEFAULT_REGION') else None
+    endpoint_url=f"https://s3.{os.getenv('CHB_AWS_DEFAULT_REGION')}.amazonaws.com" if os.getenv('CHB_AWS_DEFAULT_REGION') else None
 )
 
 
