@@ -38,7 +38,7 @@ const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
     >
       <ChatButton
         aria-describedby={id}
-        chatOpen={open}
+        isChatOpen={open}
         onOpenChat={handleClick}
         hasNewMessages={false}
       />
