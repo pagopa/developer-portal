@@ -3,6 +3,8 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
+import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import React, { ReactElement } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -68,6 +70,16 @@ const BlocksRendererClient = ({
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
+        },
+      }}
+      modifiers={{
+        code: ({ children }) => {
+          return (
+            <CodeBlockPart
+              code={(children as ReactElement).props.children}
+              showLineNumbers={false}
+            />
+          );
         },
       }}
     />

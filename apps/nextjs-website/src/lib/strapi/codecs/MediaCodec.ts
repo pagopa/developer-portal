@@ -7,6 +7,7 @@ export const MediaAttributesCodec = t.strict({
   caption: t.union([NullToUndefinedCodec, t.string]),
   width: t.union([NullToUndefinedCodec, t.number]),
   height: t.union([NullToUndefinedCodec, t.number]),
+  size: t.number,
   ext: t.string,
   mime: t.string,
   url: t.string,

@@ -1,5 +1,11 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { Media } from '../strapi/codecs/MediaCodec';
+
+export type QuestionsAndAnswersItem = {
+  readonly question: string;
+  readonly answer: BlocksContent;
+};
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -16,11 +22,28 @@ export type Webinar = {
   readonly html?: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
-  readonly speakers: readonly Speaker[];
+  readonly speakers?: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
   readonly title: string;
   readonly slug: string;
+  readonly relatedResources?: {
+    readonly title: string;
+    readonly resources: readonly {
+      readonly title: string;
+      readonly subtitle?: string;
+      readonly description?: BlocksContent;
+      readonly linkText: string;
+      readonly linkHref: string;
+      readonly image?: Media;
+    }[];
+    readonly downloadableDocuments?: readonly {
+      readonly title: string;
+      readonly downloadLink: string;
+      readonly size: number;
+      readonly extension: string;
+    }[];
+  };
   readonly relatedLinks?: {
     readonly title: string;
     readonly links: readonly {
@@ -43,5 +66,3 @@ export type Webinar = {
   };
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
 };
-
-export type StaticWebinar = Webinar & { readonly isVisibleInHome: boolean };

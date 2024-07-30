@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add QuestionsAndAnswers component
+Add Chatbot modal component
