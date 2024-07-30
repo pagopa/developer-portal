@@ -1,15 +1,19 @@
 import yaml
 import mangum
 import uvicorn
+import logging
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
 
+logging.basicConfig(level=logging.INFO)
+
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
-logger.info(f"os.getenv('CHB_AWS_ACCESS_KEY_ID') -------------->>>> {os.getenv('CHB_AWS_ACCESS_KEY_ID')}")
+logging.info(f"os.getenv('CHB_AWS_ACCESS_KEY_ID') -------------->>>> {os.getenv('CHB_AWS_ACCESS_KEY_ID')}")
 chatbot = Chatbot(params, prompts)
 
 class Query(BaseModel):

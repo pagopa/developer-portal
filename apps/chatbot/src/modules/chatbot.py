@@ -11,7 +11,7 @@ from llama_index.core.base.response.schema import (
 )
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
-from src.modules.async_bedrock import AsyncBedrock, MyBedrockEmbedding
+from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index, load_url_hash_table
 from src.modules.retriever import get_automerging_query_engine
 
@@ -50,7 +50,7 @@ class Chatbot():
         self.prompts = prompts
         self.use_guardrail = use_guardrail
         self.hash_table = load_url_hash_table(
-            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+            s3_bucket_name=os.getenv("CHB_AWS_S3_BUCKET"),
         )
 
         self.model = AsyncBedrock(
