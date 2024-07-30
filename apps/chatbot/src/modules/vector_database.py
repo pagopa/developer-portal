@@ -20,9 +20,14 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
+AWS_ACCESS_KEY_ID=os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY=os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
+AWS_DEFAULT_REGION=os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 
 FS = s3fs.S3FileSystem(
-    endpoint_url=f"https://s3.{os.getenv('CHB_AWS_DEFAULT_REGION')}.amazonaws.com" if os.getenv('CHB_AWS_DEFAULT_REGION') else None
+    key=AWS_ACCESS_KEY_ID if AWS_ACCESS_KEY_ID else None,
+    secret=AWS_SECRET_ACCESS_KEY if AWS_SECRET_ACCESS_KEY else None,
+    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
 )
 
 
@@ -168,10 +173,12 @@ def load_url_hash_table(
     ):
 
     if s3_bucket_name:
+        logging.info("Getting URLs hash table from S3 bucket...")
         with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
             hash_table = json.load(f)
 
     else:
+        logging.info("Getting URLs hash table from local...")
         with open("hash_table.json", "r") as f:
             hash_table = json.load(f)
 
