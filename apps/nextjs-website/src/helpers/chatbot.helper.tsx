@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { getChatbotQueries, sendChatbotQuery } from '@/lib/chatbot';
 import { Query } from '@/lib/chatbot/queries';
-import { set } from 'fp-ts';
 
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
