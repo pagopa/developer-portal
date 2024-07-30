@@ -21,6 +21,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
 AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
+NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
@@ -134,8 +135,7 @@ class Chatbot():
         logging.info(f"Detected '{langs[0].lang}' with score {langs[0].prob:.4f} at the last user's message.")
 
         return it_score
-    
-    
+
 
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
@@ -221,15 +221,15 @@ class Chatbot():
 
 
     def generate(self, query_str: str) -> str:
-
+        
+        num_words = query_str.split(" ")
         it_score = self._check_language(query_str)
-        if it_score < ITALIAN_THRESHOLD:
+        if num_words < NUM_MIN_WORDS_QUERY or it_score < ITALIAN_THRESHOLD:
             response_str = """Scusa, ma la domanda fornita è insufficiente per fornirti una risposta pertinente, oppure non è formulata in italiano.
             Per piacere, riformula la tua domanda.
             """
 
         else:
-
             engine_response = self.engine.query(query_str)
             response_str = self._get_response_str(engine_response)
 
@@ -242,8 +242,9 @@ class Chatbot():
 
     async def agenerate(self, query_str: str) -> str:
 
+        num_words = query_str.split(" ")
         it_score = self._check_language(query_str)
-        if it_score < ITALIAN_THRESHOLD:
+        if num_words < NUM_MIN_WORDS_QUERY or it_score < ITALIAN_THRESHOLD:
             response_str = """Scusa, ma la domanda fornita è insufficiente per fornirti una risposta pertinente oppure non è formulata in italiano.
             Per piacere, riformula la tua domanda.
             """
