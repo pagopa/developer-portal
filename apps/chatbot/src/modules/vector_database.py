@@ -20,13 +20,13 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
-AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_DEFAULT_REGION=os.getenv('AWS_DEFAULT_REGION')
 
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
 FS = s3fs.S3FileSystem(
-    key=AWS_ACCESS_KEY_ID if AWS_ACCESS_KEY_ID else None,
-    secret=AWS_SECRET_ACCESS_KEY if AWS_SECRET_ACCESS_KEY else None,
+    key=AWS_ACCESS_KEY_ID,
+    secret=AWS_SECRET_ACCESS_KEY,
     endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
 )
 
@@ -155,7 +155,7 @@ def build_automerging_index(
             persist_dir=f"{s3_bucket_name}/{save_dir}",
             fs = FS
         )
-        logging.info(f"Uploaded index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
+        logging.info(f"Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
     else:
         automerging_index.storage_context.persist(
             persist_dir=save_dir
@@ -206,7 +206,7 @@ def load_automerging_index(
         node_parser=node_parser
     )
 
-    logging.info(f"{save_dir} directory exists! Loading index...")
+    logging.info(f"{save_dir} directory exists! Loading vector index...")
     if s3_bucket_name:
 
         automerging_index = load_index_from_storage(

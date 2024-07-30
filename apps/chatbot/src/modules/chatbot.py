@@ -16,23 +16,12 @@ from src.modules.vector_database import load_automerging_index, load_url_hash_ta
 from src.modules.retriever import get_automerging_query_engine
 
 
-# LANGUAGES = {
-#     'af': 'Afrikaans', 'ar': 'Arabo', 'bg': 'Bulgaro', 'bn': 'Bengalese',
-#     'ca': 'Catalano', 'cs': 'Ceco', 'cy': 'Gallese', 'da': 'Danese',
-#     'de': 'Tedesco', 'el': 'Greco', 'en': 'Inglese', 'es': 'Spagnolo',
-#     'et': 'Estone', 'fa': 'Persiano (Farsi)', 'fi': 'Finlandese', 'fr': 'Francese',
-#     'gu': 'Gujarati', 'he': 'Ebraico', 'hi': 'Hindi', 'hr': 'Croato',
-#     'hu': 'Ungherese', 'id': 'Indonesiano', 'it': 'Italiano', 'ja': 'Giapponese',
-#     'kn': 'Kannada', 'ko': 'Coreano', 'lt': 'Lituano', 'lv': 'Lettone',
-#     'mk': 'Macedone', 'ml': 'Malayalam', 'mr': 'Marathi', 'ne': 'Nepalese',
-#     'nl': 'Olandese', 'no': 'Norvegese', 'pa': 'Punjabi', 'pl': 'Polacco',
-#     'pt': 'Portoghese', 'ro': 'Rumeno', 'ru': 'Russo', 'sk': 'Slovacco',
-#     'sl': 'Sloveno', 'so': 'Somalo', 'sq': 'Albanese', 'sv': 'Svedese',
-#     'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thailandese',
-#     'tl': 'Tagalog (Filippino)', 'tr': 'Turco', 'uk': 'Ucraino', 'ur': 'Urdu',
-#     'vi': 'Vietnamita', 'zh-cn': 'Cinese Semplificato', 'zh-tw': 'Cinese Tradizionale'
-# }
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
+AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
+NUM_MIN_REFERENCES = 1
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -50,13 +39,13 @@ class Chatbot():
         self.prompts = prompts
         self.use_guardrail = use_guardrail
         self.hash_table = load_url_hash_table(
-            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+            s3_bucket_name=AWS_S3_BUCKET,
         )
 
         self.model = AsyncBedrock(
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-            region_name=os.getenv("AWS_DEFAULT_REGION"),
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=AWS_DEFAULT_REGION,
             model=params["models"]["model_id"],
             temperature=params["models"]["temperature"],
             max_tokens=params["models"]["max_tokens"],
@@ -66,9 +55,9 @@ class Chatbot():
             },
         )
         self.embed_model = BedrockEmbedding(
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-            region_name=os.getenv("AWS_DEFAULT_REGION"),
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=AWS_DEFAULT_REGION,
             model_name=params["models"]["emded_model_id"],
         )
 
@@ -76,7 +65,7 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
-            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
+            s3_bucket_name=None, # AWS_S3_BUCKET,
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
@@ -176,8 +165,7 @@ class Chatbot():
         hashed_urls = re.findall(pattern, response_str)
 
         if not hashed_urls:
-            logging.info("Generated answer does not have a reference. Adding the first one in source nodes to it.")
-
+            num_refs = 0
             freq = {}
             for node in nodes:
                 title = node.metadata["title"]
@@ -190,19 +178,30 @@ class Chatbot():
             freq_sorted = dict(sorted(freq.items(), key=lambda item: item[1], reverse=True))
 
             response_str += "\n\nRif:"
-            for i, (k, v) in enumerate(freq_sorted.items()):
-                title, hashed_url = k
-                if hashed_url in self.hash_table.keys():
-                    url = self.hash_table[hashed_url]
-                else:
-                    url = "{URL}"
 
-                if i == 0 and v == 1:
+            for i, (k, v) in enumerate(freq_sorted.items()):
+                
+                if i == 0 and v == NUM_MIN_REFERENCES:
+                    num_refs += 1
+                    title = nodes[0].metadata["title"]
+                    hashed_url = nodes[0].metadata["filename"]
+                    if hashed_url in self.hash_table.keys():
+                        url = self.hash_table[hashed_url]
+                    else:
+                        url = "{URL}"
                     response_str += f"\n[{title}]({url})"
                     break
                 else:
-                    if v > 2:
+                    if v > NUM_MIN_REFERENCES:
+                        num_refs += 1
+                        title, hashed_url = k
+                        if hashed_url in self.hash_table.keys():
+                            url = self.hash_table[hashed_url]
+                        else:
+                            url = "{URL}"
                         response_str += f"\n[{title}]({url})"
+
+            logging.info(f"Generated answer had no references. Added {num_refs} references.")
 
         else:
             logging.info(f"Generated answer has {len(hashed_urls)} references.")
