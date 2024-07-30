@@ -11,7 +11,7 @@ from llama_index.core.base.response.schema import (
 )
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
-from src.modules.async_bedrock import AsyncBedrock, MyBedrockEmbedding
+from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index, load_url_hash_table
 from src.modules.retriever import get_automerging_query_engine
 
@@ -76,7 +76,7 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
-            s3_bucket_name=None, #os.getenv("AWS_S3_BUCKET"),
+            s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
