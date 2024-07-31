@@ -23,6 +23,8 @@ AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
+GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare o fornire contenuti inappropriati o dati sensibili.
+Riformula la domanda in modo che non violi queste linee guida."""
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -66,20 +68,20 @@ class Chatbot():
             self.model,
             self.embed_model,
             save_dir=params["vector_index"]["path"],
-            s3_bucket_name=AWS_S3_BUCKET,
+            s3_bucket_name=None, #AWS_S3_BUCKET,
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
 
         self.messages = []
-        qa_prompt_tmpl, ref_prompt_tmpl = self._get_prompt_templates()
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_query_engine(
             self.index,
             llm=self.model,
             similarity_top_k=self.params["retriever"]["similarity_top_k"],
             similarity_cutoff=self.params["retriever"]["similarity_cutoff"],
-            text_qa_template=qa_prompt_tmpl,
-            refine_template=ref_prompt_tmpl,
+            text_qa_template=self.qa_prompt_tmpl,
+            refine_template=self.ref_prompt_tmpl,
             verbose=self.params["retriever"]["verbose"]
         )
 
@@ -99,6 +101,7 @@ class Chatbot():
             self.prompts["refine_prompt_str"],
             prompt_type="refine",
             template_var_mappings = {
+                "context_msg": "context_msg",
                 "existing_answer": "existing_answer",
                 "query_str": "query_str"
             }
@@ -111,16 +114,21 @@ class Chatbot():
         self.messages.append({"role": role, "text": message})
 
 
+    def reset_chat_history(self):
+        self.messages = []
+        return self.messages
+
+
     def _messages_to_str(self, **kwargs) -> str:
         text = ""
         if len(self.messages) > 0:
             for speach in self.messages:
-                text += f"{speach['role']}: {speach['text']}\n"
+                text += f"{speach['role']}: {speach['text']}\n\n"
 
         return text
 
 
-    def get_chat_history(self) -> List[Dict[str, str]]:
+    def get_chat_history(self) -> List[dict]:
         return self.messages
 
 
@@ -151,6 +159,8 @@ class Chatbot():
             response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
             Prova a riformulare la domanda.
             """
+        elif response_str == GUARDRAIL_ANSWER:
+            pass
         else:
             response_str = self._unmask_add_reference(response_str, nodes)
         
@@ -201,10 +211,10 @@ class Chatbot():
                             url = "{URL}"
                         response_str += f"\n[{title}]({url})"
 
-            logging.info(f"Generated answer had no references. Added {num_refs} references.")
+            logging.info(f"Generated answer had no references. Added {num_refs} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
 
         else:
-            logging.info(f"Generated answer has {len(hashed_urls)} references.")
+            logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
             for hashed_url in hashed_urls:
                 if hashed_url in self.hash_table.keys():
                     url = self.hash_table[hashed_url]
@@ -212,7 +222,7 @@ class Chatbot():
                     url = "{URL}"
                 response_str = response_str.replace(hashed_url, url)
 
-        # remove potential generate masked url as {URL}
+        # remove potential generated masked url: {URL}
         parts = re.split(r"(?<=[\.\?\!\n])", response_str)
         filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
         response_str = "".join(filtered_parts) # join the filtered parts back into a single string
@@ -222,38 +232,44 @@ class Chatbot():
 
     def generate(self, query_str: str) -> str:
         
-        num_words = query_str.split(" ")
+        num_words = len(query_str.split(" "))
         it_score = self._check_language(query_str)
-        if num_words < NUM_MIN_WORDS_QUERY or it_score < ITALIAN_THRESHOLD:
-            response_str = """Scusa, ma la domanda fornita è insufficiente per fornirti una risposta pertinente, oppure non è formulata in italiano.
+        if num_words < NUM_MIN_WORDS_QUERY:
+            response_str = """Mi dispiace, la domanda fornita è insufficiente.
             Per piacere, riformula la tua domanda.
             """
-
+        elif num_words >= NUM_MIN_WORDS_QUERY and it_score < ITALIAN_THRESHOLD:
+            response_str = """Mi dispiace, la domanda fornita non è propriamente formulata in italiano.
+            Per piacere, riformula la tua domanda.
+            """
         else:
             engine_response = self.engine.query(query_str)
             response_str = self._get_response_str(engine_response)
 
         # update messages
-        self._update_messages("User", query_str)
-        self._update_messages("Assistant", response_str)
+        self._update_messages("user", query_str)
+        self._update_messages("assistant", response_str)
 
         return response_str
     
 
     async def agenerate(self, query_str: str) -> str:
 
-        num_words = query_str.split(" ")
+        num_words = len(query_str.split(" "))
         it_score = self._check_language(query_str)
-        if num_words < NUM_MIN_WORDS_QUERY or it_score < ITALIAN_THRESHOLD:
-            response_str = """Scusa, ma la domanda fornita è insufficiente per fornirti una risposta pertinente oppure non è formulata in italiano.
+        if num_words < NUM_MIN_WORDS_QUERY:
+            response_str = """Mi dispiace, la domanda fornita è insufficiente.
+            Per piacere, riformula la tua domanda.
+            """
+        elif num_words >= NUM_MIN_WORDS_QUERY and it_score < ITALIAN_THRESHOLD:
+            response_str = """Mi dispiace, la domanda fornita non è propriamente formulata in italiano.
             Per piacere, riformula la tua domanda.
             """
         else:
-
             engine_response = self.engine.aquery(query_str)
             response_str = self._get_response_str(engine_response)
 
-        self._update_messages("User", query_str)
-        self._update_messages("Assistant", response_str)
+        self._update_messages("user", query_str)
+        self._update_messages("assistant", response_str)
 
         return response_str

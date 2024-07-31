@@ -136,29 +136,6 @@ class MyFaithfulnessEvaluator(BaseEvaluator):
         )
 
 
-# async def evaluate(
-#         engine,
-#         questions: List[str],
-#         evaluator_dict: Dict[str, BaseEvaluator]
-#     ):
-
-#     # generete responses
-#     logging.info(f"Making evaluation: Generating {len(questions)} answers..")
-#     pred_responses = await aget_responses(questions, engine, show_progress=True)
-
-#     for i, pr in enumerate(pred_responses):
-#         pred_responses[i].respose = bot._get_response_str(pr)
-
-#     batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
-#     eval_results = await batch_runner.aevaluate_responses(
-#         questions,
-#         responses=pred_responses,
-#         reference=ref_responses
-#     )
-
-#     return pred_responses, eval_results
-
-
 def table_results(responses, eval_results):
 
     table = {
@@ -222,12 +199,9 @@ if __name__ == "__main__":
     # get predition responses
     pred_responses = asyncio.run(aget_responses(questions, bot.engine, show_progress=True))
 
-    # out = []
     for i, pr in enumerate(pred_responses):
         after = bot._get_response_str(pr)
-        # out.append({"before": pr.response.strip(), "after": after})
         pred_responses[i].response = after
-    # json.dump(out, open("test.json", "w"), indent=4)
 
     # get evaluation results    
     eval_results = asyncio.run(batch_runner.aevaluate_responses(

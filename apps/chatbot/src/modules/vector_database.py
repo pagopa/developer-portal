@@ -4,7 +4,7 @@ import json
 import tqdm
 import logging
 import hashlib
-from typing import List
+from typing import List, Tuple, Dict
 
 import s3fs
 from bs4 import BeautifulSoup
@@ -31,18 +31,18 @@ FS = s3fs.S3FileSystem(
 )
 
 
-def hash_url(url):
+def hash_url(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
 
 
-def filter_html_files(html_files: List[str]):
+def filter_html_files(html_files: List[str]) -> List[str]:
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
     return filtered_files
 
 
-def get_html_files(root_folder: str):
+def get_html_files(root_folder: str) -> List[str]:
     html_files = []
     for root, _, files in os.walk(root_folder):
         for file in files:
@@ -51,7 +51,9 @@ def get_html_files(root_folder: str):
     return sorted(filter_html_files(html_files))
 
 
-def create_documentation(documentation_dir: str = "./PagoPADevPortal/out/"):
+def create_documentation(
+        documentation_dir: str = "./PagoPADevPortal/out/"
+    ) -> Tuple[List[Document], dict]:
 
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
@@ -109,7 +111,7 @@ def build_automerging_index(
         s3_bucket_name: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int
-    ):
+    ) -> VectorStoreIndex:
     
     node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
@@ -170,7 +172,7 @@ def build_automerging_index(
 
 def load_url_hash_table(
     s3_bucket_name: str | None,
-    ):
+    ) -> dict:
 
     if s3_bucket_name:
         logging.info("Getting URLs hash table from S3 bucket...")
@@ -193,7 +195,7 @@ def load_automerging_index(
         s3_bucket_name: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int,
-    ):
+    ) -> VectorStoreIndex:
     
     node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
