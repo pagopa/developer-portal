@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add Chatbot modal component
+Add Chatbot to nextjs app

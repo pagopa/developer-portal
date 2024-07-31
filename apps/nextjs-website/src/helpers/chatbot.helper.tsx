@@ -1,45 +1,55 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getChatbotQueries, sendChatbotQuery } from '@/lib/chatbot';
-import { ChatbotQueries } from '@/lib/chatbot/queries';
+import { Query } from '@/lib/chatbot/queries';
 
-export const useChatbot = () => {
+export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [queries, setQueries] = useState<ChatbotQueries>([]);
+  const [queries, setQueries] = useState<Query[]>([]);
+
   useEffect(() => {
-    if (sessionId) {
+    if (sessionId || !isUserAuthenticated) {
       return;
     }
 
     // Request sessionID form chatbotAPI
     setSessionId('sessionID');
-  }, [sessionId]);
+  }, [sessionId, isUserAuthenticated]);
 
   useEffect(() => {
-    if (!sessionId) {
+    if (!sessionId || !isUserAuthenticated) {
       return;
     }
 
-    getChatbotQueries(sessionId).then((response) => setQueries(response));
+    // PENDING Chatbot API
+    // getChatbotQueries(sessionId).then((response) => setQueries(response));
     setIsLoaded(true);
-  }, [sessionId]);
+  }, [sessionId, isUserAuthenticated]);
 
   const sendQuery = (queryMessage: string) => {
-    if (!sessionId) {
-      return;
-    }
-
     setIsAwaitingResponse(true);
+    const queriedAt = new Date().toISOString();
+    setQueries([
+      ...queries,
+      {
+        sessionId: '',
+        question: queryMessage,
+        queriedAt: queriedAt,
+        answer: null,
+        createdAt: null,
+      },
+    ]);
     sendChatbotQuery({
-      sessionId: sessionId,
+      sessionId: sessionId || '',
       question: queryMessage,
-      queriedAt: new Date().toISOString(),
+      queriedAt: queriedAt,
     }).then((response) => {
       setIsAwaitingResponse(false);
       setQueries([...queries, response]);
     });
+    return null;
   };
 
   return {

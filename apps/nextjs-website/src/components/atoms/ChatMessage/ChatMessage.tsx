@@ -1,20 +1,41 @@
 import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
+import { defaultLocale } from '@/config';
 
-type ChatMessageProps = {
-  message: string;
-  sender?: string;
+type DateFormatOptions = {
+  locale?: string;
+  options?: Intl.DateTimeFormatOptions;
+};
+
+const DEFAULT_DATE_FORMAT = {
+  locale: defaultLocale,
+  options: {
+    timeStyle: 'short',
+    hourCycle: 'h23',
+  },
+} satisfies DateFormatOptions;
+
+export type Message = {
+  text: string;
+  isQuestion: boolean;
   timestamp: string;
 };
 
-const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
+type ChatMessageProps = Message;
+
+const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
-  const bgColor = sender
+  const bgColor = isQuestion
     ? palette.background.paper
     : alpha(palette.info.light, 0.5);
   const textColor = palette.text.primary;
-  const senderLabel = sender || 'AI ChatBot'; // TO-BE-REMOVED: This line will be remove in the next iteration of the component - the translation is not needed here
+
+  const timeLabel = new Intl.DateTimeFormat(
+    DEFAULT_DATE_FORMAT.locale,
+    DEFAULT_DATE_FORMAT.options
+  ).format(new Date(timestamp));
+
   return (
     <Box
       bgcolor={bgColor}
@@ -22,24 +43,10 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
       padding={{ xs: '1rem' }}
       sx={{ width: '66.6%' }}
     >
-      <Stack
-        justifyContent={'space-between'}
-        alignItems={'center'}
-        direction={'row'}
-      >
-        <Stack alignItems={'center'} direction={'row'}>
-          {sender ? <PersonOutlineIcon /> : <AdbOutlinedIcon />}
-          <Typography
-            marginLeft={'0.5rem'}
-            fontWeight={600}
-            color={palette.text.primary}
-            component={'span'}
-          >
-            {senderLabel}
-          </Typography>
-        </Stack>
-        <Typography color={textColor} component={'span'}>
-          {timestamp}
+      <Stack alignItems={'center'} direction={'row'}>
+        {isQuestion ? <PersonOutlineIcon /> : <AdbOutlinedIcon />}
+        <Typography color={textColor} component={'span'} marginLeft={1}>
+          {timeLabel}
         </Typography>
       </Stack>
       <Typography
@@ -48,7 +55,7 @@ const ChatMessage = ({ message, sender, timestamp }: ChatMessageProps) => {
         marginTop={'1rem'}
         paragraph
       >
-        {message}
+        {text}
       </Typography>
     </Box>
   );

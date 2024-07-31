@@ -8,12 +8,23 @@ export const QueryCodec = t.strict({
   createdAt: t.string,
 });
 
-export type Query = t.TypeOf<typeof QueryCodec>;
+export type RemoteQuery = t.TypeOf<typeof QueryCodec>;
 
 export const ChatbotQueriesCodec = t.array(QueryCodec);
 
 export type ChatbotQueries = t.TypeOf<typeof ChatbotQueriesCodec>;
 
-export type QueryInput = Pick<Query, 'sessionId' | 'question' | 'queriedAt'>;
+export type QueryInput = Pick<
+  RemoteQuery,
+  'sessionId' | 'question' | 'queriedAt'
+>;
 
-export type Answer = Pick<Query, 'answer' | 'createdAt'>;
+export type Answer = Pick<RemoteQuery, 'answer' | 'createdAt'>;
+
+export type Query = {
+  readonly sessionId: string;
+  readonly question: string;
+  readonly queriedAt: string;
+  readonly answer: string | null;
+  readonly createdAt: string | null;
+};

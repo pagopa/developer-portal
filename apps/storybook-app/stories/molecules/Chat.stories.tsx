@@ -2,6 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/react';
 import Chat from '../../../nextjs-website/src/components/molecules/Chat/Chat';
 import React from 'react';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
+import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof Chat> = {
   title: 'Molecules/Chat',
@@ -16,28 +17,29 @@ export default meta;
 
 export const Showcase: StoryObj<typeof Chat> = {
   args: {
-    chatMessages: [
+    queries: [
       {
-        message:
-          "Ciao, sono [Nome Chatbot], il chatbot di DevPortal.\nPrima di incominciare ti invito a leggere l'Informativa sulla Privacy.\nScrivi Accetto per proseguire.",
-        timestamp: '11:21',
+        sessionId: 'sessionID',
+        answer: mockText(25),
+        createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
-        message: 'Accetto',
-        sender: 'Mario Rossi',
-        timestamp: '11:22',
+        sessionId: 'sessionID',
+        question: 'Accetto',
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(10),
+        createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
-        message: 'Ottimo! Adesso possiamo incominciare. Come posso aiutarti?',
-        timestamp: '11:22',
-      },
-      {
-        message:
-          "E' possibile pagare una posizione debitoria una volta scaduta?",
-        sender: 'Mario Rossi',
-        timestamp: '11:22',
+        sessionId: 'sessionID',
+        question: mockText(50),
+        queriedAt: '2024-07-24T17:14:07.129Z',
       },
     ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
   },
   decorators: [decorator, nextIntlContextDecorator],
 };

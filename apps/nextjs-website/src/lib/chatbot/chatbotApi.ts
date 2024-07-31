@@ -20,9 +20,10 @@ export const postQuery = (input: QueryInput) =>
         TE.tryCatch(() => getAuthToken(), E.toError),
         TE.chainTaskK(
           (authToken) => () =>
-            fetch(`${chatbotHost}/api/queries`, {
+            fetch(`${chatbotHost}/queries`, {
               method: 'POST',
               headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
               body: JSON.stringify(input),
@@ -64,9 +65,10 @@ export const getQueries = (populate: string) =>
         TE.tryCatch(() => getAuthToken(), E.toError),
         TE.chainTaskK(
           (authToken) => () =>
-            fetch(`${chatbotHost}/api/queries?${populate}`, {
+            fetch(`${chatbotHost}/queries?${populate}`, {
               method: 'GET',
               headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
             })

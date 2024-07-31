@@ -2,6 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/react';
 import ChatMessage from '../../../nextjs-website/src/components/atoms/ChatMessage/ChatMessage';
 import React from 'react';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
+import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Atoms/ChatMessage',
@@ -16,17 +17,18 @@ export default meta;
 
 export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    message: "Hello I'm a ChatBot",
-    timestamp: '11:22',
+    text: mockText(12),
+    isQuestion: false,
+    timestamp: '2024-07-24T17:14:07.129Z',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
 
 export const UserMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    message: 'Hello World',
-    sender: 'John Doe',
-    timestamp: '11:22',
+    text: mockText(23),
+    isQuestion: true,
+    timestamp: '2024-07-24T17:14:08.129Z',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
