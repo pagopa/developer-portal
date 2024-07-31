@@ -28,7 +28,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   }, [sessionId, isUserAuthenticated]);
 
   const sendQuery = (queryMessage: string) => {
-    console.log('Sending query', queryMessage);
     setIsAwaitingResponse(true);
     const queriedAt = new Date().toISOString();
     setQueries([
