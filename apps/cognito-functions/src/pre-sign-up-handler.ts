@@ -1,17 +1,19 @@
 import { PreSignUpTriggerEvent } from 'aws-lambda';
+import * as E from 'fp-ts/Either';
 
 export const makeHandler =
-  (signUpAllowedEmailDomains: Array<string>) =>
-    async (
-      event: PreSignUpTriggerEvent
-    ): Promise<PreSignUpTriggerEvent> => {
-      const email = event.request.userAttributes['email'];
-      const domain = email.split('@')[1];
+  (signUpAllowedEmailDomains: ReadonlyArray<string>) =>
+  async (
+    event: PreSignUpTriggerEvent
+  ): Promise<E.Either<Error, PreSignUpTriggerEvent>> => {
+    const email = event.request.userAttributes['email'];
+    const domain = email.split('@')[1];
 
-      if (!signUpAllowedEmailDomains.includes(domain)) {
-        throw new Error('Invalid email domain');
-      }
+    // Validate the domain
+    if (!signUpAllowedEmailDomains.includes(domain)) {
+      return E.left(new Error('Invalid email domain'));
+    }
 
-      // return the result
-      return event;
-    };
+    // Return the event wrapped in a right Either
+    return E.right(event);
+  };

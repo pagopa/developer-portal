@@ -67,4 +67,6 @@ export const createAuthChallengeHandler = pipe(
   )
 );
 
-export const createPreSignUpHandler = preSignUp.makeHandler(JSON.parse(process.env.SIGNUP_ALLOWED_EMAIL_DOMAINS ?? '[]'));
+export const createPreSignUpHandler = preSignUp.makeHandler(
+  JSON.parse(process.env.SIGNUP_ALLOWED_EMAIL_DOMAINS ?? '[]')
+);
