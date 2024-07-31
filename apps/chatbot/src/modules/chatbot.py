@@ -133,14 +133,19 @@ class Chatbot():
 
 
     def _check_language(self, message_str):
+        
+        try:
+            langs = detect_langs(message_str)
+        except Exception as e:
+            logging.warning(f"LangDetectException: {e}. Now list of detected languages is empty.")
+            langs = []
 
-        langs = detect_langs(message_str)
         it_score = 0.0
         for lang in langs:
             if lang.lang == "it":
                 it_score = lang.prob
 
-        logging.info(f"Detected '{langs[0].lang}' with score {langs[0].prob:.4f} at the last user's message.")
+        logging.info(f"Detected Italian with score {it_score:.4f} at the last user's message.")
 
         return it_score
 
