@@ -5,9 +5,10 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 
 type ChatInputTextProps = {
   onSubmit: (message: string) => null;
+  sendDisabled?: boolean;
 };
 
-const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
+const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const t = useTranslations();
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
@@ -47,6 +48,7 @@ const ChatInputText = ({ onSubmit }: ChatInputTextProps) => {
       <IconButton
         aria-label='send'
         onClick={submit}
+        disabled={!message || sendDisabled}
         sx={{ p: '10px', color: palette.grey[700], cursor: 'pointer' }}
       >
         <SendOutlined />
