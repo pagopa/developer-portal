@@ -7,6 +7,7 @@ import * as postConfirmation from './post-confirmation-handler';
 import * as defineAuthChallenge from './define-auth-challenge-handler';
 import * as verifyAuthChallenge from './verify-auth-challenge-handler';
 import * as createAuthChallenge from './create-auth-challenge-handler';
+import * as preSignUp from './pre-sign-up-handler.ts';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
@@ -65,3 +66,5 @@ export const createAuthChallengeHandler = pipe(
       })
   )
 );
+
+export const createPreSignUpHandler = preSignUp.makeHandler(JSON.parse(process.env.SIGNUP_ALLOWED_EMAIL_DOMAINS ?? '[]'));
