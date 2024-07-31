@@ -15,9 +15,14 @@ import { Query } from '@/lib/chatbot/queries';
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  sendDisabled?: boolean;
 };
 
-const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
+const ChatbotLayout = ({
+  queries,
+  onSendQuery,
+  sendDisabled,
+}: ChatbotLayoutProps) => {
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -98,7 +103,11 @@ const ChatbotLayout = ({ queries, onSendQuery }: ChatbotLayoutProps) => {
               <Close sx={{ color: palette.primary.contrastText }} />
             </IconButton>
           </Stack>
-          <Chat queries={queries} onSendQuery={onSendQuery} />
+          <Chat
+            queries={queries}
+            onSendQuery={onSendQuery}
+            sendDisabled={sendDisabled}
+          />
         </Box>
       </Popover>
     </Box>

@@ -22,9 +22,10 @@ import { useTranslations } from 'next-intl';
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  sendDisabled?: boolean;
 };
 
-const Chat = ({ queries, onSendQuery }: ChatProps) => {
+const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -154,7 +155,7 @@ const Chat = ({ queries, onSendQuery }: ChatProps) => {
             ))}
           </Stack>
           <Box sx={{ paddingTop: '1rem' }}>
-            <ChatInputText onSubmit={onSendQuery} />
+            <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
           </Box>
         </Stack>
       </Box>
