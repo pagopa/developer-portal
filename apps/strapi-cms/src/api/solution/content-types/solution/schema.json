@@ -137,6 +137,16 @@
       },
       "component": "common.banner-link",
       "max": 2
+    },
+    "caseHistories": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.case-histories"
     }
   }
 }

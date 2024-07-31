@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add related resources to webinar
+Add Chatbot API
