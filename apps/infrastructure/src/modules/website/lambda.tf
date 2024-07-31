@@ -7,10 +7,10 @@ locals {
   */
   lambda_env_variables = merge(
     {
-    DOMAIN             = var.dns_domain_name
-    FROM_EMAIL_ADDRESS = local.from_email_address
+      DOMAIN             = var.dns_domain_name
+      FROM_EMAIL_ADDRESS = local.from_email_address
     },
-  (var.environment == "dev" ? { SIGNUP_ALLOWED_EMAIL_DOMAINS = jsonencode(var.signup_allowed_email_domains) } : {})
+    (var.environment == "dev" ? { SIGNUP_ALLOWED_EMAIL_DOMAINS = jsonencode(var.signup_allowed_email_domains) } : {})
   )
   lambda_timeout = 15
 }
