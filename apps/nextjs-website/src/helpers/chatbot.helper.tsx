@@ -23,7 +23,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       return;
     }
 
-    getChatbotQueries(sessionId).then((response) => setQueries(response));
+    // PENDING Chatbot API
+    // getChatbotQueries(sessionId).then((response) => setQueries(response));
     setIsLoaded(true);
   }, [sessionId, isUserAuthenticated]);
 
