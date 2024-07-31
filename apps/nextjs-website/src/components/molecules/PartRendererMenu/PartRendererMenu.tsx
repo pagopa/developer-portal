@@ -12,6 +12,44 @@ type PartRendererMenuProps = {
 };
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
+  const menuItems = props.parts
+    .map((part) => {
+      switch (part.component) {
+        case 'blockRenderer':
+          return <BlocksRendererClientMenu content={part.html} />;
+        case 'codeBlock':
+          return (
+            <a
+              key={part.title}
+              href={`#${computeId('codeBlock', part.title)}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <Typography>{part.title}</Typography>
+            </a>
+          );
+        case 'typography':
+          if (['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
+            return null;
+
+          return (
+            <a
+              key={part.text}
+              href={`#${computeId('typography', part.text)}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <Typography>{part.text}</Typography>
+            </a>
+          );
+        default:
+          return null;
+      }
+    })
+    .filter(Boolean);
+
+  if (menuItems.length === 0) {
+    return null;
+  }
+
   return (
     <Box
       sx={{
@@ -20,38 +58,14 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         },
       }}
     >
-      <Typography variant='h6' sx={{ marginBottom: '16px' }}>
+      <Typography
+        id='side-menu-title'
+        variant='h6'
+        sx={{ marginBottom: '16px' }}
+      >
         {translations.productGuidePage.onThisPage}
       </Typography>
-      {props.parts.map((part) => {
-        switch (part.component) {
-          case 'blockRenderer':
-            return <BlocksRendererClientMenu content={part.html} />;
-          case 'codeBlock':
-            return (
-              <a
-                href={`#${computeId('codeBlock', part.title)}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <Typography>{part.title}</Typography>
-              </a>
-            );
-          case 'typography':
-            if (['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
-              return null;
-
-            return (
-              <a
-                href={`#${computeId('typography', part.text)}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <Typography>{part.text}</Typography>
-              </a>
-            );
-          default:
-            return null;
-        }
-      })}
+      {menuItems}
     </Box>
   );
 };
