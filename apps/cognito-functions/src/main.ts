@@ -7,7 +7,7 @@ import * as postConfirmation from './post-confirmation-handler';
 import * as defineAuthChallenge from './define-auth-challenge-handler';
 import * as verifyAuthChallenge from './verify-auth-challenge-handler';
 import * as createAuthChallenge from './create-auth-challenge-handler';
-import * as preSignUp from './pre-sign-up-handler.ts';
+import * as preSignUp from './pre-sign-up-handler';
 
 export const customMessageHandler = pipe(
   { domain: process.env.DOMAIN },
