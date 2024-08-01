@@ -34,7 +34,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
       onSubmit={handleSubmit}
       sx={{
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'end',
         width: 'auto',
         padding: 2,
         borderTop: '3px solid',
@@ -66,7 +66,12 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         aria-label='send'
         onClick={submit}
         disabled={!message || sendDisabled}
-        sx={{ p: '10px', color: palette.primary.main, cursor: 'pointer' }}
+        sx={{
+          p: '10px',
+          color: palette.primary.main,
+          cursor: 'pointer',
+          marginBottom: 1,
+        }}
       >
         <Send />
       </IconButton>
