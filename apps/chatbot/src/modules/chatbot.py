@@ -165,7 +165,7 @@ class Chatbot():
             Prova a riformulare la domanda.
             """
         elif response_str == GUARDRAIL_ANSWER:
-            pass
+            logging.warning(f"BLOCKED RESPONSE: Detected harmful category or PII entity.")
         else:
             response_str = self._unmask_add_reference(response_str, nodes)
         
