@@ -168,16 +168,15 @@ class Chatbot():
         elif response_str == GUARDRAIL_ANSWER:
             logging.warning(f"BLOCKED RESPONSE: Detected harmful category or PII entity.")
         else:
-            response_str = self._remove_sentences(response_str)
+            response_str = self._remove_redundancy(response_str)
             response_str = self._unmask_add_reference(response_str, nodes)
         
         return response_str
     
 
-    def _remove_sentences(self, response_str: str) -> str:
+    def _remove_redundancy(self, response_str: str) -> str:
 
-        # remove repetitive sentences
-        sentences = re.split(r"(?<=[\.\?\!\n])", response_str)
+        sentences = re.split(r"(?<=[\n])", response_str)
         sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
         unique_sentences = list(Counter(sentences).keys())
         indexes_to_remove = []
