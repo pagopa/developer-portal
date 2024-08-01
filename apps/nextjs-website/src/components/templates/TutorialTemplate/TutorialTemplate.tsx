@@ -32,7 +32,7 @@ const TutorialTemplate = ({
     <ProductLayout
       product={product}
       path={path}
-    // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
+      // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
     >
       {product && (
         <EContainer
