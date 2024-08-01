@@ -168,19 +168,13 @@ class Chatbot():
         elif response_str == GUARDRAIL_ANSWER:
             logging.warning(f"BLOCKED RESPONSE: Detected harmful category or PII entity.")
         else:
+            response_str = self._remove_sentences(response_str)
             response_str = self._unmask_add_reference(response_str, nodes)
-        
-        response_str = self._remove_sentences(response_str)
         
         return response_str
     
 
     def _remove_sentences(self, response_str: str) -> str:
-
-        # remove sentences with generated masked url: {URL}
-        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
-        filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
-        response_str = "".join(filtered_parts) # join the filtered parts back into a single string
 
         # remove repetitive sentences
         sentences = re.split(r"(?<=[\.\?\!\n])", response_str)
@@ -190,7 +184,6 @@ class Chatbot():
         for i, unique_sentence in enumerate(unique_sentences):
             for j, us in enumerate(unique_sentences):
                 if i != j and unique_sentence in us:
-                    print("no", i, unique_sentence)
                     indexes_to_remove.append(i)
 
         for idx in indexes_to_remove:
@@ -260,6 +253,11 @@ class Chatbot():
                 else:
                     url = "{URL}"
                 response_str = response_str.replace(hashed_url, url)
+
+        # remove sentences with generated masked url: {URL}
+        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
+        filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
+        response_str = "".join(filtered_parts) # join the filtered parts back into a single string
 
         return response_str
 
