@@ -57,5 +57,5 @@ refine_prompt_str: |
   --------------------
   Given the User query: {query_str}
   Given the original answer: {existing_answer}
-  Provide either the original answer or a refined answer to better answer the uesr query according to the `Chatbot Policy` listed above.
+  Provide either the original answer or a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
   Answer:
