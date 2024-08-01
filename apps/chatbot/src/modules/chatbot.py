@@ -1,7 +1,8 @@
 import os
 import re
 import logging
-from typing import Dict, List, Union, Tuple
+from collections import Counter
+from typing import List, Union, Tuple
 
 from langdetect import detect_langs
 
@@ -172,6 +173,38 @@ class Chatbot():
         return response_str
     
 
+    def _remove_sentences(self, response_str: str) -> str:
+
+        # remove sentences with generated masked url: {URL}
+        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
+        filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
+        response_str = "".join(filtered_parts) # join the filtered parts back into a single string
+
+        # remove repetitive sentences
+        sentences = re.split(r"(?<=[\.\?\!\n])", response_str)
+        sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+        unique_sentences = list(Counter(sentences).keys())
+
+        indexes_to_remove = []
+        for i, unique_sentence in enumerate(unique_sentences):
+            for j, us in enumerate(unique_sentences):
+                if i != j and unique_sentence in us:
+                    print("no", i, unique_sentence)
+                    indexes_to_remove.append(i)
+
+        for idx in indexes_to_remove:
+            unique_sentences.pop(idx)
+
+        response_str = ""
+        for unique_sentence in unique_sentences:
+            if unique_sentence == "Rif:":
+                response_str += "\n" + unique_sentence + "\n"
+            else:
+                response_str += unique_sentence + "\n"
+
+        return response_str
+    
+
     def _unmask_add_reference(self, response_str: str, nodes) -> str:
 
         pattern = r'[a-fA-F0-9]{64}'
@@ -227,10 +260,7 @@ class Chatbot():
                     url = "{URL}"
                 response_str = response_str.replace(hashed_url, url)
 
-        # remove potential generated masked url: {URL}
-        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
-        filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
-        response_str = "".join(filtered_parts) # join the filtered parts back into a single string
+        response_str = self._remove_sentences(response_str)
 
         return response_str
 
