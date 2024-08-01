@@ -170,6 +170,8 @@ class Chatbot():
         else:
             response_str = self._unmask_add_reference(response_str, nodes)
         
+        response_str = self._remove_sentences(response_str)
+        
         return response_str
     
 
@@ -184,7 +186,6 @@ class Chatbot():
         sentences = re.split(r"(?<=[\.\?\!\n])", response_str)
         sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
         unique_sentences = list(Counter(sentences).keys())
-
         indexes_to_remove = []
         for i, unique_sentence in enumerate(unique_sentences):
             for j, us in enumerate(unique_sentences):
@@ -259,8 +260,6 @@ class Chatbot():
                 else:
                     url = "{URL}"
                 response_str = response_str.replace(hashed_url, url)
-
-        response_str = self._remove_sentences(response_str)
 
         return response_str
 
