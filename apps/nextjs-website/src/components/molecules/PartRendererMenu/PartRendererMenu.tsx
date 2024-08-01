@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material';
 
 import BlocksRendererClientMenu from '../BlocksRendererClientMenu/BlocksRendererClientMenu';
 import { translations } from '@/_contents/translations';
+import { blob } from 'stream/consumers';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
@@ -16,7 +17,16 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
     .map((part) => {
       switch (part.component) {
         case 'blockRenderer':
-          return <BlocksRendererClientMenu content={part.html} />;
+          // eslint-disable-next-line no-case-declarations
+          const hasHeading = part.html.reduce((acc, block) => {
+            if (block.type === 'heading') {
+              return true;
+            }
+            return acc;
+          }, false);
+          return hasHeading ? (
+            <BlocksRendererClientMenu content={part.html} />
+          ) : null;
         case 'codeBlock':
           return (
             <a
@@ -28,7 +38,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
             </a>
           );
         case 'typography':
-          if (['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
+          if (!['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
             return null;
 
           return (
