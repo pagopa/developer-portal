@@ -32,7 +32,7 @@ const TutorialTemplate = ({
     <ProductLayout
       product={product}
       path={path}
-      // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
+    // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
     >
       {product && (
         <EContainer
@@ -98,8 +98,8 @@ const TutorialTemplate = ({
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '158px',
-              paddingLeft: '64px',
+              paddingTop: '30px',
+              paddingLeft: '60px',
               width: { lg: '270px' },
             }}
           >
@@ -107,7 +107,7 @@ const TutorialTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '270px',
-                top: 144,
+                top: 140,
               }}
             >
               <PartRendererMenu parts={parts ?? []} />
