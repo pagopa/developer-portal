@@ -1,7 +1,7 @@
 'use client';
 import Fab from '@mui/material/Fab';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-import { Badge, Box } from '@mui/material';
+import { Badge, Box, useTheme } from '@mui/material';
+import IconWrapper from '../IconWrapper/IconWrapper';
 
 type ChatButtonProps = {
   isChatOpen: boolean;
@@ -14,6 +14,7 @@ const ChatButton = ({
   hasNewMessages,
   onOpenChat,
 }: ChatButtonProps) => {
+  const { palette } = useTheme();
   return (
     <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
       <Badge
@@ -31,9 +32,27 @@ const ChatButton = ({
           },
         }}
       >
-        <Box bgcolor={'black'} borderRadius={100} padding={'3px'}>
-          <Fab aria-label={'chat'} color={'primary'} onClick={onOpenChat}>
-            <QuestionAnswerOutlinedIcon />
+        <Box
+          sx={{
+            backgroundColor: palette.text.primary,
+            padding: '3px',
+            borderRadius: '100%',
+          }}
+        >
+          <Fab
+            aria-label='chat'
+            onClick={onOpenChat}
+            sx={{
+              backgroundColor: 'white !important',
+              paddingTop: 1,
+            }}
+          >
+            <IconWrapper
+              icon={'/icons/chatbotAvatar.svg'}
+              isSvg={true}
+              color={palette.text.secondary}
+              size={48}
+            />
           </Fab>
         </Box>
       </Badge>
