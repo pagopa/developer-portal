@@ -11,9 +11,12 @@ import {
 } from '@mui/material';
 import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 
 type Description = {
-  readonly listItems: ReadonlyArray<string>;
+  readonly listItems?: ReadonlyArray<string>;
+  readonly content?: BlocksContent;
   readonly title: string;
 };
 
@@ -88,7 +91,12 @@ export const GuideCard: FC<GuideCardProps> = ({
               <Typography variant='subtitle2' color='text.primary'>
                 {description.title}
               </Typography>
-              <UnorderedList listItems={description?.listItems} />
+              {description?.listItems && (
+                <UnorderedList listItems={description.listItems} />
+              )}
+              {description.content && (
+                <BlocksRendererClient content={description.content} />
+              )}
             </Box>
             <LinkButton label={link.label} href={link.href}></LinkButton>
           </CardContent>

@@ -3,8 +3,8 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { SolutionCodec } from './solutionsCodec';
-import { CaseHistoryCodec } from './caseHistoriesCodec';
 import { FeaturesCodec } from './codecs/FeaturesCodec';
+import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
 
 export const StrapiSolutionListCodec = t.strict({
   data: t.strict({
@@ -13,13 +13,7 @@ export const StrapiSolutionListCodec = t.strict({
       description: t.string,
       caseHistories: t.union([
         NullToUndefinedCodec,
-        t.strict({
-          title: t.string,
-          description: t.union([NullToUndefinedCodec, t.string]),
-          case_histories: t.strict({
-            data: t.array(CaseHistoryCodec),
-          }),
-        }),
+        CaseHistoriesComponentCodec,
       ]),
       solutions: t.strict({
         data: t.array(SolutionCodec),
@@ -51,6 +45,13 @@ const makeStrapiSolutionListPopulate = () =>
           'webinars.webinarSpeakers.avatar',
           'webinars.relatedResources.resources.image',
           'webinars.relatedResources.downloadableDocuments',
+          'caseHistories',
+          'caseHistories.case_histories',
+          'caseHistories.case_histories.image',
+          'caseHistories.case_histories.parts',
+          'caseHistories.case_histories.parts.backgroundImage',
+          'caseHistories.case_histories.products',
+          'caseHistories.case_histories.products.logo',
         ],
       },
       caseHistories: {

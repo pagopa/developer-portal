@@ -15,6 +15,7 @@ export const ioSign: Product = {
   logo: {
     alternativeText: 'Firma con IO',
     caption: undefined,
+    size: 10,
     name: '',
     width: 60,
     height: 61,

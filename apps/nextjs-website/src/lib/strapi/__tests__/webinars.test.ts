@@ -33,15 +33,21 @@ const makeStrapiResponseJson = () => ({
           data: {
             id: 1,
             attributes: {
-              name: 'a-image.png',
+              name: 'webinar-cover-io-remote-content.jpg',
               alternativeText: null,
               caption: null,
-              width: 1440,
-              height: 495,
-              hash: 'image_52d70c707f',
-              ext: '.png',
-              mime: 'image/png',
-              url: '/uploads/image_52d70c707f.png',
+              width: 728,
+              height: 416,
+              hash: 'webinar_cover_io_remote_content_62f1f615b5',
+              ext: '.jpg',
+              mime: 'image/jpeg',
+              size: 30.06,
+              url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
+              previewUrl: null,
+              provider: 'strapi-provider-upload-custom',
+              provider_metadata: null,
+              createdAt: '2024-04-15T14:25:47.773Z',
+              updatedAt: '2024-04-15T14:25:47.773Z',
             },
           },
         },
@@ -71,15 +77,21 @@ const makeStrapiResponseJson = () => ({
                   data: {
                     id: 1,
                     attributes: {
-                      name: 'a-image.png',
+                      name: 'webinar-cover-io-remote-content.jpg',
                       alternativeText: null,
                       caption: null,
-                      width: 1440,
-                      height: 495,
-                      hash: 'image_52d70c707f',
-                      ext: '.png',
-                      mime: 'image/png',
-                      url: '/uploads/image_52d70c707f.png',
+                      width: 728,
+                      height: 416,
+                      hash: 'webinar_cover_io_remote_content_62f1f615b5',
+                      ext: '.jpg',
+                      mime: 'image/jpeg',
+                      size: 30.06,
+                      url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
+                      previewUrl: null,
+                      provider: 'strapi-provider-upload-custom',
+                      provider_metadata: null,
+                      createdAt: '2024-04-15T14:25:47.773Z',
+                      updatedAt: '2024-04-15T14:25:47.773Z',
                     },
                   },
                 },
@@ -99,46 +111,6 @@ const makeStrapiResponseJson = () => ({
             },
           ],
         },
-        questionsAndAnswers: [
-          {
-            id: 2,
-            question: 'question',
-            answer: [
-              {
-                type: 'paragraph',
-                children: [
-                  {
-                    type: 'text',
-                    text: 'answer',
-                  },
-                  {
-                    type: 'text',
-                    text: 'answer',
-                    bold: true,
-                  },
-                  {
-                    type: 'text',
-                    text: 'answer',
-                  },
-                  {
-                    type: 'link',
-                    url: '/',
-                    children: [
-                      {
-                        type: 'text',
-                        text: 'answer',
-                      },
-                    ],
-                  },
-                  {
-                    type: 'text',
-                    text: 'answer',
-                  },
-                ],
-              },
-            ],
-          },
-        ],
         relatedResources: {
           id: 3,
           title: 'test',
@@ -255,6 +227,46 @@ const makeStrapiResponseJson = () => ({
             ],
           },
         },
+        questionsAndAnswers: [
+          {
+            id: 2,
+            question: 'question',
+            answer: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                    bold: true,
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                  {
+                    type: 'link',
+                    url: '/',
+                    children: [
+                      {
+                        type: 'text',
+                        text: 'answer',
+                      },
+                    ],
+                  },
+                  {
+                    type: 'text',
+                    text: 'answer',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     },
   ],
@@ -295,6 +307,7 @@ const makeStrapiResponseWithNullsJson = () => ({
               caption: null,
               width: 100,
               height: 100,
+              size: 5.38,
               hash: 'image',
               ext: '.png',
               mime: 'image/png',
@@ -317,8 +330,8 @@ const makeStrapiResponseWithNullsJson = () => ({
             },
           ],
         },
-        questionsAndAnswers: [],
         relatedResources: null,
+        questionsAndAnswers: [],
       },
     },
   ],
