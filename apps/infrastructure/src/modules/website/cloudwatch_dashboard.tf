@@ -104,13 +104,13 @@ resource "aws_cloudwatch_dashboard" "main" {
         "height" : 6
 
         "properties" : {
-          "metrics" : [
+          "metrics" : concat([
             ["AWS/Lambda", "Errors", "FunctionName", module.cognito_post_confirmation_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }],
             ["...", module.cognito_custom_message_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }],
             ["...", module.cognito_verify_auth_challenge_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }],
             ["...", module.cognito_create_auth_challenge_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }],
-            ["...", module.cognito_define_auth_challenge_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }]
-          ],
+            ["...", module.cognito_define_auth_challenge_function.lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }],
+          ], (var.environment == "dev" ? [["...", module.cognito_pre_sign_up_function[0].lambda_function_name, { "period" : 300, "stat" : "Sum", "region" : var.aws_region }]] : [])),
           "legend" : {
             "position" : "right"
           },
