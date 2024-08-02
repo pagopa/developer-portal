@@ -82,6 +82,9 @@ jobs:
           path: ./*
           key: ${{ github.sha }}
 
+      - name: Increase action disk space
+        uses: ./.github/actions/increase-disk-space
+
       - name: Build NextJS Website
         uses: ./.github/actions/build-nextjs-website
         with:
