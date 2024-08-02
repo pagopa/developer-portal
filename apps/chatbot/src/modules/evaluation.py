@@ -19,7 +19,7 @@ from llama_index.core.evaluation import (
     ContextRelevancyEvaluator
 )
 from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses
+from llama_index.core.evaluation.eval_utils import aget_responses, get_responses
 
 from src.modules.chatbot import Chatbot
 from src.modules.async_bedrock import AsyncBedrock
@@ -136,33 +136,12 @@ class MyFaithfulnessEvaluator(BaseEvaluator):
         )
 
 
-async def evaluate(
-        engine,
-        questions: List[str],
-        evaluator_dict: Dict[str, BaseEvaluator]
-    ) -> pd.DataFrame:
-
-    # generete responses
-    logging.info(f"Generating {len(questions)} answers..")
-    pred_responses = await aget_responses(questions, engine, show_progress=True)
-
-    logging.info("Making evaluation..")
-    batch_runner = BatchEvalRunner(evaluator_dict, workers=8, show_progress=True)
-    eval_results = await batch_runner.aevaluate_responses(
-        questions,
-        responses=pred_responses,
-        reference=ref_responses
-    )
-
-    return pred_responses, eval_results
-
-
-def table_results(eval_results):
+def table_results(responses, eval_results):
 
     table = {
         "ID": list(range(1, len(questions)+1)),
         "query": [a.query for a in eval_results["answer_relevancy"]],
-        "response": [a.response.strip() for a in eval_results["answer_relevancy"]],
+        "response": [r.response.strip() for r in responses],
         "contexts": [f.contexts for f in eval_results["faithfulness"]],
         "answer_relevancy_score": [a.score for a in eval_results["answer_relevancy"]],
         "answer_relevancy_feedback": [a.feedback for a in eval_results["answer_relevancy"]],
@@ -215,10 +194,21 @@ if __name__ == "__main__":
             parser_function=parser_function
         )
     }
+    batch_runner = BatchEvalRunner(evaluator_dict, workers=12, show_progress=True)
 
-    pred_responses, eval_results = asyncio.run(asyncio.gather(
-        evaluate(bot.engine, questions, evaluator_dict)
-    ))[0]
+    # get predition responses
+    pred_responses = asyncio.run(aget_responses(questions, bot.engine, show_progress=True))
+
+    for i, pr in enumerate(pred_responses):
+        after = bot._get_response_str(pr)
+        pred_responses[i].response = after
+
+    # get evaluation results    
+    eval_results = asyncio.run(batch_runner.aevaluate_responses(
+        questions,
+        responses=pred_responses,
+        reference=ref_responses
+    ))
 
     # save results
     now = datetime.datetime.now()
@@ -226,7 +216,7 @@ if __name__ == "__main__":
     results_dir = f"results/{now_str}"
     os.makedirs(results_dir, exist_ok=True)
 
-    df = table_results(eval_results)
+    df = table_results(pred_responses, eval_results)
     avg_scores = {
         "answer_relevancy": df["answer_relevancy_score"].mean(skipna=True),
         "context_relevancy": df["context_relevancy_score"].mean(skipna=True),
@@ -237,9 +227,6 @@ if __name__ == "__main__":
         os.path.join(results_dir, "evaluation_table.csv"),
         index=False
     )
-    json.dump(
-        avg_scores,
-        open(os.path.join(results_dir, "avg_scores.json"), "w"),
-        indent=4
-    )
+    with open(os.path.join(results_dir, "avg_scores.json"), "w") as f:
+        json.dump(avg_scores, f, indent=4)
     logging.info(f"Results stored in {results_dir}")

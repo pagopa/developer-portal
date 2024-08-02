@@ -39,8 +39,8 @@ with gr.Blocks() as demo:
         [],
         elem_id="chatbot",
         avatar_images=(
-            "src/app/user.png",
-            "src/app/chatbot.png"
+            "src/webapp/user.png",
+            "src/webapp/chatbot.png"
         ),
         bubble_full_width=False
     )
