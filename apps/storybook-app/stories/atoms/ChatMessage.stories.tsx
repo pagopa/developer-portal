@@ -10,9 +10,7 @@ const meta: Meta<typeof ChatMessage> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ backgroundColor: '#FFFFFF', padding: '2rem', width: '60%' }}>
-    {story()}
-  </div>
+  <div style={{ backgroundColor: '#FFFFFF', padding: '2rem' }}>{story()}</div>
 );
 
 export default meta;

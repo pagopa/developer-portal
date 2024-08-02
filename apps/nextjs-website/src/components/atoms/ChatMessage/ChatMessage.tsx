@@ -1,4 +1,4 @@
-import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '../IconWrapper/IconWrapper';
 
@@ -75,7 +75,12 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
           >
             {text}
           </Typography>
-          <Typography color={textColor} component={'span'} marginLeft={1}>
+          <Typography
+            color={textColor}
+            component={'span'}
+            marginLeft={1}
+            fontSize={'0.9rem'}
+          >
             {timeLabel}
           </Typography>
         </Stack>
