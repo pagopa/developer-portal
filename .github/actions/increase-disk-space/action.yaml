@@ -1,0 +1,18 @@
+name: Increase action disk space
+description: Delete unnecessary files to reduce the disk space used by actions
+
+inputs:
+
+runs:
+  steps:
+    - name: Delete dependencies
+      working-directory: ${{ inputs.path_to_nextjs_folder }}
+      shell: bash
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/hostedtoolcache/CodeQL
+        sudo docker image prune --all --force
