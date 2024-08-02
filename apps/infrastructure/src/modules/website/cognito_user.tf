@@ -58,6 +58,7 @@ resource "aws_cognito_user_pool" "devportal" {
     create_auth_challenge          = module.cognito_create_auth_challenge_function.lambda_function_arn
     define_auth_challenge          = module.cognito_define_auth_challenge_function.lambda_function_arn
     verify_auth_challenge_response = module.cognito_verify_auth_challenge_function.lambda_function_arn
+    pre_sign_up                    = var.environment == "dev" ? module.cognito_pre_sign_up_function[0].lambda_function_arn : null
   }
 
   # Custom attributes cannot be required.

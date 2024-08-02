@@ -48,6 +48,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      
+      - name: Increase action disk space
+        uses: ./.github/actions/increase-disk-space
 
       - name: Deploy website
         uses: ./.github/actions/deploy
@@ -81,7 +84,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-
+      
+      - name: Increase action disk space
+        uses: ./.github/actions/increase-disk-space
+      
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:

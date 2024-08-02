@@ -1,11 +1,12 @@
 import os
 import json
+import sys
+import logging
 import aioboto3
 from botocore.config import Config
 from typing import Any, Sequence
 
 from llama_index.llms.bedrock import Bedrock
-from llama_index.llms.bedrock.utils import _create_retry_decorator
 from llama_index.core.base.llms.types import (
     ChatMessage,
     ChatResponse,
@@ -17,6 +18,10 @@ from llama_index.core.llms.callbacks import (
     llm_completion_callback,
 )
 from llama_index.core.bridge.pydantic import Field, PrivateAttr
+
+
+AWS_GUARDRAIL_ID = os.getenv("AWS_GUARDRAIL_ID")
+AWS_GUARDRAIL_VERSION = os.getenv("AWS_GUARDRAIL_VERSION")
 
 
 class AsyncBedrock(Bedrock):
@@ -54,8 +59,8 @@ class AsyncBedrock(Bedrock):
                 accept='application/json',
                 contentType='application/json',
                 trace='ENABLED',
-                guardrailIdentifier=os.getenv("AWS_GUARDRAIL_ID"),
-                guardrailVersion=os.getenv("AWS_GUARDRAIL_VERSION")
+                guardrailIdentifier=AWS_GUARDRAIL_ID,
+                guardrailVersion=AWS_GUARDRAIL_VERSION
             )
         else:
             response = self._client.invoke_model(
@@ -65,7 +70,7 @@ class AsyncBedrock(Bedrock):
                 contentType='application/json',
                 trace='ENABLED',
             )
-
+        
         if 'body' in response:
             response_body_str = response['body'].read()
             response_body = json.loads(response_body_str)
@@ -73,7 +78,7 @@ class AsyncBedrock(Bedrock):
                 text=self._provider.get_text_from_response(response_body), raw=response_body
             )
         else:
-            raise ValueError("Unexpected response format")
+            logging.error("Unexpected response format")
 
 
     @llm_completion_callback()
@@ -100,8 +105,8 @@ class AsyncBedrock(Bedrock):
                     accept='application/json',
                     contentType='application/json',
                     trace='ENABLED',
-                    guardrailIdentifier=os.getenv("AWS_GUARDRAIL_ID"),
-                    guardrailVersion=os.getenv("AWS_GUARDRAIL_VERSION")
+                    guardrailIdentifier=AWS_GUARDRAIL_ID,
+                    guardrailVersion=AWS_GUARDRAIL_VERSION
                 )
             else:
                 response = await client.invoke_model(
@@ -120,6 +125,7 @@ class AsyncBedrock(Bedrock):
                 )
             else:
                 raise ValueError("Unexpected response format")
+
 
     @llm_chat_callback()
     async def achat(
