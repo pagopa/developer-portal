@@ -12,7 +12,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const t = useTranslations();
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
-  const disabledColor = alpha(palette.text.primary, 0.3);
+  const disabledColor = palette.action.disabled;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value.slice(0, 800));
@@ -50,7 +50,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         multiline
         maxRows={8}
         endAdornment={
-          <span style={{ color: alpha(palette.text.primary, 0.4) }}>
+          <span style={{ color: palette.action.disabled }}>
             {message.length}/800
           </span>
         }

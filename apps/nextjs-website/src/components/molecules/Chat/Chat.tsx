@@ -1,20 +1,10 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
-import {
-  Box,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack,
-  useTheme,
-} from '@mui/material';
-import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, Button, Stack, useTheme } from '@mui/material';
+import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Delete, History } from '@mui/icons-material';
+import { History, HistoryRounded } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
@@ -70,62 +60,27 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
   return (
     <Stack direction={'column'}>
       <Box
-        bgcolor={palette.grey[200]}
-        width={'auto'}
-        sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+        sx={{
+          backgroundColor: 'white',
+          borderBottom: '2px solid',
+          borderBottomColor: palette.action.disabled,
+          width: 'auto',
+        }}
       >
-        <Stack
-          direction={'row'}
-          justifyContent={'flex-end'}
-          paddingX={'0.75rem'}
-          paddingY={'0.25rem'}
-        >
-          <IconButton
-            aria-controls='chat-menu'
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleChatMenuClick}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id='chat-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'chat-button',
-            }}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Delete fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <History fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-          </Menu>
+        <Stack direction={'row'} paddingX={'0.75rem'} paddingY={'0.25rem'}>
+          <Button size='medium'>
+            <History fontSize='medium' />
+            <span style={{ fontSize: '1.3rem', marginLeft: '0.65rem' }}>
+              {t('chatBot.history')}
+            </span>
+          </Button>
         </Stack>
       </Box>
       <Box
-        bgcolor={palette.grey[300]}
         sx={{
+          backgroundColor: 'white',
           borderBottomLeftRadius: 4,
           borderBottomRightRadius: 4,
-          padding: 2,
         }}
       >
         <Stack
@@ -154,9 +109,7 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
               </Stack>
             ))}
           </Stack>
-          <Box sx={{ paddingTop: '1rem' }}>
-            <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
-          </Box>
+          <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
         </Stack>
       </Box>
     </Stack>
