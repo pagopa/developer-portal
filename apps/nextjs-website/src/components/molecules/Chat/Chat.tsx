@@ -67,7 +67,7 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
           width: 'auto',
         }}
       >
-        <Stack direction={'row'} paddingX={'0.75rem'} paddingY={'0.25rem'}>
+        <Stack direction={'row'} paddingX={1} paddingY={'0.25rem'}>
           <Button size='medium'>
             <History fontSize='medium' />
             <span style={{ fontSize: '1.3rem', marginLeft: '0.65rem' }}>

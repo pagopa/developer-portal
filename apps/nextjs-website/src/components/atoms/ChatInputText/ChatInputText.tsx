@@ -1,5 +1,12 @@
 import { Send } from '@mui/icons-material';
-import { alpha, Box, IconButton, InputBase, useTheme } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputBase,
+  Theme,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
@@ -13,6 +20,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
   const disabledColor = palette.action.disabled;
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value.slice(0, 800));
@@ -36,7 +44,9 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         display: 'flex',
         alignItems: 'end',
         width: 'auto',
-        padding: 2,
+        paddingLeft: 2,
+        paddingRight: 1,
+        paddingY: 2,
         borderTop: '3px solid',
         borderTopColor: message.length ? palette.primary.main : disabledColor,
         backgroundColor: palette.background.paper,
@@ -48,7 +58,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         value={message}
         onChange={handleChange}
         multiline
-        maxRows={8}
+        maxRows={isDesktop ? 8 : 4}
         endAdornment={
           <span style={{ color: palette.action.disabled }}>
             {message.length}/800
@@ -56,7 +66,8 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         }
         sx={{
           borderWidth: '2px',
-          padding: 2,
+          paddingX: 2,
+          paddingY: 1,
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
@@ -70,7 +81,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           p: '10px',
           color: palette.primary.main,
           cursor: 'pointer',
-          marginBottom: 1,
+          marginLeft: 0.5,
         }}
       >
         <Send />
