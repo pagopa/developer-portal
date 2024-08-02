@@ -164,7 +164,7 @@ module "cognito_pre_sign_up_function" {
 
   function_name = "cognito_pre_sign_up"
   description   = "This Lambda function is invoked to verify if the email that the user is using to sign-up is valid."
-  handler       = "main.preSignUp"
+  handler       = "main.createPreSignUpHandler"
   runtime       = "nodejs18.x"
   timeout       = local.lambda_timeout
 
