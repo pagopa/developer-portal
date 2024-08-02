@@ -1,8 +1,6 @@
 name: Increase action disk space
 description: Delete unnecessary files to reduce the disk space used by actions
 
-inputs:
-
 runs:
   steps:
     - name: Delete unnecessary files
