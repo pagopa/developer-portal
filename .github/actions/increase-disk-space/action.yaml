@@ -5,8 +5,7 @@ inputs:
 
 runs:
   steps:
-    - name: Delete dependencies
-      working-directory: ${{ inputs.path_to_nextjs_folder }}
+    - name: Delete unnecessary files
       shell: bash
       run: |
         sudo rm -rf /usr/share/dotnet
