@@ -2,6 +2,7 @@ name: Increase action disk space
 description: Delete unnecessary files to reduce the disk space used by actions
 
 runs:
+  using: "composite"
   steps:
     - name: Delete unnecessary files
       shell: bash
