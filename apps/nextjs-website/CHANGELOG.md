@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 4.3.0
+
+### Minor Changes
+
+- 0e1497e: Add Chatbot API
+- fbed94f: Add Chatbot to nextjs app
+
 ## 4.2.1
 
 ### Patch Changes
