@@ -3,7 +3,7 @@ import ChatMessage, {
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
@@ -12,12 +12,19 @@ import { useTranslations } from 'next-intl';
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  scrollToBottom: boolean;
   sendDisabled?: boolean;
 };
 
-const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
+const Chat = ({
+  queries,
+  onSendQuery,
+  scrollToBottom,
+  sendDisabled,
+}: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
+  const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const messages = useMemo(
     () =>
       compact(
@@ -44,9 +51,12 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current.scrollIntoView({
+        behavior: instantScroll ? 'auto' : 'smooth',
+      });
     }
-  }, [queries]);
+    setInstantScroll(false);
+  }, [queries, instantScroll, setInstantScroll]);
 
   return (
     <Stack direction={'column'}>

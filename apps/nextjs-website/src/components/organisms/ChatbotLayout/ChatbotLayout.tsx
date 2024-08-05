@@ -103,6 +103,7 @@ const ChatbotLayout = ({
             queries={queries}
             onSendQuery={onSendQuery}
             sendDisabled={sendDisabled}
+            scrollToBottom
           />
         </Box>
       </Popover>
