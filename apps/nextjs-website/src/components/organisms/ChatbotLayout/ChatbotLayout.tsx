@@ -53,7 +53,6 @@ const ChatbotLayout = ({
         aria-describedby={id}
         isChatOpen={open}
         onOpenChat={handleClick}
-        hasNewMessages={false}
       />
       <Popover
         id={id}
