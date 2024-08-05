@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
+import { useTranslations } from 'next-intl';
 
 type ChatbotLayoutProps = {
   queries: Query[];
@@ -23,6 +24,7 @@ const ChatbotLayout = ({
   onSendQuery,
   sendDisabled,
 }: ChatbotLayoutProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -79,24 +81,19 @@ const ChatbotLayout = ({
           },
         }}
       >
-        <Box
-          bgcolor={'black'}
-          padding={'0.75rem'}
-          borderRadius={3}
-          minWidth='40rem'
-        >
+        <Box bgcolor='black' borderRadius={3} minWidth='40rem'>
           <Stack
             direction='row'
             justifyContent='space-between'
-            paddingBottom={'0.5rem'}
-            paddingX={'0.5rem'}
+            paddingY={'0.5rem'}
+            paddingX={'1rem'}
           >
             <Typography
               variant='h5'
-              fontWeight='normal'
+              fontWeight='bold'
               sx={{ color: palette.primary.contrastText }}
             >
-              [Nome Chatbot]
+              {t('chatBot.title')}
             </Typography>
             <IconButton onClick={handleClose}>
               <Close sx={{ color: palette.primary.contrastText }} />
