@@ -3,7 +3,7 @@ import ChatMessage, {
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
@@ -18,7 +18,6 @@ type ChatProps = {
 const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const messages = useMemo(
     () =>
       compact(
@@ -41,7 +40,6 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
       ),
     [queries]
   ) satisfies Message[];
-  const open = Boolean(anchorEl);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -49,13 +47,6 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [queries]);
-
-  const handleChatMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <Stack direction={'column'}>
