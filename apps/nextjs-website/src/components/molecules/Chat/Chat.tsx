@@ -58,8 +58,8 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
           width: 'auto',
         }}
       >
-        <Stack direction={'row'} paddingX={1} paddingY={'0.25rem'}>
-          <Button size='medium'>
+        <Stack direction={'row'} paddingY={'0.25rem'}>
+          <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
             <History fontSize='medium' />
             <span style={{ fontSize: '1.3rem', marginLeft: '0.65rem' }}>
               {t('chatBot.history')}
