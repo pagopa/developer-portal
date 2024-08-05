@@ -4,7 +4,7 @@ import ChatMessage, {
 import { Box, Button, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { History, HistoryRounded } from '@mui/icons-material';
+import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
@@ -94,6 +94,7 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
             sx={{
               overflow: 'auto',
               paddingRight: '0.5rem',
+              paddingX: 4,
             }}
           >
             {messages.map((message, index) => (
@@ -103,7 +104,8 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
                 direction={'row'}
                 width={'100%'}
                 justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-                marginBottom={'1rem'}
+                marginTop={index === 0 ? 2 : 0}
+                marginBottom={2}
               >
                 <ChatMessage {...message} />
               </Stack>
