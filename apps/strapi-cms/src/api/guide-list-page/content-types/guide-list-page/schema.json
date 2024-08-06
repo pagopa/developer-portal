@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "guide_list_pages",
+  "info": {
+    "singularName": "guide-list-page",
+    "pluralName": "guide-list-pages",
+    "displayName": "GuideListPage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text",
+      "required": true
+    },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
+    "guidesByCategory": {
+      "displayName": "GuidesByCategory",
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.guides-by-category"
+    }
+  }
+}
