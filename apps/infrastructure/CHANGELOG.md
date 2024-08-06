@@ -1,5 +1,17 @@
 # infrastructure
 
+## 0.12.0
+
+### Minor Changes
+
+- 1ef5143: Disabled user sign-up in development environment
+
+## 0.11.0
+
+### Minor Changes
+
+- 61e4f75: Avoid list of medialibrary objects to be served on medialibrary root url
+
 ## 0.10.0
 
 ### Minor Changes

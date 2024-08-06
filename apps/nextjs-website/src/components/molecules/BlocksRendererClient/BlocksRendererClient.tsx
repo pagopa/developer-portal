@@ -40,7 +40,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: '16px',
+              marginBottom: 5,
               ...imageStyle,
             }}
             src={image.url}
@@ -51,7 +51,7 @@ const BlocksRendererClient = ({
         ),
         paragraph: ({ children }) => (
           <Typography
-            marginBottom={2}
+            marginBottom={5}
             variant='body1'
             color={textColor}
             sx={paragraphSx}
@@ -74,6 +74,16 @@ const BlocksRendererClient = ({
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
+        },
+      }}
+      modifiers={{
+        code: ({ children }) => {
+          return (
+            <CodeBlockPart
+              code={(children as ReactElement).props.children}
+              showLineNumbers={false}
+            />
+          );
         },
       }}
     />

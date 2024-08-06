@@ -8,6 +8,7 @@ const product: Product = {
   logo: {
     alternativeText: undefined,
     caption: undefined,
+    size: 10,
     name: 'test',
     width: 60,
     height: 61,

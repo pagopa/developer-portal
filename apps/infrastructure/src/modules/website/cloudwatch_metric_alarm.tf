@@ -640,6 +640,31 @@ module "cognito_verify_auth_challenge_lambda_concurrent_executions_alarm" {
   }
 }
 
+### Verify auth challenge concurrent executions
+module "cognito_pre_sign_up_lambda_concurrent_executions_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  count  = var.environment == "dev" ? 1 : 0
+
+  alarm_name        = "DevPortal | Website | Cognito | Lambda | PreSignUp | ConcurrentExecutions"
+  actions_enabled   = true
+  alarm_description = "This alarm can proactively detect if the concurrency of the function is approaching the Region-level concurrency quota of the account"
+  metric_name       = "ConcurrentExecutions"
+  namespace         = "AWS/Lambda"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 90 # 90% of the concurrency quota
+  statistic           = "Maximum"
+  period              = 60
+  evaluation_periods  = 10
+  datapoints_to_alarm = 10
+  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+
+  dimensions = {
+    FunctionName = module.cognito_pre_sign_up_function[0].lambda_function_name
+  }
+}
+
 # CloudFront
 
 ## Number of requests with 5xx status code
