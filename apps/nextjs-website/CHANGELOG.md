@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 4.4.0
+
+### Minor Changes
+
+- 564bb78: Add lateral menu on Strapi tutorials
+
 ## 4.3.0
 
 ### Minor Changes
