@@ -6,6 +6,8 @@ import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
 import { SITE_HEADER_HEIGHT } from '../SiteHeader/SiteHeader';
+import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
+import { ReactElement } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
