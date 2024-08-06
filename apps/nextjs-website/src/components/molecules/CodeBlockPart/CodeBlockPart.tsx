@@ -6,6 +6,7 @@ import { lightCustomStyle } from '@/components/molecules/CodeBlockPart/lightCust
 import { darkCustomStyle } from '@/components/molecules/CodeBlockPart/darkCustomStyle';
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
 import { useTranslations } from 'next-intl';
+import { computeId } from '../PartRendererMenu/PartRendererMenu';
 
 export type CodeBlockPartProps = {
   code: string;
@@ -39,6 +40,7 @@ const CodeBlockPart = ({
 
   return (
     <Box
+      id={computeId('codeBlock', title)}
       className={'container'}
       sx={{
         borderRadius: '0.375rem',
