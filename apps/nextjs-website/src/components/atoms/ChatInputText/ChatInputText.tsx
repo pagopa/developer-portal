@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 
 type ChatInputTextProps = {
   onSubmit: (message: string) => null;
@@ -36,10 +36,20 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     setMessage('');
   };
 
+  const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submit();
+    }
+  };
+
+  const iconButtonSize = isDesktop ? '1.8rem' : '1.65rem';
   return (
     <Box
       component='form'
       onSubmit={handleSubmit}
+      onKeyDown={onEnterKeyDownSubmitForm}
       sx={{
         display: 'flex',
         alignItems: 'end',
@@ -60,17 +70,25 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         multiline
         maxRows={isDesktop ? 8 : 4}
         endAdornment={
-          <span style={{ color: palette.action.disabled }}>
+          <span
+            style={{
+              color: palette.action.disabled,
+              fontSize: isDesktop ? '1rem' : '0.875rem',
+              marginLeft: '0.5rem',
+            }}
+          >
             {message.length}/800
           </span>
         }
         sx={{
+          alignItems: 'flex-end',
           borderWidth: '2px',
-          paddingX: 2,
+          paddingX: isDesktop ? 2 : 1.5,
           paddingY: 1,
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
+          fontSize: isDesktop ? '1rem' : '0.875rem',
         }}
       />
       <IconButton
@@ -82,9 +100,10 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           color: palette.primary.main,
           cursor: 'pointer',
           marginLeft: 0.5,
+          marginBottom: isDesktop ? 0.85 : 0,
         }}
       >
-        <Send />
+        <Send sx={{ height: iconButtonSize, width: iconButtonSize }} />
       </IconButton>
     </Box>
   );
