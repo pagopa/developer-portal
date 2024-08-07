@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 
 type ChatInputTextProps = {
   onSubmit: (message: string) => null;
@@ -37,11 +37,20 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     setMessage('');
   };
 
+  const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submit();
+    }
+  };
+
   const iconButtonSize = isDesktop ? '1.8rem' : '1.65rem';
   return (
     <Box
       component='form'
       onSubmit={handleSubmit}
+      onKeyDown={onEnterKeyDownSubmitForm}
       sx={{
         display: 'flex',
         alignItems: 'end',
