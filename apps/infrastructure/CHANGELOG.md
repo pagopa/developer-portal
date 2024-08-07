@@ -1,5 +1,11 @@
 # infrastructure
 
+## 0.12.0
+
+### Minor Changes
+
+- 1ef5143: Disabled user sign-up in development environment
+
 ## 0.11.0
 
 ### Minor Changes
