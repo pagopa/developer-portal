@@ -14,11 +14,3 @@ export const Showcase: StoryObj<typeof ChatButton> = {
     onOpenChat: () => null,
   },
 };
-
-export const ChatButtonNewMessages: StoryObj<typeof ChatButton> = {
-  args: {
-    isChatOpen: false,
-    hasNewMessages: true,
-    onOpenChat: () => null,
-  },
-};
