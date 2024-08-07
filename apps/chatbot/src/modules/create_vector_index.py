@@ -11,6 +11,8 @@ from src.modules.vector_database import build_automerging_index
 
 logging.basicConfig(level=logging.INFO)
 
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -38,8 +40,8 @@ if __name__ == "__main__":
         embed_model,
         documentation_dir=params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
-        s3_bucket_name=os.getenv("CHB_AWS_S3_BUCKET"),
-        region=os.getenv("CHB_AWS_DEFAULT_REGION"),
+        s3_bucket_name=AWS_S3_BUCKET,
+        region=AWS_DEFAULT_REGION,
         chunk_sizes=params["vector_index"]["chunk_sizes"],
         chunk_overlap=params["vector_index"]["chunk_overlap"]
     )
