@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '../IconWrapper/IconWrapper';
+import { parseMessage } from '@/helpers/chatMessageParser.helper';
 
 type DateFormatOptions = {
   locale?: string;
@@ -27,6 +28,7 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
+  const parsedMessage = parseMessage(text);
 
   const timeLabel = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
@@ -67,13 +69,14 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
           marginLeft={2}
         >
           <Typography
+            component={'div'}
             color={textColor}
             marginLeft={'2.2rem'}
             marginTop={1}
             paragraph
             width={'100%'}
           >
-            {text}
+            {parsedMessage}
           </Typography>
           <Typography
             color={textColor}
