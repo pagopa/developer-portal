@@ -37,7 +37,7 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
     <Box
       bgcolor={bgColor}
       borderRadius={{ xs: '0.75rem' }}
-      padding={{ xs: '1rem' }}
+      padding={{ xs: '1rem 1rem 0.5rem 1rem' }}
       sx={{ width: isQuestion ? '66.6%' : '100%' }}
     >
       <Stack direction={'row'}>
@@ -67,6 +67,7 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
           marginLeft={2}
         >
           <Typography
+            fontSize={'0.875rem'}
             color={textColor}
             marginLeft={'2.2rem'}
             marginTop={1}
@@ -79,7 +80,7 @@ const ChatMessage = ({ text, isQuestion, timestamp }: ChatMessageProps) => {
             color={textColor}
             component={'span'}
             marginLeft={1}
-            fontSize={'0.9rem'}
+            fontSize={'0.625rem'}
           >
             {timeLabel}
           </Typography>
