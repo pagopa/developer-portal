@@ -1,5 +1,22 @@
 # storybook-app
 
+## 0.8.0
+
+### Minor Changes
+
+- fbed94f: Add Chatbot to nextjs app
+
+## 0.7.0
+
+### Minor Changes
+
+- 53d26d1: Add QuestionsAndAnswers component
+- ed77bbf: Add RelatedResources and DownloadableDocuments components
+
+### Patch Changes
+
+- ec5f3f2: Fix issue with solution product
+
 ## 0.6.0
 
 ### Minor Changes

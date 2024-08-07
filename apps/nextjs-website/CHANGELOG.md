@@ -1,5 +1,41 @@
 # nextjs-website
 
+## 4.3.0
+
+### Minor Changes
+
+- 0e1497e: Add Chatbot API
+- fbed94f: Add Chatbot to nextjs app
+
+## 4.2.1
+
+### Patch Changes
+
+- 8931efc: Fix case histories path
+
+## 4.2.0
+
+### Minor Changes
+
+- dea108c: Add CaseHistories to Solution template
+
+## 4.1.0
+
+### Minor Changes
+
+- 6275174: Add and connect RelatedResources and QuestionsAndAnswers to webinar
+- f5d06c4: Add code modifier to BlockRendererClient to render code tag with CodeBlockPart
+- 53d26d1: Add QuestionsAndAnswers component
+- 83175b4: Add questionsAndAnswers attribute to Webinar codec
+- 6d518da: Add related resources to webinar
+- ed77bbf: Add RelatedResources and DownloadableDocuments components
+
+### Patch Changes
+
+- 4daeff5: Remove quotes from Tutorial pages
+- 4a56ca6: Update speaker list layout in webinar page and in its preview card
+- 34a1706: Fix spacing in case history page
+
 ## 4.0.0
 
 ### Major Changes

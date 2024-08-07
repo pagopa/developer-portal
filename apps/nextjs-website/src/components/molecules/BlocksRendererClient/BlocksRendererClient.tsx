@@ -3,6 +3,11 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
+import { computeId } from '../PartRendererMenu/PartRendererMenu';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
+import { SITE_HEADER_HEIGHT } from '../SiteHeader/SiteHeader';
+import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
+import { ReactElement } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -28,6 +33,7 @@ const BlocksRendererClient = ({
   if (!content) return null;
 
   const textColor = color ? palette.primary[color] : palette.text.primary;
+  const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   return (
     <BlocksRenderer
@@ -36,7 +42,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: '16px',
+              marginBottom: 5,
               ...imageStyle,
             }}
             src={image.url}
@@ -47,7 +53,7 @@ const BlocksRendererClient = ({
         ),
         paragraph: ({ children }) => (
           <Typography
-            marginBottom={2}
+            marginBottom={5}
             variant='body1'
             color={textColor}
             sx={paragraphSx}
@@ -56,12 +62,30 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <Typography marginY={4} variant={`h${level}`} color={textColor}>
-            {children}
-          </Typography>
+          <div
+            id={computeId('blockRenderer', children)}
+            style={{
+              marginTop: `-${scrollOffset}px`,
+              paddingTop: `${scrollOffset}px`,
+            }}
+          >
+            <Typography marginY={4} variant={`h${level}`} color={textColor}>
+              {children}
+            </Typography>
+          </div>
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
+        },
+      }}
+      modifiers={{
+        code: ({ children }) => {
+          return (
+            <CodeBlockPart
+              code={(children as ReactElement).props.children}
+              showLineNumbers={false}
+            />
+          );
         },
       }}
     />

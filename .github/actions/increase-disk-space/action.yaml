@@ -1,0 +1,22 @@
+name: Increase action disk space
+description: Delete unnecessary files to reduce the disk space used by actions
+
+runs:
+  using: "composite"
+  steps:
+    - name: Delete unnecessary files
+      shell: bash
+      run: |
+        echo "Available storage before:"
+        sudo df -h
+        echo
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/hostedtoolcache/CodeQL
+        sudo docker image prune --all --force
+        echo "Available storage after:"
+        sudo df -h
+        echo
