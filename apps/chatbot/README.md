@@ -4,7 +4,7 @@ This folder contains all the details to build a RAG using the documentation prov
 
 This chatbot uses [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
-All the parameters used to build the Retrieval-Augmented Generation (RAG) arem stored in `config/params.yaml`.
+All the parameters and prompts used to build the Retrieval-Augmented Generation (RAG) are available in `config`.
 
 ## Virtual environment
 
@@ -27,17 +27,28 @@ The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHO
 
 In this way, `PYTHONPATH` points to where the Python packages and modules are, not where your checkouts are.
 
-## Create the knowledge vector database
+## File for Environment Variables
 
-First of all, verify that the HTM files that compose the Developer Portal documentation exist in `apps/nextjs-website/out`. If it exist, then create the vector index with:
+Create a `.env` file inside the folder and write to the file the following environment variables:
+
+    AWS_ACCESS_KEY_ID=...
+    AWS_SECRET_ACCESS_KEY=...
+    AWS_DEFAULT_REGION=...
+    AWS_S3_BUCKET=...
+    AWS_GUARDRAIL_ID=...
+    AWS_GUARDRAIL_VERSION=...
+
+## Knowledge vector database
+
+First of all, verify that the HTML files that compose the Developer Portal documentation exist in `apps/nextjs-website/out`. If this folder exists, then create the vector index doing:
 
     python src/modules/create_vector_index.py --params config/params.yaml
 
-This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index`.
+This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index` or load it to a S3 bucket.
 
 ## Web App
 
-    python src/app/app.py
+    python src/webapp/app.py
 
 This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the chatbot.
 

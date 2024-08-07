@@ -39,6 +39,9 @@ jobs:
         with:
           ref: nextjs-website@latest
 
+      - name: Increase action disk space
+        uses: ./.github/actions/increase-disk-space
+
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:

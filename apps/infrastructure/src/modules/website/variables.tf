@@ -76,3 +76,9 @@ variable "mfa_code_duration_in_minutes" {
   description = "The duration for which the MFA code is valid in minutes"
   default     = 15
 }
+
+variable "signup_allowed_email_domains" {
+  type        = list(string)
+  description = "List of allowed email domains for signup"
+  default     = ["pagopa.it", "uqido.com"]
+}
