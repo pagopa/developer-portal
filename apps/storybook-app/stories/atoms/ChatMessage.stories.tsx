@@ -20,6 +20,7 @@ export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
     text: mockText(40),
     isQuestion: false,
     timestamp: '2024-07-24T17:14:07.129Z',
+    dateHeader: 'Today',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
@@ -29,6 +30,7 @@ export const UserMessage: StoryObj<typeof ChatMessage> = {
     text: mockText(23),
     isQuestion: true,
     timestamp: '2024-07-24T17:14:08.129Z',
+    dateHeader: 'Today',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
