@@ -13,30 +13,25 @@ const ChatButton = ({ isChatOpen, onOpenChat }: ChatButtonProps) => {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   return (
     <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
-      <Box
+      <Fab
+        aria-label='chat'
+        onClick={onOpenChat}
+        size={isDesktop ? 'large' : 'medium'}
         sx={{
-          backgroundColor: palette.text.primary,
-          padding: '3px',
-          borderRadius: '100%',
+          borderStyle: 'solid',
+          borderColor: palette.text.primary,
+          borderWidth: 3,
+          backgroundColor: 'white !important',
+          paddingTop: 0.5,
         }}
       >
-        <Fab
-          aria-label='chat'
-          onClick={onOpenChat}
-          size={isDesktop ? 'large' : 'medium'}
-          sx={{
-            backgroundColor: 'white !important',
-            paddingTop: 1,
-          }}
-        >
-          <IconWrapper
-            icon={'/icons/chatbotAvatar.svg'}
-            isSvg={true}
-            color={palette.text.secondary}
-            size={isDesktop ? 48 : 40}
-          />
-        </Fab>
-      </Box>
+        <IconWrapper
+          icon={'/icons/chatbotAvatar.svg'}
+          isSvg={true}
+          color={palette.text.secondary}
+          size={isDesktop ? 48 : 40}
+        />
+      </Fab>
     </Box>
   );
 };

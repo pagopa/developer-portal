@@ -3,8 +3,11 @@ import { Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
-import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import React, { ReactElement } from 'react';
+import { computeId } from '../PartRendererMenu/PartRendererMenu';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
+import { SITE_HEADER_HEIGHT } from '../SiteHeader/SiteHeader';
+import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
+import { ReactElement } from 'react';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -30,6 +33,7 @@ const BlocksRendererClient = ({
   if (!content) return null;
 
   const textColor = color ? palette.primary[color] : palette.text.primary;
+  const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   return (
     <BlocksRenderer
@@ -57,16 +61,18 @@ const BlocksRendererClient = ({
             {children}
           </Typography>
         ),
-        heading: ({ children }) => (
-          <Typography
-            marginBottom={2}
-            component={'h2'}
-            fontSize={'24px'}
-            fontWeight={600}
-            color={textColor}
+        heading: ({ children, level }) => (
+          <div
+            id={computeId('blockRenderer', children)}
+            style={{
+              marginTop: `-${scrollOffset}px`,
+              paddingTop: `${scrollOffset}px`,
+            }}
           >
-            {children}
-          </Typography>
+            <Typography marginY={4} variant={`h${level}`} color={textColor}>
+              {children}
+            </Typography>
+          </div>
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
