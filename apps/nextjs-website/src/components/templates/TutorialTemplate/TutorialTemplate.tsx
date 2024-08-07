@@ -1,14 +1,15 @@
-import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { StrapiTutorials } from '@/lib/strapi/tutorial';
 import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
+import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
@@ -21,7 +22,6 @@ type TutorialPageTemplateProps = {
 };
 
 const TutorialTemplate = ({
-  bannerLinks,
   parts,
   path,
   product,
@@ -55,41 +55,66 @@ const TutorialTemplate = ({
           />
         </EContainer>
       )}
-      <EContainer sx={{ paddingY: 7 }}>
-        <FragmentProvider>
-          <Grid container>
-            <Grid item xs={12} lg={9}>
-              <Typography
-                component='h1'
-                sx={{
-                  fontSize: '38px',
-                  fontWeight: 700,
-                  lineHeight: '42px',
-                  paddingY: 2,
-                }}
-              >
-                {title}
-              </Typography>
-              {parts && (
-                <Box mt={1}>
-                  {parts.map((part, index) => (
-                    <PartRenderer key={index} part={part} />
-                  ))}
-                </Box>
-              )}
-            </Grid>
-            <Grid item xs={false} lg={3}>
-              <Box
-                sx={{
-                  position: 'sticky',
-                  top: 200,
-                  maxWidth: '270px',
-                }}
-              ></Box>
-            </Grid>
-          </Grid>
-        </FragmentProvider>
-      </EContainer>
+      <FragmentProvider>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            maxWidth: '1156px',
+            margin: '0 auto',
+            paddingY: '56px',
+          }}
+        >
+          <Box
+            sx={{
+              flexGrow: { lg: 1 },
+              maxWidth: {
+                xs: '100%',
+                lg: '822px',
+              },
+            }}
+          >
+            <Typography
+              component='h1'
+              sx={{
+                fontSize: '38px',
+                fontWeight: 700,
+                lineHeight: '42px',
+                paddingY: 2,
+              }}
+            >
+              {title}
+            </Typography>
+            {parts && (
+              <Box mt={1}>
+                {parts.map((part, index) => (
+                  <PartRenderer key={index} part={part} />
+                ))}
+              </Box>
+            )}
+          </Box>
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              // 78px is the height of the header, 80px is the height of the product header
+              paddingTop: '30px',
+              paddingLeft: '60px',
+              width: { lg: '270px' },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '270px',
+                top: 140,
+              }}
+            >
+              <PartRendererMenu parts={parts ?? []} />
+            </Box>
+          </Box>
+        </Box>
+      </FragmentProvider>
       {relatedLinks && (
         <RelatedLinks
           title={relatedLinks?.title}
