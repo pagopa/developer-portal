@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_common_guide_versions",
+  "info": {
+    "displayName": "GuideVersion",
+    "icon": "attachment"
+  },
+  "options": {},
+  "attributes": {
+    "main": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "dirname": {
+      "type": "string",
+      "required": true
+    },
+    "version": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
