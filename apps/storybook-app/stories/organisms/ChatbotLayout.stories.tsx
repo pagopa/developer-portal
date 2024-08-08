@@ -61,6 +61,7 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
       console.log(query);
       return null;
     },
+    isAwaitingResponse: true,
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
