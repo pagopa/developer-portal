@@ -10,7 +10,7 @@ const meta: Meta<typeof Chat> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ backgroundColor: 'black', padding: '2rem' }}>{story()}</div>
+  <div style={{ backgroundColor: 'black' }}>{story()}</div>
 );
 
 export default meta;
@@ -40,6 +40,7 @@ export const Showcase: StoryObj<typeof Chat> = {
       console.log(query);
       return null;
     },
+    isAwaitingResponse: true,
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
