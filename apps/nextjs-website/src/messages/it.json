@@ -584,6 +584,7 @@
     "chatBot": {
         "title": "Chatbot",
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
+        "history": "Cronologia",
         "chatHistory": "Cronologia chat",
         "delete": "Elimina"
     }
