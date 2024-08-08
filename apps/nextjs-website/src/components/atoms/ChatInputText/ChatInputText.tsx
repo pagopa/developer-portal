@@ -44,7 +44,6 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     }
   };
 
-  const iconButtonSize = isDesktop ? '1.8rem' : '1.65rem';
   return (
     <Box
       component='form'
@@ -70,25 +69,25 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         multiline
         maxRows={isDesktop ? 8 : 4}
         endAdornment={
-          <span
-            style={{
+          <Box
+            sx={{
               color: palette.action.disabled,
-              fontSize: isDesktop ? '1rem' : '0.875rem',
+              fontSize: { xs: '0.875rem', md: '1rem' },
               marginLeft: '0.5rem',
             }}
           >
             {message.length}/800
-          </span>
+          </Box>
         }
         sx={{
           alignItems: 'flex-end',
           borderWidth: '2px',
-          paddingX: isDesktop ? 2 : 1.5,
+          paddingX: { xs: 1.5, md: 2 },
           paddingY: 1,
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: isDesktop ? '1rem' : '0.875rem',
+          fontSize: { xs: '0.875rem', md: '1rem' },
         }}
       />
       <IconButton
@@ -99,9 +98,15 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           color: palette.primary.main,
           cursor: 'pointer',
           marginLeft: 0.5,
+          marginBottom: { xs: 0, md: 0.85 },
         }}
       >
-        <Send sx={{ height: iconButtonSize, width: iconButtonSize }} />
+        <Send
+          sx={{
+            height: { xs: '1.65rem', md: '1.8rem' },
+            width: { xs: '1.65rem', md: '1.8rem' },
+          }}
+        />
       </IconButton>
     </Box>
   );
