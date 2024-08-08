@@ -1,13 +1,5 @@
 import { Send } from '@mui/icons-material';
-import {
-  alpha,
-  Box,
-  IconButton,
-  InputBase,
-  Theme,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { alpha, Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 
