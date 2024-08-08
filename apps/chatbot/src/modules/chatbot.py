@@ -15,6 +15,7 @@ from llama_index.embeddings.bedrock import BedrockEmbedding
 from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index, load_url_hash_table
 from src.modules.retriever import get_automerging_query_engine
+from src.modules.presidio import PresidioPII
 
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -36,12 +37,14 @@ class Chatbot():
             self,
             params,
             prompts,
+            presidio,
             use_guardrail: bool = True
         ):
 
         self.params = params
         self.prompts = prompts
         self.use_guardrail = use_guardrail
+        self.presidio = PresidioPII(config_file=presidio)
         self.hash_table = load_url_hash_table(
             s3_bucket_name=AWS_S3_BUCKET,
         )
@@ -185,7 +188,7 @@ class Chatbot():
                 if i != j and unique_sentence in us:
                     indexes_to_remove.append(i)
 
-        for idx in indexes_to_remove:
+        for idx in indexes_to_remove[::-1]:
             unique_sentences.pop(idx)
 
         response_str = ""
@@ -197,6 +200,10 @@ class Chatbot():
 
         return response_str
     
+
+    def mask_pii(self, text: str) -> str:
+        return self.presidio.mask_pii(text)
+
 
     def _unmask_add_reference(self, response_str: str, nodes) -> str:
 
@@ -274,8 +281,11 @@ class Chatbot():
             Per piacere, riformula la tua domanda.
             """
         else:
-            engine_response = self.engine.query(query_str)
-            response_str = self._get_response_str(engine_response)
+            # check if query contains entity that has to be blocked
+            response_str = self.presidio.block_pii(query_str)
+            if response_str == "":
+                engine_response = self.engine.query(query_str)
+                response_str = self._get_response_str(engine_response)
 
         # update messages
         self._update_messages("user", query_str)

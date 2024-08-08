@@ -51,6 +51,31 @@ def get_html_files(root_folder: str) -> List[str]:
     return sorted(filter_html_files(html_files))
 
 
+def check_html(current_table: dict, s3_bucket_name: str) -> None:
+    logging.info("From last documentation update were:")
+    prev_hash_table = load_url_hash_table(s3_bucket_name)
+
+    kept_url = 0
+    added_urls = 0
+    removed_urls = 0
+    for hash, url in current_table.items():
+        if hash not in prev_hash_table.keys():
+            added_urls += 1
+            logging.info(f"Added ==> {url}")
+        else:
+            kept_url += 1
+
+    for hash, url in prev_hash_table.items():
+        if hash not in current_table.keys():
+            removed_urls += 1
+            logging.info(f"Removed ==> {url}")
+
+    logging.info("Resume:")
+    logging.info(f"{kept_url} URLs were kept.")
+    logging.info(f"{added_urls} URLs were added.")
+    logging.info(f"{removed_urls} URLs were removed.")
+    
+
 def create_documentation(
         documentation_dir: str = "./PagoPADevPortal/out/"
     ) -> Tuple[List[Document], dict]:
@@ -63,15 +88,16 @@ def create_documentation(
     html_files = get_html_files(documentation_dir)
     documents = []
     hash_table = {}
-
+    empty_htmls = []
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         soup = BeautifulSoup(open(file), "html.parser")
         soup_text = soup.find(attrs={"id": "page-content"})
         if soup_text:
-            text = soup_text.get_text("/")
+            text = soup_text.get_text(separator="\n")
         else:
             text = ""
+            empty_htmls.append(file)
         
         url = file.replace(
             documentation_dir, 
@@ -99,6 +125,8 @@ def create_documentation(
         ))
 
     assert len(hash_table) == len(documents)
+    logging.info(f"Number of empty htmls: {len(empty_htmls)}")
+    print(empty_htmls)
     
     return documents, hash_table
 
@@ -132,6 +160,7 @@ def build_automerging_index(
     assert documentation_dir is not None
 
     documents, hash_table = create_documentation(documentation_dir)
+    check_html(hash_table, s3_bucket_name)
     
     nodes = node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
