@@ -6,7 +6,9 @@ import {
   IconButton,
   Popover,
   Stack,
+  Theme,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import React from 'react';
@@ -45,9 +47,9 @@ const ChatbotLayout = ({
   return (
     <Box
       sx={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
+        position: { xs: 'relative', md: 'fixed' },
+        bottom: { xs: 0, md: '2rem' },
+        right: { xs: 0, md: '2rem' },
         zIndex: 1000,
       }}
     >
@@ -69,19 +71,30 @@ const ChatbotLayout = ({
           vertical: 'bottom',
           horizontal: 'right',
         }}
+        marginThreshold={0}
         disableScrollLock
         slotProps={{
           paper: {
             sx: {
               backgroundColor: 'transparent',
-              borderRadius: 3,
-              width: '40%',
-              minWidth: '48rem',
+              borderRadius: { xs: 0, md: 3 },
+              width: { xs: '100%', md: '40%' },
+              height: { xs: '100%', md: '40rem' },
+              maxHeight: { xs: '100%', md: '40rem' },
+              margin: 0,
+              maxWidth: { xs: '100%' },
+              minWidth: { xs: 'auto', md: '48rem' },
             },
           },
         }}
       >
-        <Box bgcolor='black' borderRadius={3} minWidth='40rem'>
+        <Stack
+          direction='column'
+          bgcolor={palette.text.primary}
+          borderRadius={{ xs: 0, md: 3 }}
+          minWidth={{ xs: 0, md: '40rem' }}
+          height='100%'
+        >
           <Stack
             direction='row'
             justifyContent='space-between'
@@ -91,6 +104,7 @@ const ChatbotLayout = ({
             <Typography
               variant='h5'
               fontWeight='bold'
+              marginTop={{ xs: '0.5rem', md: 0 }}
               sx={{ color: palette.primary.contrastText }}
             >
               {t('chatBot.title')}
@@ -105,7 +119,7 @@ const ChatbotLayout = ({
             sendDisabled={sendDisabled}
             scrollToBottom
           />
-        </Box>
+        </Stack>
       </Popover>
     </Box>
   );

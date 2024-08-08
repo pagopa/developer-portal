@@ -59,7 +59,7 @@ const Chat = ({
   }, [queries, instantScroll, setInstantScroll]);
 
   return (
-    <Stack direction={'column'}>
+    <>
       <Box
         sx={{
           backgroundColor: 'white',
@@ -77,45 +77,32 @@ const Chat = ({
           </Button>
         </Stack>
       </Box>
-      <Box
+      <Stack
+        direction={'column'}
         sx={{
+          overflow: 'auto',
+          paddingRight: '0.5rem',
+          paddingX: { xs: 1, md: 4 },
           backgroundColor: 'white',
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
+          height: '100%',
         }}
       >
-        <Stack
-          direction={'column'}
-          minHeight='50vh'
-          maxHeight='50vh'
-          justifyContent='space-between'
-        >
+        {messages.map((message, index) => (
           <Stack
-            direction={'column'}
-            sx={{
-              overflow: 'auto',
-              paddingRight: '0.5rem',
-              paddingX: 4,
-            }}
+            key={index}
+            ref={index === messages.length - 1 ? scrollRef : null}
+            direction='row'
+            width='100%'
+            justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
+            marginTop={index === 0 ? 2 : 0}
+            marginBottom={2}
           >
-            {messages.map((message, index) => (
-              <Stack
-                key={index}
-                ref={index === messages.length - 1 ? scrollRef : null}
-                direction={'row'}
-                width={'100%'}
-                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-                marginTop={index === 0 ? 2 : 0}
-                marginBottom={2}
-              >
-                <ChatMessage {...message} />
-              </Stack>
-            ))}
+            <ChatMessage {...message} />
           </Stack>
-          <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
-        </Stack>
-      </Box>
-    </Stack>
+        ))}
+      </Stack>
+      <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
+    </>
   );
 };
 

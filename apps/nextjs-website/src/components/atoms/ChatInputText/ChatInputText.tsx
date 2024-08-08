@@ -96,11 +96,9 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         onClick={submit}
         disabled={!message || sendDisabled}
         sx={{
-          p: '10px',
           color: palette.primary.main,
           cursor: 'pointer',
           marginLeft: 0.5,
-          marginBottom: isDesktop ? 0.85 : 0,
         }}
       >
         <Send sx={{ height: iconButtonSize, width: iconButtonSize }} />
