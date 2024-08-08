@@ -8,6 +8,7 @@ import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -32,7 +33,7 @@ const Home = async () => {
   const homepage = await getHomepageProps();
 
   return (
-    <>
+    <ContentWrapper>
       <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
 
       <HeroSwiper
@@ -58,7 +59,7 @@ const Home = async () => {
         title={homepage.comingsoonDocumentation.title}
         links={[...homepage.comingsoonDocumentation.links]}
       />
-    </>
+    </ContentWrapper>
   );
 };
 
