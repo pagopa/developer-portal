@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
-logging.info(f"os.getenv('CHB_AWS_ACCESS_KEY_ID') -------------->>>> {os.getenv('CHB_AWS_ACCESS_KEY_ID')}")
 chatbot = Chatbot(params, prompts)
 
 class Query(BaseModel):
