@@ -41,10 +41,6 @@ variable "chatbot_lambda_image_container_url" {
   description = "Chatbot Lambda image container URL"
 }
 
-variable "CHB_AWS_S3_BUCKET" {
-  type        = string
-}
-
 variable "CHB_AWS_GUARDRAIL_ID" {
   type        = string
 }
