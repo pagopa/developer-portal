@@ -1,4 +1,4 @@
-import { Box, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '../IconWrapper/IconWrapper';
 

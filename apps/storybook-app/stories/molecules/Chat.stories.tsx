@@ -40,6 +40,7 @@ export const Showcase: StoryObj<typeof Chat> = {
       console.log(query);
       return null;
     },
+    isAwaitingResponse: true,
   },
   decorators: [decorator, nextIntlContextDecorator],
 };

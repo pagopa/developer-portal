@@ -15,13 +15,13 @@ import { Query } from '@/lib/chatbot/queries';
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  sendDisabled?: boolean;
+  isAwaitingResponse: boolean;
 };
 
 const ChatbotLayout = ({
   queries,
   onSendQuery,
-  sendDisabled,
+  isAwaitingResponse,
 }: ChatbotLayoutProps) => {
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -106,7 +106,7 @@ const ChatbotLayout = ({
           <Chat
             queries={queries}
             onSendQuery={onSendQuery}
-            sendDisabled={sendDisabled}
+            isAwaitingResponse={isAwaitingResponse}
             scrollToBottom
           />
         </Box>
