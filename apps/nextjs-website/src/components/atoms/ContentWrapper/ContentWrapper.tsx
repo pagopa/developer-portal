@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 // CHATBOT_CONTENT_ID is used to identify the content of guide pages for the chatbot
-const CHATBOT_CONTENT_ID = 'page-content';
+const CHATBOT_CONTENT_ID = 'chatbot-page-content';
 
 const ContentWrapper = ({
   children,
