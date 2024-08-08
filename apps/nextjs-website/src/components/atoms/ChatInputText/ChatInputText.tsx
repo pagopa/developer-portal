@@ -21,7 +21,6 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const [message, setMessage] = useState('');
   const { palette } = useTheme();
   const disabledColor = alpha(palette.text.primary, 0.3);
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value.slice(0, 800));
@@ -45,7 +44,6 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     }
   };
 
-  const iconButtonSize = isDesktop ? '1.8rem' : '1.65rem';
   return (
     <Box
       component='form'
@@ -69,24 +67,24 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         multiline
         maxRows={8}
         endAdornment={
-          <span
-            style={{
+          <Box
+            sx={{
               color: alpha(palette.text.primary, 0.4),
-              fontSize: isDesktop ? '1rem' : '0.875rem',
+              fontSize: { xs: '0.875rem', md: '1rem' },
               marginLeft: '0.5rem',
             }}
           >
             {message.length}/800
-          </span>
+          </Box>
         }
         sx={{
           alignItems: 'flex-end',
           borderWidth: '2px',
-          padding: isDesktop ? 2 : 1.5,
+          padding: { xs: 1.5, md: 2 },
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: isDesktop ? '1rem' : '0.875rem',
+          fontSize: { xs: '0.875rem', md: '1rem' },
         }}
       />
       <IconButton
@@ -97,10 +95,15 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           p: '10px',
           color: palette.primary.main,
           cursor: 'pointer',
-          marginBottom: isDesktop ? 0.85 : 0,
+          marginBottom: { xs: 0, md: 0.85 },
         }}
       >
-        <Send sx={{ height: iconButtonSize, width: iconButtonSize }} />
+        <Send
+          sx={{
+            height: { xs: '1.65rem', md: '1.8rem' },
+            width: { xs: '1.65rem', md: '1.8rem' },
+          }}
+        />
       </IconButton>
     </Box>
   );
