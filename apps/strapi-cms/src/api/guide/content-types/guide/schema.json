@@ -37,7 +37,7 @@
     "listItems": {
       "displayName": "ListItem",
       "type": "component",
-      "repeatable": false,
+      "repeatable": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
