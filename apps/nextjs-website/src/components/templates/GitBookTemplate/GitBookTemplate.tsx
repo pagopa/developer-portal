@@ -10,9 +10,6 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 
-// CHATBOT_CONTENT_ID is used to identify the content of guide pages for the chatbot
-const CHATBOT_CONTENT_ID = 'page-content';
-
 export type GitBookTemplateProps = {
   menuName: string;
   breadcrumbs: BreadcrumbSegment[];
@@ -73,7 +70,7 @@ const GitBookTemplate = ({
           <Box sx={{ paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
-          <Box id={CHATBOT_CONTENT_ID} sx={{ padding: '32px 40px' }}>
+          <Box sx={{ padding: '32px 40px' }}>
             <GitBookContent content={body} config={bodyConfig} />
           </Box>
         </Stack>
