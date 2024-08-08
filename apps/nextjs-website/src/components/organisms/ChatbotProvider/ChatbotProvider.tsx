@@ -22,7 +22,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
         <ChatbotLayout
           queries={queries}
           onSendQuery={sendQuery}
-          sendDisabled={isAwaitingResponse}
+          isAwaitingResponse={isAwaitingResponse}
         />
       )}
       {children}

@@ -8,19 +8,20 @@ import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
+import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
 
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
   scrollToBottom: boolean;
-  sendDisabled?: boolean;
+  isAwaitingResponse: boolean;
 };
 
 const Chat = ({
   queries,
   onSendQuery,
   scrollToBottom,
-  sendDisabled,
+  isAwaitingResponse,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -100,8 +101,9 @@ const Chat = ({
             <ChatMessage {...message} />
           </Stack>
         ))}
+        {isAwaitingResponse && <ChatCatbotWriting />}
       </Stack>
-      <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
+      <ChatInputText onSubmit={onSendQuery} sendDisabled={isAwaitingResponse} />
     </>
   );
 };
