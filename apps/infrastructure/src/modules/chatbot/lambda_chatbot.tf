@@ -1,8 +1,8 @@
 locals {
   lambda_env_variables = {
-    CHB_AWS_S3_BUCKET=module.s3_bucket_llamaindex.bucket
-    CHB_AWS_GUARDRAIL_ID=var.CHB_AWS_GUARDRAIL_ID
-    CHB_AWS_GUARDRAIL_VERSION=var.CHB_AWS_GUARDRAIL_VERSION
+    CHB_AWS_S3_BUCKET=module.s3_bucket_llamaindex.s3_bucket_id
+    CHB_AWS_GUARDRAIL_ID=awscc_bedrock_guardrail.guardrail.guardrail_id
+    CHB_AWS_GUARDRAIL_VERSION=awscc_bedrock_guardrail_version.guardrail.id
   }
 }
 
