@@ -26,6 +26,9 @@ langchain-aws = "^0.1.9"
 langchainhub = "^0.1.20"
 langchain-core = "^0.2.11"
 s3fs = "^2024.6.1"
+selenium = "^4.23.1"
+llama-index-readers-file = "^0.1.32"
+llama-index-readers-web = "^0.1.23"
 
 
 [build-system]

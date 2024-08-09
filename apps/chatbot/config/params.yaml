@@ -14,7 +14,7 @@ models:
   max_tokens: 784
 
 retriever:
-  similarity_top_k: 7
+  similarity_top_k: 5
   similarity_cutoff: 0.55
   response_mode: compact
   verbose: False
