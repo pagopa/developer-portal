@@ -18,7 +18,7 @@ module "lambda_function" {
   package_type  = "Image"
   architectures = ["x86_64"]
 
-  image_uri = var.chatbot_lambda_image_container_url
+  image_uri = module.ecr.repository_url
 
   timeout = 180
   memory_size = 4092
