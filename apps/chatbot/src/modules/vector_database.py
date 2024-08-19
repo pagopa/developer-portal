@@ -120,6 +120,8 @@ def create_documentation(
     hash_table = {}
     empty_pages = []
 
+    # full_text = ""
+
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         if file in LIVE_HTML:
@@ -137,6 +139,9 @@ def create_documentation(
             empty_pages.append(file)
 
         else:
+
+            text = re.sub(r'(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])', ' ', text)
+
             url = file.replace(
                 documentation_dir, 
                 "https://developer.pagopa.it/"
@@ -159,6 +164,12 @@ def create_documentation(
                     "language": "it"
                 }
             ))
+
+            full_text += text
+            full_text += "\n\n---------------------------\n\n"
+
+    # with open("full_text.txt", "w") as f:
+    #     f.write(full_text)
 
     logging.info(f"Number of documents with content: {len(documents)}")
     logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
