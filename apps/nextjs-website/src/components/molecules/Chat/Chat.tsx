@@ -84,7 +84,7 @@ const Chat = ({
           overflow: 'auto',
           paddingRight: '0.5rem',
           paddingX: { xs: 1, md: 4 },
-          backgroundColor: 'white',
+          backgroundColor: palette.background.paper,
           height: '100%',
         }}
       >

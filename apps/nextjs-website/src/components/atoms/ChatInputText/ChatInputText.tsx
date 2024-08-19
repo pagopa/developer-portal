@@ -10,6 +10,8 @@ import {
 import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 
+const MESSAGE_MAX_CHARS = 800;
+
 type ChatInputTextProps = {
   onSubmit: (message: string) => null;
   sendDisabled?: boolean;
@@ -23,7 +25,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value.slice(0, 800));
+    setMessage(event.target.value.slice(0, MESSAGE_MAX_CHARS));
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -76,7 +78,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
               marginLeft: '0.5rem',
             }}
           >
-            {message.length}/800
+            {`${message.length}/${MESSAGE_MAX_CHARS}}`}
           </Box>
         }
         sx={{
