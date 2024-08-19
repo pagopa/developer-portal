@@ -14,18 +14,13 @@ export const ChatCatbotWriting = () => {
           size={40}
         />
         <Box className={styles.dotContainer} marginLeft={2}>
-          <div
-            className={styles.dot}
-            style={{ backgroundColor: palette.text.primary }}
-          />
-          <div
-            className={styles.dot}
-            style={{ backgroundColor: palette.text.primary }}
-          />
-          <div
-            className={styles.dot}
-            style={{ backgroundColor: palette.text.primary }}
-          />
+          {Array.from({ length: 3 }, (_, index) => (
+            <div
+              key={index}
+              className={styles.dot}
+              style={{ backgroundColor: palette.text.primary }}
+            />
+          ))}
         </Box>
       </Stack>
     </Box>
