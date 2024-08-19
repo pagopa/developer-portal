@@ -10,6 +10,7 @@ import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec, webinarPopulate } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
 import { SolutionBaseAttributesCodec } from './codecs/SolutionCodec';
+import { SEOCodec } from './seo';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -84,6 +85,7 @@ export const StrapiHomepageCodec = t.strict({
         }),
       ]),
       webinars: t.strict({ data: t.array(WebinarCodec) }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   }),
 });
@@ -108,6 +110,94 @@ const makeStrapiHomepagePopulate = () =>
       webinars: webinarPopulate,
       ecosystem: {
         populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
+      },
+      seo: {
+        fields: [
+          'id',
+          'metaTitle',
+          'metaDescription',
+          'keywords',
+          'metaRobots',
+          'metaViewport',
+          'canonicalURL',
+        ],
+        populate: {
+          metaImage: {
+            fields: [
+              'id',
+              'name',
+              'alternativeText',
+              'caption',
+              'width',
+              'height',
+              'hash',
+              'ext',
+              'mime',
+              'size',
+              'url',
+              'previewUrl',
+              'provider',
+              'provider_metadata',
+            ],
+            populate: {
+              formats: {
+                populate: {
+                  thumbnail: {
+                    fields: [
+                      'name',
+                      'hash',
+                      'ext',
+                      'mime',
+                      'width',
+                      'height',
+                      'size',
+                      'path',
+                      'url',
+                    ],
+                  },
+                  small: {
+                    fields: [
+                      'name',
+                      'hash',
+                      'ext',
+                      'mime',
+                      'width',
+                      'height',
+                      'size',
+                      'path',
+                      'url',
+                    ],
+                  },
+                  medium: {
+                    fields: [
+                      'name',
+                      'hash',
+                      'ext',
+                      'mime',
+                      'width',
+                      'height',
+                      'size',
+                      'path',
+                      'url',
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          metaSocial: {
+            fields: [
+              'id',
+              'socialNetwork',
+              'title',
+              'description',
+              'card',
+              'site',
+              'creator',
+            ],
+          },
+          structuredData: { populate: '*' },
+        },
       },
     },
   });
