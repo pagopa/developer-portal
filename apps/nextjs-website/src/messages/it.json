@@ -586,6 +586,7 @@
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
         "history": "Cronologia",
         "chatHistory": "Cronologia chat",
-        "delete": "Elimina"
+        "delete": "Elimina",
+        "feedbackGiven": "Feedback\nregistrato"
     }
 }

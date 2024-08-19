@@ -40,7 +40,7 @@ const ChatbotFeedbackButton = ({
             }}
             open={true}
             placement='bottom'
-            title={t('chatbot.feedbackGiven')}
+            title={t('chatBot.feedbackGiven')}
             arrow
           >
             <Check color='success' fontSize='small' />
