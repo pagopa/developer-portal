@@ -12,6 +12,7 @@ import ProductLayout, {
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('guides')].map((productSlug) => ({
@@ -26,6 +27,7 @@ export type GuidesPageProps = {
     readonly description: string;
   };
   readonly guidesSections?: GuidesSectionProps[];
+  readonly bannerLinks?: readonly BannerLinkProps[];
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
@@ -33,10 +35,10 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const { name, path, abstract } = await getGuideLists(params?.productSlug);
+  const { path, abstract } = await getGuideLists(params?.productSlug);
 
   return makeMetadata({
-    title: name,
+    title: abstract?.title,
     description: abstract?.description,
     url: path,
     parent: resolvedParent,
