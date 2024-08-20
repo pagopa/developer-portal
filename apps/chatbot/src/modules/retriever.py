@@ -19,6 +19,7 @@ def get_automerging_query_engine(
     base_retriever = index.as_retriever(
         similarity_top_k=similarity_top_k
     )
+
     retriever = AutoMergingRetriever(
         base_retriever, 
         index.storage_context, 

@@ -26,6 +26,16 @@ langchain-aws = "^0.1.9"
 langchainhub = "^0.1.20"
 langchain-core = "^0.2.11"
 s3fs = "^2024.6.1"
+llama-index-readers-elasticsearch = "^0.1.4"
+llama-index-vector-stores-opensearch = "^0.1.14"
+opensearch-py = "^2.6.0"
+llama-index-storage-docstore-dynamodb = "^0.1.2"
+llama-index-storage-docstore-elasticsearch = "^0.1.2"
+llama-index-storage-kvstore-elasticsearch = "^0.1.2"
+llama-index-storage-docstore-redis = "^0.1.2"
+llama-index-storage-kvstore-redis = "^0.1.5"
+llama-index-storage-index-store-redis = "^0.2.0"
+llama-index-vector-stores-redis = "^0.2.1"
 
 
 [build-system]

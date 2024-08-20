@@ -20,7 +20,7 @@ from src.modules.retriever import get_automerging_query_engine
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
-AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
+AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET", None)
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
@@ -38,7 +38,7 @@ class Chatbot():
             prompts,
             use_guardrail: bool = True
         ):
-
+        logging.getLogger().setLevel(logging.DEBUG)
         self.params = params
         self.prompts = prompts
         self.use_guardrail = use_guardrail
@@ -160,7 +160,7 @@ class Chatbot():
         
         response_str = typed_response.response.strip()
         nodes = typed_response.source_nodes
-
+        logging.info(f"Response nodes: {nodes}")
         if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
             response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
             Prova a riformulare la domanda.

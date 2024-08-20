@@ -691,6 +691,23 @@ files = [
 ]
 
 [[package]]
+name = "coloredlogs"
+version = "15.0.1"
+description = "Colored terminal output for Python's logging module"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+files = [
+    {file = "coloredlogs-15.0.1-py2.py3-none-any.whl", hash = "sha256:612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934"},
+    {file = "coloredlogs-15.0.1.tar.gz", hash = "sha256:7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"},
+]
+
+[package.dependencies]
+humanfriendly = ">=9.1"
+
+[package.extras]
+cron = ["capturer (>=2.4)"]
+
+[[package]]
 name = "comm"
 version = "0.2.2"
 description = "Jupyter Python Comm implementation, for usage in ipykernel, xeus-python etc."
@@ -913,6 +930,47 @@ trio = ["trio (>=0.23)"]
 wmi = ["wmi (>=1.5.1)"]
 
 [[package]]
+name = "elastic-transport"
+version = "8.15.0"
+description = "Transport classes and utilities shared among Python Elastic client libraries"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "elastic_transport-8.15.0-py3-none-any.whl", hash = "sha256:d7080d1dada2b4eee69e7574f9c17a76b42f2895eff428e562f94b0360e158c0"},
+    {file = "elastic_transport-8.15.0.tar.gz", hash = "sha256:85d62558f9baafb0868c801233a59b235e61d7b4804c28c2fadaa866b6766233"},
+]
+
+[package.dependencies]
+certifi = "*"
+urllib3 = ">=1.26.2,<3"
+
+[package.extras]
+develop = ["aiohttp", "furo", "httpx", "opentelemetry-api", "opentelemetry-sdk", "orjson", "pytest", "pytest-asyncio", "pytest-cov", "pytest-httpserver", "pytest-mock", "requests", "respx", "sphinx (>2)", "sphinx-autodoc-typehints", "trustme"]
+
+[[package]]
+name = "elasticsearch"
+version = "8.15.0"
+description = "Python client for Elasticsearch"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "elasticsearch-8.15.0-py3-none-any.whl", hash = "sha256:7ec4d0771b8f6f76c6331e61b408261f9307264735ec7f2539f580824faaafe3"},
+    {file = "elasticsearch-8.15.0.tar.gz", hash = "sha256:d4702b4fa698ef154c6f1187988192343fb5505aee97fc4450a6d20df1683f35"},
+]
+
+[package.dependencies]
+elastic-transport = ">=8.13,<9"
+
+[package.extras]
+async = ["aiohttp (>=3,<4)"]
+dev = ["aiohttp", "black", "build", "coverage", "isort", "jinja2", "mapbox-vector-tile", "nox", "numpy", "orjson", "pandas", "pyarrow", "pytest", "pytest-asyncio", "pytest-cov", "python-dateutil", "pyyaml (>=5.4)", "requests (>=2,<3)", "simsimd", "twine", "unasync"]
+docs = ["sphinx", "sphinx-autodoc-typehints", "sphinx-rtd-theme"]
+orjson = ["orjson (>=3)"]
+pyarrow = ["pyarrow (>=1)"]
+requests = ["requests (>=2.4.0,!=2.32.2,<3.0.0)"]
+vectorstore-mmr = ["numpy (>=1)", "simsimd (>=3)"]
+
+[[package]]
 name = "email-validator"
 version = "2.2.0"
 description = "A robust email address syntax and deliverability validation library."
@@ -926,6 +984,16 @@ files = [
 [package.dependencies]
 dnspython = ">=2.0.0"
 idna = ">=2.0.0"
+
+[[package]]
+name = "events"
+version = "0.5"
+description = "Bringing the elegance of C# EventHandler to Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Events-0.5-py3-none-any.whl", hash = "sha256:a7286af378ba3e46640ac9825156c93bdba7502174dd696090fdfcd4d80a1abd"},
+]
 
 [[package]]
 name = "executing"
@@ -1496,6 +1564,20 @@ tensorflow-testing = ["keras (<3.0)", "tensorflow"]
 testing = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "fastapi", "gradio", "jedi", "minijinja (>=1.0)", "numpy", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-rerunfailures", "pytest-vcr", "pytest-xdist", "soundfile", "urllib3 (<2.0)"]
 torch = ["safetensors", "torch"]
 typing = ["types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "typing-extensions (>=4.8.0)"]
+
+[[package]]
+name = "humanfriendly"
+version = "10.0"
+description = "Human friendly output for text interfaces using Python"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+files = [
+    {file = "humanfriendly-10.0-py2.py3-none-any.whl", hash = "sha256:1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477"},
+    {file = "humanfriendly-10.0.tar.gz", hash = "sha256:6b0b831ce8f15f7300721aa49829fc4e83921a9a301cc7f606be6686a2288ddc"},
+]
+
+[package.dependencies]
+pyreadline3 = {version = "*", markers = "sys_platform == \"win32\" and python_version >= \"3.8\""}
 
 [[package]]
 name = "idna"
@@ -2371,23 +2453,23 @@ pydantic = ">=1.10"
 
 [[package]]
 name = "llama-index"
-version = "0.10.52"
+version = "0.10.67.post1"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index-0.10.52-py3-none-any.whl", hash = "sha256:f0d08f9961f360cdf08a97e8f662d7c7112c14f9395c992a0028eb900edc57d9"},
-    {file = "llama_index-0.10.52.tar.gz", hash = "sha256:a24984dcf6a5c14f1ddcdf045333115a3f3f8d91f574192399766412cc35cb20"},
+    {file = "llama_index-0.10.67.post1-py3-none-any.whl", hash = "sha256:8d8cc62a8caf40b1ebdfc047bc4aba988379449b5b3613fcf2719a246157256e"},
+    {file = "llama_index-0.10.67.post1.tar.gz", hash = "sha256:283519e069f3e2d9da22421e9afc40292fa7fc8296fd96664af57f955f39a4d6"},
 ]
 
 [package.dependencies]
 llama-index-agent-openai = ">=0.1.4,<0.3.0"
 llama-index-cli = ">=0.1.2,<0.2.0"
-llama-index-core = "0.10.52.post1"
+llama-index-core = ">=0.10.67,<0.11.0"
 llama-index-embeddings-openai = ">=0.1.5,<0.2.0"
 llama-index-indices-managed-llama-cloud = ">=0.2.0"
 llama-index-legacy = ">=0.9.48,<0.10.0"
-llama-index-llms-openai = ">=0.1.13,<0.2.0"
+llama-index-llms-openai = ">=0.1.27,<0.2.0"
 llama-index-multi-modal-llms-openai = ">=0.1.3,<0.2.0"
 llama-index-program-openai = ">=0.1.3,<0.2.0"
 llama-index-question-gen-openai = ">=0.1.2,<0.2.0"
@@ -2428,13 +2510,13 @@ llama-index-llms-openai = ">=0.1.1,<0.2.0"
 
 [[package]]
 name = "llama-index-core"
-version = "0.10.52.post1"
+version = "0.10.67"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index_core-0.10.52.post1-py3-none-any.whl", hash = "sha256:df74890d4df65c5973b58a482487070fea9384cf5c53fcb708b3661bcca9c44c"},
-    {file = "llama_index_core-0.10.52.post1.tar.gz", hash = "sha256:48a2f4891eefed6909cc545784f224df315b1c3e5ca2cb587c4e8325d4a9e5ce"},
+    {file = "llama_index_core-0.10.67-py3-none-any.whl", hash = "sha256:d251523d63f196e6e28bee033f509af0ecd0d9a59631d9e4489dd591b6e2bff7"},
+    {file = "llama_index_core-0.10.67.tar.gz", hash = "sha256:b5afda38916c9091f6742e0f5fd2802b24c3044559bcc500ba50c8264e5eb424"},
 ]
 
 [package.dependencies]
@@ -2444,10 +2526,9 @@ deprecated = ">=1.2.9.3"
 dirtyjson = ">=1.0.8,<2.0.0"
 fsspec = ">=2023.5.0"
 httpx = "*"
-llama-cloud = ">=0.0.6,<0.0.7"
 nest-asyncio = ">=1.5.8,<2.0.0"
 networkx = ">=3.0"
-nltk = ">=3.8.1,<4.0.0"
+nltk = ">=3.8.1,<3.9 || >3.9"
 numpy = "<2.0.0"
 openai = ">=1.1.0"
 pandas = "*"
@@ -2578,17 +2659,17 @@ llama-index-llms-anthropic = ">=0.1.7,<0.2.0"
 
 [[package]]
 name = "llama-index-llms-openai"
-version = "0.1.25"
+version = "0.1.27"
 description = "llama-index llms openai integration"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index_llms_openai-0.1.25-py3-none-any.whl", hash = "sha256:d1922ad2f2bb4697a6ee2f61793aeb2f5c5606302639559dd9bb0a1d6ab9e73f"},
-    {file = "llama_index_llms_openai-0.1.25.tar.gz", hash = "sha256:49750f71d58e762a597ce639a2ccb119195c47aefa8a48c55c77be8a5cec4bc5"},
+    {file = "llama_index_llms_openai-0.1.27-py3-none-any.whl", hash = "sha256:8da0e90d4a558667d2b9cf1b3f577a4cb7723b7680ed6d22027b0baf9cd5999e"},
+    {file = "llama_index_llms_openai-0.1.27.tar.gz", hash = "sha256:37c2d1159b56607d3a807d90260ee25b4f002086d6251c7272afbc53f2514603"},
 ]
 
 [package.dependencies]
-llama-index-core = ">=0.10.24,<0.11.0"
+llama-index-core = ">=0.10.57,<0.11.0"
 
 [[package]]
 name = "llama-index-multi-modal-llms-openai"
@@ -2638,6 +2719,20 @@ llama-index-llms-openai = ">=0.1.1,<0.2.0"
 llama-index-program-openai = ">=0.1.1,<0.2.0"
 
 [[package]]
+name = "llama-index-readers-elasticsearch"
+version = "0.1.4"
+description = "llama-index readers elasticsearch integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_readers_elasticsearch-0.1.4-py3-none-any.whl", hash = "sha256:b60cf5707fbaa54e355f86ea4d0219e64920d82a14f2240f28a0592de447ae32"},
+    {file = "llama_index_readers_elasticsearch-0.1.4.tar.gz", hash = "sha256:b50dc9c0e63772489de0d52399ffec269935e183a5166840b55009698a6e7f0f"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+
+[[package]]
 name = "llama-index-readers-file"
 version = "0.1.27"
 description = "llama-index readers file integration"
@@ -2671,6 +2766,141 @@ files = [
 [package.dependencies]
 llama-index-core = ">=0.10.7,<0.11.0"
 llama-parse = ">=0.4.0"
+
+[[package]]
+name = "llama-index-storage-docstore-dynamodb"
+version = "0.1.2"
+description = "llama-index docstore dynamodb integration"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+files = [
+    {file = "llama_index_storage_docstore_dynamodb-0.1.2-py3-none-any.whl", hash = "sha256:cab283350ccc9bfb5f57b4587d37dd62fde189db57609cbbf9282d987e83b141"},
+    {file = "llama_index_storage_docstore_dynamodb-0.1.2.tar.gz", hash = "sha256:f693c46bf7f141d1eda23e63ec248fddf5bdf8e71f5ab7d8e4fe6a889f2bb656"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+llama-index-storage-kvstore-dynamodb = ">=0.1.1,<0.2.0"
+
+[[package]]
+name = "llama-index-storage-docstore-elasticsearch"
+version = "0.1.2"
+description = "llama-index docstore elasticsearch integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_storage_docstore_elasticsearch-0.1.2-py3-none-any.whl", hash = "sha256:5d4a67f58b76c7d5b91b59a17c4f5f540094a13c4018cdf7bb0c39d89e8c612a"},
+    {file = "llama_index_storage_docstore_elasticsearch-0.1.2.tar.gz", hash = "sha256:c270ff5964259536fb74956209db77a61811c4db3c165af7df6fe22a88150231"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+llama-index-storage-kvstore-elasticsearch = ">=0.1.1,<0.2.0"
+
+[[package]]
+name = "llama-index-storage-docstore-redis"
+version = "0.1.2"
+description = "llama-index docstore redis integration"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+files = [
+    {file = "llama_index_storage_docstore_redis-0.1.2-py3-none-any.whl", hash = "sha256:bdd19fd63d75ecde5ac97a7dbe3c6889b933b816817ca159b35534aeba42a1ef"},
+    {file = "llama_index_storage_docstore_redis-0.1.2.tar.gz", hash = "sha256:1dc6878d0e6a7b88171c6daf80ab73ac3cd819c6c72fdf7f21c88e9b29376241"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+llama-index-storage-kvstore-redis = ">=0.1.1,<0.2.0"
+
+[[package]]
+name = "llama-index-storage-index-store-redis"
+version = "0.2.0"
+description = "llama-index index_store redis integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_storage_index_store_redis-0.2.0-py3-none-any.whl", hash = "sha256:d50df9eaf036047a4371b0b7becd51649f19a308944a867893d0817cf5817d20"},
+    {file = "llama_index_storage_index_store_redis-0.2.0.tar.gz", hash = "sha256:3ea1bff4acaa5c8e8890c67456be2ff5237a0f59300ab0398dc96ff04c57449f"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.61,<0.11.0"
+llama-index-storage-kvstore-redis = ">=0.1.1,<0.2.0"
+
+[[package]]
+name = "llama-index-storage-kvstore-dynamodb"
+version = "0.1.2"
+description = "llama-index kvstore dynamodb integration"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+files = [
+    {file = "llama_index_storage_kvstore_dynamodb-0.1.2-py3-none-any.whl", hash = "sha256:8526123594d8443c6ec6b2b6bc6a25fc041a09daf887d3b49002b6682f284cf7"},
+    {file = "llama_index_storage_kvstore_dynamodb-0.1.2.tar.gz", hash = "sha256:8f961a497d557fb8bb4f824b686767100916519cf6d5e2cc3076d130f3afe3d1"},
+]
+
+[package.dependencies]
+boto3 = ">=1.34.27,<2.0.0"
+llama-index-core = ">=0.10.1,<0.11.0"
+
+[[package]]
+name = "llama-index-storage-kvstore-elasticsearch"
+version = "0.1.2"
+description = "llama-index kvstore elasticsearch integration"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+files = [
+    {file = "llama_index_storage_kvstore_elasticsearch-0.1.2-py3-none-any.whl", hash = "sha256:7c43491b1fbf26234531cecbbf178215a6762782430f7e97db58fb4522b281ff"},
+    {file = "llama_index_storage_kvstore_elasticsearch-0.1.2.tar.gz", hash = "sha256:0f686cd4a21bd9f756be8bf73d46dc3be8d96dc322d4c3fb5a10011af88f6263"},
+]
+
+[package.dependencies]
+elasticsearch = ">=8.12.1,<9.0.0"
+llama-index-core = ">=0.10.1,<0.11.0"
+
+[[package]]
+name = "llama-index-storage-kvstore-redis"
+version = "0.1.5"
+description = "llama-index kvstore redis integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_storage_kvstore_redis-0.1.5-py3-none-any.whl", hash = "sha256:9a27643da4dfaa7cbcfe7d10799afd9e41f4576bc0f3228d279d2e04b76ef5f9"},
+    {file = "llama_index_storage_kvstore_redis-0.1.5.tar.gz", hash = "sha256:697c4ae00d481ec04764748b48b871f70653b29c9c14a818028f3c92d75583f4"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+redis = ">=5.0.1,<6.0.0"
+
+[[package]]
+name = "llama-index-vector-stores-opensearch"
+version = "0.1.14"
+description = "llama-index vector_stores opensearch integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_vector_stores_opensearch-0.1.14-py3-none-any.whl", hash = "sha256:ff4e9fb7155e556f4ba563808d17b53ad939e9ba0a5d6203619ac6f59ec26287"},
+    {file = "llama_index_vector_stores_opensearch-0.1.14.tar.gz", hash = "sha256:d2af4d4445c648724558b9b2c3a492976e30e93c43c22cad509938bc302531f4"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+opensearch-py = {version = ">=2.4.2,<3.0.0", extras = ["async"]}
+
+[[package]]
+name = "llama-index-vector-stores-redis"
+version = "0.2.1"
+description = "llama-index vector_stores redis integration"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "llama_index_vector_stores_redis-0.2.1-py3-none-any.whl", hash = "sha256:544a471572b956c469cbdb658b6340a21e6eb2fb4b553bf0d8682eaa6c37ec1a"},
+    {file = "llama_index_vector_stores_redis-0.2.1.tar.gz", hash = "sha256:6a08d6f01550bc7365a4e47cdc9d8e3d652efe55a3163a3adb8b14474e2188e8"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.10.1,<0.11.0"
+redisvl = ">=0.1.3,<0.2.0"
 
 [[package]]
 name = "llama-parse"
@@ -2810,29 +3040,24 @@ files = [
     {file = "matplotlib-3.9.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:dd2a59ff4b83d33bca3b5ec58203cc65985367812cb8c257f3e101632be86d92"},
     {file = "matplotlib-3.9.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0fc001516ffcf1a221beb51198b194d9230199d6842c540108e4ce109ac05cc0"},
     {file = "matplotlib-3.9.1-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:83c6a792f1465d174c86d06f3ae85a8fe36e6f5964633ae8106312ec0921fdf5"},
-    {file = "matplotlib-3.9.1-cp310-cp310-win_amd64.whl", hash = "sha256:421851f4f57350bcf0811edd754a708d2275533e84f52f6760b740766c6747a7"},
     {file = "matplotlib-3.9.1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:b3fce58971b465e01b5c538f9d44915640c20ec5ff31346e963c9e1cd66fa812"},
     {file = "matplotlib-3.9.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a973c53ad0668c53e0ed76b27d2eeeae8799836fd0d0caaa4ecc66bf4e6676c0"},
     {file = "matplotlib-3.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:82cd5acf8f3ef43f7532c2f230249720f5dc5dd40ecafaf1c60ac8200d46d7eb"},
     {file = "matplotlib-3.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ab38a4f3772523179b2f772103d8030215b318fef6360cb40558f585bf3d017f"},
     {file = "matplotlib-3.9.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:2315837485ca6188a4b632c5199900e28d33b481eb083663f6a44cfc8987ded3"},
-    {file = "matplotlib-3.9.1-cp311-cp311-win_amd64.whl", hash = "sha256:a0c977c5c382f6696caf0bd277ef4f936da7e2aa202ff66cad5f0ac1428ee15b"},
     {file = "matplotlib-3.9.1-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:565d572efea2b94f264dd86ef27919515aa6d629252a169b42ce5f570db7f37b"},
     {file = "matplotlib-3.9.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:6d397fd8ccc64af2ec0af1f0efc3bacd745ebfb9d507f3f552e8adb689ed730a"},
     {file = "matplotlib-3.9.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:26040c8f5121cd1ad712abffcd4b5222a8aec3a0fe40bc8542c94331deb8780d"},
     {file = "matplotlib-3.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d12cb1837cffaac087ad6b44399d5e22b78c729de3cdae4629e252067b705e2b"},
     {file = "matplotlib-3.9.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:0e835c6988edc3d2d08794f73c323cc62483e13df0194719ecb0723b564e0b5c"},
-    {file = "matplotlib-3.9.1-cp312-cp312-win_amd64.whl", hash = "sha256:44a21d922f78ce40435cb35b43dd7d573cf2a30138d5c4b709d19f00e3907fd7"},
     {file = "matplotlib-3.9.1-cp39-cp39-macosx_10_12_x86_64.whl", hash = "sha256:0c584210c755ae921283d21d01f03a49ef46d1afa184134dd0f95b0202ee6f03"},
     {file = "matplotlib-3.9.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:11fed08f34fa682c2b792942f8902e7aefeed400da71f9e5816bea40a7ce28fe"},
     {file = "matplotlib-3.9.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0000354e32efcfd86bda75729716b92f5c2edd5b947200be9881f0a671565c33"},
     {file = "matplotlib-3.9.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4db17fea0ae3aceb8e9ac69c7e3051bae0b3d083bfec932240f9bf5d0197a049"},
     {file = "matplotlib-3.9.1-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:208cbce658b72bf6a8e675058fbbf59f67814057ae78165d8a2f87c45b48d0ff"},
-    {file = "matplotlib-3.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:dc23f48ab630474264276be156d0d7710ac6c5a09648ccdf49fef9200d8cbe80"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-macosx_10_15_x86_64.whl", hash = "sha256:3fda72d4d472e2ccd1be0e9ccb6bf0d2eaf635e7f8f51d737ed7e465ac020cb3"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-macosx_11_0_arm64.whl", hash = "sha256:84b3ba8429935a444f1fdc80ed930babbe06725bcf09fbeb5c8757a2cd74af04"},
     {file = "matplotlib-3.9.1-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b918770bf3e07845408716e5bbda17eadfc3fcbd9307dc67f37d6cf834bb3d98"},
-    {file = "matplotlib-3.9.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:f1f2e5d29e9435c97ad4c36fb6668e89aee13d48c75893e25cef064675038ac9"},
     {file = "matplotlib-3.9.1.tar.gz", hash = "sha256:de06b19b8db95dd33d0dc17c926c7c9ebed9f572074b6fac4f65068a6814d010"},
 ]
 
@@ -3239,6 +3464,32 @@ typing-extensions = ">=4.7,<5"
 datalib = ["numpy (>=1)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1.0.11)"]
 
 [[package]]
+name = "opensearch-py"
+version = "2.6.0"
+description = "Python client for OpenSearch"
+optional = false
+python-versions = "<4,>=3.8"
+files = [
+    {file = "opensearch_py-2.6.0-py2.py3-none-any.whl", hash = "sha256:b6e78b685dd4e9c016d7a4299cf1de69e299c88322e3f81c716e6e23fe5683c1"},
+    {file = "opensearch_py-2.6.0.tar.gz", hash = "sha256:0b7c27e8ed84c03c99558406927b6161f186a72502ca6d0325413d8e5523ba96"},
+]
+
+[package.dependencies]
+aiohttp = {version = ">=3.9.4,<4", optional = true, markers = "extra == \"async\""}
+certifi = ">=2022.12.07"
+Events = "*"
+python-dateutil = "*"
+requests = ">=2.4.0,<3.0.0"
+six = "*"
+urllib3 = {version = ">=1.26.18,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
+
+[package.extras]
+async = ["aiohttp (>=3.9.4,<4)"]
+develop = ["black (>=24.3.0)", "botocore", "coverage (<8.0.0)", "jinja2", "mock", "myst-parser", "pytest (>=3.0.0)", "pytest-cov", "pytest-mock (<4.0.0)", "pytz", "pyyaml", "requests (>=2.0.0,<3.0.0)", "sphinx", "sphinx-copybutton", "sphinx-rtd-theme"]
+docs = ["aiohttp (>=3.9.4,<4)", "myst-parser", "sphinx", "sphinx-copybutton", "sphinx-rtd-theme"]
+kerberos = ["requests-kerberos"]
+
+[[package]]
 name = "orjson"
 version = "3.10.6"
 description = "Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy"
@@ -3275,6 +3526,8 @@ files = [
     {file = "orjson-3.10.6-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:960db0e31c4e52fa0fc3ecbaea5b2d3b58f379e32a95ae6b0ebeaa25b93dfd34"},
     {file = "orjson-3.10.6-cp312-none-win32.whl", hash = "sha256:a6ea7afb5b30b2317e0bee03c8d34c8181bc5a36f2afd4d0952f378972c4efd5"},
     {file = "orjson-3.10.6-cp312-none-win_amd64.whl", hash = "sha256:874ce88264b7e655dde4aeaacdc8fd772a7962faadfb41abe63e2a4861abc3dc"},
+    {file = "orjson-3.10.6-cp313-none-win32.whl", hash = "sha256:efdf2c5cde290ae6b83095f03119bdc00303d7a03b42b16c54517baa3c4ca3d0"},
+    {file = "orjson-3.10.6-cp313-none-win_amd64.whl", hash = "sha256:8e190fe7888e2e4392f52cafb9626113ba135ef53aacc65cd13109eb9746c43e"},
     {file = "orjson-3.10.6-cp38-cp38-macosx_10_15_x86_64.macosx_11_0_arm64.macosx_10_15_universal2.whl", hash = "sha256:66680eae4c4e7fc193d91cfc1353ad6d01b4801ae9b5314f17e11ba55e934183"},
     {file = "orjson-3.10.6-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:caff75b425db5ef8e8f23af93c80f072f97b4fb3afd4af44482905c9f588da28"},
     {file = "orjson-3.10.6-cp38-cp38-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:3722fddb821b6036fd2a3c814f6bd9b57a89dc6337b9924ecd614ebce3271394"},
@@ -3816,6 +4069,17 @@ full = ["Pillow (>=8.0.0)", "PyCryptodome", "cryptography"]
 image = ["Pillow (>=8.0.0)"]
 
 [[package]]
+name = "pyreadline3"
+version = "3.4.1"
+description = "A python implementation of GNU readline."
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyreadline3-3.4.1-py3-none-any.whl", hash = "sha256:b0efb6516fd4fb07b45949053826a62fa4cb353db5be2bbb4a7aa1fdd1e345fb"},
+    {file = "pyreadline3-3.4.1.tar.gz", hash = "sha256:6f3d1f7b8a31ba32b73917cefc1f28cc660562f39aea8646d30bd6eff21f7bae"},
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -4118,6 +4382,45 @@ packaging = "*"
 
 [package.extras]
 test = ["pytest (>=6,!=7.0.0,!=7.0.1)", "pytest-cov (>=3.0.0)", "pytest-qt"]
+
+[[package]]
+name = "redis"
+version = "5.0.8"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "redis-5.0.8-py3-none-any.whl", hash = "sha256:56134ee08ea909106090934adc36f65c9bcbbaecea5b21ba704ba6fb561f8eb4"},
+    {file = "redis-5.0.8.tar.gz", hash = "sha256:0c5b10d387568dfe0698c6fad6615750c24170e548ca2deac10c649d463e9870"},
+]
+
+[package.extras]
+hiredis = ["hiredis (>1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
+name = "redisvl"
+version = "0.1.3"
+description = "Python client library and CLI for using Redis as a vector database"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "redisvl-0.1.3-py3-none-any.whl", hash = "sha256:595cb03636dea35649d03500a18480fcca5e59c399f060fee82639005719e257"},
+    {file = "redisvl-0.1.3.tar.gz", hash = "sha256:be162648ada58a4a86df8ce2add6b07489b2dfbc093ea936aeb4652292f0d46f"},
+]
+
+[package.dependencies]
+coloredlogs = "*"
+numpy = "*"
+pydantic = ">=2,<3"
+pyyaml = "*"
+redis = ">=5.0.0"
+tabulate = ">=0.9.0,<1"
+tenacity = ">=8.2.2"
+
+[package.extras]
+all = ["cohere (>=4.44)", "google-cloud-aiplatform (>=1.26)", "openai (>=1.13.0)", "sentence-transformers (>=2.2.2)"]
+dev = ["black (>=20.8b1)", "isort (>=5.6.4)", "mypy", "pylint (>=2.6.0)", "pytest (>=6.0.0)", "pytest-asyncio", "pytest-cov (>=2.10.1)", "treon", "types-pyyaml", "types-redis", "types-tabulate"]
 
 [[package]]
 name = "referencing"
@@ -4681,6 +4984,20 @@ files = [
     {file = "striprtf-0.0.26-py3-none-any.whl", hash = "sha256:8c8f9d32083cdc2e8bfb149455aa1cc5a4e0a035893bedc75db8b73becb3a1bb"},
     {file = "striprtf-0.0.26.tar.gz", hash = "sha256:fdb2bba7ac440072d1c41eab50d8d74ae88f60a8b6575c6e2c7805dc462093aa"},
 ]
+
+[[package]]
+name = "tabulate"
+version = "0.9.0"
+description = "Pretty-print tabular data"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tabulate-0.9.0-py3-none-any.whl", hash = "sha256:024ca478df22e9340661486f85298cff5f6dcdba14f3813e8830015b9ed1948f"},
+    {file = "tabulate-0.9.0.tar.gz", hash = "sha256:0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"},
+]
+
+[package.extras]
+widechars = ["wcwidth"]
 
 [[package]]
 name = "tenacity"
@@ -5674,4 +5991,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "f442c9a698233a736ae575ece4824edb0f21e0d2ee9e75b9a825a845fefb7336"
+content-hash = "606d3cf74dfc46e994a564c0520c173ddb7c6a5810b1c61e8f102174e0ef9215"
