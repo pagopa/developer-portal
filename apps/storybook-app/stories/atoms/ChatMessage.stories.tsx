@@ -10,16 +10,17 @@ const meta: Meta<typeof ChatMessage> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ backgroundColor: '#D9D9D9', padding: '2rem' }}>{story()}</div>
+  <div style={{ backgroundColor: '#FFFFFF', padding: '2rem' }}>{story()}</div>
 );
 
 export default meta;
 
 export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    text: mockText(12),
+    text: mockText(40),
     isQuestion: false,
     timestamp: '2024-07-24T17:14:07.129Z',
+    dateHeader: 'Oggi',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
@@ -29,6 +30,7 @@ export const UserMessage: StoryObj<typeof ChatMessage> = {
     text: mockText(23),
     isQuestion: true,
     timestamp: '2024-07-24T17:14:08.129Z',
+    dateHeader: 'Oggi',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
