@@ -196,10 +196,3 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
 };
 
 export const products = [appIo, ioSign, send, pagoPa];
-
-export const productsBannerLinks = [
-  appIoBannerLinks,
-  ioSignBannerLinks,
-  sendBannerLinks,
-  pagoPaBannerLinks,
-];
