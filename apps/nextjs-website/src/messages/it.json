@@ -564,6 +564,12 @@
             "message": "Non ci sono operazioni disponibili per questo endpoint."
         }
     },
+    "guideListPage": {
+        "cardSection": {
+            "listItemsTitle": "Argomenti trattati",
+            "linkLabel": "Vai alla guida"
+        }
+    },
     "breadcrumbs": {
         "home": "DevPortal",
         "webinars": "Webinar",
