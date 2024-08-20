@@ -6,9 +6,7 @@ import {
   IconButton,
   Popover,
   Stack,
-  Theme,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import React from 'react';
@@ -81,7 +79,7 @@ const ChatbotLayout = ({
               backgroundColor: 'transparent',
               borderRadius: { xs: 0, md: 3 },
               width: { xs: '100%', md: '40%' },
-              height: { xs: '100%', md: '40rem' },
+              height: { xs: '100%', md: '70vh' },
               maxHeight: { xs: '100%', md: '40rem' },
               margin: 0,
               maxWidth: { xs: '100%' },
