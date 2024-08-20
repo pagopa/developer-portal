@@ -35,6 +35,7 @@ const Chat = ({
         queries.flatMap((q) => [
           q.question && q.queriedAt
             ? {
+                id: q.id,
                 text: q.question,
                 isQuestion: true,
                 timestamp: q.queriedAt,
@@ -43,6 +44,7 @@ const Chat = ({
             : null,
           q.answer && q.createdAt
             ? {
+                id: q.id,
                 text: q.answer,
                 isQuestion: false,
                 timestamp: q.createdAt,
@@ -52,7 +54,7 @@ const Chat = ({
         ])
       ),
     ],
-    [queries]
+    [queries, t]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -107,11 +109,11 @@ const Chat = ({
             <ChatMessage
               {...message}
               onToggleNegativeFeedback={(negativeFeedback) => {
-                if (!message.timestamp) {
+                if (!message.id) {
                   return null;
                 }
 
-                return onSendFeedback(message.timestamp, negativeFeedback);
+                return onSendFeedback(message.id, negativeFeedback);
               }}
             />
           </Stack>
@@ -127,6 +129,7 @@ export default Chat;
 
 function firstMessage(text: string): Message {
   return {
+    id: '',
     text: text,
     isQuestion: false,
     hasNegativeFeedback: false,

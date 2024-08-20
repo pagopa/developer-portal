@@ -135,7 +135,7 @@ export const getCurrentSession = () =>
     )
   );
 
-export const patchFeedback = (feedback: boolean, createdAt: string) =>
+export const patchFeedback = (feedback: boolean, queryId: string) =>
   pipe(
     R.ask<ChatbotEnv>(),
     R.map(({ config: { CHATBOT_HOST: chatbotHost }, getAuthToken, fetch }) =>
@@ -144,7 +144,7 @@ export const patchFeedback = (feedback: boolean, createdAt: string) =>
         TE.tryCatch(() => getAuthToken(), E.toError),
         TE.chainTaskK(
           (authToken) => () =>
-            fetch(`${chatbotHost}/queries/${createdAt}`, {
+            fetch(`${chatbotHost}/queries/${queryId}`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',

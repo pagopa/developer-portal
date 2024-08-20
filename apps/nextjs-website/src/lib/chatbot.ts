@@ -20,7 +20,5 @@ export const sendChatbotQuery = (query: QueryInput) =>
 export const getChatbotQueries = (sessionId: string) =>
   getQueries(sessionId)(chatbotApiEnv);
 
-export const sendChatobotFeedback = (
-  feedback: boolean,
-  queryCreatedAt: string
-) => patchFeedback(feedback, queryCreatedAt)(chatbotApiEnv);
+export const sendChatobotFeedback = (feedback: boolean, queryId: string) =>
+  patchFeedback(feedback, queryId)(chatbotApiEnv);

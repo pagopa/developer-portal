@@ -17,6 +17,7 @@ const DEFAULT_DATE_FORMAT = {
 } satisfies DateFormatOptions;
 
 export type Message = {
+  id: string;
   text: string;
   isQuestion: boolean;
   timestamp?: string;

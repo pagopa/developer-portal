@@ -34,6 +34,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     setQueries([
       ...queries,
       {
+        id: '',
         sessionId: '',
         question: queryMessage,
         queriedAt: queriedAt,
@@ -53,10 +54,10 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
-  const sendFeedback = (createdAt: string, hasNegativeFeedback: boolean) => {
-    sendChatobotFeedback(hasNegativeFeedback, createdAt);
+  const sendFeedback = (queryId: string, hasNegativeFeedback: boolean) => {
+    sendChatobotFeedback(hasNegativeFeedback, queryId);
     const updatedQueries = queries.map((query) => {
-      if (query.createdAt === createdAt) {
+      if (query.id === queryId) {
         return {
           ...query,
           badAnswer: hasNegativeFeedback,

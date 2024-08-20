@@ -1,6 +1,7 @@
 import * as t from 'io-ts/lib';
 
 export const QueryCodec = t.strict({
+  id: t.string,
   sessionId: t.string,
   question: t.string,
   queriedAt: t.string,
@@ -23,6 +24,7 @@ export type QueryInput = Pick<
 export type Answer = Pick<RemoteQuery, 'answer' | 'createdAt'>;
 
 export type Query = {
+  readonly id: string;
   readonly sessionId: string;
   readonly question: string;
   readonly queriedAt: string;
