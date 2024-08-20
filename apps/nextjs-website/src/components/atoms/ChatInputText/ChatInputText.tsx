@@ -39,7 +39,6 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   };
 
   const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
-    console.log(event.key);
     if (event.key === 'Enter') {
       event.preventDefault();
       submit();

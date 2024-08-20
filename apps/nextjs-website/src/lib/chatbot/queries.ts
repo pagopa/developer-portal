@@ -5,7 +5,7 @@ export const QueryCodec = t.strict({
   sessionId: t.string,
   question: t.string,
   queriedAt: t.string,
-  badAnswer: t.boolean,
+  badAnswer: t.union([t.boolean, t.null, t.undefined]),
   answer: t.string,
   createdAt: t.string,
 });
