@@ -39,7 +39,7 @@ const Chat = ({
                 text: q.question,
                 isQuestion: true,
                 timestamp: q.queriedAt,
-                hasNegativeFeedback: q.badAnswer,
+                hasNegativeFeedback: false,
               }
             : null,
           q.answer && q.createdAt
@@ -48,7 +48,7 @@ const Chat = ({
                 text: q.answer,
                 isQuestion: false,
                 timestamp: q.createdAt,
-                hasNegativeFeedback: false,
+                hasNegativeFeedback: q.badAnswer || false,
               }
             : null,
         ])
@@ -109,9 +109,9 @@ const Chat = ({
             <ChatMessage
               {...message}
               onToggleNegativeFeedback={(negativeFeedback) => {
-                if (!message.id) {
-                  return null;
-                }
+                // if (!message.id) {
+                //   return null;
+                // }
 
                 return onSendFeedback(message.id, negativeFeedback);
               }}
