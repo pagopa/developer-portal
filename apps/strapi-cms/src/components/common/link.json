@@ -1,8 +1,9 @@
 {
   "collectionName": "components_common_links",
   "info": {
-    "displayName": "Links",
-    "icon": "link"
+    "displayName": "Link",
+    "icon": "link",
+    "description": ""
   },
   "options": {},
   "attributes": {
