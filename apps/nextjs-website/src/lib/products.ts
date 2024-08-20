@@ -1,21 +1,32 @@
-import { Products } from './strapi/codecs/ProductCodec';
+import {
+  Products,
+  Product as ApiProduct,
+  BaseProduct,
+} from './strapi/codecs/ProductCodec';
 import { Product } from './types/product';
 
-export function makeProductProps(
-  product: Products,
+export function makeProductFromAttributes(
+  attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes'],
+  staticProducts: ReadonlyArray<Product>
+): Product {
+  const staticProduct =
+    staticProducts.find((product) => product.slug === attributes.slug) ||
+    staticProducts[0];
+  return {
+    ...staticProduct,
+    ...attributes,
+    logo: attributes.logo?.data.attributes || staticProduct.logo,
+  };
+}
+
+export function makeProductsProps(
+  products: Products,
   staticProducts: ReadonlyArray<Product>
 ): ReadonlyArray<Product> {
   return [
     ...staticProducts,
-    ...product.data.map(({ attributes }) => {
-      const staticProduct =
-        staticProducts.find((product) => product.slug === attributes.slug) ||
-        staticProducts[0];
-      return {
-        ...staticProduct,
-        ...attributes,
-        logo: attributes.logo.data.attributes,
-      };
+    ...products.data.map(({ attributes }) => {
+      return makeProductFromAttributes(attributes, staticProducts);
     }),
   ];
 }
