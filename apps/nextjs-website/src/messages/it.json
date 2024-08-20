@@ -587,6 +587,7 @@
         "history": "Cronologia",
         "chatHistory": "Cronologia chat",
         "delete": "Elimina",
-        "feedbackGiven": "Feedback\nregistrato"
+        "feedbackGiven": "Feedback\nregistrato",
+        "welcomeMessage": "**Ciao, sono il chatbot di DevPortal!**\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](#)."
     }
 }

@@ -13,6 +13,7 @@ import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatCha
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
 };
@@ -20,6 +21,7 @@ type ChatProps = {
 const Chat = ({
   queries,
   onSendQuery,
+  onSendFeedback,
   scrollToBottom,
   isAwaitingResponse,
 }: ChatProps) => {
@@ -27,14 +29,16 @@ const Chat = ({
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const messages = useMemo(
-    () =>
-      compact(
+    () => [
+      firstMessage(t('chatBot.welcomeMessage')),
+      ...compact(
         queries.flatMap((q) => [
           q.question && q.queriedAt
             ? {
                 text: q.question,
                 isQuestion: true,
                 timestamp: q.queriedAt,
+                hasNegativeFeedback: q.badAnswer,
               }
             : null,
           q.answer && q.createdAt
@@ -42,10 +46,12 @@ const Chat = ({
                 text: q.answer,
                 isQuestion: false,
                 timestamp: q.createdAt,
+                hasNegativeFeedback: false,
               }
             : null,
         ])
       ),
+    ],
     [queries]
   ) satisfies Message[];
 
@@ -98,7 +104,16 @@ const Chat = ({
             marginTop={index === 0 ? 2 : 0}
             marginBottom={2}
           >
-            <ChatMessage {...message} />
+            <ChatMessage
+              {...message}
+              onToggleNegativeFeedback={(negativeFeedback) => {
+                if (!message.timestamp) {
+                  return null;
+                }
+
+                return onSendFeedback(message.timestamp, negativeFeedback);
+              }}
+            />
           </Stack>
         ))}
         {isAwaitingResponse && <ChatCatbotWriting />}
@@ -109,3 +124,11 @@ const Chat = ({
 };
 
 export default Chat;
+
+function firstMessage(text: string): Message {
+  return {
+    text: text,
+    isQuestion: false,
+    hasNegativeFeedback: false,
+  };
+}

@@ -4,6 +4,7 @@ export const QueryCodec = t.strict({
   sessionId: t.string,
   question: t.string,
   queriedAt: t.string,
+  badAnswer: t.boolean,
   answer: t.string,
   createdAt: t.string,
 });
@@ -25,6 +26,7 @@ export type Query = {
   readonly sessionId: string;
   readonly question: string;
   readonly queriedAt: string;
+  readonly badAnswer: boolean;
   readonly answer: string | null;
   readonly createdAt: string | null;
 };

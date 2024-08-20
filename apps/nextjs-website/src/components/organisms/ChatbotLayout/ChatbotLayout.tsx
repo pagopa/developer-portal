@@ -16,12 +16,14 @@ import { useTranslations } from 'next-intl';
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   isAwaitingResponse: boolean;
 };
 
 const ChatbotLayout = ({
   queries,
   onSendQuery,
+  onSendFeedback,
   isAwaitingResponse,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
@@ -114,6 +116,7 @@ const ChatbotLayout = ({
           <Chat
             queries={queries}
             onSendQuery={onSendQuery}
+            onSendFeedback={onSendFeedback}
             isAwaitingResponse={isAwaitingResponse}
             scrollToBottom
           />

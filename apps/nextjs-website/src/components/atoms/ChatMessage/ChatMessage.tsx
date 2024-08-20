@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
-import IconWrapper from '../IconWrapper/IconWrapper';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/ChatbotFeedbackButton';
 
 type DateFormatOptions = {
   locale?: string;
@@ -18,26 +19,34 @@ const DEFAULT_DATE_FORMAT = {
 export type Message = {
   text: string;
   isQuestion: boolean;
-  timestamp: string;
+  timestamp?: string;
   dateHeader?: string;
+  hasNegativeFeedback: boolean;
 };
 
-type ChatMessageProps = Message;
+type ChatMessageProps = Message & {
+  onToggleNegativeFeedback: (negativeFeedback: boolean) => null;
+};
 
 const ChatMessage = ({
   text,
   isQuestion,
   timestamp,
   dateHeader,
+  hasNegativeFeedback,
+  onToggleNegativeFeedback,
 }: ChatMessageProps) => {
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
+  const isWelcomeMessage = !timestamp;
 
-  const timeLabel = new Intl.DateTimeFormat(
-    DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
-  ).format(new Date(timestamp));
+  const timeLabel =
+    timestamp &&
+    new Intl.DateTimeFormat(
+      DEFAULT_DATE_FORMAT.locale,
+      DEFAULT_DATE_FORMAT.options
+    ).format(new Date(timestamp));
 
   return (
     <Stack direction='column' width='100%' alignItems='flex-end'>
@@ -101,14 +110,36 @@ const ChatMessage = ({
             >
               {text}
             </Typography>
-            <Typography
-              color={textColor}
-              component={'span'}
-              marginLeft={1}
-              fontSize={'0.625rem'}
-            >
-              {timeLabel}
-            </Typography>
+            {!isQuestion && !isWelcomeMessage && (
+              <Box
+                width='100%'
+                height='1px'
+                bgcolor={palette.action.disabled}
+              />
+            )}
+            {!isWelcomeMessage && (
+              <Stack
+                direction='row'
+                alignItems='flex-end'
+                justifyContent={isQuestion ? 'flex-end' : 'space-between'}
+                width='100%'
+              >
+                {!isQuestion && (
+                  <ChatbotFeedbackButton
+                    isNegativeFeedbackGiven={hasNegativeFeedback}
+                    onToggleNegativeFeedback={onToggleNegativeFeedback}
+                  />
+                )}
+                <Typography
+                  color={textColor}
+                  component={'span'}
+                  marginLeft={1}
+                  fontSize={'0.625rem'}
+                >
+                  {timeLabel}
+                </Typography>
+              </Stack>
+            )}
           </Stack>
         </Stack>
       </Box>

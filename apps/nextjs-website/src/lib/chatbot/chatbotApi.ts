@@ -134,3 +134,44 @@ export const getCurrentSession = () =>
       )()
     )
   );
+
+export const patchFeedback = (feedback: boolean, createdAt: string) =>
+  pipe(
+    R.ask<ChatbotEnv>(),
+    R.map(({ config: { CHATBOT_HOST: chatbotHost }, getAuthToken, fetch }) =>
+      pipe(
+        // handle any promise result
+        TE.tryCatch(() => getAuthToken(), E.toError),
+        TE.chainTaskK(
+          (authToken) => () =>
+            fetch(`${chatbotHost}/queries/${createdAt}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify({ badAnswer: feedback }),
+            })
+        ),
+        TE.chain((response) => {
+          if (response.status === 200) {
+            return TE.tryCatch(() => response.json(), E.toError);
+          } else {
+            return TE.left(makeError(response));
+          }
+        }),
+        TE.chainEitherK((json) =>
+          // decode the response with the given codec
+          pipe(
+            QueryCodec.decode(json),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
+          )
+        ),
+        TE.fold(
+          // eslint-disable-next-line functional/no-promise-reject
+          (errors) => () => Promise.reject(errors),
+          (result) => () => Promise.resolve(result)
+        )
+      )()
+    )
+  );
