@@ -131,7 +131,7 @@ const ChatMessage = ({
                 {!isQuestion && (
                   <div>
                     <CopyToClipboard
-                      copiedTooltipLabel={t('shared.copied')}
+                      copiedTooltipLabel={t('chatBot.copied')}
                       textToCopy={text}
                       copyColor={palette.primary.main}
                       iconSize='20px'
