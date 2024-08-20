@@ -4,6 +4,7 @@ import { products, quickStartGuides } from '@/_contents/products';
 import { Part } from './types/part';
 import { Step } from './types/step';
 import { partFromStrapiPart } from './strapi/codecs/PartCodec';
+import { makeProductFromAttributes } from './products';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -27,22 +28,25 @@ export function makeQuickStartsProps(
   staticQuickStarts: StaticQuickStarts
 ): QuickStartGuidesPageProps {
   return [
-    ...strapiQuickStarts.data.map((quickStart) => ({
-      abstract: {
-        title: quickStart.attributes.title,
-        description: quickStart.attributes.description,
-      },
-      defaultStepAnchor:
-        quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
-      product:
-        products.find(
-          (product) =>
-            product.slug === quickStart.attributes.product.data.attributes.slug
-        ) || products[0],
-      steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
-        stepFromQuickstartGuideItems(item)
-      ),
-    })),
+    ...strapiQuickStarts.data.map((quickStart) => {
+      const product = makeProductFromAttributes(
+        quickStart.attributes.product.data.attributes,
+        products
+      );
+      return {
+        abstract: {
+          title: quickStart.attributes.title,
+          description: quickStart.attributes.description,
+        },
+        defaultStepAnchor:
+          quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
+        product: product,
+        steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
+          stepFromQuickstartGuideItems(item)
+        ),
+        path: `/${product.slug}/quick-start`,
+      };
+    }),
     ...staticQuickStarts,
   ];
 }
