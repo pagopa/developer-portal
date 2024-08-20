@@ -21,8 +21,8 @@ const ChatButton = ({ isChatOpen, onOpenChat }: ChatButtonProps) => {
           borderStyle: 'solid',
           borderColor: palette.text.primary,
           borderWidth: 3,
-          backgroundColor: 'white !important',
-          paddingTop: 0.5,
+          backgroundColor: palette.background.paper,
+          paddingTop: '0.5rem',
         }}
       >
         <IconWrapper
