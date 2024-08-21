@@ -47,9 +47,9 @@ const ChatbotLayout = ({
   return (
     <Box
       sx={{
-        position: { xs: 'relative', md: 'fixed' },
-        bottom: { xs: 0, md: '2rem' },
-        right: { xs: 0, md: '2rem' },
+        position: 'fixed',
+        bottom: { xs: '1rem', md: '2rem' },
+        right: { xs: '1rem', md: '2rem' },
         zIndex: 1000,
       }}
     >
