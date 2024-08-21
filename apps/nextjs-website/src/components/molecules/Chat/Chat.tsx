@@ -9,6 +9,7 @@ import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
+import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 
 type ChatProps = {
   queries: Query[];
@@ -16,6 +17,7 @@ type ChatProps = {
   onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
 };
 
 const Chat = ({
@@ -24,6 +26,7 @@ const Chat = ({
   onSendFeedback,
   scrollToBottom,
   isAwaitingResponse,
+  isChatbotLoaded,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -58,6 +61,7 @@ const Chat = ({
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({
@@ -71,7 +75,7 @@ const Chat = ({
     <>
       <Box
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: palette.background.paper,
           borderBottom: '2px solid',
           borderBottomColor: palette.action.disabled,
           width: 'auto',
@@ -96,6 +100,7 @@ const Chat = ({
           height: '100%',
         }}
       >
+        {!messages.length && !isChatbotLoaded && <ChatSkeleton />}
         {messages.map((message, index) => (
           <Stack
             key={index}

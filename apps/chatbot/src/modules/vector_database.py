@@ -1,12 +1,16 @@
 import os
 import re
+import time
 import json
 import tqdm
 import logging
 import hashlib
-from typing import List, Tuple, Dict
+from selenium import webdriver
+from typing import List, Tuple
+
 
 import s3fs
+import html2text
 from bs4 import BeautifulSoup
 
 from llama_index.core import (
@@ -30,6 +34,38 @@ FS = s3fs.S3FileSystem(
     endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
 )
 
+DYNAMIC_HTMLS = [
+    "app-io/api/app-io-main.html",
+    "case-histories/tari-cagliari.html",
+    "firma-con-io/api/firma-con-io-main.html",
+    "index.html",
+    "pago-pa/api/elenco-IBAN-stazioni.html",
+    "pago-pa/api/flussi-di-rendicontazione.html",
+    "pago-pa/api/gestione-massiva-delle-posizioni-debitorie.html",
+    "pago-pa/api/gestione-posizioni-debitorie.html",
+    "pago-pa/api/gpd-fdr.html",
+    "pago-pa/api/gpd-recupero-receipt.html",
+    "pago-pa/api/inserimento-posizioni-debitorie.html",
+    "pago-pa/api/pagamento-fe-ec.html",
+    "pago-pa/api/recupero-receipt.html",
+    "pago-pa/api/stampa-avvisi-pagamento.html",
+    "privacy-policy.html",
+    "send/api/send-main.html",
+    "solutions/multe-per-violazioni-al-codice-della-strada.html",
+    "solutions/tassa-sui-rifiuti-tari.html",
+    "terms-of-service.html",
+    "webinars.html",
+    "webinars/DevTalk-pagoPA-gpd-massive.html",
+    "webinars/DevTalk-pagoPA-gpd.html",
+    "webinars/DevTalk-remote-content.html",
+    "webinars/PagoPA-multe.html",
+    "webinars/PagoPALAB-nidi.html",
+    "webinars/PagoPALab-tari.html",
+    "webinars/devTalks-pagoPA-fdr.html",
+    "webinars/devTalks-send-essential.html",
+    "webinars/nuove-api-io.html"
+]
+
 
 def hash_url(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
@@ -51,6 +87,25 @@ def get_html_files(root_folder: str) -> List[str]:
     return sorted(filter_html_files(html_files))
 
 
+def html2markdown(html):
+
+    converter = html2text.HTML2Text()
+    converter.ignore_images = True
+    converter.ignore_links = True
+    converter.ignore_mailto_links = True
+
+    soup = BeautifulSoup(html, "html.parser")
+    soup_content = soup.find(attrs={"id": "chatbot-page-content"})
+    content = converter.handle(str(soup_content))
+
+    if soup.title and soup.title.string:
+        title = str(soup.title.string)
+    else:
+        title = ""
+
+    return title, content.strip()
+
+
 def create_documentation(
         documentation_dir: str = "./PagoPADevPortal/out/"
     ) -> Tuple[List[Document], dict]:
@@ -61,44 +116,66 @@ def create_documentation(
     logging.info(f"Getting documentation from: {documentation_dir}")
     
     html_files = get_html_files(documentation_dir)
+    dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
     documents = []
     hash_table = {}
+    empty_pages = []
+
+    # full_text = ""
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        soup = BeautifulSoup(open(file), "html.parser")
-        soup_text = soup.find(attrs={"id": "page-content"})
-        if soup_text:
-            text = soup_text.get_text("/")
+        if file in dynamic_htmls:
+            url = file.replace(documentation_dir, "http://localhost:3000/")
+            driver = webdriver.Chrome()
+            driver.get(url)
+            time.sleep(5)
+            title, text = html2markdown(driver.page_source)
+            driver.quit()
         else:
-            text = ""
-        
-        url = file.replace(
-            documentation_dir, 
-            "https://developer.pagopa.it/"
-        ).replace(
-            ".html", 
-            ""
-        )
-        masked_url = hash_url(url)
-        if masked_url not in hash_table.keys():
-            hash_table[masked_url] = url
+            title, text = html2markdown(open(file))
 
-        if soup.title and soup.title.string:
-            title = str(soup.title.string)
+        if text == None or text == "" or text == "None":
+            print(file)
+            empty_pages.append(file)
+
         else:
-            title = f"PagoPA DevPortal | {os.path.basename(url)}"
 
-        documents.append(Document(
-            text=text,
-            metadata={
-                "filename": masked_url,
-                "title": title,
-                "language": "it"
-            }
-        ))
+            text = re.sub(r'(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])', ' ', text)
 
-    assert len(hash_table) == len(documents)
+            url = file.replace(
+                documentation_dir, 
+                "https://developer.pagopa.it/"
+            ).replace(
+                ".html", 
+                ""
+            )
+            masked_url = hash_url(url)
+            if masked_url not in hash_table.keys():
+                hash_table[masked_url] = url
+
+            if title == "":
+                title = f"PagoPA DevPortal | {os.path.basename(url)}"
+
+            documents.append(Document(
+                text=text,
+                metadata={
+                    "filename": masked_url,
+                    "title": title,
+                    "language": "it"
+                }
+            ))
+
+            full_text += text
+            full_text += "\n\n---------------------------\n\n"
+
+    # with open("full_text.txt", "w") as f:
+    #     f.write(full_text)
+
+    logging.info(f"Number of documents with content: {len(documents)}")
+    logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    with open('empty_htmls.json', 'w') as f:
+        json.dump(empty_pages, f, indent=4)
     
     return documents, hash_table
 
@@ -124,15 +201,10 @@ def build_automerging_index(
         node_parser=node_parser
     )
 
-    if not os.path.exists(save_dir):
-        logging.info("Creating index...")
-    else:
-        logging.info("Updating index...")
-
     assert documentation_dir is not None
-
     documents, hash_table = create_documentation(documentation_dir)
-    
+
+    logging.info("Creating index...")
     nodes = node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -140,8 +212,8 @@ def build_automerging_index(
     storage_context.docstore.add_documents(nodes)
 
     automerging_index = VectorStoreIndex(
-        leaf_nodes, 
-        storage_context=storage_context, 
+        leaf_nodes,
+        storage_context=storage_context,
         service_context=merging_context
     )
     logging.info(f"Created index successfully.")

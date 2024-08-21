@@ -39,7 +39,6 @@ if __name__ == "__main__":
         documentation_dir=params["documentation"]["path"],
         save_dir=params["vector_index"]["path"],
         s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
-        region=os.getenv("AWS_DEFAULT_REGION"),
         chunk_sizes=params["vector_index"]["chunk_sizes"],
         chunk_overlap=params["vector_index"]["chunk_overlap"]
     )

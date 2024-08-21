@@ -18,6 +18,7 @@ type ChatbotLayoutProps = {
   onSendQuery: (query: string) => null;
   onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
 };
 
 const ChatbotLayout = ({
@@ -25,6 +26,7 @@ const ChatbotLayout = ({
   onSendQuery,
   onSendFeedback,
   isAwaitingResponse,
+  isChatbotLoaded,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -118,6 +120,7 @@ const ChatbotLayout = ({
             onSendQuery={onSendQuery}
             onSendFeedback={onSendFeedback}
             isAwaitingResponse={isAwaitingResponse}
+            isChatbotLoaded={isChatbotLoaded}
             scrollToBottom
           />
         </Stack>
