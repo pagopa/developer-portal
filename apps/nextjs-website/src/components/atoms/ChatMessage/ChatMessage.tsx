@@ -34,7 +34,7 @@ const ChatMessage = ({
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
-  const parsedMessage = parseMessage(text);
+  const parsedChatMessage = parseChatMessage(text);
 
   const timeLabel = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
@@ -102,7 +102,7 @@ const ChatMessage = ({
               paragraph
               width={'100%'}
             >
-              {parsedMessage}
+              {parsedChatMessage}
             </Typography>
             <Typography
               color={textColor}

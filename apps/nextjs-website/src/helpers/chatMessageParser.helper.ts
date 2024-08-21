@@ -23,7 +23,7 @@ const chatMarkdocConfig: ConfigType = {
   },
 };
 
-export function parseMessage(markdown: string): ReactNode {
+export function parseChatMessage(markdown: string): ReactNode {
   const ast = Markdoc.parse(markdown);
   const content = Markdoc.transform(ast, chatMarkdocConfig);
   return Markdoc.renderers.react(content, React, {

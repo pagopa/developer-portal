@@ -3,4 +3,4 @@
 "storybook-app": patch
 ---
 
-Align chat message to mock add parser to convert md into html
+Add a parser to convert chatbot messages from Markdown to HTML format
