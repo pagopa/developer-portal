@@ -23,7 +23,7 @@ AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
-GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare o fornire contenuti inappropriati o dati sensibili.
+GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare contenuti inappropriati.
 Riformula la domanda in modo che non violi queste linee guida."""
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
@@ -101,7 +101,6 @@ class Chatbot():
             self.prompts["refine_prompt_str"],
             prompt_type="refine",
             template_var_mappings = {
-                "context_msg": "context_msg",
                 "existing_answer": "existing_answer",
                 "query_str": "query_str"
             }
@@ -150,7 +149,7 @@ class Chatbot():
         return it_score
 
 
-    def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
+    def _get_response_str(self, query: str, engine_response: RESPONSE_TYPE) -> str:
 
         if isinstance(engine_response, StreamingResponse):
             typed_response = engine_response.get_response()
@@ -160,22 +159,23 @@ class Chatbot():
         response_str = typed_response.response.strip()
         nodes = typed_response.source_nodes
 
+        response_str = self._remove_redundancy(query, response_str)
+
         if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
             response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
             Prova a riformulare la domanda.
             """
         elif response_str == GUARDRAIL_ANSWER:
-            logging.warning(f"BLOCKED RESPONSE: Detected harmful category or PII entity.")
+            logging.warning(f"AWS guardrail: Detected harmful category.")
         else:
-            response_str = self._remove_redundancy(response_str)
-            response_str = self._unmask_add_reference(response_str, nodes)
+            response_str = self._add_reference(response_str, nodes)
         
         return response_str
     
 
-    def _remove_redundancy(self, response_str: str) -> str:
+    def _remove_redundancy(self, query: str, response: str) -> str:
 
-        sentences = re.split(r"(?<=[\n])", response_str)
+        sentences = re.split(r"(?<=[\n])", response)
         sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
         unique_sentences = list(Counter(sentences).keys())
         indexes_to_remove = []
@@ -184,20 +184,22 @@ class Chatbot():
                 if i != j and unique_sentence in us:
                     indexes_to_remove.append(i)
 
-        for idx in indexes_to_remove:
-            unique_sentences.pop(idx)
+        for idx in indexes_to_remove[::-1]:
+            try:
+                unique_sentences.pop(idx)
+            except Exception as e:
+                unique_sentences = []
+                print(response)
+                logging.info(f"{e}: the generated response has too many redundacy problems. The output is now empty string.")
+                break
 
-        response_str = ""
-        for unique_sentence in unique_sentences:
-            if unique_sentence == "Rif:":
-                response_str += "\n" + unique_sentence + "\n"
-            else:
-                response_str += unique_sentence + "\n"
+        respose_str = "\n".join(unique_sentences)
+        respose_str = respose_str.replace(query, "")
 
-        return response_str
+        return respose_str.strip()
     
 
-    def _unmask_add_reference(self, response_str: str, nodes) -> str:
+    def _add_reference(self, response_str: str, nodes) -> str:
 
         pattern = r'[a-fA-F0-9]{64}'
 
@@ -274,7 +276,7 @@ class Chatbot():
             """
         else:
             engine_response = self.engine.query(query_str)
-            response_str = self._get_response_str(engine_response)
+            response_str = self._get_response_str(query_str, engine_response)
 
         # update messages
         self._update_messages("user", query_str)
@@ -297,7 +299,7 @@ class Chatbot():
             """
         else:
             engine_response = self.engine.aquery(query_str)
-            response_str = self._get_response_str(engine_response)
+            response_str = self._get_response_str(query_str, engine_response)
 
         self._update_messages("user", query_str)
         self._update_messages("assistant", response_str)

@@ -6,28 +6,27 @@ qa_prompt_str: |
   --------------------
   Chatbot Policy:
     - the answer must be generated using only the context information and not prior knowledge.
-    - the answer must be respectful, polite, and accurate.
-    - the answer must not include the User query.
+    - the answer must be brief, concise, and composed of 80 words maximum.
+    - the answer must be respectful and polite.
     - the answer must be clear, non-redundant, and have not repeated sentences.
-    - the answer must be concise and composed of three sentences maximum.
-    - The answer must always have at the end one, or more, references in a clickable format.
+    - the answer must not include the query.
     - the answer must be in Italian.
   --------------------
   Output Examples:
-    User query: Cos'è il nodo dei pagamenti?
-    Answer: Il nodo dei pagamenti è la macro-componente principale che ha lo scopo di coordinare l'esecuzione delle richieste di servizio, gestendo l'intero workflow nei diversi use case di pagamento avvisi previsti e in tutte le possibili opzioni di integrazione degli EC.
+    Query: Cos'è il nodo dei pagamenti?
+    Response: Il nodo dei pagamenti è la macro-componente principale che ha lo scopo di coordinare l'esecuzione delle richieste di servizio, gestendo l'intero workflow nei diversi use case di pagamento avvisi previsti e in tutte le possibili opzioni di integrazione degli EC.
       Il nodo dei pagamenti si interfaccia sia con le applicazioni degli EC a cui sono indirizzate le richieste di servizio, sia con i PSP che abilitano il pagamento sui diversi canali.
       Comprende varie componenti software tra cui le principali sono quelle che permettono:
-      - la memorizzazione e la gestione delle "richieste di pagamento" per la tracciatura delle operazioni e la gestione delle eccezioni;
-      - la gestione degli errori, in base a quanto definito in Gestione degli errori;
-      - il monitoraggio dei livelli di servizio di ciascun soggetto coinvolto, come definito in indicatori-di-qualita-per-i-soggetti-aderenti;
-      - la gestione della funzionalità di "stand In" in caso di indisponibilità o mancata risposta da parte dell'EC.
+      * la memorizzazione e la gestione delle "richieste di pagamento" per la tracciatura delle operazioni e la gestione delle eccezioni;
+      * la gestione degli errori, in base a quanto definito in Gestione degli errori;
+      * il monitoraggio dei livelli di servizio di ciascun soggetto coinvolto, come definito in indicatori-di-qualita-per-i-soggetti-aderenti;
+      * la gestione della funzionalità di "stand In" in caso di indisponibilità o mancata risposta da parte dell'EC.
 
       Rif: 
       [PagoPA DevPortal | Overview delle componenti](b937c329a4207291f7cf0b5a3f020036c349ea19e502238d3621b4ea26dff096)
-
-    User query: Cos'è Firma con IO?
-    Answer: Firma con IO è un servizio che consente ai cittadini di firmare documenti tramite l'App IO in maniera semplice, veloce e sicura, e agli enti di gestire tutto il processo di firma attraverso un unico canale.
+    
+    Query: Cos'è Firma con IO?
+    Response: Firma con IO è un servizio che consente ai cittadini di firmare documenti tramite l'App IO in maniera semplice, veloce e sicura, e agli enti di gestire tutto il processo di firma attraverso un unico canale.
       Firma con IO è una Firma Elettronica Qualificata "one shot" con il massimo valore legale, pari alla firma autografa. 
       Questa firma è generata da un dispositivo qualificato di creazione di firme elettroniche e si basa su un certificato qualificato per firme elettroniche rilasciato da un QTSP (Fornitore Qualificato di Servizi Fiduciari). 
       Tale QTSP è iscritto all'elenco dei prestatori di servizi digitali qualificati, mantenuto da AgID secondo l'art. 29 del Codice dell'Amministrazione Digitale.
@@ -36,9 +35,9 @@ qa_prompt_str: |
       [PagoPA DevPortal | Guida alla scelta di Firma con IO](e9a8fb644acd3121faa2b169f17cf44ee2a7514ef4aa0e757c88751ac2daeb13)
   --------------------
   Task:
-    Given the User query: {query_str}
-    Reply to the User query according to the `Chatbot Policy` listed above. 
-    Answer:
+    Given the query: {query_str}
+    Answer the query according to the `Chatbot Policy` listed above.
+    Answer: 
 
 
 refine_prompt_str: |
@@ -55,7 +54,8 @@ refine_prompt_str: |
     - the refined answer must not include any offensive or discriminatory content.
     - the refined answer must be in Italian.
   --------------------
-  Given the User query: {query_str}
-  Given the original answer: {existing_answer}
-  Provide either the original answer or a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
-  Answer:
+  Task:
+    Given the User query: {query_str}
+    Given the original answer: {existing_answer}
+    Answer with either the original answer or with a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
+    Answer: 
