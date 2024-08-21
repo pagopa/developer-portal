@@ -44,16 +44,17 @@ const QuestionsAndAnswers = ({
         <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
           {t('title')}
         </Typography>
-        {[...items].splice(0, questionsToShow).map((item, index) => (
+        {[...items].map((item, index) => (
           <Accordion
+            key={item.question}
             sx={{
+              display: index > questionsToShow - 1 ? 'none' : 'auto',
               marginBottom: 2,
               borderTop: 'none',
               borderRadius: '4px',
               '::before': { display: 'none' },
               width: '100%',
             }}
-            key={item.question}
             disableGutters
             expanded={expanded === index}
             onChange={handleChange(index)}
