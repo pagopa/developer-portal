@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_overview_post_integrations",
+  "info": {
+    "displayName": "PostIntegration",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.link"
+    },
+    "documents": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.card-props"
+    },
+    "guidesTitle": {
+      "type": "string"
+    },
+    "guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::guide.guide"
+    },
+    "showCompactCards": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
