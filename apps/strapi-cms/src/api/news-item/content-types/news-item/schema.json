@@ -33,7 +33,7 @@
           "localized": true
         }
       },
-      "component": "common.links",
+      "component": "common.link",
       "required": true
     },
     "image": {

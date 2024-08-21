@@ -2,14 +2,16 @@
   "collectionName": "components_common_list_items",
   "info": {
     "displayName": "ListItem",
-    "icon": "cube"
+    "icon": "cube",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "text": {
       "type": "string",
       "maxLength": 70,
-      "required": true
+      "required": true,
+      "minLength": 1
     }
   }
 }

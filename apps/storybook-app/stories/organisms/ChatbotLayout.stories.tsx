@@ -21,6 +21,7 @@ export default meta;
 
 export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
   args: {
+    isChatbotLoaded: true,
     queries: [
       {
         sessionId: 'sessionID',
@@ -38,6 +39,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
 
 export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
   args: {
+    isChatbotLoaded: true,
     queries: [
       {
         sessionId: 'sessionID',
@@ -57,6 +59,18 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
     isAwaitingResponse: true,
+  },
+  decorators: [decorator, nextIntlContextDecorator],
+};
+
+export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
+  args: {
+    isChatbotLoaded: false,
+    queries: [],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
   },
   decorators: [decorator, nextIntlContextDecorator],
 };

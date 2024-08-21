@@ -1,13 +1,17 @@
 {
   "collectionName": "components_common_features",
   "info": {
-    "displayName": "Features"
+    "displayName": "Features",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "title": {
       "type": "string",
       "required": true
+    },
+    "subtitle": {
+      "type": "text"
     },
     "items": {
       "type": "component",
