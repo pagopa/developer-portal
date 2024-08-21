@@ -77,7 +77,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
               marginLeft: '0.5rem',
             }}
           >
-            {`${message.length}/${MESSAGE_MAX_CHARS}}`}
+            {`${message.length}/${MESSAGE_MAX_CHARS}`}
           </Box>
         }
         sx={{
