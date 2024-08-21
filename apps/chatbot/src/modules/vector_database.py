@@ -34,36 +34,36 @@ FS = s3fs.S3FileSystem(
     endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
 )
 
-LIVE_HTML = [
-    "build-devp/out/app-io/api/app-io-main.html",
-    "build-devp/out/case-histories/tari-cagliari.html",
-    "build-devp/out/firma-con-io/api/firma-con-io-main.html",
-    "build-devp/out/index.html",
-    "build-devp/out/pago-pa/api/elenco-IBAN-stazioni.html",
-    "build-devp/out/pago-pa/api/flussi-di-rendicontazione.html",
-    "build-devp/out/pago-pa/api/gestione-massiva-delle-posizioni-debitorie.html",
-    "build-devp/out/pago-pa/api/gestione-posizioni-debitorie.html",
-    "build-devp/out/pago-pa/api/gpd-fdr.html",
-    "build-devp/out/pago-pa/api/gpd-recupero-receipt.html",
-    "build-devp/out/pago-pa/api/inserimento-posizioni-debitorie.html",
-    "build-devp/out/pago-pa/api/pagamento-fe-ec.html",
-    "build-devp/out/pago-pa/api/recupero-receipt.html",
-    "build-devp/out/pago-pa/api/stampa-avvisi-pagamento.html",
-    "build-devp/out/privacy-policy.html",
-    "build-devp/out/send/api/send-main.html",
-    "build-devp/out/solutions/multe-per-violazioni-al-codice-della-strada.html",
-    "build-devp/out/solutions/tassa-sui-rifiuti-tari.html",
-    "build-devp/out/terms-of-service.html",
-    "build-devp/out/webinars.html",
-    "build-devp/out/webinars/DevTalk-pagoPA-gpd-massive.html",
-    "build-devp/out/webinars/DevTalk-pagoPA-gpd.html",
-    "build-devp/out/webinars/DevTalk-remote-content.html",
-    "build-devp/out/webinars/PagoPA-multe.html",
-    "build-devp/out/webinars/PagoPALAB-nidi.html",
-    "build-devp/out/webinars/PagoPALab-tari.html",
-    "build-devp/out/webinars/devTalks-pagoPA-fdr.html",
-    "build-devp/out/webinars/devTalks-send-essential.html",
-    "build-devp/out/webinars/nuove-api-io.html"
+DYNAMIC_HTMLS = [
+    "app-io/api/app-io-main.html",
+    "case-histories/tari-cagliari.html",
+    "firma-con-io/api/firma-con-io-main.html",
+    "index.html",
+    "pago-pa/api/elenco-IBAN-stazioni.html",
+    "pago-pa/api/flussi-di-rendicontazione.html",
+    "pago-pa/api/gestione-massiva-delle-posizioni-debitorie.html",
+    "pago-pa/api/gestione-posizioni-debitorie.html",
+    "pago-pa/api/gpd-fdr.html",
+    "pago-pa/api/gpd-recupero-receipt.html",
+    "pago-pa/api/inserimento-posizioni-debitorie.html",
+    "pago-pa/api/pagamento-fe-ec.html",
+    "pago-pa/api/recupero-receipt.html",
+    "pago-pa/api/stampa-avvisi-pagamento.html",
+    "privacy-policy.html",
+    "send/api/send-main.html",
+    "solutions/multe-per-violazioni-al-codice-della-strada.html",
+    "solutions/tassa-sui-rifiuti-tari.html",
+    "terms-of-service.html",
+    "webinars.html",
+    "webinars/DevTalk-pagoPA-gpd-massive.html",
+    "webinars/DevTalk-pagoPA-gpd.html",
+    "webinars/DevTalk-remote-content.html",
+    "webinars/PagoPA-multe.html",
+    "webinars/PagoPALAB-nidi.html",
+    "webinars/PagoPALab-tari.html",
+    "webinars/devTalks-pagoPA-fdr.html",
+    "webinars/devTalks-send-essential.html",
+    "webinars/nuove-api-io.html"
 ]
 
 
@@ -116,6 +116,7 @@ def create_documentation(
     logging.info(f"Getting documentation from: {documentation_dir}")
     
     html_files = get_html_files(documentation_dir)
+    dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
     documents = []
     hash_table = {}
     empty_pages = []
@@ -124,7 +125,7 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        if file in LIVE_HTML:
+        if file in dynamic_htmls:
             url = file.replace(documentation_dir, "http://localhost:3000/")
             driver = webdriver.Chrome()
             driver.get(url)
