@@ -1,7 +1,7 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '../IconWrapper/IconWrapper';
-import { parseMessage } from '@/helpers/chatMessageParser.helper';
+import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
 
 type DateFormatOptions = {
   locale?: string;
