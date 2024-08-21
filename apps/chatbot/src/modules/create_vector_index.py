@@ -36,6 +36,7 @@ if __name__ == "__main__":
         model,
         embed_model,
         documentation_dir=params["documentation"]["path"],
+        redis_url=params["vector_index"]["redis_url"],
         save_dir=params["vector_index"]["path"],
         s3_bucket_name=os.getenv("AWS_S3_BUCKET"),
         chunk_sizes=params["vector_index"]["chunk_sizes"],

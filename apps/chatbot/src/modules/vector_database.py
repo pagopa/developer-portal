@@ -134,6 +134,7 @@ def build_automerging_index(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         documentation_dir: str,
+        redis_url: str,
         save_dir: str,
         s3_bucket_name: str | None,
         chunk_sizes: List[int],
@@ -156,25 +157,14 @@ def build_automerging_index(
     nodes = node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
-    # # OpensearchVectorClient encapsulates logic for a
-    # # single opensearch index with vector search enabled
-    # client = OpensearchVectorClient(
-    #     endpoint, idx, 1024, timeout=300
-    # )
-    # # initialize vector store
-    # vector_store = OpensearchVectorStore(client)
-
-
     # create a Redis client connection
-    redis_client = Redis.from_url("redis://localhost:6379")
+    redis_client = Redis.from_url(redis_url)
 
     # create the vector store wrapper
     vector_store = RedisVectorStore(redis_client=redis_client, overwrite=True, schema=schema)
     kvstore = RedisKVStore(redis_client=redis_client)
     docstore = RedisDocumentStore(redis_kvstore=kvstore)
     index_store = RedisIndexStore(redis_kvstore=kvstore)
-    # load storage context
-    # storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
     storage_context = StorageContext.from_defaults(vector_store=vector_store, docstore=docstore, index_store=index_store)
     storage_context.docstore.add_documents(nodes)
@@ -184,28 +174,27 @@ def build_automerging_index(
         storage_context=storage_context, 
         service_context=merging_context
     )
-    logging.info(f"DOCSTORE: {storage_context.docstore}")
 
     logging.info(f"Created index successfully.")
     
-    # if s3_bucket_name:
+    if s3_bucket_name:
 
-    #     # store hash table
-    #     with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
-    #         json.dump(hash_table, f, indent=4)
-    #     logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
+        # store hash table
+        with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
+            json.dump(hash_table, f, indent=4)
+        logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
-    #     # store vector index
-    #     automerging_index.storage_context.persist(
-    #         persist_dir=f"{s3_bucket_name}/{save_dir}",
-    #         fs = FS
-    #     )
-    #     logging.info(f"Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
-    # else:
-    with open("hash_table.json", "w") as f:
-        json.dump(hash_table, f, indent=4)
+        # store vector index
+        automerging_index.storage_context.persist(
+            persist_dir=f"{s3_bucket_name}/{save_dir}",
+            fs = FS
+        )
+        logging.info(f"Uploaded hash table successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
+    else:
+        with open("hash_table.json", "w") as f:
+            json.dump(hash_table, f, indent=4)
 
-    #     logging.info(f"Saved index successfully to {save_dir}.")
+        logging.info(f"Saved hash table successfully to {save_dir}.")
 
     return automerging_index
 
@@ -231,8 +220,7 @@ def load_url_hash_table(
 def load_automerging_index(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
-        save_dir: str,
-        s3_bucket_name: str | None,
+        redis_url: str,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ) -> VectorStoreIndex:
@@ -248,51 +236,19 @@ def load_automerging_index(
         node_parser=node_parser
     )
 
-    # # OpensearchVectorClient stores text in this field by default
-    # text_field = "content"
-    # # OpensearchVectorClient stores embeddings in this field by default
-    # embedding_field = "embedding"
+    redis_client = Redis.from_url(redis_url)
 
-    # # OpensearchVectorClient encapsulates logic for a
-    # # single opensearch index with vector search enabled
-    # client = OpensearchVectorClient(
-    #     endpoint, idx, 1024, embedding_field=embedding_field, text_field=text_field
-    # )
-    # # initialize vector store
-    # vector_store = OpensearchVectorStore(client)
-
-    # create the vector store wrapper
-    redis_client = Redis.from_url("redis://localhost:6379")
-    vector_store = RedisVectorStore(redis_client=redis_client, schema=schema)
-    Settings.chunk_size = 1024
-
-    # load storage context
-    # storage_context = StorageContext.from_defaults(vector_store=vector_store)
-
-    automerging_index = VectorStoreIndex.from_vector_store(
-        vector_store = vector_store,
-        service_context = merging_context
-    )
-
-
-    # logging.info(f"{save_dir} directory exists! Loading vector index...")
-    # if s3_bucket_name:
-
-    #     automerging_index = load_index_from_storage(
-    #         StorageContext.from_defaults(
-    #             persist_dir = f"{s3_bucket_name}/{save_dir}",
-    #             fs = FS
-    #         ),
-    #         service_context=merging_context
-    #     )
+    vector_store = RedisVectorStore(redis_client=redis_client, overwrite=False, schema=schema)
+    kvstore = RedisKVStore(redis_client=redis_client)
+    docstore = RedisDocumentStore(redis_kvstore=kvstore)
+    index_store = RedisIndexStore(redis_kvstore=kvstore)
     
-    # else:
-    #     automerging_index = load_index_from_storage(
-    #         StorageContext.from_defaults(
-    #             persist_dir=save_dir
-    #         ),
-    #         service_context=merging_context,
-    #     )
+    storage_context = StorageContext.from_defaults(vector_store=vector_store, docstore=docstore, index_store=index_store)
+
+    automerging_index = load_index_from_storage(
+        storage_context,
+        service_context=merging_context
+    )
 
     logging.info("Loaded vector index successfully!")
 

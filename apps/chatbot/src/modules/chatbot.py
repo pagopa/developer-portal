@@ -38,7 +38,6 @@ class Chatbot():
             prompts,
             use_guardrail: bool = True
         ):
-        logging.getLogger().setLevel(logging.DEBUG)
         self.params = params
         self.prompts = prompts
         self.use_guardrail = use_guardrail
@@ -68,8 +67,7 @@ class Chatbot():
         self.index = load_automerging_index(
             self.model,
             self.embed_model,
-            save_dir=params["vector_index"]["path"],
-            s3_bucket_name=AWS_S3_BUCKET,
+            redis_url=params["vector_index"]["redis_url"],
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
