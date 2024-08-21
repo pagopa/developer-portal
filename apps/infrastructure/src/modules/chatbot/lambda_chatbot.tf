@@ -9,7 +9,7 @@ locals {
 module "lambda_function" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
 
-  function_name = "${random_pet.this.id}-chatbot-api-tf"
+  function_name = "chatbot-api-tf"
   description   = "chatbot"
 
   environment_variables = local.lambda_env_variables
@@ -34,8 +34,4 @@ module "lambda_function" {
     max_age           = 86400
   }
   invoke_mode = "RESPONSE_STREAM"
-}
-
-resource "random_pet" "this" {
-  length = 2
 }
