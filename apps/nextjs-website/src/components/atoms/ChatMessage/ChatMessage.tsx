@@ -108,7 +108,6 @@ const ChatMessage = ({
               color={textColor}
               component={'div'}
               marginLeft={'2.2rem'}
-              marginTop={1}
               paragraph
               width={'100%'}
             >
