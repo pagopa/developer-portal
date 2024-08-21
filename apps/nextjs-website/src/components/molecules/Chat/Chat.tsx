@@ -67,7 +67,7 @@ const Chat = ({
     <>
       <Box
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: palette.background.paper,
           borderBottom: '2px solid',
           borderBottomColor: palette.action.disabled,
           width: 'auto',
