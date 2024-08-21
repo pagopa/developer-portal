@@ -17,7 +17,12 @@ export default meta;
 
 export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
   args: {
-    text: mockText(40),
+    text: `
+      GPD gestisce i pagamenti spontanei attraverso il nodo dei pagamenti.  
+        
+      Rif:  
+      [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+    `,
     isQuestion: false,
     timestamp: '2024-07-24T17:14:07.129Z',
     dateHeader: 'Oggi',
