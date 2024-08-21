@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_common_list_items",
+  "info": {
+    "displayName": "ListItem",
+    "icon": "cube"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "maxLength": 70,
+      "required": true
+    }
+  }
+}
