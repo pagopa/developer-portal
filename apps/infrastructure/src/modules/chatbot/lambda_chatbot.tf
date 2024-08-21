@@ -1,8 +1,8 @@
 locals {
   lambda_env_variables = {
-    CHB_AWS_S3_BUCKET=module.s3_bucket_llamaindex.s3_bucket_id
-    CHB_AWS_GUARDRAIL_ID=awscc_bedrock_guardrail.guardrail.guardrail_id
-    CHB_AWS_GUARDRAIL_VERSION=awscc_bedrock_guardrail_version.guardrail.id
+    CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
+    CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
+    CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.id
   }
 }
 
@@ -13,14 +13,14 @@ module "lambda_function" {
   description   = "chatbot"
 
   environment_variables = local.lambda_env_variables
-  create_package = false
+  create_package        = false
 
   package_type  = "Image"
   architectures = ["x86_64"]
 
   image_uri = module.ecr.repository_url
 
-  timeout = 180
+  timeout     = 180
   memory_size = 4092
 
   create_lambda_function_url = true
