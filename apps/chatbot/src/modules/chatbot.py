@@ -16,11 +16,10 @@ from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index, load_url_hash_table
 from src.modules.retriever import get_automerging_query_engine
 
-
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
-AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
+AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1

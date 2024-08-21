@@ -24,10 +24,16 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
+AWS_ACCESS_KEY_ID=os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY=os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
+AWS_DEFAULT_REGION=os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION')
+FS = s3fs.S3FileSystem(
+    key=AWS_ACCESS_KEY_ID,
+    secret=AWS_SECRET_ACCESS_KEY,
+    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
+)
+
 FS = s3fs.S3FileSystem(
     key=AWS_ACCESS_KEY_ID,
     secret=AWS_SECRET_ACCESS_KEY,
