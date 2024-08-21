@@ -114,9 +114,6 @@ const Chat = ({
             <ChatMessage
               {...message}
               onToggleNegativeFeedback={(negativeFeedback) => {
-                // if (!message.id) {
-                //   return null;
-                // }
 
                 return onSendFeedback(message.id, negativeFeedback);
               }}
