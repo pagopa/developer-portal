@@ -8,6 +8,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.33.0"
     }
+
+    awscc = {
+      source  = "hashicorp/awscc"
+      version = "<= 1.8.0"
+    }
   }
 }
 
@@ -16,6 +21,10 @@ provider "aws" {
   default_tags {
     tags = var.tags
   }
+}
+
+provider "awscc" {
+  region = var.aws_region
 }
 
 provider "aws" {

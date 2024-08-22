@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_common_card_props",
+  "info": {
+    "displayName": "cardProps",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "linkText": {
+      "type": "string",
+      "required": true
+    },
+    "linkHref": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "mobileImage": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

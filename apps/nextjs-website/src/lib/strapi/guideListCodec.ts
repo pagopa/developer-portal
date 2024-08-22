@@ -1,14 +1,14 @@
 import * as t from 'io-ts/lib';
 import * as qs from 'qs';
 import { fetchFromStrapi } from './fetchFromStrapi';
-import { GuideBaseAttributesCodec } from './codecs/GuideCodec';
+import { BaseGuideCodec } from './codecs/GuideCodec';
 import { BaseProductCodec } from './codecs/ProductCodec';
 import { PaginationCodec } from './codecs/PaginationCodec';
 
 const GuideByCategoryCodec = t.strict({
   category: t.string,
   guides: t.strict({
-    data: t.array(GuideBaseAttributesCodec),
+    data: t.array(BaseGuideCodec),
   }),
 });
 
