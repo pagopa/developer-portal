@@ -46,7 +46,7 @@ const QuestionsAndAnswers = ({
         </Typography>
         {[...items].map((item, index) => (
           <Accordion
-            key={item.question}
+            key={index}
             sx={{
               display: index > questionsToShow - 1 ? 'none' : 'auto',
               marginBottom: 2,
