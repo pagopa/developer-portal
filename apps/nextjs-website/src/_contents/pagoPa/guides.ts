@@ -231,6 +231,22 @@ const boPT: GuideDefinition = {
   bannerLinks: pagoPaBannerLinks,
 };
 
+const avvisiPagamento: GuideDefinition = {
+  product: pagoPa,
+  guide: {
+    name: 'Stampa Avvisi Pagamento',
+    slug: 'stampa-avvisi-pagamento',
+  },
+  versions: [
+    {
+      main: true,
+      version: 'v1.0',
+      dirName: '9jfvPZ8QjCKuOGYxe5Uc',
+    },
+  ],
+  bannerLinks: pagoPaBannerLinks,
+}
+
 const errori: GuideDefinition = {
   product: pagoPa,
   guide: {
@@ -291,4 +307,5 @@ export const pagoPaGuides = [
   errori,
   metadata,
   redirect,
+  avvisiPagamento,
 ];
