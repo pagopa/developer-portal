@@ -1,5 +1,4 @@
 import {
-  guideLists,
   guides,
   overviews,
   products,
