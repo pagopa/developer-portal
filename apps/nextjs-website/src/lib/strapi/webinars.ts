@@ -55,7 +55,11 @@ export const WebinarCodec = t.strict({
     startDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     endDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     subscribeParagraphLabel: t.union([NullToUndefinedCodec, t.string]),
-    relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
+    relatedLinks: t.union([
+      NullToUndefinedCodec,
+      RelatedLinksCodec,
+      t.undefined,
+    ]),
     relatedResources: t.union([NullToUndefinedCodec, RelatedResources]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
     questionsAndAnswers: t.array(QuestionAndAnswerCodec),
