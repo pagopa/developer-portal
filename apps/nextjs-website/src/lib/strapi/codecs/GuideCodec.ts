@@ -1,5 +1,6 @@
 import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
+import { BaseProductCodec } from './ProductCodec';
 
 const VersionCodec = t.strict({
   main: t.boolean,
@@ -27,6 +28,7 @@ export const GuideCodec = t.intersection([
   t.strict({
     attributes: t.strict({
       versions: t.array(VersionCodec),
+      product: t.strict({ data: BaseProductCodec }),
     }),
   }),
 ]);
