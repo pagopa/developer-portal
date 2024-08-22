@@ -169,7 +169,7 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/saci': '/pago-pa/guides/saci',
   'https://docs.pagopa.it/sanp': '/pago-pa/guides/sanp',
   'https://docs.pagopa.it/manuale-back-office-pagopa/manuale-operativo-back-office-pagopa-ente-creditore/':
-    '/pago-pa/guides/manuale-bo-ec',
+    '/pago-pa/guides/manuale-bo-ec/manuale-operativo-back-office-pagopa-ente-creditore/',
   'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-psp/':
     '/pago-pa/guides/manuale-bo-psp',
   'https://docs.pagopa.it/manuale-back-office-pagopa':
