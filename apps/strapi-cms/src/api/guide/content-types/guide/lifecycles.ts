@@ -41,24 +41,11 @@ const validateGuideVersions = async (event: IGuideEvent) => {
   return true;
 };
 
-const validateListItems = async (event: IGuideEvent) => {
-  const { data } = event.params;
-  if ('listItems' in data && (data.listItems as unknown[]).length > 4) {
-    throw new errors.ApplicationError(
-      'List items must be less than 4 elements long'
-    );
-  }
-
-  return true;
-};
-
 module.exports = {
   async beforeCreate(event: IGuideEvent) {
     await validateGuideVersions(event);
-    await validateListItems(event);
   },
   async beforeUpdate(event: IGuideEvent) {
     await validateGuideVersions(event);
-    await validateListItems(event);
   },
 };

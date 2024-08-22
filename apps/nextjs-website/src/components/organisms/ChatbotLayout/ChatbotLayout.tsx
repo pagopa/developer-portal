@@ -11,18 +11,22 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
+import { useTranslations } from 'next-intl';
 
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  sendDisabled?: boolean;
+  isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
 };
 
 const ChatbotLayout = ({
   queries,
   onSendQuery,
-  sendDisabled,
+  isAwaitingResponse,
+  isChatbotLoaded,
 }: ChatbotLayoutProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -43,9 +47,9 @@ const ChatbotLayout = ({
   return (
     <Box
       sx={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
+        position: { xs: 'relative', md: 'fixed' },
+        bottom: { xs: 0, md: '2rem' },
+        right: { xs: 0, md: '2rem' },
         zIndex: 1000,
       }}
     >
@@ -53,7 +57,6 @@ const ChatbotLayout = ({
         aria-describedby={id}
         isChatOpen={open}
         onOpenChat={handleClick}
-        hasNewMessages={false}
       />
       <Popover
         id={id}
@@ -68,36 +71,43 @@ const ChatbotLayout = ({
           vertical: 'bottom',
           horizontal: 'right',
         }}
+        marginThreshold={0}
         disableScrollLock
         slotProps={{
           paper: {
             sx: {
               backgroundColor: 'transparent',
-              borderRadius: 3,
-              width: '40%',
-              minWidth: '48rem',
+              borderRadius: { xs: 0, md: 3 },
+              width: { xs: '100%', md: '40%' },
+              height: { xs: '100%', md: '70vh' },
+              maxHeight: { xs: '100%', md: '40rem' },
+              margin: 0,
+              maxWidth: { xs: '100%' },
+              minWidth: { xs: 'auto', md: '48rem' },
             },
           },
         }}
       >
-        <Box
-          bgcolor={'black'}
-          padding={'0.75rem'}
-          borderRadius={3}
-          minWidth='40rem'
+        <Stack
+          direction='column'
+          bgcolor={palette.text.primary}
+          borderRadius={{ xs: 0, md: 3 }}
+          minWidth={{ xs: 0, md: '40rem' }}
+          height='100%'
         >
           <Stack
             direction='row'
             justifyContent='space-between'
-            paddingBottom={'0.5rem'}
-            paddingX={'0.5rem'}
+            paddingY={'0.5rem'}
+            paddingX={'1rem'}
           >
             <Typography
               variant='h5'
-              fontWeight='normal'
+              fontWeight='bold'
+              marginTop={{ xs: '0.5rem', md: 0 }}
               sx={{ color: palette.primary.contrastText }}
             >
-              [Nome Chatbot]
+              {t('chatBot.title')}
             </Typography>
             <IconButton onClick={handleClose}>
               <Close sx={{ color: palette.primary.contrastText }} />
@@ -106,9 +116,11 @@ const ChatbotLayout = ({
           <Chat
             queries={queries}
             onSendQuery={onSendQuery}
-            sendDisabled={sendDisabled}
+            isAwaitingResponse={isAwaitingResponse}
+            isChatbotLoaded={isChatbotLoaded}
+            scrollToBottom
           />
-        </Box>
+        </Stack>
       </Popover>
     </Box>
   );

@@ -43,7 +43,10 @@
           "localized": true
         }
       },
-      "component": "common.list-item"
+      "component": "common.list-item",
+      "max": 4,
+      "min": 1,
+      "required": true
     },
     "versions": {
       "displayName": "GuideVersion",

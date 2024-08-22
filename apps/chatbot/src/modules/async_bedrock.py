@@ -20,8 +20,8 @@ from llama_index.core.llms.callbacks import (
 from llama_index.core.bridge.pydantic import Field, PrivateAttr
 
 
-AWS_GUARDRAIL_ID = os.getenv("AWS_GUARDRAIL_ID")
-AWS_GUARDRAIL_VERSION = os.getenv("AWS_GUARDRAIL_VERSION")
+AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
+AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
 
 class AsyncBedrock(Bedrock):

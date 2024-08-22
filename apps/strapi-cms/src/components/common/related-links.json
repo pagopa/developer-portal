@@ -13,7 +13,7 @@
     "links": {
       "type": "component",
       "repeatable": true,
-      "component": "common.links"
+      "component": "common.link"
     }
   }
 }
