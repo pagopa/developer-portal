@@ -39,7 +39,7 @@ const makeStrapiResponseJson = () => ({
           {
             id: 3,
             main: true,
-            dirname: 'aBQM7h48Vhhg8le4VIK8',
+            dirName: 'aBQM7h48Vhhg8le4VIK8',
             version: 'v5.1',
           },
         ],

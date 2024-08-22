@@ -4,7 +4,7 @@ import { BaseProductCodec } from './ProductCodec';
 
 const VersionCodec = t.strict({
   main: t.boolean,
-  dirname: t.string,
+  dirName: t.string,
   version: t.string,
 });
 
