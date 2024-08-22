@@ -1,18 +1,17 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import * as qs from 'qs';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
-import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
-// TODO: Uncomment the following line once the pull request #1050 will be merged
-// import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
-import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
-import { LinkCodec } from '@/lib/strapi/codecs/LinkCodec';
+import { BaseProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BaseTutorialCodec } from '@/lib/strapi/tutorial';
 import { BlocksContentCodec } from '@/lib/strapi/codecs/BlocksContentCodec';
+import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
+import { BaseGuideCodec } from '@/lib/strapi/codecs/GuideCodec';
+import { LinkCodec } from '@/lib/strapi/codecs/LinkCodec';
+import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
+import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
+import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { BaseProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 
 const StartInfoCodec = t.strict({
   icon: t.strict({ data: MediaCodec }),
@@ -49,8 +48,7 @@ const PostIntegrationCodec = t.strict({
   link: t.union([NullToUndefinedCodec, LinkCodec]),
   documents: t.array(CardPropsCodec),
   guidesTitle: t.union([NullToUndefinedCodec, t.string]),
-  // TODO: Uncomment the following line once the pull request #1050 will be merged
-  // guides: t.strict({ data: t.array(GuideCodec) }),
+  guides: t.strict({ data: t.array(BaseGuideCodec) }),
   showCompactCards: t.boolean,
 });
 
@@ -85,6 +83,10 @@ const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
       backgroundImage: '*',
+      product: '*',
+      relatedLinks: {
+        populate: ['links'],
+      },
       features: {
         populate: ['items.icon'],
       },
@@ -95,9 +97,13 @@ const makeStrapiOverviewsPopulate = () =>
         populate: ['tutorials.image'],
       },
       postIntegration: {
-        // TODO: Uncomment the following line once the pull request #1050 will be merged
-        // populate: ['link', 'guides.image', 'guides.mobileImage', 'documents'],
-        populate: ['link', 'documents'],
+        populate: [
+          'link',
+          'guides.image',
+          'guides.mobileImage',
+          'documents.image',
+          'documents.mobileImage',
+        ],
       },
     },
   });
