@@ -2,18 +2,6 @@ import * as t from 'io-ts/lib';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { MediaAttributesCodec } from './codecs/MediaCodec';
 
-export const SEOImageFormatCodec = t.partial({
-  name: t.union([NullToUndefinedCodec, t.string]),
-  hash: t.union([NullToUndefinedCodec, t.string]),
-  ext: t.union([NullToUndefinedCodec, t.string]),
-  mime: t.union([NullToUndefinedCodec, t.string]),
-  width: t.union([NullToUndefinedCodec, t.number]),
-  height: t.union([NullToUndefinedCodec, t.number]),
-  size: t.union([NullToUndefinedCodec, t.number]),
-  path: t.union([NullToUndefinedCodec, t.string]),
-  url: t.union([NullToUndefinedCodec, t.string]),
-});
-
 export const SEOMetaSocialCodec = t.partial({
   id: t.union([NullToUndefinedCodec, t.number]),
   socialNetwork: t.union([NullToUndefinedCodec, t.string]),

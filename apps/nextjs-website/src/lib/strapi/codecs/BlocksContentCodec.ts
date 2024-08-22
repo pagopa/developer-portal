@@ -1,6 +1,7 @@
 import * as t from 'io-ts/lib';
 import { type BlocksContent } from '@strapi/blocks-react-renderer';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { MediaAttributesCodec } from './MediaCodec';
 
 const TextInlineNodeCodec = t.intersection([
   t.strict({
@@ -79,28 +80,7 @@ const ImageBlockChildCodec = t.strict({
 
 export const ImageBlockNodeCodec = t.strict({
   type: t.literal('image'),
-  image: t.intersection([
-    t.strict({
-      name: t.string,
-      url: t.string,
-      width: t.number,
-      height: t.number,
-      hash: t.string,
-      ext: t.string,
-      mime: t.string,
-      size: t.number,
-      provider: t.string,
-      createdAt: t.string,
-      updatedAt: t.string,
-      caption: t.union([NullToUndefinedCodec, t.string]),
-      previewUrl: t.union([NullToUndefinedCodec, t.string]),
-    }),
-    t.partial({
-      alternativeText: t.string,
-      formats: t.record(t.string, t.unknown),
-      provider_metadata: t.unknown,
-    }),
-  ]),
+  image: MediaAttributesCodec,
   children: t.array(ImageBlockChildCodec),
 });
 
