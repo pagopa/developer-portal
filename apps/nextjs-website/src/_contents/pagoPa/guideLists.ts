@@ -130,6 +130,25 @@ export const pagoPaGuideLists: GuideListsData = {
             '/images/guida-tecnica-sugli-avvisi-di-pagamento-mobile.png',
         },
         {
+          title: 'Stampa Avvisi Pagamento',
+          description: {
+            title: 'Argomenti trattati',
+            listItems: [
+              'Scopri come avere le autorizzazioni per la stampa',
+              'Scopri come stampare avvisi singoli e massivi',
+              'Consulta i nostri template',
+              'Visualizza le nostre API',
+            ],
+          },
+          link: {
+            href: `${pagoPaGuideListsPath.path}/stampa-avvisi-pagamento`,
+            label: 'Vai alla guida',
+          },
+          imagePath: '/images/stampa-avvisi-pagamento.png',
+          mobileImagePath:
+            '/images/stampa-avvisi-pagamento-mobile.png',
+        },
+        {
           title: 'Linee Guida Brand pagoPA',
           description: {
             title: 'Argomenti trattati',
