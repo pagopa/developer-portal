@@ -245,7 +245,7 @@ const avvisiPagamento: GuideDefinition = {
     },
   ],
   bannerLinks: pagoPaBannerLinks,
-}
+};
 
 const errori: GuideDefinition = {
   product: pagoPa,
