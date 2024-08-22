@@ -33,4 +33,10 @@ module "lambda_function" {
     expose_headers    = ["keep-alive", "date"]
     max_age           = 86400
   }
+
+  attach_policy_jsons    = true
+  number_of_policy_jsons = 1
+  policy_jsons = [
+    data.aws_iam_policy_document.lambda_s3_policy.json,
+  ]
 }
