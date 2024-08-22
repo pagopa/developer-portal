@@ -51,21 +51,6 @@ const makeStrapiResponseJson = () => ({
         ],
         image: guideImageJson,
         mobileImage: guideImageJson,
-        product: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'CMS APP IO',
-              description: 'Test desc ',
-              slug: 'app-io',
-              createdAt: '2024-02-15T09:57:22.179Z',
-              updatedAt: '2024-07-17T15:08:58.315Z',
-              publishedAt: '2024-02-15T09:57:24.401Z',
-              locale: 'it',
-              shortName: 'app-io',
-            },
-          },
-        },
       },
     },
   ],
