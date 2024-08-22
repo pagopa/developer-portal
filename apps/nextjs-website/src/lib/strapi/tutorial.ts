@@ -17,6 +17,14 @@ const BannerLinkCodec = t.strict({
   content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
 });
 
+export const BaseTutorialCodec = t.strict({
+  attributes: t.strict({
+    title: t.string,
+    slug: t.string,
+    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+  }),
+});
+
 export const TutorialCodec = t.strict({
   id: t.number,
   attributes: t.strict({
