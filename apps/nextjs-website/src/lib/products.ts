@@ -1,3 +1,4 @@
+import { products } from '@/_contents/products';
 import {
   Products,
   Product as ApiProduct,
@@ -5,13 +6,11 @@ import {
 } from './strapi/codecs/ProductCodec';
 import { Product } from './types/product';
 
-export function makeProductFromAttributes(
-  attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes'],
-  staticProducts: ReadonlyArray<Product>
+export function mergeProductWithStaticContent(
+  attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes']
 ): Product {
   const staticProduct =
-    staticProducts.find((product) => product.slug === attributes.slug) ||
-    staticProducts[0];
+    products.find((product) => product.slug === attributes.slug) || products[0];
   return {
     ...staticProduct,
     ...attributes,
@@ -26,7 +25,7 @@ export function makeProductsProps(
   return [
     ...staticProducts,
     ...products.data.map(({ attributes }) => {
-      return makeProductFromAttributes(attributes, staticProducts);
+      return mergeProductWithStaticContent(attributes);
     }),
   ];
 }

@@ -1,7 +1,6 @@
 import { GuidesPageProps } from '@/app/[productSlug]/guides/page';
 import { StrapiGuideListPages } from './strapi/guideListCodec';
-import { products } from '@/_contents/products';
-import { makeProductFromAttributes } from './products';
+import { mergeProductWithStaticContent } from './products';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 
 type StaticGuideListPages = readonly GuidesPageProps[];
@@ -12,9 +11,8 @@ export function makeGuideListPagesProps(
 ): readonly GuidesPageProps[] {
   return [
     ...strapiGuideListPages.data.map(({ attributes }) => {
-      const product = makeProductFromAttributes(
-        attributes.product.data.attributes,
-        products
+      const product = mergeProductWithStaticContent(
+        attributes.product.data.attributes
       );
       const guidesSections: readonly GuidesSectionProps[] = [
         ...attributes.guidesByCategory.map(({ category, guides }) => ({

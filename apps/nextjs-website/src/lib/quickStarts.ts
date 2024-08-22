@@ -1,10 +1,10 @@
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { StrapiQuickStarts } from './strapi/quickStarts';
-import { products, quickStartGuides } from '@/_contents/products';
+import { quickStartGuides } from '@/_contents/products';
 import { Part } from './types/part';
 import { Step } from './types/step';
 import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-import { makeProductFromAttributes } from './products';
+import { mergeProductWithStaticContent } from './products';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -29,9 +29,8 @@ export function makeQuickStartsProps(
 ): QuickStartGuidesPageProps {
   return [
     ...strapiQuickStarts.data.map((quickStart) => {
-      const product = makeProductFromAttributes(
-        quickStart.attributes.product.data.attributes,
-        products
+      const product = mergeProductWithStaticContent(
+        quickStart.attributes.product.data.attributes
       );
       return {
         abstract: {
