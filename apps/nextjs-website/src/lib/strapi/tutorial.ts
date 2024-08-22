@@ -25,22 +25,22 @@ export const BaseTutorialCodec = t.strict({
   }),
 });
 
-export const TutorialCodec = t.strict({
-  id: t.number,
-  attributes: t.strict({
-    title: t.string,
-    slug: t.string,
-    parts: t.array(PartCodec),
-    createdAt: DateFromISOString,
-    updatedAt: DateFromISOString,
-    publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
-    locale: t.string,
-    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
-    bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
-    relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-    product: t.strict({ data: ProductCodec }),
+export const TutorialCodec = t.intersection([
+  BaseTutorialCodec,
+  t.strict({
+    id: t.number,
+    attributes: t.strict({
+      parts: t.array(PartCodec),
+      createdAt: DateFromISOString,
+      updatedAt: DateFromISOString,
+      publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
+      locale: t.string,
+      bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
+      relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
+      product: t.strict({ data: ProductCodec }),
+    }),
   }),
-});
+]);
 
 export const StrapiTutorialsCodec = t.strict({
   data: t.array(TutorialCodec),
