@@ -1,5 +1,6 @@
 import * as t from 'io-ts/lib';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
+import { MediaAttributesCodec } from './codecs/MediaCodec';
 
 export const SEOImageFormatCodec = t.partial({
   name: t.union([NullToUndefinedCodec, t.string]),
@@ -11,28 +12,6 @@ export const SEOImageFormatCodec = t.partial({
   size: t.union([NullToUndefinedCodec, t.number]),
   path: t.union([NullToUndefinedCodec, t.string]),
   url: t.union([NullToUndefinedCodec, t.string]),
-});
-
-export const SEOImageCodec = t.partial({
-  id: t.union([NullToUndefinedCodec, t.number]),
-  name: t.union([NullToUndefinedCodec, t.string]),
-  alternativeText: t.union([NullToUndefinedCodec, t.string]),
-  caption: t.union([NullToUndefinedCodec, t.string]),
-  width: t.union([NullToUndefinedCodec, t.number]),
-  height: t.union([NullToUndefinedCodec, t.number]),
-  hash: t.union([NullToUndefinedCodec, t.string]),
-  ext: t.union([NullToUndefinedCodec, t.string]),
-  mime: t.union([NullToUndefinedCodec, t.string]),
-  size: t.union([NullToUndefinedCodec, t.number]),
-  url: t.union([NullToUndefinedCodec, t.string]),
-  previewUrl: t.union([NullToUndefinedCodec, t.string]),
-  provider: t.union([NullToUndefinedCodec, t.string]),
-  provider_metadata: t.union([NullToUndefinedCodec, t.unknown]),
-  formats: t.partial({
-    thumbnail: SEOImageFormatCodec,
-    small: SEOImageFormatCodec,
-    medium: SEOImageFormatCodec,
-  }),
 });
 
 export const SEOMetaSocialCodec = t.partial({
@@ -56,7 +35,7 @@ export const SEOCodec = t.partial({
   metaImage: t.partial({
     data: t.union([
       NullToUndefinedCodec,
-      t.partial({ attributes: SEOImageCodec }),
+      t.partial({ attributes: MediaAttributesCodec }),
     ]),
   }),
   metaSocial: t.array(SEOMetaSocialCodec),
