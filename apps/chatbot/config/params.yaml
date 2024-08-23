@@ -8,7 +8,7 @@ vector_index:
   redis_url: redis://localhost:6379
 
 models:
-  model_id: mistral.mistral-large-2402-v1:0
+  model_id: amazon.titan-text-express-v1
   emded_model_id: cohere.embed-multilingual-v3
   temperature: 0.3
   topP: 1.
