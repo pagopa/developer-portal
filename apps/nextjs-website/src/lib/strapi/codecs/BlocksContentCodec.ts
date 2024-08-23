@@ -1,6 +1,5 @@
 import * as t from 'io-ts/lib';
 import { type BlocksContent } from '@strapi/blocks-react-renderer';
-import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { MediaAttributesCodec } from './MediaCodec';
 
 const TextInlineNodeCodec = t.intersection([
