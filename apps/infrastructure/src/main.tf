@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.33.0"
+      version = "5.37.0"
     }
 
     awscc = {
@@ -110,13 +110,16 @@ module "chatbot" {
   providers = {
     aws   = aws.chatbot_region
     awscc = awscc.chatbot_region
+
+    aws.eu-south-1 = aws
   }
 
   aws_chatbot_region = var.aws_chatbot_region
   environment        = var.environment
   tags               = var.tags
 
-  website_bucket_name = module.website.website_bucket_name
+  website_bucket_name     = module.website.website_bucket_name
   dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
-  cognito_user_pool = module.website.cognito_user_pool
+  cognito_user_pool       = module.website.cognito_user_pool
+  vpc                     = module.cms.vpc
 }

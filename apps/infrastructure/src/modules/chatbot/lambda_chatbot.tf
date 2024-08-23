@@ -8,6 +8,9 @@ locals {
 
 module "lambda_function" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
+  providers = {
+    aws = aws.eu-south-1
+  }
 
   function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
@@ -22,9 +25,6 @@ module "lambda_function" {
 
   timeout     = 180
   memory_size = 4092
-<<<<<<< HEAD
-}
-=======
 
   attach_policy_jsons    = true
   number_of_policy_jsons = 1
@@ -32,4 +32,13 @@ module "lambda_function" {
     data.aws_iam_policy_document.lambda_s3_policy.json,
   ]
 }
->>>>>>> 1314e3cb (feat: implemented networking and alb resources)
+
+resource "aws_lambda_permission" "lambda_permission" {
+  provider      = aws.eu-south-1
+  statement_id  = "AllowAPIGWInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_function.lambda_function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${module.api_gateway.api_execution_arn}/*/*"
+}

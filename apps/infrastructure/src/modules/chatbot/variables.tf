@@ -46,9 +46,24 @@ variable "dns_chatbot_hosted_zone" {
 
 variable "cognito_user_pool" {
   type = object({
-    client_id = string
+    id        = string
     arn       = string
     domain    = string
+    region    = string
+    client_id = string
+    endpoint  = string
   })
+  sensitive   = true
   description = "The cognito user pool used to authenticate api calls"
+}
+
+variable "vpc" {
+  type = object({
+    id               = string
+    public_subnets   = list(string)
+    database_subnets = list(string)
+    private_subnets  = list(string)
+  })
+
+  description = "The VPC used to deploy the resources"
 }
