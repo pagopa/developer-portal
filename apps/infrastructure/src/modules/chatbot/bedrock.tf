@@ -1,5 +1,5 @@
 resource "awscc_bedrock_guardrail" "guardrail" {
-  name                      = "${var.module}-${var.environment}-safety-block-guardrail"
+  name                      = "${local.prefix}-safety-block-guardrail"
   blocked_input_messaging   = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   blocked_outputs_messaging = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   description               = "Guardrail that blocks offensive language and PII entities"

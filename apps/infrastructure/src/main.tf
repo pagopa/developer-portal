@@ -112,4 +112,6 @@ module "chatbot" {
   tags               = var.tags
 
   website_bucket_name = module.website.website_bucket_name
+  dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
+  cognito_user_pool = module.website.cognito_user_pool
 }

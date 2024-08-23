@@ -35,3 +35,20 @@ variable "website_bucket_name" {
   type        = string
   description = "The name of the website bucket"
 }
+
+variable "dns_chatbot_hosted_zone" {
+  type = object({
+    name = string
+    id   = string
+  })
+  description = "The name of the chatbot hosted zone"
+}
+
+variable "cognito_user_pool" {
+  type = object({
+    client_id = string
+    arn       = string
+    domain    = string
+  })
+  description = "The cognito user pool used to authenticate api calls"
+}

@@ -9,8 +9,8 @@ locals {
 module "lambda_function" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
 
-  function_name = "chatbot-api-tf"
-  description   = "chatbot"
+  function_name = "${local.prefix}-api-lambda"
+  description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
   environment_variables = local.lambda_env_variables
   create_package        = false
@@ -22,15 +22,4 @@ module "lambda_function" {
 
   timeout     = 180
   memory_size = 4092
-
-  create_lambda_function_url = true
-  authorization_type         = "AWS_IAM"
-  cors = {
-    allow_credentials = true
-    allow_origins     = ["*"]
-    allow_methods     = ["*"]
-    allow_headers     = ["date", "keep-alive"]
-    expose_headers    = ["keep-alive", "date"]
-    max_age           = 86400
-  }
 }
