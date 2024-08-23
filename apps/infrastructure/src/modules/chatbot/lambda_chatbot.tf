@@ -3,6 +3,7 @@ locals {
     CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.id
+    CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
   }
 }
 
