@@ -22,4 +22,14 @@ module "lambda_function" {
 
   timeout     = 180
   memory_size = 4092
+<<<<<<< HEAD
 }
+=======
+
+  attach_policy_jsons    = true
+  number_of_policy_jsons = 1
+  policy_jsons = [
+    data.aws_iam_policy_document.lambda_s3_policy.json,
+  ]
+}
+>>>>>>> 1314e3cb (feat: implemented networking and alb resources)
