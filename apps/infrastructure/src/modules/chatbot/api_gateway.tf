@@ -46,31 +46,6 @@ module "api_gateway" {
         timeout_milliseconds   = 30000
       }
     }
-
-    # "$default" = {
-    #   integration = {
-    #     uri = module.lambda_function.lambda_function_arn
-    #     tls_config = {
-    #       server_name_to_verify = var.domain_name
-    #     }
-
-    #     response_parameters = [
-    #       {
-    #         status_code = 500
-    #         mappings = {
-    #           "append:header.header1" = "$context.requestId"
-    #           "overwrite:statuscode"  = "403"
-    #         }
-    #       },
-    #       {
-    #         status_code = 404
-    #         mappings = {
-    #           "append:header.error" = "$stageVariables.environmentId"
-    #         }
-    #       }
-    #     ]
-    #   }
-    # }
   }
 
   # Stage
