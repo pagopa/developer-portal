@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Change in path parsing for "Manuale Back office EC"
+Change in path rewrite for "Manuale Back office EC/PT/PSP"
