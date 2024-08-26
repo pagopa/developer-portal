@@ -1,8 +1,5 @@
 module "ssl_certificate" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
-  providers = {
-    aws = aws.eu-south-1
-  }
+  source      = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
   domain_name = "dummy.${var.dns_chatbot_hosted_zone.name}"
   zone_id     = var.dns_chatbot_hosted_zone.id
 

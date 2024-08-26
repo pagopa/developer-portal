@@ -3,9 +3,6 @@
 # ################################################################################
 module "redis" {
   source = "git::https://github.com/cloudposse/terraform-aws-elasticache-redis.git?ref=4b296b84f68228e6db25ba1c0a8cb5f7f2ba9780" # v1.4.1
-  providers = {
-    aws = aws.eu-south-1
-  }
 
   name                             = "${local.prefix}-redis"
   availability_zones               = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -29,7 +26,6 @@ module "redis" {
 }
 
 resource "aws_security_group" "redis" {
-  provider    = aws.eu-south-1
   name        = "${local.prefix}-redis"
   description = "Redis"
   vpc_id      = var.vpc.id
@@ -41,7 +37,6 @@ resource "aws_security_group" "redis" {
 }
 
 resource "aws_security_group_rule" "redis_egress" {
-  provider = aws.eu-south-1
   type              = "egress"
   from_port         = 0
   to_port           = 0
@@ -51,7 +46,6 @@ resource "aws_security_group_rule" "redis_egress" {
 }
 
 resource "aws_security_group_rule" "lambda_redis_ingress" {
-  provider = aws.eu-south-1
   type                     = "ingress"
   from_port                = 6379
   to_port                  = 6379

@@ -37,7 +37,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "chatbot_region"
+  alias  = "eu-west-3"
   region = var.aws_chatbot_region
 
   default_tags {
@@ -46,7 +46,7 @@ provider "aws" {
 }
 
 provider "awscc" {
-  alias  = "chatbot_region"
+  alias  = "eu-west-3"
   region = var.aws_chatbot_region
 }
 
@@ -108,10 +108,10 @@ module "chatbot" {
   count  = var.environment == "dev" ? 1 : 0
   source = "./modules/chatbot"
   providers = {
-    aws   = aws.chatbot_region
-    awscc = awscc.chatbot_region
-
-    aws.eu-south-1 = aws
+    aws             = aws
+    aws.eu-west-3   = aws.eu-west-3
+    awscc           = awscc
+    awscc.eu-west-3 = awscc.eu-west-3
   }
 
   aws_chatbot_region = var.aws_chatbot_region

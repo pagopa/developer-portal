@@ -1,8 +1,5 @@
 module "api_gateway" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-apigateway-v2.git?ref=881eacdacff52b691eff2c80b6bf2998cc8f5f5e" # v5.1.3
-  providers = {
-    aws = aws.eu-south-1
-  }
   cors_configuration = {
     allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
     allow_methods = ["*"]

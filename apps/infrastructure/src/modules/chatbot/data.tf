@@ -17,6 +17,5 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
 data "aws_caller_identity" "current" {}
 
 data "aws_availability_zones" "available" {
-  provider = aws.eu-south-1
   state = "available"
 }

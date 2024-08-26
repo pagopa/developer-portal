@@ -4,15 +4,12 @@ locals {
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.id
     CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
-    CHB_REDIS_URL             = "redis://${module.redis.endpoint}:${module.redis.port}" 
+    CHB_REDIS_URL             = "redis://${module.redis.endpoint}:${module.redis.port}"
   }
 }
 
 module "lambda_function" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
-  providers = {
-    aws = aws.eu-south-1
-  }
 
   function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
@@ -41,7 +38,6 @@ module "lambda_function" {
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
-  provider      = aws.eu-south-1
   statement_id  = "AllowAPIGWInvoke"
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_function.lambda_function_name
@@ -51,7 +47,6 @@ resource "aws_lambda_permission" "lambda_permission" {
 }
 
 resource "aws_security_group" "lambda" {
-  provider    = aws.eu-south-1
   name        = "${local.prefix}-lambda"
   description = "Chatbot Lambda"
   vpc_id      = var.vpc.id
@@ -63,7 +58,6 @@ resource "aws_security_group" "lambda" {
 }
 
 resource "aws_security_group_rule" "lambda_egress" {
-  provider = aws.eu-south-1
   type              = "egress"
   from_port         = 0
   to_port           = 0
