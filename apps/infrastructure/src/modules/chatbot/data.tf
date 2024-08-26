@@ -12,6 +12,20 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
     actions   = ["s3:*Object"]
     resources = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
   }
+
+  statement {
+    sid    = "BedrockPermissions"
+    effect = "Allow"
+    actions = [
+      "bedrock:ApplyGuardrail",
+      "bedrock:ListGuardrails",
+      "bedrock:GetGuardrail",
+      "bedrock:InvokeModel",
+      "bedrock:InvokeModelWithResponseStream",
+      "bedrock:ListFoundationModels"
+    ]
+    resources = ["*"]
+  }
 }
 
 data "aws_caller_identity" "current" {}

@@ -13,8 +13,6 @@ logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
-chatbot = Chatbot(params, prompts)
-
 class Query(BaseModel):
   sessionId: str | None = None
   question: str
@@ -42,6 +40,8 @@ async def healthz ():
 
 @app.post("/queries")
 async def query_creation (query: Query):
+  # Moving this line inside the function to avoid initializing timeout in Lambda
+  chatbot = Chatbot(params, prompts)
   answer = chatbot.generate(query.question)
 
   # TODO: dynamoDB integration

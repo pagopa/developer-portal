@@ -24,20 +24,20 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
-AWS_ACCESS_KEY_ID=os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
-AWS_SECRET_ACCESS_KEY=os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
-AWS_DEFAULT_REGION=os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+AWS_ACCESS_KEY_ID=os.getenv('CHB_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY=os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
+CHB_AWS_DEFAULT_REGION=os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 
 FS = s3fs.S3FileSystem(
     key=AWS_ACCESS_KEY_ID,
     secret=AWS_SECRET_ACCESS_KEY,
-    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
+    endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
 )
 
 FS = s3fs.S3FileSystem(
     key=AWS_ACCESS_KEY_ID,
     secret=AWS_SECRET_ACCESS_KEY,
-    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
+    endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
 )
 
 DYNAMIC_HTMLS = [
@@ -224,9 +224,8 @@ def build_automerging_index(
     )
     logging.info(f"Created index successfully.")
     if s3_bucket_name:
-
         # store hash table
-        with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
+        with FS.open(f'{s3_bucket_name}/hash_table.json', 'w') as f:
             json.dump(hash_table, f, indent=4)
         logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
