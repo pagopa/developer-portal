@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.37.0"
+      version = "5.47.0"
     }
 
     awscc = {
@@ -122,4 +122,5 @@ module "chatbot" {
   dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
   cognito_user_pool       = module.website.cognito_user_pool
   vpc                     = module.cms.vpc
+  chatbot_redis           = var.chatbot_redis
 }

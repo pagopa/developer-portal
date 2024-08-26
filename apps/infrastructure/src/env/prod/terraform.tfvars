@@ -31,3 +31,9 @@ dns_domain_name_cms = {
     comment = "DNS domain name of the Developer Portal's CMS"
   }
 }
+
+# chatbot_redis = {
+#   instance_type      = "cache.t4g.medium"
+#   cluster_size       = "1"
+#   automatic_failover = "false"
+# }

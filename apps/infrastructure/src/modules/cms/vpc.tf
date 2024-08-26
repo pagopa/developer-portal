@@ -14,6 +14,8 @@ module "vpc" {
   public_subnet_names          = ["cms_public_1", "cms_public_2", "cms_public_3"]
   database_subnets             = ["10.0.201.0/24", "10.0.202.0/24", "10.0.203.0/24"]
   database_subnet_names        = ["cms_database_1", "cms_database_2", "cms_database_3"]
+  elasticache_subnets          = ["10.0.211.0/24", "10.0.212.0/24", "10.0.213.0/24"]
+  elasticache_subnet_names     = ["cms_elasticache_1", "cms_elasticache_2", "cms_elasticache_3"]
   public_dedicated_network_acl = true
   enable_nat_gateway           = true
   single_nat_gateway           = true

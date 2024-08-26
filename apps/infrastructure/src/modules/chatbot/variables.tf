@@ -59,11 +59,35 @@ variable "cognito_user_pool" {
 
 variable "vpc" {
   type = object({
-    id               = string
-    public_subnets   = list(string)
-    database_subnets = list(string)
-    private_subnets  = list(string)
+    id                  = string
+    public_subnets      = list(string)
+    database_subnets    = list(string)
+    private_subnets     = list(string)
+    elasticache_subnets = list(string)
   })
 
   description = "The VPC used to deploy the resources"
+}
+
+################################################################################
+# ElastiCache - Redis
+################################################################################
+
+variable "chatbot_redis" {
+  type = object({
+    cluster_creating                 = optional(bool, true)
+    cluster_size                     = optional(number, 1)
+    instance_type                    = string
+    engine_version                   = optional(string, "7.0")
+    family                           = optional(string, "redis7")
+    at_rest_encryption_enabled       = optional(bool, true)
+    transit_encryption_enabled       = optional(bool, true)
+    automatic_failover               = optional(bool, true)
+    multi_az                         = optional(bool, false)
+    snapshot_retention_limit         = optional(number, 0)
+    snapshot_windows                 = optional(string, "06:30-07:30")
+    cloudwatch_metric_alarms_enabled = optional(bool, true)
+    auto_minor_version_upgrade       = optional(bool, false)
+  })
+  description = "Redis configuration for the AI chatbot"
 }
