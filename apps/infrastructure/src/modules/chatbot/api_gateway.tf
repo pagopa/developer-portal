@@ -33,7 +33,7 @@ module "api_gateway" {
 
   # Routes & Integration(s)
   routes = {
-    "ANY /" = {
+    "ANY /{proxy+}" = {
       authorization_type = "JWT"
       authorizer_key     = "cognito"
 
