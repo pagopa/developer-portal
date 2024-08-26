@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGuidePaths } from '@/lib/api';
+import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import {
@@ -14,6 +14,7 @@ import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { getGuidesProps } from '@/lib/cmsApi';
 
 type Params = {
   productSlug: string;
@@ -21,9 +22,9 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return getGuidePaths().map(({ slug, guidePaths }) => ({
-    productSlug: slug,
-    productGuidePage: guidePaths,
+  return (await getGuidesProps()).map((guidePage) => ({
+    productSlug: guidePage.product.slug,
+    productGuidePage: getProductGuidePath(guidePage.guide.path),
   }));
 }
 
