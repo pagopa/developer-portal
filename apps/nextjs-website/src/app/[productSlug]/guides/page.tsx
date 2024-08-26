@@ -1,5 +1,5 @@
 import { Product } from '@/lib/types/product';
-import { getGuideLists, getProductsSlugs } from '@/lib/api';
+import { getGuideLists } from '@/lib/api';
 import {
   GuidesSection,
   GuidesSectionProps,
@@ -13,10 +13,11 @@ import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { getGuideListPagesProps } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('guides')].map((productSlug) => ({
-    productSlug,
+  (await getGuideListPagesProps()).map(({ product }) => ({
+    productSlug: product.slug,
   }));
 }
 
