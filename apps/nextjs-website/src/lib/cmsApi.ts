@@ -14,7 +14,12 @@ import {
   makeQuickStartsProps,
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
-import { guideLists, products, quickStartGuides } from '@/_contents/products';
+import {
+  guideLists,
+  guidesDefinitions,
+  products,
+  quickStartGuides,
+} from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
 import { fetchSolutions } from './strapi/solutionsCodec';
@@ -29,6 +34,9 @@ import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductsProps } from './products';
 import { fetchGuideList } from './strapi/guideListCodec';
 import { makeGuideListPagesProps } from './guideListPages';
+import { fetchGuides } from './strapi/guidesCodec';
+import { makeGuidesProps } from './guides';
+import { makeGuide } from '@/_contents/makeDocs';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -187,5 +195,21 @@ export const getGuideListPagesProps = async () => {
     return makeGuideListPagesProps(strapiGuideList, guideLists);
   } else {
     return guideLists;
+  }
+};
+
+export const getGuidesProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiGuides = await fetchGuides(buildEnv);
+    const t = makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(
+      makeGuide
+    );
+    return t;
+  } else {
+    return guidesDefinitions.flatMap(makeGuide);
   }
 };
