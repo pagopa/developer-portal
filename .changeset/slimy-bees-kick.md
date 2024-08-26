@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-connect guide list page to strapi data
+Connect guide list page to Strapi data
