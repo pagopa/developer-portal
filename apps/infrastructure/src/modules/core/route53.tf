@@ -83,14 +83,16 @@ module "active_campaign_dns_records" {
 }
 
 resource "aws_route53_zone" "chatbot" {
+  count  = var.create_chatbot ? 1 : 0
   name = "${var.dns_chatbot_domain_prefix}.${aws_route53_zone.dev_portal.name}"
 }
 
 # Delegation
 resource "aws_route53_record" "chatbot_ns" {
+  count  = var.create_chatbot ? 1 : 0
   zone_id = aws_route53_zone.dev_portal.zone_id
-  name    = aws_route53_zone.chatbot.name
+  name    = aws_route53_zone.chatbot[0].name
   type    = "NS"
   ttl     = 300
-  records = aws_route53_zone.chatbot.name_servers
+  records = aws_route53_zone.chatbot[0].name_servers
 }

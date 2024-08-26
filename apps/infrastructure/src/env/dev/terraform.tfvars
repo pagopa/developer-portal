@@ -29,6 +29,8 @@ dns_domain_name_cms = {
   }
 }
 
+create_chatbot = true
+
 chatbot_redis = {
   instance_type      = "cache.t4g.small"
   cluster_size       = "1"

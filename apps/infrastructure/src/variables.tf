@@ -92,11 +92,17 @@ variable "aws_chatbot_region" {
   default     = "eu-west-3"
 }
 
+variable "create_chatbot" {
+  type        = bool
+  description = "Defines if chatbot should be created"
+  default     = false
+}
+
 variable "chatbot_redis" {
   type = object({
     cluster_creating                 = optional(bool, true)
     cluster_size                     = optional(number, 1)
-    instance_type                    = string
+    instance_type                    = optional(string, "cache.t4g.small")
     engine_version                   = optional(string, "7.0")
     family                           = optional(string, "redis7")
     at_rest_encryption_enabled       = optional(bool, true)
@@ -109,4 +115,6 @@ variable "chatbot_redis" {
     auto_minor_version_upgrade       = optional(bool, false)
   })
   description = "Redis configuration for the AI chatbot"
+
+  default = {}
 }

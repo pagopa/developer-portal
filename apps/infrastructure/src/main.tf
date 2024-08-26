@@ -64,6 +64,8 @@ module "core" {
 
   dns_domain_name      = var.dns_domain_name
   dns_delegate_records = var.dns_delegate_records
+
+  create_chatbot = var.create_chatbot
 }
 
 module "website" {
@@ -105,7 +107,7 @@ module "cms" {
 }
 
 module "chatbot" {
-  count  = var.environment == "dev" ? 1 : 0
+  count  = var.create_chatbot ? 1 : 0
   source = "./modules/chatbot"
   providers = {
     aws             = aws
