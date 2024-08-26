@@ -16,7 +16,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { getGuideListPagesProps } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
-  (await getGuideListPagesProps()).map(({ product }) => ({
+  return (await getGuideListPagesProps()).map(({ product }) => ({
     productSlug: product.slug,
   }));
 }
