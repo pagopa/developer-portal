@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add seo homepage codec
+Add seo attribute to homepage codec
