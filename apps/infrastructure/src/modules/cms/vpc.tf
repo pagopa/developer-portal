@@ -29,6 +29,15 @@ resource "aws_security_group" "vpc_endpoints" {
   description = "Associated to ECR/s3 VPC Endpoints"
   vpc_id      = module.vpc.vpc_id
 }
+resource "aws_security_group_rule" "vpc_endpoints" {
+  type              = "ingress"
+  description       = "Allow Chatbot Lambda to pull images from ECR via VPC endpoints"
+  protocol          = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.vpc_endpoints.id
+}
 
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id              = module.vpc.vpc_id
@@ -42,4 +51,23 @@ resource "aws_vpc_endpoint" "ecr_api" {
   tags = {
     "Name" = "${var.environment}-ecr-endpoint"
   }
+}
+
+resource "aws_vpc_endpoint" "ssmmessages" {
+  vpc_id              = module.vpc.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ssmmessages"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  subnet_ids         = module.vpc.private_subnets
+
+  tags = {
+    "Name" = "${var.environment}-ecr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = module.vpc.vpc_id
+  service_name = "com.amazonaws.${var.aws_region}.s3"
 }
