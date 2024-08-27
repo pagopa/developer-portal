@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import { defaultOgTagImage } from '@/config';
+import { SEO } from '@/lib/types/seo';
 import { Metadata, ResolvedMetadata } from 'next';
 
 type MakeMetadataParams = {
@@ -12,6 +13,15 @@ type MakeMetadataParams = {
 };
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
+
+export const makeMetadataFromStrapiCeoPlugin = (seo: SEO): Metadata => {
+  return makeMetadata({
+    title: seo.metaTitle,
+    description: seo.metaDescription,
+    url: seo.canonicalURL,
+    image: seo.metaImage?.data?.attributes?.url,
+  });
+};
 
 export const makeMetadata: MakeMetadataFunction = ({
   parent,
