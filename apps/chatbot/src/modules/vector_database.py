@@ -24,16 +24,35 @@ from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 
-AWS_ACCESS_KEY_ID=os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
-AWS_SECRET_ACCESS_KEY=os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
-AWS_DEFAULT_REGION=os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+from redis import Redis
+from llama_index.storage.docstore.redis import RedisDocumentStore
+from llama_index.storage.index_store.redis import RedisIndexStore
+from llama_index.storage.kvstore.redis import RedisKVStore
+from llama_index.vector_stores.redis import RedisVectorStore
+from redisvl.schema import IndexSchema
 
-FS = s3fs.S3FileSystem(
-    key=AWS_ACCESS_KEY_ID,
-    secret=AWS_SECRET_ACCESS_KEY,
-    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
-)
+from dotenv import load_dotenv
 
+load_dotenv()
+
+
+AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+CHB_REDIS_URL = os.getenv('CHB_REDIS_URL')
+REDIS_CLIENT = Redis.from_url(CHB_REDIS_URL)
+REDIS_SCHEMA = IndexSchema.from_dict({
+    "index": {"name": "index", "prefix": "index/vector"},
+    "fields": [
+        {"name": "id", "type": "tag", "attrs": {"sortable": False}},
+        {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
+        {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
+        {"name": "vector", "type": "vector", "attrs": {"dims": 1024, "algorithm": "flat", "distance_metric": "cosine"}}
+    ]
+})
+REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT)
+REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
+REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
 FS = s3fs.S3FileSystem(
     key=AWS_ACCESS_KEY_ID,
     secret=AWS_SECRET_ACCESS_KEY,
@@ -142,7 +161,7 @@ def create_documentation(
             title, text = html2markdown(open(file))
 
         if text == None or text == "" or text == "None":
-            print(file)
+            # print(file)
             empty_pages.append(file)
 
         else:
@@ -172,8 +191,8 @@ def create_documentation(
                 }
             ))
 
-            full_text += text
-            full_text += "\n\n---------------------------\n\n"
+            # full_text += text
+            # full_text += "\n\n---------------------------\n\n"
 
     # with open("full_text.txt", "w") as f:
     #     f.write(full_text)
@@ -186,7 +205,7 @@ def create_documentation(
     return documents, hash_table
 
 
-def build_automerging_index(
+def build_automerging_index_s3(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         documentation_dir: str,
@@ -195,6 +214,8 @@ def build_automerging_index(
         chunk_sizes: List[int],
         chunk_overlap: int
     ) -> VectorStoreIndex:
+
+    logging.info("Storing vector index and hash table on AWS bucket S3..")
     
     node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
@@ -248,6 +269,63 @@ def build_automerging_index(
     return automerging_index
 
 
+def build_automerging_index_redis(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        documentation_dir: str,
+        chunk_sizes: List[int],
+        chunk_overlap: int
+    ) -> VectorStoreIndex:
+
+    logging.info("Storing vector index and hash table on Redis..")
+    
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+    
+    documents, hash_table = create_documentation(documentation_dir)
+    for key, value in hash_table.items():
+        REDIS_KVSTORE.put(
+            collection="hash_table",
+            key=key,
+            val=value
+        )
+    logging.info("Hash table is now on Redis.")
+
+    logging.info("Creating index...")
+    nodes = node_parser.get_nodes_from_documents(documents)
+    leaf_nodes = get_leaf_nodes(nodes)
+
+    redis_vector_store = RedisVectorStore(
+        redis_client=REDIS_CLIENT,
+        overwrite=True,
+        schema=REDIS_SCHEMA
+    )
+
+    storage_context = StorageContext.from_defaults(
+        vector_store=redis_vector_store,
+        docstore=REDIS_DOCSTORE,
+        index_store=REDIS_INDEX_STORE
+    )
+    storage_context.docstore.add_documents(nodes)
+
+    automerging_index = VectorStoreIndex(
+        leaf_nodes,
+        storage_context=storage_context,
+        service_context=merging_context
+    )
+    logging.info("Created vector index successfully and stored on Redis.")
+
+    return automerging_index
+
+
 def load_url_hash_table(
     s3_bucket_name: str | None,
     ) -> dict:
@@ -266,7 +344,7 @@ def load_url_hash_table(
     return hash_table
 
 
-def load_automerging_index(
+def load_automerging_index_s3(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         save_dir: str,
@@ -306,5 +384,44 @@ def load_automerging_index(
         )
 
     logging.info("Loaded vector index successfully!")
+
+    return automerging_index
+
+
+def load_automerging_index_redis(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        chunk_sizes: List[int],
+        chunk_overlap: int,
+    ) -> VectorStoreIndex:
+    
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+
+    redis_vector_store = RedisVectorStore(
+        redis_client=REDIS_CLIENT,
+        overwrite=False,
+        schema=REDIS_SCHEMA
+    )
+
+    logging.info(f"Loading vector index from Redis...")
+    storage_context = StorageContext.from_defaults(
+        vector_store=redis_vector_store,
+        docstore=REDIS_DOCSTORE,
+        index_store=REDIS_INDEX_STORE
+    )
+
+    automerging_index = load_index_from_storage(
+        storage_context=storage_context,
+        service_context=merging_context
+    )
 
     return automerging_index
