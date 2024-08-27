@@ -59,11 +59,6 @@
       },
       "component": "common.guide-version"
     },
-    "product": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product.product"
-    },
     "image": {
       "type": "media",
       "multiple": false,
