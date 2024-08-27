@@ -42,9 +42,9 @@ Create a `.env` file inside the folder and write to the file the following envir
 
 First of all, verify that the HTML files that compose the Developer Portal documentation exist in a directory. Otherwise create the documentation. Once you have the documentation directory ready, put its path in `params` and, in the end, create the vector index doing:
 
-    python src/modules/create_vector_index.py --params config/params.yaml
+    python src/modules/create_vector_index.py --params config/params.yaml --use-redis
 
-This script reads the documentation, split it into chucks with gerarchical organization and stores it in the folder `index` or load it from a S3 bucket or Redis.
+This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis. If the input `--use-redis` is missing, then the index is stored on a AWS S3 bucket.
 
 ## Web App
 
