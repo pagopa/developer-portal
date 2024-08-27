@@ -112,7 +112,7 @@ const makeStrapiHomepagePopulate = () =>
         populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
       },
       seo: {
-        populate: ['metaImage', '*'],
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });
