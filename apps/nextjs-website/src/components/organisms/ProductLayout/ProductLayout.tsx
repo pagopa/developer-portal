@@ -8,6 +8,7 @@ import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
@@ -39,7 +40,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
           />
         </EContainer>
       )}
-      {children}
+      <ContentWrapper>{children}</ContentWrapper>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
     </>
   );

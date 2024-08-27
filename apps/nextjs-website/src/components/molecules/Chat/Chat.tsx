@@ -1,34 +1,34 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
-import {
-  Box,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack,
-  useTheme,
-} from '@mui/material';
-import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, Button, Stack, useTheme } from '@mui/material';
+import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Delete, History } from '@mui/icons-material';
+import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
+import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
+import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  sendDisabled?: boolean;
+  scrollToBottom: boolean;
+  isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
 };
 
-const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
+const Chat = ({
+  queries,
+  onSendQuery,
+  scrollToBottom,
+  isAwaitingResponse,
+  isChatbotLoaded,
+}: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const messages = useMemo(
     () =>
       compact(
@@ -51,115 +51,65 @@ const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
       ),
     [queries]
   ) satisfies Message[];
-  const open = Boolean(anchorEl);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current.scrollIntoView({
+        behavior: instantScroll ? 'auto' : 'smooth',
+      });
     }
-  }, [queries]);
-
-  const handleChatMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setInstantScroll(false);
+  }, [queries, instantScroll, setInstantScroll]);
 
   return (
-    <Stack direction={'column'}>
+    <>
       <Box
-        bgcolor={palette.grey[200]}
-        width={'auto'}
-        sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
-      >
-        <Stack
-          direction={'row'}
-          justifyContent={'flex-end'}
-          paddingX={'0.75rem'}
-          paddingY={'0.25rem'}
-        >
-          <IconButton
-            aria-controls='chat-menu'
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleChatMenuClick}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id='chat-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'chat-button',
-            }}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Delete fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <History fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-          </Menu>
-        </Stack>
-      </Box>
-      <Box
-        bgcolor={palette.grey[300]}
         sx={{
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
-          padding: 2,
+          backgroundColor: palette.background.paper,
+          borderBottom: '2px solid',
+          borderBottomColor: palette.action.disabled,
+          width: 'auto',
         }}
       >
-        <Stack
-          direction={'column'}
-          minHeight='50vh'
-          maxHeight='50vh'
-          justifyContent='space-between'
-        >
-          <Stack
-            direction={'column'}
-            sx={{
-              overflow: 'auto',
-              paddingRight: '0.5rem',
-            }}
-          >
-            {messages.map((message, index) => (
-              <Stack
-                key={index}
-                ref={index === messages.length - 1 ? scrollRef : null}
-                direction={'row'}
-                width={'100%'}
-                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-                marginBottom={'1rem'}
-              >
-                <ChatMessage {...message} />
-              </Stack>
-            ))}
-          </Stack>
-          <Box sx={{ paddingTop: '1rem' }}>
-            <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
-          </Box>
+        <Stack direction={'row'} paddingY={'0.25rem'}>
+          <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+            <History fontSize='small' />
+            <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
+              {t('chatBot.history')}
+            </span>
+          </Button>
         </Stack>
       </Box>
-    </Stack>
+      <Stack
+        direction={'column'}
+        sx={{
+          overflow: 'auto',
+          paddingRight: '0.5rem',
+          paddingX: { xs: 1, md: 4 },
+          backgroundColor: palette.background.paper,
+          height: '100%',
+        }}
+      >
+        {!messages.length && !isChatbotLoaded && <ChatSkeleton />}
+        {messages.map((message, index) => (
+          <Stack
+            key={index}
+            ref={index === messages.length - 1 ? scrollRef : null}
+            direction='row'
+            width='100%'
+            justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
+            marginTop={index === 0 ? 2 : 0}
+            marginBottom={2}
+          >
+            <ChatMessage {...message} />
+          </Stack>
+        ))}
+        {isAwaitingResponse && <ChatCatbotWriting />}
+      </Stack>
+      <ChatInputText onSubmit={onSendQuery} sendDisabled={isAwaitingResponse} />
+    </>
   );
 };
 
