@@ -23,3 +23,23 @@ module "vpc" {
   enable_dns_support           = true
   create_database_subnet_group = true
 }
+
+resource "aws_security_group" "vpc_endpoints" {
+  name_prefix = "${var.environment}-vpc-endpoints"
+  description = "Associated to ECR/s3 VPC Endpoints"
+  vpc_id      = module.vpc.vpc_id
+}
+
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id              = module.vpc.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  subnet_ids         = module.vpc.private_subnets
+
+  tags = {
+    "Name" = "${var.environment}-ecr-endpoint"
+  }
+}

@@ -69,6 +69,11 @@ variable "vpc" {
   description = "The VPC used to deploy the resources"
 }
 
+variable "security_groups" {
+  type        = map(string)
+  description = "The security groups used to deploy the resources"
+}
+
 ################################################################################
 # ElastiCache - Redis
 ################################################################################

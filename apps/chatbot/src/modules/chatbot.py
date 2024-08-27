@@ -23,6 +23,7 @@ AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare contenuti inappropriati.
 Riformula la domanda in modo che non violi queste linee guida."""
 RESPONSE_TYPE = Union[
@@ -84,6 +85,8 @@ class Chatbot():
             refine_template=self.ref_prompt_tmpl,
             verbose=self.params["retriever"]["verbose"]
         )
+
+        logging.getLogger().setLevel(level=LOG_LEVEL)
 
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:

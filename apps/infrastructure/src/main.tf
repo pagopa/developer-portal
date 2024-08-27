@@ -124,5 +124,6 @@ module "chatbot" {
   dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
   cognito_user_pool       = module.website.cognito_user_pool
   vpc                     = module.cms.vpc
+  security_groups         = module.cms.security_groups
   chatbot_redis           = var.chatbot_redis
 }

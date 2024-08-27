@@ -7,3 +7,9 @@ output "vpc" {
     elasticache_subnets = module.vpc.elasticache_subnets
   }
 }
+
+output "security_groups" {
+  value = {
+    vpc_endpoints = aws_security_group.vpc_endpoints.id
+  }
+}

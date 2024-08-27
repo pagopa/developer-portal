@@ -33,7 +33,40 @@ module "api_gateway" {
 
   # Routes & Integration(s)
   routes = {
-    "ANY /{proxy+}" = {
+    "GET /{proxy+}" = {
+      authorization_type = "JWT"
+      authorizer_key     = "cognito"
+
+      integration = {
+        uri                    = module.lambda_function.lambda_function_arn
+        payload_format_version = "2.0"
+        timeout_milliseconds   = 30000
+      }
+    }
+
+    "POST /{proxy+}" = {
+      authorization_type = "JWT"
+      authorizer_key     = "cognito"
+
+      integration = {
+        uri                    = module.lambda_function.lambda_function_arn
+        payload_format_version = "2.0"
+        timeout_milliseconds   = 30000
+      }
+    }
+
+    "PUT /{proxy+}" = {
+      authorization_type = "JWT"
+      authorizer_key     = "cognito"
+
+      integration = {
+        uri                    = module.lambda_function.lambda_function_arn
+        payload_format_version = "2.0"
+        timeout_milliseconds   = 30000
+      }
+    }
+
+    "PATCH /{proxy+}" = {
       authorization_type = "JWT"
       authorizer_key     = "cognito"
 

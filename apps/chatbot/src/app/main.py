@@ -19,7 +19,7 @@ class Query(BaseModel):
   queriedAt: str | None = None
 
 app = FastAPI()
-
+chatbot = Chatbot(params, prompts)
 
 origins = [
   "http://localhost",
@@ -40,8 +40,6 @@ async def healthz ():
 
 @app.post("/queries")
 async def query_creation (query: Query):
-  # Moving this line inside the function to avoid initializing timeout in Lambda
-  chatbot = Chatbot(params, prompts)
   answer = chatbot.generate(query.question)
 
   # TODO: dynamoDB integration
@@ -122,7 +120,7 @@ async def query_feedback (badAnswer: bool):
   }
   return body
 
-handler = mangum.Mangum(app)
+handler = mangum.Mangum(app, lifespan="off")
 
 if __name__ == "__main__":
    uvicorn.run(app, host="0.0.0.0", port=8080)

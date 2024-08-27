@@ -65,3 +65,13 @@ resource "aws_security_group_rule" "lambda_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.lambda.id
 }
+
+resource "aws_security_group_rule" "vpc_endpoints" {
+  type                     = "ingress"
+  description              = "Allow Chatbot Lambda to pull images from ECR via VPC endpoints"
+  protocol                 = "tcp"
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = aws_security_group.lambda.id
+  security_group_id        = var.security_groups.vpc_endpoints
+}
