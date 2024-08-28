@@ -16,11 +16,13 @@ const makeTestEnv = () => {
 
 const postQueryResponses = {
   200: {
+    id: 'queryId',
     sessionId: 'sessionId',
     queriedAt: '2024-02-08T11:12:02.142Z',
     question: 'question',
     answer: 'answer',
     createdAt: '2024-02-08T11:12:02.438Z',
+    badAnswer: false,
   },
   404: {
     data: null,
@@ -45,11 +47,13 @@ const postQueryResponses = {
 const getQueriesResponses = {
   200: [
     {
+      id: 'queryId',
       sessionId: 'sessionId',
       queriedAt: '2024-02-08T11:12:02.142Z',
       question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
+      badAnswer: false,
     },
   ],
   404: {
@@ -74,11 +78,13 @@ const getQueriesResponses = {
 
 const badResponse = {
   200: {
+    id: 'queryId',
     sessionId: 1234,
     queriedAt: '2024-02-08T11:12:02.142Z',
     question: 'question',
     answer: 'answer',
     createdAt: '2024-02-08T11:12:02.438Z',
+    badAnswer: false,
   },
 };
 
@@ -96,11 +102,13 @@ describe('chatbotApi', () => {
       question: 'aQuery',
     })(env);
     const expected = {
+      id: 'queryId',
       sessionId: 'sessionId',
       queriedAt: '2024-02-08T11:12:02.142Z',
       question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
+      badAnswer: false,
     };
     expect(await actual).toStrictEqual(expected);
   });
@@ -114,11 +122,13 @@ describe('chatbotApi', () => {
     const actual = getQueries('sessionId')(env);
     const expected = [
       {
+        id: 'queryId',
         sessionId: 'sessionId',
         queriedAt: '2024-02-08T11:12:02.142Z',
         question: 'question',
         answer: 'answer',
         createdAt: '2024-02-08T11:12:02.438Z',
+        badAnswer: false,
       },
     ];
     expect(await actual).toStrictEqual(expected);
