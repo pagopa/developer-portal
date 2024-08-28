@@ -39,7 +39,6 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   };
 
   const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
-    console.log(event.key);
     if (event.key === 'Enter') {
       event.preventDefault();
       submit();
@@ -74,7 +73,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           <Box
             sx={{
               color: palette.action.disabled,
-              fontSize: { xs: '0.875rem', md: '1rem' },
+              fontSize: '0.875rem',
               marginLeft: '0.5rem',
             }}
           >
@@ -89,7 +88,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: { xs: '0.875rem', md: '1rem' },
+          fontSize: '0.875rem',
         }}
       />
       <IconButton
@@ -100,13 +99,12 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           color: palette.primary.main,
           cursor: 'pointer',
           marginLeft: 0.5,
-          marginBottom: { xs: 0, md: 0.85 },
         }}
       >
         <Send
           sx={{
-            height: { xs: '1.65rem', md: '1.8rem' },
-            width: { xs: '1.65rem', md: '1.8rem' },
+            height: '1.5rem',
+            width: '1.5rem',
           }}
         />
       </IconButton>
