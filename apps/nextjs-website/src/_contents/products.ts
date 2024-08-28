@@ -168,12 +168,6 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   // PagoPA
   'https://docs.pagopa.it/saci': '/pago-pa/guides/saci',
   'https://docs.pagopa.it/sanp': '/pago-pa/guides/sanp',
-  'https://docs.pagopa.it/manuale-back-office-pagopa/manuale-operativo-back-office-pagopa-ente-creditore/':
-    '/pago-pa/guides/manuale-bo-ec',
-  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-psp/':
-    '/pago-pa/guides/manuale-bo-psp',
-  'https://docs.pagopa.it/manuale-back-office-pagopa':
-    '/pago-pa/guides/manuale-bo-ec',
   'https://docs.pagopa.it/avviso-pagamento': '/pago-pa/guides/avviso-pagamento',
   'https://docs.pagopa.it/linee-guida-brand-pagopa':
     '/pago-pa/guides/linee-guida-brand-pagopa',
@@ -183,6 +177,18 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/dizionario-dei-metadata': '/pago-pa/guides/metadata',
   'https://app.gitbook.com/s/axttcUGV65V2IVRggmvR/area-riservata/come-aderire':
     'https://docs.pagopa.it/area-riservata/area-riservata',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/manuale-operativo-back-office-pagopa-ente-creditore/':
+    '/pago-pa/guides/manuale-bo-ec/manuale-operativo-back-office-pagopa-ente-creditore/',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-psp/manuale-operativo-pagamenti-pagopa-prestatore-di-servizi-di-pagamento/':
+    '/pago-pa/guides/manuale-bo-psp/manuale-operativo-pagamenti-pagopa-prestatore-di-servizi-di-pagamento/',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-pt/readme/':
+    '/pago-pa/guides/manuale-bo-pt/manuale-operativo-back-office-pagopa-partner-tecnologico/',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-pt':
+    '/pago-pa/guides/manuale-bo-pt',
+  'https://docs.pagopa.it/manuale-back-office-pagopa/v/manuale-bo-pagopa-psp':
+    '/pago-pa/guides/manuale-bo-psp',
+  'https://docs.pagopa.it/manuale-back-office-pagopa':
+    '/pago-pa/guides/manuale-bo-ec',
 
   // PDND
   'https://docs.pagopa.it/interoperabilita-1/manuale-operativo/guida-alladesione':
