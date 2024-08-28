@@ -8,6 +8,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.33.0"
     }
+
+    awscc = {
+      source  = "hashicorp/awscc"
+      version = "<= 1.10.0"
+    }
   }
 }
 
@@ -16,6 +21,10 @@ provider "aws" {
   default_tags {
     tags = var.tags
   }
+}
+
+provider "awscc" {
+  region = var.aws_region
 }
 
 provider "aws" {
@@ -34,6 +43,11 @@ provider "aws" {
   default_tags {
     tags = var.tags
   }
+}
+
+provider "awscc" {
+  alias  = "chatbot_region"
+  region = var.aws_chatbot_region
 }
 
 # Init IaC resources ##########################################################
@@ -94,8 +108,8 @@ module "chatbot" {
   count  = var.environment == "dev" ? 1 : 0
   source = "./modules/chatbot"
   providers = {
-    aws                = aws
-    aws.chatbot_region = aws.chatbot_region
+    aws   = aws.chatbot_region
+    awscc = awscc.chatbot_region
   }
 
   aws_chatbot_region = var.aws_chatbot_region
