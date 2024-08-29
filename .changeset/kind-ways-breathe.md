@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Connect overview pages to CMS
+Connect overview pages to Strapi CMS
