@@ -1,5 +1,18 @@
 # strapi-cms
 
+## 2.3.0
+
+### Minor Changes
+
+- 883f999: Add guides and guide list page on Strapi
+- 157dca5: Fix guide in Strapi
+- e5c93b9: Add overview schema to Strapi CMS
+
+### Patch Changes
+
+- cd924b0: Add Product relation and fix relatedLinks attribute type in Overview schema, fix image allowedTypes in Tutorial schema and linkHref type in CardProps schema
+- 5ff6c58: Remove unused product relation in guide
+
 ## 2.2.0
 
 ### Minor Changes
