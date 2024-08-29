@@ -59,11 +59,14 @@ export function makeOverviewsProps(
           list:
             attributes.tutorialSection.tutorials.data.map((tutorial) => ({
               showInOverview: true,
-              image: {
-                url: tutorial.attributes.image.data?.attributes.url || '',
-                alternativeText:
-                  tutorial.attributes.image.data?.attributes.alternativeText,
-              },
+              image: tutorial.attributes.image.data
+                ? {
+                    url: tutorial.attributes.image.data.attributes.url,
+                    alternativeText:
+                      tutorial.attributes.image.data.attributes
+                        .alternativeText || '',
+                  }
+                : undefined,
               title: tutorial.attributes.title,
               name: 'shared.moreInfo', // This is a reference to a translation key
               path: tutorial.attributes.slug,
@@ -71,7 +74,7 @@ export function makeOverviewsProps(
         },
         postIntegration: attributes.postIntegration && {
           title: attributes.postIntegration.title,
-          subtitle: attributes.postIntegration.description || '',
+          subtitle: attributes.postIntegration.description,
           listTitle: attributes.postIntegration.guidesTitle,
           cta: {
             label: attributes.postIntegration.link?.text || '',
@@ -84,8 +87,8 @@ export function makeOverviewsProps(
                 content: document.content,
                 title: 'guideListPage.cardSection.listItemsTitle',
               },
-              imagePath: document.image.data?.attributes.url || '',
-              mobileImagePath: document.mobileImage.data?.attributes.url || '',
+              imagePath: document.image.data.attributes.url,
+              mobileImagePath: document.mobileImage.data.attributes.url,
               link: {
                 label: document.linkText,
                 href: document.linkHref,
@@ -97,9 +100,8 @@ export function makeOverviewsProps(
                 listItems: guide.attributes.listItems.map((item) => item.text),
                 title: 'guideListPage.cardSection.listItemsTitle',
               },
-              imagePath: guide.attributes.image.data?.attributes.url || '',
-              mobileImagePath:
-                guide.attributes.mobileImage.data?.attributes.url || '',
+              imagePath: guide.attributes.image.data.attributes.url,
+              mobileImagePath: guide.attributes.mobileImage.data.attributes.url,
               link: {
                 label: 'shared.goToModel',
                 href: `guides/${guide.attributes.slug}`,
