@@ -1,5 +1,20 @@
 # chatbot
 
+## 2.1.0
+
+### Minor Changes
+
+- b122af5: Updated prompts and parameters.
+  Resolved sentence redundancy in the output.
+  Corrected at least one reference in the output.
+  Enhanced HTML reading functionality, ensuring conversion to Markdown.
+  Improved handling of dynamic HTML.
+- 8d0d78b: Using Redis as vector store instead of S3
+
+### Patch Changes
+
+- 14684a4: Created safety guardrail on bedrock and hash table for URLs
+
 ## 2.0.0
 
 ### Major Changes
