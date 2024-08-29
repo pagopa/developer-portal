@@ -9,6 +9,7 @@ import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec, webinarPopulate } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
+import { SEOCodec } from './seoCodec';
 import { BaseSolutionCodec } from './codecs/SolutionCodec';
 
 const CallToActionCodec = t.strict({
@@ -84,6 +85,7 @@ export const StrapiHomepageCodec = t.strict({
         }),
       ]),
       webinars: t.strict({ data: t.array(WebinarCodec) }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   }),
 });
@@ -108,6 +110,9 @@ const makeStrapiHomepagePopulate = () =>
       webinars: webinarPopulate,
       ecosystem: {
         populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
+      },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });

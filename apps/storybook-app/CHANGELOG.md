@@ -1,5 +1,20 @@
 # storybook-app
 
+## 0.9.0
+
+### Minor Changes
+
+- 52ed6a5: Update chatbot message component
+- 52ed6a5: Update input text area
+- ac0f692: Add feedback button
+- 52ed6a5: Update layout and style of chat component
+- 52ed6a5: New chatbot button style
+
+### Patch Changes
+
+- 2b17572: Add chat skeleton
+- 81b0ef4: Add a parser to convert chatbot messages from Markdown to HTML format
+
 ## 0.8.0
 
 ### Minor Changes
