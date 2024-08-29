@@ -1,5 +1,5 @@
 documentation:
-  path: apps/nextjs-website/out
+  path: build-devp/out
 
 vector_index:
   path: index
