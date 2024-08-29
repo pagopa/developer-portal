@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_overview_service_models",
+  "info": {
+    "displayName": "serviceModel",
+    "icon": "arrowRight"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
