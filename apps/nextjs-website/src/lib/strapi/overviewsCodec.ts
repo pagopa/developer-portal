@@ -1,7 +1,7 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import * as qs from 'qs';
-import { BaseProductCodec } from '@/lib/strapi/codecs/ProductCodec';
+import { ProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BaseTutorialCodec } from '@/lib/strapi/tutorial';
 import { BlocksContentCodec } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
@@ -42,14 +42,20 @@ const CardPropsCodec = t.strict({
   mobileImage: t.strict({ data: MediaCodec }),
 });
 
+const ServiceModelCodec = t.strict({
+  title: t.string,
+  description: t.string,
+  href: t.string,
+});
+
 const PostIntegrationCodec = t.strict({
   title: t.string,
   description: t.string,
   link: t.union([NullToUndefinedCodec, LinkCodec]),
-  documents: t.array(CardPropsCodec),
   guidesTitle: t.union([NullToUndefinedCodec, t.string]),
+  documents: t.array(CardPropsCodec),
   guides: t.strict({ data: t.array(BaseGuideCodec) }),
-  showCompactCards: t.boolean,
+  serviceModels: t.array(ServiceModelCodec),
 });
 
 export const OverviewCodec = t.strict({
@@ -67,7 +73,7 @@ export const OverviewCodec = t.strict({
     postIntegration: t.union([NullToUndefinedCodec, PostIntegrationCodec]),
     relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
     product: t.strict({
-      data: t.union([NullToUndefinedCodec, BaseProductCodec]),
+      data: t.union([NullToUndefinedCodec, ProductCodec]),
     }),
   }),
 });
@@ -83,7 +89,9 @@ const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
       backgroundImage: '*',
-      product: '*',
+      product: {
+        populate: ['logo'],
+      },
       relatedLinks: {
         populate: ['links'],
       },
@@ -100,9 +108,11 @@ const makeStrapiOverviewsPopulate = () =>
         populate: [
           'link',
           'guides.image',
+          'guides.listItems',
           'guides.mobileImage',
           'documents.image',
           'documents.mobileImage',
+          'serviceModels',
         ],
       },
     },
