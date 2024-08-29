@@ -4,7 +4,7 @@ import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapiCeoPlugin,
+  makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const homepage = await getHomepageProps();
 
   return homepage.seo
-    ? makeMetadataFromStrapiCeoPlugin(homepage.seo)
+    ? makeMetadataFromStrapi(homepage.seo)
     : makeMetadata({
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',

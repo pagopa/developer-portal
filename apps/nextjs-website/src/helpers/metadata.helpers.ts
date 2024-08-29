@@ -14,7 +14,7 @@ type MakeMetadataParams = {
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
 
-export const makeMetadataFromStrapiCeoPlugin = (seo: SEO): Metadata => {
+export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
   return makeMetadata({
     title: seo.metaTitle,
     description: seo.metaDescription,
