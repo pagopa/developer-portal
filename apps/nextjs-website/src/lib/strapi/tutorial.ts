@@ -17,21 +17,30 @@ const BannerLinkCodec = t.strict({
   content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
 });
 
+const BaseTutorialAttributesCodec = t.strict({
+  title: t.string,
+  slug: t.string,
+  image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+});
+
+export const BaseTutorialCodec = t.strict({
+  attributes: BaseTutorialAttributesCodec,
+});
+
 export const TutorialCodec = t.strict({
-  id: t.number,
-  attributes: t.strict({
-    title: t.string,
-    slug: t.string,
-    parts: t.array(PartCodec),
-    createdAt: DateFromISOString,
-    updatedAt: DateFromISOString,
-    publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
-    locale: t.string,
-    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
-    bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
-    relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-    product: t.strict({ data: ProductCodec }),
-  }),
+  attributes: t.intersection([
+    BaseTutorialAttributesCodec,
+    t.strict({
+      parts: t.array(PartCodec),
+      createdAt: DateFromISOString,
+      updatedAt: DateFromISOString,
+      publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
+      locale: t.string,
+      bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
+      relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
+      product: t.strict({ data: ProductCodec }),
+    }),
+  ]),
 });
 
 export const StrapiTutorialsCodec = t.strict({
