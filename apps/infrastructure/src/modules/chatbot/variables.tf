@@ -60,6 +60,7 @@ variable "cognito_user_pool" {
 variable "vpc" {
   type = object({
     id                  = string
+    cidr_block          = string
     public_subnets      = list(string)
     database_subnets    = list(string)
     private_subnets     = list(string)
@@ -74,25 +75,28 @@ variable "security_groups" {
   description = "The security groups used to deploy the resources"
 }
 
+variable "dns_domain_name" {
+  description = "DNS domain for the Developer Portal product"
+  type        = string
+}
+
 ################################################################################
-# ElastiCache - Redis
+# OpenSearch
 ################################################################################
 
-variable "chatbot_redis" {
+variable "opensearch" {
   type = object({
-    cluster_creating                 = optional(bool, true)
-    cluster_size                     = optional(number, 1)
-    instance_type                    = string
-    engine_version                   = optional(string, "7.0")
-    family                           = optional(string, "redis7")
-    at_rest_encryption_enabled       = optional(bool, true)
-    transit_encryption_enabled       = optional(bool, true)
-    automatic_failover               = optional(bool, true)
-    multi_az                         = optional(bool, false)
-    snapshot_retention_limit         = optional(number, 0)
-    snapshot_windows                 = optional(string, "06:30-07:30")
-    cloudwatch_metric_alarms_enabled = optional(bool, true)
-    auto_minor_version_upgrade       = optional(bool, false)
+    instance_count           = optional(number, 1)
+    dedicated_master_instance_type = optional(string, null)
+    node_instance_type = optional(string, "t3.small.search")
+    engine_version = optional(string, "OpenSearch_2.13")
+    ebs_options = object({
+      ebs_enabled = bool
+      iops        = number
+      throughput  = number
+      volume_type = string
+      volume_size = number
+    })
   })
-  description = "Redis configuration for the AI chatbot"
+  description = "OpenSearch configuration for the AI chatbot"
 }

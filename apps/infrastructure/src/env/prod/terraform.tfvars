@@ -32,8 +32,6 @@ dns_domain_name_cms = {
   }
 }
 
-# chatbot_redis = {
-#   instance_type      = "cache.t4g.medium"
-#   cluster_size       = "1"
-#   automatic_failover = "false"
+# chatbot_opensearch = {
+#   node_instance_type      = "t3.medium.search"
 # }

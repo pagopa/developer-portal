@@ -1,10 +1,12 @@
 locals {
   lambda_env_variables = {
-    CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
-    CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
-    CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
-    CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
-    CHB_REDIS_URL             = "redis://${module.redis.endpoint}:${module.redis.port}"
+    CHB_AWS_S3_BUCKET             = module.s3_bucket_llamaindex.s3_bucket_id
+    CHB_AWS_GUARDRAIL_ID          = awscc_bedrock_guardrail.guardrail.guardrail_id
+    CHB_AWS_GUARDRAIL_VERSION     = awscc_bedrock_guardrail_version.guardrail.version
+    CHB_AWS_DEFAULT_REGION        = var.aws_chatbot_region
+    # CHB_REDIS_URL                 = "redis://${module.redis.cluster_endpoint_address}:${module.redis.cluster_endpoint_port}"
+    # CHB_REDIS_CREDS_SSM_PARAMETER = aws_ssm_parameter.redis_users["admin"].name
+    WEBSITE_URL                   = "https://${var.dns_domain_name}"
   }
 }
 
