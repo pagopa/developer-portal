@@ -14,9 +14,8 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
   isChatbotVisible,
 }) => {
   const { user } = useUser();
-  const { queries, sendQuery, isAwaitingResponse, isLoaded } = useChatbot(
-    !!user
-  );
+  const { queries, sendQuery, sendFeedback, isAwaitingResponse, isLoaded } =
+    useChatbot(!!user);
 
   return (
     <>
@@ -24,6 +23,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
         <ChatbotLayout
           queries={queries}
           onSendQuery={sendQuery}
+          onSendFeedback={sendFeedback}
           isAwaitingResponse={isAwaitingResponse}
           isChatbotLoaded={isLoaded}
         />

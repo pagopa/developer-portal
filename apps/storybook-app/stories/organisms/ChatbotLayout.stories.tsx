@@ -43,12 +43,7 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
     queries: [
       {
         sessionId: 'sessionID',
-        answer: mockText(25),
-        createdAt: '2024-07-24T17:14:07.129Z',
-      },
-      {
-        sessionId: 'sessionID',
-        question: 'Accetto',
+        question: mockText(5),
         queriedAt: '2024-07-24T17:14:07.129Z',
         answer: mockText(10),
         createdAt: '2024-07-24T17:14:07.129Z',
