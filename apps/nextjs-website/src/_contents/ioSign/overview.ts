@@ -64,11 +64,14 @@ export const ioSignOverview: OverviewData = {
       'Cosa serve per preparare il documento da firmare? Come si crea una richiesta di firma? Risolvi ogni dubbio con questi brevi tutorial.',
     list: ioSignTutorials,
   },
-  relatedLinks: [
-    {
-      path: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
-      name: 'Perchè scegliere Firma con IO',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link utili',
+    links: [
+      {
+        text: 'Perchè scegliere Firma con IO',
+        href: `${ioSignGuideListsPath.path}/guida-scelta-firma/`,
+      },
+    ],
+  },
   bannerLinks: ioSignBannerLinks,
 };

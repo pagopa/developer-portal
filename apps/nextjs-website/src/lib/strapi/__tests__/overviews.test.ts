@@ -98,6 +98,41 @@ const iconJson = {
   },
 };
 
+const productJson = {
+  data: {
+    id: 8,
+    attributes: {
+      name: 'Firma con IO',
+      description:
+        'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
+      slug: 'firma-con-io',
+      createdAt: '2024-03-26T16:05:30.593Z',
+      updatedAt: '2024-07-11T19:28:06.709Z',
+      publishedAt: '2024-03-26T16:05:32.226Z',
+      locale: 'it',
+      shortName: 'Firma con IO',
+      logo: iconJson,
+    },
+  },
+};
+
+const serviceModels = [
+  {
+    id: 1,
+    title: 'Tassa sui rifiuti (TARI)',
+    description:
+      'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI)',
+    href: '/app-io/guides/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari',
+  },
+  {
+    id: 2,
+    title: "Carta d'Identità Elettronica",
+    description:
+      "Scheda e modelli di messaggi del servizio che riguarda la richiesta e l'emissione della Carta d'Identità Elettronica",
+    href: '/app-io/guides/modelli-servizi/servizi-anagrafici-e-civici/carta-didentita-elettronica',
+  },
+];
+
 const makeStrapiResponseJson = () => ({
   data: [
     {
@@ -111,7 +146,7 @@ const makeStrapiResponseJson = () => ({
         subtitle:
           "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",
         backgroundImage: imageJson,
-        product: { data: null },
+        product: productJson,
         relatedLinks: {
           id: 15,
           title: 'Link utili',
@@ -151,6 +186,7 @@ const makeStrapiResponseJson = () => ({
             {
               id: 59,
               title: 'Inviare messaggi',
+              subtitle: null,
               theme: 'light',
               content: [
                 {
@@ -168,6 +204,7 @@ const makeStrapiResponseJson = () => ({
             {
               id: 60,
               title: 'Ottenere pagamenti',
+              subtitle: null,
               theme: 'light',
               content: [
                 {
@@ -185,6 +222,8 @@ const makeStrapiResponseJson = () => ({
             {
               id: 61,
               title: 'Far firmare documenti',
+              subtitle:
+                'Richiedi la firma digitale di documenti e contratti grazie a Firma con IO',
               theme: 'light',
               content: [
                 {
@@ -270,7 +309,6 @@ const makeStrapiResponseJson = () => ({
           title: "Dopo l'integrazione",
           description:
             'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
-          showCompactCards: true,
           guidesTitle: 'Modelli dei servizi',
           documents: [
             {
@@ -310,6 +348,7 @@ const makeStrapiResponseJson = () => ({
             href: '/app-io/guides/manuale-servizi',
             target: '_blank',
           },
+          serviceModels,
         },
       },
     },
@@ -343,7 +382,7 @@ const makeStrapiResponseJson = () => ({
         subtitle:
           'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
         backgroundImage: imageJson,
-        product: { data: null },
+        product: productJson,
         relatedLinks: null,
         features: {
           id: 7,
@@ -371,7 +410,6 @@ const makeStrapiResponseJson = () => ({
           title: "Dopo l'integrazione",
           description:
             'Verifica che l’integrazione con SEND soddisfi i criteri minimi per poter operare in ambiente di staging.',
-          showCompactCards: false,
           guidesTitle: null,
           documents: [],
           guides: {
@@ -392,6 +430,7 @@ const makeStrapiResponseJson = () => ({
               },
             ],
           },
+          serviceModels: serviceModels,
           link: null,
         },
       },
