@@ -13,7 +13,7 @@ from llama_index.core.base.response.schema import (
 from llama_index.embeddings.bedrock import BedrockEmbedding
 
 from src.modules.async_bedrock import AsyncBedrock
-from src.modules.vector_database import load_automerging_index, load_url_hash_table
+from src.modules.vector_database import load_automerging_index_s3, load_url_hash_table, load_automerging_index_redis, REDIS_KVSTORE
 from src.modules.retriever import get_automerging_query_engine
 
 AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
@@ -35,15 +35,14 @@ class Chatbot():
             self,
             params,
             prompts,
-            use_guardrail: bool = True
+            use_guardrail: bool = True,
+            use_redis = True
         ):
 
         self.params = params
         self.prompts = prompts
         self.use_guardrail = use_guardrail
-        self.hash_table = load_url_hash_table(
-            s3_bucket_name=AWS_S3_BUCKET,
-        )
+        self.use_redis = use_redis
 
         self.model = AsyncBedrock(
             aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -64,14 +63,26 @@ class Chatbot():
             model_name=params["models"]["emded_model_id"],
         )
 
-        self.index = load_automerging_index(
-            self.model,
-            self.embed_model,
-            save_dir=params["vector_index"]["path"],
-            s3_bucket_name=AWS_S3_BUCKET,
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"],
-        )
+        if self.use_redis:
+            self.index = load_automerging_index_redis(
+                self.model,
+                self.embed_model,
+                chunk_sizes=params["vector_index"]["chunk_sizes"],
+                chunk_overlap=params["vector_index"]["chunk_overlap"]
+            )
+
+        else:
+            self.hash_table = load_url_hash_table(
+                s3_bucket_name=AWS_S3_BUCKET,
+            )
+            self.index = load_automerging_index_s3(
+                self.model,
+                self.embed_model,
+                save_dir=params["vector_index"]["path"],
+                s3_bucket_name=AWS_S3_BUCKET,
+                chunk_sizes=params["vector_index"]["chunk_sizes"],
+                chunk_overlap=params["vector_index"]["chunk_overlap"],
+            )
 
         self.messages = []
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
@@ -227,20 +238,36 @@ class Chatbot():
                     num_refs += 1
                     title = nodes[0].metadata["title"]
                     hashed_url = nodes[0].metadata["filename"]
-                    if hashed_url in self.hash_table.keys():
-                        url = self.hash_table[hashed_url]
+                    if self.use_redis:
+                        url = REDIS_KVSTORE.get(
+                            collection="hash_table", 
+                            key=hashed_url
+                        )
+                        if url is None:
+                            url = "{URL}"
                     else:
-                        url = "{URL}"
+                        if hashed_url in self.hash_table.keys():
+                            url = self.hash_table[hashed_url]
+                        else:
+                            url = "{URL}"
                     response_str += f"\n[{title}]({url})"
                     break
                 else:
                     if v > NUM_MIN_REFERENCES:
                         num_refs += 1
                         title, hashed_url = k
-                        if hashed_url in self.hash_table.keys():
-                            url = self.hash_table[hashed_url]
+                        if self.use_redis:
+                            url = REDIS_KVSTORE.get(
+                                collection="hash_table", 
+                                key=hashed_url
+                            )
+                            if url is None:
+                                url = "{URL}"
                         else:
-                            url = "{URL}"
+                            if hashed_url in self.hash_table.keys():
+                                url = self.hash_table[hashed_url]
+                            else:
+                                url = "{URL}"
                         response_str += f"\n[{title}]({url})"
 
             logging.info(f"Generated answer had no references. Added {num_refs} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
