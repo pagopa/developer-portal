@@ -17,19 +17,20 @@ const BannerLinkCodec = t.strict({
   content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
 });
 
-export const BaseTutorialCodec = t.strict({
-  attributes: t.strict({
-    title: t.string,
-    slug: t.string,
-    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
-  }),
+const BaseTutorialAttributesCodec = t.strict({
+  title: t.string,
+  slug: t.string,
+  image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
 });
 
-export const TutorialCodec = t.intersection([
-  BaseTutorialCodec,
-  t.strict({
-    id: t.number,
-    attributes: t.strict({
+export const BaseTutorialCodec = t.strict({
+  attributes: BaseTutorialAttributesCodec,
+});
+
+export const TutorialCodec = t.strict({
+  attributes: t.intersection([
+    BaseTutorialAttributesCodec,
+    t.strict({
       parts: t.array(PartCodec),
       createdAt: DateFromISOString,
       updatedAt: DateFromISOString,
@@ -39,8 +40,8 @@ export const TutorialCodec = t.intersection([
       relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
       product: t.strict({ data: ProductCodec }),
     }),
-  }),
-]);
+  ]),
+});
 
 export const StrapiTutorialsCodec = t.strict({
   data: t.array(TutorialCodec),
