@@ -14,6 +14,7 @@ import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
+  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
@@ -22,6 +23,7 @@ type ChatProps = {
 const Chat = ({
   queries,
   onSendQuery,
+  onSendFeedback,
   scrollToBottom,
   isAwaitingResponse,
   isChatbotLoaded,
@@ -30,26 +32,32 @@ const Chat = ({
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const messages = useMemo(
-    () =>
-      compact(
+    () => [
+      firstMessage(t('chatBot.welcomeMessage')),
+      ...compact(
         queries.flatMap((q) => [
           q.question && q.queriedAt
             ? {
+                id: q.id,
                 text: q.question,
                 isQuestion: true,
                 timestamp: q.queriedAt,
+                hasNegativeFeedback: false,
               }
             : null,
           q.answer && q.createdAt
             ? {
+                id: q.id,
                 text: q.answer,
                 isQuestion: false,
                 timestamp: q.createdAt,
+                hasNegativeFeedback: q.badAnswer || false,
               }
             : null,
         ])
       ),
-    [queries]
+    ],
+    [queries, t]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -103,7 +111,12 @@ const Chat = ({
             marginTop={index === 0 ? 2 : 0}
             marginBottom={2}
           >
-            <ChatMessage {...message} />
+            <ChatMessage
+              {...message}
+              onToggleNegativeFeedback={(negativeFeedback) =>
+                onSendFeedback(message.id, negativeFeedback)
+              }
+            />
           </Stack>
         ))}
         {isAwaitingResponse && <ChatCatbotWriting />}
@@ -114,3 +127,12 @@ const Chat = ({
 };
 
 export default Chat;
+
+function firstMessage(text: string): Message {
+  return {
+    id: '',
+    text: text,
+    isQuestion: false,
+    hasNegativeFeedback: false,
+  };
+}
