@@ -1,5 +1,26 @@
 # nextjs-website
 
+## 4.4.0
+
+### Minor Changes
+
+- 52ed6a5: Update chatbot message component
+- 52ed6a5: Update input text area
+- ac0f692: Add feedback button
+- 5ff6c58: Add guides and guide list codecs
+- 0696e98: Add new pagoPA manual "Stampa Avvisi di Pagamento"
+- 52ed6a5: Update layout and style of chat component
+- 564bb78: Add lateral menu on Strapi tutorials
+- 52ed6a5: New chatbot button style
+
+### Patch Changes
+
+- 595543d: Add wrapper to identify tag for chatbot analysis
+- 2b17572: Add chat skeleton
+- 0ee63ba: Change in path rewrite for "Manuale Back office EC/PT/PSP"
+- 81b0ef4: Add a parser to convert chatbot messages from Markdown to HTML format
+- 45014a7: Hide webinar questions instead of not render when collapsed
+
 ## 4.3.0
 
 ### Minor Changes

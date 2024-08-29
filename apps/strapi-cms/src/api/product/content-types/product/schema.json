@@ -83,6 +83,12 @@
       },
       "type": "string",
       "required": true
+    },
+    "overview": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::overview.overview",
+      "mappedBy": "product"
     }
   }
 }
