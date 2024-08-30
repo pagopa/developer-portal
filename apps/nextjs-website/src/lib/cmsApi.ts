@@ -15,6 +15,7 @@ import {
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
 import {
+  guidesDefinitions,
   products,
   quickStartGuides,
   overviews,
@@ -34,6 +35,9 @@ import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductsProps } from './products';
 import { fetchGuideList } from './strapi/guideListCodec';
 import { makeGuideListPagesProps } from './guideListPages';
+import { fetchGuides } from './strapi/guidesCodec';
+import { makeGuidesProps } from './guides';
+import { makeGuide } from '@/_contents/makeDocs';
 import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
 import { makeOverviewsProps } from '@/lib/overviews';
 
@@ -205,5 +209,18 @@ export const getGuideListPagesProps = async () => {
     return makeGuideListPagesProps(strapiGuideList, guideLists);
   } else {
     return guideLists;
+  }
+};
+
+export const getGuidesProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiGuides = await fetchGuides(buildEnv);
+    return makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(makeGuide);
+  } else {
+    return guidesDefinitions.flatMap(makeGuide);
   }
 };

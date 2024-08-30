@@ -67,7 +67,8 @@ export const guideLists = [
   pagoPaGuideLists,
   sendGuideLists,
 ];
-const guidesDefinitions = [
+
+export const guidesDefinitions = [
   ...appIoGuides,
   ...ioSignGuides,
   ...pagoPaGuides,
