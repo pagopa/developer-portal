@@ -87,7 +87,6 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     },
     openGraph: enhanceOpenGraphMetadata(baseMetadata.openGraph, seo),
     twitter: enhanceTwitterMetadata(baseMetadata.twitter, seo),
-    other: seo.structuredData as Record<string, string>,
   };
 
   return metadata;
