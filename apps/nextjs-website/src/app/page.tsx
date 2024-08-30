@@ -2,7 +2,10 @@ import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
@@ -11,12 +14,16 @@ import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return makeMetadata({
-    title: 'PagoPA DevPortal',
-    description: 'Il portale per gli sviluppatori di PagoPA',
-    url: baseUrl,
-    locale: 'it_IT',
-  });
+  const homepage = await getHomepageProps();
+
+  return homepage.seo
+    ? makeMetadataFromStrapi(homepage.seo)
+    : makeMetadata({
+        title: 'PagoPA DevPortal',
+        description: 'Il portale per gli sviluppatori di PagoPA',
+        url: baseUrl,
+        locale: 'it_IT',
+      });
 }
 
 const NotSsrWebinarHeaderBanner = dynamic(
