@@ -16,6 +16,7 @@ type StartInfoProps = {
     href?: string;
     iconName: string;
     iconColor?: string;
+    isSvg?: boolean;
   }[];
   cta?: {
     text: string;
@@ -51,6 +52,7 @@ const StartInfo = ({
             href: card.href,
             icon: card.iconName,
             iconColor: card.iconColor,
+            isSvg: card.isSvg,
           }))}
         />
       </Box>

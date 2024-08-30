@@ -5,6 +5,7 @@ import { Webinar } from './types/webinar';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { makeWebinarFromStrapi } from './webinars';
+import { SEO } from './types/seo';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -55,6 +56,7 @@ export type HomepageProps = {
   readonly ecosystem: EcosystemProps;
   readonly webinars: readonly Webinar[];
   readonly comingsoonDocumentation: ComingSoonDocumentationProps;
+  readonly seo?: SEO;
 };
 
 type StaticHomepage = typeof translations.homepage;
@@ -117,6 +119,7 @@ export const makeHomepageProps = (
       },
     },
   }),
+  seo: strapiHomepage?.data?.attributes?.seo,
   webinars: [
     ...strapiHomepage.data.attributes.webinars.data.map((webinar) =>
       makeWebinarFromStrapi(webinar)

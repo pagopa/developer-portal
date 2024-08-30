@@ -28,6 +28,9 @@ export const BaseProductCodec = t.strict({
   }),
 });
 
+export type BaseProduct = t.TypeOf<typeof BaseProductCodec>;
+export type Product = t.TypeOf<typeof ProductCodec>;
+
 const makeStrapiProductsPopulate = () =>
   qs.stringify({
     populate: '*',
