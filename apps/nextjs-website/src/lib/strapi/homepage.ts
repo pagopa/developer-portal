@@ -9,8 +9,8 @@ import { MediaCodec } from './codecs/MediaCodec';
 import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec, webinarPopulate } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
-import { SolutionBaseAttributesCodec } from './codecs/SolutionCodec';
 import { SEOCodec } from './seoCodec';
+import { BaseSolutionCodec } from './codecs/SolutionCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -79,7 +79,7 @@ export const StrapiHomepageCodec = t.strict({
           }),
           solutionsTabName: t.string,
           solutions: t.strict({
-            data: t.array(SolutionBaseAttributesCodec),
+            data: t.array(BaseSolutionCodec),
           }),
           solutionsCta: t.union([NullToUndefinedCodec, CallToActionCodec]),
         }),
