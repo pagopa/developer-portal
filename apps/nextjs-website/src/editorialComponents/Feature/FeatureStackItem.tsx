@@ -53,7 +53,7 @@ export const FeatureStackItem = ({
       return (
         <BlocksRendererClient
           content={item.content}
-          paragraphSx={{ color: 'white' }}
+          paragraphSx={{ color: textStyle }}
         />
       );
     }

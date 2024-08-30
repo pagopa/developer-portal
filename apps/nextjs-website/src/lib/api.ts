@@ -1,6 +1,5 @@
 import {
   guides,
-  overviews,
   products,
   tutorialLists,
   tutorials,
@@ -19,6 +18,7 @@ import {
   getTutorialsProps,
   getWebinarsProps,
   getGuideListPagesProps,
+  getOverviewsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/tutorials';
@@ -75,11 +75,11 @@ export async function getGuideLists(productSlug?: string) {
 }
 
 export async function getOverview(productSlug?: string) {
-  const props =
-    overviews.find(
-      (overviewData) => overviewData.product.path === `/${productSlug}`
-    ) || null;
-  return manageUndefinedAndAddProducts(props);
+  return manageUndefined(
+    (await getOverviewsProps()).find(
+      (overviewData) => overviewData.product.slug === productSlug
+    )
+  );
 }
 
 export function getProductsSlugs(
