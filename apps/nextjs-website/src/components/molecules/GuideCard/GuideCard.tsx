@@ -13,6 +13,7 @@ import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import { useTranslations } from 'next-intl';
 
 type Description = {
   readonly listItems?: ReadonlyArray<string>;
@@ -41,6 +42,7 @@ export const GuideCard: FC<GuideCardProps> = ({
   title,
 }: GuideCardProps) => {
   const { spacing } = useTheme();
+  const t = useTranslations();
 
   const flexLayoutMap = {
     center: 'center',
@@ -89,7 +91,7 @@ export const GuideCard: FC<GuideCardProps> = ({
                 {title}
               </Typography>
               <Typography variant='subtitle2' color='text.primary'>
-                {description.title}
+                {t(description.title)}
               </Typography>
               {description?.listItems && (
                 <UnorderedList listItems={description.listItems} />
@@ -98,7 +100,7 @@ export const GuideCard: FC<GuideCardProps> = ({
                 <BlocksRendererClient content={description.content} />
               )}
             </Box>
-            <LinkButton label={link.label} href={link.href}></LinkButton>
+            <LinkButton label={t(link.label)} href={link.href}></LinkButton>
           </CardContent>
         </Box>
         <CardMedia

@@ -14,7 +14,12 @@ import {
   makeQuickStartsProps,
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
-import { products, quickStartGuides, overviews } from '@/_contents/products';
+import {
+  products,
+  quickStartGuides,
+  overviews,
+  guideLists,
+} from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
 import { fetchSolutions } from './strapi/solutionsCodec';
@@ -26,7 +31,9 @@ import { makeApiDataListPageProps } from './apiDataListPages';
 import { makeApiDataProps } from './apiDataPages';
 import { fetchApiData } from './strapi/codecs/ApiDataCodec';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
-import { makeProductProps } from './products';
+import { makeProductsProps } from './products';
+import { fetchGuideList } from './strapi/guideListCodec';
+import { makeGuideListPagesProps } from './guideListPages';
 import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
 import { makeOverviewsProps } from '@/lib/overviews';
 
@@ -75,7 +82,7 @@ export const getProductsProps = async () => {
 
   if (fetchFromStrapi) {
     const strapiProducts = await fetchProducts(buildEnv);
-    return makeProductProps(strapiProducts, products);
+    return makeProductsProps(strapiProducts, products);
   } else return products;
 };
 
@@ -186,4 +193,17 @@ export const getOverviewsProps = async () => {
     const strapiOverviews = await fetchOverviews(buildEnv);
     return makeOverviewsProps(strapiOverviews, overviews);
   } else return overviews;
+};
+
+export const getGuideListPagesProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiGuideList = await fetchGuideList(buildEnv);
+    return makeGuideListPagesProps(strapiGuideList, guideLists);
+  } else {
+    return guideLists;
+  }
 };

@@ -39,7 +39,7 @@ const makeStrapiResponseJson = () => ({
           {
             id: 3,
             main: true,
-            dirname: 'aBQM7h48Vhhg8le4VIK8',
+            dirName: 'aBQM7h48Vhhg8le4VIK8',
             version: 'v5.1',
           },
         ],
@@ -51,6 +51,21 @@ const makeStrapiResponseJson = () => ({
         ],
         image: guideImageJson,
         mobileImage: guideImageJson,
+        product: {
+          data: {
+            id: 1,
+            attributes: {
+              name: 'CMS APP IO',
+              description: 'Test desc ',
+              slug: 'app-io',
+              publishedAt: '2024-02-15T09:57:24.401Z',
+              createdAt: '2024-02-15T09:57:22.179Z',
+              updatedAt: '2024-07-17T15:08:58.315Z',
+              locale: 'it',
+              shortName: 'app-io',
+            },
+          },
+        },
       },
     },
   ],

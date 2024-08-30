@@ -4,6 +4,7 @@ import { ioSignOverviewPath } from '@/_contents/ioSign/overviewPath';
 import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
 import { Product } from '@/lib/types/product';
 import { ioSignQuickStartGuidePath } from './quickStartGuidePath';
+import { ioSignBannerLinks } from './bannerLinks';
 
 export const ioSign: Product = {
   name: 'Firma con IO',
@@ -30,4 +31,5 @@ export const ioSign: Product = {
     tutorials: ioSignTutorialListsPath,
     guides: ioSignGuideListsPath,
   },
+  bannerLinks: ioSignBannerLinks,
 };
