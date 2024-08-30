@@ -31,6 +31,7 @@ export const profileMenuItems: readonly {
 }[] = [
   { label: 'personalData.title', href: '/profile/personal-data' },
   { label: 'agreements.title', href: '/profile/agreements' },
+  { label: 'chatbot.title', href: '/profile/chatbot-history' },
 ];
 
 export const snackbarAutoHideDurationMs = 10_000;
