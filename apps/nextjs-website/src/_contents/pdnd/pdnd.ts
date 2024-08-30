@@ -3,6 +3,7 @@ import { pdndGuideListsPath } from '@/_contents/pdnd/guideListsPath';
 import { pdndOverviewPath } from '@/_contents/pdnd/overviewPath';
 import { pdndQuickStartGuidePath } from '@/_contents/pdnd/quickStartGuidePath';
 import { pdndTutorialListsPath } from '@/_contents/pdnd/tutorialListsPath';
+import { pdndBannerLinks } from './bannerLinks';
 
 export const pdnd: Product = {
   name: 'PDND Interoperabilità',
@@ -28,4 +29,5 @@ export const pdnd: Product = {
     tutorials: pdndTutorialListsPath,
     guides: pdndGuideListsPath,
   },
+  bannerLinks: pdndBannerLinks,
 };

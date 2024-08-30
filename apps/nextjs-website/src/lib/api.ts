@@ -1,5 +1,4 @@
 import {
-  guideLists,
   guides,
   products,
   tutorialLists,
@@ -18,6 +17,7 @@ import {
   getSolutionsListProps,
   getTutorialsProps,
   getWebinarsProps,
+  getGuideListPagesProps,
   getOverviewsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
@@ -66,10 +66,11 @@ export function getGuidePaths() {
 }
 
 export async function getGuideLists(productSlug?: string) {
-  const props =
-    guideLists.find(
-      (guideList) => guideList.product.path === `/${productSlug}`
-    ) || null;
+  const props = manageUndefined(
+    (await getGuideListPagesProps()).find(
+      ({ product }) => product.slug === productSlug
+    )
+  );
   return manageUndefinedAndAddProducts(props);
 }
 
