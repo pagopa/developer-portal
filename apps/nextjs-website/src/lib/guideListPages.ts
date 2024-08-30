@@ -20,7 +20,7 @@ export function makeGuideListPagesProps(
           guides: guides.data.map(({ attributes }) => ({
             title: attributes.title,
             description: {
-              title: 'guideListPage.cardSection.listItemsTitle', // this is translations path and it will be tranlated by the component
+              title: 'guideListPage.cardSection.listItemsTitle', // this is translations path and it will be translated by the component
               listItems: attributes.listItems.map(({ text }) => text),
             },
             imagePath: attributes.image.data.attributes.url,
