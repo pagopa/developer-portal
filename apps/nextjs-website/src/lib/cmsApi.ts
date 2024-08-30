@@ -219,10 +219,7 @@ export const getGuidesProps = async () => {
 
   if (fetchFromStrapi) {
     const strapiGuides = await fetchGuides(buildEnv);
-    const t = makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(
-      makeGuide
-    );
-    return t;
+    return makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(makeGuide);
   } else {
     return guidesDefinitions.flatMap(makeGuide);
   }
