@@ -26,8 +26,8 @@ export function makeGuideListPagesProps(
             imagePath: attributes.image.data.attributes.url,
             mobileImagePath: attributes.mobileImage.data.attributes.url,
             link: {
-              label: 'guideListPage.cardSection.linkLabel', // this is translations path and it will be tranlated by the component
-              href: `${product.slug}/guides/${attributes.slug}`,
+              label: 'guideListPage.cardSection.linkLabel', // this is translations path and it will be translated by the component
+              href: `/${product.slug}/guides/${attributes.slug}`,
             },
           })),
         })),

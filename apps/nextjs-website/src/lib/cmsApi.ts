@@ -15,10 +15,11 @@ import {
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
 import {
-  guideLists,
   guidesDefinitions,
   products,
   quickStartGuides,
+  overviews,
+  guideLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
@@ -37,6 +38,8 @@ import { makeGuideListPagesProps } from './guideListPages';
 import { fetchGuides } from './strapi/guidesCodec';
 import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
+import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
+import { makeOverviewsProps } from '@/lib/overviews';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -183,6 +186,17 @@ export const getSolutionsListProps = async () => {
     const strapiSolutionsList = await fetchSolutionList(buildEnv);
     return makeSolutionListProps(strapiSolutionsList);
   }
+};
+
+export const getOverviewsProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiOverviews = await fetchOverviews(buildEnv);
+    return makeOverviewsProps(strapiOverviews, overviews);
+  } else return overviews;
 };
 
 export const getGuideListPagesProps = async () => {

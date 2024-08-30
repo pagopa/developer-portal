@@ -5,7 +5,7 @@ import React from 'react';
 
 export type LinkCardProps = {
   readonly title: string;
-  readonly text: string;
+  readonly description: string;
   readonly minHeight?: number;
   readonly link?: {
     readonly label: string;
@@ -13,7 +13,7 @@ export type LinkCardProps = {
   };
 };
 
-const LinkCard = ({ title, text, minHeight, link }: LinkCardProps) => {
+const LinkCard = ({ title, description, minHeight, link }: LinkCardProps) => {
   return (
     <Card
       style={{
@@ -28,7 +28,7 @@ const LinkCard = ({ title, text, minHeight, link }: LinkCardProps) => {
         <Typography variant='h6' gutterBottom>
           {title}
         </Typography>
-        <Typography variant='body2'>{text}</Typography>
+        <Typography variant='body2'>{description}</Typography>
       </CardContent>
       {link && (
         <CardActions>
