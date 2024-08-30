@@ -38,13 +38,13 @@ const ProductsShowcase = ({
       <SectionTitle margin={'0 0 1.75rem 0'} title={title} />
       <CardsGrid
         cardSize={cardSize}
-        cardVariant={'outlined'}
-        cardSvg={true}
+        ctaButtonsVariant={'outlined'}
         cards={cards.map((card) => ({
           title: card.title,
           text: card.text,
           href: card.href,
           icon: card.logoUrl,
+          isSvg: true,
         }))}
       />
     </Box>

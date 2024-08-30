@@ -7,13 +7,12 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
 
 export type CardsGridProps = {
-  cardVariant?: 'text' | 'contained' | 'outlined';
-  cardSvg?: boolean;
   cardSize?: {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
   containerSx?: SxProps;
+  ctaButtonsVariant?: 'text' | 'contained' | 'outlined';
   cards: {
     target?: '_blank' | '_self' | '_parent' | '_top';
     comingSoon?: boolean;
@@ -30,9 +29,9 @@ export type CardsGridProps = {
 
 const CardsGrid = ({
   cards,
-  cardVariant,
   cardSize,
   containerSx,
+  ctaButtonsVariant,
 }: CardsGridProps) => {
   const { palette } = useTheme();
   const t = useTranslations('shared');
@@ -74,7 +73,7 @@ const CardsGrid = ({
                         ? ctaLabel
                         : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
-                      variant: cardVariant,
+                      variant: ctaButtonsVariant,
                     }}
                     icon={
                       <IconWrapper

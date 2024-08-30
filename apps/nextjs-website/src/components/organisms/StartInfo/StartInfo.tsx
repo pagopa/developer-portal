@@ -40,7 +40,7 @@ const StartInfo = ({
           <SectionTitle title={title} />
         </Box>
         <CardsGrid
-          cardVariant={cardVariant}
+          ctaButtonsVariant={cardVariant}
           cardSize={{
             xs: 12,
             md: 12 / cards.length,
