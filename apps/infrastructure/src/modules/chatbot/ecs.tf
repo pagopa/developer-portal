@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "ecs_redis_task_def" {
   container_definitions = templatefile(
     "${path.module}/task-definitions/redis.json.tpl",
     {
-      name           = "redis-task-def"
+      container_name = local.redis_container_name
       image          = var.ecs_redis.image_uri
       fargate_cpu    = var.ecs_redis.cpu
       fargate_memory = var.ecs_redis.memory
@@ -67,11 +67,19 @@ module "ecs_service" {
   task_definition_arn            = aws_ecs_task_definition.ecs_redis_task_def.arn
   tasks_iam_role_arn             = module.ecs_redis_task_iam_role.iam_role_arn
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
-  ignore_task_definition_changes = true
+  ignore_task_definition_changes = false
 
   security_group_ids = [aws_security_group.redis.id]
   subnet_ids         = var.vpc.private_subnets
   assign_public_ip   = false
+
+  load_balancer = {
+    redis-target-group = {
+      target_group_arn = module.nlb.target_groups["redis-tg"].arn
+      container_name   = local.redis_container_name
+      container_port   = var.ecs_redis.port
+    }
+  }
 }
 
 resource "aws_security_group" "redis" {
@@ -94,20 +102,11 @@ resource "aws_security_group_rule" "redis_egress" {
   security_group_id = aws_security_group.redis.id
 }
 
-resource "aws_security_group_rule" "lambda_redis_ingress" {
+resource "aws_security_group_rule" "nlb_ingress" {
   type                     = "ingress"
-  from_port                = 6379
-  to_port                  = 6379
+  from_port                = var.ecs_redis.port
+  to_port                  = var.ecs_redis.port
   protocol                 = "tcp"
   security_group_id        = aws_security_group.redis.id
-  source_security_group_id = aws_security_group.lambda.id
-}
-
-resource "aws_security_group_rule" "ecs_redis_ingress" {
-  type                     = "ingress"
-  from_port                = 6379
-  to_port                  = 6379
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.redis.id
-  source_security_group_id = var.security_groups.ecs_tasks
+  source_security_group_id = aws_security_group.nlb.id
 }

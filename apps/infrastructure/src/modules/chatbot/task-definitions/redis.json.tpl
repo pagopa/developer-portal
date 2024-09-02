@@ -1,6 +1,6 @@
 [
   {
-    "name": "${name}",
+    "name": "${container_name}",
     "image": "${image}",
     "mountPoints": ${efs_mount_points},
     "portMappings": [

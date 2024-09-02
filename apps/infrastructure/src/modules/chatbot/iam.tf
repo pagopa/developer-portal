@@ -42,7 +42,7 @@ module "ecs_redis_task_iam_role" {
 module "iam_policy_ecs_task_role_ssm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-  name   = "CMSTaskRolePoliciesSSM"
+  name   = "ECSTaskRolePoliciesSSM"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_ssm.json
 }
