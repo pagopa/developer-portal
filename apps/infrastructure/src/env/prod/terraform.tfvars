@@ -32,6 +32,4 @@ dns_domain_name_cms = {
   }
 }
 
-# chatbot_opensearch = {
-#   node_instance_type      = "t3.medium.search"
-# }
+create_chatbot = false

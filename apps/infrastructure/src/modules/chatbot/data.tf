@@ -27,13 +27,13 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
     resources = ["*"]
   }
 
-  statement {
-    effect = "Allow"
-    actions = [
-      "ssm:DescribeParameters"
-    ]
-    resources = ["*"]
-  }
+  # statement {
+  #   effect = "Allow"
+  #   actions = [
+  #     "ssm:DescribeParameters"
+  #   ]
+  #   resources = ["*"]
+  # }
 
   # statement {
   #   effect = "Allow"
@@ -50,4 +50,19 @@ data "aws_caller_identity" "current" {}
 
 data "aws_availability_zones" "available" {
   state = "available"
+}
+
+data "aws_iam_policy_document" "ecs_task_role_ssm" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 }

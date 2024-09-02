@@ -30,7 +30,3 @@ dns_domain_name_cms = {
 }
 
 create_chatbot = true
-
-chatbot_opensearch = {
-  node_instance_type      = "t3.small.search"
-}

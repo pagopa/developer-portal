@@ -125,6 +125,6 @@ module "chatbot" {
   cognito_user_pool       = module.website.cognito_user_pool
   vpc                     = module.cms.vpc
   security_groups         = module.cms.security_groups
-  opensearch              = var.chatbot_opensearch
   dns_domain_name         = var.dns_domain_name
+  ecs_redis               = var.chatbot_ecs_redis
 }

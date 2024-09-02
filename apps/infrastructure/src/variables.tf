@@ -98,25 +98,23 @@ variable "create_chatbot" {
   default     = false
 }
 
-variable "chatbot_opensearch" {
+################################################################################
+# ECS - Chatbot Redis
+################################################################################
+
+variable "chatbot_ecs_redis" {
   type = object({
-    instance_count           = optional(number, 1)
-    dedicated_master_instance_type = optional(string, null)
-    node_instance_type = optional(string, "t3.small.search")
-    engine_version = optional(string, "OpenSearch_2.13")
-    ebs_options = optional(object({
-      ebs_enabled = optional(bool, true)
-      iops        = optional(number, 3000)
-      throughput  = optional(number, 125)
-      volume_type = optional(string, "gp3")
-      volume_size = optional(number, 30)
-    }), {
-      ebs_enabled = true
-      iops        = 3000
-      throughput  = 125
-      volume_type = "gp3"
-      volume_size = 30
-    })
+    cpu       = optional(number, 2048)
+    memory    = optional(number, 4096)
+    image_uri = optional(string, "redis/redis-stack-server")
+    port      = optional(number, 6379)
   })
-  description = "OpenSearch configuration for the AI chatbot"
+  description = "Redis configuration for the AI chatbot"
+
+  default = {
+    cpu       = 2048
+    memory    = 4096
+    image_uri = "redis/redis-stack-server"
+    port      = 6379
+  }
 }
