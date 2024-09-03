@@ -20,6 +20,7 @@ const BannerLinkCodec = t.strict({
 const BaseTutorialAttributesCodec = t.strict({
   title: t.string,
   slug: t.string,
+  publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
 });
 
@@ -34,7 +35,6 @@ export const TutorialCodec = t.strict({
       parts: t.array(PartCodec),
       createdAt: DateFromISOString,
       updatedAt: DateFromISOString,
-      publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
       locale: t.string,
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
       relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
