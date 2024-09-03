@@ -48,21 +48,6 @@
         }
       }
     },
-    "parts": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "dynamiczone",
-      "components": [
-        "parts.alert",
-        "parts.code-block",
-        "parts.embed-html",
-        "parts.html"
-      ],
-      "required": true
-    },
     "product": {
       "type": "relation",
       "relation": "oneToOne",
@@ -88,6 +73,18 @@
       },
       "component": "common.banner-link",
       "max": 2
+    },
+    "parts": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "customField",
+      "options": {
+        "preset": "toolbar"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
     }
   }
 }
