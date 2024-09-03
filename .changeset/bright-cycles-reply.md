@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add bannerLinks to overview page
+Add bannerLinks to product's overview page in NextJs
