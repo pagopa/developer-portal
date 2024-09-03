@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
@@ -19,7 +19,6 @@ class Query(BaseModel):
   queriedAt: str | None = None
 
 app = FastAPI()
-chatbot = Chatbot(params, prompts)
 
 origins = [
   "http://localhost",
@@ -40,6 +39,8 @@ async def healthz ():
 
 @app.post("/queries")
 async def query_creation (query: Query):
+  chatbot = Chatbot(params, prompts)
+
   answer = chatbot.generate(query.question)
 
   # TODO: dynamoDB integration
