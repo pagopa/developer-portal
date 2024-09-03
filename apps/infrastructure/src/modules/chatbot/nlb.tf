@@ -23,7 +23,7 @@ module "nlb" {
     redis-tg = {
       name              = "redis-tg"
       protocol          = "TCP_UDP"
-      target_type = "ip"
+      target_type       = "ip"
       port              = var.ecs_redis.port
       vpc_id            = var.vpc.id
       create_attachment = false
