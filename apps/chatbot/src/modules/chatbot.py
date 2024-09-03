@@ -23,13 +23,13 @@ AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
-logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare contenuti inappropriati.
 Riformula la domanda in modo che non violi queste linee guida."""
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
 
+logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
 class Chatbot():
     def __init__(

@@ -26,24 +26,6 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
     ]
     resources = ["*"]
   }
-
-  # statement {
-  #   effect = "Allow"
-  #   actions = [
-  #     "ssm:DescribeParameters"
-  #   ]
-  #   resources = ["*"]
-  # }
-
-  # statement {
-  #   effect = "Allow"
-  #   actions = [
-  #     "ssm:GetParameters"
-  #   ]
-  #   resources = [
-  #     aws_ssm_parameter.redis_users["admin"].arn
-  #   ]
-  # }
 }
 
 data "aws_caller_identity" "current" {}

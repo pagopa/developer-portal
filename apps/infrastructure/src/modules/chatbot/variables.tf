@@ -86,10 +86,10 @@ variable "dns_domain_name" {
 
 variable "ecs_redis" {
   type = object({
-    cpu       = optional(number, 2048)
-    memory    = optional(number, 4096)
-    image_uri = optional(string, "redis/redis-stack-server")
-    port      = optional(number, 6379)
+    cpu       = number
+    memory    = number
+    image_uri = string
+    port      = number
   })
   description = "Redis configuration for the AI chatbot"
 }

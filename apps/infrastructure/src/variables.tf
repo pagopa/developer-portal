@@ -106,7 +106,7 @@ variable "chatbot_ecs_redis" {
   type = object({
     cpu       = optional(number, 2048)
     memory    = optional(number, 4096)
-    image_uri = optional(string, "redis/redis-stack-server")
+    image_uri = optional(string, "redis/redis-stack-server@sha256:675092ddbdcee9486c1c2decb879f663c01e07d9c7f78cbc787e4109ee81f54c")
     port      = optional(number, 6379)
   })
   description = "Redis configuration for the AI chatbot"
@@ -114,7 +114,7 @@ variable "chatbot_ecs_redis" {
   default = {
     cpu       = 2048
     memory    = 4096
-    image_uri = "redis/redis-stack-server"
+    image_uri = "redis/redis-stack-server@sha256:675092ddbdcee9486c1c2decb879f663c01e07d9c7f78cbc787e4109ee81f54c"
     port      = 6379
   }
 }
