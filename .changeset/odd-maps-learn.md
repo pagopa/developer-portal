@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add guides and guide list codecs
+Add overview codec and test

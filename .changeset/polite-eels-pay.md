@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Update chatbot message component
+Add copy to clipboard button

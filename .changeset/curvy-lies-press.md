@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-New chatbot button style
+Add feedback button

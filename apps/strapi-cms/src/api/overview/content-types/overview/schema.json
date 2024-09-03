@@ -47,6 +47,12 @@
         }
       }
     },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product",
+      "inversedBy": "overview"
+    },
     "features": {
       "type": "component",
       "repeatable": false,
@@ -89,7 +95,7 @@
     },
     "relatedLinks": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true

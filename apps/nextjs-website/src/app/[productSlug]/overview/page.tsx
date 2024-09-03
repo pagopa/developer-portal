@@ -1,4 +1,4 @@
-import { getOverview, getProductsSlugs } from '@/lib/api';
+import { getOverview } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
@@ -9,7 +9,6 @@ import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { Path } from '@/lib/types/path';
 import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
@@ -17,13 +16,16 @@ import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { getOverviewsProps } from '@/lib/cmsApi';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('overview')].map((productSlug) => ({
-    productSlug,
-  }));
+  return (await getOverviewsProps())
+    .map(({ product }) => ({
+      productSlug: product.slug,
+    }))
+    .filter(({ productSlug }) => !!productSlug);
 }
 
 export type OverviewPageProps = {
@@ -35,12 +37,13 @@ export type OverviewPageProps = {
     readonly title: string;
     readonly subtitle: string;
   };
-  readonly feature: {
+  readonly feature?: {
     readonly title: string;
-    readonly subtitle: string;
+    readonly subtitle?: string;
     readonly items: FeatureItem[];
   };
   readonly startInfo?: {
+    readonly title?: string;
     readonly cta?: {
       readonly text: string;
       readonly label: string;
@@ -54,13 +57,16 @@ export type OverviewPageProps = {
       readonly href?: string;
       readonly iconName: string;
       readonly iconColor?: string;
+      readonly isSvg?: boolean;
     }[];
   };
-  readonly tutorials: {
+  readonly tutorials?: {
+    readonly title?: string;
     readonly subtitle: string;
-    readonly list?: readonly Tutorial[];
+    readonly list: readonly Tutorial[];
   };
   readonly postIntegration?: {
+    readonly title?: string;
     readonly subtitle: string;
     readonly listTitle?: string;
     readonly cta?: {
@@ -68,14 +74,19 @@ export type OverviewPageProps = {
       readonly href: string;
     };
     readonly guides?: GuideCardProps[];
-    readonly list?: readonly {
+    readonly serviceModels?: readonly {
       readonly title: string;
       readonly description: string;
-      readonly path: string;
-      readonly name: string;
+      readonly href: string;
     }[];
   };
-  readonly relatedLinks?: Path[];
+  readonly relatedLinks?: {
+    readonly title: string;
+    readonly links: {
+      text: string;
+      href: string;
+    }[];
+  };
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -108,7 +119,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
   } = await getOverview(params.productSlug);
   const { overview } = translations;
 
-  const tutorialsListToShow = tutorials.list
+  const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
     .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
 
@@ -124,21 +135,23 @@ const OverviewPage = async ({ params }: ProductParams) => {
         theme='light'
         gridTextSx={{ marginTop: { xs: '62px', md: '77px' } }}
       />
-      <Feature
-        items={feature.items}
-        title={feature.title}
-        subtitle={feature.subtitle}
-      />
+      {feature && (
+        <Feature
+          items={feature.items}
+          title={feature.title}
+          subtitle={feature.subtitle}
+        />
+      )}
       {startInfo && (
         <StartInfo
-          title={overview.startInfo.title}
+          title={startInfo.title || overview.startInfo.title}
           cta={startInfo.cta}
           cards={startInfo.cards}
         />
       )}
       {product.subpaths.tutorials && tutorials && (
         <TutorialsOverview
-          title={overview.tutorial.title}
+          title={tutorials.title || overview.tutorial.title}
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={product.subpaths.tutorials}
@@ -147,7 +160,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
       )}
       {product.subpaths.guides && postIntegration && (
         <PostIntegration
-          title={overview.postIntegration.title}
+          title={postIntegration.title || overview.postIntegration.title}
           subtitle={postIntegration.subtitle}
           cta={
             postIntegration.cta && {
@@ -156,21 +169,16 @@ const OverviewPage = async ({ params }: ProductParams) => {
             }
           }
           listTitle={postIntegration.listTitle}
-          cards={postIntegration.list?.map((guide) => ({
-            title: guide.title,
-            text: guide.description,
-            href: guide.path,
-          }))}
+          serviceModels={
+            postIntegration.serviceModels && [...postIntegration.serviceModels]
+          }
           guides={postIntegration.guides}
         />
       )}
       {relatedLinks && (
         <RelatedLinks
-          title={overview.relatedLinks.title}
-          links={relatedLinks.map(({ path, name }) => ({
-            text: name,
-            href: path,
-          }))}
+          title={relatedLinks.title || overview.relatedLinks.title}
+          links={relatedLinks.links}
         />
       )}
     </ProductLayout>

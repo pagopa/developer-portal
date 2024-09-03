@@ -33,9 +33,11 @@
       "relation": "oneToMany",
       "target": "api::guide.guide"
     },
-    "showCompactCards": {
-      "type": "boolean",
-      "default": false
+    "serviceModels": {
+      "type": "component",
+      "repeatable": true,
+      "component": "overview.service-model",
+      "max": 4
     }
   }
 }

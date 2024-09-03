@@ -27,10 +27,12 @@ const makeStrapiResponseJson = () => ({
       features: {
         id: 3,
         title: 'dfdsfsfds',
+        subtitle: null,
         items: [
           {
             id: 11,
             title: 'fsdfdsfsd',
+            subtitle: 'subtitle',
             content: [
               {
                 type: 'paragraph',
@@ -70,6 +72,7 @@ const makeStrapiResponseJson = () => ({
           {
             id: 12,
             title: 'ffff',
+            subtitle: 'subtitle',
             content: [
               {
                 type: 'paragraph',
@@ -109,6 +112,7 @@ const makeStrapiResponseJson = () => ({
           {
             id: 13,
             title: 'dddd',
+            subtitle: null,
             content: [
               {
                 type: 'paragraph',

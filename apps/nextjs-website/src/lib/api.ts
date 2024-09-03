@@ -1,7 +1,5 @@
 import {
-  guideLists,
   guides,
-  overviews,
   products,
   tutorialLists,
   tutorials,
@@ -19,6 +17,9 @@ import {
   getSolutionsListProps,
   getTutorialsProps,
   getWebinarsProps,
+  getGuideListPagesProps,
+  getGuidesProps,
+  getOverviewsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/tutorials';
@@ -39,10 +40,13 @@ export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
 ): Promise<GuidePage> {
+  const guidesProps = await getGuidesProps();
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const props = manageUndefined(guides.find(({ page }) => page.path === path));
+  const props = manageUndefined(
+    guidesProps.find(({ page }) => page.path === path)
+  );
 
   return {
     ...props,
@@ -52,33 +56,27 @@ export async function getGuide(
   };
 }
 
-function getProductGuidePath(path: string) {
+export function getProductGuidePath(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
   return path.split('/').filter((p, index) => index > 2);
 }
 
-export function getGuidePaths() {
-  return guides.map((guide) => ({
-    slug: guide.product.slug,
-    guidePaths: getProductGuidePath(guide.page.path),
-  }));
-}
-
 export async function getGuideLists(productSlug?: string) {
-  const props =
-    guideLists.find(
-      (guideList) => guideList.product.path === `/${productSlug}`
-    ) || null;
+  const props = manageUndefined(
+    (await getGuideListPagesProps()).find(
+      ({ product }) => product.slug === productSlug
+    )
+  );
   return manageUndefinedAndAddProducts(props);
 }
 
 export async function getOverview(productSlug?: string) {
-  const props =
-    overviews.find(
-      (overviewData) => overviewData.product.path === `/${productSlug}`
-    ) || null;
-  return manageUndefinedAndAddProducts(props);
+  return manageUndefined(
+    (await getOverviewsProps()).find(
+      (overviewData) => overviewData.product.slug === productSlug
+    )
+  );
 }
 
 export function getProductsSlugs(

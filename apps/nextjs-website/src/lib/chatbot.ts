@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { QueryInput } from '@/lib/chatbot/queries';
 import { pipe } from 'fp-ts/lib/function';
-import { getQueries, postQuery } from '@/lib/chatbot/chatbotApi';
+import { getQueries, patchFeedback, postQuery } from '@/lib/chatbot/chatbotApi';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 
@@ -19,3 +19,6 @@ export const sendChatbotQuery = (query: QueryInput) =>
 
 export const getChatbotQueries = (sessionId: string) =>
   getQueries(sessionId)(chatbotApiEnv);
+
+export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
+  patchFeedback(feedback, queryId)(chatbotApiEnv);
