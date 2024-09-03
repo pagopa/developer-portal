@@ -102,7 +102,7 @@ const makeStrapiOverviewsPopulate = () =>
         populate: ['bottomLink', 'items.icon'],
       },
       tutorialSection: {
-        populate: ['tutorials.image'],
+        populate: ['tutorials.image', 'tutorials.product.logo'],
       },
       postIntegration: {
         populate: [

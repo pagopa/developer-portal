@@ -21,6 +21,7 @@ const BaseTutorialAttributesCodec = t.strict({
   title: t.string,
   slug: t.string,
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+  product: t.strict({ data: ProductCodec }),
 });
 
 export const BaseTutorialCodec = t.strict({
@@ -38,7 +39,6 @@ export const TutorialCodec = t.strict({
       locale: t.string,
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
       relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-      product: t.strict({ data: ProductCodec }),
     }),
   ]),
 });
