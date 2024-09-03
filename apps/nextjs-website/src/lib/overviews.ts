@@ -76,9 +76,9 @@ export function makeOverviewsProps(
           title: attributes.postIntegration.title,
           subtitle: attributes.postIntegration.description,
           listTitle: attributes.postIntegration.guidesTitle,
-          cta: {
-            label: attributes.postIntegration.link?.text || '',
-            href: attributes.postIntegration.link?.href || '',
+          cta: attributes.postIntegration.link && {
+            label: attributes.postIntegration.link.text,
+            href: attributes.postIntegration.link.href,
           },
           guides: [
             ...attributes.postIntegration.documents.map((document) => ({
