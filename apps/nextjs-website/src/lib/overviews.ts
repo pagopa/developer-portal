@@ -114,6 +114,14 @@ export function makeOverviewsProps(
           title: attributes.relatedLinks.title,
           links: attributes.relatedLinks.links,
         },
+        bannerLinks: [
+          ...attributes.bannerLinks.map((bannerLink) => ({
+            content: bannerLink.content,
+            icon: bannerLink.icon.data.attributes,
+            theme: bannerLink.theme || 'dark',
+            title: bannerLink.title || '',
+          })),
+        ],
       };
     }),
     ...staticOverviews,

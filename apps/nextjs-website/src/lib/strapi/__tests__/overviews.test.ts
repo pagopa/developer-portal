@@ -133,6 +133,45 @@ const serviceModels = [
   },
 ];
 
+const bannerLinks = [
+  {
+    id: 64,
+    title: 'first title',
+    theme: 'light',
+    content: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'text',
+          },
+        ],
+      },
+    ],
+    subtitle: 'subtitle',
+    icon: iconJson,
+  },
+  {
+    id: 65,
+    title: 'second title',
+    theme: 'light',
+    content: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'text',
+          },
+        ],
+      },
+    ],
+    subtitle: 'subtitle',
+    icon: iconJson,
+  },
+];
+
 const makeStrapiResponseJson = () => ({
   data: [
     {
@@ -350,6 +389,7 @@ const makeStrapiResponseJson = () => ({
           },
           serviceModels,
         },
+        bannerLinks,
       },
     },
     {
@@ -369,6 +409,7 @@ const makeStrapiResponseJson = () => ({
         startInfoSection: null,
         tutorialSection: null,
         postIntegration: null,
+        bannerLinks: [],
       },
     },
     {
@@ -433,6 +474,7 @@ const makeStrapiResponseJson = () => ({
           serviceModels: serviceModels,
           link: null,
         },
+        bannerLinks: [],
       },
     },
   ],
