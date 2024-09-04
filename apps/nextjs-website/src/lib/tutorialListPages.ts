@@ -1,7 +1,7 @@
 import { mergeProductWithStaticContent } from './products';
 import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
-import { StrapiTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { Tutorial } from './types/tutorialData';
+import { StrapiTutorialListPages } from './strapi/codecs/TutorialListPagesCodec';
 
 type StaticTutorialListPages = readonly TutorialsPageProps[];
 
