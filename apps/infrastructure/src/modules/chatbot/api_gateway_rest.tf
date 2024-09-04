@@ -47,7 +47,7 @@ resource "aws_api_gateway_method" "chatbot" {
   http_method          = each.value
   authorization        = "COGNITO_USER_POOLS"
   authorizer_id        = aws_api_gateway_authorizer.authorizer.id
-  authorization_scopes = ["openid"]
+  authorization_scopes = []
 
   request_parameters = {
     "method.request.path.proxy" = true
@@ -133,7 +133,7 @@ resource "aws_api_gateway_integration_response" "cors" {
   response_parameters = {
         "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
         "method.response.header.Access-Control-Allow-Methods" = "'*'",
-        "method.response.header.Access-Control-Allow-Origin" = var.environment == "dev" ? "'https://${var.dns_domain_name},http://localhost:3000'" : "'https://${var.dns_domain_name}'"
+        "method.response.header.Access-Control-Allow-Origin" = "'*'"
     }
 
   depends_on = [
