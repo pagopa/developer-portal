@@ -15,12 +15,6 @@
     }
   },
   "attributes": {
-    "product": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product.product",
-      "inversedBy": "tutorial_list_page"
-    },
     "title": {
       "pluginOptions": {
         "i18n": {
@@ -39,6 +33,11 @@
       "type": "text",
       "required": true
     },
+    "tutorials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tutorial.tutorial"
+    },
     "bannerLinks": {
       "type": "component",
       "repeatable": true,
@@ -50,10 +49,11 @@
       "component": "common.banner-link",
       "max": 2
     },
-    "tutorials": {
+    "product": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::tutorial.tutorial"
+      "relation": "oneToOne",
+      "target": "api::product.product",
+      "inversedBy": "tutorial_list_page"
     }
   }
 }
