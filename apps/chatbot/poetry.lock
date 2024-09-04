@@ -2500,19 +2500,19 @@ pydantic = ">=1.10"
 
 [[package]]
 name = "llama-index"
-version = "0.10.68"
+version = "0.10.63"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index-0.10.68-py3-none-any.whl", hash = "sha256:e2a1919707260c07f9c10a239a576a399e8c50b2ddcd8d0ad8b4ffb4ad5c5c60"},
-    {file = "llama_index-0.10.68.tar.gz", hash = "sha256:89f79e7ece951f40d753ee6e5a2273ca3728d800cbb2213f65b7e1d58abff0e5"},
+    {file = "llama_index-0.10.63-py3-none-any.whl", hash = "sha256:a24dadefed31f4cf68a22c72565e48a7844c78e1b31b47de60bd0258fa3fa875"},
+    {file = "llama_index-0.10.63.tar.gz", hash = "sha256:a423cd5da376633b791b1b2df8a1c7872b53803b6c33f233bc67eec259c04c49"},
 ]
 
 [package.dependencies]
 llama-index-agent-openai = ">=0.1.4,<0.3.0"
 llama-index-cli = ">=0.1.2,<0.2.0"
-llama-index-core = ">=0.10.68,<0.11.0"
+llama-index-core = "0.10.63"
 llama-index-embeddings-openai = ">=0.1.5,<0.2.0"
 llama-index-indices-managed-llama-cloud = ">=0.2.0"
 llama-index-legacy = ">=0.9.48,<0.10.0"
@@ -2557,13 +2557,13 @@ llama-index-llms-openai = ">=0.1.1,<0.2.0"
 
 [[package]]
 name = "llama-index-core"
-version = "0.10.68.post1"
+version = "0.10.63"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index_core-0.10.68.post1-py3-none-any.whl", hash = "sha256:1befe1324f0fa1c3a2cfc1e4d38adb0cd0c3b2948badfb2be826da048a3bdbaf"},
-    {file = "llama_index_core-0.10.68.post1.tar.gz", hash = "sha256:1215106973f2fb7651c10827c27ca3f47c03ccfae3b8653c5476d454d5ba8cd0"},
+    {file = "llama_index_core-0.10.63-py3-none-any.whl", hash = "sha256:8e98c59da2b08a7298d506648ab76c09f2340a1c6107a9d299a627e2d9804a99"},
+    {file = "llama_index_core-0.10.63.tar.gz", hash = "sha256:0d7f906196bd3d0ba5ca7a3ac63663eabfec1869a3e1f42e0fa8fbb3c789d724"},
 ]
 
 [package.dependencies]
@@ -2575,11 +2575,11 @@ fsspec = ">=2023.5.0"
 httpx = "*"
 nest-asyncio = ">=1.5.8,<2.0.0"
 networkx = ">=3.0"
-nltk = ">=3.8.1,<3.9 || >3.9"
+nltk = ">=3.8.1,<4.0.0"
 numpy = "<2.0.0"
+openai = ">=1.1.0"
 pandas = "*"
 pillow = ">=9.0.0"
-pydantic = "<3.0"
 PyYAML = ">=6.0.1"
 requests = ">=2.31.0"
 SQLAlchemy = {version = ">=1.4.49", extras = ["asyncio"]}
@@ -2872,13 +2872,13 @@ redis = ">=5.0.1,<6.0.0"
 
 [[package]]
 name = "llama-index-vector-stores-redis"
-version = "0.2.1"
+version = "0.2.0"
 description = "llama-index vector_stores redis integration"
 optional = false
 python-versions = "<4.0,>=3.8.1"
 files = [
-    {file = "llama_index_vector_stores_redis-0.2.1-py3-none-any.whl", hash = "sha256:544a471572b956c469cbdb658b6340a21e6eb2fb4b553bf0d8682eaa6c37ec1a"},
-    {file = "llama_index_vector_stores_redis-0.2.1.tar.gz", hash = "sha256:6a08d6f01550bc7365a4e47cdc9d8e3d652efe55a3163a3adb8b14474e2188e8"},
+    {file = "llama_index_vector_stores_redis-0.2.0-py3-none-any.whl", hash = "sha256:952134c192aee18c48177578faafe7a05143f7a2e08171a8bc2a35c6fa0c353e"},
+    {file = "llama_index_vector_stores_redis-0.2.0.tar.gz", hash = "sha256:6b484f42467afe4264abe7ed928c33e4b1e6b79a8bccf1c8373a0dc99f0d4eed"},
 ]
 
 [package.dependencies]
@@ -6319,4 +6319,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "79cef72f29b63c780c7e5756dee0c07f73629dbf4607e4713c1a59103388eda1"
+content-hash = "2144c75d15c7315d236c2516cf2ea814a67836561332dee391162c2df2bedc23"

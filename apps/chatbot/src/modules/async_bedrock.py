@@ -23,8 +23,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID", os.getenv("CHB_AWS_GUARDRAIL_ID"))
-AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION", os.getenv("CHB_AWS_GUARDRAIL_VERSION"))
+AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID", os.getenv("AWS_GUARDRAIL_ID"))
+AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION", os.getenv("AWS_GUARDRAIL_VERSION"))
 
 
 class AsyncBedrock(Bedrock):

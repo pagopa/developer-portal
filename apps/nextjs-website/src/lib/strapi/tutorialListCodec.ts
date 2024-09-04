@@ -11,9 +11,9 @@ const StrapiTutorialListCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     description: t.string,
-    product: t.strict({ data: BaseProductCodec }),
     tutorials: t.strict({ data: t.array(BaseTutorialCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
+    product: t.strict({ data: BaseProductCodec }),
   }),
 });
 

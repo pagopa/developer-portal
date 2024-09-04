@@ -4,7 +4,7 @@ module "ecr" {
 
   repository_name                    = "chatbot"
   repository_image_scan_on_push      = "true"
-  repository_image_tag_mutability    = "IMMUTABLE"
+  repository_image_tag_mutability    = "MUTABLE"
   repository_lambda_read_access_arns = [module.lambda_function.lambda_function_arn]
   repository_lifecycle_policy = jsonencode({
     rules = [
