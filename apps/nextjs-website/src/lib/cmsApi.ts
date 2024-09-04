@@ -7,7 +7,7 @@ import { fetchHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
-import { fetchTutorials } from './strapi/tutorial';
+import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './tutorials';
 import { fetchQuickStarts } from './strapi/quickStarts';
 import {
@@ -41,7 +41,7 @@ import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
 import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
 import { makeOverviewsProps } from '@/lib/overviews';
-import { fetchTutorialList } from './strapi/tutorialListCodec';
+import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './tutorialListPages';
 
 // a BuildEnv instance ready to be used
@@ -112,8 +112,8 @@ export const getTutorialListPagesProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiTutorialList = await fetchTutorialList(buildEnv);
-    return makeTutorialListPagesProps(strapiTutorialList, tutorialLists);
+    const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
+    return makeTutorialListPagesProps(strapiTutorialListPages, tutorialLists);
   } else {
     return tutorialLists;
   }

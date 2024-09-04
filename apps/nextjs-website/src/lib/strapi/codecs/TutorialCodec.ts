@@ -1,15 +1,13 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
-import * as qs from 'qs';
-import { fetchFromStrapi } from './fetchFromStrapi';
 import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString';
-import { MediaCodec } from './codecs/MediaCodec';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { PaginationCodec } from './codecs/PaginationCodec';
-import { ProductCodec } from './codecs/ProductCodec';
-import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
-import { PartCodec } from './codecs/PartCodec';
+import { MediaCodec } from './MediaCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { BlocksContentCodec } from './BlocksContentCodec';
+import { ProductCodec } from './ProductCodec';
+import { RelatedLinksCodec } from './RelatedLinksCodec';
+import { PartCodec } from './PartCodec';
+import { PaginationCodec } from './PaginationCodec';
 
 const BannerLinkCodec = t.strict({
   id: t.number,
@@ -49,26 +47,3 @@ export const StrapiTutorialsCodec = t.strict({
 });
 
 export type StrapiTutorials = t.TypeOf<typeof StrapiTutorialsCodec>;
-
-const makeStrapiTutorialsPopulate = () =>
-  qs.stringify({
-    populate: {
-      relatedLinks: {
-        populate: ['links'],
-      },
-      image: {
-        populate: ['image'],
-      },
-      parts: '*',
-      product: { populate: 'logo' },
-      bannerLinks: {
-        populate: ['icon'],
-      },
-    },
-  });
-
-export const fetchTutorials = fetchFromStrapi(
-  'tutorials',
-  makeStrapiTutorialsPopulate(),
-  StrapiTutorialsCodec
-);

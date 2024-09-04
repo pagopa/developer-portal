@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
-import { guideImageJson } from './guides.test';
-import { StrapiTutorialListPagesCodec } from '../tutorialListCodec';
+import { StrapiTutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
+import { mediaJson } from './fixtures/media';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -25,7 +25,7 @@ const makeStrapiResponseJson = () => ({
                 updatedAt: '2024-08-06T10:15:09.118Z',
                 publishedAt: '2024-08-06T10:15:09.114Z',
                 locale: 'it',
-                image: guideImageJson,
+                image: mediaJson,
               },
             },
           ],
@@ -62,7 +62,7 @@ const makeStrapiResponseJson = () => ({
             ],
             theme: 'light',
             subtitle: 'fdfd d',
-            icon: guideImageJson,
+            icon: mediaJson,
           },
           {
             id: 23,
@@ -80,7 +80,7 @@ const makeStrapiResponseJson = () => ({
             ],
             theme: 'light',
             subtitle: 'fdfdfd',
-            icon: guideImageJson,
+            icon: mediaJson,
           },
         ],
       },
@@ -96,8 +96,8 @@ const makeStrapiResponseJson = () => ({
   },
 });
 
-describe('StrapiTutorialListCodec', () => {
-  it('should decode strapi tutorial list', () => {
+describe('StrapiTutorialListPagesCodec', () => {
+  it('should decode strapi tutorial list pages', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiTutorialListPagesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
