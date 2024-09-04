@@ -26,7 +26,7 @@ from src.modules.async_bedrock import AsyncBedrock
 
 
 nest_asyncio.apply()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 
 def parser_function(output_str: str):

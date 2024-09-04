@@ -14,10 +14,60 @@ module "vpc" {
   public_subnet_names          = ["cms_public_1", "cms_public_2", "cms_public_3"]
   database_subnets             = ["10.0.201.0/24", "10.0.202.0/24", "10.0.203.0/24"]
   database_subnet_names        = ["cms_database_1", "cms_database_2", "cms_database_3"]
+  elasticache_subnets          = ["10.0.211.0/24", "10.0.212.0/24", "10.0.213.0/24"]
+  elasticache_subnet_names     = ["cms_elasticache_1", "cms_elasticache_2", "cms_elasticache_3"]
   public_dedicated_network_acl = true
   enable_nat_gateway           = true
   single_nat_gateway           = true
   enable_dns_hostnames         = true
   enable_dns_support           = true
   create_database_subnet_group = true
+}
+
+resource "aws_security_group" "vpc_endpoints" {
+  name_prefix = "${var.environment}-vpc-endpoints"
+  description = "Associated to ECR/s3 VPC Endpoints"
+  vpc_id      = module.vpc.vpc_id
+}
+resource "aws_security_group_rule" "vpc_endpoints" {
+  type              = "ingress"
+  description       = "Allow Chatbot Lambda to pull images from ECR via VPC endpoints"
+  protocol          = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.vpc_endpoints.id
+}
+
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id              = module.vpc.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  subnet_ids         = module.vpc.private_subnets
+
+  tags = {
+    "Name" = "${var.environment}-ecr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "ssmmessages" {
+  vpc_id              = module.vpc.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ssmmessages"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  subnet_ids         = module.vpc.private_subnets
+
+  tags = {
+    "Name" = "${var.environment}-ecr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = module.vpc.vpc_id
+  service_name = "com.amazonaws.${var.aws_region}.s3"
 }
