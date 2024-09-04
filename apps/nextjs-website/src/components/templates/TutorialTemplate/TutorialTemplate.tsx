@@ -4,12 +4,12 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import { Box, Typography } from '@mui/material';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
-import { StrapiTutorials } from '@/lib/strapi/fetchTutorials';
 import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { StrapiTutorials } from '@/lib/strapi/codecs/TutorialCodec';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
