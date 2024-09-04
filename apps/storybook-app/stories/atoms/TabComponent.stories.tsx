@@ -18,7 +18,7 @@ export const TabsComponent: StoryObj<typeof TabComponent> = {
         content: (
           <IconWrapper
             icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
-            isSvg={true}
+            useSrc={true}
           />
         ),
       },

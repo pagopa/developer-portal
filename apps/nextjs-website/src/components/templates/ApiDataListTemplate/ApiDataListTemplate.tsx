@@ -58,7 +58,7 @@ const ApiDataListTemplate = ({
           ctaButtonsVariant='outlined'
           cards={cards.map((card) => ({
             ...card,
-            isSvg: true,
+            useSrc: true,
             ctaLabel: t('apiDataListPage.explore'),
           }))}
           cardSize={{ xs: 12, md: 4 }}

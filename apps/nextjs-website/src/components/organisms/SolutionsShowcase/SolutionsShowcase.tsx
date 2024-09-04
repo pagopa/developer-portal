@@ -31,7 +31,7 @@ const SolutionsShowcase = ({
           href: card.href,
           icon: card.logoUrl,
           tags: card.tags,
-          isSvg: true,
+          useSrc: true,
         }))}
       />
     </Box>

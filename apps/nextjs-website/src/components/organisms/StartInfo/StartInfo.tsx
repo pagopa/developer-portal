@@ -16,7 +16,7 @@ type StartInfoProps = {
     href?: string;
     iconName: string;
     iconColor?: string;
-    isSvg?: boolean;
+    useSrc: boolean;
   }[];
   cta?: {
     text: string;
@@ -52,7 +52,7 @@ const StartInfo = ({
             href: card.href,
             icon: card.iconName,
             iconColor: card.iconColor,
-            isSvg: card.isSvg,
+            useSrc: card.useSrc,
           }))}
         />
       </Box>
@@ -70,6 +70,7 @@ const StartInfo = ({
                 color={palette.text.primary}
                 size={26}
                 icon={cta.iconName || 'MenuBook'}
+                useSrc={false}
               />
             </Box>
             <Typography variant='body1' mb={2}>

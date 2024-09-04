@@ -44,7 +44,7 @@ const ProductsShowcase = ({
           text: card.text,
           href: card.href,
           icon: card.logoUrl,
-          isSvg: true,
+          useSrc: true,
         }))}
       />
     </Box>

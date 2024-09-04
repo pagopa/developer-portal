@@ -60,7 +60,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
           <div style={{ marginBottom: '26px' }}>
             <IconWrapper
               icon={icon.url}
-              isSvg={true}
+              useSrc={true}
               color={textColor}
               size={60}
             />

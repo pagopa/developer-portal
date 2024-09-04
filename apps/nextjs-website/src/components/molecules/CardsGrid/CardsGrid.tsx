@@ -23,7 +23,7 @@ export type CardsGridProps = {
     icon: string;
     iconColor?: string;
     tags?: { readonly label: string; readonly path?: string }[];
-    isSvg?: boolean;
+    useSrc: boolean;
   }[];
 };
 
@@ -52,7 +52,7 @@ const CardsGrid = ({
                 iconColor,
                 tags,
                 ctaLabel,
-                isSvg,
+                useSrc,
               },
               index
             ) => {
@@ -79,7 +79,7 @@ const CardsGrid = ({
                       <IconWrapper
                         color={iconColor || palette.text.primary}
                         icon={icon}
-                        isSvg={isSvg}
+                        useSrc={useSrc}
                       />
                     }
                     tags={tags}
