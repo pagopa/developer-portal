@@ -19,7 +19,7 @@ from src.modules.vector_database import (
 from src.modules.engine import get_automerging_query_engine
 
 
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
+AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
