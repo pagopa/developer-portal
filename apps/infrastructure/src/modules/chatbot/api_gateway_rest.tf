@@ -41,9 +41,10 @@ resource "aws_api_gateway_resource" "chatbot" {
 }
 
 resource "aws_api_gateway_method" "chatbot" {
+  for_each             = toset(["GET", "POST", "PUT", "PATCH"])
   rest_api_id          = aws_api_gateway_rest_api.api.id
   resource_id          = aws_api_gateway_resource.chatbot.id
-  http_method          = "ANY"
+  http_method          = each.value
   authorization        = "COGNITO_USER_POOLS"
   authorizer_id        = aws_api_gateway_authorizer.authorizer.id
   authorization_scopes = ["openid"]
@@ -65,9 +66,10 @@ resource "aws_api_gateway_method_settings" "chatbot" {
 }
 
 resource "aws_api_gateway_integration" "chatbot" {
+  for_each                = aws_api_gateway_method.chatbot
   rest_api_id             = aws_api_gateway_rest_api.api.id
   resource_id             = aws_api_gateway_resource.chatbot.id
-  http_method             = aws_api_gateway_method.chatbot.http_method
+  http_method             = aws_api_gateway_method.chatbot[each.key].http_method
   type                    = "AWS_PROXY"
   uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
   integration_http_method = "ANY"
@@ -77,6 +79,67 @@ resource "aws_api_gateway_integration" "chatbot" {
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
   }
+}
+############
+### CORS ###
+############
+resource "aws_api_gateway_method" "cors" {
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  resource_id   = aws_api_gateway_resource.chatbot.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "cors" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.chatbot.id
+  http_method = aws_api_gateway_method.cors.http_method
+  content_handling = "CONVERT_TO_TEXT"
+
+  type = "MOCK"
+
+  request_templates = {
+    "application/json" = "{ \"statusCode\": 200 }"
+  }
+}
+
+resource "aws_api_gateway_method_response" "cors" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.chatbot.id
+  http_method = aws_api_gateway_method.cors.http_method
+  status_code = 200
+
+  response_parameters = {
+        "method.response.header.Access-Control-Allow-Headers" = true,
+        "method.response.header.Access-Control-Allow-Methods" = true,
+        "method.response.header.Access-Control-Allow-Origin" = true
+    }
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+
+  depends_on = [
+    aws_api_gateway_method.cors,
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "cors" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.chatbot.id
+  http_method = aws_api_gateway_method.cors.http_method
+  status_code = 200
+
+  response_parameters = {
+        "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Methods" = "'*'",
+        "method.response.header.Access-Control-Allow-Origin" = var.environment == "dev" ? "'https://${var.dns_domain_name},http://localhost:3000'" : "'https://${var.dns_domain_name}'"
+    }
+
+  depends_on = [
+    aws_api_gateway_integration.cors,
+    aws_api_gateway_method_response.cors,
+  ]
 }
 
 resource "aws_api_gateway_account" "chatbot" {
