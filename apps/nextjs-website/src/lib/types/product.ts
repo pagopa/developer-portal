@@ -1,5 +1,6 @@
 import { Path } from '@/lib/types/path';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 export type Product = {
   readonly slug: string;
@@ -7,6 +8,7 @@ export type Product = {
   readonly description: string | undefined;
   readonly logo: Media;
   readonly subpaths: Subpaths;
+  readonly bannerLinks: readonly BannerLinkProps[];
 } & Path;
 
 type Subpaths = {

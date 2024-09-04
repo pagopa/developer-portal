@@ -32,6 +32,7 @@ const product: Product = {
       path: '/guides',
     },
   },
+  bannerLinks: [],
 };
 
 it('should convert product to menu items', () => {

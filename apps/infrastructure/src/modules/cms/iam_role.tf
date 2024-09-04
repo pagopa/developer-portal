@@ -45,8 +45,9 @@ module "iam_role_task_role" {
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
     module.iam_policy_ecs_task_role_s3.arn,
+    module.iam_policy_ecs_task_role_ssm.arn
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
   trusted_role_services = [
     "ecs-tasks.amazonaws.com"
   ]
