@@ -26,3 +26,15 @@ variable "dns_delegate_records" {
   description = "DNS delegate records"
   default     = {}
 }
+
+variable "dns_chatbot_domain_prefix" {
+  type        = string
+  description = "DNS chatbot domain prefix"
+  default     = "chatbot"
+}
+
+variable "create_chatbot" {
+  type        = bool
+  description = "Defines if chatbot should be created"
+  default     = false
+}

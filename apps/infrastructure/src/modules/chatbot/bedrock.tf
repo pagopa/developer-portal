@@ -1,5 +1,6 @@
 resource "awscc_bedrock_guardrail" "guardrail" {
-  name                      = "${var.module}-${var.environment}-safety-block-guardrail"
+  provider                  = awscc.eu-west-3
+  name                      = "${local.prefix}-safety-block-guardrail"
   blocked_input_messaging   = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   blocked_outputs_messaging = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   description               = "Guardrail that blocks offensive language and PII entities"
@@ -160,6 +161,7 @@ resource "awscc_bedrock_guardrail" "guardrail" {
 }
 
 resource "awscc_bedrock_guardrail_version" "guardrail" {
+  provider             = awscc.eu-west-3
   guardrail_identifier = awscc_bedrock_guardrail.guardrail.guardrail_id
   description          = "Guardrail Version"
 }
