@@ -46,3 +46,18 @@ module "iam_policy_ecs_task_role_ssm" {
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_ssm.json
 }
+
+###############################################################################
+#                        IAM Role used by API Gateway                         #
+###############################################################################
+
+resource "aws_iam_role" "cloudwatch" {
+  name               = "api_gateway_cloudwatch_global"
+  assume_role_policy = data.aws_iam_policy_document.apigateway_assume_role.json
+}
+
+resource "aws_iam_role_policy" "cloudwatch" {
+  name   = "default"
+  role   = aws_iam_role.cloudwatch.id
+  policy = data.aws_iam_policy_document.apigateway_cloudwatch.json
+}
