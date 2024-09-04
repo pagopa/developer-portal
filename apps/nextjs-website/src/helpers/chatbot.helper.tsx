@@ -1,13 +1,21 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { sendChatbotQuery, sendChatbotFeedback } from '@/lib/chatbot';
-import { Query } from '@/lib/chatbot/queries';
+import {
+  sendChatbotQuery,
+  sendChatbotFeedback,
+  getChatbotHistory,
+} from '@/lib/chatbot';
+import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
+
+const HISTORY_PAGE_SIZE = 10;
 
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [paginatedSessions, setPaginatedSessions] =
+    useState<PaginatedSessions | null>(null);
 
   useEffect(() => {
     if (sessionId || !isUserAuthenticated) {
@@ -69,11 +77,21 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
+  const getSessions = (page: number) => {
+    getChatbotHistory(page, HISTORY_PAGE_SIZE).then((response) =>
+      setPaginatedSessions(response)
+    );
+
+    return null;
+  };
+
   return {
     isLoaded,
     isAwaitingResponse,
     queries,
     sendQuery,
     sendFeedback,
+    paginatedSessions,
+    getSessions,
   };
 };
