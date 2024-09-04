@@ -52,55 +52,54 @@ export const appIoOverview: OverviewData = {
     subtitle:
       'Scopri cosa può fare un servizio su IO e come pubblicarlo in app. Leggi il manuale dei servizi per creare un servizio da zero o personalizza uno dei tanti modelli disponibili.',
     listTitle: 'MODELLI DEI SERVIZI',
-    list: [
+    serviceModels: [
       {
         title: 'Tassa sui rifiuti (TARI)',
         description:
           'Scheda e modelli di messaggi del servizio che invia comunicazioni in merito alla Tassa sui rifiuti (TARI)',
-        path: `${appIOGuideListsPath.path}/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari`,
-        name: 'Tassa sui rifiuti',
+        href: `${appIOGuideListsPath.path}/modelli-servizi/casa-e-utenze/tassa-sui-rifiuti-tari`,
       },
       {
         title: "Carta d'Identità Elettronica",
         description:
           "Scheda e modelli di messaggi del servizio che riguarda la richiesta e l'emissione della Carta d'Identità Elettronica",
-        path: `${appIOGuideListsPath.path}/modelli-servizi/servizi-anagrafici-e-civici/carta-didentita-elettronica`,
-        name: 'CIE',
+        href: `${appIOGuideListsPath.path}/modelli-servizi/servizi-anagrafici-e-civici/carta-didentita-elettronica`,
       },
       {
         title: 'Asilo Nido',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda a ricezione delle comunicazioni riguardanti il sistema scolastico frequentato dai figli a carico ',
-        path: `${appIOGuideListsPath.path}/modelli-servizi/educazione-e-formazione/asilo-nido`,
-        name: 'Rimozione veicoli',
+        href: `${appIOGuideListsPath.path}/modelli-servizi/educazione-e-formazione/asilo-nido`,
       },
       {
         title: 'Multe per violazioni codice della strada',
         description:
           'Scheda e modelli di messaggi del servizio che riguarda le violazioni al Codice della Strada',
-        path: `${appIOGuideListsPath.path}/modelli-servizi/mobilita-e-trasporti/multe-per-violazioni-al-codice-della-strada`,
-        name: 'Violazioni codice della strada',
+        href: `${appIOGuideListsPath.path}/modelli-servizi/mobilita-e-trasporti/multe-per-violazioni-al-codice-della-strada`,
       },
     ],
   },
-  relatedLinks: [
-    {
-      path: `${appIOGuideListsPath.path}/modelli-servizi`,
-      name: 'Consulta alcuni dei modelli utili per configurare i servizi su IO',
-    },
-    {
-      path: `${appIOGuideListsPath.path}/supporto-agli-enti`,
-      name: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
-    },
-    {
-      path: 'https://28648410-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FygbXW3iAtEO4zjdRaFKr%2FAccordo%20di%20Adesione%20IO_v.2.4_30_giugno_2024.pdf?alt=media',
-      name: 'Scarica il contratto di adesione a IO',
-    },
-    {
-      path: `${appIOGuideListsPath.path}/kit-comunicazione`,
-      name: 'Leggi kit di comunicazione',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link utili',
+    links: [
+      {
+        text: 'Consulta alcuni dei modelli utili per configurare i servizi su IO',
+        href: `${appIOGuideListsPath.path}/modelli-servizi`,
+      },
+      {
+        text: 'Consulta FAQ e approfondimenti nella documentazione di supporto agli Enti',
+        href: `${appIOGuideListsPath.path}/supporto-agli-enti`,
+      },
+      {
+        text: 'Scarica il contratto di adesione a IO',
+        href: 'https://28648410-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FZugEhXfhuchEaSiqU3p5%2Fuploads%2FygbXW3iAtEO4zjdRaFKr%2FAccordo%20di%20Adesione%20IO_v.2.4_30_giugno_2024.pdf?alt=media',
+      },
+      {
+        text: 'Leggi kit di comunicazione',
+        href: `${appIOGuideListsPath.path}/kit-comunicazione`,
+      },
+    ],
+  },
   startInfo: {
     cta: {
       text: 'Scopri tutti i dettagli dell’integrazione',

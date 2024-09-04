@@ -92,19 +92,22 @@ export const sendOverview: OverviewData = {
       'Quali sono le modalità di invio di una notifica? Come si segue il suo avanzamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: sendTutorials,
   },
-  relatedLinks: [
-    {
-      path: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
-      name: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
-    },
-    {
-      path: `${sendGuideListsPath.path}/modello-di-integrazione`,
-      name: 'Consulta la documentazione sul modello di integrazione SEND',
-    },
-    {
-      path: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
-      name: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link utili',
+    links: [
+      {
+        text: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
+        href: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
+      },
+      {
+        text: 'Consulta la documentazione sul modello di integrazione SEND',
+        href: `${sendGuideListsPath.path}/modello-di-integrazione`,
+      },
+      {
+        text: 'Scopri come documentare e validare l’avvenuta integrazione con SEND',
+        href: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche`,
+      },
+    ],
+  },
   bannerLinks: sendBannerLinks,
 };
