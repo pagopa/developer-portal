@@ -4,6 +4,7 @@ import { appIOGuideListsPath } from '@/_contents/appIo/guideListsPath';
 import { appIoOverviewPath } from '@/_contents/appIo/overviewPath';
 import { appIoQuickStartGuidePath } from '@/_contents/appIo/quickStartGuidePath';
 import { appIoTutorialListsPath } from '@/_contents/appIo/tutorialListsPath';
+import { appIoBannerLinks } from './bannerLinks';
 
 export const appIo: Product = {
   name: 'IO, l’app dei servizi pubblici',
@@ -30,4 +31,5 @@ export const appIo: Product = {
     tutorials: appIoTutorialListsPath,
     guides: appIOGuideListsPath,
   },
+  bannerLinks: appIoBannerLinks,
 };

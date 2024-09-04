@@ -7,7 +7,6 @@ import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { ApiDataParams } from '@/lib/types/apiDataParams';
-import { products, productsBannerLinks } from '@/_contents/products';
 import PageNotFound from '@/app/not-found';
 
 export type ApiPageProps = {
@@ -44,12 +43,11 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
   if (apiDataProps && product) {
-    const bannerLink = productsBannerLinks[products.indexOf(product)];
     return (
       <ProductLayout
         product={product}
         path={product.path.concat('/api')}
-        bannerLinks={bannerLink || apiDataProps.bannerLinks}
+        bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
       >
         <ApiSection

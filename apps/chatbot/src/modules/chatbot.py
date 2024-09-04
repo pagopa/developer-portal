@@ -16,9 +16,9 @@ from src.modules.async_bedrock import AsyncBedrock
 from src.modules.vector_database import load_automerging_index_s3, load_url_hash_table, load_automerging_index_redis, REDIS_KVSTORE
 from src.modules.retriever import get_automerging_query_engine
 
-AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
-AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
-AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
+CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
@@ -29,6 +29,7 @@ RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
 
+logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
 class Chatbot():
     def __init__(
@@ -47,7 +48,7 @@ class Chatbot():
         self.model = AsyncBedrock(
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_DEFAULT_REGION,
+            region_name=CHB_AWS_DEFAULT_REGION,
             model=params["models"]["model_id"],
             temperature=params["models"]["temperature"],
             max_tokens=params["models"]["max_tokens"],
@@ -59,7 +60,7 @@ class Chatbot():
         self.embed_model = BedrockEmbedding(
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_DEFAULT_REGION,
+            region_name=CHB_AWS_DEFAULT_REGION,
             model_name=params["models"]["emded_model_id"],
         )
 
@@ -95,7 +96,6 @@ class Chatbot():
             refine_template=self.ref_prompt_tmpl,
             verbose=self.params["retriever"]["verbose"]
         )
-
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 

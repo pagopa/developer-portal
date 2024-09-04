@@ -4,9 +4,9 @@ import { partFromStrapiPart } from './strapi/codecs/PartCodec';
 import { Part } from './types/part';
 
 export function makeCaseHistoriesProps(
-  srapiCaseHistories: StrapiCaseHistories
+  strapiCaseHistories: StrapiCaseHistories
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
-  return srapiCaseHistories.data.map(({ attributes }) => ({
+  return strapiCaseHistories.data.map(({ attributes }) => ({
     ...attributes,
     parts: [
       ...(attributes.parts
