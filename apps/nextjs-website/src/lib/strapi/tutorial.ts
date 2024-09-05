@@ -7,7 +7,7 @@ import { MediaCodec } from './codecs/MediaCodec';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { BlocksContentCodec } from './codecs/BlocksContentCodec';
 import { PaginationCodec } from './codecs/PaginationCodec';
-import { ProductCodec } from './codecs/ProductCodec';
+import { BaseProductCodec, ProductCodec } from './codecs/ProductCodec';
 import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
 import { PartCodec } from './codecs/PartCodec';
 
@@ -21,6 +21,7 @@ const BaseTutorialAttributesCodec = t.strict({
   title: t.string,
   slug: t.string,
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+  product: t.strict({ data: BaseProductCodec }),
 });
 
 export const BaseTutorialCodec = t.strict({
