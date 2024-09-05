@@ -127,6 +127,11 @@ export function partFromStrapiPart(part: StrapiPart): Part | null {
         quote: part.text,
         backgroundImage: part.backgroundImage.data?.attributes,
       };
+    case 'parts.ck-editor':
+      return {
+        component: 'ckEditor',
+        content: part.content,
+      };
     default:
       return null;
   }
