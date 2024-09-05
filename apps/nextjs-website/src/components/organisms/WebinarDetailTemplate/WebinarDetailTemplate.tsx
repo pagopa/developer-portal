@@ -3,7 +3,6 @@ import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
 import SubscribeCta from '@/components/atoms/SubscribeCta/SubscribeCta';
 import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
-import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
@@ -62,17 +61,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     [webinar.speakers]
   );
 
-  const startInfo = useMemo(
-    () =>
-      webinar.startInfo && (
-        <StartInfo
-          cardVariant='outlined'
-          title={webinar.startInfo.title}
-          cards={[...webinar.startInfo.cards]}
-        />
-      ),
-    [webinar.startInfo]
-  );
   const relatedLinks = useMemo(
     () =>
       webinar.relatedLinks?.title && (
@@ -167,7 +155,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {html}
       {bodyContent}
       {speakerList}
-      {startInfo}
       {webinar.questionsAndAnswers && (
         <QuestionsAndAnswers items={[...webinar.questionsAndAnswers]} />
       )}

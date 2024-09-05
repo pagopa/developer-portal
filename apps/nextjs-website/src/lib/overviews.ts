@@ -49,7 +49,7 @@ export function makeOverviewsProps(
               title: item.title,
               text: item.description,
               href: item.path,
-              isSvg: true,
+              useSrc: true,
               iconName: item.icon.data.attributes.url,
             })) || [],
         },

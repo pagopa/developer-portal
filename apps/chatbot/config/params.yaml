@@ -5,6 +5,8 @@ vector_index:
   path: index
   chunk_sizes: [2816, 704, 176]
   chunk_overlap: 20
+  use_redis: True
+  use_s3: False
 
 models:
   model_id: amazon.titan-text-express-v1
@@ -13,8 +15,10 @@ models:
   topP: 0.95
   max_tokens: 784
 
-retriever:
+engine:
   similarity_top_k: 5
   similarity_cutoff: 0.55
   response_mode: compact
   verbose: False
+  use_async: True
+  streaming: False
