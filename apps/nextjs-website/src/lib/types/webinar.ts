@@ -54,15 +54,5 @@ export type Webinar = {
   readonly subscribeCtaLabel?: string;
   readonly isVisibleInList: boolean;
   readonly imagePath: string;
-  readonly startInfo?: {
-    readonly title: string;
-    readonly cards: readonly {
-      readonly comingSoon?: boolean;
-      readonly title: string;
-      readonly text: string;
-      readonly href?: string;
-      readonly iconName: string;
-    }[];
-  };
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
 };

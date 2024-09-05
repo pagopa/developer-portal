@@ -13,6 +13,8 @@ def get_automerging_query_engine(
         response_mode: str = "compact",
         text_qa_template: PromptTemplate | None = None,
         refine_template: PromptTemplate | None = None,
+        use_async: bool = False,
+        streaming: bool = False,
         verbose: bool = True
     ) -> RetrieverQueryEngine:
 
@@ -36,7 +38,9 @@ def get_automerging_query_engine(
             similarity_postprocessor
         ],
         text_qa_template=text_qa_template,
-        refine_template=refine_template
+        refine_template=refine_template,
+        use_async=use_async,
+        streaming=streaming
     )
 
     return automerging_engine

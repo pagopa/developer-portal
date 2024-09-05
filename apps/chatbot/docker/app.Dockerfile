@@ -13,4 +13,5 @@ RUN poetry config virtualenvs.create false
 RUN poetry install
 
 COPY . ${LAMBDA_TASK_ROOT}
+RUN python ./scripts/nltk_download.py
 CMD ["src.app.main.handler"]
