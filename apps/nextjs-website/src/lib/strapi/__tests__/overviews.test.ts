@@ -37,7 +37,7 @@ const bannerLinks = [
       },
     ],
     subtitle: 'subtitle',
-    icon: iconJson,
+    icon: mediaVectorJson,
   },
   {
     id: 65,
@@ -55,7 +55,7 @@ const bannerLinks = [
       },
     ],
     subtitle: 'subtitle',
-    icon: iconJson,
+    icon: mediaVectorJson,
   },
 ];
 
