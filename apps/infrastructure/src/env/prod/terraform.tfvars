@@ -31,3 +31,5 @@ dns_domain_name_cms = {
     comment = "DNS domain name of the Developer Portal's CMS"
   }
 }
+
+create_chatbot = false

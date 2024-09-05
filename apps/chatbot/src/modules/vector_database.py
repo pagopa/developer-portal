@@ -5,13 +5,10 @@ import json
 import tqdm
 import logging
 import hashlib
-from selenium import webdriver
 from typing import List, Tuple
 
 
 import s3fs
-import html2text
-from bs4 import BeautifulSoup
 
 from llama_index.core import (
     Document,
@@ -23,7 +20,6 @@ from llama_index.core import (
 from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
-
 from redis import Redis
 from llama_index.storage.docstore.redis import RedisDocumentStore
 from llama_index.storage.index_store.redis import RedisIndexStore
@@ -36,11 +32,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
-AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
-AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
+CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 CHB_REDIS_URL = os.getenv('CHB_REDIS_URL')
-REDIS_CLIENT = Redis.from_url(CHB_REDIS_URL)
+WEBSITE_URL = os.getenv('WEBSITE_URL')
+REDIS_CLIENT = Redis.from_url(CHB_REDIS_URL, socket_timeout=10)
+
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": "index", "prefix": "index/vector"},
     "fields": [
@@ -53,11 +51,13 @@ REDIS_SCHEMA = IndexSchema.from_dict({
 REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT)
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
-FS = s3fs.S3FileSystem(
-    key=AWS_ACCESS_KEY_ID,
-    secret=AWS_SECRET_ACCESS_KEY,
-    endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
-)
+
+if not CHB_REDIS_URL:
+    FS = s3fs.S3FileSystem(
+        key=AWS_ACCESS_KEY_ID,
+        secret=AWS_SECRET_ACCESS_KEY,
+        endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
+    )
 
 DYNAMIC_HTMLS = [
     "app-io/api/app-io-main.html",
@@ -132,9 +132,13 @@ def html2markdown(html):
 
 
 def create_documentation(
-        documentation_dir: str = "./PagoPADevPortal/out/"
+        website_url: str,
+        documentation_dir: str = "./PagoPADevPortal/out/",
     ) -> Tuple[List[Document], dict]:
-
+    from selenium import webdriver
+    import html2text
+    from bs4 import BeautifulSoup
+    
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
@@ -151,7 +155,7 @@ def create_documentation(
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         if file in dynamic_htmls:
-            url = file.replace(documentation_dir, "http://localhost:3000/")
+            url = file.replace(documentation_dir, f"{website_url}/")
             driver = webdriver.Chrome()
             driver.get(url)
             time.sleep(5)
@@ -205,12 +209,11 @@ def create_documentation(
     return documents, hash_table
 
 
-def build_automerging_index_s3(
+def build_automerging_index(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         documentation_dir: str,
         save_dir: str,
-        s3_bucket_name: str | None,
         chunk_sizes: List[int],
         chunk_overlap: int
     ) -> VectorStoreIndex:
@@ -244,10 +247,60 @@ def build_automerging_index_s3(
         service_context=merging_context
     )
     logging.info(f"Created index successfully.")
-    if s3_bucket_name:
 
+    automerging_index.storage_context.persist(
+        persist_dir=save_dir
+    )
+    with open("hash_table.json", "w") as f:
+        json.dump(hash_table, f, indent=4)
+
+    logging.info(f"Saved index successfully to {save_dir}.")
+
+    return automerging_index
+
+
+def build_automerging_index_s3(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        documentation_dir: str,
+        save_dir: str,
+        s3_bucket_name: str | None,
+        chunk_sizes: List[int],
+        chunk_overlap: int
+    ) -> VectorStoreIndex:
+
+    logging.info("Storing vector index and hash table on AWS bucket S3..")
+    
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+
+    assert documentation_dir is not None
+    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
+
+    logging.info("Creating index...")
+    nodes = node_parser.get_nodes_from_documents(documents)
+    leaf_nodes = get_leaf_nodes(nodes)
+
+    storage_context = StorageContext.from_defaults()
+    storage_context.docstore.add_documents(nodes)
+
+    automerging_index = VectorStoreIndex(
+        leaf_nodes,
+        storage_context=storage_context,
+        service_context=merging_context
+    )
+    logging.info(f"Created index successfully.")
+    if s3_bucket_name:
         # store hash table
-        with FS.open('chatbot-llamaindex-5086/hash_table.json', 'w') as f:
+        with FS.open(f'{s3_bucket_name}/hash_table.json', 'w') as f:
             json.dump(hash_table, f, indent=4)
         logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
@@ -290,7 +343,7 @@ def build_automerging_index_redis(
         node_parser=node_parser
     )
     
-    documents, hash_table = create_documentation(documentation_dir)
+    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
             collection="hash_table",
@@ -348,7 +401,7 @@ def load_automerging_index_s3(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         save_dir: str,
-        s3_bucket_name: str | None,
+        s3_bucket_name: str,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ) -> VectorStoreIndex:
@@ -365,23 +418,46 @@ def load_automerging_index_s3(
     )
 
     logging.info(f"{save_dir} directory exists! Loading vector index...")
-    if s3_bucket_name:
+    automerging_index = load_index_from_storage(
+        StorageContext.from_defaults(
+            persist_dir = f"{s3_bucket_name}/{save_dir}",
+            fs = FS
+        ),
+        service_context=merging_context
+    )
 
-        automerging_index = load_index_from_storage(
-            StorageContext.from_defaults(
-                persist_dir = f"{s3_bucket_name}/{save_dir}",
-                fs = FS
-            ),
-            service_context=merging_context
-        )
+    logging.info("Loaded vector index successfully!")
+
+    return automerging_index
+
+
+def load_automerging_index(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        save_dir: str,
+        chunk_sizes: List[int],
+        chunk_overlap: int,
+    ) -> VectorStoreIndex:
     
-    else:
-        automerging_index = load_index_from_storage(
-            StorageContext.from_defaults(
-                persist_dir=save_dir
-            ),
-            service_context=merging_context,
-        )
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+
+    logging.info(f"{save_dir} directory exists! Loading vector index...")
+    
+    automerging_index = load_index_from_storage(
+        StorageContext.from_defaults(
+            persist_dir=save_dir
+        ),
+        service_context=merging_context,
+    )
 
     logging.info("Loaded vector index successfully!")
 

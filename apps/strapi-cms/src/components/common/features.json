@@ -17,7 +17,7 @@
       "type": "component",
       "repeatable": true,
       "component": "common.banner-link",
-      "max": 3,
+      "max": 4,
       "min": 3
     }
   }

@@ -10,7 +10,7 @@ package-mode = false
 python = "^3.12"
 matplotlib = "^3.9.0"
 aioboto3 = "^13.0.1"
-llama-index = "^0.10.46"
+llama-index = "0.10.63"
 llama-index-cli = "^0.1.12"
 llama-index-core = "^0.10.46"
 llama-index-embeddings-bedrock = "^0.2.1"
@@ -36,6 +36,8 @@ llama-index-readers-web = "^0.1.23"
 llama-index-vector-stores-redis = "^0.2.0"
 llama-index-storage-docstore-redis = "^0.1.2"
 llama-index-storage-index-store-redis = "^0.2.0"
+llama-index-embeddings-langchain = "^0.1.2"
+llama-index-llms-langchain = "^0.3.0"
 
 
 [build-system]
