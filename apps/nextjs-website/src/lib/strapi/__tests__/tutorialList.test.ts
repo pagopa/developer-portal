@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { StrapiTutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
-import { mediaJson } from './fixtures/media';
+import { mediaVectorJson } from './fixtures/media';
+import { baseProductJson } from './fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -25,7 +26,8 @@ const makeStrapiResponseJson = () => ({
                 updatedAt: '2024-08-06T10:15:09.118Z',
                 publishedAt: '2024-08-06T10:15:09.114Z',
                 locale: 'it',
-                image: mediaJson,
+                image: mediaVectorJson,
+                product: baseProductJson,
               },
             },
           ],
@@ -62,7 +64,7 @@ const makeStrapiResponseJson = () => ({
             ],
             theme: 'light',
             subtitle: 'fdfd d',
-            icon: mediaJson,
+            icon: mediaVectorJson,
           },
           {
             id: 23,
@@ -80,7 +82,7 @@ const makeStrapiResponseJson = () => ({
             ],
             theme: 'light',
             subtitle: 'fdfdfd',
-            icon: mediaJson,
+            icon: mediaVectorJson,
           },
         ],
       },

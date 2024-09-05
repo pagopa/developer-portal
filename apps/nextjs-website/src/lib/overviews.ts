@@ -69,7 +69,7 @@ export function makeOverviewsProps(
                 : undefined,
               title: tutorial.attributes.title,
               name: 'shared.moreInfo', // This is a reference to a translation key
-              path: `/${tutorial.attributes?.product?.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
+              path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
             })) || [],
         },
         postIntegration: attributes.postIntegration && {

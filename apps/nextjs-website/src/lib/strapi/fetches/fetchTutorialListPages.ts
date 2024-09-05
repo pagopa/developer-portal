@@ -7,7 +7,7 @@ const makeStrapiTutorialListPagePopulate = () =>
     populate: {
       product: '*',
       tutorials: {
-        populate: ['image'],
+        populate: ['image', 'product'],
       },
       bannerLinks: {
         populate: ['icon'],

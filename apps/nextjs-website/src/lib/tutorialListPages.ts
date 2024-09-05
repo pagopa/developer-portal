@@ -15,13 +15,13 @@ export function makeTutorialListPagesProps(
         attributes.product.data.attributes
       );
       const tutorials: readonly Tutorial[] = attributes.tutorials.data.map(
-        ({ attributes }) => ({
-          name: attributes.title,
-          path: `/${product.slug}/tutorials/${attributes.slug}`,
-          title: attributes.title,
-          publishedAt: attributes.publishedAt,
+        ({ attributes: tutorialAttributes }) => ({
+          name: tutorialAttributes.title,
+          path: `/${tutorialAttributes.product.data.attributes.slug}/tutorials/${tutorialAttributes.slug}`,
+          title: tutorialAttributes.title,
+          publishedAt: tutorialAttributes.publishedAt,
           showInOverview: false,
-          image: attributes.image.data?.attributes,
+          image: tutorialAttributes.image.data?.attributes,
         })
       );
       return {
