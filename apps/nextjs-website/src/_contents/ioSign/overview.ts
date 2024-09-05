@@ -49,6 +49,7 @@ export const ioSignOverview: OverviewData = {
         href: `${ioSignQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Documentazione API',
@@ -56,6 +57,7 @@ export const ioSignOverview: OverviewData = {
         href: ioSign.subpaths.api?.path ?? '#',
         iconName: 'Code',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },

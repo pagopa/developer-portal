@@ -105,6 +105,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
                     color={palette.primary.main}
                     size={20}
                     icon={t('response.cta.icon')}
+                    useSrc={false}
                   />
                 </Box>
                 {t('response.cta.label')}

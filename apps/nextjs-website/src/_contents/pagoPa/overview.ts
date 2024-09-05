@@ -59,6 +59,7 @@ export const pagoPaOverview: OverviewData = {
         href: pagoPa.subpaths.quickStart?.path ?? '#',
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Documentazione API',
@@ -66,6 +67,7 @@ export const pagoPaOverview: OverviewData = {
         href: pagoPa.subpaths.api?.path,
         iconName: 'Code',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },
