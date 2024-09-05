@@ -10,16 +10,16 @@ from llama_index.core import PromptTemplate
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 )
-from llama_index.embeddings.bedrock import BedrockEmbedding
 
-from src.modules.async_bedrock import AsyncBedrock
-from src.modules.vector_database import load_automerging_index_s3, load_url_hash_table, load_automerging_index_redis, REDIS_KVSTORE
-from src.modules.retriever import get_automerging_query_engine
+from src.modules.models import get_llm, get_embed_model
+from src.modules.vector_database import (
+    load_automerging_index_s3, load_url_hash_table,
+    load_automerging_index_redis, REDIS_KVSTORE
+)
+from src.modules.engine import get_automerging_query_engine
 
-AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
-CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
+
+AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
@@ -36,33 +36,18 @@ class Chatbot():
             self,
             params,
             prompts,
-            use_guardrail: bool = True,
-            use_redis = True
         ):
 
         self.params = params
         self.prompts = prompts
-        self.use_guardrail = use_guardrail
-        self.use_redis = use_redis
+        self.use_redis = params["vector_index"]["use_redis"]
+        self.use_s3 = params["vector_index"]["use_s3"]
 
-        self.model = AsyncBedrock(
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=CHB_AWS_DEFAULT_REGION,
-            model=params["models"]["model_id"],
-            temperature=params["models"]["temperature"],
-            max_tokens=params["models"]["max_tokens"],
-            use_guardrail=use_guardrail,
-            model_kwargs={
-                "topP": params["models"]["topP"]
-            },
-        )
-        self.embed_model = BedrockEmbedding(
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=CHB_AWS_DEFAULT_REGION,
-            model_name=params["models"]["emded_model_id"],
-        )
+        if self.use_s3 and self.use_redis:
+            raise Exception("Vector Store Error: use s3 or Redis or none of them.")
+
+        self.model = get_llm(params)
+        self.embed_model = get_embed_model(params)
 
         if self.use_redis:
             self.index = load_automerging_index_redis(
@@ -72,7 +57,7 @@ class Chatbot():
                 chunk_overlap=params["vector_index"]["chunk_overlap"]
             )
 
-        else:
+        elif self.use_s3:
             self.hash_table = load_url_hash_table(
                 s3_bucket_name=AWS_S3_BUCKET,
             )
@@ -84,17 +69,28 @@ class Chatbot():
                 chunk_sizes=params["vector_index"]["chunk_sizes"],
                 chunk_overlap=params["vector_index"]["chunk_overlap"],
             )
+        else:
+            self.hash_table = load_url_hash_table()
+            self.index = load_automerging_index_s3(
+                self.model,
+                self.embed_model,
+                save_dir=params["vector_index"]["path"],
+                chunk_sizes=params["vector_index"]["chunk_sizes"],
+                chunk_overlap=params["vector_index"]["chunk_overlap"],
+            )
 
         self.messages = []
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_query_engine(
             self.index,
             llm=self.model,
-            similarity_top_k=self.params["retriever"]["similarity_top_k"],
-            similarity_cutoff=self.params["retriever"]["similarity_cutoff"],
+            similarity_top_k=self.params["engine"]["similarity_top_k"],
+            similarity_cutoff=self.params["engine"]["similarity_cutoff"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            verbose=self.params["retriever"]["verbose"]
+            use_async=self.params["engine"]["use_async"],
+            streaming=self.params["engine"]["streaming"],
+            verbose=self.params["engine"]["verbose"]
         )
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
@@ -275,10 +271,18 @@ class Chatbot():
         else:
             logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
             for hashed_url in hashed_urls:
-                if hashed_url in self.hash_table.keys():
-                    url = self.hash_table[hashed_url]
+                if self.use_redis:
+                    url = REDIS_KVSTORE.get(
+                        collection="hash_table", 
+                        key=hashed_url
+                    )
+                    if url is None:
+                        url = "{URL}"
                 else:
-                    url = "{URL}"
+                    if hashed_url in self.hash_table.keys():
+                        url = self.hash_table[hashed_url]
+                    else:
+                        url = "{URL}"
                 response_str = response_str.replace(hashed_url, url)
 
         # remove sentences with generated masked url: {URL}
@@ -306,28 +310,6 @@ class Chatbot():
             response_str = self._get_response_str(query_str, engine_response)
 
         # update messages
-        self._update_messages("user", query_str)
-        self._update_messages("assistant", response_str)
-
-        return response_str
-    
-
-    async def agenerate(self, query_str: str) -> str:
-
-        num_words = len(query_str.split(" "))
-        it_score = self._check_language(query_str)
-        if num_words < NUM_MIN_WORDS_QUERY:
-            response_str = """Mi dispiace, la domanda fornita è insufficiente.
-            Per piacere, riformula la tua domanda.
-            """
-        elif num_words >= NUM_MIN_WORDS_QUERY and it_score < ITALIAN_THRESHOLD:
-            response_str = """Mi dispiace, la domanda fornita non è propriamente formulata in italiano.
-            Per piacere, riformula la tua domanda.
-            """
-        else:
-            engine_response = self.engine.aquery(query_str)
-            response_str = self._get_response_str(query_str, engine_response)
-
         self._update_messages("user", query_str)
         self._update_messages("assistant", response_str)
 

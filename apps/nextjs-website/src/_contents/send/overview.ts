@@ -77,6 +77,7 @@ export const sendOverview: OverviewData = {
         href: sendQuickStartGuidePath.path,
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'API B2B per le PA',
@@ -84,6 +85,7 @@ export const sendOverview: OverviewData = {
         href: sendApiPath.path ?? '#',
         iconName: 'Code',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },

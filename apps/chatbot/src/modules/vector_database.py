@@ -209,6 +209,56 @@ def create_documentation(
     return documents, hash_table
 
 
+def build_automerging_index(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        documentation_dir: str,
+        save_dir: str,
+        chunk_sizes: List[int],
+        chunk_overlap: int
+    ) -> VectorStoreIndex:
+
+    logging.info("Storing vector index and hash table on AWS bucket S3..")
+    
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+
+    assert documentation_dir is not None
+    documents, hash_table = create_documentation(documentation_dir)
+
+    logging.info("Creating index...")
+    nodes = node_parser.get_nodes_from_documents(documents)
+    leaf_nodes = get_leaf_nodes(nodes)
+
+    storage_context = StorageContext.from_defaults()
+    storage_context.docstore.add_documents(nodes)
+
+    automerging_index = VectorStoreIndex(
+        leaf_nodes,
+        storage_context=storage_context,
+        service_context=merging_context
+    )
+    logging.info(f"Created index successfully.")
+
+    automerging_index.storage_context.persist(
+        persist_dir=save_dir
+    )
+    with open("hash_table.json", "w") as f:
+        json.dump(hash_table, f, indent=4)
+
+    logging.info(f"Saved index successfully to {save_dir}.")
+
+    return automerging_index
+
+
 def build_automerging_index_s3(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
@@ -351,7 +401,7 @@ def load_automerging_index_s3(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
         save_dir: str,
-        s3_bucket_name: str | None,
+        s3_bucket_name: str,
         chunk_sizes: List[int],
         chunk_overlap: int,
     ) -> VectorStoreIndex:
@@ -368,23 +418,46 @@ def load_automerging_index_s3(
     )
 
     logging.info(f"{save_dir} directory exists! Loading vector index...")
-    if s3_bucket_name:
+    automerging_index = load_index_from_storage(
+        StorageContext.from_defaults(
+            persist_dir = f"{s3_bucket_name}/{save_dir}",
+            fs = FS
+        ),
+        service_context=merging_context
+    )
 
-        automerging_index = load_index_from_storage(
-            StorageContext.from_defaults(
-                persist_dir = f"{s3_bucket_name}/{save_dir}",
-                fs = FS
-            ),
-            service_context=merging_context
-        )
+    logging.info("Loaded vector index successfully!")
+
+    return automerging_index
+
+
+def load_automerging_index(
+        llm: BaseLLM,
+        embed_model: BaseEmbedding,
+        save_dir: str,
+        chunk_sizes: List[int],
+        chunk_overlap: int,
+    ) -> VectorStoreIndex:
     
-    else:
-        automerging_index = load_index_from_storage(
-            StorageContext.from_defaults(
-                persist_dir=save_dir
-            ),
-            service_context=merging_context,
-        )
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=chunk_sizes, 
+        chunk_overlap=chunk_overlap
+    )
+    
+    merging_context = ServiceContext.from_defaults(
+        llm=llm,
+        embed_model=embed_model,
+        node_parser=node_parser
+    )
+
+    logging.info(f"{save_dir} directory exists! Loading vector index...")
+    
+    automerging_index = load_index_from_storage(
+        StorageContext.from_defaults(
+            persist_dir=save_dir
+        ),
+        service_context=merging_context,
+    )
 
     logging.info("Loaded vector index successfully!")
 
