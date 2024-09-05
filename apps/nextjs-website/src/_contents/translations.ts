@@ -13,6 +13,7 @@ const productToEcosystemProduct = (product: Product) => ({
   text: product.description ?? '',
   href: `${product.slug}/overview`,
   icon: product.logo.url,
+  useSrc: true,
 });
 
 export const translations = {

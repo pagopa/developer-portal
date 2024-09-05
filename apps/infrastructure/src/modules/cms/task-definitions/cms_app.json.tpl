@@ -7,6 +7,9 @@
         "containerPort": ${container_port}
       }
     ],
+  "linuxParameters": {
+    "initProcessEnabled": true
+  },
 	"logConfiguration": {
         "logDriver": "awslogs",
         "options": {

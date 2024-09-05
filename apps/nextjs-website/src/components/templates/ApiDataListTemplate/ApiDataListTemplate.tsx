@@ -55,12 +55,12 @@ const ApiDataListTemplate = ({
       />
       <Box paddingBottom={6}>
         <CardsGrid
-          cardVariant='outlined'
+          ctaButtonsVariant='outlined'
           cards={cards.map((card) => ({
             ...card,
+            useSrc: true,
             ctaLabel: t('apiDataListPage.explore'),
           }))}
-          cardSvg={true}
           cardSize={{ xs: 12, md: 4 }}
         />
       </Box>

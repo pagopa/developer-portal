@@ -101,6 +101,7 @@ export const makeHomepageProps = (
           text: product.attributes.description ?? '',
           href: `${product.attributes.slug}/overview`,
           icon: product.attributes.logo.data.attributes.url,
+          useSrc: true,
         })
       ),
       solutionsTabName:
@@ -111,6 +112,7 @@ export const makeHomepageProps = (
           text: solution.attributes.description ?? '',
           href: `/solutions/${solution.attributes.slug}`,
           icon: solution.attributes.icon.data.attributes.url,
+          useSrc: true,
         })
       ),
       solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
