@@ -30,8 +30,7 @@ const Ecosystem = ({
               title: productsTabName,
               content: (
                 <CardsGrid
-                  cardVariant={'outlined'}
-                  cardSvg
+                  ctaButtonsVariant={'contained'}
                   cards={products}
                   containerSx={{ px: 0, pb: '22px' }}
                 />
@@ -43,8 +42,7 @@ const Ecosystem = ({
                 <>
                   {solutions && (
                     <CardsGrid
-                      cardVariant={'outlined'}
-                      cardSvg
+                      ctaButtonsVariant={'contained'}
                       cards={solutions}
                       containerSx={{ px: 0, pb: '22px' }}
                     />

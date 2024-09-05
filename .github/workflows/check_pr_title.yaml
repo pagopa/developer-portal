@@ -2,6 +2,12 @@ name: Check PR title
 
 on:
   pull_request:
+    # Ignore Changeset PRs
+    paths-ignore:
+      - '**/package.json'
+      - '**/CHANGELOG.md'
+      - '.changeset/**'
+      - 'package-lock.json'
     types:
       - opened
       - edited

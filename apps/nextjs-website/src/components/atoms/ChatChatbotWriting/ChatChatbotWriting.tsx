@@ -9,7 +9,7 @@ export const ChatCatbotWriting = () => {
       <Stack direction={'row'} margin={{ xs: '1rem 1rem 0.5rem 1rem' }}>
         <IconWrapper
           icon={'/icons/chatbotChatAvatar.svg'}
-          isSvg={true}
+          useSrc={true}
           color={palette.text.secondary}
           size={40}
         />

@@ -78,6 +78,7 @@ export const pdndOverview: OverviewData = {
         href: `${pdndQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Manuale operativo',
@@ -85,6 +86,7 @@ export const pdndOverview: OverviewData = {
         href: '/pdnd-interoperabilita/guides/manuale-operativo',
         iconName: 'MenuBook',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },
