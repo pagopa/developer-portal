@@ -2,4 +2,4 @@
 "strapi-cms": minor
 ---
 
-adds ckeditor to tutorials
+Add CKEditor to Tutorials' parts
