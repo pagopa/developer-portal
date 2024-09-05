@@ -12,6 +12,7 @@ import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
 import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { BaseTutorialCodec } from './codecs/TutorialCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const StartInfoCodec = t.strict({
   icon: t.strict({ data: MediaCodec }),
@@ -75,6 +76,7 @@ export const OverviewCodec = t.strict({
     product: t.strict({
       data: t.union([NullToUndefinedCodec, ProductCodec]),
     }),
+    bannerLinks: t.array(BannerLinkCodec),
   }),
 });
 
@@ -114,6 +116,9 @@ const makeStrapiOverviewsPopulate = () =>
           'documents.mobileImage',
           'serviceModels',
         ],
+      },
+      bannerLinks: {
+        populate: ['icon'],
       },
     },
   });
