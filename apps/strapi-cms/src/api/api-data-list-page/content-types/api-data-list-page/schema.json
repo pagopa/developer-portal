@@ -4,7 +4,8 @@
   "info": {
     "singularName": "api-data-list-page",
     "pluralName": "api-data-list-pages",
-    "displayName": "ApiDataListPage"
+    "displayName": "ApiDataListPage",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -40,7 +41,8 @@
     "product": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::product.product"
+      "target": "api::product.product",
+      "mappedBy": "api_data_list_page"
     },
     "bannerLinks": {
       "type": "component",
