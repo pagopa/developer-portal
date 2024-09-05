@@ -1,5 +1,11 @@
 # chatbot
 
+## 2.2.0
+
+### Minor Changes
+
+- afafab3: Moded model to langchain and converted to llama-index, bug fix, use of redis in params
+
 ## 2.1.0
 
 ### Minor Changes

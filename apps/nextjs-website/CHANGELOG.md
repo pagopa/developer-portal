@@ -1,5 +1,26 @@
 # nextjs-website
 
+## 4.5.0
+
+### Minor Changes
+
+- dfca6c0: Add seo attribute to homepage codec
+- dd8889b: Add feedback button
+- 003ebc7: Connect overview pages to Strapi CMS
+- 61e7045: Add overview codec and test
+- dd8889b: Add copy to clipboard button
+- f3d31db: Connect guide list page to Strapi data and
+- 29dafaf: Connect Guide to Strapi data
+- 05745a3: Meta tags in home page taken from strapi
+- 59317cd: Add anchor id to QuestionsAndAnswers component container
+
+### Patch Changes
+
+- 6c96fbc: Fix link style in webinar Q&A's answers
+- c9bbea3: Fix the margins of webinar related resources
+- 2d14ea6: Fix the call to action button variant in the ecosystem section of the homepage
+- 4cfbcb3: Fix overview page input data and card links
+
 ## 4.4.0
 
 ### Minor Changes
