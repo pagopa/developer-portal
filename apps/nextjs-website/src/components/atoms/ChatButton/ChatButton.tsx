@@ -27,7 +27,7 @@ const ChatButton = ({ isChatOpen, onOpenChat }: ChatButtonProps) => {
       >
         <IconWrapper
           icon={'/icons/chatbotAvatar.svg'}
-          isSvg={true}
+          useSrc={true}
           color={palette.text.secondary}
           size={isDesktop ? 48 : 40}
         />

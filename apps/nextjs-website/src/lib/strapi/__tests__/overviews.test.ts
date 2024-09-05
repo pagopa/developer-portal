@@ -98,6 +98,17 @@ const iconJson = {
   },
 };
 
+const baseProductJson = {
+  data: {
+    id: 8,
+    attributes: {
+      name: 'Firma con IO',
+      slug: 'firma-con-io',
+      shortName: 'Firma con IO',
+    },
+  },
+};
+
 const productJson = {
   data: {
     id: 8,
@@ -286,6 +297,7 @@ const makeStrapiResponseJson = () => ({
                   publishedAt: '2024-08-05T14:11:25.924Z',
                   locale: 'it',
                   image: imageJson,
+                  product: baseProductJson,
                 },
               },
               {
@@ -299,6 +311,7 @@ const makeStrapiResponseJson = () => ({
                   publishedAt: '2024-08-06T11:29:25.949Z',
                   locale: 'it',
                   image: imageJson,
+                  product: baseProductJson,
                 },
               },
             ],

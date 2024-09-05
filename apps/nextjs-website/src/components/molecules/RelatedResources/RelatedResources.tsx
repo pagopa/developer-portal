@@ -20,7 +20,7 @@ const RelatedResources = ({
   const t = useTranslations();
 
   return (
-    <EContainer>
+    <EContainer containerSx={{ paddingBottom: '48px' }}>
       <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
         {title || t('webinar.webinarsSection.relatedResources.title')}
       </Typography>

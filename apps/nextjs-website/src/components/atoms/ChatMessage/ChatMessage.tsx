@@ -85,7 +85,7 @@ const ChatMessage = ({
             {isQuestion ? (
               <IconWrapper
                 icon={'/icons/chatbotChatUser.svg'}
-                isSvg={true}
+                useSrc={true}
                 color={palette.text.secondary}
                 size={40}
               />
@@ -93,7 +93,7 @@ const ChatMessage = ({
               <Box>
                 <IconWrapper
                   icon={'/icons/chatbotChatAvatar.svg'}
-                  isSvg={true}
+                  useSrc={true}
                   color={palette.text.secondary}
                   size={40}
                 />
