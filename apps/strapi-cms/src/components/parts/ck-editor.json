@@ -1,11 +1,12 @@
 {
   "collectionName": "components_parts_ck_editors",
   "info": {
-    "displayName": "ckEditor"
+    "displayName": "ckEditor",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "parts": {
+    "content": {
       "type": "customField",
       "options": {
         "output": "HTML",
