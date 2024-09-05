@@ -1,5 +1,5 @@
 'use client';
-import { Theme, Typography, useTheme } from '@mui/material';
+import { Link, Theme, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
@@ -39,6 +39,18 @@ const BlocksRendererClient = ({
     <BlocksRenderer
       content={content}
       blocks={{
+        link: ({ children, url }) => (
+          <Link
+            href={url}
+            sx={{
+              color: palette.primary.main,
+              textDecoration: 'none',
+              fontWeight: 600,
+            }}
+          >
+            {children}
+          </Link>
+        ),
         image: ({ image }) => (
           <Image
             style={{

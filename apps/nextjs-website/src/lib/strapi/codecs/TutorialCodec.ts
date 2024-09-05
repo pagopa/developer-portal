@@ -4,7 +4,7 @@ import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { BlocksContentCodec } from './BlocksContentCodec';
-import { ProductCodec } from './ProductCodec';
+import { BaseProductCodec, ProductCodec } from './ProductCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PartCodec } from './PartCodec';
 import { PaginationCodec } from './PaginationCodec';
@@ -20,6 +20,7 @@ const BaseTutorialAttributesCodec = t.strict({
   slug: t.string,
   publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
+  product: t.strict({ data: BaseProductCodec }),
 });
 
 export const BaseTutorialCodec = t.strict({
