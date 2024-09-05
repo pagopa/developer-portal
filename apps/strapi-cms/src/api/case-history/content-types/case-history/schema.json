@@ -58,8 +58,7 @@
     "products": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "case_history"
+      "target": "api::product.product"
     },
     "parts": {
       "pluginOptions": {

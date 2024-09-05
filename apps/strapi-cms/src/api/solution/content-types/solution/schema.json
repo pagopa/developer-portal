@@ -123,9 +123,8 @@
     },
     "products": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "mappedBy": "solutions"
+      "relation": "oneToMany",
+      "target": "api::product.product"
     },
     "bannerLinks": {
       "type": "component",
