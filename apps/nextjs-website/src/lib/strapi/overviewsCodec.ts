@@ -2,7 +2,6 @@ import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import * as qs from 'qs';
 import { ProductCodec } from '@/lib/strapi/codecs/ProductCodec';
-import { BaseTutorialCodec } from '@/lib/strapi/tutorial';
 import { BlocksContentCodec } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
 import { BaseGuideCodec } from '@/lib/strapi/codecs/GuideCodec';
@@ -12,6 +11,7 @@ import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
 import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
 import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { BaseTutorialCodec } from './codecs/TutorialCodec';
 
 const StartInfoCodec = t.strict({
   icon: t.strict({ data: MediaCodec }),

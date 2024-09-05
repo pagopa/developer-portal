@@ -1,5 +1,5 @@
 import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-import { StrapiTutorials } from './strapi/tutorial';
+import { StrapiTutorials } from './strapi/codecs/TutorialCodec';
 import { Part } from './types/part';
 import { Tutorial } from './types/tutorialData';
 
