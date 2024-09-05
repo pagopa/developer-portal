@@ -61,3 +61,33 @@ resource "aws_iam_role_policy" "cloudwatch" {
   role   = aws_iam_role.cloudwatch.id
   policy = data.aws_iam_policy_document.apigateway_cloudwatch.json
 }
+
+
+###############################################################################
+#                 IAM Role used by Bedrock Logging Config                     #
+###############################################################################
+module "iam_policy_bedrock_logging" {
+  count = var.environment == "dev" ? 1 : 0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name   = "BedrockLoggingPermissions"
+  path   = "/"
+  policy = data.aws_iam_policy_document.bedrock_logging[0].json
+}
+
+module "iam_role_bedrock_logging" {
+  count = var.environment == "dev" ? 1 : 0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "${local.prefix}-bedrock-logging-role"
+
+  custom_role_policy_arns = [
+    module.iam_policy_bedrock_logging[0].arn
+  ]
+  number_of_custom_role_policy_arns = 1
+  trusted_role_services = [
+    "bedrock.amazonaws.com"
+  ]
+  role_requires_mfa = false
+}
