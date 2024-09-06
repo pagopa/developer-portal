@@ -1,6 +1,4 @@
 import * as t from 'io-ts/lib';
-import * as qs from 'qs';
-import { fetchFromStrapi } from '../fetchFromStrapi';
 import { BaseGuideCodec } from './GuidesCodec';
 import { BaseProductCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
@@ -12,7 +10,7 @@ const GuideByCategoryCodec = t.strict({
   }),
 });
 
-const StrapiGuideListCodec = t.strict({
+const GuideListPageCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
@@ -22,25 +20,9 @@ const StrapiGuideListCodec = t.strict({
   }),
 });
 
-export const StrapiGuideListPagesCodec = t.strict({
-  data: t.array(StrapiGuideListCodec),
+export const GuideListPagesCodec = t.strict({
+  data: t.array(GuideListPageCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiGuideListPages = t.TypeOf<typeof StrapiGuideListPagesCodec>;
-
-const makeStrapiGuideListPopulate = () =>
-  qs.stringify({
-    populate: {
-      product: '*',
-      guidesByCategory: {
-        populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
-      },
-    },
-  });
-
-export const fetchGuideList = fetchFromStrapi(
-  'guide-list-pages',
-  makeStrapiGuideListPopulate(),
-  StrapiGuideListPagesCodec
-);
+export type StrapiGuideListPages = t.TypeOf<typeof GuideListPagesCodec>;
