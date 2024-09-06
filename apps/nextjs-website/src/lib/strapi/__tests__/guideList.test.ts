@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
-import { guideImageJson } from './guides.test';
 import { StrapiGuideListPagesCodec } from '../codecs/GuideListPagesCodec';
+import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -42,8 +42,8 @@ const makeStrapiResponseJson = () => ({
                         text: 'fdsfgd fsdfsd fsdf sdfsd',
                       },
                     ],
-                    image: guideImageJson,
-                    mobileImage: guideImageJson,
+                    image: mediaRasterJson,
+                    mobileImage: mediaRasterJson,
                   },
                 },
               ],
