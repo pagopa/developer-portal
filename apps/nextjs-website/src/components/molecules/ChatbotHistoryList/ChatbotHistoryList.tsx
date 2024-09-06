@@ -29,7 +29,7 @@ type ChatbotHistoryList = {
 };
 
 const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
-  const palette = useTheme().palette;
+  const { palette } = useTheme();
   const uniqueDates = Array.from(
     new Set(
       sessionsList.map((session) =>

@@ -8,7 +8,7 @@ import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
 
 const ChatbotHistory = () => {
-  const t = useTranslations('profile.chatbot');
+  const t = useTranslations();
   const { user, loading } = useUser();
   const { paginatedSessions, getSessions } = useChatbot(true);
 
@@ -26,7 +26,7 @@ const ChatbotHistory = () => {
         }}
       >
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
-          {t('title')}
+          {t('profile.chatbot.title')}
         </Typography>
         <ChatbotHistoryLayout
           paginatedSessions={paginatedSessions}

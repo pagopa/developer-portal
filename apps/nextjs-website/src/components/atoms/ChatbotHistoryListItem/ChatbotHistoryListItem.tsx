@@ -27,7 +27,7 @@ type ChatbotHistoryListItemProps = {
 };
 
 const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
-  const palette = useTheme().palette;
+  const { palette } = useTheme();
   const formattedDate = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
     DEFAULT_DATE_FORMAT.options
