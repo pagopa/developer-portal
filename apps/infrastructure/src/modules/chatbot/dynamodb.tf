@@ -20,5 +20,9 @@ module "dynamodb_chatbot_queries" {
       name = "createdAt"
       type = "S"
     },
+    {
+      name = "data"
+      type = "M"
+    },
   ]
 }
