@@ -1,5 +1,5 @@
 import { ApiDataListTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { StrapiApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { StrapiApiDataListPages } from './strapi/codecs/ApiDataListPageCodec';
 
 export function makeApiDataListPageProps(
   apiDataListPages: StrapiApiDataListPages

@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataCodec';
+import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
 
 export type ApiDataListTemplateProps = {
