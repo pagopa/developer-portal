@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiCaseHistoriesCodec } from '../caseHistoriesCodec';
+import { CaseHistoriesCodec } from '../codecs/CaseHistoriesCodec';
 
 export const baseCaseHistoryJson = {
   id: 1,
@@ -382,16 +382,16 @@ const makeStrapiResponseJsonWithNull = () => ({
   },
 });
 
-describe('StrapiCaseHistoriesCodec', () => {
+describe('CaseHistoriesCodec', () => {
   it('should decode strapi case histories', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiCaseHistoriesCodec.decode(jsonFromStrapi);
+    const actual = CaseHistoriesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should decode strapi case histories with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseJsonWithNull();
-    const actual = StrapiCaseHistoriesCodec.decode(jsonFromStrapi);
+    const actual = CaseHistoriesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
