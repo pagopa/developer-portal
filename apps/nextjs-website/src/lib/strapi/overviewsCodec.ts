@@ -4,7 +4,7 @@ import * as qs from 'qs';
 import { ProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BlocksContentCodec } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
-import { BaseGuideCodec } from '@/lib/strapi/codecs/GuideCodec';
+import { BaseGuideCodec } from '@/lib/strapi/codecs/GuidesCodec';
 import { LinkCodec } from '@/lib/strapi/codecs/LinkCodec';
 import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
 import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';

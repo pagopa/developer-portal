@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
 import { guideImageJson } from './guides.test';
-import { StrapiGuideListPagesCodec } from '../guideListCodec';
+import { StrapiGuideListPagesCodec } from '../codecs/GuideListPagesCodec';
 
 const makeStrapiResponseJson = () => ({
   data: [

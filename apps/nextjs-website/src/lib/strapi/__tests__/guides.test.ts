@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiGuidesCodec } from '../guidesCodec';
+import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
 
 export const guideImageJson = {
   data: {
@@ -82,7 +82,7 @@ const makeStrapiResponseJson = () => ({
 describe('StrapiGuidesCodec', () => {
   it('should decode strapi guides', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiGuidesCodec.decode(jsonFromStrapi);
+    const actual = GuidesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
