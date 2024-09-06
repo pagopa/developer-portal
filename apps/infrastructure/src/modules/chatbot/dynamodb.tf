@@ -22,7 +22,7 @@ module "dynamodb_chatbot_queries" {
     },
     {
       name = "data"
-      type = "M"
+      type = "S"
     },
   ]
 }
