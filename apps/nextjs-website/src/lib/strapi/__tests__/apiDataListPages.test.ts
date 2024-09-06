@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPageCodec';
+import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPagesCodec';
 
 const makeStrapiResponseJson = () => ({
   data: [

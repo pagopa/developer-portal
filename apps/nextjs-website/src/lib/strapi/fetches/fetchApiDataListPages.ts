@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPageCodec';
+import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPagesCodec';
 
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
