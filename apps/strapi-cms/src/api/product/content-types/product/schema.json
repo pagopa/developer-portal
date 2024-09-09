@@ -95,6 +95,16 @@
       "relation": "oneToOne",
       "target": "api::tutorial-list-page.tutorial-list-page",
       "mappedBy": "product"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }
