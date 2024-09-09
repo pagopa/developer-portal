@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { webinarPopulate } from '@/lib/strapi/webinars';
+import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { HomepageCodec } from '@/lib/strapi/codecs/HomepageCodec';
 

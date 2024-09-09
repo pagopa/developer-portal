@@ -1,4 +1,4 @@
-import { StrapiWebinars } from '@/lib/strapi/webinars';
+import { StrapiWebinars } from '@/lib/strapi/codecs/WebinarsCodec';
 import { Webinar } from './types/webinar';
 
 export type WebinarsProps = readonly Webinar[];

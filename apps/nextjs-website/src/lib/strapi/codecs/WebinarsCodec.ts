@@ -1,12 +1,10 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
-import * as qs from 'qs';
-import { fetchFromStrapi } from './fetchFromStrapi';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { MediaCodec } from './codecs/MediaCodec';
-import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
-import { PaginationCodec } from './codecs/PaginationCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { BlocksContentCodec } from './BlocksContentCodec';
+import { MediaCodec } from './MediaCodec';
+import { RelatedLinksCodec } from './RelatedLinksCodec';
+import { PaginationCodec } from './PaginationCodec';
 
 const WebinarSpeakerCodec = t.strict({
   id: t.number,
@@ -66,42 +64,9 @@ export const WebinarCodec = t.strict({
   }),
 });
 
-export const StrapiWebinarsCodec = t.strict({
+export const WebinarsCodec = t.strict({
   data: t.array(WebinarCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiWebinars = t.TypeOf<typeof StrapiWebinarsCodec>;
-
-export const webinarPopulate = {
-  populate: {
-    coverImage: {
-      populate: ['image'],
-    },
-    webinarSpeakers: {
-      populate: ['avatar'],
-    },
-    relatedLinks: {
-      populate: ['links'],
-    },
-    relatedResources: {
-      populate: {
-        resources: {
-          populate: ['image'],
-        },
-        downloadableDocuments: {
-          populate: '*',
-        },
-      },
-    },
-    questionsAndAnswers: '*',
-  },
-};
-
-const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
-
-export const fetchWebinars = fetchFromStrapi(
-  'webinars',
-  makeStrapiWebinarsPopulate(),
-  StrapiWebinarsCodec
-);
+export type StrapiWebinars = t.TypeOf<typeof WebinarsCodec>;
