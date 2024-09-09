@@ -73,9 +73,7 @@ resource "aws_api_gateway_integration" "chatbot" {
   type                    = "AWS_PROXY"
   uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
   integration_http_method = "ANY"
-  # TODO: fix when AWS quota increase case is resolved
-  #   timeout_milliseconds = local.lambda_timeout * 1000
-  timeout_milliseconds = 29000
+  timeout_milliseconds = var.api_gateway.integration_timeout_sec * 1000
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
   }
