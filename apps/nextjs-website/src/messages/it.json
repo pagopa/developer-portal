@@ -597,6 +597,6 @@
         "delete": "Elimina",
         "feedbackGiven": "Feedback\nregistrato",
         "copied": "Copiato",
-        "welcomeMessage": "Ciao, sono il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](/privacy-policy)."
+        "welcomeMessage": "**Benvenuto nel Dev Portal!**\n\nSono _Discovery_, il tuo assistente virtuale per la documentazione tecnica. Posso aiutarti con informazioni su API, guide, e altro.\n\n_Nota_: Discovery è in versione beta, quindi alcune risposte potrebbero non essere accurate. Verifica sempre le informazioni importanti con la documentazione ufficiale.\n\nCome posso aiutarti oggi?"
     }
 }
