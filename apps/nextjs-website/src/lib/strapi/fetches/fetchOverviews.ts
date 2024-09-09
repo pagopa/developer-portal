@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { OverviewsCodec } from '@/lib/strapi/codecs/overviewsCodec';
+import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
