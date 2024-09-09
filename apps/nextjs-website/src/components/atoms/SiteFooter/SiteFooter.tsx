@@ -28,18 +28,22 @@ const SiteFooter = ({
         {
           href: 'https://www.linkedin.com/company/pagopa/',
           icon: 'LinkedIn',
+          useSrc: false,
         },
         {
           href: 'https://twitter.com/pagopa',
           icon: 'Twitter',
+          useSrc: false,
         },
         {
           href: 'https://www.instagram.com/pagopaspa/',
           icon: 'Instagram',
+          useSrc: false,
         },
         {
           href: 'https://medium.com/pagopa-spa',
           icon: 'Medium',
+          useSrc: false,
         },
       ],
       links: [
