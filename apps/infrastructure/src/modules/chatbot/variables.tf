@@ -102,4 +102,8 @@ variable "api_gateway" {
   type = object({
     integration_timeout_sec = optional(number, 60)
   })
+
+  default = {
+    integration_timeout_sec = 60
+  }
 }
