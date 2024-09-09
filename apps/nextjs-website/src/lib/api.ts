@@ -8,7 +8,7 @@ import {
   getCaseHistoriesProps,
   getProductsProps,
   getFullSolutionsProps,
-  getQuickStartsProps,
+  getQuickStartGuidesProps,
   getSolutionsListProps,
   getTutorialsProps,
   getWebinarsProps,
@@ -89,7 +89,7 @@ export async function getProducts(): Promise<readonly Product[]> {
 
 export async function getQuickStartGuide(productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartsProps()).find(
+    (await getQuickStartGuidesProps()).find(
       ({ product }) => product.slug === productSlug
     )
   );
