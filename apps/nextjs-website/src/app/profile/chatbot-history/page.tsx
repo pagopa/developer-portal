@@ -13,7 +13,7 @@ const ChatbotHistory = () => {
   const { paginatedSessions, getSessions } = useChatbot(true);
 
   if (loading || !user || !paginatedSessions) {
-    return <div>Loading...</div>; // Maybe use skeletons here?
+    return null;
   }
 
   return (
