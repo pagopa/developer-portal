@@ -41,15 +41,6 @@ module "lambda_function" {
   ]
 }
 
-resource "aws_lambda_permission" "lambda_permission" {
-  statement_id  = "AllowAPIGWInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = module.lambda_function.lambda_function_name
-  principal     = "apigateway.amazonaws.com"
-
-  source_arn = "${module.api_gateway.api_execution_arn}/*/*"
-}
-
 resource "aws_lambda_permission" "rest_apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_function.lambda_function_name
