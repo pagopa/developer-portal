@@ -1,6 +1,7 @@
 import yaml
 import mangum
 import uvicorn
+import json
 import logging
 import os
 from fastapi import FastAPI
@@ -20,12 +21,7 @@ class Query(BaseModel):
 
 app = FastAPI()
 
-origins = [
-  os.getenv("CORS_DOMAIN")
-]
-
-if os.getenv("ENVIRONMENT") == "dev":
-  origins.extend(["http://localhost", "http://localhost:3000"])
+origins = json.loads(os.getenv("CORS_DOMAINS"))
 
 app.add_middleware(
   CORSMiddleware,
