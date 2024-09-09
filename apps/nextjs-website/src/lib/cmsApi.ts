@@ -39,7 +39,7 @@ import { makeGuideListPagesProps } from './guideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
-import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
+import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/overviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './tutorialListPages';
