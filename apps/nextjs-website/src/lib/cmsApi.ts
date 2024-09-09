@@ -3,7 +3,7 @@ import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
 import { makeHomepageProps, makeHomepagePropsFromStatic } from './homepage';
-import { fetchHomepage } from '@/lib/strapi/homepage';
+import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
