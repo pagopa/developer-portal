@@ -67,7 +67,7 @@ resource "aws_iam_role_policy" "cloudwatch" {
 #                 IAM Role used by Bedrock Logging Config                     #
 ###############################################################################
 module "iam_policy_bedrock_logging" {
-  count = var.environment == "dev" ? 1 : 0
+  count  = var.environment == "dev" ? 1 : 0
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
   name   = "BedrockLoggingPermissions"
@@ -76,7 +76,7 @@ module "iam_policy_bedrock_logging" {
 }
 
 module "iam_role_bedrock_logging" {
-  count = var.environment == "dev" ? 1 : 0
+  count  = var.environment == "dev" ? 1 : 0
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
   create_role = true

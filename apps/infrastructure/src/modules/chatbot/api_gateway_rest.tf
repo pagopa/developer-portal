@@ -59,9 +59,9 @@ resource "aws_api_gateway_method_settings" "chatbot" {
   stage_name  = aws_api_gateway_deployment.stage.stage_name
   method_path = "*/*"
   settings {
-    logging_level = "INFO"
+    logging_level      = "INFO"
     data_trace_enabled = true
-    metrics_enabled = true
+    metrics_enabled    = true
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_api_gateway_integration" "chatbot" {
   type                    = "AWS_PROXY"
   uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
   integration_http_method = "ANY"
-  timeout_milliseconds = var.api_gateway.integration_timeout_sec * 1000
+  timeout_milliseconds    = var.api_gateway.integration_timeout_sec * 1000
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
   }
@@ -89,9 +89,9 @@ resource "aws_api_gateway_method" "cors" {
 }
 
 resource "aws_api_gateway_integration" "cors" {
-  rest_api_id = aws_api_gateway_rest_api.api.id
-  resource_id = aws_api_gateway_resource.chatbot.id
-  http_method = aws_api_gateway_method.cors.http_method
+  rest_api_id      = aws_api_gateway_rest_api.api.id
+  resource_id      = aws_api_gateway_resource.chatbot.id
+  http_method      = aws_api_gateway_method.cors.http_method
   content_handling = "CONVERT_TO_TEXT"
 
   type = "MOCK"
@@ -108,10 +108,10 @@ resource "aws_api_gateway_method_response" "cors" {
   status_code = 200
 
   response_parameters = {
-        "method.response.header.Access-Control-Allow-Headers" = true,
-        "method.response.header.Access-Control-Allow-Methods" = true,
-        "method.response.header.Access-Control-Allow-Origin" = true
-    }
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
 
   response_models = {
     "application/json" = "Empty"
@@ -129,10 +129,10 @@ resource "aws_api_gateway_integration_response" "cors" {
   status_code = 200
 
   response_parameters = {
-        "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Methods" = "'*'",
-        "method.response.header.Access-Control-Allow-Origin" = "'*'"
-    }
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+    "method.response.header.Access-Control-Allow-Methods" = "'*'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
 
   depends_on = [
     aws_api_gateway_integration.cors,
