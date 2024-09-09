@@ -26,7 +26,7 @@ module "lambda_function" {
 
   image_uri = "${module.ecr.repository_url}:latest"
 
-  timeout     = 180
+  timeout     = local.lambda_timeout
   memory_size = 4092
 
   vpc_subnet_ids         = var.vpc.private_subnets
@@ -41,13 +41,12 @@ module "lambda_function" {
   ]
 }
 
-resource "aws_lambda_permission" "lambda_permission" {
-  statement_id  = "AllowAPIGWInvoke"
+resource "aws_lambda_permission" "rest_apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_function.lambda_function_name
   principal     = "apigateway.amazonaws.com"
-
-  source_arn = "${module.api_gateway.api_execution_arn}/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
+  statement_id  = "AllowExecutionFromAPIGateway"
 }
 
 resource "aws_security_group" "lambda" {
