@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { QuickStartGuidesCodec } from '@/lib/strapi/QuickStartGuides';
+import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
 
 const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({

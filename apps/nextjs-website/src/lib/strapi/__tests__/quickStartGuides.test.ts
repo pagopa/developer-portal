@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { QuickStartGuidesCodec } from '@/lib/strapi/QuickStartGuides';
+import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 
 const product = {

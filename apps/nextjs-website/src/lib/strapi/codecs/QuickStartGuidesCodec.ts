@@ -1,8 +1,8 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
-import { PaginationCodec } from './codecs/PaginationCodec';
-import { ProductCodec } from './codecs/ProductCodec';
-import { PartCodec } from './codecs/PartCodec';
+import { PaginationCodec } from './PaginationCodec';
+import { ProductCodec } from './ProductCodec';
+import { PartCodec } from './PartCodec';
 
 const QuickStartGuideItemCodec = t.strict({
   id: t.number,
