@@ -23,7 +23,7 @@ resource "aws_api_gateway_base_path_mapping" "path_mapping" {
 }
 
 resource "aws_api_gateway_domain_name" "domain_name" {
-  domain_name     = "api.${var.dns_chatbot_hosted_zone.name}"
+  domain_name              = "api.${var.dns_chatbot_hosted_zone.name}"
   regional_certificate_arn = module.ssl_certificate.acm_certificate_arn
 
   endpoint_configuration {
@@ -59,10 +59,10 @@ resource "aws_api_gateway_method" "chatbot" {
 }
 
 resource "aws_api_gateway_method" "chatbot_cors" {
-  rest_api_id          = aws_api_gateway_rest_api.api.id
-  resource_id          = aws_api_gateway_resource.chatbot.id
-  http_method          = "OPTIONS"
-  authorization        = "NONE"
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  resource_id   = aws_api_gateway_resource.chatbot.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
   request_parameters = {
     "method.request.path.proxy" = true
   }
