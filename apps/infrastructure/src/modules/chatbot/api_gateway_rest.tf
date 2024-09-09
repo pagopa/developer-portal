@@ -23,8 +23,12 @@ resource "aws_api_gateway_base_path_mapping" "path_mapping" {
 }
 
 resource "aws_api_gateway_domain_name" "domain_name" {
-  certificate_arn = module.ssl_certificate_us_east_1.acm_certificate_arn
-  domain_name     = "restapi.${var.dns_chatbot_hosted_zone.name}"
+  domain_name     = "api.${var.dns_chatbot_hosted_zone.name}"
+  regional_certificate_arn = module.ssl_certificate.acm_certificate_arn
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 resource "aws_api_gateway_authorizer" "authorizer" {
