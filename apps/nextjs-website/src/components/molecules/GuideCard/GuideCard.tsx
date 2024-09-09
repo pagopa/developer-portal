@@ -87,13 +87,13 @@ export const GuideCard: FC<GuideCardProps> = ({
             }}
           >
             <Box>
-              <Typography variant='h6' mb={spacing(1.75)}>
+              <Typography variant='h6' mb={spacing(2.25)}>
                 {title}
               </Typography>
-              <Typography variant='subtitle2' color='text.primary'>
+              <Typography variant='subtitle2' color='text.primary' mb={1.5}>
                 {t(description.title)}
               </Typography>
-              {description?.listItems && (
+              {description.listItems && (
                 <UnorderedList listItems={description.listItems} />
               )}
               {description.content && (

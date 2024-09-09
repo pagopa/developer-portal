@@ -1,5 +1,16 @@
 # strapi-cms
 
+## 2.4.0
+
+### Minor Changes
+
+- 6547ed1: Add TutorialListPage collection
+- 7378c15: Add bannerLinks attribute to overview schema in Strapi
+
+### Patch Changes
+
+- 13897f4: Fix the maximum number of items in Strapi's features component
+
 ## 2.3.0
 
 ### Minor Changes

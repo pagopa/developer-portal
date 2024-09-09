@@ -1,5 +1,12 @@
 # storybook-app
 
+## 0.10.0
+
+### Minor Changes
+
+- dd8889b: Add feedback button
+- dd8889b: Add copy to clipboard button
+
 ## 0.9.0
 
 ### Minor Changes

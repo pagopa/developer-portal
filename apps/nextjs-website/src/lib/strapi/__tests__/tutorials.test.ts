@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiTutorialsCodec } from '@/lib/strapi/tutorial';
+import { StrapiTutorialsCodec } from '../codecs/TutorialCodec';
 
 const baseTutorialJson = {
   id: 1,
