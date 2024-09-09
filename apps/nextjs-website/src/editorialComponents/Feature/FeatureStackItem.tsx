@@ -84,7 +84,12 @@ export const FeatureStackItem = ({
         color={imageStyle}
       >
         {item.iconName && (
-          <IconWrapper size={64} color={imageStyle} icon={item.iconName} />
+          <IconWrapper
+            size={64}
+            color={imageStyle}
+            icon={item.iconName}
+            useSrc={false}
+          />
         )}
         {item.iconUrl && (
           <Image src={item.iconUrl} alt={item.title} width={64} height={64} />

@@ -6,7 +6,7 @@ import { ICON_MAP } from './IconMap';
 
 export type IconWrapperProps = {
   icon: string;
-  isSvg?: boolean;
+  useSrc: boolean;
   color?: string;
   size?: number;
 };
@@ -15,11 +15,11 @@ type IconName = keyof typeof ICON_MAP;
 
 const IconWrapper = ({
   icon,
-  isSvg = false,
+  useSrc,
   color = 'text.primary',
   size = 35,
 }: IconWrapperProps) => {
-  if (isSvg) {
+  if (useSrc) {
     return (
       <Icon sx={{ width: size, height: size, color }}>
         <Image alt={icon} src={icon} height={size} width={size} />

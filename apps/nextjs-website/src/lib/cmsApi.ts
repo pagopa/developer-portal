@@ -7,7 +7,7 @@ import { fetchHomepage } from '@/lib/strapi/homepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
-import { fetchTutorials } from './strapi/tutorial';
+import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './tutorials';
 import { fetchQuickStarts } from './strapi/quickStarts';
 import {
@@ -20,6 +20,7 @@ import {
   quickStartGuides,
   overviews,
   guideLists,
+  tutorialLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
 import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
@@ -40,6 +41,8 @@ import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
 import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
 import { makeOverviewsProps } from '@/lib/overviews';
+import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
+import { makeTutorialListPagesProps } from './tutorialListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -100,6 +103,19 @@ export const getTutorialsProps = async (productSlug?: string) => {
     return makeTutorialsProps(strapiTutorials, productSlug);
   } else {
     return [];
+  }
+};
+
+export const getTutorialListPagesProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
+    return makeTutorialListPagesProps(strapiTutorialListPages, tutorialLists);
+  } else {
+    return tutorialLists;
   }
 };
 

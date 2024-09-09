@@ -4,7 +4,7 @@ import uvicorn
 import logging
 import os
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
 
@@ -21,9 +21,11 @@ class Query(BaseModel):
 app = FastAPI()
 
 origins = [
-  "http://localhost",
-  "http://localhost:3000",
+  os.getenv("CORS_DOMAIN")
 ]
+
+if os.getenv("ENVIRONMENT") == "dev":
+  origins.extend(["http://localhost", "http://localhost:3000"])
 
 app.add_middleware(
   CORSMiddleware,

@@ -113,6 +113,7 @@ export const appIoOverview: OverviewData = {
         href: `${appIoQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Documentazione API',
@@ -120,6 +121,7 @@ export const appIoOverview: OverviewData = {
         href: '/app-io/api',
         iconName: 'Code',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },
