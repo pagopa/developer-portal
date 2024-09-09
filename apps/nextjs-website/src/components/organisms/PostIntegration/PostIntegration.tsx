@@ -77,6 +77,7 @@ const PostIntegration = ({
                   description={{
                     title: t(props.description.title),
                     content: props.description.content,
+                    listItems: props.description.listItems,
                   }}
                   link={{ label: t(props.link.label), href: props.link.href }}
                 />

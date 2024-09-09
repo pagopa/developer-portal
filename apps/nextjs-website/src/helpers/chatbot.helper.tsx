@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { sendChatbotQuery, sendChatobotFeedback } from '@/lib/chatbot';
+import { sendChatbotQuery, sendChatbotFeedback } from '@/lib/chatbot';
 import { Query } from '@/lib/chatbot/queries';
 
 export const useChatbot = (isUserAuthenticated: boolean) => {
@@ -55,7 +55,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const sendFeedback = (queryId: string, hasNegativeFeedback: boolean) => {
-    sendChatobotFeedback(hasNegativeFeedback, queryId);
+    sendChatbotFeedback(hasNegativeFeedback, queryId);
     const updatedQueries = queries.map((query) => {
       if (query.id === queryId) {
         return {

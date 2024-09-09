@@ -21,7 +21,7 @@ export const ShowcaseWithIcon: StoryObj<typeof CtaCard> = {
     icon: (
       <IconWrapper
         icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
-        isSvg={true}
+        useSrc={true}
       />
     ),
     tags: [

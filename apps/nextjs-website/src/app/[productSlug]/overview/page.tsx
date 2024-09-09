@@ -57,7 +57,7 @@ export type OverviewPageProps = {
       readonly href?: string;
       readonly iconName: string;
       readonly iconColor?: string;
-      readonly isSvg?: boolean;
+      readonly useSrc: boolean;
     }[];
   };
   readonly tutorials?: {

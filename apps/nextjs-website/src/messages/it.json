@@ -132,6 +132,7 @@
             },
             "solutionDescription": "I webinar PagoPA LAB sono incontri formativi in cui gli specialisti del nostro team illustrano tutti i passaggi del processo di gestione di un servizio pubblico digitale, approfondendo i benefici di un approccio integrato delle piattaforme gestite da PagoPA.",
             "questionsAndAnswers": {
+                "anchorId": "domande-e-risposte",
                 "title": "Le risposte alle vostre domande",
                 "showMore": "Mostra più domande",
                 "showLess": "Mostra meno domande"
@@ -595,6 +596,7 @@
         "chatHistory": "Cronologia chat",
         "delete": "Elimina",
         "feedbackGiven": "Feedback\nregistrato",
+        "copied": "Copiato",
         "welcomeMessage": "Ciao, sono il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](/privacy-policy)."
     }
 }

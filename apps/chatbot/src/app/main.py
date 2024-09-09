@@ -4,16 +4,14 @@ import uvicorn
 import logging
 import os
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-
-chatbot = Chatbot(params, prompts)
 
 class Query(BaseModel):
   sessionId: str | None = None
@@ -22,11 +20,12 @@ class Query(BaseModel):
 
 app = FastAPI()
 
-
 origins = [
-  "http://localhost",
-  "http://localhost:3000",
+  os.getenv("CORS_DOMAIN")
 ]
+
+if os.getenv("ENVIRONMENT") == "dev":
+  origins.extend(["http://localhost", "http://localhost:3000"])
 
 app.add_middleware(
   CORSMiddleware,
@@ -42,6 +41,8 @@ async def healthz ():
 
 @app.post("/queries")
 async def query_creation (query: Query):
+  chatbot = Chatbot(params, prompts)
+
   answer = chatbot.generate(query.question)
 
   # TODO: dynamoDB integration
@@ -122,7 +123,7 @@ async def query_feedback (badAnswer: bool):
   }
   return body
 
-handler = mangum.Mangum(app)
+handler = mangum.Mangum(app, lifespan="off")
 
 if __name__ == "__main__":
    uvicorn.run(app, host="0.0.0.0", port=8080)

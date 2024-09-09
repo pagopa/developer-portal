@@ -2,6 +2,8 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/ChatbotFeedbackButton';
+import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
+import { useTranslations } from 'next-intl';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
 
 type DateFormatOptions = {
@@ -38,6 +40,7 @@ const ChatMessage = ({
   hasNegativeFeedback,
   onToggleNegativeFeedback,
 }: ChatMessageProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
@@ -82,7 +85,7 @@ const ChatMessage = ({
             {isQuestion ? (
               <IconWrapper
                 icon={'/icons/chatbotChatUser.svg'}
-                isSvg={true}
+                useSrc={true}
                 color={palette.text.secondary}
                 size={40}
               />
@@ -90,7 +93,7 @@ const ChatMessage = ({
               <Box>
                 <IconWrapper
                   icon={'/icons/chatbotChatAvatar.svg'}
-                  isSvg={true}
+                  useSrc={true}
                   color={palette.text.secondary}
                   size={40}
                 />
@@ -128,10 +131,19 @@ const ChatMessage = ({
                 width='100%'
               >
                 {!isQuestion && (
-                  <ChatbotFeedbackButton
-                    isNegativeFeedbackGiven={hasNegativeFeedback}
-                    onToggleNegativeFeedback={onToggleNegativeFeedback}
-                  />
+                  <div>
+                    <CopyToClipboard
+                      copiedTooltipLabel={t('chatBot.copied')}
+                      textToCopy={text}
+                      copyColor={palette.primary.main}
+                      iconSize='20px'
+                      tooltipPlacement='bottom'
+                    />
+                    <ChatbotFeedbackButton
+                      isNegativeFeedbackGiven={hasNegativeFeedback}
+                      onToggleNegativeFeedback={onToggleNegativeFeedback}
+                    />
+                  </div>
                 )}
                 <Typography
                   color={textColor}

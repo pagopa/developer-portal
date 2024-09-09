@@ -1,5 +1,6 @@
 resource "awscc_bedrock_guardrail" "guardrail" {
-  name                      = "${var.module}-${var.environment}-safety-block-guardrail"
+  provider                  = awscc.eu-west-3
+  name                      = "${local.prefix}-safety-block-guardrail"
   blocked_input_messaging   = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   blocked_outputs_messaging = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   description               = "Guardrail that blocks offensive language and PII entities"
@@ -160,6 +161,31 @@ resource "awscc_bedrock_guardrail" "guardrail" {
 }
 
 resource "awscc_bedrock_guardrail_version" "guardrail" {
+  provider             = awscc.eu-west-3
   guardrail_identifier = awscc_bedrock_guardrail.guardrail.guardrail_id
   description          = "Guardrail Version"
+}
+
+module "bedrock_log_group" {
+  count  = var.environment == "dev" ? 1 : 0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/log-group?ref=bf969da953bdbea229392255d2b36e7b720e917e" # v5.3.0
+  providers = {
+    aws = aws.eu-west-3
+  }
+  name              = "/chatbot/bedrock"
+  retention_in_days = 14
+}
+
+resource "aws_bedrock_model_invocation_logging_configuration" "this" {
+  count    = var.environment == "dev" ? 1 : 0
+  provider = aws.eu-west-3
+  logging_config {
+    embedding_data_delivery_enabled = false
+    image_data_delivery_enabled     = false
+    text_data_delivery_enabled      = true
+    cloudwatch_config {
+      log_group_name = module.bedrock_log_group[0].cloudwatch_log_group_name
+      role_arn       = module.iam_role_bedrock_logging[0].iam_role_arn
+    }
+  }
 }

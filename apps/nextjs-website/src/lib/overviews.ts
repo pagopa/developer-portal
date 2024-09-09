@@ -49,7 +49,7 @@ export function makeOverviewsProps(
               title: item.title,
               text: item.description,
               href: item.path,
-              isSvg: true,
+              useSrc: true,
               iconName: item.icon.data.attributes.url,
             })) || [],
         },
@@ -69,16 +69,16 @@ export function makeOverviewsProps(
                 : undefined,
               title: tutorial.attributes.title,
               name: 'shared.moreInfo', // This is a reference to a translation key
-              path: tutorial.attributes.slug,
+              path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
             })) || [],
         },
         postIntegration: attributes.postIntegration && {
           title: attributes.postIntegration.title,
           subtitle: attributes.postIntegration.description,
           listTitle: attributes.postIntegration.guidesTitle,
-          cta: {
-            label: attributes.postIntegration.link?.text || '',
-            href: attributes.postIntegration.link?.href || '',
+          cta: attributes.postIntegration.link && {
+            label: attributes.postIntegration.link.text,
+            href: attributes.postIntegration.link.href,
           },
           guides: [
             ...attributes.postIntegration.documents.map((document) => ({
@@ -114,6 +114,15 @@ export function makeOverviewsProps(
           title: attributes.relatedLinks.title,
           links: attributes.relatedLinks.links,
         },
+        bannerLinks:
+          attributes.bannerLinks.length > 0
+            ? attributes.bannerLinks.map((bannerLink) => ({
+                content: bannerLink.content,
+                icon: bannerLink.icon.data.attributes,
+                theme: bannerLink.theme || 'dark',
+                title: bannerLink.title || '',
+              }))
+            : product.bannerLinks,
       };
     }),
     ...staticOverviews,
