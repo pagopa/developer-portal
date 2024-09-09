@@ -1,131 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { StrapiOverviewsCodec } from '@/lib/strapi/overviewsCodec';
-
-const imageJson = {
-  data: {
-    id: 100,
-    attributes: {
-      name: 'hero.jpg',
-      alternativeText: null,
-      caption: null,
-      width: 1440,
-      height: 720,
-      formats: {
-        medium: {
-          name: 'medium_hero.jpg',
-          hash: 'medium_hero_b2b3247d4c',
-          ext: '.jpg',
-          mime: 'image/jpeg',
-          path: null,
-          width: 750,
-          height: 375,
-          size: 3.53,
-          sizeInBytes: 3527,
-          url: 'http://localhost:1337/uploads/medium_hero_b2b3247d4c.jpg',
-        },
-        large: {
-          name: 'large_hero.jpg',
-          hash: 'large_hero_b2b3247d4c',
-          ext: '.jpg',
-          mime: 'image/jpeg',
-          path: null,
-          width: 1000,
-          height: 500,
-          size: 5.42,
-          sizeInBytes: 5424,
-          url: 'http://localhost:1337/uploads/large_hero_b2b3247d4c.jpg',
-        },
-        small: {
-          name: 'small_hero.jpg',
-          hash: 'small_hero_b2b3247d4c',
-          ext: '.jpg',
-          mime: 'image/jpeg',
-          path: null,
-          width: 500,
-          height: 250,
-          size: 2.08,
-          sizeInBytes: 2081,
-          url: 'http://localhost:1337/uploads/small_hero_b2b3247d4c.jpg',
-        },
-        thumbnail: {
-          name: 'thumbnail_hero.jpg',
-          hash: 'thumbnail_hero_b2b3247d4c',
-          ext: '.jpg',
-          mime: 'image/jpeg',
-          path: null,
-          width: 245,
-          height: 123,
-          size: 0.98,
-          sizeInBytes: 975,
-          url: 'http://localhost:1337/uploads/thumbnail_hero_b2b3247d4c.jpg',
-        },
-      },
-      hash: 'hero_b2b3247d4c',
-      ext: '.jpg',
-      mime: 'image/jpeg',
-      size: 51.34,
-      url: 'http://localhost:1337/uploads/hero_b2b3247d4c.jpg',
-      previewUrl: null,
-      provider: 'strapi-provider-upload-custom',
-      provider_metadata: null,
-      createdAt: '2024-08-21T13:21:14.822Z',
-      updatedAt: '2024-08-21T13:21:14.822Z',
-    },
-  },
-};
-
-const iconJson = {
-  data: {
-    id: 59,
-    attributes: {
-      name: 'Home.svg',
-      alternativeText: null,
-      caption: null,
-      width: 48,
-      height: 48,
-      formats: null,
-      hash: 'Home_9ca652379e',
-      ext: '.svg',
-      mime: 'image/svg+xml',
-      size: 0.18,
-      url: 'http://localhost:1337/uploads/Home_9ca652379e.svg',
-      previewUrl: null,
-      provider: 'strapi-provider-upload-custom',
-      provider_metadata: null,
-      createdAt: '2024-06-27T15:29:30.479Z',
-      updatedAt: '2024-08-21T13:27:05.052Z',
-    },
-  },
-};
-
-const baseProductJson = {
-  data: {
-    id: 8,
-    attributes: {
-      name: 'Firma con IO',
-      slug: 'firma-con-io',
-      shortName: 'Firma con IO',
-    },
-  },
-};
-
-const productJson = {
-  data: {
-    id: 8,
-    attributes: {
-      name: 'Firma con IO',
-      description:
-        'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
-      slug: 'firma-con-io',
-      createdAt: '2024-03-26T16:05:30.593Z',
-      updatedAt: '2024-07-11T19:28:06.709Z',
-      publishedAt: '2024-03-26T16:05:32.226Z',
-      locale: 'it',
-      shortName: 'Firma con IO',
-      logo: iconJson,
-    },
-  },
-};
+import { baseProductJson, productJson } from './fixtures/product';
+import { mediaRasterJson, mediaVectorJson } from './fixtures/media';
 
 const serviceModels = [
   {
@@ -144,6 +20,45 @@ const serviceModels = [
   },
 ];
 
+const bannerLinks = [
+  {
+    id: 64,
+    title: 'first title',
+    theme: 'light',
+    content: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'text',
+          },
+        ],
+      },
+    ],
+    subtitle: 'subtitle',
+    icon: mediaVectorJson,
+  },
+  {
+    id: 65,
+    title: 'second title',
+    theme: 'light',
+    content: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            text: 'text',
+          },
+        ],
+      },
+    ],
+    subtitle: 'subtitle',
+    icon: mediaVectorJson,
+  },
+];
+
 const makeStrapiResponseJson = () => ({
   data: [
     {
@@ -156,7 +71,7 @@ const makeStrapiResponseJson = () => ({
         locale: 'it',
         subtitle:
           "Con l’app IO accresci la visibilità dei servizi offerti dal tuo ente, offri alla cittadinanza un'esperienza digitale di qualità e risparmi sulle spese di implementazione tecnologica.",
-        backgroundImage: imageJson,
+        backgroundImage: mediaRasterJson,
         product: productJson,
         relatedLinks: {
           id: 15,
@@ -210,7 +125,7 @@ const makeStrapiResponseJson = () => ({
                   ],
                 },
               ],
-              icon: iconJson,
+              icon: mediaVectorJson,
             },
             {
               id: 60,
@@ -228,7 +143,7 @@ const makeStrapiResponseJson = () => ({
                   ],
                 },
               ],
-              icon: iconJson,
+              icon: mediaVectorJson,
             },
             {
               id: 61,
@@ -247,7 +162,7 @@ const makeStrapiResponseJson = () => ({
                   ],
                 },
               ],
-              icon: iconJson,
+              icon: mediaVectorJson,
             },
           ],
         },
@@ -262,7 +177,7 @@ const makeStrapiResponseJson = () => ({
               description:
                 'Aderire a IO tramite l’Area Riservata, creare un servizio, verificare l’esistenza di un utente, inviare un messaggio: ecco come si fa',
               path: '/app-io/quick-start',
-              icon: iconJson,
+              icon: mediaVectorJson,
             },
             {
               id: 2,
@@ -270,7 +185,7 @@ const makeStrapiResponseJson = () => ({
               description:
                 "Esplora le API Rest per l'invio dei messaggi e la creazione di servizi sull'app IO",
               path: '/app-io/api',
-              icon: iconJson,
+              icon: mediaVectorJson,
             },
           ],
           bottomLink: {
@@ -296,7 +211,7 @@ const makeStrapiResponseJson = () => ({
                   updatedAt: '2024-08-08T08:25:43.654Z',
                   publishedAt: '2024-08-05T14:11:25.924Z',
                   locale: 'it',
-                  image: imageJson,
+                  image: mediaRasterJson,
                   product: baseProductJson,
                 },
               },
@@ -310,7 +225,7 @@ const makeStrapiResponseJson = () => ({
                   updatedAt: '2024-08-06T12:41:25.713Z',
                   publishedAt: '2024-08-06T11:29:25.949Z',
                   locale: 'it',
-                  image: imageJson,
+                  image: mediaRasterJson,
                   product: baseProductJson,
                 },
               },
@@ -333,8 +248,8 @@ const makeStrapiResponseJson = () => ({
               linkText: 'Vai al modello',
               linkHref:
                 '/uploads/pago_pa_stampare_avviso_pagamento_0b04344a0e.png',
-              image: imageJson,
-              mobileImage: imageJson,
+              image: mediaRasterJson,
+              mobileImage: mediaRasterJson,
             },
           ],
           guides: {
@@ -348,9 +263,9 @@ const makeStrapiResponseJson = () => ({
                   updatedAt: '2024-08-22T15:23:17.709Z',
                   publishedAt: '2024-08-21T14:58:22.979Z',
                   locale: 'it',
-                  image: imageJson,
+                  image: mediaRasterJson,
                   listItems: [{ id: 31, text: 'title of the list item' }],
-                  mobileImage: imageJson,
+                  mobileImage: mediaRasterJson,
                 },
               },
             ],
@@ -363,6 +278,7 @@ const makeStrapiResponseJson = () => ({
           },
           serviceModels,
         },
+        bannerLinks,
       },
     },
     {
@@ -375,13 +291,14 @@ const makeStrapiResponseJson = () => ({
         locale: 'it',
         subtitle:
           'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
-        backgroundImage: imageJson,
+        backgroundImage: mediaRasterJson,
         product: { data: null },
         relatedLinks: null,
         features: null,
         startInfoSection: null,
         tutorialSection: null,
         postIntegration: null,
+        bannerLinks: [],
       },
     },
     {
@@ -394,7 +311,7 @@ const makeStrapiResponseJson = () => ({
         locale: 'it',
         subtitle:
           'Digitalizza e semplifica il modo in cui il tuo ente gestisce le comunicazioni a valore legale. Integrandoti con SEND, ti basterà depositare gli atti da notificare: sarà la piattaforma a occuparsi del loro invio, per via digitale o analogica.',
-        backgroundImage: imageJson,
+        backgroundImage: mediaRasterJson,
         product: productJson,
         relatedLinks: null,
         features: {
@@ -436,9 +353,9 @@ const makeStrapiResponseJson = () => ({
                   updatedAt: '2024-08-22T15:23:17.709Z',
                   publishedAt: '2024-08-21T14:58:22.979Z',
                   locale: 'it',
-                  image: imageJson,
+                  image: mediaRasterJson,
                   listItems: [{ id: 31, text: 'title of the list item' }],
-                  mobileImage: imageJson,
+                  mobileImage: mediaRasterJson,
                 },
               },
             ],
@@ -446,6 +363,7 @@ const makeStrapiResponseJson = () => ({
           serviceModels: serviceModels,
           link: null,
         },
+        bannerLinks: [],
       },
     },
   ],
