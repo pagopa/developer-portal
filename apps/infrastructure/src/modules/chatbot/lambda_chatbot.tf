@@ -6,6 +6,8 @@ locals {
     CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     WEBSITE_URL               = "https://${var.dns_domain_name}"
+    CORS_DOMAIN               = "https://www.${var.dns_domain_name}"
+    ENVIRONMENT               = var.environment
     LOG_LEVEL                 = "INFO"
     LLAMA_INDEX_CACHE_DIR     = "/tmp"
     NLTK_DATA                 = "_static/nltk_cache/"
