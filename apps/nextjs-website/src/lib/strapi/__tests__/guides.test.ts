@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -29,21 +30,7 @@ const makeStrapiResponseJson = () => ({
         ],
         image: mediaRasterJson,
         mobileImage: mediaRasterJson,
-        product: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'CMS APP IO',
-              description: 'Test desc ',
-              slug: 'app-io',
-              publishedAt: '2024-02-15T09:57:24.401Z',
-              createdAt: '2024-02-15T09:57:22.179Z',
-              updatedAt: '2024-07-17T15:08:58.315Z',
-              locale: 'it',
-              shortName: 'app-io',
-            },
-          },
-        },
+        product: productJson,
       },
     },
   ],
