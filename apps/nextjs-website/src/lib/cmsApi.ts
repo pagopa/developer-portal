@@ -28,7 +28,7 @@ import {
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { fetchSolutions } from './strapi/fetches/fetchSolutions';
-import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
+import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
@@ -170,33 +170,20 @@ export const getCaseHistoriesProps = async () => {
   }
 };
 
-export const getFullSolutionsProps = async () => {
+export const getSolutionsProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
     const strapiSolutions = await fetchSolutions(buildEnv);
-    return makeFullSolutionsProps(strapiSolutions);
+    return makeSolutionsProps(strapiSolutions);
   } else {
     return [];
   }
 };
 
-export const getDetailSolutionsProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiSolutions = await fetchSolutions(buildEnv);
-    return makeDetailSolutionsProps(strapiSolutions);
-  } else {
-    return [];
-  }
-};
-
-export const getSolutionsListProps = async () => {
+export const getSolutionListPageProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
