@@ -114,6 +114,7 @@ module "chatbot" {
     aws.eu-west-3   = aws.eu-west-3
     awscc           = awscc
     awscc.eu-west-3 = awscc.eu-west-3
+    aws.us-east-1   = aws.us-east-1
   }
 
   aws_chatbot_region = var.aws_chatbot_region
