@@ -3,8 +3,8 @@ import {
   Products,
   Product as ApiProduct,
   BaseProduct,
-} from './strapi/codecs/ProductCodec';
-import { Product } from './types/product';
+} from '../codecs/ProductCodec';
+import { Product } from '../../types/product';
 
 export function mergeProductWithStaticContent(
   attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes']

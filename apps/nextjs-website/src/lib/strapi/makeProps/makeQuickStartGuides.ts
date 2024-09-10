@@ -1,10 +1,10 @@
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
-import { StrapiQuickStartGuides } from './strapi/codecs/QuickStartGuidesCodec';
+import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
 import { quickStartGuides } from '@/_contents/products';
-import { Part } from './types/part';
-import { Step } from './types/step';
-import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-import { mergeProductWithStaticContent } from './products';
+import { Part } from '../../types/part';
+import { Step } from '../../types/step';
+import { partFromStrapiPart } from '../codecs/PartCodec';
+import { mergeProductWithStaticContent } from './makeProducts';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 

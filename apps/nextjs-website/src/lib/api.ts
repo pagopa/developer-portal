@@ -18,7 +18,7 @@ import {
   getTutorialListPagesProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
-import { TutorialsProps } from '@/lib/tutorials';
+import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {

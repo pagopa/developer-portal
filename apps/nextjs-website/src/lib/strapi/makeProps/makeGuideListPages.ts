@@ -1,6 +1,6 @@
 import { GuidesPageProps } from '@/app/[productSlug]/guides/page';
-import { StrapiGuideListPages } from './strapi/codecs/GuideListPagesCodec';
-import { mergeProductWithStaticContent } from './products';
+import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
+import { mergeProductWithStaticContent } from './makeProducts';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 
 type StaticGuideListPages = readonly GuidesPageProps[];

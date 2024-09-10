@@ -1,7 +1,7 @@
 import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { StrapiApiData } from './strapi/codecs/ApiDataListCodec';
+import { StrapiApiData } from '../codecs/ApiDataListCodec';
 
-export function makeApiDataProps(
+export function makeApiDataListProps(
   apiData: StrapiApiData
 ): ReadonlyArray<ApiPageProps> {
   return apiData.data
