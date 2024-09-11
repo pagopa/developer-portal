@@ -1,4 +1,5 @@
 import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { productsJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 export const baseSolutionJson = {
   id: 1,
@@ -44,24 +45,7 @@ export const baseSolutionJson = {
                 data: null,
               },
               parts: [],
-              products: {
-                data: [
-                  {
-                    id: 2,
-                    attributes: {
-                      name: 'Firma con IO',
-                      description: 'Lorem ipsum dolor sit amet',
-                      slug: 'firma-con-io',
-                      createdAt: '2024-02-16T10:14:15.098Z',
-                      updatedAt: '2024-07-15T13:23:09.737Z',
-                      publishedAt: '2024-02-16T10:14:16.646Z',
-                      locale: 'it',
-                      shortName: 'Firma con IO',
-                      logo: mediaVectorJson,
-                    },
-                  },
-                ],
-              },
+              products: productsJson,
             },
           },
         ],
