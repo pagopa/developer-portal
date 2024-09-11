@@ -8,7 +8,7 @@ export type CkEditorPartProps = {
 
 const CkEditorPart = ({ content }: CkEditorPartProps) => {
   return (
-    <Box className={'container'} sx={{}}>
+    <Box className={'container'}>
       <div dangerouslySetInnerHTML={{ __html: content }}></div>
     </Box>
   );
