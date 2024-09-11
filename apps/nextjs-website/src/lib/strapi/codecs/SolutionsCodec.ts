@@ -6,7 +6,7 @@ import { PaginationCodec } from './PaginationCodec';
 import { BaseProductCodec, ProductCodec } from './ProductCodec';
 import { BlocksContentCodec } from './BlocksContentCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
-import { WebinarCodec } from '../webinars';
+import { WebinarCodec } from './WebinarsCodec';
 import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
 
 const StepCodec = t.strict({

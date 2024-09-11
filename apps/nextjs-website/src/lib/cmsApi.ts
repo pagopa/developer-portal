@@ -6,7 +6,7 @@ import { makeHomepageProps, makeHomepagePropsFromStatic } from './homepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './webinars';
-import { fetchWebinars } from './strapi/webinars';
+import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './tutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
