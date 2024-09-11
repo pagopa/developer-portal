@@ -189,8 +189,8 @@ export const getSolutionListPageProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiSolutionsList = await fetchSolutionListPage(buildEnv);
-    return makeSolutionListPageProps(strapiSolutionsList);
+    const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+    return makeSolutionListPageProps(strapiSolutionListPage);
   }
 };
 
