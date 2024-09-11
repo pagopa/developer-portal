@@ -1,10 +1,11 @@
 import yaml
 import mangum
 import uvicorn
+import json
 import logging
 import os
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.modules.chatbot import Chatbot
 
@@ -20,10 +21,7 @@ class Query(BaseModel):
 
 app = FastAPI()
 
-origins = [
-  "http://localhost",
-  "http://localhost:3000",
-]
+origins = json.loads(os.getenv("CORS_DOMAINS"))
 
 app.add_middleware(
   CORSMiddleware,

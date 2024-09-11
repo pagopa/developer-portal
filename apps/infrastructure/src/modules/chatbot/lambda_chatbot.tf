@@ -6,6 +6,8 @@ locals {
     CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     WEBSITE_URL               = "https://${var.dns_domain_name}"
+    CORS_DOMAINS              = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
+    ENVIRONMENT               = var.environment
     LOG_LEVEL                 = "INFO"
     LLAMA_INDEX_CACHE_DIR     = "/tmp"
     NLTK_DATA                 = "_static/nltk_cache/"
@@ -26,7 +28,7 @@ module "lambda_function" {
 
   image_uri = "${module.ecr.repository_url}:latest"
 
-  timeout     = 180
+  timeout     = local.lambda_timeout
   memory_size = 4092
 
   vpc_subnet_ids         = var.vpc.private_subnets
@@ -41,13 +43,12 @@ module "lambda_function" {
   ]
 }
 
-resource "aws_lambda_permission" "lambda_permission" {
-  statement_id  = "AllowAPIGWInvoke"
+resource "aws_lambda_permission" "rest_apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_function.lambda_function_name
   principal     = "apigateway.amazonaws.com"
-
-  source_arn = "${module.api_gateway.api_execution_arn}/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
+  statement_id  = "AllowExecutionFromAPIGateway"
 }
 
 resource "aws_security_group" "lambda" {
