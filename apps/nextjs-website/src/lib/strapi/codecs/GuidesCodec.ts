@@ -1,6 +1,7 @@
 import * as t from 'io-ts/lib';
-import { MediaCodec } from './MediaCodec';
-import { BaseProductCodec } from './ProductCodec';
+import { PaginationCodec } from './PaginationCodec';
+import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
+import { BaseProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 
 const VersionCodec = t.strict({
   main: t.boolean,
@@ -33,3 +34,10 @@ export const GuideCodec = t.strict({
     }),
   ]),
 });
+
+export const GuidesCodec = t.strict({
+  data: t.array(GuideCodec),
+  meta: PaginationCodec,
+});
+
+export type StrapiGuides = t.TypeOf<typeof GuidesCodec>;

@@ -3,7 +3,7 @@ import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
 import { makeHomepageProps, makeHomepagePropsFromStatic } from './homepage';
-import { fetchHomepage } from '@/lib/strapi/homepage';
+import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
@@ -15,31 +15,32 @@ import {
   makeQuickStartsPropsFromStatic,
 } from './quickStarts';
 import {
+  guideLists,
+  guides,
   guidesDefinitions,
+  overviews,
   products,
   quickStartGuides,
-  overviews,
-  guideLists,
   tutorialLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
-import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
-import { fetchSolutions } from './strapi/solutionsCodec';
+import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
+import { fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
 import { makeSolutionListProps } from './solutionList';
-import { fetchSolutionList } from './strapi/solutionListCodec';
-import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
+import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
 import { makeApiDataListPageProps } from './apiDataListPages';
 import { makeApiDataProps } from './apiDataPages';
-import { fetchApiData } from './strapi/codecs/ApiDataCodec';
+import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductsProps } from './products';
-import { fetchGuideList } from './strapi/guideListCodec';
+import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './guideListPages';
-import { fetchGuides } from './strapi/guidesCodec';
+import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
-import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
+import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/overviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './tutorialListPages';
@@ -149,7 +150,7 @@ export const getApiDataProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apiDataPages = await fetchApiData(buildEnv);
+    const apiDataPages = await fetchApiDataList(buildEnv);
     return makeApiDataProps(apiDataPages);
   } else return [];
 };
@@ -199,7 +200,7 @@ export const getSolutionsListProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiSolutionsList = await fetchSolutionList(buildEnv);
+    const strapiSolutionsList = await fetchSolutionListPage(buildEnv);
     return makeSolutionListProps(strapiSolutionsList);
   }
 };
@@ -221,14 +222,32 @@ export const getGuideListPagesProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiGuideList = await fetchGuideList(buildEnv);
+    const strapiGuideList = await fetchGuideListPages(buildEnv);
     return makeGuideListPagesProps(strapiGuideList, guideLists);
   } else {
     return guideLists;
   }
 };
 
+// Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
+// we had to manage cache with two dedicated variables
+// eslint-disable-next-line
+let cachedGuides = guides;
+// eslint-disable-next-line
+let isCached: boolean = false;
+
 export const getGuidesProps = async () => {
+  if (!isCached) {
+    // eslint-disable-next-line functional/no-expression-statements
+    cachedGuides = await getGuidesPropsCache();
+    // eslint-disable-next-line functional/no-expression-statements
+    isCached = true;
+  }
+  return cachedGuides;
+};
+
+// TODO: Manage all fetched resources with cache in a dedicated helper function
+export const getGuidesPropsCache = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
@@ -236,7 +255,6 @@ export const getGuidesProps = async () => {
   if (fetchFromStrapi) {
     const strapiGuides = await fetchGuides(buildEnv);
     return makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(makeGuide);
-  } else {
-    return guidesDefinitions.flatMap(makeGuide);
   }
+  return guides;
 };

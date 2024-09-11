@@ -1,31 +1,8 @@
-import * as t from 'io-ts/lib';
 import * as qs from 'qs';
-import { fetchFromStrapi } from './fetchFromStrapi';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { SolutionCodec } from './solutionsCodec';
-import { FeaturesCodec } from './codecs/FeaturesCodec';
-import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { SolutionListPageCodec } from '@/lib/strapi/codecs/SolutionListPageCodec';
 
-export const StrapiSolutionListCodec = t.strict({
-  data: t.strict({
-    attributes: t.strict({
-      title: t.string,
-      description: t.string,
-      caseHistories: t.union([
-        NullToUndefinedCodec,
-        CaseHistoriesComponentCodec,
-      ]),
-      solutions: t.strict({
-        data: t.array(SolutionCodec),
-      }),
-      features: t.union([NullToUndefinedCodec, FeaturesCodec]),
-    }),
-  }),
-});
-
-export type StrapiSolutionList = t.TypeOf<typeof StrapiSolutionListCodec>;
-
-const makeStrapiSolutionListPopulate = () =>
+const makeStrapiSolutionListPagePopulate = () =>
   qs.stringify({
     populate: {
       solutions: {
@@ -70,8 +47,8 @@ const makeStrapiSolutionListPopulate = () =>
     },
   });
 
-export const fetchSolutionList = fetchFromStrapi(
+export const fetchSolutionListPage = fetchFromStrapi(
   'solution-list-page',
-  makeStrapiSolutionListPopulate(),
-  StrapiSolutionListCodec
+  makeStrapiSolutionListPagePopulate(),
+  SolutionListPageCodec
 );

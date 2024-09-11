@@ -1,5 +1,5 @@
 import { GuideDefinition } from '@/_contents/makeDocs';
-import { StrapiGuides } from './strapi/guidesCodec';
+import { StrapiGuides } from './strapi/codecs/GuidesCodec';
 import { mergeProductWithStaticContent } from './products';
 
 type StaticGuides = readonly GuideDefinition[];

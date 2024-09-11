@@ -1,16 +1,14 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
-import * as qs from 'qs';
-import { fetchFromStrapi } from './fetchFromStrapi';
-import { BlocksContentCodec } from './codecs/BlocksContentCodec';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { RelatedLinksCodec } from './codecs/RelatedLinksCodec';
-import { MediaCodec } from './codecs/MediaCodec';
-import { LinkCodec } from './codecs/LinkCodec';
-import { WebinarCodec, webinarPopulate } from './webinars';
-import { ProductCodec } from './codecs/ProductCodec';
-import { SEOCodec } from './seoCodec';
-import { BaseSolutionCodec } from './codecs/SolutionCodec';
+import { BlocksContentCodec } from './BlocksContentCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { RelatedLinksCodec } from './RelatedLinksCodec';
+import { MediaCodec } from './MediaCodec';
+import { LinkCodec } from './LinkCodec';
+import { WebinarCodec } from '../webinars';
+import { ProductCodec } from './ProductCodec';
+import { SEOCodec } from '../seoCodec';
+import { BaseSolutionCodec } from './SolutionsCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -55,7 +53,7 @@ const NewsItemCodec = t.strict({
   }),
 });
 
-export const StrapiHomepageCodec = t.strict({
+export const HomepageCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
       comingsoonDocumentation: RelatedLinksCodec,
@@ -90,35 +88,4 @@ export const StrapiHomepageCodec = t.strict({
   }),
 });
 
-export type StrapiHomepage = t.TypeOf<typeof StrapiHomepageCodec>;
-
-const makeStrapiHomepagePopulate = () =>
-  qs.stringify({
-    populate: {
-      comingsoonDocumentation: {
-        populate: ['links'],
-      },
-      heroSlider: {
-        populate: ['backgroundImage', 'callToAction.link'],
-      },
-      newsShowcase: {
-        populate: ['items.image', 'items.link'],
-      },
-      productsShowcase: {
-        populate: ['products.logo'],
-      },
-      webinars: webinarPopulate,
-      ecosystem: {
-        populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
-      },
-      seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
-    },
-  });
-
-export const fetchHomepage = fetchFromStrapi(
-  'homepage',
-  makeStrapiHomepagePopulate(),
-  StrapiHomepageCodec
-);
+export type StrapiHomepage = t.TypeOf<typeof HomepageCodec>;

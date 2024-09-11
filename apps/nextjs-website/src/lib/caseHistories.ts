@@ -1,5 +1,5 @@
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-import { StrapiCaseHistories } from './strapi/caseHistoriesCodec';
+import { StrapiCaseHistories } from './strapi/codecs/CaseHistoriesCodec';
 import { partFromStrapiPart } from './strapi/codecs/PartCodec';
 import { Part } from './types/part';
 
