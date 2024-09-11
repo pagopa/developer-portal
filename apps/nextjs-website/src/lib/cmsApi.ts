@@ -9,10 +9,10 @@ import { makeWebinarsProps } from './webinars';
 import { fetchWebinars } from './strapi/webinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './tutorials';
-import { fetchQuickStarts } from './strapi/quickStarts';
+import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import {
-  makeQuickStartsProps,
-  makeQuickStartsPropsFromStatic,
+  makeQuickStartGuidesProps,
+  makeQuickStartGuidesPropsFromStatic,
 } from './quickStarts';
 import {
   guideLists,
@@ -120,16 +120,16 @@ export const getTutorialListPagesProps = async () => {
   }
 };
 
-export const getQuickStartsProps = async () => {
+export const getQuickStartGuidesProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiQuickStart = await fetchQuickStarts(buildEnv);
-    return makeQuickStartsProps(strapiQuickStart, quickStartGuides);
+    const strapiQuickStart = await fetchQuickStartGuides(buildEnv);
+    return makeQuickStartGuidesProps(strapiQuickStart, quickStartGuides);
   } else {
-    return makeQuickStartsPropsFromStatic(quickStartGuides);
+    return makeQuickStartGuidesPropsFromStatic(quickStartGuides);
   }
 };
 
