@@ -11,8 +11,6 @@ export type ChatbotEnv = {
 export const makeChatbotEnv = (config: ChatbotConfig): ChatbotEnv => ({
   config: config,
   getAuthToken: async () =>
-    Auth.currentSession().then((session) =>
-      session.getAccessToken().getJwtToken()
-    ),
+    Auth.currentSession().then((session) => session.getIdToken().getJwtToken()),
   fetch: fetch,
 });
