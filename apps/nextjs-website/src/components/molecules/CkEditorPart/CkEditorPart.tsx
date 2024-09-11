@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Box } from '@mui/material';
+import DOMPurify from 'dompurify';
 
 export type CkEditorPartProps = {
   content: string;
@@ -9,7 +10,9 @@ export type CkEditorPartProps = {
 const CkEditorPart = ({ content }: CkEditorPartProps) => {
   return (
     <Box className={'container'}>
-      <div dangerouslySetInnerHTML={{ __html: content }}></div>
+      <div
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
+      ></div>
     </Box>
   );
 };
