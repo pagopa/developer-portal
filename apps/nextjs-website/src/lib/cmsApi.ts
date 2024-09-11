@@ -24,11 +24,11 @@ import {
   tutorialLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
-import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
-import { fetchSolutions } from './strapi/solutionsCodec';
+import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
+import { fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
 import { makeSolutionListProps } from './solutionList';
-import { fetchSolutionList } from './strapi/solutionListCodec';
+import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
 import { makeApiDataListPageProps } from './apiDataListPages';
 import { makeApiDataProps } from './apiDataPages';
@@ -40,7 +40,7 @@ import { makeGuideListPagesProps } from './guideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './guides';
 import { makeGuide } from '@/_contents/makeDocs';
-import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
+import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/overviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './tutorialListPages';
@@ -200,7 +200,7 @@ export const getSolutionsListProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiSolutionsList = await fetchSolutionList(buildEnv);
+    const strapiSolutionsList = await fetchSolutionListPage(buildEnv);
     return makeSolutionListProps(strapiSolutionsList);
   }
 };

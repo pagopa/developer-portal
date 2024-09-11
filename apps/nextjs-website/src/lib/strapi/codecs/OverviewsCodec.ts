@@ -1,17 +1,15 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
-import * as qs from 'qs';
 import { ProductCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BlocksContentCodec } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { FeaturesCodec } from '@/lib/strapi/codecs/FeaturesCodec';
 import { BaseGuideCodec } from '@/lib/strapi/codecs/GuidesCodec';
 import { LinkCodec } from '@/lib/strapi/codecs/LinkCodec';
 import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
 import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { BaseTutorialCodec } from './codecs/TutorialCodec';
+import { BaseTutorialCodec } from './TutorialCodec';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const StartInfoCodec = t.strict({
@@ -80,51 +78,9 @@ export const OverviewCodec = t.strict({
   }),
 });
 
-export const StrapiOverviewsCodec = t.strict({
+export const OverviewsCodec = t.strict({
   data: t.array(OverviewCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiOverviews = t.TypeOf<typeof StrapiOverviewsCodec>;
-
-const makeStrapiOverviewsPopulate = () =>
-  qs.stringify({
-    populate: {
-      backgroundImage: '*',
-      product: {
-        populate: ['logo'],
-      },
-      relatedLinks: {
-        populate: ['links'],
-      },
-      features: {
-        populate: ['items.icon'],
-      },
-      startInfoSection: {
-        populate: ['bottomLink', 'items.icon'],
-      },
-      tutorialSection: {
-        populate: ['tutorials.image', 'tutorials.product'],
-      },
-      postIntegration: {
-        populate: [
-          'link',
-          'guides.image',
-          'guides.listItems',
-          'guides.mobileImage',
-          'documents.image',
-          'documents.mobileImage',
-          'serviceModels',
-        ],
-      },
-      bannerLinks: {
-        populate: ['icon'],
-      },
-    },
-  });
-
-export const fetchOverviews = fetchFromStrapi(
-  'overviews',
-  makeStrapiOverviewsPopulate(),
-  StrapiOverviewsCodec
-);
+export type StrapiOverviews = t.TypeOf<typeof OverviewsCodec>;

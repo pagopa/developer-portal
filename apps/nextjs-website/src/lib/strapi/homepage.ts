@@ -10,7 +10,7 @@ import { LinkCodec } from './codecs/LinkCodec';
 import { WebinarCodec, webinarPopulate } from './webinars';
 import { ProductCodec } from './codecs/ProductCodec';
 import { SEOCodec } from './seoCodec';
-import { BaseSolutionCodec } from './codecs/SolutionCodec';
+import { BaseSolutionCodec } from './codecs/SolutionsCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
