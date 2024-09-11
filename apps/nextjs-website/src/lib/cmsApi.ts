@@ -35,7 +35,7 @@ import { makeApiDataProps } from './apiDataPages';
 import { fetchApiData } from './strapi/codecs/ApiDataCodec';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductsProps } from './products';
-import { fetchGuideList } from './strapi/codecs/GuideListPagesCodec';
+import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './guideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './guides';
@@ -222,7 +222,7 @@ export const getGuideListPagesProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiGuideList = await fetchGuideList(buildEnv);
+    const strapiGuideList = await fetchGuideListPages(buildEnv);
     return makeGuideListPagesProps(strapiGuideList, guideLists);
   } else {
     return guideLists;

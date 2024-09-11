@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiGuideListPagesCodec } from '../codecs/GuideListPagesCodec';
+import { GuideListPagesCodec } from '../codecs/GuideListPagesCodec';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
 
@@ -65,10 +65,10 @@ const makeStrapiResponseJson = () => ({
   },
 });
 
-describe('StrapiGuideListCodec', () => {
+describe('GuideListPagesCodec', () => {
   it('should decode strapi guide list', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiGuideListPagesCodec.decode(jsonFromStrapi);
+    const actual = GuideListPagesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
