@@ -5,6 +5,7 @@ import {
   mediaRasterAttributesJson,
   mediaRasterJson,
 } from '@/lib/strapi/__tests__/fixtures/media';
+import { productsJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: {
@@ -248,24 +249,7 @@ const makeStrapiResponseJson = () => ({
         title: 'Scopri il nostro ecosistema',
         productsTabName: 'Per i prodotti',
         solutionsTabName: 'Per le soluzioni',
-        products: {
-          data: [
-            {
-              id: 1,
-              attributes: {
-                name: 'IO',
-                shortName: 'IO',
-                description: null,
-                slug: 'app-io',
-                createdAt: '2024-05-24T07:45:13.658Z',
-                updatedAt: '2024-05-24T07:58:24.107Z',
-                publishedAt: '2024-05-24T07:45:20.231Z',
-                locale: 'en',
-                logo: mediaRasterJson,
-              },
-            },
-          ],
-        },
+        products: productsJson,
         solutions: {
           data: [
             {
@@ -281,24 +265,7 @@ const makeStrapiResponseJson = () => ({
                 updatedAt: '2024-05-31T09:16:50.894Z',
                 publishedAt: '2024-05-31T09:16:50.890Z',
                 locale: 'en',
-                products: {
-                  data: [
-                    {
-                      id: 1,
-                      attributes: {
-                        name: 'IO',
-                        shortName: 'IO',
-                        description: null,
-                        slug: 'app-io',
-                        createdAt: '2024-05-24T07:45:13.658Z',
-                        updatedAt: '2024-05-24T07:58:24.107Z',
-                        publishedAt: '2024-05-24T07:45:20.231Z',
-                        locale: 'en',
-                        logo: mediaRasterJson,
-                      },
-                    },
-                  ],
-                },
+                products: productsJson,
                 bannerLinks: [
                   {
                     id: 1,
@@ -430,24 +397,7 @@ const makeStrapiResponseJson = () => ({
                         ],
                       },
                     ],
-                    products: {
-                      data: [
-                        {
-                          id: 1,
-                          attributes: {
-                            name: 'IO',
-                            shortName: 'IO',
-                            description: null,
-                            slug: 'app-io',
-                            createdAt: '2024-05-24T07:45:13.658Z',
-                            updatedAt: '2024-05-24T07:58:24.107Z',
-                            publishedAt: '2024-05-24T07:45:20.231Z',
-                            locale: 'en',
-                            logo: mediaRasterJson,
-                          },
-                        },
-                      ],
-                    },
+                    products: productsJson,
                   },
                 ],
               },
@@ -666,58 +616,7 @@ const makeStrapiResponseWithNullsJson = () => ({
         title: 'Scopri il nostro ecosistema',
         productsTabName: 'Per i prodotti',
         solutionsTabName: 'Per le soluzioni',
-        products: {
-          data: [
-            {
-              id: 1,
-              attributes: {
-                name: 'IO',
-                shortName: 'IO',
-                description: null,
-                slug: 'app-io',
-                createdAt: '2024-05-24T07:45:13.658Z',
-                updatedAt: '2024-05-24T07:58:24.107Z',
-                publishedAt: '2024-05-24T07:45:20.231Z',
-                locale: 'en',
-                logo: {
-                  data: {
-                    id: 2,
-                    attributes: {
-                      name: 'minestrone-soup-500x500.jpg',
-                      alternativeText: null,
-                      caption: null,
-                      width: 500,
-                      height: 500,
-                      formats: {
-                        thumbnail: {
-                          name: 'thumbnail_minestrone-soup-500x500.jpg',
-                          hash: 'thumbnail_minestrone_soup_500x500_582b21c155',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          path: null,
-                          width: 156,
-                          height: 156,
-                          size: 8.66,
-                          url: '/uploads/thumbnail_minestrone_soup_500x500_582b21c155.jpg',
-                        },
-                      },
-                      hash: 'minestrone_soup_500x500_582b21c155',
-                      ext: '.jpg',
-                      mime: 'image/jpeg',
-                      size: 51.82,
-                      url: '/uploads/minestrone_soup_500x500_582b21c155.jpg',
-                      previewUrl: null,
-                      provider: 'local',
-                      provider_metadata: null,
-                      createdAt: '2024-04-08T16:05:13.531Z',
-                      updatedAt: '2024-04-08T16:05:13.531Z',
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
+        products: productsJson,
         solutions: {
           data: [
             {
