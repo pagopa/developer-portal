@@ -1,10 +1,10 @@
 import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { StrapiApiData } from '../codecs/ApiDataListCodec';
+import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
 
 export function makeApiDataListProps(
-  apiData: StrapiApiData
+  apiDataList: StrapiApiDataList
 ): ReadonlyArray<ApiPageProps> {
-  return apiData.data
+  return apiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => ({
       ...attributes,
