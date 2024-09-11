@@ -66,7 +66,7 @@ const makeStrapiResponseJson = () => ({
 });
 
 describe('GuideListPagesCodec', () => {
-  it('should decode strapi guide list', () => {
+  it('should decode strapi guide list pages', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = GuideListPagesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();

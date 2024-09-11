@@ -29,10 +29,10 @@ import { fetchSolutions } from './strapi/solutionsCodec';
 import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
 import { makeSolutionListProps } from './solutionList';
 import { fetchSolutionList } from './strapi/solutionListCodec';
-import { fetchApiDataListPages } from './strapi/ApiDataListPageCodec';
+import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
 import { makeApiDataListPageProps } from './apiDataListPages';
 import { makeApiDataProps } from './apiDataPages';
-import { fetchApiData } from './strapi/codecs/ApiDataCodec';
+import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
 import { makeProductsProps } from './products';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
@@ -150,7 +150,7 @@ export const getApiDataProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apiDataPages = await fetchApiData(buildEnv);
+    const apiDataPages = await fetchApiDataList(buildEnv);
     return makeApiDataProps(apiDataPages);
   } else return [];
 };
