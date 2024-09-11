@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { GuideListPagesCodec } from '../codecs/GuideListPagesCodec';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -50,21 +51,7 @@ const makeStrapiResponseJson = () => ({
             },
           },
         ],
-        product: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'CMS APP IO',
-              description: 'Test desc ',
-              slug: 'app-io',
-              createdAt: '2024-02-15T09:57:22.179Z',
-              updatedAt: '2024-07-17T15:08:58.315Z',
-              publishedAt: '2024-02-15T09:57:24.401Z',
-              locale: 'it',
-              shortName: 'app-io',
-            },
-          },
-        },
+        product: productJson,
       },
     },
   ],
@@ -79,7 +66,7 @@ const makeStrapiResponseJson = () => ({
 });
 
 describe('GuideListPagesCodec', () => {
-  it('should decode strapi guide list', () => {
+  it('should decode strapi guide list pages', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = GuideListPagesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
