@@ -1,5 +1,5 @@
 import { GuidesPageProps } from '@/app/[productSlug]/guides/page';
-import { StrapiGuideListPages } from './strapi/guideListCodec';
+import { StrapiGuideListPages } from './strapi/codecs/GuideListPagesCodec';
 import { mergeProductWithStaticContent } from './products';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 
