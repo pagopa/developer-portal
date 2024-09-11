@@ -29,6 +29,7 @@ export type SolutionTemplateProps = {
     content: BlocksContent;
     products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
+  statsSource?: string;
   dirName: string;
   landingUseCaseFile: string;
   stats: {
@@ -63,6 +64,7 @@ const SolutionTemplate = ({
   introductionToSteps,
   steps,
   stats,
+  statsSource,
   products,
   webinars,
   bannerLinks,
@@ -116,6 +118,7 @@ const SolutionTemplate = ({
             title: stat.title,
             description: stat.description,
           }))}
+          statsSource={statsSource}
         />
       )}
       {successStories && (
