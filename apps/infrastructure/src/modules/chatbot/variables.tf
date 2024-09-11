@@ -93,3 +93,17 @@ variable "ecs_redis" {
   })
   description = "Redis configuration for the AI chatbot"
 }
+
+################################################################################
+# API Gateway
+################################################################################
+
+variable "api_gateway" {
+  type = object({
+    integration_timeout_sec = optional(number, 60)
+  })
+
+  default = {
+    integration_timeout_sec = 60
+  }
+}

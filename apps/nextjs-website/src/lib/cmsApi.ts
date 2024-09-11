@@ -15,11 +15,12 @@ import {
   makeQuickStartGuidesPropsFromStatic,
 } from './quickStarts';
 import {
+  guideLists,
+  guides,
   guidesDefinitions,
+  overviews,
   products,
   quickStartGuides,
-  overviews,
-  guideLists,
   tutorialLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './caseHistories';
@@ -228,7 +229,25 @@ export const getGuideListPagesProps = async () => {
   }
 };
 
+// Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
+// we had to manage cache with two dedicated variables
+// eslint-disable-next-line
+let cachedGuides = guides;
+// eslint-disable-next-line
+let isCached: boolean = false;
+
 export const getGuidesProps = async () => {
+  if (!isCached) {
+    // eslint-disable-next-line functional/no-expression-statements
+    cachedGuides = await getGuidesPropsCache();
+    // eslint-disable-next-line functional/no-expression-statements
+    isCached = true;
+  }
+  return cachedGuides;
+};
+
+// TODO: Manage all fetched resources with cache in a dedicated helper function
+export const getGuidesPropsCache = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
@@ -236,7 +255,6 @@ export const getGuidesProps = async () => {
   if (fetchFromStrapi) {
     const strapiGuides = await fetchGuides(buildEnv);
     return makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(makeGuide);
-  } else {
-    return guidesDefinitions.flatMap(makeGuide);
   }
+  return guides;
 };

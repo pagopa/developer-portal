@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { OverviewsCodec } from '@/lib/strapi/codecs/overviewsCodec';
+import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 import { baseProductJson, productJson } from './fixtures/product';
 import { mediaRasterJson, mediaVectorJson } from './fixtures/media';
 
