@@ -2,11 +2,6 @@ import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '../strapi/codecs/MediaCodec';
 
-export type QuestionsAndAnswersItem = {
-  readonly question: string;
-  readonly answer: BlocksContent;
-};
-
 export type QuestionsAndAnswer = {
   readonly question: string;
   readonly answer: BlocksContent;

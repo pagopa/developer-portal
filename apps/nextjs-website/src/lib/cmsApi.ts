@@ -2,18 +2,21 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
-import { makeHomepageProps, makeHomepagePropsFromStatic } from './homepage';
-import { fetchHomepage } from '@/lib/strapi/homepage';
-import { translations } from '@/_contents/translations';
-import { makeWebinarsProps } from './webinars';
-import { fetchWebinars } from './strapi/webinars';
-import { fetchTutorials } from './strapi/fetches/fetchTutorials';
-import { makeTutorialsProps } from './tutorials';
-import { fetchQuickStarts } from './strapi/quickStarts';
 import {
-  makeQuickStartsProps,
-  makeQuickStartsPropsFromStatic,
-} from './quickStarts';
+  makeHomepageProps,
+  makeHomepagePropsFromStatic,
+} from './strapi/makeProps/makeHomepage';
+import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
+import { translations } from '@/_contents/translations';
+import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
+import { fetchWebinars } from './strapi/fetches/fetchWebinars';
+import { fetchTutorials } from './strapi/fetches/fetchTutorials';
+import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
+import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
+import {
+  makeQuickStartGuidesProps,
+  makeQuickStartGuidesPropsFromStatic,
+} from './strapi/makeProps/makeQuickStartGuides';
 import {
   guideLists,
   guides,
@@ -23,27 +26,27 @@ import {
   quickStartGuides,
   tutorialLists,
 } from '@/_contents/products';
-import { makeCaseHistoriesProps } from './caseHistories';
-import { fetchCaseHistories } from './strapi/caseHistoriesCodec';
-import { fetchSolutions } from './strapi/solutionsCodec';
-import { makeDetailSolutionsProps, makeFullSolutionsProps } from './solutions';
-import { makeSolutionListProps } from './solutionList';
-import { fetchSolutionList } from './strapi/solutionListCodec';
+import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
+import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
+import { fetchSolutions } from './strapi/fetches/fetchSolutions';
+import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
+import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
+import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
-import { makeApiDataListPageProps } from './apiDataListPages';
-import { makeApiDataProps } from './apiDataPages';
+import { makeApiDataListPagesProps } from './strapi/makeProps/makeApiDataListPages';
+import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
 import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from './strapi/codecs/ProductCodec';
-import { makeProductsProps } from './products';
+import { makeProductsProps } from './strapi/makeProps/makeProducts';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
-import { makeGuideListPagesProps } from './guideListPages';
+import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
-import { makeGuidesProps } from './guides';
+import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { makeGuide } from '@/_contents/makeDocs';
-import { fetchOverviews } from '@/lib/strapi/overviewsCodec';
-import { makeOverviewsProps } from '@/lib/overviews';
+import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
+import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './tutorialListPages';
+import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -120,16 +123,16 @@ export const getTutorialListPagesProps = async () => {
   }
 };
 
-export const getQuickStartsProps = async () => {
+export const getQuickStartGuidesProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiQuickStart = await fetchQuickStarts(buildEnv);
-    return makeQuickStartsProps(strapiQuickStart, quickStartGuides);
+    const strapiQuickStart = await fetchQuickStartGuides(buildEnv);
+    return makeQuickStartGuidesProps(strapiQuickStart, quickStartGuides);
   } else {
-    return makeQuickStartsPropsFromStatic(quickStartGuides);
+    return makeQuickStartGuidesPropsFromStatic(quickStartGuides);
   }
 };
 
@@ -140,7 +143,7 @@ export const getApiDataListPagesProps = async () => {
 
   if (fetchFromStrapi) {
     const apiDataListPages = await fetchApiDataListPages(buildEnv);
-    return makeApiDataListPageProps(apiDataListPages);
+    return makeApiDataListPagesProps(apiDataListPages);
   } else return [];
 };
 
@@ -150,8 +153,8 @@ export const getApiDataProps = async () => {
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const apiDataPages = await fetchApiDataList(buildEnv);
-    return makeApiDataProps(apiDataPages);
+    const apiDataList = await fetchApiDataList(buildEnv);
+    return makeApiDataListProps(apiDataList);
   } else return [];
 };
 
@@ -168,40 +171,27 @@ export const getCaseHistoriesProps = async () => {
   }
 };
 
-export const getFullSolutionsProps = async () => {
+export const getSolutionsProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
     const strapiSolutions = await fetchSolutions(buildEnv);
-    return makeFullSolutionsProps(strapiSolutions);
+    return makeSolutionsProps(strapiSolutions);
   } else {
     return [];
   }
 };
 
-export const getDetailSolutionsProps = async () => {
+export const getSolutionListPageProps = async () => {
   const {
     config: { FETCH_FROM_STRAPI: fetchFromStrapi },
   } = buildEnv;
 
   if (fetchFromStrapi) {
-    const strapiSolutions = await fetchSolutions(buildEnv);
-    return makeDetailSolutionsProps(strapiSolutions);
-  } else {
-    return [];
-  }
-};
-
-export const getSolutionsListProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiSolutionsList = await fetchSolutionList(buildEnv);
-    return makeSolutionListProps(strapiSolutionsList);
+    const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+    return makeSolutionListPageProps(strapiSolutionListPage);
   }
 };
 
