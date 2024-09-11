@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-add ckeditor renderer
+Add CKEditor renderer to NextJS
