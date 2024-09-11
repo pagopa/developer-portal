@@ -5,7 +5,7 @@ import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { MediaCodec } from './MediaCodec';
 import { LinkCodec } from './LinkCodec';
-import { WebinarCodec } from '../WebinarsCodec';
+import { WebinarCodec } from './WebinarsCodec';
 import { ProductCodec } from './ProductCodec';
 import { SEOCodec } from '../seoCodec';
 import { BaseSolutionCodec } from './SolutionsCodec';
