@@ -3,6 +3,7 @@ import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SolutionCodec } from './SolutionsCodec';
 import { FeaturesCodec } from './FeaturesCodec';
 import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
+import { SEOCodec } from './SeoCodec';
 
 export const SolutionListPageCodec = t.strict({
   data: t.strict({
@@ -17,6 +18,7 @@ export const SolutionListPageCodec = t.strict({
         data: t.array(SolutionCodec),
       }),
       features: t.union([NullToUndefinedCodec, FeaturesCodec]),
+      seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
     }),
   }),
 });

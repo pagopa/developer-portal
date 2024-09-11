@@ -3,11 +3,13 @@ import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
+import { SEOCodec } from './SeoCodec';
 
 const BaseProductAttributesCodec = t.strict({
   name: t.string,
   shortName: t.string,
   slug: t.string,
+  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
 });
 
 export const BaseProductCodec = t.strict({

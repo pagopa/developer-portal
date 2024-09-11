@@ -5,6 +5,7 @@ import { MediaCodec } from './MediaCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { ProductCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
+import { SEOCodec } from './SeoCodec';
 
 export const CaseHistoryCodec = t.strict({
   id: t.number,
@@ -21,6 +22,7 @@ export const CaseHistoryCodec = t.strict({
       data: t.array(ProductCodec),
     }),
     parts: t.array(PartCodec),
+    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
   }),
 });
 

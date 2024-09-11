@@ -8,6 +8,7 @@ import { BlocksContentCodec } from './BlocksContentCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { WebinarCodec } from './WebinarsCodec';
 import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
+import { SEOCodec } from './SeoCodec';
 
 const StepCodec = t.strict({
   title: t.string,
@@ -56,6 +57,7 @@ export const SolutionCodec = t.strict({
         NullToUndefinedCodec,
         CaseHistoriesComponentCodec,
       ]),
+      seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
     }),
   ]),
 });

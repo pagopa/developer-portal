@@ -1,6 +1,7 @@
 import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { SEOCodec } from './SeoCodec';
 
 const UrlCodec = t.strict({
   id: t.number,
@@ -23,6 +24,7 @@ const ApiDataCodec = t.strict({
       }),
     ]),
     apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
   }),
 });
 

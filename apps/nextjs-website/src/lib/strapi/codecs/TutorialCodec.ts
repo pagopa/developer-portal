@@ -8,6 +8,7 @@ import { BaseProductCodec, ProductCodec } from './ProductCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PartCodec } from './PartCodec';
 import { PaginationCodec } from './PaginationCodec';
+import { SEOCodec } from './SeoCodec';
 
 const BannerLinkCodec = t.strict({
   id: t.number,
@@ -21,6 +22,7 @@ const BaseTutorialAttributesCodec = t.strict({
   publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
   product: t.strict({ data: BaseProductCodec }),
+  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
 });
 
 export const BaseTutorialCodec = t.strict({

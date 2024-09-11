@@ -2,6 +2,8 @@ import * as t from 'io-ts/lib';
 import { PaginationCodec } from './PaginationCodec';
 import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
 import { BaseProductCodec } from '@/lib/strapi/codecs/ProductCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { SEOCodec } from './SeoCodec';
 
 const VersionCodec = t.strict({
   main: t.boolean,
@@ -19,6 +21,7 @@ const BaseGuideAttributesCodec = t.strict({
       text: t.string,
     })
   ),
+  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
 });
 
 export const BaseGuideCodec = t.strict({

@@ -3,6 +3,8 @@ import { BaseProductCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { BaseTutorialCodec } from './TutorialCodec';
+import { SEOCodec } from './SeoCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
 const StrapiTutorialListPageCodec = t.strict({
   id: t.number,
@@ -12,6 +14,7 @@ const StrapiTutorialListPageCodec = t.strict({
     tutorials: t.strict({ data: t.array(BaseTutorialCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
     product: t.strict({ data: BaseProductCodec }),
+    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
   }),
 });
 
