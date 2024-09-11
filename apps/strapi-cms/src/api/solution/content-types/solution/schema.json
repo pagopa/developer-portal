@@ -115,6 +115,14 @@
       },
       "component": "common.solution-stat"
     },
+    "statsSource": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
     "webinars": {
       "type": "relation",
       "relation": "manyToMany",
