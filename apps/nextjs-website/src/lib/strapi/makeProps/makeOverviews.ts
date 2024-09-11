@@ -1,4 +1,4 @@
-import { StrapiOverviews } from '@/lib/strapi/codecs/overviewsCodec';
+import { StrapiOverviews } from '@/lib/strapi/codecs/OverviewsCodec';
 import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 import { overviews, products } from '@/_contents/products';
 
