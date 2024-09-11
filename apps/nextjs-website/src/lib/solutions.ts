@@ -4,7 +4,7 @@ import { StrapiSolutions } from './strapi/codecs/SolutionsCodec';
 import { Solution } from './types/solution';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { makeWebinarFromStrapi } from './webinars';
+import { makeWebinarFromStrapi } from './strapi/makeProps/makeWebinars';
 
 export type DetailSolutionsProps = Solution & {
   readonly solutionSlug: string;

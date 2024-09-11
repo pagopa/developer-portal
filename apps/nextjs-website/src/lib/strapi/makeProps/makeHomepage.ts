@@ -1,6 +1,6 @@
 import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
 import { translations } from '@/_contents/translations';
-import { makeWebinarFromStrapi } from './webinars';
+import { makeWebinarFromStrapi } from './makeWebinars';
 import { HomepageProps } from '@/app/page';
 
 type StaticHomepage = typeof translations.homepage;
