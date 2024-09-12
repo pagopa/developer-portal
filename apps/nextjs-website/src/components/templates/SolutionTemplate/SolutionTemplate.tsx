@@ -51,6 +51,8 @@ export type SolutionTemplateProps = {
       };
     }[];
   };
+  solutionSlug: string;
+  path?: string;
 };
 
 const SolutionTemplate = ({
