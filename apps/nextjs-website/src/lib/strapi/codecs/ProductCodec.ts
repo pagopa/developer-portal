@@ -9,7 +9,6 @@ const BaseProductAttributesCodec = t.strict({
   name: t.string,
   shortName: t.string,
   slug: t.string,
-  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
 });
 
 export const BaseProductCodec = t.strict({
@@ -25,6 +24,7 @@ export const ProductCodec = t.strict({
       description: t.union([NullToUndefinedCodec, t.string]),
       slug: t.string,
       logo: t.strict({ data: MediaCodec }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });

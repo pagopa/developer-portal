@@ -75,6 +75,7 @@ const baseTutorialJson = {
       data: {
         id: 1,
         attributes: {
+          seo: null,
           name: 'CMS APP IO',
           shortName: 'IO',
           description: 'Test desc ',
@@ -241,6 +242,7 @@ const makeStrapiResponseJsonWithNull = () => ({
           data: {
             id: 1,
             attributes: {
+              seo: null,
               name: 'CMS APP IO',
               shortName: 'IO',
               description: 'Test desc ',

@@ -30,6 +30,7 @@ const makeStrapiResponseJson = () => ({
               {
                 id: 1,
                 attributes: {
+                  seo: null,
                   name: 'CMS APP IO',
                   description: 'Test desc ',
                   slug: 'app-io',
@@ -164,6 +165,7 @@ const makeStrapiResponseJson = () => ({
           {
             id: 1,
             attributes: {
+              seo: null,
               name: 'CMS APP IO',
               description: 'Test desc ',
               slug: 'app-io',
