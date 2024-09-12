@@ -45,6 +45,7 @@ export const SolutionCodec = t.strict({
       introductionToSteps: t.union([NullToUndefinedCodec, t.string]),
       steps: t.array(StepCodec),
       stats: t.array(StatCodec),
+      statsSource: t.union([NullToUndefinedCodec, t.string]),
       bannerLinks: t.array(BannerLinkCodec),
       webinars: t.strict({
         data: t.array(WebinarCodec),
