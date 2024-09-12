@@ -9,12 +9,6 @@ export type QuestionsAndAnswer = {
 
 export type Webinar = {
   readonly description: string;
-  // Use bodyContent instead, remove when webinars will be managed by Strapi
-  // (remove it when both of this tasks
-  // https://pagopa.atlassian.net/browse/DEV-1557 and
-  // https://pagopa.atlassian.net/browse/DEV-1524 are resolved)
-  /** @deprecated */
-  readonly html?: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
   readonly speakers?: readonly Speaker[];
