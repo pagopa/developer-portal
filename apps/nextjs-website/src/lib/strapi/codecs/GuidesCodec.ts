@@ -21,7 +21,7 @@ const BaseGuideAttributesCodec = t.strict({
       text: t.string,
     })
   ),
-  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+  seo: t.union([NullToUndefinedCodec, SEOCodec]),
 });
 
 export const BaseGuideCodec = t.strict({

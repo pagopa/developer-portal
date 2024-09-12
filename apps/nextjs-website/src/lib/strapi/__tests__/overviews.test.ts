@@ -258,6 +258,7 @@ const makeStrapiResponseJson = () => ({
               {
                 id: 4,
                 attributes: {
+                  seo: null,
                   title: 'First',
                   slug: 'slug',
                   createdAt: '2024-08-21T14:57:40.184Z',
@@ -350,6 +351,7 @@ const makeStrapiResponseJson = () => ({
               {
                 id: 4,
                 attributes: {
+                  seo: null,
                   title: 'First',
                   slug: 'slug',
                   createdAt: '2024-08-21T14:57:40.184Z',
