@@ -141,7 +141,7 @@ export function makeEvent(event: Omit<Event, '@type'>): WithContext<Event> {
   };
 }
 
-export function convertWebinarToStracturedDataEvent(
+export function convertWebinarToStructuredDataEvent(
   webinar: Webinar
 ): WithContext<Event> {
   return makeEvent({
