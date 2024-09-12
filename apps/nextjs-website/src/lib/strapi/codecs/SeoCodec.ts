@@ -1,6 +1,6 @@
 import * as t from 'io-ts/lib';
-import { NullToUndefinedCodec } from './codecs/NullToUndefinedCodec';
-import { MediaAttributesCodec } from './codecs/MediaCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { MediaAttributesCodec } from './MediaCodec';
 
 export const SEOMetaSocialCodec = t.partial({
   id: t.union([NullToUndefinedCodec, t.number]),

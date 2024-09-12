@@ -30,4 +30,4 @@ export const ApiDataListCodec = t.strict({
   data: t.array(ApiDataCodec),
 });
 
-export type StrapiApiData = t.TypeOf<typeof ApiDataListCodec>;
+export type StrapiApiDataList = t.TypeOf<typeof ApiDataListCodec>;

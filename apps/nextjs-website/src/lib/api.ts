@@ -6,19 +6,21 @@ import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
-  getProductsProps,
-  getFullSolutionsProps,
-  getQuickStartGuidesProps,
-  getSolutionsListProps,
-  getTutorialsProps,
-  getWebinarsProps,
+  getSolutionsProps,
   getGuideListPagesProps,
   getGuidesProps,
   getOverviewsProps,
+  getProductsProps,
+  getQuickStartGuidesProps,
+  getSolutionListPageProps,
   getTutorialListPagesProps,
+  getTutorialsProps,
+  getWebinarsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
-import { TutorialsProps } from '@/lib/tutorials';
+import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
+import { makeSolution } from '@/_contents/makeDocs';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -232,12 +234,48 @@ export async function getApiData(apiDataSlug: string) {
 
 export async function getSolution(solutionSlug?: string) {
   const props = manageUndefined(
-    (await getFullSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }
 
-export async function getSolutionsList() {
-  const solutionsListProps = await getSolutionsListProps();
-  return manageUndefined(solutionsListProps);
+export async function getSolutionListPage() {
+  const solutionListPageProps = await getSolutionListPageProps();
+  return manageUndefined(solutionListPageProps);
+}
+
+export async function getSolutionDetail(
+  solutionSlug: string,
+  solutionSubPathSlugs: readonly string[]
+) {
+  const solutionsFromStrapi = await getSolutionsProps();
+
+  const solutionFromStrapi = solutionsFromStrapi.find(
+    ({ slug }) => slug === solutionSlug
+  );
+
+  if (!solutionFromStrapi) {
+    return undefined;
+  }
+
+  const parsedSolutions = makeSolution(solutionFromStrapi);
+
+  return parsedSolutions.find(
+    ({ page }) =>
+      page.path ===
+      `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+  );
+}
+
+export function getSolutionSubPaths(
+  solutionTemplateProps: SolutionTemplateProps
+) {
+  return makeSolution(solutionTemplateProps).map(({ page, solution }) => {
+    const path = page.path.split('/').filter((_, index) => index > 2);
+
+    return {
+      solutionSlug: solution.slug,
+      solutionSubPathSlugs: path,
+    };
+  });
 }

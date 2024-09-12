@@ -7,7 +7,7 @@ import { MediaCodec } from './MediaCodec';
 import { LinkCodec } from './LinkCodec';
 import { WebinarCodec } from './WebinarsCodec';
 import { ProductCodec } from './ProductCodec';
-import { SEOCodec } from '../seoCodec';
+import { SEOCodec } from './SeoCodec';
 import { BaseSolutionCodec } from './SolutionsCodec';
 
 const CallToActionCodec = t.strict({

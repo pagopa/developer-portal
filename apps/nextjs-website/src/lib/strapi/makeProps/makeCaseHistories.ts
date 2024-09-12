@@ -1,7 +1,7 @@
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-import { StrapiCaseHistories } from './strapi/codecs/CaseHistoriesCodec';
-import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-import { Part } from './types/part';
+import { StrapiCaseHistories } from '../codecs/CaseHistoriesCodec';
+import { partFromStrapiPart } from '../codecs/PartCodec';
+import { Part } from '../../types/part';
 
 export function makeCaseHistoriesProps(
   strapiCaseHistories: StrapiCaseHistories
