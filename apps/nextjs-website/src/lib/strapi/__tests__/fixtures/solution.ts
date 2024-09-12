@@ -1,5 +1,6 @@
 import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
 import { productsJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { setOption } from 'monocle-ts/lib/Optional';
 
 export const baseSolutionJson = {
   id: 1,
@@ -51,5 +52,6 @@ export const baseSolutionJson = {
         ],
       },
     },
+    seo: null,
   },
 };

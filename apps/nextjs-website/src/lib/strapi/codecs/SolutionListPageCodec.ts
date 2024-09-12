@@ -18,7 +18,7 @@ export const SolutionListPageCodec = t.strict({
         data: t.array(SolutionCodec),
       }),
       features: t.union([NullToUndefinedCodec, FeaturesCodec]),
-      seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   }),
 });

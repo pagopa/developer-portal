@@ -57,7 +57,7 @@ export const SolutionCodec = t.strict({
         NullToUndefinedCodec,
         CaseHistoriesComponentCodec,
       ]),
-      seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });

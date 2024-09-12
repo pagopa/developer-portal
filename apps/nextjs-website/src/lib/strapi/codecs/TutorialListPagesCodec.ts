@@ -14,7 +14,7 @@ const StrapiTutorialListPageCodec = t.strict({
     tutorials: t.strict({ data: t.array(BaseTutorialCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
     product: t.strict({ data: BaseProductCodec }),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

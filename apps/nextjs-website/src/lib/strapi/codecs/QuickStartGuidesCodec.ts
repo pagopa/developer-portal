@@ -23,7 +23,7 @@ export const QuickStartGuideCodec = t.strict({
     description: t.string,
     product: t.strict({ data: ProductCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

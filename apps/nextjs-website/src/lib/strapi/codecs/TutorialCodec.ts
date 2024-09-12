@@ -22,7 +22,6 @@ const BaseTutorialAttributesCodec = t.strict({
   publishedAt: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
   image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
   product: t.strict({ data: BaseProductCodec }),
-  seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
 });
 
 export const BaseTutorialCodec = t.strict({
@@ -40,13 +39,14 @@ export const TutorialCodec = t.strict({
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
       relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
       product: t.strict({ data: ProductCodec }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });
 
-export const StrapiTutorialsCodec = t.strict({
+export const TutorialsCodec = t.strict({
   data: t.array(TutorialCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiTutorials = t.TypeOf<typeof StrapiTutorialsCodec>;
+export type StrapiTutorials = t.TypeOf<typeof TutorialsCodec>;
