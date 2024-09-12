@@ -1,6 +1,7 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '../strapi/codecs/MediaCodec';
+import { SEO } from './seo';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -50,4 +51,5 @@ export type Webinar = {
   readonly isVisibleInList: boolean;
   readonly imagePath: string;
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
+  readonly seo?: SEO;
 };

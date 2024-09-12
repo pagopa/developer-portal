@@ -1,7 +1,10 @@
 import { getWebinar } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getWebinarsProps } from '@/lib/cmsApi';
@@ -23,6 +26,10 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const webinar = await getWebinar(params?.webinarSlug);
+
+  if (webinar.seo) {
+    return makeMetadataFromStrapi(webinar.seo);
+  }
 
   return makeMetadata({
     title: webinar.title,
