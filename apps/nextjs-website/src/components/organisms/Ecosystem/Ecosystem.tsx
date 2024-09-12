@@ -2,10 +2,10 @@
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import TabComponent from '@/components/atoms/TabComponent/TabComponent';
-import { HomepageProps } from '@/lib/homepage';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
+import { HomepageProps } from '@/app/page';
 
 const Ecosystem = ({
   title,

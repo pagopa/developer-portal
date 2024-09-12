@@ -1,28 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiGuidesCodec } from '../guidesCodec';
-
-export const guideImageJson = {
-  data: {
-    id: 4,
-    attributes: {
-      name: 'webinar-cover-io-remote-content.jpg',
-      alternativeText: null,
-      caption: null,
-      width: 728,
-      height: 416,
-      hash: 'webinar_cover_io_remote_content_62f1f615b5',
-      ext: '.jpg',
-      mime: 'image/jpeg',
-      size: 30.06,
-      url: 'http://localhost:1337/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
-      previewUrl: null,
-      provider: 'strapi-provider-upload-custom',
-      provider_metadata: null,
-      createdAt: '2024-04-15T14:25:47.773Z',
-      updatedAt: '2024-08-19T13:39:34.462Z',
-    },
-  },
-};
+import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
+import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -49,23 +28,9 @@ const makeStrapiResponseJson = () => ({
             text: 'fdsfgd fsdfsd fsdf sdfsd',
           },
         ],
-        image: guideImageJson,
-        mobileImage: guideImageJson,
-        product: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'CMS APP IO',
-              description: 'Test desc ',
-              slug: 'app-io',
-              publishedAt: '2024-02-15T09:57:24.401Z',
-              createdAt: '2024-02-15T09:57:22.179Z',
-              updatedAt: '2024-07-17T15:08:58.315Z',
-              locale: 'it',
-              shortName: 'app-io',
-            },
-          },
-        },
+        image: mediaRasterJson,
+        mobileImage: mediaRasterJson,
+        product: productJson,
       },
     },
   ],
@@ -79,10 +44,10 @@ const makeStrapiResponseJson = () => ({
   },
 });
 
-describe('StrapiGuidesCodec', () => {
+describe('GuidesCodec', () => {
   it('should decode strapi guides', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiGuidesCodec.decode(jsonFromStrapi);
+    const actual = GuidesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
