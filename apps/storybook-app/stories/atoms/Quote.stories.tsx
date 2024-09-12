@@ -26,3 +26,10 @@ export const Showcase: StoryObj<typeof Quote> = {
     ...quoteMockProps,
   },
 };
+
+export const ShortQuote: StoryObj<typeof Quote> = {
+  args: {
+    ...quoteMockProps,
+    quote: 'Short quote',
+  },
+};
