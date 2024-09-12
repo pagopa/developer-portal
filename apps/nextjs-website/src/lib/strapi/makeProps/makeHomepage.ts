@@ -1,63 +1,7 @@
-import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
-import { StrapiHomepage } from '@/lib/strapi/homepage';
+import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
 import { translations } from '@/_contents/translations';
-import { Webinar } from './types/webinar';
-import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
-import { makeWebinarFromStrapi } from './webinars';
-import { SEO } from './types/seo';
-
-type NewsShowcaseItemProps = {
-  readonly comingSoon?: boolean;
-  readonly title: string;
-  readonly publishedAt?: Date;
-  readonly link: {
-    readonly text: string;
-    readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
-  };
-  readonly image?: Media;
-};
-
-type NewsShowcaseProps = {
-  readonly title: string;
-  readonly items: readonly NewsShowcaseItemProps[];
-};
-
-type EcosystemSolutionsCtaProps = {
-  readonly variant?: 'text' | 'contained' | 'outlined';
-  readonly link: {
-    readonly href: string;
-    readonly text: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
-  };
-};
-
-type EcosystemProps = {
-  readonly title: string;
-  readonly productsTabName: string;
-  readonly products: CardsGridProps['cards'];
-  readonly solutionsTabName: string;
-  readonly solutions?: CardsGridProps['cards'];
-  readonly solutionsCta?: EcosystemSolutionsCtaProps;
-};
-
-type ComingSoonDocumentationProps = {
-  readonly title: string;
-  readonly links: readonly {
-    readonly text: string;
-    readonly href: string;
-  }[];
-};
-
-export type HomepageProps = {
-  readonly hero: readonly CtaSlideProps[];
-  readonly newsShowcase: NewsShowcaseProps;
-  readonly ecosystem: EcosystemProps;
-  readonly webinars: readonly Webinar[];
-  readonly comingsoonDocumentation: ComingSoonDocumentationProps;
-  readonly seo?: SEO;
-};
+import { makeWebinarFromStrapi } from './makeWebinars';
+import { HomepageProps } from '@/app/page';
 
 type StaticHomepage = typeof translations.homepage;
 

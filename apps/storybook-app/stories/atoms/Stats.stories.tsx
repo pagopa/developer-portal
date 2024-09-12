@@ -25,5 +25,7 @@ export const Showcase: StoryObj<typeof Stats> = {
         description: 'Some very long text description',
       },
     ],
+    statsSource:
+      'Dati forniti da [Nome della fonte], aggiornati a [mese/anno].',
   },
 };

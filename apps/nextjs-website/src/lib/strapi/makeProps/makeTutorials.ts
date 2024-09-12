@@ -1,7 +1,7 @@
-import { partFromStrapiPart } from './strapi/codecs/PartCodec';
-import { StrapiTutorials } from './strapi/codecs/TutorialCodec';
-import { Part } from './types/part';
-import { Tutorial } from './types/tutorialData';
+import { partFromStrapiPart } from '../codecs/PartCodec';
+import { StrapiTutorials } from '../codecs/TutorialCodec';
+import { Part } from '../../types/part';
+import { Tutorial } from '../../types/tutorialData';
 
 export type TutorialsProps = readonly (Tutorial & {
   readonly productSlug: string;

@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiQuickStartsCodec } from '@/lib/strapi/quickStarts';
+import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
+import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 
 const product = {
   data: {
@@ -13,74 +14,7 @@ const product = {
       updatedAt: '2024-02-27T11:13:34.014Z',
       publishedAt: '2024-02-15T09:57:24.401Z',
       locale: 'it',
-      logo: {
-        data: {
-          id: 1,
-          attributes: {
-            name: 'Screenshot from 2024-02-20 17-03-22.png',
-            alternativeText: null,
-            caption: null,
-            width: 2481,
-            height: 1919,
-            formats: {
-              thumbnail: {
-                name: 'thumbnail_Screenshot from 2024-02-20 17-03-22.png',
-                hash: 'thumbnail_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e',
-                ext: '.png',
-                mime: 'image/png',
-                path: null,
-                width: 202,
-                height: 156,
-                size: 5.63,
-                url: '/uploads/thumbnail_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e.png',
-              },
-              large: {
-                name: 'large_Screenshot from 2024-02-20 17-03-22.png',
-                hash: 'large_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e',
-                ext: '.png',
-                mime: 'image/png',
-                path: null,
-                width: 1000,
-                height: 773,
-                size: 48.63,
-                url: '/uploads/large_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e.png',
-              },
-              medium: {
-                name: 'medium_Screenshot from 2024-02-20 17-03-22.png',
-                hash: 'medium_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e',
-                ext: '.png',
-                mime: 'image/png',
-                path: null,
-                width: 750,
-                height: 580,
-                size: 33.57,
-                url: '/uploads/medium_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e.png',
-              },
-              small: {
-                name: 'small_Screenshot from 2024-02-20 17-03-22.png',
-                hash: 'small_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e',
-                ext: '.png',
-                mime: 'image/png',
-                path: null,
-                width: 500,
-                height: 387,
-                size: 19.04,
-                url: '/uploads/small_Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e.png',
-              },
-            },
-            hash: 'Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e',
-            ext: '.png',
-            mime: 'image/png',
-            size: 30.86,
-            url: '/uploads/Screenshot_from_2024_02_20_17_03_22_4fe74a0a0e.png',
-            previewUrl: null,
-            provider: 'local',
-            provider_metadata: null,
-            createdAt: '2024-02-27T10:11:20.913Z',
-            updatedAt: '2024-03-27T17:34:49.514Z',
-          },
-        },
-      },
+      logo: mediaRasterJson,
     },
   },
 };
@@ -353,16 +287,16 @@ const makeStrapiResponseWithNullsJson = () => ({
   },
 });
 
-describe('StrapiQuickStartsCodec', () => {
-  it('should decode strapi quickStarts', () => {
+describe('QuickStartGuidesCodec', () => {
+  it('should decode strapi quickStartGuides', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiQuickStartsCodec.decode(jsonFromStrapi);
+    const actual = QuickStartGuidesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
-  it('should decode strapi quickStarts with nulls', () => {
+  it('should decode strapi quickStartGuides with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseWithNullsJson();
-    const actual = StrapiQuickStartsCodec.decode(jsonFromStrapi);
+    const actual = QuickStartGuidesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
