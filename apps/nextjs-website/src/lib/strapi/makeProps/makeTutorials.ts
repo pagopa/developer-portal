@@ -34,6 +34,7 @@ export function makeTutorialsProps(
     productSlug: attributes.product.data.attributes.slug,
     relatedLinks: attributes.relatedLinks,
     bannerLinks: attributes.bannerLinks,
+    seo: attributes.seo,
   }));
 
   return productSlug

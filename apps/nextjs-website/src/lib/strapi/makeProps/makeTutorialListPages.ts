@@ -32,6 +32,7 @@ export function makeTutorialListPagesProps(
           title: attributes.title,
           description: attributes.description,
         },
+        seo: attributes.seo,
         tutorials: tutorials,
         bannerLinks:
           attributes.bannerLinks.length > 0
