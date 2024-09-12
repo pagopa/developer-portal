@@ -1,6 +1,6 @@
 import React from 'react';
 import { getWebinar } from '@/lib/api';
-import WebinarQuestionsTemplate from '@/components/organisms/WebinarQuestionsTemplate/WebinarQuestionsTemplate';
+import WebinarQuestionsTemplate from '@/components/templates/WebinarQuestionsTemplate/WebinarQuestionsTemplate';
 import { getWebinarsProps } from '@/lib/cmsApi';
 
 type Params = {
