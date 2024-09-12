@@ -64,6 +64,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 2,
       attributes: {
+        seo: null,
         title: 'Raccogli i servizi del tuo ente in un unico spazio',
         createdAt: '2024-08-21T13:21:42.844Z',
         updatedAt: '2024-08-22T07:33:11.968Z',
@@ -284,6 +285,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 3,
       attributes: {
+        seo: null,
         title: 'Richiedi la firma di contratti e documenti',
         createdAt: '2024-08-22T07:34:05.159Z',
         updatedAt: '2024-08-22T07:36:37.072Z',
@@ -304,6 +306,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 4,
       attributes: {
+        seo: null,
         title: 'Gestisci le notifiche in modo più semplice',
         createdAt: '2024-08-22T07:36:15.808Z',
         updatedAt: '2024-08-22T07:36:33.178Z',

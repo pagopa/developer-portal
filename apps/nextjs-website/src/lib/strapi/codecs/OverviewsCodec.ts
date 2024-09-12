@@ -76,7 +76,7 @@ export const OverviewCodec = t.strict({
       data: t.union([NullToUndefinedCodec, ProductCodec]),
     }),
     bannerLinks: t.array(BannerLinkCodec),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 
