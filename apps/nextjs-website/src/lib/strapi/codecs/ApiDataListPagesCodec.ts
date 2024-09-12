@@ -15,7 +15,7 @@ export const ApiDataListPageCodec = t.strict({
     }),
     apiData: ApiDataListCodec,
     bannerLinks: t.array(BannerLinkCodec),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 
