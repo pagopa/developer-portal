@@ -24,7 +24,7 @@ const ApiDataCodec = t.strict({
       }),
     ]),
     apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 
