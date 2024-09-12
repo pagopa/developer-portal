@@ -99,7 +99,7 @@ export const sendOverview: OverviewData = {
     links: [
       {
         text: 'Scopri approfondimenti e domande frequenti sull’integrazione con SEND',
-        href: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/faq-inserimento-notifiche`,
+        href: `${sendGuideListsPath.path}/knowledge-base/knowledge-base-di-piattaforma-notifiche/inserimento-della-notifica/faq-inserimento-notifiche`,
       },
       {
         text: 'Consulta la documentazione sul modello di integrazione SEND',
