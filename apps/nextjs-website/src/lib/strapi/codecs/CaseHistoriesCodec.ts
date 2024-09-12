@@ -22,7 +22,7 @@ export const CaseHistoryCodec = t.strict({
       data: t.array(ProductCodec),
     }),
     parts: t.array(PartCodec),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 
