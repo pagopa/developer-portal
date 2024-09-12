@@ -19,7 +19,7 @@ const GuideListPageCodec = t.strict({
     description: t.string,
     product: t.strict({ data: BaseProductCodec }),
     guidesByCategory: t.array(GuideByCategoryCodec),
-    seo: t.union([NullToUndefinedCodec, SEOCodec, t.undefined]),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

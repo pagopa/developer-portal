@@ -8,6 +8,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 1,
       attributes: {
+        seo: null,
         title: 'guides',
         description: 'dfd sdcf dfsd fsdf sdf sdfsd',
         createdAt: '2024-08-19T14:10:10.483Z',
