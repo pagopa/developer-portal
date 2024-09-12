@@ -1,4 +1,7 @@
-import { makeMetadata, makeMetadataFromStrapi } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
