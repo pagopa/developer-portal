@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 2.5.0
+
+### Minor Changes
+
+- 9ab42ab: Add CKEditor to Tutorials' parts
+- 8ecf996: Add statsSource attribute to Solution's schema in Strapi CMS
+
 ## 2.4.0
 
 ### Minor Changes
