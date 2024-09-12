@@ -52,10 +52,8 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product } =
+  const { abstract, bannerLinks, path, product, tutorials } =
     await getTutorialListPageProps(productSlug);
-
-  const tutorials = await getTutorials(productSlug);
 
   const { shared } = translations;
 

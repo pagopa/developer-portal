@@ -1,9 +1,4 @@
-import {
-  guides,
-  products,
-  tutorialLists,
-  tutorials,
-} from '@/_contents/products';
+import { products, tutorials } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
@@ -11,18 +6,21 @@ import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
-  getProductsProps,
-  getFullSolutionsProps,
-  getQuickStartsProps,
-  getSolutionsListProps,
-  getTutorialsProps,
-  getWebinarsProps,
+  getSolutionsProps,
   getGuideListPagesProps,
   getGuidesProps,
   getOverviewsProps,
+  getProductsProps,
+  getQuickStartGuidesProps,
+  getSolutionListPageProps,
+  getTutorialListPagesProps,
+  getTutorialsProps,
+  getWebinarsProps,
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
-import { TutorialsProps } from '@/lib/tutorials';
+import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
+import { makeSolution } from '@/_contents/makeDocs';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -93,7 +91,7 @@ export async function getProducts(): Promise<readonly Product[]> {
 
 export async function getQuickStartGuide(productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartsProps()).find(
+    (await getQuickStartGuidesProps()).find(
       ({ product }) => product.slug === productSlug
     )
   );
@@ -163,10 +161,10 @@ export async function getTutorialPaths() {
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
+  const tutorialListPages = await getTutorialListPagesProps();
   const props =
-    tutorialLists.find(
-      (tutorialList) => tutorialList.product.path === `/${productSlug}`
-    ) || null;
+    tutorialListPages.find(({ product }) => product.slug === productSlug) ||
+    null;
   return manageUndefinedAndAddProducts(props);
 }
 
@@ -236,12 +234,48 @@ export async function getApiData(apiDataSlug: string) {
 
 export async function getSolution(solutionSlug?: string) {
   const props = manageUndefined(
-    (await getFullSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }
 
-export async function getSolutionsList() {
-  const solutionsListProps = await getSolutionsListProps();
-  return manageUndefined(solutionsListProps);
+export async function getSolutionListPage() {
+  const solutionListPageProps = await getSolutionListPageProps();
+  return manageUndefined(solutionListPageProps);
+}
+
+export async function getSolutionDetail(
+  solutionSlug: string,
+  solutionSubPathSlugs: readonly string[]
+) {
+  const solutionsFromStrapi = await getSolutionsProps();
+
+  const solutionFromStrapi = solutionsFromStrapi.find(
+    ({ slug }) => slug === solutionSlug
+  );
+
+  if (!solutionFromStrapi) {
+    return undefined;
+  }
+
+  const parsedSolutions = makeSolution(solutionFromStrapi);
+
+  return parsedSolutions.find(
+    ({ page }) =>
+      page.path ===
+      `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+  );
+}
+
+export function getSolutionSubPaths(
+  solutionTemplateProps: SolutionTemplateProps
+) {
+  return makeSolution(solutionTemplateProps).map(({ page, solution }) => {
+    const path = page.path.split('/').filter((_, index) => index > 2);
+
+    return {
+      solutionSlug: solution.slug,
+      solutionSubPathSlugs: path,
+    };
+  });
 }
