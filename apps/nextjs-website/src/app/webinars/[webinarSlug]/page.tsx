@@ -35,7 +35,7 @@ export async function generateMetadata({
 const NotSsrWebinarDetailTemplate = dynamic(
   () =>
     import(
-      '@/components/organisms/WebinarDetailTemplate/WebinarDetailTemplate'
+      '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
     ),
   {
     ssr: false,
