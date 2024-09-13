@@ -20,7 +20,7 @@ PROVIDER = os.getenv('CHB_PROVIDER', "aws")
 GOOGLE_API_KEY = os.getenv('CHB_GOOGLE_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
-AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
+CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
@@ -59,7 +59,7 @@ def get_llm(add_event_handler: bool = True):
             max_tokens=int(MODEL_MAXTOKENS),
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_DEFAULT_REGION
+            region_name=CHB_AWS_DEFAULT_REGION
         )
 
     else:
@@ -83,7 +83,7 @@ def get_embed_model():
             model_name = EMBED_MODEL_ID,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_DEFAULT_REGION
+            region_name=CHB_AWS_DEFAULT_REGION
         )
     else:
         embed_model = GeminiEmbedding(
