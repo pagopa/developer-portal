@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
+PROVIDER = os.getenv('CHB_PROVIDER', "aws")
 GOOGLE_API_KEY = os.getenv('CHB_GOOGLE_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
@@ -22,7 +22,6 @@ AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
-PROVIDER = os.getenv('CHB_PROVIDER', "aws")
 MODEL_ID = os.getenv('CHB_MODEL_ID', "mistral.mistral-large-2402-v1:0")
 MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE', "0.5")
 MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "784")
