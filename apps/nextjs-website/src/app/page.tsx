@@ -13,12 +13,16 @@ import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/Bl
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
-import { websiteWithContext } from '@/helpers/structuredData.helpers';
+import {
+  homeBreadCrumb,
+  websiteWithContext,
+} from '@/helpers/structuredData.helpers';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
+import { useMemo } from 'react';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -98,10 +102,10 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const homepage: HomepageProps = await getHomepageProps();
 
-  return (
-    <>
-      {generateStructuredDataScripts({
-        breadcrumbsItems: [{ name: 'Home', item: baseUrl }],
+  const structuredData = useMemo(
+    () =>
+      generateStructuredDataScripts({
+        breadcrumbsItems: [homeBreadCrumb],
         webPage: {
           name: homepage.seo?.metaTitle,
           description: homepage.seo?.metaDescription,
@@ -109,7 +113,13 @@ const Home = async () => {
           media: homepage.seo?.metaImage?.data?.attributes,
         },
         things: [websiteWithContext],
-      })}
+      }),
+    [homepage]
+  );
+
+  return (
+    <>
+      {structuredData}
       <ContentWrapper>
         <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
 

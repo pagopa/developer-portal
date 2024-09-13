@@ -19,6 +19,8 @@ import {
   WithContext,
 } from 'schema-dts';
 
+export const homeBreadCrumb = { name: websiteName, item: baseUrl };
+
 export const organization: Organization = {
   '@type': 'Organization',
   ...organizationInfo,
@@ -31,7 +33,7 @@ export const organizationWithContext: WithContext<Organization> = {
 
 export const website: WebSite = {
   '@type': 'WebSite',
-  name: websiteName,
+  name: `${websiteName} ${organizationInfo.name}`,
   url: baseUrl,
 };
 

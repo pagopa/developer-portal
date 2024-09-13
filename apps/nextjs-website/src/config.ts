@@ -61,8 +61,7 @@ export const timeOptions: Intl.DateTimeFormatOptions = {
   minute: '2-digit',
 };
 
-export const websiteName =
-  process.env.NEXT_PUBLIC_WEBSITE_NAME || 'DevPortal PagoPA';
+export const websiteName = process.env.NEXT_PUBLIC_WEBSITE_NAME || 'DevPortal';
 
 export const organizationInfo = {
   name: process.env.NEXT_PUBLIC_ORGANIZATION_NAME || 'PagoPA',
