@@ -42,11 +42,15 @@ const ApiTesterPartCodec = t.strict({
   responseCode: CodeBlockPartCodec,
 });
 
-const QuotePart = t.strict({
+const QuotePartCodec = t.strict({
   text: t.string,
   backgroundImage: t.strict({
     data: t.union([NullToUndefinedCodec, MediaCodec]),
   }),
+});
+
+const CKEditorPartCodec = t.strict({
+  content: t.string,
 });
 
 export const PartCodec = t.union([
@@ -71,8 +75,12 @@ export const PartCodec = t.union([
     t.type({ __component: t.literal('parts.embed-html') }),
   ]),
   t.intersection([
-    QuotePart,
+    QuotePartCodec,
     t.type({ __component: t.literal('parts.quote') }),
+  ]),
+  t.intersection([
+    CKEditorPartCodec,
+    t.type({ __component: t.literal('parts.ck-editor') }),
   ]),
 ]);
 
@@ -118,6 +126,11 @@ export function partFromStrapiPart(part: StrapiPart): Part | null {
         component: 'quote',
         quote: part.text,
         backgroundImage: part.backgroundImage.data?.attributes,
+      };
+    case 'parts.ck-editor':
+      return {
+        component: 'ckEditor',
+        content: part.content,
       };
     default:
       return null;
