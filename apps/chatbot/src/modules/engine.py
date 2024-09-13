@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ENGINE_SIMILARITY_TOPK = os.getenv('CHB_ENGINE_SIMILARITY_TOPK')
-ENGINE_SIMILARITY_CUTOFF = os.getenv('CHB_ENGINE_SIMILARITY_CUTOFF')
-ENGINE_USE_ASYNC = os.getenv('CHB_ENGINE_USE_ASYNC')
-ENGINE_USE_SREAMING = os.getenv('CHB_ENGINE_USE_SREAMING')
+ENGINE_SIMILARITY_TOPK = os.getenv('CHB_ENGINE_SIMILARITY_TOPK', "5")
+ENGINE_SIMILARITY_CUTOFF = os.getenv('CHB_ENGINE_SIMILARITY_CUTOFF', "0.55")
+ENGINE_USE_ASYNC = os.getenv('CHB_ENGINE_USE_ASYNC', "True")
+ENGINE_USE_SREAMING = os.getenv('CHB_ENGINE_USE_SREAMING', "False")
 
 
 def get_automerging_query_engine(
@@ -25,7 +25,7 @@ def get_automerging_query_engine(
     ) -> RetrieverQueryEngine:
 
     base_retriever = index.as_retriever(
-        similarity_top_k=ENGINE_SIMILARITY_TOPK
+        similarity_top_k=int(ENGINE_SIMILARITY_TOPK)
     )
     retriever = AutoMergingRetriever(
         base_retriever, 
@@ -33,7 +33,7 @@ def get_automerging_query_engine(
         verbose=verbose
     )
     similarity_postprocessor = SimilarityPostprocessor(
-        similarity_cutoff=ENGINE_SIMILARITY_CUTOFF
+        similarity_cutoff=float(ENGINE_SIMILARITY_CUTOFF)
     )
 
     automerging_engine = RetrieverQueryEngine.from_args(
@@ -45,8 +45,8 @@ def get_automerging_query_engine(
         ],
         text_qa_template=text_qa_template,
         refine_template=refine_template,
-        use_async=ENGINE_USE_ASYNC,
-        streaming=ENGINE_USE_SREAMING
+        use_async=True if ENGINE_USE_ASYNC == "True" else False,
+        streaming=True if ENGINE_USE_SREAMING == "True" else False
     )
 
     return automerging_engine

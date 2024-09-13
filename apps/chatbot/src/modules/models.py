@@ -22,11 +22,11 @@ AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
-PROVIDER = os.getenv('CHB_PROVIDER')
-MODEL_ID = os.getenv('CHB_MODEL_ID')
-MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE')
-MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS")
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
+PROVIDER = os.getenv('CHB_PROVIDER', "aws")
+MODEL_ID = os.getenv('CHB_MODEL_ID', "mistral.mistral-large-2402-v1:0")
+MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE', "0.5")
+MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "784")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID", "cohere.embed-multilingual-v3")
 
 
 class ModelEventHandler(BaseEventHandler):
@@ -54,8 +54,8 @@ def get_llm(add_event_handler: bool = True):
         
         llm = BedrockConverse(
             model=MODEL_ID,
-            temperature=MODEL_TEMPERATURE,
-            max_tokens=MODEL_MAXTOKENS,
+            temperature=float(MODEL_TEMPERATURE),
+            max_tokens=int(MODEL_MAXTOKENS),
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_DEFAULT_REGION
@@ -64,8 +64,8 @@ def get_llm(add_event_handler: bool = True):
     else:
         llm = Gemini(
             model=MODEL_ID,
-            temperature=MODEL_TEMPERATURE,
-            max_tokens=MODEL_MAXTOKENS,
+            temperature=float(MODEL_TEMPERATURE),
+            max_tokens=int(MODEL_MAXTOKENS),
             api_key=GOOGLE_API_KEY,
         )
 
