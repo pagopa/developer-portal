@@ -6,6 +6,7 @@ from typing import List, Union, Tuple
 
 from langdetect import detect_langs
 
+from llama_index.core import Settings
 from llama_index.core import PromptTemplate
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
@@ -48,6 +49,9 @@ class Chatbot():
 
         self.model = get_llm(params)
         self.embed_model = get_embed_model(params)
+
+        Settings.llm = self.model
+        Settings.embed_model = self.embed_model
 
         if self.use_redis:
             self.index = load_automerging_index_redis(
