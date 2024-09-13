@@ -30,7 +30,9 @@ dynamodb = boto3.resource(
   aws_access_key_id=os.getenv('CHB_AWS_ACCESS_KEY_ID'),
   aws_secret_access_key=os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
 )
-chatbot_queries = dynamodb.Table('ChatbotQueries')
+# TODO: use ENV var for table name
+CHATBOT_QUERY_TABLE_NAME = 'chatbot-dev-queries'
+chatbot_queries = dynamodb.Table(CHATBOT_QUERY_TABLE_NAME)
 
 # FastAPI config
 app = FastAPI()
