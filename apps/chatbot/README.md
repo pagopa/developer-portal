@@ -50,9 +50,9 @@ To reach the remote redis instance, it is necessary to open a tunnel:
 
 Then, to start the indexing:
 
-    python src/modules/create_vector_index.py --params config/params.yaml --use-redis
+    python src/modules/create_vector_index.py --params config/params.yaml
 
-This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis. If the input `--use-redis` is missing, then the index is stored on a AWS S3 bucket.
+Check out the params in order to store your vector index accordingly.
 
 ## Web App
 
