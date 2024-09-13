@@ -4,12 +4,17 @@ import uvicorn
 import json
 import logging
 import os
+import uuid
+import boto3
+from botocore.config import Config
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 from src.modules.chatbot import Chatbot
 
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+# logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
@@ -19,10 +24,17 @@ class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
+dynamodb = boto3.resource(
+  'dynamodb',
+  region_name=os.getenv('CHB_AWS_DEFAULT_REGION'),
+  aws_access_key_id=os.getenv('CHB_AWS_ACCESS_KEY_ID'),
+  aws_secret_access_key=os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
+)
+chatbot_queries = dynamodb.Table('ChatbotQueries')
+
+# FastAPI config
 app = FastAPI()
-
 origins = json.loads(os.getenv("CORS_DOMAINS"))
-
 app.add_middleware(
   CORSMiddleware,
   allow_origins=origins,
@@ -41,15 +53,17 @@ async def query_creation (query: Query):
 
   answer = chatbot.generate(query.question)
 
-  # TODO: dynamoDB integration
   body = {
-    "id": "",
+    "id": f'{uuid.uuid4()}',
     "sessionId": "",
     "question": query.question,
     "answer": answer,
     "createdAt": query.queriedAt,
     "queriedAt": query.queriedAt
   }
+  # TODO: body validation
+  db_response = chatbot_queries.put_item(Item = body)
+  logging.info(f"[query_creation] db response: {db_response['ResponseMetadata']}")
   return body
 
 @app.post("/sessions")
@@ -122,4 +136,4 @@ async def query_feedback (badAnswer: bool):
 handler = mangum.Mangum(app, lifespan="off")
 
 if __name__ == "__main__":
-   uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, log_level="info")
