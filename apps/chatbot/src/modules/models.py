@@ -12,7 +12,7 @@ from llama_index.embeddings.gemini import GeminiEmbedding
 
 from dotenv import load_dotenv
 
-from utils import get_ssm_parameter
+from src.modules.utils import get_ssm_parameter
 
 load_dotenv()
 
@@ -63,12 +63,12 @@ def get_llm(add_event_handler: bool = True):
         )
 
     else:
-        GOOGLE_API_KEY = get_ssm_parameter(GOOGLE_API_KEY)
+        google_api_key = get_ssm_parameter(GOOGLE_API_KEY)
         llm = Gemini(
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
             max_tokens=int(MODEL_MAXTOKENS),
-            api_key=GOOGLE_API_KEY,
+            api_key=google_api_key,
         )
 
     logging.info(f"{MODEL_ID} LLM loaded successfully!")
