@@ -8,6 +8,7 @@ import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
 import Quote from '@/components/atoms/Quote/Quote';
+import CkEditorPart from '../CkEditorPart/CkEditorPart';
 
 type PartRendererProps = {
   part: Part;
@@ -29,6 +30,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
       return <InnerHtmlLazyLoadedPart html={part.html} />;
     case 'typography':
       return <TypographyPart {...part} />;
+    case 'ckEditor':
+      return <CkEditorPart {...part} />;
     default:
       return null;
   }

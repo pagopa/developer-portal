@@ -12,6 +12,11 @@ import { getHomepageProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  homeBreadCrumb,
+  websiteWithContext,
+} from '@/helpers/structuredData.helpers';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
@@ -96,34 +101,48 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const homepage: HomepageProps = await getHomepageProps();
 
-  return (
-    <ContentWrapper>
-      <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [homeBreadCrumb],
+    webPage: {
+      name: homepage.seo?.metaTitle,
+      description: homepage.seo?.metaDescription,
+      url: homepage.seo?.canonicalURL,
+      media: homepage.seo?.metaImage?.data?.attributes,
+    },
+    things: [websiteWithContext],
+  });
 
-      <HeroSwiper
-        cards={homepage.hero.map((itemProp, index) => ({
-          ...itemProp,
-          child: itemProp.subhead && (
-            <BlocksRendererClient
-              key={index}
-              content={itemProp.subhead}
-              color={itemProp.subheadColor}
-            />
-          ),
-        }))}
-      />
-      <NewsShowcase
-        marginTop={5}
-        title={homepage.newsShowcase.title}
-        items={[...homepage.newsShowcase.items]}
-      />
-      <Ecosystem {...homepage.ecosystem} />
-      <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
-      <RelatedLinks
-        title={homepage.comingsoonDocumentation.title}
-        links={[...homepage.comingsoonDocumentation.links]}
-      />
-    </ContentWrapper>
+  return (
+    <>
+      {structuredData}
+      <ContentWrapper>
+        <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
+
+        <HeroSwiper
+          cards={homepage.hero.map((itemProp, index) => ({
+            ...itemProp,
+            child: itemProp.subhead && (
+              <BlocksRendererClient
+                key={index}
+                content={itemProp.subhead}
+                color={itemProp.subheadColor}
+              />
+            ),
+          }))}
+        />
+        <NewsShowcase
+          marginTop={5}
+          title={homepage.newsShowcase.title}
+          items={[...homepage.newsShowcase.items]}
+        />
+        <Ecosystem {...homepage.ecosystem} />
+        <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
+        <RelatedLinks
+          title={homepage.comingsoonDocumentation.title}
+          links={[...homepage.comingsoonDocumentation.links]}
+        />
+      </ContentWrapper>
+    </>
   );
 };
 

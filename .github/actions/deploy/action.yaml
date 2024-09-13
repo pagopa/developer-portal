@@ -98,6 +98,10 @@ runs:
         NEXT_PUBLIC_COGNITO_USER_POOL_ID: ${{ inputs.cognito_user_pool_id }}
         NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: ${{ inputs.cognito_identity_pool_id }}
         NEXT_PUBLIC_CHATBOT_HOST: ${{ inputs.chatbot_host }}
+        NEXT_PUBLIC_WEBSITE_NAME: ${{ inputs.website_name }}
+        NEXT_PUBLIC_ORGANIZATION_NAME: ${{ inputs.organization_name }}
+        NEXT_PUBLIC_ORGANIZATION_LOGO: ${{ inputs.organization_logo }}
+        NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS: ${{ inputs.organization_social_links }}
         NEXT_PUBLIC_CHATBOT_ACTIVE: ${{ inputs.chatbot_active }}
         STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
