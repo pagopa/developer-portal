@@ -39,10 +39,10 @@ load_dotenv()
 
 AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
-CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
-CHB_REDIS_URL = os.getenv('CHB_REDIS_URL')
-WEBSITE_URL = os.getenv('WEBSITE_URL')
-REDIS_CLIENT = Redis.from_url(CHB_REDIS_URL, socket_timeout=10)
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
+REDIS_URL = os.getenv('CHB_REDIS_URL')
+WEBSITE_URL = os.getenv('CHB_WEBSITE_URL')
+REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
 
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": "index", "prefix": "index/vector"},
@@ -57,11 +57,11 @@ REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT)
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
 
-if not CHB_REDIS_URL:
+if not REDIS_URL:
     FS = s3fs.S3FileSystem(
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
-        endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
+        endpoint_url=f"https://s3.{AWS_DEFAULT_REGION}.amazonaws.com" if AWS_DEFAULT_REGION else None
     )
 
 DYNAMIC_HTMLS = [
