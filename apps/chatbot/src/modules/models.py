@@ -22,11 +22,11 @@ AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
-CHB_MODEL_PROVIDER = os.getenv('CHB_MODEL_PROVIDER')
-CHB_MODEL_NAME = os.getenv('CHB_MODEL_NAME')
-CHB_MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE')
-CHB_MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS")
-CHB_EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
+PROVIDER = os.getenv('CHB_PROVIDER')
+MODEL_ID = os.getenv('CHB_MODEL_ID')
+MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE')
+MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
 class ModelEventHandler(BaseEventHandler):
@@ -47,15 +47,15 @@ class ModelEventHandler(BaseEventHandler):
 
 def get_llm(add_event_handler: bool = True):
 
-    if CHB_MODEL_PROVIDER == "aws":
+    if PROVIDER == "aws":
         if add_event_handler:
             root_dispatcher = get_dispatcher()
             root_dispatcher.add_event_handler(ModelEventHandler())
         
         llm = BedrockConverse(
-            model=CHB_MODEL_NAME,
-            temperature=CHB_MODEL_TEMPERATURE,
-            max_tokens=CHB_MODEL_MAXTOKENS,
+            model=MODEL_ID,
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_DEFAULT_REGION
@@ -63,22 +63,22 @@ def get_llm(add_event_handler: bool = True):
 
     else:
         llm = Gemini(
-            model=CHB_MODEL_NAME,
-            temperature=CHB_MODEL_TEMPERATURE,
-            max_tokens=CHB_MODEL_MAXTOKENS,
+            model=MODEL_ID,
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             api_key=GOOGLE_API_KEY,
         )
 
-    logging.info(f"{CHB_MODEL_NAME} LLM loaded successfully!")
+    logging.info(f"{MODEL_ID} LLM loaded successfully!")
 
     return llm
 
 
 def get_embed_model():
 
-    if CHB_MODEL_PROVIDER == "aws":
+    if PROVIDER == "aws":
         embed_model = BedrockEmbedding(
-            model_name = CHB_EMBED_MODEL_ID,
+            model_name = EMBED_MODEL_ID,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_DEFAULT_REGION
@@ -86,8 +86,8 @@ def get_embed_model():
     else:
         embed_model = GeminiEmbedding(
             api_key=GOOGLE_API_KEY,
-            model_name=CHB_EMBED_MODEL_ID,
+            model_name=EMBED_MODEL_ID,
         )
-    logging.info(f"{CHB_EMBED_MODEL_ID} embegging model loaded successfully!")
+    logging.info(f"{EMBED_MODEL_ID} embegging model loaded successfully!")
 
     return embed_model
