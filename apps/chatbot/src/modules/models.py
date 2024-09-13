@@ -12,6 +12,8 @@ from llama_index.embeddings.gemini import GeminiEmbedding
 
 from dotenv import load_dotenv
 
+from utils import get_ssm_parameter
+
 load_dotenv()
 
 PROVIDER = os.getenv('CHB_PROVIDER', "aws")
@@ -61,6 +63,7 @@ def get_llm(add_event_handler: bool = True):
         )
 
     else:
+        GOOGLE_API_KEY = get_ssm_parameter(GOOGLE_API_KEY)
         llm = Gemini(
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
