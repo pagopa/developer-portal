@@ -5,6 +5,9 @@ import json
 import tqdm
 import logging
 import hashlib
+import html2text
+from bs4 import BeautifulSoup
+from selenium import webdriver
 from typing import List, Tuple
 
 
@@ -134,11 +137,7 @@ def html2markdown(html):
 def create_documentation(
         website_url: str,
         documentation_dir: str = "./PagoPADevPortal/out/",
-    ) -> Tuple[List[Document], dict]:
-    from selenium import webdriver
-    import html2text
-    from bs4 import BeautifulSoup
-    
+    ) -> Tuple[List[Document], dict]:    
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
@@ -174,7 +173,7 @@ def create_documentation(
 
             url = file.replace(
                 documentation_dir, 
-                "https://developer.pagopa.it/"
+                f"{website_url}/"
             ).replace(
                 ".html", 
                 ""
