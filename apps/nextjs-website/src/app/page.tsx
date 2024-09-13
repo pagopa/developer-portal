@@ -22,7 +22,6 @@ import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
-import { useMemo } from 'react';
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -102,20 +101,16 @@ const NotSsrWebinarsSection = dynamic(
 const Home = async () => {
   const homepage: HomepageProps = await getHomepageProps();
 
-  const structuredData = useMemo(
-    () =>
-      generateStructuredDataScripts({
-        breadcrumbsItems: [homeBreadCrumb],
-        webPage: {
-          name: homepage.seo?.metaTitle,
-          description: homepage.seo?.metaDescription,
-          url: homepage.seo?.canonicalURL,
-          media: homepage.seo?.metaImage?.data?.attributes,
-        },
-        things: [websiteWithContext],
-      }),
-    [homepage]
-  );
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [homeBreadCrumb],
+    webPage: {
+      name: homepage.seo?.metaTitle,
+      description: homepage.seo?.metaDescription,
+      url: homepage.seo?.canonicalURL,
+      media: homepage.seo?.metaImage?.data?.attributes,
+    },
+    things: [websiteWithContext],
+  });
 
   return (
     <>
