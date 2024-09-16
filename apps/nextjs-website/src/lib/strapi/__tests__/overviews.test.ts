@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiOverviewsCodec } from '@/lib/strapi/overviewsCodec';
+import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 import { baseProductJson, productJson } from './fixtures/product';
 import { mediaRasterJson, mediaVectorJson } from './fixtures/media';
 
@@ -373,7 +373,7 @@ const makeStrapiResponseJson = () => ({
 describe('StrapiOverviewsCodec', () => {
   it('should decode strapi overviews', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiOverviewsCodec.decode(jsonFromStrapi);
+    const actual = OverviewsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });
