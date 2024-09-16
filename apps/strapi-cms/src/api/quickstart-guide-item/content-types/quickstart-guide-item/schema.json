@@ -55,16 +55,6 @@
       "relation": "manyToOne",
       "target": "api::quickstart-guide.quickstart-guide",
       "inversedBy": "quickstartGuideItems"
-    },
-    "seo": {
-      "type": "component",
-      "repeatable": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "shared.seo"
     }
   }
 }
