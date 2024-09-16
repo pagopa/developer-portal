@@ -1,6 +1,11 @@
-import { StrapiHomepageCodec } from '@/lib/strapi/homepage';
+import { HomepageCodec } from '@/lib/strapi/codecs/HomepageCodec';
 import * as E from 'fp-ts/lib/Either';
 import { NullToUndefinedCodec } from '../codecs/NullToUndefinedCodec';
+import {
+  mediaRasterAttributesJson,
+  mediaRasterJson,
+} from '@/lib/strapi/__tests__/fixtures/media';
+import { productsJson } from '@/lib/strapi/__tests__/fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: {
@@ -198,47 +203,7 @@ const makeStrapiResponseJson = () => ({
             },
             {
               type: 'image',
-              image: {
-                name: 'a-image.jpg',
-                alternativeText: 'a-image.jpg',
-                url: 'http://localhost:1337/uploads/a-image.jpg',
-                caption: null,
-                width: 728,
-                height: 416,
-                formats: {
-                  thumbnail: {
-                    name: 'thumbnail_a-image.jpg',
-                    hash: 'thumbnail_a_image_db00b47553',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    path: null,
-                    width: 245,
-                    height: 140,
-                    size: 5.18,
-                    url: '/uploads/thumbnail_a_image_db00b47553.jpg',
-                  },
-                  small: {
-                    name: 'small_a-image.jpg',
-                    hash: 'small_a_image_db00b47553',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    path: null,
-                    width: 500,
-                    height: 286,
-                    size: 14.85,
-                    url: '/uploads/small_a_image_db00b47553.jpg',
-                  },
-                },
-                hash: 'a_image_db00b47553',
-                ext: '.jpg',
-                mime: 'image/jpeg',
-                size: 26.69,
-                previewUrl: null,
-                provider: 'local',
-                provider_metadata: null,
-                createdAt: '2024-03-21T17:11:46.709Z',
-                updatedAt: '2024-03-21T17:11:46.709Z',
-              },
+              image: mediaRasterAttributesJson,
               children: [
                 {
                   type: 'text',
@@ -276,28 +241,7 @@ const makeStrapiResponseJson = () => ({
               target: '_self',
             },
           },
-          backgroundImage: {
-            data: {
-              id: 2,
-              attributes: {
-                name: 'webinar-cover-io-remote-content.jpg',
-                alternativeText: null,
-                caption: null,
-                width: 728,
-                height: 416,
-                hash: 'webinar_cover_io_remote_content_62f1f615b5',
-                ext: '.jpg',
-                mime: 'image/jpeg',
-                size: 30.06,
-                url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
-                previewUrl: null,
-                provider: 'strapi-provider-upload-custom',
-                provider_metadata: null,
-                createdAt: '2024-04-15T14:25:47.773Z',
-                updatedAt: '2024-04-15T14:25:47.773Z',
-              },
-            },
-          },
+          backgroundImage: mediaRasterJson,
         },
       ],
       ecosystem: {
@@ -305,58 +249,7 @@ const makeStrapiResponseJson = () => ({
         title: 'Scopri il nostro ecosistema',
         productsTabName: 'Per i prodotti',
         solutionsTabName: 'Per le soluzioni',
-        products: {
-          data: [
-            {
-              id: 1,
-              attributes: {
-                name: 'IO',
-                shortName: 'IO',
-                description: null,
-                slug: 'app-io',
-                createdAt: '2024-05-24T07:45:13.658Z',
-                updatedAt: '2024-05-24T07:58:24.107Z',
-                publishedAt: '2024-05-24T07:45:20.231Z',
-                locale: 'en',
-                logo: {
-                  data: {
-                    id: 2,
-                    attributes: {
-                      name: 'minestrone-soup-500x500.jpg',
-                      alternativeText: null,
-                      caption: null,
-                      width: 500,
-                      height: 500,
-                      formats: {
-                        thumbnail: {
-                          name: 'thumbnail_minestrone-soup-500x500.jpg',
-                          hash: 'thumbnail_minestrone_soup_500x500_582b21c155',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          path: null,
-                          width: 156,
-                          height: 156,
-                          size: 8.66,
-                          url: '/uploads/thumbnail_minestrone_soup_500x500_582b21c155.jpg',
-                        },
-                      },
-                      hash: 'minestrone_soup_500x500_582b21c155',
-                      ext: '.jpg',
-                      mime: 'image/jpeg',
-                      size: 51.82,
-                      url: '/uploads/minestrone_soup_500x500_582b21c155.jpg',
-                      previewUrl: null,
-                      provider: 'local',
-                      provider_metadata: null,
-                      createdAt: '2024-04-08T16:05:13.531Z',
-                      updatedAt: '2024-04-08T16:05:13.531Z',
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
+        products: productsJson,
         solutions: {
           data: [
             {
@@ -372,58 +265,7 @@ const makeStrapiResponseJson = () => ({
                 updatedAt: '2024-05-31T09:16:50.894Z',
                 publishedAt: '2024-05-31T09:16:50.890Z',
                 locale: 'en',
-                products: {
-                  data: [
-                    {
-                      id: 1,
-                      attributes: {
-                        name: 'IO',
-                        shortName: 'IO',
-                        description: null,
-                        slug: 'app-io',
-                        createdAt: '2024-05-24T07:45:13.658Z',
-                        updatedAt: '2024-05-24T07:58:24.107Z',
-                        publishedAt: '2024-05-24T07:45:20.231Z',
-                        locale: 'en',
-                        logo: {
-                          data: {
-                            id: 2,
-                            attributes: {
-                              name: 'minestrone-soup-500x500.jpg',
-                              alternativeText: null,
-                              caption: null,
-                              width: 500,
-                              height: 500,
-                              formats: {
-                                thumbnail: {
-                                  name: 'thumbnail_minestrone-soup-500x500.jpg',
-                                  hash: 'thumbnail_minestrone_soup_500x500_582b21c155',
-                                  ext: '.jpg',
-                                  mime: 'image/jpeg',
-                                  path: null,
-                                  width: 156,
-                                  height: 156,
-                                  size: 8.66,
-                                  url: '/uploads/thumbnail_minestrone_soup_500x500_582b21c155.jpg',
-                                },
-                              },
-                              hash: 'minestrone_soup_500x500_582b21c155',
-                              ext: '.jpg',
-                              mime: 'image/jpeg',
-                              size: 51.82,
-                              url: '/uploads/minestrone_soup_500x500_582b21c155.jpg',
-                              previewUrl: null,
-                              provider: 'local',
-                              provider_metadata: null,
-                              createdAt: '2024-04-08T16:05:13.531Z',
-                              updatedAt: '2024-04-08T16:05:13.531Z',
-                            },
-                          },
-                        },
-                      },
-                    },
-                  ],
-                },
+                products: productsJson,
                 bannerLinks: [
                   {
                     id: 1,
@@ -439,52 +281,7 @@ const makeStrapiResponseJson = () => ({
                         ],
                       },
                     ],
-                    icon: {
-                      data: {
-                        id: 1,
-                        attributes: {
-                          name: 'webinar-cover-pago-pa-multe.jpg',
-                          alternativeText: null,
-                          caption: null,
-                          width: 728,
-                          height: 416,
-                          formats: {
-                            thumbnail: {
-                              name: 'thumbnail_webinar-cover-pago-pa-multe.jpg',
-                              hash: 'thumbnail_webinar_cover_pago_pa_multe_db00b47553',
-                              ext: '.jpg',
-                              mime: 'image/jpeg',
-                              path: null,
-                              width: 245,
-                              height: 140,
-                              size: 5.18,
-                              url: '/uploads/thumbnail_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                            },
-                            small: {
-                              name: 'small_webinar-cover-pago-pa-multe.jpg',
-                              hash: 'small_webinar_cover_pago_pa_multe_db00b47553',
-                              ext: '.jpg',
-                              mime: 'image/jpeg',
-                              path: null,
-                              width: 500,
-                              height: 286,
-                              size: 14.85,
-                              url: '/uploads/small_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                            },
-                          },
-                          hash: 'webinar_cover_pago_pa_multe_db00b47553',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          size: 26.69,
-                          url: '/uploads/webinar_cover_pago_pa_multe_db00b47553.jpg',
-                          previewUrl: null,
-                          provider: 'local',
-                          provider_metadata: null,
-                          createdAt: '2024-03-21T17:11:46.709Z',
-                          updatedAt: '2024-05-31T09:16:42.250Z',
-                        },
-                      },
-                    },
+                    icon: mediaRasterJson,
                   },
                 ],
                 webinars: {
@@ -525,52 +322,7 @@ const makeStrapiResponseJson = () => ({
                             ],
                           },
                         ],
-                        coverImage: {
-                          data: {
-                            id: 1,
-                            attributes: {
-                              name: 'webinar-cover-pago-pa-multe.jpg',
-                              alternativeText: null,
-                              caption: null,
-                              width: 728,
-                              height: 416,
-                              formats: {
-                                thumbnail: {
-                                  name: 'thumbnail_webinar-cover-pago-pa-multe.jpg',
-                                  hash: 'thumbnail_webinar_cover_pago_pa_multe_db00b47553',
-                                  ext: '.jpg',
-                                  mime: 'image/jpeg',
-                                  path: null,
-                                  width: 245,
-                                  height: 140,
-                                  size: 5.18,
-                                  url: '/uploads/thumbnail_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                                },
-                                small: {
-                                  name: 'small_webinar-cover-pago-pa-multe.jpg',
-                                  hash: 'small_webinar_cover_pago_pa_multe_db00b47553',
-                                  ext: '.jpg',
-                                  mime: 'image/jpeg',
-                                  path: null,
-                                  width: 500,
-                                  height: 286,
-                                  size: 14.85,
-                                  url: '/uploads/small_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                                },
-                              },
-                              hash: 'webinar_cover_pago_pa_multe_db00b47553',
-                              ext: '.jpg',
-                              mime: 'image/jpeg',
-                              size: 26.69,
-                              url: '/uploads/webinar_cover_pago_pa_multe_db00b47553.jpg',
-                              previewUrl: null,
-                              provider: 'local',
-                              provider_metadata: null,
-                              createdAt: '2024-03-21T17:11:46.709Z',
-                              updatedAt: '2024-05-31T09:16:42.250Z',
-                            },
-                          },
-                        },
+                        coverImage: mediaRasterJson,
                         relatedLinks: null,
                         webinarSpeakers: {
                           data: [
@@ -594,52 +346,7 @@ const makeStrapiResponseJson = () => ({
                                 updatedAt: '2024-03-28T17:28:46.140Z',
                                 publishedAt: '2024-03-28T17:28:46.125Z',
                                 locale: 'en',
-                                avatar: {
-                                  data: {
-                                    id: 1,
-                                    attributes: {
-                                      name: 'webinar-cover-pago-pa-multe.jpg',
-                                      alternativeText: null,
-                                      caption: null,
-                                      width: 728,
-                                      height: 416,
-                                      formats: {
-                                        thumbnail: {
-                                          name: 'thumbnail_webinar-cover-pago-pa-multe.jpg',
-                                          hash: 'thumbnail_webinar_cover_pago_pa_multe_db00b47553',
-                                          ext: '.jpg',
-                                          mime: 'image/jpeg',
-                                          path: null,
-                                          width: 245,
-                                          height: 140,
-                                          size: 5.18,
-                                          url: '/uploads/thumbnail_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                                        },
-                                        small: {
-                                          name: 'small_webinar-cover-pago-pa-multe.jpg',
-                                          hash: 'small_webinar_cover_pago_pa_multe_db00b47553',
-                                          ext: '.jpg',
-                                          mime: 'image/jpeg',
-                                          path: null,
-                                          width: 500,
-                                          height: 286,
-                                          size: 14.85,
-                                          url: '/uploads/small_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                                        },
-                                      },
-                                      hash: 'webinar_cover_pago_pa_multe_db00b47553',
-                                      ext: '.jpg',
-                                      mime: 'image/jpeg',
-                                      size: 26.69,
-                                      url: '/uploads/webinar_cover_pago_pa_multe_db00b47553.jpg',
-                                      previewUrl: null,
-                                      provider: 'local',
-                                      provider_metadata: null,
-                                      createdAt: '2024-03-21T17:11:46.709Z',
-                                      updatedAt: '2024-05-31T09:16:42.250Z',
-                                    },
-                                  },
-                                },
+                                avatar: mediaRasterJson,
                               },
                             },
                           ],
@@ -656,52 +363,7 @@ const makeStrapiResponseJson = () => ({
                     description: 'fsdfsdf',
                   },
                 ],
-                icon: {
-                  data: {
-                    id: 1,
-                    attributes: {
-                      name: 'webinar-cover-pago-pa-multe.jpg',
-                      alternativeText: null,
-                      caption: null,
-                      width: 728,
-                      height: 416,
-                      formats: {
-                        thumbnail: {
-                          name: 'thumbnail_webinar-cover-pago-pa-multe.jpg',
-                          hash: 'thumbnail_webinar_cover_pago_pa_multe_db00b47553',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          path: null,
-                          width: 245,
-                          height: 140,
-                          size: 5.18,
-                          url: '/uploads/thumbnail_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                        },
-                        small: {
-                          name: 'small_webinar-cover-pago-pa-multe.jpg',
-                          hash: 'small_webinar_cover_pago_pa_multe_db00b47553',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          path: null,
-                          width: 500,
-                          height: 286,
-                          size: 14.85,
-                          url: '/uploads/small_webinar_cover_pago_pa_multe_db00b47553.jpg',
-                        },
-                      },
-                      hash: 'webinar_cover_pago_pa_multe_db00b47553',
-                      ext: '.jpg',
-                      mime: 'image/jpeg',
-                      size: 26.69,
-                      url: '/uploads/webinar_cover_pago_pa_multe_db00b47553.jpg',
-                      previewUrl: null,
-                      provider: 'local',
-                      provider_metadata: null,
-                      createdAt: '2024-03-21T17:11:46.709Z',
-                      updatedAt: '2024-05-31T09:16:42.250Z',
-                    },
-                  },
-                },
+                icon: mediaRasterJson,
                 steps: [
                   {
                     id: 2,
@@ -735,58 +397,7 @@ const makeStrapiResponseJson = () => ({
                         ],
                       },
                     ],
-                    products: {
-                      data: [
-                        {
-                          id: 1,
-                          attributes: {
-                            name: 'IO',
-                            shortName: 'IO',
-                            description: null,
-                            slug: 'app-io',
-                            createdAt: '2024-05-24T07:45:13.658Z',
-                            updatedAt: '2024-05-24T07:58:24.107Z',
-                            publishedAt: '2024-05-24T07:45:20.231Z',
-                            locale: 'en',
-                            logo: {
-                              data: {
-                                id: 2,
-                                attributes: {
-                                  name: 'minestrone-soup-500x500.jpg',
-                                  alternativeText: null,
-                                  caption: null,
-                                  width: 500,
-                                  height: 500,
-                                  formats: {
-                                    thumbnail: {
-                                      name: 'thumbnail_minestrone-soup-500x500.jpg',
-                                      hash: 'thumbnail_minestrone_soup_500x500_582b21c155',
-                                      ext: '.jpg',
-                                      mime: 'image/jpeg',
-                                      path: null,
-                                      width: 156,
-                                      height: 156,
-                                      size: 8.66,
-                                      url: '/uploads/thumbnail_minestrone_soup_500x500_582b21c155.jpg',
-                                    },
-                                  },
-                                  hash: 'minestrone_soup_500x500_582b21c155',
-                                  ext: '.jpg',
-                                  mime: 'image/jpeg',
-                                  size: 51.82,
-                                  url: '/uploads/minestrone_soup_500x500_582b21c155.jpg',
-                                  previewUrl: null,
-                                  provider: 'local',
-                                  provider_metadata: null,
-                                  createdAt: '2024-04-08T16:05:13.531Z',
-                                  updatedAt: '2024-04-08T16:05:13.531Z',
-                                },
-                              },
-                            },
-                          },
-                        },
-                      ],
-                    },
+                    products: productsJson,
                   },
                 ],
               },
@@ -833,41 +444,7 @@ const makeStrapiResponseJson = () => ({
               updatedAt: '2024-03-28T17:35:59.322Z',
               publishedAt: '2024-03-28T17:05:00.681Z',
               locale: 'en',
-              coverImage: {
-                data: {
-                  id: 1,
-                  attributes: {
-                    name: 'a-image.jpg',
-                    alternativeText: null,
-                    caption: null,
-                    width: 728,
-                    height: 416,
-                    formats: {
-                      thumbnail: {
-                        name: 'thumbnail_a-image.jpg',
-                        hash: 'thumbnail_a_image_db00b47553',
-                        ext: '.jpg',
-                        mime: 'image/jpeg',
-                        path: null,
-                        width: 245,
-                        height: 140,
-                        size: 5.18,
-                        url: '/uploads/thumbnail_a_image_db00b47553.jpg',
-                      },
-                    },
-                    hash: 'a_image_db00b47553',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    size: 26.69,
-                    url: '/uploads/a_image_db00b47553.jpg',
-                    previewUrl: null,
-                    provider: 'local',
-                    provider_metadata: null,
-                    createdAt: '2024-03-21T17:11:46.709Z',
-                    updatedAt: '2024-03-28T17:04:29.926Z',
-                  },
-                },
-              },
+              coverImage: mediaRasterJson,
               relatedLinks: null,
               webinarSpeakers: {
                 data: [
@@ -891,41 +468,7 @@ const makeStrapiResponseJson = () => ({
                       updatedAt: '2024-03-28T17:28:46.140Z',
                       publishedAt: '2024-03-28T17:28:46.125Z',
                       locale: 'en',
-                      avatar: {
-                        data: {
-                          id: 1,
-                          attributes: {
-                            name: 'a-image.jpg',
-                            alternativeText: null,
-                            caption: null,
-                            width: 728,
-                            height: 416,
-                            formats: {
-                              thumbnail: {
-                                name: 'thumbnail_a-image.jpg',
-                                hash: 'thumbnail_a_image_db00b47553',
-                                ext: '.jpg',
-                                mime: 'image/jpeg',
-                                path: null,
-                                width: 245,
-                                height: 140,
-                                size: 5.18,
-                                url: '/uploads/thumbnail_a_image_db00b47553.jpg',
-                              },
-                            },
-                            hash: 'webinar_a_image_db00b47553',
-                            ext: '.jpg',
-                            mime: 'image/jpeg',
-                            size: 26.69,
-                            url: '/uploads/a_image_db00b47553.jpg',
-                            previewUrl: null,
-                            provider: 'local',
-                            provider_metadata: null,
-                            createdAt: '2024-03-21T17:11:46.709Z',
-                            updatedAt: '2024-03-28T17:04:29.926Z',
-                          },
-                        },
-                      },
+                      avatar: mediaRasterJson,
                     },
                   },
                 ],
@@ -948,66 +491,7 @@ const makeStrapiResponseJson = () => ({
         },
         metaViewport: 'sdfsdf',
         canonicalURL: 'sfsdf',
-        metaImage: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'Screenshot 2024-07-31 at 14.32.36.png',
-              alternativeText: null,
-              caption: null,
-              width: 914,
-              height: 256,
-              formats: {
-                thumbnail: {
-                  name: 'thumbnail_Screenshot 2024-07-31 at 14.32.36.png',
-                  hash: 'thumbnail_Screenshot_2024_07_31_at_14_32_36_fa55f3317f',
-                  ext: '.png',
-                  mime: 'image/png',
-                  path: null,
-                  width: 245,
-                  height: 69,
-                  size: 23.27,
-                  sizeInBytes: 23270,
-                  url: 'http://localhost:1337/uploads/thumbnail_Screenshot_2024_07_31_at_14_32_36_fa55f3317f.png',
-                },
-                small: {
-                  name: 'small_Screenshot 2024-07-31 at 14.32.36.png',
-                  hash: 'small_Screenshot_2024_07_31_at_14_32_36_fa55f3317f',
-                  ext: '.png',
-                  mime: 'image/png',
-                  path: null,
-                  width: 500,
-                  height: 140,
-                  size: 71.63,
-                  sizeInBytes: 71634,
-                  url: 'http://localhost:1337/uploads/small_Screenshot_2024_07_31_at_14_32_36_fa55f3317f.png',
-                },
-                medium: {
-                  name: 'medium_Screenshot 2024-07-31 at 14.32.36.png',
-                  hash: 'medium_Screenshot_2024_07_31_at_14_32_36_fa55f3317f',
-                  ext: '.png',
-                  mime: 'image/png',
-                  path: null,
-                  width: 750,
-                  height: 210,
-                  size: 141.02,
-                  sizeInBytes: 141019,
-                  url: 'http://localhost:1337/uploads/medium_Screenshot_2024_07_31_at_14_32_36_fa55f3317f.png',
-                },
-              },
-              hash: 'Screenshot_2024_07_31_at_14_32_36_fa55f3317f',
-              ext: '.png',
-              mime: 'image/png',
-              size: 32.48,
-              url: 'http://localhost:1337/uploads/Screenshot_2024_07_31_at_14_32_36_fa55f3317f.png',
-              previewUrl: null,
-              provider: 'strapi-provider-upload-custom',
-              provider_metadata: null,
-              createdAt: '2024-08-06T12:45:06.782Z',
-              updatedAt: '2024-08-06T12:45:06.782Z',
-            },
-          },
-        },
+        metaImage: mediaRasterJson,
         metaSocial: [
           {
             id: 1,
@@ -1132,58 +616,7 @@ const makeStrapiResponseWithNullsJson = () => ({
         title: 'Scopri il nostro ecosistema',
         productsTabName: 'Per i prodotti',
         solutionsTabName: 'Per le soluzioni',
-        products: {
-          data: [
-            {
-              id: 1,
-              attributes: {
-                name: 'IO',
-                shortName: 'IO',
-                description: null,
-                slug: 'app-io',
-                createdAt: '2024-05-24T07:45:13.658Z',
-                updatedAt: '2024-05-24T07:58:24.107Z',
-                publishedAt: '2024-05-24T07:45:20.231Z',
-                locale: 'en',
-                logo: {
-                  data: {
-                    id: 2,
-                    attributes: {
-                      name: 'minestrone-soup-500x500.jpg',
-                      alternativeText: null,
-                      caption: null,
-                      width: 500,
-                      height: 500,
-                      formats: {
-                        thumbnail: {
-                          name: 'thumbnail_minestrone-soup-500x500.jpg',
-                          hash: 'thumbnail_minestrone_soup_500x500_582b21c155',
-                          ext: '.jpg',
-                          mime: 'image/jpeg',
-                          path: null,
-                          width: 156,
-                          height: 156,
-                          size: 8.66,
-                          url: '/uploads/thumbnail_minestrone_soup_500x500_582b21c155.jpg',
-                        },
-                      },
-                      hash: 'minestrone_soup_500x500_582b21c155',
-                      ext: '.jpg',
-                      mime: 'image/jpeg',
-                      size: 51.82,
-                      url: '/uploads/minestrone_soup_500x500_582b21c155.jpg',
-                      previewUrl: null,
-                      provider: 'local',
-                      provider_metadata: null,
-                      createdAt: '2024-04-08T16:05:13.531Z',
-                      updatedAt: '2024-04-08T16:05:13.531Z',
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
+        products: productsJson,
         solutions: {
           data: [
             {
@@ -1268,17 +701,17 @@ const makeStrapiResponseWithNullsJson = () => ({
   meta: {},
 });
 
-describe('StrapiHomepageCodec', () => {
+describe('HomepageCodec', () => {
   it('should decode strapi homepage', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     // Verify all the values are parsed properly, especially the nullable (e.g. links[0].target)
-    const actual = StrapiHomepageCodec.decode(jsonFromStrapi);
+    const actual = HomepageCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should decode strapi homepage with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseWithNullsJson();
-    const actual = StrapiHomepageCodec.decode(jsonFromStrapi);
+    const actual = HomepageCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

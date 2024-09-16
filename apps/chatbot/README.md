@@ -37,14 +37,23 @@ Create a `.env` file inside the folder and write to the file the following envir
     AWS_S3_BUCKET=...
     AWS_GUARDRAIL_ID=...
     AWS_GUARDRAIL_VERSION=...
+    CHB_REDIS_URL=...
+    WEBSITE_URL=...
 
 ## Knowledge vector database
 
 First of all, verify that the HTML files that compose the Developer Portal documentation exist in a directory. Otherwise create the documentation. Once you have the documentation directory ready, put its path in `params` and, in the end, create the vector index doing:
 
+``` 
     python src/modules/create_vector_index.py --params config/params.yaml
+```
 
-This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis. If the input `--use-redis` is missing, then the index is stored on a AWS S3 bucket.
+This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis.
+
+To reach the remote redis instance, it is necessary to open a tunnel:
+```
+    ./scripts/redis-tunnel.sh
+```
 
 ## Web App
 

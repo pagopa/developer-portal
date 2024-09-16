@@ -6,7 +6,7 @@ import logging
 import os
 import uuid
 import boto3
-from botocore.config import Config
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -24,15 +24,16 @@ class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
-dynamodb = boto3.resource(
-  'dynamodb',
-  region_name=os.getenv('CHB_AWS_DEFAULT_REGION'),
-  aws_access_key_id=os.getenv('CHB_AWS_ACCESS_KEY_ID'),
-  aws_secret_access_key=os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
+#  uncomment profile_name and endpoint_url for local test
+boto3_session = boto3.session.Session(
+#  profile_name='dummy'
 )
-# TODO: use ENV var for table name
-CHATBOT_QUERY_TABLE_NAME = 'chatbot-dev-queries'
-chatbot_queries = dynamodb.Table(CHATBOT_QUERY_TABLE_NAME)
+dynamodb = boto3_session.resource(
+  'dynamodb',
+  region_name='eu-west-3',
+#  endpoint_url='http://localhost:8000'
+)
+chatbot_queries = dynamodb.Table(os.getenv('CHATBOT_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
 
 # FastAPI config
 app = FastAPI()
@@ -55,17 +56,23 @@ async def query_creation (query: Query):
 
   answer = chatbot.generate(query.question)
 
+  # TODO: calculate sessionId
   body = {
     "id": f'{uuid.uuid4()}',
-    "sessionId": "",
+    "sessionId": "1",
     "question": query.question,
     "answer": answer,
     "createdAt": query.queriedAt,
     "queriedAt": query.queriedAt
   }
   # TODO: body validation
-  db_response = chatbot_queries.put_item(Item = body)
-  logging.info(f"[query_creation] db response: {db_response['ResponseMetadata']}")
+
+  try:
+    db_response = chatbot_queries.put_item(Item = body)
+    logging.info(f"[query_creation] db response: {db_response['ResponseMetadata']}")
+  except (BotoCoreError, ClientError) as e:
+    logging.error(f"[query_creation] Error saving to DynamoDB: {e}")
+    raise HTTPException(status_code=422, detail='db error')
   return body
 
 @app.post("/sessions")
