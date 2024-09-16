@@ -1,7 +1,9 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { makeMetadata } from '@/helpers/metadata.helpers';
+import { productToBreadcrumb } from '@/helpers/structuredData.helpers';
 import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
@@ -33,9 +35,21 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
   const product = await getProduct(params.productSlug);
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: 'API', // TODO: add SEO page name
+        item: product ? `${baseUrl}/${product?.slug}/api` : undefined,
+      },
+    ],
+    seo: undefined, // TODO: add SEO
+  });
+
   if (apiDataListPageProps && product) {
     return (
       <>
+        {structuredData}
         <ProductLayout
           product={product}
           path={product.path.concat('/api')}
