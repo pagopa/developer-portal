@@ -12,9 +12,15 @@ type StatsProps = {
   items: StatItem[];
   maxWidth?: number;
   useDarkTheme?: boolean;
+  statsSource?: string;
 };
 
-const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
+const Stats = ({
+  items,
+  statsSource,
+  maxWidth = 150,
+  useDarkTheme = false,
+}: StatsProps) => {
   const { palette } = useTheme();
 
   const titleColor = useDarkTheme ? palette.common.white : palette.primary.main;
@@ -25,14 +31,20 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
 
   return (
     <Box bgcolor={bgColor}>
-      <EContainer>
+      <EContainer
+        containerSx={{
+          paddingTop: { xs: '2.2rem', sm: '4.688rem' },
+          paddingBottom: {
+            xs: statsSource ? '2.2rem' : '2.6rem',
+            sm: statsSource ? '2.5rem' : '6.5rem',
+          },
+        }}
+      >
         <Stack
           flexDirection={{ xs: 'column', sm: 'row' }}
           justifyContent={'space-between'}
-          alignItems={'center'}
+          alignItems={{ xs: 'center', sm: 'start' }}
           gap={4.2}
-          paddingTop={{ xs: '2.2rem', sm: '4.688rem' }}
-          paddingBottom={{ xs: '2.6rem', sm: '6.5rem' }}
           width={'100%'}
         >
           {items.map(({ title, description }, index) => (
@@ -65,6 +77,22 @@ const Stats = ({ items, maxWidth = 150, useDarkTheme = false }: StatsProps) => {
             </Stack>
           ))}
         </Stack>
+        {statsSource && (
+          <Box
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            alignItems={'center'}
+            paddingTop={{ xs: '2.2rem', sm: '3.5rem' }}
+            width={'100%'}
+          >
+            <Typography
+              variant='body2'
+              color={textColor}
+              sx={{ textAlign: 'center', width: '100%' }}
+            >
+              {statsSource}
+            </Typography>
+          </Box>
+        )}
       </EContainer>
     </Box>
   );

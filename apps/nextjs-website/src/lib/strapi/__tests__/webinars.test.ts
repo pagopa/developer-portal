@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiWebinarsCodec } from '@/lib/strapi/webinars';
+import { WebinarsCodec } from '@/lib/strapi/codecs/WebinarsCodec';
+import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -29,28 +30,7 @@ const makeStrapiResponseJson = () => ({
         updatedAt: '2024-03-26T17:12:31.925Z',
         publishedAt: '2024-03-26T17:12:31.921Z',
         locale: 'it',
-        coverImage: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'webinar-cover-io-remote-content.jpg',
-              alternativeText: null,
-              caption: null,
-              width: 728,
-              height: 416,
-              hash: 'webinar_cover_io_remote_content_62f1f615b5',
-              ext: '.jpg',
-              mime: 'image/jpeg',
-              size: 30.06,
-              url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
-              previewUrl: null,
-              provider: 'strapi-provider-upload-custom',
-              provider_metadata: null,
-              createdAt: '2024-04-15T14:25:47.773Z',
-              updatedAt: '2024-04-15T14:25:47.773Z',
-            },
-          },
-        },
+        coverImage: mediaRasterJson,
         webinarSpeakers: {
           data: [
             {
@@ -73,28 +53,7 @@ const makeStrapiResponseJson = () => ({
                 updatedAt: '2024-03-26T17:12:37.276Z',
                 publishedAt: '2024-03-26T17:12:37.274Z',
                 locale: 'it',
-                avatar: {
-                  data: {
-                    id: 1,
-                    attributes: {
-                      name: 'webinar-cover-io-remote-content.jpg',
-                      alternativeText: null,
-                      caption: null,
-                      width: 728,
-                      height: 416,
-                      hash: 'webinar_cover_io_remote_content_62f1f615b5',
-                      ext: '.jpg',
-                      mime: 'image/jpeg',
-                      size: 30.06,
-                      url: '/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
-                      previewUrl: null,
-                      provider: 'strapi-provider-upload-custom',
-                      provider_metadata: null,
-                      createdAt: '2024-04-15T14:25:47.773Z',
-                      updatedAt: '2024-04-15T14:25:47.773Z',
-                    },
-                  },
-                },
+                avatar: mediaRasterJson,
               },
             },
           ],
@@ -132,52 +91,7 @@ const makeStrapiResponseJson = () => ({
               ],
               linkText: 'test',
               linkHref: 'http://localhost:3000/solutions',
-              image: {
-                data: {
-                  id: 4,
-                  attributes: {
-                    name: 'webinar-cover-io-remote-content.jpg',
-                    alternativeText: null,
-                    caption: null,
-                    width: 728,
-                    height: 416,
-                    formats: {
-                      thumbnail: {
-                        name: 'thumbnail_webinar-cover-io-remote-content.jpg',
-                        hash: 'thumbnail_webinar_cover_io_remote_content_62f1f615b5',
-                        ext: '.jpg',
-                        mime: 'image/jpeg',
-                        path: null,
-                        width: 245,
-                        height: 140,
-                        size: 5.38,
-                        url: 'http://localhost:1337/uploads/thumbnail_webinar_cover_io_remote_content_62f1f615b5.jpg',
-                      },
-                      small: {
-                        name: 'small_webinar-cover-io-remote-content.jpg',
-                        hash: 'small_webinar_cover_io_remote_content_62f1f615b5',
-                        ext: '.jpg',
-                        mime: 'image/jpeg',
-                        path: null,
-                        width: 500,
-                        height: 286,
-                        size: 16.03,
-                        url: 'http://localhost:1337/uploads/small_webinar_cover_io_remote_content_62f1f615b5.jpg',
-                      },
-                    },
-                    hash: 'webinar_cover_io_remote_content_62f1f615b5',
-                    ext: '.jpg',
-                    mime: 'image/jpeg',
-                    size: 30.06,
-                    url: 'http://localhost:1337/uploads/webinar_cover_io_remote_content_62f1f615b5.jpg',
-                    previewUrl: null,
-                    provider: 'strapi-provider-upload-custom',
-                    provider_metadata: null,
-                    createdAt: '2024-04-15T14:25:47.773Z',
-                    updatedAt: '2024-04-15T14:25:47.773Z',
-                  },
-                },
-              },
+              image: mediaRasterJson,
             },
           ],
           downloadableDocuments: {
@@ -298,23 +212,7 @@ const makeStrapiResponseWithNullsJson = () => ({
         updatedAt: '2024-03-26T17:12:31.925Z',
         publishedAt: '2024-03-26T17:12:31.921Z',
         locale: 'it',
-        coverImage: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'image.png',
-              alternativeText: null,
-              caption: null,
-              width: 100,
-              height: 100,
-              size: 5.38,
-              hash: 'image',
-              ext: '.png',
-              mime: 'image/png',
-              url: '/uploads/image.png',
-            },
-          },
-        },
+        coverImage: mediaRasterJson,
         webinarSpeakers: {
           data: [],
         },
@@ -345,16 +243,16 @@ const makeStrapiResponseWithNullsJson = () => ({
   },
 });
 
-describe('StrapiWebinarsCodec', () => {
-  it('should decode strapi webinars', () => {
+describe('WebinarsCodec', () => {
+  it('should decode Strapi webinars', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiWebinarsCodec.decode(jsonFromStrapi);
+    const actual = WebinarsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
-  it('should decode strapi webinars with nulls', () => {
+  it('should decode Strapi webinars with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseWithNullsJson();
-    const actual = StrapiWebinarsCodec.decode(jsonFromStrapi);
+    const actual = WebinarsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

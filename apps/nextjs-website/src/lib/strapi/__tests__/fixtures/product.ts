@@ -28,3 +28,7 @@ export const productJson = {
     },
   },
 };
+
+export const productsJson = {
+  data: [productJson.data],
+};
