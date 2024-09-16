@@ -115,6 +115,14 @@
       },
       "component": "common.solution-stat"
     },
+    "statsSource": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
     "webinars": {
       "type": "relation",
       "relation": "manyToMany",
@@ -147,6 +155,16 @@
         }
       },
       "component": "common.case-histories"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

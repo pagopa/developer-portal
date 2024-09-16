@@ -5,7 +5,7 @@ import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Solution } from '@/lib/types/solution';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -109,7 +109,7 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = (solution: Solution) =>
+export const makeSolution = (solution: SolutionTemplateProps) =>
   pipe(
     [
       {
