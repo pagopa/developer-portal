@@ -54,6 +54,16 @@
       "relation": "oneToOne",
       "target": "api::product.product",
       "inversedBy": "tutorial_list_page"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

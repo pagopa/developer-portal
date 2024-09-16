@@ -66,6 +66,11 @@ const baseTutorialJson = {
           },
         ],
       },
+      {
+        id: 1,
+        __component: 'parts.ck-editor',
+        content: '<p>Ciao ciao ciao prova ciao</p>',
+      },
     ],
     createdAt: '2024-06-04T12:34:13.309Z',
     updatedAt: '2024-06-04T12:42:01.642Z',

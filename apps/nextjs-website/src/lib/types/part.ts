@@ -5,6 +5,7 @@ import { InnerHtmlLazyLoadedPartProps } from '@/components/atoms/InnerHtmlLazyLo
 import { TypographyPartProps } from '@/components/atoms/TypographyPart/TypographyPart';
 import { BlocksRendererPartProps } from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
 import { QuoteProps } from '@/components/atoms/Quote/Quote';
+import { CkEditorPartProps } from '@/components/molecules/CkEditorPart/CkEditorPart';
 
 export type Part =
   | (AlertPartProps & { readonly component: 'alert' })
@@ -13,6 +14,7 @@ export type Part =
   | (BlocksRendererPartProps & { readonly component: 'blockRenderer' })
   | (CodeBlockPartProps & { readonly component: 'codeBlock' })
   | (TypographyPartProps & { readonly component: 'typography' })
+  | (CkEditorPartProps & { readonly component: 'ckEditor' })
   | (InnerHtmlLazyLoadedPartProps & {
       readonly component: 'innerHTMLLazyLoaded';
     });
