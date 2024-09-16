@@ -1,8 +1,8 @@
 import SolutionListTemplate from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
-import { getSolutionsList } from '@/lib/api';
+import { getSolutionListPage } from '@/lib/api';
 
 const Page = async () => {
-  const solutionsList = await getSolutionsList();
+  const solutionsList = await getSolutionListPage();
 
   return (
     <SolutionListTemplate

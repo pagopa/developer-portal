@@ -6,15 +6,15 @@ import {
 } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolution, getSolutionSubPaths } from '@/lib/solutions';
+import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { Solution } from '@/lib/types/solution';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getDetailSolutionsProps } from '@/lib/cmsApi';
+import { getSolutionsProps } from '@/lib/cmsApi';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
-type SolutionDetailsPageTemplateProps = {
-  solution: Solution;
+type SolutionDetailPageTemplateProps = {
+  solution: SolutionTemplateProps;
   path: string;
   pathPrefix: string;
   isIndex: boolean;
@@ -29,7 +29,7 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  const solutions = await getDetailSolutionsProps();
+  const solutions = await getSolutionsProps();
   return solutions.flatMap(getSolutionSubPaths);
 }
 
@@ -38,7 +38,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const props = await getSolution(
+  const props = await getSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs
   );
@@ -57,7 +57,7 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const solutionProps = await getSolution(
+  const solutionProps = await getSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs
   );
@@ -67,7 +67,7 @@ const Page = async ({ params }: { params: Params }) => {
   }
 
   const { page, solution, source } = solutionProps;
-  const props: SolutionDetailsPageTemplateProps = {
+  const props: SolutionDetailPageTemplateProps = {
     ...page,
     solution,
     pathPrefix: source.pathPrefix,

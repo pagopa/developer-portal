@@ -4,7 +4,7 @@ import * as R from 'fp-ts/lib/Reader';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as PR from './PathReporter';
-import { StrapiEnv } from '@/lib/strapi/StapiEnv';
+import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
 
 // Function to invoke in order to retrieve data from Strapi.
 export const fetchFromStrapi = <A, O, I>(
