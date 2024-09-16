@@ -1,6 +1,7 @@
 import { ApiPageProps } from '@/components/molecules/ApiSection/ApiSection';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Product } from '@/lib/types/product';
 import { Webinar } from '@/lib/types/webinar';
 import {
   Article,
@@ -20,6 +21,13 @@ import {
 } from 'schema-dts';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
+
+export function productToBreadcrumb(product?: Product) {
+  return {
+    name: product?.name,
+    item: product ? `${baseUrl}/${product.slug}/overview` : undefined,
+  };
+}
 
 export const organization: Organization = {
   '@type': 'Organization',
