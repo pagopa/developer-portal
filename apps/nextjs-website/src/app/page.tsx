@@ -102,13 +102,7 @@ const Home = async () => {
   const homepage: HomepageProps = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
-    breadcrumbsItems: [homeBreadCrumb],
-    webPage: {
-      name: homepage.seo?.metaTitle,
-      description: homepage.seo?.metaDescription,
-      url: homepage.seo?.canonicalURL,
-      media: homepage.seo?.metaImage?.data?.attributes,
-    },
+    seo: homepage.seo,
     things: [websiteWithContext],
   });
 
