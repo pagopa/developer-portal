@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import { NullToUndefinedCodec } from '@/lib/strapi/codecs/NullToUndefinedCodec';
-import { CaseHistoryCodec } from '@/lib/strapi/caseHistoriesCodec';
+import { CaseHistoryCodec } from '@/lib/strapi/codecs/CaseHistoriesCodec';
 
 export const CaseHistoriesComponentCodec = t.strict({
   title: t.string,

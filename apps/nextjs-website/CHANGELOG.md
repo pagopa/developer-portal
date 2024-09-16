@@ -1,5 +1,30 @@
 # nextjs-website
 
+## 4.6.0
+
+### Minor Changes
+
+- b40773a: Add bannerLinks to product's overview page in NextJs
+- fd090f7: [DPC-298] Update link in overview SEND
+- 2fd2d35: Connect product tutorial list page to Strapi content
+- 2fd2d35: Add tutorial list pages codec
+- 9d2120b: Add version 2.4 of "Manuale dei Servizi"
+
+### Patch Changes
+
+- 9547654: Refactor guides codec
+- 7b045c2: Fix Guides page generateStaticParams method
+- fe97c1b: Refactor SEO codec, SolutionDetail codec and SolutionTemplateProps
+- 95e0cc5: Using id token instead of access token to authenticate api calls
+- 46746b4: Add makeProps folder
+- 9cb88cf: Refactor homepage codec
+- ecb45cc: Refactor ApiDataList and ApiDataListPages codecs
+- afc9ecd: Refactor Overviews codec
+- c05180d: Refactor Solutions, SolutionListPage and CaseHistories codecs
+- ece2b34: Refactor QuickStartGuides codec
+- 429a1d5: Refactor webinars codec
+- c038519: Refactor guideListPages codec
+
 ## 4.5.0
 
 ### Minor Changes
