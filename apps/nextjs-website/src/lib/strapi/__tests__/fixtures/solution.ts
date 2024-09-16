@@ -19,6 +19,7 @@ export const baseSolutionJson = {
     introductionToSteps: null,
     steps: [],
     stats: [],
+    statsSource: null,
     bannerLinks: [],
     products: {
       data: [],

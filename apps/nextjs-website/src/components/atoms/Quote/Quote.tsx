@@ -34,7 +34,7 @@ const Quote = ({
     <Stack height={{ xs: 468, sm: 560 }} position={'relative'}>
       <EContainer
         containerSx={{
-          margin: 'auto',
+          margin: 'auto 0',
         }}
       >
         <Stack

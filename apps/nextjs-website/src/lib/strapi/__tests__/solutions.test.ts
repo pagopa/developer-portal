@@ -51,6 +51,8 @@ const makeStrapiResponseJson = () => ({
           description: 'dsfsdfdssfsd',
         },
       ],
+      statsSource:
+        'Dati forniti da [Nome della fonte], aggiornati a [mese/anno].',
       bannerLinks: [
         {
           id: 1,

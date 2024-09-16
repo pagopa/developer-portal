@@ -36,20 +36,10 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     webinar && setWebinar(webinar);
   }, [webinar]);
 
-  const html = useMemo(
-    () =>
-      webinar.html ? (
-        <EContainer direction='column'>
-          <Box dangerouslySetInnerHTML={{ __html: webinar.html }} />
-        </EContainer>
-      ) : null,
-    [webinar.html]
-  );
-
   const bodyContent = useMemo(
     () =>
       webinar.bodyContent ? (
-        <EContainer direction='column'>
+        <EContainer direction='column' containerSx={{ marginTop: '2.5rem' }}>
           <BlocksRendererClient content={webinar.bodyContent} />
         </EContainer>
       ) : null,
@@ -152,7 +142,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           {subscribeToWebinarButton}
         </SubscribeCta>
       )}
-      {html}
       {bodyContent}
       {speakerList}
       {webinar.questionsAndAnswers && (
