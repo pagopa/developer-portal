@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
