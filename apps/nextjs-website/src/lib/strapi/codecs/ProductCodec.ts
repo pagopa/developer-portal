@@ -23,7 +23,6 @@ export const ProductCodec = t.strict({
       description: t.union([NullToUndefinedCodec, t.string]),
       slug: t.string,
       logo: t.strict({ data: MediaCodec }),
-      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });
