@@ -1,3 +1,3 @@
 #!/bin/bash
 conda activate chatbot
-PYTHONPATH=`pwd` poetry run fastapi dev src/app/main.py --port 8080
+PYTHONPATH=$PWD poetry run fastapi dev src/app/main.py --port 8080
