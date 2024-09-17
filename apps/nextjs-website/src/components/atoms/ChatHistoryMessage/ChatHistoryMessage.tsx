@@ -1,7 +1,6 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { useTranslations } from 'next-intl';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
 
 type DateFormatOptions = {
@@ -30,7 +29,6 @@ const ChatHistoryMessage = ({
   isQuestion,
   sender,
 }: ChatMessageProps) => {
-  const t = useTranslations();
   const { palette } = useTheme();
   const textColor = palette.text.primary;
   const parsedChatMessage = parseChatMessage(text);
@@ -73,7 +71,7 @@ const ChatHistoryMessage = ({
           minWidth='12rem'
           fontWeight={600}
         >
-          {isQuestion ? sender : t('chatBot.title')}
+          {sender}
         </Typography>
         {timeLabel && (
           <Typography
