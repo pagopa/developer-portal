@@ -3,7 +3,6 @@ import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
-import { SEOCodec } from './SeoCodec';
 
 const BaseProductAttributesCodec = t.strict({
   name: t.string,
