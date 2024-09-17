@@ -21,7 +21,6 @@ const BaseGuideAttributesCodec = t.strict({
       text: t.string,
     })
   ),
-  seo: t.union([NullToUndefinedCodec, SEOCodec]),
 });
 
 export const BaseGuideCodec = t.strict({
@@ -34,6 +33,7 @@ export const GuideCodec = t.strict({
     t.strict({
       versions: t.array(VersionCodec),
       product: t.strict({ data: BaseProductCodec }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });
