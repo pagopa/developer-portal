@@ -15,7 +15,6 @@ export const productJson = {
   data: {
     id: 8,
     attributes: {
-      seo: null,
       name: 'Firma con IO',
       description:
         'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
