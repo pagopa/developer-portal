@@ -42,7 +42,7 @@ const ChatHistoryMessage = ({
     ).format(new Date(timestamp));
 
   return (
-    <Stack direction='column' width='100%' spacing={2}>
+    <Stack direction='column' width='100%' spacing={1}>
       <Stack
         direction={'row'}
         margin={{ xs: '1rem 1rem 0.5rem 1rem' }}
