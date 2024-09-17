@@ -68,7 +68,6 @@ async def query_creation (query: Query):
     "createdAt": now,
     "queriedAt": query.queriedAt
   }
-  # TODO: body validation
 
   try:
     db_response = chatbot_queries.put_item(Item = body)
@@ -116,18 +115,13 @@ async def sessions_fetching():
 
 @app.get("/queries")
 async def queries_fetching(sessionId: str):
-  # TODO: dynamoDB integration
-  body = [
-    {
-      "id": "",
-      "sessionId": sessionId,
-      "question": "",
-      "answer": "",
-      "createdAt": "",
-      "queriedAt": ""
-    }
-  ]
-  return body
+  try:
+    db_response = chatbot_queries.query(
+      KeyConditionExpression=Key("sessionId").eq(sessionId)
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail='db error')
+  return db_response['Items']
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
