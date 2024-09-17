@@ -17,6 +17,9 @@ const makeStrapiCaseHistoriesPopulate = () =>
       products: {
         populate: ['logo'],
       },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
+      },
     },
   });
 
