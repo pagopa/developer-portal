@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 4.7.0
+
+### Minor Changes
+
+- 47637c0: Add style to content generated with CKEditor in Strapi
+- 1bf8e5b: Add structured data functions and add them to homepage
+- 8fa630b: Show statsSource attribute in Stats component
+- 828faf3: Add CKEditor renderer to NextJS
+
+### Patch Changes
+
+- 7146095: Fix Webinar's bodyContent margins
+- 76c4593: Fix text alignment when quote is short in Quote component and add "ShortQuote" story to Storybook
+
 ## 4.6.0
 
 ### Minor Changes
