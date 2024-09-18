@@ -3,15 +3,15 @@ import { Query } from '@/lib/chatbot/queries';
 import { Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
-type ChatHistoryMessagesProps = {
+type ChatbotHistoryMessagesProps = {
   queries: Query[];
   userName: string;
 };
 
-const ChatHistoryMessages = ({
+const ChatbotHistoryMessages = ({
   queries,
   userName,
-}: ChatHistoryMessagesProps) => {
+}: ChatbotHistoryMessagesProps) => {
   const t = useTranslations();
 
   return (
@@ -38,4 +38,4 @@ const ChatHistoryMessages = ({
   );
 };
 
-export default ChatHistoryMessages;
+export default ChatbotHistoryMessages;

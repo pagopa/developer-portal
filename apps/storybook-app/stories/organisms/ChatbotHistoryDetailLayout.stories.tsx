@@ -1,0 +1,33 @@
+import { Decorator, Meta, StoryObj } from '@storybook/react';
+import ChatbotHistoryDetailLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
+import { chatbotChatSession } from '../fixtures/chatbotFixtures';
+import React from 'react';
+import { mockText } from '../mock-content.helper';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
+
+const meta: Meta<typeof ChatbotHistoryDetailLayout> = {
+  title: 'Organisms/ChatbotHistoryDetailLayout',
+  component: ChatbotHistoryDetailLayout,
+};
+
+const decorator: Decorator = (story) => (
+  <div style={{ padding: '2rem' }}>{story()}</div>
+);
+
+export default meta;
+
+export const NewChatSession: StoryObj<typeof ChatbotHistoryDetailLayout> = {
+  args: {
+    queries: chatbotChatSession,
+    userName: 'John Doe',
+    nextSession: {
+      sessionId: '1',
+      sessionTitle: mockText(10),
+    },
+    previousSession: {
+      sessionId: '2',
+      sessionTitle: mockText(5),
+    },
+  },
+  decorators: [decorator, nextIntlContextDecorator],
+};

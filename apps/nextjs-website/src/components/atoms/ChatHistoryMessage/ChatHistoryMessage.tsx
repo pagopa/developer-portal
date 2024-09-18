@@ -65,11 +65,11 @@ const ChatHistoryMessage = ({
           />
         )}
         <Typography
-          fontSize='1rem'
           color={textColor}
           component='span'
           minWidth='12rem'
           fontWeight={600}
+          sx={{ fontSize: { xs: '1rem', xl: '1.125rem' } }}
         >
           {sender}
         </Typography>
@@ -78,19 +78,19 @@ const ChatHistoryMessage = ({
             color={textColor}
             component={'span'}
             marginLeft={1}
-            fontSize={'0.625rem'}
+            sx={{ fontSize: { xs: '0.75rem', xl: '0.875rem' } }}
           >
             {timeLabel}
           </Typography>
         )}
       </Stack>
       <Typography
-        fontSize={'0.875rem'}
         color={textColor}
         component={'div'}
         marginLeft={'1rem'}
         paragraph
         width={'100%'}
+        sx={{ fontSize: { xs: '0.875rem', xl: '1rem' } }}
       >
         {parsedChatMessage}
       </Typography>
