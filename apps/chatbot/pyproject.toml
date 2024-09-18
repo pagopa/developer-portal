@@ -38,6 +38,8 @@ llama-index-storage-docstore-redis = "^0.1.2"
 llama-index-storage-index-store-redis = "^0.2.0"
 llama-index-embeddings-langchain = "^0.1.2"
 llama-index-llms-langchain = "^0.3.0"
+pyjwt = "^2.9.0"
+cryptography = "^43.0.1"
 
 
 [build-system]

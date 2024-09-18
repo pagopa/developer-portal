@@ -6,8 +6,9 @@ import os
 import uuid
 import boto3
 import datetime
+from typing import Annotated
 from botocore.exceptions import BotoCoreError, ClientError
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -37,7 +38,12 @@ dynamodb = boto3_session.resource(
   endpoint_url=locals().get('endpoint_url',None)
 )
 
-chatbot_queries = dynamodb.Table(os.getenv('CHB_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
+table_queries = dynamodb.Table(
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot-dev')}-queries"
+)
+table_sessions = dynamodb.Table(
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot-dev')}-sessions"
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -70,20 +76,33 @@ async def query_creation (query: Query):
   }
 
   try:
-    db_response = chatbot_queries.put_item(Item = body)
+    db_response = table_queries.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail='db error')
+  raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return body
 
 @app.post("/sessions")
-async def sessions_creation ():
-  # TODO: dynamoDB integration
-  # TODO: get current user from cognito
+async def sessions_creation (authorization: Annotated[str | None, Header()] = None):
+  # TODO: calculate title
+  if authorization:
+    token = authorization.split(' ')[1]
+    decoded = jwt.decode(token, algorithms=["RS256"], options={"verify_signature": False})
+    userId = decoded['cognito:username']
+  else:
+    userId = "-"
+
+  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   body = {
-    "id": "",
-    "title": "",
-    "createdAt": ""
+    "id": f'{uuid.uuid4()}',
+    "title": "session",
+    "userId": userId,
+    "createdAt": now
   }
+  try:
+    db_response = table_sessions.put_item(Item = body)
+  except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[POST /sessions] error: {e}")
   return body
 
 @app.get("/queries/{id}")
@@ -116,7 +135,7 @@ async def sessions_fetching():
 @app.get("/queries")
 async def queries_fetching(sessionId: str):
   try:
-    db_response = chatbot_queries.query(
+    db_response = table_queries.query(
       KeyConditionExpression=Key("sessionId").eq(sessionId)
     )
   except (BotoCoreError, ClientError) as e:
