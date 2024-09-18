@@ -15,6 +15,7 @@ import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
+  convertApiToStructuredDataSoftwareApplication,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
@@ -69,6 +70,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
       },
     ],
     seo: apiDataProps?.seo,
+    things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
   });
 
   if (apiDataProps && product) {

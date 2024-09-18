@@ -21,6 +21,7 @@ import { getGuidesProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
+  convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
@@ -110,6 +111,7 @@ const Page = async ({ params }: { params: Params }) => {
       },
     ],
     seo: seo,
+    things: [convertSeoToStructuredDataArticle(seo)],
   });
 
   return (
