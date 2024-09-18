@@ -19,6 +19,7 @@ const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {
       id={computeId('alert', `${title}${text}`)}
       severity={severity}
       sx={{ borderRadius: '4px', marginBottom: spacing(5), ...alertStyle }}
+      variant={'outlined'}
     >
       {title && <AlertTitle>{title}</AlertTitle>}
       {text}
