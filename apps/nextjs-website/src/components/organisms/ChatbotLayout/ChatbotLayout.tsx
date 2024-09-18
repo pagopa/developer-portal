@@ -55,11 +55,22 @@ const ChatbotLayout = ({
         zIndex: 1000,
       }}
     >
-      <ChatButton
-        aria-describedby={id}
-        isChatOpen={open}
-        onOpenChat={handleClick}
-      />
+      <Box sx={{ display: { lg: 'none' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='medium'
+        />
+      </Box>
+      <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='large'
+        />
+      </Box>
       <Popover
         id={id}
         open={open}
