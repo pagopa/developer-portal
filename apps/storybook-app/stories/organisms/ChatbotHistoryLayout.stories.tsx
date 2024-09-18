@@ -17,7 +17,7 @@ export const NewChatSession: StoryObj<typeof ChatbotHistoryLayout> = {
       pages: 5,
       size: 44,
     },
-    getSessions: (page: number) => {
+    getSessionsByPage: (page: number) => {
       console.log(page);
       return null;
     },
