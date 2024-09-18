@@ -56,11 +56,10 @@ const TutorialTemplate = ({
         </EContainer>
       )}
       <FragmentProvider>
-        <Box
+        <EContainer
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
-            maxWidth: '1156px',
             margin: '0 auto',
             paddingY: '56px',
           }}
@@ -113,7 +112,7 @@ const TutorialTemplate = ({
               <PartRendererMenu parts={parts ?? []} />
             </Box>
           </Box>
-        </Box>
+        </EContainer>
       </FragmentProvider>
       {relatedLinks && (
         <RelatedLinks

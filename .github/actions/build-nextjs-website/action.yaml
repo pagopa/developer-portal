@@ -96,4 +96,7 @@ runs:
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
       shell: bash
-      run: npm run build -w nextjs-website
+      run: |
+        npm run build -w nextjs-website
+        echo "Available storage after build:"
+        sudo df -h
