@@ -10,7 +10,11 @@ import { useUser } from '@/helpers/user.helper';
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
-  const { paginatedSessions, getSessions } = useChatbot(true);
+  const { paginatedSessions, getSessionsByPage } = useChatbot(true);
+
+  if (!process.env.NEXT_PUBLIC_CHATBOT_ACTIVE) {
+    return null;
+  }
 
   if (loading || !user || !paginatedSessions) {
     return null;
@@ -30,7 +34,7 @@ const ChatbotHistory = () => {
         </Typography>
         <ChatbotHistoryLayout
           paginatedSessions={paginatedSessions}
-          getSessions={getSessions}
+          getSessionsByPage={getSessionsByPage}
         />
       </Stack>
     </>

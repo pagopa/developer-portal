@@ -5,15 +5,15 @@ import { useEffect } from 'react';
 
 type ChatbotHistoryLayoutProps = {
   paginatedSessions: PaginatedSessions;
-  getSessions: (page: number) => null;
+  getSessionsByPage: (page: number) => null;
 };
 
 const ChatbotHistoryLayout = ({
   paginatedSessions,
-  getSessions,
+  getSessionsByPage,
 }: ChatbotHistoryLayoutProps) => {
   useEffect(() => {
-    getSessions(1);
+    getSessionsByPage(1);
   });
 
   return (
@@ -22,7 +22,7 @@ const ChatbotHistoryLayout = ({
       <Pagination
         count={paginatedSessions.pages}
         page={paginatedSessions.page}
-        onChange={(_, page) => getSessions(page)}
+        onChange={(_, page) => getSessionsByPage(page)}
       />
     </Stack>
   );

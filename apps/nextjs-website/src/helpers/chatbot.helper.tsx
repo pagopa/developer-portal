@@ -77,7 +77,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
-  const getSessions = (page: number) => {
+  const getSessionsByPage = (page: number) => {
     getChatbotHistory(page, HISTORY_PAGE_SIZE).then((response) =>
       setPaginatedSessions(response)
     );
@@ -92,6 +92,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendQuery,
     sendFeedback,
     paginatedSessions,
-    getSessions,
+    getSessionsByPage,
   };
 };
