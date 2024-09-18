@@ -1,5 +1,11 @@
 # chatbot
 
+## 2.3.0
+
+### Minor Changes
+
+- a6f52bc: Indexing interpolates the website url of the correct environment
+
 ## 2.2.0
 
 ### Minor Changes
