@@ -1,7 +1,8 @@
-import { ApiPageProps } from '@/components/molecules/ApiSection/ApiSection';
+import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { Product } from '@/lib/types/product';
+import { SEO } from '@/lib/types/seo';
 import { Webinar } from '@/lib/types/webinar';
 import {
   Article,
@@ -199,17 +200,37 @@ export function makeSoftwareApplication(
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api: ApiPageProps
-): WithContext<SoftwareApplication> {
-  return makeSoftwareApplication({
-    name: api.specURLsName,
-    url: `${baseUrl}/${api.product.slug}/api/${api.apiSlug}`,
-  });
+  api?: ApiPageProps
+): WithContext<SoftwareApplication> | undefined {
+  return (
+    api &&
+    makeSoftwareApplication({
+      name: api.specURLsName,
+      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
+    })
+  );
 }
 
-export function makeArticle(article: Omit<Article, '@type'>): Article {
+function makeArticle(article: Omit<Article, '@type'>): Article {
   return {
     '@type': 'Article',
     ...article,
   };
+}
+
+export function convertSeoToStructuredDataArticle(
+  seo?: SEO
+): WithContext<Article> | undefined {
+  return (
+    seo && {
+      '@context': 'https://schema.org',
+      ...makeArticle({
+        name: seo?.metaTitle,
+        description: seo?.metaDescription,
+        url: seo?.canonicalURL,
+        author: organization,
+        about: seo?.keywords,
+      }),
+    }
+  );
 }

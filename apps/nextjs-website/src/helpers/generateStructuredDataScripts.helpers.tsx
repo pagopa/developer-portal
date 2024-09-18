@@ -12,7 +12,7 @@ import { SEO } from '@/lib/types/seo';
 export function generateStructuredDataScripts(props: {
   breadcrumbsItems?: StructuredDataBreadcrumbList;
   seo?: SEO;
-  things?: Thing[];
+  things?: Array<Thing | undefined>;
 }) {
   const { breadcrumbsItems, seo, things } = props;
   const allBreadcrumbsItems = [homeBreadCrumb, ...(breadcrumbsItems || [])];
@@ -26,7 +26,7 @@ export function generateStructuredDataScripts(props: {
     makeBreadcrumbList(allBreadcrumbsItems) as Thing,
     makeWebPage(webPage) as Thing,
     organizationWithContext as Thing,
-    ...(things || []),
+    ...(things ? (things.filter(Boolean) as Thing[]) : []),
   ];
   return (
     <>
