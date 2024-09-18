@@ -1,6 +1,7 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Link, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import ChatbotHistoryNavigationLink from '@/components/atoms/ChatbotHistoryNavigationLink/ChatbotHistoryNavigationLink';
 
 export type SessionNavigationData = {
   sessionId: string;
@@ -17,7 +18,7 @@ const ChatbotHistoryNavigationMenu = ({
   nextSession,
 }: ChatbotHistoryNavigationMenuProps) => {
   const t = useTranslations();
-  const { palette, typography } = useTheme();
+  const { palette } = useTheme();
   const textColor = palette.text.secondary;
 
   return (
@@ -29,19 +30,10 @@ const ChatbotHistoryNavigationMenu = ({
           </Typography>
           <Stack direction='row' spacing={1}>
             <ArrowBack sx={{ color: textColor }} />
-            <Link
-              maxWidth='15rem'
-              textOverflow='ellipsis'
-              fontSize='1.125rem'
-              fontWeight='600'
-              fontFamily={typography.fontFamily}
-              color={textColor}
-              component='span'
-              noWrap
-              sx={{ cursor: 'pointer', textDecoration: 'none' }}
-            >
-              {previousSession.sessionTitle}
-            </Link>
+            <ChatbotHistoryNavigationLink
+              sessionId={previousSession.sessionId}
+              sessionTitle={previousSession.sessionTitle}
+            />
           </Stack>
         </Stack>
       )}
@@ -51,19 +43,10 @@ const ChatbotHistoryNavigationMenu = ({
             {t('chatBot.previousChat')}
           </Typography>
           <Stack direction='row' spacing={1}>
-            <Link
-              maxWidth='15rem'
-              textOverflow='ellipsis'
-              color={textColor}
-              fontSize='1.125rem'
-              fontWeight='600'
-              fontFamily={typography.fontFamily}
-              component='span'
-              noWrap
-              sx={{ cursor: 'pointer', textDecoration: 'none' }}
-            >
-              {nextSession.sessionTitle}
-            </Link>
+            <ChatbotHistoryNavigationLink
+              sessionId={nextSession.sessionId}
+              sessionTitle={nextSession.sessionTitle}
+            />
             <ArrowForward sx={{ color: textColor }} />
           </Stack>
         </Stack>
