@@ -16,7 +16,7 @@ const decorator: Decorator = (story) => (
 
 export default meta;
 
-export const NewChatSession: StoryObj<typeof ChatbotHistoryDetailLayout> = {
+export const Showcase: StoryObj<typeof ChatbotHistoryDetailLayout> = {
   args: {
     queries: chatbotChatSession,
     userName: 'John Doe',

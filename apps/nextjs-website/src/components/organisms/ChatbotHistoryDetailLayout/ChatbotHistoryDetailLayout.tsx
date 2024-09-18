@@ -54,12 +54,29 @@ const ChatbotHistoryDetailLayout = ({
         >
           {date}
         </Typography>
-        <Button variant='outlined' startIcon={<Delete />} color='error'>
+        <Button
+          variant='outlined'
+          startIcon={<Delete />}
+          color='error'
+          sx={{ display: { xs: 'none', xl: 'flex' } }}
+        >
           {t('chatBot.deleteChat')}
         </Button>
       </Stack>
       <ChatbotHistoryMessages queries={queries} userName={userName} />
-      <Box paddingTop='3rem'>
+      <Box
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          justifyContent: 'center',
+          paddingTop: '2rem',
+          width: '100%',
+        }}
+      >
+        <Button variant='outlined' startIcon={<Delete />} color='error'>
+          {t('chatBot.deleteChat')}
+        </Button>
+      </Box>
+      <Box paddingTop='3rem' sx={{ display: { xs: 'none', md: 'flex' } }}>
         <ChatbotHistoryNavigationMenu
           previousSession={previousSession}
           nextSession={nextSession}
