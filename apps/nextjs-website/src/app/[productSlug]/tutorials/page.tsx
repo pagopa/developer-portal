@@ -1,10 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getProductsSlugs,
-  getTutorialListPageProps,
-  getTutorials,
-} from '@/lib/api';
+import { getProductsSlugs, getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
