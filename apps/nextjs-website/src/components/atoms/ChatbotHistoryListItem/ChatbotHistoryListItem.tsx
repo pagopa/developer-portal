@@ -36,10 +36,10 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   return (
     <ListItem>
       <ListItemButton
-        sx={{ width: '100%' }}
+        sx={{ display: 'block', width: '100%' }}
         href={`/profile/${session.id}/session-history`}
       >
-        <Stack direction='column'>
+        <Stack direction='column' spacing={3}>
           <Typography
             color={palette.text.secondary}
             fontSize='0.875rem'
@@ -55,7 +55,6 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
             component='span'
             display='block'
             textOverflow='ellipsis'
-            maxWidth='50rem'
           >
             {session.title}
           </Typography>

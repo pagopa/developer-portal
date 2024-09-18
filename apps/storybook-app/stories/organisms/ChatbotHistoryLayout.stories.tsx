@@ -1,4 +1,5 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
+import { Box } from '@mui/material';
 import ChatbotHistoryLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { sessionsList } from '../fixtures/chatbotFixture';
 import React from 'react';
@@ -9,7 +10,7 @@ const meta: Meta<typeof ChatbotHistoryLayout> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ padding: '2rem' }}>{story()}</div>
+  <Box sx={{ padding: { xs: 0, md: '2rem' } }}>{story()}</Box>
 );
 
 export default meta;

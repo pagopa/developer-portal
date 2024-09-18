@@ -1,6 +1,6 @@
 import ChatbotHistoryList from '@/components/molecules/ChatbotHistoryList/ChatbotHistoryList';
 import { PaginatedSessions } from '@/lib/chatbot/queries';
-import { Pagination, Stack } from '@mui/material';
+import { Box, Pagination, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 type ChatbotHistoryLayoutProps = {
@@ -17,13 +17,17 @@ const ChatbotHistoryLayout = ({
   });
 
   return (
-    <Stack direction='column' alignItems='center'>
+    <Stack direction='column' display='block'>
       <ChatbotHistoryList sessionsList={paginatedSessions.items} />
-      <Pagination
-        count={paginatedSessions.pages}
-        page={paginatedSessions.page}
-        onChange={(_, page) => getSessionsByPage(page)}
-      />
+      <Box display='flex' marginY='1rem' width='100%' justifyContent='center'>
+        <Pagination
+          count={paginatedSessions.pages}
+          page={paginatedSessions.page}
+          onChange={(_, page) => getSessionsByPage(page)}
+          hidePrevButton={paginatedSessions.page === 1}
+          hideNextButton={paginatedSessions.page === paginatedSessions.pages}
+        />
+      </Box>
     </Stack>
   );
 };
