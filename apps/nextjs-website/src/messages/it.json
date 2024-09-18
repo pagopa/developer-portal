@@ -600,6 +600,10 @@
         "delete": "Elimina",
         "feedbackGiven": "Feedback\nregistrato",
         "copied": "Copiato",
-        "welcomeMessage": "Ciao, sono il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](/privacy-policy)."
+        "welcomeMessage": "Ciao, sono il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](/privacy-policy).",
+        "documentationUpdatedDisclaimer": {
+            "title": "Aggiornamento Documentazione",
+            "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti."
+        }
     }
 }

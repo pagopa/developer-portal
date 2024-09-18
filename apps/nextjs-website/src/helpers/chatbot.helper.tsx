@@ -85,6 +85,11 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
+  const getDocuentationUpdatedAt = () => {
+    // PENDING Chatbot API
+    return new Date();
+  };
+
   return {
     isLoaded,
     isAwaitingResponse,
@@ -93,5 +98,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendFeedback,
     paginatedSessions,
     getSessionsByPage,
+    getDocuentationUpdatedAt,
   };
 };
