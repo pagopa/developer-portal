@@ -13,7 +13,6 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
-CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
@@ -28,13 +27,12 @@ if (os.getenv('environment', 'dev') == 'local'):
   endpoint_url='http://localhost:8000'
 
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name',None)
+  profile_name = locals().get('profile_name', None)
 )
 
 dynamodb = boto3_session.resource(    
   'dynamodb',
-  region_name=CHB_AWS_DEFAULT_REGION,
-  endpoint_url=locals().get('endpoint_url',None)
+  endpoint_url=locals().get('endpoint_url', None)
 )
 
 chatbot_queries = dynamodb.Table(os.getenv('CHB_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
