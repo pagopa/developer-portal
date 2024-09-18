@@ -10,12 +10,14 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from typing import List, Tuple
 
-
+from bs4 import BeautifulSoup
+from selenium import webdriver
+import html2text
 import s3fs
 
 from llama_index.core import (
+    Settings,
     Document,
-    ServiceContext,
     VectorStoreIndex,
     StorageContext,
     load_index_from_storage
@@ -38,9 +40,9 @@ load_dotenv()
 AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
 CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
-CHB_REDIS_URL = os.getenv('CHB_REDIS_URL')
-WEBSITE_URL = os.getenv('WEBSITE_URL')
-REDIS_CLIENT = Redis.from_url(CHB_REDIS_URL, socket_timeout=10)
+REDIS_URL = os.getenv('CHB_REDIS_URL')
+WEBSITE_URL = os.getenv('CHB_WEBSITE_URL')
+REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
 
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": "index", "prefix": "index/vector"},
@@ -55,7 +57,7 @@ REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT)
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
 
-if not CHB_REDIS_URL:
+if not REDIS_URL:
     FS = s3fs.S3FileSystem(
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
@@ -137,7 +139,8 @@ def html2markdown(html):
 def create_documentation(
         website_url: str,
         documentation_dir: str = "./PagoPADevPortal/out/",
-    ) -> Tuple[List[Document], dict]:    
+    ) -> Tuple[List[Document], dict]:
+    
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
@@ -219,22 +222,19 @@ def build_automerging_index(
 
     logging.info("Storing vector index and hash table on AWS bucket S3..")
     
-    node_parser = HierarchicalNodeParser.from_defaults(
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
     )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
-    )
 
     assert documentation_dir is not None
-    documents, hash_table = create_documentation(documentation_dir)
+    print(documentation_dir)
+    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
 
     logging.info("Creating index...")
-    nodes = node_parser.get_nodes_from_documents(documents)
+    nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
     storage_context = StorageContext.from_defaults()
@@ -242,8 +242,7 @@ def build_automerging_index(
 
     automerging_index = VectorStoreIndex(
         leaf_nodes,
-        storage_context=storage_context,
-        service_context=merging_context
+        storage_context=storage_context
     )
     logging.info(f"Created index successfully.")
 
@@ -270,22 +269,18 @@ def build_automerging_index_s3(
 
     logging.info("Storing vector index and hash table on AWS bucket S3..")
     
-    node_parser = HierarchicalNodeParser.from_defaults(
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
-    )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
     )
 
     assert documentation_dir is not None
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
 
     logging.info("Creating index...")
-    nodes = node_parser.get_nodes_from_documents(documents)
+    nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
     storage_context = StorageContext.from_defaults()
@@ -293,8 +288,7 @@ def build_automerging_index_s3(
 
     automerging_index = VectorStoreIndex(
         leaf_nodes,
-        storage_context=storage_context,
-        service_context=merging_context
+        storage_context=storage_context
     )
     logging.info(f"Created index successfully.")
     if s3_bucket_name:
@@ -330,16 +324,12 @@ def build_automerging_index_redis(
     ) -> VectorStoreIndex:
 
     logging.info("Storing vector index and hash table on Redis..")
-    
-    node_parser = HierarchicalNodeParser.from_defaults(
+
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
-    )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
     )
     
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
@@ -352,7 +342,7 @@ def build_automerging_index_redis(
     logging.info("Hash table is now on Redis.")
 
     logging.info("Creating index...")
-    nodes = node_parser.get_nodes_from_documents(documents)
+    nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
     redis_vector_store = RedisVectorStore(
@@ -370,8 +360,7 @@ def build_automerging_index_redis(
 
     automerging_index = VectorStoreIndex(
         leaf_nodes,
-        storage_context=storage_context,
-        service_context=merging_context
+        storage_context=storage_context
     )
     logging.info("Created vector index successfully and stored on Redis.")
 
@@ -405,15 +394,11 @@ def load_automerging_index_s3(
         chunk_overlap: int,
     ) -> VectorStoreIndex:
     
-    node_parser = HierarchicalNodeParser.from_defaults(
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
-    )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
     )
 
     logging.info(f"{save_dir} directory exists! Loading vector index...")
@@ -421,8 +406,7 @@ def load_automerging_index_s3(
         StorageContext.from_defaults(
             persist_dir = f"{s3_bucket_name}/{save_dir}",
             fs = FS
-        ),
-        service_context=merging_context
+        )
     )
 
     logging.info("Loaded vector index successfully!")
@@ -438,15 +422,11 @@ def load_automerging_index(
         chunk_overlap: int,
     ) -> VectorStoreIndex:
     
-    node_parser = HierarchicalNodeParser.from_defaults(
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
-    )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
     )
 
     logging.info(f"{save_dir} directory exists! Loading vector index...")
@@ -454,8 +434,7 @@ def load_automerging_index(
     automerging_index = load_index_from_storage(
         StorageContext.from_defaults(
             persist_dir=save_dir
-        ),
-        service_context=merging_context,
+        )
     )
 
     logging.info("Loaded vector index successfully!")
@@ -470,15 +449,11 @@ def load_automerging_index_redis(
         chunk_overlap: int,
     ) -> VectorStoreIndex:
     
-    node_parser = HierarchicalNodeParser.from_defaults(
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+    Settings.node_parser = HierarchicalNodeParser.from_defaults(
         chunk_sizes=chunk_sizes, 
         chunk_overlap=chunk_overlap
-    )
-    
-    merging_context = ServiceContext.from_defaults(
-        llm=llm,
-        embed_model=embed_model,
-        node_parser=node_parser
     )
 
     redis_vector_store = RedisVectorStore(
@@ -496,7 +471,6 @@ def load_automerging_index_redis(
 
     automerging_index = load_index_from_storage(
         storage_context=storage_context,
-        service_context=merging_context
     )
 
     return automerging_index
