@@ -107,7 +107,10 @@ const Page = async ({ params }: { params: Params }) => {
       productToBreadcrumb(product),
       {
         name: seo?.metaTitle,
-        item: breadcrumbItemByProduct(product, ['guides']),
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productGuidePage || []),
+        ]),
       },
     ],
     seo: seo,
