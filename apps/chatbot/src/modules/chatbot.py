@@ -46,8 +46,8 @@ class Chatbot():
         if self.use_s3 and self.use_redis:
             raise Exception("Vector Store Error: use s3 or Redis or none of them.")
 
-        self.model = get_llm(params)
-        self.embed_model = get_embed_model(params)
+        self.model = get_llm()
+        self.embed_model = get_embed_model()
 
         if self.use_redis:
             self.index = load_automerging_index_redis(
@@ -84,12 +84,8 @@ class Chatbot():
         self.engine = get_automerging_query_engine(
             self.index,
             llm=self.model,
-            similarity_top_k=self.params["engine"]["similarity_top_k"],
-            similarity_cutoff=self.params["engine"]["similarity_cutoff"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            use_async=self.params["engine"]["use_async"],
-            streaming=self.params["engine"]["streaming"],
             verbose=self.params["engine"]["verbose"]
         )
 
