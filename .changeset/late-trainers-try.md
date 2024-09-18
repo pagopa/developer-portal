@@ -2,4 +2,4 @@
 "strapi-cms": patch
 ---
 
-add unique slugs
+Require all entries with a slug field to have it unique
