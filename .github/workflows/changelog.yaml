@@ -27,6 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci --audit=false --fund=false
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "devportal-portalsandtools-github-bot@pagopa.it"
+          git config --global user.name "devportal-portalsandtools-github-bot"
+        
       - name: Create PR for next release
         uses: changesets/action@f13b1baaa620fde937751f5d2c3572b9da32af23 # v1.4.5
         with:
@@ -36,5 +41,6 @@ jobs:
           commit: "Update CHANGELOG and prepare next release"
           title: "Push next releases"
           createGithubReleases: false
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_PAT }}
