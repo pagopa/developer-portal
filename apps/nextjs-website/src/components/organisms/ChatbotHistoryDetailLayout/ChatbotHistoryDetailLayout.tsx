@@ -27,6 +27,7 @@ type ChatbotHistoryDetailLayoutProps = {
   userName: string;
   previousSession?: SessionNavigationData;
   nextSession?: SessionNavigationData;
+  onDeleteChatSession: (sessionId: string) => null;
 };
 
 const ChatbotHistoryDetailLayout = ({
@@ -34,6 +35,7 @@ const ChatbotHistoryDetailLayout = ({
   userName,
   previousSession,
   nextSession,
+  onDeleteChatSession,
 }: ChatbotHistoryDetailLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -72,11 +74,19 @@ const ChatbotHistoryDetailLayout = ({
           width: '100%',
         }}
       >
-        <Button variant='outlined' startIcon={<Delete />} color='error'>
+        <Button
+          variant='outlined'
+          startIcon={<Delete />}
+          color='error'
+          onClick={() => onDeleteChatSession(queries[0].sessionId)}
+        >
           {t('chatBot.deleteChat')}
         </Button>
       </Box>
-      <Box paddingTop='3rem' sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Box
+        paddingTop='3rem'
+        sx={{ display: { xs: 'none', md: 'block' }, width: '100%' }}
+      >
         <ChatbotHistoryNavigationMenu
           previousSession={previousSession}
           nextSession={nextSession}

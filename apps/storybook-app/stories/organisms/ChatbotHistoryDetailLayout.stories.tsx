@@ -28,6 +28,10 @@ export const Showcase: StoryObj<typeof ChatbotHistoryDetailLayout> = {
       sessionId: '2',
       sessionTitle: mockText(5),
     },
+    onDeleteChatSession: (sessionId: string) => {
+      console.log(sessionId);
+      return null;
+    },
   },
   decorators: [decorator, nextIntlContextDecorator],
 };
