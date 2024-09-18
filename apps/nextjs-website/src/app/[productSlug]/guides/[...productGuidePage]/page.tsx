@@ -115,28 +115,26 @@ const Page = async ({ params }: { params: Params }) => {
   });
 
   return (
-    <>
-      {structuredData}
-      <ProductLayout
-        product={props.product}
-        path={props.path}
-        bannerLinks={props.bannerLinks}
-      >
-        <GitBookTemplate
-          menuName={props.guide.name}
-          breadcrumbs={[
-            ...productPageToBreadcrumbs(props.product, props.path, [
-              {
-                name: props.guide.name,
-                path: props.guide.path,
-              },
-            ]),
-          ]}
-          versionName={props.version.name}
-          {...props}
-        />
-      </ProductLayout>
-    </>
+    <ProductLayout
+      product={props.product}
+      path={props.path}
+      bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
+    >
+      <GitBookTemplate
+        menuName={props.guide.name}
+        breadcrumbs={[
+          ...productPageToBreadcrumbs(props.product, props.path, [
+            {
+              name: props.guide.name,
+              path: props.guide.path,
+            },
+          ]),
+        ]}
+        versionName={props.version.name}
+        {...props}
+      />
+    </ProductLayout>
   );
 };
 

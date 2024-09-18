@@ -76,29 +76,27 @@ const GuidesPage = async ({ params }: ProductParams) => {
   });
 
   return (
-    <>
-      {structuredData}
-      <ProductLayout
-        product={product}
-        path={path}
-        bannerLinks={bannerLinks}
-        showBreadcrumbs
-      >
-        {abstract && (
-          <Abstract
-            description={abstract?.description}
-            overline=''
-            title={abstract?.title}
-          />
-        )}
-        <Box>
-          {guidesSections?.length &&
-            guidesSections.map((props, index) => (
-              <GuidesSection key={index} {...props}></GuidesSection>
-            ))}
-        </Box>
-      </ProductLayout>
-    </>
+    <ProductLayout
+      product={product}
+      path={path}
+      bannerLinks={bannerLinks}
+      showBreadcrumbs
+      structuredData={structuredData}
+    >
+      {abstract && (
+        <Abstract
+          description={abstract?.description}
+          overline=''
+          title={abstract?.title}
+        />
+      )}
+      <Box>
+        {guidesSections?.length &&
+          guidesSections.map((props, index) => (
+            <GuidesSection key={index} {...props}></GuidesSection>
+          ))}
+      </Box>
+    </ProductLayout>
   );
 };
 

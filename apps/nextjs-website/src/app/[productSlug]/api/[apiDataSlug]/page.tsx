@@ -75,22 +75,20 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
 
   if (apiDataProps && product) {
     return (
-      <>
-        {structuredData}
-        <ProductLayout
+      <ProductLayout
+        product={product}
+        path={product.path.concat('/api')}
+        bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
+        showBreadcrumbs
+        structuredData={structuredData}
+      >
+        <ApiSection
+          apiSlug={params.apiDataSlug}
+          specURLs={apiDataProps.specURLs}
           product={product}
-          path={product.path.concat('/api')}
-          bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
-          showBreadcrumbs
-        >
-          <ApiSection
-            apiSlug={params.apiDataSlug}
-            specURLs={apiDataProps.specURLs}
-            product={product}
-            specURLsName={apiDataProps.specURLsName}
-          />
-        </ProductLayout>
-      </>
+          specURLsName={apiDataProps.specURLsName}
+        />
+      </ProductLayout>
     );
   }
   return <PageNotFound />;

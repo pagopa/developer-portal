@@ -58,16 +58,14 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
 
   if (apiDataListPageProps && product) {
     return (
-      <>
-        {structuredData}
-        <ProductLayout
-          product={product}
-          path={product.path.concat('/api')}
-          showBreadcrumbs
-        >
-          <ApiDataListTemplate {...apiDataListPageProps} />
-        </ProductLayout>
-      </>
+      <ProductLayout
+        product={product}
+        path={product.path.concat('/api')}
+        showBreadcrumbs
+        structuredData={structuredData}
+      >
+        <ApiDataListTemplate {...apiDataListPageProps} />
+      </ProductLayout>
     );
   }
 };
