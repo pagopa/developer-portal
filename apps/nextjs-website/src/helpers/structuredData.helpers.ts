@@ -23,10 +23,20 @@ import {
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
 export function productToBreadcrumb(product?: Product) {
+  const item = breadcrumbItemByProduct(product, ['overview']);
   return {
     name: product?.name,
-    item: product ? `${baseUrl}/${product.slug}/overview` : undefined,
+    item,
   };
+}
+
+export function breadcrumbItemByProduct(
+  product?: Product,
+  paths?: readonly string[]
+) {
+  return product?.slug && paths
+    ? [baseUrl, product.slug, ...paths].join('/')
+    : undefined;
 }
 
 export const organization: Organization = {
