@@ -6,13 +6,14 @@ import React from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
+import { isChatbotActive } from '@/config';
 
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
   const { paginatedSessions, getSessionsByPage } = useChatbot(true);
 
-  if (!process.env.NEXT_PUBLIC_CHATBOT_ACTIVE) {
+  if (!isChatbotActive) {
     return null;
   }
 

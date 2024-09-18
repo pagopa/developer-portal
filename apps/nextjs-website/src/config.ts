@@ -25,14 +25,20 @@ export const amplifyConfig = {
   authenticationFlowType: 'CUSTOM_AUTH',
 };
 
+const defaultItems = [
+  { label: 'personalData.title', href: '/profile/personal-data' },
+  { label: 'agreements.title', href: '/profile/agreements' },
+];
+
 export const profileMenuItems: readonly {
   readonly label: string;
   readonly href: string;
-}[] = [
-  { label: 'personalData.title', href: '/profile/personal-data' },
-  { label: 'agreements.title', href: '/profile/agreements' },
-  { label: 'chatbot.title', href: '/profile/chatbot-history' },
-];
+}[] = isChatbotActive
+  ? [
+      ...defaultItems,
+      { label: 'chatbot.title', href: '/profile/chatbot-history' },
+    ]
+  : defaultItems;
 
 export const snackbarAutoHideDurationMs = 10_000;
 
