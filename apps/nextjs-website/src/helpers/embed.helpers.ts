@@ -6,7 +6,7 @@ export function selectEmbedType(
   }
   if (
     url.match(
-      /https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})/
+      /https:\/\/([\w.-]+\.)?figma.com\/(file|proto|design)\/([0-9a-zA-Z]{22,128})/
     )
   ) {
     return 'figma';
