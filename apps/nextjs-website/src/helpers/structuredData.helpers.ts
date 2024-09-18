@@ -1,4 +1,5 @@
 import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { Product } from '@/lib/types/product';
@@ -10,6 +11,7 @@ import {
   Event,
   FAQPage,
   HowTo,
+  HowToStep,
   ImageObject,
   ListItem,
   MonetaryAmount,
@@ -147,6 +149,25 @@ export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
   };
 }
 
+export function quickStartToStructuredDataHowTo(
+  quickStart: QuickStartGuidePageProps
+): WithContext<HowTo> {
+  const steps: readonly HowToStep[] = quickStart.steps
+    ? quickStart.steps.map((step) => ({
+        '@type': 'HowToStep',
+        text: step.title,
+      }))
+    : [];
+  return makeHowTo({
+    name: quickStart.seo?.metaTitle,
+    description: quickStart.abstract?.description,
+    image:
+      quickStart.seo?.metaImage?.data?.attributes &&
+      mediaToImageObject(quickStart.seo.metaImage.data.attributes),
+    step: steps,
+  });
+}
+
 const defaultOffers: Offer = {
   '@type': 'Offer',
   price: '0',
@@ -230,6 +251,9 @@ export function convertSeoToStructuredDataArticle(
         url: seo?.canonicalURL,
         author: organization,
         about: seo?.keywords,
+        image:
+          seo?.metaImage?.data?.attributes &&
+          mediaToImageObject(seo.metaImage.data.attributes),
       }),
     }
   );
