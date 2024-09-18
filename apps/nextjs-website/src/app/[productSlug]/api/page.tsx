@@ -2,7 +2,10 @@ import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
-import { productToBreadcrumb } from '@/helpers/structuredData.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
@@ -46,11 +49,11 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(product),
       {
-        name: 'API', // TODO: add SEO page name
-        item: product ? `${baseUrl}/${product?.slug}/api` : undefined,
+        name: apiDataListPageProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['api']),
       },
     ],
-    seo: undefined, // TODO: add SEO
+    seo: apiDataListPageProps?.seo,
   });
 
   if (apiDataListPageProps && product) {
