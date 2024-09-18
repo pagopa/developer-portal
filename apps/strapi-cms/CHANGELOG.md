@@ -1,5 +1,15 @@
 # strapi-cms
 
+## 2.6.0
+
+### Minor Changes
+
+- e5eba2e: Add Seo component to every entity having a corresponding page
+
+### Patch Changes
+
+- 64292d4: Fix SEO for guide in strapi
+
 ## 2.5.0
 
 ### Minor Changes
