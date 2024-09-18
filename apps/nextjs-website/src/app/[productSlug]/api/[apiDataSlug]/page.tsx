@@ -5,9 +5,13 @@ import ProductLayout, {
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { ApiDataParams } from '@/lib/types/apiDataParams';
 import PageNotFound from '@/app/not-found';
+import { SEO } from '@/lib/types/seo';
 
 export type ApiPageProps = {
   readonly product?: Product;
@@ -18,6 +22,7 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateStaticParams() {
@@ -30,6 +35,10 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
   const ApiDataProps = await getApiData(params.apiDataSlug);
+
+  if (ApiDataProps?.seo) {
+    return makeMetadataFromStrapi(ApiDataProps.seo);
+  }
 
   return makeMetadata({
     title: ApiDataProps?.specURLsName,

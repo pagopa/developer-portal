@@ -42,6 +42,7 @@ export const makeWebinarFromStrapi = (
     endDateTime: webinar.attributes.endDatetime?.toISOString(),
     subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
     imagePath: webinar.attributes.coverImage.data.attributes.url,
+    seo: webinar.attributes.seo,
   };
 };
 

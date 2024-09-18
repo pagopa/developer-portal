@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiTutorialsCodec } from '../codecs/TutorialCodec';
+import { TutorialsCodec } from '../codecs/TutorialCodec';
 
 const baseTutorialJson = {
   id: 1,
@@ -80,6 +80,7 @@ const baseTutorialJson = {
       data: {
         id: 1,
         attributes: {
+          seo: null,
           name: 'CMS APP IO',
           shortName: 'IO',
           description: 'Test desc ',
@@ -170,50 +171,53 @@ const baseTutorialJson = {
 const makeStrapiResponseJson = () => ({
   data: [
     {
-      ...baseTutorialJson,
-      bannerLinks: [
-        {
-          id: 1,
-          title: 'test',
-          body: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: 'some desc',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          title: 'test 2',
-          body: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: 'some desc',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      relatedLinks: {
-        id: 9,
-        title: 'links',
-        links: [
+      attributes: {
+        ...baseTutorialJson.attributes,
+        bannerLinks: [
           {
-            id: 21,
-            text: 'click',
-            href: 'http://localhost:1337/admin/content-manager/collection-types/api::tutorial.tutorial/1?plugins[i18n][locale]=it',
-            target: '_blank',
+            id: 1,
+            title: 'test',
+            content: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'some desc',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: 'test 2',
+            content: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'some desc',
+                  },
+                ],
+              },
+            ],
           },
         ],
+        relatedLinks: {
+          id: 9,
+          title: 'links',
+          links: [
+            {
+              id: 21,
+              text: 'click',
+              href: 'http://localhost:1337/admin/content-manager/collection-types/api::tutorial.tutorial/1?plugins[i18n][locale]=it',
+              target: '_blank',
+            },
+          ],
+        },
+        seo: null,
       },
     },
   ],
@@ -243,6 +247,7 @@ const makeStrapiResponseJsonWithNull = () => ({
           data: {
             id: 1,
             attributes: {
+              seo: null,
               name: 'CMS APP IO',
               shortName: 'IO',
               description: 'Test desc ',
@@ -346,6 +351,7 @@ const makeStrapiResponseJsonWithNull = () => ({
         },
         relatedLinks: null,
         bannerLinks: [],
+        seo: null,
       },
     },
   ],
@@ -359,16 +365,16 @@ const makeStrapiResponseJsonWithNull = () => ({
   },
 });
 
-describe('StrapiTutorialCodec', () => {
+describe('TutorialCodec', () => {
   it('should decode strapi tutorials', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiTutorialsCodec.decode(jsonFromStrapi);
+    const actual = TutorialsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should decode strapi tutorials with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseJsonWithNull();
-    const actual = StrapiTutorialsCodec.decode(jsonFromStrapi);
+    const actual = TutorialsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

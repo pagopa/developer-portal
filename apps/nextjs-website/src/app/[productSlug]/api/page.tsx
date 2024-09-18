@@ -2,8 +2,11 @@ import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
-import { makeMetadata } from '@/helpers/metadata.helpers';
 import { productToBreadcrumb } from '@/helpers/structuredData.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
@@ -23,6 +26,10 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const apiDataListPage = await getApiDataListPages(params?.productSlug);
+
+  if (apiDataListPage?.seo) {
+    return makeMetadataFromStrapi(apiDataListPage.seo);
+  }
 
   return makeMetadata({
     title: apiDataListPage?.hero.title,

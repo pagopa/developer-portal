@@ -13,6 +13,9 @@ const makeStrapiSolutionsPopulate = () =>
           products: '*',
         },
       },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
+      },
       products: {
         populate: ['logo'],
       },
@@ -21,14 +24,7 @@ const makeStrapiSolutionsPopulate = () =>
       },
       webinars: webinarPopulate,
       caseHistories: {
-        populate: [
-          'case_histories',
-          'case_histories.image',
-          'case_histories.parts',
-          'case_histories.parts.backgroundImage',
-          'case_histories.products',
-          'case_histories.products.logo',
-        ],
+        populate: ['case_histories', 'case_histories.image'],
       },
     },
   });
