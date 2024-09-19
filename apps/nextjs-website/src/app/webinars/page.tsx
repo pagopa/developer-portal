@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -25,7 +27,22 @@ const NotSsrWebinarsTemplate = dynamic(
 const Webinars = async () => {
   const webinars = await getVisibleInListWebinars();
 
-  return <NotSsrWebinarsTemplate webinars={webinars} />;
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: 'Webinars',
+        item: getItemFromPaths(['webinars']),
+      },
+    ],
+    seo: undefined, // TODO: add SEO when available
+  });
+
+  return (
+    <>
+      {structuredData}
+      <NotSsrWebinarsTemplate webinars={webinars} />
+    </>
+  );
 };
 
 export default Webinars;
