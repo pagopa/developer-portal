@@ -1,7 +1,7 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
-import { Box, Button, Stack, useTheme } from '@mui/material';
+import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
@@ -12,6 +12,8 @@ import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatCha
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
 import { baseUrl } from '@/config';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
 type ChatProps = {
   queries: Query[];
@@ -20,6 +22,7 @@ type ChatProps = {
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
+  error: ChatbotErrorsType | null;
 };
 
 const Chat = ({
@@ -29,6 +32,7 @@ const Chat = ({
   scrollToBottom,
   isAwaitingResponse,
   isChatbotLoaded,
+  error,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -127,6 +131,22 @@ const Chat = ({
           </Stack>
         ))}
         {isAwaitingResponse && <ChatCatbotWriting />}
+        {error && (
+          <Paper
+            elevation={4}
+            sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
+          >
+            <AlertPart
+              title={t('chatBot.errors.title')}
+              text={t(`chatBot.errors.${error}`)}
+              severity={'error'}
+              alertStyle={{
+                backgroundColor: palette.background.paper,
+                marginBottom: 0,
+              }}
+            />
+          </Paper>
+        )}
       </Stack>
       <ChatInputText onSubmit={onSendQuery} sendDisabled={isAwaitingResponse} />
     </>
