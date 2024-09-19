@@ -34,7 +34,7 @@ jobs:
           version: npm run version
           publish: npm run tag
           commit: "Update CHANGELOG and prepare next release"
-          title: "Push next releases"
+          title: ${{ vars.CHANGESET_PR_TITLE }}
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_PAT }}
