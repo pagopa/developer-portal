@@ -23,11 +23,13 @@ const chatbotApiEnv = pipe(
 export const sendChatbotQuery = (query: QueryInput) =>
   postQuery(query)(chatbotApiEnv);
 
-export const getChatbotQueries = (sessionId: string) =>
-  getQueries(qs.stringify({ sessionId: sessionId }))(chatbotApiEnv);
+export const getChatbotQueries = (sessionId?: string) =>
+  getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || '')(
+    chatbotApiEnv
+  );
 
 export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
   patchFeedback(feedback, queryId)(chatbotApiEnv);
 
-export const getChatbotHistory = (page: number, pageSize: number) =>
+export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);
