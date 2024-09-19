@@ -12,7 +12,7 @@ const ChatbotHistoryLayout = ({
   getSessionsByPage,
 }: ChatbotHistoryLayoutProps) => {
   return (
-    <Stack direction='column' display='block'>
+    <Stack direction='column'>
       <ChatbotHistoryList sessionsList={paginatedSessions.items} />
       <Box display='flex' marginY='1rem' width='100%' justifyContent='center'>
         <Pagination

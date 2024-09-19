@@ -5,7 +5,7 @@ import {
   sendChatbotFeedback,
   getChatbotSessionsHistory,
   getChatbotQueries,
-} from '@/lib/chatbot/chatbot';
+} from '@/lib/chatbotApi';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
 const HISTORY_PAGE_SIZE = 10;
@@ -14,6 +14,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
+    useState(true);
   const [paginatedSessions, setPaginatedSessions] =
     useState<PaginatedSessions | null>(null);
 
@@ -70,12 +72,14 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const getSessionsByPage = (page: number) => {
-    getChatbotSessionsHistory(page, HISTORY_PAGE_SIZE).then((response) =>
-      setPaginatedSessions(response)
-    );
+    getChatbotSessionsHistory(page, HISTORY_PAGE_SIZE)
+      .then((response) => setPaginatedSessions(response))
+      .finally(() => setPaginatedSessionsLoading(false));
 
     return null;
   };
+
+  const getSession = (sessionId: string) => getChatbotQueries(sessionId);
 
   return {
     isLoaded,
@@ -85,5 +89,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendFeedback,
     paginatedSessions,
     getSessionsByPage,
+    getSession,
+    paginatedSessionsLoading,
   };
 };

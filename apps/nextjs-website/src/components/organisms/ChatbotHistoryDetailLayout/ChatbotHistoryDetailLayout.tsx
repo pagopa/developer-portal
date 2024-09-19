@@ -47,7 +47,7 @@ const ChatbotHistoryDetailLayout = ({
 
   return (
     <Stack direction='column' spacing={2}>
-      <Typography variant='h2'>{queries[0].question}</Typography>
+      <Typography variant='h4'>{queries[0].question}</Typography>
       <Stack direction='row' justifyContent='space-between'>
         <Typography
           component='span'

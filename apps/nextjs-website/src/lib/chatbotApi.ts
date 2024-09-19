@@ -6,7 +6,7 @@ import {
   getSessions,
   patchFeedback,
   postQuery,
-} from '@/lib/chatbot/chatbotApi';
+} from '@/lib/chatbot/chatbotFetch';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';

@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
@@ -55,6 +55,7 @@ const ChatHistoryMessage = ({
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
+            sx={{ overflow: 'visible' }}
           />
         ) : (
           <IconWrapper
@@ -62,6 +63,7 @@ const ChatHistoryMessage = ({
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
+            sx={{ overflow: 'visible' }}
           />
         )}
         <Typography

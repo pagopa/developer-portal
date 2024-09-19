@@ -1,4 +1,4 @@
-import { getQueries, postQuery } from '@/lib/chatbot/chatbotApi';
+import { getQueries, postQuery } from '@/lib/chatbot/chatbotFetch';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
