@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Stack, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
@@ -12,6 +12,10 @@ const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
   const { paginatedSessions, getSessionsByPage } = useChatbot(true);
+
+  useEffect(() => {
+    getSessionsByPage(1);
+  });
 
   if (!isChatbotActive) {
     return null;
