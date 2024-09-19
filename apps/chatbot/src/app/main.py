@@ -6,6 +6,7 @@ import os
 import uuid
 import boto3
 import datetime
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException
 from starlette.middleware.cors import CORSMiddleware
@@ -68,7 +69,7 @@ async def query_creation (query: Query):
   }
 
   try:
-    db_response = chatbot_queries.put_item(Item = body)
+    chatbot_queries.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail='db error')
   return body
