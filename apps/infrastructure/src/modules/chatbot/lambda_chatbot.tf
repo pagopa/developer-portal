@@ -5,12 +5,20 @@ locals {
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
     CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-    WEBSITE_URL               = "https://${var.dns_domain_name}"
+    CHB_WEBSITE_URL           = "https://${var.dns_domain_name}"
     CORS_DOMAINS              = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
     ENVIRONMENT               = var.environment
     LOG_LEVEL                 = "INFO"
     LLAMA_INDEX_CACHE_DIR     = "/tmp"
     NLTK_DATA                 = "_static/nltk_cache/"
+
+    # Be extremely careful when changing the provider
+    # both the generation and the embedding models would be changed
+    # embeddings size change would break the application and requires reindexing
+    CHB_PROVIDER       = "aws"
+    CHB_MODEL_ID       = "mistral.mistral-large-2402-v1:0"
+    CHB_EMBED_MODEL_ID = "cohere.embed-multilingual-v3"
+    CHB_GOOGLE_API_KEY = module.google_api_key_ssm_parameter.ssm_parameter_name
   }
 }
 
@@ -69,4 +77,15 @@ resource "aws_security_group_rule" "lambda_egress" {
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.lambda.id
+}
+
+
+module "google_api_key_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/google_api_key"
+  value                = "Set the Google Gemini API Key in the AWS console"
+  type                 = "SecureString"
+  secure_type          = true
+  ignore_value_changes = true
 }
