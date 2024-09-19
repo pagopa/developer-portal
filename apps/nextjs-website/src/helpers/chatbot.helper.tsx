@@ -81,9 +81,9 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const getSessionsByPage = (page: number) => {
-    getChatbotHistory(page, HISTORY_PAGE_SIZE).then((response) =>
-      setPaginatedSessions(response)
-    ).finally(() => setPaginatedSessionsLoading(false));;
+    getChatbotHistory(page, HISTORY_PAGE_SIZE)
+      .then((response) => setPaginatedSessions(response))
+      .finally(() => setPaginatedSessionsLoading(false));
 
     return null;
   };
