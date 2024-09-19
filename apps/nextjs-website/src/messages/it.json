@@ -90,7 +90,8 @@
         },
         "insert": "Inserisci",
         "chatbot": {
-            "title": "Cronologia Chatbot"
+            "title": "Cronologia Chatbot",
+            "noSessions": "Nessuna chat trovata"
         }
     },
     "webinar": {
