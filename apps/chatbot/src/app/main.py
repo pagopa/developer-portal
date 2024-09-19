@@ -65,11 +65,10 @@ async def healthz ():
 @app.post("/queries")
 async def query_creation (
   query: Query, 
-  authorizationHeader: Annotated[str | None, Header()] = None
+  authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorizationHeader)
+  userId = current_user_id(authorization)
   session = find_or_create_session(userId)
-
   answer = chatbot.generate(query.question)
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -94,13 +93,13 @@ async def query_creation (
   return body
 
 
-def current_user_id(authorizationHeader: str):
-  if authorizationHeader is None:
+def current_user_id(authorization: str):
+  if authorization is None:
     # TODO remove fake user and return None
     # return None
     return '-'
   else:
-    token = authorizationHeader.split(' ')[1]
+    token = authorization.split(' ')[1]
     decoded = jwt.decode(
       token, 
       algorithms=["RS256"], 
@@ -147,9 +146,9 @@ async def query_fetching(id: str):
 # retrieve sessions of current user
 @app.get("/sessions")
 async def sessions_fetching(
-  authorizationHeader: Annotated[str | None, Header()] = None
+  authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorizationHeader)
+  userId = current_user_id(authorization)
 
   try:
     db_response = table_sessions.query(
@@ -162,9 +161,9 @@ async def sessions_fetching(
 @app.get("/queries")
 async def queries_fetching(
   sessionId: str | None = None,
-  authorizationHeader: Annotated[str | None, Header()] = None
+  authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorizationHeader)
+  userId = current_user_id(authorization)
   if sessionId is None:
     sessionId = last_session_id(userId)
 
