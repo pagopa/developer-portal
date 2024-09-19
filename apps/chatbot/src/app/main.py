@@ -6,7 +6,9 @@ import os
 import uuid
 import boto3
 import datetime
+import jwt
 from typing import Annotated
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
 from starlette.middleware.cors import CORSMiddleware
@@ -74,10 +76,9 @@ async def query_creation (query: Query):
   }
 
   try:
-    db_response = table_queries.put_item(Item = body)
+    table_queries.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail='db error')
-  raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
+    raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return body
 
 @app.post("/sessions")
@@ -98,7 +99,7 @@ async def sessions_creation (authorization: Annotated[str | None, Header()] = No
     "createdAt": now
   }
   try:
-    db_response = table_sessions.put_item(Item = body)
+    table_sessions.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
       raise HTTPException(status_code=422, detail=f"[POST /sessions] error: {e}")
   return body
