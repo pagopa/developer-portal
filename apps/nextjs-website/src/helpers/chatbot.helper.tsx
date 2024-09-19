@@ -3,30 +3,25 @@ import { useEffect, useState } from 'react';
 import {
   sendChatbotQuery,
   sendChatbotFeedback,
+  getChatbotQueries,
   getChatbotHistory,
 } from '@/lib/chatbot';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
 const HISTORY_PAGE_SIZE = 10;
 
-export type ChatbotErrorsType =
-  | 'serviceDown'
-  | 'queryFailed'
-  | 'feedbackFailed';
-
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
+    useState(true);
   const [paginatedSessions, setPaginatedSessions] =
     useState<PaginatedSessions | null>(null);
-  const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
-    null
-  );
 
   useEffect(() => {
-    if (sessionId || !isUserAuthenticated) {
+    if (!isUserAuthenticated) {
       return;
     }
 
@@ -50,8 +45,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     setQueries([
       ...queries,
       {
-        id: '',
-        sessionId: '',
+        id: '0',
+        sessionId: '0',
         question: queryMessage,
         queriedAt: queriedAt,
         badAnswer: false,
@@ -63,15 +58,10 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       sessionId: sessionId || '',
       question: queryMessage,
       queriedAt: queriedAt,
-    })
-      .then((response) => {
-        setIsAwaitingResponse(false);
-        setQueries([...queries, response]);
-      })
-      .catch(() => {
-        setIsAwaitingResponse(false);
-        setChatbotError('queryFailed');
-      });
+    }).then((response) => {
+      setIsAwaitingResponse(false);
+      setQueries([...queries, response]);
+    });
     return null;
   };
 
@@ -93,10 +83,12 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const getSessionsByPage = (page: number) => {
     getChatbotHistory(page, HISTORY_PAGE_SIZE).then((response) =>
       setPaginatedSessions(response)
-    );
+    ).finally(() => setPaginatedSessionsLoading(false));;
 
     return null;
   };
+
+  const getSession = (sessionId: string) => getChatbotQueries(sessionId);
 
   return {
     isLoaded,
@@ -106,6 +98,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendFeedback,
     paginatedSessions,
     getSessionsByPage,
-    chatbotError,
+    getSession,
+    paginatedSessionsLoading,
   };
 };
