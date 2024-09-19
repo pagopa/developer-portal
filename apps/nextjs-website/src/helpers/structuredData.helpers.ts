@@ -42,6 +42,10 @@ export function breadcrumbItemByProduct(
     : undefined;
 }
 
+export function getItemFromPaths(paths?: readonly string[]) {
+  return paths ? [baseUrl, ...paths].join('/') : undefined;
+}
+
 export const organization: Organization = {
   '@type': 'Organization',
   ...organizationInfo,
