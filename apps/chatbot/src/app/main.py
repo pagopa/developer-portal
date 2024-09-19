@@ -112,7 +112,11 @@ async def sessions_fetching():
   return body
 
 @app.get("/queries")
-async def queries_fetching(sessionId: str):
+async def queries_fetching(sessionId: str | None = None):
+  if sessionId is None:
+    # TODO: retrieve last user session
+    # sessionId = lastSessionId(userId)
+    sessionId = '1'
   try:
     db_response = chatbot_queries.query(
       KeyConditionExpression=Key("sessionId").eq(sessionId)
