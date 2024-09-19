@@ -18,6 +18,7 @@ from src.modules.chatbot import Chatbot
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
+chatbot = Chatbot(params, prompts)
 
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
 
@@ -62,19 +63,22 @@ async def healthz ():
   return {"message": "OK"}
 
 @app.post("/queries")
-async def query_creation (query: Query):
-  chatbot = Chatbot(params, prompts)
+async def query_creation (
+  query: Query, 
+  authorizationHeader: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorizationHeader)
+  session = find_or_create_session(userId)
 
   answer = chatbot.generate(query.question)
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-  # TODO: calculate sessionId
   if query.queriedAt is None:
     queriedAt = now
 
   body = {
     "id": f'{uuid.uuid4()}',
-    "sessionId": "1",
+    "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
     "createdAt": now,
@@ -87,29 +91,42 @@ async def query_creation (query: Query):
     raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return body
 
-@app.post("/sessions")
-async def sessions_creation (authorization: Annotated[str | None, Header()] = None):
-  # TODO: calculate title
-  if authorization:
-    token = authorization.split(' ')[1]
-    decoded = jwt.decode(token, algorithms=["RS256"], options={"verify_signature": False})
-    userId = decoded['cognito:username']
-  else:
-    userId = "-"
 
+def current_user_id(authorizationHeader: str):
+  if authorizationHeader is None:
+    return None
+  else:
+    token = authorizationHeader.split(' ')[1]
+    decoded = jwt.decode(
+      token, 
+      algorithms=["RS256"], 
+      options={"verify_signature": False}
+    )
+    return decoded['cognito:username']
+
+
+def find_or_create_session(userId: str):
+  # TODO: return if userId is None
+  if userId is None:
+    userId = '-'
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  # TODO: calculate title
+  # TODO: find last session based on SESSION_MAX_DURATION_MINUTES
+  # TODO: if it's None, create it.
   body = {
-    "id": f'{uuid.uuid4()}',
-    "title": "session",
+    "id": '1',#f'{uuid.uuid4()}',
+    "title": "last session",
     "userId": userId,
     "createdAt": now
   }
   try:
     table_sessions.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
-      raise HTTPException(status_code=422, detail=f"[POST /sessions] error: {e}")
+    raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+
   return body
 
+  
 @app.get("/queries/{id}")
 async def query_fetching(id: str):
   # TODO: dynamoDB integration
