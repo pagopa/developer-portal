@@ -19,7 +19,6 @@ params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
 class Query(BaseModel):
-  sessionId: str | None = None
   question: str
   queriedAt: str | None = None
 
