@@ -14,9 +14,10 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
-
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
+
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
 
 class Query(BaseModel):
   question: str
@@ -25,14 +26,17 @@ class Query(BaseModel):
 if (os.getenv('environment', 'dev') == 'local'):
   profile_name='dummy'
   endpoint_url='http://localhost:8000'
+  region_name = AWS_DEFAULT_REGION
 
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None)
+  profile_name = locals().get('profile_name', None),
+  region_name=locals().get('region_name', None)
 )
 
 dynamodb = boto3_session.resource(    
   'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None)
+  endpoint_url=locals().get('endpoint_url', None),
+  region_name=locals().get('region_name', None),
 )
 
 chatbot_queries = dynamodb.Table(os.getenv('CHB_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
