@@ -69,7 +69,7 @@ async def query_creation (query: Query):
   # TODO: body validation
 
   try:
-    db_response = chatbot_queries.put_item(Item = body)
+    chatbot_queries.put_item(Item = body)
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail='db error')
   return body
