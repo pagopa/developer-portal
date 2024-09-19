@@ -39,7 +39,8 @@ dynamodb = boto3_session.resource(
   region_name=locals().get('region_name', None),
 )
 
-chatbot_queries = dynamodb.Table(os.getenv('CHB_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
+queries_table_name = f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
+chatbot_queries = dynamodb.Table(queries_table_name)
 
 app = FastAPI()
 app.add_middleware(
@@ -62,13 +63,16 @@ async def query_creation (query: Query):
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   # TODO: calculate sessionId
+  if query.queriedAt is None:
+    queriedAt = now
+
   body = {
     "id": f'{uuid.uuid4()}',
     "sessionId": "1",
     "question": query.question,
     "answer": answer,
     "createdAt": now,
-    "queriedAt": query.queriedAt
+    "queriedAt": queriedAt
   }
 
   try:
