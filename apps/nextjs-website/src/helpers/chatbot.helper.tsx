@@ -3,11 +3,19 @@ import { useEffect, useState } from 'react';
 import { sendChatbotQuery, sendChatbotFeedback } from '@/lib/chatbot';
 import { Query } from '@/lib/chatbot/queries';
 
+export type ChatbotErrorsType =
+  | 'serviceDown'
+  | 'queryFailed'
+  | 'feedbackFailed';
+
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
+    null
+  );
 
   useEffect(() => {
     if (sessionId || !isUserAuthenticated) {
@@ -47,10 +55,15 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       sessionId: sessionId || '',
       question: queryMessage,
       queriedAt: queriedAt,
-    }).then((response) => {
-      setIsAwaitingResponse(false);
-      setQueries([...queries, response]);
-    });
+    })
+      .then((response) => {
+        setIsAwaitingResponse(false);
+        setQueries([...queries, response]);
+      })
+      .catch(() => {
+        setIsAwaitingResponse(false);
+        setChatbotError('queryFailed');
+      });
     return null;
   };
 
@@ -75,5 +88,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     queries,
     sendQuery,
     sendFeedback,
+    chatbotError,
   };
 };

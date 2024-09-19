@@ -16,33 +16,36 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
-
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+
 class Query(BaseModel):
-  sessionId: str | None = None
   question: str
   queriedAt: str | None = None
 
 if (os.getenv('environment', 'dev') == 'local'):
   profile_name='dummy'
   endpoint_url='http://localhost:8000'
+  region_name = AWS_DEFAULT_REGION
 
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None)
+  profile_name = locals().get('profile_name', None),
+  region_name=locals().get('region_name', None)
 )
 
 dynamodb = boto3_session.resource(    
   'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None)
+  endpoint_url=locals().get('endpoint_url', None),
+  region_name=locals().get('region_name', None),
 )
 
 table_queries = dynamodb.Table(
-  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot-dev')}-queries"
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
 )
 table_sessions = dynamodb.Table(
-  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot-dev')}-sessions"
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
 )
 
 app = FastAPI()
@@ -66,13 +69,16 @@ async def query_creation (query: Query):
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   # TODO: calculate sessionId
+  if query.queriedAt is None:
+    queriedAt = now
+
   body = {
     "id": f'{uuid.uuid4()}',
     "sessionId": "1",
     "question": query.question,
     "answer": answer,
     "createdAt": now,
-    "queriedAt": query.queriedAt
+    "queriedAt": queriedAt
   }
 
   try:
@@ -132,7 +138,11 @@ async def sessions_fetching():
   return body
 
 @app.get("/queries")
-async def queries_fetching(sessionId: str):
+async def queries_fetching(sessionId: str | None = None):
+  if sessionId is None:
+    # TODO: retrieve last user session
+    # sessionId = lastSessionId(userId)
+    sessionId = '1'
   try:
     db_response = table_queries.query(
       KeyConditionExpression=Key("sessionId").eq(sessionId)
