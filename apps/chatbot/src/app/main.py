@@ -22,6 +22,7 @@ chatbot = Chatbot(params, prompts)
 
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
 
+
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
@@ -165,7 +166,7 @@ async def queries_fetching(sessionId: str | None = None):
       KeyConditionExpression=Key("sessionId").eq(sessionId)
     )
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail='db error')
+    raise HTTPException(status_code=422, detail=f"[queries_fetching] error: {e}")
   return db_response['Items']
 
 @app.patch("/queries/{id}")
