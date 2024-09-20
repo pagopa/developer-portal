@@ -12,6 +12,7 @@ import {
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
 import { useTranslations } from 'next-intl';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
 type ChatbotLayoutProps = {
   queries: Query[];
@@ -19,6 +20,7 @@ type ChatbotLayoutProps = {
   onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
+  error: ChatbotErrorsType | null;
 };
 
 const ChatbotLayout = ({
@@ -27,6 +29,7 @@ const ChatbotLayout = ({
   onSendFeedback,
   isAwaitingResponse,
   isChatbotLoaded,
+  error,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -55,11 +58,22 @@ const ChatbotLayout = ({
         zIndex: 1000,
       }}
     >
-      <ChatButton
-        aria-describedby={id}
-        isChatOpen={open}
-        onOpenChat={handleClick}
-      />
+      <Box sx={{ display: { lg: 'none' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='medium'
+        />
+      </Box>
+      <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='large'
+        />
+      </Box>
       <Popover
         id={id}
         open={open}
@@ -122,6 +136,7 @@ const ChatbotLayout = ({
             isAwaitingResponse={isAwaitingResponse}
             isChatbotLoaded={isChatbotLoaded}
             scrollToBottom
+            error={error}
           />
         </Stack>
       </Popover>
