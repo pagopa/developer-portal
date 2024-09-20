@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Show statsSource attribute in Stats component
+Add error alerts in chatbot chat
