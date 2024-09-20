@@ -6,7 +6,7 @@ import { useUser } from '@/helpers/user.helper';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
 import { Box } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const ChatbotHistoryDetails = ({
   params,
