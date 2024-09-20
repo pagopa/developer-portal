@@ -61,6 +61,7 @@ const ChatbotHistoryDetailLayout = ({
           startIcon={<Delete />}
           color='error'
           sx={{ display: { xs: 'none', xl: 'flex' } }}
+          onClick={() => onDeleteChatSession(queries[0].sessionId)}
         >
           {t('chatBot.deleteChat')}
         </Button>

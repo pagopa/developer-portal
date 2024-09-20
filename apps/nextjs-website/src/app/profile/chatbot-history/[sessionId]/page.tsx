@@ -6,6 +6,7 @@ import { useUser } from '@/helpers/user.helper';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
 import { Box } from '@mui/material';
+import Router from 'next/router';
 
 const ChatbotHistoryDetails = ({
   params,
@@ -13,7 +14,7 @@ const ChatbotHistoryDetails = ({
   params: { sessionId: string };
 }) => {
   const { user } = useUser();
-  const { getSession } = useChatbot(true);
+  const { getSession, deleteSession } = useChatbot(true);
   const [session, setSession] = useState<Query[]>([]);
   const sessionId = params.sessionId;
   useEffect(() => {
@@ -21,6 +22,7 @@ const ChatbotHistoryDetails = ({
       setSession(response);
     });
   }, []);
+
   if (!user) {
     return null;
   }
@@ -36,7 +38,11 @@ const ChatbotHistoryDetails = ({
       <ChatbotHistoryDetailLayout
         queries={session}
         userName={`${user.attributes.given_name} `}
-        onDeleteChatSession={function (sessionId: string): null {
+        onDeleteChatSession={(sessionId: string) => {
+          deleteSession(sessionId).then(() =>
+            // eslint-disable-next-line functional/immutable-data
+            Router.push('/profile/chatbot-history')
+          );
           return null;
         }}
       />
