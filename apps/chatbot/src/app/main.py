@@ -156,7 +156,16 @@ async def sessions_fetching(
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
-  return db_response['Items']
+  
+  # TODO: pagination
+  result = {
+    "items": db_response['Items'],
+    "page": 1,
+    "pages": 1,
+    "size": len(db_response['Items']),
+    "total": len(db_response['Items']),
+  }
+  return result
 
 @app.get("/queries")
 async def queries_fetching(
@@ -174,7 +183,16 @@ async def queries_fetching(
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
-  return db_response['Items']
+
+  # TODO: pagination
+  result = {
+    "items": db_response['Items'],
+    "page": 1,
+    "pages": 1,
+    "size": len(db_response['Items']),
+    "total": len(db_response['Items']),
+  }
+  return result
 
 
 def last_session_id(userId: str):
