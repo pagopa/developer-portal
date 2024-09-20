@@ -19,7 +19,7 @@ locals {
     CHB_MODEL_ID              = "mistral.mistral-large-2402-v1:0"
     CHB_EMBED_MODEL_ID        = "cohere.embed-multilingual-v3"
     CHB_GOOGLE_API_KEY        = module.google_api_key_ssm_parameter.ssm_parameter_name
-    CHB_QUERY_TABLE_PREFIX    = var.CHB_QUERY_TABLE_PREFIX
+    CHB_QUERY_TABLE_PREFIX    = local.prefix
   }
 }
 

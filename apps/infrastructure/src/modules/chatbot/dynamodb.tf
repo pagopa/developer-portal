@@ -4,7 +4,7 @@ module "dynamodb_chatbot_queries" {
   billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = false
 
-  name                           = "${var.CHB_QUERY_TABLE_PREFIX}-queries"
+  name                           = "${local.prefix}-queries"
   hash_key                       = "sessionId"
   range_key                      = "id"
   server_side_encryption_enabled = true
@@ -27,7 +27,7 @@ module "dynamodb_chatbot_sessions" {
   billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = false
 
-  name                           = "${var.CHB_QUERY_TABLE_PREFIX}-sessions"
+  name                           = "${local.prefix}-sessions"
   hash_key                       = "userId"
   range_key                      = "id"
   server_side_encryption_enabled = true
