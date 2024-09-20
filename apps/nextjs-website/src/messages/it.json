@@ -288,6 +288,7 @@
         "requiredFieldError": "Questo campo non può essere vuoto",
         "emailFieldError": "Inserisci un indirizzo email valido",
         "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
+        "goToGuide": "Vai alla guida",
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",

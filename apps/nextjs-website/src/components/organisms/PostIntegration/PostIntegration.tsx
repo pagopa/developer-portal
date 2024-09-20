@@ -69,7 +69,7 @@ const PostIntegration = ({
       )}
       {guides && guides.length > 0 && (
         <EContainer>
-          <Box mt={5}>
+          <Box sx={{ marginTop: 5, width: '100%' }}>
             {guides &&
               guides.map((props, index) => (
                 <GuideCard
