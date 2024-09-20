@@ -119,9 +119,8 @@ variable "chatbot_ecs_redis" {
   }
 }
 
-variable "CHB_QUERY_TABLE_NAME" {
+variable "CHB_QUERY_TABLE_PREFIX" {
   type        = string
-  description = "dynamodb table name for queries"
-  default     = "chatbot-dev-queries"
+  description = "dynamodb table name prefix"
+  default     = "chatbot-dev"
 }
-
