@@ -21,7 +21,8 @@ const ChatbotHistoryDetails = ({
     getSession(sessionId).then((response) => {
       setSession(response);
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Needs to run only once
 
   if (!user) {
     return null;
