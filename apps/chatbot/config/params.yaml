@@ -8,17 +8,6 @@ vector_index:
   use_redis: True
   use_s3: False
 
-models:
-  model_id: amazon.titan-text-express-v1
-  emded_model_id: cohere.embed-multilingual-v3
-  temperature: 0.5
-  topP: 0.95
-  max_tokens: 784
-
 engine:
-  similarity_top_k: 5
-  similarity_cutoff: 0.55
   response_mode: compact
   verbose: False
-  use_async: True
-  streaming: False
