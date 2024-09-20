@@ -1,7 +1,7 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import { PaginationCodec } from './PaginationCodec';
-import { ProductCodec } from './ProductCodec';
+import { BaseProductCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
 
 const QuickStartGuideItemCodec = t.strict({
@@ -19,7 +19,7 @@ export const QuickStartGuideCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     description: t.string,
-    product: t.strict({ data: ProductCodec }),
+    product: t.strict({ data: BaseProductCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),
   }),
 });

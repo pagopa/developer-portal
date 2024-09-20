@@ -6,7 +6,7 @@ import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { MediaCodec } from './MediaCodec';
 import { LinkCodec } from './LinkCodec';
 import { WebinarCodec } from './WebinarsCodec';
-import { ProductCodec } from './ProductCodec';
+import { BaseProductCodec } from './ProductCodec';
 import { SEOCodec } from './SeoCodec';
 import { BaseSolutionCodec } from './SolutionsCodec';
 
@@ -73,7 +73,7 @@ export const HomepageCodec = t.strict({
           title: t.union([NullToUndefinedCodec, t.string]),
           productsTabName: t.string,
           products: t.strict({
-            data: t.array(ProductCodec),
+            data: t.array(BaseProductCodec),
           }),
           solutionsTabName: t.string,
           solutions: t.strict({

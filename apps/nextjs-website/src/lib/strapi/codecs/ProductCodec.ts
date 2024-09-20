@@ -3,6 +3,7 @@ import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const BaseProductAttributesCodec = t.strict({
   name: t.string,
@@ -18,11 +19,9 @@ export const ProductCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,
     t.strict({
-      name: t.string,
-      shortName: t.string,
       description: t.union([NullToUndefinedCodec, t.string]),
-      slug: t.string,
       logo: t.strict({ data: MediaCodec }),
+      bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
     }),
   ]),
 });
@@ -31,10 +30,9 @@ export const ProductsCodec = t.strict({
   data: t.array(ProductCodec),
 });
 
-export type Products = t.TypeOf<typeof ProductsCodec>;
-
 export type BaseProduct = t.TypeOf<typeof BaseProductCodec>;
 export type Product = t.TypeOf<typeof ProductCodec>;
+export type Products = t.TypeOf<typeof ProductsCodec>;
 
 const makeStrapiProductsPopulate = () =>
   qs.stringify({

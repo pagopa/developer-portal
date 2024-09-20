@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { MediaCodec } from './MediaCodec';
 import { PaginationCodec } from './PaginationCodec';
-import { ProductCodec } from './ProductCodec';
+import { BaseProductCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
 
 export const CaseHistoryCodec = t.strict({
@@ -18,7 +18,7 @@ export const CaseHistoryCodec = t.strict({
       t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
     ]),
     products: t.strict({
-      data: t.array(ProductCodec),
+      data: t.array(BaseProductCodec),
     }),
     parts: t.array(PartCodec),
   }),

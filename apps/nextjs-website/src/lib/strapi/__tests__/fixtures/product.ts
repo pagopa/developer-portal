@@ -1,4 +1,5 @@
 import { mediaVectorJson } from './media';
+import { bannerLinks } from '@/lib/strapi/__tests__/fixtures/bannerLinks';
 
 export const baseProductJson = {
   data: {
@@ -25,6 +26,7 @@ export const productJson = {
       locale: 'it',
       shortName: 'Firma con IO',
       logo: mediaVectorJson,
+      bannerLinks: bannerLinks,
     },
   },
 };

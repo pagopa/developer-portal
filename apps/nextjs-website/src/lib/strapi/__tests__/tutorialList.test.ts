@@ -98,7 +98,7 @@ const makeStrapiResponseJson = () => ({
   },
 });
 
-describe('StrapiTutorialListPagesCodec', () => {
+describe('TutorialListPagesCodec', () => {
   it('should decode strapi tutorial list pages', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = StrapiTutorialListPagesCodec.decode(jsonFromStrapi);
