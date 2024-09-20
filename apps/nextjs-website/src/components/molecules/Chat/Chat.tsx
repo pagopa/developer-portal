@@ -82,7 +82,11 @@ const Chat = ({
         }}
       >
         <Stack direction={'row'} paddingY={'0.25rem'}>
-          <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+          <Button
+            size='small'
+            sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
+            href='/profile/chatbot-history'
+          >
             <History fontSize='small' />
             <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
               {t('chatBot.history')}
