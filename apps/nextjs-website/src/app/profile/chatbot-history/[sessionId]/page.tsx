@@ -43,7 +43,7 @@ const ChatbotHistoryDetails = ({
         onDeleteChatSession={(sessionId: string) => {
           deleteSession(sessionId).then(() =>
             // eslint-disable-next-line functional/immutable-data
-            router.push('/profile/chatbot-history')
+            router.replace('/profile/chatbot-history')
           );
           return null;
         }}
