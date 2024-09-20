@@ -6,6 +6,7 @@ import os
 import uuid
 import boto3
 import datetime
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException
 from starlette.middleware.cors import CORSMiddleware
@@ -13,9 +14,10 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
-
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
+
+AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
 
 class Query(BaseModel):
   question: str
@@ -24,17 +26,21 @@ class Query(BaseModel):
 if (os.getenv('environment', 'dev') == 'local'):
   profile_name='dummy'
   endpoint_url='http://localhost:8000'
+  region_name = AWS_DEFAULT_REGION
 
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None)
+  profile_name = locals().get('profile_name', None),
+  region_name=locals().get('region_name', None)
 )
 
 dynamodb = boto3_session.resource(    
   'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None)
+  endpoint_url=locals().get('endpoint_url', None),
+  region_name=locals().get('region_name', None),
 )
 
-chatbot_queries = dynamodb.Table(os.getenv('CHB_QUERY_TABLE_NAME', 'chatbot-dev-queries'))
+queries_table_name = f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
+chatbot_queries = dynamodb.Table(queries_table_name)
 
 app = FastAPI()
 app.add_middleware(
@@ -57,15 +63,17 @@ async def query_creation (query: Query):
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   # TODO: calculate sessionId
+  if query.queriedAt is None:
+    queriedAt = now
+
   body = {
     "id": f'{uuid.uuid4()}',
     "sessionId": "1",
     "question": query.question,
     "answer": answer,
     "createdAt": now,
-    "queriedAt": query.queriedAt
+    "queriedAt": queriedAt
   }
-  # TODO: body validation
 
   try:
     chatbot_queries.put_item(Item = body)
@@ -112,19 +120,18 @@ async def sessions_fetching():
   return body
 
 @app.get("/queries")
-async def queries_fetching(sessionId: str):
-  # TODO: dynamoDB integration
-  body = [
-    {
-      "id": "",
-      "sessionId": sessionId,
-      "question": "",
-      "answer": "",
-      "createdAt": "",
-      "queriedAt": ""
-    }
-  ]
-  return body
+async def queries_fetching(sessionId: str | None = None):
+  if sessionId is None:
+    # TODO: retrieve last user session
+    # sessionId = lastSessionId(userId)
+    sessionId = '1'
+  try:
+    db_response = chatbot_queries.query(
+      KeyConditionExpression=Key("sessionId").eq(sessionId)
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail='db error')
+  return db_response['Items']
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
