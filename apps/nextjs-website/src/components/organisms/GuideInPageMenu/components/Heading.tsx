@@ -33,9 +33,6 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
             : palette.text.secondary,
           fontSize: level === 2 ? 18 : 16,
           fontWeight: isCurrentFragment ? 700 : 400,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
         }}
       >
         {children}

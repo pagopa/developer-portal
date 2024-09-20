@@ -2,15 +2,29 @@
 import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import DOMPurify from 'isomorphic-dompurify';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
+
+export type CkEditorMenuItem = {
+  title: string;
+  href: string;
+  level: number;
+};
 
 export type CkEditorPartProps = {
   content: string;
+  menuItems: CkEditorMenuItem[];
 };
 
 const CkEditorPart = ({ content }: CkEditorPartProps) => {
   const { palette, typography } = useTheme();
+  const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   const ckEditorStyles = {
+    '& .menuAnchor': {
+      marginTop: `-${scrollOffset}px`,
+      paddingTop: `${scrollOffset}px`,
+    },
     '& h1': { ...typography.h3 },
     '& h2': { ...typography.h4 },
     '& h3': { ...typography.h5 },

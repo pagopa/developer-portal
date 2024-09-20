@@ -8,7 +8,6 @@ import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { StrapiTutorials } from '@/lib/strapi/codecs/TutorialCodec';
 
 // TODO: Remove once the migration to CMS contents will be completed
@@ -35,8 +34,9 @@ const TutorialTemplate = ({
       // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
     >
       {product && (
-        <EContainer
+        <Box
           sx={{
+            maxWidth: '1200px',
             // 80px is the height of the product header
             marginTop: '80px',
             marginX: 'auto',
@@ -53,15 +53,20 @@ const TutorialTemplate = ({
               ]),
             ]}
           />
-        </EContainer>
+        </Box>
       )}
       <FragmentProvider>
-        <EContainer
+        <Box
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
+            maxWidth: '1200px',
             margin: '0 auto',
-            paddingY: '56px',
+            paddingBottom: !((relatedLinks?.links?.length ?? 0) > 0)
+              ? '56px'
+              : 0,
+            paddingTop: '56px',
+            px: { xs: 4, lg: 0 },
           }}
         >
           <Box
@@ -71,6 +76,7 @@ const TutorialTemplate = ({
                 xs: '100%',
                 lg: '822px',
               },
+              overflowWrap: 'break-word',
             }}
           >
             <Typography
@@ -99,20 +105,20 @@ const TutorialTemplate = ({
               // 78px is the height of the header, 80px is the height of the product header
               paddingTop: '30px',
               paddingLeft: '60px',
-              width: { lg: '270px' },
+              width: { lg: '378px' },
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
-                maxWidth: '270px',
+                maxWidth: '378px',
                 top: 140,
               }}
             >
               <PartRendererMenu parts={parts ?? []} />
             </Box>
           </Box>
-        </EContainer>
+        </Box>
       </FragmentProvider>
       {relatedLinks && (
         <RelatedLinks
