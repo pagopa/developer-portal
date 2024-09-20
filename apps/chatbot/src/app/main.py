@@ -22,6 +22,7 @@ chatbot = Chatbot(params, prompts)
 
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
 
+
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
@@ -191,7 +192,6 @@ async def queries_fetching(
 def last_session_id(userId: str):
   # TODO: retrieve last user session
   return '1'
-
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
