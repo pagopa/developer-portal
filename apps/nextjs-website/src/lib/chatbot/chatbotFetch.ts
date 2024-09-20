@@ -10,7 +10,6 @@ import * as E from 'fp-ts/lib/Either';
 import * as PR from '@/lib/strapi/PathReporter';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as t from 'io-ts/lib';
 import qs from 'qs';
 
 export const postQuery = (input: QueryInput) =>
