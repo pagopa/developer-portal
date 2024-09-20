@@ -42,7 +42,7 @@ const Stats = ({
       >
         <Stack
           flexDirection={{ xs: 'column', sm: 'row' }}
-          justifyContent={'space-between'}
+          justifyContent={items.length > 2 ? 'space-between' : 'space-around'}
           alignItems={{ xs: 'center', sm: 'start' }}
           gap={4.2}
           width={'100%'}

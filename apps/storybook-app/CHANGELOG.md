@@ -1,5 +1,18 @@
 # storybook-app
 
+## 0.12.0
+
+### Minor Changes
+
+- 72c13cc: Add error alerts in chatbot chat
+
+## 0.11.0
+
+### Minor Changes
+
+- 8fa630b: Show statsSource attribute in Stats component
+- 76c4593: Fix text alignment when quote is short in Quote component and add "ShortQuote" story to Storybook
+
 ## 0.10.0
 
 ### Minor Changes

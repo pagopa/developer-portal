@@ -1,5 +1,17 @@
 # chatbot
 
+## 2.4.0
+
+### Minor Changes
+
+- d6f0518: Allowing the usage of Google Gemini generation and embedding models
+
+## 2.3.0
+
+### Minor Changes
+
+- a6f52bc: Indexing interpolates the website url of the correct environment
+
 ## 2.2.0
 
 ### Minor Changes
