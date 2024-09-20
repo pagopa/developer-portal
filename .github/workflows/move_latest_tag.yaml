@@ -3,7 +3,7 @@ name: Move Latest Tag to New Commit
 on:
   push:
     tags:
-      # Trigger this workflow when a tag `@infra/resources@<sem-ver>` is pushed.
+      # Trigger this workflow when a tag `nextjs-website@<sem-ver>` is pushed.
       - 'nextjs-website@[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 jobs:
