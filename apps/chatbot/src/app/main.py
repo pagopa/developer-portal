@@ -144,6 +144,7 @@ async def query_fetching(id: str):
   }
   return body
 
+
 # retrieve sessions of current user
 @app.get("/sessions")
 async def sessions_fetching(
@@ -167,6 +168,41 @@ async def sessions_fetching(
     "total": len(db_response['Items']),
   }
   return result
+
+@app.delete("/sessions/{id}")
+async def session_delete(
+  id: str,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  body = {
+    "id": id,
+  }
+  try:
+    db_response_queries = table_queries.query(
+      KeyConditionExpression=Key("sessionId").eq(id)
+    )
+    # TODO: use batch writer
+#    with table_sessions.batch_writer() as batch:
+    for query in db_response_queries['Items']:
+      table_queries.delete_item(
+        Key={
+          "id": query["id"],
+          "sessionId": id
+        }
+      )
+
+    table_sessions.delete_item(
+      Key={
+        "id": id,
+        "userId": userId,
+      }
+    )
+
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}")
+  
+  return body
 
 @app.get("/queries")
 async def queries_fetching(
