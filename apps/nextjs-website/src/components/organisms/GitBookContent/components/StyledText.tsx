@@ -22,13 +22,23 @@ const StyledText = ({ style, children }: StyledTextProps) => {
       );
     case 'strong':
       return (
-        <Typography variant='body1' fontWeight='bold' component='span'>
+        <Typography
+          variant='body1'
+          fontWeight='bold'
+          component='span'
+          sx={{ my: 2, fontSize: '16px', lineHeight: '24px' }}
+        >
           {children}
         </Typography>
       );
     case 'italic':
       return (
-        <Typography variant='body1' fontStyle='italic' component='span'>
+        <Typography
+          variant='body1'
+          fontStyle='italic'
+          component='span'
+          sx={{ my: 2, fontSize: '16px', fontWeight: 400, lineHeight: '24px' }}
+        >
           {children}
         </Typography>
       );
