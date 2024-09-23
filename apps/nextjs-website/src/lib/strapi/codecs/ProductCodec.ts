@@ -9,7 +9,7 @@ const BaseProductAttributesCodec = t.strict({
   slug: t.string,
 });
 
-// To avoid circular dependencies, we can use the following codec:
+// To avoid circular dependencies, we must use the following codec:
 const ApiDataListPageCodec = t.strict({
   data: t.union([
     NullToUndefinedCodec,
