@@ -13,11 +13,11 @@ import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 
-export async function generateStaticParams() {
-  return [...getProductsSlugs('tutorials')].map((productSlug) => ({
-    productSlug,
-  }));
-}
+// export async function generateStaticParams() {
+//   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
+//     productSlug,
+//   }));
+// }
 
 export type TutorialsPageProps = {
   readonly product: Product;

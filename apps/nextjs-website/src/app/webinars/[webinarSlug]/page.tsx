@@ -10,12 +10,12 @@ type Params = {
   webinarSlug: string;
 };
 
-export async function generateStaticParams() {
-  const webinars = await getWebinarsProps();
-  return [...webinars].map(({ slug }) => ({
-    webinarSlug: slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   const webinars = await getWebinarsProps();
+//   return [...webinars].map(({ slug }) => ({
+//     webinarSlug: slug,
+//   }));
+// }
 
 export async function generateMetadata({
   params,

@@ -15,11 +15,11 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { getGuideListPagesProps } from '@/lib/cmsApi';
 
-export async function generateStaticParams() {
-  return (await getGuideListPagesProps()).map(({ product }) => ({
-    productSlug: product.slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   return (await getGuideListPagesProps()).map(({ product }) => ({
+//     productSlug: product.slug,
+//   }));
+// }
 
 export type GuidesPageProps = {
   readonly product: Product;

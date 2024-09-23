@@ -7,8 +7,8 @@
   NextJS reference: https://nextjs.org/docs/advanced-features/compiler#module-transpilation
  */
 const nextConfig = {
-  reactStrictMode: true,
-  output: 'export',
+  reactStrictMode: false,
+  output: 'standalone',
   trailingSlash: false,
   images: {
     unoptimized: true,

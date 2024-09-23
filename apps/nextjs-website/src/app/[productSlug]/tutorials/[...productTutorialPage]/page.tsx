@@ -32,13 +32,13 @@ type Params = {
   productTutorialPage: Array<string>;
 };
 
-export async function generateStaticParams() {
-  const tutorialPaths = await getTutorialPaths();
-  return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({
-    productSlug: slug,
-    productTutorialPage: tutorialPaths,
-  }));
-}
+// export async function generateStaticParams() {
+//   const tutorialPaths = await getTutorialPaths();
+//   return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({
+//     productSlug: slug,
+//     productTutorialPage: tutorialPaths,
+//   }));
+// }
 
 type ProductTutorialPageProps = {
   product: Product;
