@@ -9,6 +9,11 @@ import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
 const HISTORY_PAGE_SIZE = 10;
 
+export type ChatbotErrorsType =
+  | 'serviceDown'
+  | 'queryFailed'
+  | 'feedbackFailed';
+
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
@@ -16,6 +21,9 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [queries, setQueries] = useState<Query[]>([]);
   const [paginatedSessions, setPaginatedSessions] =
     useState<PaginatedSessions | null>(null);
+  const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
+    null
+  );
 
   useEffect(() => {
     if (sessionId || !isUserAuthenticated) {
@@ -55,10 +63,15 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       sessionId: sessionId || '',
       question: queryMessage,
       queriedAt: queriedAt,
-    }).then((response) => {
-      setIsAwaitingResponse(false);
-      setQueries([...queries, response]);
-    });
+    })
+      .then((response) => {
+        setIsAwaitingResponse(false);
+        setQueries([...queries, response]);
+      })
+      .catch(() => {
+        setIsAwaitingResponse(false);
+        setChatbotError('queryFailed');
+      });
     return null;
   };
 
@@ -99,5 +112,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     paginatedSessions,
     getSessionsByPage,
     getDocuentationUpdatedAt,
+    chatbotError,
   };
 };

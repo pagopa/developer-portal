@@ -291,6 +291,7 @@
         "requiredFieldError": "Questo campo non può essere vuoto",
         "emailFieldError": "Inserisci un indirizzo email valido",
         "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
+        "goToGuide": "Vai alla guida",
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
@@ -593,17 +594,21 @@
         "explore": "Esplora le API"
     },
     "chatBot": {
-        "title": "Chatbot",
+        "title": "Discovery",
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
         "history": "Cronologia",
         "chatHistory": "Cronologia chat",
         "delete": "Elimina",
         "feedbackGiven": "Feedback\nregistrato",
         "copied": "Copiato",
-        "welcomeMessage": "Ciao, sono il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPrima di incominciare con la prima domanda, ti invito a leggere l'[Informativa sulla Privacy](/privacy-policy).",
+        "welcomeMessage": "**Benvenuto nel Dev Portal!**\n\nSono _Discovery_, il tuo assistente virtuale per la documentazione tecnica. Posso aiutarti con informazioni su API, guide, e altro.\n\n_Nota_: Discovery è in versione beta, quindi alcune risposte potrebbero non essere accurate. Verifica sempre le informazioni importanti con la documentazione ufficiale.\n\nCome posso aiutarti oggi?",
         "documentationUpdatedDisclaimer": {
             "title": "Aggiornamento Documentazione",
-            "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti."
+            "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti.",
+        "errors": {
+            "title": "Errore",
+            "serviceDown": "Il chatbot al momento non è disponibile. Riprovare più tardi.",
+            "queryFailed": "Il chatbot ha avuto problemi nel formulare la risposta. Riprova."
         }
     }
 }

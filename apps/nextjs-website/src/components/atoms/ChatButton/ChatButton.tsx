@@ -1,22 +1,22 @@
 'use client';
 import Fab from '@mui/material/Fab';
-import { Box, Theme, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import IconWrapper from '../IconWrapper/IconWrapper';
 
 type ChatButtonProps = {
   isChatOpen: boolean;
   onOpenChat: (event: React.MouseEvent<HTMLButtonElement>) => null;
+  size: 'medium' | 'large';
 };
 
-const ChatButton = ({ isChatOpen, onOpenChat }: ChatButtonProps) => {
+const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
   const { palette } = useTheme();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   return (
     <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
       <Fab
         aria-label='chat'
         onClick={onOpenChat}
-        size={isDesktop ? 'large' : 'medium'}
+        size={size}
         sx={{
           borderStyle: 'solid',
           borderColor: palette.text.primary,
@@ -29,7 +29,7 @@ const ChatButton = ({ isChatOpen, onOpenChat }: ChatButtonProps) => {
           icon={'/icons/chatbotAvatar.svg'}
           useSrc={true}
           color={palette.text.secondary}
-          size={isDesktop ? 48 : 40}
+          size={size === 'large' ? 48 : 40}
         />
       </Fab>
     </Box>
