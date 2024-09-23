@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
-import { StrapiTutorialsCodec } from '../codecs/TutorialCodec';
+import { TutorialsCodec } from '../codecs/TutorialCodec';
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
@@ -12,7 +12,9 @@ const makeStrapiTutorialsPopulate = () =>
         populate: ['image'],
       },
       parts: '*',
-      product: { populate: 'logo' },
+      product: {
+        populate: ['logo', 'bannerLinks.icon'],
+      },
       bannerLinks: {
         populate: ['icon'],
       },
@@ -22,5 +24,5 @@ const makeStrapiTutorialsPopulate = () =>
 export const fetchTutorials = fetchFromStrapi(
   'tutorials',
   makeStrapiTutorialsPopulate(),
-  StrapiTutorialsCodec
+  TutorialsCodec
 );

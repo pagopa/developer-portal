@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiTutorialsCodec } from '../codecs/TutorialCodec';
+import { TutorialsCodec } from '../codecs/TutorialCodec';
 import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const baseTutorialJson = {
   id: 1,
@@ -82,7 +83,7 @@ const baseTutorialJson = {
       data: null,
     },
     relatedLinks: null,
-    bannerLinks: [],
+    bannerLinks: bannerLinksJson,
   },
 };
 
@@ -90,38 +91,7 @@ const makeStrapiResponseJson = () => ({
   data: [
     {
       ...baseTutorialJson,
-      bannerLinks: [
-        {
-          id: 1,
-          title: 'test',
-          body: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: 'some desc',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          title: 'test 2',
-          body: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  text: 'some desc',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      bannerLinks: bannerLinksJson,
       relatedLinks: {
         id: 9,
         title: 'links',
@@ -182,7 +152,7 @@ const makeStrapiResponseJsonWithNull = () => ({
           },
         },
         relatedLinks: null,
-        bannerLinks: [],
+        bannerLinks: bannerLinksJson,
       },
     },
   ],
@@ -199,13 +169,13 @@ const makeStrapiResponseJsonWithNull = () => ({
 describe('TutorialCodec', () => {
   it('should decode strapi tutorials', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiTutorialsCodec.decode(jsonFromStrapi);
+    const actual = TutorialsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 
   it('should decode strapi tutorials with nulls', () => {
     const jsonFromStrapi = makeStrapiResponseJsonWithNull();
-    const actual = StrapiTutorialsCodec.decode(jsonFromStrapi);
+    const actual = TutorialsCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

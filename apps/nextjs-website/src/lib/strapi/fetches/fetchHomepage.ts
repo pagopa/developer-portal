@@ -20,7 +20,12 @@ const makeStrapiHomepagePopulate = () =>
       },
       webinars: webinarPopulate,
       ecosystem: {
-        populate: ['products.logo', 'solutions.icon', 'solutionsCta.link'],
+        populate: [
+          'products.logo',
+          'products.bannerLinks.icon',
+          'solutions.icon',
+          'solutionsCta.link',
+        ],
       },
       seo: {
         populate: '*,metaImage,metaSocial.image',

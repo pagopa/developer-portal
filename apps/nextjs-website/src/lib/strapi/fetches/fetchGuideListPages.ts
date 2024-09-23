@@ -5,7 +5,9 @@ import { GuideListPagesCodec } from '@/lib/strapi/codecs/GuideListPagesCodec';
 const makeStrapiGuideListPopulate = () =>
   qs.stringify({
     populate: {
-      product: '*',
+      product: {
+        populate: ['logo', 'bannerLinks.icon'],
+      },
       guidesByCategory: {
         populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
       },

@@ -50,4 +50,4 @@ const secondItem = {
   icon: mediaVectorJson,
 };
 
-export const bannerLinks = [firstItem, secondItem];
+export const bannerLinksJson = [firstItem, secondItem];

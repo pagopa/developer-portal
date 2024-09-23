@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiTutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
+import { TutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
 import { mediaVectorJson } from './fixtures/media';
-import { baseProductJson } from './fixtures/product';
+import { baseProductJson, productJson } from './fixtures/product';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -32,21 +32,7 @@ const makeStrapiResponseJson = () => ({
             },
           ],
         },
-        product: {
-          data: {
-            id: 1,
-            attributes: {
-              name: 'APP IO',
-              description: 'Test desc ',
-              slug: 'app-io',
-              createdAt: '2024-02-15T09:57:22.179Z',
-              updatedAt: '2024-07-17T15:08:58.315Z',
-              publishedAt: '2024-02-15T09:57:24.401Z',
-              locale: 'it',
-              shortName: 'app-io',
-            },
-          },
-        },
+        product: productJson,
         bannerLinks: [
           {
             id: 22,
@@ -101,7 +87,7 @@ const makeStrapiResponseJson = () => ({
 describe('TutorialListPagesCodec', () => {
   it('should decode strapi tutorial list pages', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
-    const actual = StrapiTutorialListPagesCodec.decode(jsonFromStrapi);
+    const actual = TutorialListPagesCodec.decode(jsonFromStrapi);
     expect(E.isRight(actual)).toBeTruthy();
   });
 });

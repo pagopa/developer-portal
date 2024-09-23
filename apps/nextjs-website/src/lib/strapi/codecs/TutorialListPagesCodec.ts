@@ -1,25 +1,23 @@
 import * as t from 'io-ts/lib';
-import { BaseProductCodec } from './ProductCodec';
+import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { BaseTutorialCodec } from './TutorialCodec';
 
-const StrapiTutorialListPageCodec = t.strict({
+const TutorialListPageCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
     description: t.string,
     tutorials: t.strict({ data: t.array(BaseTutorialCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
-    product: t.strict({ data: BaseProductCodec }),
+    product: t.strict({ data: BaseProductWithBannerLinksCodec }),
   }),
 });
 
-export const StrapiTutorialListPagesCodec = t.strict({
-  data: t.array(StrapiTutorialListPageCodec),
+export const TutorialListPagesCodec = t.strict({
+  data: t.array(TutorialListPageCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiTutorialListPages = t.TypeOf<
-  typeof StrapiTutorialListPagesCodec
->;
+export type StrapiTutorialListPages = t.TypeOf<typeof TutorialListPagesCodec>;

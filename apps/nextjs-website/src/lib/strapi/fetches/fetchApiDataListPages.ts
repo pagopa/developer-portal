@@ -14,7 +14,7 @@ const makeStrapiApiDataListPagePopulate = () =>
         },
       },
       product: {
-        populate: ['logo'],
+        populate: ['logo', 'bannerLinks.icon'],
       },
       bannerLinks: {
         populate: ['icon'],

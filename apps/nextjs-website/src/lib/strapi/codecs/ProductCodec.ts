@@ -14,6 +14,14 @@ const BaseProductAttributesCodec = t.strict({
 export const BaseProductCodec = t.strict({
   attributes: BaseProductAttributesCodec,
 });
+export const BaseProductWithBannerLinksCodec = t.strict({
+  attributes: t.intersection([
+    BaseProductAttributesCodec,
+    t.strict({
+      bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
+    }),
+  ]),
+});
 
 export const ProductCodec = t.strict({
   attributes: t.intersection([

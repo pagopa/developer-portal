@@ -42,9 +42,9 @@ export const TutorialCodec = t.strict({
   ]),
 });
 
-export const StrapiTutorialsCodec = t.strict({
+export const TutorialsCodec = t.strict({
   data: t.array(TutorialCodec),
   meta: PaginationCodec,
 });
 
-export type StrapiTutorials = t.TypeOf<typeof StrapiTutorialsCodec>;
+export type StrapiTutorials = t.TypeOf<typeof TutorialsCodec>;

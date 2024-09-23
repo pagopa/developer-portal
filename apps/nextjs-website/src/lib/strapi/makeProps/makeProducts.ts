@@ -15,6 +15,12 @@ export function mergeProductWithStaticContent(
     ...staticProduct,
     ...attributes,
     logo: attributes.logo?.data.attributes || staticProduct.logo,
+    bannerLinks: [
+      ...(attributes.bannerLinks?.map((item) => ({
+        ...item,
+        icon: item.icon?.data.attributes,
+      })) || []),
+    ],
   };
 }
 
