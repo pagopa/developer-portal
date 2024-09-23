@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.12.0
+
+### Minor Changes
+
+- 72c13cc: Add error alerts in chatbot chat
+
 ## 0.11.0
 
 ### Minor Changes
