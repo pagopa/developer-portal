@@ -8,18 +8,21 @@ import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { useRouter } from 'next/navigation';
 
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
   const { paginatedSessions, paginatedSessionsLoading, getSessionsByPage } =
     useChatbot(true);
+  const router = useRouter();
 
   useEffect(() => {
     getSessionsByPage(1);
   }, [getSessionsByPage]);
 
   if (!isChatbotActive) {
+    router.replace('/not-found');
     return null;
   }
 
