@@ -1,8 +1,6 @@
 import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
-import qs from 'qs';
-import { fetchFromStrapi } from '../fetchFromStrapi';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const BaseProductAttributesCodec = t.strict({
@@ -41,14 +39,3 @@ export const ProductsCodec = t.strict({
 export type BaseProduct = t.TypeOf<typeof BaseProductCodec>;
 export type Product = t.TypeOf<typeof ProductCodec>;
 export type Products = t.TypeOf<typeof ProductsCodec>;
-
-const makeStrapiProductsPopulate = () =>
-  qs.stringify({
-    populate: '*',
-  });
-
-export const fetchProducts = fetchFromStrapi(
-  'products',
-  makeStrapiProductsPopulate(),
-  ProductsCodec
-);
