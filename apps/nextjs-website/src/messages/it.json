@@ -604,7 +604,8 @@
         "welcomeMessage": "**Benvenuto nel Dev Portal!**\n\nSono _Discovery_, il tuo assistente virtuale per la documentazione tecnica. Posso aiutarti con informazioni su API, guide, e altro.\n\n_Nota_: Discovery è in versione beta, quindi alcune risposte potrebbero non essere accurate. Verifica sempre le informazioni importanti con la documentazione ufficiale.\n\nCome posso aiutarti oggi?",
         "documentationUpdatedDisclaimer": {
             "title": "Aggiornamento Documentazione",
-            "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti.",
+            "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti."
+        },
         "errors": {
             "title": "Errore",
             "serviceDown": "Il chatbot al momento non è disponibile. Riprovare più tardi.",
