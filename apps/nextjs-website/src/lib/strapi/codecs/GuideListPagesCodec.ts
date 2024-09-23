@@ -10,7 +10,7 @@ const GuideByCategoryCodec = t.strict({
   }),
 });
 
-const GuideListPageCodec = t.strict({
+export const GuideListPageCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,

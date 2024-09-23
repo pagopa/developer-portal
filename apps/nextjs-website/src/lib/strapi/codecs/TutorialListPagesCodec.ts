@@ -4,7 +4,7 @@ import { PaginationCodec } from './PaginationCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { BaseTutorialCodec } from './TutorialCodec';
 
-const TutorialListPageCodec = t.strict({
+export const TutorialListPageCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,

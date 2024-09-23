@@ -27,6 +27,11 @@ export const productJson = {
       shortName: 'Firma con IO',
       logo: mediaVectorJson,
       bannerLinks: bannerLinksJson,
+      overview: { data: null },
+      quickstart_guide: { data: null },
+      api_data_list_page: { data: null },
+      tutorial_list_page: { data: null },
+      guide_list_page: { data: null },
     },
   },
 };

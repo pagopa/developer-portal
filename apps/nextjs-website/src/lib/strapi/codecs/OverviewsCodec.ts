@@ -57,25 +57,35 @@ const PostIntegrationCodec = t.strict({
   serviceModels: t.array(ServiceModelCodec),
 });
 
+const BaseOverviewAttributesCodec = t.strict({
+  title: t.string,
+  createdAt: tt.DateFromISOString,
+  updatedAt: tt.DateFromISOString,
+  publishedAt: tt.DateFromISOString,
+  subtitle: t.string,
+});
+
+export const BaseOverviewCodec = t.strict({
+  attributes: BaseOverviewAttributesCodec,
+});
+
 export const OverviewCodec = t.strict({
   id: t.number,
-  attributes: t.strict({
-    title: t.string,
-    createdAt: tt.DateFromISOString,
-    updatedAt: tt.DateFromISOString,
-    publishedAt: tt.DateFromISOString,
-    subtitle: t.string,
-    backgroundImage: t.strict({ data: MediaCodec }),
-    features: t.union([NullToUndefinedCodec, FeaturesCodec]),
-    startInfoSection: t.union([NullToUndefinedCodec, StartInfoSectionCodec]),
-    tutorialSection: t.union([NullToUndefinedCodec, TutorialSectionCodec]),
-    postIntegration: t.union([NullToUndefinedCodec, PostIntegrationCodec]),
-    relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-    product: t.strict({
-      data: t.union([NullToUndefinedCodec, ProductCodec]),
+  attributes: t.intersection([
+    BaseOverviewAttributesCodec,
+    t.strict({
+      backgroundImage: t.strict({ data: MediaCodec }),
+      features: t.union([NullToUndefinedCodec, FeaturesCodec]),
+      startInfoSection: t.union([NullToUndefinedCodec, StartInfoSectionCodec]),
+      tutorialSection: t.union([NullToUndefinedCodec, TutorialSectionCodec]),
+      postIntegration: t.union([NullToUndefinedCodec, PostIntegrationCodec]),
+      relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
+      product: t.strict({
+        data: t.union([NullToUndefinedCodec, ProductCodec]),
+      }),
+      bannerLinks: t.array(BannerLinkCodec),
     }),
-    bannerLinks: t.array(BannerLinkCodec),
-  }),
+  ]),
 });
 
 export const OverviewsCodec = t.strict({
