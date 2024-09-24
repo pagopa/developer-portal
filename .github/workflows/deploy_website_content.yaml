@@ -65,3 +65,8 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+
+      - name: Chatbot Vector Index
+        uses: ./.github/actions/chatbot
+        with:
+          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
