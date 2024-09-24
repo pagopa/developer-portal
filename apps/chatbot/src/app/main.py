@@ -130,7 +130,7 @@ def find_or_create_session(userId: str):
 
   return body
 
-  
+
 @app.get("/queries/{id}")
 async def query_fetching(id: str):
   # TODO: dynamoDB integration
