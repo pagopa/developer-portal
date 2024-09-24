@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 4.8.0
+
+### Minor Changes
+
+- 72c13cc: Add error alerts in chatbot chat
+
+### Patch Changes
+
+- d2b0c30: Change chatbot name, update chatbot first message and fix chatbot button size
+- 617fef4: Fix the label of the guide links on the overview page
+- bd9206d: Fix selectEmbedType method by adding 'design' option to Figma urls
+- 3928519: Fix guidesTitle's position in Overview's PostIntegration component
+- f683aa5: Fix Stats component layout in Solution's page
+
 ## 4.7.0
 
 ### Minor Changes

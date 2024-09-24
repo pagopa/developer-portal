@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 2.6.1
+
+### Patch Changes
+
+- bae5f53: Set default value to metaViewport field in Strapi's SEO component
+
 ## 2.6.0
 
 ### Minor Changes
