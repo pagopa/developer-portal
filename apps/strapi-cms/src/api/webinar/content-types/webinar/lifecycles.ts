@@ -37,7 +37,7 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 module.exports = {
-  async beforeCreate(event: IWebinarEvent) {
+  beforeCreate(event: IWebinarEvent) {
     validateDates(event);
   },
   async beforeUpdate(event: IWebinarEvent) {
