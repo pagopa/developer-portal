@@ -43,6 +43,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
   const path = product?.path + '/api/' + params.apiDataSlug;
+
   if (apiDataProps && product) {
     return (
       <ProductLayout
