@@ -1,4 +1,7 @@
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
@@ -22,6 +25,10 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const solution = await getSolution(params?.solutionSlug);
+
+  if (solution.seo) {
+    return makeMetadataFromStrapi(solution.seo);
+  }
 
   return makeMetadata({
     title: solution.title,
