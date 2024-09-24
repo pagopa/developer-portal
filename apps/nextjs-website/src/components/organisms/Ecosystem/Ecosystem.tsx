@@ -18,7 +18,9 @@ const Ecosystem = ({
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <Box sx={{ maxWidth: '1300px', margin: 'auto' }}>
+      <Box
+        sx={{ maxWidth: '1300px', margin: 'auto', paddingX: { xs: '24px' } }}
+      >
         {title && (
           <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
             {title}

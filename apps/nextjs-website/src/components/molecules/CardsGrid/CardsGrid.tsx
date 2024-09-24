@@ -41,6 +41,10 @@ const CardsGrid = ({
       containerSx={{
         pt: '22px',
         mt: '-22px',
+        pr: '22px',
+        mr: '-22px',
+        pl: '22px',
+        ml: '-22px',
         ...containerSx,
       }}
     >
