@@ -3,6 +3,7 @@ import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
 export const apiDataRestJson = {
   id: 3,
   attributes: {
+    seo: null,
     title: 'SEND Main',
     description: null,
     createdAt: '2024-07-11T17:16:21.322Z',
@@ -29,6 +30,7 @@ export const apiDataRestJson = {
 export const apiDataSoapJson = {
   id: 7,
   attributes: {
+    seo: null,
     title: 'Documentazione SOAP',
     description:
       'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',

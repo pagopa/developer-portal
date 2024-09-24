@@ -23,6 +23,9 @@ export const webinarPopulate = {
         },
       },
     },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
     questionsAndAnswers: '*',
   },
 };
