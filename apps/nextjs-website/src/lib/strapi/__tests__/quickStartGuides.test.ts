@@ -15,6 +15,7 @@ const product = {
       publishedAt: '2024-02-15T09:57:24.401Z',
       locale: 'it',
       logo: mediaRasterJson,
+      seo: null,
     },
   },
 };
@@ -140,6 +141,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         product: product,
+        seo: null,
       },
     },
   ],
@@ -274,6 +276,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           ],
         },
         product: product,
+        seo: null,
       },
     },
   ],

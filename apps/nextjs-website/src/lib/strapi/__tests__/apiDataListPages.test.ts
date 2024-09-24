@@ -23,6 +23,7 @@ const makeStrapiResponseJson = () => ({
         },
         product: productJson,
         bannerLinks: [],
+        seo: null,
       },
     },
     {
@@ -39,6 +40,7 @@ const makeStrapiResponseJson = () => ({
         },
         product: productJson,
         bannerLinks: [],
+        seo: null,
       },
     },
     {
@@ -107,6 +109,7 @@ const makeStrapiResponseJson = () => ({
             icon: mediaVectorJson,
           },
         ],
+        seo: null,
       },
     },
     {
@@ -123,6 +126,7 @@ const makeStrapiResponseJson = () => ({
         },
         product: productJson,
         bannerLinks: [],
+        seo: null,
       },
     },
   ],

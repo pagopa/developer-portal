@@ -103,7 +103,7 @@ export function makeOverviewsProps(
               imagePath: guide.attributes.image.data.attributes.url,
               mobileImagePath: guide.attributes.mobileImage.data.attributes.url,
               link: {
-                label: 'shared.goToModel',
+                label: 'shared.goToGuide',
                 href: `guides/${guide.attributes.slug}`,
               },
             })),
@@ -123,6 +123,7 @@ export function makeOverviewsProps(
                 title: bannerLink.title || '',
               }))
             : product.bannerLinks,
+        seo: attributes.seo,
       };
     }),
     ...staticOverviews,
