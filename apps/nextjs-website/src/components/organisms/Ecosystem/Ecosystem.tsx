@@ -18,7 +18,7 @@ const Ecosystem = ({
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <Box sx={{ maxWidth: '1200px', margin: 'auto' }}>
+      <Box sx={{ maxWidth: '1300px', margin: 'auto' }}>
         {title && (
           <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
             {title}
@@ -44,7 +44,10 @@ const Ecosystem = ({
                     <CardsGrid
                       ctaButtonsVariant={'contained'}
                       cards={solutions}
-                      containerSx={{ px: 0, pb: '22px' }}
+                      containerSx={{
+                        px: 0,
+                        pb: '22px',
+                      }}
                     />
                   )}
                   {solutionsCta && (

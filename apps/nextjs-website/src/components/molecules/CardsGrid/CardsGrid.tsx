@@ -37,7 +37,13 @@ const CardsGrid = ({
   const t = useTranslations('shared');
 
   return (
-    <EContainer containerSx={containerSx}>
+    <EContainer
+      containerSx={{
+        pt: '22px',
+        mt: '-22px',
+        ...containerSx,
+      }}
+    >
       <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(
