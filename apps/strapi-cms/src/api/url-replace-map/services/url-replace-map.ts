@@ -4,4 +4,6 @@
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::url-replace-map.url-replace-map');
+export default factories.createCoreService(
+  'api::url-replace-map.url-replace-map'
+);
