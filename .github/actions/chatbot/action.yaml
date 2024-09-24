@@ -1,0 +1,52 @@
+name: chatbot
+description: Recreate Chatbot LLamaindex Vector Index
+
+inputs:
+  iam_role:
+    description: 'The IAM Role to use to perform the deploy'
+    required: true
+  aws_region:
+    description: 'The AWS region selected'
+    required: false
+    default: 'eu-south-1'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install and configure Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.8.3
+        virtualenvs-create: false
+        installer-parallel: true
+
+    - name: Install project
+      run: |
+        cd apps/chatbot
+        poetry install --no-interaction
+    
+    - name: Run tests
+      run: |
+        cd apps/chatbot
+        source .venv/bin/activate
+        pytest tests/
+        coverage report
+
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: ${{ inputs.aws_region }}
+        role_to_assume: ${{ inputs.iam_role }}
+
+    - name: Create Vector Index
+      shell: bash
+      run: |
+        cd apps/chatbot
+        poetry run python src/modules/create_vector_index.py --params config/params.yaml
