@@ -40,7 +40,7 @@ module.exports = {
   beforeCreate(event: IWebinarEvent) {
     validateDates(event);
   },
-  async beforeUpdate(event: IWebinarEvent) {
+  beforeUpdate(event: IWebinarEvent) {
     validateDates(event);
   },
 };
