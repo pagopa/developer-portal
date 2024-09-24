@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_products_url_to_guides",
+  "info": {
+    "displayName": "urlToGuide"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "guide": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::guide.guide"
+    },
+    "version": {
+      "type": "string"
+    }
+  }
+}
