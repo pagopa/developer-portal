@@ -88,7 +88,11 @@
                 "confirmLabel": "Chiudi"
             }
         },
-        "insert": "Inserisci"
+        "insert": "Inserisci",
+        "chatbot": {
+            "title": "Cronologia Chatbot",
+            "noSessions": "Nessuna chat trovata"
+        }
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",
@@ -288,6 +292,7 @@
         "requiredFieldError": "Questo campo non può essere vuoto",
         "emailFieldError": "Inserisci un indirizzo email valido",
         "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
+        "goToGuide": "Vai alla guida",
         "goToModel": "Vai al modello",
         "edit": "Modifica",
         "cancel": "Annulla",
