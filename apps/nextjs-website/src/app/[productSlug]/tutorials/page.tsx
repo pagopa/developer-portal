@@ -11,7 +11,11 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -26,6 +30,7 @@ export type TutorialsPageProps = {
     readonly description: string;
   };
   readonly tutorials: readonly Tutorial[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -33,9 +38,13 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path } = await getTutorialListPageProps(
+  const { product, abstract, path, seo } = await getTutorialListPageProps(
     params.productSlug
   );
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     parent: resolvedParent,

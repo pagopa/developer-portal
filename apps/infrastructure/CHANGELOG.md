@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.1.0
+
+### Minor Changes
+
+- d6f0518: Allowing the usage of Google Gemini generation and embedding models
+
 ## 1.0.0
 
 ### Major Changes

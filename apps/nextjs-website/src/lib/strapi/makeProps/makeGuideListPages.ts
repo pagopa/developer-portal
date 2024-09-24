@@ -42,6 +42,7 @@ export function makeGuideListPagesProps(
         },
         guidesSections: [...guidesSections],
         bannerLinks: product.bannerLinks,
+        seo: attributes.seo,
       };
     }),
     ...staticGuideListPages,

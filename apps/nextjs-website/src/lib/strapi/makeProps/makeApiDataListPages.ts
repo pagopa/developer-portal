@@ -40,5 +40,6 @@ export function makeApiDataListPagesProps(
         title: bannerLink.title || '',
       })),
     ],
+    seo: attributes.seo,
   }));
 }

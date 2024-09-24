@@ -8,6 +8,7 @@ import { BlocksContentCodec } from './BlocksContentCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { WebinarCodec } from './WebinarsCodec';
 import { CaseHistoriesComponentCodec } from '@/lib/strapi/codecs/CaseHistoriesComponentCodec';
+import { SEOCodec } from './SeoCodec';
 
 const StepCodec = t.strict({
   title: t.string,
@@ -36,6 +37,15 @@ export const BaseSolutionCodec = t.strict({
   attributes: BaseSolutionAttributesCodec,
 });
 
+export const BaseSolutionWithProductsCodec = t.strict({
+  attributes: t.intersection([
+    BaseSolutionAttributesCodec,
+    t.strict({
+      products: t.strict({ data: t.array(ProductCodec) }),
+    }),
+  ]),
+});
+
 export const SolutionCodec = t.strict({
   id: t.number,
   attributes: t.intersection([
@@ -50,13 +60,12 @@ export const SolutionCodec = t.strict({
       webinars: t.strict({
         data: t.array(WebinarCodec),
       }),
-      products: t.strict({
-        data: t.array(ProductCodec),
-      }),
+      products: t.strict({ data: t.array(ProductCodec) }),
       caseHistories: t.union([
         NullToUndefinedCodec,
         CaseHistoriesComponentCodec,
       ]),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });
