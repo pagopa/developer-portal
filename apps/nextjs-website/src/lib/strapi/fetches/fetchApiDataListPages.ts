@@ -11,6 +11,9 @@ const makeStrapiApiDataListPagePopulate = () =>
             populate: ['slug', 'specUrls'],
           },
           icon: { populate: '*' },
+          seo: {
+            populate: '*,metaImage,metaSocial.image',
+          },
         },
       },
       product: {
@@ -18,6 +21,9 @@ const makeStrapiApiDataListPagePopulate = () =>
       },
       bannerLinks: {
         populate: ['icon'],
+      },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });
