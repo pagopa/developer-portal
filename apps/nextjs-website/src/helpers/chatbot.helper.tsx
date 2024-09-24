@@ -1,7 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { sendChatbotQuery, sendChatbotFeedback } from '@/lib/chatbot';
-import { Query } from '@/lib/chatbot/queries';
+import {
+  sendChatbotQuery,
+  sendChatbotFeedback,
+  getChatbotQueries,
+  getChatbotHistory,
+} from '@/lib/chatbot';
+import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
+
+const HISTORY_PAGE_SIZE = 10;
 
 export type ChatbotErrorsType =
   | 'serviceDown'
@@ -13,12 +20,16 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
+    useState(true);
+  const [paginatedSessions, setPaginatedSessions] =
+    useState<PaginatedSessions | null>(null);
   const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
     null
   );
 
   useEffect(() => {
-    if (sessionId || !isUserAuthenticated) {
+    if (!isUserAuthenticated) {
       return;
     }
 
@@ -42,8 +53,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     setQueries([
       ...queries,
       {
-        id: '',
-        sessionId: '',
+        id: '0',
+        sessionId: '0',
         question: queryMessage,
         queriedAt: queriedAt,
         badAnswer: false,
@@ -82,12 +93,26 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
+  const getSessionsByPage = (page: number) => {
+    getChatbotHistory(page, HISTORY_PAGE_SIZE)
+      .then((response) => setPaginatedSessions(response))
+      .finally(() => setPaginatedSessionsLoading(false));
+
+    return null;
+  };
+
+  const getSession = (sessionId: string) => getChatbotQueries(sessionId);
+
   return {
     isLoaded,
     isAwaitingResponse,
     queries,
     sendQuery,
     sendFeedback,
+    paginatedSessions,
+    getSessionsByPage,
+    getSession,
     chatbotError,
+    paginatedSessionsLoading,
   };
 };
