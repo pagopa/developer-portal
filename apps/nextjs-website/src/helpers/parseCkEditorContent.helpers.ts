@@ -1,6 +1,7 @@
 import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPart';
 import { JSDOM } from 'jsdom';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
+import DOMPurify from 'isomorphic-dompurify';
 
 export function parseCkEditorContent(content: string): {
   readonly parsedContent: string;
@@ -31,7 +32,7 @@ export function parseCkEditorContent(content: string): {
       });
     }
   });
-  const serializedContent = dom.serialize();
+  const serializedContent = DOMPurify.sanitize(dom.serialize());
 
   return { parsedContent: serializedContent, menuItems };
 }

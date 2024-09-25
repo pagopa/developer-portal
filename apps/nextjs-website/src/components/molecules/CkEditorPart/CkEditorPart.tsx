@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { Box, useTheme } from '@mui/material';
-import DOMPurify from 'isomorphic-dompurify';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
 
@@ -111,7 +110,7 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
 
   return (
     <Box
-      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
+      dangerouslySetInnerHTML={{ __html: content }}
       sx={ckEditorStyles}
     ></Box>
   );
