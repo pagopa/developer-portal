@@ -10,8 +10,9 @@ const makeStrapiApiDataPopulate = () =>
       },
       icon: { populate: '*' },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
+      product: { populate: 'logo' },
     },
   });
 
