@@ -88,7 +88,11 @@
                 "confirmLabel": "Chiudi"
             }
         },
-        "insert": "Inserisci"
+        "insert": "Inserisci",
+        "chatbot": {
+            "title": "Cronologia Chatbot",
+            "noSessions": "Nessuna chat trovata"
+        }
     },
     "webinar": {
         "liveWebinar": "Webinar in corso",
@@ -599,6 +603,7 @@
         "feedbackGiven": "Feedback\nregistrato",
         "copied": "Copiato",
         "welcomeMessage": "**Benvenuto nel Dev Portal!**\n\nSono _Discovery_, il tuo assistente virtuale per la documentazione tecnica. Posso aiutarti con informazioni su API, guide, e altro.\n\n_Nota_: Discovery è in versione beta, quindi alcune risposte potrebbero non essere accurate. Verifica sempre le informazioni importanti con la documentazione ufficiale.\n\nCome posso aiutarti oggi?",
+        "guestMessage": "Ciao sono _Discovery_ , il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPer poter accedere al servizio, ti invito a [iscriverti a PagoPA DevPortal]({host}/auth/login)",
         "errors": {
             "title": "Errore",
             "serviceDown": "Il chatbot al momento non è disponibile. Riprovare più tardi.",
