@@ -9,6 +9,9 @@ const makeStrapiApiDataPopulate = () =>
         populate: ['slug', 'specUrls'],
       },
       icon: { populate: '*' },
+      seo: {
+        populate: '*',
+      },
     },
   });
 

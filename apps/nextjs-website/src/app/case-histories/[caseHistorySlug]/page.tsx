@@ -1,4 +1,7 @@
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getCaseHistoriesProps } from '@/lib/cmsApi';
@@ -22,6 +25,10 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+
+  if (caseHistory?.seo) {
+    return makeMetadataFromStrapi(caseHistory.seo);
+  }
 
   return makeMetadata({
     title: caseHistory.title,

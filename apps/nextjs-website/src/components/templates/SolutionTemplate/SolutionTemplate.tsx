@@ -16,6 +16,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { SEO } from '@/lib/types/seo';
 
 export type SolutionTemplateProps = {
   slug: string;
@@ -54,6 +55,7 @@ export type SolutionTemplateProps = {
   };
   solutionSlug: string;
   path?: string;
+  seo?: SEO;
 };
 
 const SolutionTemplate = ({
