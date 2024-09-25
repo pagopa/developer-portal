@@ -66,7 +66,7 @@ const Page = async ({ params }: { params: Params }) => {
         item: getItemFromPaths(['webinars', webinar.slug]),
       },
     ],
-    seo: undefined, // TODO: add SEO when available
+    seo: webinar.seo,
   });
 
   return (
