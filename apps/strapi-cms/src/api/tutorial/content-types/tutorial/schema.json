@@ -33,6 +33,7 @@
       },
       "type": "string",
       "required": true,
+      "unique": true,
       "regex": "^[a-zA-Z0-9-]+$"
     },
     "image": {
