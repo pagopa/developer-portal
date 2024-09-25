@@ -16,14 +16,12 @@ const ChatbotHistory = () => {
   const { user, loading } = useUser();
   const { paginatedSessions, paginatedSessionsLoading, getSessionsByPage } =
     useChatbot(true);
+  const router = useRouter();
 
   useEffect(() => {
     getSessionsByPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
-
-  if (!isChatbotActive) {
-  const router = useRouter();
 
   useEffect(() => {
     getSessionsByPage(1);
