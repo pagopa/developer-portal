@@ -21,6 +21,9 @@ const makeStrapiOverviewsPopulate = () =>
       tutorialSection: {
         populate: ['tutorials.image', 'tutorials.product'],
       },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
+      },
       postIntegration: {
         populate: [
           'link',

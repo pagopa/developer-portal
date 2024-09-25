@@ -11,9 +11,13 @@ import ProductLayout, {
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { getGuideListPagesProps } from '@/lib/cmsApi';
+import { SEO } from '@/lib/types/seo';
 
 export async function generateStaticParams() {
   return (await getGuideListPagesProps()).map(({ product }) => ({
@@ -29,6 +33,7 @@ export type GuidesPageProps = {
   };
   readonly guidesSections?: GuidesSectionProps[];
   readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
@@ -36,7 +41,11 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const { path, abstract } = await getGuideLists(params?.productSlug);
+  const { path, abstract, seo } = await getGuideLists(params?.productSlug);
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     title: abstract?.title,

@@ -3,6 +3,7 @@ import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { ApiDataListCodec } from './ApiDataListCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { SEOCodec } from './SeoCodec';
 
 export const ApiDataListPageCodec = t.strict({
   id: t.number,
@@ -14,6 +15,7 @@ export const ApiDataListPageCodec = t.strict({
     }),
     apiData: ApiDataListCodec,
     bannerLinks: t.array(BannerLinkCodec),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

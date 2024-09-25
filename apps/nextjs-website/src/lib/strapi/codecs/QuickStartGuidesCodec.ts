@@ -3,6 +3,8 @@ import * as tt from 'io-ts-types';
 import { PaginationCodec } from './PaginationCodec';
 import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { SEOCodec } from './SeoCodec';
 
 const QuickStartGuideItemCodec = t.strict({
   id: t.number,
@@ -21,6 +23,7 @@ export const QuickStartGuideCodec = t.strict({
     description: t.string,
     product: t.strict({ data: BaseProductWithBannerLinksCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

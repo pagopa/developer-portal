@@ -90,19 +90,22 @@ const baseTutorialJson = {
 const makeStrapiResponseJson = () => ({
   data: [
     {
-      ...baseTutorialJson,
-      bannerLinks: bannerLinksJson,
-      relatedLinks: {
-        id: 9,
-        title: 'links',
-        links: [
-          {
-            id: 21,
-            text: 'click',
-            href: 'http://localhost:1337/admin/content-manager/collection-types/api::tutorial.tutorial/1?plugins[i18n][locale]=it',
-            target: '_blank',
-          },
-        ],
+      attributes: {
+        ...baseTutorialJson.attributes,
+        bannerLinks: bannerLinksJson,
+        relatedLinks: {
+          id: 9,
+          title: 'links',
+          links: [
+            {
+              id: 21,
+              text: 'click',
+              href: 'http://localhost:1337/admin/content-manager/collection-types/api::tutorial.tutorial/1?plugins[i18n][locale]=it',
+              target: '_blank',
+            },
+          ],
+        },
+        seo: null,
       },
     },
   ],
@@ -153,6 +156,7 @@ const makeStrapiResponseJsonWithNull = () => ({
         },
         relatedLinks: null,
         bannerLinks: bannerLinksJson,
+        seo: null,
       },
     },
   ],

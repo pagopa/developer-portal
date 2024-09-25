@@ -123,6 +123,7 @@ export function makeOverviewsProps(
                 title: bannerLink.title || '',
               }))
             : product.bannerLinks,
+        seo: attributes.seo,
       };
     }),
     ...staticOverviews,

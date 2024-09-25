@@ -24,6 +24,7 @@ const makeStrapiHomepagePopulate = () =>
           'products.logo',
           'products.bannerLinks.icon',
           'solutions.icon',
+          'solutions.product.logo',
           'solutionsCta.link',
         ],
       },

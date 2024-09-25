@@ -18,6 +18,9 @@ const makeStrapiTutorialsPopulate = () =>
       bannerLinks: {
         populate: ['icon'],
       },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
+      },
     },
   });
 

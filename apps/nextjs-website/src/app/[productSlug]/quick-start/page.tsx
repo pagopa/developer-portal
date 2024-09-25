@@ -9,8 +9,11 @@ import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideSteppe
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
-import { Box, Divider } from '@mui/material';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -25,6 +28,7 @@ export type QuickStartGuidePageProps = {
   };
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -32,9 +36,13 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { abstract, path, product } = await getQuickStartGuide(
+  const { abstract, path, product, seo } = await getQuickStartGuide(
     params?.productSlug
   );
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     parent: resolvedParent,

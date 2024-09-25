@@ -8,6 +8,7 @@ import { BaseProductCodec, ProductCodec } from './ProductCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PartCodec } from './PartCodec';
 import { PaginationCodec } from './PaginationCodec';
+import { SEOCodec } from './SeoCodec';
 
 const BannerLinkCodec = t.strict({
   id: t.number,
@@ -38,6 +39,7 @@ export const TutorialCodec = t.strict({
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
       relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
       product: t.strict({ data: ProductCodec }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });

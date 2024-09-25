@@ -71,6 +71,7 @@ const makeStrapiResponseJson = () => ({
             icon: mediaVectorJson,
           },
         ],
+        seo: null,
       },
     },
   ],

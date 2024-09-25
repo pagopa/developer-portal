@@ -2,6 +2,8 @@ import * as t from 'io-ts/lib';
 import { BaseGuideCodec } from './GuidesCodec';
 import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
+import { NullToUndefinedCodec } from './NullToUndefinedCodec';
+import { SEOCodec } from './SeoCodec';
 
 const GuideByCategoryCodec = t.strict({
   category: t.string,
@@ -17,6 +19,7 @@ export const GuideListPageCodec = t.strict({
     description: t.string,
     product: t.strict({ data: BaseProductWithBannerLinksCodec }),
     guidesByCategory: t.array(GuideByCategoryCodec),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

@@ -11,6 +11,7 @@ import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
 import { RelatedLinksCodec } from '@/lib/strapi/codecs/RelatedLinksCodec';
 import { BaseTutorialCodec } from './TutorialCodec';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
+import { SEOCodec } from './SeoCodec';
 
 const StartInfoCodec = t.strict({
   icon: t.strict({ data: MediaCodec }),
@@ -84,7 +85,7 @@ export const OverviewCodec = t.strict({
         data: t.union([NullToUndefinedCodec, ProductCodec]),
       }),
       bannerLinks: t.array(BannerLinkCodec),
-    }),
+      seo: t.union([NullToUndefinedCodec, SEOCodec]),}),
   ]),
 });
 

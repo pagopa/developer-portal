@@ -20,6 +20,7 @@ export const baseCaseHistoryJson = {
       data: null,
     },
     parts: [],
+    seo: null,
   },
 };
 

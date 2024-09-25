@@ -11,6 +11,9 @@ const makeStrapiGuideListPopulate = () =>
       guidesByCategory: {
         populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
       },
+      seo: {
+        populate: '*,metaImage,metaSocial.image',
+      },
     },
   });
 
