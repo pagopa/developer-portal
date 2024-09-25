@@ -86,6 +86,7 @@ const makeStrapiResponseJson = () => ({
           },
         ],
       },
+      seo: null,
     },
   },
   meta: {},

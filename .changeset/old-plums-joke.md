@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fixed product layout path for api page
+Fix product layout path for Api page

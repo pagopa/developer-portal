@@ -13,5 +13,6 @@ export function makeApiDataListProps(
         ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
         : [],
       specURLsName: attributes.title,
+      seo: attributes.seo,
     }));
 }
