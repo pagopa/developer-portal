@@ -1,8 +1,7 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Box, Grow, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import ChatbotHistoryNavigationLink from '@/components/atoms/ChatbotHistoryNavigationLink/ChatbotHistoryNavigationLink';
-import { Flex } from '@aws-amplify/ui-react';
 
 export type SessionNavigationData = {
   sessionId: string;
