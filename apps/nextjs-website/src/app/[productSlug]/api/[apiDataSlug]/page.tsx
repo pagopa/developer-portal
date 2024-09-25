@@ -5,9 +5,13 @@ import ProductLayout, {
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { ApiDataParams } from '@/lib/types/apiDataParams';
 import PageNotFound from '@/app/not-found';
+import { SEO } from '@/lib/types/seo';
 
 export type ApiPageProps = {
   readonly product?: Product;
@@ -18,6 +22,7 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateStaticParams() {
@@ -31,6 +36,10 @@ export const generateMetadata = async (
   const resolvedParent = await parent;
   const ApiDataProps = await getApiData(params.apiDataSlug);
 
+  if (ApiDataProps?.seo) {
+    return makeMetadataFromStrapi(ApiDataProps.seo);
+  }
+
   return makeMetadata({
     title: ApiDataProps?.specURLsName,
     description: ApiDataProps?.product?.description,
@@ -42,11 +51,13 @@ export const generateMetadata = async (
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
+  const path = product?.path + '/api/' + params.apiDataSlug;
+
   if (apiDataProps && product) {
     return (
       <ProductLayout
         product={product}
-        path={product.path.concat('/api')}
+        path={path}
         bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
       >

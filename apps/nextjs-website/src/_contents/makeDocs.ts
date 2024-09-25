@@ -6,6 +6,7 @@ import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { SEO } from '@/lib/types/seo';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -25,6 +26,7 @@ export type GuideDefinition = {
     readonly dirName: string;
   }>;
   readonly bannerLinks: readonly BannerLinkProps[];
+  readonly seo?: SEO;
 };
 
 const parseDocOrThrow = flow(

@@ -15,8 +15,12 @@ import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import { ProductParams } from '@/lib/types/productParams';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { getOverviewsProps } from '@/lib/cmsApi';
+import { SEO } from '@/lib/types/seo';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -87,6 +91,7 @@ export type OverviewPageProps = {
       href: string;
     }[];
   };
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -94,7 +99,11 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, path } = await getOverview(params.productSlug);
+  const { product, path, seo } = await getOverview(params.productSlug);
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     parent: resolvedParent,
