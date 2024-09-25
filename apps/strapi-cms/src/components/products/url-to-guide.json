@@ -1,12 +1,14 @@
 {
   "collectionName": "components_products_url_to_guides",
   "info": {
-    "displayName": "urlToGuide"
+    "displayName": "urlToGuide",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "url": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "guide": {
       "type": "relation",

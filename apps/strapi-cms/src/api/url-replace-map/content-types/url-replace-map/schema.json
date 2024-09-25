@@ -4,7 +4,8 @@
   "info": {
     "singularName": "url-replace-map",
     "pluralName": "url-replace-maps",
-    "displayName": "UrlReplaceMap"
+    "displayName": "UrlReplaceMap",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
