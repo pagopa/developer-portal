@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Refactor api data add product
+Add product to ApiData codec
