@@ -5,7 +5,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
+import { getApiDataListPages, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
@@ -38,14 +38,13 @@ export async function generateMetadata({
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
-  const product = await getProduct(params.productSlug);
 
-  if (apiDataListPageProps && product) {
+  if (apiDataListPageProps) {
     return (
       <>
         <ProductLayout
-          product={product}
-          path={product.path.concat('/api')}
+          product={apiDataListPageProps.product}
+          path={apiDataListPageProps.product.path.concat('/api')}
           showBreadcrumbs
         >
           <ApiDataListTemplate {...apiDataListPageProps} />
