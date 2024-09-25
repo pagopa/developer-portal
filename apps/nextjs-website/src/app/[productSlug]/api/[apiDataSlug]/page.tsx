@@ -51,11 +51,13 @@ export const generateMetadata = async (
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
+  const path = product?.path + '/api/' + params.apiDataSlug;
+
   if (apiDataProps && product) {
     return (
       <ProductLayout
         product={product}
-        path={product.path.concat('/api')}
+        path={path}
         bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
       >
