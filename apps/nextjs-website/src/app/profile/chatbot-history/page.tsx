@@ -9,6 +9,7 @@ import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { isEmpty } from 'fp-ts/lib/Array';
+import { useRouter } from 'next/navigation';
 
 const ChatbotHistory = () => {
   const t = useTranslations();
@@ -22,6 +23,14 @@ const ChatbotHistory = () => {
   }, []); // Needs to run only once
 
   if (!isChatbotActive) {
+  const router = useRouter();
+
+  useEffect(() => {
+    getSessionsByPage(1);
+  }, [getSessionsByPage]);
+
+  if (!isChatbotActive) {
+    router.replace('/not-found');
     return null;
   }
 

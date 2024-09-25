@@ -42,5 +42,6 @@ export function makeSolutionListPageProps(
         iconUrl: item.icon.data.attributes.url,
       })),
     },
+    seo: attributes.seo,
   };
 }

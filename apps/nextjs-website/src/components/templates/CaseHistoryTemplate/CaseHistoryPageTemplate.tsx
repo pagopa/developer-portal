@@ -10,6 +10,7 @@ import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { SEO } from '@/lib/types/seo';
 
 export type CaseHistoryPageTemplateProps = {
   slug: string;
@@ -18,6 +19,7 @@ export type CaseHistoryPageTemplateProps = {
   description?: string;
   products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];
+  seo?: SEO;
 };
 
 const CaseHistoryPageTemplate = ({

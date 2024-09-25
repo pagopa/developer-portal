@@ -10,6 +10,8 @@ import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
+import { useUser } from '@/helpers/user.helper';
+import { baseUrl } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
@@ -35,9 +37,14 @@ const Chat = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
+  const { user } = useUser();
   const messages = useMemo(
     () => [
-      firstMessage(t('chatBot.welcomeMessage')),
+      firstMessage(
+        user
+          ? t('chatBot.welcomeMessage')
+          : t('chatBot.guestMessage', { host: baseUrl })
+      ),
       ...compact(
         queries.flatMap((q) => [
           q.question && q.queriedAt
@@ -61,7 +68,7 @@ const Chat = ({
         ])
       ),
     ],
-    [queries, t]
+    [queries, t, user]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
