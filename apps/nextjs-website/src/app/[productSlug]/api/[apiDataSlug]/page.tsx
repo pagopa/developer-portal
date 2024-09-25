@@ -14,6 +14,7 @@ import PageNotFound from '@/app/not-found';
 import { SEO } from '@/lib/types/seo';
 
 export type ApiPageProps = {
+  readonly title?: string;
   readonly product?: Product;
   readonly apiDataSlug: string;
   readonly specURLsName?: string;
@@ -58,6 +59,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
       <ProductLayout
         product={product}
         path={path}
+        paths={[{ name: apiDataProps.title || '', path: path }]}
         bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
       >
