@@ -16,6 +16,9 @@ export function makeApiDataListPagesProps(
         subtitle: attributes.description || '',
       },
       product,
+      apiRestDetailSlugs: attributes.apiData.data
+        .map(({ attributes }) => attributes.apiRestDetail?.slug)
+        .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data.map((item) => ({
         target: (item.attributes.apiSoapUrl ? '_blank' : '_self') as
           | '_blank'

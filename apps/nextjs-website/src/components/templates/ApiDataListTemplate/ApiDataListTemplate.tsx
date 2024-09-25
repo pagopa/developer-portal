@@ -16,6 +16,7 @@ export type ApiDataListTemplateProps = {
     readonly heigth?: string;
   };
   readonly product: Product;
+  readonly apiRestDetailSlugs: readonly string[];
   readonly cards: {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly title: string;
