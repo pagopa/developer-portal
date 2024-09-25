@@ -24,7 +24,12 @@ const ChatbotHistoryDetails = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
+  const router = useRouter();
 
+  if (!isChatbotActive) {
+    router.replace('/not-found');
+    return null;
+  }
   if (!user) {
     return null;
   }

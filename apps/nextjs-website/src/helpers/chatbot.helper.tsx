@@ -5,7 +5,7 @@ import {
   sendChatbotFeedback,
   getChatbotSessionsHistory,
   getChatbotQueries,
-  deleteSession as deleteSessionApi,
+  deleteSession,
 } from '@/lib/chatbotApi';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
@@ -94,10 +94,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const getSession = (sessionId: string) => getChatbotQueries(sessionId);
-
-  const deleteSession = (sessionId: string) => {
-    return deleteSessionApi(sessionId);
-  };
 
   return {
     isLoaded,
