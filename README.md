@@ -32,6 +32,15 @@ and then run the script to checkout docs to the right branch
 npm run update-docs -w nextjs-website
 ``` 
 
+### Adding dynamic pages
+
+When a new page is added and the main content of that page cannot be defined at build time (like for webinar pages for example), rember to add the page path inside the array in this file: `apps/chatbot/config/dynamic-pages.json`. 
+
+This path is used from chatbot to define which pages need to be fetch diretctly from website. Chatbot will fetch all path containing the strings indide di `dynamic-pages.json` array (like for string `/webinars/` chatbot will fetch data for every path containing this path like `/webinars/1`, `/webinars/2` ecc).
+
+This information is needed to make chatbot able to scan new dynamic pages during traing session, chatbot by default scan static HTML files generated on build. 
+
+
 #### Update documentation
 You can update the doc by downloading it again or, if you chose the submodule way, by running again the update command:
 ```bash
