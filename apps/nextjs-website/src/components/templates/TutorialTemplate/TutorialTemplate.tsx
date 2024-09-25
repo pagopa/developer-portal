@@ -41,6 +41,7 @@ const TutorialTemplate = ({
             marginTop: '80px',
             marginX: 'auto',
             paddingTop: 3,
+            px: { xs: 4, lg: 0 },
           }}
         >
           <ProductBreadcrumbs
