@@ -74,7 +74,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
-          zIndex: 1,
+          zIndex: 51,
         }}
       >
         <Stack
