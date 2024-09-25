@@ -50,4 +50,3 @@ export const BaseApiDataListCodec = t.strict({
 });
 
 export type StrapiApiDataList = t.TypeOf<typeof ApiDataListCodec>;
-export type StrapiBaseApiDataList = t.TypeOf<typeof BaseApiDataListCodec>;
