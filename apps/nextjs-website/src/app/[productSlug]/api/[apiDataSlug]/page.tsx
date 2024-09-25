@@ -73,11 +73,13 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
     things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
   });
 
+  const path = product?.path + '/api/' + params.apiDataSlug;
+
   if (apiDataProps && product) {
     return (
       <ProductLayout
         product={product}
-        path={product.path.concat('/api')}
+        path={path}
         bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
         structuredData={structuredData}
