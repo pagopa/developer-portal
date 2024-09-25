@@ -7,6 +7,7 @@ import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDet
 import { Query } from '@/lib/chatbot/queries';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { isChatbotActive } from '@/config';
 
 const ChatbotHistoryDetails = ({
   params,
@@ -24,7 +25,6 @@ const ChatbotHistoryDetails = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
-  const router = useRouter();
 
   if (!isChatbotActive) {
     router.replace('/not-found');
