@@ -13,7 +13,7 @@ describe('parseCkEditorContent', () => {
       `id="ckeditor-example-string!!$%^&amp;*()_"`
     ); // Check if IDs are added correctly around a h2 heading
     expect(result.parsedContent).toContain(
-      `<div id="ckeditor-example-string!!$%^&amp;*()_" class="menuAnchor"><h2>Éxámplé String!@#!@#$%^&amp;*()_+</h2></div>`
+      `<div class="menuAnchor" id="ckeditor-example-string!!$%^&amp;*()_"><h2>Éxámplé String!@#!@#$%^&amp;*()_+</h2></div>`
     ); // Check if IDs are added correctly around a h2 heading
 
     // Test the menuItems array
