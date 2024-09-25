@@ -230,19 +230,31 @@ def last_session_id(userId: str):
   return '1'
 
 @app.patch("/queries/{id}")
-async def query_feedback (badAnswer: bool):
-  # TODO: dynamoDB integration
-  body = {
-    "id": "",
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "badAnswer": badAnswer,
-    "createdAt": "",
-    "queriedAt": ""
-  }
-  return body
+async def query_feedback (
+  badAnswer: bool,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  try:
+    # TODO: add userId filter
+    db_response = table_queries.update_item(
+      Key={
+        "id": query["id"],
+        "userd": userId
+      },
+      UpdateExpression="set badAnswer = :value",
+      ExpressionAttributeValues={
+        ':value': badAnswer,
+      },
+      ReturnValues="UPDATED_NEW"
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[query_feedback] id: {id}, userId: {userId}, error: {e}")
 
+  result = db_response
+  return result
+
+# Application server
 handler = mangum.Mangum(app, lifespan="off")
 
 if __name__ == "__main__":
