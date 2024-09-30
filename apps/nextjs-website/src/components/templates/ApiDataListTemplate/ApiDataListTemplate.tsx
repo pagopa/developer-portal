@@ -66,6 +66,7 @@ const ApiDataListTemplate = ({
           cardSize={{ xs: 12, md: 4 }}
           containerSx={{
             pt: '22px',
+            mt: '-22px',
           }}
         />
       </Box>
