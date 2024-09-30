@@ -13,10 +13,7 @@ import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/Bl
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
-import {
-  homeBreadCrumb,
-  websiteWithContext,
-} from '@/helpers/structuredData.helpers';
+import { websiteWithContext } from '@/helpers/structuredData.helpers';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
@@ -102,13 +99,7 @@ const Home = async () => {
   const homepage: HomepageProps = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
-    breadcrumbsItems: [homeBreadCrumb],
-    webPage: {
-      name: homepage.seo?.metaTitle,
-      description: homepage.seo?.metaDescription,
-      url: homepage.seo?.canonicalURL,
-      media: homepage.seo?.metaImage?.data?.attributes,
-    },
+    seo: homepage.seo,
     things: [websiteWithContext],
   });
 

@@ -16,6 +16,7 @@ export type ProductLayoutProps = {
   readonly paths?: Path[];
   readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
+  readonly structuredData?: ReactNode;
 };
 
 type LayoutPropsWithChildren = {
@@ -29,9 +30,11 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   bannerLinks,
   children,
   showBreadcrumbs = false,
+  structuredData,
 }) => {
   return (
     <>
+      {structuredData}
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
         <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>

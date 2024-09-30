@@ -29,6 +29,11 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   productSlug: string;
@@ -93,6 +98,19 @@ const Page = async ({ params }: { params: Params }) => {
   ]);
 
   if (strapiTutorialProps) {
+    const structuredData = generateStructuredDataScripts({
+      breadcrumbsItems: [
+        productToBreadcrumb(strapiTutorialProps.product),
+        {
+          name: strapiTutorialProps.seo?.metaTitle,
+          item: breadcrumbItemByProduct(strapiTutorialProps.product, [
+            'guides',
+            ...(params?.productTutorialPage || []),
+          ]),
+        },
+      ],
+      seo: strapiTutorialProps.seo,
+    });
     return (
       <TutorialTemplate
         bannerLinks={strapiTutorialProps.bannerLinks}
@@ -101,6 +119,7 @@ const Page = async ({ params }: { params: Params }) => {
         product={strapiTutorialProps.product}
         relatedLinks={strapiTutorialProps.relatedLinks}
         title={strapiTutorialProps.title}
+        structuredData={structuredData}
       />
     );
   }
@@ -124,11 +143,26 @@ const Page = async ({ params }: { params: Params }) => {
 
   const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: tutorialProps.page.title,
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productTutorialPage || []),
+        ]),
+      },
+    ],
+    seo: undefined,
+  });
+
   return (
     <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
     >
       <FragmentProvider>
         <Box

@@ -9,6 +9,9 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import WebinarListItem from '@/components/molecules/WebinarListItem/WebinarListItem';
 import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
+import { baseUrl } from '@/config';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
@@ -21,6 +24,22 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
   const { palette } = useTheme();
   const [futureWebinars, setFutureWebinars] = useState<readonly Webinar[]>([]);
   const [pastWebinars, setPastWebinars] = useState<readonly Webinar[]>([]);
+
+  const webinarsListPageSEO = {
+    metaTitle: t('webinars.title'),
+    metaDescription: t('webinars.subtitle'),
+    canonicalURL: `${baseUrl}/webinars`,
+  };
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: webinarsListPageSEO.metaTitle,
+        item: getItemFromPaths(['webinars']),
+      },
+    ],
+    seo: webinarsListPageSEO,
+  });
 
   useEffect(() => {
     setFutureWebinars(getFutureWebinars(webinars));
@@ -37,6 +56,7 @@ const WebinarsTemplate = ({ webinars }: WebinarsTemplateProps) => {
 
   return (
     <>
+      {structuredData}
       <Hero
         background={palette.background.paper}
         title={t('webinars.title')}

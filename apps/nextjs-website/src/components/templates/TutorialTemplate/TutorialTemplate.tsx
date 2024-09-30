@@ -9,6 +9,7 @@ import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { StrapiTutorials } from '@/lib/strapi/codecs/TutorialCodec';
+import { ReactNode } from 'react';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
@@ -18,6 +19,7 @@ type TutorialPageTemplateProps = {
   readonly product?: Product;
   readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
   readonly title: string;
+  readonly structuredData?: ReactNode;
 };
 
 const TutorialTemplate = ({
@@ -26,11 +28,13 @@ const TutorialTemplate = ({
   product,
   relatedLinks,
   title,
+  structuredData,
 }: TutorialPageTemplateProps) => {
   return (
     <ProductLayout
       product={product}
       path={path}
+      structuredData={structuredData}
       // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
     >
       {product && (
