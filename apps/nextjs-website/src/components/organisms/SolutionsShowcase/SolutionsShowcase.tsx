@@ -33,6 +33,10 @@ const SolutionsShowcase = ({
           tags: card.tags,
           useSrc: true,
         }))}
+        containerSx={{
+          pt: '22px',
+          mt: '-22px',
+        }}
       />
     </Box>
   );
