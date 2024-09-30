@@ -62,6 +62,9 @@ const ApiDataListTemplate = ({
             ctaLabel: t('apiDataListPage.explore'),
           }))}
           cardSize={{ xs: 12, md: 4 }}
+          containerSx={{
+            pt: '22px',
+          }}
         />
       </Box>
       <BannerLinks bannerLinks={bannerLinks} />

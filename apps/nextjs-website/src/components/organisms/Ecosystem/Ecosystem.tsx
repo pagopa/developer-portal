@@ -34,7 +34,13 @@ const Ecosystem = ({
                 <CardsGrid
                   ctaButtonsVariant={'contained'}
                   cards={products}
-                  containerSx={{ px: 0, pb: '22px' }}
+                  containerSx={{
+                    px: '22px',
+                    py: '22px',
+                    mt: '-22px',
+                    mx: '-22px',
+                    pb: '22px',
+                  }}
                 />
               ),
             },
@@ -47,7 +53,10 @@ const Ecosystem = ({
                       ctaButtonsVariant={'contained'}
                       cards={solutions}
                       containerSx={{
-                        px: 0,
+                        px: '22px',
+                        py: '22px',
+                        mt: '-22px',
+                        mx: '-22px',
                         pb: '22px',
                       }}
                     />
