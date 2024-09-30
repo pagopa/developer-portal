@@ -1,11 +1,12 @@
 'use client';
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import TabComponent from '@/components/atoms/TabComponent/TabComponent';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import { HomepageProps } from '@/app/page';
+import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 
 const Ecosystem = ({
   title,
@@ -18,14 +19,14 @@ const Ecosystem = ({
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
+      {title && <SectionTitle margin={'0 0 1.75rem 0'} title={title} />}
       <Box
-        sx={{ maxWidth: '1300px', margin: 'auto', paddingX: { xs: '24px' } }}
+        sx={{
+          maxWidth: '1264px',
+          margin: 'auto',
+          paddingX: 4,
+        }}
       >
-        {title && (
-          <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
-            {title}
-          </Typography>
-        )}
         <TabComponent
           items={[
             {
@@ -39,7 +40,6 @@ const Ecosystem = ({
                     py: '22px',
                     mt: '-22px',
                     mx: '-22px',
-                    pb: '22px',
                   }}
                 />
               ),
@@ -57,7 +57,6 @@ const Ecosystem = ({
                         py: '22px',
                         mt: '-22px',
                         mx: '-22px',
-                        pb: '22px',
                       }}
                     />
                   )}
