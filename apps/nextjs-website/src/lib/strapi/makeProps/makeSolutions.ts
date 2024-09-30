@@ -39,5 +39,6 @@ export function makeSolutionsProps(
         })
       ),
     },
+    seo: attributes.seo,
   }));
 }
