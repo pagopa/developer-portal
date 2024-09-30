@@ -18,10 +18,9 @@ import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
+import { PRODUCT_HEADER_HEIGHT } from '../ProductHeader/ProductHeader';
 
 type GuideMenuProps = GuideMenuItemsProps & { distanceFromTop?: number };
-
-export const PRODUCT_HEADER_HEIGHT = 75;
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
@@ -68,7 +67,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           backgroundColor: palette.grey[50],
           flexShrink: 0,
           position: 'sticky',
-          top,
+          top: { xs: 110, sm: 138, md: 125 },
           height: { lg: height },
           overflowY: 'auto',
           transition: 'all 0.5s linear',

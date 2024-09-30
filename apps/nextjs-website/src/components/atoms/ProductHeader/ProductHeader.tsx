@@ -12,6 +12,8 @@ type ProductHeaderProps = {
   path: string;
 };
 
+export const PRODUCT_HEADER_HEIGHT = 75;
+
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();
   const scrollUp = useScrollUp();

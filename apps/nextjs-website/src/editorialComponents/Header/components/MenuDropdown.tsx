@@ -100,7 +100,11 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   return (
     <Stack sx={styles.menu} {...menuEventsHandlers}>
       <Link sx={styles.item} {...button}>
-        <Typography variant='sidenav' color='inherit'>
+        <Typography
+          variant='sidenav'
+          color='inherit'
+          sx={{ maxWidth: 10, overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
           {label}
         </Typography>
         {hasLinks && (
