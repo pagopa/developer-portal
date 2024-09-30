@@ -133,11 +133,12 @@ const Page = async ({ params }: { params: Params }) => {
       <FragmentProvider>
         <Box
           sx={{
-            maxWidth: '1156px',
+            maxWidth: '1200px',
             // 80px is the height of the product header
             marginTop: '80px',
             marginX: 'auto',
             paddingTop: 3,
+            px: { xs: 4, md: 0 },
           }}
         >
           <ProductBreadcrumbs
@@ -152,10 +153,11 @@ const Page = async ({ params }: { params: Params }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
-            maxWidth: '1156px',
+            maxWidth: '1200px',
             margin: '0 auto',
             paddingBottom: !hasRelatedLinks ? '56px' : 0,
             paddingTop: '56px',
+            px: { xs: 4, lg: 0 },
           }}
         >
           <Box
@@ -165,6 +167,7 @@ const Page = async ({ params }: { params: Params }) => {
                 xs: '100%',
                 lg: '822px',
               },
+              overflowWrap: 'break-word',
             }}
           >
             <GitBookContent content={props.body} config={props.bodyConfig} />
@@ -174,16 +177,16 @@ const Page = async ({ params }: { params: Params }) => {
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '158px',
-              paddingLeft: '64px',
-              width: { lg: '270px' },
+              paddingTop: '30px',
+              paddingLeft: '60px',
+              width: { lg: '378px' },
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
-                maxWidth: '270px',
-                top: 144,
+                minWidth: '378px',
+                top: 140,
               }}
             >
               <GuideInPageMenu
