@@ -12,6 +12,8 @@ import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { getSolutionsProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -81,27 +83,54 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: 'Solutions',
+        item: getItemFromPaths(['solutions']),
+      },
+      {
+        name: solution.seo?.metaTitle,
+        item: getItemFromPaths(['solutions', solution.slug]),
+      },
+      {
+        name: page.title,
+        item:
+          params?.solutionSubPathSlugs &&
+          getItemFromPaths([
+            'solutions',
+            solution.slug,
+            ...params.solutionSubPathSlugs,
+          ]),
+      },
+    ],
+    seo: solution.seo,
+  });
+
   return (
-    <GitBookTemplate
-      menuName={props.solution.title}
-      breadcrumbs={[
-        ...pageToBreadcrumbs('solutions', [
-          {
-            name: props.solution.title,
-            path: `/solutions/${props.solution.slug}`,
-          },
-          {
-            name: page.title,
-            path: `/solutions/${
-              props.solution.slug
-            }/details/${params.solutionSubPathSlugs.join('/')}`,
-          },
-        ]),
-      ]}
-      menuDistanceFromTop={0}
-      contentMarginTop={0}
-      {...props}
-    />
+    <>
+      {structuredData}
+      <GitBookTemplate
+        menuName={props.solution.title}
+        breadcrumbs={[
+          ...pageToBreadcrumbs('solutions', [
+            {
+              name: props.solution.title,
+              path: `/solutions/${props.solution.slug}`,
+            },
+            {
+              name: page.title,
+              path: `/solutions/${
+                props.solution.slug
+              }/details/${params.solutionSubPathSlugs.join('/')}`,
+            },
+          ]),
+        ]}
+        menuDistanceFromTop={0}
+        contentMarginTop={0}
+        {...props}
+      />
+    </>
   );
 };
 

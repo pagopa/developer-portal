@@ -54,6 +54,9 @@ const ChatMessage = ({
       DEFAULT_DATE_FORMAT.options
     ).format(new Date(timestamp));
 
+  const iconSize = 40;
+  const marginLeftMessage = 20;
+
   return (
     <Stack direction='column' width='100%' alignItems='flex-end'>
       {dateHeader && (
@@ -95,7 +98,7 @@ const ChatMessage = ({
                   icon={'/icons/chatbotChatAvatar.svg'}
                   useSrc={true}
                   color={palette.text.secondary}
-                  size={40}
+                  size={iconSize}
                 />
               </Box>
             )}
@@ -103,16 +106,16 @@ const ChatMessage = ({
           <Stack
             alignItems={'flex-end'}
             direction={'column'}
-            width={'100%'}
-            marginLeft={2}
+            width={`calc(100% - ${iconSize + marginLeftMessage}px)`}
+            marginLeft='20px'
           >
             <Typography
               fontSize={'0.875rem'}
               color={textColor}
               component={'div'}
-              marginLeft={'2.2rem'}
               paragraph
               width={'100%'}
+              sx={{ overflowWrap: 'break-word' }}
             >
               {parsedChatMessage}
             </Typography>

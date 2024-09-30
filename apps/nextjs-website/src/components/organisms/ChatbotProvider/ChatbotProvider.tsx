@@ -33,6 +33,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           isAwaitingResponse={isAwaitingResponse}
           isChatbotLoaded={isLoaded}
           error={chatbotError}
+          disabled={!user}
         />
       )}
       {children}
