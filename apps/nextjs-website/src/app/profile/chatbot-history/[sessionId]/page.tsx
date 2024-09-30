@@ -8,6 +8,7 @@ import { Query } from '@/lib/chatbot/queries';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { isChatbotActive } from '@/config';
+import { isEmpty } from 'fp-ts/lib/Array';
 
 const ChatbotHistoryDetails = ({
   params,
@@ -30,7 +31,7 @@ const ChatbotHistoryDetails = ({
     router.replace('/not-found');
     return null;
   }
-  if (!user) {
+  if (!user || isEmpty(session)) {
     return null;
   }
 
