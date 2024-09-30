@@ -7,6 +7,11 @@ import { baseUrl } from '@/config';
 import { getCaseHistoriesProps } from '@/lib/cmsApi';
 import { getCaseHistory } from '@/lib/api';
 import CaseHistoryPageTemplate from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  convertSeoToStructuredDataArticle,
+  getItemFromPaths,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   caseHistorySlug: string;
@@ -40,7 +45,23 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const caseHistory = await getCaseHistory(params?.caseHistorySlug);
 
-  return <CaseHistoryPageTemplate {...caseHistory} />;
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: caseHistory.seo?.metaTitle,
+        item: getItemFromPaths(['case-histories', caseHistory.slug]),
+      },
+    ],
+    seo: caseHistory.seo,
+    things: [convertSeoToStructuredDataArticle(caseHistory.seo)],
+  });
+
+  return (
+    <>
+      {structuredData}
+      <CaseHistoryPageTemplate {...caseHistory} />
+    </>
+  );
 };
 
 export default Page;
