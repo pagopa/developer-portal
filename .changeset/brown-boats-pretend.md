@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add font size to bold and italic sections
+Set font size to be 16px on bold and italic sections
