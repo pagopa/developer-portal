@@ -7,6 +7,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { StrapiApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
+import { SEO } from '@/lib/types/seo';
 
 export type ApiDataListTemplateProps = {
   readonly hero: {
@@ -31,6 +32,7 @@ export type ApiDataListTemplateProps = {
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
   readonly apiData: StrapiApiDataList;
+  readonly seo?: SEO;
 };
 
 const ApiDataListTemplate = ({
