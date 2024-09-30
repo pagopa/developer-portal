@@ -3,4 +3,4 @@
 "storybook-app": minor
 ---
 
-Add error alerts in chatbot chat
+Add chatbot chat history detail layout

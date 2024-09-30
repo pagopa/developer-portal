@@ -35,6 +35,7 @@ export const baseSolutionJson = {
           {
             id: 3,
             attributes: {
+              seo: null,
               slug: 'slugdellacasehistory',
               title: 'Lorem ipsum dolor sit amet consectetur adipiscing el',
               description: 'Lorem ipsum dolor sit amet consectetur adipiscing',
@@ -52,5 +53,6 @@ export const baseSolutionJson = {
         ],
       },
     },
+    seo: null,
   },
 };

@@ -16,7 +16,10 @@ import {
 } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { translations } from '@/_contents/translations';
 import RelatedLinks, {
@@ -60,7 +63,12 @@ export async function generateMetadata({
     tutorialPath,
   ]);
   if (strapiTutorialProps) {
-    const { title, path } = strapiTutorialProps;
+    const { title, path, seo } = strapiTutorialProps;
+
+    if (seo) {
+      return makeMetadataFromStrapi(seo);
+    }
+
     return makeMetadata({
       title,
       url: path,

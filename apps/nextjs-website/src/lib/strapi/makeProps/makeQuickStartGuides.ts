@@ -44,6 +44,7 @@ export function makeQuickStartGuidesProps(
           makeStepFromQuickstartGuideItems(item)
         ),
         path: `/${product.slug}/quick-start`,
+        seo: quickStart.attributes.seo,
       };
     }),
     ...staticQuickStarts,

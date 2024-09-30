@@ -5,6 +5,7 @@ import { BlocksContentCodec } from './BlocksContentCodec';
 import { MediaCodec } from './MediaCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PaginationCodec } from './PaginationCodec';
+import { SEOCodec } from './SeoCodec';
 
 const WebinarSpeakerCodec = t.strict({
   id: t.number,
@@ -53,14 +54,11 @@ export const WebinarCodec = t.strict({
     startDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     endDatetime: t.union([NullToUndefinedCodec, tt.DateFromISOString]),
     subscribeParagraphLabel: t.union([NullToUndefinedCodec, t.string]),
-    relatedLinks: t.union([
-      NullToUndefinedCodec,
-      RelatedLinksCodec,
-      t.undefined,
-    ]),
+    relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
     relatedResources: t.union([NullToUndefinedCodec, RelatedResources]),
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
     questionsAndAnswers: t.array(QuestionAndAnswerCodec),
+    seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });
 

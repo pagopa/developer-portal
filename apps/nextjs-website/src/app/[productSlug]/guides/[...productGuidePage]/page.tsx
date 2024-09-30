@@ -11,7 +11,10 @@ import {
 } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { getGuidesProps } from '@/lib/cmsApi';
@@ -54,7 +57,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {
     page: { path, title },
+    seo,
   } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     title,

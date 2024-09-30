@@ -118,10 +118,3 @@ variable "chatbot_ecs_redis" {
     port      = 6379
   }
 }
-
-variable "CHB_QUERY_TABLE_NAME" {
-  type        = string
-  description = "dynamodb table name for queries"
-  default     = "chatbot-dev-queries"
-}
-
