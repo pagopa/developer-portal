@@ -18,6 +18,11 @@ import {
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { getGuideListPagesProps } from '@/lib/cmsApi';
 import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
   return (await getGuideListPagesProps()).map(({ product }) => ({
@@ -56,8 +61,19 @@ export const generateMetadata = async (
 };
 
 const GuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, guidesSections, path, product } =
+  const { abstract, bannerLinks, guidesSections, path, product, seo } =
     await getGuideLists(params?.productSlug);
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['guides']),
+      },
+    ],
+    seo: seo,
+  });
 
   return (
     <ProductLayout
@@ -65,6 +81,7 @@ const GuidesPage = async ({ params }: ProductParams) => {
       path={path}
       bannerLinks={bannerLinks}
       showBreadcrumbs
+      structuredData={structuredData}
     >
       {abstract && (
         <Abstract

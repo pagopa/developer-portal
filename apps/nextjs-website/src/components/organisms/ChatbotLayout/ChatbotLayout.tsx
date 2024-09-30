@@ -21,6 +21,7 @@ type ChatbotLayoutProps = {
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
   error: ChatbotErrorsType | null;
+  disabled?: boolean;
 };
 
 const ChatbotLayout = ({
@@ -30,6 +31,7 @@ const ChatbotLayout = ({
   isAwaitingResponse,
   isChatbotLoaded,
   error,
+  disabled,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -137,6 +139,7 @@ const ChatbotLayout = ({
             isChatbotLoaded={isChatbotLoaded}
             scrollToBottom
             error={error}
+            disabled={disabled}
           />
         </Stack>
       </Popover>
