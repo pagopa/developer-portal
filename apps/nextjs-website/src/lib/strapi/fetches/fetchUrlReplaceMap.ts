@@ -4,15 +4,8 @@ import qs from 'qs';
 
 const makeStrapiUrlReplaceMapPopulate = () =>
   qs.stringify({
-    populate: {
-      urlToGuide: {
-        populate: {
-          guide: {
-            populate: '*',
-          },
-        },
-      },
-    },
+    populate:
+      'urlToGuide.guide.*,urlToGuide.guide.image,urlToGuide.guide.mobileImage,urlToGuide.guide.listItems,urlToGuide.guide.product.*,urlToGuide.guide.versions.*,urlToGuide.guide.seo.*',
   });
 
 export const fetchUrlReplaceMap = fetchFromStrapi(
