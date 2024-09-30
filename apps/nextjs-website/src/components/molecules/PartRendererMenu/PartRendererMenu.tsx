@@ -2,17 +2,19 @@
 import { Part } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import BlocksRendererClientMenu from '../BlocksRendererClientMenu/BlocksRendererClientMenu';
 import { translations } from '@/_contents/translations';
-import { blob } from 'stream/consumers';
+import { generateIdFromString } from '@/helpers/anchor.helpers';
+import MUILink from '@mui/material/Link';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
 };
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
+  const { palette } = useTheme();
   const menuItems = props.parts
     .map((part) => {
       switch (part.component) {
@@ -37,6 +39,30 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               <Typography>{part.title}</Typography>
             </a>
           );
+        case 'ckEditor':
+          return part.menuItems.map((menuItem) => (
+            <MUILink
+              key={menuItem.title}
+              href={menuItem.href}
+              title={menuItem.title}
+              sx={{
+                display: 'block',
+                fontFamily: 'Titillium Web',
+                marginBottom: '12px',
+                textDecoration: 'none',
+              }}
+            >
+              <Typography
+                sx={{
+                  color: palette.text.secondary,
+                  fontSize: menuItem.level === 2 ? 18 : 16,
+                  fontWeight: 400,
+                }}
+              >
+                {menuItem.title}
+              </Typography>
+            </MUILink>
+          ));
         case 'typography':
           if (!['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
             return null;
@@ -69,9 +95,11 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
       }}
     >
       <Typography
-        id='side-menu-title'
-        variant='h6'
-        sx={{ marginBottom: '16px' }}
+        color={palette.text.secondary}
+        fontSize={14}
+        fontWeight={700}
+        textTransform={'uppercase'}
+        marginBottom={'18px'}
       >
         {translations.productGuidePage.onThisPage}
       </Typography>
@@ -80,31 +108,19 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   );
 };
 
-export function refactorId(id: string | undefined): string {
-  if (id === undefined) return '';
-  return id
-    .trim()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
-    .replace(/^\s*/, '')
-    .normalize('NFD') // Split an accented letter in the base letter and the accent
-    .replace(/[\u0300-\u036f]/g, '') // Remove all accents
-    .replace(/ /g, '-'); // Replace spaces with -
-}
-
 export function computeId(type: string, children: ReactNode | string): string {
   if (typeof children === 'string') {
-    return `${type}-${refactorId(children)}`;
+    return `${type}-${generateIdFromString(children)}`;
   }
 
   if (!Array.isArray(children)) {
     // if children is react element and has props text return that
     if (children && typeof children === 'object' && 'props' in children) {
-      const text = refactorId(children.props.text);
+      const text = generateIdFromString(children.props.text);
       return `${type}-${text}`;
     }
 
-    return refactorId(children?.toString()) ?? '';
+    return generateIdFromString(children?.toString()) ?? '';
   }
 
   return children

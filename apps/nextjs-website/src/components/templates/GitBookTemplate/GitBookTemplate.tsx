@@ -79,13 +79,13 @@ const GitBookTemplate = ({
             display: { xs: 'none', lg: 'initial' },
             position: 'relative',
             padding: { lg: '80px 64px' },
-            width: { lg: '270px' },
+            width: { lg: '378px' },
           }}
         >
           <Box
             sx={{
               position: 'sticky',
-              maxWidth: '270px',
+              maxWidth: '378px',
               top: 144,
             }}
           >
