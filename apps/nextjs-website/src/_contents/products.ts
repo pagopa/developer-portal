@@ -152,7 +152,6 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/v1.0-catalogo-dei-servizi':
     '/app-io/guides/v1.0-catalogo-dei-servizi',
 
-
   // Firma con IO
   'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
     '/firma-con-io/guides/manuale-operativo',
