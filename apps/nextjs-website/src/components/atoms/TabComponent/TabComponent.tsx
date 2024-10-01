@@ -53,8 +53,8 @@ export const TabComponent: FC<TabsProps> = ({
     <>
       <Box
         sx={{
-          borderBottom: 2,
-          borderColor: 'divider',
+          display: 'flex',
+          justifyContent: 'space-around',
           marginBottom: 6,
           position: 'relative',
           top: '2px',
@@ -67,10 +67,23 @@ export const TabComponent: FC<TabsProps> = ({
           onChange={(event, newValue: number) => {
             setCurrentTab(newValue);
           }}
-          sx={{ position: 'relative', top: '2px' }}
+          sx={{
+            flexGrow: '1',
+            position: 'relative',
+            top: '2px',
+            maxWidth: '1200px',
+          }}
         >
           {items.map((item, index) => (
-            <Tab key={index} label={item.title} />
+            <Tab
+              key={index}
+              label={item.title}
+              sx={{
+                maxWidth: '600px',
+                borderBottom: 2,
+                borderColor: 'divider',
+              }}
+            />
           ))}
         </Tabs>
       </Box>

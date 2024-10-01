@@ -14,6 +14,11 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -54,8 +59,26 @@ export async function generateMetadata(
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, defaultStepAnchor, path, product, steps } =
-    await getQuickStartGuide(params?.productSlug);
+  const {
+    abstract,
+    bannerLinks,
+    defaultStepAnchor,
+    path,
+    product,
+    steps,
+    seo,
+  } = await getQuickStartGuide(params?.productSlug);
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['quick-start']),
+      },
+    ],
+    seo: seo,
+  });
 
   return (
     <ProductLayout
@@ -63,6 +86,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
       path={path}
       showBreadcrumbs
       bannerLinks={bannerLinks}
+      structuredData={structuredData}
     >
       {abstract && (
         <Abstract
