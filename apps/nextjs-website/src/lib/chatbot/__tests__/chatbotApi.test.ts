@@ -1,4 +1,4 @@
-import { getQueries, postQuery } from '@/lib/chatbot/chatbotApi';
+import { getQueries, postQuery } from '@/lib/chatbot/chatbotFetch';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -97,7 +97,6 @@ describe('chatbotApi', () => {
       json: () => Promise.resolve(postQueryResponses[200]),
     });
     const actual = postQuery({
-      sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
       question: 'aQuery',
     })(env);
@@ -141,7 +140,6 @@ describe('chatbotApi', () => {
       json: () => Promise.resolve(postQueryResponses[401]),
     });
     const actual = postQuery({
-      sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
       question: 'aQuery',
     })(env);
@@ -163,7 +161,6 @@ describe('chatbotApi', () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockRejectedValueOnce({});
     const actual = postQuery({
-      sessionId: 'aWrongSessionId',
       queriedAt: 'aQueriedAt',
       question: 'aQuery',
     })(env);
@@ -178,7 +175,6 @@ describe('chatbotApi', () => {
       json: () => Promise.resolve(badResponse[200]),
     });
     const actual = postQuery({
-      sessionId: 'aSessionId',
       queriedAt: 'aQueriedAt',
       question: 'aQuery',
     })(env);

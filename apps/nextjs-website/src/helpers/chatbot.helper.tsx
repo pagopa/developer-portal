@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 import {
   sendChatbotQuery,
   sendChatbotFeedback,
+  getChatbotSessionsHistory,
   getChatbotQueries,
-  getChatbotHistory,
-} from '@/lib/chatbot';
+  deleteSession,
+  getDocumentationUpdatedAt,
+} from '@/lib/chatbotApi';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
 const HISTORY_PAGE_SIZE = 10;
@@ -18,7 +20,6 @@ export type ChatbotErrorsType =
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
   const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
     useState(true);
@@ -27,25 +28,26 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
     null
   );
+  const [documentationUpdatedAt, setDocumentationUpdatedAt] =
+    useState<Date | null>(null);
+
+  useEffect(() => {
+    getDocumentationUpdatedAt().then((response) =>
+      setDocumentationUpdatedAt(new Date(response))
+    );
+  }, []);
 
   useEffect(() => {
     if (!isUserAuthenticated) {
       return;
     }
 
-    // Request sessionID form chatbotAPI
-    setSessionId('sessionID');
-  }, [sessionId, isUserAuthenticated]);
-
-  useEffect(() => {
-    if (!sessionId || !isUserAuthenticated) {
-      return;
-    }
-
-    // PENDING Chatbot API
-    // getChatbotQueries(sessionId).then((response) => setQueries(response));
-    setIsLoaded(true);
-  }, [sessionId, isUserAuthenticated]);
+    getChatbotQueries()
+      .then((response) => {
+        setQueries(response);
+      })
+      .finally(() => setIsLoaded(true));
+  }, [isUserAuthenticated]);
 
   const sendQuery = (queryMessage: string) => {
     setIsAwaitingResponse(true);
@@ -63,7 +65,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       },
     ]);
     sendChatbotQuery({
-      sessionId: sessionId || '',
       question: queryMessage,
       queriedAt: queriedAt,
     })
@@ -94,7 +95,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const getSessionsByPage = (page: number) => {
-    getChatbotHistory(page, HISTORY_PAGE_SIZE)
+    getChatbotSessionsHistory(page, HISTORY_PAGE_SIZE)
       .then((response) => setPaginatedSessions(response))
       .finally(() => setPaginatedSessionsLoading(false));
 
@@ -111,8 +112,10 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendFeedback,
     paginatedSessions,
     getSessionsByPage,
+    documentationUpdatedAt,
     getSession,
-    chatbotError,
     paginatedSessionsLoading,
+    deleteSession,
+    chatbotError,
   };
 };

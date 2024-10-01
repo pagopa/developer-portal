@@ -55,6 +55,7 @@ const ChatHistoryMessage = ({
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
+            sx={{ overflow: 'visible' }}
           />
         ) : (
           <IconWrapper
@@ -62,6 +63,7 @@ const ChatHistoryMessage = ({
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
+            sx={{ overflow: 'visible' }}
           />
         )}
         <Typography
