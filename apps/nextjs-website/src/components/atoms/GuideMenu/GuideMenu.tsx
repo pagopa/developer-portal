@@ -36,9 +36,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const productHeaderHeight =
     menuProps.distanceFromTop ?? PRODUCT_HEADER_HEIGHT;
 
-  const top = scrollUp
-    ? SITE_HEADER_HEIGHT + productHeaderHeight
-    : productHeaderHeight;
+  const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
   const height = `calc(100vh - ${top}px)`;
 
@@ -67,7 +65,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           backgroundColor: palette.grey[50],
           flexShrink: 0,
           position: 'sticky',
-          top: { xs: 110, sm: 138, md: 125 },
+          top: { xs: top + 62, sm: top + 90, md: top + 77 },
           height: { lg: height },
           overflowY: 'auto',
           transition: 'all 0.5s linear',
