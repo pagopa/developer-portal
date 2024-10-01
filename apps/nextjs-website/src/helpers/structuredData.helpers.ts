@@ -158,9 +158,9 @@ export function quickStartToStructuredDataHowTo(
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
     ? quickStart.steps.map((step) => ({
-        '@type': 'HowToStep',
-        text: step.title,
-      }))
+      '@type': 'HowToStep',
+      text: step.title,
+    }))
     : [];
   return makeHowTo({
     name: quickStart.seo?.metaTitle,

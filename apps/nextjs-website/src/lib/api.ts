@@ -86,7 +86,7 @@ export function getProductsSlugs(
 }
 
 export async function getProducts(): Promise<readonly Product[]> {
-  return [...products];
+  return await getProductsProps();
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
@@ -115,9 +115,9 @@ export async function getStrapiTutorial(
 
   return tutorialFromStrapi
     ? {
-        ...tutorialFromStrapi,
-        product: products.find(({ slug }) => slug === productSlug),
-      }
+      ...tutorialFromStrapi,
+      product: products.find(({ slug }) => slug === productSlug),
+    }
     : undefined;
 }
 

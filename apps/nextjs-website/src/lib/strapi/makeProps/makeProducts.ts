@@ -21,6 +21,11 @@ export function mergeProductWithStaticContent(
         icon: item.icon?.data.attributes,
       })) || []),
     ],
+    api_data_list_page: attributes.api_data_list_page,
+    tutorial_list_page: attributes.tutorial_list_page,
+    guide_list_page: attributes.guide_list_page,
+    overview: attributes.overview,
+    quickstart_guide: attributes.quickstart_guide,
   };
 }
 
