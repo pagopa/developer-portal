@@ -41,13 +41,10 @@ const ChatbotHistory = () => {
   const {
     paginatedSessions,
     getSessionsByPage,
-    getDocuentationUpdatedAt,
+    documentationUpdatedAt,
     paginatedSessionsLoading,
   } = useChatbot(true);
   const router = useRouter();
-  const documentationUpdatedAt = useMemo(getDocuentationUpdatedAt, [
-    getDocuentationUpdatedAt,
-  ]);
 
   useEffect(() => {
     getSessionsByPage(1);

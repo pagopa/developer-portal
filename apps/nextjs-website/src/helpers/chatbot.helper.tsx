@@ -6,6 +6,7 @@ import {
   getChatbotSessionsHistory,
   getChatbotQueries,
   deleteSession,
+  getDocumentationUpdatedAt,
 } from '@/lib/chatbotApi';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 
@@ -27,6 +28,14 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
     null
   );
+  const [documentationUpdatedAt, setDocumentationUpdatedAt] =
+    useState<Date | null>(null);
+
+  useEffect(() => {
+    getDocumentationUpdatedAt().then((response) =>
+      setDocumentationUpdatedAt(new Date(response))
+    );
+  }, []);
 
   useEffect(() => {
     if (!isUserAuthenticated) {
@@ -93,11 +102,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
-  const getDocuentationUpdatedAt = () => {
-    // PENDING Chatbot API
-    return new Date();
-  };
-
   const getSession = (sessionId: string) => getChatbotQueries(sessionId);
 
   return {
@@ -108,7 +112,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendFeedback,
     paginatedSessions,
     getSessionsByPage,
-    getDocuentationUpdatedAt,
+    documentationUpdatedAt,
     getSession,
     paginatedSessionsLoading,
     deleteSession,

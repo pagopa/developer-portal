@@ -7,6 +7,7 @@ import {
   patchFeedback,
   postQuery,
   deleteSession as deleteSessionApi,
+  getLastDocUpdate,
 } from '@/lib/chatbot/chatbotFetch';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
@@ -37,3 +38,6 @@ export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
 
 export const deleteSession = (sessionId: string) =>
   deleteSessionApi(sessionId)(chatbotApiEnv);
+
+export const getDocumentationUpdatedAt = () =>
+  getLastDocUpdate()(chatbotApiEnv);
