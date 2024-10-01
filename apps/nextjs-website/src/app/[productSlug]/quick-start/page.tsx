@@ -9,8 +9,16 @@ import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideSteppe
 import { Step } from '@/lib/types/step';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
-import { Box, Divider } from '@mui/material';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -25,6 +33,7 @@ export type QuickStartGuidePageProps = {
   };
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -32,9 +41,13 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { abstract, path, product } = await getQuickStartGuide(
+  const { abstract, path, product, seo } = await getQuickStartGuide(
     params?.productSlug
   );
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     parent: resolvedParent,
@@ -46,8 +59,26 @@ export async function generateMetadata(
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, defaultStepAnchor, path, product, steps } =
-    await getQuickStartGuide(params?.productSlug);
+  const {
+    abstract,
+    bannerLinks,
+    defaultStepAnchor,
+    path,
+    product,
+    steps,
+    seo,
+  } = await getQuickStartGuide(params?.productSlug);
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['quick-start']),
+      },
+    ],
+    seo: seo,
+  });
 
   return (
     <ProductLayout
@@ -55,6 +86,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
       path={path}
       showBreadcrumbs
       bannerLinks={bannerLinks}
+      structuredData={structuredData}
     >
       {abstract && (
         <Abstract

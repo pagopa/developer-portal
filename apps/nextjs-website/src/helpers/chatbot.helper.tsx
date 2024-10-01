@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   sendChatbotQuery,
   sendChatbotFeedback,
+  getChatbotQueries,
   getChatbotHistory,
 } from '@/lib/chatbot';
 import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
@@ -19,6 +20,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Query[]>([]);
+  const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
+    useState(true);
   const [paginatedSessions, setPaginatedSessions] =
     useState<PaginatedSessions | null>(null);
   const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
@@ -26,7 +29,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   );
 
   useEffect(() => {
-    if (sessionId || !isUserAuthenticated) {
+    if (!isUserAuthenticated) {
       return;
     }
 
@@ -50,8 +53,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     setQueries([
       ...queries,
       {
-        id: '',
-        sessionId: '',
+        id: '0',
+        sessionId: '0',
         question: queryMessage,
         queriedAt: queriedAt,
         badAnswer: false,
@@ -91,9 +94,9 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   };
 
   const getSessionsByPage = (page: number) => {
-    getChatbotHistory(page, HISTORY_PAGE_SIZE).then((response) =>
-      setPaginatedSessions(response)
-    );
+    getChatbotHistory(page, HISTORY_PAGE_SIZE)
+      .then((response) => setPaginatedSessions(response))
+      .finally(() => setPaginatedSessionsLoading(false));
 
     return null;
   };
@@ -102,6 +105,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     // PENDING Chatbot API
     return new Date();
   };
+
+  const getSession = (sessionId: string) => getChatbotQueries(sessionId);
 
   return {
     isLoaded,
@@ -112,6 +117,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     paginatedSessions,
     getSessionsByPage,
     getDocuentationUpdatedAt,
+    getSession,
     chatbotError,
+    paginatedSessionsLoading,
   };
 };
