@@ -2,13 +2,14 @@
 
 import { useTranslations } from 'next-intl';
 import { Stack, Typography, useTheme } from '@mui/material';
+import { defaultLocale, isChatbotActive } from '@/config';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import React, { useEffect, useMemo } from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
-import { defaultLocale, isChatbotActive } from '@/config';
-import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { isEmpty } from 'fp-ts/lib/Array';
 import { useRouter } from 'next/navigation';
 
 type DateFormatOptions = {
@@ -47,6 +48,11 @@ const ChatbotHistory = () => {
   const documentationUpdatedAt = useMemo(getDocuentationUpdatedAt, [
     getDocuentationUpdatedAt,
   ]);
+
+  useEffect(() => {
+    getSessionsByPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Needs to run only once
 
   useEffect(() => {
     getSessionsByPage(1);
@@ -97,9 +103,11 @@ const ChatbotHistory = () => {
         {t('profile.chatbot.title')}
       </Typography>
       {(loading || paginatedSessionsLoading) && <Spinner />}
-      {!loading && !paginatedSessionsLoading && !paginatedSessions && (
-        <Typography>{t('profile.chatbot.noSessions')}</Typography>
-      )}
+      {!loading &&
+        !paginatedSessionsLoading &&
+        (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
+          <Typography>{t('profile.chatbot.noSessions')}</Typography>
+        )}
       {!loading && !paginatedSessionsLoading && paginatedSessions && (
         <>
           <AlertPart

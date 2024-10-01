@@ -6,7 +6,8 @@ import {
   getSessions,
   patchFeedback,
   postQuery,
-} from '@/lib/chatbot/chatbotApi';
+  deleteSession as deleteSessionApi,
+} from '@/lib/chatbot/chatbotFetch';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';
@@ -23,11 +24,16 @@ const chatbotApiEnv = pipe(
 export const sendChatbotQuery = (query: QueryInput) =>
   postQuery(query)(chatbotApiEnv);
 
-export const getChatbotQueries = (sessionId: string) =>
-  getQueries(qs.stringify({ sessionId: sessionId }))(chatbotApiEnv);
+export const getChatbotQueries = (sessionId?: string) =>
+  getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || '')(
+    chatbotApiEnv
+  );
 
 export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
   patchFeedback(feedback, queryId)(chatbotApiEnv);
 
-export const getChatbotHistory = (page: number, pageSize: number) =>
+export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);
+
+export const deleteSession = (sessionId: string) =>
+  deleteSessionApi(sessionId)(chatbotApiEnv);

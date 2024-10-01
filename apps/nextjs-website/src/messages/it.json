@@ -607,14 +607,15 @@
             "title": "Aggiornamento Documentazione",
             "message": "La documentazione è stata aggiornata il {date} alla versione {timestamp}.\n\nI contenuti della cronologia potrebbero aver subito dei cambiamenti."
         },
-        "guestMessage": "Ciao sono _Discovery_ , il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPer poter accedere al servizio, ti invito a [iscriverti a PagoPA DevPortal]({host}/auth/login)",
         "deleteChat": "Elimina Chat",
         "previousChat": "Chat Precedente",
         "nextChat": "Chat Successiva",
+        "guestMessage": "Ciao sono _Discovery_ , il chatbot di DevPortal!\n\nPosso aiutarti a trovare in modo semplice e rapido le informazioni presenti nella documentazione del Portale.\n\nPer poter accedere al servizio, ti invito a [iscriverti a PagoPA DevPortal]({host}/auth/login)",
         "errors": {
             "title": "Errore",
             "serviceDown": "Il chatbot al momento non è disponibile. Riprovare più tardi.",
             "queryFailed": "Il chatbot ha avuto problemi nel formulare la risposta. Riprova."
-        }
+        },
+        "thereAreNoMessages": "Non ci sono messaggi in questa sessione"
     }
 }
