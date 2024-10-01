@@ -3,8 +3,8 @@ import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
 import { quickStartGuides } from '@/_contents/products';
 import { Part } from '../../types/part';
 import { Step } from '../../types/step';
-import { partFromStrapiPart } from '../codecs/PartCodec';
 import { mergeProductWithStaticContent } from './makeProducts';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -18,7 +18,7 @@ function makeStepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
     parts: item.attributes.parts
-      .map((part) => partFromStrapiPart(part))
+      .map((part) => makePartProps(part))
       .filter((part) => !!part) as ReadonlyArray<Part>,
   };
 }
