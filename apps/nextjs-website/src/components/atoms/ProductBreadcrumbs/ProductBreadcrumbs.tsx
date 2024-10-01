@@ -23,7 +23,7 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
       component='div'
       sx={{
         display: { xs: 'none', md: 'block' },
-        paddingY: '44px',
+        paddingY: '24px',
         zIndex: 50,
         position: 'relative',
       }}
