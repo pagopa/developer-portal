@@ -54,6 +54,10 @@ const StartInfo = ({
             iconColor: card.iconColor,
             useSrc: card.useSrc,
           }))}
+          containerSx={{
+            pt: '22px',
+            mt: '-22px',
+          }}
         />
       </Box>
       {cta && (

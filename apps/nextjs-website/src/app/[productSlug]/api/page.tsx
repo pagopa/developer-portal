@@ -1,6 +1,11 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
@@ -40,17 +45,27 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
   const product = await getProduct(params.productSlug);
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: apiDataListPageProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['api']),
+      },
+    ],
+    seo: apiDataListPageProps?.seo,
+  });
+
   if (apiDataListPageProps && product) {
     return (
-      <>
-        <ProductLayout
-          product={product}
-          path={product.path.concat('/api')}
-          showBreadcrumbs
-        >
-          <ApiDataListTemplate {...apiDataListPageProps} />
-        </ProductLayout>
-      </>
+      <ProductLayout
+        product={product}
+        path={product.path.concat('/api')}
+        showBreadcrumbs
+        structuredData={structuredData}
+      >
+        <ApiDataListTemplate {...apiDataListPageProps} />
+      </ProductLayout>
     );
   }
 };
