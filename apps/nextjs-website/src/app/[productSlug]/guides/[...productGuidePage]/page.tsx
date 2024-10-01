@@ -18,6 +18,12 @@ import {
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { getGuidesProps } from '@/lib/cmsApi';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  convertSeoToStructuredDataArticle,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   productSlug: string;
@@ -76,7 +82,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
-  const { product, page, guide, version, versions, source, bannerLinks } =
+  const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
     ...page,
@@ -96,11 +102,27 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productGuidePage || []),
+        ]),
+      },
+    ],
+    seo: seo,
+    things: [convertSeoToStructuredDataArticle(seo)],
+  });
+
   return (
     <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
     >
       <GitBookTemplate
         menuName={props.guide.name}
