@@ -66,16 +66,17 @@ async def healthz ():
 @app.post("/queries")
 async def query_creation (
   query: Query, 
-  authorizationHeader: Annotated[str | None, Header()] = None
+  authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorizationHeader)
+  userId = current_user_id(authorization)
   session = find_or_create_session(userId)
-
   answer = chatbot.generate(query.question)
 
   now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   if query.queriedAt is None:
     queriedAt = now
+  else:
+    queriedAt = query.queriedAt
 
   body = {
     "id": f'{uuid.uuid4()}',
@@ -93,11 +94,13 @@ async def query_creation (
   return body
 
 
-def current_user_id(authorizationHeader: str):
-  if authorizationHeader is None:
-    return None
+def current_user_id(authorization: str):
+  if authorization is None:
+    # TODO remove fake user and return None
+    # return None
+    return '-'
   else:
-    token = authorizationHeader.split(' ')[1]
+    token = authorization.split(' ')[1]
     decoded = jwt.decode(
       token, 
       algorithms=["RS256"], 
@@ -127,7 +130,7 @@ def find_or_create_session(userId: str):
 
   return body
 
-  
+
 @app.get("/queries/{id}")
 async def query_fetching(id: str):
   # TODO: dynamoDB integration
@@ -141,33 +144,90 @@ async def query_fetching(id: str):
   }
   return body
 
+
 # retrieve sessions of current user
 @app.get("/sessions")
-async def sessions_fetching():
-  # TODO: dynamoDB integration
-  # TODO: get current user from cognito
-  body = [
-    {
-      "id": "",
-      "title": "",
-      "createdAt": ""
-    }
-  ]
+async def sessions_fetching(
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+
+  try:
+    db_response = table_sessions.query(
+      KeyConditionExpression=Key("userId").eq(userId)
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
+  
+  # TODO: pagination
+  result = {
+    "items": db_response['Items'],
+    "page": 1,
+    "pages": 1,
+    "size": len(db_response['Items']),
+    "total": len(db_response['Items']),
+  }
+  return result
+
+@app.delete("/sessions/{id}")
+async def session_delete(
+  id: str,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  body = {
+    "id": id,
+  }
+  try:
+    db_response_queries = table_queries.query(
+      KeyConditionExpression=Key("sessionId").eq(id)
+    )
+    # TODO: use batch writer
+#    with table_sessions.batch_writer() as batch:
+    for query in db_response_queries['Items']:
+      table_queries.delete_item(
+        Key={
+          "id": query["id"],
+          "sessionId": id
+        }
+      )
+
+    table_sessions.delete_item(
+      Key={
+        "id": id,
+        "userId": userId,
+      }
+    )
+
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}")
+  
   return body
 
 @app.get("/queries")
-async def queries_fetching(sessionId: str | None = None):
+async def queries_fetching(
+  sessionId: str | None = None,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
   if sessionId is None:
-    # TODO: retrieve last user session
-    # sessionId = lastSessionId(userId)
-    sessionId = '1'
+    sessionId = last_session_id(userId)
+
   try:
+    # TODO: add userId filter
     db_response = table_queries.query(
       KeyConditionExpression=Key("sessionId").eq(sessionId)
     )
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[queries_fetching] error: {e}")
-  return db_response['Items']
+    raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
+
+  result = db_response['Items']
+  return result
+
+
+def last_session_id(userId: str):
+  # TODO: retrieve last user session
+  return '1'
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
