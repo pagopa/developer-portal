@@ -1,9 +1,10 @@
-import { ApiDataListTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function makeApiDataListPagesProps(
   apiDataListPages: StrapiApiDataListPages
-): ReadonlyArray<ApiDataListTemplateProps> {
+): ReadonlyArray<ApiDataListPageTemplateProps> {
   return apiDataListPages.data.map(({ attributes }) => ({
     ...attributes,
     hero: {
@@ -32,14 +33,7 @@ export function makeApiDataListPagesProps(
         item.attributes.apiSoapUrl ||
         `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
     })),
-    bannerLinks: [
-      ...attributes.bannerLinks.map((bannerLink) => ({
-        content: bannerLink.content,
-        icon: bannerLink.icon.data.attributes,
-        theme: bannerLink.theme || 'dark',
-        title: bannerLink.title || '',
-      })),
-    ],
+    bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
     seo: attributes.seo,
   }));
 }

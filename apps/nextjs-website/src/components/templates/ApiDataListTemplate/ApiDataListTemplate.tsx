@@ -5,15 +5,15 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { StrapiApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
+import { StrapiBaseApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 
-export type ApiDataListTemplateProps = {
+export type ApiDataListPageTemplateProps = {
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
-    readonly heigth?: string;
+    readonly height?: string;
   };
   readonly product: {
     readonly name: string;
@@ -31,7 +31,7 @@ export type ApiDataListTemplateProps = {
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiApiDataList;
+  readonly apiData: StrapiBaseApiDataList;
   readonly seo?: SEO;
 };
 
@@ -40,7 +40,7 @@ const ApiDataListTemplate = ({
   cards,
   bannerLinks,
   theme = 'light',
-}: ApiDataListTemplateProps) => {
+}: ApiDataListPageTemplateProps) => {
   const t = useTranslations('');
 
   return (
@@ -49,7 +49,7 @@ const ApiDataListTemplate = ({
         title={hero.title}
         subtitle={hero.subtitle}
         theme={theme}
-        smallHeight={hero.heigth || '272px'}
+        smallHeight={hero.height || '272px'}
         titleVariant='h4'
         gridTextSx={{
           justifyContent: 'center',
@@ -70,7 +70,7 @@ const ApiDataListTemplate = ({
           }}
         />
       </Box>
-      <BannerLinks bannerLinks={bannerLinks} />
+      {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
     </>
   );
 };

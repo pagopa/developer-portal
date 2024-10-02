@@ -60,7 +60,7 @@ export function getProductGuidePath(path: string) {
   return path.split('/').filter((p, index) => index > 2);
 }
 
-export async function getGuideLists(productSlug?: string) {
+export async function getGuideListPages(productSlug?: string) {
   const props = manageUndefined(
     (await getGuideListPagesProps()).find(
       ({ product }) => product.slug === productSlug

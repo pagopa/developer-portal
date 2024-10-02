@@ -1,18 +1,31 @@
-import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
+import { mergeProductWithStaticContent } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function makeApiDataListProps(
   apiDataList: StrapiApiDataList
-): ReadonlyArray<ApiPageProps> {
+): ReadonlyArray<ApiDataPageProps> {
   return apiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
-    .map(({ attributes }) => ({
-      ...attributes,
-      apiDataSlug: attributes.apiRestDetail?.slug || '',
-      specURLs: attributes.apiRestDetail
-        ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
-        : [],
-      specURLsName: attributes.title,
-      seo: attributes.seo,
-    }));
+    .map(({ attributes }) => {
+      const product = mergeProductWithStaticContent(
+        attributes.product.data.attributes
+      );
+
+      return {
+        ...attributes,
+        apiDataSlug: attributes.apiRestDetail?.slug || '',
+        specURLs: attributes.apiRestDetail
+          ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
+          : [],
+        specURLsName: attributes.title,
+        product,
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ),
+        seo: attributes.seo,
+      };
+    });
 }

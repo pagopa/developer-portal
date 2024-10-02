@@ -1,14 +1,15 @@
-import { GuidesPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { mergeProductWithStaticContent } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
-type StaticGuideListPages = readonly GuidesPageProps[];
+type StaticGuideListPages = readonly GuideListPageProps[];
 
 export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages,
   staticGuideListPages: StaticGuideListPages
-): readonly GuidesPageProps[] {
+): readonly GuideListPageProps[] {
   return [
     ...strapiGuideListPages.data.map(({ attributes }) => {
       const product = mergeProductWithStaticContent(
@@ -41,7 +42,10 @@ export function makeGuideListPagesProps(
           description: attributes.description,
         },
         guidesSections: [...guidesSections],
-        bannerLinks: product.bannerLinks,
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ),
         seo: attributes.seo,
       };
     }),
