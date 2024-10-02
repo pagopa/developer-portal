@@ -32,3 +32,21 @@ export type Query = {
   readonly answer: string | null;
   readonly createdAt: string | null;
 };
+
+export const SessionCodec = t.strict({
+  id: t.string,
+  title: t.string,
+  createdAt: t.string,
+});
+
+export type Session = t.TypeOf<typeof SessionCodec>;
+
+export const RemoteSessionsResponseCodec = t.strict({
+  items: t.array(SessionCodec),
+  total: t.number,
+  page: t.number,
+  size: t.number,
+  pages: t.number,
+});
+
+export type PaginatedSessions = t.TypeOf<typeof RemoteSessionsResponseCodec>;

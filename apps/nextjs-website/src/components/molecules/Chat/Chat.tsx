@@ -10,6 +10,8 @@ import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
+import { useUser } from '@/helpers/user.helper';
+import { baseUrl } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
@@ -21,6 +23,7 @@ type ChatProps = {
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
   error: ChatbotErrorsType | null;
+  disabled?: boolean;
 };
 
 const Chat = ({
@@ -31,13 +34,19 @@ const Chat = ({
   isAwaitingResponse,
   isChatbotLoaded,
   error,
+  disabled,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
+  const { user } = useUser();
   const messages = useMemo(
     () => [
-      firstMessage(t('chatBot.welcomeMessage')),
+      firstMessage(
+        user
+          ? t('chatBot.welcomeMessage')
+          : t('chatBot.guestMessage', { host: baseUrl })
+      ),
       ...compact(
         queries.flatMap((q) => [
           q.question && q.queriedAt
@@ -61,7 +70,7 @@ const Chat = ({
         ])
       ),
     ],
-    [queries, t]
+    [queries, t, user]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -77,23 +86,25 @@ const Chat = ({
 
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: palette.background.paper,
-          borderBottom: '2px solid',
-          borderBottomColor: palette.action.disabled,
-          width: 'auto',
-        }}
-      >
-        <Stack direction={'row'} paddingY={'0.25rem'}>
-          <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
-            <History fontSize='small' />
-            <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
-              {t('chatBot.history')}
-            </span>
-          </Button>
-        </Stack>
-      </Box>
+      {!disabled && (
+        <Box
+          sx={{
+            backgroundColor: palette.background.paper,
+            borderBottom: '2px solid',
+            borderBottomColor: palette.action.disabled,
+            width: 'auto',
+          }}
+        >
+          <Stack direction={'row'} paddingY={'0.25rem'}>
+            <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+              <History fontSize='small' />
+              <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
+                {t('chatBot.history')}
+              </span>
+            </Button>
+          </Stack>
+        </Box>
+      )}
       <Stack
         direction={'column'}
         sx={{
@@ -141,7 +152,12 @@ const Chat = ({
           </Paper>
         )}
       </Stack>
-      <ChatInputText onSubmit={onSendQuery} sendDisabled={isAwaitingResponse} />
+      {!disabled && (
+        <ChatInputText
+          onSubmit={onSendQuery}
+          sendDisabled={isAwaitingResponse}
+        />
+      )}
     </>
   );
 };
