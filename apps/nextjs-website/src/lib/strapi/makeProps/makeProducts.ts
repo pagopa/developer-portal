@@ -33,8 +33,15 @@ export function makeProductsProps(
   products: Products,
   staticProducts: ReadonlyArray<Product>
 ): ReadonlyArray<Product> {
+  const productsSlugs = new Set(
+    products.data.map(({ attributes }) => attributes.slug)
+  );
+  const filteredStaticProducts = staticProducts.filter(
+    ({ slug }) => !productsSlugs.has(slug)
+  );
+
   return [
-    ...staticProducts,
+    ...filteredStaticProducts,
     ...products.data.map(({ attributes }) => {
       return mergeProductWithStaticContent(attributes);
     }),

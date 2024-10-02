@@ -2,6 +2,7 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import {
+  getProduct,
   getStaticTutorial,
   getStrapiTutorial,
   getTutorialPaths,
@@ -126,9 +127,12 @@ const Page = async ({ params }: { params: Params }) => {
 
   const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
+
+  const fetchedProduct = await getProduct(params.productSlug);
+
   const props: ProductTutorialPageProps = {
     ...page,
-    product,
+    product: fetchedProduct ?? product,
     bannerLinks,
     relatedLinks,
     bodyConfig: {
@@ -145,7 +149,7 @@ const Page = async ({ params }: { params: Params }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(props.product),
       {
         name: tutorialProps.page.title,
         item: breadcrumbItemByProduct(product, [

@@ -1,5 +1,5 @@
 import { Product } from '@/lib/types/product';
-import { getGuideLists } from '@/lib/api';
+import { getGuideLists, getProduct } from '@/lib/api';
 import {
   GuidesSection,
   GuidesSectionProps,
@@ -61,8 +61,10 @@ export const generateMetadata = async (
 };
 
 const GuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, guidesSections, path, product, seo } =
+  const { abstract, bannerLinks, guidesSections, path, seo } =
     await getGuideLists(params?.productSlug);
+
+  const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
