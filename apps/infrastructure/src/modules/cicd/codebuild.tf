@@ -12,7 +12,7 @@ resource "aws_codebuild_project" "github_runner" {
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
-    privileged_mode = true
+    privileged_mode             = true
   }
 
   source {
@@ -47,5 +47,5 @@ resource "aws_codebuild_webhook" "github_webhook" {
     }
   }
 
-  depends_on = [ aws_iam_role_policy_attachment.github_connection ]
+  depends_on = [aws_iam_role_policy_attachment.github_connection]
 }
