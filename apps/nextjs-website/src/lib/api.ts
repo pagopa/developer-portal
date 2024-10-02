@@ -115,9 +115,9 @@ export async function getStrapiTutorial(
 
   return tutorialFromStrapi
     ? {
-      ...tutorialFromStrapi,
-      product: products.find(({ slug }) => slug === productSlug),
-    }
+        ...tutorialFromStrapi,
+        product: products.find(({ slug }) => slug === productSlug),
+      }
     : undefined;
 }
 
