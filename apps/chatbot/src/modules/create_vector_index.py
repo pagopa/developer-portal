@@ -13,7 +13,7 @@ from src.modules.vector_database import (
 from dotenv import load_dotenv
 
 load_dotenv()
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "DEBUG"))
 
 CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
 AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
@@ -30,8 +30,8 @@ if __name__ == "__main__":
     if params["vector_index"]["use_redis"] and params["vector_index"]["use_s3"]:
         raise Exception("Vector Store Error: use s3 or Redis or none of them.")
 
-    model = get_llm(params)
-    embed_model = get_embed_model(params)
+    model = get_llm()
+    embed_model = get_embed_model()
 
     # create vector index
     if params["vector_index"]["use_redis"]:

@@ -1,12 +1,13 @@
 import os
 import re
 import logging
-from collections import Counter
-from typing import List, Union, Tuple
+# from collections import Counter
+from typing import Union, Tuple
 
-from langdetect import detect_langs
+# from langdetect import detect_langs
 
 from llama_index.core import PromptTemplate
+from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 )
@@ -23,8 +24,8 @@ AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
 ITALIAN_THRESHOLD = 0.85
 NUM_MIN_WORDS_QUERY = 3
 NUM_MIN_REFERENCES = 1
-GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare contenuti inappropriati.
-Riformula la domanda in modo che non violi queste linee guida."""
+# GUARDRAIL_ANSWER = """Mi dispiace, non mi è consentito elaborare contenuti inappropriati.
+# Riformula la domanda in modo che non violi queste linee guida."""
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -79,7 +80,14 @@ class Chatbot():
                 chunk_overlap=params["vector_index"]["chunk_overlap"],
             )
 
-        self.messages = []
+        self.history = [
+            ChatMessage(
+                role=MessageRole.ASSISTANT,
+                content=(
+                    "You are an Italian customer services chatbot. Your name is Discovery and it is your duty to assist the user answering his questions about the PagoPA DevPortal documentation!"
+                )
+            )
+        ]
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_query_engine(
             self.index,
@@ -112,47 +120,34 @@ class Chatbot():
         return qa_prompt_tmpl, ref_prompt_tmpl
 
 
-    def _update_messages(self, role: str, message: str):
-        self.messages.append({"role": role, "text": message})
+    def _update_history(self, role: MessageRole, message: str):
+        self.history.append(ChatMessage(role=role, content=message))
 
 
     def reset_chat_history(self):
-        self.messages = []
-        return self.messages
+        self.history = []
+        return self.history
 
 
-    def _messages_to_str(self, **kwargs) -> str:
-        text = ""
-        if len(self.messages) > 0:
-            for speach in self.messages:
-                text += f"{speach['role']}: {speach['text']}\n\n"
-
-        return text
-
-
-    def get_chat_history(self) -> List[dict]:
-        return self.messages
-
-
-    def _check_language(self, message_str):
+    # def _check_language(self, message_str):
         
-        try:
-            langs = detect_langs(message_str)
-        except Exception as e:
-            logging.warning(f"LangDetectException: {e}. Now list of detected languages is empty.")
-            langs = []
+    #     try:
+    #         langs = detect_langs(message_str)
+    #     except Exception as e:
+    #         logging.warning(f"LangDetectException: {e}. Now list of detected languages is empty.")
+    #         langs = []
 
-        it_score = 0.0
-        for lang in langs:
-            if lang.lang == "it":
-                it_score = lang.prob
+    #     it_score = 0.0
+    #     for lang in langs:
+    #         if lang.lang == "it":
+    #             it_score = lang.prob
 
-        logging.info(f"Detected Italian with score {it_score:.4f} at the last user's message.")
+    #     logging.info(f"Detected Italian with score {it_score:.4f} at the last user's message.")
 
-        return it_score
+    #     return it_score
 
 
-    def _get_response_str(self, query: str, engine_response: RESPONSE_TYPE) -> str:
+    def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
         if isinstance(engine_response, StreamingResponse):
             typed_response = engine_response.get_response()
@@ -162,44 +157,42 @@ class Chatbot():
         response_str = typed_response.response.strip()
         nodes = typed_response.source_nodes
 
-        response_str = self._remove_redundancy(query, response_str)
+        # response_str = self._remove_redundancy(query, response_str)
 
         if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
             response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
             Prova a riformulare la domanda.
             """
-        elif response_str == GUARDRAIL_ANSWER:
-            logging.warning(f"AWS guardrail: Detected harmful category.")
         else:
             response_str = self._add_reference(response_str, nodes)
         
         return response_str
     
 
-    def _remove_redundancy(self, query: str, response: str) -> str:
+    # def _remove_redundancy(self, query: str, response: str) -> str:
 
-        sentences = re.split(r"(?<=[\n])", response)
-        sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
-        unique_sentences = list(Counter(sentences).keys())
-        indexes_to_remove = []
-        for i, unique_sentence in enumerate(unique_sentences):
-            for j, us in enumerate(unique_sentences):
-                if i != j and unique_sentence in us:
-                    indexes_to_remove.append(i)
+    #     sentences = re.split(r"(?<=[\n])", response)
+    #     sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+    #     unique_sentences = list(Counter(sentences).keys())
+    #     indexes_to_remove = []
+    #     for i, unique_sentence in enumerate(unique_sentences):
+    #         for j, us in enumerate(unique_sentences):
+    #             if i != j and unique_sentence in us:
+    #                 indexes_to_remove.append(i)
 
-        for idx in indexes_to_remove[::-1]:
-            try:
-                unique_sentences.pop(idx)
-            except Exception as e:
-                unique_sentences = []
-                print(response)
-                logging.info(f"{e}: the generated response has too many redundacy problems. The output is now empty string.")
-                break
+    #     for idx in indexes_to_remove[::-1]:
+    #         try:
+    #             unique_sentences.pop(idx)
+    #         except Exception as e:
+    #             unique_sentences = []
+    #             print(response)
+    #             logging.info(f"{e}: the generated response has too many redundacy problems. The output is now empty string.")
+    #             break
 
-        respose_str = "\n".join(unique_sentences)
-        respose_str = respose_str.replace(query, "")
+    #     respose_str = "\n".join(unique_sentences)
+    #     respose_str = respose_str.replace(query, "")
 
-        return respose_str.strip()
+    #     return respose_str.strip()
     
 
     def _add_reference(self, response_str: str, nodes) -> str:
@@ -291,22 +284,22 @@ class Chatbot():
 
     def generate(self, query_str: str) -> str:
         
-        num_words = len(query_str.split(" "))
-        it_score = self._check_language(query_str)
-        if num_words < NUM_MIN_WORDS_QUERY:
-            response_str = """Mi dispiace, la domanda fornita è insufficiente.
-            Per piacere, riformula la tua domanda.
-            """
-        elif num_words >= NUM_MIN_WORDS_QUERY and it_score < ITALIAN_THRESHOLD:
-            response_str = """Mi dispiace, la domanda fornita non è propriamente formulata in italiano.
-            Per piacere, riformula la tua domanda.
-            """
-        else:
-            engine_response = self.engine.query(query_str)
-            response_str = self._get_response_str(query_str, engine_response)
+        # num_words = len(query_str.split(" "))
+        # it_score = self._check_language(query_str)
+        # if num_words < NUM_MIN_WORDS_QUERY:
+        #     response_str = """Mi dispiace, la domanda fornita è insufficiente.
+        #     Per piacere, riformula la tua domanda.
+        #     """
+        # elif num_words >= NUM_MIN_WORDS_QUERY and it_score < ITALIAN_THRESHOLD:
+        #     response_str = """Mi dispiace, la domanda fornita non è propriamente formulata in italiano.
+        #     Per piacere, riformula la tua domanda.
+        #     """
+        # else:
+        engine_response = self.engine.query(query_str)
+        response_str = self._get_response_str(engine_response)
 
         # update messages
-        self._update_messages("user", query_str)
-        self._update_messages("assistant", response_str)
+        self._update_history(MessageRole.USER, query_str)
+        self._update_history(MessageRole.ASSISTANT, response_str)
 
         return response_str
