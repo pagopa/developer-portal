@@ -27,6 +27,12 @@ variable "github_repository" {
   description = "The repository where the IaC workflows will run"
 }
 
+variable "build_timeout" {
+  type        = number
+  description = "The timeout for the build process in minutes"
+  default     = 480
+}
+
 variable "vpc" {
   type = object({
     id                  = string

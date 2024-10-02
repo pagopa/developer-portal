@@ -1,8 +1,8 @@
 resource "aws_codebuild_project" "github_runner" {
-  name         = "${var.environment}-github-runner"
-  description  = "CodeBuild project for self-hosted GitHub runner"
-  service_role = aws_iam_role.codebuild_role.arn
-
+  name          = "${var.environment}-github-runner"
+  description   = "CodeBuild project for self-hosted GitHub runner"
+  service_role  = aws_iam_role.codebuild_role.arn
+  build_timeout = var.build_timeout
   artifacts {
     type = "NO_ARTIFACTS"
   }
@@ -12,17 +12,6 @@ resource "aws_codebuild_project" "github_runner" {
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
-    privileged_mode             = true
-
-    # Add environment variables for EFS mount
-    environment_variable {
-      name  = "EFS_ID"
-      value = aws_efs_file_system.this.id
-    }
-    environment_variable {
-      name  = "EFS_MOUNT_POINT"
-      value = "/mnt/efs"
-    }
   }
 
   source {
@@ -42,15 +31,6 @@ resource "aws_codebuild_project" "github_runner" {
       group_name  = "/aws/codebuild/${var.environment}-github-runner"
       stream_name = "log-stream"
     }
-  }
-
-  # Add EFS file system configuration
-  file_system_locations {
-    identifier    = "efs_mount"
-    location      = "${aws_efs_file_system.this.dns_name}:/data"
-    type          = "EFS"
-    mount_point   = "/mnt/efs"
-    mount_options = "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2"
   }
 
   tags = var.tags
