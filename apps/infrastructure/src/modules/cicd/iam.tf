@@ -66,21 +66,28 @@ resource "aws_iam_role_policy_attachment" "deploy_website" {
   policy_arn = aws_iam_policy.deploy_website.arn
 }
 
-resource "aws_iam_role_policy" "codebuild_efs_access" {
-  name = "${local.prefix}-codebuild-efs-access"
-  role = aws_iam_role.codebuild_role.name
+resource "aws_iam_policy" "github_connection" {
+  name        = "${local.prefix}-github-connection"
+  description = "Policy to allow to use the github connection"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
         Action = [
-          "elasticfilesystem:ClientMount",
-          "elasticfilesystem:ClientWrite"
+          "codeconnections:*",
+          "codestar-connections:*"
         ]
-        Resource = aws_efs_file_system.this.arn
+        Effect = "Allow"
+        Resource = [
+          "*"
+        ]
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "github_connection" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.github_connection.arn
 }

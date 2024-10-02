@@ -85,7 +85,7 @@ jobs:
 
   build_website:
     name: Build Website
-    runs-on: codebuild-test-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
         # We want to make sure the env variables are set correctly
