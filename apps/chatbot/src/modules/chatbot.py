@@ -153,77 +153,77 @@ class Chatbot():
         # Find all matches in the text
         hashed_urls = re.findall(pattern, response_str)
 
-        if not hashed_urls:
-            num_refs = 0
-            freq = {}
-            for node in nodes:
-                title = node.metadata["title"]
-                hashed_url = node.metadata["filename"]
-                if (title, hashed_url) not in freq.keys():
-                    freq[(title, hashed_url)] = 1
-                else:
-                    freq[(title, hashed_url)] += 1
+        # if not hashed_urls:
+        #     num_refs = 0
+        #     freq = {}
+        #     for node in nodes:
+        #         title = node.metadata["title"]
+        #         hashed_url = node.metadata["filename"]
+        #         if (title, hashed_url) not in freq.keys():
+        #             freq[(title, hashed_url)] = 1
+        #         else:
+        #             freq[(title, hashed_url)] += 1
 
-            freq_sorted = dict(sorted(freq.items(), key=lambda item: item[1], reverse=True))
+        #     freq_sorted = dict(sorted(freq.items(), key=lambda item: item[1], reverse=True))
 
-            response_str += "\n\nRif:"
+        #     response_str += "\n\nRif:"
 
-            for i, (k, v) in enumerate(freq_sorted.items()):
+        #     for i, (k, v) in enumerate(freq_sorted.items()):
                 
-                if i == 0 and v == NUM_MIN_REFERENCES:
-                    num_refs += 1
-                    title = nodes[0].metadata["title"]
-                    hashed_url = nodes[0].metadata["filename"]
-                    if self.use_redis:
-                        url = REDIS_KVSTORE.get(
-                            collection="hash_table", 
-                            key=hashed_url
-                        )
-                        if url is None:
-                            url = "{URL}"
-                    else:
-                        if hashed_url in self.hash_table.keys():
-                            url = self.hash_table[hashed_url]
-                        else:
-                            url = "{URL}"
-                    response_str += f"\n[{title}]({url})"
-                    break
-                else:
-                    if v > NUM_MIN_REFERENCES:
-                        num_refs += 1
-                        title, hashed_url = k
-                        if self.use_redis:
-                            url = REDIS_KVSTORE.get(
-                                collection="hash_table", 
-                                key=hashed_url
-                            )
-                            if url is None:
-                                url = "{URL}"
-                        else:
-                            if hashed_url in self.hash_table.keys():
-                                url = self.hash_table[hashed_url]
-                            else:
-                                url = "{URL}"
-                        response_str += f"\n[{title}]({url})"
+        #         if i == 0 and v == NUM_MIN_REFERENCES:
+        #             num_refs += 1
+        #             title = nodes[0].metadata["title"]
+        #             hashed_url = nodes[0].metadata["filename"]
+        #             if self.use_redis:
+        #                 url = REDIS_KVSTORE.get(
+        #                     collection="hash_table", 
+        #                     key=hashed_url
+        #                 )
+        #                 if url is None:
+        #                     url = "{URL}"
+        #             else:
+        #                 if hashed_url in self.hash_table.keys():
+        #                     url = self.hash_table[hashed_url]
+        #                 else:
+        #                     url = "{URL}"
+        #             response_str += f"\n[{title}]({url})"
+        #             break
+        #         else:
+        #             if v > NUM_MIN_REFERENCES:
+        #                 num_refs += 1
+        #                 title, hashed_url = k
+        #                 if self.use_redis:
+        #                     url = REDIS_KVSTORE.get(
+        #                         collection="hash_table", 
+        #                         key=hashed_url
+        #                     )
+        #                     if url is None:
+        #                         url = "{URL}"
+        #                 else:
+        #                     if hashed_url in self.hash_table.keys():
+        #                         url = self.hash_table[hashed_url]
+        #                     else:
+        #                         url = "{URL}"
+        #                 response_str += f"\n[{title}]({url})"
 
-            logging.info(f"Generated answer had no references. Added {num_refs} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        #     logging.info(f"Generated answer had no references. Added {num_refs} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
 
-        else:
-            logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
-            for hashed_url in hashed_urls:
-                if self.use_redis:
-                    url = REDIS_KVSTORE.get(
-                        collection="hash_table", 
-                        key=hashed_url
-                    )
-                    if url is None:
-                        url = "{URL}"
+        # else:
+        logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        for hashed_url in hashed_urls:
+            if self.use_redis:
+                url = REDIS_KVSTORE.get(
+                    collection="hash_table", 
+                    key=hashed_url
+                )
+                if url is None:
+                    url = "{URL}"
+            else:
+                if hashed_url in self.hash_table.keys():
+                    url = self.hash_table[hashed_url]
                 else:
-                    if hashed_url in self.hash_table.keys():
-                        url = self.hash_table[hashed_url]
-                    else:
-                        url = "{URL}"
-                response_str = response_str.replace(hashed_url, url)
+                    url = "{URL}"
+            response_str = response_str.replace(hashed_url, url)
 
         # remove sentences with generated masked url: {URL}
         parts = re.split(r"(?<=[\.\?\!\n])", response_str)
