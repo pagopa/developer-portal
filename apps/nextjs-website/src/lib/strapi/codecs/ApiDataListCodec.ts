@@ -3,6 +3,7 @@ import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
 import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const UrlCodec = t.strict({
   id: t.number,
@@ -36,6 +37,7 @@ export const ApiDataCodec = t.strict({
     BaseApiDataAttributesCodec,
     t.strict({
       product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+      bannerLinks: t.array(BannerLinkCodec),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),

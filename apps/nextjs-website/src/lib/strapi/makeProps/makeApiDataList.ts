@@ -22,9 +22,11 @@ export function makeApiDataListProps(
           : [],
         specURLsName: attributes.title,
         bannerLinks:
-          attributes.product.data.attributes.bannerLinks?.map(
-            makeBannerLinkProps
-          ),
+          attributes.bannerLinks.length > 0
+            ? attributes.bannerLinks.map(makeBannerLinkProps)
+            : attributes.product.data.attributes.bannerLinks?.map(
+                makeBannerLinkProps
+              ),
         seo: attributes.seo,
       };
     });
