@@ -6,13 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-GOOGLE_PARAM_NAME = os.getenv("GOOGLE_PARAM_NAME")
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_DEFAUL_REGION = os.getenv("GOOGLE_AND_REDIS_AWS_DEFAULT_REGION")
 
 
-def get_ssm_parameter(name: str = GOOGLE_PARAM_NAME, default: str | None = None) -> str | None:
+def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 

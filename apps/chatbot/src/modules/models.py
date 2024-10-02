@@ -18,21 +18,22 @@ from src.modules.utils import get_ssm_parameter
 
 load_dotenv()
 
-PROVIDER = os.getenv('CHB_PROVIDER', "aws")
+PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
 
-GOOGLE_API_KEY = get_ssm_parameter()
-AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
-CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION')
+GOOGLE_PARAM_NAME = os.getenv("GOOGLE_PARAM_NAME")
+GOOGLE_API_KEY = get_ssm_parameter(name=GOOGLE_PARAM_NAME)
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
-MODEL_ID = os.getenv('CHB_MODEL_ID', "mistral.mistral-large-2402-v1:0")
-MODEL_TEMPERATURE = os.getenv('CHB_MODEL_TEMPERATURE', "0.5")
-MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "784")
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID", "cohere.embed-multilingual-v3")
+MODEL_ID = os.getenv("CHB_MODEL_ID", "models/gemini-1.5-flash")
+MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.5")
+MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "512")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID", "models/text-embedding-004")
 
 
 def get_llm():
