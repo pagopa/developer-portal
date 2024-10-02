@@ -1,0 +1,19 @@
+resource "aws_security_group" "codebuild" {
+  name        = "${local.prefix}-codebuild"
+  description = "Security group for Codebuild container"
+  vpc_id      = var.vpc.id
+
+  # https://registry.terraform.io/providers/hashicorp/aws/5.35.0/docs/resources/security_group#recreating-a-security-group
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_security_group_rule" "codebuild_redis_ingress" {
+  type                     = "ingress"
+  from_port                = var.ecs_redis.port
+  to_port                  = var.ecs_redis.port
+  protocol                 = "tcp"
+  security_group_id        = var.security_groups.redis
+  source_security_group_id = aws_security_group.codebuild.id
+}

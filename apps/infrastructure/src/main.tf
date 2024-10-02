@@ -121,11 +121,23 @@ module "chatbot" {
   environment        = var.environment
   tags               = var.tags
 
-  website_bucket_name     = module.website.website_bucket_name
+  website_bucket_name     = module.website.website_bucket.name
   dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
   cognito_user_pool       = module.website.cognito_user_pool
   vpc                     = module.cms.vpc
   security_groups         = module.cms.security_groups
   dns_domain_name         = var.dns_domain_name
   ecs_redis               = var.chatbot_ecs_redis
+}
+
+module "cicd" {
+  source = "./modules/cicd"
+
+  environment = var.environment
+  tags        = var.tags
+
+  vpc                     = module.cms.vpc
+  security_groups         = merge(module.cms.security_groups, module.chatbot.security_groups)
+  redis_port = var.chatbot_ecs_redis.port
+  github_repository = var.github_repository
 }

@@ -108,3 +108,8 @@ output "lambda_cloudwatch_log_group_arn" {
   value       = module.lambda_function.lambda_cloudwatch_log_group_arn
 }
 
+output "security_groups" {
+  value = {
+    redis = aws_security_group.redis.id
+  }
+}

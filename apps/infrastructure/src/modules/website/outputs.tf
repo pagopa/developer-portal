@@ -1,5 +1,14 @@
-output "website_bucket_name" {
-  value = aws_s3_bucket.website.id
+output "website_bucket" {
+  value =  {
+    name = aws_s3_bucket.website.id
+    arn = aws_s3_bucket.website.arn
+  }
+}
+
+output "website_cdn" {
+  value = {
+    arn = aws_cloudfront_distribution.website.arn
+  }
 }
 
 output "cognito_user_pool" {
