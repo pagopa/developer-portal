@@ -31,7 +31,7 @@ if __name__ == "__main__":
         raise Exception("Vector Store Error: use s3 or Redis or none of them.")
 
     model = get_llm(params)
-    embed_model = get_embed_model(params)
+    embed_model = get_embed_model()
 
     # create vector index
     if params["vector_index"]["use_redis"]:
