@@ -4,6 +4,7 @@ import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const GuideByCategoryCodec = t.strict({
   category: t.string,
@@ -19,6 +20,7 @@ export const GuideListPageCodec = t.strict({
     description: t.string,
     product: t.strict({ data: BaseProductWithBannerLinksCodec }),
     guidesByCategory: t.array(GuideByCategoryCodec),
+    bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });

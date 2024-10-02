@@ -46,9 +46,11 @@ export function makeQuickStartGuidesProps(
         ),
         path: `/${product.slug}/quick-start`,
         bannerLinks:
-          quickStart.attributes.product.data?.attributes.bannerLinks?.map(
-            makeBannerLinkProps
-          ),
+          quickStart.attributes.bannerLinks.length > 0
+            ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+            : quickStart.attributes.product.data.attributes.bannerLinks?.map(
+                makeBannerLinkProps
+              ),
         seo: quickStart.attributes.seo,
       };
     }),

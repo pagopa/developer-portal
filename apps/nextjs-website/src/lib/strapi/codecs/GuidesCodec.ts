@@ -4,6 +4,7 @@ import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
 import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const VersionCodec = t.strict({
   main: t.boolean,
@@ -33,6 +34,7 @@ export const GuideCodec = t.strict({
     t.strict({
       versions: t.array(VersionCodec),
       product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+      bannerLinks: t.array(BannerLinkCodec),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
