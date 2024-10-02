@@ -33,6 +33,11 @@
       },
       "type": "text"
     },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
     "icon": {
       "type": "media",
       "multiple": false,

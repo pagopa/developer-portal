@@ -21,6 +21,7 @@ export function makeGuidesProps(
         },
         versions: attributes.versions,
         bannerLinks: product.bannerLinks,
+        seo: attributes.seo,
       };
     }),
     ...staticGuides,

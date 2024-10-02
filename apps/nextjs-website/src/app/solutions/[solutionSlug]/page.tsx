@@ -1,9 +1,14 @@
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { getSolutionsProps } from '@/lib/cmsApi';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 type Params = {
   solutionSlug: string;
@@ -23,6 +28,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const solution = await getSolution(params?.solutionSlug);
 
+  if (solution.seo) {
+    return makeMetadataFromStrapi(solution.seo);
+  }
+
   return makeMetadata({
     title: solution.title,
     url: `${baseUrl}/solutions/${solution.slug}`,
@@ -33,7 +42,26 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solution = await getSolution(params?.solutionSlug);
 
-  return <SolutionTemplate {...solution} />;
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: 'Solutions',
+        item: getItemFromPaths(['solutions']),
+      },
+      {
+        name: solution.seo?.metaTitle,
+        item: getItemFromPaths(['solutions', solution.slug]),
+      },
+    ],
+    seo: solution.seo,
+  });
+
+  return (
+    <>
+      {structuredData}
+      <SolutionTemplate {...solution} />
+    </>
+  );
 };
 
 export default Page;

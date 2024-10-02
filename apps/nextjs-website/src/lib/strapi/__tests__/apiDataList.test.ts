@@ -7,6 +7,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 14,
       attributes: {
+        seo: null,
         title: 'Gestione flussi di Rendicontazione',
         description:
           'API ad uso dei PSP ed EC per l’upload e il Download dei Flussi di Rendicontazione sul Nodo dei Pagamenti. ',
@@ -39,6 +40,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 2,
       attributes: {
+        seo: null,
         title: 'Firma con IO Main',
         description: null,
         createdAt: '2024-07-11T17:14:58.618Z',
@@ -64,6 +66,7 @@ const makeStrapiResponseJson = () => ({
     {
       id: 7,
       attributes: {
+        seo: null,
         title: 'Documentazione SOAP',
         description:
           'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
