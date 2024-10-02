@@ -35,7 +35,7 @@ const TutorialTemplate = ({
       product={product}
       path={path}
       structuredData={structuredData}
-    // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
+      // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
     >
       {product && (
         <Box
