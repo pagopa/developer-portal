@@ -161,7 +161,7 @@ if __name__ == "__main__":
     prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
     eval_prompts = yaml.safe_load(open("config/eval_prompts.yaml", "r"))
     bot = Chatbot(params, prompts)
-    eval_model = get_llm(params)
+    eval_model = get_llm()
 
     # load FAQs
     faqs = json.load(open("faqs.json", "r"))
