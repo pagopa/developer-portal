@@ -235,10 +235,29 @@ class Chatbot():
 
     def generate(self, query_str: str) -> str:
 
-        engine_response = self.engine.query(query_str)
-        response_str = self._get_response_str(engine_response)
+        try:
+            engine_response = self.engine.query(query_str)
+            response_str = self._get_response_str(engine_response)
 
-        self._update_history(MessageRole.USER, query_str)
-        self._update_history(MessageRole.ASSISTANT, response_str)
+            self._update_history(MessageRole.USER, query_str)
+            self._update_history(MessageRole.ASSISTANT, response_str)
+
+        except Exception as e:
+            exception_str = str(e)
+            if "SAFETY" in exception_str:
+                if "HARM_CATEGORY_HARASSMENT" in exception_str:
+                    response_str = "Mi dispiace, ma non posso rispondere a domande offensive o minacciose."
+                    logging.info("Gemini Safety: blocked query because retrieved HARM_CATEGORY_HARASSMENT in it.")
+                if "HARM_CATEGORY_SEXUALLY_EXPLICIT" in exception_str:
+                    response_str = "Mi dispiace, ma non posso rispondere a domande di natura sessualmente esplicita."
+                    logging.info("Gemini Safety: blocked query because retrieved HARM_CATEGORY_SEXUALLY_EXPLICIT in it.")
+                if "HARM_CATEGORY_HATE_SPEECH" in exception_str:
+                    response_str = "Mi dispiace, ma non posso accettare discorsi di odio. Per favore, evita di usare linguaggio."
+                    logging.info("Gemini Safety: blocked query because retrieved HARM_CATEGORY_HATE_SPEECH in it.")
+                if "HARM_CATEGORY_DANGEROUS_CONTENT" in exception_str:
+                    response_str = "Mi dispiace, ma non posso  fornire informazioni che potrebbero essere pericolose o dannose."
+                    logging.info("Gemini Safety: blocked query because retrieved HARM_CATEGORY_DANGEROUS_CONTENT in it.")
+            else:
+                logging.info(e)
 
         return response_str
