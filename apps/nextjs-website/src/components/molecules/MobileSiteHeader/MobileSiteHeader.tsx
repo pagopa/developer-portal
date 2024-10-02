@@ -4,7 +4,7 @@ import {
   SiteHeaderProps,
 } from '@/components/molecules/SiteHeader/SiteHeader';
 import Button from '@mui/material/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Box, Divider, useTheme } from '@mui/material';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
+import { Product } from '@/lib/types/product';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -140,6 +141,12 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
     setIsOpen(!isOpen);
   };
 
+  // Filter out products that don't have an overview page
+  const filteredProducts = useMemo(
+    () => products.filter((product: Product) => product.overview?.data),
+    [products]
+  );
+
   return (
     <Box
       sx={{
@@ -184,7 +191,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
             label={t('siteHeader.products')}
             disabled={false}
           >
-            {products.map((product, index) => {
+            {filteredProducts.map((product, index) => {
               return (
                 <Typography
                   key={index}
