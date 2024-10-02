@@ -54,9 +54,9 @@ variable "redis_port" {
 variable "website_bucket" {
   type = object({
     name = string
-    arn = string
+    arn  = string
   })
-  
+
   description = "The S3 bucket used to store the website"
 }
 
@@ -66,4 +66,10 @@ variable "website_cdn" {
   })
 
   description = "The CloudFront distribution used to serve the website"
+}
+
+variable "create_chatbot" {
+  type        = bool
+  description = "Defines if chatbot should be created"
+  default     = false
 }

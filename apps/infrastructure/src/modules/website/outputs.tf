@@ -1,7 +1,7 @@
 output "website_bucket" {
-  value =  {
+  value = {
     name = aws_s3_bucket.website.id
-    arn = aws_s3_bucket.website.arn
+    arn  = aws_s3_bucket.website.arn
   }
 }
 

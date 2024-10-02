@@ -136,8 +136,12 @@ module "cicd" {
   environment = var.environment
   tags        = var.tags
 
-  vpc                     = module.cms.vpc
-  security_groups         = merge(module.cms.security_groups, module.chatbot.security_groups)
-  redis_port = var.chatbot_ecs_redis.port
+  create_chatbot    = var.create_chatbot
+  vpc               = module.cms.vpc
+  security_groups   = var.create_chatbot ? merge(module.cms.security_groups, module.chatbot[0].security_groups) : module.cms.security_groups
+  redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
+
+  website_bucket = module.website.website_bucket
+  website_cdn    = module.website.website_cdn
 }

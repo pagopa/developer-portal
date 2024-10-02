@@ -12,6 +12,7 @@ resource "aws_codebuild_project" "github_runner" {
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
 
     # Add environment variables for EFS mount
     environment_variable {
@@ -31,8 +32,8 @@ resource "aws_codebuild_project" "github_runner" {
   }
 
   vpc_config {
-    vpc_id = var.vpc.id
-    subnets = var.vpc.private_subnets
+    vpc_id             = var.vpc.id
+    subnets            = var.vpc.private_subnets
     security_group_ids = [aws_security_group.codebuild.id]
   }
 
@@ -45,7 +46,7 @@ resource "aws_codebuild_project" "github_runner" {
 
   # Add EFS file system configuration
   file_system_locations {
-    identifier    = "efs-mount"
+    identifier    = "efs_mount"
     location      = "${aws_efs_file_system.this.dns_name}:/data"
     type          = "EFS"
     mount_point   = "/mnt/efs"

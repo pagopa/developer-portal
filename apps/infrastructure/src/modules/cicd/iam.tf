@@ -1,5 +1,27 @@
+resource "aws_iam_role" "codebuild_role" {
+  name = "codebuild-${var.environment}-github-runner-service-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "codebuild.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_policy" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"
+}
+
 resource "aws_iam_policy" "deploy_website" {
-  name        = "DeployWebsite"
+  name        = "${local.prefix}-deploy-website"
   description = "Policy to allow to deploy the website"
 
   policy = jsonencode({
@@ -39,29 +61,13 @@ resource "aws_iam_policy" "deploy_website" {
   })
 }
 
-resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-${var.environment}-github-runner-service-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "codebuild.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role_policy_attachment" "deploy_website" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = aws_iam_policy.deploy_website.arn
 }
 
 resource "aws_iam_role_policy" "codebuild_efs_access" {
+  name = "${local.prefix}-codebuild-efs-access"
   role = aws_iam_role.codebuild_role.name
 
   policy = jsonencode({
