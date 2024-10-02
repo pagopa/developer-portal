@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
+import { Padding } from '@mui/icons-material';
+import { disconnect } from 'process';
 
 export type CkEditorMenuItem = {
   title: string;
@@ -105,6 +107,15 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       borderLeftStyle: 'solid',
       borderLeftColor: palette.divider,
       '& > p': { margin: 0 },
+    },
+    '& ol li li': {
+      'list-style-type': 'lower-alpha',
+    },
+    '& ul li li': {
+      'list-style-type': 'circle',
+    },
+    '& ol li li li, & ul li li li': {
+      'list-style-type': 'square',
     },
   };
 
