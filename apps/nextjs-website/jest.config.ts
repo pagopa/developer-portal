@@ -5,7 +5,7 @@ const jestConfig: JestConfigWithTsJest = {
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testMatch: ['**/__tests__/**/*test.+(ts|tsx)'],
   moduleFileExtensions: ['ts', 'js', 'tsx'],
-  testEnvironment: 'jsdom',
+  testEnvironment: '@bufbuild/jest-environment-jsdom',
   transform: {
     // See the discussion https://github.com/vercel/next.js/issues/8663
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
