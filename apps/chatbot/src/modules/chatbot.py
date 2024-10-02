@@ -258,6 +258,6 @@ class Chatbot():
                     response_str = "Mi dispiace, ma non posso fornire informazioni che potrebbero essere pericolose o dannose."
                     logging.info("Gemini Safety: blocked query because retrieved DANGEROUS_CONTENT in it.")
             else:
-                logging.info(e)
+                logging.info(exception_str)
 
         return response_str
