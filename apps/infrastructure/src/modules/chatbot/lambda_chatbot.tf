@@ -15,9 +15,10 @@ locals {
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER           = "aws"
-    CHB_MODEL_ID           = "mistral.mistral-large-2402-v1:0"
-    CHB_EMBED_MODEL_ID     = "cohere.embed-multilingual-v3"
+    CHB_PROVIDER           = "google"
+    CHB_MODEL_ID           = "models/gemini-1.5-flash"
+    CHB_EMBED_MODEL_ID     = "models/text-embedding-004"
+    CHB_REDIS_INDEX_NAME   = "gemini-index"
     CHB_GOOGLE_API_KEY     = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_QUERY_TABLE_PREFIX = local.prefix
   }
