@@ -11,3 +11,44 @@ vector_index:
 engine:
   response_mode: compact
   verbose: False
+
+config_presidio:
+  nlp_engine_name: spacy
+  models:
+    -
+      lang_code: en
+      model_name: en_core_web_lg
+    -
+      lang_code: it
+      model_name: it_core_news_lg
+  ner_model_configuration:
+    labels_to_ignore:
+      - ORDINAL
+      - QUANTITY
+      - ORGANIZATION
+      - ORG
+      - LANGUAGE
+      - PRODUCT
+      - MONEY
+      - PERCENT
+      - O
+      - CARDINAL
+      - EVENT
+      - WORK_OF_ART
+      - LAW
+      - MISC
+    model_to_presidio_entity_mapping:
+      PER: PERSON
+      PERSON: PERSON
+      LOC: LOCATION
+      LOCATION: LOCATION
+      GPE: LOCATION
+      ORG: ORGANIZATION
+      DATE: DATE_TIME
+      TIME: DATE_TIME
+      NORP: NRP
+    low_confidence_score_multiplier: 0.4
+    low_score_entity_names:
+      - ORGANIZATION
+      - ORG
+    default_score: 0.8
