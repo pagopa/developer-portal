@@ -148,31 +148,6 @@ def html2markdown(html):
     return title, content.strip()
 
 
-def check_html(current_table: dict, s3_bucket_name: str) -> None:
-    logging.info("From last documentation update were:")
-    prev_hash_table = load_url_hash_table(s3_bucket_name)
-
-    kept_url = 0
-    added_urls = 0
-    removed_urls = 0
-    for hash, url in current_table.items():
-        if hash not in prev_hash_table.keys():
-            added_urls += 1
-            logging.info(f"Added ==> {url}")
-        else:
-            kept_url += 1
-
-    for hash, url in prev_hash_table.items():
-        if hash not in current_table.keys():
-            removed_urls += 1
-            logging.info(f"Removed ==> {url}")
-
-    logging.info("Resume:")
-    logging.info(f"{kept_url} URLs were kept.")
-    logging.info(f"{added_urls} URLs were added.")
-    logging.info(f"{removed_urls} URLs were removed.")
-    
-
 def create_documentation(
         website_url: str,
         documentation_dir: str = "./PagoPADevPortal/out/",
