@@ -22,7 +22,7 @@ PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
 
-GOOGLE_PARAM_NAME = os.getenv("CHB_GOOGLE_API_KEY")
+GOOGLE_PARAM_NAME = os.getenv("GOOGLE_PARAM_NAME")
 GOOGLE_API_KEY = get_ssm_parameter(name=GOOGLE_PARAM_NAME)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")

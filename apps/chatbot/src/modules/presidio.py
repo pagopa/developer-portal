@@ -34,20 +34,8 @@ ENTITIES = [
     "IT_PHYSICAL_ADDRESS"  # this is a custom entity added to the analyzer registry
 ]
 
-ENTITIES_TO_BLOCK = [
-    "CREDIT_CARD",
-    "CRYPTO",
-    "EMAIL_ADDRESS",
-    "IBAN_CODE",
-    "IP_ADDRESS",
-    "IT_PASSPORT",
-    "IT_IDENTITY_CARD",
-    "IT_FISCAL_CODE",
-    "IT_VAT_CODE"
-]
-
 ALLOW_LIST = [
-    "pagoPA", "PagoPA", "pagopa", "Riformula"
+    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa"
 ]
 
 
@@ -99,33 +87,26 @@ class PresidioPII():
     """Uses a presidio to analyse PIIs.
     """
 
-    config_file: Optional[Union[Path, str]] = None,
-    pii_node_info_key: str = "__pii_node_info__",
-    entity_mapping: Dict[str, Dict] = {},
-    mapping: Dict[str, str] = {},
-    entities: List[str] | None = None,
-    entities_to_block: List[str] | None = None,
-    analyzer_threshold: float = 0.4
-
     def __init__(
             self,
-            config_file: Optional[Union[Path, str]] | None = None,
-            pii_node_info_key: str = "__pii_node_info__",
+            config: Union[Path, str] | dict,
             entity_mapping: Dict[str, Dict] = {},
             mapping: Dict[str, str] = {},
             entities: List[str] | None = None,
-            entities_to_block: List[str] | None = None,
             analyzer_threshold: float = 0.4
         ):
-        self.config_file = config_file
-        self.pii_node_info_key = pii_node_info_key
+        self.config = config
         self.entity_mapping = entity_mapping
         self.mapping = mapping
         self.entities = entities if entities else ENTITIES
-        self.entities_to_block = entities_to_block if entities_to_block else ENTITIES_TO_BLOCK
         self.analyzer_threshold = analyzer_threshold
 
-        self.provider = NlpEngineProvider(conf_file=config_file)
+        if isinstance(self.config, (Path, str)):
+            self.provider = NlpEngineProvider(conf_file=self.config)
+        elif isinstance(self.config, dict):
+            self.provider = NlpEngineProvider(nlp_configuration=self.config)
+        else:
+            raise ValueError("Error! config should be a path or a dictionary.")
         nlp_engine = self.provider.create_engine()
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
@@ -151,37 +132,6 @@ class PresidioPII():
             allow_list=ALLOW_LIST   
         )
         return results
-    
-
-    def block_pii(self, text: str, results: List[RecognizerResult] | None = None):
-
-        if results is None:
-            results = self.detect_pii(text)
-
-        entities_to_block = []
-        for result in results:
-            if result.entity_type in self.entities_to_block:
-                if result.entity_type not in entities_to_block:
-                    entities_to_block.append(result)
-
-        num_entities_to_block = len(entities_to_block)
-        logging.info(f"Presidio: Detected {num_entities_to_block} entities to block.")
-        if num_entities_to_block == 0:
-            output_text = ""
-        else:
-            output_text = "Mi dispiace, non mi è consentito di elaborare dati sensibili (i.e."
-
-            for i, entity_result in enumerate(entities_to_block):
-                entity_text = text[entity_result.start:entity_result.end]
-
-                if i == num_entities_to_block - 1:
-                    output_text += f" {entity_text})."
-                else:
-                    output_text += f" {entity_text},"
-                
-            output_text += "\nRiformula la domanda in modo che non contenga tali informazioni."
-
-        return output_text
 
 
     def mask_pii(self, text: str, results: List[RecognizerResult] | None = None):

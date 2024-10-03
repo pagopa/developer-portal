@@ -16,6 +16,7 @@ from src.modules.vector_database import (
     load_automerging_index_redis, REDIS_KVSTORE
 )
 from src.modules.engine import get_automerging_query_engine
+from src.modules.presidio import PresidioPII
 
 
 AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
@@ -32,11 +33,12 @@ class Chatbot():
     def __init__(
             self,
             params,
-            prompts,
+            prompts
         ):
 
         self.params = params
         self.prompts = prompts
+        self.pii_detector = PresidioPII(config=params["config_presidio"])
         self.use_redis = params["vector_index"]["use_redis"]
         self.use_s3 = params["vector_index"]["use_s3"]
 
@@ -175,6 +177,10 @@ class Chatbot():
         response_str = "".join(filtered_parts) # join the filtered parts back into a single string
 
         return response_str
+    
+
+    def mask_pii(self, message: str) -> str:
+        return self.pii_detector.mask_pii(message)
 
 
     def generate(self, query_str: str) -> str:
