@@ -13,7 +13,7 @@ qa_prompt_str: |
     - the answer must be clear, non-redundant, and have not repeated sentences.
     - the answer must not include the query.
     - If your answer is based on this retrieved context, include a "Rif" section at the end of the response, listing the titles and filenames from the source nodes used. If no context is used, do not include a reference.
-    - the answer must be with the same language of the query.
+    - the answer must be in Italian.
   --------------------
   Output Examples:
     Query: Cos'è il nodo dei pagamenti?
