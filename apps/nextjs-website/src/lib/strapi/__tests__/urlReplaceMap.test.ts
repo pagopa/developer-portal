@@ -1,11 +1,9 @@
-import {
-  UrlReplaceMap,
-  UrlReplaceMapCodec,
-} from '../codecs/UrlReplaceMapCodec';
+import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
 import * as Either from 'fp-ts/lib/Either';
 import { baseProductJson } from './fixtures/product';
 import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
 import { pipe } from 'fp-ts/lib/function';
+import { mediaRasterJson } from './fixtures/media';
 
 const strapiResponse = {
   data: {
