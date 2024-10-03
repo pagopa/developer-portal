@@ -9,11 +9,7 @@ import {
 import { Product } from '@/lib/types/product';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Box } from '@mui/material';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -34,6 +30,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 
 type Params = {
   productSlug: string;
@@ -124,6 +121,7 @@ const Page = async ({ params }: { params: Params }) => {
     );
   }
 
+  const urlReplacesMap = (await getUrlReplaceMapProps()) || {};
   const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {

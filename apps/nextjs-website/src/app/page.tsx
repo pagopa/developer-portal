@@ -8,7 +8,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
-import { getHomepageProps } from '@/lib/cmsApi';
+import { getHomepageProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';

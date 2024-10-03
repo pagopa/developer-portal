@@ -1,3 +1,4 @@
+import { staticUrlReplacesMap } from '@/_contents/products';
 import { UrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
 
 export type UrlReplacesMap = Record<string, string>;
@@ -15,5 +16,5 @@ export function makeUrlReplaceMap(
       }`,
     };
   }, {} as UrlReplacesMap);
-  return map;
+  return Object.assign({}, staticUrlReplacesMap, map);
 }
