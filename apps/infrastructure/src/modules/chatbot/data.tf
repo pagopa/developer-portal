@@ -30,10 +30,33 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
 
 data "aws_iam_policy_document" "lambda_dynamodb_policy" {
   statement {
-    sid       = "AllowDynamoDBItemOperations"
-    effect    = "Allow"
-    actions   = ["s3:ListBucket"]
-    resources = [module.s3_bucket_llamaindex.s3_bucket_arn, module.s3_bucket_kb.s3_bucket_arn]
+    sid    = "AllowDynamoDBItemOperations"
+    effect = "Allow"
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:ConditionCheckItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem",
+      "dynamodb:GetRecords"
+    ]
+    resources = [module.dynamodb_chatbot_queries.dynamodb_table_arn, module.dynamodb_chatbot_sessions.dynamodb_table_arn]
+  }
+}
+
+data "aws_iam_policy_document" "lambda_ssm_policy" {
+  statement {
+    sid    = "AllowSSMOperations"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters"
+    ]
+    resources = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"]
   }
 }
 

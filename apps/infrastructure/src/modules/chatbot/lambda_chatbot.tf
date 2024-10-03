@@ -46,10 +46,12 @@ module "lambda_function" {
   attach_network_policy  = true
 
   attach_policy_jsons    = true
-  number_of_policy_jsons = 1
+  number_of_policy_jsons = 3
 
   policy_jsons = [
     data.aws_iam_policy_document.lambda_s3_policy.json,
+    data.aws_iam_policy_document.lambda_dynamodb_policy.json,
+    data.aws_iam_policy_document.lambda_ssm_policy.json
   ]
 }
 
