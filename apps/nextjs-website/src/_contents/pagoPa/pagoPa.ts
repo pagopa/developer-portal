@@ -4,6 +4,7 @@ import { pagoPaOverviewPath } from '@/_contents/pagoPa/overviewPath';
 import { pagoPaTutorialListsPath } from '@/_contents/pagoPa/tutorialListsPath';
 import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
 import { Product } from '@/lib/types/product';
+import { pagoPaBannerLinks } from './bannerLinks';
 
 export const pagoPa: Product = {
   name: 'Piattaforma pagoPA',
@@ -31,4 +32,5 @@ export const pagoPa: Product = {
     tutorials: pagoPaTutorialListsPath,
     guides: pagoPaGuideListsPath,
   },
+  bannerLinks: pagoPaBannerLinks,
 };

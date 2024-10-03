@@ -5,12 +5,22 @@ import ProductLayout, {
 import { Product } from '@/lib/types/product';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { ApiDataParams } from '@/lib/types/apiDataParams';
-import { products, productsBannerLinks } from '@/_contents/products';
 import PageNotFound from '@/app/not-found';
+import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  convertApiToStructuredDataSoftwareApplication,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 export type ApiPageProps = {
+  readonly title?: string;
   readonly product?: Product;
   readonly apiDataSlug: string;
   readonly specURLsName?: string;
@@ -19,6 +29,7 @@ export type ApiPageProps = {
     url: string;
     hideTryIt?: boolean;
   }[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateStaticParams() {
@@ -32,6 +43,10 @@ export const generateMetadata = async (
   const resolvedParent = await parent;
   const ApiDataProps = await getApiData(params.apiDataSlug);
 
+  if (ApiDataProps?.seo) {
+    return makeMetadataFromStrapi(ApiDataProps.seo);
+  }
+
   return makeMetadata({
     title: ApiDataProps?.specURLsName,
     description: ApiDataProps?.product?.description,
@@ -43,14 +58,33 @@ export const generateMetadata = async (
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
   const product = await getProduct(params.productSlug);
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: apiDataProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, [
+          'api',
+          `${apiDataProps?.apiDataSlug}`,
+        ]),
+      },
+    ],
+    seo: apiDataProps?.seo,
+    things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
+  });
+
+  const path = product?.path + '/api/' + params.apiDataSlug;
+
   if (apiDataProps && product) {
-    const bannerLink = productsBannerLinks[products.indexOf(product)];
     return (
       <ProductLayout
         product={product}
-        path={product.path.concat('/api')}
-        bannerLinks={bannerLink || apiDataProps.bannerLinks}
+        path={path}
+        paths={[{ name: apiDataProps.title || '', path: path }]}
+        bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
         showBreadcrumbs
+        structuredData={structuredData}
       >
         <ApiSection
           apiSlug={params.apiDataSlug}

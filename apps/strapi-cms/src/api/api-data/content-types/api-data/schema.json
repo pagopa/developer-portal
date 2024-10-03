@@ -33,6 +33,11 @@
       },
       "type": "text"
     },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
     "icon": {
       "type": "media",
       "multiple": false,
@@ -67,6 +72,16 @@
         }
       },
       "type": "string"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

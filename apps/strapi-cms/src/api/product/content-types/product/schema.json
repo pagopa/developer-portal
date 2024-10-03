@@ -83,6 +83,18 @@
       },
       "type": "string",
       "required": true
+    },
+    "overview": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::overview.overview",
+      "mappedBy": "product"
+    },
+    "tutorial_list_page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tutorial-list-page.tutorial-list-page",
+      "mappedBy": "product"
     }
   }
 }

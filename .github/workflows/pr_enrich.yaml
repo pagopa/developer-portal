@@ -7,6 +7,7 @@ jobs:
 
   add_labels:
     name: Add labels
+    if: github.event.pull_request.title != ${{ vars.CHANGESET_PR_TITLE }}
     permissions:
       contents: read
       pull-requests: write
@@ -30,6 +31,7 @@ jobs:
 
   add_assignee:
     name: Add assignee
+    needs: add_labels
     runs-on: ubuntu-latest
 
     steps:

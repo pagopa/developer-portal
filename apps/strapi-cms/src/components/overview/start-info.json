@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_overview_start_infos",
+  "info": {
+    "displayName": "StartInfo",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "path": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

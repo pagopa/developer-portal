@@ -5,8 +5,9 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { StrapiApiData } from '@/lib/strapi/codecs/ApiDataCodec';
+import { StrapiApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
+import { SEO } from '@/lib/types/seo';
 
 export type ApiDataListTemplateProps = {
   readonly hero: {
@@ -30,7 +31,8 @@ export type ApiDataListTemplateProps = {
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiApiData;
+  readonly apiData: StrapiApiDataList;
+  readonly seo?: SEO;
 };
 
 const ApiDataListTemplate = ({
@@ -55,13 +57,17 @@ const ApiDataListTemplate = ({
       />
       <Box paddingBottom={6}>
         <CardsGrid
-          cardVariant='outlined'
+          ctaButtonsVariant='outlined'
           cards={cards.map((card) => ({
             ...card,
+            useSrc: true,
             ctaLabel: t('apiDataListPage.explore'),
           }))}
-          cardSvg={true}
           cardSize={{ xs: 12, md: 4 }}
+          containerSx={{
+            pt: '22px',
+            mt: '-22px',
+          }}
         />
       </Box>
       <BannerLinks bannerLinks={bannerLinks} />

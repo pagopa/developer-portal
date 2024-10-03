@@ -5,7 +5,8 @@ import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Solution } from '@/lib/types/solution';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { SEO } from '@/lib/types/seo';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -25,6 +26,7 @@ export type GuideDefinition = {
     readonly dirName: string;
   }>;
   readonly bannerLinks: readonly BannerLinkProps[];
+  readonly seo?: SEO;
 };
 
 const parseDocOrThrow = flow(
@@ -109,7 +111,7 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = (solution: Solution) =>
+export const makeSolution = (solution: SolutionTemplateProps) =>
   pipe(
     [
       {

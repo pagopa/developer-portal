@@ -1,5 +1,6 @@
 import { translations } from '@/_contents/translations';
 import { defaultOgTagImage } from '@/config';
+import { SEO } from '@/lib/types/seo';
 import { Metadata, ResolvedMetadata } from 'next';
 
 type MakeMetadataParams = {
@@ -67,3 +68,73 @@ const getTwitterMetadata = (
   site: '@pagopa',
   creator: '@pagopa',
 });
+
+export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
+  const baseMetadata = makeMetadata({
+    title: seo.metaTitle,
+    description: seo.metaDescription,
+    url: seo.canonicalURL,
+    image: seo.metaImage?.data?.attributes?.url,
+  });
+
+  const metadata: Metadata = {
+    ...baseMetadata,
+    keywords: seo.keywords,
+    robots: seo.metaRobots,
+    viewport: seo.metaViewport,
+    alternates: {
+      canonical: seo.canonicalURL,
+    },
+    openGraph: enhanceOpenGraphMetadata(baseMetadata.openGraph, seo),
+    twitter: enhanceTwitterMetadata(baseMetadata.twitter, seo),
+  };
+
+  return metadata;
+};
+
+const enhanceOpenGraphMetadata = (
+  baseOG: Metadata['openGraph'] | undefined,
+  seo: SEO
+): Metadata['openGraph'] => {
+  if (!baseOG) return baseOG;
+
+  const enhancedOG = { ...baseOG };
+
+  // eslint-disable-next-line functional/no-expression-statements
+  seo.metaSocial?.forEach((social) => {
+    if (social.socialNetwork?.toLowerCase() === 'facebook') {
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      enhancedOG.title = social.title || enhancedOG.title;
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      enhancedOG.description = social.description || enhancedOG.description;
+    }
+  });
+
+  return enhancedOG;
+};
+
+const enhanceTwitterMetadata = (
+  baseTwitter: Metadata['twitter'] | undefined,
+  seo: SEO
+): Metadata['twitter'] => {
+  if (!baseTwitter) return baseTwitter;
+
+  const enhancedTwitter = { ...baseTwitter };
+
+  // eslint-disable-next-line functional/no-expression-statements
+  seo.metaSocial?.forEach((social) => {
+    if (social.socialNetwork?.toLowerCase() === 'twitter') {
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      enhancedTwitter.title = social.title || enhancedTwitter.title;
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      enhancedTwitter.description =
+        social.description || enhancedTwitter.description;
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      if (social.site) enhancedTwitter.site = social.site;
+      // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
+      if (social.creator) enhancedTwitter.creator = social.creator;
+    }
+  });
+
+  return enhancedTwitter;
+};

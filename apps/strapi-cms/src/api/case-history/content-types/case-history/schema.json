@@ -23,7 +23,8 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "title": {
       "pluginOptions": {
@@ -77,6 +78,16 @@
         "parts.quote"
       ],
       "required": true
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

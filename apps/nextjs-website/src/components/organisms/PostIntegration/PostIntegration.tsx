@@ -18,9 +18,9 @@ type PostIntegrationProps = {
     href: string;
   };
   listTitle?: string;
-  cards?: {
+  serviceModels?: {
     title: string;
-    text: string;
+    description: string;
     href: string;
   }[];
   guides?: GuideCardProps[];
@@ -31,15 +31,16 @@ const PostIntegration = ({
   subtitle,
   cta,
   listTitle,
-  cards,
+  serviceModels,
   guides,
 }: PostIntegrationProps) => {
   const theme = useTheme();
-  const t = useTranslations('shared');
+  const t = useTranslations();
 
   return (
     <Box py={8} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <SectionTitle margin={0} title={title} subtitle={subtitle} cta={cta}>
+      <SectionTitle margin={0} title={title} subtitle={subtitle} cta={cta} />
+      <EContainer>
         {listTitle && (
           <Typography
             content='div'
@@ -55,20 +56,32 @@ const PostIntegration = ({
             {listTitle}
           </Typography>
         )}
-      </SectionTitle>
-      {cards && (
+      </EContainer>
+      {serviceModels && serviceModels.length > 0 && (
         <EContainer sx={{ margin: 0 }}>
           <LinkCards
-            cards={cards.map((card) => ({ ...card, label: t('goToModel') }))}
+            cards={serviceModels.map((serviceModel) => ({
+              ...serviceModel,
+              label: t('shared.goToModel'),
+            }))}
           />
         </EContainer>
       )}
-      {guides && (
+      {guides && guides.length > 0 && (
         <EContainer>
-          <Box mt={5}>
+          <Box sx={{ marginTop: 5, width: '100%' }}>
             {guides &&
               guides.map((props, index) => (
-                <GuideCard key={index} {...props} />
+                <GuideCard
+                  key={index}
+                  {...props}
+                  description={{
+                    title: t(props.description.title),
+                    content: props.description.content,
+                    listItems: props.description.listItems,
+                  }}
+                  link={{ label: t(props.link.label), href: props.link.href }}
+                />
               ))}
           </Box>
         </EContainer>

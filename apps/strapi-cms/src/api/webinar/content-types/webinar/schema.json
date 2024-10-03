@@ -46,7 +46,8 @@
         }
       },
       "required": true,
-      "regex": "^[a-zA-Z0-9-]+$"
+      "regex": "^[a-zA-Z0-9-]+$",
+      "unique": true
     },
     "bodyContent": {
       "type": "blocks",
@@ -148,6 +149,16 @@
         }
       },
       "component": "webinar.related-resources"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

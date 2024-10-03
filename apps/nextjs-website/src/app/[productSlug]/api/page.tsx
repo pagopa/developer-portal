@@ -1,7 +1,15 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
@@ -22,6 +30,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const apiDataListPage = await getApiDataListPages(params?.productSlug);
 
+  if (apiDataListPage?.seo) {
+    return makeMetadataFromStrapi(apiDataListPage.seo);
+  }
+
   return makeMetadata({
     title: apiDataListPage?.hero.title,
     url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
@@ -33,17 +45,27 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
   const product = await getProduct(params.productSlug);
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: apiDataListPageProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['api']),
+      },
+    ],
+    seo: apiDataListPageProps?.seo,
+  });
+
   if (apiDataListPageProps && product) {
     return (
-      <>
-        <ProductLayout
-          product={product}
-          path={product.path.concat('/api')}
-          showBreadcrumbs
-        >
-          <ApiDataListTemplate {...apiDataListPageProps} />
-        </ProductLayout>
-      </>
+      <ProductLayout
+        product={product}
+        path={product.path.concat('/api')}
+        showBreadcrumbs
+        structuredData={structuredData}
+      >
+        <ApiDataListTemplate {...apiDataListPageProps} />
+      </ProductLayout>
     );
   }
 };

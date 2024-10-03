@@ -91,3 +91,30 @@ variable "aws_chatbot_region" {
   description = "AWS region to create AI chatbot's resources"
   default     = "eu-west-3"
 }
+
+variable "create_chatbot" {
+  type        = bool
+  description = "Defines if chatbot should be created"
+  default     = false
+}
+
+################################################################################
+# ECS - Chatbot Redis
+################################################################################
+
+variable "chatbot_ecs_redis" {
+  type = object({
+    cpu       = optional(number, 2048)
+    memory    = optional(number, 4096)
+    image_uri = optional(string, "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186")
+    port      = optional(number, 6379)
+  })
+  description = "Redis configuration for the AI chatbot"
+
+  default = {
+    cpu       = 2048
+    memory    = 4096
+    image_uri = "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
+    port      = 6379
+  }
+}

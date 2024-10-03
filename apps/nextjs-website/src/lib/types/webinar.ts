@@ -1,11 +1,7 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '../strapi/codecs/MediaCodec';
-
-export type QuestionsAndAnswersItem = {
-  readonly question: string;
-  readonly answer: BlocksContent;
-};
+import { SEO } from './seo';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -14,12 +10,6 @@ export type QuestionsAndAnswer = {
 
 export type Webinar = {
   readonly description: string;
-  // Use bodyContent instead, remove when webinars will be managed by Strapi
-  // (remove it when both of this tasks
-  // https://pagopa.atlassian.net/browse/DEV-1557 and
-  // https://pagopa.atlassian.net/browse/DEV-1524 are resolved)
-  /** @deprecated */
-  readonly html?: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
   readonly speakers?: readonly Speaker[];
@@ -54,15 +44,6 @@ export type Webinar = {
   readonly subscribeCtaLabel?: string;
   readonly isVisibleInList: boolean;
   readonly imagePath: string;
-  readonly startInfo?: {
-    readonly title: string;
-    readonly cards: readonly {
-      readonly comingSoon?: boolean;
-      readonly title: string;
-      readonly text: string;
-      readonly href?: string;
-      readonly iconName: string;
-    }[];
-  };
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
+  readonly seo?: SEO;
 };

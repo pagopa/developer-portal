@@ -25,13 +25,21 @@ export const amplifyConfig = {
   authenticationFlowType: 'CUSTOM_AUTH',
 };
 
+const defaultItems = [
+  { label: 'personalData.title', href: '/profile/personal-data' },
+  { label: 'agreements.title', href: '/profile/agreements' },
+  { label: 'chatbot.title', href: '/profile/chatbot-history' },
+];
+
 export const profileMenuItems: readonly {
   readonly label: string;
   readonly href: string;
-}[] = [
-  { label: 'personalData.title', href: '/profile/personal-data' },
-  { label: 'agreements.title', href: '/profile/agreements' },
-];
+}[] = isChatbotActive
+  ? [
+      ...defaultItems,
+      { label: 'chatbot.title', href: '/profile/chatbot-history' },
+    ]
+  : defaultItems;
 
 export const snackbarAutoHideDurationMs = 10_000;
 
@@ -59,4 +67,18 @@ export const dateOptions: Intl.DateTimeFormatOptions = {
 export const timeOptions: Intl.DateTimeFormatOptions = {
   hour: '2-digit',
   minute: '2-digit',
+};
+
+export const websiteName = process.env.NEXT_PUBLIC_WEBSITE_NAME || 'DevPortal';
+
+export const organizationInfo = {
+  name: process.env.NEXT_PUBLIC_ORGANIZATION_NAME || 'PagoPA',
+  url: baseUrl,
+  logo:
+    process.env.NEXT_PUBLIC_ORGANIZATION_LOGO ||
+    'https://1603831084-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FvKmQOwMmwOgFq0L2Rf0Q%2Flogo%2FgCUQ6tWtEoMqS8uZcWOP%2FpagoPA.svg?alt=media&token=2405d6bd-94df-4129-8bcd-8dd0f52272d9',
+  sameAs: (
+    process.env.NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS ||
+    'https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa'
+  ).split(','),
 };

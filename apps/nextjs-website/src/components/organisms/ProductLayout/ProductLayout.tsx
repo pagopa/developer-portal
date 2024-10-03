@@ -8,6 +8,7 @@ import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
@@ -15,6 +16,7 @@ export type ProductLayoutProps = {
   readonly paths?: Path[];
   readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
+  readonly structuredData?: ReactNode;
 };
 
 type LayoutPropsWithChildren = {
@@ -28,9 +30,11 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   bannerLinks,
   children,
   showBreadcrumbs = false,
+  structuredData,
 }) => {
   return (
     <>
+      {structuredData}
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
         <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
@@ -39,7 +43,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
           />
         </EContainer>
       )}
-      {children}
+      <ContentWrapper>{children}</ContentWrapper>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
     </>
   );

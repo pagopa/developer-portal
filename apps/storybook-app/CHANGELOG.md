@@ -1,5 +1,40 @@
 # storybook-app
 
+## 0.12.0
+
+### Minor Changes
+
+- 72c13cc: Add error alerts in chatbot chat
+
+## 0.11.0
+
+### Minor Changes
+
+- 8fa630b: Show statsSource attribute in Stats component
+- 76c4593: Fix text alignment when quote is short in Quote component and add "ShortQuote" story to Storybook
+
+## 0.10.0
+
+### Minor Changes
+
+- dd8889b: Add feedback button
+- dd8889b: Add copy to clipboard button
+
+## 0.9.0
+
+### Minor Changes
+
+- 52ed6a5: Update chatbot message component
+- 52ed6a5: Update input text area
+- ac0f692: Add feedback button
+- 52ed6a5: Update layout and style of chat component
+- 52ed6a5: New chatbot button style
+
+### Patch Changes
+
+- 2b17572: Add chat skeleton
+- 81b0ef4: Add a parser to convert chatbot messages from Markdown to HTML format
+
 ## 0.8.0
 
 ### Minor Changes

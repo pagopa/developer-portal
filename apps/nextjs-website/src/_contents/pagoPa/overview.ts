@@ -59,6 +59,7 @@ export const pagoPaOverview: OverviewData = {
         href: pagoPa.subpaths.quickStart?.path ?? '#',
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Documentazione API',
@@ -66,6 +67,7 @@ export const pagoPaOverview: OverviewData = {
         href: pagoPa.subpaths.api?.path,
         iconName: 'Code',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },
@@ -74,24 +76,27 @@ export const pagoPaOverview: OverviewData = {
       'Quali sono i passaggi per rendere disponibili i propri servizi di pagamento sulla piattaforma pagoPA? Come si stampa un avviso di pagamento? Risolvi ogni dubbio con questi brevi tutorial.',
     list: pagoPaTutorials,
   },
-  relatedLinks: [
-    {
-      path: 'https://survey.pagopa.it/238313',
-      name: 'Contribuisci al miglioramento della Tassonomia',
-    },
-    {
-      path: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa`,
-      name: 'Consulta le linee guida brand pagoPA',
-    },
-    {
-      path: 'https://www.gazzettaufficiale.it/eli/id/2018/07/03/18A04494/sg',
-      name: 'Consulta le linee Guida Gazzetta Ufficiale',
-    },
-    {
-      path: `${pagoPaGuideListsPath.path}/portale-delle-adesioni`,
-      name: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link utili',
+    links: [
+      {
+        text: 'Contribuisci al miglioramento della Tassonomia',
+        href: 'https://survey.pagopa.it/238313',
+      },
+      {
+        text: 'Consulta le linee guida brand pagoPA',
+        href: `${pagoPaGuideListsPath.path}/linee-guida-brand-pagopa`,
+      },
+      {
+        text: 'Consulta le linee Guida Gazzetta Ufficiale',
+        href: 'https://www.gazzettaufficiale.it/eli/id/2018/07/03/18A04494/sg',
+      },
+      {
+        text: 'Leggi il documento sul Portale delle Adesioni predisposto per gli Enti Creditori',
+        href: `${pagoPaGuideListsPath.path}/portale-delle-adesioni`,
+      },
+    ],
+  },
   postIntegration: {
     subtitle:
       'Se hai da poco terminato il processo di integrazione con pagoPA o lo stai già utilizzando, queste risorse potrebbero fare al caso tuo.',

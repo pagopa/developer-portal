@@ -1,5 +1,52 @@
 # strapi-cms
 
+## 2.6.1
+
+### Patch Changes
+
+- bae5f53: Set default value to metaViewport field in Strapi's SEO component
+
+## 2.6.0
+
+### Minor Changes
+
+- e5eba2e: Add Seo component to every entity having a corresponding page
+
+### Patch Changes
+
+- 64292d4: Fix SEO for guide in strapi
+
+## 2.5.0
+
+### Minor Changes
+
+- 9ab42ab: Add CKEditor to Tutorials' parts
+- 8ecf996: Add statsSource attribute to Solution's schema in Strapi CMS
+
+## 2.4.0
+
+### Minor Changes
+
+- 6547ed1: Add TutorialListPage collection
+- 7378c15: Add bannerLinks attribute to overview schema in Strapi
+
+### Patch Changes
+
+- 13897f4: Fix the maximum number of items in Strapi's features component
+
+## 2.3.0
+
+### Minor Changes
+
+- 883f999: Add guides and guide list page on Strapi
+- 157dca5: Fix guide in Strapi
+- e5c93b9: Add overview schema to Strapi CMS
+
+### Patch Changes
+
+- cd924b0: Add Product relation and fix relatedLinks attribute type in Overview schema, fix image allowedTypes in Tutorial schema and linkHref type in CardProps schema
+- 5ff6c58: Remove unused product relation in guide
+
 ## 2.2.0
 
 ### Minor Changes

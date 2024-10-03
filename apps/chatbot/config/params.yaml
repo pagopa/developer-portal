@@ -1,20 +1,13 @@
 documentation:
-  path: apps/nextjs-website/out
+  path: build-devp/out
 
 vector_index:
   path: index
   chunk_sizes: [2816, 704, 176]
   chunk_overlap: 20
+  use_redis: True
+  use_s3: False
 
-models:
-  model_id: amazon.titan-text-express-v1
-  emded_model_id: cohere.embed-multilingual-v3
-  temperature: 0.3
-  topP: 1.
-  max_tokens: 784
-
-retriever:
-  similarity_top_k: 5
-  similarity_cutoff: 0.55
+engine:
   response_mode: compact
   verbose: False

@@ -10,7 +10,7 @@ const meta: Meta<typeof Chat> = {
 };
 
 const decorator: Decorator = (story) => (
-  <div style={{ backgroundColor: 'black', padding: '2rem' }}>{story()}</div>
+  <div style={{ backgroundColor: 'black' }}>{story()}</div>
 );
 
 export default meta;
@@ -25,14 +25,14 @@ export const Showcase: StoryObj<typeof Chat> = {
       },
       {
         sessionId: 'sessionID',
-        question: 'Accetto',
+        question: mockText(10),
         queriedAt: '2024-07-24T17:14:07.129Z',
-        answer: mockText(10),
+        answer: mockText(50),
         createdAt: '2024-07-24T17:14:07.129Z',
       },
       {
         sessionId: 'sessionID',
-        question: mockText(50),
+        question: mockText(12),
         queriedAt: '2024-07-24T17:14:07.129Z',
       },
     ],
@@ -40,6 +40,43 @@ export const Showcase: StoryObj<typeof Chat> = {
       console.log(query);
       return null;
     },
+    isAwaitingResponse: true,
+  },
+  decorators: [decorator, nextIntlContextDecorator],
+};
+
+export const QueryError: StoryObj<typeof Chat> = {
+  args: {
+    queries: [
+      {
+        sessionId: 'sessionID',
+        question: mockText(12),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+      },
+    ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
+    error: 'queryFailed',
+  },
+  decorators: [decorator, nextIntlContextDecorator],
+};
+
+export const ChatbotServiceError: StoryObj<typeof Chat> = {
+  args: {
+    queries: [
+      {
+        sessionId: 'sessionID',
+        question: mockText(12),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+      },
+    ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
+    error: 'serviceDown',
   },
   decorators: [decorator, nextIntlContextDecorator],
 };

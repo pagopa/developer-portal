@@ -1,5 +1,100 @@
 # nextjs-website
 
+## 4.8.0
+
+### Minor Changes
+
+- 72c13cc: Add error alerts in chatbot chat
+
+### Patch Changes
+
+- d2b0c30: Change chatbot name, update chatbot first message and fix chatbot button size
+- 617fef4: Fix the label of the guide links on the overview page
+- bd9206d: Fix selectEmbedType method by adding 'design' option to Figma urls
+- 3928519: Fix guidesTitle's position in Overview's PostIntegration component
+- f683aa5: Fix Stats component layout in Solution's page
+
+## 4.7.0
+
+### Minor Changes
+
+- 47637c0: Add style to content generated with CKEditor in Strapi
+- 1bf8e5b: Add structured data functions and add them to homepage
+- 8fa630b: Show statsSource attribute in Stats component
+- 828faf3: Add CKEditor renderer to NextJS
+
+### Patch Changes
+
+- 7146095: Fix Webinar's bodyContent margins
+- 76c4593: Fix text alignment when quote is short in Quote component and add "ShortQuote" story to Storybook
+
+## 4.6.0
+
+### Minor Changes
+
+- b40773a: Add bannerLinks to product's overview page in NextJs
+- fd090f7: [DPC-298] Update link in overview SEND
+- 2fd2d35: Connect product tutorial list page to Strapi content
+- 2fd2d35: Add tutorial list pages codec
+- 9d2120b: Add version 2.4 of "Manuale dei Servizi"
+
+### Patch Changes
+
+- 9547654: Refactor guides codec
+- 7b045c2: Fix Guides page generateStaticParams method
+- fe97c1b: Refactor SEO codec, SolutionDetail codec and SolutionTemplateProps
+- 95e0cc5: Using id token instead of access token to authenticate api calls
+- 46746b4: Add makeProps folder
+- 9cb88cf: Refactor homepage codec
+- ecb45cc: Refactor ApiDataList and ApiDataListPages codecs
+- afc9ecd: Refactor Overviews codec
+- c05180d: Refactor Solutions, SolutionListPage and CaseHistories codecs
+- ece2b34: Refactor QuickStartGuides codec
+- 429a1d5: Refactor webinars codec
+- c038519: Refactor guideListPages codec
+
+## 4.5.0
+
+### Minor Changes
+
+- dfca6c0: Add seo attribute to homepage codec
+- dd8889b: Add feedback button
+- 003ebc7: Connect overview pages to Strapi CMS
+- 61e7045: Add overview codec and test
+- dd8889b: Add copy to clipboard button
+- f3d31db: Connect guide list page to Strapi data and
+- 29dafaf: Connect Guide to Strapi data
+- 05745a3: Meta tags in home page taken from strapi
+- 59317cd: Add anchor id to QuestionsAndAnswers component container
+
+### Patch Changes
+
+- 6c96fbc: Fix link style in webinar Q&A's answers
+- c9bbea3: Fix the margins of webinar related resources
+- 2d14ea6: Fix the call to action button variant in the ecosystem section of the homepage
+- 4cfbcb3: Fix overview page input data and card links
+
+## 4.4.0
+
+### Minor Changes
+
+- 52ed6a5: Update chatbot message component
+- 52ed6a5: Update input text area
+- ac0f692: Add feedback button
+- 5ff6c58: Add guides and guide list codecs
+- 0696e98: Add new pagoPA manual "Stampa Avvisi di Pagamento"
+- 52ed6a5: Update layout and style of chat component
+- 564bb78: Add lateral menu on Strapi tutorials
+- 52ed6a5: New chatbot button style
+
+### Patch Changes
+
+- 595543d: Add wrapper to identify tag for chatbot analysis
+- 2b17572: Add chat skeleton
+- 0ee63ba: Change in path rewrite for "Manuale Back office EC/PT/PSP"
+- 81b0ef4: Add a parser to convert chatbot messages from Markdown to HTML format
+- 45014a7: Hide webinar questions instead of not render when collapsed
+
 ## 4.3.0
 
 ### Minor Changes

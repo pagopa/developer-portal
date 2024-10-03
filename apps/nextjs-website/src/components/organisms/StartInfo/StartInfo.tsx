@@ -16,6 +16,7 @@ type StartInfoProps = {
     href?: string;
     iconName: string;
     iconColor?: string;
+    useSrc: boolean;
   }[];
   cta?: {
     text: string;
@@ -39,7 +40,7 @@ const StartInfo = ({
           <SectionTitle title={title} />
         </Box>
         <CardsGrid
-          cardVariant={cardVariant}
+          ctaButtonsVariant={cardVariant}
           cardSize={{
             xs: 12,
             md: 12 / cards.length,
@@ -51,7 +52,12 @@ const StartInfo = ({
             href: card.href,
             icon: card.iconName,
             iconColor: card.iconColor,
+            useSrc: card.useSrc,
           }))}
+          containerSx={{
+            pt: '22px',
+            mt: '-22px',
+          }}
         />
       </Box>
       {cta && (
@@ -68,6 +74,7 @@ const StartInfo = ({
                 color={palette.text.primary}
                 size={26}
                 icon={cta.iconName || 'MenuBook'}
+                useSrc={false}
               />
             </Box>
             <Typography variant='body1' mb={2}>

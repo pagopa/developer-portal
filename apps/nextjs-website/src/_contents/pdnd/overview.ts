@@ -45,28 +45,31 @@ export const pdndOverview: OverviewData = {
       'Vuoi scoprire cos’è una Finalità su PDND Interoperabilità? Vuoi capire come mettere un servizio a disposizione di altri enti? Questi tutorial possono aiutarti.',
     list: pdndTutorials,
   },
-  relatedLinks: [
-    {
-      path: 'https://trasparenza.agid.gov.it/archivio28_provvedimenti-amministrativi_0_123064_725_1.html',
-      name: 'Linee guida PDND Interoperabilità redatte da AgID e aggiornamento a maggio 2023',
-    },
-    {
-      path: 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/9732758',
-      name: 'Parere del Garante per la Protezione dei Dati Personali',
-    },
-    {
-      path: 'https://developers.italia.it/it/pdnd/',
-      name: 'PDND - Piattaforma Digitale Nazionale Dati',
-    },
-    {
-      path: 'https://next.developers.italia.it/it/interoperabilita/',
-      name: 'Ecosistema Interoperabilità',
-    },
-    {
-      path: 'https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=2005-05-16&atto.codiceRedazionale=005G0104&atto.articolo.numero=0&atto.articolo.sottoArticolo=1&atto.articolo.sottoArticolo1=10&qId=5614860b-4769-478e-bf22-a8a76a04159a&tabID=0.5538263478162919&title=lbl.dettaglioAtto',
-      name: 'Articolo 50-ter',
-    },
-  ],
+  relatedLinks: {
+    title: 'Link utili',
+    links: [
+      {
+        text: 'Linee guida PDND Interoperabilità redatte da AgID e aggiornamento a maggio 2023',
+        href: 'https://trasparenza.agid.gov.it/archivio28_provvedimenti-amministrativi_0_123064_725_1.html',
+      },
+      {
+        text: 'Parere del Garante per la Protezione dei Dati Personali',
+        href: 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/9732758',
+      },
+      {
+        text: 'PDND - Piattaforma Digitale Nazionale Dati',
+        href: 'https://developers.italia.it/it/pdnd/',
+      },
+      {
+        text: 'Ecosistema Interoperabilità',
+        href: 'https://next.developers.italia.it/it/interoperabilita/',
+      },
+      {
+        text: 'Articolo 50-ter',
+        href: 'https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=2005-05-16&atto.codiceRedazionale=005G0104&atto.articolo.numero=0&atto.articolo.sottoArticolo=1&atto.articolo.sottoArticolo1=10&qId=5614860b-4769-478e-bf22-a8a76a04159a&tabID=0.5538263478162919&title=lbl.dettaglioAtto',
+      },
+    ],
+  },
   startInfo: {
     cards: [
       {
@@ -75,6 +78,7 @@ export const pdndOverview: OverviewData = {
         href: `${pdndQuickStartGuidePath.path}`,
         iconName: 'FlagOutlined',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
       {
         title: 'Manuale operativo',
@@ -82,6 +86,7 @@ export const pdndOverview: OverviewData = {
         href: '/pdnd-interoperabilita/guides/manuale-operativo',
         iconName: 'MenuBook',
         iconColor: 'primary.dark',
+        useSrc: false,
       },
     ],
   },

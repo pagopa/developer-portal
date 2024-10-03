@@ -2,7 +2,6 @@ import * as t from 'io-ts/lib';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { BlocksContentCodec } from './BlocksContentCodec';
 import { MediaCodec } from './MediaCodec';
-import { Part } from '@/lib/types/part';
 
 const HtmlPartCodec = t.strict({
   html: BlocksContentCodec,
@@ -42,11 +41,15 @@ const ApiTesterPartCodec = t.strict({
   responseCode: CodeBlockPartCodec,
 });
 
-const QuotePart = t.strict({
+const QuotePartCodec = t.strict({
   text: t.string,
   backgroundImage: t.strict({
     data: t.union([NullToUndefinedCodec, MediaCodec]),
   }),
+});
+
+const CKEditorPartCodec = t.strict({
+  content: t.string,
 });
 
 export const PartCodec = t.union([
@@ -71,55 +74,13 @@ export const PartCodec = t.union([
     t.type({ __component: t.literal('parts.embed-html') }),
   ]),
   t.intersection([
-    QuotePart,
+    QuotePartCodec,
     t.type({ __component: t.literal('parts.quote') }),
+  ]),
+  t.intersection([
+    CKEditorPartCodec,
+    t.type({ __component: t.literal('parts.ck-editor') }),
   ]),
 ]);
 
 export type StrapiPart = t.TypeOf<typeof PartCodec>;
-
-export function partFromStrapiPart(part: StrapiPart): Part | null {
-  switch (part.__component) {
-    case 'parts.alert':
-      return {
-        component: 'alert',
-        ...part,
-      };
-    case 'parts.api-tester':
-      return {
-        component: 'apiTester',
-        apiRequest: {
-          ...part.requestCode,
-          description: part.requestDescription,
-          attributes: part.requestAttributes,
-        },
-        apiResponse: {
-          ...part.responseCode,
-          description: part.responseDescription,
-        },
-      };
-    case 'parts.code-block':
-      return {
-        component: 'codeBlock',
-        ...part,
-      };
-    case 'parts.html':
-      return {
-        component: 'blockRenderer',
-        ...part,
-      };
-    case 'parts.embed-html':
-      return {
-        component: 'innerHTMLLazyLoaded',
-        ...part,
-      };
-    case 'parts.quote':
-      return {
-        component: 'quote',
-        quote: part.text,
-        backgroundImage: part.backgroundImage.data?.attributes,
-      };
-    default:
-      return null;
-  }
-}

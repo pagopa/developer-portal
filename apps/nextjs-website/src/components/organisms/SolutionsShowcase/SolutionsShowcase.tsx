@@ -24,15 +24,19 @@ const SolutionsShowcase = ({
     <Box py={py}>
       {title && <SectionTitle title={title} />}
       <CardsGrid
-        cardVariant={'contained'}
-        cardSvg={true}
+        ctaButtonsVariant={'contained'}
         cards={cards.map((card) => ({
           title: card.title,
           text: card.text,
           href: card.href,
           icon: card.logoUrl,
           tags: card.tags,
+          useSrc: true,
         }))}
+        containerSx={{
+          pt: '22px',
+          mt: '-22px',
+        }}
       />
     </Box>
   );

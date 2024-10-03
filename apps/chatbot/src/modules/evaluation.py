@@ -6,7 +6,7 @@ import datetime
 import logging
 import asyncio
 import nest_asyncio
-from typing import Any, List, Dict
+from typing import Any
 
 import pandas as pd
 
@@ -19,14 +19,14 @@ from llama_index.core.evaluation import (
     ContextRelevancyEvaluator
 )
 from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses, get_responses
+from llama_index.core.evaluation.eval_utils import aget_responses
 
 from src.modules.chatbot import Chatbot
-from src.modules.async_bedrock import AsyncBedrock
+from src.modules.models import get_llm
 
 
 nest_asyncio.apply()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 
 def parser_function(output_str: str):
@@ -161,12 +161,7 @@ if __name__ == "__main__":
     prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
     eval_prompts = yaml.safe_load(open("config/eval_prompts.yaml", "r"))
     bot = Chatbot(params, prompts)
-    eval_model = AsyncBedrock(
-        model=params["models"]["model_id"],
-        temperature=params["models"]["temperature"],
-        max_tokens=params["models"]["max_tokens"],
-        use_guardrail=False
-    )
+    eval_model = get_llm()
 
     # load FAQs
     faqs = json.load(open("faqs.json", "r"))

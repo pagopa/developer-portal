@@ -1,5 +1,17 @@
 # infrastructure
 
+## 1.1.0
+
+### Minor Changes
+
+- d6f0518: Allowing the usage of Google Gemini generation and embedding models
+
+## 1.0.0
+
+### Major Changes
+
+- 506f225: Use the rest api gateway and complete the chatbot backend infrastructure scaffolding
+
 ## 0.12.0
 
 ### Minor Changes

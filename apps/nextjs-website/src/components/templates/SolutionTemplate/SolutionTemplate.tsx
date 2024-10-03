@@ -16,6 +16,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { SEO } from '@/lib/types/seo';
 
 export type SolutionTemplateProps = {
   slug: string;
@@ -29,6 +30,7 @@ export type SolutionTemplateProps = {
     content: BlocksContent;
     products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
+  statsSource?: string;
   dirName: string;
   landingUseCaseFile: string;
   stats: {
@@ -51,6 +53,9 @@ export type SolutionTemplateProps = {
       };
     }[];
   };
+  solutionSlug: string;
+  path?: string;
+  seo?: SEO;
 };
 
 const SolutionTemplate = ({
@@ -61,6 +66,7 @@ const SolutionTemplate = ({
   introductionToSteps,
   steps,
   stats,
+  statsSource,
   products,
   webinars,
   bannerLinks,
@@ -114,6 +120,7 @@ const SolutionTemplate = ({
             title: stat.title,
             description: stat.description,
           }))}
+          statsSource={statsSource}
         />
       )}
       {successStories && (

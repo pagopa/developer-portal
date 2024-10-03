@@ -1,10 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getProductsSlugs,
-  getTutorialListPageProps,
-  getTutorials,
-} from '@/lib/api';
+import { getProductsSlugs, getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -15,7 +11,16 @@ import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('tutorials')].map((productSlug) => ({
@@ -30,6 +35,7 @@ export type TutorialsPageProps = {
     readonly description: string;
   };
   readonly tutorials: readonly Tutorial[];
+  readonly seo?: SEO;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -37,9 +43,13 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path } = await getTutorialListPageProps(
+  const { product, abstract, path, seo } = await getTutorialListPageProps(
     params.productSlug
   );
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     parent: resolvedParent,
@@ -52,12 +62,21 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product } =
+  const { abstract, bannerLinks, path, product, tutorials, seo } =
     await getTutorialListPageProps(productSlug);
 
-  const tutorials = await getTutorials(productSlug);
-
   const { shared } = translations;
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, ['tutorials']),
+      },
+    ],
+    seo: seo,
+  });
 
   return (
     <ProductLayout
@@ -65,6 +84,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
       path={path}
       bannerLinks={bannerLinks}
       showBreadcrumbs
+      structuredData={structuredData}
     >
       {abstract && (
         <Abstract

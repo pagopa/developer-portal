@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGuidePaths } from '@/lib/api';
+import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import {
@@ -11,9 +11,19 @@ import {
 } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { getGuidesProps } from '@/lib/cmsApi';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  convertSeoToStructuredDataArticle,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   productSlug: string;
@@ -21,9 +31,9 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return getGuidePaths().map(({ slug, guidePaths }) => ({
-    productSlug: slug,
-    productGuidePage: guidePaths,
+  return (await getGuidesProps()).map((guidePage) => ({
+    productSlug: guidePage.product.slug,
+    productGuidePage: getProductGuidePath(guidePage.page.path),
   }));
 }
 
@@ -53,7 +63,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {
     page: { path, title },
+    seo,
   } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
 
   return makeMetadata({
     title,
@@ -67,7 +82,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
-  const { product, page, guide, version, versions, source, bannerLinks } =
+  const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
     ...page,
@@ -87,11 +102,27 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productGuidePage || []),
+        ]),
+      },
+    ],
+    seo: seo,
+    things: [convertSeoToStructuredDataArticle(seo)],
+  });
+
   return (
     <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
     >
       <GitBookTemplate
         menuName={props.guide.name}

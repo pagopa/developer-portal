@@ -16,7 +16,10 @@ import {
 } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { translations } from '@/_contents/translations';
 import RelatedLinks, {
@@ -26,6 +29,11 @@ import { FragmentProvider } from '@/components/organisms/FragmentProvider/Fragme
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   productSlug: string;
@@ -60,7 +68,12 @@ export async function generateMetadata({
     tutorialPath,
   ]);
   if (strapiTutorialProps) {
-    const { title, path } = strapiTutorialProps;
+    const { title, path, seo } = strapiTutorialProps;
+
+    if (seo) {
+      return makeMetadataFromStrapi(seo);
+    }
+
     return makeMetadata({
       title,
       url: path,
@@ -85,6 +98,19 @@ const Page = async ({ params }: { params: Params }) => {
   ]);
 
   if (strapiTutorialProps) {
+    const structuredData = generateStructuredDataScripts({
+      breadcrumbsItems: [
+        productToBreadcrumb(strapiTutorialProps.product),
+        {
+          name: strapiTutorialProps.seo?.metaTitle,
+          item: breadcrumbItemByProduct(strapiTutorialProps.product, [
+            'guides',
+            ...(params?.productTutorialPage || []),
+          ]),
+        },
+      ],
+      seo: strapiTutorialProps.seo,
+    });
     return (
       <TutorialTemplate
         bannerLinks={strapiTutorialProps.bannerLinks}
@@ -93,6 +119,7 @@ const Page = async ({ params }: { params: Params }) => {
         product={strapiTutorialProps.product}
         relatedLinks={strapiTutorialProps.relatedLinks}
         title={strapiTutorialProps.title}
+        structuredData={structuredData}
       />
     );
   }
@@ -116,20 +143,36 @@ const Page = async ({ params }: { params: Params }) => {
 
   const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: tutorialProps.page.title,
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productTutorialPage || []),
+        ]),
+      },
+    ],
+    seo: undefined,
+  });
+
   return (
     <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
     >
       <FragmentProvider>
         <Box
           sx={{
-            maxWidth: '1156px',
+            maxWidth: '1200px',
             // 80px is the height of the product header
             marginTop: '80px',
             marginX: 'auto',
             paddingTop: 3,
+            px: { xs: 4, md: 0 },
           }}
         >
           <ProductBreadcrumbs
@@ -144,10 +187,11 @@ const Page = async ({ params }: { params: Params }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
-            maxWidth: '1156px',
+            maxWidth: '1200px',
             margin: '0 auto',
             paddingBottom: !hasRelatedLinks ? '56px' : 0,
             paddingTop: '56px',
+            px: { xs: 4, lg: 0 },
           }}
         >
           <Box
@@ -157,6 +201,7 @@ const Page = async ({ params }: { params: Params }) => {
                 xs: '100%',
                 lg: '822px',
               },
+              overflowWrap: 'break-word',
             }}
           >
             <GitBookContent content={props.body} config={props.bodyConfig} />
@@ -166,16 +211,16 @@ const Page = async ({ params }: { params: Params }) => {
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '158px',
-              paddingLeft: '64px',
-              width: { lg: '270px' },
+              paddingTop: '30px',
+              paddingLeft: '60px',
+              width: { lg: '378px' },
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
-                maxWidth: '270px',
-                top: 144,
+                minWidth: '378px',
+                top: 140,
               }}
             >
               <GuideInPageMenu

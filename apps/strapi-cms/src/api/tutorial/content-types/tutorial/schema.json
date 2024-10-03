@@ -33,6 +33,7 @@
       },
       "type": "string",
       "required": true,
+      "unique": true,
       "regex": "^[a-zA-Z0-9-]+$"
     },
     "image": {
@@ -40,10 +41,7 @@
       "multiple": false,
       "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ],
       "pluginOptions": {
         "i18n": {
@@ -62,7 +60,8 @@
         "parts.alert",
         "parts.code-block",
         "parts.embed-html",
-        "parts.html"
+        "parts.html",
+        "parts.ck-editor"
       ],
       "required": true
     },
@@ -91,6 +90,16 @@
       },
       "component": "common.banner-link",
       "max": 2
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

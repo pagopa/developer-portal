@@ -11,18 +11,29 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
+import { useTranslations } from 'next-intl';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  sendDisabled?: boolean;
+  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
+  isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
+  error: ChatbotErrorsType | null;
+  disabled?: boolean;
 };
 
 const ChatbotLayout = ({
   queries,
   onSendQuery,
-  sendDisabled,
+  onSendFeedback,
+  isAwaitingResponse,
+  isChatbotLoaded,
+  error,
+  disabled,
 }: ChatbotLayoutProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -44,17 +55,27 @@ const ChatbotLayout = ({
     <Box
       sx={{
         position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
+        bottom: { xs: '1rem', md: '2rem' },
+        right: { xs: '1rem', md: '2rem' },
         zIndex: 1000,
       }}
     >
-      <ChatButton
-        aria-describedby={id}
-        isChatOpen={open}
-        onOpenChat={handleClick}
-        hasNewMessages={false}
-      />
+      <Box sx={{ display: { lg: 'none' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='medium'
+        />
+      </Box>
+      <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+        <ChatButton
+          aria-describedby={id}
+          isChatOpen={open}
+          onOpenChat={handleClick}
+          size='large'
+        />
+      </Box>
       <Popover
         id={id}
         open={open}
@@ -68,36 +89,43 @@ const ChatbotLayout = ({
           vertical: 'bottom',
           horizontal: 'right',
         }}
+        marginThreshold={0}
         disableScrollLock
         slotProps={{
           paper: {
             sx: {
               backgroundColor: 'transparent',
-              borderRadius: 3,
-              width: '40%',
-              minWidth: '48rem',
+              borderRadius: { xs: 0, md: 3 },
+              width: { xs: '100%', md: '40%' },
+              height: { xs: '100%', md: '70vh' },
+              maxHeight: { xs: '100%', md: '40rem' },
+              margin: 0,
+              maxWidth: { xs: '100%' },
+              minWidth: { xs: 'auto', md: '48rem' },
             },
           },
         }}
       >
-        <Box
-          bgcolor={'black'}
-          padding={'0.75rem'}
-          borderRadius={3}
-          minWidth='40rem'
+        <Stack
+          direction='column'
+          bgcolor={palette.text.primary}
+          borderRadius={{ xs: 0, md: 3 }}
+          minWidth={{ xs: 0, md: '40rem' }}
+          height='100%'
         >
           <Stack
             direction='row'
             justifyContent='space-between'
-            paddingBottom={'0.5rem'}
-            paddingX={'0.5rem'}
+            paddingY={'0.5rem'}
+            paddingX={'1rem'}
           >
             <Typography
               variant='h5'
-              fontWeight='normal'
+              fontWeight='bold'
+              marginTop={{ xs: '0.5rem', md: 0 }}
               sx={{ color: palette.primary.contrastText }}
             >
-              [Nome Chatbot]
+              {t('chatBot.title')}
             </Typography>
             <IconButton onClick={handleClose}>
               <Close sx={{ color: palette.primary.contrastText }} />
@@ -106,9 +134,14 @@ const ChatbotLayout = ({
           <Chat
             queries={queries}
             onSendQuery={onSendQuery}
-            sendDisabled={sendDisabled}
+            onSendFeedback={onSendFeedback}
+            isAwaitingResponse={isAwaitingResponse}
+            isChatbotLoaded={isChatbotLoaded}
+            scrollToBottom
+            error={error}
+            disabled={disabled}
           />
-        </Box>
+        </Stack>
       </Popover>
     </Box>
   );

@@ -10,6 +10,7 @@ type CopyToClipboardProps = {
   readonly copyColor?: string;
   readonly tooltipDuration?: number;
   readonly iconSize?: string;
+  readonly tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
 };
 
 const CopyToClipboard = ({
@@ -18,6 +19,7 @@ const CopyToClipboard = ({
   copyColor,
   tooltipDuration = 2000,
   iconSize = '24px',
+  tooltipPlacement = 'top',
 }: CopyToClipboardProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -45,7 +47,7 @@ const CopyToClipboard = ({
             display: 'block',
           }}
           open={true}
-          placement='top'
+          placement={tooltipPlacement}
           title={copiedTooltipLabel}
           arrow
         >

@@ -1,166 +1,174 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
-import {
-  Box,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack,
-  useTheme,
-} from '@mui/material';
-import ChatInputText from '../../atoms/ChatInputText/ChatInputText';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
+import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Delete, History } from '@mui/icons-material';
+import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
+import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
+import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
+import { useUser } from '@/helpers/user.helper';
+import { baseUrl } from '@/config';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  sendDisabled?: boolean;
+  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
+  scrollToBottom: boolean;
+  isAwaitingResponse: boolean;
+  isChatbotLoaded: boolean;
+  error: ChatbotErrorsType | null;
+  disabled?: boolean;
 };
 
-const Chat = ({ queries, onSendQuery, sendDisabled }: ChatProps) => {
+const Chat = ({
+  queries,
+  onSendQuery,
+  onSendFeedback,
+  scrollToBottom,
+  isAwaitingResponse,
+  isChatbotLoaded,
+  error,
+  disabled,
+}: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [instantScroll, setInstantScroll] = useState(scrollToBottom);
+  const { user } = useUser();
   const messages = useMemo(
-    () =>
-      compact(
+    () => [
+      firstMessage(
+        user
+          ? t('chatBot.welcomeMessage')
+          : t('chatBot.guestMessage', { host: baseUrl })
+      ),
+      ...compact(
         queries.flatMap((q) => [
           q.question && q.queriedAt
             ? {
+                id: q.id,
                 text: q.question,
                 isQuestion: true,
                 timestamp: q.queriedAt,
+                hasNegativeFeedback: false,
               }
             : null,
           q.answer && q.createdAt
             ? {
+                id: q.id,
                 text: q.answer,
                 isQuestion: false,
                 timestamp: q.createdAt,
+                hasNegativeFeedback: q.badAnswer || false,
               }
             : null,
         ])
       ),
-    [queries]
+    ],
+    [queries, t, user]
   ) satisfies Message[];
-  const open = Boolean(anchorEl);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current.scrollIntoView({
+        behavior: instantScroll ? 'auto' : 'smooth',
+      });
     }
-  }, [queries]);
-
-  const handleChatMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setInstantScroll(false);
+  }, [queries, instantScroll, setInstantScroll]);
 
   return (
-    <Stack direction={'column'}>
-      <Box
-        bgcolor={palette.grey[200]}
-        width={'auto'}
-        sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
-      >
-        <Stack
-          direction={'row'}
-          justifyContent={'flex-end'}
-          paddingX={'0.75rem'}
-          paddingY={'0.25rem'}
+    <>
+      {!disabled && (
+        <Box
+          sx={{
+            backgroundColor: palette.background.paper,
+            borderBottom: '2px solid',
+            borderBottomColor: palette.action.disabled,
+            width: 'auto',
+          }}
         >
-          <IconButton
-            aria-controls='chat-menu'
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleChatMenuClick}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id='chat-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'chat-button',
-            }}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Delete fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <History fontSize='small' />
-              </ListItemIcon>
-              <ListItemText>{t('chatBot.chatHistory')}</ListItemText>
-            </MenuItem>
-          </Menu>
-        </Stack>
-      </Box>
-      <Box
-        bgcolor={palette.grey[300]}
+          <Stack direction={'row'} paddingY={'0.25rem'}>
+            <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+              <History fontSize='small' />
+              <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
+                {t('chatBot.history')}
+              </span>
+            </Button>
+          </Stack>
+        </Box>
+      )}
+      <Stack
+        direction={'column'}
         sx={{
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
-          padding: 2,
+          overflow: 'auto',
+          paddingRight: '0.5rem',
+          paddingX: { xs: 1, md: 4 },
+          backgroundColor: palette.background.paper,
+          height: '100%',
         }}
       >
-        <Stack
-          direction={'column'}
-          minHeight='50vh'
-          maxHeight='50vh'
-          justifyContent='space-between'
-        >
+        {!messages.length && !isChatbotLoaded && <ChatSkeleton />}
+        {messages.map((message, index) => (
           <Stack
-            direction={'column'}
-            sx={{
-              overflow: 'auto',
-              paddingRight: '0.5rem',
-            }}
+            key={index}
+            ref={index === messages.length - 1 ? scrollRef : null}
+            direction='row'
+            width='100%'
+            justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
+            marginTop={index === 0 ? 2 : 0}
+            marginBottom={2}
           >
-            {messages.map((message, index) => (
-              <Stack
-                key={index}
-                ref={index === messages.length - 1 ? scrollRef : null}
-                direction={'row'}
-                width={'100%'}
-                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-                marginBottom={'1rem'}
-              >
-                <ChatMessage {...message} />
-              </Stack>
-            ))}
+            <ChatMessage
+              {...message}
+              onToggleNegativeFeedback={(negativeFeedback) =>
+                onSendFeedback(message.id, negativeFeedback)
+              }
+            />
           </Stack>
-          <Box sx={{ paddingTop: '1rem' }}>
-            <ChatInputText onSubmit={onSendQuery} sendDisabled={sendDisabled} />
-          </Box>
-        </Stack>
-      </Box>
-    </Stack>
+        ))}
+        {isAwaitingResponse && <ChatCatbotWriting />}
+        {error && (
+          <Paper
+            elevation={4}
+            sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
+          >
+            <AlertPart
+              title={t('chatBot.errors.title')}
+              text={t(`chatBot.errors.${error}`)}
+              severity={'error'}
+              alertStyle={{
+                backgroundColor: palette.background.paper,
+                marginBottom: 0,
+              }}
+            />
+          </Paper>
+        )}
+      </Stack>
+      {!disabled && (
+        <ChatInputText
+          onSubmit={onSendQuery}
+          sendDisabled={isAwaitingResponse}
+        />
+      )}
+    </>
   );
 };
 
 export default Chat;
+
+function firstMessage(text: string): Message {
+  return {
+    id: '',
+    text: text,
+    isQuestion: false,
+    hasNegativeFeedback: false,
+  };
+}

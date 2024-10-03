@@ -6,7 +6,12 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.33.0"
+      version = "5.64.0"
+    }
+
+    awscc = {
+      source  = "hashicorp/awscc"
+      version = "<= 1.10.0"
     }
   }
 }
@@ -16,6 +21,10 @@ provider "aws" {
   default_tags {
     tags = var.tags
   }
+}
+
+provider "awscc" {
+  region = var.aws_region
 }
 
 provider "aws" {
@@ -28,12 +37,17 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "chatbot_region"
+  alias  = "eu-west-3"
   region = var.aws_chatbot_region
 
   default_tags {
     tags = var.tags
   }
+}
+
+provider "awscc" {
+  alias  = "eu-west-3"
+  region = var.aws_chatbot_region
 }
 
 # Init IaC resources ##########################################################
@@ -50,6 +64,8 @@ module "core" {
 
   dns_domain_name      = var.dns_domain_name
   dns_delegate_records = var.dns_delegate_records
+
+  create_chatbot = var.create_chatbot
 }
 
 module "website" {
@@ -91,16 +107,25 @@ module "cms" {
 }
 
 module "chatbot" {
-  count  = var.environment == "dev" ? 1 : 0
+  count  = var.create_chatbot ? 1 : 0
   source = "./modules/chatbot"
   providers = {
-    aws                = aws
-    aws.chatbot_region = aws.chatbot_region
+    aws             = aws
+    aws.eu-west-3   = aws.eu-west-3
+    awscc           = awscc
+    awscc.eu-west-3 = awscc.eu-west-3
+    aws.us-east-1   = aws.us-east-1
   }
 
   aws_chatbot_region = var.aws_chatbot_region
   environment        = var.environment
   tags               = var.tags
 
-  website_bucket_name = module.website.website_bucket_name
+  website_bucket_name     = module.website.website_bucket_name
+  dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
+  cognito_user_pool       = module.website.cognito_user_pool
+  vpc                     = module.cms.vpc
+  security_groups         = module.cms.security_groups
+  dns_domain_name         = var.dns_domain_name
+  ecs_redis               = var.chatbot_ecs_redis
 }

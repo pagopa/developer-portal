@@ -4,6 +4,7 @@ import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
 import { sendOverviewPath } from '@/_contents/send/overviewPath';
 import { sendTutorialListsPath } from '@/_contents/send/tutorialListsPath';
 import { sendQuickStartGuidePath } from '@/_contents/send/quickStartGuidePath';
+import { sendBannerLinks } from './bannerLinks';
 
 export const send: Product = {
   name: 'SEND - Servizio Notifiche Digitali',
@@ -30,4 +31,5 @@ export const send: Product = {
     tutorials: sendTutorialListsPath,
     guides: sendGuideListsPath,
   },
+  bannerLinks: sendBannerLinks,
 };

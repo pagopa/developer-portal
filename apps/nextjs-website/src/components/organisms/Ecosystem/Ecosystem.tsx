@@ -1,11 +1,12 @@
 'use client';
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import TabComponent from '@/components/atoms/TabComponent/TabComponent';
-import { HomepageProps } from '@/lib/homepage';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
+import { HomepageProps } from '@/app/page';
+import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 
 const Ecosystem = ({
   title,
@@ -18,22 +19,28 @@ const Ecosystem = ({
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <Box sx={{ maxWidth: '1200px', margin: 'auto' }}>
-        {title && (
-          <Typography variant='h4' sx={{ mb: 4, width: '100%' }}>
-            {title}
-          </Typography>
-        )}
+      {title && <SectionTitle margin={'0 0 1.75rem 0'} title={title} />}
+      <Box
+        sx={{
+          maxWidth: '1264px',
+          margin: 'auto',
+          paddingX: 4,
+        }}
+      >
         <TabComponent
           items={[
             {
               title: productsTabName,
               content: (
                 <CardsGrid
-                  cardVariant={'outlined'}
-                  cardSvg
+                  ctaButtonsVariant={'contained'}
                   cards={products}
-                  containerSx={{ px: 0, pb: '22px' }}
+                  containerSx={{
+                    px: '22px',
+                    py: '22px',
+                    mt: '-22px',
+                    mx: '-22px',
+                  }}
                 />
               ),
             },
@@ -43,10 +50,14 @@ const Ecosystem = ({
                 <>
                   {solutions && (
                     <CardsGrid
-                      cardVariant={'outlined'}
-                      cardSvg
+                      ctaButtonsVariant={'contained'}
                       cards={solutions}
-                      containerSx={{ px: 0, pb: '22px' }}
+                      containerSx={{
+                        px: '22px',
+                        py: '22px',
+                        mt: '-22px',
+                        mx: '-22px',
+                      }}
                     />
                   )}
                   {solutionsCta && (
