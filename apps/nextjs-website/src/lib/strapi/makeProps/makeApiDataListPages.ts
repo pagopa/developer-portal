@@ -7,7 +7,7 @@ export function makeApiDataListPagesProps(
 ): ReadonlyArray<ApiDataListTemplateProps> {
   return apiDataListPages.data.map(({ attributes }) => {
     const product = mergeProductWithStaticContent(
-      attributes.product.data?.attributes
+      attributes.product.data.attributes
     );
     return {
       ...attributes,
