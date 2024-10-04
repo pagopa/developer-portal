@@ -23,7 +23,8 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "title": {
       "pluginOptions": {
@@ -58,8 +59,7 @@
     "products": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "case_history"
+      "target": "api::product.product"
     },
     "parts": {
       "pluginOptions": {

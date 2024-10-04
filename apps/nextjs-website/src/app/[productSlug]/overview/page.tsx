@@ -21,6 +21,11 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getOverviewsProps } from '@/lib/cmsApi';
 import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  convertSeoToStructuredDataArticle,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -125,6 +130,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     postIntegration,
     relatedLinks,
     bannerLinks,
+    seo,
   } = await getOverview(params.productSlug);
   const { overview } = translations;
 
@@ -132,8 +138,19 @@ const OverviewPage = async ({ params }: ProductParams) => {
     ?.filter((tutorial) => tutorial.showInOverview)
     .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
 
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [productToBreadcrumb(product)],
+    seo: seo,
+    things: [convertSeoToStructuredDataArticle(seo)],
+  });
+
   return (
-    <ProductLayout product={product} path={path} bannerLinks={bannerLinks}>
+    <ProductLayout
+      product={product}
+      path={path}
+      bannerLinks={bannerLinks}
+      structuredData={structuredData}
+    >
       <Hero
         background={hero.backgroundImage}
         title={hero.title}

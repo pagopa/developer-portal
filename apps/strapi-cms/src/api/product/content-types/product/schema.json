@@ -26,6 +26,25 @@
       "required": true,
       "unique": true
     },
+    "slug": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "shortName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
     "description": {
       "pluginOptions": {
         "i18n": {
@@ -47,42 +66,15 @@
         }
       }
     },
-    "slug": {
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "quickstart_guides": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::quickstart-guide.quickstart-guide",
-      "mappedBy": "product"
-    },
-    "case_history": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::case-history.case-history",
-      "inversedBy": "products"
-    },
-    "solutions": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::solution.solution",
-      "inversedBy": "products"
-    },
-    "shortName": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": true
+      "component": "common.banner-link"
     },
     "overview": {
       "type": "relation",
@@ -90,11 +82,29 @@
       "target": "api::overview.overview",
       "mappedBy": "product"
     },
+    "quickstart_guide": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::quickstart-guide.quickstart-guide",
+      "mappedBy": "product"
+    },
+    "api_data_list_page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::api-data-list-page.api-data-list-page",
+      "inversedBy": "product"
+    },
     "tutorial_list_page": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::tutorial-list-page.tutorial-list-page",
       "mappedBy": "product"
+    },
+    "guide_list_page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::guide-list-page.guide-list-page",
+      "inversedBy": "product"
     }
   }
 }
