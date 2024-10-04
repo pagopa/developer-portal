@@ -3,8 +3,6 @@ import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
-import { Padding } from '@mui/icons-material';
-import { disconnect } from 'process';
 
 export type CkEditorMenuItem = {
   title: string;
