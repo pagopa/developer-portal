@@ -6,7 +6,7 @@ const makeStrapiGuideListPopulate = () =>
   qs.stringify({
     populate: {
       product: {
-        populate: '*',
+        populate: ['logo', 'bannerLinks.icon'],
       },
       guidesByCategory: {
         populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
