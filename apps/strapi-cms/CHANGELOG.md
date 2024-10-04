@@ -1,5 +1,23 @@
 # strapi-cms
 
+## 3.0.0
+
+### Major Changes
+
+- f63974f: Refactor product field and relations
+
+### Minor Changes
+
+- 76a8c58: Add bannerLinks attribute to QuickStartGuide, ApiData, Guide and GuideListPage schemas
+- d4386b4: Add product to ApiData
+- d5d1038: Add UrlReplaceMap as a single type
+- 2465867: Add validation for entities having product, product is required for overview, quick start, api, tutorial, guide
+
+### Patch Changes
+
+- 422b067: Require all entries with a slug field to have it unique
+- 4a44693: Remove unique validator from api rest detail component because of strapi bug https://github.com/strapi/strapi/issues/12541
+
 ## 2.6.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # chatbot
 
+## 3.0.0
+
+### Major Changes
+
+- 4569d96: Using Gemini LLM instead one of those provided by AWS
+
 ## 2.4.0
 
 ### Minor Changes
