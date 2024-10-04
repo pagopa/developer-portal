@@ -6,7 +6,6 @@ import { PaginationCodec } from './PaginationCodec';
 import {
   BaseProductCodec,
   ProductWithoutBannerLinksCodec,
-  ProductCodec,
 } from './ProductCodec';
 import { BlocksContentCodec } from './BlocksContentCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
