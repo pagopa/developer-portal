@@ -6,10 +6,11 @@ SERVICE_NAME="cms-ecs"
 LOAD_BALANCER_NAME="chatbot-load-balancer"
 REMOTE_PORT="6379"
 LOCAL_PORT="16379"
+AWS_REGION="eu-south-1"
 
 
 # Get the ECS Task ARN
-TASK_ARN=$(aws ecs list-tasks --cluster $CLUSTER_NAME --service-name $SERVICE_NAME --query 'taskArns[0]' --output text)
+TASK_ARN=$(aws ecs list-tasks --cluster $CLUSTER_NAME --service-name $SERVICE_NAME --query 'taskArns[0]' --output text --region $AWS_REGION)
 
 if [ -z "$TASK_ARN" ]; then
   echo "No ECS task found for the service $SERVICE_NAME in cluster $CLUSTER_NAME."
@@ -25,7 +26,7 @@ if [ -z "$TASK_ID" ]; then
 fi
 
 # Get the container name (task definition details)
-CONTAINER_ID=$(aws ecs describe-tasks --cluster $CLUSTER_NAME --tasks $TASK_ARN --query 'tasks[0].containers[0].runtimeId' --output text)
+CONTAINER_ID=$(aws ecs describe-tasks --cluster $CLUSTER_NAME --tasks $TASK_ARN --query 'tasks[0].containers[0].runtimeId' --output text --region $AWS_REGION)
 
 if [ -z "$CONTAINER_ID" ]; then
   echo "No container found for task $TASK_ARN."
@@ -33,7 +34,7 @@ if [ -z "$CONTAINER_ID" ]; then
 fi
 
 # Get the Network Load Balancer DNS name
-TARGET_HOST=$(aws elbv2 describe-load-balancers --names $LOAD_BALANCER_NAME --query 'LoadBalancers[0].DNSName' --output text)
+TARGET_HOST=$(aws elbv2 describe-load-balancers --names $LOAD_BALANCER_NAME --query 'LoadBalancers[0].DNSName' --output text --region $AWS_REGION)
 
 if [ -z "$TARGET_HOST" ]; then
   echo "No Load Balancer found with the name $LOAD_BALANCER_NAME."
@@ -47,4 +48,5 @@ TARGET="ecs:${CLUSTER_NAME}_${TASK_ID}_${CONTAINER_ID}"
 aws ssm start-session \
   --target $TARGET \
   --document-name AWS-StartPortForwardingSessionToRemoteHost \
-  --parameters "{\"host\":[\"$TARGET_HOST\"],\"portNumber\":[\"$REMOTE_PORT\"],\"localPortNumber\":[\"$LOCAL_PORT\"]}"
+  --parameters "{\"host\":[\"$TARGET_HOST\"],\"portNumber\":[\"$REMOTE_PORT\"],\"localPortNumber\":[\"$LOCAL_PORT\"]}" \
+  --region $AWS_REGION
