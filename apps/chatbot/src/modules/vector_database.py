@@ -25,11 +25,13 @@ from llama_index.core import (
 from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
-from redis import Redis
 from llama_index.storage.docstore.redis import RedisDocumentStore
 from llama_index.storage.index_store.redis import RedisIndexStore
 from llama_index.storage.kvstore.redis import RedisKVStore
 from llama_index.vector_stores.redis import RedisVectorStore
+
+from redis import Redis
+import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
 from dotenv import load_dotenv
@@ -37,23 +39,33 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-AWS_ACCESS_KEY_ID = os.getenv('CHB_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('CHB_AWS_SECRET_ACCESS_KEY')
-CHB_AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION'))
-REDIS_URL = os.getenv('CHB_REDIS_URL')
-WEBSITE_URL = os.getenv('CHB_WEBSITE_URL')
-REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
+PROVIDER = os.getenv("CHB_PROVIDER")
+assert PROVIDER in ["google", "aws"]
 
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION"))
+REDIS_URL = os.getenv("CHB_REDIS_URL")
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
+REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
+REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
+    aredis.ConnectionPool.from_url(REDIS_URL)
+)
+REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
 REDIS_SCHEMA = IndexSchema.from_dict({
-    "index": {"name": "index", "prefix": "index/vector"},
+    "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
     "fields": [
         {"name": "id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
-        {"name": "vector", "type": "vector", "attrs": {"dims": 1024, "algorithm": "flat", "distance_metric": "cosine"}}
+        {"name": "vector", "type": "vector", "attrs": {
+            "dims": 768 if PROVIDER == "google" else 1024,
+            "algorithm": "flat",
+            "distance_metric": "cosine"
+        }}
     ]
 })
-REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT)
+REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT)
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
 
@@ -157,7 +169,7 @@ def create_documentation(
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         if file in dynamic_htmls:
-            url = file.replace(documentation_dir, f"{website_url}/")
+            url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
             driver = webdriver.Chrome()
             driver.get(url)
             time.sleep(5)
@@ -177,10 +189,7 @@ def create_documentation(
             url = file.replace(
                 documentation_dir, 
                 f"{website_url}/"
-            ).replace(
-                ".html", 
-                ""
-            )
+            ).replace(".html", "")
             masked_url = hash_url(url)
             if masked_url not in hash_table.keys():
                 hash_table[masked_url] = url
@@ -205,7 +214,7 @@ def create_documentation(
 
     logging.info(f"Number of documents with content: {len(documents)}")
     logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
-    with open('empty_htmls.json', 'w') as f:
+    with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
     return documents, hash_table
@@ -293,7 +302,7 @@ def build_automerging_index_s3(
     logging.info(f"Created index successfully.")
     if s3_bucket_name:
         # store hash table
-        with FS.open(f'{s3_bucket_name}/hash_table.json', 'w') as f:
+        with FS.open(f"{s3_bucket_name}/hash_table.json", "w") as f:
             json.dump(hash_table, f, indent=4)
         logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
