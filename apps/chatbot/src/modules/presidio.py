@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
-from copy import deepcopy
+from typing import Any, Dict, List, Union
+from langdetect import detect_langs
 
 from presidio_anonymizer.operators import Operator, OperatorType
 from llama_index.core.postprocessor.types import BaseNodePostprocessor
@@ -31,7 +31,15 @@ ENTITIES = [
     "IT_VAT_CODE",
     "IT_PASSPORT",
     "IT_IDENTITY_CARD",
-    "IT_PHYSICAL_ADDRESS"  # this is a custom entity added to the analyzer registry
+    "IT_PHYSICAL_ADDRESS",  # this is a custom entity added to the analyzer registry
+    "ES_NIF",
+    "ES_NIE",
+    "US_BANK_NUMBER",
+    "US_DRIVER_LICENSE",
+    "US_ITIN",
+    "US_PASSPORT",
+    "US_SSN",
+    "UK_NHS"
 ]
 
 ALLOW_LIST = [
@@ -111,10 +119,10 @@ class PresidioPII():
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
             nlp_engine = self.nlp_engine,
-            supported_languages = ["it", "en"],
+            supported_languages = ["it", "en", "es", "fr", "de"],
             default_score_threshold = analyzer_threshold
         )
-        self._add_physical_address_entity()
+        self._add_italian_physical_address_entity()
         self.engine = AnonymizerEngine()
         self.engine.add_anonymizer(EntityTypeCountAnonymizer)
 
@@ -122,15 +130,41 @@ class PresidioPII():
     @classmethod
     def class_name(cls) -> str:
         return "PresidioPIINodePostprocessor"
-    
+
+
+    def detect_language(self, text: str) -> str:
+
+        try:
+            lang_list = detect_langs(text)
+            for i in range(len(lang_list)-1, -1, -1):
+                if lang_list[i].lang not in ["it", "en", "es", "fr", "de"]:
+                    lang_list.pop(i)
+            
+            if not lang_list:
+                logging.warning("No detected language.")
+                lang = "it"
+            elif "it" in lang_list:
+                lang = "it"
+            else:
+                lang = lang_list[0].lang
+            
+        except:
+            logging.warning("No detected language.")
+            lang = "it"
+
+        logging.info(f"Set presidio to detect PII in {lang} language.")
+        return lang
 
     def detect_pii(self, text: str) -> List[RecognizerResult]:
+
+        lang = self.detect_language(text)
         results = self.analyzer.analyze(
-            text=text, 
-            language="it",
+            text=text,
+            language=lang,
             entities=self.entities,
-            allow_list=ALLOW_LIST   
+            allow_list=ALLOW_LIST
         )
+        print(results)
         return results
 
 
@@ -156,7 +190,7 @@ class PresidioPII():
         return new_text.text
 
 
-    def _add_physical_address_entity(self) -> None:
+    def _add_italian_physical_address_entity(self) -> None:
 
         italian_address_pattern = Pattern(
             name="italian_address_pattern",

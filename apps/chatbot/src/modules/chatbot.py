@@ -38,7 +38,7 @@ class Chatbot():
 
         self.params = params
         self.prompts = prompts
-        self.pii_detector = PresidioPII(config=params["config_presidio"])
+        self.pii = PresidioPII(config=params["config_presidio"])
         self.use_redis = params["vector_index"]["use_redis"]
         self.use_s3 = params["vector_index"]["use_s3"]
 
@@ -180,7 +180,7 @@ class Chatbot():
     
 
     def mask_pii(self, message: str) -> str:
-        return self.pii_detector.mask_pii(message)
+        return self.pii.mask_pii(message)
 
 
     def generate(self, query_str: str) -> str:
