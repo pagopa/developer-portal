@@ -106,6 +106,15 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       borderLeftColor: palette.divider,
       '& > p': { margin: 0 },
     },
+    '& ol li li': {
+      'list-style-type': 'lower-alpha',
+    },
+    '& ul li li': {
+      'list-style-type': 'circle',
+    },
+    '& ol li li li, & ul li li li': {
+      'list-style-type': 'square',
+    },
   };
 
   return (
