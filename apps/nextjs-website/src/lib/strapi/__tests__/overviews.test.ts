@@ -295,7 +295,7 @@ const makeStrapiResponseJson = () => ({
         subtitle:
           'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
         backgroundImage: mediaRasterJson,
-        product: { data: null },
+        product: productJson,
         relatedLinks: null,
         features: null,
         startInfoSection: null,

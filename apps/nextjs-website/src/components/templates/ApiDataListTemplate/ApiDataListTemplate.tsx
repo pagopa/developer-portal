@@ -5,9 +5,9 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { StrapiApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
+import { Product } from '@/lib/types/product';
 
 export type ApiDataListTemplateProps = {
   readonly hero: {
@@ -15,10 +15,8 @@ export type ApiDataListTemplateProps = {
     readonly subtitle: string;
     readonly heigth?: string;
   };
-  readonly product: {
-    readonly name: string;
-    readonly slug: string;
-  };
+  readonly product: Product;
+  readonly apiRestDetailSlugs: readonly string[];
   readonly cards: {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly title: string;
@@ -31,7 +29,6 @@ export type ApiDataListTemplateProps = {
   }[];
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiApiDataList;
   readonly seo?: SEO;
 };
 
