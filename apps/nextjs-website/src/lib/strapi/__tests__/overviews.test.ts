@@ -375,7 +375,7 @@ const makeStrapiResponseJson = () => ({
   meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 3 } },
 });
 
-describe('StrapiOverviewsCodec', () => {
+describe('OverviewsCodec', () => {
   it('should decode strapi overviews', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = OverviewsCodec.decode(jsonFromStrapi);

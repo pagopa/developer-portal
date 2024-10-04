@@ -30,7 +30,7 @@ const BaseApiDataCodec = t.strict({
   attributes: BaseApiDataAttributesCodec,
 });
 
-const ApiDataCodec = t.strict({
+export const ApiDataCodec = t.strict({
   id: t.number,
   attributes: t.intersection([
     BaseApiDataAttributesCodec,

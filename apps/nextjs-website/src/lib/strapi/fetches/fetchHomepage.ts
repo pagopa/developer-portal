@@ -22,8 +22,8 @@ const makeStrapiHomepagePopulate = () =>
       ecosystem: {
         populate: [
           'products.logo',
+          'products.bannerLinks.icon',
           'solutions.icon',
-          'solutions.product',
           'solutions.product.logo',
           'solutionsCta.link',
         ],

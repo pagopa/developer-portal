@@ -1,5 +1,5 @@
 import * as t from 'io-ts/lib';
-import { BaseProductCodec } from './ProductCodec';
+import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
@@ -11,7 +11,7 @@ export const ApiDataListPageCodec = t.strict({
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
     product: t.strict({
-      data: BaseProductCodec,
+      data: BaseProductWithBannerLinksCodec,
     }),
     apiData: BaseApiDataListCodec,
     bannerLinks: t.array(BannerLinkCodec),
