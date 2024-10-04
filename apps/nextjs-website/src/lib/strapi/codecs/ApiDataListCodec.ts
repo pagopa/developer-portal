@@ -10,7 +10,7 @@ const UrlCodec = t.strict({
   hideTryIt: t.boolean,
 });
 
-const ApiDataCodec = t.strict({
+export const ApiDataCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
