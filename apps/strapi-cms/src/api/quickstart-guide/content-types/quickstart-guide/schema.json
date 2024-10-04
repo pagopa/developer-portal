@@ -18,9 +18,9 @@
   "attributes": {
     "product": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToOne",
       "target": "api::product.product",
-      "inversedBy": "quickstart_guides"
+      "inversedBy": "quickstart_guide"
     },
     "title": {
       "type": "string",
