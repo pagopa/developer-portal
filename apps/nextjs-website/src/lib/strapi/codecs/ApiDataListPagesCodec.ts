@@ -11,7 +11,7 @@ export const ApiDataListPageCodec = t.strict({
     title: t.string,
     description: t.union([NullToUndefinedCodec, t.string]),
     product: t.strict({
-      data: t.union([NullToUndefinedCodec, BaseProductWithBannerLinksCodec]),
+      data: BaseProductWithBannerLinksCodec,
     }),
     apiData: BaseApiDataListCodec,
     bannerLinks: t.array(BannerLinkCodec),

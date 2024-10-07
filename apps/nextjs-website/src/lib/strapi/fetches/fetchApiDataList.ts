@@ -13,8 +13,9 @@ const makeStrapiApiDataListPopulate = () =>
         populate: ['logo', 'bannerLinks.icon'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
+      product: { populate: 'logo' },
     },
   });
 

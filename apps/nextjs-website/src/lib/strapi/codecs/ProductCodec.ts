@@ -66,6 +66,16 @@ export const BaseProductWithBannerLinksCodec = t.strict({
   ]),
 });
 
+export const ProductWithoutBannerLinksCodec = t.strict({
+  attributes: t.intersection([
+    BaseProductAttributesCodec,
+    t.strict({
+      description: t.union([NullToUndefinedCodec, t.string]),
+      logo: t.strict({ data: MediaCodec }),
+    }),
+  ]),
+});
+
 export const ProductCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,

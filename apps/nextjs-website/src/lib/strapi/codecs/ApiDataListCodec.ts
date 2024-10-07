@@ -2,6 +2,7 @@ import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
+import { BaseProductCodec } from './ProductCodec';
 import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
 
 const UrlCodec = t.strict({

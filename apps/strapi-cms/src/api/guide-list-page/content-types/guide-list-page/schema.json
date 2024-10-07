@@ -37,7 +37,8 @@
     "product": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::product.product"
+      "target": "api::product.product",
+      "mappedBy": "guide_list_page"
     },
     "guidesByCategory": {
       "displayName": "GuidesByCategory",
@@ -59,6 +60,17 @@
         }
       },
       "component": "shared.seo"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.banner-link",
+      "max": 2
     }
   }
 }

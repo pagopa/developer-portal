@@ -201,12 +201,10 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 export async function getApiDataParams() {
   const props = (await getApiDataListPagesProps()).flatMap(
     (apiDataListPageProps) =>
-      apiDataListPageProps.apiData.data
-        .filter((apiData) => !!apiData.attributes.apiRestDetail)
-        .map((apiData) => ({
-          productSlug: apiDataListPageProps.product.slug,
-          apiDataSlug: apiData.attributes.apiRestDetail?.slug || '',
-        }))
+      apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
+        productSlug: apiDataListPageProps.product.slug,
+        apiDataSlug,
+      }))
   );
 
   return props || [];

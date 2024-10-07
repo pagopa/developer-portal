@@ -15,12 +15,12 @@ export function makeApiDataListProps(
 
       return {
         ...attributes,
+        product,
         apiDataSlug: attributes.apiRestDetail?.slug || '',
         specURLs: attributes.apiRestDetail
           ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
           : [],
         specURLsName: attributes.title,
-        product,
         bannerLinks:
           attributes.product.data.attributes.bannerLinks?.map(
             makeBannerLinkProps

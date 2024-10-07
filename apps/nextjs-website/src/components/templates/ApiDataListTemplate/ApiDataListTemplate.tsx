@@ -8,6 +8,7 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { StrapiBaseApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
+import { Product } from '@/lib/types/product';
 
 export type ApiDataListPageTemplateProps = {
   readonly hero: {
@@ -15,10 +16,8 @@ export type ApiDataListPageTemplateProps = {
     readonly subtitle: string;
     readonly height?: string;
   };
-  readonly product: {
-    readonly name: string;
-    readonly slug: string;
-  };
+  readonly product: Product;
+  readonly apiRestDetailSlugs: readonly string[];
   readonly cards: {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly title: string;
