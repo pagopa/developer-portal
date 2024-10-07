@@ -129,7 +129,7 @@ class PresidioPII():
 
     @classmethod
     def class_name(cls) -> str:
-        return "PresidioPIINodePostprocessor"
+        return "PresidioPII"
 
 
     def detect_language(self, text: str) -> str:
@@ -164,7 +164,7 @@ class PresidioPII():
             entities=self.entities,
             allow_list=ALLOW_LIST
         )
-        print(results)
+
         return results
 
 
