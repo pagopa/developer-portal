@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { MediaCodec } from './MediaCodec';
 import { PaginationCodec } from './PaginationCodec';
-import { ProductCodec } from './ProductCodec';
+import { ProductWithoutBannerLinksCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
 import { SEOCodec } from './SeoCodec';
 
@@ -29,7 +29,7 @@ export const CaseHistoryCodec = t.strict({
     BaseCaseHistoryAttributesCodec,
     t.strict({
       products: t.strict({
-        data: t.array(ProductCodec),
+        data: t.array(ProductWithoutBannerLinksCodec),
       }),
       parts: t.array(PartCodec),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
