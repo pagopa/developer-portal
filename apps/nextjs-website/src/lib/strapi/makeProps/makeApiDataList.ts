@@ -1,16 +1,18 @@
-import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
-import { mergeProductWithStaticContent } from './makeProducts';
+import { mergeProductWithStaticContent } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function makeApiDataListProps(
   apiDataList: StrapiApiDataList
-): ReadonlyArray<ApiPageProps> {
+): ReadonlyArray<ApiDataPageProps> {
   return apiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => {
       const product = mergeProductWithStaticContent(
         attributes.product.data.attributes
       );
+
       return {
         ...attributes,
         product,
@@ -19,6 +21,10 @@ export function makeApiDataListProps(
           ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
           : [],
         specURLsName: attributes.title,
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ),
         seo: attributes.seo,
       };
     });

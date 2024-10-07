@@ -1,4 +1,4 @@
-import { ApiPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
@@ -225,7 +225,7 @@ export function makeSoftwareApplication(
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api?: ApiPageProps
+  api?: ApiDataPageProps
 ): WithContext<SoftwareApplication> | undefined {
   return (
     api &&

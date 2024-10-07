@@ -1,6 +1,7 @@
 import { GuideDefinition } from '@/_contents/makeDocs';
 import { StrapiGuides } from '../codecs/GuidesCodec';
 import { mergeProductWithStaticContent } from './makeProducts';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 type StaticGuides = readonly GuideDefinition[];
 
@@ -20,7 +21,10 @@ export function makeGuidesProps(
           slug: attributes.slug,
         },
         versions: attributes.versions,
-        bannerLinks: product.bannerLinks,
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ) || [],
         seo: attributes.seo,
       };
     }),

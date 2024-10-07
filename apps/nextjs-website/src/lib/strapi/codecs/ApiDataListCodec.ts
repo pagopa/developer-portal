@@ -2,7 +2,7 @@ import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
-import { BaseProductCodec } from './ProductCodec';
+import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
 
 const UrlCodec = t.strict({
   id: t.number,
@@ -25,7 +25,7 @@ const BaseApiDataAttributesCodec = t.strict({
   apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
 });
 
-const BaseApiDataCodec = t.strict({
+export const BaseApiDataCodec = t.strict({
   id: t.number,
   attributes: BaseApiDataAttributesCodec,
 });
@@ -35,18 +35,20 @@ export const ApiDataCodec = t.strict({
   attributes: t.intersection([
     BaseApiDataAttributesCodec,
     t.strict({
-      product: t.strict({ data: BaseProductCodec }),
+      product: t.strict({ data: BaseProductWithBannerLinksCodec }),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),
   ]),
 });
 
-export const ApiDataListCodec = t.strict({
-  data: t.array(ApiDataCodec),
-});
-
 export const BaseApiDataListCodec = t.strict({
   data: t.array(BaseApiDataCodec),
+});
+
+export type StrapiBaseApiDataList = t.TypeOf<typeof BaseApiDataListCodec>;
+
+export const ApiDataListCodec = t.strict({
+  data: t.array(ApiDataCodec),
 });
 
 export type StrapiApiDataList = t.TypeOf<typeof ApiDataListCodec>;
