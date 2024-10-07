@@ -12,7 +12,6 @@ export function makeApiDataListProps(
       const product = mergeProductWithStaticContent(
         attributes.product.data.attributes
       );
-
       return {
         ...attributes,
         product,
