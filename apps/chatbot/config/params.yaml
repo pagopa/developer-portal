@@ -21,6 +21,15 @@ config_presidio:
     -
       lang_code: it
       model_name: it_core_news_lg
+    -
+      lang_code: de
+      model_name: de_core_news_md
+    -
+      lang_code: es
+      model_name: es_core_news_md
+    -
+      lang_code: fr
+      model_name: fr_core_news_md
   ner_model_configuration:
     labels_to_ignore:
       - ORDINAL
