@@ -23,7 +23,7 @@ export function parseCkEditorContent(content: string): {
     wrapper.appendChild(cloned);
     // eslint-disable-next-line functional/no-expression-statements
     element.parentNode?.replaceChild(wrapper, element);
-    if (['h2', 'h3'].includes(element.tagName.toLowerCase())) {
+    if (['h2', 'h3', 'h4'].includes(element.tagName.toLowerCase())) {
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       menuItems.push({
         title: cloned.textContent ?? '',
