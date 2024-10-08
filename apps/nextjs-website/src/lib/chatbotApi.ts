@@ -3,14 +3,13 @@ import { QueryInput } from '@/lib/chatbot/queries';
 import { pipe } from 'fp-ts/lib/function';
 import {
   getQueries,
-  getSessions,
   patchFeedback,
   postQuery,
-  deleteSession as deleteSessionApi,
-} from '@/lib/chatbot/chatbotFetch';
+} from '@/lib/chatbot/chatbotQueries';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';
+import { deleteSession, getSessions } from './chatbot/chatbotSessions';
 
 const chatbotApiEnv = pipe(
   makeChatbotConfig(publicEnv),
@@ -35,5 +34,5 @@ export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
 export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);
 
-export const deleteSession = (sessionId: string) =>
-  deleteSessionApi(sessionId)(chatbotApiEnv);
+export const deleteChatbotSession = (sessionId: string) =>
+  deleteSession(sessionId)(chatbotApiEnv);

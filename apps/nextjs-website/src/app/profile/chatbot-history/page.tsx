@@ -23,10 +23,6 @@ const ChatbotHistory = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
 
-  useEffect(() => {
-    getSessionsByPage(1);
-  }, [getSessionsByPage]);
-
   if (!isChatbotActive) {
     router.replace('/not-found');
     return null;

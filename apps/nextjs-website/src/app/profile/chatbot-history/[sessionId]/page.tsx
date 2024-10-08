@@ -16,7 +16,7 @@ const ChatbotHistoryDetails = ({
   params: { sessionId: string };
 }) => {
   const { user } = useUser();
-  const { getSession, deleteSession } = useChatbot(true);
+  const { getSession, deleteChatbotSession } = useChatbot(true);
   const [session, setSession] = useState<Query[]>([]);
   const sessionId = params.sessionId;
   const router = useRouter();
@@ -47,7 +47,7 @@ const ChatbotHistoryDetails = ({
         queries={session}
         userName={`${user.attributes.given_name} `}
         onDeleteChatSession={(sessionId: string) => {
-          deleteSession(sessionId).then(() =>
+          deleteChatbotSession(sessionId).then(() =>
             // eslint-disable-next-line functional/immutable-data
             router.replace('/profile/chatbot-history')
           );

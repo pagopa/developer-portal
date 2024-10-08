@@ -48,14 +48,15 @@ const ChatbotHistoryDetailLayout = ({
     );
   }
 
+  const firstQuery = queries[0];
   const date = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
     DEFAULT_DATE_FORMAT.options
-  ).format(new Date(queries[0].queriedAt));
+  ).format(new Date(firstQuery.queriedAt));
 
   return (
     <Stack direction='column' spacing={2}>
-      <Typography variant='h4'>{queries[0].question}</Typography>
+      <Typography variant='h4'>{firstQuery.question}</Typography>
       <Stack direction='row' justifyContent='space-between'>
         <Typography
           component='span'
@@ -68,8 +69,8 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          sx={{ display: { xs: 'none', xl: 'flex' } }}
-          onClick={() => onDeleteChatSession(queries[0].sessionId)}
+          sx={{ display: { xs: 'none', sm: 'flex' } }}
+          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
         >
           {t('chatBot.deleteChat')}
         </Button>
@@ -87,7 +88,7 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          onClick={() => onDeleteChatSession(queries[0].sessionId)}
+          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
         >
           {t('chatBot.deleteChat')}
         </Button>

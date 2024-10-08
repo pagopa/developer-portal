@@ -34,7 +34,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   ).format(new Date(session.createdAt));
 
   return (
-    <ListItem sx={{ paddingLeft: 0, width: '100%' }}>
+    <ListItem sx={{ paddingLeft: 10, width: '100%' }}>
       <ListItemButton
         sx={{ display: 'block', width: '100%', paddingLeft: 0 }}
         href={`/profile/chatbot-history/${session.id}`}
