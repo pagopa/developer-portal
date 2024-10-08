@@ -1,10 +1,15 @@
 # PagoPA Chatbot
 
-This folder contains all the details to build a RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/). The retriver chosen is the `Auto Merging Retriver` one and it was implemented using [`llama-index`](https://docs.llamaindex.ai/en/stable/). Check out `src/modules/retriever.py`.
+This folder contains all the details to build a RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider, so be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
+This chatbot uses [Google](https://ai.google.dev/) or [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider.
+Even though the provider is the Google one, we stored its API key in AWS. So, be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
-All the parameters and prompts used to build the Retrieval-Augmented Generation (RAG) are available in `config`.
+The Retrieval-Augmented Generation (RAG) was implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the parameters and prompts used are stored in `config`.
+
+## Environment Variables
+
+Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
 
 ## Virtual environment
 
@@ -26,10 +31,6 @@ The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHO
     export PYTHONPATH=$PWD
 
 In this way, `PYTHONPATH` points to where the Python packages and modules are, not where your checkouts are.
-
-## Environment Variables
-
-Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
 
 ## Knowledge index vector database
 
