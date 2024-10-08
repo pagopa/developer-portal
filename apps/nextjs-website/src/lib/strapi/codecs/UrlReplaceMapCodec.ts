@@ -19,4 +19,4 @@ export const UrlReplaceMapCodec = t.strict({
   }),
 });
 
-export type UrlReplaceMap = t.TypeOf<typeof UrlReplaceMapCodec>;
+export type StrapiUrlReplaceMap = t.TypeOf<typeof UrlReplaceMapCodec>;

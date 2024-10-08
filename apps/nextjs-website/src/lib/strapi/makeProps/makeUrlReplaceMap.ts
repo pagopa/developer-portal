@@ -1,9 +1,9 @@
-import { UrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
+import { StrapiUrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
 
 export type UrlReplacesMap = Record<string, string>;
 
 export function makeUrlReplaceMap(
-  urlReplacemap: UrlReplaceMap
+  urlReplacemap: StrapiUrlReplaceMap
 ): UrlReplacesMap {
   const map = urlReplacemap.data.attributes.urlToGuide.reduce((map, obj) => {
     return {
