@@ -23,11 +23,11 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
-export async function generateStaticParams() {
-  return (await getGuideListPagesProps()).map(({ product }) => ({
-    productSlug: product.slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   return (await getGuideListPagesProps()).map(({ product }) => ({
+//     productSlug: product.slug,
+//   }));
+// }
 
 export type GuideListPageProps = {
   readonly product: Product;
