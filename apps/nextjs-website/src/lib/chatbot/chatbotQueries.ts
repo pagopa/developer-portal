@@ -10,6 +10,10 @@ import * as PR from '@/lib/strapi/PathReporter';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
 
+const makeError = ({ status, statusText }: Response) => {
+  return new Error(`${status} - ${statusText}`);
+};
+
 export const postQuery = (input: QueryInput) =>
   pipe(
     R.ask<ChatbotEnv>(),
