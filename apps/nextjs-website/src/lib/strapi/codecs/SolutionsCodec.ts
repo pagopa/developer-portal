@@ -3,7 +3,10 @@ import * as tt from 'io-ts-types';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { MediaCodec } from './MediaCodec';
 import { PaginationCodec } from './PaginationCodec';
-import { BaseProductCodec, ProductCodec } from './ProductCodec';
+import {
+  BaseProductCodec,
+  ProductWithoutBannerLinksCodec,
+} from './ProductCodec';
 import { BlocksContentCodec } from './BlocksContentCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { WebinarCodec } from './WebinarsCodec';
@@ -41,7 +44,7 @@ export const BaseSolutionWithProductsCodec = t.strict({
   attributes: t.intersection([
     BaseSolutionAttributesCodec,
     t.strict({
-      products: t.strict({ data: t.array(ProductCodec) }),
+      products: t.strict({ data: t.array(ProductWithoutBannerLinksCodec) }),
     }),
   ]),
 });
@@ -60,7 +63,7 @@ export const SolutionCodec = t.strict({
       webinars: t.strict({
         data: t.array(WebinarCodec),
       }),
-      products: t.strict({ data: t.array(ProductCodec) }),
+      products: t.strict({ data: t.array(ProductWithoutBannerLinksCodec) }),
       caseHistories: t.union([
         NullToUndefinedCodec,
         CaseHistoriesComponentCodec,

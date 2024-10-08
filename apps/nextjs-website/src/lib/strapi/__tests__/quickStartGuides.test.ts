@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
 import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -123,6 +124,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         product: productJson,
+        bannerLinks: bannerLinksJson,
         seo: null,
       },
     },
@@ -258,6 +260,7 @@ const makeStrapiResponseWithNullsJson = () => ({
           ],
         },
         product: productJson,
+        bannerLinks: [],
         seo: null,
       },
     },

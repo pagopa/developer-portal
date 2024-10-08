@@ -2,8 +2,8 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ProductsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import qs from 'qs';
 
-const makeStrapiProductsPopulate = () => {
-  return qs.stringify({
+const makeStrapiProductsPopulate = () =>
+  qs.stringify({
     populate: [
       'logo',
       'bannerLinks.icon',
@@ -16,7 +16,6 @@ const makeStrapiProductsPopulate = () => {
       'tutorial_list_page',
     ],
   });
-};
 
 export const fetchProducts = fetchFromStrapi(
   'products',
