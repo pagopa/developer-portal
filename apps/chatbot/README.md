@@ -2,8 +2,8 @@
 
 This folder contains all the details to build a RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) or [`AWS Bedrock`](https://aws.amazon.com/bedrock/) as provider.
-Even though the provider is the Google one, we stored its API key in AWS. So, be sure to have installed [`aws-cli`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
+This chatbot uses [Google](https://ai.google.dev/) or [AWS Bedrock](https://aws.amazon.com/bedrock/) as provider.
+Even though the provider is the Google one, we stored its API key in AWS. So, be sure to have installed [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
 The Retrieval-Augmented Generation (RAG) was implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the parameters and prompts used are stored in `config`.
 
