@@ -295,7 +295,7 @@ const makeStrapiResponseJson = () => ({
         subtitle:
           'Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.',
         backgroundImage: mediaRasterJson,
-        product: { data: null },
+        product: productJson,
         relatedLinks: null,
         features: null,
         startInfoSection: null,
@@ -375,7 +375,7 @@ const makeStrapiResponseJson = () => ({
   meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 3 } },
 });
 
-describe('StrapiOverviewsCodec', () => {
+describe('OverviewsCodec', () => {
   it('should decode strapi overviews', () => {
     const jsonFromStrapi = makeStrapiResponseJson();
     const actual = OverviewsCodec.decode(jsonFromStrapi);

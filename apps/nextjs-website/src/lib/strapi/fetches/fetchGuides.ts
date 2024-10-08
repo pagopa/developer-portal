@@ -4,7 +4,17 @@ import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
 
 const makeStrapiGuidesPopulate = () =>
   qs.stringify({
-    populate: '*',
+    populate: [
+      'image',
+      'mobileImage',
+      'listItems',
+      'versions',
+      'bannerLinks.icon',
+      'seo',
+      'seo.metaSocial.image',
+      'product.logo',
+      'product.bannerLinks.icon',
+    ],
   });
 
 export const fetchGuides = fetchFromStrapi(

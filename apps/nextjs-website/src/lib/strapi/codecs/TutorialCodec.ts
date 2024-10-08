@@ -3,18 +3,12 @@ import * as tt from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
-import { BlocksContentCodec } from './BlocksContentCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 import { BaseProductCodec, ProductCodec } from './ProductCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PartCodec } from './PartCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { SEOCodec } from './SeoCodec';
-
-const BannerLinkCodec = t.strict({
-  id: t.number,
-  title: t.union([NullToUndefinedCodec, t.string]),
-  content: t.union([NullToUndefinedCodec, BlocksContentCodec]),
-});
 
 const BaseTutorialAttributesCodec = t.strict({
   title: t.string,

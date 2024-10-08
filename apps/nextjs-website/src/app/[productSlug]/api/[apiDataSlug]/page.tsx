@@ -19,7 +19,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
-export type ApiPageProps = {
+export type ApiDataPageProps = {
   readonly title?: string;
   readonly product?: Product;
   readonly apiDataSlug: string;
@@ -57,11 +57,12 @@ export const generateMetadata = async (
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
+  // TODO: Remove this get during product refactor
   const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(apiDataProps?.product),
       {
         name: apiDataProps?.seo?.metaTitle,
         item: breadcrumbItemByProduct(product, [
@@ -74,15 +75,15 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
     things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
   });
 
-  const path = product?.path + '/api/' + params.apiDataSlug;
+  const path = apiDataProps?.product?.path + '/api/' + params.apiDataSlug;
 
-  if (apiDataProps && product) {
+  if (apiDataProps && apiDataProps.product && product) {
     return (
       <ProductLayout
         product={product}
         path={path}
         paths={[{ name: apiDataProps.title || '', path: path }]}
-        bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
+        bannerLinks={apiDataProps.bannerLinks}
         showBreadcrumbs
         structuredData={structuredData}
       >

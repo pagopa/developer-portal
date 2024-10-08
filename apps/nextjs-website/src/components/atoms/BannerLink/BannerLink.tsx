@@ -26,8 +26,6 @@ export const BannerLink: FC<BannerLinkProps> = ({
     theme === 'dark' ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
 
-  if (!content) return null;
-
   return (
     <Box
       component='section'
@@ -71,49 +69,51 @@ export const BannerLink: FC<BannerLinkProps> = ({
               {title}
             </Typography>
           )}
-          <BlocksRenderer
-            content={content}
-            blocks={{
-              image: ({ image }) => (
-                <Image
-                  src={image.url}
-                  width={image.width}
-                  height={image.height}
-                  alt={image.alternativeText || ''}
-                />
-              ),
-              paragraph: ({ children }) => (
-                <Typography variant='body2' color={textColor}>
-                  {children}
-                </Typography>
-              ),
-              link: ({ children, url }) => (
-                <a
-                  href={url}
-                  style={{ color: textColor, textDecorationLine: 'none' }}
-                >
-                  <b>{children}</b>
-                </a>
-              ),
-              heading: ({ children, level }) => (
-                <Typography variant={`h${level}`} color={textColor}>
-                  {children}
-                </Typography>
-              ),
-              list: ({ children }) => (
-                <ul
-                  style={{
-                    listStyleType: 'square',
-                    listStylePosition: 'inside',
-                    color: textColor,
-                    padding: 0,
-                  }}
-                >
-                  {children}
-                </ul>
-              ),
-            }}
-          />
+          {content && (
+            <BlocksRenderer
+              content={content}
+              blocks={{
+                image: ({ image }) => (
+                  <Image
+                    src={image.url}
+                    width={image.width}
+                    height={image.height}
+                    alt={image.alternativeText || ''}
+                  />
+                ),
+                paragraph: ({ children }) => (
+                  <Typography variant='body2' color={textColor}>
+                    {children}
+                  </Typography>
+                ),
+                link: ({ children, url }) => (
+                  <a
+                    href={url}
+                    style={{ color: textColor, textDecorationLine: 'none' }}
+                  >
+                    <b>{children}</b>
+                  </a>
+                ),
+                heading: ({ children, level }) => (
+                  <Typography variant={`h${level}`} color={textColor}>
+                    {children}
+                  </Typography>
+                ),
+                list: ({ children }) => (
+                  <ul
+                    style={{
+                      listStyleType: 'square',
+                      listStylePosition: 'inside',
+                      color: textColor,
+                      padding: 0,
+                    }}
+                  >
+                    {children}
+                  </ul>
+                ),
+              }}
+            />
+          )}
         </Stack>
       </Box>
     </Box>
