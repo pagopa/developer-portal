@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 4.10.0
+
+### Minor Changes
+
+- 891ba3e: Add bannerLinks attribute to all product pages codecs
+- c417ceb: Add product's bannerLinks fallback to all product pages
+- 41fe437: Add a new URL to be mapped in products.ts file
+
+### Patch Changes
+
+- a54d147: Fix paragraph margins and WordBreak setting in ckEditor tables
+- 80e3cae: Fix style for list items in ckEditor content
+- a5ef8c4: Set conditional visibility of Products section in SolutionTemplate
+- 6d2f8b8: Add product to ApiData codec
+- 5852b22: Add the bannerLinks attribute to the product codec and refactor its relationships
+
 ## 4.9.0
 
 ### Minor Changes
