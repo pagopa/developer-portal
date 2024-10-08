@@ -1,11 +1,13 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
-import { StrapiTutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
+import { TutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
 
 const makeStrapiTutorialListPagePopulate = () =>
   qs.stringify({
     populate: {
-      product: '*',
+      product: {
+        populate: ['bannerLinks.icon'],
+      },
       tutorials: {
         populate: ['image', 'product'],
       },
@@ -21,5 +23,5 @@ const makeStrapiTutorialListPagePopulate = () =>
 export const fetchTutorialListPages = fetchFromStrapi(
   'tutorial-list-pages',
   makeStrapiTutorialListPagePopulate(),
-  StrapiTutorialListPagesCodec
+  TutorialListPagesCodec
 );

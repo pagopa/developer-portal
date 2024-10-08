@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.2.0
+
+### Minor Changes
+
+- 064366d: Using codebuild for actions demanding high disk usage and private AWS networking
+
 ## 1.1.0
 
 ### Minor Changes

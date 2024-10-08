@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "url_replace_maps",
+  "info": {
+    "singularName": "url-replace-map",
+    "pluralName": "url-replace-maps",
+    "displayName": "UrlReplaceMap",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "urlToGuide": {
+      "displayName": "urlToGuide",
+      "type": "component",
+      "repeatable": true,
+      "component": "products.url-to-guide"
+    }
+  }
+}
