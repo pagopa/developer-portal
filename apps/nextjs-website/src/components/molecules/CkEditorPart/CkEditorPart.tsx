@@ -35,6 +35,9 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       textDecoration: 'underline',
       fontWeight: typography.fontWeightRegular,
     },
+    '& p': {
+      margin: '0px 0px 40px',
+    },
     '& pre': {
       background: '#F2F2F2',
       borderRadius: '0.375rem',
@@ -70,12 +73,14 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
     },
     '& figure.table': {
       margin: 0,
+      width: '100%',
     },
     '& table': {
       borderCollapse: 'collapse',
       borderStyle: 'hidden',
-      width: '100%',
       textAlign: 'left',
+      width: '100%',
+      wordBreak: 'break-word',
     },
     '& table > thead': {
       backgroundColor: palette.background.default,
@@ -105,6 +110,18 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       borderLeftStyle: 'solid',
       borderLeftColor: palette.divider,
       '& > p': { margin: 0 },
+    },
+    '& ol li, & ul li': {
+      margin: '0px 0px 12px',
+    },
+    '& ol li li': {
+      'list-style-type': 'lower-alpha',
+    },
+    '& ul li li': {
+      'list-style-type': 'circle',
+    },
+    '& ol li li li, & ul li li li': {
+      'list-style-type': 'square',
     },
   };
 

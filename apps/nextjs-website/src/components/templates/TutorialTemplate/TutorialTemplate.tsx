@@ -2,22 +2,24 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { Box, Typography } from '@mui/material';
-import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
+import RelatedLinks, {
+  RelatedLinksProps,
+} from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
-import { StrapiTutorials } from '@/lib/strapi/codecs/TutorialCodec';
 import { ReactNode } from 'react';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
-  readonly bannerLinks?: StrapiTutorials['data'][0]['attributes']['bannerLinks'];
-  readonly parts?: readonly Part[];
+  readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
+  readonly parts?: ReadonlyArray<Part>;
   readonly path: string;
   readonly product?: Product;
-  readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
+  readonly relatedLinks?: RelatedLinksProps;
   readonly title: string;
   readonly structuredData?: ReactNode;
 };
@@ -27,6 +29,7 @@ const TutorialTemplate = ({
   path,
   product,
   relatedLinks,
+  bannerLinks,
   title,
   structuredData,
 }: TutorialPageTemplateProps) => {
@@ -35,7 +38,7 @@ const TutorialTemplate = ({
       product={product}
       path={path}
       structuredData={structuredData}
-      // bannerLinks={bannerLinks} // TODO: Enable this property once the bannerLinks refactor will be completed
+      bannerLinks={bannerLinks}
     >
       {product && (
         <Box
