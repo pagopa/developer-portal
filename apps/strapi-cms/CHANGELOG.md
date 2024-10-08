@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.0.1
+
+### Patch Changes
+
+- 8292b5b: Fix Strapi defaultLimit and maxLimit configurations
+
 ## 3.0.0
 
 ### Major Changes
