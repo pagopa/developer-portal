@@ -160,12 +160,13 @@ async def sessions_fetching(
     raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
   
   # TODO: pagination
+  items = db_response.get('Items', [])
   result = {
-    "items": db_response['Items'],
+    "items": items,
     "page": 1,
     "pages": 1,
-    "size": len(db_response['Items']),
-    "total": len(db_response['Items']),
+    "size": len(items),
+    "total": len(items),
   }
   return result
 
@@ -214,20 +215,26 @@ async def queries_fetching(
     sessionId = last_session_id(userId)
 
   try:
-    # TODO: add userId filter
     db_response = table_queries.query(
-      KeyConditionExpression=Key("sessionId").eq(sessionId)
+      KeyConditionExpression=Key("sessionId").eq(sessionId) &
+        Key("id").eq(userId)
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
 
-  result = db_response['Items']
+  result = db_response.get('Items', [])
   return result
 
 
 def last_session_id(userId: str):
-  # TODO: retrieve last user session
-  return '1'
+  db_response = table_sessions.query(
+    IndexName='SessionsByCreatedAtIndex',
+    KeyConditionExpression=Key('userId').eq(userId),
+    ScanIndexForward=False,
+    Limit=1
+  )
+  items = db_response.get('Items', [])
+  return items[0] if items else None
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
