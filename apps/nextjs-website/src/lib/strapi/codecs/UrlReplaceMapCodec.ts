@@ -7,7 +7,7 @@ const UrlToGuideCodec = t.strict({
   url: t.string,
   version: t.union([NullToUndefinedCodec, t.string]),
   guide: t.strict({
-    data: GuideCodec,
+    data: t.union([NullToUndefinedCodec, GuideCodec]),
   }),
 });
 
