@@ -13,6 +13,7 @@ const makeStrapiUrlReplaceMapPopulate = () =>
       'urlToGuide.guide.versions.*',
       'urlToGuide.guide.seo.*',
       'urlToGuide.guide.product.bannerLinks.*',
+      'urlToGuide.guide.product.bannerLinks.icon',
     ],
   });
 
