@@ -4,8 +4,6 @@ from typing import Any, Dict, List, Union
 from langdetect import detect_langs
 
 from presidio_anonymizer.operators import Operator, OperatorType
-from llama_index.core.postprocessor.types import BaseNodePostprocessor
-from llama_index.core.schema import MetadataMode, NodeWithScore, QueryBundle
 
 from presidio_analyzer import AnalyzerEngine, Pattern, PatternRecognizer, RecognizerResult
 from presidio_analyzer.nlp_engine import NlpEngineProvider
