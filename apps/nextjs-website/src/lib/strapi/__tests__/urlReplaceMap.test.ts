@@ -1,6 +1,6 @@
 import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
 import * as Either from 'fp-ts/lib/Either';
-import { baseProductJson } from './fixtures/product';
+import { productJson } from './fixtures/product';
 import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
 import { pipe } from 'fp-ts/lib/function';
 import { mediaRasterJson } from './fixtures/media';
@@ -34,8 +34,9 @@ const strapiResponse = {
                   { id: 2, text: 'fdsafdsagtyhtyh' },
                   { id: 3, text: 'hrhrhthrtyrth' },
                 ],
-                product: baseProductJson,
+                product: productJson,
                 versions: [],
+                bannerLinks: [],
                 seo: null,
               },
             },
