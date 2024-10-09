@@ -1,10 +1,10 @@
-import { UrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
+import { StrapiUrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
 
-export type UrlReplacesMap = Record<string, string>;
+export type UrlReplaceMap = Record<string, string>;
 
 export function makeUrlReplaceMap(
-  urlReplacemap: UrlReplaceMap
-): UrlReplacesMap {
+  urlReplacemap: StrapiUrlReplaceMap
+): UrlReplaceMap {
   return urlReplacemap.data.attributes.urlToGuide.reduce((map, obj) => {
     return {
       ...map,
@@ -14,5 +14,5 @@ export function makeUrlReplaceMap(
         obj.version ? `/${obj.version}` : ''
       }`,
     };
-  }, {} as UrlReplacesMap);
+  }, {} as UrlReplaceMap);
 }
