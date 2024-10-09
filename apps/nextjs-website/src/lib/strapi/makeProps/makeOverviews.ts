@@ -1,6 +1,7 @@
 import { StrapiOverviews } from '@/lib/strapi/codecs/OverviewsCodec';
 import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 import { overviews, products } from '@/_contents/products';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 type StaticOverviews = typeof overviews;
 
@@ -116,13 +117,10 @@ export function makeOverviewsProps(
         },
         bannerLinks:
           attributes.bannerLinks.length > 0
-            ? attributes.bannerLinks.map((bannerLink) => ({
-                content: bannerLink.content,
-                icon: bannerLink.icon.data.attributes,
-                theme: bannerLink.theme || 'dark',
-                title: bannerLink.title || '',
-              }))
-            : product.bannerLinks,
+            ? attributes.bannerLinks.map(makeBannerLinkProps)
+            : attributes.product.data?.attributes.bannerLinks?.map(
+                makeBannerLinkProps
+              ),
         seo: attributes.seo,
       };
     }),

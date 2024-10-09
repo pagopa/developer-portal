@@ -2,6 +2,7 @@ import { mergeProductWithStaticContent } from './makeProducts';
 import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '../../types/tutorialData';
 import { StrapiTutorialListPages } from '../codecs/TutorialListPagesCodec';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 type StaticTutorialListPages = readonly TutorialsPageProps[];
 
@@ -36,12 +37,12 @@ export function makeTutorialListPagesProps(
         tutorials: tutorials,
         bannerLinks:
           attributes.bannerLinks.length > 0
-            ? attributes.bannerLinks.map((bannerLink) => ({
-                ...bannerLink,
-                title: bannerLink.title || '',
-                icon: bannerLink.icon?.data?.attributes,
-              }))
-            : product.bannerLinks,
+            ? attributes.bannerLinks.map((bannerLink) =>
+                makeBannerLinkProps(bannerLink)
+              )
+            : attributes.product.data.attributes.bannerLinks?.map(
+                (bannerLink) => makeBannerLinkProps(bannerLink)
+              ),
       };
     }),
     ...staticTutorialListPages,
