@@ -12,7 +12,7 @@ type ProductHeaderProps = {
   path: string;
 };
 
-export const PRODUCT_HEADER_HEIGHT = 75;
+export const PRODUCT_HEADER_HEIGHT = 77;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();

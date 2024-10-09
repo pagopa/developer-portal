@@ -18,7 +18,6 @@ import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
-import { PRODUCT_HEADER_HEIGHT } from '../ProductHeader/ProductHeader';
 
 type GuideMenuProps = GuideMenuItemsProps & { distanceFromTop?: number };
 
@@ -32,9 +31,6 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
-
-  const productHeaderHeight =
-    menuProps.distanceFromTop ?? PRODUCT_HEADER_HEIGHT;
 
   const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
