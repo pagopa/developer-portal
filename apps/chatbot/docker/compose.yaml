@@ -1,0 +1,52 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ..:/app
+    depends_on:
+      redis:
+        condition: service_started
+      dynamodb:
+        condition: service_started
+    networks:
+      - ntw
+  
+  dynamodb:
+    image: amazon/dynamodb-local:2.5.2
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=local
+    ports:
+      - "8000:8000"
+    networks:
+      - ntw
+  
+  redis:
+    image: redis/redis-stack:7.2.0-v13
+    ports:
+      - "6379:6379"
+    networks:
+      - ntw
+
+  create_index:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ..:/app
+    command: "python src/modules/create_vector_index.py --params config/params.yaml"
+    depends_on:
+      redis:
+        condition: service_started
+    networks:
+      - ntw
+
+networks:
+  ntw:
