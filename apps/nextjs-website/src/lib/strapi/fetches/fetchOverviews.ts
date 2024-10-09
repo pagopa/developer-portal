@@ -7,7 +7,7 @@ const makeStrapiOverviewsPopulate = () =>
     populate: {
       backgroundImage: '*',
       product: {
-        populate: ['logo'],
+        populate: ['logo', 'bannerLinks.icon'],
       },
       relatedLinks: {
         populate: ['links'],

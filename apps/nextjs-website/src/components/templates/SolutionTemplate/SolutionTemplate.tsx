@@ -17,6 +17,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { SEO } from '@/lib/types/seo';
+import { isNonEmpty } from 'fp-ts/lib/Array';
 
 export type SolutionTemplateProps = {
   slug: string;
@@ -113,7 +114,7 @@ const SolutionTemplate = ({
         />
       </EContainer>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
-      {stats.length > 0 && (
+      {isNonEmpty(stats) && (
         <Stats
           maxWidth={265}
           items={stats.map((stat) => ({
@@ -138,24 +139,26 @@ const SolutionTemplate = ({
           }))}
         />
       )}
-      {webinars.length > 0 && (
+      {isNonEmpty(webinars) && (
         <FutureWebinarsShowcase
           webinars={webinars}
           title='dedicatedWebinar'
           description='solutionDescription'
         />
       )}
-      <ProductsShowcase
-        cardSize={{ xs: 12, md: 4 }}
-        backgroundColor={palette.background.paper}
-        title={t('caseHistory.productShowcaseLabel')}
-        cards={products.map((product) => ({
-          title: product.name,
-          text: product.description || '',
-          href: `/${product.slug}/overview`,
-          logoUrl: product.logo.url,
-        }))}
-      />
+      {isNonEmpty(products) && (
+        <ProductsShowcase
+          cardSize={{ xs: 12, md: 4 }}
+          backgroundColor={palette.background.paper}
+          title={t('caseHistory.productShowcaseLabel')}
+          cards={products.map((product) => ({
+            title: product.name,
+            text: product.description || '',
+            href: `/${product.slug}/overview`,
+            logoUrl: product.logo.url,
+          }))}
+        />
+      )}
     </>
   );
 };

@@ -37,7 +37,7 @@ import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
 import { makeApiDataListPagesProps } from './strapi/makeProps/makeApiDataListPages';
 import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
 import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
-import { fetchProducts } from './strapi/codecs/ProductCodec';
+import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
 import { makeProductsProps } from './strapi/makeProps/makeProducts';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';

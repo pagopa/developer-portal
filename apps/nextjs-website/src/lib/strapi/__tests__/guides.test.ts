@@ -2,6 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -31,6 +32,7 @@ const makeStrapiResponseJson = () => ({
         ],
         image: mediaRasterJson,
         mobileImage: mediaRasterJson,
+        bannerLinks: bannerLinksJson,
         product: productJson,
       },
     },

@@ -1,24 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
-import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
-
-const product = {
-  data: {
-    id: 1,
-    attributes: {
-      name: 'CMS APP IO',
-      shortName: 'IO',
-      description: 'Test desc ',
-      slug: 'app-io',
-      createdAt: '2024-02-15T09:57:22.179Z',
-      updatedAt: '2024-02-27T11:13:34.014Z',
-      publishedAt: '2024-02-15T09:57:24.401Z',
-      locale: 'it',
-      logo: mediaRasterJson,
-      seo: null,
-    },
-  },
-};
+import { productJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -140,7 +123,8 @@ const makeStrapiResponseJson = () => ({
             },
           ],
         },
-        product: product,
+        product: productJson,
+        bannerLinks: bannerLinksJson,
         seo: null,
       },
     },
@@ -275,7 +259,8 @@ const makeStrapiResponseWithNullsJson = () => ({
             },
           ],
         },
-        product: product,
+        product: productJson,
+        bannerLinks: [],
         seo: null,
       },
     },

@@ -12,7 +12,9 @@ const makeStrapiTutorialsPopulate = () =>
         populate: ['image'],
       },
       parts: '*',
-      product: { populate: 'logo' },
+      product: {
+        populate: ['logo', 'bannerLinks.icon'],
+      },
       bannerLinks: {
         populate: ['icon'],
       },

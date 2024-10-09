@@ -2,11 +2,14 @@ import { StrapiTutorials } from '../codecs/TutorialCodec';
 import { Part } from '../../types/part';
 import { Tutorial } from '../../types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export type TutorialsProps = readonly (Tutorial & {
   readonly productSlug: string;
-  readonly relatedLinks?: StrapiTutorials['data'][0]['attributes']['relatedLinks'];
-  readonly bannerLinks?: StrapiTutorials['data'][0]['attributes']['bannerLinks'];
+  readonly relatedLinks?: RelatedLinksProps;
+  readonly bannerLinks?: readonly BannerLinkProps[];
 })[];
 
 export function makeTutorialsProps(
@@ -14,7 +17,6 @@ export function makeTutorialsProps(
   productSlug?: string
 ): TutorialsProps {
   const tutorialsProps = strapiTutorials.data.map(({ attributes }) => ({
-    showInOverview: false, // TODO: remove this when overview data are fetched from Strapi
     image: attributes.image.data
       ? {
           url: attributes.image.data.attributes.url,
@@ -33,7 +35,12 @@ export function makeTutorialsProps(
     ],
     productSlug: attributes.product.data.attributes.slug,
     relatedLinks: attributes.relatedLinks,
-    bannerLinks: attributes.bannerLinks,
+    bannerLinks:
+      attributes.bannerLinks && attributes.bannerLinks.length > 0
+        ? attributes.bannerLinks?.map(makeBannerLinkProps)
+        : attributes.product.data?.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ),
     seo: attributes.seo,
   }));
 
