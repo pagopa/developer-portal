@@ -18,30 +18,26 @@ from src.modules.chatbot import Chatbot
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
-
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+
+chatbot = Chatbot(params, prompts)
 
 
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
+boto3_session = boto3.session.Session(
+  region_name=AWS_DEFAULT_REGION
+)
+
 if (os.getenv('environment', 'dev') == 'local'):
-  boto3_session = boto3.session.Session(
-    aws_access_key_id='dummy',
-    aws_secret_access_key='dummy',
-    region_name=AWS_DEFAULT_REGION
-  )
   dynamodb = boto3_session.resource(    
     'dynamodb',
     endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
     region_name=AWS_DEFAULT_REGION
   )
 else:
-  boto3_session = boto3.session.Session(
-    region_name=AWS_DEFAULT_REGION
-  )
   dynamodb = boto3_session.resource(    
     'dynamodb',
     region_name=AWS_DEFAULT_REGION
