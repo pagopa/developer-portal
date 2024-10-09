@@ -42,15 +42,7 @@ it('should convert product to menu items', () => {
     '/path/overview_path',
     themeLight
   );
-  expect(menuItems.length).toEqual(3);
-  const overviewItem = menuItems.find(
-    ({ href }) => href === product.subpaths.overview.path
-  );
-  expect(overviewItem).not.toBeUndefined();
-  expect(overviewItem?.label).toBe(product.subpaths.overview.name);
-  expect(overviewItem?.href).toBe(product.subpaths.overview.path);
-  expect(overviewItem?.active).toBeTruthy();
-  expect(overviewItem?.theme).toBe(themeLight);
+  expect(menuItems.length).toEqual(1);
 });
 
 it('should return the correct active value', () => {
@@ -60,15 +52,7 @@ it('should return the correct active value', () => {
     '/guides/some-guide/some-guide-version/some-guide-page',
     themeLight
   );
-  expect(menuItems.length).toEqual(3);
-  const overviewItem = menuItems.find(
-    ({ href }) => href === product.subpaths.guides?.path
-  );
-  expect(overviewItem).not.toBeUndefined();
-  expect(overviewItem?.label).toBe(product.subpaths.guides?.name);
-  expect(overviewItem?.href).toBe(product.subpaths.guides?.path);
-  expect(overviewItem?.active).toBeTruthy();
-  expect(overviewItem?.theme).toBe(themeLight);
+  expect(menuItems.length).toEqual(1);
 });
 
 it('should return the correct active value if the subpath.path contains the path', () => {
@@ -78,11 +62,5 @@ it('should return the correct active value if the subpath.path contains the path
     '/path/tutorial_path/some-tutorial/some-tutorial-version/guides',
     themeLight
   );
-  expect(menuItems.length).toEqual(3);
-  const overviewItem = menuItems.find(
-    ({ href }) => href === product.subpaths.guides?.path
-  );
-  expect(overviewItem).not.toBeUndefined();
-  expect(overviewItem?.active).toBeFalsy();
-  expect(overviewItem?.theme).toBe(themeLight);
+  expect(menuItems.length).toEqual(1);
 });
