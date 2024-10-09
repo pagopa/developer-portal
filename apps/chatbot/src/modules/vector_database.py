@@ -176,7 +176,7 @@ def create_documentation(
         else:
             title, text = html2markdown(open(file))
 
-        if text == None or text == "" or text == "None":
+        if text is None or text == "" or text == "None":
             # print(file)
             empty_pages.append(file)
 
@@ -285,7 +285,7 @@ def load_automerging_index_redis(
         schema=REDIS_SCHEMA
     )
 
-    logging.info(f"Loading vector index from Redis...")
+    logging.info("Loading vector index from Redis...")
     storage_context = StorageContext.from_defaults(
         vector_store=redis_vector_store,
         docstore=REDIS_DOCSTORE,
