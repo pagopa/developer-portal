@@ -8,7 +8,10 @@ import hashlib
 import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
+from chromedriver_py import binary_path
 
 import s3fs
 
@@ -34,7 +37,6 @@ from redisvl.schema import IndexSchema
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -114,15 +116,18 @@ def filter_html_files(html_files: List[str]) -> List[str]:
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
+    logging.info(f"[vector_database.py] filter_html_files len(filtered_files): {len(filtered_files)}")
     return filtered_files
 
 
 def get_html_files(root_folder: str) -> List[str]:
+    logging.info(f"[vector_database.py] get_html_files({root_folder})")
     html_files = []
     for root, _, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
+    logging.info(f"[vector_database.py] get_html_files len(html_files): {len(html_files)}")
     return sorted(filter_html_files(html_files))
 
 
@@ -153,10 +158,15 @@ def create_documentation(
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
-    logging.info(f"Getting documentation from: {documentation_dir}")
+    logging.info(f"[vector_database.py] Getting documentation from: {documentation_dir}")
+    logging.info(f"[vector_database.py] create_documentation: DYNAMIC_HTML: {DYNAMIC_HTMLS}")
+    logging.info(f"[vector_database.py] create_documentation: documentation_dir: {documentation_dir}")
     
-    html_files = get_html_files(documentation_dir)
+    # FIX: all docs
+    html_files = get_html_files(documentation_dir)[:10]
+    logging.info(f"[vector_database.py] create_documentation: len(html_files): {len(html_files)}")
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
+    logging.info(f"[vector_database.py] create_documentation: len(dynamic_htmls): {len(dynamic_htmls)}")
     documents = []
     hash_table = {}
     empty_pages = []
@@ -165,9 +175,20 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        if file in dynamic_htmls:
+# FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
+#        if file in dynamic_htmls:
+        if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-            driver = webdriver.Chrome()
+
+            # svc = webdriver.ChromeService(executable_path=binary_path)
+            service = Service(executable_path=binary_path)
+            options = webdriver.ChromeOptions()
+            options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('user-agent=fake-useragent')
+            driver = webdriver.Chrome(service=service, options=options)
+
+            logging.info(f"[vector_database.py] create_documentation: driver.get({url})")
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
@@ -209,8 +230,8 @@ def create_documentation(
     # with open("full_text.txt", "w") as f:
     #     f.write(full_text)
 
-    logging.info(f"Number of documents with content: {len(documents)}")
-    logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logging.info(f"[vector_database.py] Number of documents with content: {len(documents)}")
+    logging.info(f"[vector_database.py] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
@@ -226,7 +247,7 @@ def build_automerging_index(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("Storing vector index and hash table on AWS bucket S3..")
+    logging.info("[vector_database.py] Storing vector index and hash table on AWS bucket S3..")
     
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -239,7 +260,7 @@ def build_automerging_index(
     print(documentation_dir)
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
 
-    logging.info("Creating index...")
+    logging.info("[vector_database.py] Creating index...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -250,7 +271,7 @@ def build_automerging_index(
         leaf_nodes,
         storage_context=storage_context
     )
-    logging.info("Created index successfully.")
+    logging.info("[vector_database.py] Created index successfully.")
 
     automerging_index.storage_context.persist(
         persist_dir=save_dir
@@ -258,7 +279,7 @@ def build_automerging_index(
     with open("hash_table.json", "w") as f:
         json.dump(hash_table, f, indent=4)
 
-    logging.info(f"Saved index successfully to {save_dir}.")
+    logging.info(f"[vector_database.py] Saved index successfully to {save_dir}.")
 
     return automerging_index
 
@@ -273,7 +294,7 @@ def build_automerging_index_s3(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("Storing vector index and hash table on AWS bucket S3..")
+    logging.info("[vector_database.py] Storing vector index and hash table on AWS bucket S3..")
     
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -285,7 +306,7 @@ def build_automerging_index_s3(
     assert documentation_dir is not None
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
 
-    logging.info("Creating index...")
+    logging.info("[vector_database.py] Creating index...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -296,19 +317,19 @@ def build_automerging_index_s3(
         leaf_nodes,
         storage_context=storage_context
     )
-    logging.info("Created index successfully.")
+    logging.info("[vector_database.py] Created index successfully.")
     if s3_bucket_name:
         # store hash table
         with FS.open(f"{s3_bucket_name}/hash_table.json", "w") as f:
             json.dump(hash_table, f, indent=4)
-        logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
+        logging.info(f"[vector_database.py] Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
 
         # store vector index
         automerging_index.storage_context.persist(
             persist_dir=f"{s3_bucket_name}/{save_dir}",
             fs = FS
         )
-        logging.info(f"Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
+        logging.info(f"[vector_database.py] Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
     else:
         automerging_index.storage_context.persist(
             persist_dir=save_dir
@@ -316,7 +337,7 @@ def build_automerging_index_s3(
         with open("hash_table.json", "w") as f:
             json.dump(hash_table, f, indent=4)
 
-        logging.info(f"Saved index successfully to {save_dir}.")
+        logging.info(f"[vector_database.py] Saved index successfully to {save_dir}.")
 
     return automerging_index
 
@@ -329,7 +350,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("Storing vector index and hash table on Redis..")
+    logging.info("[vector_database.py] Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -345,9 +366,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info("Hash table is now on Redis.")
+    logging.info("[vector_database.py] Hash table is now on Redis.")
 
-    logging.info("Creating index...")
+    logging.info("[vector_database.py] Creating index...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -368,7 +389,7 @@ def build_automerging_index_redis(
         leaf_nodes,
         storage_context=storage_context
     )
-    logging.info("Created vector index successfully and stored on Redis.")
+    logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
 
     return automerging_index
 
@@ -378,16 +399,16 @@ def load_url_hash_table(
     ) -> dict:
 
     if s3_bucket_name:
-        logging.info("Getting URLs hash table from S3 bucket...")
+        logging.info("[vector_database.py] Getting URLs hash table from S3 bucket...")
         with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
             hash_table = json.load(f)
 
     else:
-        logging.info("Getting URLs hash table from local...")
+        logging.info("[vector_database.py] Getting URLs hash table from local...")
         with open("hash_table.json", "r") as f:
             hash_table = json.load(f)
 
-    logging.info("Loaded URLs hash table successfully.")
+    logging.info("[vector_database.py] Loaded URLs hash table successfully.")
     return hash_table
 
 
@@ -407,7 +428,7 @@ def load_automerging_index_s3(
         chunk_overlap=chunk_overlap
     )
 
-    logging.info(f"{save_dir} directory exists! Loading vector index...")
+    logging.info(f"[vector_database.py] {save_dir} directory exists! Loading vector index...")
     automerging_index = load_index_from_storage(
         StorageContext.from_defaults(
             persist_dir = f"{s3_bucket_name}/{save_dir}",
@@ -415,7 +436,7 @@ def load_automerging_index_s3(
         )
     )
 
-    logging.info("Loaded vector index successfully!")
+    logging.info("[vector_database.py] Loaded vector index successfully!")
 
     return automerging_index
 
@@ -435,7 +456,7 @@ def load_automerging_index(
         chunk_overlap=chunk_overlap
     )
 
-    logging.info(f"{save_dir} directory exists! Loading vector index...")
+    logging.info(f"[vector_database.py] {save_dir} directory exists! Loading vector index...")
     
     automerging_index = load_index_from_storage(
         StorageContext.from_defaults(
@@ -443,7 +464,7 @@ def load_automerging_index(
         )
     )
 
-    logging.info("Loaded vector index successfully!")
+    logging.info("[vector_database.py] Loaded vector index successfully!")
 
     return automerging_index
 
@@ -468,7 +489,7 @@ def load_automerging_index_redis(
         schema=REDIS_SCHEMA
     )
 
-    logging.info("Loading vector index from Redis...")
+    logging.info("[vector_database.py] Loading vector index from Redis...")
     storage_context = StorageContext.from_defaults(
         vector_store=redis_vector_store,
         docstore=REDIS_DOCSTORE,
