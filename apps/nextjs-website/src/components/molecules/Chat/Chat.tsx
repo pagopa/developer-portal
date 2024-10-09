@@ -1,6 +1,8 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
+import { Link as MuiLink } from '@mui/material';
+
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -96,7 +98,11 @@ const Chat = ({
           }}
         >
           <Stack direction={'row'} paddingY={'0.25rem'}>
-            <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+            <Button
+              href='/profile/chatbot-history'
+              size='small'
+              sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
+            >
               <History fontSize='small' />
               <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
                 {t('chatBot.history')}

@@ -33,10 +33,19 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
     DEFAULT_DATE_FORMAT.options
   ).format(new Date(session.createdAt));
 
+  console.log(palette);
+
   return (
-    <ListItem sx={{ paddingLeft: 10, width: '100%' }}>
+    <ListItem sx={{ width: '100%', paddingX: 0 }}>
       <ListItemButton
-        sx={{ display: 'block', width: '100%', paddingLeft: 0 }}
+        sx={{
+          '&:hover': {
+            backgroundColor: '#E8EAEC',
+          },
+          display: 'block',
+          width: '100%',
+          backgroundColor: '#fafafa',
+        }}
         href={`/profile/chatbot-history/${session.id}`}
       >
         <Stack direction='column' spacing={3}>
