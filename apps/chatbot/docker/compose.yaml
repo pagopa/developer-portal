@@ -7,6 +7,7 @@ services:
       - "8080:8080"
     volumes:
       - ..:/app
+      - ./files/.aws:/root/.aws
     depends_on:
       redis:
         condition: service_started
