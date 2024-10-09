@@ -105,6 +105,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
           variant='sidenav'
           color='inherit'
           sx={{
+            paddingTop: '2px',
             textOverflow: 'ellipsis',
             overflow: 'hidden',
             maxWidth: '130px',

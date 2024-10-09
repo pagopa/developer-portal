@@ -8,6 +8,7 @@ export interface NavigationProps extends CommonProps {
 
 export const Navigation = ({ menu, theme }: NavigationProps) => (
   <Stack
+    maxHeight={'61px'}
     gap={{ md: 4, xs: 2 }}
     direction={{ md: 'row', xs: 'column' }}
     component='nav'
