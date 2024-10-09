@@ -8,7 +8,10 @@ import hashlib
 import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
+from chromedriver_py import binary_path
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -38,7 +41,6 @@ from src.modules.utils import get_ssm_parameter
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -115,15 +117,18 @@ def filter_html_files(html_files: List[str]) -> List[str]:
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
+    logging.info(f"[vector_database.py] filter_html_files len(filtered_files): {len(filtered_files)}")
     return filtered_files
 
 
 def get_html_files(root_folder: str) -> List[str]:
+    logging.info(f"[vector_database.py] get_html_files({root_folder})")
     html_files = []
     for root, _, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
+    logging.info(f"[vector_database.py] get_html_files len(html_files): {len(html_files)}")
     return sorted(filter_html_files(html_files))
 
 
@@ -154,10 +159,15 @@ def create_documentation(
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
-    logging.info(f"Getting documentation from: {documentation_dir}")
+    logging.info(f"[vector_database.py] Getting documentation from: {documentation_dir}")
+    logging.info(f"[vector_database.py] create_documentation: DYNAMIC_HTML: {DYNAMIC_HTMLS}")
+    logging.info(f"[vector_database.py] create_documentation: documentation_dir: {documentation_dir}")
     
-    html_files = get_html_files(documentation_dir)
+    # FIX: all docs
+    html_files = get_html_files(documentation_dir)[:10]
+    logging.info(f"[vector_database.py] create_documentation: len(html_files): {len(html_files)}")
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
+    logging.info(f"[vector_database.py] create_documentation: len(dynamic_htmls): {len(dynamic_htmls)}")
     documents = []
     hash_table = {}
     empty_pages = []
@@ -166,9 +176,20 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        if file in dynamic_htmls:
+# FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
+#        if file in dynamic_htmls:
+        if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-            driver = webdriver.Chrome()
+
+            # svc = webdriver.ChromeService(executable_path=binary_path)
+            service = Service(executable_path=binary_path)
+            options = webdriver.ChromeOptions()
+            options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('user-agent=fake-useragent')
+            driver = webdriver.Chrome(service=service, options=options)
+
+            logging.info(f"[vector_database.py] create_documentation: driver.get({url})")
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
@@ -220,7 +241,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("Storing vector index and hash table on Redis..")
+    logging.info("[vector_database.py] Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -236,9 +257,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info("Hash table is now on Redis.")
+    logging.info("[vector_database.py] Hash table is now on Redis.")
 
-    logging.info("Creating index...")
+    logging.info("[vector_database.py] Creating index...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -285,7 +306,7 @@ def load_automerging_index_redis(
         schema=REDIS_SCHEMA
     )
 
-    logging.info("Loading vector index from Redis...")
+    logging.info("[vector_database.py] Loading vector index from Redis...")
     storage_context = StorageContext.from_defaults(
         vector_store=redis_vector_store,
         docstore=REDIS_DOCSTORE,
