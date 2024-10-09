@@ -5,6 +5,7 @@ import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
+import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const QuickStartGuideItemCodec = t.strict({
   id: t.number,
@@ -23,6 +24,7 @@ export const QuickStartGuideCodec = t.strict({
     description: t.string,
     product: t.strict({ data: BaseProductWithBannerLinksCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),
+    bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });

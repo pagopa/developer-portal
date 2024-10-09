@@ -10,6 +10,9 @@ const makeStrapiQuickStartGuidesPopulate = () =>
           'parts.responseCode,parts.requestCode,parts.requestAttributes',
       },
       product: { populate: ['logo', 'bannerLinks.icon'] },
+      bannerLinks: {
+        populate: ['icon'],
+      },
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },

@@ -18,30 +18,30 @@ from src.modules.chatbot import Chatbot
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
-
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+
+chatbot = Chatbot(params, prompts)
 
 
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
-if (os.getenv('environment', 'dev') == 'local'):
-  profile_name='dummy'
-  endpoint_url='http://localhost:8000'
-  region_name = AWS_DEFAULT_REGION
-
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None),
-  region_name=locals().get('region_name', None)
+  region_name=AWS_DEFAULT_REGION
 )
 
-dynamodb = boto3_session.resource(    
-  'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None),
-  region_name=locals().get('region_name', None),
-)
+if (os.getenv('environment', 'dev') == 'local'):
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
+    region_name=AWS_DEFAULT_REGION
+  )
+else:
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    region_name=AWS_DEFAULT_REGION
+  )
 
 table_queries = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"

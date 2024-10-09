@@ -9,6 +9,7 @@ const makeStrapiGuidesPopulate = () =>
       'mobileImage',
       'listItems',
       'versions',
+      'bannerLinks.icon',
       'seo',
       'seo.metaSocial.image',
       'product.logo',

@@ -2,6 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import { ApiDataListCodec } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
 import { productJson } from './fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -37,6 +38,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
     {
@@ -64,6 +66,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
     {
@@ -81,6 +84,7 @@ const makeStrapiResponseJson = () => ({
         apiSoapUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
         apiRestDetail: null,
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
   ],

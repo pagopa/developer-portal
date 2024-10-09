@@ -1,9 +1,9 @@
 import * as t from 'io-ts/lib';
 import { BaseProductWithBannerLinksCodec } from './ProductCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
+import { BaseApiDataListCodec } from './ApiDataListCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
-import { BaseApiDataListCodec } from './ApiDataListCodec';
 
 export const ApiDataListPageCodec = t.strict({
   id: t.number,
