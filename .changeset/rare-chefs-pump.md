@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add wordwrap break word to links
+Fix tutorial's in page menu

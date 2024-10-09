@@ -72,9 +72,7 @@ export const OverviewCodec = t.strict({
     tutorialSection: t.union([NullToUndefinedCodec, TutorialSectionCodec]),
     postIntegration: t.union([NullToUndefinedCodec, PostIntegrationCodec]),
     relatedLinks: t.union([NullToUndefinedCodec, RelatedLinksCodec]),
-    product: t.strict({
-      data: t.union([NullToUndefinedCodec, ProductCodec]),
-    }),
+    product: t.strict({ data: ProductCodec }),
     bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),

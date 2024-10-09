@@ -20,6 +20,9 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
   const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   const ckEditorStyles = {
+    '&': {
+      fontSize: '1rem',
+    },
     '& .menuAnchor': {
       marginTop: `-${scrollOffset}px`,
       paddingTop: `${scrollOffset}px`,
@@ -35,11 +38,15 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       textDecoration: 'underline',
       fontWeight: typography.fontWeightRegular,
     },
+    '& p': {
+      fontSize: '1rem',
+      margin: '0px 0px 16px',
+    },
     '& pre': {
       background: '#F2F2F2',
       borderRadius: '0.375rem',
       lineHeight: '1.5em',
-      margin: '0.5em 0',
+      margin: '0.5em 0 1.5rem 0',
       overflow: 'auto',
       padding: '1.25em 3em 1.25em 1em',
       position: 'relative',
@@ -62,6 +69,9 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       wordBreak: 'break-all',
       whiteSpace: 'pre-wrap',
     },
+    '& figure.image': {
+      margin: '0 1.5rem 1.5rem 1.5rem',
+    },
     '& img': {
       display: 'block',
       margin: '0 auto',
@@ -70,12 +80,14 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
     },
     '& figure.table': {
       margin: 0,
+      width: '100%',
     },
     '& table': {
       borderCollapse: 'collapse',
       borderStyle: 'hidden',
-      width: '100%',
       textAlign: 'left',
+      width: '100%',
+      wordBreak: 'break-word',
     },
     '& table > thead': {
       backgroundColor: palette.background.default,
@@ -105,6 +117,18 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       borderLeftStyle: 'solid',
       borderLeftColor: palette.divider,
       '& > p': { margin: 0 },
+    },
+    '& ol li, & ul li': {
+      margin: '0px 0px 8px',
+    },
+    '& ol li li': {
+      'list-style-type': 'lower-alpha',
+    },
+    '& ul li li': {
+      'list-style-type': 'circle',
+    },
+    '& ol li li li, & ul li li li': {
+      'list-style-type': 'square',
     },
   };
 

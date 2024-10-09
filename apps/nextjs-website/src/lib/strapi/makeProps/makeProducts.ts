@@ -5,6 +5,7 @@ import {
   BaseProduct,
 } from '../codecs/ProductCodec';
 import { Product } from '../../types/product';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function mergeProductWithStaticContent(
   attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes']
@@ -15,6 +16,7 @@ export function mergeProductWithStaticContent(
     ...staticProduct,
     ...attributes,
     logo: attributes.logo?.data.attributes || staticProduct.logo,
+    bannerLinks: attributes.bannerLinks?.map(makeBannerLinkProps) || [],
   };
 }
 

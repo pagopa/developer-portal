@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/lib/Either';
 import { ApiDataListCodec } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { productJson } from './fixtures/product';
+import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 
 const makeStrapiResponseJson = () => ({
   data: [
@@ -9,6 +11,7 @@ const makeStrapiResponseJson = () => ({
       attributes: {
         seo: null,
         title: 'Gestione flussi di Rendicontazione',
+        product: productJson,
         description:
           'API ad uso dei PSP ed EC per l’upload e il Download dei Flussi di Rendicontazione sul Nodo dei Pagamenti. ',
         createdAt: '2024-07-12T12:44:40.003Z',
@@ -35,6 +38,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
     {
@@ -42,6 +46,7 @@ const makeStrapiResponseJson = () => ({
       attributes: {
         seo: null,
         title: 'Firma con IO Main',
+        product: productJson,
         description: null,
         createdAt: '2024-07-11T17:14:58.618Z',
         updatedAt: '2024-07-11T17:15:11.267Z',
@@ -61,6 +66,7 @@ const makeStrapiResponseJson = () => ({
           ],
         },
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
     {
@@ -68,6 +74,7 @@ const makeStrapiResponseJson = () => ({
       attributes: {
         seo: null,
         title: 'Documentazione SOAP',
+        product: productJson,
         description:
           'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
         createdAt: '2024-07-11T17:19:51.114Z',
@@ -77,6 +84,7 @@ const makeStrapiResponseJson = () => ({
         apiSoapUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
         apiRestDetail: null,
         icon: mediaVectorJson,
+        bannerLinks: bannerLinksJson,
       },
     },
   ],
