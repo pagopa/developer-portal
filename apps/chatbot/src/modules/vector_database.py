@@ -52,6 +52,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
+INDEX_ID = os.getenv("CHB_LLAMAINDEX_INDEX_ID")
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
     "fields": [
@@ -371,6 +372,7 @@ def build_automerging_index_redis(
         leaf_nodes,
         storage_context=storage_context
     )
+    automerging_index.set_index_id(INDEX_ID)
     logging.info("Created vector index successfully and stored on Redis.")
 
     return automerging_index
@@ -480,6 +482,7 @@ def load_automerging_index_redis(
 
     automerging_index = load_index_from_storage(
         storage_context=storage_context,
+        index_id=INDEX_ID
     )
 
     return automerging_index

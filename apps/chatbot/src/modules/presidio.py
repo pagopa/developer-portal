@@ -30,14 +30,14 @@ ENTITIES = [
     "IT_PASSPORT",
     "IT_IDENTITY_CARD",
     "IT_PHYSICAL_ADDRESS",  # this is a custom entity added to the analyzer registry
-    "ES_NIF",
-    "ES_NIE",
-    "US_BANK_NUMBER",
-    "US_DRIVER_LICENSE",
-    "US_ITIN",
-    "US_PASSPORT",
-    "US_SSN",
-    "UK_NHS"
+    # "ES_NIF",
+    # "ES_NIE",
+    # "US_BANK_NUMBER",
+    # "US_DRIVER_LICENSE",
+    # "US_ITIN",
+    # "US_PASSPORT",
+    # "US_SSN",
+    # "UK_NHS"
 ]
 
 ALLOW_LIST = [
@@ -117,7 +117,7 @@ class PresidioPII():
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
             nlp_engine = self.nlp_engine,
-            supported_languages = ["it", "en", "es", "fr", "de"],
+            supported_languages = ["it", "en"], # "es", "fr", "de"
             default_score_threshold = analyzer_threshold
         )
         self._add_italian_physical_address_entity()
@@ -133,25 +133,26 @@ class PresidioPII():
     def detect_language(self, text: str) -> str:
 
         try:
-            lang_list = detect_langs(text)
-            for i in range(len(lang_list)-1, -1, -1):
-                if lang_list[i].lang not in ["it", "en", "es", "fr", "de"]:
-                    lang_list.pop(i)
-            
+            detected_languages = detect_langs(text)
+            lang_list = []
+            for detected_lang in detected_languages:
+                if detected_lang.lang in ["it", "en", "es", "fr", "de"]:
+                    lang_list.append(detected_lang.lang)
+
             if not lang_list:
                 logging.warning("No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
-                lang = lang_list[0].lang
-            
+                lang = "en" # lang_list[0].lang            
         except:
             logging.warning("No detected language.")
             lang = "it"
 
         logging.info(f"Set presidio to detect PII in {lang} language.")
         return lang
+
 
     def detect_pii(self, text: str) -> List[RecognizerResult]:
 

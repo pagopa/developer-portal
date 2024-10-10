@@ -8,7 +8,7 @@ load_dotenv()
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_DEFAUL_REGION = os.getenv("CHB_GOOGLE_AWS_DEFAULT_REGION")
+AWS_DEFAULT_REGION = os.getenv("CHB_GOOGLE_AWS_DEFAULT_REGION")
 
 
 def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
@@ -23,7 +23,7 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
         "ssm",
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_DEFAUL_REGION
+        region_name=AWS_DEFAULT_REGION
     )
     logging.debug(f"Getting parameter {name} from SSM")
     try: 

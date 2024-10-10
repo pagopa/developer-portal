@@ -1,4 +1,3 @@
-
 import os
 import yaml
 import argparse
@@ -16,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION"))
+DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR")
 AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
 
 
@@ -39,7 +38,7 @@ if __name__ == "__main__":
         index = build_automerging_index_redis(
             model,
             embed_model,
-            documentation_dir=params["documentation"]["path"],
+            documentation_dir=DOCUMENTATION_DIR,
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
         )
@@ -47,7 +46,7 @@ if __name__ == "__main__":
         index = build_automerging_index_s3(
             model,
             embed_model,
-            documentation_dir=params["documentation"]["path"],
+            documentation_dir=DOCUMENTATION_DIR,
             save_dir=params["vector_index"]["path"],
             s3_bucket_name=AWS_S3_BUCKET,
             chunk_sizes=params["vector_index"]["chunk_sizes"],
@@ -57,7 +56,7 @@ if __name__ == "__main__":
         index = build_automerging_index(
             model,
             embed_model,
-            documentation_dir=params["documentation"]["path"],
+            documentation_dir=DOCUMENTATION_DIR,
             save_dir=params["vector_index"]["path"],
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
