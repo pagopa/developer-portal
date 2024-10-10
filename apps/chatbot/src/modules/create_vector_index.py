@@ -4,11 +4,7 @@ import argparse
 import logging
 
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import (
-    build_automerging_index,
-    build_automerging_index_redis,
-    build_automerging_index_s3
-)
+from src.modules.vector_database import build_automerging_index_redis
 
 from dotenv import load_dotenv
 
@@ -27,37 +23,15 @@ if __name__ == "__main__":
     # load parameters
     params = yaml.safe_load(open(args.params, "r"))
 
-    if params["vector_index"]["use_redis"] and params["vector_index"]["use_s3"]:
-        raise Exception("Vector Store Error: use s3 or Redis or none of them.")
-
     model = get_llm()
     embed_model = get_embed_model()
 
     # create vector index
-    if params["vector_index"]["use_redis"]:
-        index = build_automerging_index_redis(
-            model,
-            embed_model,
-            documentation_dir=DOCUMENTATION_DIR,
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"]
-        )
-    if params["vector_index"]["use_s3"]:
-        index = build_automerging_index_s3(
-            model,
-            embed_model,
-            documentation_dir=DOCUMENTATION_DIR,
-            save_dir=params["vector_index"]["path"],
-            s3_bucket_name=AWS_S3_BUCKET,
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"]
-        )
-    if not params["vector_index"]["use_redis"] and not params["vector_index"]["use_s3"]:
-        index = build_automerging_index(
-            model,
-            embed_model,
-            documentation_dir=DOCUMENTATION_DIR,
-            save_dir=params["vector_index"]["path"],
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"]
-        )
+    index = build_automerging_index_redis(
+        model,
+        embed_model,
+        documentation_dir=DOCUMENTATION_DIR,
+        chunk_sizes=params["vector_index"]["chunk_sizes"],
+        chunk_overlap=params["vector_index"]["chunk_overlap"]
+    )
+    
