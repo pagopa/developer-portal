@@ -5,8 +5,6 @@ vector_index:
   path: index
   chunk_sizes: [2816, 704, 176]
   chunk_overlap: 20
-  use_redis: True
-  use_s3: False
 
 engine:
   response_mode: compact
