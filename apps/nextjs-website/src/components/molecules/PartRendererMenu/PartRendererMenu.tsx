@@ -13,6 +13,20 @@ type PartRendererMenuProps = {
   readonly parts: readonly Part[];
 };
 
+const getFontSizeByLevel = (level: number): number => {
+  switch (level) {
+    case 1:
+      return 24;
+    case 2:
+      return 18;
+    case 3:
+      return 16;
+    case 4:
+    default:
+      return 14;
+  }
+};
+
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   const { palette } = useTheme();
   const menuItems = props.parts
@@ -55,7 +69,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               <Typography
                 sx={{
                   color: palette.text.secondary,
-                  fontSize: menuItem.level === 2 ? 18 : 16,
+                  fontSize: getFontSizeByLevel(menuItem.level),
                   fontWeight: 400,
                 }}
               >
@@ -82,7 +96,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
     })
     .filter(Boolean);
 
-  if (menuItems.length === 0) {
+  if (menuItems.flat().length === 0) {
     return null;
   }
 
