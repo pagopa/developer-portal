@@ -43,17 +43,17 @@ module "dynamodb_chatbot_sessions" {
     },
     {
       name = "createdAt"
-      type = "S"  # String (for ISO 8601 timestamp)
+      type = "S"
     },
   ]
 
   # GSI for query on created_at
   global_secondary_index {
-    name               = "SessionsByCreatedAtIndex"
-    hash_key           = "userId"
-    range_key          = "createdAt"
-    read_capacity      = 5
-    write_capacity     = 5
-    projection_type    = "ALL"
+    name            = "SessionsByCreatedAtIndex"
+    hash_key        = "userId"
+    range_key       = "createdAt"
+    read_capacity   = 5
+    write_capacity  = 5
+    projection_type = "ALL"
   }
 }
