@@ -4,7 +4,7 @@ resource "aws_efs_file_system" "this" {
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
 
-  tags = merge(var.tags, { Name = "${local.prefix}-efs" })
+  tags = merge(var.tags, { Name = "${local.prefix}-redis-efs" })
 }
 
 resource "aws_efs_access_point" "this" {
