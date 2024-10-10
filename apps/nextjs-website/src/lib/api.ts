@@ -1,5 +1,4 @@
-import { tutorials } from '@/_contents/products';
-import { Product, ProductSubpathsKeys } from './types/product';
+import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
@@ -109,31 +108,10 @@ export async function getStrapiTutorial(
 
   return tutorialFromStrapi
     ? {
-      ...tutorialFromStrapi,
-      product,
-    }
+        ...tutorialFromStrapi,
+        product,
+      }
     : undefined;
-}
-
-export async function getStaticTutorial(
-  productSlug?: string,
-  productTutorialPage?: ReadonlyArray<string>
-) {
-  const tutorialPath = productTutorialPage?.join('/');
-  const path = `/${productSlug}/tutorials/${tutorialPath}`;
-  const props = manageUndefined(
-    tutorials.find(({ page }) => page.path === path)
-  );
-
-  return {
-    ...props,
-    product: props.product,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
-    bannerLinks: props.bannerLinks,
-    relatedLinks: props.relatedLinks,
-  };
 }
 
 export async function getTutorialPaths() {
@@ -142,16 +120,7 @@ export async function getTutorialPaths() {
     slug: path.split('/')[1],
     tutorialPaths: [path.split('/').at(-1)],
   }));
-
-  const tutorialPaths = tutorials.map((tutorial) => ({
-    slug: tutorial.product.slug,
-    tutorialPaths: tutorial.page.path
-      .split('/')
-      // the filter is to remove the first 3 elements of the path which are
-      // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
-      .filter((p, index) => index > 2),
-  }));
-  return [...tutorialPaths, ...tutorialPathsFromCMS];
+  return tutorialPathsFromCMS;
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
