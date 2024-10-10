@@ -391,6 +391,7 @@ def build_automerging_index_redis(
     )
     logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
 
+    automerging_index.set_index_id("1234")
     return automerging_index
 
 
@@ -498,6 +499,7 @@ def load_automerging_index_redis(
 
     automerging_index = load_index_from_storage(
         storage_context=storage_context,
+        index_id="1234"
     )
 
     return automerging_index
