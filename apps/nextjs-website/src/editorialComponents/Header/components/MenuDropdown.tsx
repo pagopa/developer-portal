@@ -99,7 +99,10 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
 
   return (
     <Stack sx={styles.menu} {...menuEventsHandlers}>
-      <Link sx={styles.item} {...button}>
+      <Link
+        sx={{ maxHeight: '27px', maxWidth: '130px', ...styles.item }}
+        {...button}
+      >
         <Typography
           noWrap
           variant='sidenav'
@@ -108,7 +111,6 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
             paddingTop: '2px',
             textOverflow: 'ellipsis',
             overflow: 'hidden',
-            maxWidth: '130px',
             display: 'inline-block',
           }}
         >
