@@ -100,7 +100,7 @@ module "index_id_ssm_parameter" {
 
   name                 = "/chatbot/index_id"
   value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0dc"
-  type                 = "SecureString"
+  type                 = "String"
   secure_type          = true
   ignore_value_changes = true
 }
