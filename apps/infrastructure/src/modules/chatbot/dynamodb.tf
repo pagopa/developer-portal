@@ -53,8 +53,6 @@ module "dynamodb_chatbot_sessions" {
       name            = "SessionsByCreatedAtIndex"
       hash_key        = "userId"
       range_key       = "createdAt"
-      read_capacity   = 5
-      write_capacity  = 5
       projection_type = "ALL"
     }
   ]
