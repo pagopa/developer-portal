@@ -163,8 +163,7 @@ def create_documentation(
     logging.info(f"[vector_database.py] create_documentation: DYNAMIC_HTML: {DYNAMIC_HTMLS}")
     logging.info(f"[vector_database.py] create_documentation: documentation_dir: {documentation_dir}")
     
-    # FIX: all docs
-    html_files = get_html_files(documentation_dir)[:10]
+    html_files = get_html_files(documentation_dir)
     logging.info(f"[vector_database.py] create_documentation: len(html_files): {len(html_files)}")
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
     logging.info(f"[vector_database.py] create_documentation: len(dynamic_htmls): {len(dynamic_htmls)}")
