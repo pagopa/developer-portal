@@ -34,6 +34,8 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
+from src.modules.utils import get_ssm_parameter
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -44,7 +46,7 @@ assert PROVIDER in ["google", "aws"]
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION"))
+AWS_BEDROCK_REGION = os.getenv("CHB_AWS_BEDROCK_REGION", os.getenv("AWS_DEFAULT_REGION"))
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -52,7 +54,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
-INDEX_ID = os.getenv("CHB_LLAMAINDEX_INDEX_ID")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
     "fields": [
@@ -74,7 +76,7 @@ if not REDIS_URL:
     FS = s3fs.S3FileSystem(
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
-        endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
+        endpoint_url=f"https://s3.{AWS_BEDROCK_REGION}.amazonaws.com" if AWS_BEDROCK_REGION else None
     )
 
 DYNAMIC_HTMLS = [
