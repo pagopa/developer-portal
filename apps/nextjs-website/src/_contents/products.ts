@@ -149,8 +149,6 @@ export const staticUrlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
   'https://docs.pagopa.it/i-modelli-dei-servizi':
     '/app-io/guides/modelli-servizi',
-  'https://docs.pagopa.it/v1.0-catalogo-dei-servizi':
-    '/app-io/guides/v1.0-catalogo-dei-servizi',
 
   // Firma con IO
   'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':
