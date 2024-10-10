@@ -99,8 +99,21 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
 
   return (
     <Stack sx={styles.menu} {...menuEventsHandlers}>
-      <Link sx={styles.item} {...button}>
-        <Typography variant='sidenav' color='inherit'>
+      <Link
+        sx={{ maxHeight: '27px', maxWidth: '130px', ...styles.item }}
+        {...button}
+      >
+        <Typography
+          noWrap
+          variant='sidenav'
+          color='inherit'
+          sx={{
+            paddingTop: '2px',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            display: 'inline-block',
+          }}
+        >
           {label}
         </Typography>
         {hasLinks && (

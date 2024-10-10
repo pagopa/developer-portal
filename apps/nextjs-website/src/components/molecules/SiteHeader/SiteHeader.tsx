@@ -21,11 +21,6 @@ const SiteHeader = (
   const { palette } = useTheme();
   const t = useTranslations('devPortal');
 
-  const dropdownItems = products.map((product) => ({
-    href: product.subpaths.overview.path,
-    label: product.name,
-  }));
-
   return (
     <Box
       sx={{
