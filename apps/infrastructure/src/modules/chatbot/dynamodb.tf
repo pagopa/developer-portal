@@ -47,8 +47,8 @@ module "dynamodb_chatbot_sessions" {
     },
   ]
 
-  # GSI for query on created_at
-  global_secondary_indexes = [
+  # LSI for query on created_at
+  local_secondary_indexes = [
     {
       name            = "SessionsByCreatedAtIndex"
       hash_key        = "userId"
