@@ -73,7 +73,7 @@ describe('UrlReplaceMapCodec', () => {
     const urlReplaceMap = makeUrlReplaceMap(result!);
 
     expect(urlReplaceMap).toEqual({
-      aaaa: 'firma-con-io/guides/aaaa/2',
+      aaaa: '/firma-con-io/guides/aaaa/2',
     });
   });
 });
