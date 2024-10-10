@@ -2,10 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
-import {
-  makeHomepageProps,
-  makeHomepagePropsFromStatic,
-} from './strapi/makeProps/makeHomepage';
+import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
@@ -13,19 +10,7 @@ import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
-import {
-  makeQuickStartGuidesProps,
-  makeQuickStartGuidesPropsFromStatic,
-} from './strapi/makeProps/makeQuickStartGuides';
-import {
-  guideLists,
-  guides,
-  guidesDefinitions,
-  overviews,
-  products,
-  quickStartGuides,
-  tutorialLists,
-} from '@/_contents/products';
+import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { fetchSolutions } from './strapi/fetches/fetchSolutions';
@@ -42,7 +27,7 @@ import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { makeGuide } from '@/_contents/makeDocs';
+import { GuideDefinition, makeGuide } from '@/_contents/makeDocs';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
@@ -59,170 +44,76 @@ const buildEnv = pipe(
 );
 
 export const getHomepageProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
   const { homepage: staticHomepage } = translations;
 
-  if (fetchFromStrapi) {
-    const strapiHomepage = await fetchHomepage(buildEnv);
-    return makeHomepageProps(strapiHomepage, staticHomepage);
-  } else {
-    return makeHomepagePropsFromStatic(staticHomepage);
-  }
+  const strapiHomepage = await fetchHomepage(buildEnv);
+  return makeHomepageProps(strapiHomepage, staticHomepage);
 };
 
 export const getWebinarsProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiWebinars = await fetchWebinars(buildEnv);
-    return makeWebinarsProps(strapiWebinars);
-  } else {
-    return [];
-  }
+  const strapiWebinars = await fetchWebinars(buildEnv);
+  return makeWebinarsProps(strapiWebinars);
 };
 
 export const getProductsProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiProducts = await fetchProducts(buildEnv);
-    return makeProductsProps(strapiProducts, products);
-  } else return products;
+  const strapiProducts = await fetchProducts(buildEnv);
+  return makeProductsProps(strapiProducts);
 };
 
 export const getTutorialsProps = async (productSlug?: string) => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiTutorials = await fetchTutorials(buildEnv);
-    return makeTutorialsProps(strapiTutorials, productSlug);
-  } else {
-    return [];
-  }
+  const strapiTutorials = await fetchTutorials(buildEnv);
+  return makeTutorialsProps(strapiTutorials, productSlug);
 };
 
 export const getTutorialListPagesProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-    return makeTutorialListPagesProps(strapiTutorialListPages, tutorialLists);
-  } else {
-    return tutorialLists;
-  }
+  const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
+  return makeTutorialListPagesProps(strapiTutorialListPages);
 };
 
 export const getQuickStartGuidesProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiQuickStart = await fetchQuickStartGuides(buildEnv);
-    return makeQuickStartGuidesProps(strapiQuickStart, quickStartGuides);
-  } else {
-    return makeQuickStartGuidesPropsFromStatic(quickStartGuides);
-  }
+  const strapiQuickStart = await fetchQuickStartGuides(buildEnv);
+  return makeQuickStartGuidesProps(strapiQuickStart);
 };
 
 export const getApiDataListPagesProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const apiDataListPages = await fetchApiDataListPages(buildEnv);
-    return makeApiDataListPagesProps(apiDataListPages);
-  } else return [];
+  const apiDataListPages = await fetchApiDataListPages(buildEnv);
+  return makeApiDataListPagesProps(apiDataListPages);
 };
 
 export const getApiDataProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const apiDataList = await fetchApiDataList(buildEnv);
-    return makeApiDataListProps(apiDataList);
-  } else return [];
+  const apiDataList = await fetchApiDataList(buildEnv);
+  return makeApiDataListProps(apiDataList);
 };
 
 export const getCaseHistoriesProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiCaseHistories = await fetchCaseHistories(buildEnv);
-    return makeCaseHistoriesProps(strapiCaseHistories);
-  } else {
-    return [];
-  }
+  const strapiCaseHistories = await fetchCaseHistories(buildEnv);
+  return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
 export const getSolutionsProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiSolutions = await fetchSolutions(buildEnv);
-    return makeSolutionsProps(strapiSolutions);
-  } else {
-    return [];
-  }
+  const strapiSolutions = await fetchSolutions(buildEnv);
+  return makeSolutionsProps(strapiSolutions);
 };
 
 export const getSolutionListPageProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
-    return makeSolutionListPageProps(strapiSolutionListPage);
-  }
+  const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+  return makeSolutionListPageProps(strapiSolutionListPage);
 };
 
 export const getOverviewsProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiOverviews = await fetchOverviews(buildEnv);
-    return makeOverviewsProps(strapiOverviews, overviews);
-  } else return overviews;
+  const strapiOverviews = await fetchOverviews(buildEnv);
+  return makeOverviewsProps(strapiOverviews);
 };
 
 export const getGuideListPagesProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiGuideList = await fetchGuideListPages(buildEnv);
-    return makeGuideListPagesProps(strapiGuideList, guideLists);
-  } else {
-    return guideLists;
-  }
+  const strapiGuideList = await fetchGuideListPages(buildEnv);
+  return makeGuideListPagesProps(strapiGuideList);
 };
 
 // Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
 // we had to manage cache with two dedicated variables
 // eslint-disable-next-line
-let cachedGuides = guides;
+let cachedGuides: any[] = [];
 // eslint-disable-next-line
 let isCached: boolean = false;
 
@@ -233,18 +124,11 @@ export const getGuidesProps = async () => {
     // eslint-disable-next-line functional/no-expression-statements
     isCached = true;
   }
-  return cachedGuides;
+  return cachedGuides as unknown as readonly GuideDefinition[];
 };
 
 // TODO: Manage all fetched resources with cache in a dedicated helper function
 export const getGuidesPropsCache = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const strapiGuides = await fetchGuides(buildEnv);
-    return makeGuidesProps(strapiGuides, guidesDefinitions).flatMap(makeGuide);
-  }
-  return guides;
+  const strapiGuides = await fetchGuides(buildEnv);
+  return makeGuidesProps(strapiGuides).flatMap(makeGuide);
 };

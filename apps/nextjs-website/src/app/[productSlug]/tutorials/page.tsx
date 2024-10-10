@@ -1,10 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import {
-  getProduct,
-  getProductsSlugs,
-  getTutorialListPageProps,
-} from '@/lib/api';
+import { getProduct, getProducts, getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -27,8 +23,9 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('tutorials')].map((productSlug) => ({
-    productSlug,
+  const products = await getProducts();
+  return products.map((product) => ({
+    productSlug: product.slug,
   }));
 }
 

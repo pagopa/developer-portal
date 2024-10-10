@@ -7,8 +7,8 @@ export type Product = {
   readonly slug: string;
   readonly shortName: string;
   readonly description: string | undefined;
-  readonly logo: Media;
-  readonly subpaths: Subpaths;
+  readonly logo?: Media;
+  readonly name: string;
   readonly bannerLinks: readonly BannerLinkProps[];
   readonly api_data_list_page?:
     | ApiProduct['attributes']['api_data_list_page']
@@ -23,14 +23,4 @@ export type Product = {
   readonly quickstart_guide?:
     | ApiProduct['attributes']['quickstart_guide']
     | undefined;
-} & Path;
-
-type Subpaths = {
-  readonly api?: Path;
-  readonly guides?: Path;
-  readonly overview: Path;
-  readonly quickStart?: Path;
-  readonly tutorials?: Path;
 };
-
-export type ProductSubpathsKeys = keyof Subpaths;

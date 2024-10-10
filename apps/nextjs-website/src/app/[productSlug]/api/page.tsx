@@ -10,7 +10,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getApiDataListPages, getProductsSlugs } from '@/lib/api';
+import { getApiDataListPages, getProducts } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
@@ -18,8 +18,9 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return getProductsSlugs('api').map((productSlug) => ({
-    productSlug,
+  const products = await getProducts();
+  return products.map((product) => ({
+    productSlug: product.slug,
   }));
 }
 

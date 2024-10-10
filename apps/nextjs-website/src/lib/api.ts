@@ -1,4 +1,4 @@
-import { products, tutorials } from '@/_contents/products';
+import { tutorials } from '@/_contents/products';
 import { Product, ProductSubpathsKeys } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
@@ -77,14 +77,6 @@ export async function getOverview(productSlug?: string) {
   );
 }
 
-export function getProductsSlugs(
-  page?: ProductSubpathsKeys
-): readonly string[] {
-  return products
-    .filter((p) => !page || Object.keys(p.subpaths).includes(page))
-    .map(({ slug }) => slug);
-}
-
 export async function getProducts(): Promise<readonly Product[]> {
   return await getProductsProps();
 }
@@ -99,7 +91,7 @@ export async function getQuickStartGuide(productSlug?: string) {
 }
 
 export async function getStrapiTutorial(
-  productSlug?: string,
+  productSlug: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
@@ -113,11 +105,13 @@ export async function getStrapiTutorial(
     ({ path }) => path === tutorialPath
   );
 
+  const product = await getProduct(productSlug);
+
   return tutorialFromStrapi
     ? {
-        ...tutorialFromStrapi,
-        product: products.find(({ slug }) => slug === productSlug),
-      }
+      ...tutorialFromStrapi,
+      product,
+    }
     : undefined;
 }
 
