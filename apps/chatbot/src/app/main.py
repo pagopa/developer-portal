@@ -28,6 +28,9 @@ class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
+class QueryFeedback(BaseModel):
+  badAnswer: bool
+
 boto3_session = boto3.session.Session(
   region_name=AWS_DEFAULT_REGION
 )
@@ -85,7 +88,8 @@ async def query_creation (
     "question": query.question,
     "answer": answer,
     "createdAt": now.isoformat(),
-    "queriedAt": queriedAt
+    "queriedAt": queriedAt,
+    "badAnswer": False
   }
 
   try:
@@ -120,7 +124,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
   startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
   # trovare una sessione con createdAt > datetimeLimit
   try:
-    db_response = table_sessions.query(
+    dbResponse = table_sessions.query(
       KeyConditionExpression=Key("userId").eq(userId) &
         Key('createdAt').gt(startOfDay.isoformat()),
       IndexName='SessionsByCreatedAtIndex',
@@ -130,7 +134,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[find_or_create_session] userId: {userId}, error: {e}")
   
-  items = db_response.get('Items', [])
+  items = dbResponse.get('Items', [])
   if len(items) == 0:
     body = {
       "id": f'{uuid.uuid4()}',
@@ -171,7 +175,7 @@ async def sessions_fetching(
   userId = current_user_id(authorization)
 
   try:
-    db_response = table_sessions.query(
+    dbResponse = table_sessions.query(
       KeyConditionExpression=Key("userId").eq(userId),
       IndexName='SessionsByCreatedAtIndex',
       ScanIndexForward=False
@@ -180,7 +184,7 @@ async def sessions_fetching(
     raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
   
   # TODO: pagination
-  items = db_response.get('Items', [])
+  items = dbResponse.get('Items', [])
   result = {
     "items": items,
     "page": 1,
@@ -200,12 +204,12 @@ async def session_delete(
     "id": id,
   }
   try:
-    db_response_queries = table_queries.query(
+    dbResponse_queries = table_queries.query(
       KeyConditionExpression=Key("sessionId").eq(id)
     )
     # TODO: use batch writer
 #    with table_sessions.batch_writer() as batch:
-    for query in db_response_queries['Items']:
+    for query in dbResponse_queries['Items']:
       table_queries.delete_item(
         Key={
           "id": query["id"],
@@ -235,40 +239,58 @@ async def queries_fetching(
     sessionId = last_session_id(userId)
 
   try:
-    db_response = table_queries.query(
+    dbResponse = table_queries.query(
       KeyConditionExpression=Key("sessionId").eq(sessionId) &
         Key("id").eq(userId)
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
 
-  result = db_response.get('Items', [])
+  result = dbResponse.get('Items', [])
   return result
 
 
 def last_session_id(userId: str):
-  db_response = table_sessions.query(
+  dbResponse = table_sessions.query(
     IndexName='SessionsByCreatedAtIndex',
     KeyConditionExpression=Key('userId').eq(userId),
     ScanIndexForward=False,
     Limit=1
   )
-  items = db_response.get('Items', [])
+  items = dbResponse.get('Items', [])
   return items[0] if items else None
 
-@app.patch("/queries/{id}")
-async def query_feedback (badAnswer: bool):
-  # TODO: dynamoDB integration
-  body = {
-    "id": "",
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "badAnswer": badAnswer,
-    "createdAt": "",
-    "queriedAt": ""
-  }
-  return body
+@app.patch("/sessions/{sessionId}/queries/{id}")
+async def query_feedback (
+  id: str,
+  sessionId: str,
+  query: QueryFeedback,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+
+  try:
+    dbResponse = table_queries.update_item(
+      Key={
+        'sessionId': sessionId,
+        'id': id
+      },
+      UpdateExpression='SET #badAnswer = :badAnswer',
+      ExpressionAttributeNames={
+        '#badAnswer': 'badAnswer'
+      },
+      ExpressionAttributeValues={
+        ':badAnswer': query.badAnswer
+      },
+      ReturnValues='ALL_NEW'
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[query_feedback] id: {id}, sessionId: {sessionId}, error: {e}")
+
+  if 'Attributes' in dbResponse:
+    return dbResponse.get('Attributes')
+  else:
+    raise HTTPException(status_code=404, detail="Record not found")
 
 handler = mangum.Mangum(app, lifespan="off")
 
