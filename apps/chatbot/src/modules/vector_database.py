@@ -117,18 +117,15 @@ def filter_html_files(html_files: List[str]) -> List[str]:
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
-    logging.info(f"[vector_database.py] filter_html_files len(filtered_files): {len(filtered_files)}")
     return filtered_files
 
 
 def get_html_files(root_folder: str) -> List[str]:
-    logging.info(f"[vector_database.py] get_html_files({root_folder})")
     html_files = []
     for root, _, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
-    logging.info(f"[vector_database.py] get_html_files len(html_files): {len(html_files)}")
     return sorted(filter_html_files(html_files))
 
 
@@ -159,14 +156,8 @@ def create_documentation(
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
-    logging.info(f"[vector_database.py] Getting documentation from: {documentation_dir}")
-    logging.info(f"[vector_database.py] create_documentation: DYNAMIC_HTML: {DYNAMIC_HTMLS}")
-    logging.info(f"[vector_database.py] create_documentation: documentation_dir: {documentation_dir}")
-    
     html_files = get_html_files(documentation_dir)
-    logging.info(f"[vector_database.py] create_documentation: len(html_files): {len(html_files)}")
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
-    logging.info(f"[vector_database.py] create_documentation: len(dynamic_htmls): {len(dynamic_htmls)}")
     documents = []
     hash_table = {}
     empty_pages = []
@@ -188,7 +179,6 @@ def create_documentation(
             options.add_argument('user-agent=fake-useragent')
             driver = webdriver.Chrome(service=service, options=options)
 
-            logging.info(f"[vector_database.py] create_documentation: driver.get({url})")
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
