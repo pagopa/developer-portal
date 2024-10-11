@@ -121,7 +121,7 @@ const Page = async ({ params }: { params: Params }) => {
     );
   }
 
-  const urlReplacesMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
   const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {
@@ -135,7 +135,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
     },
   };
 

@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
-  const urlReplacesMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
   if (!solutionProps) {
     return null;
   }
@@ -76,7 +76,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
     },
   };
 

@@ -24,7 +24,7 @@ import {
   overviews,
   products,
   quickStartGuides,
-  staticUrlReplacesMap,
+  staticUrlReplaceMap,
   tutorialLists,
 } from '@/_contents/products';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
@@ -149,10 +149,10 @@ export const getUrlReplaceMapProps = async () => {
     const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
     return Object.assign(
       {},
-      staticUrlReplacesMap,
+      staticUrlReplaceMap,
       makeUrlReplaceMap(urlReplaceMap)
     );
-  } else return staticUrlReplacesMap;
+  } else return staticUrlReplaceMap;
 };
 
 export const getApiDataListPagesProps = async () => {
