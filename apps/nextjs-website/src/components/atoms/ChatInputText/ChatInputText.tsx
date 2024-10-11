@@ -88,7 +88,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: '0.875rem',
+          fontSize: { xs: '1rem', md: '0.875rem' },
         }}
       />
       <IconButton
