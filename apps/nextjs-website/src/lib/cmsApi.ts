@@ -152,7 +152,8 @@ export const getUrlReplaceMapProps = async () => {
       staticUrlReplaceMap,
       makeUrlReplaceMap(urlReplaceMap)
     );
-  } else return staticUrlReplaceMap;
+  }
+  return staticUrlReplaceMap;
 };
 
 export const getApiDataListPagesProps = async () => {

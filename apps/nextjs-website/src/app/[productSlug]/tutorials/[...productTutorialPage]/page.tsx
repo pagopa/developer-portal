@@ -121,7 +121,7 @@ const Page = async ({ params }: { params: Params }) => {
     );
   }
 
-  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
   const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
   const props: ProductTutorialPageProps = {

@@ -77,7 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {

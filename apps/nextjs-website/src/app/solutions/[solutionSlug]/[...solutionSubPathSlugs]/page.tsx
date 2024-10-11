@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
-  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!solutionProps) {
     return null;
   }
