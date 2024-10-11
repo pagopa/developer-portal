@@ -43,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - ..:/app
+      - ./build-devp/out:/app/build-devp/out
     command: "python src/modules/create_vector_index.py --params config/params.yaml"
     tty: true
     depends_on:
