@@ -265,34 +265,6 @@ def build_automerging_index_redis(
     return automerging_index
 
 
-def load_automerging_index(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        save_dir: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int,
-    ) -> VectorStoreIndex:
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    logging.info(f"{save_dir} directory exists! Loading vector index...")
-    
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir=save_dir
-        )
-    )
-
-    logging.info("Loaded vector index successfully!")
-
-    return automerging_index
-
-
 def load_automerging_index_redis(
         llm: BaseLLM,
         embed_model: BaseEmbedding,
