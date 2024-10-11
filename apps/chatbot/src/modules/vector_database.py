@@ -34,6 +34,8 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
+from src.modules.utils import get_ssm_parameter
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -42,9 +44,6 @@ load_dotenv()
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION"))
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -52,6 +51,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
     "fields": [
@@ -65,17 +65,16 @@ REDIS_SCHEMA = IndexSchema.from_dict({
         }}
     ]
 })
-REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT)
-REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
-REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
-
-if not REDIS_URL:
-    FS = s3fs.S3FileSystem(
-        key=AWS_ACCESS_KEY_ID,
-        secret=AWS_SECRET_ACCESS_KEY,
-        endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
-    )
-
+REDIS_KVSTORE = RedisKVStore(
+    redis_client=REDIS_CLIENT,
+    async_redis_client=REDIS_ASYNC_CLIENT
+)
+REDIS_DOCSTORE = RedisDocumentStore(
+    redis_kvstore=REDIS_KVSTORE
+)
+REDIS_INDEX_STORE = RedisIndexStore(
+    redis_kvstore=REDIS_KVSTORE
+)
 DYNAMIC_HTMLS = [
     "app-io/api/app-io-main.html",
     "case-histories/tari-cagliari.html",
@@ -206,122 +205,12 @@ def create_documentation(
                 }
             ))
 
-            # full_text += text
-            # full_text += "\n\n---------------------------\n\n"
-
-    # with open("full_text.txt", "w") as f:
-    #     f.write(full_text)
-
     logging.info(f"Number of documents with content: {len(documents)}")
     logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
     return documents, hash_table
-
-
-def build_automerging_index(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        documentation_dir: str,
-        save_dir: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int
-    ) -> VectorStoreIndex:
-
-    logging.info("Storing vector index and hash table on AWS bucket S3..")
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    assert documentation_dir is not None
-    print(documentation_dir)
-    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
-
-    logging.info("Creating index...")
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
-    leaf_nodes = get_leaf_nodes(nodes)
-
-    storage_context = StorageContext.from_defaults()
-    storage_context.docstore.add_documents(nodes)
-
-    automerging_index = VectorStoreIndex(
-        leaf_nodes,
-        storage_context=storage_context
-    )
-    logging.info(f"Created index successfully.")
-
-    automerging_index.storage_context.persist(
-        persist_dir=save_dir
-    )
-    with open("hash_table.json", "w") as f:
-        json.dump(hash_table, f, indent=4)
-
-    logging.info(f"Saved index successfully to {save_dir}.")
-
-    return automerging_index
-
-
-def build_automerging_index_s3(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        documentation_dir: str,
-        save_dir: str,
-        s3_bucket_name: str | None,
-        chunk_sizes: List[int],
-        chunk_overlap: int
-    ) -> VectorStoreIndex:
-
-    logging.info("Storing vector index and hash table on AWS bucket S3..")
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    assert documentation_dir is not None
-    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
-
-    logging.info("Creating index...")
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
-    leaf_nodes = get_leaf_nodes(nodes)
-
-    storage_context = StorageContext.from_defaults()
-    storage_context.docstore.add_documents(nodes)
-
-    automerging_index = VectorStoreIndex(
-        leaf_nodes,
-        storage_context=storage_context
-    )
-    logging.info(f"Created index successfully.")
-    if s3_bucket_name:
-        # store hash table
-        with FS.open(f"{s3_bucket_name}/hash_table.json", "w") as f:
-            json.dump(hash_table, f, indent=4)
-        logging.info(f"Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
-
-        # store vector index
-        automerging_index.storage_context.persist(
-            persist_dir=f"{s3_bucket_name}/{save_dir}",
-            fs = FS
-        )
-        logging.info(f"Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
-    else:
-        automerging_index.storage_context.persist(
-            persist_dir=save_dir
-        )
-        with open("hash_table.json", "w") as f:
-            json.dump(hash_table, f, indent=4)
-
-        logging.info(f"Saved index successfully to {save_dir}.")
-
-    return automerging_index
 
 
 def build_automerging_index_redis(
@@ -344,7 +233,7 @@ def build_automerging_index_redis(
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
-            collection="hash_table",
+            collection=f"hash_table_{INDEX_ID}",
             key=key,
             val=value
         )
@@ -371,6 +260,7 @@ def build_automerging_index_redis(
         leaf_nodes,
         storage_context=storage_context
     )
+    automerging_index.set_index_id(INDEX_ID)
     logging.info("Created vector index successfully and stored on Redis.")
 
     return automerging_index
@@ -480,6 +370,7 @@ def load_automerging_index_redis(
 
     automerging_index = load_index_from_storage(
         storage_context=storage_context,
+        index_id=INDEX_ID
     )
 
     return automerging_index

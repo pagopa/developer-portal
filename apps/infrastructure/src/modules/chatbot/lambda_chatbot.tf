@@ -3,7 +3,7 @@ locals {
     CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
-    CHB_AWS_DEFAULT_REGION    = var.aws_chatbot_region
+    CHB_AWS_BEDROCK_REGION    = var.aws_chatbot_region
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     CHB_WEBSITE_URL           = "https://${var.dns_domain_name}"
     CORS_DOMAINS              = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
@@ -15,12 +15,13 @@ locals {
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER           = "google"
-    CHB_MODEL_ID           = "models/gemini-1.5-flash"
-    CHB_EMBED_MODEL_ID     = "models/text-embedding-004"
-    CHB_REDIS_INDEX_NAME   = "gemini-index"
-    CHB_GOOGLE_API_KEY     = module.google_api_key_ssm_parameter.ssm_parameter_name
-    CHB_QUERY_TABLE_PREFIX = local.prefix
+    CHB_PROVIDER            = "google"
+    CHB_MODEL_ID            = "models/gemini-1.5-flash"
+    CHB_EMBED_MODEL_ID      = "models/text-embedding-004"
+    CHB_REDIS_INDEX_NAME    = "gemini-index"
+    CHB_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
+    CHB_QUERY_TABLE_PREFIX  = local.prefix
+    CHB_LLAMAINDEX_INDEX_ID = module.index_id_ssm_parameter.ssm_parameter_name
   }
 }
 
@@ -90,6 +91,16 @@ module "google_api_key_ssm_parameter" {
   name                 = "/chatbot/google_api_key"
   value                = "Set the Google Gemini API Key in the AWS console"
   type                 = "SecureString"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+module "index_id_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/index_id"
+  value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0dc"
+  type                 = "String"
   secure_type          = true
   ignore_value_changes = true
 }
