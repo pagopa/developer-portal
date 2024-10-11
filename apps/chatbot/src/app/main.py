@@ -6,7 +6,6 @@ import os
 import uuid
 import boto3
 import datetime
-import time
 import jwt
 from typing import Annotated
 from boto3.dynamodb.conditions import Key
@@ -267,7 +266,6 @@ async def query_feedback (
   query: QueryFeedback,
   authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorization)
 
   try:
     dbResponse = table_queries.update_item(
