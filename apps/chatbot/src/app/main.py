@@ -292,6 +292,7 @@ async def query_feedback (
 
 handler = mangum.Mangum(app, lifespan="off")
 
+
 if __name__ == "__main__":
   uvicorn.run(
     "main:app",
