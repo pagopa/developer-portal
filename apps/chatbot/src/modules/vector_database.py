@@ -13,7 +13,6 @@ from typing import List, Tuple
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import html2text
-import s3fs
 
 from llama_index.core import (
     Settings,
@@ -262,81 +261,6 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(INDEX_ID)
     logging.info("Created vector index successfully and stored on Redis.")
-
-    return automerging_index
-
-
-def load_url_hash_table(
-    s3_bucket_name: str | None,
-    ) -> dict:
-
-    if s3_bucket_name:
-        logging.info("Getting URLs hash table from S3 bucket...")
-        with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
-            hash_table = json.load(f)
-
-    else:
-        logging.info("Getting URLs hash table from local...")
-        with open("hash_table.json", "r") as f:
-            hash_table = json.load(f)
-
-    logging.info("Loaded URLs hash table successfully.")
-    return hash_table
-
-
-def load_automerging_index_s3(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        save_dir: str,
-        s3_bucket_name: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int,
-    ) -> VectorStoreIndex:
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    logging.info(f"{save_dir} directory exists! Loading vector index...")
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir = f"{s3_bucket_name}/{save_dir}",
-            fs = FS
-        )
-    )
-
-    logging.info("Loaded vector index successfully!")
-
-    return automerging_index
-
-
-def load_automerging_index(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        save_dir: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int,
-    ) -> VectorStoreIndex:
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    logging.info(f"{save_dir} directory exists! Loading vector index...")
-    
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir=save_dir
-        )
-    )
-
-    logging.info("Loaded vector index successfully!")
 
     return automerging_index
 
