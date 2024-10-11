@@ -77,7 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-  const urlReplacesMap = (await getUrlReplaceMapProps()) || {};
+  const urlReplaceMap = (await getUrlReplaceMapProps()) || {};
   const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
@@ -94,7 +94,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
     },
   };
 
