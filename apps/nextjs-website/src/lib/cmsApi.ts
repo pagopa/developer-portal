@@ -147,11 +147,7 @@ export const getUrlReplaceMapProps = async () => {
 
   if (fetchFromStrapi) {
     const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-    return Object.assign(
-      {},
-      staticUrlReplaceMap,
-      makeUrlReplaceMap(urlReplaceMap)
-    );
+    return { ...staticUrlReplaceMap, ...makeUrlReplaceMap(urlReplaceMap) };
   }
   return staticUrlReplaceMap;
 };
