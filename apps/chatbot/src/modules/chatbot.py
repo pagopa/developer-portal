@@ -11,11 +11,9 @@ from llama_index.core.base.response.schema import (
 )
 
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import (
-    load_automerging_index_s3, load_url_hash_table,
-    load_automerging_index_redis, REDIS_KVSTORE
-)
+from src.modules.vector_database import load_automerging_index_redis, REDIS_KVSTORE, INDEX_ID
 from src.modules.engine import get_automerging_query_engine
+from src.modules.presidio import PresidioPII
 
 
 AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
@@ -28,54 +26,25 @@ RESPONSE_TYPE = Union[
 
 logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
+
 class Chatbot():
     def __init__(
             self,
             params,
-            prompts,
+            prompts
         ):
 
         self.params = params
         self.prompts = prompts
-        self.use_redis = params["vector_index"]["use_redis"]
-        self.use_s3 = params["vector_index"]["use_s3"]
-
-        if self.use_s3 and self.use_redis:
-            raise Exception("Vector Store Error: use s3 or Redis or none of them.")
-
+        self.pii = PresidioPII(config=params["config_presidio"])
         self.model = get_llm()
         self.embed_model = get_embed_model()
-
-        if self.use_redis:
-            self.index = load_automerging_index_redis(
-                self.model,
-                self.embed_model,
-                chunk_sizes=params["vector_index"]["chunk_sizes"],
-                chunk_overlap=params["vector_index"]["chunk_overlap"]
-            )
-
-        elif self.use_s3:
-            self.hash_table = load_url_hash_table(
-                s3_bucket_name=AWS_S3_BUCKET,
-            )
-            self.index = load_automerging_index_s3(
-                self.model,
-                self.embed_model,
-                save_dir=params["vector_index"]["path"],
-                s3_bucket_name=AWS_S3_BUCKET,
-                chunk_sizes=params["vector_index"]["chunk_sizes"],
-                chunk_overlap=params["vector_index"]["chunk_overlap"],
-            )
-        else:
-            self.hash_table = load_url_hash_table()
-            self.index = load_automerging_index_s3(
-                self.model,
-                self.embed_model,
-                save_dir=params["vector_index"]["path"],
-                chunk_sizes=params["vector_index"]["chunk_sizes"],
-                chunk_overlap=params["vector_index"]["chunk_overlap"],
-            )
-
+        self.index = load_automerging_index_redis(
+            self.model,
+            self.embed_model,
+            chunk_sizes=params["vector_index"]["chunk_sizes"],
+            chunk_overlap=params["vector_index"]["chunk_overlap"]
+        )
         self.history = [
             ChatMessage(
                 role=MessageRole.ASSISTANT,
@@ -155,18 +124,13 @@ class Chatbot():
 
         logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
         for hashed_url in hashed_urls:
-            if self.use_redis:
-                url = REDIS_KVSTORE.get(
-                    collection="hash_table", 
-                    key=hashed_url
-                )
-                if url is None:
-                    url = "{URL}"
-            else:
-                if hashed_url in self.hash_table.keys():
-                    url = self.hash_table[hashed_url]
-                else:
-                    url = "{URL}"
+            url = REDIS_KVSTORE.get(
+                collection=f"hash_table_{INDEX_ID}", 
+                key=hashed_url
+            )
+            if url is None:
+                url = "{URL}"
+
             response_str = response_str.replace(hashed_url, url)
 
         # remove sentences with generated masked url: {URL}
@@ -175,6 +139,10 @@ class Chatbot():
         response_str = "".join(filtered_parts) # join the filtered parts back into a single string
 
         return response_str
+    
+
+    def mask_pii(self, message: str) -> str:
+        return self.pii.mask_pii(message)
 
 
     def generate(self, query_str: str) -> str:
