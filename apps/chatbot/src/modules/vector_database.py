@@ -272,7 +272,6 @@ def build_automerging_index_redis(
     automerging_index.set_index_id(INDEX_ID)
     logging.info("Created vector index successfully and stored on Redis.")
 
-    automerging_index.set_index_id("1234")
     return automerging_index
 
 
