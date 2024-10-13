@@ -13,7 +13,9 @@ from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
 from chromedriver_py import binary_path
 
-import s3fs
+from bs4 import BeautifulSoup
+from selenium import webdriver
+import html2text
 
 from llama_index.core import (
     Settings,
@@ -34,6 +36,8 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
+from src.modules.utils import get_ssm_parameter
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -41,9 +45,6 @@ load_dotenv()
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-CHB_AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION"))
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -51,6 +52,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
     "fields": [
@@ -64,17 +66,16 @@ REDIS_SCHEMA = IndexSchema.from_dict({
         }}
     ]
 })
-REDIS_KVSTORE = RedisKVStore(redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT)
-REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
-REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
-
-if not REDIS_URL:
-    FS = s3fs.S3FileSystem(
-        key=AWS_ACCESS_KEY_ID,
-        secret=AWS_SECRET_ACCESS_KEY,
-        endpoint_url=f"https://s3.{CHB_AWS_DEFAULT_REGION}.amazonaws.com" if CHB_AWS_DEFAULT_REGION else None
-    )
-
+REDIS_KVSTORE = RedisKVStore(
+    redis_client=REDIS_CLIENT,
+    async_redis_client=REDIS_ASYNC_CLIENT
+)
+REDIS_DOCSTORE = RedisDocumentStore(
+    redis_kvstore=REDIS_KVSTORE
+)
+REDIS_INDEX_STORE = RedisIndexStore(
+    redis_kvstore=REDIS_KVSTORE
+)
 DYNAMIC_HTMLS = [
     "app-io/api/app-io-main.html",
     "case-histories/tari-cagliari.html",
@@ -116,18 +117,15 @@ def filter_html_files(html_files: List[str]) -> List[str]:
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
     filtered_files = [file for file in html_files if not pattern.search(file) and not pattern2.search(file)]
-    logging.info(f"[vector_database.py] filter_html_files len(filtered_files): {len(filtered_files)}")
     return filtered_files
 
 
 def get_html_files(root_folder: str) -> List[str]:
-    logging.info(f"[vector_database.py] get_html_files({root_folder})")
     html_files = []
     for root, _, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
-    logging.info(f"[vector_database.py] get_html_files len(html_files): {len(html_files)}")
     return sorted(filter_html_files(html_files))
 
 
@@ -158,14 +156,8 @@ def create_documentation(
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
-    logging.info(f"[vector_database.py] Getting documentation from: {documentation_dir}")
-    logging.info(f"[vector_database.py] create_documentation: DYNAMIC_HTML: {DYNAMIC_HTMLS}")
-    logging.info(f"[vector_database.py] create_documentation: documentation_dir: {documentation_dir}")
-    
     html_files = get_html_files(documentation_dir)
-    logging.info(f"[vector_database.py] create_documentation: len(html_files): {len(html_files)}")
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
-    logging.info(f"[vector_database.py] create_documentation: len(dynamic_htmls): {len(dynamic_htmls)}")
     documents = []
     hash_table = {}
     empty_pages = []
@@ -187,7 +179,6 @@ def create_documentation(
             options.add_argument('user-agent=fake-useragent')
             driver = webdriver.Chrome(service=service, options=options)
 
-            logging.info(f"[vector_database.py] create_documentation: driver.get({url})")
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
@@ -223,122 +214,12 @@ def create_documentation(
                 }
             ))
 
-            # full_text += text
-            # full_text += "\n\n---------------------------\n\n"
-
-    # with open("full_text.txt", "w") as f:
-    #     f.write(full_text)
-
-    logging.info(f"[vector_database.py] Number of documents with content: {len(documents)}")
-    logging.info(f"[vector_database.py] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logging.info(f"Number of documents with content: {len(documents)}")
+    logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
     return documents, hash_table
-
-
-def build_automerging_index(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        documentation_dir: str,
-        save_dir: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int
-    ) -> VectorStoreIndex:
-
-    logging.info("[vector_database.py] Storing vector index and hash table on AWS bucket S3..")
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    assert documentation_dir is not None
-    print(documentation_dir)
-    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
-
-    logging.info("[vector_database.py] Creating index...")
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
-    leaf_nodes = get_leaf_nodes(nodes)
-
-    storage_context = StorageContext.from_defaults()
-    storage_context.docstore.add_documents(nodes)
-
-    automerging_index = VectorStoreIndex(
-        leaf_nodes,
-        storage_context=storage_context
-    )
-    logging.info("[vector_database.py] Created index successfully.")
-
-    automerging_index.storage_context.persist(
-        persist_dir=save_dir
-    )
-    with open("hash_table.json", "w") as f:
-        json.dump(hash_table, f, indent=4)
-
-    logging.info(f"[vector_database.py] Saved index successfully to {save_dir}.")
-
-    return automerging_index
-
-
-def build_automerging_index_s3(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        documentation_dir: str,
-        save_dir: str,
-        s3_bucket_name: str | None,
-        chunk_sizes: List[int],
-        chunk_overlap: int
-    ) -> VectorStoreIndex:
-
-    logging.info("[vector_database.py] Storing vector index and hash table on AWS bucket S3..")
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    assert documentation_dir is not None
-    documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
-
-    logging.info("[vector_database.py] Creating index...")
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
-    leaf_nodes = get_leaf_nodes(nodes)
-
-    storage_context = StorageContext.from_defaults()
-    storage_context.docstore.add_documents(nodes)
-
-    automerging_index = VectorStoreIndex(
-        leaf_nodes,
-        storage_context=storage_context
-    )
-    logging.info("[vector_database.py] Created index successfully.")
-    if s3_bucket_name:
-        # store hash table
-        with FS.open(f"{s3_bucket_name}/hash_table.json", "w") as f:
-            json.dump(hash_table, f, indent=4)
-        logging.info(f"[vector_database.py] Uploaded URLs hash table successfully to S3 bucket {s3_bucket_name}/hash_table.json")
-
-        # store vector index
-        automerging_index.storage_context.persist(
-            persist_dir=f"{s3_bucket_name}/{save_dir}",
-            fs = FS
-        )
-        logging.info(f"[vector_database.py] Uploaded vector index successfully to S3 bucket at {s3_bucket_name}/{save_dir}.")
-    else:
-        automerging_index.storage_context.persist(
-            persist_dir=save_dir
-        )
-        with open("hash_table.json", "w") as f:
-            json.dump(hash_table, f, indent=4)
-
-        logging.info(f"[vector_database.py] Saved index successfully to {save_dir}.")
-
-    return automerging_index
 
 
 def build_automerging_index_redis(
@@ -361,7 +242,7 @@ def build_automerging_index_redis(
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
-            collection="hash_table",
+            collection=f"hash_table_{INDEX_ID}",
             key=key,
             val=value
         )
@@ -388,83 +269,8 @@ def build_automerging_index_redis(
         leaf_nodes,
         storage_context=storage_context
     )
-    logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
-
-    automerging_index.set_index_id("1234")
-    return automerging_index
-
-
-def load_url_hash_table(
-    s3_bucket_name: str | None,
-    ) -> dict:
-
-    if s3_bucket_name:
-        logging.info("[vector_database.py] Getting URLs hash table from S3 bucket...")
-        with FS.open(f"{s3_bucket_name}/hash_table.json", "r") as f:
-            hash_table = json.load(f)
-
-    else:
-        logging.info("[vector_database.py] Getting URLs hash table from local...")
-        with open("hash_table.json", "r") as f:
-            hash_table = json.load(f)
-
-    logging.info("[vector_database.py] Loaded URLs hash table successfully.")
-    return hash_table
-
-
-def load_automerging_index_s3(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        save_dir: str,
-        s3_bucket_name: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int,
-    ) -> VectorStoreIndex:
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    logging.info(f"[vector_database.py] {save_dir} directory exists! Loading vector index...")
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir = f"{s3_bucket_name}/{save_dir}",
-            fs = FS
-        )
-    )
-
-    logging.info("[vector_database.py] Loaded vector index successfully!")
-
-    return automerging_index
-
-
-def load_automerging_index(
-        llm: BaseLLM,
-        embed_model: BaseEmbedding,
-        save_dir: str,
-        chunk_sizes: List[int],
-        chunk_overlap: int,
-    ) -> VectorStoreIndex:
-    
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
-
-    logging.info(f"[vector_database.py] {save_dir} directory exists! Loading vector index...")
-    
-    automerging_index = load_index_from_storage(
-        StorageContext.from_defaults(
-            persist_dir=save_dir
-        )
-    )
-
-    logging.info("[vector_database.py] Loaded vector index successfully!")
+    automerging_index.set_index_id(INDEX_ID)
+    logging.info("Created vector index successfully and stored on Redis.")
 
     return automerging_index
 
@@ -498,7 +304,7 @@ def load_automerging_index_redis(
 
     automerging_index = load_index_from_storage(
         storage_context=storage_context,
-        index_id="1234"
+        index_id=INDEX_ID
     )
 
     return automerging_index
