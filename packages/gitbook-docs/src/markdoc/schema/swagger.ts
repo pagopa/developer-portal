@@ -1,4 +1,4 @@
-import Markdoc, { Schema } from '@markdoc/markdoc';
+import Markdoc, { RenderableTreeNode, Schema } from '@markdoc/markdoc';
 import { SrcAttr } from '../attributes';
 
 export type SwaggerProps<A> = {
@@ -19,9 +19,10 @@ export const swagger: Schema = {
     baseUrl: { type: String },
   },
   transform: (node, config) => {
-    const attrs = node.transformAttributes(config);
-    const children = node.transformChildren(config);
-    return new Markdoc.Tag('Swagger', attrs, children);
+    const attrs: Record<string, unknown> = node.transformAttributes(config);
+    const children: readonly RenderableTreeNode[] =
+      node.transformChildren(config);
+    return new Markdoc.Tag('Swagger', attrs, [...children]);
   },
 };
 
