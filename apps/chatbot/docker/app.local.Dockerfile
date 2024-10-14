@@ -8,7 +8,10 @@ RUN apt-get update && \
 ENV PYTHONPATH=/app
 
 RUN pip install --upgrade pip \
-  && pip install poetry
+  && pip install poetry \
+  spacy
+
+RUN python -m spacy download it_core_news_md
 
 WORKDIR /app
 COPY pyproject.toml .
