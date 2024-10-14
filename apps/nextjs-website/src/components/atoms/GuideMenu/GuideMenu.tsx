@@ -21,8 +21,6 @@ import { useTranslations } from 'next-intl';
 
 type GuideMenuProps = GuideMenuItemsProps & { distanceFromTop?: number };
 
-export const PRODUCT_HEADER_HEIGHT = 75;
-
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
   const { palette } = useTheme();
@@ -34,12 +32,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
-  const productHeaderHeight =
-    menuProps.distanceFromTop ?? PRODUCT_HEADER_HEIGHT;
-
-  const top = scrollUp
-    ? SITE_HEADER_HEIGHT + productHeaderHeight
-    : productHeaderHeight;
+  const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
   const height = `calc(100vh - ${top}px)`;
 
@@ -68,13 +61,13 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           backgroundColor: palette.grey[50],
           flexShrink: 0,
           position: 'sticky',
-          top,
+          top: { xs: top + 62, sm: top + 90, md: top + 77 },
           height: { lg: height },
           overflowY: 'auto',
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
-          zIndex: 1,
+          zIndex: 51,
         }}
       >
         <Stack
