@@ -10,6 +10,7 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
       variant='body1'
       style={{
         wordBreak: 'break-word',
+        margin: '0px 0px 8px',
       }}
       sx={{
         '& div.MuiContainer-root:has(img)': {

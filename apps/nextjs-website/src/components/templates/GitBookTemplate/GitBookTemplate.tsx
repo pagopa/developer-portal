@@ -67,7 +67,7 @@ const GitBookTemplate = ({
             },
           }}
         >
-          <Box sx={{ paddingX: '40px' }}>
+          <Box sx={{ paddingTop: '60px', paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '32px 40px' }}>
