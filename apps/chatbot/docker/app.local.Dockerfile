@@ -8,16 +8,15 @@ RUN apt-get update && \
 ENV PYTHONPATH=/app
 
 RUN pip install --upgrade pip \
-  && pip install poetry \
-  spacy
-
-RUN python -m spacy download it_core_news_md
+  && pip install poetry
 
 WORKDIR /app
 COPY pyproject.toml .
 COPY poetry.lock .
 RUN poetry config virtualenvs.create false
 RUN poetry install
+RUN python -m spacy download it_core_news_md
+RUN python -m spacy download en_core_web_md
 
 COPY . .
 
