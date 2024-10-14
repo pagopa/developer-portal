@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.1.0
+
+### Minor Changes
+
+- fd2e2c5: Remove subtitle attribute from bannerLink component
+
 ## 3.0.1
 
 ### Patch Changes
