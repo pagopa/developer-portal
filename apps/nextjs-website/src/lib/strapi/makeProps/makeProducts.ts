@@ -1,14 +1,15 @@
 import { products } from '@/_contents/products';
 import {
-  Products,
-  Product as ApiProduct,
-  BaseProduct,
+  StrapiProducts,
+  StrapiProduct,
+  StrapiBaseProduct,
 } from '../codecs/ProductCodec';
 import { Product } from '../../types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function mergeProductWithStaticContent(
-  attributes: Partial<ApiProduct['attributes']> & BaseProduct['attributes']
+  attributes: Partial<StrapiProduct['attributes']> &
+    StrapiBaseProduct['attributes']
 ): Product {
   const staticProduct =
     products.find((product) => product.slug === attributes.slug) || products[0];
@@ -21,7 +22,7 @@ export function mergeProductWithStaticContent(
 }
 
 export function makeProductsProps(
-  products: Products,
+  products: StrapiProducts,
   staticProducts: ReadonlyArray<Product>
 ): ReadonlyArray<Product> {
   return [
