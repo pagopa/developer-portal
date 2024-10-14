@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide, getProduct, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import {
@@ -82,11 +82,13 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
+  const fetchedProduct = await getProduct(params.productSlug);
+
   const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
     ...page,
-    product,
+    product: fetchedProduct ?? product,
     guide,
     version,
     versions: Array.from(versions),
@@ -104,10 +106,10 @@ const Page = async ({ params }: { params: Params }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(props.product),
       {
         name: seo?.metaTitle,
-        item: breadcrumbItemByProduct(product, [
+        item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),
         ]),

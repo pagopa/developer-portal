@@ -10,6 +10,8 @@ const makeStrapiProductsPopulate = () =>
       'overview',
       'quickstart_guide',
       'api_data_list_page',
+      'api_data_list_page.apiData.*',
+      'api_data_list_page.apiData.apiRestDetail.*',
       'guide_list_page',
       'tutorial_list_page',
     ],

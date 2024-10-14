@@ -1,6 +1,10 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getProductsSlugs, getTutorialListPageProps } from '@/lib/api';
+import {
+  getProduct,
+  getProductsSlugs,
+  getTutorialListPageProps,
+} from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -62,10 +66,12 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials, seo } =
+  const { abstract, bannerLinks, path, tutorials, seo } =
     await getTutorialListPageProps(productSlug);
 
   const { shared } = translations;
+
+  const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -93,7 +99,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
           title={abstract?.title}
         />
       )}
-      {product.subpaths.tutorials && tutorials && (
+      {product?.tutorial_list_page?.data && tutorials && (
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({

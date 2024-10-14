@@ -3,7 +3,7 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getProductsSlugs, getQuickStartGuide } from '@/lib/api';
+import { getProduct, getProductsSlugs, getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
@@ -59,15 +59,10 @@ export async function generateMetadata(
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const {
-    abstract,
-    bannerLinks,
-    defaultStepAnchor,
-    path,
-    product,
-    steps,
-    seo,
-  } = await getQuickStartGuide(params?.productSlug);
+  const { abstract, bannerLinks, defaultStepAnchor, path, steps, seo } =
+    await getQuickStartGuide(params?.productSlug);
+
+  const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
