@@ -25,7 +25,11 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value.slice(0, MESSAGE_MAX_CHARS));
+    setMessage(
+      event.target.value
+        .slice(0, MESSAGE_MAX_CHARS)
+        .replace(/(\r\n|\n|\r)/gm, '')
+    );
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -39,7 +43,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   };
 
   const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && message) {
       event.preventDefault();
       submit();
     }
@@ -64,6 +68,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     >
       <InputBase
         fullWidth
+        disabled={sendDisabled}
         placeholder={t('chatBot.writeNewMessagePlaceholder')}
         value={message}
         onChange={handleChange}
