@@ -52,7 +52,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
 INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 REDIS_SCHEMA = IndexSchema.from_dict({
-    "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
+    "index": {"name": f"{REDIS_INDEX_NAME}_{INDEX_ID}", "prefix": "index/vector"},
     "fields": [
         {"name": "id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
