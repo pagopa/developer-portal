@@ -169,6 +169,8 @@ async def query_fetching(id: str):
 # retrieve sessions of current user
 @app.get("/sessions")
 async def sessions_fetching(
+  page: int = 1,
+  pageSize: int = 10,
   authorization: Annotated[str | None, Header()] = None
 ):
   userId = current_user_id(authorization)
@@ -231,6 +233,8 @@ async def session_delete(
 @app.get("/queries")
 async def queries_fetching(
   sessionId: str | None = None,
+  page: int = 1,
+  pageSize: int = 10,
   authorization: Annotated[str | None, Header()] = None
 ):
   userId = current_user_id(authorization)
