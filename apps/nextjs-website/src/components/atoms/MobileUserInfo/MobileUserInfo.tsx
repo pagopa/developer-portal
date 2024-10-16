@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
-import { ButtonNaked } from '@pagopa/mui-italia';
 
 type MobileUserInfoProps = {
   // eslint-disable-next-line functional/no-return-void

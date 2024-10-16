@@ -43,6 +43,7 @@ export const code: Schema = {
       'CodeBlock',
       {
         ...Object.fromEntries(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           Object.entries(attrs).filter(([_, value]) => value !== null)
         ),
         ...fenceAttr,
