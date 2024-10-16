@@ -10,6 +10,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 
 type Params = {
   productSlug: string;

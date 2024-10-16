@@ -45,7 +45,7 @@ resource "aws_api_gateway_resource" "chatbot" {
 }
 
 resource "aws_api_gateway_method" "chatbot" {
-  for_each             = toset(["GET", "POST", "PUT", "PATCH"])
+  for_each             = toset(["GET", "POST", "PUT", "PATCH", "DELETE"])
   rest_api_id          = aws_api_gateway_rest_api.api.id
   resource_id          = aws_api_gateway_resource.chatbot.id
   http_method          = each.value

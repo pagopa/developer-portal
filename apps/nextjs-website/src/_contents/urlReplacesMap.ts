@@ -1,7 +1,7 @@
 /**
  * Contains the mapping between the docs.pagopa.it url and the developer portal url.
  */
-export const urlReplacesMap: { readonly [url: string]: string } = {
+export const staticUrlReplaceMap: { readonly [url: string]: string } = {
   // App IO
   'https://docs.pagopa.it/io-guida-tecnica-1.3/':
     '/app-io/guides/io-guida-tecnica/v1.3',

@@ -12,14 +12,14 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { urlReplacesMap } from '@/_contents/urlReplacesMap';
+import { staticUrlReplaceMap } from '@/_contents/urlReplacesMap';
 
 type Params = {
   productSlug: string;
@@ -94,7 +94,7 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: staticUrlReplaceMap,
       gitBookPagesWithTitle: [], // TODO: check if this works
       spaceToPrefix: [], // TODO: check if this works
     },

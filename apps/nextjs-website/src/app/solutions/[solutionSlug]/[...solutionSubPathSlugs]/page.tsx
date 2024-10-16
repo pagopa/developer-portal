@@ -5,11 +5,10 @@ import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getSolutionsProps } from '@/lib/cmsApi';
+import { getSolutionsProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
-import { urlReplacesMap } from '@/_contents/urlReplacesMap';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -60,6 +59,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
+  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!solutionProps) {
     return null;
   }
@@ -73,7 +73,7 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
       gitBookPagesWithTitle: [],
       spaceToPrefix: [],
     },

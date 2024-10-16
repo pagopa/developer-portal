@@ -32,6 +32,9 @@ import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
+import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
+import { staticUrlReplaceMap } from '@/_contents/urlReplacesMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -73,6 +76,18 @@ export const getTutorialListPagesProps = async () => {
 export const getQuickStartGuidesProps = async () => {
   const strapiQuickStart = await fetchQuickStartGuides(buildEnv);
   return makeQuickStartGuidesProps(strapiQuickStart);
+};
+
+export const getUrlReplaceMapProps = async () => {
+  const {
+    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
+  } = buildEnv;
+
+  if (fetchFromStrapi) {
+    const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+    return { ...staticUrlReplaceMap, ...makeUrlReplaceMap(urlReplaceMap) };
+  }
+  return staticUrlReplaceMap;
 };
 
 export const getApiDataListPagesProps = async () => {

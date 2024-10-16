@@ -104,6 +104,6 @@ export const ProductsCodec = t.strict({
   data: t.array(ProductCodec),
 });
 
-export type BaseProduct = t.TypeOf<typeof BaseProductCodec>;
-export type Product = t.TypeOf<typeof ProductCodec>;
-export type Products = t.TypeOf<typeof ProductsCodec>;
+export type StrapiBaseProduct = t.TypeOf<typeof BaseProductCodec>;
+export type StrapiProduct = t.TypeOf<typeof ProductCodec>;
+export type StrapiProducts = t.TypeOf<typeof ProductsCodec>;

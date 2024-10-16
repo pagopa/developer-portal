@@ -1,12 +1,14 @@
-import { Products } from '../codecs/ProductCodec';
+import { StrapiProducts } from '../codecs/ProductCodec';
 import { Product } from '../../types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
-export function makeProductsProps(products: Products): ReadonlyArray<Product> {
+export function makeProductsProps(
+  products: StrapiProducts
+): ReadonlyArray<Product> {
   return products.data.map(makeProductProps);
 }
 
-export function makeProductProps(product: Products['data'][0]): Product {
+export function makeProductProps(product: StrapiProducts['data'][0]): Product {
   return {
     ...product.attributes,
     description: product.attributes.description ?? '',
