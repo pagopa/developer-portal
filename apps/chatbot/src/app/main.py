@@ -118,7 +118,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
   if userId is None:
     userId = '-'
   
-  SESSION_MAX_DURATION_DAYS = int(os.getenv('SESSION_MAX_DURATION_DAYS', '1'))
+  SESSION_MAX_DURATION_DAYS = float(os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1'))
   datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
   startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
   # trovare una sessione con createdAt > datetimeLimit
