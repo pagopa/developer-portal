@@ -1,18 +1,11 @@
 // TODO: move to proper localization system
-import { ioSignTutorialListsPath } from '@/_contents/ioSign/tutorialListsPath';
-import { sendGuideListsPath } from '@/_contents/send/guideListsPath';
-import { pagoPaQuickStartGuidePath } from '@/_contents/pagoPa/quickStartGuidePath';
-import { send } from '@/_contents/send/send';
-import { appIo } from '@/_contents/appIo/appIo';
-import { ioSign } from '@/_contents/ioSign/ioSign';
-import { pagoPa } from '@/_contents/pagoPa/pagoPa';
 import { Product } from '@/lib/types/product';
 
 const productToEcosystemProduct = (product: Product) => ({
   title: product.name,
   text: product.description ?? '',
   href: `${product.slug}/overview`,
-  icon: product.logo.url,
+  icon: product.logo?.url ?? '',
   useSrc: true,
 });
 
@@ -62,7 +55,7 @@ export const translations = {
           title:
             'Usa il validatore di SEND per fare una verifica sull’integrazione',
           link: {
-            url: `${sendGuideListsPath.path}/validatore`,
+            url: `TODO/validatore`,
             text: 'Vai al validatore',
           },
           image: {
@@ -82,7 +75,7 @@ export const translations = {
           comingSoon: false,
           title: 'Scopri i nuovi tutorial di Firma con IO',
           link: {
-            url: `${ioSignTutorialListsPath.path}`,
+            url: `TODO`,
             text: 'Vai ai tutorial',
           },
           image: {
@@ -103,7 +96,7 @@ export const translations = {
           title:
             'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
           link: {
-            url: `${pagoPaQuickStartGuidePath.path}`,
+            url: `TODO`,
             text: 'Vai alla guida',
           },
           image: {
@@ -125,12 +118,7 @@ export const translations = {
     ecosystem: {
       title: 'Scopri il nostro ecosistema',
       productsTabName: 'Per prodotti',
-      products: [
-        productToEcosystemProduct(appIo),
-        productToEcosystemProduct(ioSign),
-        productToEcosystemProduct(pagoPa),
-        productToEcosystemProduct(send),
-      ],
+      products: [],
       solutionsTabName: 'Per soluzioni',
       solutions: [],
     },
