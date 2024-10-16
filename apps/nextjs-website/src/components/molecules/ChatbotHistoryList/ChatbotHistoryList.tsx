@@ -42,7 +42,7 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
   );
 
   return (
-    <List>
+    <List sx={{ width: '100%' }}>
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
@@ -71,13 +71,13 @@ function dateDividerSessionsItemsInterpolation(
   });
   return items.flatMap((sameMonthItems) => (
     <>
-      <ListItem>
+      <ListItem sx={{ padding: 0 }}>
         <Typography
           key={sameMonthItems[0].createdAt}
           color={palette.text.primary}
           fontSize='1.5rem'
           fontWeight='700'
-          sx={{ padding: '1rem' }}
+          sx={{ paddingY: '1rem' }}
         >
           {capitalize(
             new Intl.DateTimeFormat(
@@ -90,9 +90,7 @@ function dateDividerSessionsItemsInterpolation(
       {sameMonthItems.map((item, index) => [
         <ChatbotHistoryListItem key={item.id} session={item} />,
         <>
-          {sameMonthItems.length - 1 !== index && (
-            <Divider component='li' sx={{ marginX: '32px' }} />
-          )}
+          {sameMonthItems.length - 1 !== index && <Divider component='li' />}
         </>,
       ])}
     </>
