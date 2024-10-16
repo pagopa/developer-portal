@@ -19,6 +19,7 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     :param default: The default value to return if the parameter is not found.
     :return: The value of the requested parameter.
     """
+
     ssm = boto3.client(
         "ssm",
         aws_access_key_id=AWS_ACCESS_KEY_ID,
