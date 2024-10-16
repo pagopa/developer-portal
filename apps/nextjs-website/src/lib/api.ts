@@ -18,8 +18,9 @@ import {
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { makeSolution } from '@/_contents/makeDocs';
+import { GuideDefinition, makeSolution } from '@/_contents/makeDocs';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { get } from 'http';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -41,15 +42,49 @@ export async function getGuide(
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const props = manageUndefined(
-    guidesProps.find(({ page }) => page.path === path)
+  const guideDefinition: GuideDefinition = manageUndefined(
+    guidesProps.find(
+      (guideDefinition) =>
+        guideDefinition.product.slug === productSlug &&
+        guideDefinition.guide.slug === guidePath
+    )
   );
 
   return {
-    ...props,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
+    product: guideDefinition.product,
+    page: {
+      path: path,
+      title: guideDefinition.guide.name,
+      menu: guideDefinition.guide.name,
+      body: '',
+      isIndex: false,
+    },
+    guide: {
+      name: guideDefinition.guide.name,
+      path: path,
+    },
+    version: {
+      main: guideDefinition.versions.find((v) => v.main)?.main ?? false,
+      name: guideDefinition.versions.find((v) => v.main)?.version ?? '',
+      path: guideDefinition.versions.find((v) => v.main)?.dirName ?? '',
+    },
+    versions: guideDefinition.versions.map((v) => ({
+      name: v.version,
+      main: v.main ?? false,
+      path: v.dirName,
+    })),
+    source: {
+      pathPrefix: '',
+      assetsPrefix: '',
+      dirPath: '',
+      spaceId: '',
+    },
+    bannerLinks: guideDefinition.bannerLinks,
+    products: await getProducts(),
+    pathPrefix: '',
+    assetsPrefix: '',
+    redirect: false,
+    seo: guideDefinition.seo,
   };
 }
 

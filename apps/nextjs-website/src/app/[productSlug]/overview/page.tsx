@@ -116,7 +116,7 @@ export async function generateMetadata(
     title: product.name,
     description: product.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url ?? '',
   });
 }
 
@@ -183,8 +183,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={
-            product.subpaths.tutorials ??
-            ({ name: 'tutorials', path: '/tutorials' } as Path)
+            { path: `${product.slug}/tutorials`, name: 'tutorials' } as Path
           }
           tutorials={[...(tutorialsListToShow || [])]}
         />

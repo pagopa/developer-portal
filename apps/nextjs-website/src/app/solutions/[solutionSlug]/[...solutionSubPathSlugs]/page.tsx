@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
@@ -14,6 +9,7 @@ import { getSolutionsProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { urlReplacesMap } from '@/_contents/urlReplacesMap';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -77,9 +73,9 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
       urlReplaces: urlReplacesMap,
+      gitBookPagesWithTitle: [],
+      spaceToPrefix: [],
     },
   };
 

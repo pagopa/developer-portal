@@ -16,22 +16,7 @@ const product: Product = {
     mime: 'image/svg+xml',
     url: 'test',
   },
-  path: '/path',
   slug: 'path',
-  subpaths: {
-    overview: {
-      name: 'overview',
-      path: '/path/overview_path',
-    },
-    tutorials: {
-      name: 'tutorials',
-      path: '/path/tutorial_path',
-    },
-    guides: {
-      name: 'guides',
-      path: '/guides',
-    },
-  },
   bannerLinks: [],
 };
 

@@ -83,7 +83,7 @@ const CaseHistoryPageTemplate = ({
             title: product.name,
             text: product.description || '',
             href: `/${product.slug}/overview`,
-            logoUrl: product.logo.url,
+            logoUrl: product.logo?.url || '',
           }))}
         />
       )}

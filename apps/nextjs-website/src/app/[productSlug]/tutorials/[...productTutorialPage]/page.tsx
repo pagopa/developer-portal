@@ -1,34 +1,9 @@
-import ProductLayout, {
-  ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
-import {
-  getProduct,
-  getStaticTutorial,
-  getStrapiTutorial,
-  getTutorialPaths,
-} from '@/lib/api';
-import { Product } from '@/lib/types/product';
-import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { Box } from '@mui/material';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
-import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { getStrapiTutorial, getTutorialPaths } from '@/lib/api';
 import { Metadata } from 'next';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { translations } from '@/_contents/translations';
-import RelatedLinks, {
-  RelatedLinksProps,
-} from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
@@ -48,15 +23,6 @@ export async function generateStaticParams() {
     productTutorialPage: tutorialPaths,
   }));
 }
-
-type ProductTutorialPageProps = {
-  product: Product;
-  path: string;
-  menu: string;
-  body: string;
-  bodyConfig: ParseContentConfig;
-  relatedLinks?: RelatedLinksProps;
-} & ProductLayoutProps;
 
 export async function generateMetadata({
   params,
@@ -80,14 +46,6 @@ export async function generateMetadata({
       url: path,
     });
   }
-  const {
-    page: { path, title },
-  } = await getStaticTutorial(productSlug, [tutorialPath]);
-
-  return makeMetadata({
-    title,
-    url: path,
-  });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -98,152 +56,33 @@ const Page = async ({ params }: { params: Params }) => {
     tutorialPath,
   ]);
 
-  if (strapiTutorialProps) {
-    const structuredData = generateStructuredDataScripts({
-      breadcrumbsItems: [
-        productToBreadcrumb(strapiTutorialProps.product),
-        {
-          name: strapiTutorialProps.seo?.metaTitle,
-          item: breadcrumbItemByProduct(strapiTutorialProps.product, [
-            'guides',
-            ...(params?.productTutorialPage || []),
-          ]),
-        },
-      ],
-      seo: strapiTutorialProps.seo,
-    });
-    return (
-      <TutorialTemplate
-        bannerLinks={strapiTutorialProps.bannerLinks}
-        parts={strapiTutorialProps.parts}
-        path={strapiTutorialProps.path}
-        product={strapiTutorialProps.product}
-        relatedLinks={strapiTutorialProps.relatedLinks}
-        title={strapiTutorialProps.title}
-        structuredData={structuredData}
-      />
-    );
+  if (!strapiTutorialProps) {
+    return null;
   }
-
-  const tutorialProps = await getStaticTutorial(productSlug, [tutorialPath]);
-  const { product, page, bannerLinks, source, relatedLinks } = tutorialProps;
-
-  const fetchedProduct = await getProduct(params.productSlug);
-
-  const props: ProductTutorialPageProps = {
-    ...page,
-    product: fetchedProduct ?? product,
-    bannerLinks,
-    relatedLinks,
-    bodyConfig: {
-      isPageIndex: false,
-      pagePath: page.path,
-      assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
-    },
-  };
-
-  const hasRelatedLinks = (props.relatedLinks?.links?.length ?? 0) > 0;
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(props.product),
+      productToBreadcrumb(strapiTutorialProps.product),
       {
-        name: tutorialProps.page.title,
-        item: breadcrumbItemByProduct(product, [
+        name: strapiTutorialProps.seo?.metaTitle,
+        item: breadcrumbItemByProduct(strapiTutorialProps.product, [
           'guides',
           ...(params?.productTutorialPage || []),
         ]),
       },
     ],
-    seo: undefined,
+    seo: strapiTutorialProps.seo,
   });
-
   return (
-    <ProductLayout
-      product={props.product}
-      path={props.path}
-      bannerLinks={props.bannerLinks}
+    <TutorialTemplate
+      bannerLinks={strapiTutorialProps.bannerLinks}
+      parts={strapiTutorialProps.parts}
+      path={strapiTutorialProps.path}
+      product={strapiTutorialProps.product}
+      relatedLinks={strapiTutorialProps.relatedLinks}
+      title={strapiTutorialProps.title}
       structuredData={structuredData}
-    >
-      <FragmentProvider>
-        <Box
-          sx={{
-            maxWidth: '1200px',
-            // 80px is the height of the product header
-            marginTop: '80px',
-            marginX: 'auto',
-            paddingTop: 3,
-            px: { xs: 4, md: 0 },
-          }}
-        >
-          <ProductBreadcrumbs
-            breadcrumbs={[
-              ...productPageToBreadcrumbs(product, props.path, [
-                { name: tutorialProps.page.title, path: props.path },
-              ]),
-            ]}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
-            maxWidth: '1200px',
-            margin: '0 auto',
-            paddingBottom: !hasRelatedLinks ? '56px' : 0,
-            paddingTop: '56px',
-            px: { xs: 4, lg: 0 },
-          }}
-        >
-          <Box
-            sx={{
-              flexGrow: { lg: 1 },
-              maxWidth: {
-                xs: '100%',
-                lg: '822px',
-              },
-              overflowWrap: 'break-word',
-            }}
-          >
-            <GitBookContent content={props.body} config={props.bodyConfig} />
-          </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', lg: 'initial' },
-              position: 'relative',
-              // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '30px',
-              paddingLeft: '60px',
-              width: { lg: '378px' },
-            }}
-          >
-            <Box
-              sx={{
-                position: 'sticky',
-                minWidth: '378px',
-                top: 140,
-              }}
-            >
-              <GuideInPageMenu
-                assetsPrefix={props.bodyConfig.assetsPrefix}
-                pagePath={props.path}
-                inPageMenu={props.body}
-                title={translations.productGuidePage.onThisPage}
-              />
-            </Box>
-          </Box>
-        </Box>
-      </FragmentProvider>
-      {hasRelatedLinks && (
-        <RelatedLinks
-          title={props.relatedLinks?.title}
-          links={props.relatedLinks?.links ?? []}
-        />
-      )}
-    </ProductLayout>
+    />
   );
 };
 

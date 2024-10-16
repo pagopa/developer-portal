@@ -4,11 +4,6 @@ import ProductLayout, {
 import { getGuide, getProduct, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -24,6 +19,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { urlReplacesMap } from '@/_contents/urlReplacesMap';
 
 type Params = {
   productSlug: string;
@@ -33,7 +29,7 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.page.path),
+    productGuidePage: getProductGuidePath(guidePage.guide.slug),
   }));
 }
 
@@ -98,9 +94,9 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
       urlReplaces: urlReplacesMap,
+      gitBookPagesWithTitle: [], // TODO: check if this works
+      spaceToPrefix: [], // TODO: check if this works
     },
   };
 
