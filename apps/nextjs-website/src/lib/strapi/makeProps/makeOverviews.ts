@@ -33,7 +33,6 @@ export function makeOverviewsProps(
           items:
             attributes.features.items.map((item) => ({
               iconUrl: item.icon.data?.attributes.url,
-              subtitle: item.subtitle,
               content: item.content,
               title: item.title || '',
             })) || [],
