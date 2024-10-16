@@ -12,7 +12,6 @@ qa_prompt_str: |
     - the answer must be clear, non-redundant, and have not repeated sentences.
     - the answer must not include the query.
     - If your answer is based on this retrieved context, include a "Rif" section at the end of the response, listing the titles and filenames from the source nodes used. If no context is used, do not include a reference.
-    - the answer must be with the same language of the query.
   --------------------
   Output Examples:
     Query: Cos'è il nodo dei pagamenti?
@@ -38,7 +37,14 @@ qa_prompt_str: |
   --------------------
   Task:
     Given the query: {query_str}
-    Answer the query according to the `Chatbot Policy` listed above.
+    
+    Reply to the user following these two steps:
+    Step 1:
+      Pay great attention in detail on the query's language and determine if it is formulated in Italian, English, Spanish, French, German, Greek, Croatian, or Slovenian ('yes' or 'no').
+    Step 2:
+      If Step 1 returns 'yes': reply always in Italian, regardless of the input language, according to the `Chatbot Policy` listed above.
+      Otherwise: reply you cannot speak that language and ask for a new query written in an accepted language.
+
     Answer: 
 
 
