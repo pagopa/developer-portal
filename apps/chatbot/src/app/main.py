@@ -6,6 +6,7 @@ import os
 import uuid
 import boto3
 import datetime
+import time
 import jwt
 from typing import Annotated
 from boto3.dynamodb.conditions import Key
@@ -18,30 +19,30 @@ from src.modules.chatbot import Chatbot
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
-
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+
+chatbot = Chatbot(params, prompts)
 
 
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
-if (os.getenv('environment', 'dev') == 'local'):
-  profile_name='dummy'
-  endpoint_url='http://localhost:8000'
-  region_name = AWS_DEFAULT_REGION
-
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None),
-  region_name=locals().get('region_name', None)
+  region_name=AWS_DEFAULT_REGION
 )
 
-dynamodb = boto3_session.resource(    
-  'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None),
-  region_name=locals().get('region_name', None),
-)
+if (os.getenv('environment', 'dev') == 'local'):
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
+    region_name=AWS_DEFAULT_REGION
+  )
+else:
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    region_name=AWS_DEFAULT_REGION
+  )
 
 table_queries = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
@@ -68,13 +69,13 @@ async def query_creation (
   query: Query, 
   authorization: Annotated[str | None, Header()] = None
 ):
+  now = datetime.datetime.now(datetime.UTC)
   userId = current_user_id(authorization)
-  session = find_or_create_session(userId)
+  session = find_or_create_session(userId, now=now)
   answer = chatbot.generate(query.question)
 
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   if query.queriedAt is None:
-    queriedAt = now
+    queriedAt = now.isoformat()
   else:
     queriedAt = query.queriedAt
 
@@ -83,7 +84,7 @@ async def query_creation (
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
-    "createdAt": now,
+    "createdAt": now.isoformat(),
     "queriedAt": queriedAt
   }
 
@@ -109,24 +110,41 @@ def current_user_id(authorization: str):
     return decoded['cognito:username']
 
 
-def find_or_create_session(userId: str):
+def find_or_create_session(userId: str, now: datetime.datetime):
   # TODO: return if userId is None
   if userId is None:
     userId = '-'
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-  # TODO: calculate title
-  # TODO: find last session based on SESSION_MAX_DURATION_MINUTES
-  # TODO: if it's None, create it.
-  body = {
-    "id": '1',#f'{uuid.uuid4()}',
-    "title": "last session",
-    "userId": userId,
-    "createdAt": now
-  }
+  
+  SESSION_MAX_DURATION_DAYS = int(os.getenv('SESSION_MAX_DURATION_DAYS', '1'))
+  datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+  startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
+  # trovare una sessione con createdAt > datetimeLimit
   try:
-    table_sessions.put_item(Item = body)
+    db_response = table_sessions.query(
+      KeyConditionExpression=Key("userId").eq(userId) &
+        Key('createdAt').gt(startOfDay.isoformat()),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False,
+      Limit=1
+    )
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+    raise HTTPException(status_code=422, detail=f"[find_or_create_session] userId: {userId}, error: {e}")
+  
+  items = db_response.get('Items', [])
+  if len(items) == 0:
+    body = {
+      "id": f'{uuid.uuid4()}',
+      "title": now.strftime("%Y-%m-%d"),
+      "userId": userId,
+      "createdAt": now.isoformat()
+    }
+    try:
+      table_sessions.put_item(Item = body)
+    except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+
+  else:
+    body = items[0]
 
   return body
 
@@ -154,18 +172,21 @@ async def sessions_fetching(
 
   try:
     db_response = table_sessions.query(
-      KeyConditionExpression=Key("userId").eq(userId)
+      KeyConditionExpression=Key("userId").eq(userId),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
   
   # TODO: pagination
+  items = db_response.get('Items', [])
   result = {
-    "items": db_response['Items'],
+    "items": items,
     "page": 1,
     "pages": 1,
-    "size": len(db_response['Items']),
-    "total": len(db_response['Items']),
+    "size": len(items),
+    "total": len(items),
   }
   return result
 
@@ -214,20 +235,26 @@ async def queries_fetching(
     sessionId = last_session_id(userId)
 
   try:
-    # TODO: add userId filter
     db_response = table_queries.query(
-      KeyConditionExpression=Key("sessionId").eq(sessionId)
+      KeyConditionExpression=Key("sessionId").eq(sessionId) &
+        Key("id").eq(userId)
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
 
-  result = db_response['Items']
+  result = db_response.get('Items', [])
   return result
 
 
 def last_session_id(userId: str):
-  # TODO: retrieve last user session
-  return '1'
+  db_response = table_sessions.query(
+    IndexName='SessionsByCreatedAtIndex',
+    KeyConditionExpression=Key('userId').eq(userId),
+    ScanIndexForward=False,
+    Limit=1
+  )
+  items = db_response.get('Items', [])
+  return items[0] if items else None
 
 @app.patch("/queries/{id}")
 async def query_feedback (badAnswer: bool):
