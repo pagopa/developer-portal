@@ -6,6 +6,7 @@ import {
   getSessions,
   patchFeedback,
   postQuery,
+  getHealthz,
 } from '@/lib/chatbot/chatbotApi';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
@@ -25,6 +26,8 @@ export const sendChatbotQuery = (query: QueryInput) =>
 
 export const getChatbotQueries = (sessionId: string) =>
   getQueries(qs.stringify({ sessionId: sessionId }))(chatbotApiEnv);
+
+export const getChatbotHealthz = () => getHealthz()(chatbotApiEnv);
 
 export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
   patchFeedback(feedback, queryId)(chatbotApiEnv);

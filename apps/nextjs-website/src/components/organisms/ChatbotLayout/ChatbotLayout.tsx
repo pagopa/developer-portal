@@ -13,6 +13,7 @@ import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
 import { useTranslations } from 'next-intl';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
+import { getChatbotHealthz } from '@/lib/chatbot';
 
 type ChatbotLayoutProps = {
   queries: Query[];
@@ -41,6 +42,7 @@ const ChatbotLayout = ({
   );
 
   const handleClick = () => {
+    if (!open) getChatbotHealthz();
     setAnchorEl(ref.current);
     return null;
   };
