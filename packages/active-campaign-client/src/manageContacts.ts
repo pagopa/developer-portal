@@ -12,7 +12,11 @@ export type AddContact = (contactInfo: SignUpUserData) => unknown;//torna la ris
 
 //the contactId is the id used on Active Campaign, which must be retrieved
 //https://developers.activecampaign.com/reference/delete-contact
-export type DeleteContact = (contactId: number) => unknown;
+export type DeleteContact = (contactId: string) => unknown;
 
 //https://developers.activecampaign.com/reference/update-a-contact-new
-export type UpdateContact = (contactId: number, contactInfo: SignUpUserData) => unknown;
+export type UpdateContact = (contactId: string, contactInfo: SignUpUserData) => unknown;
+
+//https://developers.activecampaign.com/reference/update-list-status-for-contact
+//status can have 2 values: "1" -> subscribe, "2" -> unsubscribe
+export type UpdateListStatus = (listId: string, contactId: string, status: string) => unknown;
