@@ -2,17 +2,5 @@
   "root": true,
   "extends": [
     "custom"
-  ],
-  "overrides": [
-    {
-      "files": ["**/*.ts"],
-      "rules": {
-        "functional/prefer-readonly-type": "off",
-        "functional/no-expression-statements": "off",
-        "functional/no-expression-statement": "off",
-        "functional/immutable-data": "off",
-        "@typescript-eslint/no-non-null-assertion": "off"
-      }
-    }
   ]
 }
