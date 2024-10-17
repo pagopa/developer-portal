@@ -16,6 +16,10 @@ export interface IEventWithProduct {
   };
 }
 
-export const validateAssociatedProductPresenceOnUpdate = (): boolean => true;
+export const validateAssociatedProductPresenceOnUpdate = (
+  _: IEventWithProduct
+): boolean => true;
 
-export const validateAssociatedProductPresenceOnCreate = (): boolean => true;
+export const validateAssociatedProductPresenceOnCreate = (
+  _: IEventWithProduct
+) => true;
