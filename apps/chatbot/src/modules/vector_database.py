@@ -10,10 +10,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from typing import List, Tuple
 
-from bs4 import BeautifulSoup
-from selenium import webdriver
-import html2text
-
 from llama_index.core import (
     Settings,
     Document,
