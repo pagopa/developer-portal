@@ -95,7 +95,11 @@ export const getQueries = (query: string) =>
     )
   );
 
-export const patchFeedback = (feedback: boolean, queryId: string) =>
+export const patchFeedback = (
+  feedback: boolean,
+  sessionId: string,
+  queryId: string
+) =>
   pipe(
     R.ask<ChatbotEnv>(),
     R.map(({ config: { CHATBOT_HOST: chatbotHost }, getAuthToken, fetch }) =>
@@ -104,7 +108,7 @@ export const patchFeedback = (feedback: boolean, queryId: string) =>
         TE.tryCatch(() => getAuthToken(), E.toError),
         TE.chainTaskK(
           (authToken) => () =>
-            fetch(`${chatbotHost}/queries/${queryId}`, {
+            fetch(`${chatbotHost}/sessions/${sessionId}/queries/${queryId}`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',

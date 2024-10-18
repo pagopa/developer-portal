@@ -28,8 +28,11 @@ export const getChatbotQueries = (sessionId?: string) =>
     chatbotApiEnv
   );
 
-export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
-  patchFeedback(feedback, queryId)(chatbotApiEnv);
+export const sendChatbotFeedback = (
+  feedback: boolean,
+  sessionId: string,
+  queryId: string
+) => patchFeedback(feedback, sessionId, queryId)(chatbotApiEnv);
 
 export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);

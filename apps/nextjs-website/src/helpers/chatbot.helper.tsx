@@ -70,8 +70,12 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     return null;
   };
 
-  const sendFeedback = (queryId: string, hasNegativeFeedback: boolean) => {
-    sendChatbotFeedback(hasNegativeFeedback, queryId);
+  const sendFeedback = (
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    queryId: string
+  ) => {
+    sendChatbotFeedback(hasNegativeFeedback, sessionId, queryId);
     const updatedQueries = queries.map((query) => {
       if (query.id === queryId) {
         return {

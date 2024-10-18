@@ -1,8 +1,6 @@
 import ChatMessage, {
   Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
-import { Link as MuiLink } from '@mui/material';
-
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -20,7 +18,11 @@ import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
+  onSendFeedback: (
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    chatId: string
+  ) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
@@ -56,6 +58,7 @@ const Chat = ({
                 id: q.id,
                 text: q.question,
                 isQuestion: true,
+                sessionId: q.sessionId,
                 timestamp: q.queriedAt,
                 hasNegativeFeedback: false,
               }
@@ -65,6 +68,7 @@ const Chat = ({
                 id: q.id,
                 text: q.answer,
                 isQuestion: false,
+                sessionId: q.sessionId,
                 timestamp: q.createdAt,
                 hasNegativeFeedback: q.badAnswer || false,
               }
@@ -135,7 +139,7 @@ const Chat = ({
             <ChatMessage
               {...message}
               onToggleNegativeFeedback={(negativeFeedback) =>
-                onSendFeedback(message.id, negativeFeedback)
+                onSendFeedback(negativeFeedback, message.sessionId, message.id)
               }
             />
           </Stack>
@@ -175,6 +179,7 @@ function firstMessage(text: string): Message {
     id: '',
     text: text,
     isQuestion: false,
+    sessionId: '',
     hasNegativeFeedback: false,
   };
 }
