@@ -29,7 +29,9 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.guide.slug),
+    productGuidePage: getProductGuidePath(
+      guidePage?.guide?.slug ?? 'TODO, why is this null'
+    ),
   }));
 }
 
