@@ -24,6 +24,7 @@ RESPONSE_TYPE = Union[
 logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 nest_asyncio.apply()
 
+
 class Chatbot():
     def __init__(
             self,
