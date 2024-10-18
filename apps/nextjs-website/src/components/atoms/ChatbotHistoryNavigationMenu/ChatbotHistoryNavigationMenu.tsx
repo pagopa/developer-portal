@@ -1,5 +1,5 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import ChatbotHistoryNavigationLink from '@/components/atoms/ChatbotHistoryNavigationLink/ChatbotHistoryNavigationLink';
 
@@ -22,7 +22,7 @@ const ChatbotHistoryNavigationMenu = ({
   const textColor = palette.text.secondary;
 
   return (
-    <Stack direction='row' justifyContent='space-between'>
+    <Stack direction='row'>
       {previousSession && (
         <Stack direction='column' spacing={1}>
           <Typography component='h6' fontSize='0.875rem' color={textColor}>
@@ -37,10 +37,11 @@ const ChatbotHistoryNavigationMenu = ({
           </Stack>
         </Stack>
       )}
+      <Box flexGrow={1} />
       {nextSession && (
         <Stack direction='column' spacing={1}>
           <Typography component='h6' fontSize='0.875rem' color={textColor}>
-            {t('chatBot.previousChat')}
+            {t('chatBot.nextChat')}
           </Typography>
           <Stack direction='row' spacing={1}>
             <ChatbotHistoryNavigationLink

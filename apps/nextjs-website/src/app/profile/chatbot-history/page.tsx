@@ -8,6 +8,7 @@ import { useChatbot } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { isEmpty } from 'fp-ts/lib/Array';
 import { useRouter } from 'next/navigation';
 
 const ChatbotHistory = () => {
@@ -19,7 +20,8 @@ const ChatbotHistory = () => {
 
   useEffect(() => {
     getSessionsByPage(1);
-  }, [getSessionsByPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Needs to run only once
 
   if (!isChatbotActive) {
     router.replace('/not-found');
@@ -42,9 +44,11 @@ const ChatbotHistory = () => {
         {t('profile.chatbot.title')}
       </Typography>
       {(loading || paginatedSessionsLoading) && <Spinner />}
-      {!loading && !paginatedSessionsLoading && !paginatedSessions && (
-        <Typography>{t('profile.chatbot.noSessions')}</Typography>
-      )}
+      {!loading &&
+        !paginatedSessionsLoading &&
+        (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
+          <Typography>{t('profile.chatbot.noSessions')}</Typography>
+        )}
       {!loading && !paginatedSessionsLoading && paginatedSessions && (
         <ChatbotHistoryLayout
           paginatedSessions={paginatedSessions}
