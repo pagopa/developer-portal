@@ -1,6 +1,5 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
-import { mergeProductWithStaticContent } from '@/lib/strapi/makeProps/makeProducts';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function makeApiDataListProps(
@@ -9,9 +8,14 @@ export function makeApiDataListProps(
   return apiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => {
-      const product = mergeProductWithStaticContent(
-        attributes.product.data.attributes
-      );
+      const product = {
+        ...attributes.product.data.attributes,
+        description: '',
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ) || [],
+      };
       return {
         ...attributes,
         product,

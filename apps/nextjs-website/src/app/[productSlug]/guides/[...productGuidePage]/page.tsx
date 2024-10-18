@@ -1,10 +1,9 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide, getProduct, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -20,6 +19,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { staticUrlReplaceMap } from '@/_contents/urlReplacesMap';
 
 type Params = {
   productSlug: string;
@@ -29,7 +29,9 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.page.path),
+    productGuidePage: getProductGuidePath(
+      guidePage?.guide?.slug ?? 'TODO, why is this null'
+    ),
   }));
 }
 
@@ -77,12 +79,14 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-  const urlReplaceMap = await getUrlReplaceMapProps();
+
+  const fetchedProduct = await getProduct(params.productSlug);
+
   const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
     ...page,
-    product,
+    product: fetchedProduct ?? product,
     guide,
     version,
     versions: Array.from(versions),
@@ -92,18 +96,18 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplaceMap,
+      urlReplaces: staticUrlReplaceMap,
+      gitBookPagesWithTitle: [], // TODO: check if this works
+      spaceToPrefix: [], // TODO: check if this works
     },
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(props.product),
       {
         name: seo?.metaTitle,
-        item: breadcrumbItemByProduct(product, [
+        item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),
         ]),

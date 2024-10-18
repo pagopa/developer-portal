@@ -1,6 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getProductsSlugs, getTutorialListPageProps } from '@/lib/api';
+import { getProduct, getProducts, getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -23,8 +23,9 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('tutorials')].map((productSlug) => ({
-    productSlug,
+  const products = await getProducts();
+  return products.map((product) => ({
+    productSlug: product.slug,
   }));
 }
 
@@ -56,16 +57,18 @@ export async function generateMetadata(
     title: product.name,
     description: abstract?.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url,
   });
 }
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials, seo } =
+  const { abstract, bannerLinks, path, tutorials, seo } =
     await getTutorialListPageProps(productSlug);
 
   const { shared } = translations;
+
+  const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -93,7 +96,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
           title={abstract?.title}
         />
       )}
-      {product.subpaths.tutorials && tutorials && (
+      {product?.tutorial_list_page?.data && tutorials && (
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
