@@ -179,20 +179,6 @@ async def queries_fetching(
   return result
 
 
-@app.get("/queries/{id}")
-async def query_fetching(id: str):
-  # TODO: dynamoDB integration
-  body = {
-    "id": id,
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "createdAt": "",
-    "queriedAt": ""
-  }
-  return body
-
-
 # retrieve sessions of current user
 @app.get("/sessions")
 async def sessions_fetching(
