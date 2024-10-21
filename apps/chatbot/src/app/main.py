@@ -170,7 +170,7 @@ async def queries_fetching(
       dbResponse = table_queries.query(
         KeyConditionExpression=Key('sessionId').eq(sessionId),
         IndexName='QueriesByCreatedAtIndex',
-        ScanIndexForward=False
+        ScanIndexForward=True
       )
     except (BotoCoreError, ClientError) as e:
       raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
