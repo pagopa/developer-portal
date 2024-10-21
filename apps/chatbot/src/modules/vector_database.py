@@ -8,7 +8,10 @@ import hashlib
 import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
+from chromedriver_py import binary_path
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -38,7 +41,6 @@ from src.modules.utils import get_ssm_parameter
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -154,8 +156,6 @@ def create_documentation(
     if documentation_dir[-1] != "/":
         documentation_dir += "/"
 
-    logging.info(f"Getting documentation from: {documentation_dir}")
-    
     html_files = get_html_files(documentation_dir)
     dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
     documents = []
@@ -166,9 +166,19 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        if file in dynamic_htmls:
+# FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
+#        if file in dynamic_htmls:
+        if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-            driver = webdriver.Chrome()
+
+            # svc = webdriver.ChromeService(executable_path=binary_path)
+            service = Service(executable_path=binary_path)
+            options = webdriver.ChromeOptions()
+            options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('user-agent=fake-useragent')
+            driver = webdriver.Chrome(service=service, options=options)
+
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
@@ -176,7 +186,7 @@ def create_documentation(
         else:
             title, text = html2markdown(open(file))
 
-        if text == None or text == "" or text == "None":
+        if text is None or text == "" or text == "None":
             # print(file)
             empty_pages.append(file)
 
@@ -220,7 +230,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("Storing vector index and hash table on Redis..")
+    logging.info("[vector_database.py] Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -236,9 +246,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info("Hash table is now on Redis.")
+    logging.info("[vector_database.py] Hash table is now on Redis.")
 
-    logging.info("Creating index...")
+    logging.info("[vector_database.py] Creating index...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -285,7 +295,7 @@ def load_automerging_index_redis(
         schema=REDIS_SCHEMA
     )
 
-    logging.info(f"Loading vector index from Redis...")
+    logging.info("[vector_database.py] Loading vector index from Redis...")
     storage_context = StorageContext.from_defaults(
         vector_store=redis_vector_store,
         docstore=REDIS_DOCSTORE,
