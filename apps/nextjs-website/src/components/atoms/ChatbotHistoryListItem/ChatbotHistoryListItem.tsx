@@ -33,8 +33,6 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
     DEFAULT_DATE_FORMAT.options
   ).format(new Date(session.createdAt));
 
-  console.log(palette);
-
   return (
     <ListItem sx={{ width: '100%', paddingX: 0 }}>
       <ListItemButton
@@ -46,7 +44,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
           width: '100%',
           backgroundColor: '#fafafa',
         }}
-        href={`/profile/chatbot-history/${session.id}`}
+        href={`/profile/chatbot-history?sessionId=${session.id}`}
       >
         <Stack direction='column' spacing={3}>
           <Typography

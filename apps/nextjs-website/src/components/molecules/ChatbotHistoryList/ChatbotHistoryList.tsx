@@ -69,6 +69,7 @@ function dateDividerSessionsItemsInterpolation(
     );
     return sessions.map((session: Session) => session);
   });
+
   return items.flatMap((sameMonthItems) => (
     <>
       <ListItem sx={{ padding: 0 }}>
