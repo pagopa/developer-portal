@@ -6,11 +6,11 @@ import {
   getSessions,
   patchFeedback,
   postQuery,
-  getHealthz,
 } from '@/lib/chatbot/chatbotApi';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';
+import { getHealthz } from './chatbot/chatbotHealthz';
 
 const chatbotApiEnv = pipe(
   makeChatbotConfig(publicEnv),
