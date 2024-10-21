@@ -6,6 +6,7 @@ import os
 import uuid
 import boto3
 import datetime
+import time
 import jwt
 from typing import Annotated
 from boto3.dynamodb.conditions import Key
@@ -68,13 +69,13 @@ async def query_creation (
   query: Query, 
   authorization: Annotated[str | None, Header()] = None
 ):
+  now = datetime.datetime.now(datetime.UTC)
   userId = current_user_id(authorization)
-  session = find_or_create_session(userId)
+  session = find_or_create_session(userId, now=now)
   answer = chatbot.generate(query.question)
 
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   if query.queriedAt is None:
-    queriedAt = now
+    queriedAt = now.isoformat()
   else:
     queriedAt = query.queriedAt
 
@@ -83,7 +84,7 @@ async def query_creation (
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
-    "createdAt": now,
+    "createdAt": now.isoformat(),
     "queriedAt": queriedAt
   }
 
@@ -109,24 +110,41 @@ def current_user_id(authorization: str):
     return decoded['cognito:username']
 
 
-def find_or_create_session(userId: str):
+def find_or_create_session(userId: str, now: datetime.datetime):
   # TODO: return if userId is None
   if userId is None:
     userId = '-'
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-  # TODO: calculate title
-  # TODO: find last session based on SESSION_MAX_DURATION_MINUTES
-  # TODO: if it's None, create it.
-  body = {
-    "id": '1',#f'{uuid.uuid4()}',
-    "title": "last session",
-    "userId": userId,
-    "createdAt": now
-  }
+  
+  SESSION_MAX_DURATION_DAYS = int(os.getenv('SESSION_MAX_DURATION_DAYS', '1'))
+  datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+  startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
+  # trovare una sessione con createdAt > datetimeLimit
   try:
-    table_sessions.put_item(Item = body)
+    db_response = table_sessions.query(
+      KeyConditionExpression=Key("userId").eq(userId) &
+        Key('createdAt').gt(startOfDay.isoformat()),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False,
+      Limit=1
+    )
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+    raise HTTPException(status_code=422, detail=f"[find_or_create_session] userId: {userId}, error: {e}")
+  
+  items = db_response.get('Items', [])
+  if len(items) == 0:
+    body = {
+      "id": f'{uuid.uuid4()}',
+      "title": now.strftime("%Y-%m-%d"),
+      "userId": userId,
+      "createdAt": now.isoformat()
+    }
+    try:
+      table_sessions.put_item(Item = body)
+    except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+
+  else:
+    body = items[0]
 
   return body
 
@@ -154,7 +172,9 @@ async def sessions_fetching(
 
   try:
     db_response = table_sessions.query(
-      KeyConditionExpression=Key("userId").eq(userId)
+      KeyConditionExpression=Key("userId").eq(userId),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
