@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add display:block
+Fix chatbot response layout by showing one link per line
