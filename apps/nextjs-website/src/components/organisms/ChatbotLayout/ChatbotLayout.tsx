@@ -17,7 +17,11 @@ import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 type ChatbotLayoutProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
+  onSendFeedback: (
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    chatId: string
+  ) => null;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
   error: ChatbotErrorsType | null;
@@ -139,7 +143,7 @@ const ChatbotLayout = ({
             onSendFeedback={onSendFeedback}
             isAwaitingResponse={isAwaitingResponse}
             isChatbotLoaded={isChatbotLoaded}
-            scrollToBottom
+            scrollToBottom={true}
             error={error}
             disabled={disabled}
           />
