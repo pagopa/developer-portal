@@ -14,11 +14,6 @@ load_dotenv()
 
 ENGINE_SIMILARITY_TOPK = os.getenv('CHB_ENGINE_SIMILARITY_TOPK', "5")
 ENGINE_SIMILARITY_CUTOFF = os.getenv('CHB_ENGINE_SIMILARITY_CUTOFF', "0.55")
-PREFIX_MESSAGE = """\
-Ciao! Io sono Discovery, l'assistente virtuale di PagoPA. \
-Rispondo solo e soltanto a domande riguardanti la documentazione di PagoPA DevPortal, \
-che puoi trovare sul sito: https://dev.developer.pagopa.it!\
-"""
 USE_ASYNC = True if os.getenv("CHB_ENGINE_USE_ASYNC", "True") == "True" else False,
 USE_STREAMING = True if os.getenv("CHB_ENGINE_USE_STREAMING", "False") == "True" else False
 
@@ -45,14 +40,6 @@ def get_automerging_engine(
     )
 
     memory = ChatMemoryBuffer.from_defaults(
-        chat_history=[
-            ChatMessage(
-                role = MessageRole.ASSISTANT,
-                content = PREFIX_MESSAGE
-            )
-        ],
-        chat_store=None,
-        chat_store_key="None",
         token_limit=llm.metadata.context_window - llm.max_tokens
     )
 
