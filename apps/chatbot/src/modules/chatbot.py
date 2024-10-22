@@ -16,7 +16,7 @@ from src.modules.engine import get_automerging_query_engine
 from src.modules.presidio import PresidioPII
 
 
-USE_PRESIDIO = True if os.getenv("CHB_USE_PRESIDIO", "True") == "True" else False
+USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
