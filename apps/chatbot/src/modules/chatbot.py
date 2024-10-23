@@ -33,6 +33,7 @@ class Chatbot():
 
         self.params = params
         self.prompts = prompts
+
         if USE_PRESIDIO:
             self.pii = PresidioPII(config=params["config_presidio"])
 
@@ -175,6 +176,7 @@ class Chatbot():
                     response_str = "Mi dispiace, ma non posso fornire informazioni che potrebbero essere pericolose o dannose."
                     logging.info("Gemini Safety: blocked query because retrieved DANGEROUS_CONTENT in it.")
             else:
-                logging.info(exception_str)
+                response_str = ""
+                logging.info(f"[chatbot.py] generate: exception_str = {exception_str}")
 
         return response_str
