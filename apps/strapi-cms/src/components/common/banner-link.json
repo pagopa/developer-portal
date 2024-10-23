@@ -10,9 +10,6 @@
     "title": {
       "type": "string"
     },
-    "subtitle": {
-      "type": "string"
-    },
     "content": {
       "type": "blocks"
     },

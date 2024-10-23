@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Guest chatbot message
+Fix the header in the guide page

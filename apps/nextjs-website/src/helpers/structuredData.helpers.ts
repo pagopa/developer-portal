@@ -1,6 +1,9 @@
-import { ApiPageProps } from '@/components/molecules/ApiSection/ApiSection';
+import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Product } from '@/lib/types/product';
+import { SEO } from '@/lib/types/seo';
 import { Webinar } from '@/lib/types/webinar';
 import {
   Article,
@@ -8,6 +11,7 @@ import {
   Event,
   FAQPage,
   HowTo,
+  HowToStep,
   ImageObject,
   ListItem,
   MonetaryAmount,
@@ -20,6 +24,27 @@ import {
 } from 'schema-dts';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
+
+export function productToBreadcrumb(product?: Product) {
+  const item = breadcrumbItemByProduct(product, ['overview']);
+  return {
+    name: product?.name,
+    item,
+  };
+}
+
+export function breadcrumbItemByProduct(
+  product?: Product,
+  paths?: readonly string[]
+) {
+  return product?.slug && paths
+    ? [baseUrl, product.slug, ...paths].join('/')
+    : undefined;
+}
+
+export function getItemFromPaths(paths?: readonly string[]) {
+  return paths ? [baseUrl, ...paths].join('/') : undefined;
+}
 
 export const organization: Organization = {
   '@type': 'Organization',
@@ -128,6 +153,25 @@ export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
   };
 }
 
+export function quickStartToStructuredDataHowTo(
+  quickStart: QuickStartGuidePageProps
+): WithContext<HowTo> {
+  const steps: readonly HowToStep[] = quickStart.steps
+    ? quickStart.steps.map((step) => ({
+        '@type': 'HowToStep',
+        text: step.title,
+      }))
+    : [];
+  return makeHowTo({
+    name: quickStart.seo?.metaTitle,
+    description: quickStart.abstract?.description,
+    image:
+      quickStart.seo?.metaImage?.data?.attributes &&
+      mediaToImageObject(quickStart.seo.metaImage.data.attributes),
+    step: steps,
+  });
+}
+
 const defaultOffers: Offer = {
   '@type': 'Offer',
   price: '0',
@@ -181,17 +225,40 @@ export function makeSoftwareApplication(
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api: ApiPageProps
-): WithContext<SoftwareApplication> {
-  return makeSoftwareApplication({
-    name: api.specURLsName,
-    url: `${baseUrl}/${api.product.slug}/api/${api.apiSlug}`,
-  });
+  api?: ApiDataPageProps
+): WithContext<SoftwareApplication> | undefined {
+  return (
+    api &&
+    makeSoftwareApplication({
+      name: api.specURLsName,
+      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
+    })
+  );
 }
 
-export function makeArticle(article: Omit<Article, '@type'>): Article {
+function makeArticle(article: Omit<Article, '@type'>): Article {
   return {
     '@type': 'Article',
     ...article,
   };
+}
+
+export function convertSeoToStructuredDataArticle(
+  seo?: SEO
+): WithContext<Article> | undefined {
+  return (
+    seo && {
+      '@context': 'https://schema.org',
+      ...makeArticle({
+        name: seo?.metaTitle,
+        description: seo?.metaDescription,
+        url: seo?.canonicalURL,
+        author: organization,
+        about: seo?.keywords,
+        image:
+          seo?.metaImage?.data?.attributes &&
+          mediaToImageObject(seo.metaImage.data.attributes),
+      }),
+    }
+  );
 }

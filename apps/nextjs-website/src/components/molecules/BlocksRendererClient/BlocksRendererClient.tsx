@@ -4,10 +4,10 @@ import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
-import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
 import { SITE_HEADER_HEIGHT } from '../SiteHeader/SiteHeader';
 import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
 import { ReactElement } from 'react';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -54,7 +54,7 @@ const BlocksRendererClient = ({
         image: ({ image }) => (
           <Image
             style={{
-              marginBottom: 5,
+              marginBottom: 40,
               ...imageStyle,
             }}
             src={image.url}

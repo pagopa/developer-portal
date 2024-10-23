@@ -1,11 +1,16 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { baseUrl } from '@/config';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getApiDataListPages, getProduct, getProductsSlugs } from '@/lib/api';
+import { getApiDataListPages, getProductsSlugs } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
@@ -38,19 +43,28 @@ export async function generateMetadata({
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
-  const product = await getProduct(params.productSlug);
 
-  if (apiDataListPageProps && product) {
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(apiDataListPageProps?.product),
+      {
+        name: apiDataListPageProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api']),
+      },
+    ],
+    seo: apiDataListPageProps?.seo,
+  });
+
+  if (apiDataListPageProps) {
     return (
-      <>
-        <ProductLayout
-          product={product}
-          path={product.path.concat('/api')}
-          showBreadcrumbs
-        >
-          <ApiDataListTemplate {...apiDataListPageProps} />
-        </ProductLayout>
-      </>
+      <ProductLayout
+        product={apiDataListPageProps.product}
+        path={apiDataListPageProps.product.path.concat('/api')}
+        showBreadcrumbs
+        structuredData={structuredData}
+      >
+        <ApiDataListTemplate {...apiDataListPageProps} />
+      </ProductLayout>
     );
   }
 };

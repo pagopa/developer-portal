@@ -97,7 +97,7 @@ export const spaceToPrefixMap = pipe(
 /**
  * Contains the mapping between the docs.pagopa.it url and the developer portal url.
  */
-export const urlReplacesMap: { readonly [url: string]: string } = {
+export const staticUrlReplaceMap: { readonly [url: string]: string } = {
   // App IO
   'https://docs.pagopa.it/io-guida-tecnica-1.3/':
     '/app-io/guides/io-guida-tecnica/v1.3',
@@ -149,6 +149,8 @@ export const urlReplacesMap: { readonly [url: string]: string } = {
   'https://docs.pagopa.it/io-come-aderire': '/app-io/guides/accordi-adesione',
   'https://docs.pagopa.it/i-modelli-dei-servizi':
     '/app-io/guides/modelli-servizi',
+  'https://docs.pagopa.it/v1.0-catalogo-dei-servizi':
+    '/app-io/guides/v1.0-catalogo-dei-servizi',
 
   // Firma con IO
   'https://docs.pagopa.it/manuale-operativo-di-firma-con-io':

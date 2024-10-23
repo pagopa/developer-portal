@@ -12,8 +12,15 @@ import {
 import { ApiDataParams } from '@/lib/types/apiDataParams';
 import PageNotFound from '@/app/not-found';
 import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  convertApiToStructuredDataSoftwareApplication,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
-export type ApiPageProps = {
+export type ApiDataPageProps = {
+  readonly title?: string;
   readonly product?: Product;
   readonly apiDataSlug: string;
   readonly specURLsName?: string;
@@ -50,14 +57,35 @@ export const generateMetadata = async (
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
+  // TODO: Remove this get during product refactor
   const product = await getProduct(params.productSlug);
-  if (apiDataProps && product) {
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(apiDataProps?.product),
+      {
+        name: apiDataProps?.seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, [
+          'api',
+          `${apiDataProps?.apiDataSlug}`,
+        ]),
+      },
+    ],
+    seo: apiDataProps?.seo,
+    things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
+  });
+
+  const path = apiDataProps?.product?.path + '/api/' + params.apiDataSlug;
+
+  if (apiDataProps && apiDataProps.product && product) {
     return (
       <ProductLayout
         product={product}
-        path={product.path.concat('/api')}
-        bannerLinks={product.bannerLinks || apiDataProps.bannerLinks}
+        path={path}
+        paths={[{ name: apiDataProps.title || '', path: path }]}
+        bannerLinks={apiDataProps.bannerLinks}
         showBreadcrumbs
+        structuredData={structuredData}
       >
         <ApiSection
           apiSlug={params.apiDataSlug}

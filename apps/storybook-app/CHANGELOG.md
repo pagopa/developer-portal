@@ -1,5 +1,13 @@
 # storybook-app
 
+## 0.13.0
+
+### Minor Changes
+
+- 366c864: Add chatbot history list component
+- 366c864: Add chatobot layout component
+- bb1a614: Add chatbot chat history detail layout
+
 ## 0.12.0
 
 ### Minor Changes

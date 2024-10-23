@@ -1,26 +1,21 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  Box,
   FormControl,
+  formLabelClasses,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Stack,
-  Typography,
-  formLabelClasses,
   styled,
   useTheme,
-  Box,
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
-import Link from 'next/link';
-import { ButtonNaked } from '@pagopa/mui-italia';
-import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 
 /* TODO: Workaround due to error in SSR of elements package:
@@ -64,7 +59,7 @@ const ApiSection = ({
   specURLs,
   specURLsName,
 }: ApiPageProps) => {
-  const { palette, spacing } = useTheme();
+  const { palette } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 

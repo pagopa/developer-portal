@@ -33,6 +33,11 @@
       },
       "type": "text"
     },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
     "icon": {
       "type": "media",
       "multiple": false,
@@ -77,6 +82,17 @@
         }
       },
       "component": "shared.seo"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.banner-link",
+      "max": 2
     }
   }
 }

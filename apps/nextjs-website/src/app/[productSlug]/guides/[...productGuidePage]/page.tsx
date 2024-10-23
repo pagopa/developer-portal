@@ -4,11 +4,7 @@ import ProductLayout, {
 import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -17,7 +13,13 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import {
+  breadcrumbItemByProduct,
+  convertSeoToStructuredDataArticle,
+  productToBreadcrumb,
+} from '@/helpers/structuredData.helpers';
 
 type Params = {
   productSlug: string;
@@ -75,8 +77,8 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-
-  const { product, page, guide, version, versions, source, bannerLinks } =
+  const urlReplaceMap = await getUrlReplaceMapProps();
+  const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
     ...page,
@@ -92,15 +94,31 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
     },
   };
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: seo?.metaTitle,
+        item: breadcrumbItemByProduct(product, [
+          'guides',
+          ...(params?.productGuidePage || []),
+        ]),
+      },
+    ],
+    seo: seo,
+    things: [convertSeoToStructuredDataArticle(seo)],
+  });
 
   return (
     <ProductLayout
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}
+      structuredData={structuredData}
     >
       <GitBookTemplate
         menuName={props.guide.name}

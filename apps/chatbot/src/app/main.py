@@ -6,6 +6,7 @@ import os
 import uuid
 import boto3
 import datetime
+import time
 import jwt
 from typing import Annotated
 from boto3.dynamodb.conditions import Key
@@ -18,30 +19,33 @@ from src.modules.chatbot import Chatbot
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
-
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+
+chatbot = Chatbot(params, prompts)
 
 
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
 
-if (os.getenv('environment', 'dev') == 'local'):
-  profile_name='dummy'
-  endpoint_url='http://localhost:8000'
-  region_name = AWS_DEFAULT_REGION
+class QueryFeedback(BaseModel):
+  badAnswer: bool
 
 boto3_session = boto3.session.Session(
-  profile_name = locals().get('profile_name', None),
-  region_name=locals().get('region_name', None)
+  region_name=AWS_DEFAULT_REGION
 )
 
-dynamodb = boto3_session.resource(    
-  'dynamodb',
-  endpoint_url=locals().get('endpoint_url', None),
-  region_name=locals().get('region_name', None),
-)
+if (os.getenv('environment', 'dev') == 'local'):
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
+    region_name=AWS_DEFAULT_REGION
+  )
+else:
+  dynamodb = boto3_session.resource(    
+    'dynamodb',
+    region_name=AWS_DEFAULT_REGION
+  )
 
 table_queries = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
@@ -66,24 +70,26 @@ async def healthz ():
 @app.post("/queries")
 async def query_creation (
   query: Query, 
-  authorizationHeader: Annotated[str | None, Header()] = None
+  authorization: Annotated[str | None, Header()] = None
 ):
-  userId = current_user_id(authorizationHeader)
-  session = find_or_create_session(userId)
-
+  now = datetime.datetime.now(datetime.UTC)
+  userId = current_user_id(authorization)
+  session = find_or_create_session(userId, now=now)
   answer = chatbot.generate(query.question)
 
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
   if query.queriedAt is None:
-    queriedAt = now
+    queriedAt = now.isoformat()
+  else:
+    queriedAt = query.queriedAt
 
   body = {
     "id": f'{uuid.uuid4()}',
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
-    "createdAt": now,
-    "queriedAt": queriedAt
+    "createdAt": now.isoformat(),
+    "queriedAt": queriedAt,
+    "badAnswer": False
   }
 
   try:
@@ -93,11 +99,13 @@ async def query_creation (
   return body
 
 
-def current_user_id(authorizationHeader: str):
-  if authorizationHeader is None:
-    return None
+def current_user_id(authorization: str):
+  if authorization is None:
+    # TODO remove fake user and return None
+    # return None
+    return '-'
   else:
-    token = authorizationHeader.split(' ')[1]
+    token = authorization.split(' ')[1]
     decoded = jwt.decode(
       token, 
       algorithms=["RS256"], 
@@ -106,82 +114,177 @@ def current_user_id(authorizationHeader: str):
     return decoded['cognito:username']
 
 
-def find_or_create_session(userId: str):
+def find_or_create_session(userId: str, now: datetime.datetime):
   # TODO: return if userId is None
   if userId is None:
     userId = '-'
-  now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-  # TODO: calculate title
-  # TODO: find last session based on SESSION_MAX_DURATION_MINUTES
-  # TODO: if it's None, create it.
-  body = {
-    "id": '1',#f'{uuid.uuid4()}',
-    "title": "last session",
-    "userId": userId,
-    "createdAt": now
-  }
-  try:
-    table_sessions.put_item(Item = body)
-  except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
-
-  return body
-
   
-@app.get("/queries/{id}")
-async def query_fetching(id: str):
-  # TODO: dynamoDB integration
-  body = {
-    "id": id,
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "createdAt": "",
-    "queriedAt": ""
-  }
+  SESSION_MAX_DURATION_DAYS = float(os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1'))
+  datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+  startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
+  # trovare una sessione con createdAt > datetimeLimit
+  try:
+    dbResponse = table_sessions.query(
+      KeyConditionExpression=Key("userId").eq(userId) &
+        Key('createdAt').gt(startOfDay.isoformat()),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False,
+      Limit=1
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[find_or_create_session] userId: {userId}, error: {e}")
+  
+  items = dbResponse.get('Items', [])
+  if len(items) == 0:
+    body = {
+      "id": f'{uuid.uuid4()}',
+      "title": now.strftime("%Y-%m-%d"),
+      "userId": userId,
+      "createdAt": now.isoformat()
+    }
+    try:
+      table_sessions.put_item(Item = body)
+    except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
+
+  else:
+    body = items[0]
+
   return body
+
+
+@app.get("/queries")
+async def queries_fetching(
+  sessionId: str | None = None,
+  page: int | None = 1,
+  pageSize: int | None = 10,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  if sessionId is None:
+    sessionId = last_session_id(userId)
+
+  if sessionId is None:
+    result = []
+  else:
+    try:
+      dbResponse = table_queries.query(
+        KeyConditionExpression=Key('sessionId').eq(sessionId),
+        IndexName='QueriesByCreatedAtIndex',
+        ScanIndexForward=True
+      )
+    except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
+    result = dbResponse.get('Items', [])
+  
+  return result
+
 
 # retrieve sessions of current user
 @app.get("/sessions")
-async def sessions_fetching():
-  # TODO: dynamoDB integration
-  # TODO: get current user from cognito
-  body = [
-    {
-      "id": "",
-      "title": "",
-      "createdAt": ""
-    }
-  ]
-  return body
+async def sessions_fetching(
+  page: int = 1,
+  pageSize: int = 10,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
 
-@app.get("/queries")
-async def queries_fetching(sessionId: str | None = None):
-  if sessionId is None:
-    # TODO: retrieve last user session
-    # sessionId = lastSessionId(userId)
-    sessionId = '1'
   try:
-    db_response = table_queries.query(
-      KeyConditionExpression=Key("sessionId").eq(sessionId)
+    dbResponse = table_sessions.query(
+      KeyConditionExpression=Key("userId").eq(userId),
+      IndexName='SessionsByCreatedAtIndex',
+      ScanIndexForward=False
     )
   except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[queries_fetching] error: {e}")
-  return db_response['Items']
-
-@app.patch("/queries/{id}")
-async def query_feedback (badAnswer: bool):
-  # TODO: dynamoDB integration
-  body = {
-    "id": "",
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "badAnswer": badAnswer,
-    "createdAt": "",
-    "queriedAt": ""
+    raise HTTPException(status_code=422, detail=f"[sessions_fetching] userId: {userId}, error: {e}")
+  
+  # TODO: pagination
+  items = dbResponse.get('Items', [])
+  result = {
+    "items": items,
+    "page": 1,
+    "pages": 1,
+    "size": len(items),
+    "total": len(items),
   }
+  return result
+
+@app.delete("/sessions/{id}")
+async def session_delete(
+  id: str,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  body = {
+    "id": id,
+  }
+  try:
+    dbResponse_queries = table_queries.query(
+      KeyConditionExpression=Key("sessionId").eq(id)
+    )
+    # TODO: use batch writer
+#    with table_sessions.batch_writer() as batch:
+    for query in dbResponse_queries['Items']:
+      table_queries.delete_item(
+        Key={
+          "id": query["id"],
+          "sessionId": id
+        }
+      )
+
+    table_sessions.delete_item(
+      Key={
+        "id": id,
+        "userId": userId,
+      }
+    )
+
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}")
+  
   return body
+
+
+def last_session_id(userId: str):
+  dbResponse = table_sessions.query(
+    IndexName='SessionsByCreatedAtIndex',
+    KeyConditionExpression=Key('userId').eq(userId),
+    ScanIndexForward=False,
+    Limit=1
+  )
+  items = dbResponse.get('Items', [])
+  return items[0].get('id', None) if items else None
+
+@app.patch("/sessions/{sessionId}/queries/{id}")
+async def query_feedback (
+  id: str,
+  sessionId: str,
+  query: QueryFeedback,
+  authorization: Annotated[str | None, Header()] = None
+):
+
+  try:
+    dbResponse = table_queries.update_item(
+      Key={
+        'sessionId': sessionId,
+        'id': id
+      },
+      UpdateExpression='SET #badAnswer = :badAnswer',
+      ExpressionAttributeNames={
+        '#badAnswer': 'badAnswer'
+      },
+      ExpressionAttributeValues={
+        ':badAnswer': query.badAnswer
+      },
+      ReturnValues='ALL_NEW'
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[query_feedback] id: {id}, sessionId: {sessionId}, error: {e}")
+
+  if 'Attributes' in dbResponse:
+    return dbResponse.get('Attributes')
+  else:
+    raise HTTPException(status_code=404, detail="Record not found")
 
 handler = mangum.Mangum(app, lifespan="off")
 

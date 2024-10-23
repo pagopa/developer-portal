@@ -7,6 +7,8 @@ import { baseUrl } from '@/config';
 import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { getSolutionsProps } from '@/lib/cmsApi';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 type Params = {
   solutionSlug: string;
@@ -40,7 +42,26 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Params }) => {
   const solution = await getSolution(params?.solutionSlug);
 
-  return <SolutionTemplate {...solution} />;
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: 'Solutions',
+        item: getItemFromPaths(['solutions']),
+      },
+      {
+        name: solution.seo?.metaTitle,
+        item: getItemFromPaths(['solutions', solution.slug]),
+      },
+    ],
+    seo: solution.seo,
+  });
+
+  return (
+    <>
+      {structuredData}
+      <SolutionTemplate {...solution} />
+    </>
+  );
 };
 
 export default Page;

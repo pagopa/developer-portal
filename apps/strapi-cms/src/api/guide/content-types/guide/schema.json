@@ -32,7 +32,8 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "listItems": {
       "displayName": "ListItem",
@@ -99,6 +100,17 @@
         }
       },
       "component": "shared.seo"
+    },
+    "bannerLinks": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.banner-link",
+      "max": 2
     }
   }
 }

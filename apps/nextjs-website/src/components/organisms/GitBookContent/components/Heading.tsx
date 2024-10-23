@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import { ReactNode } from 'react';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/GuideMenu/GuideMenu';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
 const asVariant = (level: number) => {
   switch (level) {

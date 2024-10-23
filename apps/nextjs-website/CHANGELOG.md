@@ -1,5 +1,44 @@
 # nextjs-website
 
+## 4.10.0
+
+### Minor Changes
+
+- 891ba3e: Add bannerLinks attribute to all product pages codecs
+- c417ceb: Add product's bannerLinks fallback to all product pages
+- 41fe437: Add a new URL to be mapped in products.ts file
+
+### Patch Changes
+
+- a54d147: Fix paragraph margins and WordBreak setting in ckEditor tables
+- 80e3cae: Fix style for list items in ckEditor content
+- a5ef8c4: Set conditional visibility of Products section in SolutionTemplate
+- 6d2f8b8: Add product to ApiData codec
+- 5852b22: Add the bannerLinks attribute to the product codec and refactor its relationships
+
+## 4.9.0
+
+### Minor Changes
+
+- 803e41e: Add links to headings created with CKEditor in the in-page menu of Tutorial pages
+- fda6c3d: Add SEO to codecs and generate metadata in pages
+- 366c864: Add chatbot history list component
+- 366c864: Add chatobot layout component
+- 1e9b58d: Add structured data to alla pages
+- b278f87: Guest chatbot message
+- bb1a614: Add chatbot chat history detail layout
+
+### Patch Changes
+
+- 3b81539: Set font size to be 16px on bold and italic sections
+- 86ffbd6: Add padding and margin to mobile version in ecosystem cards
+- e2ce39e: Add margin bottom to block content images
+- af68449: Add wordwrap break word to links
+- 695f025: Fix product layout path for Api page
+- e564dad: Remove input text and history button if user not logged in
+- 86ffbd6: Fix ecosystem and card grid for correct card box shadows
+- f1092ae: Add api title to breadcrumbs
+
 ## 4.8.0
 
 ### Minor Changes

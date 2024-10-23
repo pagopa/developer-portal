@@ -1,5 +1,15 @@
+import os
 import boto3
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
+
 
 def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     """
@@ -9,7 +19,13 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     :param default: The default value to return if the parameter is not found.
     :return: The value of the requested parameter.
     """
-    ssm = boto3.client('ssm')
+
+    ssm = boto3.client(
+        "ssm",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_DEFAULT_REGION
+    )
     logging.debug(f"Getting parameter {name} from SSM")
     try: 
         # Get the requested parameter
@@ -17,9 +33,9 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
             Name=name,
             WithDecryption=True
         )
-    except boto3.botocore.errorfactory.ParameterNotFound:
+    except ssm.exceptions.ParameterNotFound:
         logging.warning(f"Parameter {name} not found in SSM, returning default")
         return default
     
     logging.debug(f"Parameter {name} retrieved from SSM")
-    return response['Parameter']['Value']
+    return response["Parameter"]["Value"]

@@ -3,8 +3,9 @@ import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
 import { quickStartGuides } from '@/_contents/products';
 import { Part } from '../../types/part';
 import { Step } from '../../types/step';
-import { partFromStrapiPart } from '../codecs/PartCodec';
 import { mergeProductWithStaticContent } from './makeProducts';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -18,7 +19,7 @@ function makeStepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
     parts: item.attributes.parts
-      .map((part) => partFromStrapiPart(part))
+      .map((part) => makePartProps(part))
       .filter((part) => !!part) as ReadonlyArray<Part>,
   };
 }
@@ -44,6 +45,12 @@ export function makeQuickStartGuidesProps(
           makeStepFromQuickstartGuideItems(item)
         ),
         path: `/${product.slug}/quick-start`,
+        bannerLinks:
+          quickStart.attributes.bannerLinks.length > 0
+            ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+            : quickStart.attributes.product.data.attributes.bannerLinks?.map(
+                makeBannerLinkProps
+              ),
         seo: quickStart.attributes.seo,
       };
     }),
