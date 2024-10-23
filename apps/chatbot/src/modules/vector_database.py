@@ -13,10 +13,6 @@ from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
 from chromedriver_py import binary_path
 
-from bs4 import BeautifulSoup
-from selenium import webdriver
-import html2text
-
 from llama_index.core import (
     Settings,
     Document,
