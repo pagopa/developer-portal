@@ -18,6 +18,20 @@ module "dynamodb_chatbot_queries" {
       name = "sessionId"
       type = "S"
     },
+    {
+      name = "createdAt"
+      type = "S"
+    },
+  ]
+
+  # LSI for query on created_at
+  local_secondary_indexes = [
+    {
+      name            = "QueriesByCreatedAtIndex"
+      hash_key        = "userId"
+      range_key       = "createdAt"
+      projection_type = "ALL"
+    }
   ]
 }
 

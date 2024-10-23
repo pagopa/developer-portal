@@ -1,8 +1,8 @@
-import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
 import * as Either from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
+import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
 import { productJson } from './fixtures/product';
 import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
-import { pipe } from 'fp-ts/lib/function';
 import { mediaRasterJson } from './fixtures/media';
 
 const strapiResponse = {
@@ -73,7 +73,7 @@ describe('UrlReplaceMapCodec', () => {
     const urlReplaceMap = makeUrlReplaceMap(result!);
 
     expect(urlReplaceMap).toEqual({
-      aaaa: 'firma-con-io/guides/aaaa/2',
+      aaaa: '/firma-con-io/guides/aaaa/2',
     });
   });
 });

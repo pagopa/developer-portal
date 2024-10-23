@@ -35,17 +35,18 @@ const ChatbotLayout = ({
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+  const ref = React.useRef<HTMLElement | undefined>();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
+    undefined
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setAnchorEl(ref.current);
     return null;
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(undefined);
   };
 
   const open = Boolean(anchorEl);
@@ -53,6 +54,7 @@ const ChatbotLayout = ({
 
   return (
     <Box
+      ref={ref}
       sx={{
         position: 'fixed',
         bottom: { xs: '1rem', md: '2rem' },

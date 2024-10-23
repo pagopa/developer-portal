@@ -4,11 +4,7 @@ import ProductLayout, {
 import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import {
-  gitBookPagesWithTitle,
-  spaceToPrefixMap,
-  urlReplacesMap,
-} from '@/_contents/products';
+import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -17,7 +13,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -81,7 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const { product, page, guide, version, versions, source, bannerLinks, seo } =
     guideProps;
   const props: ProductGuidePageProps = {
@@ -98,7 +94,7 @@ const Page = async ({ params }: { params: Params }) => {
       assetsPrefix: source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix: spaceToPrefixMap,
-      urlReplaces: urlReplacesMap,
+      urlReplaces: urlReplaceMap,
     },
   };
 
