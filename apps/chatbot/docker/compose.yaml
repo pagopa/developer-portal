@@ -9,6 +9,14 @@ services:
       - ..:/app
       - ./files/.aws:/root/.aws
       - ../../nextjs-website/out:/app/build-devp/out
+#  api-image:
+#    image: fastapi-local
+#    ports:
+#      - "8080:8080"
+#    env_file:
+#      - ../.env  # The path to the .env file
+#    volumes:
+#      - ~/.aws:/root/.aws
     depends_on:
       redis:
         condition: service_started

@@ -13,6 +13,9 @@ from selenium.webdriver.chrome.service import Service
 from typing import List, Tuple
 from chromedriver_py import binary_path
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d97640a4a7742a76429e073afe92c8b0cf30ce5e
 
 from bs4 import BeautifulSoup
 from selenium import webdriver

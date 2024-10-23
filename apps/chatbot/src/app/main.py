@@ -6,7 +6,6 @@ import os
 import uuid
 import boto3
 import datetime
-import time
 import jwt
 from typing import Annotated
 from boto3.dynamodb.conditions import Key
