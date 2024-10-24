@@ -1,5 +1,11 @@
 # chatbot
 
+## 3.1.0
+
+### Minor Changes
+
+- cee4135: "Add Presidio to detect and mask PII entities"
+
 ## 3.0.0
 
 ### Major Changes
