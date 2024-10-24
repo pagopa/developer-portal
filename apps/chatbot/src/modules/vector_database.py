@@ -8,10 +8,10 @@ import hashlib
 import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.service import Service
+# from chromedriver_py import binary_path
 from typing import List, Tuple
-from chromedriver_py import binary_path
 
 from llama_index.core import (
     Settings,
@@ -32,7 +32,7 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 from dotenv import load_dotenv
 
@@ -50,7 +50,7 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
 INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 REDIS_SCHEMA = IndexSchema.from_dict({
-    "index": {"name": REDIS_INDEX_NAME, "prefix": "index/vector"},
+    "index": {"name": f"{REDIS_INDEX_NAME}_{INDEX_ID}", "prefix": f"index_{INDEX_ID}/vector"},
     "fields": [
         {"name": "id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
@@ -162,18 +162,18 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-# FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
-#        if file in dynamic_htmls:
-        if 6 == 9:
+        # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
+        if file in dynamic_htmls:
+        # if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
 
             # svc = webdriver.ChromeService(executable_path=binary_path)
-            service = Service(executable_path=binary_path)
-            options = webdriver.ChromeOptions()
-            options.add_argument('--headless=new')
-            options.add_argument('--no-sandbox')
-            options.add_argument('user-agent=fake-useragent')
-            driver = webdriver.Chrome(service=service, options=options)
+            # service = Service(executable_path=binary_path)
+            # options = webdriver.ChromeOptions()
+            # options.add_argument('--headless=new')
+            # options.add_argument('--no-sandbox')
+            # options.add_argument('user-agent=fake-useragent')
+            driver = webdriver.Chrome() #(service=service, options=options)
 
             driver.get(url)
             time.sleep(5)
@@ -210,8 +210,8 @@ def create_documentation(
                 }
             ))
 
-    logging.info(f"Number of documents with content: {len(documents)}")
-    logging.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logging.info(f"[vector_database.py] Number of documents with content: {len(documents)}")
+    logging.info(f"[vector_database.py] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
@@ -266,7 +266,8 @@ def build_automerging_index_redis(
         storage_context=storage_context
     )
     automerging_index.set_index_id(INDEX_ID)
-    logging.info("Created vector index successfully and stored on Redis.")
+    put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), INDEX_ID)
+    logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
 
     return automerging_index
 

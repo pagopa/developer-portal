@@ -136,17 +136,17 @@ class PresidioPII():
                     lang_list.append(detected_lang.lang)
 
             if not lang_list:
-                logging.warning("No detected language.")
+                logging.warning("[presidio.py] No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
                 lang = lang_list[0]           
         except:
-            logging.warning("No detected language.")
+            logging.warning("[presidio.py] No detected language.")
             lang = "it"
 
-        logging.info(f"Set presidio to detect PII in {lang} language.")
+        logging.info(f"[presidio.py] Set presidio to detect PII in {lang} language.")
         return lang
 
 
