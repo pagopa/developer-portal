@@ -75,7 +75,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
     things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
   });
 
-  const path = apiDataProps?.product?.path + '/api/' + params.apiDataSlug;
+  const path = apiDataProps?.product?.slug + '/api/' + params.apiDataSlug;
 
   if (apiDataProps && apiDataProps.product && product) {
     return (

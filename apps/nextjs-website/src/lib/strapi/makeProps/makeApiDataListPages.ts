@@ -1,22 +1,25 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { mergeProductWithStaticContent } from './makeProducts';
 
 export function makeApiDataListPagesProps(
   apiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return apiDataListPages.data.map(({ attributes }) => {
-    const product = mergeProductWithStaticContent(
-      attributes.product.data.attributes
-    );
     return {
       ...attributes,
       hero: {
         title: attributes.title,
         subtitle: attributes.description || '',
       },
-      product,
+      product: {
+        ...attributes.product.data.attributes,
+        description: '',
+        bannerLinks:
+          attributes.product.data.attributes.bannerLinks?.map(
+            makeBannerLinkProps
+          ) || [],
+      },
       apiRestDetailSlugs: attributes.apiData.data
         .map(({ attributes }) => attributes.apiRestDetail?.slug)
         .filter(Boolean) as readonly string[],

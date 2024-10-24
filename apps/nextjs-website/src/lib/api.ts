@@ -1,5 +1,4 @@
-import { products, tutorials } from '@/_contents/products';
-import { Product, ProductSubpathsKeys } from './types/product';
+import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
@@ -19,8 +18,9 @@ import {
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { makeSolution } from '@/_contents/makeDocs';
+import { GuideDefinition, makeSolution } from '@/_contents/makeDocs';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { get } from 'http';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -42,15 +42,49 @@ export async function getGuide(
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const props = manageUndefined(
-    guidesProps.find(({ page }) => page.path === path)
+  const guideDefinition: GuideDefinition = manageUndefined(
+    guidesProps.find(
+      (guideDefinition) =>
+        guideDefinition.product.slug === productSlug &&
+        guideDefinition.guide.slug === guidePath
+    )
   );
 
   return {
-    ...props,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
+    product: guideDefinition.product,
+    page: {
+      path: path,
+      title: guideDefinition.guide.name,
+      menu: guideDefinition.guide.name,
+      body: '',
+      isIndex: false,
+    },
+    guide: {
+      name: guideDefinition.guide.name,
+      path: path,
+    },
+    version: {
+      main: guideDefinition.versions.find((v) => v.main)?.main ?? false,
+      name: guideDefinition.versions.find((v) => v.main)?.version ?? '',
+      path: guideDefinition.versions.find((v) => v.main)?.dirName ?? '',
+    },
+    versions: guideDefinition.versions.map((v) => ({
+      name: v.version,
+      main: v.main ?? false,
+      path: v.dirName,
+    })),
+    source: {
+      pathPrefix: '',
+      assetsPrefix: '',
+      dirPath: '',
+      spaceId: '',
+    },
+    bannerLinks: guideDefinition.bannerLinks,
+    products: await getProducts(),
+    pathPrefix: '',
+    assetsPrefix: '',
+    redirect: false,
+    seo: guideDefinition.seo,
   };
 }
 
@@ -77,16 +111,8 @@ export async function getOverview(productSlug?: string) {
   );
 }
 
-export function getProductsSlugs(
-  page?: ProductSubpathsKeys
-): readonly string[] {
-  return products
-    .filter((p) => !page || Object.keys(p.subpaths).includes(page))
-    .map(({ slug }) => slug);
-}
-
 export async function getProducts(): Promise<readonly Product[]> {
-  return [...products];
+  return await getProductsProps();
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
@@ -99,7 +125,7 @@ export async function getQuickStartGuide(productSlug?: string) {
 }
 
 export async function getStrapiTutorial(
-  productSlug?: string,
+  productSlug: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
@@ -113,33 +139,14 @@ export async function getStrapiTutorial(
     ({ path }) => path === tutorialPath
   );
 
+  const product = await getProduct(productSlug);
+
   return tutorialFromStrapi
     ? {
         ...tutorialFromStrapi,
-        product: products.find(({ slug }) => slug === productSlug),
+        product,
       }
     : undefined;
-}
-
-export async function getStaticTutorial(
-  productSlug?: string,
-  productTutorialPage?: ReadonlyArray<string>
-) {
-  const tutorialPath = productTutorialPage?.join('/');
-  const path = `/${productSlug}/tutorials/${tutorialPath}`;
-  const props = manageUndefined(
-    tutorials.find(({ page }) => page.path === path)
-  );
-
-  return {
-    ...props,
-    product: props.product,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
-    bannerLinks: props.bannerLinks,
-    relatedLinks: props.relatedLinks,
-  };
 }
 
 export async function getTutorialPaths() {
@@ -148,16 +155,7 @@ export async function getTutorialPaths() {
     slug: path.split('/')[1],
     tutorialPaths: [path.split('/').at(-1)],
   }));
-
-  const tutorialPaths = tutorials.map((tutorial) => ({
-    slug: tutorial.product.slug,
-    tutorialPaths: tutorial.page.path
-      .split('/')
-      // the filter is to remove the first 3 elements of the path which are
-      // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
-      .filter((p, index) => index > 2),
-  }));
-  return [...tutorialPaths, ...tutorialPathsFromCMS];
+  return tutorialPathsFromCMS;
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {

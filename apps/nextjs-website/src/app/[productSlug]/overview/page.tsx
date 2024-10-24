@@ -1,4 +1,4 @@
-import { getOverview } from '@/lib/api';
+import { getOverview, getProduct } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
@@ -26,6 +26,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { Path } from '@/lib/types/path';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -115,7 +116,7 @@ export async function generateMetadata(
     title: product.name,
     description: product.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url ?? '',
   });
 }
 
@@ -124,7 +125,6 @@ const OverviewPage = async ({ params }: ProductParams) => {
     hero,
     startInfo,
     feature,
-    product,
     path,
     tutorials,
     postIntegration,
@@ -133,6 +133,8 @@ const OverviewPage = async ({ params }: ProductParams) => {
     seo,
   } = await getOverview(params.productSlug);
   const { overview } = translations;
+
+  const product = await getProduct(params.productSlug);
 
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
@@ -175,16 +177,18 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product.subpaths.tutorials && tutorials && (
+      {product?.tutorial_list_page?.data && tutorials && (
         <TutorialsOverview
           title={tutorials.title || overview.tutorial.title}
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
-          tutorialPath={product.subpaths.tutorials}
+          tutorialPath={
+            { path: `${product.slug}/tutorials`, name: 'tutorials' } as Path
+          }
           tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
-      {product.subpaths.guides && postIntegration && (
+      {product?.guide_list_page?.data && postIntegration && (
         <PostIntegration
           title={postIntegration.title || overview.postIntegration.title}
           subtitle={postIntegration.subtitle}

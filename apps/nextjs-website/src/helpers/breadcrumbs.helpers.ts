@@ -6,9 +6,6 @@ export function productPageToBreadcrumbs(
   path?: string,
   paths?: readonly Path[]
 ): readonly BreadcrumbSegment[] {
-  const subpath = Object.entries(product.subpaths)
-    .filter(([, subpath]) => path?.includes(subpath.path))
-    .map(([, subpath]) => subpath);
   return [
     {
       name: 'home',
@@ -17,9 +14,8 @@ export function productPageToBreadcrumbs(
     },
     {
       name: product.name,
-      path: product.subpaths.overview.path,
+      path: product.slug + '/overview',
     },
-    ...subpath,
     ...(paths || []),
   ];
 }
