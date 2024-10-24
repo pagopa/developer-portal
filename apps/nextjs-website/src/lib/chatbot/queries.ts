@@ -16,10 +16,7 @@ export const ChatbotQueriesCodec = t.array(QueryCodec);
 
 export type ChatbotQueries = t.TypeOf<typeof ChatbotQueriesCodec>;
 
-export type QueryInput = Pick<
-  RemoteQuery,
-  'sessionId' | 'question' | 'queriedAt'
->;
+export type QueryInput = Pick<RemoteQuery, 'question' | 'queriedAt'>;
 
 export type Answer = Pick<RemoteQuery, 'answer' | 'createdAt'>;
 

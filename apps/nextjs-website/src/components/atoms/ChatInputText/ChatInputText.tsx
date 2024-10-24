@@ -67,6 +67,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
       }}
     >
       <InputBase
+        inputRef={(input) => input && input.focus()}
         fullWidth
         disabled={sendDisabled}
         placeholder={t('chatBot.writeNewMessagePlaceholder')}
