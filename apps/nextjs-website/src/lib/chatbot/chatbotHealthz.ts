@@ -3,11 +3,7 @@ import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import * as E from 'fp-ts/lib/Either';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
-
-//TODO - Remove this makeError when CAI-84 is merged on main
-const makeError = ({ status, statusText }: Response) => {
-  return new Error(`${status} - ${statusText}`);
-};
+import { makeError } from './chatbotSessions';
 
 export const getHealthz = () =>
   pipe(
