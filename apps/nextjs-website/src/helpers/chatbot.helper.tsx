@@ -62,6 +62,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       .then((response) => {
         setIsAwaitingResponse(false);
         setQueries([...queries, response]);
+        setChatbotError(null);
       })
       .catch(() => {
         setIsAwaitingResponse(false);
