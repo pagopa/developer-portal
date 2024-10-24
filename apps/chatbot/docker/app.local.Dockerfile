@@ -18,4 +18,10 @@ RUN poetry install
 
 COPY . .
 
+RUN python -m spacy download it_core_news_md
+RUN python -m spacy download en_core_web_md
+
+#RUN python ./scripts/nltk_download.py
+#RUN python ./scripts/spacy_download.py
+
 CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]
