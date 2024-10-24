@@ -3,17 +3,21 @@ import re
 import logging
 from typing import Union, Tuple
 
-
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 )
 
-from src.modules.models import get_llm, get_embed_model
+from src.modules.models import get_llm, get_embed_model, PROVIDER
 from src.modules.vector_database import load_automerging_index_redis, REDIS_KVSTORE, INDEX_ID
 from src.modules.engine import get_automerging_query_engine
+from src.modules.guardrail import safety_check_aws
 from src.modules.presidio import PresidioPII
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
@@ -112,8 +116,8 @@ class Chatbot():
         else:
             response_str = self._unmask_reference(response_str, nodes)
 
-        if "Step 2:" in response_str:
-            response_str = response_str.split("Step 2:")[1].strip()
+        # if "Step 2:" in response_str:
+        #     response_str = response_str.split("Step 2:")[1].strip()
         
         return response_str
     
@@ -125,7 +129,7 @@ class Chatbot():
         # Find all matches in the text
         hashed_urls = re.findall(pattern, response_str)
 
-        logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        logging.info(f"[chatbot.py] Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(
                 collection=f"hash_table_{INDEX_ID}", 
@@ -145,38 +149,31 @@ class Chatbot():
     
 
     def mask_pii(self, message: str) -> str:
-        if USE_PRESIDIO:
+        try:
             return self.pii.mask_pii(message)
-        else:
-            return message
+        except Exception as e:
+            logging.error(f"[chatbot.py] exception in mask_pii: {e}")
 
 
     def generate(self, query_str: str) -> str:
 
-        try:
-            engine_response = self.engine.query(query_str)
-            response_str = self._get_response_str(engine_response)
+        if PROVIDER == "aws":
+            check = safety_check_aws(query_str)
+        else:
+            check = None
 
-            self._update_history(MessageRole.USER, query_str)
-            self._update_history(MessageRole.ASSISTANT, response_str)
+        if check:
+            response_str = check
+        else:
+            try:
+                engine_response = self.engine.query(query_str)
+                response_str = self._get_response_str(engine_response)
 
-        except Exception as e:
-            exception_str = str(e)
-            if "SAFETY" in exception_str:
-                if "HARM_CATEGORY_HARASSMENT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso rispondere a domande offensive o minacciose."
-                    logging.info("Gemini Safety: blocked query because retrieved HARASSMENT content in it.")
-                if "HARM_CATEGORY_SEXUALLY_EXPLICIT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso rispondere a domande di natura sessualmente esplicita."
-                    logging.info("Gemini Safety: blocked query because retrieved SEXUALLY_EXPLICIT content in it.")
-                if "HARM_CATEGORY_HATE_SPEECH" in exception_str:
-                    response_str = "Mi dispiace, ma non posso accettare discorsi di odio. Per favore, evita di usare linguaggio."
-                    logging.info("Gemini Safety: blocked query because retrieved HATE_SPEECH content in it.")
-                if "HARM_CATEGORY_DANGEROUS_CONTENT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso fornire informazioni che potrebbero essere pericolose o dannose."
-                    logging.info("Gemini Safety: blocked query because retrieved DANGEROUS_CONTENT in it.")
-            else:
-                response_str = ""
-                logging.info(f"[chatbot.py] generate: exception_str = {exception_str}")
+                self._update_history(MessageRole.USER, query_str)
+                self._update_history(MessageRole.ASSISTANT, response_str)
+
+            except Exception as e:
+                response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
+                logging.info(f"[chatbot.py] exception in generate: {e}")
 
         return response_str
