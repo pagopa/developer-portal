@@ -3,13 +3,13 @@ import { QueryInput } from '@/lib/chatbot/queries';
 import { pipe } from 'fp-ts/lib/function';
 import {
   getQueries,
-  getSessions,
   patchFeedback,
   postQuery,
-} from '@/lib/chatbot/chatbotApi';
+} from '@/lib/chatbot/chatbotQueries';
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';
+import { deleteSession, getSessions } from './chatbot/chatbotSessions';
 
 const chatbotApiEnv = pipe(
   makeChatbotConfig(publicEnv),
@@ -23,11 +23,19 @@ const chatbotApiEnv = pipe(
 export const sendChatbotQuery = (query: QueryInput) =>
   postQuery(query)(chatbotApiEnv);
 
-export const getChatbotQueries = (sessionId: string) =>
-  getQueries(qs.stringify({ sessionId: sessionId }))(chatbotApiEnv);
+export const getChatbotQueries = (sessionId?: string) =>
+  getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || '')(
+    chatbotApiEnv
+  );
 
-export const sendChatbotFeedback = (feedback: boolean, queryId: string) =>
-  patchFeedback(feedback, queryId)(chatbotApiEnv);
+export const sendChatbotFeedback = (
+  feedback: boolean,
+  sessionId: string,
+  queryId: string
+) => patchFeedback(feedback, sessionId, queryId)(chatbotApiEnv);
 
-export const getChatbotHistory = (page: number, pageSize: number) =>
+export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);
+
+export const deleteChatbotSession = (sessionId: string) =>
+  deleteSession(sessionId)(chatbotApiEnv);
