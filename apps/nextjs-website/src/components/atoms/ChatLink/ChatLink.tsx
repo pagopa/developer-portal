@@ -10,6 +10,7 @@ const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
       href={href}
       title={title}
       color={palette.primary.main}
+      display={'block'}
       fontWeight={'600'}
     >
       {children}
