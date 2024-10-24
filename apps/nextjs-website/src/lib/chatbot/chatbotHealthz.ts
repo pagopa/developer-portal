@@ -3,7 +3,7 @@ import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import * as E from 'fp-ts/lib/Either';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { makeError } from './chatbotSessions';
+import { makeError } from '../makeError';
 
 export const getHealthz = () =>
   pipe(

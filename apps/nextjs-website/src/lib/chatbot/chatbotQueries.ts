@@ -9,7 +9,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as PR from '@/lib/strapi/PathReporter';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { makeError } from './chatbotSessions';
+import { makeError } from '../makeError';
 
 export const postQuery = (input: QueryInput) =>
   pipe(
