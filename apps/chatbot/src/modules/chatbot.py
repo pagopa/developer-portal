@@ -16,10 +16,7 @@ from src.modules.engine import get_automerging_query_engine
 from src.modules.presidio import PresidioPII
 
 
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
-ITALIAN_THRESHOLD = 0.85
-NUM_MIN_WORDS_QUERY = 3
-NUM_MIN_REFERENCES = 1
+USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -36,7 +33,10 @@ class Chatbot():
 
         self.params = params
         self.prompts = prompts
-        self.pii = PresidioPII(config=params["config_presidio"])
+
+        if USE_PRESIDIO:
+            self.pii = PresidioPII(config=params["config_presidio"])
+
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.index = load_automerging_index_redis(
@@ -111,6 +111,9 @@ class Chatbot():
             """
         else:
             response_str = self._unmask_reference(response_str, nodes)
+
+        if "Step 2:" in response_str:
+            response_str = response_str.split("Step 2:")[1].strip()
         
         return response_str
     
@@ -142,7 +145,10 @@ class Chatbot():
     
 
     def mask_pii(self, message: str) -> str:
-        return self.pii.mask_pii(message)
+        if USE_PRESIDIO:
+            return self.pii.mask_pii(message)
+        else:
+            return message
 
 
     def generate(self, query_str: str) -> str:
@@ -170,6 +176,7 @@ class Chatbot():
                     response_str = "Mi dispiace, ma non posso fornire informazioni che potrebbero essere pericolose o dannose."
                     logging.info("Gemini Safety: blocked query because retrieved DANGEROUS_CONTENT in it.")
             else:
-                logging.info(exception_str)
+                response_str = ""
+                logging.info(f"[chatbot.py] generate: exception_str = {exception_str}")
 
         return response_str
