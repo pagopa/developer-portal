@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "lambda_dynamodb_policy" {
       "dynamodb:UpdateItem",
       "dynamodb:GetRecords"
     ]
-    resources = [module.dynamodb_chatbot_queries.dynamodb_table_arn, module.dynamodb_chatbot_sessions.dynamodb_table_arn]
+    resources = [module.dynamodb_chatbot_queries.dynamodb_table_arn, module.dynamodb_chatbot_sessions.dynamodb_table_arn, "${module.dynamodb_chatbot_queries.dynamodb_table_arn}/*", "${module.dynamodb_chatbot_sessions.dynamodb_table_arn}/*"]
   }
 }
 
