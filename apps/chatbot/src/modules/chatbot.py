@@ -4,15 +4,13 @@ import logging
 from typing import Union, Tuple
 
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 )
 
-from src.modules.models import get_llm, get_embed_model, PROVIDER
+from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_automerging_index_redis, REDIS_KVSTORE, INDEX_ID
 from src.modules.engine import get_automerging_query_engine
-from src.modules.guardrail import safety_check_aws
 from src.modules.presidio import PresidioPII
 
 from dotenv import load_dotenv
@@ -49,14 +47,6 @@ class Chatbot():
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
         )
-        self.history = [
-            ChatMessage(
-                role=MessageRole.ASSISTANT,
-                content="""You are an Italian customer services chatbot. 
-                Your name is Discovery and it is your duty to assist the user answering his questions about the PagoPA DevPortal documentation!
-                """
-            )
-        ]
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_query_engine(
             self.index,
@@ -90,15 +80,6 @@ class Chatbot():
         return qa_prompt_tmpl, ref_prompt_tmpl
 
 
-    def _update_history(self, role: MessageRole, message: str):
-        self.history.append(ChatMessage(role=role, content=message))
-
-
-    def reset_chat_history(self):
-        self.history = []
-        return self.history
-
-
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
         if isinstance(engine_response, StreamingResponse):
@@ -115,9 +96,6 @@ class Chatbot():
             """
         else:
             response_str = self._unmask_reference(response_str, nodes)
-
-        # if "Step 2:" in response_str:
-        #     response_str = response_str.split("Step 2:")[1].strip()
         
         return response_str
     
@@ -152,28 +130,17 @@ class Chatbot():
         try:
             return self.pii.mask_pii(message)
         except Exception as e:
-            logging.error(f"[chatbot.py] exception in mask_pii: {e}")
+            logging.warning(f"[chatbot.py] exception in mask_pii: {e}")
 
 
     def generate(self, query_str: str) -> str:
 
-        if PROVIDER == "aws":
-            check = safety_check_aws(query_str)
-        else:
-            check = None
+        try:
+            engine_response = self.engine.query(query_str)
+            response_str = self._get_response_str(engine_response)
 
-        if check:
-            response_str = check
-        else:
-            try:
-                engine_response = self.engine.query(query_str)
-                response_str = self._get_response_str(engine_response)
-
-                self._update_history(MessageRole.USER, query_str)
-                self._update_history(MessageRole.ASSISTANT, response_str)
-
-            except Exception as e:
-                response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
-                logging.info(f"[chatbot.py] exception in generate: {e}")
+        except Exception as e:
+            response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
+            logging.info(f"[chatbot.py] exception in generate: {e}")
 
         return response_str

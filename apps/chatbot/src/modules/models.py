@@ -29,10 +29,10 @@ AWS_BEDROCK_REGION = os.getenv("CHB_AWS_BEDROCK_REGION")
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
-MODEL_ID = os.getenv("CHB_MODEL_ID", "models/gemini-1.5-flash")
+MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.5")
 MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID", "models/text-embedding-004")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
 def get_llm():

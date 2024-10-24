@@ -6,6 +6,7 @@ import tqdm
 import logging
 import hashlib
 import html2text
+from datetime import date
 from bs4 import BeautifulSoup
 from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -41,6 +42,10 @@ load_dotenv()
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
+TODAY = date.today().strftime("%Y-%m-%d")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
+NEW_INDEX_ID = f"index--{TODAY}"
+
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -48,7 +53,10 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
+EMBEDDING_DIMS = {
+    "models/text-embedding-004": 768,
+    "cohere.embed-multilingual-v3": 1024
+}
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": f"{REDIS_INDEX_NAME}_{INDEX_ID}", "prefix": f"index_{INDEX_ID}/vector"},
     "fields": [
@@ -238,7 +246,7 @@ def build_automerging_index_redis(
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
-            collection=f"hash_table_{INDEX_ID}",
+            collection=f"hash_table_{NEW_INDEX_ID}",
             key=key,
             val=value
         )
@@ -251,7 +259,19 @@ def build_automerging_index_redis(
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
         overwrite=True,
-        schema=REDIS_SCHEMA
+        schema=IndexSchema.from_dict({
+            "index": {"name": f"{NEW_INDEX_ID}", "prefix": f"{NEW_INDEX_ID}/vector"},
+            "fields": [
+                {"name": "id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
+                {"name": "vector", "type": "vector", "attrs": {
+                    "dims": EMBEDDING_DIMS[embed_model.model_name],
+                    "algorithm": "flat",
+                    "distance_metric": "cosine"
+                }}
+            ]
+        })
     )
 
     storage_context = StorageContext.from_defaults(
@@ -265,9 +285,11 @@ def build_automerging_index_redis(
         leaf_nodes,
         storage_context=storage_context
     )
-    automerging_index.set_index_id(INDEX_ID)
-    put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), INDEX_ID)
+    automerging_index.set_index_id(NEW_INDEX_ID)
+    put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
     logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
+
+    delete_old_index()
 
     return automerging_index
 
@@ -305,3 +327,12 @@ def load_automerging_index_redis(
     )
 
     return automerging_index
+
+
+def delete_old_index():
+
+    for key in REDIS_CLIENT.scan_iter():
+        if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
+            REDIS_CLIENT.delete(key)
+
+    logging.info(f"[vector_database.py] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
