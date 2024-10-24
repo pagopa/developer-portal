@@ -49,70 +49,7 @@ export const translations = {
   homepage: {
     newsShowcase: {
       title: 'In evidenza',
-      items: [
-        {
-          comingSoon: false,
-          title:
-            'Usa il validatore di SEND per fare una verifica sull’integrazione',
-          link: {
-            url: `TODO/validatore`,
-            text: 'Vai al validatore',
-          },
-          image: {
-            name: 'homepage-validatore.png',
-            caption: undefined,
-            size: 10,
-            alternativeText:
-              'Immagine: Usa il validatore di SEND per fare una verifica sull’integrazione',
-            width: 1156,
-            height: 580,
-            ext: '.svg',
-            mime: 'image/svg+xml',
-            url: '/images/homepage-validatore.png',
-          },
-        },
-        {
-          comingSoon: false,
-          title: 'Scopri i nuovi tutorial di Firma con IO',
-          link: {
-            url: `TODO`,
-            text: 'Vai ai tutorial',
-          },
-          image: {
-            name: 'homepage-io-sign.png',
-            caption: undefined,
-            size: 10,
-            alternativeText:
-              'Immagine: Scopri i nuovi tutorial di Firma con IO',
-            width: 1156,
-            height: 580,
-            ext: '.svg',
-            mime: 'image/svg+xml',
-            url: '/images/homepage-io-sign.png',
-          },
-        },
-        {
-          comingSoon: false,
-          title:
-            'Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
-          link: {
-            url: `TODO`,
-            text: 'Vai alla guida',
-          },
-          image: {
-            name: 'homepage-pago-pa.png',
-            caption: undefined,
-            size: 10,
-            alternativeText:
-              'Immagine: Scopri la Quick Start di piattaforma pagoPA: l’integrazione in pochi semplici step',
-            width: 1156,
-            height: 580,
-            ext: '.svg',
-            mime: 'image/svg+xml',
-            url: '/images/homepage-pago-pa.png',
-          },
-        },
-      ],
+      items: [],
     },
     webinarBannerButtonContent: 'Scopri',
     ecosystem: {
