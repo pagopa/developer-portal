@@ -6,10 +6,7 @@ import * as PR from '@/lib/strapi/PathReporter';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
 import qs from 'qs';
-
-const makeError = ({ status, statusText }: Response) => {
-  return new Error(`${status} - ${statusText}`);
-};
+import { makeError } from '../makeError';
 
 export const getSessions = (page: number, pageSize: number) =>
   pipe(

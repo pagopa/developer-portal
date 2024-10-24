@@ -9,6 +9,7 @@ import {
 import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
 import qs from 'qs';
+import { getHealthz } from './chatbot/chatbotHealthz';
 import { deleteSession, getSessions } from './chatbot/chatbotSessions';
 
 const chatbotApiEnv = pipe(
@@ -27,6 +28,8 @@ export const getChatbotQueries = (sessionId?: string) =>
   getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || '')(
     chatbotApiEnv
   );
+
+export const getChatbotHealthz = () => getHealthz()(chatbotApiEnv);
 
 export const sendChatbotFeedback = (
   feedback: boolean,
