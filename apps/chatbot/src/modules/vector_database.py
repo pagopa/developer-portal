@@ -6,7 +6,8 @@ import tqdm
 import logging
 import hashlib
 import html2text
-from datetime import date
+import pytz
+from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -42,7 +43,7 @@ load_dotenv()
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-TODAY = date.today().strftime("%Y-%m-%d")
+TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
 INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
 NEW_INDEX_ID = f"index--{TODAY}"
 
