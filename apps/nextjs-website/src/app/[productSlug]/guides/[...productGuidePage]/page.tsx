@@ -12,14 +12,13 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { staticUrlReplaceMap } from '@/_contents/urlReplacesMap';
 
 type Params = {
   productSlug: string;
@@ -82,9 +81,19 @@ const Page = async ({ params }: { params: Params }) => {
   );
 
   const fetchedProduct = await getProduct(params.productSlug);
+  const urlReplaceMap = await getUrlReplaceMapProps();
 
-  const { product, page, guide, version, versions, source, bannerLinks, seo } =
-    guideProps;
+  const {
+    product,
+    page,
+    guide,
+    version,
+    versions,
+    source,
+    bannerLinks,
+    seo,
+    bodyConfig,
+  } = guideProps;
   const props: ProductGuidePageProps = {
     ...page,
     product: fetchedProduct ?? product,
@@ -94,22 +103,8 @@ const Page = async ({ params }: { params: Params }) => {
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
-      isPageIndex: page.isIndex,
-      pagePath: page.path,
-      assetsPrefix: source.assetsPrefix,
-      urlReplaces: staticUrlReplaceMap,
-      gitBookPagesWithTitle: [
-        {
-          path: page.path,
-          title: page.title,
-        },
-      ],
-      spaceToPrefix: [
-        {
-          spaceId: source.spaceId,
-          pathPrefix: source.pathPrefix,
-        },
-      ],
+      ...bodyConfig,
+      urlReplaces: urlReplaceMap,
     },
   };
 

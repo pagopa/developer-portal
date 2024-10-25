@@ -18,9 +18,8 @@ import {
 } from './cmsApi';
 import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { GuideDefinition, makeSolution } from '@/_contents/makeDocs';
+import { makeSolution } from '@/_contents/makeDocs';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { get } from 'http';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -46,6 +45,15 @@ export async function getGuide(
     guidesProps.find((guideDefinition) => guideDefinition.page.path === path)
   );
 
+  const gitBookPagesWithTitle = guidesProps.map((content) => ({
+    title: content.page.title,
+    path: content.page.path,
+  }));
+  const spaceToPrefix = guidesProps.map((content) => ({
+    spaceId: content.source.spaceId,
+    pathPrefix: content.source.pathPrefix,
+  }));
+
   return {
     product: guideDefinition.product,
     page: {
@@ -68,6 +76,13 @@ export async function getGuide(
     assetsPrefix: guideDefinition.source.assetsPrefix,
     redirect: false,
     seo: guideDefinition.seo,
+    bodyConfig: {
+      isPageIndex: guideDefinition.page.isIndex,
+      pagePath: guideDefinition.page.path,
+      assetsPrefix: guideDefinition.source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix,
+    },
   };
 }
 
