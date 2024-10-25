@@ -42,47 +42,30 @@ export async function getGuide(
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const guideDefinition: GuideDefinition = manageUndefined(
-    guidesProps.find(
-      (guideDefinition) =>
-        guideDefinition.product.slug === productSlug &&
-        guideDefinition.guide.slug === guidePath
-    )
+  const guideDefinition = manageUndefined(
+    guidesProps.find((guideDefinition) => guideDefinition.page.path === path)
   );
 
   return {
     product: guideDefinition.product,
     page: {
       path: path,
-      title: guideDefinition.guide.name,
-      menu: guideDefinition.guide.name,
-      body: '',
-      isIndex: false,
+      title: guideDefinition.page.title,
+      menu: guideDefinition.page.menu,
+      body: guideDefinition.page.body,
+      isIndex: guideDefinition.page.isIndex,
     },
     guide: {
       name: guideDefinition.guide.name,
       path: path,
     },
-    version: {
-      main: guideDefinition.versions.find((v) => v.main)?.main ?? false,
-      name: guideDefinition.versions.find((v) => v.main)?.version ?? '',
-      path: guideDefinition.versions.find((v) => v.main)?.dirName ?? '',
-    },
-    versions: guideDefinition.versions.map((v) => ({
-      name: v.version,
-      main: v.main ?? false,
-      path: v.dirName,
-    })),
-    source: {
-      pathPrefix: '',
-      assetsPrefix: '',
-      dirPath: '',
-      spaceId: '',
-    },
+    version: guideDefinition.version,
+    versions: guideDefinition.versions,
+    source: guideDefinition.source,
     bannerLinks: guideDefinition.bannerLinks,
     products: await getProducts(),
-    pathPrefix: '',
-    assetsPrefix: '',
+    pathPrefix: guideDefinition.source.pathPrefix,
+    assetsPrefix: guideDefinition.source.assetsPrefix,
     redirect: false,
     seo: guideDefinition.seo,
   };

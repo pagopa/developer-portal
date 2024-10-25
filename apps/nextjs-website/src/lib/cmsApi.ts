@@ -139,7 +139,7 @@ export const getGuidesProps = async () => {
     // eslint-disable-next-line functional/no-expression-statements
     isCached = true;
   }
-  return cachedGuides as unknown as readonly GuideDefinition[];
+  return cachedGuides;
 };
 
 // TODO: Manage all fetched resources with cache in a dedicated helper function

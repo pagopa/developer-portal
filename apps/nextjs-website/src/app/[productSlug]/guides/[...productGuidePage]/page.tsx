@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getGuidesProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -27,12 +27,13 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return (await getGuidesProps()).map((guidePage) => ({
-    productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(
-      guidePage?.guide?.slug ?? 'TODO, why is this null'
-    ),
-  }));
+  return (await getGuidesProps())
+    .filter((guidePage) => guidePage?.guide?.path) // TODO: check why this sometimes at build time is null, should be fixed in the CMS
+    .map((guidePage) => ({
+      productSlug: guidePage.product.slug,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      productGuidePage: getProductGuidePath(guidePage.guide.path!),
+    }));
 }
 
 export type ProductGuidePageProps = {
@@ -97,8 +98,18 @@ const Page = async ({ params }: { params: Params }) => {
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
       urlReplaces: staticUrlReplaceMap,
-      gitBookPagesWithTitle: [], // TODO: check if this works
-      spaceToPrefix: [], // TODO: check if this works
+      gitBookPagesWithTitle: [
+        {
+          path: page.path,
+          title: page.title,
+        },
+      ],
+      spaceToPrefix: [
+        {
+          spaceId: source.spaceId,
+          pathPrefix: source.pathPrefix,
+        },
+      ],
     },
   };
 

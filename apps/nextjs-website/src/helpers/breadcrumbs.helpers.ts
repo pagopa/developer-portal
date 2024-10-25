@@ -14,7 +14,9 @@ export function productPageToBreadcrumbs(
     },
     {
       name: product.name,
-      path: product.slug + '/overview',
+      path: `${
+        product.slug.startsWith('/') ? product.slug : `/${product.slug}`
+      }/overview`,
     },
     ...(paths || []),
   ];
