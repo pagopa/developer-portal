@@ -48,7 +48,7 @@ def get_llm():
             def handle(self, event) -> None:
                 """Logic for handling event."""
                 if isinstance(event, (LLMCompletionEndEvent, LLMChatEndEvent)):
-                    logging.info(f"[{MODEL_ID}] RequestID: {event.response.raw["ResponseMetadata"]["RequestId"]}")
+                    logging.info(f"[{MODEL_ID}] Bedrock request id: {event.response.raw["ResponseMetadata"]["RequestId"]}")
                     logging.info(f"[{MODEL_ID}] Stop Reason: {event.response.raw["stopReason"]}")
                     logging.info(f"[{MODEL_ID}] Input Tokens: {event.response.raw["usage"]["inputTokens"]}")
                     logging.info(f"[{MODEL_ID}] Output Tokens: {event.response.raw["usage"]["outputTokens"]}")
