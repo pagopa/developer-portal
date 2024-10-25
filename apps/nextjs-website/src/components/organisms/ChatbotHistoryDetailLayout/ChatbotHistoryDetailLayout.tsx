@@ -6,7 +6,9 @@ import { defaultLocale } from '@/config';
 import { Query } from '@/lib/chatbot/queries';
 import { Delete } from '@mui/icons-material';
 import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
+import React from 'react';
 
 type DateFormatOptions = {
   locale?: string;
@@ -40,14 +42,21 @@ const ChatbotHistoryDetailLayout = ({
   const t = useTranslations();
   const { palette } = useTheme();
 
+  if (isEmpty(queries)) {
+    return (
+      <Typography variant='h4'>{t('chatBot.thereAreNoMessages')}</Typography>
+    );
+  }
+
+  const firstQuery = queries[0];
   const date = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
     DEFAULT_DATE_FORMAT.options
-  ).format(new Date(queries[0].queriedAt));
+  ).format(new Date(firstQuery.queriedAt));
 
   return (
     <Stack direction='column' spacing={2}>
-      <Typography variant='h2'>{queries[0].question}</Typography>
+      <Typography variant='h4'>{firstQuery.question}</Typography>
       <Stack direction='row' justifyContent='space-between'>
         <Typography
           component='span'
@@ -60,7 +69,8 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          sx={{ display: { xs: 'none', xl: 'flex' } }}
+          sx={{ display: { xs: 'none', sm: 'flex' } }}
+          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
         >
           {t('chatBot.deleteChat')}
         </Button>
@@ -78,7 +88,7 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          onClick={() => onDeleteChatSession(queries[0].sessionId)}
+          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
         >
           {t('chatBot.deleteChat')}
         </Button>
