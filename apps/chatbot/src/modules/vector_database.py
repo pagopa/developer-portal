@@ -301,39 +301,44 @@ def load_automerging_index_redis(
         chunk_sizes: List[int],
         chunk_overlap: int,
     ) -> VectorStoreIndex:
+
+    if INDEX_ID:
     
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, 
-        chunk_overlap=chunk_overlap
-    )
+        Settings.llm = llm
+        Settings.embed_model = embed_model
+        Settings.node_parser = HierarchicalNodeParser.from_defaults(
+            chunk_sizes=chunk_sizes, 
+            chunk_overlap=chunk_overlap
+        )
 
-    redis_vector_store = RedisVectorStore(
-        redis_client=REDIS_CLIENT,
-        overwrite=False,
-        schema=REDIS_SCHEMA
-    )
+        redis_vector_store = RedisVectorStore(
+            redis_client=REDIS_CLIENT,
+            overwrite=False,
+            schema=REDIS_SCHEMA
+        )
 
-    logging.info("[vector_database.py] Loading vector index from Redis...")
-    storage_context = StorageContext.from_defaults(
-        vector_store=redis_vector_store,
-        docstore=REDIS_DOCSTORE,
-        index_store=REDIS_INDEX_STORE
-    )
+        logging.info("[vector_database.py] Loading vector index from Redis...")
+        storage_context = StorageContext.from_defaults(
+            vector_store=redis_vector_store,
+            docstore=REDIS_DOCSTORE,
+            index_store=REDIS_INDEX_STORE
+        )
 
-    automerging_index = load_index_from_storage(
-        storage_context=storage_context,
-        index_id=INDEX_ID
-    )
+        automerging_index = load_index_from_storage(
+            storage_context=storage_context,
+            index_id=INDEX_ID
+        )
 
-    return automerging_index
+        return automerging_index
+    else:
+        logging.error("[vector_database.py] load: No index_id provided.")
 
 
 def delete_old_index():
 
-    for key in REDIS_CLIENT.scan_iter():
-        if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
-            REDIS_CLIENT.delete(key)
+    if INDEX_ID: # is in ssm there is nothing, INDEX_ID = None
+        for key in REDIS_CLIENT.scan_iter():
+            if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
+                REDIS_CLIENT.delete(key)
 
-    logging.info(f"[vector_database.py] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        logging.info(f"[vector_database.py] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
