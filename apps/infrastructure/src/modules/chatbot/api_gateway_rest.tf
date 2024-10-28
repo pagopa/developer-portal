@@ -78,9 +78,8 @@ resource "aws_api_gateway_method_settings" "chatbot" {
     data_trace_enabled = true
     metrics_enabled    = true
 
-    # TODO: Customize the throttling settings
-    # throttling_burst_limit = 1000
-    # throttling_rate_limit  = 10
+    throttling_burst_limit = 80
+    throttling_rate_limit  = 50
   }
 }
 
