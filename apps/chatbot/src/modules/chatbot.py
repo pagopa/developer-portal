@@ -107,7 +107,7 @@ class Chatbot():
         # Find all matches in the text
         hashed_urls = re.findall(pattern, response_str)
 
-        logging.info(f"[chatbot.py] Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        logging.info(f"[chatbot.py - _unmask_reference] Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(
                 collection=f"hash_table_{INDEX_ID}", 
@@ -130,7 +130,7 @@ class Chatbot():
         try:
             return self.pii.mask_pii(message)
         except Exception as e:
-            logging.warning(f"[chatbot.py] exception in mask_pii: {e}")
+            logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
 
 
     def generate(self, query_str: str) -> str:
@@ -141,6 +141,6 @@ class Chatbot():
 
         except Exception as e:
             response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
-            logging.info(f"[chatbot.py] exception in generate: {e}")
+            logging.info(f"[chatbot.py - generate] Exception: {e}")
 
         return response_str

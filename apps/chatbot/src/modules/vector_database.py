@@ -54,18 +54,19 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
 REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 EMBEDDING_DIMS = {
     "models/text-embedding-004": 768,
     "cohere.embed-multilingual-v3": 1024
 }
 REDIS_SCHEMA = IndexSchema.from_dict({
-    "index": {"name": f"{REDIS_INDEX_NAME}_{INDEX_ID}", "prefix": f"index_{INDEX_ID}/vector"},
+    "index": {"name": f"{INDEX_ID}", "prefix": f"{INDEX_ID}/vector"},
     "fields": [
         {"name": "id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
         {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
         {"name": "vector", "type": "vector", "attrs": {
-            "dims": 768 if PROVIDER == "google" else 1024,
+            "dims": EMBEDDING_DIMS[EMBED_MODEL_ID],
             "algorithm": "flat",
             "distance_metric": "cosine"
         }}
@@ -82,35 +83,15 @@ REDIS_INDEX_STORE = RedisIndexStore(
     redis_kvstore=REDIS_KVSTORE
 )
 DYNAMIC_HTMLS = [
-    "app-io/api/app-io-main.html",
     "case-histories/tari-cagliari.html",
     "firma-con-io/api/firma-con-io-main.html",
     "index.html",
-    "pago-pa/api/elenco-IBAN-stazioni.html",
-    "pago-pa/api/flussi-di-rendicontazione.html",
-    "pago-pa/api/gestione-massiva-delle-posizioni-debitorie.html",
-    "pago-pa/api/gestione-posizioni-debitorie.html",
-    "pago-pa/api/gpd-fdr.html",
-    "pago-pa/api/gpd-recupero-receipt.html",
-    "pago-pa/api/inserimento-posizioni-debitorie.html",
-    "pago-pa/api/pagamento-fe-ec.html",
-    "pago-pa/api/recupero-receipt.html",
-    "pago-pa/api/stampa-avvisi-pagamento.html",
     "privacy-policy.html",
     "send/api/send-main.html",
     "solutions/multe-per-violazioni-al-codice-della-strada.html",
     "solutions/tassa-sui-rifiuti-tari.html",
     "terms-of-service.html",
     "webinars.html",
-    "webinars/DevTalk-pagoPA-gpd-massive.html",
-    "webinars/DevTalk-pagoPA-gpd.html",
-    "webinars/DevTalk-remote-content.html",
-    "webinars/PagoPA-multe.html",
-    "webinars/PagoPALAB-nidi.html",
-    "webinars/PagoPALab-tari.html",
-    "webinars/devTalks-pagoPA-fdr.html",
-    "webinars/devTalks-send-essential.html",
-    "webinars/nuove-api-io.html"
 ]
 
 
@@ -172,7 +153,7 @@ def create_documentation(
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
-        if file in dynamic_htmls:
+        if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
         # if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
 
@@ -191,7 +172,7 @@ def create_documentation(
         else:
             title, text = html2markdown(open(file))
 
-        if text is None or text == "" or text == "None":
+        if text is None or text == "" or text == "None" or text=="404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non esiste":
             # print(file)
             empty_pages.append(file)
 
@@ -219,8 +200,8 @@ def create_documentation(
                 }
             ))
 
-    logging.info(f"[vector_database.py] Number of documents with content: {len(documents)}")
-    logging.info(f"[vector_database.py] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logging.info(f"[vector_database.py - create_documentation] Number of documents with content: {len(documents)}")
+    logging.info(f"[vector_database.py - create_documentation] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
@@ -235,7 +216,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("[vector_database.py] Storing vector index and hash table on Redis..")
+    logging.info("[vector_database.py - build_automerging_index_redis] Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -251,9 +232,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info("[vector_database.py] Hash table is now on Redis.")
+    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{INDEX_ID} is now on Redis.")
 
-    logging.info("[vector_database.py] Creating index...")
+    logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -288,7 +269,7 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(NEW_INDEX_ID)
     put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logging.info("[vector_database.py] Created vector index successfully and stored on Redis.")
+    logging.info("[vector_database.py - build_automerging_index_redis] Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
@@ -317,7 +298,7 @@ def load_automerging_index_redis(
             schema=REDIS_SCHEMA
         )
 
-        logging.info("[vector_database.py] Loading vector index from Redis...")
+        logging.info("[vector_database.py - load_automerging_index_redis] Loading vector index from Redis...")
         storage_context = StorageContext.from_defaults(
             vector_store=redis_vector_store,
             docstore=REDIS_DOCSTORE,
@@ -331,7 +312,7 @@ def load_automerging_index_redis(
 
         return automerging_index
     else:
-        logging.error("[vector_database.py] load: No index_id provided.")
+        logging.error("[vector_database.py - load_automerging_index_redis] No index_id provided.")
 
 
 def delete_old_index():
@@ -341,4 +322,4 @@ def delete_old_index():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
 
-        logging.info(f"[vector_database.py] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        logging.info(f"[vector_database.py - delete_old_index] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")

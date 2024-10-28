@@ -30,7 +30,7 @@ AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
-MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.5")
+MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
 MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
@@ -80,7 +80,7 @@ def get_llm():
             api_key=GOOGLE_API_KEY,
         )
 
-    logging.info(f"[models.py] {MODEL_ID} LLM loaded successfully!")
+    logging.info(f"[models.py - get_llm] {MODEL_ID} LLM loaded successfully!")
 
     return llm
 
@@ -99,6 +99,6 @@ def get_embed_model():
             api_key=GOOGLE_API_KEY,
             model_name=EMBED_MODEL_ID,
         )
-    logging.info(f"[models.py] {EMBED_MODEL_ID} embegging model loaded successfully!")
+    logging.info(f"[models.py - get_embed_model] {EMBED_MODEL_ID} embegging model loaded successfully!")
 
     return embed_model
