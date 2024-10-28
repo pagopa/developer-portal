@@ -5,6 +5,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as PR from './PathReporter';
 import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
+import { makeError } from '../makeError';
 
 // Function to invoke in order to retrieve data from Strapi.
 export const fetchFromStrapi = <A, O, I>(
@@ -57,7 +58,3 @@ export const fetchFromStrapi = <A, O, I>(
         )()
     )
   );
-
-const makeError = ({ status, statusText }: Response) => {
-  return new Error(`${status} - ${statusText}`);
-};
