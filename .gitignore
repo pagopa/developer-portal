@@ -408,3 +408,6 @@ apps/chatbot/.env
 apps/chatbot/empty_htmls.json
 
 /results
+
+# python
+__pycache__/
