@@ -118,7 +118,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
   if userId is None:
     userId = '-'
   
-  SESSION_MAX_DURATION_DAYS = int(os.getenv('SESSION_MAX_DURATION_DAYS', '1'))
+  SESSION_MAX_DURATION_DAYS = float(os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1'))
   datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
   startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
   # trovare una sessione con createdAt > datetimeLimit
@@ -152,23 +152,38 @@ def find_or_create_session(userId: str, now: datetime.datetime):
   return body
 
 
-@app.get("/queries/{id}")
-async def query_fetching(id: str):
-  # TODO: dynamoDB integration
-  body = {
-    "id": id,
-    "sessionId": "",
-    "question": "",
-    "answer": "",
-    "createdAt": "",
-    "queriedAt": ""
-  }
-  return body
+@app.get("/queries")
+async def queries_fetching(
+  sessionId: str | None = None,
+  page: int | None = 1,
+  pageSize: int | None = 10,
+  authorization: Annotated[str | None, Header()] = None
+):
+  userId = current_user_id(authorization)
+  if sessionId is None:
+    sessionId = last_session_id(userId)
+
+  if sessionId is None:
+    result = []
+  else:
+    try:
+      dbResponse = table_queries.query(
+        KeyConditionExpression=Key('sessionId').eq(sessionId),
+        IndexName='QueriesByCreatedAtIndex',
+        ScanIndexForward=True
+      )
+    except (BotoCoreError, ClientError) as e:
+      raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
+    result = dbResponse.get('Items', [])
+  
+  return result
 
 
 # retrieve sessions of current user
 @app.get("/sessions")
 async def sessions_fetching(
+  page: int = 1,
+  pageSize: int = 10,
   authorization: Annotated[str | None, Header()] = None
 ):
   userId = current_user_id(authorization)
@@ -228,26 +243,6 @@ async def session_delete(
   
   return body
 
-@app.get("/queries")
-async def queries_fetching(
-  sessionId: str | None = None,
-  authorization: Annotated[str | None, Header()] = None
-):
-  userId = current_user_id(authorization)
-  if sessionId is None:
-    sessionId = last_session_id(userId)
-
-  try:
-    dbResponse = table_queries.query(
-      KeyConditionExpression=Key("sessionId").eq(sessionId) &
-        Key("id").eq(userId)
-    )
-  except (BotoCoreError, ClientError) as e:
-    raise HTTPException(status_code=422, detail=f"[queries_fetching] sessionId: {sessionId}, error: {e}")
-
-  result = dbResponse.get('Items', [])
-  return result
-
 
 def last_session_id(userId: str):
   dbResponse = table_sessions.query(
@@ -257,7 +252,7 @@ def last_session_id(userId: str):
     Limit=1
   )
   items = dbResponse.get('Items', [])
-  return items[0] if items else None
+  return items[0].get('id', None) if items else None
 
 @app.patch("/sessions/{sessionId}/queries/{id}")
 async def query_feedback (

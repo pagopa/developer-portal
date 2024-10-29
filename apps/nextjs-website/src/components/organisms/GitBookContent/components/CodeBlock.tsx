@@ -1,7 +1,6 @@
 import { CodeBlockProps } from 'gitbook-docs/markdoc/schema/code';
 import { ReactNode } from 'react';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import MermaidDiagram from '@/components/atoms/MermaidDiagram/MermaidDiagram';
 import dynamic from 'next/dynamic';
 
 const NoSSRMermaidDiagram = dynamic(

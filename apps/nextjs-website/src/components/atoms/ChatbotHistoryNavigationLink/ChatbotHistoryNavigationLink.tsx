@@ -1,4 +1,5 @@
-import { Link, useTheme } from '@mui/material';
+import { Link as MuiLink, useTheme } from '@mui/material';
+import Link from 'next/link';
 
 type ChatbotHistoryNavigationLinkProps = {
   sessionId: string;
@@ -13,23 +14,20 @@ const ChatbotHistoryNavigationLink = ({
   const textColor = palette.text.secondary;
 
   return (
-    <Link
+    <MuiLink
       maxWidth='15rem'
       textOverflow='ellipsis'
       color={textColor}
       fontSize='1.125rem'
       fontWeight='600'
       fontFamily={typography.fontFamily}
-      component='span'
       noWrap
       sx={{ cursor: 'pointer', textDecoration: 'none' }}
-      onClick={() => {
-        // TODO: Implement the navigation to the chatbot history session
-        console.log(`Navigating to chatbot history session: ${sessionId}`);
-      }}
+      component={Link}
+      href={`/profile/chatbot-history/${sessionId}`}
     >
       {sessionTitle}
-    </Link>
+    </MuiLink>
   );
 };
 
