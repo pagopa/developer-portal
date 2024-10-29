@@ -20,17 +20,21 @@ const handler = (
     const isHomepage = uri === '/';
 
     // List of special cases (add more as needed)
-    const specialCases: string[] = ['.bollo'];
+    const specialCases: readonly string[] = ['.bollo'];
 
     // Function to check if URI ends with any of the special cases
-    const isSpecialCase = specialCases.some(caseExt => uri.endsWith(caseExt));
+    const isSpecialCase = specialCases.some((caseExt) => uri.endsWith(caseExt));
 
     if (!isHomepage) {
       if (uriEndsWithSlash) {
         request.uri = uri.replace(/\/$/, '');
       }
       // Always add .html if there's no file extension, including special cases
-      if (!isGitbookAssets && !isWoff2 && (!/\.[a-zA-Z]+$/.test(uri) || isSpecialCase)) {
+      if (
+        !isGitbookAssets &&
+        !isWoff2 &&
+        (!/\.[a-zA-Z]+$/.test(uri) || isSpecialCase)
+      ) {
         request.uri += '.html';
       }
     }
