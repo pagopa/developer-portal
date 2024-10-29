@@ -104,3 +104,13 @@ module "index_id_ssm_parameter" {
   secure_type          = true
   ignore_value_changes = true
 }
+
+module "index_id_ssm_parameter_local" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/index_id_local"
+  value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0de"
+  type                 = "String"
+  secure_type          = true
+  ignore_value_changes = true
+}
