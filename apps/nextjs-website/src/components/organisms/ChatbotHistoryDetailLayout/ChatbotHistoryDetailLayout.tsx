@@ -5,7 +5,18 @@ import ChatbotHistoryMessages from '@/components/molecules/ChatbotHistoryMessage
 import { defaultLocale } from '@/config';
 import { Query } from '@/lib/chatbot/queries';
 import { Delete } from '@mui/icons-material';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -39,8 +50,17 @@ const ChatbotHistoryDetailLayout = ({
   nextSession,
   onDeleteChatSession,
 }: ChatbotHistoryDetailLayoutProps) => {
+  const [open, setOpen] = React.useState(false);
   const t = useTranslations();
   const { palette } = useTheme();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   if (isEmpty(queries)) {
     return (
@@ -56,6 +76,33 @@ const ChatbotHistoryDetailLayout = ({
 
   return (
     <Stack direction='column' spacing={2}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>
+          {t('chatBot.deleteHeader')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-description'>
+            {t('chatBot.confirmDelete')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='outlined' onClick={handleClose}>
+            {t('chatBot.deleteDismiss')}
+          </Button>
+          <Button
+            variant='contained'
+            onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+            autoFocus
+          >
+            {t('chatBot.deleteConfirm')}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Typography variant='h4'>{firstQuery.question}</Typography>
       <Stack direction='row' justifyContent='space-between'>
         <Typography
@@ -70,7 +117,7 @@ const ChatbotHistoryDetailLayout = ({
           startIcon={<Delete />}
           color='error'
           sx={{ display: { xs: 'none', sm: 'flex' } }}
-          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+          onClick={handleClickOpen}
         >
           {t('chatBot.deleteChat')}
         </Button>
