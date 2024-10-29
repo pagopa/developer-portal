@@ -153,8 +153,8 @@ def create_documentation(
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
-        if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
-        # if 6 == 9:
+        # if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
+        if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
 
             # svc = webdriver.ChromeService(executable_path=binary_path)
@@ -235,7 +235,7 @@ def build_automerging_index_redis(
     logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{INDEX_ID} is now on Redis.")
 
     logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
+    nodes = Settings.node_parser.get_nodes_from_documents(documents[:2])
     leaf_nodes = get_leaf_nodes(nodes)
 
     redis_vector_store = RedisVectorStore(
