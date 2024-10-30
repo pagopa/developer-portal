@@ -82,7 +82,7 @@ async def query_creation (
   else:
     queriedAt = query.queriedAt
 
-  body = {
+  bodyToReturn = {
     "id": f'{uuid.uuid4()}',
     "sessionId": session['id'],
     "question": query.question,
@@ -92,11 +92,14 @@ async def query_creation (
     "badAnswer": False
   }
 
+  bodyToSave = bodyToReturn.copy()
+  bodyToSave["question"] = chatbot.mask_pii(query.question)
+  bodyToSave["answer"] = chatbot.mask_pii(answer)
   try:
-    table_queries.put_item(Item = body)
+    table_queries.put_item(Item = bodyToSave)
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
-  return body
+  return bodyToReturn
 
 
 def current_user_id(authorization: str):

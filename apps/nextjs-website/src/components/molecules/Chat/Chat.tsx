@@ -18,7 +18,11 @@ import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 type ChatProps = {
   queries: Query[];
   onSendQuery: (query: string) => null;
-  onSendFeedback: (createdAt: string, hasNegativeFeedback: boolean) => null;
+  onSendFeedback: (
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    chatId: string
+  ) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
   isChatbotLoaded: boolean;
@@ -54,6 +58,7 @@ const Chat = ({
                 id: q.id,
                 text: q.question,
                 isQuestion: true,
+                sessionId: q.sessionId,
                 timestamp: q.queriedAt,
                 hasNegativeFeedback: false,
               }
@@ -63,6 +68,7 @@ const Chat = ({
                 id: q.id,
                 text: q.answer,
                 isQuestion: false,
+                sessionId: q.sessionId,
                 timestamp: q.createdAt,
                 hasNegativeFeedback: q.badAnswer || false,
               }
@@ -96,7 +102,11 @@ const Chat = ({
           }}
         >
           <Stack direction={'row'} paddingY={'0.25rem'}>
-            <Button size='small' sx={{ margin: '0.4rem', paddingX: '0.4rem' }}>
+            <Button
+              href='/profile/chatbot-history'
+              size='small'
+              sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
+            >
               <History fontSize='small' />
               <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
                 {t('chatBot.history')}
@@ -129,7 +139,7 @@ const Chat = ({
             <ChatMessage
               {...message}
               onToggleNegativeFeedback={(negativeFeedback) =>
-                onSendFeedback(message.id, negativeFeedback)
+                onSendFeedback(negativeFeedback, message.sessionId, message.id)
               }
             />
           </Stack>
@@ -169,6 +179,7 @@ function firstMessage(text: string): Message {
     id: '',
     text: text,
     isQuestion: false,
+    sessionId: '',
     hasNegativeFeedback: false,
   };
 }

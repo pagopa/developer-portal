@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { profileMenuItems } from '@/config';
 import Link from 'next/link';
+import { includes } from 'fp-ts/lib/string';
 
 type DesktopProfileMenuProps = {
   currentPathname: string;
@@ -53,7 +54,7 @@ const DesktopProfileMenu = ({
         </Box>
         {profileMenuItems.map(
           ({ label, href }: { label: string; href: string }, index: number) => {
-            const isCurrent = currentPathname === href;
+            const isCurrent = currentPathname.startsWith(href);
 
             return (
               <MuiLink

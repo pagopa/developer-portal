@@ -104,3 +104,40 @@ module "index_id_ssm_parameter" {
   secure_type          = true
   ignore_value_changes = true
 }
+
+module "index_id_ssm_parameter_local" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/index_id_local"
+  value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0de"
+  type                 = "String"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+# Invoke the lambda function every 3 minutes from 6:00 am to 11:00 pm to keep it warm
+resource "aws_cloudwatch_event_rule" "lambda_invocation_rule" {
+  name                = "${local.prefix}-lambda-invocation-rule"
+  schedule_expression = "cron(0/3 6-23 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "lambda_target" {
+  rule      = aws_cloudwatch_event_rule.lambda_invocation_rule.name
+  target_id = "keep-chatbot-lambda-warm"
+  arn       = module.lambda_function.lambda_function_arn
+  input = jsonencode({
+    resource                        = "/",
+    path                            = "/",
+    httpMethod                      = "OPTIONS",
+    requestContext                  = {},
+    multiValueQueryStringParameters = null
+  })
+}
+
+resource "aws_lambda_permission" "allow_eventbridge" {
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_function.lambda_function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.lambda_invocation_rule.arn
+  statement_id  = "AllowExecutionFromEventBridge"
+}
