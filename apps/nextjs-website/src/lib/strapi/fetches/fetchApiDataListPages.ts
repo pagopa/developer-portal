@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPagesCodec';
+import { productPopulate } from './fetchProducts';
 
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
@@ -15,7 +16,7 @@ const makeStrapiApiDataListPagePopulate = () =>
         },
       },
       product: {
-        populate: ['logo', 'bannerLinks.icon'],
+        ...productPopulate,
       },
       bannerLinks: {
         populate: ['icon'],

@@ -2,20 +2,15 @@ import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = {
-      ...attributes.product.data.attributes,
-      description: attributes.description,
-      bannerLinks:
-        attributes.product.data.attributes.bannerLinks?.map(
-          makeBannerLinkProps
-        ) ?? ([] as readonly BannerLinkProps[]),
-    };
+    const product = makeBaseProductWithRelationsCodec(
+      attributes.product.data
+    );
 
     const guidesSections: readonly GuidesSectionProps[] = [
       ...attributes.guidesByCategory.map(({ category, guides }) => ({

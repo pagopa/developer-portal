@@ -1,4 +1,3 @@
-import { Path } from '@/lib/types/path';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { StrapiProduct as ApiProduct } from '@/lib/strapi/codecs/ProductCodec';

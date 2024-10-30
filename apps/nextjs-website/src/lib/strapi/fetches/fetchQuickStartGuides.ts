@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
+import { productPopulate } from './fetchProducts';
 
 const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({
@@ -9,7 +10,9 @@ const makeStrapiQuickStartGuidesPopulate = () =>
         populate:
           'parts.responseCode,parts.requestCode,parts.requestAttributes',
       },
-      product: { populate: ['logo', 'bannerLinks.icon'] },
+      product: {
+        ...productPopulate,
+      },
       bannerLinks: {
         populate: ['icon'],
       },

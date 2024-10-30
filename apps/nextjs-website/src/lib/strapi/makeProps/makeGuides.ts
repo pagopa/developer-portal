@@ -1,19 +1,15 @@
 import { GuideDefinition } from '@/_contents/makeDocs';
 import { StrapiGuides } from '../codecs/GuidesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export function makeGuidesProps(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return strapiGuides.data.map(({ attributes }) => {
-    const product = {
-      ...attributes.product.data.attributes,
-      description: '',
-      bannerLinks:
-        attributes.product.data.attributes.bannerLinks?.map(
-          makeBannerLinkProps
-        ) || [],
-    };
+    const product = makeBaseProductWithRelationsCodec(
+      attributes.product.data
+    );
 
     return {
       product,

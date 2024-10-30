@@ -2,7 +2,7 @@ import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '../../types/tutorialData';
 import { StrapiTutorialListPages } from '../codecs/TutorialListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export function makeTutorialListPagesProps(
   strapiTutorialListPages: StrapiTutorialListPages
@@ -22,14 +22,9 @@ export function makeTutorialListPagesProps(
     return {
       name: attributes.title,
       path: `/${attributes.product.data.attributes.slug}/tutorials`,
-      product: {
-        ...attributes.product.data.attributes,
-        description: '',
-        bannerLinks:
-          attributes.product.data.attributes.bannerLinks?.map((bannerLink) =>
-            makeBannerLinkProps(bannerLink)
-          ) ?? ([] as readonly BannerLinkProps[]),
-      },
+      product: makeBaseProductWithRelationsCodec(
+        attributes.product.data
+      ),
       abstract: {
         title: attributes.title,
         description: attributes.description,

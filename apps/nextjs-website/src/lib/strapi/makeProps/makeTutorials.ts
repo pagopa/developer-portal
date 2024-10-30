@@ -5,6 +5,7 @@ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export type TutorialsProps = readonly (Tutorial & {
   readonly productSlug: string;
@@ -33,6 +34,7 @@ export function makeTutorialsProps(
         .map((part) => makePartProps(part))
         .filter((part) => !!part) as ReadonlyArray<Part>),
     ],
+    product: makeBaseProductWithRelationsCodec(attributes.product.data),
     productSlug: attributes.product.data.attributes.slug,
     relatedLinks: attributes.relatedLinks,
     bannerLinks:

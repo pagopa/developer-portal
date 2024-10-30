@@ -4,7 +4,7 @@ import { Part } from '../../types/part';
 import { Step } from '../../types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -32,14 +32,9 @@ export function makeQuickStartGuidesProps(
       },
       defaultStepAnchor:
         quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
-      product: {
-        ...quickStart.attributes.product.data.attributes,
-        description: quickStart.attributes.description,
-        bannerLinks:
-          quickStart.attributes.product.data.attributes.bannerLinks?.map(
-            (bannerLink) => makeBannerLinkProps(bannerLink)
-          ) ?? ([] as readonly BannerLinkProps[]),
-      },
+      product: makeBaseProductWithRelationsCodec(
+        quickStart.attributes.product.data
+      ),
       steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
         makeStepFromQuickstartGuideItems(item)
       ),

@@ -27,14 +27,13 @@ import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { GuideDefinition, makeGuide } from '@/_contents/makeDocs';
+import { makeGuide } from '@/_contents/makeDocs';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
-import { staticUrlReplaceMap } from '@/_contents/urlReplacesMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -50,7 +49,7 @@ export const getHomepageProps = async () => {
   const { homepage: staticHomepage } = translations;
 
   const strapiHomepage = await fetchHomepage(buildEnv);
-  return makeHomepageProps(strapiHomepage, staticHomepage);
+  return makeHomepageProps(strapiHomepage, staticHomepage); //TODO: Remove staticHomepage to makeHomepageProps
 };
 
 export const getWebinarsProps = async () => {
@@ -65,7 +64,7 @@ export const getProductsProps = async () => {
 
 export const getTutorialsProps = async (productSlug?: string) => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials, productSlug);
+  return makeTutorialsProps(strapiTutorials, productSlug); //TODO: Remove productSlug to makeTutorialsProps
 };
 
 export const getTutorialListPagesProps = async () => {
@@ -79,15 +78,8 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  const {
-    config: { FETCH_FROM_STRAPI: fetchFromStrapi },
-  } = buildEnv;
-
-  if (fetchFromStrapi) {
-    const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-    return { ...staticUrlReplaceMap, ...makeUrlReplaceMap(urlReplaceMap) };
-  }
-  return staticUrlReplaceMap;
+  const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+  return makeUrlReplaceMap(urlReplaceMap);
 };
 
 export const getApiDataListPagesProps = async () => {

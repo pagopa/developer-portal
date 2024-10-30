@@ -57,9 +57,10 @@ export const ProductRelationshipsCodec = t.strict({
   }),
 });
 
-export const BaseProductWithBannerLinksCodec = t.strict({
+export const BaseProductWithRelationsCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,
+    ProductRelationshipsCodec,
     t.strict({
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
     }),
@@ -105,5 +106,8 @@ export const ProductsCodec = t.strict({
 });
 
 export type StrapiBaseProduct = t.TypeOf<typeof BaseProductCodec>;
+export type BaseProductWithRelationsCodec = t.TypeOf<
+  typeof BaseProductWithRelationsCodec
+>;
 export type StrapiProduct = t.TypeOf<typeof ProductCodec>;
 export type StrapiProducts = t.TypeOf<typeof ProductsCodec>;
