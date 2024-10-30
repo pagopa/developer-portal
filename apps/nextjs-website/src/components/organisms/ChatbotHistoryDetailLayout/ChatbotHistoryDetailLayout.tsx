@@ -56,15 +56,13 @@ const ChatbotHistoryDetailLayout = ({
 
   return (
     <Stack direction='column' spacing={2}>
-      <Typography variant='h4'>{firstQuery.question}</Typography>
+      <Typography variant='h4'>{t('chatBot.sessionTitle') + date}</Typography>
       <Stack direction='row' justifyContent='space-between'>
-        <Typography
+        <Box
           component='span'
           color={palette.text.secondary}
           sx={{ fontSize: { xs: '0.75rem', xl: '1rem' } }}
-        >
-          {date}
-        </Typography>
+        />
         <Button
           variant='outlined'
           startIcon={<Delete />}

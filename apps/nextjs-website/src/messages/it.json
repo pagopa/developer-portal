@@ -596,6 +596,7 @@
     },
     "chatBot": {
         "title": "Discovery",
+        "sessionTitle": "Sessione del ",
         "writeNewMessagePlaceholder": "Scrivi un nuovo messaggio",
         "history": "Cronologia",
         "chatHistory": "Cronologia chat",
