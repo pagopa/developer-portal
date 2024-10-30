@@ -57,17 +57,12 @@ const ChatbotHistoryDetailLayout = ({
   return (
     <Stack direction='column' spacing={2}>
       <Typography variant='h4'>{t('chatBot.sessionTitle') + date}</Typography>
-      <Stack direction='row' justifyContent='space-between'>
-        <Box
-          component='span'
-          color={palette.text.secondary}
-          sx={{ fontSize: { xs: '0.75rem', xl: '1rem' } }}
-        />
+      <Stack direction='row' justifyContent='flex-end'>
         <Button
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          sx={{ display: { xs: 'none', sm: 'flex' } }}
+          sx={{ display: { xs: 'none', sm: 'flex' }, maxWidth: '162px' }}
           onClick={() => onDeleteChatSession(firstQuery.sessionId)}
         >
           {t('chatBot.deleteChat')}
