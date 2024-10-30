@@ -11,7 +11,8 @@ qa_prompt_str: |
     - the answer must be respectful and polite.
     - the answer must be clear, non-redundant, and have not repeated sentences.
     - the answer must not include the query.
-    - If your answer is based on this retrieved context, include a "Rif" section at the end of the response, listing the titles and filenames from the source nodes used. If no context is used, do not include a reference.
+    - If the answer is based on this retrieved context, include a "Rif" section at the end of the response, listing the titles and filenames from the source nodes used. If the context information is not used, then do not include any reference at the end.
+    - the answer must be retuned in Italian.
   --------------------
   Output Examples:
     Query: Cos'è il nodo dei pagamenti?
@@ -37,13 +38,7 @@ qa_prompt_str: |
   --------------------
   Task:
     Given the query: {query_str}
-    
-    Reply to the user following these two steps:
-    Step 1:
-      Pay great attention in detail on the query's language and determine if it is formulated in Italian, English, Spanish, French, German, Greek, Croatian, or Slovenian ('yes' or 'no').
-    Step 2:
-      If Step 1 returns 'yes': reply always in Italian, regardless of the input language, according to the `Chatbot Policy` listed above.
-      Otherwise: reply you cannot speak that language and ask for a new query written in an accepted language.
+    Reply according to the `Chatbot Policy` listed above.
 
     Answer: 
 
@@ -67,3 +62,10 @@ refine_prompt_str: |
     Given the original answer: {existing_answer}
     Answer with either the original answer or with a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
     Answer: 
+
+
+# Reply to the user following these two steps:
+#     Step 1:
+#       Pay great attention in detail on the query's language and determine if it is formulated in Italian, English, Spanish, French, German, Greek, Croatian, or Slovenian ('yes' or 'no').
+#     Step 2:
+#       If Step 1 returns 'yes': reply according to the `Chatbot Policy` listed above. If `no`, reply you cannot speak that language and ask for a new query written in an accepted language.
