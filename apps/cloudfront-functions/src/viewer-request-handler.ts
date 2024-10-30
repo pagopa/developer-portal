@@ -13,18 +13,28 @@ const handler = (
     const { request } = event;
     const uri = request.uri;
 
-    // Check if the uri refers to a gitbook assets
+    // Check if the uri refers to a gitbook asset
     const isGitbookAssets = uri.startsWith('/gitbook/docs');
     const isWoff2 = uri.endsWith('.woff2'); // woff2 is a font format
     const uriEndsWithSlash = uri.endsWith('/');
     const isHomepage = uri === '/';
 
+    // List of special cases (add more as needed)
+    const specialCases: readonly string[] = ['.bollo'];
+
+    // Function to check if URI ends with any of the special cases
+    const isSpecialCase = specialCases.some((caseExt) => uri.endsWith(caseExt));
+
     if (!isHomepage) {
       if (uriEndsWithSlash) {
         request.uri = uri.replace(/\/$/, '');
       }
-      // Add the .html extension if missing
-      if (!isGitbookAssets && !isWoff2 && !/\.[a-zA-Z]+$/.test(uri)) {
+      // Always add .html if there's no file extension, including special cases
+      if (
+        !isGitbookAssets &&
+        !isWoff2 &&
+        (!/\.[a-zA-Z]+$/.test(uri) || isSpecialCase)
+      ) {
         request.uri += '.html';
       }
     }
