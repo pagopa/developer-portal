@@ -13,9 +13,7 @@ export function makeApiDataListPagesProps(
         title: attributes.title,
         subtitle: attributes.description || '',
       },
-      product: makeBaseProductWithRelationsCodec(
-        attributes.product.data
-      ),
+      product: makeBaseProductWithRelationsCodec(attributes.product.data),
       apiRestDetailSlugs: attributes.apiData.data
         .map(({ attributes }) => attributes.apiRestDetail?.slug)
         .filter(Boolean) as readonly string[],

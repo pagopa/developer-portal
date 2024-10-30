@@ -8,9 +8,7 @@ export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = makeBaseProductWithRelationsCodec(
-      attributes.product.data
-    );
+    const product = makeBaseProductWithRelationsCodec(attributes.product.data);
 
     const guidesSections: readonly GuidesSectionProps[] = [
       ...attributes.guidesByCategory.map(({ category, guides }) => ({

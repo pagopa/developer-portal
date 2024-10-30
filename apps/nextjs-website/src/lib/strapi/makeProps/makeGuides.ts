@@ -7,9 +7,7 @@ export function makeGuidesProps(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return strapiGuides.data.map(({ attributes }) => {
-    const product = makeBaseProductWithRelationsCodec(
-      attributes.product.data
-    );
+    const product = makeBaseProductWithRelationsCodec(attributes.product.data);
 
     return {
       product,

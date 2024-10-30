@@ -9,9 +9,7 @@ export function makeOverviewsProps(
   return strapiOverviews.data.map(({ attributes }) => {
     return {
       path: `/${attributes.product.data?.attributes.slug}/overview`,
-      product: makeBaseProductWithRelationsCodec(
-        attributes.product.data
-      ),
+      product: makeBaseProductWithRelationsCodec(attributes.product.data),
       hero: {
         backgroundImage: attributes.backgroundImage.data.attributes.url,
         altText:
