@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { acClient, ActiveCampaignClient } from '../activeCampaignClient';
+import { acClient } from '../activeCampaignClient';
 import { validateCognitoToken } from '../cognito';
 import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
 import { ACContactPayload } from '../activeCampaign';

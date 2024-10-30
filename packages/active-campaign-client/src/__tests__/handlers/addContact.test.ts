@@ -7,7 +7,7 @@ describe('addContact handler', () => {
         Authorization: 'test-token',
       },
       body: JSON.stringify({
-        username: 'test@example.com',
+        username: `test@example${new Date().getTime()}e.com`,
         firstName: 'John',
         lastName: 'Doe',
         company: 'Test Co',

@@ -7,6 +7,10 @@ import {
   ACListPayload,
   ACListStatusPayload,
 } from './activeCampaign';
+import * as dotenv from 'dotenv';
+
+// eslint-disable-next-line functional/no-expression-statements
+dotenv.config({ path: '.env' });
 
 export class ActiveCampaignClient {
   private readonly baseUrl: string;
@@ -66,7 +70,6 @@ export class ActiveCampaignClient {
 }
 
 export const acClient = new ActiveCampaignClient(
-  process.env.AC_BASE_URL || 'https://uqido1728911682.activehosted.com',
-  process.env.AC_API_KEY ||
-    'c9d193d287bd1e5e7f8dc5a6a8ec673d4c1d48bf4d84abd440d4f33cc405f78828f1d0e9'
+  process.env.AC_BASE_URL!,
+  process.env.AC_API_KEY!
 );
