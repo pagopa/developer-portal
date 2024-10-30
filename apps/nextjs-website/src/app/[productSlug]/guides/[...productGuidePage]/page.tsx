@@ -26,12 +26,10 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return (await getGuidesProps())
-    .filter((guidePage) => guidePage?.guide?.path) // TODO: check why this sometimes at build time is null, should be fixed in the CMS
-    .map((guidePage) => ({
-      productSlug: guidePage.product.slug,
-      productGuidePage: getProductGuidePath(guidePage.guide.path),
-    }));
+  return (await getGuidesProps()).map((guidePage) => ({
+    productSlug: guidePage.product.slug,
+    productGuidePage: getProductGuidePath(guidePage.guide.path),
+  }));
 }
 
 export type ProductGuidePageProps = {
