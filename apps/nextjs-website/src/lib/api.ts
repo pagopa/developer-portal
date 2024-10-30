@@ -67,64 +67,6 @@ export async function getGuide(
   };
 }
 
-export async function getGuideOLD(
-  productSlug?: string,
-  productGuidePage?: ReadonlyArray<string>
-): Promise<GuidePage> {
-  const products = await getProducts();
-  const guidesProps = await getGuidesProps();
-  const guidePath = productGuidePage?.join('/');
-  const path = `/${productSlug}/guides/${guidePath}`;
-
-  const guideDefinition = manageUndefined(
-    guidesProps.find((guideDefinition) => guideDefinition.page.path === path)
-  );
-
-  const product = productSlug
-    ? await getProduct(productSlug)
-    : guideDefinition.product;
-
-  const gitBookPagesWithTitle = guidesProps.map((content) => ({
-    title: content.page.title,
-    path: content.page.path,
-  }));
-  const spaceToPrefix = guidesProps.map((content) => ({
-    spaceId: content.source.spaceId,
-    pathPrefix: content.source.pathPrefix,
-  }));
-
-  return {
-    product,
-    page: {
-      path: path,
-      title: guideDefinition.page.title,
-      menu: guideDefinition.page.menu,
-      body: guideDefinition.page.body,
-      isIndex: guideDefinition.page.isIndex,
-    },
-    guide: {
-      name: guideDefinition.guide.name,
-      path: path,
-    },
-    version: guideDefinition.version,
-    versions: guideDefinition.versions,
-    source: guideDefinition.source,
-    bannerLinks: guideDefinition.bannerLinks,
-    products,
-    pathPrefix: guideDefinition.source.pathPrefix,
-    assetsPrefix: guideDefinition.source.assetsPrefix,
-    redirect: false,
-    seo: guideDefinition.seo,
-    bodyConfig: {
-      isPageIndex: guideDefinition.page.isIndex,
-      pagePath: guideDefinition.page.path,
-      assetsPrefix: guideDefinition.source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix,
-    },
-  };
-}
-
 export function getProductGuidePath(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
