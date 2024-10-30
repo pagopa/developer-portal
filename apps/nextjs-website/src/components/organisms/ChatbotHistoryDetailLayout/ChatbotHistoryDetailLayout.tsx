@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { useState } from 'react';
 
 type DateFormatOptions = {
   locale?: string;
@@ -50,7 +50,7 @@ const ChatbotHistoryDetailLayout = ({
   nextSession,
   onDeleteChatSession,
 }: ChatbotHistoryDetailLayoutProps) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const t = useTranslations();
   const { palette } = useTheme();
 
