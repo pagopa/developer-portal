@@ -1,9 +1,6 @@
 import { ResolvedMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { translations } from '@/_contents/translations';
 import { baseUrl } from '@/config';
-
-const { shared } = translations;
 
 const parent = {
   title: {
@@ -171,18 +168,18 @@ it('should return the correct metadata when parent is missing', () => {
   });
 
   expect(metadataWithoutParent).toEqual({
-    title: `${shared.siteTitle} | Title`,
+    title: 'PagoPA DevPortal | Title',
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: `${shared.siteTitle} | Title`,
+      title: 'PagoPA DevPortal | Title',
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: `${shared.siteTitle} | Title`,
+      title: 'PagoPA DevPortal | Title',
       description: 'Description',
       images: 'Image',
       card: 'summary',

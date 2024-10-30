@@ -65,8 +65,8 @@ type ComingSoonDocumentationProps = {
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
-  readonly newsShowcase: NewsShowcaseProps;
-  readonly ecosystem: EcosystemProps;
+  readonly newsShowcase?: NewsShowcaseProps;
+  readonly ecosystem?: EcosystemProps;
   readonly webinars: readonly Webinar[];
   readonly comingsoonDocumentation: ComingSoonDocumentationProps;
   readonly seo?: SEO;
@@ -121,12 +121,14 @@ const Home = async () => {
             ),
           }))}
         />
-        <NewsShowcase
-          marginTop={5}
-          title={homepage.newsShowcase.title}
-          items={[...homepage.newsShowcase.items]}
-        />
-        <Ecosystem {...homepage.ecosystem} />
+        {homepage.newsShowcase && (
+          <NewsShowcase
+            marginTop={5}
+            title={homepage.newsShowcase.title}
+            items={[...homepage.newsShowcase.items]}
+          />
+        )}
+        {homepage.ecosystem && <Ecosystem {...homepage.ecosystem} />}
         <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
         <RelatedLinks
           title={homepage.comingsoonDocumentation.title}

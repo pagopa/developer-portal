@@ -4,7 +4,6 @@ import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
 import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
-import { translations } from '@/_contents/translations';
 import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
@@ -46,10 +45,8 @@ const buildEnv = pipe(
 );
 
 export const getHomepageProps = async () => {
-  const { homepage: staticHomepage } = translations;
-
   const strapiHomepage = await fetchHomepage(buildEnv);
-  return makeHomepageProps(strapiHomepage, staticHomepage); //TODO: Remove staticHomepage to makeHomepageProps
+  return makeHomepageProps(strapiHomepage);
 };
 
 export const getWebinarsProps = async () => {

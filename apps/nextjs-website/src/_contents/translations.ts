@@ -1,13 +1,4 @@
 // TODO: move to proper localization system
-import { Product } from '@/lib/types/product';
-
-const productToEcosystemProduct = (product: Product) => ({
-  title: product.name,
-  text: product.description ?? '',
-  href: `${product.slug}/overview`,
-  icon: product.logo?.url ?? '',
-  useSrc: true,
-});
 
 export const translations = {
   header: {
@@ -45,56 +36,6 @@ export const translations = {
   },
   productGuidePage: {
     onThisPage: 'In questa pagina',
-  },
-  homepage: {
-    newsShowcase: {
-      title: 'In evidenza',
-      items: [],
-    },
-    webinarBannerButtonContent: 'Scopri',
-    ecosystem: {
-      title: 'Scopri il nostro ecosistema',
-      productsTabName: 'Per prodotti',
-      products: [],
-      solutionsTabName: 'Per soluzioni',
-      solutions: [],
-    },
-    heroItems: [
-      {
-        title: 'Tutto ciò che serve per integrarsi con i prodotti PagoPA',
-      },
-      {
-        title: 'Invia comunicazioni a valore legale con piattaforma notifiche',
-        callToAction: {
-          link: {
-            text: 'Vai a SEND',
-            href: '/send/overview',
-          },
-        },
-      },
-      {
-        title: 'Richiedi una firma su documenti e contratti',
-        callToAction: {
-          link: {
-            text: 'Vai a Firma con IO',
-            href: '/firma-con-io/overview',
-          },
-        },
-      },
-    ],
-    comingsoonDocumentation: {
-      title: 'Documentazione in arrivo',
-      links: [
-        {
-          text: 'Interoperabilità. Scambia informazioni con altri enti in tutta sicurezza.',
-          href: 'https://www.interop.pagopa.it/',
-        },
-        {
-          text: 'Check IBAN. Utilizza un sistema per la gestione degli incassi centralizzato e immediato.',
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban/',
-        },
-      ],
-    },
   },
   quickStartGuide: {
     content: {
