@@ -60,7 +60,7 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
     return (
       <ProductLayout
         product={apiDataListPageProps.product}
-        path={`${apiDataListPageProps.product.slug}/api`}
+        path={`/${apiDataListPageProps.product.slug}/api`}
         showBreadcrumbs
         structuredData={structuredData}
       >
