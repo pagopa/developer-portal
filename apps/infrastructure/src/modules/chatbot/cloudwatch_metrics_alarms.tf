@@ -17,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
       namespace   = "AWS/ApiGateway"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         ApiName = aws_api_gateway_rest_api.api.name
       }
     }
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_increased_requests" {
       namespace   = "AWS/ApiGateway"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         ApiName = aws_api_gateway_rest_api.api.name
       }
     }
@@ -77,7 +77,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_errors" {
       namespace   = "AWS/ApiGateway"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         ApiName = aws_api_gateway_rest_api.api.name
       }
     }
@@ -108,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
       namespace   = "AWS/Lambda"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         FunctionName = module.lambda_function.lambda_function_name
       }
     }
@@ -138,7 +138,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_increased_invocations" {
       namespace   = "AWS/Lambda"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         FunctionName = module.lambda_function.lambda_function_name
       }
     }
@@ -168,7 +168,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
       namespace   = "AWS/Lambda"
       period      = "60"
       stat        = "Average"
-      dimensions  = {
+      dimensions = {
         FunctionName = module.lambda_function.lambda_function_name
       }
     }
@@ -199,7 +199,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_queries" {
       namespace   = "AWS/DynamoDB"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         TableName = module.dynamodb_chatbot_queries.dynamodb_table_id
       }
     }
@@ -229,7 +229,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_queries" {
       namespace   = "AWS/DynamoDB"
       period      = "60"
       stat        = "Sum"
-      dimensions  = {
+      dimensions = {
         TableName = module.dynamodb_chatbot_queries.dynamodb_table_id
       }
     }
@@ -254,7 +254,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_sessions" {
   threshold           = "10"
   alarm_description   = "This metric monitors DynamoDB read throttle events for sessions table"
   alarm_actions       = [aws_sns_topic.alerts.arn]
-  
+
   dimensions = {
     TableName = module.dynamodb_chatbot_sessions.dynamodb_table_id
   }
@@ -271,7 +271,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_sessions" {
   threshold           = "10"
   alarm_description   = "This metric monitors DynamoDB write throttle events for sessions table"
   alarm_actions       = [aws_sns_topic.alerts.arn]
-  
+
   dimensions = {
     TableName = module.dynamodb_chatbot_sessions.dynamodb_table_id
   }

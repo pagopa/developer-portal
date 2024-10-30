@@ -17,7 +17,7 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
         width  = 24
         height = 6
         properties = {
-          title  = "Chatbot Health Overview"
+          title = "Chatbot Health Overview"
           alarms = [
             aws_cloudwatch_metric_alarm.api_gateway_5xx_errors.arn,
             aws_cloudwatch_metric_alarm.lambda_errors.arn,
