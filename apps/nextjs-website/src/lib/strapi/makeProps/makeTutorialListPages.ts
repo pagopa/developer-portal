@@ -22,9 +22,7 @@ export function makeTutorialListPagesProps(
     return {
       name: attributes.title,
       path: `/${attributes.product.data.attributes.slug}/tutorials`,
-      product: makeBaseProductWithRelationsCodec(
-        attributes.product.data
-      ),
+      product: makeBaseProductWithRelationsCodec(attributes.product.data),
       abstract: {
         title: attributes.title,
         description: attributes.description,
