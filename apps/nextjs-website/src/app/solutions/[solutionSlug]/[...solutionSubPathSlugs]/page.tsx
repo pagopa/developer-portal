@@ -40,17 +40,14 @@ export async function generateMetadata({
     params?.solutionSubPathSlugs
   );
 
-  return (
-    {} ||
-    makeMetadata({
-      title: props?.solution.title,
-      url: props
-        ? `/solutions/${
-            props?.solution.slug
-          }/${params.solutionSubPathSlugs.join('/')}`
-        : '',
-    })
-  );
+  return makeMetadata({
+    title: props?.solution.title,
+    url: props
+      ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
+          '/'
+        )}`
+      : '',
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {

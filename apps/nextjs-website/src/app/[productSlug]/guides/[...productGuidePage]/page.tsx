@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProduct, getProductGuidePath } from '@/lib/api';
+import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -30,8 +30,7 @@ export async function generateStaticParams() {
     .filter((guidePage) => guidePage?.guide?.path) // TODO: check why this sometimes at build time is null, should be fixed in the CMS
     .map((guidePage) => ({
       productSlug: guidePage.product.slug,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      productGuidePage: getProductGuidePath(guidePage.guide.path!),
+      productGuidePage: getProductGuidePath(guidePage.guide.path),
     }));
 }
 
@@ -80,7 +79,6 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
-  const fetchedProduct = await getProduct(params.productSlug);
   const urlReplaceMap = await getUrlReplaceMapProps();
 
   const {
@@ -96,7 +94,7 @@ const Page = async ({ params }: { params: Params }) => {
   } = guideProps;
   const props: ProductGuidePageProps = {
     ...page,
-    product: fetchedProduct ?? product,
+    product,
     guide,
     version,
     versions: Array.from(versions),

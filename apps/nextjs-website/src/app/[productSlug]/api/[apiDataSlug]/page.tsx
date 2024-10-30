@@ -1,4 +1,4 @@
-import { getApiData, getApiDataParams, getProduct } from '@/lib/api';
+import { getApiData, getApiDataParams } from '@/lib/api';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
@@ -57,17 +57,15 @@ export const generateMetadata = async (
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
-  // TODO: Remove this get during product refactor
-  const product = await getProduct(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(apiDataProps?.product),
+      productToBreadcrumb(apiDataProps.product),
       {
-        name: apiDataProps?.seo?.metaTitle,
-        item: breadcrumbItemByProduct(product, [
+        name: apiDataProps.seo?.metaTitle,
+        item: breadcrumbItemByProduct(apiDataProps.product, [
           'api',
-          `${apiDataProps?.apiDataSlug}`,
+          `${apiDataProps.apiDataSlug}`,
         ]),
       },
     ],
@@ -75,12 +73,14 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
     things: [convertApiToStructuredDataSoftwareApplication(apiDataProps)],
   });
 
-  const path = apiDataProps?.product?.slug + '/api/' + params.apiDataSlug;
+  const path = apiDataProps.product?.slug
+    ? `/${apiDataProps.product.slug}/api/${params.apiDataSlug}`
+    : '';
 
-  if (apiDataProps && apiDataProps.product && product) {
+  if (apiDataProps && apiDataProps.product) {
     return (
       <ProductLayout
-        product={product}
+        product={apiDataProps.product}
         path={path}
         paths={[{ name: apiDataProps.title || '', path: path }]}
         bannerLinks={apiDataProps.bannerLinks}
@@ -90,7 +90,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
         <ApiSection
           apiSlug={params.apiDataSlug}
           specURLs={apiDataProps.specURLs}
-          product={product}
+          product={apiDataProps.product}
           specURLsName={apiDataProps.specURLsName}
         />
       </ProductLayout>

@@ -60,10 +60,15 @@ export async function generateMetadata(
 }
 
 const QuickStartGuidesPage = async ({ params }: ProductParams) => {
-  const { abstract, bannerLinks, defaultStepAnchor, path, steps, seo } =
-    await getQuickStartGuide(params?.productSlug);
-
-  const product = await getProduct(params.productSlug);
+  const {
+    abstract,
+    bannerLinks,
+    defaultStepAnchor,
+    path,
+    steps,
+    seo,
+    product,
+  } = await getQuickStartGuide(params?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

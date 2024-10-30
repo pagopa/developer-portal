@@ -26,7 +26,6 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { Path } from '@/lib/types/path';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -116,7 +115,7 @@ export async function generateMetadata(
     title: product.name,
     description: product.description,
     url: path,
-    image: product.logo?.url ?? '',
+    image: product.logo?.url,
   });
 }
 
@@ -182,9 +181,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
           title={tutorials.title || overview.tutorial.title}
           subtitle={tutorials.subtitle}
           ctaLabel={overview.tutorial.ctaLabel}
-          tutorialPath={
-            { path: `${product.slug}/tutorials`, name: 'tutorials' } as Path
-          }
+          tutorialPath={{
+            path: `/${product.slug}/tutorials`,
+            name: 'tutorials',
+          }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
       )}

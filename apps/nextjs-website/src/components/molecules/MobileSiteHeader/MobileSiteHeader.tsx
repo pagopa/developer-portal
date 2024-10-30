@@ -197,7 +197,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={`${product.slug}/overview`}
+                  href={`/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,

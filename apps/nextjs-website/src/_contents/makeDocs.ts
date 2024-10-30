@@ -56,7 +56,7 @@ export const makeTutorials = ({
       {
         product: product,
         source: {
-          pathPrefix: `${product.slug}/tutorials`,
+          pathPrefix: `/${product.slug}/tutorials`,
           assetsPrefix: `${docsAssetsPath}/${dirName}`,
           dirPath: `${docsPath}/${dirName}`,
           spaceId: dirName,
@@ -69,7 +69,7 @@ export const makeTutorials = ({
     ],
     parseDocOrThrow,
     // This is a workaround that removes the 'index' space from tutorial docs
-    RA.filter(({ page: { path } }) => path !== `${product.slug}/tutorials`)
+    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
   );
 
 export const makeGuide = ({

@@ -32,7 +32,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       <Header
         menu={[...productToMenuItems(product, path, themeVariant)]}
         product={{
-          href: `${product.slug}/overview`,
+          href: `/${product.slug}/overview`,
           name: product.name,
         }}
         theme={themeVariant}

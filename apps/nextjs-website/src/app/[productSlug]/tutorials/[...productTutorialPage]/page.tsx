@@ -1,4 +1,4 @@
-import { getStrapiTutorial, getTutorialPaths } from '@/lib/api';
+import { getTutorial, getTutorialPaths } from '@/lib/api';
 import { Metadata } from 'next';
 import {
   makeMetadata,
@@ -10,7 +10,6 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 
 type Params = {
   productSlug: string;
@@ -32,9 +31,7 @@ export async function generateMetadata({
 }): Promise<Metadata | undefined> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
-  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
-    tutorialPath,
-  ]);
+  const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
   if (strapiTutorialProps) {
     const { title, path, seo } = strapiTutorialProps;
 
@@ -53,13 +50,7 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
-  const strapiTutorialProps = await getStrapiTutorial(productSlug, [
-    tutorialPath,
-  ]);
-
-  if (!strapiTutorialProps) {
-    return null;
-  }
+  const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
