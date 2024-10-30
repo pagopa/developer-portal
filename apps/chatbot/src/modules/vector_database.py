@@ -53,7 +53,6 @@ REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(REDIS_URL)
 )
-REDIS_INDEX_NAME = os.getenv("CHB_REDIS_INDEX_NAME")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 EMBEDDING_DIMS = {
     "models/text-embedding-004": 768,
