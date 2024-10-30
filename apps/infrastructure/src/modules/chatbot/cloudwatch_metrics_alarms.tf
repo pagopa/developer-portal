@@ -31,23 +31,6 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "api_gateway_availability" {
-  alarm_name          = "${local.prefix}-api-gateway-availability"
-  comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "5"
-  metric_name         = "Availability"
-  namespace           = "AWS/ApiGateway"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = "99"
-  alarm_description   = "This metric monitors API Gateway availability"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
-
-  dimensions = {
-    ApiName = aws_api_gateway_rest_api.api.name
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "api_gateway_increased_requests" {
   alarm_name          = "${local.prefix}-api-gateway-increased-requests"
   comparison_operator = "GreaterThanUpperThreshold"

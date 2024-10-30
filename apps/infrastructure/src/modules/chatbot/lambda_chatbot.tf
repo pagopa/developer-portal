@@ -127,9 +127,9 @@ resource "aws_cloudwatch_event_target" "lambda_target" {
   target_id = "keep-chatbot-lambda-warm"
   arn       = module.lambda_function.lambda_function_arn
   input = jsonencode({
-    resource                        = "/",
-    path                            = "/",
-    httpMethod                      = "OPTIONS",
+    resource                        = "/{proxy+}",
+    path                            = "/healthz",
+    httpMethod                      = "GET",
     requestContext                  = {},
     multiValueQueryStringParameters = null
   })
