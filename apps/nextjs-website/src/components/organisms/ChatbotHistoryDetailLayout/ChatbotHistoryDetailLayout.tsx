@@ -56,7 +56,9 @@ const ChatbotHistoryDetailLayout = ({
 
   return (
     <Stack direction='column' spacing={2}>
-      <Typography variant='h4'>{firstQuery.question}</Typography>
+      <Typography variant='h4' sx={{ overflowWrap: 'break-word' }}>
+        {firstQuery.question}
+      </Typography>
       <Stack direction='row' justifyContent='space-between'>
         <Typography
           component='span'
