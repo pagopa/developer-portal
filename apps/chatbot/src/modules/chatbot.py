@@ -127,10 +127,13 @@ class Chatbot():
     
 
     def mask_pii(self, message: str) -> str:
-        try:
-            return self.pii.mask_pii(message)
-        except Exception as e:
-            logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
+        if USE_PRESIDIO:
+            try:
+                return self.pii.mask_pii(message)
+            except Exception as e:
+                logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
+        else:
+            return message
 
 
     def generate(self, query_str: str) -> str:
