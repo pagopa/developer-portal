@@ -9,7 +9,6 @@ import ProductLayout, {
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
-import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
 import {
   makeMetadata,
@@ -66,8 +65,6 @@ const TutorialsPage = async ({ params }: ProductParams) => {
   const { abstract, bannerLinks, path, tutorials, seo, product } =
     await getTutorialListPageProps(productSlug);
 
-  const { shared } = translations;
-
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(product),
@@ -103,9 +100,8 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 date: tutorial.publishedAt,
               },
               href: {
-                label: shared.readTutorial,
+                label: 'shared.readTutorial',
                 link: tutorial.path,
-                title: shared.readTutorial,
               },
               img: {
                 alt: tutorial.image?.alternativeText || '',
