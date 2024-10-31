@@ -7,7 +7,6 @@ import ProductLayout, {
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
-import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 import Feature from '@/editorialComponents/Feature/Feature';
@@ -130,10 +129,8 @@ const OverviewPage = async ({ params }: ProductParams) => {
     relatedLinks,
     bannerLinks,
     seo,
+    product,
   } = await getOverview(params.productSlug);
-  const { overview } = translations;
-
-  const product = await getProduct(params.productSlug);
 
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
@@ -171,16 +168,15 @@ const OverviewPage = async ({ params }: ProductParams) => {
       )}
       {startInfo && (
         <StartInfo
-          title={startInfo.title || overview.startInfo.title}
+          title={startInfo.title}
           cta={startInfo.cta}
           cards={startInfo.cards}
         />
       )}
       {product?.tutorial_list_page?.data && tutorials && (
         <TutorialsOverview
-          title={tutorials.title || overview.tutorial.title}
+          title={tutorials.title}
           subtitle={tutorials.subtitle}
-          ctaLabel={overview.tutorial.ctaLabel}
           tutorialPath={{
             path: `/${product.slug}/tutorials`,
             name: 'tutorials',
@@ -190,7 +186,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
       )}
       {product?.guide_list_page?.data && postIntegration && (
         <PostIntegration
-          title={postIntegration.title || overview.postIntegration.title}
+          title={postIntegration.title}
           subtitle={postIntegration.subtitle}
           cta={
             postIntegration.cta && {
@@ -206,10 +202,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
         />
       )}
       {relatedLinks && (
-        <RelatedLinks
-          title={relatedLinks.title || overview.relatedLinks.title}
-          links={relatedLinks.links}
-        />
+        <RelatedLinks title={relatedLinks.title} links={relatedLinks.links} />
       )}
     </ProductLayout>
   );
