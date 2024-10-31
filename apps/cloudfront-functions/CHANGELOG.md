@@ -1,5 +1,11 @@
 # cloudfront-functions
 
+## 0.0.3
+
+### Patch Changes
+
+- bcba266: Fixed .bollo ending urls causing 404
+
 ## 0.0.2
 
 ### Patch Changes
