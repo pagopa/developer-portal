@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml -p chatbot up api
+docker compose --env-file .env.local -f docker/compose.yaml -p chatbot up api

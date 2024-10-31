@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml -p chatbot run create_index
+docker compose --env-file .env.local -f docker/compose.yaml -p chatbot run create_index

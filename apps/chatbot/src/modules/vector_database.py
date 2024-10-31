@@ -38,7 +38,7 @@ from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 from dotenv import load_dotenv
 
-load_dotenv(".env.test")
+load_dotenv()
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -236,7 +236,7 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{INDEX_ID} is now on Redis.")
+    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
 
     logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
