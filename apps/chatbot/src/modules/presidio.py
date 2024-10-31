@@ -36,7 +36,7 @@ IT_ENTITIES = [
 ]
 
 ALLOW_LIST = [
-    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa"
+    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa", "Rif"
 ]
 
 
