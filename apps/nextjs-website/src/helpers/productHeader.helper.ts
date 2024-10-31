@@ -7,13 +7,6 @@ export function productToMenuItems(
   path: string,
   theme: Theme
 ): readonly MenuDropdownProp[] {
-  // total possible items and corresponding links are:
-  // Overview: app-io/overview
-  // Quickstart Guide: app-io/quick-start
-  // API: app-io/api or app-io/api/main if there's only one api in the list
-  // Tutorials: app-io/tutorials
-  // Guides: app-io/guides
-
   return [
     {
       label: 'Overview',
@@ -22,7 +15,7 @@ export function productToMenuItems(
       theme,
     },
     // if there's quiskstart guide data, add it to the menu
-    product.quickstart_guide?.data
+    product.hasQuickstartGuidePage
       ? {
           label: 'Quickstart Guide',
           href: `/${product.slug}/quick-start`,
@@ -30,33 +23,16 @@ export function productToMenuItems(
           theme,
         }
       : null,
-    // if there's api data, and consists of only one item in the list, add it to the menu
-    product.api_data_list_page?.data &&
-    product.api_data_list_page.data.attributes.apiData.data.length === 1
+    product.hasApiDataListPage
       ? {
           label: 'API',
-          href: `/${product.slug}/api/${
-            product.api_data_list_page.data.attributes.apiData.data[0]
-              .attributes.apiRestDetail?.slug ??
-            product.api_data_list_page.data.attributes.apiData.data[0]
-              .attributes.apiSoapUrl
-          }`,
-          active: path.startsWith(`/${product.slug}/api/main`),
-          theme,
-        }
-      : null,
-    // if there's api data, and consists of more than one item in the list, add it to the menu
-    product.api_data_list_page?.data &&
-    product.api_data_list_page.data.attributes.apiData.data.length > 1
-      ? {
-          label: 'API',
-          href: `/${product.slug}/api`,
+          href: product.apiDataListPageUrl,
           active: path.startsWith(`/${product.slug}/api`),
           theme,
         }
       : null,
     // if there's tutorials data, add it to the menu
-    product.tutorial_list_page?.data
+    product.hasTutorialListPage
       ? {
           label: 'Tutorials',
           href: `/${product.slug}/tutorials`,
@@ -65,7 +41,7 @@ export function productToMenuItems(
         }
       : null,
     // if there's guides data, add it to the menu
-    product.guide_list_page?.data
+    product.hasGuideListPage
       ? {
           label: 'Guides',
           href: `/${product.slug}/guides`,

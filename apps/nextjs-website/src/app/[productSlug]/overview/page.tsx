@@ -173,7 +173,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product?.tutorial_list_page?.data && tutorials && (
+      {product?.hasTutorialListPage && tutorials && (
         <TutorialsOverview
           title={tutorials.title}
           subtitle={tutorials.subtitle}
@@ -184,7 +184,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
-      {product?.guide_list_page?.data && postIntegration && (
+      {product?.hasGuideListPage && postIntegration && (
         <PostIntegration
           title={postIntegration.title}
           subtitle={postIntegration.subtitle}

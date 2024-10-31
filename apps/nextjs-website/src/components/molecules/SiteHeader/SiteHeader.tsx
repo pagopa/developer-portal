@@ -22,7 +22,7 @@ const SiteHeader = (
   const t = useTranslations('devPortal');
 
   const productsWithOverview = useMemo(
-    () => products.filter((product: Product) => product.overview?.data),
+    () => products.filter((product: Product) => product.hasOverviewPage),
     [products]
   );
 
