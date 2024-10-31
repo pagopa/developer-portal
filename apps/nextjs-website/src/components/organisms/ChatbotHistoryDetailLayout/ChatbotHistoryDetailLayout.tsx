@@ -103,22 +103,13 @@ const ChatbotHistoryDetailLayout = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <Typography variant='h4' sx={{ overflowWrap: 'break-word' }}>
-        {firstQuery.question}
-      </Typography>
-      <Stack direction='row' justifyContent='space-between'>
-        <Typography
-          component='span'
-          color={palette.text.secondary}
-          sx={{ fontSize: { xs: '0.75rem', xl: '1rem' } }}
-        >
-          {date}
-        </Typography>
+      <Typography variant='h4'>{t('chatBot.sessionTitle') + date}</Typography>
+      <Stack direction='row' justifyContent='flex-end'>
         <Button
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          sx={{ display: { xs: 'none', sm: 'flex' } }}
+          sx={{ display: { xs: 'none', sm: 'flex' }, maxWidth: '162px' }}
           onClick={handleClickOpen}
         >
           {t('chatBot.deleteChat')}
