@@ -38,7 +38,7 @@ from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(".env.test")
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -147,22 +147,27 @@ def create_documentation(
     hash_table = {}
     empty_pages = []
 
-    # full_text = ""
-
+    driver_exe_path = "/usr/bin/chromedriver"
+    if os.path.exists(driver_exe_path):
+        driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
+    else:
+        driver_service = None
+    driver_options = webdriver.ChromeOptions()
+    driver_options.add_argument('--headless')
+    driver_options.add_argument('--disable-gpu')
+    driver_options.add_argument('--no-sandbox')
+    driver_options.add_argument('--disable-dev-shm-usage')
+    
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
         # if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-
-            # svc = webdriver.ChromeService(executable_path=binary_path)
-            # service = Service(executable_path=binary_path)
-            # options = webdriver.ChromeOptions()
-            # options.add_argument('--headless=new')
-            # options.add_argument('--no-sandbox')
-            # options.add_argument('user-agent=fake-useragent')
-            driver = webdriver.Chrome() #(service=service, options=options)
+            driver = webdriver.Chrome(
+                options=driver_options,
+                service=driver_service
+            )
 
             driver.get(url)
             time.sleep(5)
