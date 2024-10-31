@@ -91,9 +91,7 @@ class Chatbot():
         nodes = typed_response.source_nodes
 
         if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-            response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
-            Prova a riformulare la domanda.
-            """
+            response_str = "Mi dispiace, posso rispondere solo a domande riguardo la documentazione del DevPortal di PagoPA.\nProva a riformulare la domanda."
         else:
             response_str = self._unmask_reference(response_str, nodes)
         
