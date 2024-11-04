@@ -160,9 +160,7 @@ def create_documentation(
     
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
-        # if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
             driver = webdriver.Chrome(
                 options=driver_options,
@@ -177,7 +175,6 @@ def create_documentation(
             title, text = html2markdown(open(file))
 
         if text is None or text == "" or text == "None" or text=="404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non esiste":
-            # print(file)
             empty_pages.append(file)
 
         else:
