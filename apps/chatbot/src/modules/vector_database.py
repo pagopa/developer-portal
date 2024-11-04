@@ -10,9 +10,6 @@ import pytz
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.chrome.service import Service
-# from chromedriver_py import binary_path
 from typing import List, Tuple
 
 from llama_index.core import (
