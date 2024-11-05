@@ -36,7 +36,7 @@ IT_ENTITIES = [
 ]
 
 ALLOW_LIST = [
-    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa"
+    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa", "Rif"
 ]
 
 
@@ -136,17 +136,17 @@ class PresidioPII():
                     lang_list.append(detected_lang.lang)
 
             if not lang_list:
-                logging.warning("No detected language.")
+                logging.warning("[presidio.py - detect_language] No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
                 lang = lang_list[0]           
         except:
-            logging.warning("No detected language.")
+            logging.warning("[presidio.py - detect_language] No detected language.")
             lang = "it"
 
-        logging.info(f"Set presidio to detect PII in {lang} language.")
+        logging.info(f"[presidio.py - detect_language] Set presidio to detect PII in {lang} language.")
         return lang
 
 

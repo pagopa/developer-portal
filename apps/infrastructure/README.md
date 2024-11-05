@@ -13,7 +13,7 @@ Make sure you don't have a `*.tfstate` file within the `apps/infrastructure/.ter
 
 Comment the `backend "s3" {}` line from `main.tf` file:
 
-``` sh
+```sh
 terraform {
   required_version = "x.y.z"
 
@@ -33,7 +33,7 @@ terraform {
 
 The following steps require a valid aws session
 
-``` sh
+```sh
 cd apps/infrastructure/src
 
 # create an empty terraform vars file
@@ -64,7 +64,7 @@ Copy the output provided by terraform, you need the following two outputs:
 
 Remove the comment from the line `backend "s3" {}` from `main.tf` file:
 
-``` sh
+```sh
 terraform {
   required_version = "x.y.z"
 
@@ -82,7 +82,7 @@ terraform {
 
 Write into the file `env/<env_name>/backend.tfvars` the following content replacing the keys with the valid values:
 
-``` sh
+```sh
 bucket         = "<put_here_the_terraform_backend_bucket_name>"
 key            = "<env_name>/main/tfstate"
 region         = "eu-south-1"
@@ -91,7 +91,7 @@ dynamodb_table = "<put_here_the_terraform_lock_dynamodb_table>"
 
 And finally execute the following command that upload state to S3. Reply yes to the question:
 
-``` sh
+```sh
 # you will ask to push the existing state to S3 bucket
  ./terraform.sh init <env_name>
 ```
