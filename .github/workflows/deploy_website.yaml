@@ -124,5 +124,3 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
-        with:
-          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
