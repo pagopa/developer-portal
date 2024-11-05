@@ -36,11 +36,6 @@ runs:
         pytest tests/
         coverage report
 
-    - name: Configure AWS Credentials
-      uses: ./.github/actions/configure-aws-credentials
-      with:
-        aws_region: ${{ inputs.aws_region }}
-        role_to_assume: ${{ inputs.iam_role }}
 
     - name: Create Vector Index
       shell: bash
