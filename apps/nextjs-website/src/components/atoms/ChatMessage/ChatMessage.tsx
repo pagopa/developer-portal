@@ -23,6 +23,7 @@ export type Message = {
   id: string;
   text: string;
   isQuestion: boolean;
+  sessionId: string;
   timestamp?: string;
   dateHeader?: string;
   hasNegativeFeedback: boolean;

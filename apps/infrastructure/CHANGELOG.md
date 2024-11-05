@@ -1,5 +1,17 @@
 # infrastructure
 
+## 1.3.0
+
+### Minor Changes
+
+- e5e9647: Production deployment enabled
+
+### Patch Changes
+
+- 30fbfe5: Chatbot lambda is now kept warm by invoking it every 3 minutes
+- b63169d: Added chatbot cloudwatch dashboards and alarms
+- a80753c: Presidio
+
 ## 1.2.0
 
 ### Minor Changes

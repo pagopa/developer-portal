@@ -1,5 +1,30 @@
 # nextjs-website
 
+## 4.11.0
+
+### Minor Changes
+
+- acae444: Add modal to confirm history deletion
+- 0fe4dff: Update url mapping for documentation
+- 3f63584: Update title for chat history sessions
+- 27ed2cf: Fix the header in the guide page
+
+### Patch Changes
+
+- d572be4: fix reference in anchorEl for chatbot
+- e6b7263: Remove warnings from build output
+- 42d423c: Fix chatbot response layout by showing one link per line
+- 980fe99: Add healthz call on chatbot popoup
+- bc51ec3: Fix issue with error remaining on screen
+- 23f27b8: Remove subtitle from banner link codec
+- 8a2a203: Add UrlReplaceMapCodec and mapping function
+- 3881914: Fix margins and text size of guides and tutorials
+- 6741ec9: Fix tutorial's in page menu
+- 60bd477: Fix chatbot issue with sending empty messages
+- d5d09b6: Fix chat messages with long words from going off the screen
+- Updated dependencies [e6b7263]
+  - gitbook-docs@0.2.1
+
 ## 4.10.0
 
 ### Minor Changes

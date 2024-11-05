@@ -11,8 +11,8 @@ load_dotenv()
 
 ENGINE_SIMILARITY_TOPK = os.getenv('CHB_ENGINE_SIMILARITY_TOPK', "5")
 ENGINE_SIMILARITY_CUTOFF = os.getenv('CHB_ENGINE_SIMILARITY_CUTOFF', "0.55")
-ENGINE_USE_ASYNC = os.getenv('CHB_ENGINE_USE_ASYNC', "True")
-ENGINE_USE_STREAMING = os.getenv('CHB_ENGINE_USE_STREAMING', "False")
+ENGINE_USE_ASYNC = True if (os.getenv('CHB_ENGINE_USE_ASYNC', "True")).lower() == "true" else False
+ENGINE_USE_STREAMING = True if (os.getenv('CHB_ENGINE_USE_STREAMING', "False")).lower() == "true" else False 
 
 
 def get_automerging_query_engine(
@@ -45,8 +45,8 @@ def get_automerging_query_engine(
         ],
         text_qa_template=text_qa_template,
         refine_template=refine_template,
-        use_async=True if ENGINE_USE_ASYNC == "True" else False,
-        streaming=True if ENGINE_USE_STREAMING == "True" else False
+        use_async=ENGINE_USE_ASYNC,
+        streaming=ENGINE_USE_STREAMING
     )
 
     return automerging_engine
