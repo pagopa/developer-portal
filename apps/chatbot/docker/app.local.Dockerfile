@@ -1,6 +1,10 @@
 FROM python:3.12.4-slim-bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update && \
+  apt-get install -y \
+  curl
+
 ENV PYTHONPATH=/app
 
 RUN pip install --upgrade pip \
@@ -14,4 +18,4 @@ RUN poetry install
 
 COPY . .
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080"]
+CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]

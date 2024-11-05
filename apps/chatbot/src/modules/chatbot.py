@@ -3,9 +3,7 @@ import re
 import logging
 from typing import Union, Tuple
 
-
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 )
@@ -15,11 +13,12 @@ from src.modules.vector_database import load_automerging_index_redis, REDIS_KVST
 from src.modules.engine import get_automerging_query_engine
 from src.modules.presidio import PresidioPII
 
+from dotenv import load_dotenv
 
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET")
-ITALIAN_THRESHOLD = 0.85
-NUM_MIN_WORDS_QUERY = 3
-NUM_MIN_REFERENCES = 1
+load_dotenv()
+
+
+USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
 ]
@@ -36,7 +35,10 @@ class Chatbot():
 
         self.params = params
         self.prompts = prompts
-        self.pii = PresidioPII(config=params["config_presidio"])
+
+        if USE_PRESIDIO:
+            self.pii = PresidioPII(config=params["config_presidio"])
+
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.index = load_automerging_index_redis(
@@ -45,14 +47,6 @@ class Chatbot():
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
         )
-        self.history = [
-            ChatMessage(
-                role=MessageRole.ASSISTANT,
-                content="""You are an Italian customer services chatbot. 
-                Your name is Discovery and it is your duty to assist the user answering his questions about the PagoPA DevPortal documentation!
-                """
-            )
-        ]
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_query_engine(
             self.index,
@@ -86,15 +80,6 @@ class Chatbot():
         return qa_prompt_tmpl, ref_prompt_tmpl
 
 
-    def _update_history(self, role: MessageRole, message: str):
-        self.history.append(ChatMessage(role=role, content=message))
-
-
-    def reset_chat_history(self):
-        self.history = []
-        return self.history
-
-
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
         if isinstance(engine_response, StreamingResponse):
@@ -106,9 +91,7 @@ class Chatbot():
         nodes = typed_response.source_nodes
 
         if response_str is None or response_str == "Empty Response" or response_str == "" or len(nodes) == 0:
-            response_str = """Mi dispiace, posso rispondere solo a domande riguardo la documentazione del [PagoPA DevPortal | Home](https://developer.pagopa.it/).
-            Prova a riformulare la domanda.
-            """
+            response_str = "Mi dispiace, posso rispondere solo a domande riguardo la documentazione del DevPortal di PagoPA.\nProva a riformulare la domanda."
         else:
             response_str = self._unmask_reference(response_str, nodes)
         
@@ -122,7 +105,7 @@ class Chatbot():
         # Find all matches in the text
         hashed_urls = re.findall(pattern, response_str)
 
-        logging.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        logging.info(f"[chatbot.py - _unmask_reference] Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(
                 collection=f"hash_table_{INDEX_ID}", 
@@ -142,7 +125,13 @@ class Chatbot():
     
 
     def mask_pii(self, message: str) -> str:
-        return self.pii.mask_pii(message)
+        if USE_PRESIDIO:
+            try:
+                return self.pii.mask_pii(message)
+            except Exception as e:
+                logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
+        else:
+            return message
 
 
     def generate(self, query_str: str) -> str:
@@ -151,25 +140,8 @@ class Chatbot():
             engine_response = self.engine.query(query_str)
             response_str = self._get_response_str(engine_response)
 
-            self._update_history(MessageRole.USER, query_str)
-            self._update_history(MessageRole.ASSISTANT, response_str)
-
         except Exception as e:
-            exception_str = str(e)
-            if "SAFETY" in exception_str:
-                if "HARM_CATEGORY_HARASSMENT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso rispondere a domande offensive o minacciose."
-                    logging.info("Gemini Safety: blocked query because retrieved HARASSMENT content in it.")
-                if "HARM_CATEGORY_SEXUALLY_EXPLICIT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso rispondere a domande di natura sessualmente esplicita."
-                    logging.info("Gemini Safety: blocked query because retrieved SEXUALLY_EXPLICIT content in it.")
-                if "HARM_CATEGORY_HATE_SPEECH" in exception_str:
-                    response_str = "Mi dispiace, ma non posso accettare discorsi di odio. Per favore, evita di usare linguaggio."
-                    logging.info("Gemini Safety: blocked query because retrieved HATE_SPEECH content in it.")
-                if "HARM_CATEGORY_DANGEROUS_CONTENT" in exception_str:
-                    response_str = "Mi dispiace, ma non posso fornire informazioni che potrebbero essere pericolose o dannose."
-                    logging.info("Gemini Safety: blocked query because retrieved DANGEROUS_CONTENT in it.")
-            else:
-                logging.info(exception_str)
+            response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
+            logging.info(f"[chatbot.py - generate] Exception: {e}")
 
         return response_str

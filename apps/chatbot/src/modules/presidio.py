@@ -12,7 +12,7 @@ from presidio_anonymizer.entities import OperatorConfig
 
 
 # see supported entities by Presidio with their description at: https://microsoft.github.io/presidio/supported_entities/
-ENTITIES = [
+GLOBAL_ENTITIES = [
     "CREDIT_CARD",
     "CRYPTO",
     "DATE_TIME",
@@ -23,25 +23,20 @@ ENTITIES = [
     "LOCATION",
     "PERSON",
     "PHONE_NUMBER",
-    "MEDICAL_LICENSE",
+    "MEDICAL_LICENSE"
+]
+
+IT_ENTITIES = [
     "IT_FISCAL_CODE",
     "IT_DRIVER_LICENSE",
     "IT_VAT_CODE",
     "IT_PASSPORT",
     "IT_IDENTITY_CARD",
-    "IT_PHYSICAL_ADDRESS",  # this is a custom entity added to the analyzer registry
-    # "ES_NIF",
-    # "ES_NIE",
-    # "US_BANK_NUMBER",
-    # "US_DRIVER_LICENSE",
-    # "US_ITIN",
-    # "US_PASSPORT",
-    # "US_SSN",
-    # "UK_NHS"
+    "IT_PHYSICAL_ADDRESS"
 ]
 
 ALLOW_LIST = [
-    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa"
+    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa", "Rif"
 ]
 
 
@@ -102,9 +97,10 @@ class PresidioPII():
             analyzer_threshold: float = 0.4
         ):
         self.config = config
+        self.languages = [item["lang_code"] for item in config["models"]]
         self.entity_mapping = entity_mapping
         self.mapping = mapping
-        self.entities = entities if entities else ENTITIES
+        self.entities = entities if entities else GLOBAL_ENTITIES
         self.analyzer_threshold = analyzer_threshold
 
         if isinstance(self.config, (Path, str)):
@@ -117,7 +113,7 @@ class PresidioPII():
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
             nlp_engine = self.nlp_engine,
-            supported_languages = ["it", "en"], # "es", "fr", "de"
+            supported_languages = self.languages,
             default_score_threshold = analyzer_threshold
         )
         self._add_italian_physical_address_entity()
@@ -136,21 +132,21 @@ class PresidioPII():
             detected_languages = detect_langs(text)
             lang_list = []
             for detected_lang in detected_languages:
-                if detected_lang.lang in ["it", "en", "es", "fr", "de"]:
+                if detected_lang.lang in self.languages:
                     lang_list.append(detected_lang.lang)
 
             if not lang_list:
-                logging.warning("No detected language.")
+                logging.warning("[presidio.py - detect_language] No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
-                lang = "en" # lang_list[0].lang            
+                lang = lang_list[0]           
         except:
-            logging.warning("No detected language.")
+            logging.warning("[presidio.py - detect_language] No detected language.")
             lang = "it"
 
-        logging.info(f"Set presidio to detect PII in {lang} language.")
+        logging.info(f"[presidio.py - detect_language] Set presidio to detect PII in {lang} language.")
         return lang
 
 
@@ -160,7 +156,7 @@ class PresidioPII():
         results = self.analyzer.analyze(
             text=text,
             language=lang,
-            entities=self.entities,
+            entities=self.entities + IT_ENTITIES if lang == "it" else self.entities,
             allow_list=ALLOW_LIST
         )
 
