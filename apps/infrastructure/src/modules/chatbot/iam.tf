@@ -91,3 +91,17 @@ module "iam_role_bedrock_logging" {
   ]
   role_requires_mfa = false
 }
+
+###############################################################################
+#                Define IAM Role to use on chatbot deploy                     #
+###############################################################################
+resource "aws_iam_role" "deploy_chatbot" {
+  name               = "GitHubActionDeployChatbot"
+  description        = "Role to assume to deploy the chatbot"
+  assume_role_policy = data.aws_iam_policy_document.deploy_github.json
+}
+
+resource "aws_iam_role_policy_attachment" "deploy_chatbot" {
+  role       = aws_iam_role.deploy_chatbot.name
+  policy_arn = aws_iam_policy.deploy_chatbot.arn
+}
