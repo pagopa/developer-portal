@@ -52,3 +52,35 @@ config_presidio:
       - ORGANIZATION
       - ORG
     default_score: 0.8
+  allow_list:
+    - Discovery
+    - discovery
+    - Rif
+    - SEND
+    - send
+    - Send
+    - GPD
+    - gpd
+    - Gpd
+    - STATO
+    - stato
+    - PagoPA 
+    - pagoPA
+    - pagopa
+    - Pagopa
+    - Firma con IO
+    - IO
+    - io
+    - Io
+    - PDND
+    - pdnd
+    - Pdnd
+    - IDPay
+    - idpay
+    - IDpay
+    - Idpay
+    - IdPay
+    - id-pay
+    - ID-Pay
+    - id-Pay
+    - ID-pay
