@@ -59,7 +59,7 @@ config_presidio:
     - SEND
     - send
     - Send
-    - GDP
+    - GPD
     - gpd
     - Gpd
     - STATO
