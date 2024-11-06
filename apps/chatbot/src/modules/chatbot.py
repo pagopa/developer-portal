@@ -127,7 +127,11 @@ class Chatbot():
     def mask_pii(self, message: str) -> str:
         if USE_PRESIDIO:
             try:
-                return self.pii.mask_pii(message)
+                split_message = message.split("Rif:")
+                masked_message = self.pii.mask_pii(split_message[0])
+                if len(split_message)>1:
+                    masked_message = masked_message + "Rif:" + split_message[1]
+                return masked_message
             except Exception as e:
                 logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
         else:
