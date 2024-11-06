@@ -457,6 +457,12 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse emoji and convert from name to unicode', () => {
+    expect(parseContent(':sos:', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['🆘']),
+    ]);
+  });
+
   it('should parse hint', () => {
     expect(
       parseContent('{% hint style="info" %}\nText\n{% endhint %}\nText', config)
