@@ -15,7 +15,6 @@ import {
   DialogTitle,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
@@ -52,7 +51,6 @@ const ChatbotHistoryDetailLayout = ({
 }: ChatbotHistoryDetailLayoutProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
-  const { palette } = useTheme();
 
   const handleClickOpen = () => {
     setOpen(true);
