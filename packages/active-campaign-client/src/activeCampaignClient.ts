@@ -67,6 +67,21 @@ export class ActiveCampaignClient {
     return response.data?.contacts?.[0]?.id;
   }
 
+  async getListIdByStringId(stringId: string) {
+    const response = await axios.get(`${this.baseUrl}/api/3/lists`, {
+      headers: this.getHeaders(),
+      params: { stringid: stringId },
+    });
+    return response.data?.lists?.[0]?.id;
+  }
+
+  async deleteList(id: number) {
+    const response = await axios.delete(`${this.baseUrl}/api/3/lists/${id}`, {
+      headers: this.getHeaders(),
+    });
+    return response.data;
+  }
+
   async updateListStatus(data: ACListStatusPayload) {
     const response = await axios.post(
       `${this.baseUrl}/api/3/contactLists`,
