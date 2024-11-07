@@ -2,21 +2,12 @@
 /* eslint-disable functional/no-expression-statements */
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { acClient } from '../activeCampaignClient';
-import { validateCognitoToken } from '../cognito';
 import { ACContactPayload } from '../activeCampaign';
 
 export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
   try {
-    const token = event.headers.Authorization;
-    if (!token || !(await validateCognitoToken(token))) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Unauthorized' }),
-      };
-    }
-
     const { email, ...userData } = JSON.parse(event.body || '{}');
 
     if (!email) {
