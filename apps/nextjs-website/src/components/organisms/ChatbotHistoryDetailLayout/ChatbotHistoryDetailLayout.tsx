@@ -39,7 +39,7 @@ type ChatbotHistoryDetailLayoutProps = {
   userName: string;
   previousSession?: SessionNavigationData;
   nextSession?: SessionNavigationData;
-  onDeleteChatSession: (sessionId: string) => null;
+  onDeleteChatSession: (sessionId: string, sessionDate: string | null) => null;
 };
 
 const ChatbotHistoryDetailLayout = ({
@@ -94,7 +94,9 @@ const ChatbotHistoryDetailLayout = ({
           </Button>
           <Button
             variant='contained'
-            onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+            onClick={() =>
+              onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
+            }
             autoFocus
           >
             {t('chatBot.deleteConfirm')}
@@ -126,7 +128,9 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+          onClick={() =>
+            onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
+          }
         >
           {t('chatBot.deleteChat')}
         </Button>

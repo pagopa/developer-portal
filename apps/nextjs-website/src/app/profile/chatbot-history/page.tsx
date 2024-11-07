@@ -64,9 +64,16 @@ const ChatbotHistory = () => {
         <ChatbotHistoryDetailLayout
           queries={session}
           userName={`${user.attributes.given_name} `}
-          onDeleteChatSession={(sessionId: string) => {
+          onDeleteChatSession={(
+            sessionId: string,
+            sessionDate: string | null
+          ) => {
             deleteChatbotSession(sessionId).then(() => {
-              flushChatQueriesFromLocalStorage();
+              const date = sessionDate ? new Date(sessionDate) : null;
+              const currentDate = new Date();
+              if (date && date.getDate() === currentDate.getDate()) {
+                flushChatQueriesFromLocalStorage();
+              }
               if (typeof window !== 'undefined') {
                 // router.replace() or push() are not enough because they will not clean current state of components
                 // eslint-disable-next-line functional/immutable-data
