@@ -58,9 +58,9 @@ The strapi token can be recovered by a mantainer with admin access to the produc
 Give that SQLite is used for local developement, this transfer will require the following lines to be added to `apps/strapi-cms/config/database.ts`:
 
 ```
-pool: {
-        min: 0,
-        max: 4,
+      pool: {
+        min: 2,
+        max: 20,
         acquireTimeoutMillis: 300000,
         createTimeoutMillis: 300000,
         destroyTimeoutMillis: 300000,
