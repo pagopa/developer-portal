@@ -55,7 +55,7 @@ npx strapi transfer --from https://cms.developer.pagopa.it/admin --from-token <s
 
 The strapi token can be recovered by a mantainer with admin access to the production cms
 
-Give that SQLite is used for local developement, this transfer will require the following lines to be added to `apps/strapi-cms/config/database.ts`:
+Give that SQLite is used for local developement, this transfer will require the following lines to be added to `apps/strapi-cms/config/database.ts` inside the `sqlite` object:
 
 ```
       pool: {
