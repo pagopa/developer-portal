@@ -193,7 +193,7 @@ class Chatbot():
             response_str = self._get_response_str(engine_response)
 
         except Exception as e:
-            response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
+            response_str = "Scusa, non sono riuscito ad elaborare questa domanda.\nChiedimi un'altra domanda."
             logging.info(f"[chatbot.py - generate] Exception: {e}")
 
         return response_str
@@ -217,7 +217,7 @@ class Chatbot():
             response_str = self._get_response_str(engine_response)
 
         except Exception as e:
-            response_str = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
+            response_str = "Scusa, non sono riuscito ad elaborare questa domanda.\nChiedimi un'altra domanda."
             logging.info(f"[chatbot.py - generate] Exception: {e}")
 
         return response_str
