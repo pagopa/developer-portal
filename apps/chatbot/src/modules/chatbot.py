@@ -72,10 +72,6 @@ class Chatbot():
         )
 
 
-    def reset_chat_history(self, user_id: str) -> None:
-        if USE_CHAT_ENGINE:
-            self.chat_store.delete_messages(key=user_id)
-
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 
         # create templates
@@ -203,7 +199,6 @@ class Chatbot():
 
         
         chat_history = self._messages_to_chathistory(messages)
-        print(chat_history)
 
         try:
             if USE_ASYNC and not USE_STREAMING:
