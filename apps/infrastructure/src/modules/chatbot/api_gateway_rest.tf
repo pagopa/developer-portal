@@ -72,10 +72,14 @@ resource "aws_api_gateway_method_settings" "chatbot" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = aws_api_gateway_deployment.stage.stage_name
   method_path = "*/*"
+
   settings {
     logging_level      = "INFO"
     data_trace_enabled = true
     metrics_enabled    = true
+
+    throttling_burst_limit = 80
+    throttling_rate_limit  = 50
   }
 }
 
