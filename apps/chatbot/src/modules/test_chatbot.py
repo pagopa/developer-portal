@@ -41,7 +41,7 @@ def test_messages_to_chathistory():
     ]
     chat_history = CHATBOT._messages_to_chathistory(messages)
 
-    assert len(chat_history) == 7
+    assert len(chat_history) == 2 * len(messages) + 1
 
 
 def test_pii_mask():
