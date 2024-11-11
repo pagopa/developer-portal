@@ -131,3 +131,65 @@ data "aws_iam_policy_document" "bedrock_logging" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "deploy_github" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:${var.github_repository}:*"]
+    }
+
+    condition {
+      test     = "ForAllValues:StringEquals"
+      variable = "token.actions.githubusercontent.com:iss"
+      values   = ["https://token.actions.githubusercontent.com"]
+    }
+
+    condition {
+      test     = "ForAllValues:StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "deploy_chatbot" {
+  name        = "DeployChatbot"
+  description = "Policy to allow to deploy the chatbot"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:*",
+          "ecr:GetAuthorizationToken",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetAuthorizationToken",
+          "ecr:UploadLayerPart",
+          "ecr:InitiateLayerUpload",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:PutImage",
+          "ecr:BatchGetImage"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}

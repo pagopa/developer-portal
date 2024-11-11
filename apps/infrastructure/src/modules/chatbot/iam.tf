@@ -105,3 +105,4 @@ resource "aws_iam_role_policy_attachment" "deploy_chatbot" {
   role       = aws_iam_role.deploy_chatbot.name
   policy_arn = aws_iam_policy.deploy_chatbot.arn
 }
+
