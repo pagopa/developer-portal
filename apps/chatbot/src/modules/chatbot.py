@@ -29,11 +29,14 @@ RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse,
     AgentChatResponse, StreamingAgentChatResponse
 ]
-START_CHAT_MESSAGE = """\
-Ciao! Io sono Discovery, l'assistente virtuale di PagoPA. \
-Rispondo solo e soltanto a domande riguardanti la documentazione di PagoPA DevPortal, \
-che puoi trovare sul sito: https://dev.developer.pagopa.it!\
-"""
+START_CHAT_MESSAGE = [ChatMessage(
+    role = MessageRole.ASSISTANT,
+    content = (
+        "Ciao! Io sono Discovery, l'assistente virtuale di PagoPA.\n"
+        "Rispondo solo e soltanto a domande riguardanti la documentazione di PagoPA DevPortal, "
+        "che puoi trovare sul sito: https://dev.developer.pagopa.it!"
+    )
+)]
 
 logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
@@ -163,11 +166,6 @@ class Chatbot():
         
 
     def _messages_to_chathistory(self, messages: Optional[List[dict]] = None) -> List[ChatMessage]:
-        
-        start_message = [ChatMessage(
-            role = MessageRole.ASSISTANT,
-            content = START_CHAT_MESSAGE
-        )]
 
         chat_history = []
         if messages:
@@ -183,7 +181,7 @@ class Chatbot():
                     )
                 ]
         
-        chat_history = start_message + chat_history
+        chat_history = START_CHAT_MESSAGE + chat_history
 
         return chat_history
 
