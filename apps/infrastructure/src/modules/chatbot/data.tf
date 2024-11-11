@@ -187,7 +187,7 @@ resource "aws_iam_policy" "deploy_chatbot" {
         Action = [
           "iam:PassRole"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       }
     ]
