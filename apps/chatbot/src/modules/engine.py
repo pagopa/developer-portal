@@ -25,7 +25,7 @@ def get_automerging_engine(
         refine_template: PromptTemplate | None = None,
         verbose: bool = True,
         use_chat_engine: bool | None = None
-    ):
+    ) -> (RetrieverQueryEngine | CondenseQuestionChatEngine):
 
     if use_chat_engine is None:
         use_chat_engine = USE_CHAT_ENGINE
