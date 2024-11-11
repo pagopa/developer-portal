@@ -34,9 +34,10 @@ const DesktopUserInfo: FC = () => {
   };
 
   const signOut = useCallback(async () => {
-    await Auth.signOut();
+    await Auth.signOut().then(() => {
+      flushChatQueriesFromLocalStorage();
+    });
 
-    flushChatQueriesFromLocalStorage();
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
       router.replace('/');
