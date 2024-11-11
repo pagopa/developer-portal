@@ -13,21 +13,14 @@ engine:
 config_presidio:
   nlp_engine_name: spacy
   models:
-    -
-      lang_code: en
+    - lang_code: en
       model_name: en_core_web_md
-    -
-      lang_code: it
+    - lang_code: it
       model_name: it_core_news_md
-    # -
-    #   lang_code: de
-    #   model_name: de_core_news_md
-    # -
-    #   lang_code: es
-    #   model_name: es_core_news_md
-    # -
-    #   lang_code: fr
-    #   model_name: fr_core_news_md
+    - lang_code: de
+      model_name: de_core_news_md
+    - lang_code: fr
+      model_name: fr_core_news_md
   ner_model_configuration:
     labels_to_ignore:
       - ORDINAL
@@ -59,3 +52,35 @@ config_presidio:
       - ORGANIZATION
       - ORG
     default_score: 0.8
+  allow_list:
+    - Discovery
+    - discovery
+    - Rif
+    - SEND
+    - send
+    - Send
+    - GPD
+    - gpd
+    - Gpd
+    - STATO
+    - stato
+    - PagoPA 
+    - pagoPA
+    - pagopa
+    - Pagopa
+    - Firma con IO
+    - IO
+    - io
+    - Io
+    - PDND
+    - pdnd
+    - Pdnd
+    - IDPay
+    - idpay
+    - IDpay
+    - Idpay
+    - IdPay
+    - id-pay
+    - ID-Pay
+    - id-Pay
+    - ID-pay

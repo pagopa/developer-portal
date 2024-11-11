@@ -17,6 +17,7 @@ import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
+import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
 const DesktopUserInfo: FC = () => {
   const t = useTranslations();
@@ -33,7 +34,9 @@ const DesktopUserInfo: FC = () => {
   };
 
   const signOut = useCallback(async () => {
-    await Auth.signOut();
+    await Auth.signOut().then(() => {
+      flushChatQueriesFromLocalStorage();
+    });
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
