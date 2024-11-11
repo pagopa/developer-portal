@@ -15,7 +15,6 @@ import {
   DialogTitle,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
@@ -40,7 +39,7 @@ type ChatbotHistoryDetailLayoutProps = {
   userName: string;
   previousSession?: SessionNavigationData;
   nextSession?: SessionNavigationData;
-  onDeleteChatSession: (sessionId: string) => null;
+  onDeleteChatSession: (sessionId: string, sessionDate: string | null) => null;
 };
 
 const ChatbotHistoryDetailLayout = ({
@@ -52,7 +51,6 @@ const ChatbotHistoryDetailLayout = ({
 }: ChatbotHistoryDetailLayoutProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
-  const { palette } = useTheme();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -96,7 +94,9 @@ const ChatbotHistoryDetailLayout = ({
           </Button>
           <Button
             variant='contained'
-            onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+            onClick={() =>
+              onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
+            }
             autoFocus
           >
             {t('chatBot.deleteConfirm')}
@@ -128,7 +128,9 @@ const ChatbotHistoryDetailLayout = ({
           variant='outlined'
           startIcon={<Delete />}
           color='error'
-          onClick={() => onDeleteChatSession(firstQuery.sessionId)}
+          onClick={() =>
+            onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
+          }
         >
           {t('chatBot.deleteChat')}
         </Button>

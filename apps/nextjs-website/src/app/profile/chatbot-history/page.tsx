@@ -4,7 +4,10 @@ import { useTranslations } from 'next-intl';
 import { Box, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
-import { useChatbot } from '@/helpers/chatbot.helper';
+import {
+  flushChatQueriesFromLocalStorage,
+  useChatbot,
+} from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -61,8 +64,16 @@ const ChatbotHistory = () => {
         <ChatbotHistoryDetailLayout
           queries={session}
           userName={`${user.attributes.given_name} `}
-          onDeleteChatSession={(sessionId: string) => {
+          onDeleteChatSession={(
+            sessionId: string,
+            sessionDate: string | null
+          ) => {
             deleteChatbotSession(sessionId).then(() => {
+              const date = sessionDate ? new Date(sessionDate) : null;
+              const currentDate = new Date();
+              if (date && date.getDate() === currentDate.getDate()) {
+                flushChatQueriesFromLocalStorage();
+              }
               if (typeof window !== 'undefined') {
                 // router.replace() or push() are not enough because they will not clean current state of components
                 // eslint-disable-next-line functional/immutable-data
