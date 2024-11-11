@@ -94,7 +94,7 @@ jobs:
         with:
            task-definition: apps/chatbot/task-definition.json
            container-name: chatbot-docker
-           image: ${{ steps.login-ecr.outputs.registry }}/strapi:${{ github.sha }}
+           image: ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
 
       - name: Deploy new ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1.4.11
@@ -102,6 +102,10 @@ jobs:
             task-definition: ${{ steps.task-def.outputs.task-definition }}
             service: chatbot-ecs
             cluster: chatbot-ecs-cluster
+
+      - name: AWS set lambda function image
+        run: |
+            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
 
   manual_deploy:
     name: Build and push Chatbot API lambda image (manual trigger) - (${{ inputs.environment }})
@@ -156,7 +160,7 @@ jobs:
         with:
            task-definition: apps/chatbot/task-definition.json
            container-name: chatbot-docker
-           image: ${{ steps.login-ecr.outputs.registry }}/strapi:${{ github.sha }}
+           image: ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
 
       - name: Deploy new ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1.4.11
@@ -164,3 +168,7 @@ jobs:
             task-definition: ${{ steps.task-def.outputs.task-definition }}
             service: chatbot-ecs
             cluster: chatbot-ecs-cluster
+      
+      - name: AWS set lambda function image
+        run: |
+            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
