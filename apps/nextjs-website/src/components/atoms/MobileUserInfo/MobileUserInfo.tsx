@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
+import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
 type MobileUserInfoProps = {
   // eslint-disable-next-line functional/no-return-void
@@ -24,7 +25,9 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
 
   const signOut = useCallback(async () => {
     onClick && onClick();
-    await Auth.signOut();
+    await Auth.signOut().then(() => {
+      flushChatQueriesFromLocalStorage();
+    });
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
