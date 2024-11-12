@@ -1,0 +1,12 @@
+{
+  "root": true,
+  "extends": [
+    "custom"
+  ],
+  "rules": {
+    "functional/no-expression-statements": "off",
+    "functional/no-this-expressions": "off",
+    "functional/no-classes": "off",
+    "functional/immutable-data": "off"
+  }
+}
