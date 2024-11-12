@@ -69,6 +69,19 @@ export function flushChatQueriesFromLocalStorage() {
   localStorage.removeItem(CHAT_QUERIES_LOCAL_STORAGE_KEY);
 }
 
+function setFeedbackByQueryId(
+  queries: Query[],
+  queryId: string,
+  hasNegativeFeedback: boolean
+) {
+  return queries.map((query) => {
+    if (query.id === queryId) {
+      return { ...query, badAnswer: hasNegativeFeedback };
+    }
+    return query;
+  });
+}
+
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
@@ -109,24 +122,28 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       createdAt: null,
     };
     setHistoryQueries([...historyQueries, newQuery]);
+
     const newChatQueries = [
       ...previousQueries,
       { ...newQuery, question: queryMessage },
     ];
     setChatQueries(newChatQueries);
     setChatQueriesInLocalStorage(newChatQueries);
+
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
     })
       .then((response) => {
         setIsAwaitingResponse(false);
+
         const newChatQueries = [
           ...chatQueries,
           { ...response, question: queryMessage },
         ];
         setChatQueries(newChatQueries);
         setChatQueriesInLocalStorage(newChatQueries);
+
         setHistoryQueries([...historyQueries, response]);
         setChatbotError(null);
       })
@@ -143,16 +160,20 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     queryId: string
   ) => {
     sendChatbotFeedback(hasNegativeFeedback, sessionId, queryId);
-    const updatedQueries = historyQueries.map((query) => {
-      if (query.id === queryId) {
-        return {
-          ...query,
-          badAnswer: hasNegativeFeedback,
-        };
-      }
-      return query;
-    });
-    setHistoryQueries(updatedQueries);
+    const updatedChatQueries = setFeedbackByQueryId(
+      chatQueries,
+      queryId,
+      hasNegativeFeedback
+    );
+    setChatQueries(updatedChatQueries);
+    setChatQueriesInLocalStorage(updatedChatQueries);
+
+    const updatedHistoryQueries = setFeedbackByQueryId(
+      historyQueries,
+      queryId,
+      hasNegativeFeedback
+    );
+    setHistoryQueries(updatedHistoryQueries);
     return null;
   };
 
