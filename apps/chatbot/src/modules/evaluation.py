@@ -192,7 +192,7 @@ if __name__ == "__main__":
     batch_runner = BatchEvalRunner(evaluator_dict, workers=12, show_progress=True)
 
     # get predition responses
-    pred_responses = asyncio.run(aget_responses(questions, bot.engine, show_progress=True))
+    pred_responses = asyncio.run(aget_responses(questions, bot.engine._query_engine, show_progress=True))
 
     for i, pr in enumerate(pred_responses):
         after = bot._get_response_str(pr)
