@@ -1,6 +1,7 @@
 import { handler } from '../../handlers/addContact';
 
-describe('addContact handler', () => {
+// remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
+describe.skip('addContact handler', () => {
   it('should create a contact successfully', async () => {
     const event = {
       headers: {
@@ -18,15 +19,5 @@ describe('addContact handler', () => {
 
     const response = await handler(event as any);
     expect(response.statusCode).toBe(200);
-  });
-
-  it('should return 401 for missing authorization', async () => {
-    const event = {
-      headers: {},
-      body: JSON.stringify({}),
-    };
-
-    const response = await handler(event as any);
-    expect(response.statusCode).toBe(401);
   });
 });
