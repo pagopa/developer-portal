@@ -1,5 +1,5 @@
 import Markdoc, { Node, Schema } from '@markdoc/markdoc';
-import { sanitizedTextLeadingWhitespace } from './sanitizedText';
+import { sanitizedText, sanitizedTextLeadingWhitespace } from './sanitizedText';
 
 export type HeadingProps<A> = {
   readonly level: number;
@@ -7,7 +7,7 @@ export type HeadingProps<A> = {
   readonly id: string;
 };
 
-export const heading: Schema = {
+export const heading = (excludeEmoji?: boolean): Schema => ({
   children: ['inline'],
   attributes: {
     level: { type: Number, required: true },
@@ -15,7 +15,10 @@ export const heading: Schema = {
   transform(node: Node, config) {
     const children = node.transformChildren({
       ...config,
-      nodes: { ...config.nodes, text: sanitizedTextLeadingWhitespace },
+      nodes: {
+        ...config.nodes,
+        text: excludeEmoji ? sanitizedTextLeadingWhitespace : sanitizedText,
+      },
     });
     const attributes = node.transformAttributes(config);
 
@@ -37,4 +40,4 @@ export const heading: Schema = {
 
     return new Markdoc.Tag(`Heading`, { ...attributes, id }, children);
   },
-};
+});

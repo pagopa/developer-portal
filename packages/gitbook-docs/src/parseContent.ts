@@ -85,7 +85,7 @@ const schema: ConfigType = {
   nodes: {
     document,
     paragraph,
-    heading,
+    heading: heading(true),
     image: img,
     link,
     list,
