@@ -6,7 +6,6 @@ import {
 } from './activeCampaign';
 import * as dotenv from 'dotenv';
 
-// eslint-disable-next-line functional/no-expression-statements
 dotenv.config({ path: '.env' });
 
 export class ActiveCampaignClient {
