@@ -25,7 +25,7 @@ import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
-import * as emoji from 'node-emoji';
+import { convertEmojiToUnicode } from './convertEmojiToUnicode';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -114,10 +114,7 @@ export const parseAst = (markdown: string) => {
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
     .replaceAll(fileR.regex, fileR.replace)
-    .replaceAll(/:([a-z0-9_]+):/g, (match) => {
-      const emojiUnicode = emoji.get(match);
-      return emojiUnicode ? emojiUnicode : match;
-    });
+    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
 
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
