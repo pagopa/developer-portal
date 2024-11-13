@@ -20,7 +20,7 @@ const handler = (
     const isHomepage = uri === '/';
 
     // List of special cases (add more as needed)
-    const specialCases: readonly string[] = ['.bollo'];
+    const specialCases: readonly string[] = ['.bollo', '.a', '.b'];
 
     // Function to check if URI ends with any of the special cases
     const isSpecialCase = specialCases.some((caseExt) => uri.endsWith(caseExt));
