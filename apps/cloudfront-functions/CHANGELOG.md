@@ -1,5 +1,11 @@
 # cloudfront-functions
 
+## 0.0.4
+
+### Patch Changes
+
+- f591264: Add special cases to exceptions list to avoid false positives that cause 404
+
 ## 0.0.3
 
 ### Patch Changes
