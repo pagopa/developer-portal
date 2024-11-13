@@ -16,7 +16,6 @@ import {
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
-import { Tutorial } from './types/tutorialData';
 import { makeSolution } from '@/_contents/makeDocs';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
