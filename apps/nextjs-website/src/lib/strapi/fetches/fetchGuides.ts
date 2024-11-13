@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
-import { productPopulate } from './fetchProducts';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiGuidesPopulate = () =>
   qs.stringify({
@@ -13,7 +13,7 @@ const makeStrapiGuidesPopulate = () =>
       bannerLinks: { populate: ['icon'] },
       seo: { populate: 'metaSocial.image' },
       product: {
-        ...productPopulate,
+        ...productRelationsPopulate,
       },
     },
   });

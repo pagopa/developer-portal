@@ -31,9 +31,9 @@ export async function generateMetadata({
 }): Promise<Metadata | undefined> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
-  const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  if (strapiTutorialProps) {
-    const { title, path, seo } = strapiTutorialProps;
+  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  if (tutorialProps) {
+    const { title, path, seo } = tutorialProps;
 
     if (seo) {
       return makeMetadataFromStrapi(seo);

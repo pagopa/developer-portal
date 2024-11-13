@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
 import { TutorialsCodec } from '../codecs/TutorialCodec';
-import { productPopulate } from './fetchProducts';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
@@ -14,7 +14,7 @@ const makeStrapiTutorialsPopulate = () =>
       },
       parts: '*',
       product: {
-        ...productPopulate,
+        ...productRelationsPopulate,
       },
       bannerLinks: {
         populate: ['icon'],

@@ -1,13 +1,13 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '../fetchFromStrapi';
 import { TutorialListPagesCodec } from '../codecs/TutorialListPagesCodec';
-import { productPopulate } from './fetchProducts';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiTutorialListPagePopulate = () =>
   qs.stringify({
     populate: {
       product: {
-        ...productPopulate,
+        ...productRelationsPopulate,
       },
       tutorials: {
         populate: ['image', 'product'],

@@ -41,7 +41,7 @@ export const BaseProductCodec = t.strict({
   attributes: BaseProductAttributesCodec,
 });
 
-export const ProductRelationshipsCodec = t.strict({
+export const ProductRelationsCodec = t.strict({
   overview: t.strict({
     data: t.union([NullToUndefinedCodec, t.strict({ id: t.number })]),
   }),
@@ -60,7 +60,7 @@ export const ProductRelationshipsCodec = t.strict({
 export const BaseProductWithRelationsCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,
-    ProductRelationshipsCodec,
+    ProductRelationsCodec,
     t.strict({
       bannerLinks: t.union([NullToUndefinedCodec, t.array(BannerLinkCodec)]),
     }),
@@ -80,7 +80,7 @@ export const ProductWithoutBannerLinksCodec = t.strict({
 export const ProductCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,
-    ProductRelationshipsCodec,
+    ProductRelationsCodec,
     t.strict({
       description: t.union([NullToUndefinedCodec, t.string]),
       logo: t.strict({ data: MediaCodec }),
@@ -92,7 +92,7 @@ export const ProductCodec = t.strict({
 export const ProductWithRelationshipsCodec = t.strict({
   attributes: t.intersection([
     BaseProductAttributesCodec,
-    ProductRelationshipsCodec,
+    ProductRelationsCodec,
     t.strict({
       description: t.union([NullToUndefinedCodec, t.string]),
       logo: t.strict({ data: MediaCodec }),

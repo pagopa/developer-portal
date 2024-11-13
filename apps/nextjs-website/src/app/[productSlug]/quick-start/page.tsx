@@ -3,7 +3,7 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getProduct, getProducts, getQuickStartGuide } from '@/lib/api';
+import { getProducts, getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
@@ -21,8 +21,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({
+  return (await getProducts()).map((product) => ({
     productSlug: product.slug,
   }));
 }

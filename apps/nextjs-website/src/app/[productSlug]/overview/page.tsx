@@ -1,4 +1,4 @@
-import { getOverview, getProduct } from '@/lib/api';
+import { getOverview } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {

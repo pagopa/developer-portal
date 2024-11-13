@@ -2,7 +2,7 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ProductsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import qs from 'qs';
 
-export const productPopulate = {
+export const productRelationsPopulate = {
   populate: [
     'logo',
     'bannerLinks.icon',
@@ -18,7 +18,7 @@ export const productPopulate = {
 
 const makeStrapiProductsPopulate = () =>
   qs.stringify({
-    ...productPopulate,
+    ...productRelationsPopulate,
   });
 
 export const fetchProducts = fetchFromStrapi(

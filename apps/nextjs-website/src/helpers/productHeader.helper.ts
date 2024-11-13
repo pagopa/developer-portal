@@ -8,12 +8,15 @@ export function productToMenuItems(
   theme: Theme
 ): readonly MenuDropdownProp[] {
   return [
-    {
-      label: 'Overview',
-      href: `/${product.slug}/overview`,
-      active: path.startsWith(`/${product.slug}/overview`),
-      theme,
-    },
+    // if there's overview data, add it to the menu
+    product.hasOverviewPage
+      ? {
+          label: 'Overview',
+          href: `/${product.slug}/overview`,
+          active: path.startsWith(`/${product.slug}/overview`),
+          theme,
+        }
+      : null,
     // if there's quiskstart guide data, add it to the menu
     product.hasQuickstartGuidePage
       ? {

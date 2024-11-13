@@ -96,10 +96,17 @@ const NotSsrWebinarsSection = dynamic(
 );
 
 const Home = async () => {
-  const homepage: HomepageProps = await getHomepageProps();
+  const {
+    webinars,
+    hero,
+    newsShowcase,
+    ecosystem,
+    comingsoonDocumentation,
+    seo,
+  }: HomepageProps = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
-    seo: homepage.seo,
+    seo: seo,
     things: [websiteWithContext],
   });
 
@@ -107,10 +114,10 @@ const Home = async () => {
     <>
       {structuredData}
       <ContentWrapper>
-        <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
+        <NotSsrWebinarHeaderBanner webinars={[...webinars]} />
 
         <HeroSwiper
-          cards={homepage.hero.map((itemProp, index) => ({
+          cards={hero.map((itemProp, index) => ({
             ...itemProp,
             child: itemProp.subhead && (
               <BlocksRendererClient
@@ -121,18 +128,18 @@ const Home = async () => {
             ),
           }))}
         />
-        {homepage.newsShowcase && (
+        {newsShowcase && (
           <NewsShowcase
             marginTop={5}
-            title={homepage.newsShowcase.title}
-            items={[...homepage.newsShowcase.items]}
+            title={newsShowcase.title}
+            items={[...newsShowcase.items]}
           />
         )}
-        {homepage.ecosystem && <Ecosystem {...homepage.ecosystem} />}
-        <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
+        {ecosystem && <Ecosystem {...ecosystem} />}
+        <NotSsrWebinarsSection webinars={[...webinars]} />
         <RelatedLinks
-          title={homepage.comingsoonDocumentation.title}
-          links={[...homepage.comingsoonDocumentation.links]}
+          title={comingsoonDocumentation.title}
+          links={[...comingsoonDocumentation.links]}
         />
       </ContentWrapper>
     </>

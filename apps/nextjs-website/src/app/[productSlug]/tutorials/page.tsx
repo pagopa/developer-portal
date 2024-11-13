@@ -22,8 +22,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({
+  return (await getProducts()).map((product) => ({
     productSlug: product.slug,
   }));
 }
