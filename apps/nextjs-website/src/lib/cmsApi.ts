@@ -116,8 +116,8 @@ export const getGuideListPagesProps = async () => {
 
 // Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
 // we had to manage cache with two dedicated variables
-// eslint-disable-next-line functional/no-let
-let cachedGuides: readonly unknown[] = [];
+// eslint-disable-next-line
+let cachedGuides: any[] = [];
 // eslint-disable-next-line
 let isCached: boolean = false;
 
