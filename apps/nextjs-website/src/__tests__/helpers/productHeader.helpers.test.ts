@@ -17,6 +17,7 @@ const product: Product = {
     url: 'test',
   },
   slug: 'path',
+  hasOverviewPage: true,
   bannerLinks: [],
 };
 
@@ -28,6 +29,16 @@ it('should convert product to menu items', () => {
     themeLight
   );
   expect(menuItems.length).toEqual(1);
+});
+
+it('should not have menu items has no supbath available', () => {
+  const themeLight = 'light';
+  const menuItems = productToMenuItems(
+    { ...product, hasOverviewPage: false },
+    '/path/overview_path',
+    themeLight
+  );
+  expect(menuItems.length).toEqual(0);
 });
 
 it('should return the correct active value', () => {

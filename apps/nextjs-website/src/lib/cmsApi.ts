@@ -59,9 +59,9 @@ export const getProductsProps = async () => {
   return makeProductsProps(strapiProducts);
 };
 
-export const getTutorialsProps = async (productSlug?: string) => {
+export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials, productSlug); //TODO: Remove productSlug to makeTutorialsProps
+  return makeTutorialsProps(strapiTutorials);
 };
 
 export const getTutorialListPagesProps = async () => {
@@ -75,18 +75,18 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  const urlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-  return makeUrlReplaceMap(urlReplaceMap);
+  const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+  return makeUrlReplaceMap(strapiUrlReplaceMap);
 };
 
 export const getApiDataListPagesProps = async () => {
-  const apiDataListPages = await fetchApiDataListPages(buildEnv);
-  return makeApiDataListPagesProps(apiDataListPages);
+  const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
+  return makeApiDataListPagesProps(strapiApiDataListPages);
 };
 
 export const getApiDataProps = async () => {
-  const apiDataList = await fetchApiDataList(buildEnv);
-  return makeApiDataListProps(apiDataList);
+  const strapiApiDataList = await fetchApiDataList(buildEnv);
+  return makeApiDataListProps(strapiApiDataList);
 };
 
 export const getCaseHistoriesProps = async () => {
@@ -117,7 +117,7 @@ export const getGuideListPagesProps = async () => {
 // Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
 // we had to manage cache with two dedicated variables
 // eslint-disable-next-line
-let cachedGuides: any[] = [];
+let cachedGuides: any[] = []; // We need to use any[] because of the type issue makeGuide derived type are not statically defined
 // eslint-disable-next-line
 let isCached: boolean = false;
 

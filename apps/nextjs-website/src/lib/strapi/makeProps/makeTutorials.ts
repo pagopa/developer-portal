@@ -14,10 +14,9 @@ export type TutorialsProps = readonly (Tutorial & {
 })[];
 
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials,
-  productSlug?: string
+  strapiTutorials: StrapiTutorials
 ): TutorialsProps {
-  const tutorialsProps = strapiTutorials.data.map(({ attributes }) => ({
+  return strapiTutorials.data.map(({ attributes }) => ({
     image: attributes.image.data
       ? {
           url: attributes.image.data.attributes.url,
@@ -45,8 +44,4 @@ export function makeTutorialsProps(
           ),
     seo: attributes.seo,
   }));
-
-  return productSlug
-    ? tutorialsProps.filter((tutorial) => tutorial.productSlug === productSlug)
-    : tutorialsProps;
 }

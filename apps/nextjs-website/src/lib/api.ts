@@ -113,9 +113,7 @@ export async function getTutorial(
   const product = await getProduct(productSlug);
 
   const props = manageUndefined(
-    (await getTutorialsProps(productSlug)).find(
-      ({ path }) => path === tutorialPath
-    )
+    (await getTutorialsProps()).find(({ path }) => path === tutorialPath)
   );
   return {
     ...props,
@@ -139,14 +137,6 @@ export async function getTutorialListPageProps(productSlug?: string) {
     null;
 
   return manageUndefinedAndAddProducts(props);
-}
-
-export async function getTutorials(
-  productSlug?: string
-): Promise<readonly Tutorial[]> {
-  const { tutorials } = await getTutorialListPageProps(productSlug);
-  const tutorialsFromCMS = await getTutorialsProps(productSlug);
-  return [...tutorials, ...tutorialsFromCMS];
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {

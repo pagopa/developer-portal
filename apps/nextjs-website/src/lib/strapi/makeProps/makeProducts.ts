@@ -6,9 +6,9 @@ import { Product } from '../../types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
 export function makeProductsProps(
-  products: StrapiProducts
+  strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return products.data.map(makeProductProps);
+  return strapiProducts.data.map(makeProductProps);
 }
 
 export function makeProductProps(product: StrapiProducts['data'][0]): Product {
@@ -41,7 +41,7 @@ export function makeBaseProductWithRelationsCodec(
 ): Product {
   return {
     ...product.attributes,
-    description: '',
+    description: undefined,
     hasApiDataListPage:
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data

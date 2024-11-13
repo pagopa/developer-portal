@@ -2,6 +2,7 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ProductsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import qs from 'qs';
 
+// TODO: divide this populate in more specific ones for query optimization
 export const productRelationsPopulate = {
   populate: [
     'logo',

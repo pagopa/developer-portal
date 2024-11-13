@@ -4,9 +4,9 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export function makeApiDataListPagesProps(
-  apiDataListPages: StrapiApiDataListPages
+  strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
-  return apiDataListPages.data.map(({ attributes }) => {
+  return strapiApiDataListPages.data.map(({ attributes }) => {
     return {
       ...attributes,
       hero: {

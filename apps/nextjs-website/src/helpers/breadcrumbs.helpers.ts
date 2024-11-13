@@ -15,7 +15,7 @@ export function productPageToBreadcrumbs(
     {
       name: product.name,
       path: `${
-        product.slug.startsWith('/') ? product.slug : `/${product.slug}`
+        product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
       }/overview`,
     },
     ...(paths || []),

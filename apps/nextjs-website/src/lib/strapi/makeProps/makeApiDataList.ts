@@ -4,9 +4,9 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithRelationsCodec } from './makeProducts';
 
 export function makeApiDataListProps(
-  apiDataList: StrapiApiDataList
+  strapiApiDataList: StrapiApiDataList
 ): ReadonlyArray<ApiDataPageProps> {
-  return apiDataList.data
+  return strapiApiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => {
       const product = makeBaseProductWithRelationsCodec(
