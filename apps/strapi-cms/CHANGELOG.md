@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.1.1
+
+### Patch Changes
+
+- 63a2efc: Update .env.default files for strapi and nextjs, update README.md
+
 ## 3.1.0
 
 ### Minor Changes
