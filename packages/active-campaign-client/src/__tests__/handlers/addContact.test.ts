@@ -17,7 +17,7 @@ describe.skip('addContact handler', () => {
       }),
     };
 
-    const response = await handler(event as any);
+    const response = await handler(event);
     expect(response.statusCode).toBe(200);
   });
 });
