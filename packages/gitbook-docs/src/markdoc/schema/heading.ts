@@ -1,5 +1,5 @@
 import Markdoc, { Node, Schema } from '@markdoc/markdoc';
-import { sanitizedText } from './sanitizedText';
+import { sanitizedTextLeadingWhitespace } from './sanitizedText';
 
 export type HeadingProps<A> = {
   readonly level: number;
@@ -15,7 +15,7 @@ export const heading: Schema = {
   transform(node: Node, config) {
     const children = node.transformChildren({
       ...config,
-      nodes: { ...config.nodes, text: sanitizedText },
+      nodes: { ...config.nodes, text: sanitizedTextLeadingWhitespace },
     });
     const attributes = node.transformAttributes(config);
 
