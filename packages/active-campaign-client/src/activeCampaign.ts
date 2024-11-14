@@ -1,4 +1,4 @@
-export type ACContactPayload = {
+export type ContactPayload = {
   readonly contact: {
     readonly email: string;
     readonly firstName: string;
