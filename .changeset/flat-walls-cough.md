@@ -2,4 +2,4 @@
 "active-campaign-client": minor
 ---
 
-Package setup and add user to active campaign lambda
+Add package setup and the lambda function to add user to Active Campaign
