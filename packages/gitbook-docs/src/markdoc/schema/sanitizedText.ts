@@ -11,3 +11,12 @@ export const sanitizedText: Schema = {
       .replace(/^\s*/, '');
   },
 };
+
+export const sanitizedTextLeadingWhitespace: Schema = {
+  attributes: {
+    content: { type: String, required: true },
+  },
+  transform: (node) => {
+    return node.attributes.content.replace(/^\s*/, '');
+  },
+};
