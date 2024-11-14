@@ -3,7 +3,7 @@ import { acClient } from '../activeCampaignClient';
 import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
 import { ACContactPayload } from '../activeCampaign';
 
-export type HandlerEvent = Pick<APIGatewayProxyEvent, 'headers' | 'body'>;
+export type HandlerEvent = Pick<APIGatewayProxyEvent, 'body'>;
 
 export async function handler(
   event: HandlerEvent
