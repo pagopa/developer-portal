@@ -1,7 +1,7 @@
 import { StrapiOverviews } from '@/lib/strapi/codecs/OverviewsCodec';
 import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithRelationsCodec } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeOverviewsProps(
   strapiOverviews: StrapiOverviews
@@ -9,7 +9,7 @@ export function makeOverviewsProps(
   return strapiOverviews.data.map(({ attributes }) => {
     return {
       path: `/${attributes.product.data?.attributes.slug}/overview`,
-      product: makeBaseProductWithRelationsCodec(attributes.product.data),
+      product: makeBaseProductWithoutLogoProps(attributes.product.data),
       hero: {
         backgroundImage: attributes.backgroundImage.data.attributes.url,
         altText:

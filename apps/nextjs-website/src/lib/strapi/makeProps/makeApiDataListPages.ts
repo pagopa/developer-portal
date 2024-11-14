@@ -1,7 +1,7 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithRelationsCodec } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
@@ -13,7 +13,7 @@ export function makeApiDataListPagesProps(
         title: attributes.title,
         subtitle: attributes.description || '',
       },
-      product: makeBaseProductWithRelationsCodec(attributes.product.data),
+      product: makeBaseProductWithoutLogoProps(attributes.product.data),
       apiRestDetailSlugs: attributes.apiData.data
         .map(({ attributes }) => attributes.apiRestDetail?.slug)
         .filter(Boolean) as readonly string[],

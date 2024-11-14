@@ -1,7 +1,7 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithRelationsCodec } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeApiDataListProps(
   strapiApiDataList: StrapiApiDataList
@@ -9,7 +9,7 @@ export function makeApiDataListProps(
   return strapiApiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => {
-      const product = makeBaseProductWithRelationsCodec(
+      const product = makeBaseProductWithoutLogoProps(
         attributes.product.data
       );
       return {

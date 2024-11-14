@@ -1,13 +1,13 @@
 import { GuideDefinition } from '@/_contents/makeDocs';
 import { StrapiGuides } from '../codecs/GuidesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithRelationsCodec } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeGuidesProps(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return strapiGuides.data.map(({ attributes }) => {
-    const product = makeBaseProductWithRelationsCodec(attributes.product.data);
+    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
 
     return {
       product,

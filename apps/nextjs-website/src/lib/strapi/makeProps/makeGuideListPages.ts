@@ -2,13 +2,13 @@ import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithRelationsCodec } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = makeBaseProductWithRelationsCodec(attributes.product.data);
+    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
 
     const guidesSections: readonly GuidesSectionProps[] = [
       ...attributes.guidesByCategory.map(({ category, guides }) => ({
