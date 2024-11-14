@@ -11,7 +11,7 @@ export type ACContactPayload = {
   };
 };
 
-export type ACListPayload = {
+export type ListPayload = {
   readonly list: {
     readonly name: string;
     readonly stringid: string;
