@@ -22,7 +22,7 @@ export type ACListPayload = {
   };
 };
 
-export type ACListStatusPayload = {
+export type ListStatusPayload = {
   readonly contactList: {
     readonly list: string;
     readonly contact: string;
