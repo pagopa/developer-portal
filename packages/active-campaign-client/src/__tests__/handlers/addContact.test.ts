@@ -4,9 +4,6 @@ import { handler } from '../../handlers/addContact';
 describe.skip('addContact handler', () => {
   it('should create a contact successfully', async () => {
     const event = {
-      headers: {
-        Authorization: 'test-token',
-      },
       body: JSON.stringify({
         username: `test@example${new Date().getTime()}e.com`,
         firstName: 'John',
