@@ -9,9 +9,7 @@ export function makeApiDataListProps(
   return strapiApiDataList.data
     .filter((apiPage) => apiPage.attributes.apiRestDetail)
     .map(({ attributes }) => {
-      const product = makeBaseProductWithoutLogoProps(
-        attributes.product.data
-      );
+      const product = makeBaseProductWithoutLogoProps(attributes.product.data);
       return {
         ...attributes,
         product,
