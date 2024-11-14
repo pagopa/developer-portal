@@ -6,7 +6,7 @@ describe.skip('addContact handler', () => {
     const event = {
       body: JSON.stringify({
         username: `test@example${new Date().getTime()}e.com`,
-        firstName: 'John',
+        firstName: 'Giovanni',
         lastName: 'Doe',
         company: 'Test Co',
         role: 'Developer',

@@ -1,10 +1,6 @@
 import axios from 'axios';
-import {
-  ACContactPayload,
-  ACListPayload,
-  ACListStatusPayload,
-} from './activeCampaign';
 import * as dotenv from 'dotenv';
+import { ContactPayload } from './types/contactPayload';
 
 dotenv.config({ path: '.env' });
 
@@ -24,13 +20,12 @@ export class ActiveCampaignClient {
     };
   }
 
-  async createContact(data: ACContactPayload) {
+  async createContact(data: ContactPayload) {
     const response = await axios.post(`${this.baseUrl}/api/3/contacts`, data, {
       headers: this.getHeaders(),
     });
     return response.data;
   }
-
 }
 
 export const acClient = new ActiveCampaignClient(
