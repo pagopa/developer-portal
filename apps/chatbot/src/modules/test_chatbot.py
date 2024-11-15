@@ -35,9 +35,9 @@ def test_messages_to_chathistory():
     ###########################3
 
     messages = [
-        {"query": "aaaa", "response": "bbbb"},
-        {"query": "cccc", "response": "dddd"},
-        {"query": "eeee", "response": "ffff"},
+        {"question": "aaaa", "answer": "bbbb"},
+        {"question": "cccc", "answer": "dddd"},
+        {"question": "eeee", "answer": "ffff"},
     ]
     chat_history = CHATBOT._messages_to_chathistory(messages)
 

@@ -18,7 +18,7 @@ from src.modules.presidio import PresidioPII
 from dotenv import load_dotenv
 
 load_dotenv()
-nest_asyncio.apply()
+#nest_asyncio.apply()
 
 
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
@@ -169,11 +169,11 @@ class Chatbot():
                 chat_history += [
                     ChatMessage(
                         role = MessageRole.USER,
-                        content = message["query"]
+                        content = message["question"]
                     ),
                     ChatMessage(
                         role = MessageRole.ASSISTANT,
-                        content = message["response"]
+                        content = message["answer"]
                     )
                 ]
         
