@@ -21,6 +21,18 @@ const postQueryResponses = {
     queriedAt: '2024-02-08T11:12:02.142Z',
     question: 'question',
     answer: 'answer',
+    history: [
+      {
+        id: '1',
+        question: 'question',
+        answer: 'answer',
+      },
+      {
+        id: '2',
+        question: 'question',
+        answer: 'answer',
+      },
+    ],
     createdAt: '2024-02-08T11:12:02.438Z',
     badAnswer: false,
   },

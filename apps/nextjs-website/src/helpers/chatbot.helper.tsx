@@ -133,6 +133,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
+      history: previousQueries,
     })
       .then((response) => {
         setIsAwaitingResponse(false);
