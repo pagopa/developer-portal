@@ -82,7 +82,7 @@ async def query_creation (
   session = find_or_create_session(userId, now=now)
   answer = chatbot.chat_generate(
     query_str = query.question,
-    messages = [item.dict() for item in query.history]
+    messages = [item.dict() for item in query.history] if query.history else None
   )
 
 

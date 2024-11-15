@@ -62,12 +62,13 @@ class Chatbot():
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
         )
-        self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_engine(
             self.index,
             llm=self.model,
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
+            condense_template=self.condense_prompt_tmpl,
             verbose=self.params["engine"]["verbose"]
         )
 
@@ -83,16 +84,25 @@ class Chatbot():
             }
         )
 
-        ref_prompt_tmpl = PromptTemplate(
-            self.prompts["refine_prompt_str"],
-            prompt_type="refine",
-            template_var_mappings = {
-                "existing_answer": "existing_answer",
-                "query_str": "query_str"
+        ref_prompt_tmpl = None
+        # PromptTemplate(
+        #     self.prompts["refine_prompt_str"],
+        #     prompt_type="refine",
+        #     template_var_mappings = {
+        #         "existing_answer": "existing_answer",
+        #         "query_str": "query_str"
+        #     }
+        # )
+
+        condense_prompt_tmpl = PromptTemplate(
+            self.prompts["condense_prompt_str"],
+            template_var_mappings={
+                "chat_history": "chat_history",
+                "question": "question"
             }
         )
 
-        return qa_prompt_tmpl, ref_prompt_tmpl
+        return qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl
 
 
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
