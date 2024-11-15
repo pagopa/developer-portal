@@ -1,6 +1,6 @@
 import os
 import re
-import logging
+from logging import getLogger
 import nest_asyncio
 from typing import Union, Tuple, Optional, List
 
@@ -10,15 +10,20 @@ from llama_index.core.base.response.schema import Response, StreamingResponse, A
 from llama_index.core.chat_engine.types import AgentChatResponse, StreamingAgentChatResponse
 from llama_index.core.async_utils import asyncio_run
 
+from langfuse import Langfuse
+from langfuse.llama_index import LlamaIndexInstrumentor
+
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_automerging_index_redis, REDIS_KVSTORE, INDEX_ID
 from src.modules.engine import get_automerging_engine
+from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 
 from dotenv import load_dotenv
 
 load_dotenv()
-nest_asyncio.apply()
+# nest_asyncio.apply()
+logger = getLogger(__name__)
 
 
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
@@ -37,8 +42,15 @@ START_CHAT_MESSAGE = [ChatMessage(
         "che puoi trovare sul sito: https://dev.developer.pagopa.it!"
     )
 )]
-
-logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
+LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY")
+LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_SECRET_KEY")
+LANGFUSE_HOST = os.getenv("DATABASE_URL")
+LANGFUSE_TAG = os.getenv("LANGFUSE_TAG")
+LANGFUSE = Langfuse(
+    public_key = LANGFUSE_PUBLIC_KEY,
+    secret_key = LANGFUSE_SECRET_KEY,
+    host = LANGFUSE_HOST
+)
 
 
 class Chatbot():
@@ -62,14 +74,21 @@ class Chatbot():
             chunk_sizes=params["vector_index"]["chunk_sizes"],
             chunk_overlap=params["vector_index"]["chunk_overlap"]
         )
-        self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = self._get_prompt_templates()
         self.engine = get_automerging_engine(
             self.index,
-            llm=self.model,
-            text_qa_template=self.qa_prompt_tmpl,
-            refine_template=self.ref_prompt_tmpl,
+            llm = self.model,
+            text_qa_template = self.qa_prompt_tmpl,
+            refine_template = self.ref_prompt_tmpl,
+            condense_template = self.condense_prompt_tmpl,
             verbose=self.params["engine"]["verbose"]
         )
+        self.instrumentor = LlamaIndexInstrumentor(
+            public_key = LANGFUSE_PUBLIC_KEY,
+            secret_key = LANGFUSE_SECRET_KEY,
+            host = LANGFUSE_HOST,
+        )
+        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE)
 
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
@@ -83,16 +102,25 @@ class Chatbot():
             }
         )
 
-        ref_prompt_tmpl = PromptTemplate(
-            self.prompts["refine_prompt_str"],
-            prompt_type="refine",
-            template_var_mappings = {
-                "existing_answer": "existing_answer",
-                "query_str": "query_str"
+        ref_prompt_tmpl = None
+        # PromptTemplate(
+        #     self.prompts["refine_prompt_str"],
+        #     prompt_type="refine",
+        #     template_var_mappings = {
+        #         "existing_answer": "existing_answer",
+        #         "query_str": "query_str"
+        #     }
+        # )
+
+        condense_prompt_tmpl = PromptTemplate(
+            self.prompts["condense_prompt_str"],
+            template_var_mappings={
+                "chat_history": "chat_history",
+                "question": "question"
             }
         )
 
-        return qa_prompt_tmpl, ref_prompt_tmpl
+        return qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl
 
 
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
@@ -128,7 +156,7 @@ class Chatbot():
         # Find all matches in the text
         hashed_urls = re.findall(pattern, response_str)
 
-        logging.info(f"[chatbot.py - _unmask_reference] Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
+        logger.info(f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}.")
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(
                 collection=f"hash_table_{INDEX_ID}", 
@@ -156,7 +184,7 @@ class Chatbot():
                     masked_message = masked_message + "Rif:" + split_message[1]
                 return masked_message
             except Exception as e:
-                logging.warning(f"[chatbot.py - mask_pii] exception in mask_pii: {e}")
+                logger.warning(f"Exception: {e}")
         else:
             return message
         
@@ -180,39 +208,106 @@ class Chatbot():
         chat_history = START_CHAT_MESSAGE + chat_history
 
         return chat_history
+    
 
+    def update_trace_with_feedback(self, trace_id, user_feedback) -> None:
 
-    def generate(self, query_str: str) -> str:
+        with self.instrumentor.observe(trace_id=trace_id) as trace:
 
+            trace.update(
+                metadata={
+                    "user_feedback": user_feedback
+                }
+            )
+
+    
+    def get_trace(self, trace_id: str):
+
+        trace = {}
         try:
-            engine_response = self.engine.query(query_str)
-            response_str = self._get_response_str(engine_response)
-
+            trace_langfuse = LANGFUSE.get_trace(trace_id)
+            for item in trace_langfuse:
+                key, value = item
+                trace[key] = value
         except Exception as e:
-            response_str = "Scusa, non sono riuscito ad elaborare questa domanda.\nChiedimi un'altra domanda."
-            logging.info(f"[chatbot.py - generate] Exception: {e}")
+            logger.error(e)
+
+        return trace
+
+
+    def generate(
+            self, 
+            query_str: str,
+            trace_id: str,
+            session_id: str = "session-abc",
+            user_id: str = "user-123"
+        ) -> str:
+
+        with self.instrumentor.observe(
+            trace_id = trace_id,
+            session_id = session_id,
+            user_id = user_id,
+            tags=[LANGFUSE_TAG],
+            metadata={"user_feedback": None}
+            ) as trace:
+
+            try:
+                engine_response = self.engine.query(query_str)
+                response_str = self._get_response_str(engine_response)
+
+            except Exception as e:
+                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
+                logger.error(f"Exception: {e}")
+        
+            trace.update(
+                input=self.mask_pii(query_str),
+                output=self.mask_pii(response_str),
+            )
+
+        self.instrumentor.flush()
 
         return response_str
 
 
-    def chat_generate(self, query_str: str, messages: Optional[List[dict]] = None) -> str:
+    def chat_generate(
+            self, 
+            query_str: str,
+            trace_id: str | None = None,
+            session_id: str = "session-abc",
+            user_id: str = "user-123",
+            messages: Optional[List[dict]] = None,
+        ) -> str:
 
-        
         chat_history = self._messages_to_chathistory(messages)
 
-        try:
-            if USE_ASYNC and not USE_STREAMING:
-                engine_response = asyncio_run(self.engine.achat(query_str, chat_history))
-            elif not USE_ASYNC and USE_STREAMING:
-                engine_response = self.engine.stream_chat(query_str, chat_history)
-            elif USE_ASYNC and USE_STREAMING:
-                engine_response = asyncio_run(self.engine.astream_chat(query_str, chat_history))
-            else:
-                engine_response = self.engine.chat(query_str, chat_history)
-            response_str = self._get_response_str(engine_response)
+        with self.instrumentor.observe(
+            trace_id = trace_id,
+            session_id = session_id,
+            user_id = user_id,
+            tags = [LANGFUSE_TAG],
+            metadata={"user_feedback": None}
+        ) as trace:
 
-        except Exception as e:
-            response_str = "Scusa, non sono riuscito ad elaborare questa domanda.\nChiedimi un'altra domanda."
-            logging.info(f"[chatbot.py - generate] Exception: {e}")
+            try:
+                if USE_ASYNC and not USE_STREAMING:
+                    engine_response = asyncio_run(self.engine.achat(query_str, chat_history))
+                elif not USE_ASYNC and USE_STREAMING:
+                    engine_response = self.engine.stream_chat(query_str, chat_history)
+                elif USE_ASYNC and USE_STREAMING:
+                    engine_response = asyncio_run(self.engine.astream_chat(query_str, chat_history))
+                else:
+                    engine_response = self.engine.chat(query_str, chat_history)
+                response_str = self._get_response_str(engine_response)
+
+            except Exception as e:
+                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
+                logger.error(f"Exception: {e}")
+
+            trace.update(
+                input=self.mask_pii(query_str),
+                output=self.mask_pii(response_str),
+            )
+
+        self.instrumentor.flush()
 
         return response_str

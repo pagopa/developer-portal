@@ -23,6 +23,7 @@ def get_automerging_engine(
         response_mode: str = "compact",
         text_qa_template: PromptTemplate | None = None,
         refine_template: PromptTemplate | None = None,
+        condense_template: PromptTemplate | None = None,
         verbose: bool = True,
         use_chat_engine: bool | None = None
     ) -> (RetrieverQueryEngine | CondenseQuestionChatEngine):
@@ -57,7 +58,8 @@ def get_automerging_engine(
 
     if use_chat_engine:
         automerging_engine = CondenseQuestionChatEngine.from_defaults(
-            query_engine = automerging_engine
+            query_engine = automerging_engine,
+            condense_question_prompt = condense_template
         )
 
     return automerging_engine

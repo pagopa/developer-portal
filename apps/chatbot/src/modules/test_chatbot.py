@@ -1,11 +1,12 @@
 import os
 import yaml
-import logging
+from logging import getLogger
 from pathlib import Path
 
 from src.modules.chatbot import Chatbot
 
-logging.getLogger().setLevel(os.getenv("LOG_LEVEL", "INFO"))
+
+logger = getLogger(__name__)
 
 
 CWF = Path(__file__)
@@ -47,3 +48,25 @@ def test_messages_to_chathistory():
 def test_pii_mask():
     masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
     assert masked_str == "Il mio nome e' <PERSON_1>"
+
+
+def test_generation():
+
+    try:
+        res = CHATBOT.generate("GPD gestisce i pagamenti spontanei?")
+    except Exception as e:
+        print(e)
+        res = f"Something went wrong!"
+
+    assert res != f"Something went wrong!"
+
+
+def test_chat_generation():
+
+    try:
+        res = CHATBOT.chat_generate("GPD gestisce i pagamenti spontanei?")
+    except Exception as e:
+        logger.error(e)
+        res = f"Something went wrong!"
+
+    assert res != f"Something went wrong!"

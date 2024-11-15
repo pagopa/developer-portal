@@ -1,6 +1,5 @@
-import logging
-from pathlib import Path
-from typing import Any, Dict, List, Union
+from logging import getLogger
+from typing import Any, Dict, List
 from langdetect import detect_langs
 
 from presidio_anonymizer.operators import Operator, OperatorType
@@ -9,6 +8,9 @@ from presidio_analyzer import AnalyzerEngine, Pattern, PatternRecognizer, Recogn
 from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
+
+
+logger = getLogger(__name__)
 
 
 # see supported entities by Presidio with their description at: https://microsoft.github.io/presidio/supported_entities/
@@ -130,17 +132,17 @@ class PresidioPII():
                     lang_list.append(detected_lang.lang)
 
             if not lang_list:
-                logging.warning("[presidio.py - detect_language] No detected language.")
+                logger.warning("No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
                 lang = lang_list[0]           
         except:
-            logging.warning("[presidio.py - detect_language] No detected language.")
+            logger.warning("No detected language.")
             lang = "it"
 
-        logging.info(f"[presidio.py - detect_language] Set presidio to detect PII in {lang} language.")
+        logger.info(f"Set presidio to detect PII in {lang} language.")
         return lang
 
 

@@ -3,7 +3,7 @@ import re
 import json
 import yaml
 import datetime
-import logging
+from logging import getLogger
 import asyncio
 import nest_asyncio
 from typing import Any
@@ -26,7 +26,7 @@ from src.modules.models import get_llm
 
 
 nest_asyncio.apply()
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logger = getLogger(__name__)
 
 
 def parser_function(output_str: str):
@@ -224,4 +224,4 @@ if __name__ == "__main__":
     )
     with open(os.path.join(results_dir, "avg_scores.json"), "w") as f:
         json.dump(avg_scores, f, indent=4)
-    logging.info(f"Results stored in {results_dir}")
+    logger.info(f"Results stored in {results_dir}")

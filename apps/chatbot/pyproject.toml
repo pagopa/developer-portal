@@ -36,6 +36,7 @@ llama-index-embeddings-gemini = "^0.2.0"
 llama-index-llms-bedrock-converse = "^0.3.0"
 llama-index-postprocessor-presidio = "^0.2.0"
 pytest = "^8.3.3"
+langfuse = "^2.53.9"
 
 [tool.poetry.group.dev.dependencies]
 gradio = "^4.36.1"
