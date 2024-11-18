@@ -1,7 +1,6 @@
 import os
 import re
 from logging import getLogger
-import nest_asyncio
 from typing import Union, Tuple, Optional, List
 
 from llama_index.core import PromptTemplate
@@ -22,7 +21,6 @@ from src.modules.presidio import PresidioPII
 from dotenv import load_dotenv
 
 load_dotenv()
-# nest_asyncio.apply()
 logger = getLogger(__name__)
 
 

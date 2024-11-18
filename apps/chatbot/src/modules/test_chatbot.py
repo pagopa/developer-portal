@@ -33,8 +33,6 @@ def test_messages_to_chathistory():
     chat_history = CHATBOT._messages_to_chathistory()
     assert len(chat_history) == 1
 
-    ###########################3
-
     messages = [
         {"question": "aaaa", "answer": "bbbb"},
         {"question": "cccc", "answer": "dddd"},
@@ -58,7 +56,7 @@ def test_generation():
             tags = "test"
         )
     except Exception as e:
-        print(e)
+        logger(e)
         res = f"Something went wrong!"
 
     assert res != f"Something went wrong!"
