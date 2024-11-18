@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add hisotory to send query endpoint
+Add history to send query endpoint
