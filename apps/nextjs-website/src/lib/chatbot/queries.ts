@@ -1,4 +1,5 @@
 import * as t from 'io-ts/lib';
+import { NullToUndefinedCodec } from '../strapi/codecs/NullToUndefinedCodec';
 
 export const QueryCodec = t.strict({
   id: t.string,
@@ -10,13 +11,20 @@ export const QueryCodec = t.strict({
   createdAt: t.string,
 });
 
+const ChatbotHistoryCodec = t.array(QueryCodec);
+
+export const QueryWithHistoryCodec = t.intersection([
+  QueryCodec,
+  t.strict({
+    history: t.union([NullToUndefinedCodec, ChatbotHistoryCodec]),
+  }),
+]);
+
 export type RemoteQuery = t.TypeOf<typeof QueryCodec>;
 
 export const ChatbotQueriesCodec = t.array(QueryCodec);
 
 export type ChatbotQueries = t.TypeOf<typeof ChatbotQueriesCodec>;
-
-export type QueryInput = Pick<RemoteQuery, 'question' | 'queriedAt'>;
 
 export type Answer = Pick<RemoteQuery, 'answer' | 'createdAt'>;
 
@@ -29,6 +37,15 @@ export type Query = {
   readonly answer: string | null;
   readonly createdAt: string | null;
 };
+
+export type QueryWithHistory = Query & {
+  readonly history?: readonly Pick<Query, 'question' | 'id' | 'answer'>[];
+};
+
+export type QueryInput = Pick<
+  QueryWithHistory,
+  'question' | 'queriedAt' | 'history'
+>;
 
 export const SessionCodec = t.strict({
   id: t.string,
