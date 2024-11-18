@@ -1,17 +1,35 @@
 import { handler } from '../../handlers/addContact';
+import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
-describe.skip('addContact handler', () => {
+describe('addContact handler', () => {
   it('should create a contact successfully', async () => {
-    const event = {
-      body: JSON.stringify({
-        username: `test@example${new Date().getTime()}e.com`,
-        firstName: 'Giovanni',
-        lastName: 'Doe',
-        company: 'Test Co',
-        role: 'Developer',
-        mailinglistAccepted: true,
-      }),
+    const event: SQSEvent = {
+      Records: [
+        {
+          messageId: '1',
+          receiptHandle: '1',
+          body: JSON.stringify({
+            username: `test@example${new Date().getTime()}e.com`,
+            firstName: 'Giovanni',
+            lastName: 'Doe',
+            company: 'Test Co',
+            role: 'Developer',
+            mailinglistAccepted: true,
+          }),
+          attributes: {
+            ApproximateReceiveCount: '1',
+            SentTimestamp: '1',
+            SenderId: '1',
+            ApproximateFirstReceiveTimestamp: '1',
+          },
+          messageAttributes: {},
+          md5OfBody: '1',
+          eventSource: 'aws:sqs',
+          eventSourceARN: 'arn:aws:sqs:region:account-id:queue-name',
+          awsRegion: 'region',
+        },
+      ],
     };
 
     const response = await handler(event);

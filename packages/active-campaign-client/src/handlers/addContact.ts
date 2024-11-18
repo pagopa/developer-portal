@@ -1,16 +1,15 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { acClient } from '../activeCampaignClient';
 import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
 import { ContactPayload } from '../types/contactPayload';
 
-export type HandlerEvent = Pick<APIGatewayProxyEvent, 'body'>;
-
-export async function handler(
-  event: HandlerEvent
-): Promise<APIGatewayProxyResult> {
+export async function handler(event: {
+  readonly Records: SQSEvent['Records'];
+}): Promise<APIGatewayProxyResult> {
   try {
+    const firstMessage = event.Records[0] ?? { body: '{}' };
     // Parse request body
-    const userData: SignUpUserData = JSON.parse(event.body || '{}');
+    const userData: SignUpUserData = JSON.parse(firstMessage.body);
 
     // Transform to AC payload
     const acPayload: ContactPayload = {
