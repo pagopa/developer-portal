@@ -44,14 +44,13 @@ START_CHAT_MESSAGE = [ChatMessage(
 )]
 LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY")
 LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_SECRET_KEY")
-LANGFUSE_HOST = os.getenv("DATABASE_URL")
-LANGFUSE_TAG = os.getenv("LANGFUSE_TAG")
+LANGFUSE_HOST = os.getenv("LANGFUSE_HOST")
+LANGFUSE_TAG = os.getenv("LANGFUSE_TAG", "development")
 LANGFUSE = Langfuse(
     public_key = LANGFUSE_PUBLIC_KEY,
     secret_key = LANGFUSE_SECRET_KEY,
     host = LANGFUSE_HOST
 )
-
 
 class Chatbot():
     def __init__(
@@ -197,11 +196,11 @@ class Chatbot():
                 chat_history += [
                     ChatMessage(
                         role = MessageRole.USER,
-                        content = message["query"]
+                        content = message["question"]
                     ),
                     ChatMessage(
                         role = MessageRole.ASSISTANT,
-                        content = message["response"]
+                        content = message["answer"]
                     )
                 ]
         
@@ -238,17 +237,27 @@ class Chatbot():
     def generate(
             self, 
             query_str: str,
-            trace_id: str,
-            session_id: str = "session-abc",
-            user_id: str = "user-123"
+            trace_id: str | None = None,
+            session_id: str | None = None,
+            user_id: str | None = None,
+            tags: Union[str, List[str]] | None = None
         ) -> str:
+
+        if tags is None:
+            tags = [LANGFUSE_TAG]
+        elif isinstance(tags, str):
+            tags = [tags]
+        elif isinstance(tags, List[str]):
+            pass
+        else:
+            raise ValueError(f"Error! The given tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
 
         with self.instrumentor.observe(
             trace_id = trace_id,
             session_id = session_id,
             user_id = user_id,
-            tags=[LANGFUSE_TAG],
-            metadata={"user_feedback": None}
+            tags = tags,
+            metadata = {"user_feedback": None}
             ) as trace:
 
             try:
@@ -273,19 +282,29 @@ class Chatbot():
             self, 
             query_str: str,
             trace_id: str | None = None,
-            session_id: str = "session-abc",
-            user_id: str = "user-123",
+            session_id: str | None = None,
+            user_id: str | None = None,
             messages: Optional[List[dict]] = None,
+            tags: Union[str, List[str]] | None = None
         ) -> str:
 
+
         chat_history = self._messages_to_chathistory(messages)
+        if tags is None:
+            tags = [LANGFUSE_TAG]
+        elif isinstance(tags, str):
+            tags = [tags]
+        elif isinstance(tags, List[str]):
+            pass
+        else:
+            raise ValueError(f"Error! tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
 
         with self.instrumentor.observe(
             trace_id = trace_id,
             session_id = session_id,
             user_id = user_id,
-            tags = [LANGFUSE_TAG],
-            metadata={"user_feedback": None}
+            tags = tags,
+            metadata = {"user_feedback": None}
         ) as trace:
 
             try:

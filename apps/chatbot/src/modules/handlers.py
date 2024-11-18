@@ -50,7 +50,8 @@ LLMS_COST = {
     "models/gemini-1.5-flash": {"input_cost": 0.075 * 1.e-6, "output_cost": 0.30 * 1.e-6}
 }
 EMBEDDERS_COST = {
-    "cohere.embed-multilingual-v3" : 0.0001 * 1.e-3
+    "cohere.embed-multilingual-v3": 0.0001 * 1.e-3,
+    "models/models/text-embedding-004": 0
 }
 
 
@@ -122,25 +123,25 @@ class EventHandler(BaseEventHandler, extra="allow"):
         if isinstance(event, (LLMCompletionEndEvent, LLMChatEndEvent)):
             if event.response:
                 usage = self._parse_token_usage(event.response) if event.response else None
+                logger.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
+                logger.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
 
         if isinstance(event, EmbeddingEndEvent):
             token_count = sum(
                 self._token_counter.get_string_tokens(chunk) for chunk in event.chunks
             )
-
             usage = {
                 "input": 0,
                 "output": 0,
-                "total": token_count or None,
+                "total": token_count or 0,
+                "total_cost": token_count * EMBEDDERS_COST[EMBED_MODEL_ID] if MODEL_ID in LLMS_COST.keys() else 0
             }
+            logger.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
 
         self._get_generation_client(event.span_id).update(
             usage=usage, end_time=_get_timestamp()
         )
 
-        logger.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
-        logger.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
-        # logger.info(f"[{MODEL_ID}] Latency (ms): {}")
 
     def _parse_token_usage(
         self, response: Union[ChatResponse, CompletionResponse]

@@ -53,7 +53,10 @@ def test_pii_mask():
 def test_generation():
 
     try:
-        res = CHATBOT.generate("GPD gestisce i pagamenti spontanei?")
+        res = CHATBOT.generate(
+            query_str = "GPD gestisce i pagamenti spontanei?",
+            tags = "test"
+        )
     except Exception as e:
         print(e)
         res = f"Something went wrong!"
@@ -63,8 +66,18 @@ def test_generation():
 
 def test_chat_generation():
 
+    query_str = "GPD gestisce i pagamenti spontanei?"
+
     try:
-        res = CHATBOT.chat_generate("GPD gestisce i pagamenti spontanei?")
+        res = CHATBOT.chat_generate(
+            query_str = query_str,
+            tags = "test"
+        )
+        res = CHATBOT.chat_generate(
+            query_str = "sai dirmi di più?", 
+            messages=[{"question": query_str, "answer": res}],
+            tags = "test"
+        )
     except Exception as e:
         logger.error(e)
         res = f"Something went wrong!"
