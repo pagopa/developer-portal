@@ -1,7 +1,8 @@
 import os
 import re
+import uuid
 from logging import getLogger
-from typing import Union, Tuple, Optional, List
+from typing import Union, Tuple, Optional, List, Any
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -85,6 +86,7 @@ class Chatbot():
             public_key = LANGFUSE_PUBLIC_KEY,
             secret_key = LANGFUSE_SECRET_KEY,
             host = LANGFUSE_HOST,
+            mask=self._mask_trace
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE)
 
@@ -100,15 +102,14 @@ class Chatbot():
             }
         )
 
-        ref_prompt_tmpl = None
-        # PromptTemplate(
-        #     self.prompts["refine_prompt_str"],
-        #     prompt_type="refine",
-        #     template_var_mappings = {
-        #         "existing_answer": "existing_answer",
-        #         "query_str": "query_str"
-        #     }
-        # )
+        ref_prompt_tmpl = PromptTemplate(
+            self.prompts["refine_prompt_str"],
+            prompt_type="refine",
+            template_var_mappings = {
+                "existing_answer": "existing_answer",
+                "query_str": "query_str"
+            }
+        )
 
         condense_prompt_tmpl = PromptTemplate(
             self.prompts["condense_prompt_str"],
@@ -206,31 +207,71 @@ class Chatbot():
         chat_history = START_CHAT_MESSAGE + chat_history
 
         return chat_history
-    
-
-    def update_trace_with_feedback(self, trace_id, user_feedback) -> None:
-
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
-
-            trace.update(
-                metadata={
-                    "user_feedback": user_feedback
-                }
-            )
 
     
-    def get_trace(self, trace_id: str):
+    def get_trace(self, trace_id: str, as_dict: bool = False):
 
-        trace = {}
         try:
-            trace_langfuse = LANGFUSE.get_trace(trace_id)
-            for item in trace_langfuse:
-                key, value = item
-                trace[key] = value
+            trace = LANGFUSE.get_trace(trace_id)
         except Exception as e:
             logger.error(e)
 
-        return trace
+        if as_dict:
+            return trace.dict()
+        else:
+            return trace
+
+    
+    def get_user_traces(self, user_id: str, as_dict: bool = True):
+
+        try:
+            traces = LANGFUSE.get_traces(user_id=user_id)
+        except Exception as e:
+            logger.error(e)
+
+        if as_dict:
+            return traces.dict()
+        else:
+            return traces
+
+
+    def update_trace_with_feedback(self, trace_id: str, user_feedback: str) -> None:
+        with self.instrumentor.observe(trace_id=trace_id) as trace:
+            trace.update(
+                metadata={"user_feedback": user_feedback}
+            )
+
+
+    def _mask_trace(self, data: Any) -> None:
+        
+        if isinstance(data, dict):
+            for key, value in data.items():
+                
+                if isinstance(value, str):
+                    data[key] = self.mask_pii(value)
+
+                if isinstance(value, list):
+                    for message in value:
+                        if isinstance(message, ChatMessage):
+                            message.content = self.mask_pii(message.content)
+                        if isinstance(message, str):
+                            message = self.mask_pii(message)
+
+                if isinstance(value, dict):
+                    for k, v in value.items():
+                        if isinstance(v, list):
+                            for message in v:
+                                if isinstance(message, ChatMessage):
+                                    message.content = self.mask_pii(message.content)
+                                if isinstance(message, str):
+                                    message = self.mask_pii(message)
+                        if isinstance(v, str):
+                            value[k] = self.mask_pii(v)
+
+        if isinstance(data, str):
+            data = self.mask_pii(data)
+
+        return data
 
 
     def generate(
@@ -250,6 +291,12 @@ class Chatbot():
             pass
         else:
             raise ValueError(f"Error! The given tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
+        
+        if not trace_id:
+            logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
+            trace_id = str(uuid.uuid4())
+
+        logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
             trace_id = trace_id,
@@ -257,7 +304,7 @@ class Chatbot():
             user_id = user_id,
             tags = tags,
             metadata = {"user_feedback": None}
-            ) as trace:
+        ):
 
             try:
                 engine_response = self.engine.query(query_str)
@@ -266,11 +313,6 @@ class Chatbot():
             except Exception as e:
                 response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
                 logger.error(f"Exception: {e}")
-        
-            trace.update(
-                input=self.mask_pii(query_str),
-                output=self.mask_pii(response_str),
-            )
 
         self.instrumentor.flush()
 
@@ -297,6 +339,12 @@ class Chatbot():
             pass
         else:
             raise ValueError(f"Error! tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
+        
+        if not trace_id:
+            logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
+            trace_id = str(uuid.uuid4())
+
+        logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
             trace_id = trace_id,
@@ -304,7 +352,7 @@ class Chatbot():
             user_id = user_id,
             tags = tags,
             metadata = {"user_feedback": None}
-        ) as trace:
+        ):
 
             try:
                 if USE_ASYNC and not USE_STREAMING:
@@ -320,11 +368,6 @@ class Chatbot():
             except Exception as e:
                 response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
                 logger.error(f"Exception: {e}")
-
-            trace.update(
-                input=self.mask_pii(query_str),
-                output=self.mask_pii(response_str),
-            )
 
         self.instrumentor.flush()
 
