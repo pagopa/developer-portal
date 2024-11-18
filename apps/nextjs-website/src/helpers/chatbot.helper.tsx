@@ -14,6 +14,7 @@ import {
 } from '@/lib/chatbot/queries';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
+import { chatMaxHistoryMessages } from '@/config';
 
 const HISTORY_PAGE_SIZE = 10;
 const EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY = 'expireChatDate';
@@ -133,7 +134,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
-      history: previousQueries,
+      history: previousQueries.slice(-chatMaxHistoryMessages),
     })
       .then((response) => {
         setIsAwaitingResponse(false);
