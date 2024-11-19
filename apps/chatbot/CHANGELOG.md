@@ -1,5 +1,16 @@
 # chatbot
 
+## 4.0.0
+
+### Major Changes
+
+- b594e5f: docker image size
+- a80753c: Presidio
+
+### Minor Changes
+
+- cee4135: "Add Presidio to detect and mask PII entities"
+
 ## 3.0.0
 
 ### Major Changes

@@ -7,6 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 type DateFormatOptions = {
   locale?: string;
@@ -28,6 +29,7 @@ type ChatbotHistoryListItemProps = {
 
 const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const { palette } = useTheme();
+  const t = useTranslations();
   const formattedDate = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
     DEFAULT_DATE_FORMAT.options
@@ -37,35 +39,28 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
     <ListItem sx={{ width: '100%', paddingX: 0 }}>
       <ListItemButton
         sx={{
+          minHeight: '101px',
           '&:hover': {
             backgroundColor: '#E8EAEC',
           },
           display: 'block',
           width: '100%',
+          alignContent: 'center',
           backgroundColor: '#fafafa',
         }}
         href={`/profile/chatbot-history?sessionId=${session.id}`}
       >
-        <Stack direction='column' spacing={3}>
-          <Typography
-            color={palette.text.secondary}
-            fontSize='0.875rem'
-            fontWeight='600'
-          >
-            {formattedDate}
-          </Typography>
-          <Typography
-            color={palette.text.primary}
-            fontSize='1rem'
-            fontWeight='600'
-            noWrap
-            component='span'
-            display='block'
-            textOverflow='ellipsis'
-          >
-            {session.title}
-          </Typography>
-        </Stack>
+        <Typography
+          color={palette.text.primary}
+          fontSize='1rem'
+          fontWeight='600'
+          noWrap
+          component='span'
+          display='block'
+          textOverflow='ellipsis'
+        >
+          {t('chatBot.sessionTitle') + formattedDate}
+        </Typography>
       </ListItemButton>
     </ListItem>
   );

@@ -71,7 +71,10 @@ const ChatHistoryMessage = ({
           component='span'
           minWidth='12rem'
           fontWeight={600}
-          sx={{ fontSize: { xs: '1rem', xl: '1.125rem' } }}
+          sx={{
+            fontSize: { xs: '1rem', xl: '1.125rem' },
+            overflowWrap: 'break-word',
+          }}
         >
           {sender}
         </Typography>
@@ -92,7 +95,10 @@ const ChatHistoryMessage = ({
         marginLeft={'1rem'}
         paragraph
         width={'100%'}
-        sx={{ fontSize: { xs: '0.875rem', xl: '1rem' } }}
+        sx={{
+          fontSize: { xs: '0.875rem', xl: '1rem' },
+          overflowWrap: 'break-word',
+        }}
       >
         {parsedChatMessage}
       </Typography>

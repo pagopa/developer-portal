@@ -1,5 +1,21 @@
 # strapi-cms
 
+## 3.1.1
+
+### Patch Changes
+
+- 63a2efc: Update .env.default files for strapi and nextjs, update README.md
+
+## 3.1.0
+
+### Minor Changes
+
+- fd2e2c5: Remove subtitle attribute from bannerLink component
+
+### Patch Changes
+
+- 2f93d2d: Add environment variable to disable custom validators during Strapi's data transfer
+
 ## 3.0.1
 
 ### Patch Changes

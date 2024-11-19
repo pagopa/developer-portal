@@ -1,5 +1,17 @@
 # gitbook-docs
 
+## 0.3.0
+
+### Minor Changes
+
+- ea14e69: Fix emoji in guide
+
+## 0.2.1
+
+### Patch Changes
+
+- e6b7263: Remove warnings from build output
+
 ## 0.2.0
 
 ### Minor Changes

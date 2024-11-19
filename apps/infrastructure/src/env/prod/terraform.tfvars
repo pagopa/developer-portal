@@ -32,4 +32,4 @@ dns_domain_name_cms = {
   }
 }
 
-create_chatbot = false
+create_chatbot = true

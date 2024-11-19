@@ -35,10 +35,6 @@ IT_ENTITIES = [
     "IT_PHYSICAL_ADDRESS"
 ]
 
-ALLOW_LIST = [
-    "Discovery", "discovery", "pagoPA", "PagoPA", "pagopa"
-]
-
 
 class EntityTypeCountAnonymizer(Operator):
     """
@@ -90,7 +86,7 @@ class PresidioPII():
 
     def __init__(
             self,
-            config: Union[Path, str] | dict,
+            config: dict,
             entity_mapping: Dict[str, Dict] = {},
             mapping: Dict[str, str] = {},
             entities: List[str] | None = None,
@@ -103,12 +99,10 @@ class PresidioPII():
         self.entities = entities if entities else GLOBAL_ENTITIES
         self.analyzer_threshold = analyzer_threshold
 
-        if isinstance(self.config, (Path, str)):
-            self.provider = NlpEngineProvider(conf_file=self.config)
-        elif isinstance(self.config, dict):
+        if isinstance(self.config, dict):
             self.provider = NlpEngineProvider(nlp_configuration=self.config)
         else:
-            raise ValueError("Error! config should be a path or a dictionary.")
+            raise ValueError("Error! config should be a dictionary.")
         nlp_engine = self.provider.create_engine()
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
@@ -157,7 +151,7 @@ class PresidioPII():
             text=text,
             language=lang,
             entities=self.entities + IT_ENTITIES if lang == "it" else self.entities,
-            allow_list=ALLOW_LIST
+            allow_list=self.config["allow_list"]
         )
 
         return results
