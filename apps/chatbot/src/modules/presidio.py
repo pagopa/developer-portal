@@ -142,7 +142,7 @@ class PresidioPII():
             logger.warning("No detected language.")
             lang = "it"
 
-        logger.info(f"Set presidio to detect PII in {lang} language.")
+        logger.debug(f"Set presidio to detect PII in {lang} language.")
         return lang
 
 

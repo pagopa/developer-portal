@@ -1,8 +1,9 @@
 import os
 import re
 import uuid
+from datetime import datetime
 from logging import getLogger
-from typing import Union, Tuple, Optional, List, Any
+from typing import Union, Tuple, Sequence, Optional, List, Any
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -12,6 +13,8 @@ from llama_index.core.async_utils import asyncio_run
 
 from langfuse import Langfuse
 from langfuse.llama_index import LlamaIndexInstrumentor
+from langfuse.api.resources.trace.types.traces import Traces
+from langfuse.model import TraceWithFullDetails
 
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_automerging_index_redis, REDIS_KVSTORE, INDEX_ID
@@ -33,7 +36,7 @@ USE_CHAT_ENGINE = True if (os.getenv('CHB_ENGINE_USE_CHAT_ENGINE', "True")).lowe
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse,
     AgentChatResponse, StreamingAgentChatResponse
-]
+] 
 START_CHAT_MESSAGE = [ChatMessage(
     role = MessageRole.ASSISTANT,
     content = (
@@ -80,7 +83,8 @@ class Chatbot():
             text_qa_template = self.qa_prompt_tmpl,
             refine_template = self.ref_prompt_tmpl,
             condense_template = self.condense_prompt_tmpl,
-            verbose=self.params["engine"]["verbose"]
+            verbose=self.params["engine"]["verbose"],
+            use_chat_engine=USE_CHAT_ENGINE,
         )
         self.instrumentor = LlamaIndexInstrumentor(
             public_key = LANGFUSE_PUBLIC_KEY,
@@ -209,7 +213,7 @@ class Chatbot():
         return chat_history
 
     
-    def get_trace(self, trace_id: str, as_dict: bool = False):
+    def get_trace(self, trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | dict:
 
         try:
             trace = LANGFUSE.get_trace(trace_id)
@@ -222,23 +226,37 @@ class Chatbot():
             return trace
 
     
-    def get_user_traces(self, user_id: str, as_dict: bool = True):
+    def get_traces(
+            self, 
+            user_id: str | None = None,
+            session_id: str | None = None,
+            from_timestamp: datetime | None = None,
+            to_timestamp: datetime | None = None,
+            order_by: str | None = None,
+            tags: str | Sequence[str] | None = None,
+        ) -> Traces:
 
         try:
-            traces = LANGFUSE.get_traces(user_id=user_id)
+            traces = LANGFUSE.get_traces(
+                user_id=user_id,
+                session_id = session_id,
+                from_timestamp = from_timestamp,
+                to_timestamp = to_timestamp,
+                order_by = order_by,
+                tags = tags
+            )
         except Exception as e:
             logger.error(e)
 
-        if as_dict:
-            return traces.dict()
-        else:
-            return traces
+        return traces
 
 
     def update_trace_with_feedback(self, trace_id: str, user_feedback: str) -> None:
         with self.instrumentor.observe(trace_id=trace_id) as trace:
+            trace_info = self.get_trace(trace_id, as_dict=False)
             trace.update(
-                metadata={"user_feedback": user_feedback}
+                metadata={"user_feedback": user_feedback},
+                tags = trace_info.tags + [user_feedback]
             )
 
 
@@ -307,7 +325,10 @@ class Chatbot():
         ):
 
             try:
-                engine_response = self.engine.query(query_str)
+                if USE_CHAT_ENGINE:
+                    engine_response = self.engine._query_engine.query(query_str)
+                else:
+                    engine_response = self.engine.query(query_str)
                 response_str = self._get_response_str(engine_response)
 
             except Exception as e:

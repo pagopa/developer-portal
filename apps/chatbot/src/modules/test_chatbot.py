@@ -3,7 +3,7 @@ import yaml
 from logging import getLogger
 from pathlib import Path
 
-from src.modules.chatbot import Chatbot
+from src.modules.chatbot import Chatbot, LANGFUSE
 
 
 logger = getLogger(__name__)
@@ -48,11 +48,17 @@ def test_pii_mask():
     assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
+def test_connection_langfuse():
+    assert LANGFUSE.auth_check() == True
+
+
 def test_generation():
 
     try:
         res = CHATBOT.generate(
             query_str = "GPD gestisce i pagamenti spontanei?",
+            user_id = "user-test",
+            session_id = "session-test",
             tags = "test"
         )
     except Exception as e:
@@ -69,11 +75,15 @@ def test_chat_generation():
     try:
         res = CHATBOT.chat_generate(
             query_str = query_str,
+            user_id = "user-test",
+            session_id = "session-test",
             tags = "test"
         )
         res = CHATBOT.chat_generate(
             query_str = "sai dirmi di più?", 
-            messages=[{"question": query_str, "answer": res}],
+            messages = [{"question": query_str, "answer": res}],
+            user_id = "user-test",
+            session_id = "session-test",
             tags = "test"
         )
     except Exception as e:
