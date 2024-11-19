@@ -1,0 +1,76 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "",
+            "AttributeType": "S"
+        }
+    ],
+    "TableName": "",
+    "KeySchema": [
+        {
+            "AttributeName": "",
+            "KeyType": "HASH"
+        }
+    ],
+    "LocalSecondaryIndexes": [
+        {
+            "IndexName": "",
+            "KeySchema": [
+                {
+                    "AttributeName": "",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL",
+                "NonKeyAttributes": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "",
+            "KeySchema": [
+                {
+                    "AttributeName": "",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL",
+                "NonKeyAttributes": [
+                    ""
+                ]
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 0,
+                "WriteCapacityUnits": 0
+            }
+        }
+    ],
+    "BillingMode": "PROVISIONED",
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 0,
+        "WriteCapacityUnits": 0
+    },
+    "StreamSpecification": {
+        "StreamEnabled": true,
+        "StreamViewType": "NEW_IMAGE"
+    },
+    "SSESpecification": {
+        "Enabled": true,
+        "SSEType": "AES256",
+        "KMSMasterKeyId": ""
+    },
+    "Tags": [
+        {
+            "Key": "",
+            "Value": ""
+        }
+    ],
+    "TableClass": "STANDARD",
+    "DeletionProtectionEnabled": true,
+    "ResourcePolicy": ""
+}
