@@ -1,5 +1,5 @@
 ---
-"nextjs-website": patch
+"nextjs-website": minor
 ---
 
-Fix sendApiPath to reach API list page
+Fix sendApiPath to reach the Send API list page
