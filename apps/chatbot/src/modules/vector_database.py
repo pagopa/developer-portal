@@ -162,7 +162,6 @@ def create_documentation(
 
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-
             driver = webdriver.Chrome(
                 options=driver_options,
                 service=driver_service
@@ -234,7 +233,7 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logger.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
+    logger.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
 
     logger.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
