@@ -60,12 +60,12 @@ export class ActiveCampaignClient {
     return response.data;
   }
 
-  async getListIdByStringId(stringId: string) {
+  async getListIdByName(name: string) {
     const response = await axios.get(`${this.baseUrl}/api/3/lists`, {
       headers: this.getHeaders(),
-      params: { stringid: stringId },
+      params: { 'filters[name][eq]': name },
     });
-    return response.data?.lists?.[0]?.id;
+    return response.data?.lists[0]?.id;
   }
 
   async deleteList(id: number) {

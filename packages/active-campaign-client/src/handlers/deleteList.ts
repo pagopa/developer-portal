@@ -1,8 +1,4 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  SQSEvent,
-} from 'aws-lambda';
+import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { acClient } from '../activeCampaignClient';
 
 export async function handler(event: {
@@ -19,8 +15,8 @@ export async function handler(event: {
       };
     }
 
-    // Get list ID using the slug (stringid)
-    const listId = await acClient.getListIdByStringId(slug);
+    // Get list ID using the slug (name)
+    const listId = await acClient.getListIdByName(slug);
 
     if (!listId) {
       return {

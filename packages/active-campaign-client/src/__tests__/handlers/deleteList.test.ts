@@ -1,7 +1,7 @@
 import { handler } from '../../handlers/deleteList';
 import { SQSEvent } from 'aws-lambda';
 
-describe.skip('deleteList handler', () => {
+describe('deleteList handler', () => {
   it('should delete a list successfully', async () => {
     const event: SQSEvent = {
       Records: [
@@ -9,7 +9,7 @@ describe.skip('deleteList handler', () => {
           messageId: '1',
           receiptHandle: '1',
           body: JSON.stringify({
-            slug: 'Test Webinar 1732094177817',
+            slug: 'test-webinar-1732097293540',
           }),
           attributes: {
             ApproximateReceiveCount: '1',

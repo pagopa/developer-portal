@@ -1,8 +1,4 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  SQSEvent,
-} from 'aws-lambda';
+import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { acClient } from '../activeCampaignClient';
 import { Webinar } from 'nextjs-website/src/lib/types/webinar';
 import { ListPayload } from '../types/listPayload';
@@ -16,8 +12,8 @@ export async function handler(event: {
 
     const acPayload: ListPayload = {
       list: {
-        name: webinarData.title,
-        stringid: webinarData.slug, // Using slug as the stringid
+        name: webinarData.slug,
+        stringid: webinarData.title, // Using slug as the stringid
         sender_url: process.env.SENDER_URL || '',
         sender_reminder: webinarData.subscribeCtaLabel || '',
         subscription_notify: '',
