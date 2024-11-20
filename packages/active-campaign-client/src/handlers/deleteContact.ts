@@ -8,10 +8,8 @@ export async function handler(event: {
     const firstMessage = event.Records[0] ?? { body: '{}' };
     // Parse request body
     const { username } = JSON.parse(firstMessage.body);
-    console.log('email:', username);
 
     const contactId = await acClient.getContactByEmail(username);
-    console.log('contactId:', contactId);
 
     if (!contactId) {
       return {
