@@ -7,7 +7,7 @@ import uuid
 import boto3
 import datetime
 import jwt
-from typing import Annotated
+from typing import Annotated, List
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
@@ -23,9 +23,15 @@ AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_
 chatbot = Chatbot(params, prompts)
 
 
+class QueryFromThePast(BaseModel):
+  id: str | None = None
+  question: str
+  answer: str | None = None
+
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
+  history: List[QueryFromThePast] | None = None
 
 class QueryFeedback(BaseModel):
   badAnswer: bool
@@ -74,7 +80,11 @@ async def query_creation (
   now = datetime.datetime.now(datetime.UTC)
   userId = current_user_id(authorization)
   session = find_or_create_session(userId, now=now)
-  answer = chatbot.generate(query.question)
+  answer = chatbot.chat_generate(
+    query_str = query.question,
+    messages = [item.dict() for item in query.history] if query.history else None
+  )
+
 
   if query.queriedAt is None:
     queriedAt = now.isoformat()
