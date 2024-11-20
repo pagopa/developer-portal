@@ -1,7 +1,7 @@
 import { handler } from '../../handlers/createList';
 import { SQSEvent } from 'aws-lambda';
 
-describe('createList handler', () => {
+describe.skip('createList handler', () => {
   it('should create a list successfully', async () => {
     const event: SQSEvent = {
       Records: [

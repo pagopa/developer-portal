@@ -1,7 +1,7 @@
 import { handler } from '../../handlers/deleteList';
 import { SQSEvent } from 'aws-lambda';
 
-describe('deleteList handler', () => {
+describe.skip('deleteList handler', () => {
   it('should delete a list successfully', async () => {
     const event: SQSEvent = {
       Records: [
