@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
 import { ContactPayload } from './types/contactPayload';
+import { ListPayload } from './types/listPayload';
 
 dotenv.config({ path: '.env' });
 
@@ -50,6 +51,28 @@ export class ActiveCampaignClient {
       params: { email },
     });
     return response.data?.contacts?.[0]?.id;
+  }
+
+  async createList(data: ListPayload) {
+    const response = await axios.post(`${this.baseUrl}/api/3/lists`, data, {
+      headers: this.getHeaders(),
+    });
+    return response.data;
+  }
+
+  async getListIdByStringId(stringId: string) {
+    const response = await axios.get(`${this.baseUrl}/api/3/lists`, {
+      headers: this.getHeaders(),
+      params: { stringid: stringId },
+    });
+    return response.data?.lists?.[0]?.id;
+  }
+
+  async deleteList(id: number) {
+    const response = await axios.delete(`${this.baseUrl}/api/3/lists/${id}`, {
+      headers: this.getHeaders(),
+    });
+    return response.data;
   }
 }
 
