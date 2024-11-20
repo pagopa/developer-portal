@@ -3,7 +3,7 @@ import type { JestConfigWithTsJest } from 'ts-jest';
 const jestConfig: JestConfigWithTsJest = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.+(ts)'],
-  moduleFileExtensions: ['ts', 'js'],
+  moduleFileExtensions: ['ts', 'js', 'json'],
   transform: {
     '^.+\\.(ts)$': 'ts-jest',
   },

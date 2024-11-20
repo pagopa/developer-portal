@@ -17,6 +17,9 @@ apps/storybook-app/ @MarcoPonchia @marcobottaro @tommaso1
 # GitBook docs
 packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
 
+# Active Campaign Client
+packages/active-campaign-client/ @MarcoPonchia @marcobottaro @tommaso1
+
 # Lint rules
 **/.eslintrc.json @pagopa/devportal-maintain
 
