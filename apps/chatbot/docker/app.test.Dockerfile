@@ -8,7 +8,7 @@ RUN apt-get update && \
 ENV PYTHONPATH=/app
 
 RUN pip install --upgrade pip \
-  && pip install poetry
+  && pip install poetry awscli
 
 WORKDIR /app
 COPY pyproject.toml .
@@ -18,4 +18,5 @@ RUN poetry install
 
 COPY . .
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]
+#CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]
+CMD ["bash", "./scripts/run.test.sh"]

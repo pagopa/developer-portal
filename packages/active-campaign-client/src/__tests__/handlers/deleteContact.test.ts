@@ -1,21 +1,17 @@
-import { handler } from '../../handlers/addContact';
+import { handler } from '../../handlers/deleteContact';
 import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
-describe.skip('addContact handler', () => {
-  it('should create a contact successfully', async () => {
+describe.skip('deleteContact handler', () => {
+  it('should delete a contact successfully', async () => {
     const event: SQSEvent = {
       Records: [
         {
           messageId: '1',
           receiptHandle: '1',
           body: JSON.stringify({
-            username: `test@example${new Date().getTime()}e.com`,
-            firstName: 'Giovanni',
-            lastName: 'Doe',
-            company: 'Test Co',
-            role: 'Developer',
-            mailinglistAccepted: true,
+            // Replace this with the existing email of the contact you want to delete, otherwise the test will fail
+            username: `test@example1731961388029e.com`,
           }),
           attributes: {
             ApproximateReceiveCount: '1',

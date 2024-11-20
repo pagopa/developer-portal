@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: docker/app.test.Dockerfile
-    command: scripts/create_index.sh 
+    command: "./scripts/run.test.sh"
     env_file: "../.env.test"
     ports:
       - "8080:8080"

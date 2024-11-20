@@ -10,9 +10,6 @@ import pytz
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.chrome.service import Service
-# from chromedriver_py import binary_path
 from typing import List, Tuple
 # from chromedriver_py import binary_path
 
@@ -148,22 +145,26 @@ def create_documentation(
     hash_table = {}
     empty_pages = []
 
-    # full_text = ""
-
+    driver_exe_path = "/usr/bin/chromedriver"
+    if os.path.exists(driver_exe_path):
+        driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
+    else:
+        driver_service = None
+    driver_options = webdriver.ChromeOptions()
+    driver_options.add_argument('--headless')
+    driver_options.add_argument('--disable-gpu')
+    driver_options.add_argument('--no-sandbox')
+    driver_options.add_argument('--disable-dev-shm-usage')
+    
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
-        if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
-        # if 6 == 9:
+        #if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
+        if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
-
-            # svc = webdriver.ChromeService(executable_path=binary_path)
-            # service = Service(executable_path=binary_path)
-            # options = webdriver.ChromeOptions()
-            # options.add_argument('--headless=new')
-            # options.add_argument('--no-sandbox')
-            # options.add_argument('user-agent=fake-useragent')
-            driver = webdriver.Chrome() #(service=service, options=options)
+            driver = webdriver.Chrome(
+                options=driver_options,
+                service=driver_service
+            )
 
             driver.get(url)
             time.sleep(5)
@@ -173,7 +174,6 @@ def create_documentation(
             title, text = html2markdown(open(file))
 
         if text is None or text == "" or text == "None" or text=="404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non esiste":
-            # print(file)
             empty_pages.append(file)
 
         else:
@@ -232,7 +232,7 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{INDEX_ID} is now on Redis.")
+    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
 
     logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
