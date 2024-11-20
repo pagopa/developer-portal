@@ -8,13 +8,14 @@ from llama_index.core.postprocessor import SimilarityPostprocessor
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
 
 SIMILARITY_TOPK = os.getenv('CHB_ENGINE_SIMILARITY_TOPK', "5")
 SIMILARITY_CUTOFF = os.getenv('CHB_ENGINE_SIMILARITY_CUTOFF', "0.55")
 USE_ASYNC = True if (os.getenv('CHB_ENGINE_USE_ASYNC', "True")).lower() == "true" else False
 USE_STREAMING = True if (os.getenv('CHB_ENGINE_USE_STREAMING', "False")).lower() == "true" else False 
-USE_CHAT_ENGINE = True if (os.getenv('CHB_ENGINE_USE_CHAT_ENGINE', "True")).lower() == "true" else False 
 
 
 def get_automerging_engine(
@@ -25,11 +26,7 @@ def get_automerging_engine(
         refine_template: PromptTemplate | None = None,
         condense_template: PromptTemplate | None = None,
         verbose: bool = True,
-        use_chat_engine: bool | None = None
     ) -> (RetrieverQueryEngine | CondenseQuestionChatEngine):
-
-    if use_chat_engine is None:
-        use_chat_engine = USE_CHAT_ENGINE
 
     base_retriever = index.as_retriever(
         similarity_top_k=int(SIMILARITY_TOPK)
@@ -55,11 +52,10 @@ def get_automerging_engine(
         use_async=USE_ASYNC,
         streaming=USE_STREAMING
     )
-
-    if use_chat_engine:
-        automerging_engine = CondenseQuestionChatEngine.from_defaults(
-            query_engine = automerging_engine,
-            condense_question_prompt = condense_template
-        )
+    
+    automerging_engine = CondenseQuestionChatEngine.from_defaults(
+        query_engine = automerging_engine,
+        condense_question_prompt = condense_template
+    )
 
     return automerging_engine

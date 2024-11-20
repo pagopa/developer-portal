@@ -8,7 +8,7 @@ from typing import Union, Tuple, Sequence, Optional, List, Any
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse
-from llama_index.core.chat_engine.types import AgentChatResponse, StreamingAgentChatResponse
+from llama_index.core.chat_engine.types import BaseChatEngine, AgentChatResponse, StreamingAgentChatResponse
 from llama_index.core.async_utils import asyncio_run
 
 from langfuse import Langfuse
@@ -32,19 +32,15 @@ logger = getLogger(__name__)
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 USE_ASYNC = True if (os.getenv('CHB_ENGINE_USE_ASYNC', "True")).lower() == "true" else False
 USE_STREAMING = True if (os.getenv('CHB_ENGINE_USE_STREAMING', "False")).lower() == "true" else False 
-USE_CHAT_ENGINE = True if (os.getenv('CHB_ENGINE_USE_CHAT_ENGINE', "True")).lower() == "true" else False 
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse,
     AgentChatResponse, StreamingAgentChatResponse
 ] 
-START_CHAT_MESSAGE = [ChatMessage(
-    role = MessageRole.ASSISTANT,
-    content = (
-        "Ciao! Io sono Discovery, l'assistente virtuale di PagoPA.\n"
-        "Rispondo solo e soltanto a domande riguardanti la documentazione di PagoPA DevPortal, "
-        "che puoi trovare sul sito: https://dev.developer.pagopa.it!"
-    )
-)]
+PREFIX_MESSAGE = (
+    "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
+    "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
+    "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
+)
 LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY")
 LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_SECRET_KEY")
 LANGFUSE_HOST = os.getenv("LANGFUSE_HOST")
@@ -54,6 +50,7 @@ LANGFUSE = Langfuse(
     secret_key = LANGFUSE_SECRET_KEY,
     host = LANGFUSE_HOST
 )
+
 
 class Chatbot():
     def __init__(
@@ -83,9 +80,12 @@ class Chatbot():
             text_qa_template = self.qa_prompt_tmpl,
             refine_template = self.ref_prompt_tmpl,
             condense_template = self.condense_prompt_tmpl,
-            verbose=self.params["engine"]["verbose"],
-            use_chat_engine=USE_CHAT_ENGINE,
+            verbose=self.params["engine"]["verbose"]
         )
+        self.prefix_message = ChatMessage(
+            role = self.model.metadata.system_role,
+            content = PREFIX_MESSAGE 
+        ) if isinstance(self.engine, BaseChatEngine) else None
         self.instrumentor = LlamaIndexInstrumentor(
             public_key = LANGFUSE_PUBLIC_KEY,
             secret_key = LANGFUSE_SECRET_KEY,
@@ -111,7 +111,7 @@ class Chatbot():
             prompt_type="refine",
             template_var_mappings = {
                 "existing_answer": "existing_answer",
-                "query_str": "query_str"
+                "context_msg": "context_msg"
             }
         )
 
@@ -128,18 +128,15 @@ class Chatbot():
 
     def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
 
-        if USE_CHAT_ENGINE:
-            if isinstance(engine_response, StreamingAgentChatResponse):
-                response_str = ""
-                for token in engine_response.response_gen:
-                    response_str += token
-            else:
-                response_str = engine_response.response
+        if isinstance(engine_response, StreamingAgentChatResponse):
+            response_str = ""
+            for token in engine_response.response_gen:
+                response_str += token
+        if isinstance(engine_response, AgentChatResponse):
+            response_str = engine_response.response
         else:
-            if isinstance(engine_response, StreamingResponse):
-                engine_response = engine_response.get_response()
-
-            response_str = engine_response.response.strip()
+            engine_response = engine_response.get_response()
+            response_str = engine_response.response
         
         response_str = response_str.strip()
         nodes = engine_response.source_nodes
@@ -194,7 +191,7 @@ class Chatbot():
 
     def _messages_to_chathistory(self, messages: Optional[List[dict]] = None) -> List[ChatMessage]:
 
-        chat_history = []
+        chat_history = [self.prefix_message]
         if messages:
             for message in messages:
                 chat_history += [
@@ -207,8 +204,6 @@ class Chatbot():
                         content = message["answer"]
                     )
                 ]
-        
-        chat_history = START_CHAT_MESSAGE + chat_history
 
         return chat_history
 
@@ -225,7 +220,7 @@ class Chatbot():
         else:
             return trace
 
-    
+
     def get_traces(
             self, 
             user_id: str | None = None,
@@ -309,7 +304,7 @@ class Chatbot():
             pass
         else:
             raise ValueError(f"Error! The given tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
-        
+
         if not trace_id:
             logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
             trace_id = str(uuid.uuid4())
@@ -325,10 +320,7 @@ class Chatbot():
         ):
 
             try:
-                if USE_CHAT_ENGINE:
-                    engine_response = self.engine._query_engine.query(query_str)
-                else:
-                    engine_response = self.engine.query(query_str)
+                engine_response = self.engine._query_engine.query(query_str)
                 response_str = self._get_response_str(engine_response)
 
             except Exception as e:

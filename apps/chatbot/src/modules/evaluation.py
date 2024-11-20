@@ -5,7 +5,6 @@ import yaml
 import datetime
 from logging import getLogger
 import asyncio
-import nest_asyncio
 from typing import Any
 
 import pandas as pd
@@ -25,7 +24,6 @@ from src.modules.chatbot import Chatbot
 from src.modules.models import get_llm
 
 
-nest_asyncio.apply()
 logger = getLogger(__name__)
 
 
