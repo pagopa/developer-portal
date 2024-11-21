@@ -11,7 +11,6 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from typing import List, Tuple
-# from chromedriver_py import binary_path
 
 from llama_index.core import (
     Settings,
@@ -161,8 +160,7 @@ def create_documentation(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        #if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
-        if 6 == 9:
+        if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
             driver = webdriver.Chrome(
                 options=driver_options,
