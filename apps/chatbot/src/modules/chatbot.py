@@ -250,7 +250,6 @@ class Chatbot():
         with self.instrumentor.observe(trace_id=trace_id) as trace:
             trace_info = self.get_trace(trace_id, as_dict=False)
             trace.update(
-                metadata={"user_feedback": user_feedback},
                 tags = trace_info.tags + [user_feedback]
             )
 
@@ -285,51 +284,6 @@ class Chatbot():
             data = self.mask_pii(data)
 
         return data
-
-
-    def generate(
-            self, 
-            query_str: str,
-            trace_id: str | None = None,
-            session_id: str | None = None,
-            user_id: str | None = None,
-            tags: Union[str, List[str]] | None = None
-        ) -> str:
-
-        if tags is None:
-            tags = [LANGFUSE_TAG]
-        elif isinstance(tags, str):
-            tags = [tags]
-        elif isinstance(tags, List[str]):
-            pass
-        else:
-            raise ValueError(f"Error! The given tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
-
-        if not trace_id:
-            logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
-            trace_id = str(uuid.uuid4())
-
-        logger.info(f"[Langfuse] Trace id: {trace_id}")
-
-        with self.instrumentor.observe(
-            trace_id = trace_id,
-            session_id = session_id,
-            user_id = user_id,
-            tags = tags,
-            metadata = {"user_feedback": None}
-        ):
-
-            try:
-                engine_response = self.engine._query_engine.query(query_str)
-                response_str = self._get_response_str(engine_response)
-
-            except Exception as e:
-                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
-                logger.error(f"Exception: {e}")
-
-        self.instrumentor.flush()
-
-        return response_str
 
 
     def chat_generate(
