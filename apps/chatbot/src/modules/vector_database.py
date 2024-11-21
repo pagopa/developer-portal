@@ -3,10 +3,10 @@ import re
 import time
 import json
 import tqdm
-import logging
 import hashlib
 import html2text
 import pytz
+from logging import getLogger
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -35,7 +35,10 @@ from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
+logger = getLogger(__name__)
+
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
@@ -154,7 +157,7 @@ def create_documentation(
     driver_options.add_argument('--disable-gpu')
     driver_options.add_argument('--no-sandbox')
     driver_options.add_argument('--disable-dev-shm-usage')
-    
+
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
@@ -198,8 +201,8 @@ def create_documentation(
                 }
             ))
 
-    logging.info(f"[vector_database.py - create_documentation] Number of documents with content: {len(documents)}")
-    logging.info(f"[vector_database.py - create_documentation] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logger.info(f"Number of documents with content: {len(documents)}")
+    logger.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
@@ -214,7 +217,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("[vector_database.py - build_automerging_index_redis] Storing vector index and hash table on Redis..")
+    logger.info("Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -230,9 +233,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
+    logger.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
 
-    logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
+    logger.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -267,7 +270,7 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(NEW_INDEX_ID)
     put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logging.info("[vector_database.py - build_automerging_index_redis] Created vector index successfully and stored on Redis.")
+    logger.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
@@ -296,7 +299,7 @@ def load_automerging_index_redis(
             schema=REDIS_SCHEMA
         )
 
-        logging.info("[vector_database.py - load_automerging_index_redis] Loading vector index from Redis...")
+        logger.info("Loading vector index from Redis...")
         storage_context = StorageContext.from_defaults(
             vector_store=redis_vector_store,
             docstore=REDIS_DOCSTORE,
@@ -310,7 +313,7 @@ def load_automerging_index_redis(
 
         return automerging_index
     else:
-        logging.error("[vector_database.py - load_automerging_index_redis] No index_id provided.")
+        logger.error("No index_id provided.")
 
 
 def delete_old_index():
@@ -320,4 +323,4 @@ def delete_old_index():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
 
-        logging.info(f"[vector_database.py - delete_old_index] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        logger.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
