@@ -1,36 +1,30 @@
-import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../utils/activeCampaignClient';
-import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
+import { APIGatewayProxyResult } from 'aws-lambda';
+import { acClient } from '../clients/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
+import { User } from '..';
 
-export async function addContact(event: {
-  readonly Records: SQSEvent['Records'];
-}): Promise<APIGatewayProxyResult> {
+export async function addContact(user: User): Promise<APIGatewayProxyResult> {
   try {
-    const firstMessage = event.Records[0] ?? { body: '{}' };
-    // Parse request body
-    const userData: SignUpUserData & { readonly cognitoId: string } =
-      JSON.parse(firstMessage.body);
-
     // Transform to AC payload
     const acPayload: ContactPayload = {
       contact: {
-        email: userData.username,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phone: `cognito:${userData.cognitoId}`,
+        email: user.email,
+        firstName: user.given_name,
+        lastName: user.family_name,
+        phone: `cognito:${user.username}`,
         fieldValues: [
           {
             field: '2',
-            value: userData.company,
+            value: user['custom:company_type'],
           },
           {
             field: '1',
-            value: userData.role,
+            value: user['custom:job_role'],
           },
           {
             field: '3',
-            value: userData.mailinglistAccepted ? 'TRUE' : 'FALSE',
+            value:
+              user['custom:mailinglist_accepted'] === 'true' ? 'TRUE' : 'FALSE',
           },
         ],
       },

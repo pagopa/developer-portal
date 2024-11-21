@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../utils/activeCampaignClient';
+import { acClient } from '../clients/activeCampaignClient';
 import { ListPayload } from '../types/listPayload';
 import { WebinarPayload } from '../types/webinarPayload';
 

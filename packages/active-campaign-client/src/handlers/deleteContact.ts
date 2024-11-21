@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../utils/activeCampaignClient';
+import { acClient } from '../clients/activeCampaignClient';
 
 export async function deleteContact(event: {
   readonly Records: SQSEvent['Records'];

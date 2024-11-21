@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../utils/activeCampaignClient';
+import { acClient } from '../clients/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
 
 export async function updateContact(event: {
