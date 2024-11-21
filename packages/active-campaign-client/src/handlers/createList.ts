@@ -1,14 +1,14 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../activeCampaignClient';
-import { Webinar } from 'nextjs-website/src/lib/types/webinar';
+import { acClient } from '../utils/activeCampaignClient';
 import { ListPayload } from '../types/listPayload';
+import { WebinarPayload } from '../types/webinarPayload';
 
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {
     const firstMessage = event.Records[0] ?? { body: '{}' };
-    const webinarData: Webinar = JSON.parse(firstMessage.body);
+    const webinarData: WebinarPayload = JSON.parse(firstMessage.body);
 
     const acPayload: ListPayload = {
       list: {

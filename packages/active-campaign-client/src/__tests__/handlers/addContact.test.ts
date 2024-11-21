@@ -12,6 +12,7 @@ describe.skip('addContact handler', () => {
           body: JSON.stringify({
             username: `test@example${new Date().getTime()}e.com`,
             firstName: 'Giovanni',
+            cognitoId: '466e0280-9061-7007-c3e0-beb6be672f68',
             lastName: 'Doe',
             company: 'Test Co',
             role: 'Developer',

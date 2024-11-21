@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../activeCampaignClient';
+import { acClient } from '../utils/activeCampaignClient';
 
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];

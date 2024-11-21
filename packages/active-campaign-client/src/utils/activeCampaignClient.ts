@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
-import { ContactPayload } from './types/contactPayload';
-import { ListPayload } from './types/listPayload';
+import { ContactPayload } from '../types/contactPayload';
+import { ListPayload } from '../types/listPayload';
 
 dotenv.config({ path: '.env' });
 
@@ -45,10 +45,10 @@ export class ActiveCampaignClient {
     return response.data;
   }
 
-  async getContactByEmail(email: string) {
+  async getContactByCognitoId(cognitoId: string) {
     const response = await axios.get(`${this.baseUrl}/api/3/contacts`, {
       headers: this.getHeaders(),
-      params: { email },
+      params: { phone: `cognito:${cognitoId}` },
     });
     return response.data?.contacts?.[0]?.id;
   }

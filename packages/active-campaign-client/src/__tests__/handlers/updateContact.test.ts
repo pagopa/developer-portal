@@ -16,6 +16,7 @@ describe.skip('updateContact handler', () => {
             company: 'Test Co',
             role: 'Developer',
             mailinglistAccepted: true,
+            cognitoId: '466e0280-9061-7007-c3e0-beb6be672f68',
           }),
           attributes: {
             ApproximateReceiveCount: '1',
