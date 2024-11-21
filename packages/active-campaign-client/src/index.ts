@@ -1,41 +1,10 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { getUserFromCognito } from './handlers/getUserFromCognito';
+import { getUserFromCognito } from './helpers/getUserFromCognito';
 import { QueueEvent } from './types/queueEvent';
-import { addContact } from './handlers/addContact';
-import { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
-import { updateContact } from './handlers/updateContact';
-import { deleteContact } from './handlers/deleteContact';
-
-export type User = {
-  readonly username: string;
-  readonly email: string;
-  readonly given_name: string;
-  readonly family_name: string;
-  readonly 'custom:mailinglist_accepted': string;
-  readonly 'custom:company_type': string;
-  readonly 'custom:job_role': string;
-};
-
-function listUsersCommandOutputToUser(
-  listUsersCommandOutput: ListUsersCommandOutput
-) {
-  const userData = listUsersCommandOutput.Users?.[0];
-  if (!userData) {
-    return undefined;
-  }
-  return {
-    username: userData.Username,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ...userData.Attributes?.reduce((acc, attr) => {
-      if (!attr.Name || !attr.Value) {
-        return acc;
-      }
-      acc[attr.Name] = attr.Value;
-      return acc;
-    }, {} as Record<string, string>),
-  } as User;
-}
+import { addContact } from './helpers/addContact';
+import { updateContact } from './helpers/updateContact';
+import { deleteContact } from './helpers/deleteContact';
+import { listUsersCommandOutputToUser } from './helpers/listUsersCommandOutputToUser';
 
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];

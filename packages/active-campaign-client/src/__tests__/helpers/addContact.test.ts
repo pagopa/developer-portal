@@ -1,5 +1,5 @@
-import { User } from '../..';
-import { addContact } from '../../handlers/addContact';
+import { addContact } from '../../helpers/addContact';
+import { User } from '../../types/user';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
 describe.skip('addContact handler', () => {

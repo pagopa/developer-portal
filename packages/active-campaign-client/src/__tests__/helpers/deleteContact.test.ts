@@ -1,4 +1,4 @@
-import { deleteContact } from '../../handlers/deleteContact';
+import { deleteContact } from '../../helpers/deleteContact';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
 describe.skip('deleteContact handler', () => {

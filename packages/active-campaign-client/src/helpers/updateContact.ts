@@ -1,11 +1,12 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { acClient } from '../clients/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
-import { User } from '..';
+import { User } from '../types/user';
 
-export async function addContact(user: User): Promise<APIGatewayProxyResult> {
+export async function updateContact(
+  user: User
+): Promise<APIGatewayProxyResult> {
   try {
-    // Transform to AC payload
     const acPayload: ContactPayload = {
       contact: {
         email: user.email,
@@ -29,8 +30,15 @@ export async function addContact(user: User): Promise<APIGatewayProxyResult> {
         ],
       },
     };
+    const contactId = await acClient.getContactByCognitoId(user.username);
+    if (!contactId) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Contact not found' }),
+      };
+    }
 
-    const response = await acClient.createContact(acPayload);
+    const response = await acClient.updateContact(contactId, acPayload);
 
     return {
       statusCode: 200,
