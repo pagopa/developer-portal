@@ -1,3 +1,8 @@
-import { handler } from './handlers/addContact';
+import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
+import { addContact } from './handlers/addContact';
 
-export { handler };
+export async function handler(event: {
+  readonly Records: SQSEvent['Records'];
+}): Promise<APIGatewayProxyResult> {
+  return addContact(event);
+}

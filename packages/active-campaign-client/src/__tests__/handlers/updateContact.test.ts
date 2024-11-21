@@ -1,4 +1,4 @@
-import { handler } from '../../handlers/updateContact';
+import { updateContact } from '../../handlers/updateContact';
 import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
@@ -33,7 +33,7 @@ describe.skip('updateContact handler', () => {
       ],
     };
 
-    const response = await handler(event);
+    const response = await updateContact(event);
     expect(response.statusCode).toBe(200);
   });
 });

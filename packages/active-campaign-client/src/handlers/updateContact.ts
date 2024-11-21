@@ -2,7 +2,7 @@ import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { acClient } from '../utils/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
 
-export async function handler(event: {
+export async function updateContact(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {

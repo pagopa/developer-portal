@@ -3,7 +3,7 @@ import { acClient } from '../utils/activeCampaignClient';
 import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
 import { ContactPayload } from '../types/contactPayload';
 
-export async function handler(event: {
+export async function addContact(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {

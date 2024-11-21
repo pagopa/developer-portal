@@ -3,7 +3,7 @@ import { acClient } from '../utils/activeCampaignClient';
 import { ListPayload } from '../types/listPayload';
 import { WebinarPayload } from '../types/webinarPayload';
 
-export async function handler(event: {
+export async function createList(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {

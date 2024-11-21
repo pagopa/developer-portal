@@ -1,4 +1,4 @@
-import { handler } from '../../handlers/createList';
+import { createList } from '../../handlers/createList';
 import { SQSEvent } from 'aws-lambda';
 
 describe.skip('createList handler', () => {
@@ -31,7 +31,7 @@ describe.skip('createList handler', () => {
       ],
     };
 
-    const response = await handler(event);
+    const response = await createList(event);
     expect(response.statusCode).toBe(200);
   });
 });

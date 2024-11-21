@@ -1,8 +1,8 @@
-import { handler } from '../../handlers/deleteContact';
+import { deleteContact } from '../../handlers/deleteContact';
 import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
-describe('deleteContact handler', () => {
+describe.skip('deleteContact handler', () => {
   it('should delete a contact successfully', async () => {
     const event: SQSEvent = {
       Records: [
@@ -28,7 +28,7 @@ describe('deleteContact handler', () => {
       ],
     };
 
-    const response = await handler(event);
+    const response = await deleteContact(event);
     expect(response.statusCode).toBe(200);
   });
 });
