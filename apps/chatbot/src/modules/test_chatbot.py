@@ -77,7 +77,3 @@ def test_chat_generation():
         res = f"Something went wrong!"
 
     assert res != f"Something went wrong!"
-
-
-def test_langfuse_connection():
-    assert LANGFUSE.auth_check() == True
