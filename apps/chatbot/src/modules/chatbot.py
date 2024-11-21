@@ -84,15 +84,14 @@ class Chatbot():
             }
         )
 
-        ref_prompt_tmpl = None
-        # PromptTemplate(
-        #     self.prompts["refine_prompt_str"],
-        #     prompt_type="refine",
-        #     template_var_mappings = {
-        #         "existing_answer": "existing_answer",
-        #         "query_str": "query_str"
-        #     }
-        # )
+        ref_prompt_tmpl = PromptTemplate(
+            self.prompts["refine_prompt_str"],
+            prompt_type="refine",
+            template_var_mappings = {
+                "existing_answer": "existing_answer",
+                "context_msg": "context_msg"
+            }
+        )
 
         condense_prompt_tmpl = PromptTemplate(
             self.prompts["condense_prompt_str"],
