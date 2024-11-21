@@ -19,11 +19,12 @@ RUN pip install --upgrade pip \
   && pip install poetry
 
 WORKDIR /app
-COPY pyproject.toml .
-COPY poetry.lock .
+COPY ./pyproject.toml .
+COPY ./poetry.lock .
+COPY ./src ./src
+COPY ./config ./config
+
 RUN poetry config virtualenvs.create false
 RUN poetry install
-
-COPY . .
 
 CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]
