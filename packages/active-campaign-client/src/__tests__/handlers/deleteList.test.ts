@@ -1,4 +1,4 @@
-import { handler } from '../../handlers/deleteList';
+import { deleteList } from '../../handlers/deleteList';
 import { SQSEvent } from 'aws-lambda';
 
 describe.skip('deleteList handler', () => {
@@ -25,7 +25,7 @@ describe.skip('deleteList handler', () => {
         },
       ],
     };
-    const response = await handler(event);
+    const response = await deleteList(event);
     expect(response.statusCode).toBe(200);
   });
 });
