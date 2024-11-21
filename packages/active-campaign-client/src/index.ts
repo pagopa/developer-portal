@@ -3,6 +3,8 @@ import { getUserFromCognito } from './handlers/getUserFromCognito';
 import { QueueEvent } from './types/queueEvent';
 import { addContact } from './handlers/addContact';
 import { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
+import { updateContact } from './handlers/updateContact';
+import { deleteContact } from './handlers/deleteContact';
 
 export type User = {
   readonly username: string;
@@ -23,6 +25,8 @@ function listUsersCommandOutputToUser(
   }
   return {
     username: userData.Username,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     ...userData.Attributes?.reduce((acc, attr) => {
       if (!attr.Name || !attr.Value) {
         return acc;
@@ -56,12 +60,20 @@ export async function handler(event: {
         return await addContact(user);
       case 'UpdateUserAttributes':
         // eslint-disable-next-line no-case-declarations
-        const confirmedUser = await getUserFromCognito(queueEvent);
-        console.log('UpdateUserAttributes', confirmedUser);
-        break;
+        const userToUpdate = listUsersCommandOutputToUser(
+          await getUserFromCognito(queueEvent)
+        );
+        console.log(
+          'UpdateUserAttributes:',
+          JSON.stringify(userToUpdate, null, 2)
+        );
+        if (!userToUpdate) {
+          // eslint-disable-next-line functional/no-throw-statements
+          throw new Error('User not found');
+        }
+        return await updateContact(userToUpdate);
       case 'DeleteUser':
-        console.log('DeleteUser');
-        break;
+        return await deleteContact(queueEvent.detail.additionalEventData.sub);
       default:
         console.log('Unknown event:', queueEvent.detail.eventName);
         break;

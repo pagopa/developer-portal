@@ -1,52 +1,42 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { acClient } from '../clients/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
+import { User } from '../index';
 
-export async function updateContact(event: {
-  readonly Records: SQSEvent['Records'];
-}): Promise<APIGatewayProxyResult> {
+export async function updateContact(
+  user: User
+): Promise<APIGatewayProxyResult> {
   try {
-    const firstMessage = event.Records[0] ?? { body: '{}' };
-    // Parse request body
-    const userData = JSON.parse(firstMessage.body);
-
-    if (!userData.username) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Missing email' }),
-      };
-    }
-
-    const contactId = await acClient.getContactByCognitoId(userData.cognitoId);
-
+    const acPayload: ContactPayload = {
+      contact: {
+        email: user.email,
+        firstName: user.given_name,
+        lastName: user.family_name,
+        phone: `cognito:${user.username}`,
+        fieldValues: [
+          {
+            field: '2',
+            value: user['custom:company_type'],
+          },
+          {
+            field: '1',
+            value: user['custom:job_role'],
+          },
+          {
+            field: '3',
+            value:
+              user['custom:mailinglist_accepted'] === 'true' ? 'TRUE' : 'FALSE',
+          },
+        ],
+      },
+    };
+    const contactId = await acClient.getContactByCognitoId(user.username);
     if (!contactId) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: 'Contact not found' }),
       };
     }
-
-    const acPayload: ContactPayload = {
-      contact: {
-        email: userData.username,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        fieldValues: [
-          {
-            field: '2',
-            value: userData.company,
-          },
-          {
-            field: '1',
-            value: userData.role,
-          },
-          {
-            field: '3',
-            value: userData.mailinglistAccepted ? 'TRUE' : 'FALSE',
-          },
-        ],
-      },
-    };
 
     const response = await acClient.updateContact(contactId, acPayload);
 

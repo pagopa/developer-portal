@@ -1,14 +1,10 @@
-import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
+import { APIGatewayProxyResult } from 'aws-lambda';
 import { acClient } from '../clients/activeCampaignClient';
 
-export async function deleteContact(event: {
-  readonly Records: SQSEvent['Records'];
-}): Promise<APIGatewayProxyResult> {
+export async function deleteContact(
+  cognitoId: string
+): Promise<APIGatewayProxyResult> {
   try {
-    const firstMessage = event.Records[0] ?? { body: '{}' };
-    // Parse request body
-    const { cognitoId } = JSON.parse(firstMessage.body);
-
     const contactId = await acClient.getContactByCognitoId(cognitoId);
 
     if (!contactId) {
