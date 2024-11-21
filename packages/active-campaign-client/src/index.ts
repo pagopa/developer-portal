@@ -4,5 +4,9 @@ import { addContact } from './handlers/addContact';
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
-  return addContact(event);
+  console.log('Event:', event);
+  return {
+    statusCode: 200,
+    body: JSON.stringify(event),
+  };
 }
