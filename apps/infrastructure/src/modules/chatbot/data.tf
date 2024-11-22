@@ -26,6 +26,15 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid = "AssumeCrossAccountRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [local.cross_account_role_arn]
+  }
 }
 
 data "aws_iam_policy_document" "lambda_dynamodb_policy" {

@@ -1,3 +1,4 @@
+import boto3
 import os
 import logging
 
@@ -34,11 +35,11 @@ MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
 MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
+CROSS_ACCOUNT_ROLE_ARN = os.getenv("CHB_CROSS_ACCOUNT_ROLE_ARN")
 
 def get_llm():
 
     if PROVIDER == "aws":
-
         class ModelEventHandler(BaseEventHandler):
             @classmethod
             def class_name(cls) -> str:
@@ -56,15 +57,37 @@ def get_llm():
 
         root_dispatcher = get_dispatcher()
         root_dispatcher.add_event_handler(ModelEventHandler())
-        
-        llm = BedrockConverse(
-            model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_REGION
-        )
+        if CROSS_ACCOUNT_ROLE_ARN:
+            # Create an STS client
+            sts_client = boto3.client('sts')
+
+            # Assume the role
+            assumed_role_object = sts_client.assume_role(
+                RoleArn=CROSS_ACCOUNT_ROLE_ARN,
+                RoleSessionName="chatbot-cross-account-generation"
+            )
+
+            # Retrieve the temporary credentials
+            credentials = assumed_role_object['Credentials']
+
+            llm = BedrockConverse(
+                model=MODEL_ID,
+                temperature=float(MODEL_TEMPERATURE),
+                max_tokens=int(MODEL_MAXTOKENS),
+                aws_access_key_id=credentials['AccessKeyId'],
+                aws_secret_access_key=credentials['SecretAccessKey'],
+                aws_session_token=credentials['SessionToken'],
+                region_name=AWS_BEDROCK_REGION
+            )
+        else:
+            llm = BedrockConverse(
+                model=MODEL_ID,
+                temperature=float(MODEL_TEMPERATURE),
+                max_tokens=int(MODEL_MAXTOKENS),
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_BEDROCK_REGION
+            )
 
     else:
         llm = Gemini(
@@ -86,14 +109,34 @@ def get_llm():
 
 
 def get_embed_model():
-
     if PROVIDER == "aws":
-        embed_model = BedrockEmbedding(
-            model_name = EMBED_MODEL_ID,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_REGION
-        )
+        if CROSS_ACCOUNT_ROLE_ARN:
+            # Create an STS client
+            sts_client = boto3.client('sts')
+
+            # Assume the role
+            assumed_role_object = sts_client.assume_role(
+                RoleArn=CROSS_ACCOUNT_ROLE_ARN,
+                RoleSessionName="chatbot-cross-account-generation"
+            )
+
+            # Retrieve the temporary credentials
+            credentials = assumed_role_object['Credentials']
+
+            embed_model = BedrockEmbedding(
+                model_name = EMBED_MODEL_ID,
+                aws_access_key_id=credentials['AccessKeyId'],
+                aws_secret_access_key=credentials['SecretAccessKey'],
+                aws_session_token=credentials['SessionToken'],
+                region_name=AWS_BEDROCK_REGION
+            )
+        else:
+            embed_model = BedrockEmbedding(
+                model_name = EMBED_MODEL_ID,
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_BEDROCK_REGION
+            )
     else:
         embed_model = GeminiEmbedding(
             api_key=GOOGLE_API_KEY,

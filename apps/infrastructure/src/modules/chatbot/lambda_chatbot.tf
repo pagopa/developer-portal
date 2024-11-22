@@ -1,5 +1,5 @@
 locals {
-  lambda_env_variables = {
+  lambda_env_variables = merge({
     CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
@@ -23,7 +23,8 @@ locals {
     CHB_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_QUERY_TABLE_PREFIX  = local.prefix
     CHB_LLAMAINDEX_INDEX_ID = module.index_id_ssm_parameter.ssm_parameter_name
-  }
+  }, 
+  var.environment == "prod" ? { CHB_CROSS_ACCOUNT_ROLE_ARN = local.cross_account_role_arn } : {})
 }
 
 module "lambda_function" {
