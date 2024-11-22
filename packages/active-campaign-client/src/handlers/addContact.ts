@@ -1,15 +1,16 @@
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { acClient } from '../activeCampaignClient';
+import { acClient } from '../utils/activeCampaignClient';
 import { SignUpUserData } from 'nextjs-website/src/lib/types/sign-up';
 import { ContactPayload } from '../types/contactPayload';
 
-export async function handler(event: {
+export async function addContact(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {
     const firstMessage = event.Records[0] ?? { body: '{}' };
     // Parse request body
-    const userData: SignUpUserData = JSON.parse(firstMessage.body);
+    const userData: SignUpUserData & { readonly cognitoId: string } =
+      JSON.parse(firstMessage.body);
 
     // Transform to AC payload
     const acPayload: ContactPayload = {
@@ -17,6 +18,7 @@ export async function handler(event: {
         email: userData.username,
         firstName: userData.firstName,
         lastName: userData.lastName,
+        phone: `cognito:${userData.cognitoId}`,
         fieldValues: [
           {
             field: '2',

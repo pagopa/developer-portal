@@ -1,4 +1,4 @@
-import { handler } from '../../handlers/addContact';
+import { addContact } from '../../handlers/addContact';
 import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
@@ -12,6 +12,7 @@ describe.skip('addContact handler', () => {
           body: JSON.stringify({
             username: `test@example${new Date().getTime()}e.com`,
             firstName: 'Giovanni',
+            cognitoId: '466e0280-9061-7007-c3e0-beb6be672f68',
             lastName: 'Doe',
             company: 'Test Co',
             role: 'Developer',
@@ -32,7 +33,7 @@ describe.skip('addContact handler', () => {
       ],
     };
 
-    const response = await handler(event);
+    const response = await addContact(event);
     expect(response.statusCode).toBe(200);
   });
 });
