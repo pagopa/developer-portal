@@ -42,6 +42,37 @@ Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 - in the `strapi-cms` app (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
+In order to get the Strapi API token needed in the .env.local:
+- for local developement, you can find the token at: [http://localhost:1337/admin/settings/api-tokens] (http://localhost:1337/admin/settings/api-tokens)
+- for the dev api token, ask one of the mantainer with admin access to [https://cms.dev.developer.pagopa.it] (https://cms.dev.developer.pagopa.it)
+
+### Populate strapi cms
+
+In order to start with a populated strapi database, run the following command:
+``` bash
+npx strapi transfer --from https://cms.developer.pagopa.it/admin --from-token <strapi_token>
+```
+
+The strapi token can be recovered by a mantainer with admin access to the production cms
+
+Give that SQLite is used for local developement, this transfer will require the following lines to be added to `apps/strapi-cms/config/database.ts` inside the `sqlite` object:
+
+```
+      pool: {
+        min: 2,
+        max: 20,
+        acquireTimeoutMillis: 300000,
+        createTimeoutMillis: 300000,
+        destroyTimeoutMillis: 300000,
+        idleTimeoutMillis: 30000,
+        reapIntervalMillis:1000,
+        createRetryIntervalMillis: 2000
+      },
+      debug: false,
+```
+
+**Important**: remember to remove these lines after the transfer, before launching Strapi.
+
 ### Run the developer portal locally
 
 Run the following command from the root folder.
@@ -74,6 +105,16 @@ or run the following command to keep watching changes while updating code or tes
 npm run test -w <workspace> -- --watch
 ```
 
+## Enable the chatbot for local developement
+
+In the `nextjs-website` app (`apps/nextjs-websites`) add (or update if already present) the following lines: 
+
+```
+NEXT_PUBLIC_CHATBOT_HOST="https://api.chatbot.dev.developer.pagopa.it"
+NEXT_PUBLIC_CHATBOT_ACTIVE="true"
+```
+
+##
 ## Commands Cheat Sheet
 
 

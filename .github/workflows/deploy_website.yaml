@@ -66,6 +66,7 @@ jobs:
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
           chatbot_host: ${{ vars.NEXT_PUBLIC_CHATBOT_HOST }}
+          chat_max_history_messages: ${{ vars.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES }}
           website_name: ${{ vars.NEXT_PUBLIC_WEBSITE_NAME }}
           organization_name: ${{ vars.NEXT_PUBLIC_ORGANIZATION_NAME }}
           organization_logo: ${{ vars.NEXT_PUBLIC_ORGANIZATION_LOGO }}
@@ -110,6 +111,7 @@ jobs:
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
           cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
           chatbot_host: ${{ vars.NEXT_PUBLIC_CHATBOT_HOST }}
+          chat_max_history_messages: ${{ vars.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES }}
           website_name: ${{ vars.NEXT_PUBLIC_WEBSITE_NAME }}
           organization_name: ${{ vars.NEXT_PUBLIC_ORGANIZATION_NAME }}
           organization_logo: ${{ vars.NEXT_PUBLIC_ORGANIZATION_LOGO }}

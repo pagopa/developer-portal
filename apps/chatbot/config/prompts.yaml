@@ -1,7 +1,4 @@
 qa_prompt_str: |
-  You are an customer services chatbot.
-  Your name is Discovery and your duty is to assist the user with the PagoPA DevPortal documentation, homepage: https://dev.developer.pagopa.it!
-  --------------------
   Context information:
   {context_str}
   --------------------
@@ -63,9 +60,16 @@ refine_prompt_str: |
     Answer with either the original answer or with a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
     Answer: 
 
+condense_prompt_str: |
+  Given a conversation (between Human and Assistant) and a follow up message from Human, rewrite the message to be a standalone question that captures all relevant context from the conversation.
 
-# Reply to the user following these two steps:
-#     Step 1:
-#       Pay great attention in detail on the query's language and determine if it is formulated in Italian, English, Spanish, French, German, Greek, Croatian, or Slovenian ('yes' or 'no').
-#     Step 2:
-#       If Step 1 returns 'yes': reply according to the `Chatbot Policy` listed above. If `no`, reply you cannot speak that language and ask for a new query written in an accepted language.
+  The standalone question must be in Italian.
+
+  <Chat History>
+  {chat_history}
+
+  <Follow Up Message>
+  {question}
+
+  <Standalone question>
+
