@@ -1,22 +1,17 @@
-import { addContact } from '../../handlers/addContact';
+import { deleteContact } from '../../handlers/deleteContact';
 import { SQSEvent } from 'aws-lambda';
 
 // remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
-describe.skip('addContact handler', () => {
-  it('should create a contact successfully', async () => {
+describe.skip('deleteContact handler', () => {
+  it('should delete a contact successfully', async () => {
     const event: SQSEvent = {
       Records: [
         {
           messageId: '1',
           receiptHandle: '1',
           body: JSON.stringify({
-            username: `test@example${new Date().getTime()}e.com`,
-            firstName: 'Giovanni',
-            cognitoId: '466e0280-9061-7007-c3e0-beb6be672f68',
-            lastName: 'Doe',
-            company: 'Test Co',
-            role: 'Developer',
-            mailinglistAccepted: true,
+            // Replace this with the existing email of the contact you want to delete, otherwise the test will fail
+            cognitoId: `466e0280-9061-7007-c3e0-beb6be672f68`,
           }),
           attributes: {
             ApproximateReceiveCount: '1',
@@ -33,7 +28,7 @@ describe.skip('addContact handler', () => {
       ],
     };
 
-    const response = await addContact(event);
+    const response = await deleteContact(event);
     expect(response.statusCode).toBe(200);
   });
 });
