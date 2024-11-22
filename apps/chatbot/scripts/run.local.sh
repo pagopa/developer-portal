@@ -6,5 +6,5 @@ echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
 echo '-=-=-=-=-=-=-=-=-= init DynamoDB -==-=-=-=-=-=-=-=-'
 ./scripts/dynamodb-init.sh
 
-echo '-=-=-=-=-=-=-=-=-=- run pytest -=-==-=-=-=-=-=-=-=-'
-pytest  -p no:warnings
+echo '-=-=-=-=-=-=-=-=-= run FastAPI =-==-=-=-=-=-=-=-=-'
+fastapi dev src/app/main.py --port 8080 --host 0.0.0.0
