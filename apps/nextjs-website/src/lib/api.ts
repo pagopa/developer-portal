@@ -16,7 +16,7 @@ import {
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
-import { makeSolution } from '@/_contents/makeDocs';
+import { makeSolution } from '@/helpers/makeDocs.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 function manageUndefined<T>(props: undefined | null | T) {

@@ -26,7 +26,7 @@ import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { makeGuide } from '@/_contents/makeDocs';
+import { makeGuide } from '@/helpers/makeDocs.helpers';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';

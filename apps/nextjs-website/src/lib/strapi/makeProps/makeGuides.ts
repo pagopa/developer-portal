@@ -1,4 +1,4 @@
-import { GuideDefinition } from '@/_contents/makeDocs';
+import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { StrapiGuides } from '../codecs/GuidesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
