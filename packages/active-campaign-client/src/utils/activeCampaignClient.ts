@@ -115,7 +115,7 @@ export class ActiveCampaignClient {
 
 export const acClient = new ActiveCampaignClient(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  process.env.AC_BASE_URL!,
+  process.env.AC_BASE_URL || '',
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  process.env.AC_API_KEY!
+  process.env.AC_API_KEY || ''
 );
