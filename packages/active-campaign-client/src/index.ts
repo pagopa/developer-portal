@@ -4,43 +4,20 @@ import { QueueEvent } from './types/queueEvent';
 import { addContact } from './helpers/addContact';
 import { updateContact } from './helpers/updateContact';
 import { deleteContact } from './helpers/deleteContact';
-import { listUsersCommandOutputToUser } from './helpers/listUsersCommandOutputToUser';
 
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {
-    console.log('Event:', event);
+    console.log('Event:', event); // TODO: Remove after testing
     const queueEvent = JSON.parse(
       event.Records[0].body
     ) as unknown as QueueEvent;
-    console.log('queueEvent:', queueEvent);
     switch (queueEvent.detail.eventName) {
       case 'ConfirmSignUp':
-        // eslint-disable-next-line no-case-declarations
-        const user = listUsersCommandOutputToUser(
-          await getUserFromCognito(queueEvent)
-        );
-        console.log('ConfirmSignUp:', JSON.stringify(user, null, 2));
-        if (!user) {
-          // eslint-disable-next-line functional/no-throw-statements
-          throw new Error('User not found');
-        }
-        return await addContact(user);
+        return await addContact(await getUserFromCognito(queueEvent));
       case 'UpdateUserAttributes':
-        // eslint-disable-next-line no-case-declarations
-        const userToUpdate = listUsersCommandOutputToUser(
-          await getUserFromCognito(queueEvent)
-        );
-        console.log(
-          'UpdateUserAttributes:',
-          JSON.stringify(userToUpdate, null, 2)
-        );
-        if (!userToUpdate) {
-          // eslint-disable-next-line functional/no-throw-statements
-          throw new Error('User not found');
-        }
-        return await updateContact(userToUpdate);
+        return await updateContact(await getUserFromCognito(queueEvent));
       case 'DeleteUser':
         return await deleteContact(queueEvent.detail.additionalEventData.sub);
       default:
