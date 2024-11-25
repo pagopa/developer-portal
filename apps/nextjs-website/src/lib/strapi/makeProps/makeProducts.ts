@@ -27,16 +27,17 @@ function getApiDataListPageUrl(
   if (!apiDataList || apiDataList.attributes.apiData.data.length === 0) return;
 
   const productSlug = product.attributes.slug;
-  // if there are multiple api data, return the api data list page
-  if (apiDataList && apiDataList.attributes.apiData.data.length > 1) {
-    return `/${productSlug}/api`;
+  const apiData = apiDataList.attributes.apiData.data[0];
+
+  if (
+    apiDataList &&
+    apiDataList.attributes.apiData.data.length === 1 &&
+    apiData.attributes.apiRestDetail?.slug
+  ) {
+    return `/${productSlug}/api/${apiData.attributes.apiRestDetail.slug}`;
   }
 
-  // if there is only one api data, return the api data page
-  const apiData = apiDataList.attributes.apiData.data[0];
-  const apiUrl =
-    apiData.attributes.apiRestDetail?.slug ?? apiData.attributes.apiSoapUrl;
-  return apiUrl && `/${productSlug}/api/${apiUrl}`;
+  return `/${productSlug}/api`;
 }
 
 export function makeBaseProductWithoutLogoProps(
