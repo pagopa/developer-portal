@@ -2,7 +2,7 @@
 name = "chatbot"
 version = "0.1.0"
 description = "Chatbot repository for PagoPA"
-authors = ["Marco Cirillo <marco.cirillo@uqido.com>"]
+authors = ["Marco Domenico Cirillo <marco.cirillo@uqido.com>", Devis Battisti <devis.battisti@uqido.com>"]
 readme = "README.md"
 package-mode = false
 
