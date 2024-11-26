@@ -111,6 +111,26 @@ export class ActiveCampaignClient {
   async deleteList(id: number) {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
   }
+
+  async addContactToList(contactId: string, listId: number) {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
+      contactList: {
+        contact: contactId,
+        list: listId,
+        status: 1, // subscribe
+      },
+    });
+  }
+
+  async removeContactFromList(contactId: string, listId: number) {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
+      contactList: {
+        contact: contactId,
+        list: listId,
+        status: 2, // unsubscrbe
+      },
+    });
+  }
 }
 
 export const acClient = new ActiveCampaignClient(

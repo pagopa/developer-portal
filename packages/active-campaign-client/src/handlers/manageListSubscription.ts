@@ -1,0 +1,40 @@
+import { APIGatewayProxyResult } from 'aws-lambda';
+import { acClient } from '../utils/activeCampaignClient';
+
+export async function manageListSubscription(
+  username: string,
+  listName: string,
+  action: 'subscribe' | 'unsubscribe'
+): Promise<APIGatewayProxyResult> {
+  try {
+    const contactId = await acClient.getContactByCognitoId(username);
+    if (!contactId) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Contact not found' }),
+      };
+    }
+
+    const listId = await acClient.getListIdByName(listName);
+
+    if (action == 'subscribe') {
+      const response = await acClient.addContactToList(contactId, listId);
+      return {
+        statusCode: 200,
+        body: JSON.stringify(response),
+      };
+    } else {
+      const response = await acClient.removeContactFromList(contactId, listId);
+      return {
+        statusCode: 200,
+        body: JSON.stringify(response),
+      };
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal server error' }),
+    };
+  }
+}
