@@ -50,6 +50,12 @@ This script reads the documentation, split it into chucks with gerarchical organ
 
 Check out the params in order to store your vector index accordingly.
 
+## test
+
+```
+pytest
+```
+
 ## Web App
 
     python src/webapp/app.py
