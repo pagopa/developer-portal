@@ -1,5 +1,8 @@
 {
-    "name": "chatbot",
-    "version": "4.0.0",
-    "private": true
+  "name": "chatbot",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "test": "./docker/docker-compose-run-tests.sh"
+  }
 }

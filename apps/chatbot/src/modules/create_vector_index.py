@@ -12,8 +12,6 @@ load_dotenv()
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR")
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

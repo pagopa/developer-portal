@@ -1,7 +1,7 @@
 import os
 import re
 import logging
-import nest_asyncio
+# import nest_asyncio
 from typing import Union, Tuple, Optional, List
 
 from llama_index.core import PromptTemplate
@@ -18,7 +18,7 @@ from src.modules.presidio import PresidioPII
 from dotenv import load_dotenv
 
 load_dotenv()
-#nest_asyncio.apply()
+# nest_asyncio.apply()
 
 
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
@@ -84,15 +84,14 @@ class Chatbot():
             }
         )
 
-        ref_prompt_tmpl = None
-        # PromptTemplate(
-        #     self.prompts["refine_prompt_str"],
-        #     prompt_type="refine",
-        #     template_var_mappings = {
-        #         "existing_answer": "existing_answer",
-        #         "query_str": "query_str"
-        #     }
-        # )
+        ref_prompt_tmpl = PromptTemplate(
+            self.prompts["refine_prompt_str"],
+            prompt_type="refine",
+            template_var_mappings = {
+                "existing_answer": "existing_answer",
+                "context_msg": "context_msg"
+            }
+        )
 
         condense_prompt_tmpl = PromptTemplate(
             self.prompts["condense_prompt_str"],
