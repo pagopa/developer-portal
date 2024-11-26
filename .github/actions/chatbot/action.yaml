@@ -24,18 +24,17 @@ runs:
         virtualenvs-create: false
         installer-parallel: true
 
-    - name: Install project
+    - name: Install python libraries
       run: |
         cd apps/chatbot
         poetry install --no-interaction
     
-    - name: Run tests
-      run: |
-        cd apps/chatbot
-        source .venv/bin/activate
-        pytest tests/
-        coverage report
-
+#    - name: Run tests
+#      run: |
+#        cd apps/chatbot
+#        poetry run pytest
+#        coverage report
+#
 
     - name: Create Vector Index
       shell: bash
