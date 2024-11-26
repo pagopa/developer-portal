@@ -36,6 +36,9 @@ module "dynamodb_webinar_subscriptions" {
   range_key                      = "webinarId"
   server_side_encryption_enabled = true
 
+  stream_enabled   = true
+  stream_view_type = "KEYS_ONLY"
+  
   attributes = [
     {
       name = "username"
