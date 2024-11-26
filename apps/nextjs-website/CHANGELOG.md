@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 4.12.0
+
+### Minor Changes
+
+- aa761a7: Chat uses local storage to save chat session information
+
+### Patch Changes
+
+- 63a2efc: Update .env.default files for strapi and nextjs, update README.md
+- 2ce3156: Fix feedback in chatbot hook
+
 ## 4.11.0
 
 ### Minor Changes

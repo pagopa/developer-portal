@@ -1,2 +1,3 @@
 #!/bin/bash
-docker compose --env-file .env -f docker/compose.yaml -p chatbot run create_index
+docker compose -f docker/compose.yaml -p chatbot run api \
+  python src/modules/create_vector_index.py --params config/params.yaml

@@ -46,8 +46,8 @@ def test_messages_to_chathistory():
 
 
 def test_pii_mask():
-    masked_str = CHATBOT.mask_pii("Il mio nome è Mario Rossi")
-    assert masked_str == "Il mio nome è <PERSON_1>"
+    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
+    assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
 def test_connection_langfuse():

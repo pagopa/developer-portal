@@ -3,6 +3,8 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
+    env_file: ../.env.local
+    command: "./scripts/run.local.sh"
     ports:
       - "8080:8080"
     volumes:

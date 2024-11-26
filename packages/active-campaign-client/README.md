@@ -96,3 +96,9 @@ All requests require authentication using an API key. The key is passed in the h
   'Content-Type': 'application/json'
 }
 ```
+
+# Tests
+
+Since the client is a wrapper around the Active Campaign API, it is not possible to test the client without making actual requests to the API.
+The tests are therefore integration tests that require a valid Active Campaign account and API key to run.
+They are skipped by default but can be run by deleting the `.skip` from the test suite.

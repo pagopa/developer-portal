@@ -1,0 +1,42 @@
+services:
+  api-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "./scripts/run.test.sh"
+    env_file: "../.env.test"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ..:/app
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis:
+        condition: service_started
+      dynamodb:
+        condition: service_started
+    networks:
+      - ntw
+
+  dynamodb:
+    image: amazon/dynamodb-local:2.5.2
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=local
+    healthcheck:
+      test: ["CMD-SHELL", '[ "$(curl -s -o /dev/null -I -w ''%{http_code}'' http://localhost:8000)" == "400" ]']
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    networks:
+      - ntw
+  
+  redis:
+    image: redis/redis-stack:7.2.0-v13
+    networks:
+      - ntw
+
+networks:
+  ntw:
