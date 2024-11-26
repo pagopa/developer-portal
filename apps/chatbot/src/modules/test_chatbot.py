@@ -19,6 +19,7 @@ CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
 def test_prompt_templates():
 
     qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl = CHATBOT._get_prompt_templates()
+    qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl = CHATBOT._get_prompt_templates()
 
     p1 = PROMPTS["qa_prompt_str"].format(context_str="aaaaa", query_str="bbbbb")
     p2 = qa_prompt_tmpl.format(context_str="aaaaa", query_str="bbbbb")
