@@ -10,7 +10,7 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
+      - ../../nextjs-website/generated:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
