@@ -22,7 +22,7 @@ export class ActiveCampaignClient {
   private async makeRequest<T>(
     method: string,
     path: string,
-    data?: any,
+    data?: ContactPayload | ListPayload,
     params?: Record<string, string>
   ): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -114,8 +114,6 @@ export class ActiveCampaignClient {
 }
 
 export const acClient = new ActiveCampaignClient(
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  process.env.AC_BASE_URL!,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  process.env.AC_API_KEY!
+  process.env.AC_BASE_URL || '',
+  process.env.AC_API_KEY || ''
 );

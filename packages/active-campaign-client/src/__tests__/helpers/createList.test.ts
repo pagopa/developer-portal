@@ -1,22 +1,20 @@
-import { updateContact } from '../../handlers/updateContact';
+import { createList } from '../../helpers/createList';
 import { SQSEvent } from 'aws-lambda';
 
-// remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
-describe.skip('updateContact handler', () => {
-  it('should update a contact successfully', async () => {
+describe.skip('createList handler', () => {
+  it('should create a list successfully', async () => {
     const event: SQSEvent = {
       Records: [
         {
           messageId: '1',
           receiptHandle: '1',
           body: JSON.stringify({
-            username: `test@example1731961399739e.com`,
-            firstName: 'Alberto',
-            lastName: 'Doe',
-            company: 'Test Co',
-            role: 'Developer',
-            mailinglistAccepted: true,
-            cognitoId: '466e0280-9061-7007-c3e0-beb6be672f68',
+            title: `Test Webinar ${new Date().getTime()}`,
+            slug: `test-webinar-${new Date().getTime()}`,
+            description: 'Test Description',
+            subscribeCtaLabel: 'Subscribe to webinar',
+            isVisibleInList: true,
+            imagePath: '/path/to/image.jpg',
           }),
           attributes: {
             ApproximateReceiveCount: '1',
@@ -33,7 +31,7 @@ describe.skip('updateContact handler', () => {
       ],
     };
 
-    const response = await updateContact(event);
+    const response = await createList(event);
     expect(response.statusCode).toBe(200);
   });
 });
