@@ -1,9 +1,10 @@
+import os
 import yaml
 import mangum
 import uvicorn
 import logging
 import json
-import os
+import hashlib
 import uuid
 import boto3
 import datetime
@@ -70,6 +71,9 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+def hash_func(user_id: str) -> str:
+    return hashlib.sha256(user_id.encode()).hexdigest()
+
 @app.get("/healthz")
 async def healthz ():
   return {"message": "OK"}
@@ -80,11 +84,16 @@ async def query_creation (
   authorization: Annotated[str | None, Header()] = None
 ):
   now = datetime.datetime.now(datetime.UTC)
+  trace_id = str(uuid.uuid4())
   userId = current_user_id(authorization)
   session = find_or_create_session(userId, now=now)
+
   answer = chatbot.chat_generate(
     query_str = query.question,
-    messages = [item.dict() for item in query.history] if query.history else None
+    messages = [item.dict() for item in query.history] if query.history else None,
+    trace_id = trace_id,
+    user_id = hash_func(userId),
+    session_id = session["id"]
   )
 
 
@@ -94,7 +103,7 @@ async def query_creation (
     queriedAt = query.queriedAt
 
   bodyToReturn = {
-    "id": f'{uuid.uuid4()}',
+    "id": trace_id,
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
@@ -113,7 +122,7 @@ async def query_creation (
   return bodyToReturn
 
 
-def current_user_id(authorization: str):
+def current_user_id(authorization: str) -> str:
   if authorization is None:
     # TODO remove fake user and return None
     # return None
