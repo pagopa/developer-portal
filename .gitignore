@@ -409,5 +409,8 @@ apps/chatbot/empty_htmls.json
 
 /results
 
+# terraform
+apps/infrastructure/src/builds
+
 ## Python ##
 __pycache__/

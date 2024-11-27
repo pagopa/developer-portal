@@ -40,6 +40,6 @@ variable "cognito_user_pool" {
 }
 
 variable "webinar_subscriptions_ddb_stream_arn" {
-  type = string
+  type        = string
   description = "The ARN of the webinar subscriptions ddb stream"
 }

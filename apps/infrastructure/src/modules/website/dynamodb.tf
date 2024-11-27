@@ -38,7 +38,7 @@ module "dynamodb_webinar_subscriptions" {
 
   stream_enabled   = true
   stream_view_type = "KEYS_ONLY"
-  
+
   attributes = [
     {
       name = "username"
