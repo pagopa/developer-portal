@@ -16,7 +16,7 @@ RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64
 ENV PYTHONPATH=/app
 
 RUN pip install --upgrade pip \
-  && pip install poetry
+  && pip install poetry awscli
 
 WORKDIR /app
 COPY pyproject.toml .

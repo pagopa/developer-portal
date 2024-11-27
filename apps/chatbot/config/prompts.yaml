@@ -41,23 +41,15 @@ qa_prompt_str: |
 
 
 refine_prompt_str: |
-  We have the opportunity to refine the original answer (only if needed).
-  Given the chat history between the user and the assistant here below:
+  Given the original answer: {existing_answer}, we have the opportunity to refine it (only if needed) with some more context here below:
   --------------------
   {context_msg}
   --------------------
-  Chatbot Policy:
-    - the refined answer must be generated using only the context information and not prior knowledge.
-    - the refined answer must synthesize than the existing answer if the latter longer than 3 sentenses.
-    - the refined answer must be clear, non-redundant, and have not repeated sentences.
-    - the refined answer must be respectful and accurate.
-    - the refined answer must not include any offensive or discriminatory content.
-    - the refined answer must be in Italian.
-  --------------------
   Task:
-    Given the User query: {query_str}
-    Given the original answer: {existing_answer}
-    Answer with either the original answer or with a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
+    Given the new context, refine the original answer to better answer the query.
+    If the context isn't useful, return the original answer.
+    The answer must be in Italian.
+
     Answer: 
 
 condense_prompt_str: |
