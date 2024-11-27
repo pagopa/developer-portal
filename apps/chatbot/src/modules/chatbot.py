@@ -41,9 +41,9 @@ PREFIX_MESSAGE = (
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
     "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
 )
-LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY")
-LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_SECRET_KEY")
-LANGFUSE_HOST = os.getenv("LANGFUSE_HOST")
+LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
+LANGFUSE_SECRET_KEY = os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
+LANGFUSE_HOST = os.getenv("NEXTAUTH_URL")
 LANGFUSE_TAG = os.getenv("LANGFUSE_TAG", "development")
 LANGFUSE = Langfuse(
     public_key = LANGFUSE_PUBLIC_KEY,
@@ -211,7 +211,8 @@ class Chatbot():
     def get_trace(self, trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | dict:
 
         try:
-            trace = LANGFUSE.get_trace(trace_id)
+            trace = LANGFUSE.fetch_trace(trace_id)
+            trace = trace.data
         except Exception as e:
             logger.error(e)
 
@@ -317,8 +318,7 @@ class Chatbot():
             trace_id = trace_id,
             session_id = session_id,
             user_id = user_id,
-            tags = tags,
-            metadata = {"user_feedback": None}
+            tags = tags
         ):
 
             try:
@@ -333,7 +333,7 @@ class Chatbot():
                 response_str = self._get_response_str(engine_response)
 
             except Exception as e:
-                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedimi una nuova domanda."
+                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chierdimi una nuova domanda."
                 logger.error(f"Exception: {e}")
 
         self.instrumentor.flush()

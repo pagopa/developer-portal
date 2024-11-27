@@ -43,17 +43,9 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), 'default-index')
-
-def calculate_new_index_id(current_index_id):
-  if current_index_id == 'default-index':
-    return current_index_id
-  TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-  rtn = f"index--{TODAY}"
-  return rtn
-
-NEW_INDEX_ID = calculate_new_index_id(INDEX_ID)
-
+TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), "default-index")
+NEW_INDEX_ID = f"index--{TODAY}" if INDEX_ID != "default-index" else "default-index"
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -326,7 +318,7 @@ def load_automerging_index_redis(
 
 def delete_old_index():
 
-    if INDEX_ID: # is in ssm there is nothing, INDEX_ID = None
+    if INDEX_ID != "default-index": # if in ssm there is nothing, INDEX_ID = None
         for key in REDIS_CLIENT.scan_iter():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
