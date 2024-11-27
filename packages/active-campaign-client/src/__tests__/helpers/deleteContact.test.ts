@@ -1,6 +1,6 @@
 import { deleteContact } from '../../helpers/deleteContact';
 
-// remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
+// remove .skip to run the test, be aware it does a real API call so it will delete a contact in the active campaign account
 describe.skip('deleteContact handler', () => {
   it('should delete a contact successfully', async () => {
     const response = await deleteContact(
