@@ -62,7 +62,7 @@ const listUsersCommandOutput: ListUsersCommandOutput = {
 };
 
 describe('addContact handler', () => {
-  it('should proper convert ListUsersCommandOutput to User', async () => {
+  it('should properly convert ListUsersCommandOutput to User', async () => {
     const user = listUsersCommandOutputToUser(listUsersCommandOutput);
     const expectedUser: User = {
       username: 'c67ec280-799a-40d6-b398-2a2b31aefbbd',
