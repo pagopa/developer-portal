@@ -5,7 +5,7 @@ describe.skip('manage list subscription', () => {
   const cognitoUserId = '66ae52a0-f051-7080-04a1-465b3a4f44cc';
   const listName = 'test-webinar-1732097286071';
 
-  it('should subscriber the contact to the list', async () => {
+  it('should subscribe the contact to the list', async () => {
     const result = await manageListSubscription(
       cognitoUserId,
       listName,
