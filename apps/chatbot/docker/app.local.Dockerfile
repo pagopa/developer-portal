@@ -23,6 +23,7 @@ COPY ./pyproject.toml .
 COPY ./poetry.lock .
 COPY ./src ./src
 COPY ./config ./config
+COPY ./scripts ./scripts
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
