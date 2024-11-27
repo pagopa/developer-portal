@@ -1,6 +1,7 @@
 import yaml
 import mangum
 import uvicorn
+import logging
 import json
 import os
 import uuid
@@ -16,6 +17,7 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
+logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
