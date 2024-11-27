@@ -23,7 +23,7 @@ services:
       - ntw
 
   postgres:
-    image: postgres:17.2-alpine3.20
+    image: postgres
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
