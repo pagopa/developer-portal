@@ -1,7 +1,7 @@
 import { updateContact } from '../../helpers/updateContact';
 import { User } from '../../types/user';
 
-// remove .skip to run the test, be aware it does a real API call so it will create a contact in the active campaign account
+// remove .skip to run the test, be aware it does a real API call so it will update a contact in the active campaign account
 describe.skip('updateContact handler', () => {
   it('should update a contact successfully', async () => {
     const user: User = {
