@@ -1,13 +1,13 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { acClient } from '../utils/activeCampaignClient';
+import { acClient } from '../clients/activeCampaignClient';
 
 export async function manageListSubscription(
-  username: string,
+  cognitoUserId: string,
   listName: string,
   action: 'subscribe' | 'unsubscribe'
 ): Promise<APIGatewayProxyResult> {
   try {
-    const contactId = await acClient.getContactByCognitoId(username);
+    const contactId = await acClient.getContactByCognitoId(cognitoUserId);
     if (!contactId) {
       return {
         statusCode: 404,
