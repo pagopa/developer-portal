@@ -23,7 +23,7 @@ services:
       - ntw
 
   postgres:
-    image: postgres
+    image: postgres:17.2-alpine
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -33,7 +33,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     env_file: ../.env.local
     networks:
       - ntw
@@ -54,6 +54,8 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+    volumes:
+      - redis_data:/var/lib/redis/data
     networks:
       - ntw
 
@@ -87,7 +89,9 @@ services:
       - ntw
 
 volumes:
-  database_data:
+  postgres_data:
+    driver: local
+  redis_data:
     driver: local
 
 networks:
