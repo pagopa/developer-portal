@@ -7,6 +7,8 @@ Even though the provider is the Google one, we stored its API key in AWS. So, be
 
 The Retrieval-Augmented Generation (RAG) was implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the parameters and prompts used are stored in `config`.
 
+The monitoring is done using [Langfuse](https://langfuse.com/) deployed on AWS.
+
 ## Environment Variables
 
 Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
@@ -56,10 +58,11 @@ Check out the params in order to store your vector index accordingly.
 pytest
 ```
 
-## Web App
+## Docker
 
-    python src/webapp/app.py
+In order to run the chatbot locally, you need first to install [Docker Compose](https://docs.docker.com/compose/install/), and then run the two following bash scripts:
 
-This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the chatbot.
+    ./docker/docker-compose-build-local.sh
+    ./docker/docker-compose-up-api.sh
 
-Both [`user icon`](https://www.flaticon.com/free-icon/user_1077012) and [`chatbot icon`](https://www.flaticon.com/free-icon/chatbot_8943377) are made by [Freepick](https://www.freepik.com/) and they were downloaded from [Flaticon](https://www.flaticon.com/).
+Notice that the `docker/compose.yaml` needs `.env.local` file with the environment variables.
