@@ -7,7 +7,7 @@ module "lambda_sync" {
 
   environment_variables = {
     AC_API_KEY_PARAM     = module.active_campaign_api_key.ssm_parameter_name
-    AC_BASE_URL_PARAM    = "pippo"
+    AC_BASE_URL_PARAM    = module.active_campaign_base_url.ssm_parameter_name
     COGNITO_USER_POOL_ID = var.cognito_user_pool.id
   }
 
@@ -46,6 +46,16 @@ module "active_campaign_api_key" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
   name                 = "/ac/api_key"
+  value                = "Substitute with real api key from the console"
+  type                 = "SecureString"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+module "active_campaign_base_url" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/ac/base_url"
   value                = "Substitute with real api key from the console"
   type                 = "SecureString"
   secure_type          = true
