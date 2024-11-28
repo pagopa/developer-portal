@@ -30,13 +30,14 @@ logger = getLogger(__name__)
 
 
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
+USE_CHAT_ENGINE = True if (os.getenv("CHB_USE_CHAT_ENGINE", "True")).lower() == "true" else False 
 USE_ASYNC = True if (os.getenv('CHB_ENGINE_USE_ASYNC', "True")).lower() == "true" else False
 USE_STREAMING = True if (os.getenv('CHB_ENGINE_USE_STREAMING', "False")).lower() == "true" else False 
 RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse,
     AgentChatResponse, StreamingAgentChatResponse
 ] 
-PREFIX_MESSAGE = (
+SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
     "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
@@ -55,12 +56,14 @@ LANGFUSE = Langfuse(
 class Chatbot():
     def __init__(
             self,
-            params,
-            prompts
+            params: dict,
+            prompts: dict,
+            use_chat_engine: bool | None = None
         ):
 
         self.params = params
         self.prompts = prompts
+        self.use_chat_engine = use_chat_engine if use_chat_engine else USE_CHAT_ENGINE
 
         if USE_PRESIDIO:
             self.pii = PresidioPII(config=params["config_presidio"])
@@ -80,11 +83,12 @@ class Chatbot():
             text_qa_template = self.qa_prompt_tmpl,
             refine_template = self.ref_prompt_tmpl,
             condense_template = self.condense_prompt_tmpl,
-            verbose=self.params["engine"]["verbose"]
+            verbose = self.params["engine"]["verbose"],
+            use_chat_engine = self.use_chat_engine
         )
-        self.prefix_message = ChatMessage(
+        self.system_message = ChatMessage(
             role = self.model.metadata.system_role,
-            content = PREFIX_MESSAGE 
+            content = SYSTEM_PROMPT 
         ) if isinstance(self.engine, BaseChatEngine) else None
         self.instrumentor = LlamaIndexInstrumentor(
             public_key = LANGFUSE_PUBLIC_KEY,
@@ -191,7 +195,7 @@ class Chatbot():
 
     def _messages_to_chathistory(self, messages: Optional[List[dict]] = None) -> List[ChatMessage]:
 
-        chat_history = [self.prefix_message]
+        chat_history = [self.system_message]
         if messages:
             for message in messages:
                 chat_history += [
