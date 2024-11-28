@@ -61,7 +61,7 @@ const listUsersCommandOutput: ListUsersCommandOutput = {
   ],
 };
 
-describe('addContact handler', () => {
+describe('Helpers: listUsersCommandOutputToUser', () => {
   it('should properly convert ListUsersCommandOutput to User', async () => {
     const user = listUsersCommandOutputToUser(listUsersCommandOutput);
     const expectedUser: User = {
