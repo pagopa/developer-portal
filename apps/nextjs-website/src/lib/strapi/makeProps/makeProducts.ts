@@ -51,10 +51,10 @@ export function makeBaseProductWithoutLogoProps(
       product.attributes.api_data_list_page.data.attributes.apiData.data
         .length > 0,
     apiDataListPageUrl: getApiDataListPageUrl(product),
-    hasTutorialListPage: !!product.attributes.tutorial_list_page,
-    hasGuideListPage: !!product.attributes.guide_list_page,
-    hasOverviewPage: !!product.attributes.overview,
-    hasQuickstartGuidePage: !!product.attributes.quickstart_guide,
+    hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
+    hasGuideListPage: !!product.attributes.guide_list_page.data,
+    hasOverviewPage: !!product.attributes.overview.data,
+    hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
   };
 }
