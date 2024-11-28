@@ -1,6 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getProducts, getTutorialListPageProps } from '@/lib/api';
+import { getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -20,9 +20,10 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { getTutorialListPagesProps } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
-  return (await getProducts()).map((product) => ({
+  return (await getTutorialListPagesProps()).map(({ product }) => ({
     productSlug: product.slug,
   }));
 }
