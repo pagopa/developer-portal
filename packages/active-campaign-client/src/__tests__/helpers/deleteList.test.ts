@@ -1,20 +1,15 @@
-import { createList } from '../../handlers/createList';
+import { deleteList } from '../../helpers/deleteList';
 import { SQSEvent } from 'aws-lambda';
 
-describe.skip('createList handler', () => {
-  it('should create a list successfully', async () => {
+describe.skip('deleteList handler', () => {
+  it('should delete a list successfully', async () => {
     const event: SQSEvent = {
       Records: [
         {
           messageId: '1',
           receiptHandle: '1',
           body: JSON.stringify({
-            title: `Test Webinar ${new Date().getTime()}`,
-            slug: `test-webinar-${new Date().getTime()}`,
-            description: 'Test Description',
-            subscribeCtaLabel: 'Subscribe to webinar',
-            isVisibleInList: true,
-            imagePath: '/path/to/image.jpg',
+            slug: 'test-webinar-1732097293540',
           }),
           attributes: {
             ApproximateReceiveCount: '1',
@@ -30,8 +25,7 @@ describe.skip('createList handler', () => {
         },
       ],
     };
-
-    const response = await createList(event);
+    const response = await deleteList(event);
     expect(response.statusCode).toBe(200);
   });
 });
