@@ -13,6 +13,10 @@ The monitoring is done using [Langfuse](https://langfuse.com/) deployed on AWS.
 
 Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
 
+cp .env.example .env
+
+Note that the envirables inside `.env` file should be pointing to the AWS infrastructure.s
+
 ## Virtual environment
 
 Before creating your virtual environment, install [Miniconda](https://docs.anaconda.com/miniconda/#quick-command-line-install) and [Poetry](https://python-poetry.org/docs/main#installation) on your device.
@@ -38,40 +42,42 @@ In this way, `PYTHONPATH` points to where the Python packages and modules are, n
 
 To reach the remote redis instance, it is necessary to open a tunnel:
 
-```
     ./scripts/redis-tunnel.sh
-```
 
 Verify that the HTML files that compose the Developer Portal documentation exist in a directory. Otherwise create the documentation. Once you have the documentation directory ready, put its path in `params` and, in the end, create the vector index doing:
 
-```
     python src/modules/create_vector_index.py --params config/params.yaml
-```
 
 This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis.
 
 Check out the params in order to store your vector index accordingly.
 
-## test
+## Test
 
-```
-pytest
-```
+Run the tests for the chatbot and the APIs running:
+
+    pytest
 
 ## Docker
 
 In order to run the chatbot locally for the first time, you need to:
 
-- install [Docker Compose](https://docs.docker.com/compose/install/)
+- install [Docker Compose](https://docs.docker.com/compose/install/),
 - create `.env.local` file running:
-    cp .env.example .env.local
+
+        cp .env.example .env.local
+
+  and fill it in,
+
 - run the following bash scripts:
 
-    ./docker/docker-compose-build-local.sh
-    ./docker/docker-compose-run-create_index.sh
+        ./docker/docker-compose-build-local.sh
+        ./docker/docker-compose-run-create_index.sh
 
-In this way, the docker images are built and the vector index is stored in Redis. Now you can start the API running:
+In this way, the docker images are built and the vector index is stored in Redis.
+
+Now you can start the API running:
 
     ./docker/docker-compose-up-api.sh
 
-Notice that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
+Note that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
