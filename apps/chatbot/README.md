@@ -60,9 +60,18 @@ pytest
 
 ## Docker
 
-In order to run the chatbot locally, you need first to install [Docker Compose](https://docs.docker.com/compose/install/), and then run the two following bash scripts:
+In order to run the chatbot locally for the first time, you need to:
+
+- install [Docker Compose](https://docs.docker.com/compose/install/)
+- create `.env.local` file running:
+    cp .env.example .env.local
+- run the following bash scripts:
 
     ./docker/docker-compose-build-local.sh
+    ./docker/docker-compose-run-create_index.sh
+
+In this way, the docker images are built and the vector index is stored in Redis. Now you can start the API running:
+
     ./docker/docker-compose-up-api.sh
 
-Notice that the `docker/compose.yaml` needs `.env.local` file with the environment variables.
+Notice that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
