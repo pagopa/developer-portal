@@ -150,10 +150,10 @@ resource "aws_cognito_user" "master" {
 module "master_user_password" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
-  name                 = "/chatbot/monitoring/master_user_password"
-  value                = random_password.master.result
-  type                 = "SecureString"
-  secure_type          = true
+  name        = "/chatbot/monitoring/master_user_password"
+  value       = random_password.master.result
+  type        = "SecureString"
+  secure_type = true
 }
 
 module "user_pool_client_id" {
