@@ -43,9 +43,16 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
-NEW_INDEX_ID = f"index--{TODAY}"
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), 'default-index')
+
+def calculate_new_index_id(current_index_id):
+  if current_index_id == 'default-index':
+    return current_index_id
+  TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
+  rtn = f"index--{TODAY}"
+  return rtn
+
+NEW_INDEX_ID = calculate_new_index_id(INDEX_ID)
 
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
@@ -217,7 +224,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logger.info("Storing vector index and hash table on Redis..")
+    logger.info(f"Storing vector index and hash table on Redis hash_table_{NEW_INDEX_ID}..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -270,7 +277,7 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(NEW_INDEX_ID)
     put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logger.info("Created vector index successfully and stored on Redis.")
+    logger.info(f"Created vector index ${NEW_INDEX_ID} successfully and stored on Redis.")
 
     delete_old_index()
 

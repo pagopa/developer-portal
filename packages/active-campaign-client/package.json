@@ -4,13 +4,15 @@
   "description": "Implements ActiveCampaign API to add, update and delete Accounts and to add and update lists",
   "scripts": {
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "devDependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.696.0",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.1",
-    "eslint": "^8.57.1",
     "dotenv": "16.4.5",
+    "eslint": "^8.57.1",
     "eslint-config-custom": "^0.1.0"
   },
   "dependencies": {

@@ -17,14 +17,16 @@ CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
 
 def test_prompt_templates():
 
-    qa_prompt_tmpl, ref_prompt_tmpl = CHATBOT._get_prompt_templates()
+    qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl = CHATBOT._get_prompt_templates()
 
     p1 = PROMPTS["qa_prompt_str"].format(context_str="aaaaa", query_str="bbbbb")
     p2 = qa_prompt_tmpl.format(context_str="aaaaa", query_str="bbbbb")
-    p3 = PROMPTS["refine_prompt_str"].format(existing_answer="aaaaa", query_str="bbbbb", context_msg="ccccc")
-    p4 = ref_prompt_tmpl.format(existing_answer="aaaaa", query_str="bbbbb", context_msg="ccccc")
+    p3 = PROMPTS["refine_prompt_str"].format(existing_answer="aaaaa", context_msg="bbbbb")
+    p4 = ref_prompt_tmpl.format(existing_answer="aaaaa", context_msg="bbbbb")
+    p5 = PROMPTS["condense_prompt_str"].format(chat_history="aaaaa", question="bbbbb")
+    p6 = condense_prompt_tmpl.format(chat_history="aaaaa", question="bbbbb")
 
-    assert p1 == p2 and p3 == p4
+    assert p1 == p2 and p3 == p4 and p5 == p6
 
 
 def test_messages_to_chathistory():
@@ -47,3 +49,23 @@ def test_messages_to_chathistory():
 def test_pii_mask():
     masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
     assert masked_str == "Il mio nome e' <PERSON_1>"
+
+
+def test_chat_generation():
+
+    query_str = "GPD gestisce i pagamenti spontanei?"
+
+    try:
+        res = CHATBOT.chat_generate(query_str=query_str)
+        res = CHATBOT.chat_generate(
+            query_str="sai dirmi di più?",
+            messages=[{
+                "question": query_str,
+                "answer": res
+            }]
+        )
+    except Exception as e:
+        logging.error(e)
+        res = f"Something went wrong!"
+
+    assert res != f"Something went wrong!"
