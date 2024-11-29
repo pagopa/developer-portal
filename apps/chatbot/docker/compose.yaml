@@ -1,3 +1,4 @@
+---
 services:
   api:
     build:
@@ -68,7 +69,8 @@ services:
     volumes:
       - ..:/app
       - ../../nextjs-website/out:/app/build-devp/out
-    command: "python src/modules/create_vector_index.py --params config/params.yaml"
+    command: >
+      "python src/modules/create_vector_index.py --params config/params.yaml"
     tty: true
     depends_on:
       redis:
