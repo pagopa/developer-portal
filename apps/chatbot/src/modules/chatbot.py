@@ -267,9 +267,9 @@ class Chatbot():
         with self.instrumentor.observe(trace_id=trace_id) as trace:
             trace_info = self.get_trace(trace_id, as_dict=False)
             if tag in trace_info.tags:
-                tags = trace_info.tags.pop(trace_info.tags.index(tag))
+                trace_info.tags.pop(trace_info.tags.index(tag))
                 trace.update(
-                    tags = tags
+                    tags = trace_info.tags
                 )
                 logger.info(f"Removed tag {tag} from trace {trace_id}")
             else:
