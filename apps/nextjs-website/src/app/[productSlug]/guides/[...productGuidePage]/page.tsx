@@ -129,7 +129,14 @@ const Page = async ({ params }: { params: Params }) => {
       <GitBookTemplate
         menuName={props.guide.name}
         breadcrumbs={[
-          ...productPageToBreadcrumbs(props.product, props.path, [
+          ...productPageToBreadcrumbs(props.product, [
+            {
+              translate: true,
+              name: 'devPortal.productHeader.guides',
+              path: props.product.hasGuideListPage
+                ? `/${props.product.slug}/guides`
+                : '/',
+            },
             {
               name: props.guide.name,
               path: props.guide.path,

@@ -3,8 +3,7 @@ import { Product } from '@/lib/types/product';
 
 export function productPageToBreadcrumbs(
   product: Product,
-  path?: string,
-  paths?: readonly Path[]
+  breadcrumbSegments?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
   return [
     {
@@ -14,11 +13,13 @@ export function productPageToBreadcrumbs(
     },
     {
       name: product.name,
-      path: `${
-        product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
-      }/overview`,
+      path: product.hasOverviewPage
+        ? `${
+            product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
+          }/overview`
+        : '',
     },
-    ...(paths || []),
+    ...(breadcrumbSegments || []),
   ];
 }
 

@@ -82,7 +82,16 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
       <ProductLayout
         product={apiDataProps.product}
         path={path}
-        paths={[{ name: apiDataProps.title || '', path: path }]}
+        breadcrumbSegments={[
+          {
+            translate: true,
+            name: 'devPortal.productHeader.api',
+            path: apiDataProps.product.hasApiDataListPage
+              ? `/${apiDataProps.product.slug}/api`
+              : '',
+          },
+          { name: apiDataProps.title || '', path: path },
+        ]}
         bannerLinks={apiDataProps.bannerLinks}
         showBreadcrumbs
         structuredData={structuredData}
