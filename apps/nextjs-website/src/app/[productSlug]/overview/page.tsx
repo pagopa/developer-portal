@@ -89,7 +89,7 @@ export type OverviewPageProps = {
     }[];
   };
   readonly relatedLinks?: {
-    readonly title: string;
+    readonly title?: string;
     readonly links: {
       text: string;
       href: string;
