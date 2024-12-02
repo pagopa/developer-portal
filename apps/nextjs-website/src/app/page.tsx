@@ -56,7 +56,7 @@ type EcosystemProps = {
 };
 
 type ComingSoonDocumentationProps = {
-  readonly title: string;
+  readonly title?: string;
   readonly links: readonly {
     readonly text: string;
     readonly href: string;
