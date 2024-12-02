@@ -314,10 +314,12 @@ class Chatbot():
             trace_id: str | None = None,
             session_id: str | None = None,
             user_id: str | None = None,
-            messages: Optional[List[dict]] = None,
+            messages: List[dict] | None = None,
             tags: Union[str, List[str]] | None = None
         ) -> str:
 
+        if isinstance(tags, str):
+            tags = [tags]
 
         chat_history = self._messages_to_chathistory(messages)
         
