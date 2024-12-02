@@ -128,6 +128,7 @@ module "chatbot" {
   security_groups         = module.cms.security_groups
   dns_domain_name         = var.dns_domain_name
   ecs_redis               = var.chatbot_ecs_redis
+  ecs_monitoring          = var.chatbot_ecs_monitoring
 }
 
 module "cicd" {
