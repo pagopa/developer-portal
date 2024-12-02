@@ -43,8 +43,8 @@ SYSTEM_PROMPT = (
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
     "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
 )
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"))
-LANGFUSE_SECRET_KEY = get_ssm_parameter(os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"))
+LANGFUSE_PUBLIC_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"))
+LANGFUSE_SECRET_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"))
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE_TAG = os.getenv("LANGFUSE_TAG", "development")
 LANGFUSE = Langfuse(
