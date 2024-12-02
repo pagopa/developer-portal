@@ -19,7 +19,6 @@ services:
       langfuse:
         condition: service_started
     env_file: ../.env.local
-
     networks:
       - ntw
 
@@ -64,13 +63,12 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
+    command: "python src/modules/create_vector_index.py --params config/params.yaml"
     ports:
       - "8080:8080"
     volumes:
       - ..:/app
       - ../../nextjs-website/out:/app/build-devp/out
-    command: >
-      "python src/modules/create_vector_index.py --params config/params.yaml"
     tty: true
     depends_on:
       redis:
