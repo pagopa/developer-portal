@@ -11,7 +11,9 @@ locals {
     LOG_LEVEL                 = "INFO"
     LLAMA_INDEX_CACHE_DIR     = "/tmp"
     NLTK_DATA                 = "_static/nltk_cache/"
-
+    CHB_LANGFUSE_HOST         = "https://${local.priv_monitoring_host}"
+    CHB_LANGFUSE_PUBLIC_KEY   = module.langfuse_public_key.ssm_parameter_name
+    CHB_LANGFUSE_SECRET_KEY   = module.langfuse_secret_key.ssm_parameter_name
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
