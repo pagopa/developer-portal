@@ -57,10 +57,6 @@
         "value": "false"
       },
       {
-        "name": "LANGFUSE_TAG",
-        "value": "discovery"
-      },
-      {
         "name": "LANGFUSE_INIT_USER_EMAIL",
         "value": "${master_user_email}"
       },
