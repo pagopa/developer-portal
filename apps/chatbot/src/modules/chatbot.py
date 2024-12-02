@@ -46,7 +46,6 @@ SYSTEM_PROMPT = (
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"))
 LANGFUSE_SECRET_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"))
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
-LANGFUSE_TAG = os.getenv("LANGFUSE_TAG", "development")
 LANGFUSE = Langfuse(
     public_key = LANGFUSE_PUBLIC_KEY,
     secret_key = LANGFUSE_SECRET_KEY,
@@ -252,12 +251,29 @@ class Chatbot():
         return traces
 
 
-    def update_trace_with_feedback(self, trace_id: str, user_feedback: str) -> None:
+    def add_langfuse_tag(self, trace_id: str, tag: str) -> None:
         with self.instrumentor.observe(trace_id=trace_id) as trace:
             trace_info = self.get_trace(trace_id, as_dict=False)
-            trace.update(
-                tags = trace_info.tags + [user_feedback]
-            )
+            if tag not in trace_info.tags:
+                trace.update(
+                    tags = trace_info.tags + [tag]
+                )
+                logger.info(f"Added tag {tag} to trace {trace_id}")
+            else:
+                logger.warning(f"Tag {tag} already present in trace {trace_id}")
+
+
+    def remove_langfuse_tag(self, trace_id: str, tag: str) -> None:
+        with self.instrumentor.observe(trace_id=trace_id) as trace:
+            trace_info = self.get_trace(trace_id, as_dict=False)
+            if tag in trace_info.tags:
+                tags = trace_info.tags.pop(trace_info.tags.index(tag))
+                trace.update(
+                    tags = tags
+                )
+                logger.info(f"Removed tag {tag} from trace {trace_id}")
+            else:
+                logger.warning(f"Tag {tag} not present in trace {trace_id}")
 
 
     def _mask_trace(self, data: Any) -> None:
@@ -304,14 +320,6 @@ class Chatbot():
 
 
         chat_history = self._messages_to_chathistory(messages)
-        if tags is None:
-            tags = [LANGFUSE_TAG]
-        elif isinstance(tags, str):
-            tags = [tags]
-        elif isinstance(tags, List[str]):
-            pass
-        else:
-            raise ValueError(f"Error! tags: {tags} is not acceptable. It has to be a sting, a list of string, or None")
         
         if not trace_id:
             logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
