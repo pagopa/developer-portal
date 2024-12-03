@@ -4,6 +4,10 @@ import { addContact } from '../helpers/addContact';
 import { updateContact } from '../helpers/updateContact';
 import { deleteContact } from '../helpers/deleteContact';
 import { queueEventParser } from '../helpers/queueEventParser';
+import {
+  addContactToList,
+  removeContactToList,
+} from '../helpers/manageListSubscription';
 
 export async function sqsQueueHandler(event: {
   readonly Records: SQSEvent['Records'];
@@ -19,21 +23,15 @@ export async function sqsQueueHandler(event: {
       case 'DeleteUser':
         return await deleteContact(queueEvent.detail.additionalEventData.sub);
       case 'DynamoINSERT':
-        // TODO: implement pending from DEV-1983 and DEV-1986
-        console.log(
-          'Dynamo event:',
-          queueEvent.detail.eventName,
-          queueEvent.webinarId
+        return await addContactToList(
+          queueEvent.detail.additionalEventData.sub,
+          queueEvent.webinarId || ''
         );
-        break;
       case 'DynamoREMOVE':
-        // TODO: implement pending from DEV-1983 and DEV-1986
-        console.log(
-          'Dynamo event:',
-          queueEvent.detail.eventName,
-          queueEvent.webinarId
+        return await removeContactToList(
+          queueEvent.detail.additionalEventData.sub,
+          queueEvent.webinarId || ''
         );
-        break;
       default:
         console.log('Unknown event:', queueEvent.detail.eventName);
         break;
