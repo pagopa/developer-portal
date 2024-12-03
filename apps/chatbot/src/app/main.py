@@ -103,7 +103,7 @@ async def query_creation (
     queriedAt = query.queriedAt
 
   bodyToReturn = {
-    "id": str(uuid.uuid4()),
+    "id": trace_id,
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
