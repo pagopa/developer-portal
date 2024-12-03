@@ -32,7 +32,6 @@ jobs:
           node-version: '20.x'
       
       - name: Install dependencies
-        working-directory: packages/active-campaign-client
         run: npm install
 
       - name: Build
