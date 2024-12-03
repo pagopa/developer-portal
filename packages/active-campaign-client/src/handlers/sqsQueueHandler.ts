@@ -33,15 +33,11 @@ export async function sqsQueueHandler(event: {
           queueEvent.webinarId || ''
         );
       default:
-        console.log('Unknown event:', queueEvent.detail.eventName);
-        break;
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Unknown event');
     }
-    return {
-      statusCode: 200,
-      body: JSON.stringify(event),
-    };
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error); // TODO: Remove after testing
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Internal server error' }),
