@@ -128,6 +128,7 @@ module "chatbot" {
   security_groups         = module.cms.security_groups
   dns_domain_name         = var.dns_domain_name
   ecs_redis               = var.chatbot_ecs_redis
+  ecs_monitoring          = var.chatbot_ecs_monitoring
 }
 
 module "cicd" {
@@ -144,4 +145,14 @@ module "cicd" {
 
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
+}
+
+module "active_campaign" {
+  source = "./modules/active_campaign"
+
+  environment = var.environment
+  tags        = var.tags
+
+  cognito_user_pool                    = module.website.cognito_user_pool
+  webinar_subscriptions_ddb_stream_arn = module.website.webinar_subscriptions_ddb_stream_arn
 }
