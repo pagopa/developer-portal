@@ -83,25 +83,49 @@ const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
   return true;
 };
 
-const createList = async (name: string, stringid: string): Promise<boolean> => {
+const activeCampaignError = (message: string) => {
+  throw new errors.ApplicationError(
+    `Something went wrong during Active Campaign ${message}`
+  );
+};
+
+const createActiveCampaignList = async (
+  event: IWebinarEvent
+): Promise<boolean> => {
+  if (
+    !activeCampaignIntegrationIsEnabled ||
+    !event.result?.slug ||
+    !event.result?.title
+  ) {
+    return true;
+  }
+
+  const { slug: name, title: stringid } = event.result;
+
   const payload: IActiveCampaignListPayload = {
     list: {
       name,
       sender_reminder: '',
-      sender_url: process.env.SENDER_URL || '',
+      sender_url: `${process.env.SENDER_URL}/webinars/${name}`,
       stringid,
       subscription_notify: '',
       unsubscription_notify: '',
     },
   };
 
-  const response = await axios.post(
-    `${process.env.AC_BASE_URL}/api/3/lists`,
-    payload,
-    { headers: getHeaders() }
-  );
+  const response = await axios
+    .post(`${process.env.AC_BASE_URL}/api/3/lists`, payload, {
+      headers: getHeaders(),
+    })
+    .catch((_) => {
+      activeCampaignError('list creation');
+    });
 
-  return response.status === 201;
+  if (response?.status !== 201) {
+    activeCampaignError('list creation');
+  }
+
+  return response?.status === 201;
 };
 
 const getListIdByName = async (name: string): Promise<number> => {
@@ -115,64 +139,54 @@ const getListIdByName = async (name: string): Promise<number> => {
   return response?.data.lists[0]?.id;
 };
 
-const deleteList = async (slug: string): Promise<boolean> => {
+const deleteActiveCampaignList = async (
+  event: IWebinarEvent
+): Promise<boolean> => {
+  if (
+    !activeCampaignIntegrationIsEnabled ||
+    !event?.params.where ||
+    !event.params.where.id
+  ) {
+    return true;
+  }
+  const webinar = await strapi.db
+    .query('api::webinar.webinar')
+    .findOne({ where: { id: event.params.where.id } });
+
+  if (!webinar?.slug) {
+    activeCampaignError('list deletion: webinar slug is missing');
+  }
   // Get list ID using the slug (name)
-  const listId = await getListIdByName(slug);
+  const listId = await getListIdByName(webinar.slug);
 
   if (!listId) {
     return false;
   }
 
-  const response = await axios.delete(
-    `${process.env.AC_BASE_URL}/api/3/lists/${listId}`,
-    { headers: getHeaders() }
-  );
+  const response = await axios
+    .delete(`${process.env.AC_BASE_URL}/api/3/lists/${listId}`, {
+      headers: getHeaders(),
+    })
+    .catch((_) => {
+      activeCampaignError('list deletion');
+    });
 
-  return response.status === 200;
+  if (response?.status !== 200) {
+    activeCampaignError('list deletion');
+  }
+
+  return response?.status === 200;
 };
 
 module.exports = {
   async afterCreate(event: IWebinarEvent) {
-    if (
-      activeCampaignIntegrationIsEnabled &&
-      event.result?.slug &&
-      event.result?.title
-    ) {
-      // Using slug as name to filter by name and title as stringid
-      const responseIsSuccessful = await createList(
-        event.result.slug,
-        event.result.title
-      );
-      if (!responseIsSuccessful) {
-        throw new errors.ApplicationError(
-          'Something went wrong during list creation'
-        );
-      }
-    }
+    await createActiveCampaignList(event);
   },
   beforeCreate(event: IWebinarEvent) {
     validateDates(event);
   },
   async beforeDelete(event: IWebinarEvent) {
-    if (
-      activeCampaignIntegrationIsEnabled &&
-      event?.params.where &&
-      event.params.where.id
-    ) {
-      const webinar = await strapi.db
-        .query('api::webinar.webinar')
-        .findOne({ where: { id: event.params.where.id } });
-      if (webinar?.slug) {
-        const responseIsSuccessful = await deleteList(webinar.slug);
-        if (!responseIsSuccessful) {
-          throw new errors.ApplicationError(
-            'Something went wrong during list deletion'
-          );
-        }
-      } else {
-        throw new errors.ApplicationError('Webinar not found');
-      }
-    }
+    await deleteActiveCampaignList(event);
   },
   beforeDeleteMany() {
     if (activeCampaignIntegrationIsEnabled) {
