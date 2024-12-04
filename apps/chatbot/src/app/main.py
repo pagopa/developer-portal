@@ -61,6 +61,9 @@ table_queries = dynamodb.Table(
 table_sessions = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
 )
+table_salts = dynamodb.Table(
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -71,8 +74,9 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-def hash_func(user_id: str) -> str:
-    return hashlib.sha256(user_id.encode()).hexdigest()
+def hash_func(user_id: str, salt: str) -> str:
+  # TODO: use salt qb
+  return hashlib.sha256(user_id.encode()).hexdigest()
 
 @app.get("/healthz")
 async def healthz ():
@@ -85,15 +89,15 @@ async def query_creation (
 ):
   now = datetime.datetime.now(datetime.UTC)
   trace_id = str(uuid.uuid4())
-  salt = str(uuid.uuid4())
   userId = current_user_id(authorization)
   session = find_or_create_session(userId, now=now)
+  salt = session_salt(session['id'])
 
   answer = chatbot.chat_generate(
     query_str = query.question,
     messages = [item.dict() for item in query.history] if query.history else None,
     trace_id = trace_id,
-    user_id = hash_func(userId),
+    user_id = hash_func(userId, salt),
     session_id = session["id"]
   )
 
@@ -167,7 +171,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
       "createdAt": now.isoformat()
     }
     try:
-      table_sessions.put_item(Item = body)
+      create_session_record(body)
     except (BotoCoreError, ClientError) as e:
       raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
 
@@ -175,6 +179,26 @@ def find_or_create_session(userId: str, now: datetime.datetime):
     body = items[0]
 
   return body
+
+def create_session_record(body: dict):
+  saltValue = str(uuid.uuid4())
+  saltBody = {
+    'sessionId': body['id'],
+    'value': saltValue
+  }
+  # TODO: transaction https://github.com/boto/boto3/pull/4010
+  table_sessions.put_item(Item = body)
+  table_salts.put_item(Item = saltBody)
+
+def session_salt(sessionId: str):
+  try:
+    dbResponse = table_salts.query(
+      KeyConditionExpression=Key("sessionId").eq(sessionId)
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}")
+  result = dbResponse.get('Item', {})
+  return result.get('salt', None)
 
 
 @app.get("/queries")

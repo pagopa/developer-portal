@@ -17,5 +17,5 @@
     "WriteCapacityUnits": 5
   },
   "TableClass": "STANDARD",
-  "DeletionProtectionEnabled": true
+  "DeletionProtectionEnabled": false
 }

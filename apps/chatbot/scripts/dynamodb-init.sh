@@ -14,17 +14,6 @@ aws dynamodb create-table \
 --cli-input-json file://./docker/files/dynamodb_schemas/salts.json \
 --region eu-south-1
 
-aws dynamodb scan \
-  --table-name chatbot-local-sessions \
-  --endpoint-url http://dynamodb:8000 \
-  --region eu-south-1
-
-aws dynamodb scan \
-  --table-name chatbot-local-queries \
-  --endpoint-url http://dynamodb:8000 \
-  --region eu-south-1
-
-aws dynamodb scan \
-  --table-name chatbot-local-salts \
+aws dynamodb list-tables \
   --endpoint-url http://dynamodb:8000 \
   --region eu-south-1
