@@ -85,6 +85,7 @@ async def query_creation (
 ):
   now = datetime.datetime.now(datetime.UTC)
   trace_id = str(uuid.uuid4())
+  salt = str(uuid.uuid4())
   userId = current_user_id(authorization)
   session = find_or_create_session(userId, now=now)
 
