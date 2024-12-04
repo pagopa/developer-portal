@@ -1,21 +1,41 @@
 import * as https from 'https';
+import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { ContactPayload } from '../types/contactPayload';
 import { ListPayload } from '../types/listPayload';
 import { ListStatusPayload } from '../types/listStatusPayload';
 
-export class ActiveCampaignClient {
-  private readonly baseUrl: string;
-  private readonly apiKey: string;
+async function getParameter(
+  paramName: string,
+  ssmClient: SSMClient,
+  fallbackValue?: string
+) {
+  // TODO: remove fallbackValue only for testing purposes should be substituted by a mock function
+  if (fallbackValue) {
+    return fallbackValue;
+  }
+  const command = new GetParameterCommand({
+    Name: paramName,
+    WithDecryption: true, // Use this if the parameter is encrypted
+  });
+  const response = await ssmClient.send(command);
 
-  constructor(baseUrl: string, apiKey: string) {
-    // Remove any trailing slashes from the baseUrl
-    this.baseUrl = baseUrl.replace(/\/$/, '');
-    this.apiKey = apiKey;
+  return response.Parameter?.Value;
+}
+
+export class ActiveCampaignClient {
+  private readonly baseUrlParam: string;
+  private readonly apiKeyParam: string;
+
+  private readonly ssm = new SSMClient();
+
+  constructor(baseUrlParam?: string, apiKeyParam?: string) {
+    this.baseUrlParam = baseUrlParam || '';
+    this.apiKeyParam = apiKeyParam || '';
   }
 
-  private getHeaders() {
+  private getHeaders(apiKey: string) {
     return {
-      'Api-Token': this.apiKey,
+      'Api-Token': apiKey,
       'Content-Type': 'application/json',
     };
   }
@@ -26,9 +46,13 @@ export class ActiveCampaignClient {
     data?: ContactPayload | ListPayload | ListStatusPayload,
     params?: Record<string, string>
   ): Promise<T> {
+    const [apiKey, baseUrl] = await Promise.all([
+      getParameter(this.apiKeyParam, this.ssm, process.env.AC_API_KEY),
+      getParameter(this.baseUrlParam, this.ssm, process.env.AC_BASE_URL),
+    ]);
     return new Promise((resolve, reject) => {
-      // Parse the base URL to get hostname and path
-      const url = new URL(path, this.baseUrl);
+      // Parse the base URL to get hostname and path and remove any trailing slashes from the baseUrl
+      const url = new URL(path, baseUrl?.replace(/\/$/, ''));
 
       // Add query parameters if they exist
       if (params) {
@@ -41,7 +65,7 @@ export class ActiveCampaignClient {
         method,
         hostname: url.hostname,
         path: `${url.pathname}${url.search}`,
-        headers: this.getHeaders(),
+        headers: this.getHeaders(apiKey || ''),
       };
 
       const req = https.request(options, (res) => {
@@ -135,6 +159,6 @@ export class ActiveCampaignClient {
 }
 
 export const acClient = new ActiveCampaignClient(
-  process.env.AC_BASE_URL || '',
-  process.env.AC_API_KEY || ''
+  process.env.AC_BASE_URL_PARAM,
+  process.env.AC_API_KEY_PARAM
 );
