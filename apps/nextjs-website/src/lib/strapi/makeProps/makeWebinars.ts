@@ -4,32 +4,33 @@ import { Webinar } from '../../types/webinar';
 export type WebinarsProps = readonly Webinar[];
 
 export const makeWebinarFromStrapi = (
-  webinar: StrapiWebinars['data'][0]
+  strapiWebinar: StrapiWebinars['data'][0]
 ): Webinar => {
   return {
-    ...webinar.attributes,
+    ...strapiWebinar.attributes,
     speakers:
-      webinar.attributes.webinarSpeakers.data.length > 0
-        ? webinar.attributes.webinarSpeakers.data.map((speaker) => ({
+      strapiWebinar.attributes.webinarSpeakers.data.length > 0
+        ? strapiWebinar.attributes.webinarSpeakers.data.map((speaker) => ({
             ...speaker.attributes,
             avatar: speaker.attributes.avatar.data?.attributes,
           }))
         : undefined,
     questionsAndAnswers:
-      webinar.attributes.questionsAndAnswers.length > 0
-        ? webinar.attributes.questionsAndAnswers
+      strapiWebinar.attributes.questionsAndAnswers.length > 0
+        ? strapiWebinar.attributes.questionsAndAnswers
         : undefined,
-    relatedResources: webinar.attributes.relatedResources
+    relatedResources: strapiWebinar.attributes.relatedResources
       ? {
-          title: webinar.attributes.relatedResources.title,
-          resources: (webinar.attributes.relatedResources.resources || []).map(
-            (resource) => ({
-              ...resource,
-              image: resource.image.data?.attributes,
-            })
-          ),
+          title: strapiWebinar.attributes.relatedResources.title,
+          resources: (
+            strapiWebinar.attributes.relatedResources.resources || []
+          ).map((resource) => ({
+            ...resource,
+            image: resource.image.data?.attributes,
+          })),
           downloadableDocuments: (
-            webinar.attributes.relatedResources.downloadableDocuments.data || []
+            strapiWebinar.attributes.relatedResources.downloadableDocuments
+              .data || []
           ).map(({ attributes }) => ({
             title: attributes.caption || attributes.name,
             downloadLink: attributes.url,
@@ -38,11 +39,11 @@ export const makeWebinarFromStrapi = (
           })),
         }
       : undefined,
-    startDateTime: webinar.attributes.startDatetime?.toISOString(),
-    endDateTime: webinar.attributes.endDatetime?.toISOString(),
-    subscribeCtaLabel: webinar.attributes.subscribeParagraphLabel,
-    imagePath: webinar.attributes.coverImage.data.attributes.url,
-    seo: webinar.attributes.seo,
+    startDateTime: strapiWebinar.attributes.startDatetime?.toISOString(),
+    endDateTime: strapiWebinar.attributes.endDatetime?.toISOString(),
+    subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
+    imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
+    seo: strapiWebinar.attributes.seo,
   };
 };
 

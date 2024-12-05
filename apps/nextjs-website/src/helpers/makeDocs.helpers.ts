@@ -18,7 +18,8 @@ export type GuideDefinition = {
   readonly product: Product;
   readonly guide: {
     readonly name: string;
-    readonly slug: string;
+    readonly slug?: string;
+    readonly path?: string;
   };
   readonly versions: ReadonlyArray<{
     readonly main?: boolean;
@@ -27,6 +28,12 @@ export type GuideDefinition = {
   }>;
   readonly bannerLinks: readonly BannerLinkProps[];
   readonly seo?: SEO;
+  readonly source?: {
+    readonly pathPrefix: string;
+    readonly assetsPrefix: string;
+    readonly dirPath: string;
+    readonly spaceId: string;
+  };
 };
 
 const parseDocOrThrow = flow(
@@ -49,7 +56,7 @@ export const makeTutorials = ({
       {
         product: product,
         source: {
-          pathPrefix: `${product.path}/tutorials`,
+          pathPrefix: `/${product.slug}/tutorials`,
           assetsPrefix: `${docsAssetsPath}/${dirName}`,
           dirPath: `${docsPath}/${dirName}`,
           spaceId: dirName,
@@ -62,7 +69,7 @@ export const makeTutorials = ({
     ],
     parseDocOrThrow,
     // This is a workaround that removes the 'index' space from tutorial docs
-    RA.filter(({ page: { path } }) => path !== `${product.path}/tutorials`)
+    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
   );
 
 export const makeGuide = ({
@@ -71,7 +78,7 @@ export const makeGuide = ({
   versions,
   bannerLinks,
 }: GuideDefinition) => {
-  const guidePath = `${product.path}/guides/${guide.slug}`;
+  const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
     versions,
     RA.map(({ main = false, version, dirName }) => {

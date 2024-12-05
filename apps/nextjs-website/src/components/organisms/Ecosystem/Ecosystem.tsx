@@ -15,7 +15,7 @@ const Ecosystem = ({
   solutionsTabName,
   solutions,
   solutionsCta,
-}: HomepageProps['ecosystem']) => {
+}: Required<HomepageProps>['ecosystem']) => {
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>

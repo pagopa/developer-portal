@@ -1,7 +1,7 @@
 import * as t from 'io-ts/lib';
 import { PaginationCodec } from './PaginationCodec';
 import { MediaCodec } from '@/lib/strapi/codecs/MediaCodec';
-import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
+import { BaseProductWithRelationsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
@@ -33,7 +33,7 @@ export const GuideCodec = t.strict({
     BaseGuideAttributesCodec,
     t.strict({
       versions: t.array(VersionCodec),
-      product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+      product: t.strict({ data: BaseProductWithRelationsCodec }),
       bannerLinks: t.array(BannerLinkCodec),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),

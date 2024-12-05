@@ -1,15 +1,12 @@
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
-import { quickStartGuides } from '@/_contents/products';
 import { Part } from '../../types/part';
 import { Step } from '../../types/step';
-import { mergeProductWithStaticContent } from './makeProducts';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
-
-type StaticQuickStarts = typeof quickStartGuides;
 
 type QuickstartGuideItem =
   StrapiQuickStartGuides['data'][0]['attributes']['quickstartGuideItems']['data'][0];
@@ -25,39 +22,30 @@ function makeStepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
 }
 
 export function makeQuickStartGuidesProps(
-  strapiQuickStarts: StrapiQuickStartGuides,
-  staticQuickStarts: StaticQuickStarts
+  strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
-  return [
-    ...strapiQuickStarts.data.map((quickStart) => {
-      const product = mergeProductWithStaticContent(
-        quickStart.attributes.product.data.attributes
-      );
-      return {
-        abstract: {
-          title: quickStart.attributes.title,
-          description: quickStart.attributes.description,
-        },
-        defaultStepAnchor:
-          quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
-        product: product,
-        steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
-          makeStepFromQuickstartGuideItems(item)
-        ),
-        path: `/${product.slug}/quick-start`,
-        bannerLinks:
-          quickStart.attributes.bannerLinks.length > 0
-            ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
-            : quickStart.attributes.product.data.attributes.bannerLinks?.map(
-                makeBannerLinkProps
-              ),
-        seo: quickStart.attributes.seo,
-      };
-    }),
-    ...staticQuickStarts,
-  ];
+  return strapiQuickStarts.data.map((quickStart) => {
+    return {
+      abstract: {
+        title: quickStart.attributes.title,
+        description: quickStart.attributes.description,
+      },
+      defaultStepAnchor:
+        quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
+      product: makeBaseProductWithoutLogoProps(
+        quickStart.attributes.product.data
+      ),
+      steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
+        makeStepFromQuickstartGuideItems(item)
+      ),
+      path: `/${quickStart.attributes.product.data.attributes.slug}/quick-start`,
+      bannerLinks:
+        quickStart.attributes.bannerLinks.length > 0
+          ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+          : quickStart.attributes.product.data.attributes.bannerLinks?.map(
+              makeBannerLinkProps
+            ),
+      seo: quickStart.attributes.seo,
+    };
+  });
 }
-
-export const makeQuickStartGuidesPropsFromStatic = (
-  staticQuickStarts: StaticQuickStarts
-): QuickStartGuidesPageProps => staticQuickStarts;

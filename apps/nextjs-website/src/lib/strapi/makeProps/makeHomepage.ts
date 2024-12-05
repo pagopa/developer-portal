@@ -1,15 +1,10 @@
 import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
-import { translations } from '@/_contents/translations';
 import { makeWebinarFromStrapi } from './makeWebinars';
 import { HomepageProps } from '@/app/page';
 
-type StaticHomepage = typeof translations.homepage;
-
 export const makeHomepageProps = (
-  strapiHomepage: StrapiHomepage,
-  staticHomepage: StaticHomepage
+  strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
-  ...makeHomepagePropsFromStatic(staticHomepage),
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
@@ -71,14 +66,4 @@ export const makeHomepageProps = (
       makeWebinarFromStrapi(webinar)
     ),
   ],
-});
-
-export const makeHomepagePropsFromStatic = (
-  staticHomepage: StaticHomepage
-): HomepageProps => ({
-  hero: staticHomepage.heroItems,
-  newsShowcase: staticHomepage.newsShowcase,
-  ecosystem: staticHomepage.ecosystem,
-  comingsoonDocumentation: staticHomepage.comingsoonDocumentation,
-  webinars: [],
 });

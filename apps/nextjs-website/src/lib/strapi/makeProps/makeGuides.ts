@@ -1,35 +1,28 @@
-import { GuideDefinition } from '@/_contents/makeDocs';
+import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { StrapiGuides } from '../codecs/GuidesCodec';
-import { mergeProductWithStaticContent } from './makeProducts';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-
-type StaticGuides = readonly GuideDefinition[];
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export function makeGuidesProps(
-  strapiGuides: StrapiGuides,
-  staticGuides: StaticGuides
+  strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
-  return [
-    ...strapiGuides.data.map(({ attributes }) => {
-      const product = mergeProductWithStaticContent(
-        attributes.product.data.attributes
-      );
-      return {
-        product,
-        guide: {
-          name: attributes.title,
-          slug: attributes.slug,
-        },
-        versions: attributes.versions,
-        bannerLinks:
-          attributes.bannerLinks.length > 0
-            ? attributes.bannerLinks.map(makeBannerLinkProps)
-            : attributes.product.data.attributes.bannerLinks?.map(
-                makeBannerLinkProps
-              ) || [],
-        seo: attributes.seo,
-      };
-    }),
-    ...staticGuides,
-  ];
+  return strapiGuides.data.map(({ attributes }) => {
+    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
+
+    return {
+      product,
+      guide: {
+        name: attributes.title,
+        slug: attributes.slug,
+      },
+      versions: attributes.versions,
+      bannerLinks:
+        attributes.bannerLinks.length > 0
+          ? attributes.bannerLinks.map(makeBannerLinkProps)
+          : attributes.product.data.attributes.bannerLinks?.map(
+              makeBannerLinkProps
+            ) || [],
+      seo: attributes.seo,
+    };
+  });
 }

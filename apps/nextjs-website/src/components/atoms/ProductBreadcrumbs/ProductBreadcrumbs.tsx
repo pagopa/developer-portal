@@ -17,7 +17,7 @@ type ProductBreadcrumbsProps = {
 
 const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
   const theme = useTheme();
-  const t = useTranslations('breadcrumbs');
+  const t = useTranslations();
   return (
     <Box
       component='div'
