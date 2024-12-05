@@ -1,9 +1,11 @@
 import os
 import re
+import yaml
 import uuid
+from pathlib import Path
 from datetime import datetime
 from logging import getLogger
-from typing import Union, Tuple, Sequence, Optional, List, Any
+from typing import Union, Tuple, Sequence, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -29,7 +31,8 @@ from dotenv import load_dotenv
 load_dotenv()
 logger = getLogger(__name__)
 
-
+CWF = Path(__file__)
+ROOT = CWF.parent.parent.parent.absolute().__str__()
 USE_PRESIDIO = True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 USE_CHAT_ENGINE = True if (os.getenv("CHB_USE_CHAT_ENGINE", "True")).lower() == "true" else False 
 USE_ASYNC = True if (os.getenv('CHB_ENGINE_USE_ASYNC', "True")).lower() == "true" else False
@@ -56,13 +59,13 @@ LANGFUSE = Langfuse(
 class Chatbot():
     def __init__(
             self,
-            params: dict,
-            prompts: dict,
+            params: dict | None = None,
+            prompts: dict | None = None,
             use_chat_engine: bool | None = None
         ):
 
-        self.params = params
-        self.prompts = prompts
+        self.params = params if params else yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
+        self.prompts = prompts if prompts else yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
         self.use_chat_engine = use_chat_engine if use_chat_engine else USE_CHAT_ENGINE
 
         if USE_PRESIDIO:
@@ -101,7 +104,6 @@ class Chatbot():
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 
-        # create templates
         qa_prompt_tmpl = PromptTemplate(
             self.prompts["qa_prompt_str"], 
             template_var_mappings={
@@ -173,8 +175,8 @@ class Chatbot():
 
         # remove sentences with generated masked url: {URL}
         parts = re.split(r"(?<=[\.\?\!\n])", response_str)
-        filtered_parts = [part for part in parts if "{URL}" not in part] # filter out parts containing {URL}
-        response_str = "".join(filtered_parts) # join the filtered parts back into a single string
+        filtered_parts = [part for part in parts if "{URL}" not in part]
+        response_str = "".join(filtered_parts)
 
         return response_str
     
@@ -193,7 +195,7 @@ class Chatbot():
             return message
         
 
-    def _messages_to_chathistory(self, messages: Optional[List[dict]] = None) -> List[ChatMessage]:
+    def _messages_to_chathistory(self, messages: Optional[List[Dict[str, str]]] = None) -> List[ChatMessage]:
 
         chat_history = [self.system_message]
         if messages:
@@ -205,7 +207,7 @@ class Chatbot():
                     ),
                     ChatMessage(
                         role = MessageRole.ASSISTANT,
-                        content = message["answer"]
+                        content = message["answer"].split("Rif:")[0].strip()
                     )
                 ]
 
@@ -314,8 +316,8 @@ class Chatbot():
             trace_id: str | None = None,
             session_id: str | None = None,
             user_id: str | None = None,
-            messages: List[dict] | None = None,
-            tags: Union[str, List[str]] | None = None
+            messages: Optional[List[Dict[str, str]]] | None = None,
+            tags: Optional[Union[str, List[str]]] | None = None
         ) -> str:
 
         if isinstance(tags, str):
@@ -334,7 +336,7 @@ class Chatbot():
             session_id = session_id,
             user_id = user_id,
             tags = tags
-        ):
+        ) as trace:
 
             try:
                 if USE_ASYNC and not USE_STREAMING:
@@ -347,10 +349,20 @@ class Chatbot():
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
 
+                context = ""
+                for node in engine_response.source_nodes:
+                    url = REDIS_KVSTORE.get(
+                        collection=f"hash_table_{INDEX_ID}", 
+                        key=node.metadata["filename"]
+                    )
+                    context += f"URL: {url}\n\n{node.text}\n\n------------------\n\n"
+
             except Exception as e:
                 response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chierdimi una nuova domanda."
+                context = ""
                 logger.error(f"Exception: {e}")
 
+            trace.update(output=self.mask_pii(response_str), metadata={"context": context})
         self.instrumentor.flush()
 
         return response_str

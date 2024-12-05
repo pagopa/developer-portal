@@ -75,8 +75,8 @@ app.add_middleware(
 )
 
 def hash_func(user_id: str, salt: str) -> str:
-  # TODO: use salt qb
-  return hashlib.sha256(user_id.encode()).hexdigest()
+  salted_user_id = user_id + salt
+  return hashlib.sha256(salted_user_id.encode()).hexdigest()
 
 @app.get("/healthz")
 async def healthz ():
@@ -197,11 +197,11 @@ def session_salt(sessionId: str):
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}")
-    result = dbResponse.get('Items', [])
-    if len(result) == 0:
-      result = None
-    else:
-      result = result[0]
+  result = dbResponse.get('Items', [])
+  if len(result) == 0:
+    result = None
+  else:
+    result = result[0]
   return result.get('value', None)
 
 
@@ -275,7 +275,7 @@ async def session_delete(
       KeyConditionExpression=Key("sessionId").eq(id)
     )
     # TODO: use batch writer
-#    with table_sessions.batch_writer() as batch:
+    # with table_sessions.batch_writer() as batch:
     for query in dbResponse_queries['Items']:
       table_queries.delete_item(
         Key={
