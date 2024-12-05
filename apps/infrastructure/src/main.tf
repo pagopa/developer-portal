@@ -160,3 +160,8 @@ module "active_campaign" {
   cognito_user_pool                    = module.website.cognito_user_pool
   webinar_subscriptions_ddb_stream_arn = module.website.webinar_subscriptions_ddb_stream_arn
 }
+
+moved {
+  from = module.active_campaign
+  to   = module.active_campaign[0]
+}
