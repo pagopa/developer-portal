@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.2.0
+
+### Minor Changes
+
+- 82b7d4b: Add Active Campaign integration to create and delete lists when creating and deleting webinars
+
 ## 3.1.1
 
 ### Patch Changes
