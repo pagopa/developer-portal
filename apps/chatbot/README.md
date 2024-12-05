@@ -54,9 +54,11 @@ Check out the params in order to store your vector index accordingly.
 
 ## Test
 
-Run the tests for the chatbot and the APIs running:
+In order to test the chatbot and its APIs, run:
 
     pytest
+
+For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
 
 ## Docker
 

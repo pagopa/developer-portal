@@ -1,8 +1,11 @@
 import os
+import re
 import yaml
 from logging import getLogger
 from pathlib import Path
 
+from src.modules.vector_database import REDIS_CLIENT
+from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE
 
 
@@ -16,19 +19,45 @@ PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r")
 CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
 
 
+def test_connection_redis():
+    flag = False
+    try:
+        REDIS_CLIENT.ping()
+        flag = True
+    except Exception as e:
+        logger.error(e)
+
+    assert flag == True
+
+
+def test_connection_langfuse():
+    assert LANGFUSE.auth_check() == True
+
+
+def test_cloud_connection():
+
+    flag = False
+    try:
+        _ = get_llm()
+        _ = get_embed_model()
+        flag = True
+    except Exception as e:
+        logger.error(e)
+
+    assert flag == True
+
+
 def test_prompt_templates():
 
-    qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl = CHATBOT._get_prompt_templates()
-    qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl = CHATBOT._get_prompt_templates()
+    for prompt_str, template in zip(PROMPTS.values(), CHATBOT._get_prompt_templates()):
+        vars_str = re.findall(r'\{(.*?)\}', prompt_str)
+        vars_tmp = list(template.template_var_mappings.keys())
+        assert vars_str == vars_tmp
 
-    p1 = PROMPTS["qa_prompt_str"].format(context_str="aaaaa", query_str="bbbbb")
-    p2 = qa_prompt_tmpl.format(context_str="aaaaa", query_str="bbbbb")
-    p3 = PROMPTS["refine_prompt_str"].format(existing_answer="aaaaa", context_msg="bbbbb")
-    p4 = ref_prompt_tmpl.format(existing_answer="aaaaa", context_msg="bbbbb")
-    p5 = PROMPTS["condense_prompt_str"].format(chat_history="aaaaa", question="bbbbb")
-    p6 = condense_prompt_tmpl.format(chat_history="aaaaa", question="bbbbb")
 
-    assert p1 == p2 and p3 == p4 and p5 == p6
+def test_pii_mask():
+    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
+    assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
 def test_messages_to_chathistory():
@@ -44,15 +73,6 @@ def test_messages_to_chathistory():
     chat_history = CHATBOT._messages_to_chathistory(messages)
 
     assert len(chat_history) == 2 * len(messages) + 1
-
-
-def test_pii_mask():
-    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
-    assert masked_str == "Il mio nome e' <PERSON_1>"
-
-
-def test_connection_langfuse():
-    assert LANGFUSE.auth_check() == True
 
 
 def test_chat_generation():
