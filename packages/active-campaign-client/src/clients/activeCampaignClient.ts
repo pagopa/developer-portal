@@ -1,6 +1,7 @@
 import * as https from 'https';
 import { ContactPayload } from '../types/contactPayload';
 import { ListPayload } from '../types/listPayload';
+import { ListStatusPayload } from '../types/listStatusPayload';
 
 export class ActiveCampaignClient {
   private readonly baseUrl: string;
@@ -22,7 +23,7 @@ export class ActiveCampaignClient {
   private async makeRequest<T>(
     method: string,
     path: string,
-    data?: ContactPayload | ListPayload,
+    data?: ContactPayload | ListPayload | ListStatusPayload,
     params?: Record<string, string>
   ): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -110,6 +111,26 @@ export class ActiveCampaignClient {
 
   async deleteList(id: number) {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
+  }
+
+  async addContactToList(contactId: string, listId: number) {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
+      contactList: {
+        contact: contactId,
+        list: listId,
+        status: 1, // subscribe
+      },
+    });
+  }
+
+  async removeContactFromList(contactId: string, listId: number) {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
+      contactList: {
+        contact: contactId,
+        list: listId,
+        status: 2, // unsubscrbe
+      },
+    });
   }
 }
 
