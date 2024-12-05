@@ -9,12 +9,6 @@ import { addContactToList } from './manageListSubscription';
 export async function resyncUser(
   cognitoId: string
 ): Promise<APIGatewayProxyResult> {
-  /*
-    La lambda cancella l’utente e, se esiste ancora su Cognito, lo ricrea e lo associa ai webinar corrispondenti (liste su AC).
-
-    Capire se esiste già uno script python (fatto da Christian) che fa la stessa cosa.
-
-  */
   // Step 1: Delete user on active campaign
   const deletionResult = await deleteContact(cognitoId);
   if (deletionResult.statusCode != 200 && deletionResult.statusCode != 404) {
