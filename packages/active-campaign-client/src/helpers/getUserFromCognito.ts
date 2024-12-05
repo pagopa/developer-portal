@@ -4,9 +4,15 @@ import { QueueEvent } from '../types/queueEvent';
 import { listUsersCommandOutputToUser } from './listUsersCommandOutputToUser';
 
 export async function getUserFromCognito(queueEvent: QueueEvent) {
+  return await getUserFromCognitoByUsername(
+    queueEvent.detail.additionalEventData.sub
+  );
+}
+
+export async function getUserFromCognitoByUsername(username: string) {
   const command = new ListUsersCommand({
     UserPoolId: process.env.COGNITO_USER_POOL_ID,
-    Filter: `username = "${queueEvent.detail.additionalEventData.sub}"`,
+    Filter: `username = "${username}"`,
   });
   const listUsersCommandOutput = await cognitoClient.send(command);
   const user = listUsersCommandOutputToUser(listUsersCommandOutput);
