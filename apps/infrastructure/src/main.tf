@@ -101,12 +101,12 @@ module "cms" {
   github_repository = var.github_repository
   tags              = var.tags
 
-  dns_domain_name     = var.dns_domain_name
-  dns_domain_name_cms = var.dns_domain_name_cms
-  hosted_zone_id      = module.core.hosted_zone_id
+  dns_domain_name           = var.dns_domain_name
+  dns_domain_name_cms       = var.dns_domain_name_cms
+  hosted_zone_id            = module.core.hosted_zone_id
   ac_integration_is_enabled = var.ac_integration_is_enabled
-  ac_base_url_param = module.active_campaign.base_url_param
-  ac_api_key_param = module.active_campaign.api_key_param
+  ac_base_url_param         = module.active_campaign[0].base_url_param
+  ac_api_key_param          = module.active_campaign[0].api_key_param
 }
 
 module "chatbot" {
@@ -151,7 +151,7 @@ module "cicd" {
 }
 
 module "active_campaign" {
-  count = var.ac_integration_is_enabled ? 1 : 0
+  count  = var.ac_integration_is_enabled ? 1 : 0
   source = "./modules/active_campaign"
 
   environment = var.environment
