@@ -55,3 +55,20 @@ variable "hosted_zone_id" {
   type        = string
   description = "The ID of the hosted zone to create the public DNS records in"
 }
+
+## Active Campaign configuration for Strapi
+variable "ac_integration_is_enabled" {
+  type        = bool
+  description = "Enable Active Campaign integration for Strapi"
+  default     = false
+}
+
+variable "ac_base_url_param" {
+  type        = string
+  description = "Active Campaign base URL SSM parameter ARN"
+}
+
+variable "ac_api_key_param" {
+  type        = string
+  description = "Active Campaign API key SSM parameter ARN"
+}
