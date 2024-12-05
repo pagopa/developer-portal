@@ -197,8 +197,12 @@ def session_salt(sessionId: str):
     )
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}")
-  result = dbResponse.get('Item', {})
-  return result.get('salt', None)
+    result = dbResponse.get('Items', [])
+    if len(result) == 0:
+      result = None
+    else:
+      result = result[0]
+  return result.get('value', None)
 
 
 @app.get("/queries")
