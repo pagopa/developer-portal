@@ -4,6 +4,7 @@ import { fetchSubscribedWebinarsFromDynamo } from './fetchSubscribedWebinarsFrom
 import { addContact } from './addContact';
 import { User } from '../types/user';
 import { APIGatewayProxyResult } from 'aws-lambda';
+import { addContactToList } from './manageListSubscription';
 
 export async function resyncUser(
   cognitoId: string
@@ -44,12 +45,7 @@ export async function resyncUser(
 
   // Fetch all the webinars the user is subscribed to
   const webinars = await fetchSubscribedWebinarsFromDynamo(cognitoId);
-  /*
-  {
-    "statusCode": 200,
-    "body": "[{\"createdAt\":{\"S\":\"2024-12-05T14:18:28.601Z\"},\"username\":{\"S\":\"56beb230-f081-70a4-f0e1-4b09723b4771\"},\"webinarId\":{\"S\":\"DevTalks-pagoPA-IBAN\"}},{\"createdAt\":{\"S\":\"2024-12-05T14:18:22.429Z\"},\"username\":{\"S\":\"56beb230-f081-70a4-f0e1-4b09723b4771\"},\"webinarId\":{\"S\":\"PagoPALAB-sanita\"}}]"
-}
-  */
+
   const webinarIds = JSON.parse(webinars.body)
     .map(
       (webinar: { readonly webinarId: { readonly S: string } }) =>
@@ -60,37 +56,25 @@ export async function resyncUser(
   console.log('Webinar IDs:', webinarIds);
 
   // Step 3: Create user on active campaign
-  addContact(user);
+  const res = await addContact(user);
+  console.log('Add contact result:', res);
 
   // Step 4: Add user to the webinars lists
-  // TBD
+  // eslint-disable-next-line functional/no-loop-statements
+  for (const webinarId of webinarIds) {
+    console.log('Adding contact to list:', webinarId);
+    try {
+      const result = await addContactToList(cognitoId, webinarId);
+      console.log('Add contact to list result:', result);
+      // wait 1 sec to avoid rate limiting
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (e) {
+      console.error('Error adding contact to list', e);
+    }
+  }
 
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'User resynced' }),
   };
 }
-
-/*
-
-{
-  "Records": [
-    {
-      "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
-      "receiptHandle": "MessageReceiptHandle",
-      "body": "{\"detail\":{\"eventName\":\"ResyncUser\", \"additionalEventData\" : {\"sub\": \"56beb230-f081-70a4-f0e1-4b09723b4771\"}}}",
-      "attributes": {
-        "ApproximateReceiveCount": "1",
-        "SentTimestamp": "1523232000000",
-        "SenderId": "123456789012",
-        "ApproximateFirstReceiveTimestamp": "1523232000001"
-      },
-      "messageAttributes": {},
-      "md5OfBody": "{{{md5_of_body}}}",
-      "eventSource": "aws:sqs",
-      "eventSourceARN": "arn:aws:sqs:us-east-1:123456789012:MyQueue",
-      "awsRegion": "us-east-1"
-    }
-  ]
-}
- */
