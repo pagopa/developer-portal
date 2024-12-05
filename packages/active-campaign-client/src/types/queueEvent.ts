@@ -1,7 +1,9 @@
 export type QueueEventType =
   | 'UpdateUserAttributes'
   | 'DeleteUser'
-  | 'ConfirmSignUp';
+  | 'ConfirmSignUp'
+  | 'DynamoINSERT'
+  | 'DynamoREMOVE';
 
 export type QueueEvent = {
   readonly detail: {
@@ -10,4 +12,5 @@ export type QueueEvent = {
       readonly sub: string;
     };
   };
+  readonly webinarId?: string;
 };
