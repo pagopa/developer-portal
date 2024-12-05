@@ -8,7 +8,6 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.696.0",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.1",
     "dotenv": "16.4.5",
@@ -16,6 +15,8 @@
     "eslint-config-custom": "^0.1.0"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.696.0",
+    "@aws-sdk/client-ssm": "^3.699.0",
     "@types/aws-lambda": "^8.10.126",
     "@types/jest": "^29.5.1",
     "aws-lambda": "^1.0.7",
