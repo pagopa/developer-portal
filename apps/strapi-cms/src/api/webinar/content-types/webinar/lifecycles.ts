@@ -1,4 +1,4 @@
-import { errors } from '@strapi/utils';
+import { errors, env } from '@strapi/utils';
 import axios from 'axios';
 
 interface IActiveCampaignListPayload {
@@ -13,12 +13,12 @@ interface IActiveCampaignListPayload {
 }
 
 const activeCampaignIntegrationIsEnabled =
-  process.env.ACTIVE_CAMPAIGN_INTEGRATION_IS_ENABLED === 'True';
+  env('ACTIVE_CAMPAIGN_INTEGRATION_IS_ENABLED', 'False') === 'True';
 
 function getHeaders() {
   return {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'Api-Token': process.env.AC_API_KEY || '',
+    'Api-Token': env('AC_API_KEY', ''),
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'Content-Type': 'application/json',
   };
@@ -106,7 +106,10 @@ const createActiveCampaignList = async (
     list: {
       name,
       sender_reminder: '',
-      sender_url: `${process.env.SENDER_URL}/webinars/${name}`,
+      sender_url: `${env(
+        'SENDER_URL',
+        'http://localhost:3000/'
+      )}/webinars/${name}`,
       stringid,
       subscription_notify: '',
       unsubscription_notify: '',
@@ -114,7 +117,7 @@ const createActiveCampaignList = async (
   };
 
   const response = await axios
-    .post(`${process.env.AC_BASE_URL}/api/3/lists`, payload, {
+    .post(`${env('AC_BASE_URL')}/api/3/lists`, payload, {
       headers: getHeaders(),
     })
     .catch((_) => {
@@ -132,7 +135,7 @@ const getListIdByName = async (name: string): Promise<number> => {
   const response = await axios.get<{
     readonly lists: ReadonlyArray<{ readonly id: number }>;
   }>(
-    `${process.env.AC_BASE_URL}/api/3/lists`,
+    `${env('AC_BASE_URL')}/api/3/lists`,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     { headers: getHeaders(), params: { 'filters[name][eq]': name } }
   );
@@ -164,7 +167,7 @@ const deleteActiveCampaignList = async (
   }
 
   const response = await axios
-    .delete(`${process.env.AC_BASE_URL}/api/3/lists/${listId}`, {
+    .delete(`${env('AC_BASE_URL')}/api/3/lists/${listId}`, {
       headers: getHeaders(),
     })
     .catch((_) => {
