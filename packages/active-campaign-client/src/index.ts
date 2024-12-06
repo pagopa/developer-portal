@@ -11,8 +11,5 @@ export async function sqsQueue(event: {
 export async function handler(event: {
   readonly Records: SQSEvent['Records'];
 }) {
-  //return await sqsQueueHandler(event);
-  const cognitoId = event.Records[0].body;
-  console.log('cognitoId: ', cognitoId);
-  return await resyncUser(cognitoId);
+  return await resyncUserHandler(event);
 }
