@@ -66,9 +66,11 @@ variable "ac_integration_is_enabled" {
 variable "ac_base_url_param" {
   type        = string
   description = "Active Campaign base URL SSM parameter ARN"
+  default     = null
 }
 
 variable "ac_api_key_param" {
   type        = string
   description = "Active Campaign API key SSM parameter ARN"
+  default     = null
 }

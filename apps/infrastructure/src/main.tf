@@ -105,8 +105,8 @@ module "cms" {
   dns_domain_name_cms       = var.dns_domain_name_cms
   hosted_zone_id            = module.core.hosted_zone_id
   ac_integration_is_enabled = var.ac_integration_is_enabled
-  ac_base_url_param         = module.active_campaign[0].base_url_param
-  ac_api_key_param          = module.active_campaign[0].api_key_param
+  ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
+  ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
 }
 
 module "chatbot" {
