@@ -330,6 +330,14 @@ async def query_feedback (
       },
       ReturnValues='ALL_NEW'
     )
+    
+    chatbot.add_langfuse_score(
+      trace_id = id,
+      name = 'user-feedback',
+      value = (1 if query.badAnswer else 0),
+      data_type = 'BOOLEAN'
+    )
+
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[query_feedback] id: {id}, sessionId: {sessionId}, error: {e}")
 
