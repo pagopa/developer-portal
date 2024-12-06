@@ -19,8 +19,9 @@ module "lambda_sync" {
   ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
 
-  timeout     = 15
-  memory_size = 256
+  timeout                = 15
+  memory_size            = 256
+  maximum_retry_attempts = 0
 
   event_source_mapping = {
     sqs = {
