@@ -2,7 +2,7 @@
 name = "chatbot"
 version = "0.1.0"
 description = "Chatbot repository for PagoPA"
-authors = ["Marco Cirillo <marco.cirillo@uqido.com>"]
+authors = ["Marco Domenico Cirillo <marco.cirillo@uqido.com>", "Devis Battisti <devis.battisti@uqido.com>"]
 readme = "README.md"
 package-mode = false
 
@@ -35,13 +35,13 @@ google-generativeai = "^0.5.2"
 llama-index-embeddings-gemini = "^0.2.0"
 llama-index-llms-bedrock-converse = "^0.3.0"
 llama-index-postprocessor-presidio = "^0.2.0"
+langfuse = "^2.53.9"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.27.2"
 pytest = "^8.3.3"
 
 [tool.poetry.group.dev.dependencies]
-gradio = "^4.36.1"
 jupyter = "^1.0.0"
 
 [build-system]
