@@ -5,7 +5,7 @@ import uuid
 from pathlib import Path
 from datetime import datetime
 from logging import getLogger
-from typing import Union, Tuple, Sequence, Optional, List, Any, Dict
+from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -276,6 +276,31 @@ class Chatbot():
                 logger.info(f"Removed tag {tag} from trace {trace_id}")
             else:
                 logger.warning(f"Tag {tag} not present in trace {trace_id}")
+
+    
+    def add_langfuse_score(
+            self,
+            trace_id: str,
+            name: str, 
+            value: float, 
+            data_type: Literal['NUMERIC', 'BOOLEAN'] | None = None
+        ) -> None:
+
+        with self.instrumentor.observe(trace_id=trace_id) as trace:
+            trace_info = self.get_trace(trace_id, as_dict=False)
+            flag = True
+            for score in trace_info.scores:
+                if score.name == name:
+                    flag = False
+                    score_id = score.id
+                    break
+            
+            if flag:
+                trace.score(name=name, value=value, data_type=data_type)
+                logger.warning(f"Add score {name}: {value} in trace {trace_id}")
+            else:
+                trace.score(id=score_id, name=name, value=value, data_type=data_type)
+                logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
 
     def _mask_trace(self, data: Any) -> None:
