@@ -4,9 +4,13 @@ import { QueueEvent } from '../types/queueEvent';
 import { listUsersCommandOutputToUser } from './listUsersCommandOutputToUser';
 
 export async function getUserFromCognito(queueEvent: QueueEvent) {
-  return await getUserFromCognitoByUsername(
-    queueEvent.detail.additionalEventData.sub
-  );
+  const username = queueEvent.detail.additionalEventData.sub;
+  const user = await getUserFromCognitoByUsername(username);
+  if (!user) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('User not found');
+  }
+  return user;
 }
 
 export async function getUserFromCognitoByUsername(username: string) {
@@ -16,10 +20,6 @@ export async function getUserFromCognitoByUsername(username: string) {
   });
   const listUsersCommandOutput = await cognitoClient.send(command);
   const user = listUsersCommandOutputToUser(listUsersCommandOutput);
-  if (!user) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('User not found');
-  }
   console.log('User:', JSON.stringify(user, null, 2)); // TODO: Remove after testing
   return user;
 }

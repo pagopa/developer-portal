@@ -1,10 +1,10 @@
-import { deleteContact } from './deleteContact';
-import { getUserFromCognitoByUsername } from './getUserFromCognito';
-import { fetchSubscribedWebinarsFromDynamo } from './fetchSubscribedWebinarsFromDynamo';
-import { addContact } from './addContact';
+import { deleteContact } from '../helpers/deleteContact';
+import { getUserFromCognitoByUsername } from '../helpers/getUserFromCognito';
+import { fetchSubscribedWebinarsFromDynamo } from '../helpers/fetchSubscribedWebinarsFromDynamo';
+import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { addContactToList } from './manageListSubscription';
-import { queueEventParser } from './queueEventParser';
+import { addContactToList } from '../helpers/manageListSubscription';
+import { queueEventParser } from '../helpers/queueEventParser';
 
 export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
@@ -77,4 +77,3 @@ export async function resyncUserHandler(event: {
     };
   }
 }
-
