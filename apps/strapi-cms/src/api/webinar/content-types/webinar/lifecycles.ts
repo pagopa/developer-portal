@@ -65,7 +65,11 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
-  const { id } = event.params.data;
+  if (!event.params.data.slug || !activeCampaignIntegrationIsEnabled) {
+    return true;
+  }
+
+  const id = event.params.where?.id;
   if (!id) {
     throw new errors.ApplicationError('Webinar id not found');
   }
