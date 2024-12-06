@@ -2,4 +2,4 @@
 "active-campaign-client": minor
 ---
 
-Resync user
+Add resync user handler
