@@ -1,6 +1,6 @@
 import { SQSEvent } from 'aws-lambda';
 import { sqsQueueHandler } from './handlers/sqsQueueHandler';
-import { resyncUser } from './helpers/resyncUser';
+import { resyncUserHandler } from './helpers/resyncUser';
 
 export async function sqsQueue(event: {
   readonly Records: SQSEvent['Records'];
