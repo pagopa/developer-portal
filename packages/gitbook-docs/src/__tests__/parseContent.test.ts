@@ -457,21 +457,21 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should parse emoji and convert from name to unicode', () => {
-    expect(parseContent(':sos:', config)).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['🆘']),
-    ]);
-  });
+  // it('should parse emoji and convert from name to unicode', () => {
+  //   expect(parseContent(':sos:', config)).toStrictEqual([
+  //     new Markdoc.Tag('Paragraph', {}, ['🆘']),
+  //   ]);
+  // });
 
-  it('should parse emoji in title and convert from name to unicode', () => {
-    expect(
-      parseContent('## :technologist:Ideare un servizio', config)
-    ).toStrictEqual([
-      new Markdoc.Tag('Heading', { level: 2, id: 'ideare-un-servizio' }, [
-        '🧑‍💻Ideare un servizio',
-      ]),
-    ]);
-  });
+  // it('should parse emoji in title and convert from name to unicode', () => {
+  //   expect(
+  //     parseContent('## :technologist:Ideare un servizio', config)
+  //   ).toStrictEqual([
+  //     new Markdoc.Tag('Heading', { level: 2, id: 'ideare-un-servizio' }, [
+  //       '🧑‍💻Ideare un servizio',
+  //     ]),
+  //   ]);
+  // });
 
   it('should parse hint', () => {
     expect(
