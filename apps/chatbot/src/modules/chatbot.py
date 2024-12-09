@@ -388,6 +388,7 @@ class Chatbot():
                 logger.error(f"Exception: {e}")
 
             trace.update(output=self.mask_pii(response_str), metadata={"context": context})
+            trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
         return response_str
