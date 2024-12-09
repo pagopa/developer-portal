@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 3.2.0
+
+### Minor Changes
+
+- 38fc70b: Fix webinar validateSlug on update
+- 82b7d4b: Add Active Campaign integration to create and delete lists when creating and deleting webinars
+
 ## 3.1.1
 
 ### Patch Changes

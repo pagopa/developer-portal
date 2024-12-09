@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.3.0
+
+### Minor Changes
+
+- a7e0508: Add SSM client to mange secrets
+
 ## 0.2.0
 
 ### Minor Changes
