@@ -5,6 +5,8 @@ import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { addContactToList } from '../helpers/manageListSubscription';
 import { queueEventParser } from '../helpers/queueEventParser';
+import { acClient } from '../clients/activeCampaignClient';
+import { bulkAddContactToList } from '../helpers/bulkAddContactsToLists';
 
 export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
@@ -43,28 +45,16 @@ export async function resyncUserHandler(event: {
 
     console.log('Webinar IDs:', webinarIds); // TODO: Remove after testing
 
-    const res = await addContact(user);
-    if (res.statusCode !== 200) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Error adding contact');
-    }
-
-    await webinarIds.reduce(
-      async (
-        prevPromise: Promise<APIGatewayProxyResult>,
-        webinarId: string
-      ) => {
-        await prevPromise;
-        try {
-          const result = await addContactToList(cognitoId, webinarId);
-          console.log('Add contact to list result:', result, webinarId); // TODO: Remove after testing
-          await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 sec to avoid rate limiting
-        } catch (e) {
-          console.error('Error adding contact to list', e); // TODO: Remove after testing
-        }
-      },
-      Promise.resolve()
+    const webinarListIds = await Promise.all(
+      webinarIds.map(async (webinarId: string) => {
+        const listId = await acClient.getListIdByName(webinarId);
+        return listId;
+      })
     );
+
+    const res = await bulkAddContactToList([user], [webinarListIds]);
+
+    console.log('Res:', res);
 
     return {
       statusCode: 200,
