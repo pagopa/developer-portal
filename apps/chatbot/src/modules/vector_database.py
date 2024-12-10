@@ -55,7 +55,8 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 EMBEDDING_DIMS = {
     "models/text-embedding-004": 768,
-    "cohere.embed-multilingual-v3": 1024
+    "cohere.embed-multilingual-v3": 1024,
+    "amazon.titan-embed-text-v2:0": 1024
 }
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": f"{INDEX_ID}", "prefix": f"{INDEX_ID}/vector"},

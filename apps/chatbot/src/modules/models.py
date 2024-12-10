@@ -21,7 +21,8 @@ assert PROVIDER in ["aws", "google"]
 GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_BEDROCK_REGION = os.getenv("CHB_AWS_BEDROCK_REGION")
+AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
+AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
 AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
@@ -41,7 +42,7 @@ def get_llm():
             max_tokens=int(MODEL_MAXTOKENS),
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_REGION
+            region_name=AWS_BEDROCK_LLM_REGION
         )
 
     else:
@@ -71,7 +72,7 @@ def get_embed_model():
             model_name = EMBED_MODEL_ID,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_REGION
+            region_name=AWS_BEDROCK_EMBED_REGION
         )
     else:
         embed_model = GeminiEmbedding(
