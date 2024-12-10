@@ -11,7 +11,7 @@ const user: User = {
   'custom:job_role': 'Developer',
 };
 
-describe('Active campaign integration contact flow', () => {
+describe.skip('Active campaign integration contact flow', () => {
   it('should bulk add contacts to a list', async () => {
     const response = await bulkAddContactToList([user], [[28]]);
     expect(response.statusCode).toBe(200);

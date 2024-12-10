@@ -3,6 +3,7 @@ import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { ContactPayload } from '../types/contactPayload';
 import { ListPayload } from '../types/listPayload';
 import { ListStatusPayload } from '../types/listStatusPayload';
+import { BulkAddContactPayload } from '../types/bulkAddContactPayload';
 
 async function getParameter(
   paramName: string,
@@ -47,11 +48,7 @@ export class ActiveCampaignClient {
       | ContactPayload
       | ListPayload
       | ListStatusPayload
-      | {
-          readonly contacts: readonly (ContactPayload & {
-            readonly listIds: readonly number[];
-          })[];
-        },
+      | BulkAddContactPayload,
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
@@ -92,6 +89,7 @@ export class ActiveCampaignClient {
               reject(new Error('Failed to parse response data'));
             }
           } else {
+            console.log(data);
             reject(
               new Error(`Request failed with status code ${res.statusCode}`)
             );
@@ -150,12 +148,22 @@ export class ActiveCampaignClient {
       readonly listIds: readonly number[];
     })[]
   ) {
-    return this.makeRequest('POST', `/api/3/import/bulk_import`, {
-      contacts: contacts.map((contact) => ({
-        ...contact,
-        subscribe: contact.listIds.map((listId) => ({ listid: listId })),
+    const body = {
+      contacts: contacts.map((payload) => ({
+        email: payload.contact.email,
+        first_name: payload.contact.firstName,
+        last_name: payload.contact.lastName,
+        phone: payload.contact.phone,
+        customer_acct_name: payload.contact.lastName,
+        fields: payload.contact.fieldValues.map((field) => ({
+          id: Number(field.field),
+          value: field.value,
+        })),
+        subscribe: payload.listIds.map((listId) => ({ listid: listId })),
       })),
-    });
+    };
+
+    return this.makeRequest('POST', `/api/3/import/bulk_import`, body);
   }
 
   async addContactToList(contactId: string, listId: number) {
