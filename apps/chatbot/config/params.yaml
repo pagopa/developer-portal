@@ -52,6 +52,8 @@ config_presidio:
   allow_list:
     - Discovery
     - discovery
+    - rispondo
+    - Rispondo
     - Rif
     - SEND
     - send
@@ -61,8 +63,12 @@ config_presidio:
     - Gpd
     - STATO
     - stato
-    - PagoPA 
+    - PagoPA
     - pagoPA
+    - Devportal
+    - devPortal
+    - DevPortal
+    - devportal
     - pagopa
     - Pagopa
     - Firma con IO
