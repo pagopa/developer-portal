@@ -43,7 +43,15 @@ export class ActiveCampaignClient {
   private async makeRequest<T>(
     method: string,
     path: string,
-    data?: ContactPayload | ListPayload | ListStatusPayload,
+    data?:
+      | ContactPayload
+      | ListPayload
+      | ListStatusPayload
+      | {
+          readonly contacts: readonly (ContactPayload & {
+            readonly listIds: readonly number[];
+          })[];
+        },
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
@@ -135,6 +143,19 @@ export class ActiveCampaignClient {
 
   async deleteList(id: number) {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
+  }
+
+  async bulkAddContactToList(
+    contacts: readonly (ContactPayload & {
+      readonly listIds: readonly number[];
+    })[]
+  ) {
+    return this.makeRequest('POST', `/api/3/import/bulk_import`, {
+      contacts: contacts.map((contact) => ({
+        ...contact,
+        subscribe: contact.listIds.map((listId) => ({ listid: listId })),
+      })),
+    });
   }
 
   async addContactToList(contactId: string, listId: number) {
