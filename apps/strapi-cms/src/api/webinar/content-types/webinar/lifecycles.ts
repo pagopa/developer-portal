@@ -12,8 +12,9 @@ interface IActiveCampaignListPayload {
   };
 }
 
-const activeCampaignIntegrationIsEnabled =
-  env('ACTIVE_CAMPAIGN_INTEGRATION_IS_ENABLED', 'False') === 'True';
+function getActiveCampaignIntegrationIsEnabled() {
+  return env('ACTIVE_CAMPAIGN_INTEGRATION_ENABLED', 'false') === 'true';
+}
 
 function getHeaders() {
   return {
@@ -65,7 +66,7 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
-  if (!event.params.data.slug || !activeCampaignIntegrationIsEnabled) {
+  if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
     return true;
   }
 
@@ -97,7 +98,7 @@ const createActiveCampaignList = async (
   event: IWebinarEvent
 ): Promise<boolean> => {
   if (
-    !activeCampaignIntegrationIsEnabled ||
+    !getActiveCampaignIntegrationIsEnabled() ||
     !event.result?.slug ||
     !event.result?.title
   ) {
@@ -150,7 +151,7 @@ const deleteActiveCampaignList = async (
   event: IWebinarEvent
 ): Promise<boolean> => {
   if (
-    !activeCampaignIntegrationIsEnabled ||
+    !getActiveCampaignIntegrationIsEnabled() ||
     !event?.params.where ||
     !event.params.where.id
   ) {
@@ -196,7 +197,7 @@ module.exports = {
     await deleteActiveCampaignList(event);
   },
   beforeDeleteMany() {
-    if (activeCampaignIntegrationIsEnabled) {
+    if (getActiveCampaignIntegrationIsEnabled()) {
       throw new errors.ApplicationError(
         'Bulk deletion is not allowed for webinars if Active Campaign integration is enabled'
       );
