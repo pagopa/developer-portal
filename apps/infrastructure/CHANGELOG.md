@@ -1,5 +1,12 @@
 # infrastructure
 
+## 1.4.1
+
+### Patch Changes
+
+- 22aea81: Change ac sync lambda handler to index.sqsQueue
+- 8f7d007: Added environment variables that allow strapi to integrate with active campaign
+
 ## 1.4.0
 
 ### Minor Changes
