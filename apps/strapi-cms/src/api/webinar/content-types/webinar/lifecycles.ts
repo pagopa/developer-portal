@@ -66,6 +66,7 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
+  console.log('validateSlug IWebinarEvent:', JSON.stringify(event, null, 2));
   if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
     return true;
   }
