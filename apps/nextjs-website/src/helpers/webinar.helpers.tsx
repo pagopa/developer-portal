@@ -26,23 +26,50 @@ export const useWebinar = () => {
   const handleWebinarState = (): WebinarState => {
     console.log('webinar', webinar);
     const currentTimestamp = new Date().getTime();
-    console.log('currentTimestamp', currentTimestamp);
+    console.log(
+      'currentTimestamp',
+      currentTimestamp,
+      new Date(currentTimestamp)
+    );
     if (!webinar || !startDateTimestamp || !endDateTimestamp) {
+      console.log(
+        'webinarState unknown',
+        !webinar,
+        !startDateTimestamp,
+        !endDateTimestamp
+      );
       return WebinarState.unknown;
     }
-    if (endDateTimestamp < currentTimestamp) return WebinarState.past;
+    if (endDateTimestamp < currentTimestamp) {
+      console.log('webinarState past', endDateTimestamp, currentTimestamp);
+      return WebinarState.past;
+    }
 
     const delta = startDateTimestamp - currentTimestamp;
     if (delta > 0 && delta < COMING_SOON_START_TIME_DELTA_MS) {
+      console.log(
+        'webinarState comingSoon',
+        delta,
+        COMING_SOON_START_TIME_DELTA_MS
+      );
       return WebinarState.comingSoon;
     }
     if (
       startDateTimestamp <= currentTimestamp &&
       endDateTimestamp >= currentTimestamp
     ) {
+      console.log(
+        'webinarState live',
+        startDateTimestamp <= currentTimestamp,
+        endDateTimestamp >= currentTimestamp
+      );
       return WebinarState.live;
     }
-    if (startDateTimestamp > currentTimestamp) return WebinarState.future;
+    if (startDateTimestamp > currentTimestamp) {
+      console.log('webinarState future');
+      return WebinarState.future;
+    }
+    console.log('webinarState unknown');
     return WebinarState.unknown;
   };
 
