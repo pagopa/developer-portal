@@ -89,7 +89,6 @@ export class ActiveCampaignClient {
               reject(new Error('Failed to parse response data'));
             }
           } else {
-            console.log(data);
             reject(
               new Error(`Request failed with status code ${res.statusCode}`)
             );
