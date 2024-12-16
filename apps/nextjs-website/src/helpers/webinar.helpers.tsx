@@ -24,7 +24,9 @@ export const useWebinar = () => {
     webinar?.endDateTime && new Date(webinar.endDateTime).getTime();
 
   const handleWebinarState = (): WebinarState => {
+    console.log('webinar', webinar);
     const currentTimestamp = new Date().getTime();
+    console.log('currentTimestamp', currentTimestamp);
     if (!webinar || !startDateTimestamp || !endDateTimestamp) {
       return WebinarState.unknown;
     }
