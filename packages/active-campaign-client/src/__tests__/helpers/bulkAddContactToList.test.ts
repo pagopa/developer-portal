@@ -13,7 +13,10 @@ const user: User = {
 
 describe.skip('Active campaign integration contact flow', () => {
   it('should bulk add contacts to a list', async () => {
-    const response = await bulkAddContactToList([user], [[28]]);
+    const response = await bulkAddContactToList(
+      [user],
+      [[Number(process.env.TEST_AC_LIST_ID)]]
+    );
     expect(response.statusCode).toBe(200);
   });
 });
