@@ -71,7 +71,9 @@ const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
     'validateSlug IWebinarEvent:',
     JSON.stringify(event.params, null, 2)
   );
+  // eslint-disable-next-line no-console
   console.log('id', event.params.data?.id, event.params.where?.id);
+  // eslint-disable-next-line no-console
   console.log('slug', event.params.data?.slug);
   if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
     return true;
