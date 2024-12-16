@@ -139,3 +139,12 @@ variable "chatbot_ecs_monitoring" {
     port      = 3000
   }
 }
+
+################################################################################
+# Active Campaign integration
+################################################################################
+variable "ac_integration_is_enabled" {
+  type        = bool
+  description = "Defines if Active Campaign integration should be enabled"
+  default     = false
+}

@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
     actions = [
       "ssm:GetParameters"
     ]
-    resources = [
+    resources = concat([
       module.secret_cms_database_password.ssm_parameter_arn,
       module.secret_cms_admin_jwt_secret.ssm_parameter_arn,
       module.secret_cms_app_keys.ssm_parameter_arn,
@@ -95,7 +95,9 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       module.secret_cms_google_gsuite_hd.ssm_parameter_arn,
       module.secret_cms_google_oauth_client_id.ssm_parameter_arn,
       module.secret_cms_google_oauth_client_secret.ssm_parameter_arn,
-    ]
+      ],
+      (var.ac_integration_is_enabled ? [var.ac_base_url_param, var.ac_api_key_param] : [])
+    )
   }
 
   statement {
