@@ -54,7 +54,6 @@ export async function resyncUserHandler(event: {
 
     const res = await bulkAddContactToList([user], [webinarListIds]);
 
-    console.log('Res:', res);
 
     return {
       statusCode: 200,
