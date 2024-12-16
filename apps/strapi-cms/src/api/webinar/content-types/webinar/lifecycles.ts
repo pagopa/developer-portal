@@ -66,12 +66,13 @@ const validateDates = (event: IWebinarEvent): boolean => {
 };
 
 const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
+  // eslint-disable-next-line no-console
   console.log('validateSlug IWebinarEvent:', JSON.stringify(event, null, 2));
   if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
     return true;
   }
 
-  const id = event.params.where?.id;
+  const { id } = event.params.data;
   if (!id) {
     throw new errors.ApplicationError('Webinar id not found');
   }
