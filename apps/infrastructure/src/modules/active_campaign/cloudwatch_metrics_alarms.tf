@@ -6,7 +6,7 @@ resource "aws_cloudwatch_metric_alarm" "pipe_failed" {
   evaluation_periods  = 1
   period              = 60
   statistic           = "Sum"
-  threshold           = 0
+  threshold           = 1
   metric_name         = "ExecutionFailed"
   namespace           = "AWS/EventBridge/Pipes"
   dimensions = {
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "dlq" {
   evaluation_periods  = 1
   period              = 60
   statistic           = "Sum"
-  threshold           = 0
+  threshold           = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"
   namespace           = "AWS/SQS"
   dimensions = {
