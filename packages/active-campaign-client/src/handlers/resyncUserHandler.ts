@@ -23,7 +23,6 @@ export async function resyncUserHandler(event: {
     const user = await getUserFromCognitoByUsername(cognitoId);
 
     if (!user) {
-      console.log(`User: ${cognitoId} not present on Cognito, sync done.`);
       return {
         statusCode: 200,
         body: JSON.stringify({
