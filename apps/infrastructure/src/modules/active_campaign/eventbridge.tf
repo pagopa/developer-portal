@@ -29,11 +29,12 @@ resource "aws_pipes_pipe" "dynamodb_to_sqs" {
       "sub": "<$.dynamodb.Keys.username.S>"
     }
   },
-  "webinarId": "<$.dynamodb.Keys.webinarId.S>"
+  "webinarId": "<$.dynamodb.Keys.webinarId.S>",
+  "eventID": "<$.eventID>"
 }
 EOF
     sqs_queue_parameters {
-      message_group_id = local.sqs_message_group_id
+      message_group_id = "$.eventID"
     }
   }
 }
