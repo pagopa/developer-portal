@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": patch
 ---
 
 Rename "version" to "subPath" in UrlReplaceMapCodec
