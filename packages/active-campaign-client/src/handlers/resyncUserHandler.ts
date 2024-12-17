@@ -18,7 +18,7 @@ export async function resyncUserHandler(event: {
       throw new Error('Error adding contact');
     }
 
-    const user = await getUserFromCognitoByUsername(cognitoId);
+    const user = await getCognitoUserById(cognitoId);
 
     if (!user) {
       console.log(`User: ${cognitoId} not present on Cognito, sync done.`);
