@@ -1,7 +1,7 @@
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { APIGatewayProxyResult } from 'aws-lambda';
 
-export async function fetchSubscribedWebinarsFromDynamo(
+export async function getSubscribedWebinars(
   username: string
 ): Promise<APIGatewayProxyResult> {
   try {

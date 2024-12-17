@@ -1,6 +1,6 @@
 import { deleteContact } from '../helpers/deleteContact';
 import { getUserFromCognitoUsername } from '../helpers/getUserFromCognito';
-import { fetchSubscribedWebinarsFromDynamo } from '../helpers/fetchSubscribedWebinarsFromDynamo';
+import { getSubscribedWebinars } from '../helpers/getSubscribedWebinars';
 import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { addContactToList } from '../helpers/manageListSubscription';
@@ -35,7 +35,7 @@ export async function resyncUserHandler(event: {
       };
     }
 
-    const userWebinarsSubscriptions = await fetchSubscribedWebinarsFromDynamo(
+    const userWebinarsSubscriptions = await getSubscribedWebinars(
       cognitoUsername
     );
 
