@@ -1,5 +1,5 @@
 import { deleteContact } from '../helpers/deleteContact';
-import { getUserFromCognitoByUsername } from '../helpers/getUserFromCognito';
+import { getUserFromCognitoUsername } from '../helpers/getUserFromCognito';
 import { fetchSubscribedWebinarsFromDynamo } from '../helpers/fetchSubscribedWebinarsFromDynamo';
 import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
@@ -11,17 +11,22 @@ export async function resyncUserHandler(event: {
 }): Promise<APIGatewayProxyResult> {
   try {
     const queueEvent = queueEventParser(event);
-    const cognitoId = queueEvent.detail.additionalEventData.sub;
-    const deletionResult = await deleteContact(cognitoId);
-    if (deletionResult.statusCode !== 200 && deletionResult.statusCode !== 404) {
+    const cognitoUsername = queueEvent.detail.additionalEventData.sub;
+    const deletionResult = await deleteContact(cognitoUsername);
+    if (
+      deletionResult.statusCode !== 200 &&
+      deletionResult.statusCode !== 404
+    ) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Error adding contact');
     }
 
-    const user = await getCognitoUserById(cognitoId);
+    const user = await getUserFromCognitoUsername(cognitoUsername);
 
     if (!user) {
-      console.log(`User: ${cognitoId} not present on Cognito, sync done.`);
+      console.log(
+        `User: ${cognitoUsername} not present on Cognito, sync done.`
+      );
       return {
         statusCode: 200,
         body: JSON.stringify({
@@ -31,7 +36,7 @@ export async function resyncUserHandler(event: {
     }
 
     const userWebinarsSubscriptions = await fetchSubscribedWebinarsFromDynamo(
-      cognitoId
+      cognitoUsername
     );
 
     const webinarIds = JSON.parse(userWebinarsSubscriptions.body)
@@ -40,8 +45,6 @@ export async function resyncUserHandler(event: {
           webinar?.webinarId?.S
       )
       .filter(Boolean);
-
-    console.log('Webinar IDs:', webinarIds); // TODO: Remove after testing
 
     const res = await addContact(user);
     if (res.statusCode !== 200) {
@@ -56,7 +59,7 @@ export async function resyncUserHandler(event: {
       ) => {
         await prevPromise;
         try {
-          const result = await addContactToList(cognitoId, webinarId);
+          const result = await addContactToList(cognitoUsername, webinarId);
           console.log('Add contact to list result:', result, webinarId); // TODO: Remove after testing
           await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 sec to avoid rate limiting
         } catch (e) {
