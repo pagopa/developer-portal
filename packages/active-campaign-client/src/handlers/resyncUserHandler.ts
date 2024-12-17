@@ -13,7 +13,7 @@ export async function resyncUserHandler(event: {
     const queueEvent = queueEventParser(event);
     const cognitoId = queueEvent.detail.additionalEventData.sub;
     const deletionResult = await deleteContact(cognitoId);
-    if (deletionResult.statusCode != 200 && deletionResult.statusCode != 404) {
+    if (deletionResult.statusCode !== 200 && deletionResult.statusCode !== 404) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Error adding contact');
     }
