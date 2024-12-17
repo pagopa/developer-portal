@@ -67,14 +67,16 @@ const validateDates = (event: IWebinarEvent): boolean => {
 
 const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
   // eslint-disable-next-line no-console
-  console.log(
-    'validateSlug IWebinarEvent:',
-    JSON.stringify(event.params, null, 2)
-  );
+  console.log('validateSlug IWebinarEvent:', JSON.stringify(event.params));
   // eslint-disable-next-line no-console
   console.log('id', event.params.data?.id, event.params.where?.id);
   // eslint-disable-next-line no-console
   console.log('slug', event.params.data?.slug);
+  // eslint-disable-next-line no-console
+  console.log(
+    'ACIntegrationIsEnabled',
+    getActiveCampaignIntegrationIsEnabled()
+  );
   if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
     return true;
   }
