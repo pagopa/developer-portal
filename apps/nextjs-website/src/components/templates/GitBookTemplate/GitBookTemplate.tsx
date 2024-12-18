@@ -37,7 +37,7 @@ const GitBookTemplate = ({
   contentMarginTop = 75,
   hasHeader = true,
 }: GitBookTemplateProps) => {
-  const headerPadding = hasHeader ? '60px' : '-80px';
+  const paddingTop = hasHeader ? '60px' : '-80px';
   return (
     <FragmentProvider>
       <Box
@@ -71,7 +71,7 @@ const GitBookTemplate = ({
             },
           }}
         >
-          <Box sx={{ paddingTop: headerPadding, paddingX: '40px' }}>
+          <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '32px 40px' }}>
