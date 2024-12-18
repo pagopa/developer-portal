@@ -334,8 +334,8 @@ async def query_feedback (
     chatbot.add_langfuse_score(
       trace_id = id,
       name = 'user-feedback',
-      value = (1 if query.badAnswer else 0),
-      data_type = 'BOOLEAN'
+      value = (-1 if query.badAnswer else 1),
+      data_type = 'NUMERIC'
     )
 
   except (BotoCoreError, ClientError) as e:
