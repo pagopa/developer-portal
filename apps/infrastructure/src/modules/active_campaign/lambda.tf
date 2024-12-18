@@ -14,13 +14,14 @@ module "lambda_sync" {
   runtime       = "nodejs20.x"
   architectures = ["x86_64"]
 
-  handler                                 = "index.handler"
+  handler                                 = "index.sqsQueue"
   source_path                             = "${path.module}/functions"
   ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
 
-  timeout     = 15
-  memory_size = 256
+  timeout                = 15
+  memory_size            = 256
+  maximum_retry_attempts = 0
 
   event_source_mapping = {
     sqs = {

@@ -1,7 +1,7 @@
 export type ListStatusPayload = {
   readonly contactList: {
-    readonly list: string;
+    readonly list: number;
     readonly contact: string;
-    readonly status: string;
+    readonly status: number;
   };
 };
