@@ -5,7 +5,7 @@ import { listUsersCommandOutputToUser } from './listUsersCommandOutputToUser';
 
 export async function getUserFromCognito(queueEvent: QueueEvent) {
   const username = queueEvent.detail.additionalEventData.sub;
-  const user = await getUserFromCognitoByUsername(username);
+  const user = await getUserFromCognitoUsername(username);
   if (!user) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('User not found');
@@ -13,7 +13,7 @@ export async function getUserFromCognito(queueEvent: QueueEvent) {
   return user;
 }
 
-export async function getUserFromCognitoByUsername(username: string) {
+export async function getUserFromCognitoUsername(username: string) {
   const command = new ListUsersCommand({
     UserPoolId: process.env.COGNITO_USER_POOL_ID,
     Filter: `username = "${username}"`,

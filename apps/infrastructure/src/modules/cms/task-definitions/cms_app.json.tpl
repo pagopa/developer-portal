@@ -91,6 +91,14 @@
       {
         "name": "DEPLOY_WEBSITE_TARGET_BRANCH",
         "value": "${target_branch}"
+      },
+      {
+        "name": "ACTIVE_CAMPAIGN_INTEGRATION_IS_ENABLED",
+        "value": "${ac_integration_is_enabled}"
+      },
+      {
+        "name": "SENDER_URL",
+        "value": "${ac_sender_url}"
       }
     ],
     "secrets" : [
@@ -141,7 +149,15 @@
       {
         "name": "GOOGLE_OAUTH_CLIENT_SECRET",
         "valueFrom": "${google_oauth_client_secret}"
-      }
+      },
+      {
+        "name": "AC_BASE_URL",
+        "valueFrom": "${ac_base_url}"
+      },
+      {
+        "name": "AC_API_KEY",
+        "valueFrom": "${ac_api_key}"
+      }        
     ]
   }
 ]
