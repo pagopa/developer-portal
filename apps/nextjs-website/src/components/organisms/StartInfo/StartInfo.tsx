@@ -5,9 +5,10 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { useTranslations } from 'next-intl';
 
 type StartInfoProps = {
-  title: string;
+  title?: string;
   cardVariant?: 'text' | 'contained' | 'outlined';
   cards: {
     comingSoon?: boolean;
@@ -33,11 +34,13 @@ const StartInfo = ({
   cardVariant = 'contained',
 }: StartInfoProps) => {
   const { palette } = useTheme();
+  const t = useTranslations();
+
   return (
     <>
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
         <Box mb={2}>
-          <SectionTitle title={title} />
+          <SectionTitle title={title || t('overview.startInfo.title')} />
         </Box>
         <CardsGrid
           ctaButtonsVariant={cardVariant}

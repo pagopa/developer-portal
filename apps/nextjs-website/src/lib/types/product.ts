@@ -1,4 +1,3 @@
-import { Path } from '@/lib/types/path';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
@@ -6,17 +5,15 @@ export type Product = {
   readonly slug: string;
   readonly shortName: string;
   readonly description: string | undefined;
-  readonly logo: Media;
-  readonly subpaths: Subpaths;
+  readonly logo?: Media;
+  readonly name: string;
   readonly bannerLinks: readonly BannerLinkProps[];
-} & Path;
 
-type Subpaths = {
-  readonly api?: Path;
-  readonly guides?: Path;
-  readonly overview: Path;
-  readonly quickStart?: Path;
-  readonly tutorials?: Path;
+  readonly hasApiDataListPage?: boolean;
+  readonly apiDataListPageUrl?: string;
+
+  readonly hasTutorialListPage?: boolean;
+  readonly hasGuideListPage?: boolean;
+  readonly hasOverviewPage?: boolean;
+  readonly hasQuickstartGuidePage?: boolean;
 };
-
-export type ProductSubpathsKeys = keyof Subpaths;

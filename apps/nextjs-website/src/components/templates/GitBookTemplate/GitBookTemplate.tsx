@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import { ProductGuidePageProps } from '@/app/[productSlug]/guides/[...productGuidePage]/page';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import { GuideMenuItemsProps } from '@/components/atoms/GuideMenu/Menu';
@@ -9,6 +8,7 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -35,6 +35,7 @@ const GitBookTemplate = ({
   menuDistanceFromTop,
   contentMarginTop = 75,
 }: GitBookTemplateProps) => {
+  const t = useTranslations();
   return (
     <FragmentProvider>
       <Box
@@ -93,7 +94,7 @@ const GitBookTemplate = ({
               assetsPrefix={bodyConfig.assetsPrefix}
               pagePath={path}
               inPageMenu={body}
-              title={translations.productGuidePage.onThisPage}
+              title={t('productGuidePage.onThisPage')}
             />
           </Box>
         </Box>

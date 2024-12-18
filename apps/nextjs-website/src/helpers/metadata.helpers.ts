@@ -1,5 +1,4 @@
-import { translations } from '@/_contents/translations';
-import { defaultOgTagImage } from '@/config';
+import { defaultOgTagImage, websiteName } from '@/config';
 import { SEO } from '@/lib/types/seo';
 import { Metadata, ResolvedMetadata } from 'next';
 
@@ -22,8 +21,7 @@ export const makeMetadata: MakeMetadataFunction = ({
   image: imageParam,
   locale,
 }) => {
-  const { shared } = translations;
-  const previousTitle = parent?.title?.absolute || shared.siteTitle;
+  const previousTitle = parent?.title?.absolute || websiteName;
   const metadataTitle = title ? `${previousTitle} | ${title}` : previousTitle;
   const image = imageParam || defaultOgTagImage;
   const openGraph = getOpenGraphMetadata(

@@ -2,50 +2,52 @@ import { Part } from '@/lib/types/part';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import { StrapiPart } from '@/lib/strapi/codecs/PartCodec';
 
-export function makePartProps(part: StrapiPart): Part | null {
-  switch (part.__component) {
+export function makePartProps(strapiPart: StrapiPart): Part | null {
+  switch (strapiPart.__component) {
     case 'parts.alert':
       return {
         component: 'alert',
-        ...part,
+        ...strapiPart,
       };
     case 'parts.api-tester':
       return {
         component: 'apiTester',
         apiRequest: {
-          ...part.requestCode,
-          description: part.requestDescription,
-          attributes: part.requestAttributes,
+          ...strapiPart.requestCode,
+          description: strapiPart.requestDescription,
+          attributes: strapiPart.requestAttributes,
         },
         apiResponse: {
-          ...part.responseCode,
-          description: part.responseDescription,
+          ...strapiPart.responseCode,
+          description: strapiPart.responseDescription,
         },
       };
     case 'parts.code-block':
       return {
         component: 'codeBlock',
-        ...part,
+        ...strapiPart,
       };
     case 'parts.html':
       return {
         component: 'blockRenderer',
-        ...part,
+        ...strapiPart,
       };
     case 'parts.embed-html':
       return {
         component: 'innerHTMLLazyLoaded',
-        ...part,
+        ...strapiPart,
       };
     case 'parts.quote':
       return {
         component: 'quote',
-        quote: part.text,
-        backgroundImage: part.backgroundImage.data?.attributes,
+        quote: strapiPart.text,
+        backgroundImage: strapiPart.backgroundImage.data?.attributes,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
-      const { parsedContent, menuItems } = parseCkEditorContent(part.content);
+      const { parsedContent, menuItems } = parseCkEditorContent(
+        strapiPart.content
+      );
       return {
         component: 'ckEditor',
         content: parsedContent,

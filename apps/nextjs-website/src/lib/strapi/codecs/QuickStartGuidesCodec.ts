@@ -1,7 +1,7 @@
 import * as t from 'io-ts/lib';
 import * as tt from 'io-ts-types';
 import { PaginationCodec } from './PaginationCodec';
-import { BaseProductWithBannerLinksCodec } from './ProductCodec';
+import { BaseProductWithRelationsCodec } from './ProductCodec';
 import { PartCodec } from './PartCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
@@ -22,7 +22,7 @@ export const QuickStartGuideCodec = t.strict({
   attributes: t.strict({
     title: t.string,
     description: t.string,
-    product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+    product: t.strict({ data: BaseProductWithRelationsCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),

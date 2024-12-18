@@ -190,7 +190,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={product.subpaths.overview.path}
+                  href={`/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,

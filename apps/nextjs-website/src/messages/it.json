@@ -8,6 +8,13 @@
             "webinars": "Webinar",
             "solutions": "Soluzioni"
         },
+        "productHeader": {
+            "overview": "Panoramica",
+            "quickStartGuide": "Quick Start",
+            "api": "API",
+            "tutorials": "Tutorial",
+            "guides": "Guide e manuali"
+        },
         "title": "DevPortal"
     },
     "profile": {

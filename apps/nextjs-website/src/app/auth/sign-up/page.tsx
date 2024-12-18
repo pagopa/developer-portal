@@ -8,10 +8,10 @@ import { Auth } from 'aws-amplify';
 import { useSearchParams } from 'next/navigation';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
-import { signUpAdvantages } from '@/_contents/auth';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';
 import { useState } from 'react';
+import { signUpAdvantages } from '@/config';
 
 const SignUp = () => {
   const loading = useAuthenticatedUserRedirect();

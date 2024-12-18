@@ -6,6 +6,7 @@ import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { useTranslations } from 'next-intl';
 
 type ProductHeaderProps = {
   product: Product;
@@ -16,9 +17,14 @@ export const PRODUCT_HEADER_HEIGHT = 77;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();
+  const t = useTranslations();
   const scrollUp = useScrollUp();
-
   const themeVariant = palette.mode;
+
+  const menu = productToMenuItems(product, path, themeVariant).map((item) => ({
+    ...item,
+    label: t(item.label),
+  }));
   return (
     <Box
       sx={{
@@ -30,9 +36,9 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       }}
     >
       <Header
-        menu={[...productToMenuItems(product, path, themeVariant)]}
+        menu={menu}
         product={{
-          href: product.subpaths.overview.path,
+          href: `/${product.slug}/overview`,
           name: product.name,
         }}
         theme={themeVariant}
