@@ -4,8 +4,7 @@ import { User } from '../types/user';
 export function makeContactPayload(user: User): ContactPayload {
   return {
     contact: {
-      // email: user.email,
-      email: '',
+      email: user.email,
       firstName: user.given_name,
       lastName: user.family_name,
       phone: `cognito:${user.username}`,
