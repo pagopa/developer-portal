@@ -147,7 +147,7 @@ export class ActiveCampaignClient {
     return this.makeRequest('POST', '/api/3/lists', data);
   }
 
-  async getListIdByName(name: string) {
+  async getListIdByName(name: string): Promise<number | undefined> {
     const response = await this.makeRequest<{
       readonly lists: ReadonlyArray<{ readonly id: number }>;
     }>('GET', '/api/3/lists', undefined, { 'filters[name][eq]': name });
