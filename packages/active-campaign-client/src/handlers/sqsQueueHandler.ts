@@ -15,7 +15,10 @@ function manageError(result: APIGatewayProxyResult) {
     throw new Error('Internal server error');
   }
 
-  return result;
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+  };
 }
 
 export async function sqsQueueHandler(event: {
