@@ -1,5 +1,17 @@
 # infrastructure
 
+## 1.5.0
+
+### Minor Changes
+
+- 2345af9: Implemented llm monitoring with LangFuse
+
+### Patch Changes
+
+- 22aea81: Change ac sync lambda handler to index.sqsQueue
+- 8664295: Use the ddb stream event id as message group id in sqs
+- 8f7d007: Added environment variables that allow strapi to integrate with active campaign
+
 ## 1.4.0
 
 ### Minor Changes
