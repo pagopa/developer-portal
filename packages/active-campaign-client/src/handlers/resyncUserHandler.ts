@@ -1,12 +1,11 @@
 import { deleteContact } from '../helpers/deleteContact';
 import { getUserFromCognitoByUsername } from '../helpers/getUserFromCognito';
-import { fetchSubscribedWebinarsFromDynamo } from '../helpers/fetchSubscribedWebinarsFromDynamo';
-import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { addContactToList } from '../helpers/manageListSubscription';
 import { queueEventParser } from '../helpers/queueEventParser';
-import { acClient } from '../clients/activeCampaignClient';
-import { bulkAddContactToList } from '../helpers/bulkAddContactsToLists';
+import { addOrUpdateContact } from '../helpers/addOrUpdateContact';
+import { getNewWebinarsAndUnsubsriptionLists } from '../helpers/getNewWebinarsAndUnsubsriptionLists';
+import { addArrayOfListToContact } from '../helpers/addArrayOfListToContact';
+import { removeArrayOfListFromContact } from '../helpers/removeArrayOfListFromContact';
 
 export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
@@ -14,47 +13,40 @@ export async function resyncUserHandler(event: {
   try {
     const queueEvent = queueEventParser(event);
     const cognitoId = queueEvent.detail.additionalEventData.sub;
-    const deletionResult = await deleteContact(cognitoId);
-    if (deletionResult.statusCode != 200 && deletionResult.statusCode != 404) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Error adding contact');
-    }
 
     const user = await getUserFromCognitoByUsername(cognitoId);
 
     if (!user) {
-      console.log(`User: ${cognitoId} not present on Cognito, sync done.`);
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: 'User not present on Cognito, sync done.',
-        }),
-      };
+      const deletionResult = await deleteContact(cognitoId); // AC call * 2
+      if (
+        deletionResult.statusCode != 200 &&
+        deletionResult.statusCode != 404
+      ) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Error adding contact');
+      }
+    } else {
+      const contactResponse = await addOrUpdateContact(user); // AC call * 3
+
+      const { listsToUnsubscribe, newWebinarSlugs } =
+        await getNewWebinarsAndUnsubsriptionLists(contactResponse, cognitoId); // AC call * 1
+
+      const resyncTimeoutMilliseconds: number = parseInt(
+        process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
+      );
+
+      await addArrayOfListToContact({
+        webinarSlugs: newWebinarSlugs,
+        cognitoId,
+        resyncTimeoutMilliseconds,
+      });
+
+      await removeArrayOfListFromContact({
+        listsToUnsubscribe,
+        contactId: contactResponse.contact.id,
+        resyncTimeoutMilliseconds,
+      });
     }
-
-    const userWebinarsSubscriptions = await fetchSubscribedWebinarsFromDynamo(
-      cognitoId
-    );
-
-    const webinarIds = JSON.parse(userWebinarsSubscriptions.body)
-      .map(
-        (webinar: { readonly webinarId: { readonly S: string } }) =>
-          webinar?.webinarId?.S
-      )
-      .filter(Boolean);
-
-    console.log('Webinar IDs:', webinarIds); // TODO: Remove after testing
-
-    const webinarListIds = await Promise.all(
-      webinarIds.map(async (webinarId: string) => {
-        const listId = await acClient.getListIdByName(webinarId);
-        return listId;
-      })
-    );
-
-    const res = await bulkAddContactToList([user], [webinarListIds]);
-
-
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'User resynced' }),
