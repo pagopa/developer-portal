@@ -8,13 +8,18 @@ export async function addContactToList(
   try {
     const contactId = await acClient.getContactByCognitoId(cognitoId);
     if (!contactId) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Contact not found' }),
-      };
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Contact not found');
     }
 
     const listId = await acClient.getListIdByName(listName);
+
+    if (!listId) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'List not found' }),
+      };
+    }
 
     const response = await acClient.addContactToList(contactId, listId);
     return {
@@ -37,13 +42,18 @@ export async function removeContactToList(
   try {
     const contactId = await acClient.getContactByCognitoId(cognitoId);
     if (!contactId) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Contact not found' }),
-      };
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Contact not found');
     }
 
     const listId = await acClient.getListIdByName(listName);
+
+    if (!listId) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'List not found' }),
+      };
+    }
 
     const response = await acClient.removeContactFromList(contactId, listId);
     return {
