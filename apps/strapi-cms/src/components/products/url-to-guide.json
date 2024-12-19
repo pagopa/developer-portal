@@ -15,7 +15,7 @@
       "relation": "oneToOne",
       "target": "api::guide.guide"
     },
-    "version": {
+    "subPath": {
       "type": "string"
     }
   }
