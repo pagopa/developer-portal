@@ -47,6 +47,10 @@ resource "aws_ecs_task_definition" "cms_task_def" {
       google_oauth_client_id     = module.secret_cms_google_oauth_client_id.ssm_parameter_arn
       google_oauth_client_secret = module.secret_cms_google_oauth_client_secret.ssm_parameter_arn
       google_oauth_redirect_uri  = format("https://cms.%s/strapi-plugin-sso/google/callback", var.dns_domain_name)
+      ac_integration_is_enabled  = var.ac_integration_is_enabled ? "True" : "False"
+      ac_base_url                = var.ac_integration_is_enabled ? var.ac_base_url_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
+      ac_api_key                 = var.ac_integration_is_enabled ? var.ac_api_key_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
+      ac_sender_url              = "https://${var.dns_domain_name}"
   })
 }
 

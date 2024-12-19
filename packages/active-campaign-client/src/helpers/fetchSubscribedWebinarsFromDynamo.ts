@@ -21,7 +21,6 @@ export async function fetchSubscribedWebinarsFromDynamo(
       body: JSON.stringify(response.Items),
     };
   } catch (error) {
-    console.error('Error querying items by username:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Internal server error' }),

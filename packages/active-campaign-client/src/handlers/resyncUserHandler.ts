@@ -1,5 +1,5 @@
 import { deleteContact } from '../helpers/deleteContact';
-import { getUserFromCognitoByUsername } from '../helpers/getUserFromCognito';
+import { getUserFromCognitoUsername } from '../helpers/getUserFromCognito';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
 import { queueEventParser } from '../helpers/queueEventParser';
 import { addOrUpdateContact } from '../helpers/addOrUpdateContact';
@@ -12,12 +12,12 @@ export async function resyncUserHandler(event: {
 }): Promise<APIGatewayProxyResult> {
   try {
     const queueEvent = queueEventParser(event);
-    const cognitoId = queueEvent.detail.additionalEventData.sub;
+    const cognitoUsername = queueEvent.detail.additionalEventData.sub;
 
-    const user = await getUserFromCognitoByUsername(cognitoId);
+    const user = await getUserFromCognitoUsername(cognitoUsername);
 
     if (!user) {
-      const deletionResult = await deleteContact(cognitoId); // AC call * 2
+      const deletionResult = await deleteContact(cognitoUsername); // AC call * 2
       if (
         deletionResult.statusCode != 200 &&
         deletionResult.statusCode != 404
@@ -29,7 +29,10 @@ export async function resyncUserHandler(event: {
       const contactResponse = await addOrUpdateContact(user); // AC call * 3
 
       const { listsToUnsubscribe, newWebinarSlugs } =
-        await getNewWebinarsAndUnsubsriptionLists(contactResponse, cognitoId); // AC call * 1
+        await getNewWebinarsAndUnsubsriptionLists(
+          contactResponse,
+          cognitoUsername
+        ); // AC call * 1
 
       const resyncTimeoutMilliseconds: number = parseInt(
         process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
@@ -37,13 +40,13 @@ export async function resyncUserHandler(event: {
 
       await addArrayOfListToContact({
         webinarSlugs: newWebinarSlugs,
-        cognitoId,
+        cognitoId: cognitoUsername,
         resyncTimeoutMilliseconds,
       });
 
       await removeArrayOfListFromContact({
         listsToUnsubscribe,
-        contactId: contactResponse.contact.id,
+        cognitoUsername: contactResponse.contact.id,
         resyncTimeoutMilliseconds,
       });
     }
