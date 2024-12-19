@@ -158,14 +158,15 @@ export class ActiveCampaignClient {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
   }
 
-  async getLists(ids: readonly string[]) {
+  async getLists(ids?: readonly string[]) {
+    const limitParams = { limit: '1000' };
     return this.makeRequest<readonly ActiveCampaignList[]>(
-      'DELETE',
+      'GET',
       `/api/3/lists`,
       undefined,
-      {
-        ids: ids.join(','),
-      }
+      ids && ids.length > 0
+        ? { ids: ids.join(','), ...limitParams }
+        : limitParams
     );
   }
 
