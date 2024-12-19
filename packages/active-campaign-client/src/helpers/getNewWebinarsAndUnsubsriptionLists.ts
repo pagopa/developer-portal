@@ -5,7 +5,7 @@ import { ContactResponseWithLists } from '../types/contactResponse';
 
 export async function getNewWebinarsAndUnsubsriptionLists(
   contactResponse: ContactResponseWithLists,
-  cognitoId: string
+  cognitoUsername: string
 ) {
   // eslint-disable-next-line functional/prefer-readonly-type
   const contactLists: ActiveCampaignList[] = [
@@ -17,7 +17,7 @@ export async function getNewWebinarsAndUnsubsriptionLists(
   ];
 
   const userWebinarsSubscriptions = await fetchSubscribedWebinarsFromDynamo(
-    cognitoId
+    cognitoUsername
   );
 
   const webinarSlugs: readonly string[] = JSON.parse(
