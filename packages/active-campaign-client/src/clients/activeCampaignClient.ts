@@ -57,8 +57,8 @@ export class ActiveCampaignClient {
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
-      getParameter(this.apiKeyParam, this.ssm, process.env.AC_API_KEY),
-      getParameter(this.baseUrlParam, this.ssm, process.env.AC_BASE_URL),
+      getParameter(this.apiKeyParam, this.ssm, process.env.TEST_AC_API_KEY),
+      getParameter(this.baseUrlParam, this.ssm, process.env.TEST_AC_BASE_URL),
     ]);
     return new Promise((resolve, reject) => {
       // Parse the base URL to get hostname and path and remove any trailing slashes from the baseUrl
@@ -160,9 +160,9 @@ export class ActiveCampaignClient {
 
   async getLists(ids?: readonly string[]) {
     const limitParams = { limit: '1000' };
-    return this.makeRequest<readonly ActiveCampaignList[]>(
+    return this.makeRequest<{ readonly lists: readonly ActiveCampaignList[] }>(
       'GET',
-      `/api/3/lists`,
+      '/api/3/lists',
       undefined,
       ids && ids.length > 0
         ? { ids: ids.join(','), ...limitParams }

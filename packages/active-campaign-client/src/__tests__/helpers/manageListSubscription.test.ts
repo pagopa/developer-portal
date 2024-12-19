@@ -5,8 +5,8 @@ import {
 } from '../../helpers/manageListSubscription';
 
 describe.skip('manage list subscription', () => {
-  const cognitoUserId = process.env.COGNITO_USER_ID || '';
-  const listName = process.env.LIST_NAME || '';
+  const cognitoUserId = process.env.TEST_COGNITO_USER_ID || '';
+  const listName = process.env.TEST_LIST_NAME || '';
 
   it('should subscribe the contact to the list', async () => {
     const result = await addContactToList(cognitoUserId, listName);
