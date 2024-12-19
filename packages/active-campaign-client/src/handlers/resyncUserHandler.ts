@@ -11,10 +11,13 @@ export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {
+    console.log('resyncUserHandler: Event:', event); // TODO: Remove after testing
     const queueEvent = queueEventParser(event);
     const cognitoUsername = queueEvent.detail.additionalEventData.sub;
 
     const user = await getUserFromCognitoUsername(cognitoUsername);
+
+    console.log('user:', user); // TODO: Remove after testing
 
     if (!user) {
       const deletionResult = await deleteContact(cognitoUsername); // AC call * 2
@@ -27,6 +30,8 @@ export async function resyncUserHandler(event: {
       }
     } else {
       const contactResponse = await addOrUpdateContact(user); // AC call * 3
+
+      console.log('contactResponse:', contactResponse); // TODO: Remove after testing
 
       const { listsToUnsubscribe, newWebinarSlugs } =
         await getNewWebinarsAndUnsubsriptionLists(

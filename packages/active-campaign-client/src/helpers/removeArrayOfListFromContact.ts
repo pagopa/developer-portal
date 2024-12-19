@@ -1,8 +1,7 @@
 import { acClient } from '../clients/activeCampaignClient';
-import { ActiveCampaignList } from '../types/activeCampaignList';
 
 export async function removeArrayOfListFromContact(event: {
-  readonly listsToUnsubscribe: ReadonlyArray<ActiveCampaignList>;
+  readonly listsToUnsubscribe: readonly number[];
   readonly cognitoUsername: string;
   readonly resyncTimeoutMilliseconds: number;
 }) {
@@ -10,14 +9,11 @@ export async function removeArrayOfListFromContact(event: {
     event;
   // remove contact from list for each item in unsubscription lists
   await listsToUnsubscribe.reduce(
-    async (prevPromise: Promise<void>, list: ActiveCampaignList) => {
+    async (prevPromise: Promise<void>, id: number) => {
       await prevPromise;
       // AC call * M
-      const result = await acClient.removeContactFromList(
-        cognitoUsername,
-        list.id
-      );
-      console.log('Remove contact from list result:', result, list); // TODO: Remove after testing
+      const result = await acClient.removeContactFromList(cognitoUsername, id);
+      console.log('Remove contact from list result:', result, id); // TODO: Remove after testing
       await new Promise((resolve) =>
         setTimeout(resolve, resyncTimeoutMilliseconds)
       ); // wait 1 sec to avoid rate limiting
