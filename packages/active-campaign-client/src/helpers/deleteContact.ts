@@ -5,7 +5,7 @@ export async function deleteContact(
   cognitoId: string
 ): Promise<APIGatewayProxyResult> {
   try {
-    const contactId = await acClient.getContactByCognitoId(cognitoId);
+    const contactId = await acClient.getContactByCognitoUsername(cognitoId);
 
     if (!contactId) {
       return {

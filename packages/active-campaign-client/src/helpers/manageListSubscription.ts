@@ -2,11 +2,13 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 import { acClient } from '../clients/activeCampaignClient';
 
 export async function addContactToList(
-  cognitoId: string,
+  cognitoUsername: string,
   listName: string
 ): Promise<APIGatewayProxyResult> {
   try {
-    const contactId = await acClient.getContactByCognitoId(cognitoId);
+    const contactId = await acClient.getContactByCognitoUsername(
+      cognitoUsername
+    );
     if (!contactId) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Contact not found');
@@ -35,12 +37,14 @@ export async function addContactToList(
   }
 }
 
-export async function removeContactToList(
-  cognitoId: string,
+export async function removeContactFromList(
+  cognitoUsername: string,
   listName: string
 ): Promise<APIGatewayProxyResult> {
   try {
-    const contactId = await acClient.getContactByCognitoId(cognitoId);
+    const contactId = await acClient.getContactByCognitoUsername(
+      cognitoUsername
+    );
     if (!contactId) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Contact not found');

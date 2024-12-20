@@ -3,7 +3,7 @@ import { makeContactPayload } from './makeContactPayload';
 import { acClient } from '../clients/activeCampaignClient';
 
 export async function addOrUpdateContact(user: User) {
-  const contactId = await acClient.getContactByCognitoId(user.username);
+  const contactId = await acClient.getContactByCognitoUsername(user.username);
 
   const acPayload = makeContactPayload(user);
   const { contact } = contactId

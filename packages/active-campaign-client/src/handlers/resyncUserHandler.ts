@@ -20,16 +20,16 @@ export async function resyncUserHandler(event: {
     console.log('user:', user); // TODO: Remove after testing
 
     if (!user) {
-      const deletionResult = await deleteContact(cognitoUsername); // AC call * 2
+      const deletionResult = await deleteContact(cognitoUsername);
       if (
-        deletionResult.statusCode != 200 &&
-        deletionResult.statusCode != 404
+        deletionResult.statusCode !== 200 &&
+        deletionResult.statusCode !== 404
       ) {
         // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Error adding contact');
+        throw new Error('Error deleting contact');
       }
     } else {
-      const contactResponse = await addOrUpdateContact(user); // AC call * 3
+      const contactResponse = await addOrUpdateContact(user);
 
       console.log('contactResponse:', contactResponse); // TODO: Remove after testing
 
@@ -37,23 +37,28 @@ export async function resyncUserHandler(event: {
         await getNewWebinarsAndUnsubsriptionLists(
           contactResponse,
           cognitoUsername
-        ); // AC call * 1
+        );
 
       const resyncTimeoutMilliseconds: number = parseInt(
         process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
       );
 
-      await addArrayOfListToContact({
+      const subscriptionsresult = await addArrayOfListToContact({
         webinarSlugs: newWebinarSlugs,
-        cognitoId: cognitoUsername,
+        cognitoUsername: cognitoUsername,
         resyncTimeoutMilliseconds,
       });
 
-      await removeArrayOfListFromContact({
+      const unsubscriptionsResult = await removeArrayOfListFromContact({
         listsToUnsubscribe,
-        cognitoUsername: contactResponse.contact.id,
+        contactId: contactResponse.contact.id,
         resyncTimeoutMilliseconds,
       });
+
+      if (!subscriptionsresult || !unsubscriptionsResult) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Error managing list subscriptions');
+      }
     }
     return {
       statusCode: 200,

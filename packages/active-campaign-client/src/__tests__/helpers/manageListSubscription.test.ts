@@ -1,7 +1,7 @@
 // remove .skip to run the test, be aware it does real API calls
 import {
   addContactToList,
-  removeContactToList,
+  removeContactFromList,
 } from '../../helpers/manageListSubscription';
 
 describe.skip('manage list subscription', () => {
@@ -15,7 +15,7 @@ describe.skip('manage list subscription', () => {
   });
 
   it('should unsubscribe the contact from the list', async () => {
-    const result = await removeContactToList(cognitoUserId, listName);
+    const result = await removeContactFromList(cognitoUserId, listName);
     expect(result.statusCode).toBe(200);
   });
 });
