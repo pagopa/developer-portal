@@ -24,32 +24,21 @@ import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext'
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
 const MATOMO_SCRIPT = `
- var _paq = window._paq = window._paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="https://uqido.matomo.cloud/";
-    _paq.push(['setTrackerUrl', u+'matomo.php']);
-    _paq.push(['setSiteId', '3']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src='https://cdn.matomo.cloud/uqido.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-  })();
-`;
-
-const MATOMO_ENV = `
-  var _mtm = window._mtm = window._mtm || [];
-  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-  (function() {
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src='https://cdn.matomo.cloud/uqido.matomo.cloud/container_50OlzmFz.js'; s.parentNode.insertBefore(g,s);
-  })();
-`;
-
-const MATOMO_PUSH = `
-funtion matomoEvent() {
- var _paq = window._paq = window._paq || [];
-_paq.push(['trackEvent', 'Contact', 'Email Link Click', 'name@example.com']);}
+var _paq = (window._paq = window._paq || []);
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(["trackPageView"]);
+_paq.push(["enableLinkTracking"]);
+(function () {
+  var u = "https://pagopa.matomo.cloud/";
+  _paq.push(["setTrackerUrl", u + "matomo.php"]);
+  _paq.push(["setSiteId", "8"]);
+  var d = document,
+    g = d.createElement("script"),
+    s = d.getElementsByTagName("script")[0];
+  g.async = true;
+  g.src = "//cdn.matomo.cloud/pagopa.matomo.cloud/matomo.js";
+  s.parentNode.insertBefore(g, s);
+})();
 `;
 
 const titilliumWeb = Titillium_Web({
@@ -91,20 +80,12 @@ export default async function RootLayout({
     <html lang='it' className={titilliumWeb.variable}>
       <head>
         {isProduction && (
-          <>
-            <Script
-              id='matomo'
-              key='script-matomo'
-              dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
-              strategy='lazyOnload'
-            />
-            <Script
-              id='matomoenv'
-              key='script-matomoenv'
-              dangerouslySetInnerHTML={{ __html: MATOMO_ENV }}
-              strategy='lazyOnload'
-            />
-          </>
+          <Script
+            id='matomo'
+            key='script-matomo'
+            dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
+            strategy='lazyOnload'
+          />
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
