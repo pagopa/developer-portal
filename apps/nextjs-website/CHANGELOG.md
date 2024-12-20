@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 4.13.0
+
+### Minor Changes
+
+- 7ac487f: Fix related links and webinar codec
+- fe61351: Add history to send query endpoint
+
 ## 4.12.0
 
 ### Minor Changes
