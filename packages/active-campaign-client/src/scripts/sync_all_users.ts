@@ -108,10 +108,11 @@ async function main() {
     return true;
   });
 
-  // limit uniqueUsersAndWebinars to 10
-  const limitedUniqueUsersAndWebinars = uniqueUsersAndWebinars
+  const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT && parseInt(process.env.USERS_TO_IMPORT_LIMIT);
+  const limitedUniqueUsersAndWebinars = usersToImportLimit ? uniqueUsersAndWebinars
     .filter((userAndWebinars) => userAndWebinars.subscribedWebinars.length > 0)
-    .slice(0, 2);
+    .slice(0, usersToImportLimit)
+    : uniqueUsersAndWebinars;
 
   const acPayload = limitedUniqueUsersAndWebinars.map((userAndWebinars, index) => ({
     contact: {
