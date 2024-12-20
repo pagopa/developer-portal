@@ -10,6 +10,8 @@ import {
 } from '../types/contactResponse';
 import { ActiveCampaignList } from '../types/activeCampaignList';
 
+const MAX_NUMBER_OF_LIST = '1000';
+
 async function getParameter(
   paramName: string,
   ssmClient: SSMClient,
@@ -130,10 +132,12 @@ export class ActiveCampaignClient {
     return this.makeRequest('DELETE', `/api/3/contacts/${contactId}`);
   }
 
-  async getContactByCognitoId(cognitoId: string) {
+  async getContactByCognitoUsername(cognitoUsername: string) {
     const response = await this.makeRequest<{
       readonly contacts: ReadonlyArray<{ readonly id: string }>;
-    }>('GET', '/api/3/contacts', undefined, { phone: `cognito:${cognitoId}` });
+    }>('GET', '/api/3/contacts', undefined, {
+      phone: `cognito:${cognitoUsername}`,
+    });
     return response?.contacts?.[0]?.id;
   }
 
@@ -160,7 +164,7 @@ export class ActiveCampaignClient {
   }
 
   async getLists(ids?: readonly string[]) {
-    const limitParams = { limit: '1000' };
+    const limitParams = { limit: MAX_NUMBER_OF_LIST };
     return this.makeRequest<{ readonly lists: readonly ActiveCampaignList[] }>(
       'GET',
       '/api/3/lists',

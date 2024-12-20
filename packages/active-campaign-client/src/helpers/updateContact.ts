@@ -8,7 +8,7 @@ export async function updateContact(
 ): Promise<APIGatewayProxyResult> {
   try {
     const acPayload = makeContactPayload(user);
-    const contactId = await acClient.getContactByCognitoId(user.username);
+    const contactId = await acClient.getContactByCognitoUsername(user.username);
     if (!contactId) {
       return {
         statusCode: 404,

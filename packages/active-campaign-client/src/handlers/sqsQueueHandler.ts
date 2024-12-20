@@ -6,7 +6,7 @@ import { deleteContact } from '../helpers/deleteContact';
 import { queueEventParser } from '../helpers/queueEventParser';
 import {
   addContactToList,
-  removeContactToList,
+  removeContactFromList,
 } from '../helpers/manageListSubscription';
 
 function manageError(result: APIGatewayProxyResult) {
@@ -49,7 +49,7 @@ export async function sqsQueueHandler(event: {
         );
       case 'DynamoREMOVE':
         return manageError(
-          await removeContactToList(
+          await removeContactFromList(
             queueEvent.detail.additionalEventData.sub,
             queueEvent.webinarId || ''
           )
