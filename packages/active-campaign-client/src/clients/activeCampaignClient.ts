@@ -60,8 +60,8 @@ export class ActiveCampaignClient {
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
       // Fallback env variable exists only for manual testing purposes
-      getParameter(this.apiKeyParam, this.ssm, process.env.TEST_AC_API_KEY),
-      getParameter(this.baseUrlParam, this.ssm, process.env.TEST_AC_BASE_URL),
+      getParameter(this.apiKeyParam, this.ssm, process.env.AC_API_KEY),
+      getParameter(this.baseUrlParam, this.ssm, process.env.AC_BASE_URL),
     ]);
     return new Promise((resolve, reject) => {
       // Parse the base URL to get hostname and path and remove any trailing slashes from the baseUrl
@@ -187,10 +187,12 @@ export class ActiveCampaignClient {
         last_name: payload.contact.lastName,
         phone: payload.contact.phone,
         customer_acct_name: payload.contact.lastName,
-        fields: payload.contact.fieldValues.map((field) => ({
-          id: Number(field.field),
-          value: field.value,
-        })),
+        fields: payload.contact.fieldValues
+          .filter((field) => field.value)
+          .map((field) => ({
+            id: Number(field.field),
+            value: field.value,
+          })),
         subscribe: payload.listIds.map((listId) => ({ listid: listId })),
       })),
     };
