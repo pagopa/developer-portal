@@ -10,7 +10,7 @@ import {
 } from '../types/contactResponse';
 import { ActiveCampaignList } from '../types/activeCampaignList';
 
-const MAX_NUMBER_OF_LIST = '1000';
+const MAX_NUMBER_OF_LISTS = '1000';
 
 async function getParameter(
   paramName: string,
@@ -164,7 +164,7 @@ export class ActiveCampaignClient {
   }
 
   async getLists(ids?: readonly string[]) {
-    const limitParams = { limit: MAX_NUMBER_OF_LIST };
+    const limitParams = { limit: MAX_NUMBER_OF_LISTS };
     return this.makeRequest<{ readonly lists: readonly ActiveCampaignList[] }>(
       'GET',
       '/api/3/lists',
