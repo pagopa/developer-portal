@@ -23,7 +23,7 @@ services:
       - ntw
 
   postgres:
-    image: postgres:17.2-alpine
+    image: postgres:17.2-alpine@sha256:d37d2c160d34430877c802e5adc22824a2ad453499db9bab1a2ceb2be6c1a46f
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -39,7 +39,7 @@ services:
       - ntw
 
   dynamodb:
-    image: amazon/dynamodb-local:2.5.2
+    image: amazon/dynamodb-local:2.5.2@sha256:d7ebddeb60fa418bcda218a6c6a402a58441b2a20d54c9cb1d85fd5194341753
     environment:
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
@@ -50,7 +50,7 @@ services:
       - ntw
 
   redis:
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -78,7 +78,7 @@ services:
       - ntw
 
   langfuse:
-    image: langfuse/langfuse:2
+    image: langfuse/langfuse:2@sha256:79f4df5c79f421810c45c89bedda3ff381723b1573dcfe98b988736ff8e9d16e
     depends_on:
       postgres:
         condition: service_healthy
