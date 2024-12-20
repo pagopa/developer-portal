@@ -20,7 +20,6 @@ const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
   return (
     <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
       <Fab
-        id='chatbot'
         aria-label='chat'
         onClick={(e) => {
           matomoEvent();
