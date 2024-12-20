@@ -3,9 +3,8 @@ import re
 import json
 import yaml
 import datetime
-import logging
+from logging import getLogger
 import asyncio
-import nest_asyncio
 from typing import Any
 
 import pandas as pd
@@ -19,14 +18,13 @@ from llama_index.core.evaluation import (
     ContextRelevancyEvaluator
 )
 from llama_index.core.evaluation.base import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation.eval_utils import aget_responses
+from llama_index.core.evaluation.eval_utils import get_responses
 
 from src.modules.chatbot import Chatbot
 from src.modules.models import get_llm
 
 
-nest_asyncio.apply()
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logger = getLogger(__name__)
 
 
 def parser_function(output_str: str):
@@ -160,7 +158,7 @@ if __name__ == "__main__":
     params = yaml.safe_load(open("config/params.yaml", "r"))
     prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
     eval_prompts = yaml.safe_load(open("config/eval_prompts.yaml", "r"))
-    bot = Chatbot(params, prompts)
+    bot = Chatbot(params, prompts, use_chat_engine=False)
     eval_model = get_llm()
 
     # load FAQs
@@ -192,18 +190,18 @@ if __name__ == "__main__":
     batch_runner = BatchEvalRunner(evaluator_dict, workers=12, show_progress=True)
 
     # get predition responses
-    pred_responses = asyncio.run(aget_responses(questions, bot.engine._query_engine, show_progress=True))
+    pred_responses = get_responses(questions, bot.engine, show_progress=True)
 
     for i, pr in enumerate(pred_responses):
         after = bot._get_response_str(pr)
         pred_responses[i].response = after
 
     # get evaluation results    
-    eval_results = asyncio.run(batch_runner.aevaluate_responses(
+    eval_results = batch_runner.evaluate_responses(
         questions,
         responses=pred_responses,
         reference=ref_responses
-    ))
+    )
 
     # save results
     now = datetime.datetime.now()
@@ -224,4 +222,4 @@ if __name__ == "__main__":
     )
     with open(os.path.join(results_dir, "avg_scores.json"), "w") as f:
         json.dump(avg_scores, f, indent=4)
-    logging.info(f"Results stored in {results_dir}")
+    logger.info(f"Results stored in {results_dir}")

@@ -1,0 +1,78 @@
+name: Deploy Lambda Active Campaign Syncer
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "packages/active-campaign-client/**"
+      - ".github/workflows/deploy_ac_sync_lambda.yaml"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose environment'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - prod
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        working-directory: packages/active-campaign-client
+        run: npm run build
+
+      - name: Package
+        working-directory: packages/active-campaign-client/dist
+        run: zip -r function.zip .
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: active-campaign-client
+          path: packages/active-campaign-client/dist/function.zip
+
+  deploy:
+    name: Deploy Lambda Active Campaign Syncer
+    runs-on: ubuntu-22.04
+    needs: build
+
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: active-campaign-client
+          path: ./packages/active-campaign-client/target
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+          aws-region: eu-south-1
+
+      - name: Deploy Lambda function (${{ github.event.inputs.environment || 'dev' }})
+        run: |
+          aws lambda update-function-code \
+          --function-name ac-${{ github.event.inputs.environment || 'dev' }}-sync-lambda \
+          --zip-file fileb://packages/active-campaign-client/target/function.zip
