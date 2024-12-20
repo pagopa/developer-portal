@@ -2,4 +2,4 @@
 "active-campaign-client": minor
 ---
 
-Refactor resyncUserHandler update active campaing only with updated data
+Refactor resyncUserHandler to align contacts and subscriptions in Active Campaign

@@ -57,6 +57,7 @@ export class ActiveCampaignClient {
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
+      // Fallback env variable exists only for manual testing purposes
       getParameter(this.apiKeyParam, this.ssm, process.env.TEST_AC_API_KEY),
       getParameter(this.baseUrlParam, this.ssm, process.env.TEST_AC_BASE_URL),
     ]);

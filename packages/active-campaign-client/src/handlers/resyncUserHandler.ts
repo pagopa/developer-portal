@@ -22,11 +22,11 @@ export async function resyncUserHandler(event: {
     if (!user) {
       const deletionResult = await deleteContact(cognitoUsername); // AC call * 2
       if (
-        deletionResult.statusCode != 200 &&
-        deletionResult.statusCode != 404
+        deletionResult.statusCode !== 200 &&
+        deletionResult.statusCode !== 404
       ) {
         // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Error adding contact');
+        throw new Error('Error deleting contact');
       }
     } else {
       const contactResponse = await addOrUpdateContact(user); // AC call * 3
