@@ -11,7 +11,7 @@ const activeCampaignClient = new ActiveCampaignClient(
   process.env.AC_API_KEY!
 );
 
-const userPoolId = process.env.AWS_USER_POOL_ID!;
+const userPoolId = process.env.COGNITO_USER_POOL_ID!;
 
 // Initialize Cognito client
 const cognito = new CognitoIdentityServiceProvider({
