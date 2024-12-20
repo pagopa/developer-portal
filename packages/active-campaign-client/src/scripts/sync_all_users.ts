@@ -1,3 +1,7 @@
+// To run this script you need to have proper environment variables set up.
+// Must be logged in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
+// Then run 'npm run sync-all-users -w active-campaign-client'
+
 /* eslint-disable */
 import { ActiveCampaignClient } from "../clients/activeCampaignClient";
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
