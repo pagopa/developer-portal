@@ -3,6 +3,7 @@ import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { ContactPayload } from '../types/contactPayload';
 import { ListPayload } from '../types/listPayload';
 import { ListStatusPayload } from '../types/listStatusPayload';
+import { BulkAddContactPayload } from '../types/bulkAddContactPayload';
 
 async function getParameter(
   paramName: string,
@@ -43,7 +44,11 @@ export class ActiveCampaignClient {
   private async makeRequest<T>(
     method: string,
     path: string,
-    data?: ContactPayload | ListPayload | ListStatusPayload,
+    data?:
+      | ContactPayload
+      | ListPayload
+      | ListStatusPayload
+      | BulkAddContactPayload,
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
@@ -135,6 +140,29 @@ export class ActiveCampaignClient {
 
   async deleteList(id: number) {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
+  }
+
+  async bulkAddContactToList(
+    contacts: readonly (ContactPayload & {
+      readonly listIds: readonly number[];
+    })[]
+  ) {
+    const body = {
+      contacts: contacts.map((payload) => ({
+        email: payload.contact.email,
+        first_name: payload.contact.firstName,
+        last_name: payload.contact.lastName,
+        phone: payload.contact.phone,
+        customer_acct_name: payload.contact.lastName,
+        fields: payload.contact.fieldValues.map((field) => ({
+          id: Number(field.field),
+          value: field.value,
+        })),
+        subscribe: payload.listIds.map((listId) => ({ listid: listId })),
+      })),
+    };
+
+    return this.makeRequest('POST', `/api/3/import/bulk_import`, body);
   }
 
   async addContactToList(contactId: string, listId: number) {
