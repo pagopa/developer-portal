@@ -4,13 +4,14 @@ import { ActiveCampaignClient } from '../clients/activeCampaignClient';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { ContactPayload } from '../types/contactPayload';
+import * as dotenv from 'dotenv';
 
 const activeCampaignClient = new ActiveCampaignClient(
   process.env.TEST_AC_BASE_URL,
   process.env.TEST_AC_API_KEY
 );
 
-const userPoolId = process.env.COGNITO_USER_POOL_ID!;
+const userPoolId = () => process.env.COGNITO_USER_POOL_ID!;
 
 // Initialize Cognito client
 const cognito = new CognitoIdentityServiceProvider({
@@ -48,7 +49,7 @@ async function listAllUsers() {
 
     do {
       const params: any = {
-        UserPoolId: userPoolId,
+        UserPoolId: userPoolId(),
         PaginationToken: paginationToken,
       };
 
@@ -67,6 +68,8 @@ async function listAllUsers() {
 }
 
 async function main() {
+  dotenv.config();
+  console.log(process.env);
   const users = await listAllUsers();
 
   console.log(process.env.DYNAMO_WEBINARS_TABLE_NAME);
