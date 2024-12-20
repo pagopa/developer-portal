@@ -4,6 +4,13 @@ import { ContactPayload } from '../types/contactPayload';
 import { ListPayload } from '../types/listPayload';
 import { ListStatusPayload } from '../types/listStatusPayload';
 import { BulkAddContactPayload } from '../types/bulkAddContactPayload';
+import {
+  ContactResponse,
+  ContactResponseWithLists,
+} from '../types/contactResponse';
+import { ActiveCampaignList } from '../types/activeCampaignList';
+
+const MAX_NUMBER_OF_LISTS = '1000';
 
 async function getParameter(
   paramName: string,
@@ -52,8 +59,9 @@ export class ActiveCampaignClient {
     params?: Record<string, string>
   ): Promise<T> {
     const [apiKey, baseUrl] = await Promise.all([
-      getParameter(this.apiKeyParam, this.ssm, process.env.AC_API_KEY),
-      getParameter(this.baseUrlParam, this.ssm, process.env.AC_BASE_URL),
+      // Fallback env variable exists only for manual testing purposes
+      getParameter(this.apiKeyParam, this.ssm, process.env.TEST_AC_API_KEY),
+      getParameter(this.baseUrlParam, this.ssm, process.env.TEST_AC_BASE_URL),
     ]);
     return new Promise((resolve, reject) => {
       // Parse the base URL to get hostname and path and remove any trailing slashes from the baseUrl
@@ -109,29 +117,42 @@ export class ActiveCampaignClient {
   }
 
   async createContact(data: ContactPayload) {
-    return this.makeRequest('POST', '/api/3/contacts', data);
+    return this.makeRequest<ContactResponse>('POST', '/api/3/contacts', data);
   }
 
   async updateContact(contactId: string, data: ContactPayload) {
-    return this.makeRequest('PUT', `/api/3/contacts/${contactId}`, data);
+    return this.makeRequest<ContactResponse>(
+      'PUT',
+      `/api/3/contacts/${contactId}`,
+      data
+    );
   }
 
   async deleteContact(contactId: string) {
     return this.makeRequest('DELETE', `/api/3/contacts/${contactId}`);
   }
 
-  async getContactByCognitoId(cognitoId: string) {
+  async getContactByCognitoUsername(cognitoUsername: string) {
     const response = await this.makeRequest<{
       readonly contacts: ReadonlyArray<{ readonly id: string }>;
-    }>('GET', '/api/3/contacts', undefined, { phone: `cognito:${cognitoId}` });
+    }>('GET', '/api/3/contacts', undefined, {
+      phone: `cognito:${cognitoUsername}`,
+    });
     return response?.contacts?.[0]?.id;
+  }
+
+  async getContact(id: string) {
+    return await this.makeRequest<ContactResponseWithLists>(
+      'GET',
+      `/api/3/contacts/${id}`
+    );
   }
 
   async createList(data: ListPayload) {
     return this.makeRequest('POST', '/api/3/lists', data);
   }
 
-  async getListIdByName(name: string) {
+  async getListIdByName(name: string): Promise<number | undefined> {
     const response = await this.makeRequest<{
       readonly lists: ReadonlyArray<{ readonly id: number }>;
     }>('GET', '/api/3/lists', undefined, { 'filters[name][eq]': name });
@@ -140,6 +161,18 @@ export class ActiveCampaignClient {
 
   async deleteList(id: number) {
     return this.makeRequest('DELETE', `/api/3/lists/${id}`);
+  }
+
+  async getLists(ids?: readonly string[]) {
+    const limitParams = { limit: MAX_NUMBER_OF_LISTS };
+    return this.makeRequest<{ readonly lists: readonly ActiveCampaignList[] }>(
+      'GET',
+      '/api/3/lists',
+      undefined,
+      ids && ids.length > 0
+        ? { ids: ids.join(','), ...limitParams }
+        : limitParams
+    );
   }
 
   async bulkAddContactToList(

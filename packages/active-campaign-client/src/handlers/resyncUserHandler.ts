@@ -1,74 +1,65 @@
 import { deleteContact } from '../helpers/deleteContact';
 import { getUserFromCognitoUsername } from '../helpers/getUserFromCognito';
-import { getSubscribedWebinars } from '../helpers/getSubscribedWebinars';
-import { addContact } from '../helpers/addContact';
 import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { addContactToList } from '../helpers/manageListSubscription';
 import { queueEventParser } from '../helpers/queueEventParser';
+import { addOrUpdateContact } from '../helpers/addOrUpdateContact';
+import { getNewWebinarsAndUnsubsriptionLists } from '../helpers/getNewWebinarsAndUnsubsriptionLists';
+import { addArrayOfListToContact } from '../helpers/addArrayOfListToContact';
+import { removeArrayOfListFromContact } from '../helpers/removeArrayOfListFromContact';
 
 export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
   try {
+    console.log('resyncUserHandler: Event:', event); // TODO: Remove after testing
     const queueEvent = queueEventParser(event);
     const cognitoUsername = queueEvent.detail.additionalEventData.sub;
-    const deletionResult = await deleteContact(cognitoUsername);
-    if (
-      deletionResult.statusCode !== 200 &&
-      deletionResult.statusCode !== 404
-    ) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Error adding contact');
-    }
 
     const user = await getUserFromCognitoUsername(cognitoUsername);
 
+    console.log('user:', user); // TODO: Remove after testing
+
     if (!user) {
-      console.log(
-        `User: ${cognitoUsername} not present on Cognito, sync done.`
+      const deletionResult = await deleteContact(cognitoUsername);
+      if (
+        deletionResult.statusCode !== 200 &&
+        deletionResult.statusCode !== 404
+      ) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Error deleting contact');
+      }
+    } else {
+      const contactResponse = await addOrUpdateContact(user);
+
+      console.log('contactResponse:', contactResponse); // TODO: Remove after testing
+
+      const { listsToUnsubscribe, newWebinarSlugs } =
+        await getNewWebinarsAndUnsubsriptionLists(
+          contactResponse,
+          cognitoUsername
+        );
+
+      const resyncTimeoutMilliseconds: number = parseInt(
+        process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
       );
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: 'User not present on Cognito, sync done.',
-        }),
-      };
+
+      const subscriptionsresult = await addArrayOfListToContact({
+        webinarSlugs: newWebinarSlugs,
+        cognitoUsername: cognitoUsername,
+        resyncTimeoutMilliseconds,
+      });
+
+      const unsubscriptionsResult = await removeArrayOfListFromContact({
+        listsToUnsubscribe,
+        contactId: contactResponse.contact.id,
+        resyncTimeoutMilliseconds,
+      });
+
+      if (!subscriptionsresult || !unsubscriptionsResult) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Error managing list subscriptions');
+      }
     }
-
-    const userWebinarsSubscriptions = await getSubscribedWebinars(
-      cognitoUsername
-    );
-
-    const webinarIds = JSON.parse(userWebinarsSubscriptions.body)
-      .map(
-        (webinar: { readonly webinarId: { readonly S: string } }) =>
-          webinar?.webinarId?.S
-      )
-      .filter(Boolean);
-
-    const res = await addContact(user);
-    if (res.statusCode !== 200) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Error adding contact');
-    }
-
-    await webinarIds.reduce(
-      async (
-        prevPromise: Promise<APIGatewayProxyResult>,
-        webinarId: string
-      ) => {
-        await prevPromise;
-        try {
-          const result = await addContactToList(cognitoUsername, webinarId);
-          console.log('Add contact to list result:', result, webinarId); // TODO: Remove after testing
-          await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 sec to avoid rate limiting
-        } catch (e) {
-          console.error('Error adding contact to list', e); // TODO: Remove after testing
-        }
-      },
-      Promise.resolve()
-    );
-
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'User resynced' }),
