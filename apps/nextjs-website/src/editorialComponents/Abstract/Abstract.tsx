@@ -91,7 +91,11 @@ export const Abstract: React.FC<AbstractProps> = ({
               {overline}
             </Typography>
           )}
-          <Typography color={textColor} variant='h4'>
+          <Typography
+            color={textColor}
+            variant='h1'
+            sx={{ fontSize: '2rem !important', lineHeight: '1.125 !important' }}
+          >
             {title}
           </Typography>
           {description && (
