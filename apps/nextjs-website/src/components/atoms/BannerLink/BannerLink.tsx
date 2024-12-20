@@ -4,6 +4,7 @@ import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
+import { Variant } from '@mui/material/styles/createTypography';
 
 export type BannerLinkProps = {
   content?: BlocksContent;
@@ -11,6 +12,7 @@ export type BannerLinkProps = {
   icon: Media;
   theme: 'light' | 'dark';
   title?: string;
+  variant?: Variant;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
@@ -19,6 +21,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
   icon,
   theme = 'light',
   title,
+  variant = 'h6',
 }) => {
   const { palette } = useTheme();
 
@@ -65,7 +68,14 @@ export const BannerLink: FC<BannerLinkProps> = ({
           </div>
 
           {title && (
-            <Typography variant={`h6`} color={textColor}>
+            <Typography
+              variant={variant}
+              sx={{
+                fontSize: '1.5rem !important',
+                lineHeight: '1.15 !important',
+              }}
+              color={textColor}
+            >
               {title}
             </Typography>
           )}

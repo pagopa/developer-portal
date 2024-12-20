@@ -4,6 +4,7 @@ import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
+import { Variant } from '@mui/material/styles/createTypography';
 
 interface INewsroomItem {
   comingSoonLabel?: string;
@@ -22,6 +23,7 @@ interface INewsroomItem {
     title?: string;
     link: string;
   };
+  variant?: Variant;
 }
 
 export interface INewsroom {
@@ -30,6 +32,7 @@ export interface INewsroom {
 }
 
 const Item = (props: INewsroomItem) => {
+  const { variant = 'h6' } = props;
   const theme = useTheme();
 
   const {
@@ -112,7 +115,15 @@ const Item = (props: INewsroomItem) => {
           flexGrow: '1',
         }}
       >
-        <Typography variant='h6'>{title}</Typography>
+        <Typography
+          variant={variant}
+          sx={{
+            fontSize: '1.5rem !important',
+            lineHeight: '1.15 !important',
+          }}
+        >
+          {title}
+        </Typography>
         <Stack mt={2} direction='row' alignItems='center' color='primary.main'>
           <LinkButton
             disabled={!!comingSoonLabel}

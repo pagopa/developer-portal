@@ -41,7 +41,7 @@ const NewsShowcase = ({
   const coomingSoonLabel = t('comingSoon');
   return (
     <Box marginTop={marginTop}>
-      <SectionTitle title={title} subtitle={subtitle} cta={cta} />
+      <SectionTitle title={title} subtitle={subtitle} cta={cta} variant='h2' />
       <Box mt={newsMarginTop}>
         <Newsroom
           items={items.map((item) => ({

@@ -37,7 +37,7 @@ const StartInfo = ({
     <>
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
         <Box mb={2}>
-          <SectionTitle title={title} />
+          <SectionTitle title={title} variant='h2' />
         </Box>
         <CardsGrid
           ctaButtonsVariant={cardVariant}

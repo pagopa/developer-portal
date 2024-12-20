@@ -2,6 +2,7 @@
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Stack, Typography } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 import React, { ReactNode } from 'react';
 
 type SectionTitleProps = {
@@ -13,6 +14,7 @@ type SectionTitleProps = {
   };
   children?: ReactNode | ReactNode[];
   margin?: number | string;
+  variant?: Variant;
 };
 
 const SectionTitle = ({
@@ -21,6 +23,7 @@ const SectionTitle = ({
   cta,
   margin,
   children,
+  variant = 'h4',
 }: SectionTitleProps) => {
   return (
     <EContainer>
@@ -33,8 +36,13 @@ const SectionTitle = ({
       >
         {title && (
           <Typography
-            variant='h4'
-            style={{ marginBottom: '16px', width: '100%' }}
+            variant={variant}
+            sx={{
+              paddingBottom: '16px',
+              width: '100%',
+              fontSize: '2rem !important',
+              lineHeight: '1.125 !important',
+            }}
           >
             {title}
           </Typography>
