@@ -1,4 +1,4 @@
-import PrivacyPolicyTemplate from '@/components/templates/PrivacyPolicyTemplate/PrivacyPolicyAtom';
+import PrivacyPolicyTemplate from '@/components/templates/PrivacyPolicyTemplate/PrivacyPolicyTemplate';
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
