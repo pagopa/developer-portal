@@ -6,8 +6,20 @@ import { deleteContact } from '../helpers/deleteContact';
 import { queueEventParser } from '../helpers/queueEventParser';
 import {
   addContactToList,
-  removeContactToList,
+  removeContactFromList,
 } from '../helpers/manageListSubscription';
+
+function manageError(result: APIGatewayProxyResult) {
+  if (result.statusCode === 500) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Internal server error');
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+  };
+}
 
 export async function sqsQueueHandler(event: {
   readonly Records: SQSEvent['Records'];
@@ -17,20 +29,30 @@ export async function sqsQueueHandler(event: {
     const queueEvent = queueEventParser(event);
     switch (queueEvent.detail.eventName) {
       case 'ConfirmSignUp':
-        return await addContact(await getUserFromCognito(queueEvent));
+        return manageError(
+          await addContact(await getUserFromCognito(queueEvent))
+        );
       case 'UpdateUserAttributes':
-        return await updateContact(await getUserFromCognito(queueEvent));
+        return manageError(
+          await updateContact(await getUserFromCognito(queueEvent))
+        );
       case 'DeleteUser':
-        return await deleteContact(queueEvent.detail.additionalEventData.sub);
+        return manageError(
+          await deleteContact(queueEvent.detail.additionalEventData.sub)
+        );
       case 'DynamoINSERT':
-        return await addContactToList(
-          queueEvent.detail.additionalEventData.sub,
-          queueEvent.webinarId || ''
+        return manageError(
+          await addContactToList(
+            queueEvent.detail.additionalEventData.sub,
+            queueEvent.webinarId || ''
+          )
         );
       case 'DynamoREMOVE':
-        return await removeContactToList(
-          queueEvent.detail.additionalEventData.sub,
-          queueEvent.webinarId || ''
+        return manageError(
+          await removeContactFromList(
+            queueEvent.detail.additionalEventData.sub,
+            queueEvent.webinarId || ''
+          )
         );
       default:
         // eslint-disable-next-line functional/no-throw-statements

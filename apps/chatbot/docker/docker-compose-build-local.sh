@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose --env-file .env -f docker/compose.yaml -p chatbot build
+docker compose -f docker/compose.yaml -p chatbot build
