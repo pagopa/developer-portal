@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.2.1
+
+### Patch Changes
+
+- 175eef7: Rename "version" to "subPath" in "components_products_url_to_guides"
+
 ## 3.2.0
 
 ### Minor Changes
