@@ -71,8 +71,8 @@ const CtaCard = ({
               ...titleStyle,
               fontSize: '1.5rem !important',
               lineHeight: '1.15 !important',
+              marginTop: 2,
             }}
-            mt={2}
             variant={variant}
             gutterBottom
           >
