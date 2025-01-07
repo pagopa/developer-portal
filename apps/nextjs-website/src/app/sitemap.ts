@@ -4,7 +4,12 @@ import {
   getGuideListPagesProps,
   getCaseHistoriesProps,
   getProductsProps,
+  getTutorialsProps,
+  getGuidesProps,
+  getWebinarsProps,
+  getSolutionsProps,
 } from '@/lib/cmsApi';
+import { baseUrl } from '@/config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
@@ -14,8 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productSlugs = (await getProductsProps()).map(
     (product) => product.slug
   );
-
-  const baseUrl = 'https://developers.pagopa.it';
 
   // Base routes
   const routes = [
@@ -100,12 +103,69 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Guide list pages
-  const guideRoutes = guideListPages.map((guide) => ({
+  const guidePagesRoutes = guideListPages.map((guide) => ({
     url: `${baseUrl}/${guide.product.slug}/guides`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
+
+  const tutorials = await getTutorialsProps();
+  const tutorialRoutes = tutorials.map((tutorial) => ({
+    // eslint-disable-next-line prettier/prettier
+    url: `${baseUrl}/${tutorial.productSlug}/tutorials/${tutorial.parts?.join('/') ?? ''
+    }`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  const guides = await getGuidesProps();
+  const guideRoutes = guides.map((guide) => ({
+    url: `${baseUrl}/${guide.product.slug}/guides/${guide.guide.path}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  const webinars = await getWebinarsProps();
+  const webinarRoutes = webinars.map((webinar) => ({
+    url: `${baseUrl}/webinars/${webinar.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  const solutions = await getSolutionsProps();
+  const solutionRoutes = solutions.map((solution) => ({
+    url: `${baseUrl}/solutions/${solution.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  const solutionsDetailRoutes = solutions.map((solution) => ({
+    url: `${baseUrl}/solutions/${solution.slug}/details`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  // Add main section routes
+  const sectionRoutes = [
+    {
+      url: `${baseUrl}/solutions`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/webinars`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+  ];
 
   return [
     ...routes,
@@ -114,6 +174,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...caseHistoryRoutes,
     ...productRoutes,
     ...apiRoutes,
+    ...guidePagesRoutes,
+    ...tutorialRoutes,
     ...guideRoutes,
+    ...webinarRoutes,
+    ...solutionRoutes,
+    ...solutionsDetailRoutes,
+    ...sectionRoutes,
   ];
 }
