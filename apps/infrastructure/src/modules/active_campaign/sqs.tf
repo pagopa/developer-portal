@@ -3,8 +3,8 @@ resource "aws_sqs_queue" "fifo_queue" {
   name                        = "${local.prefix}-events.fifo"
   fifo_queue                  = true
   content_based_deduplication = true
-  deduplication_scope         = "messageGroup"
-  fifo_throughput_limit       = "perMessageGroupId"
+  deduplication_scope         = "queue"
+  fifo_throughput_limit       = "perQueue"
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.fifo_dlq_queue.arn

@@ -43,17 +43,9 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), 'default-index')
-
-def calculate_new_index_id(current_index_id):
-  if current_index_id == 'default-index':
-    return current_index_id
-  TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-  rtn = f"index--{TODAY}"
-  return rtn
-
-NEW_INDEX_ID = calculate_new_index_id(INDEX_ID)
-
+TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), "default-index")
+NEW_INDEX_ID = f"index--{TODAY}" if INDEX_ID != "default-index" else "default-index"
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -63,7 +55,8 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 EMBEDDING_DIMS = {
     "models/text-embedding-004": 768,
-    "cohere.embed-multilingual-v3": 1024
+    "cohere.embed-multilingual-v3": 1024,
+    "amazon.titan-embed-text-v2:0": 1024
 }
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": f"{INDEX_ID}", "prefix": f"{INDEX_ID}/vector"},
@@ -169,6 +162,7 @@ def create_documentation(
 
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
+
             driver = webdriver.Chrome(
                 options=driver_options,
                 service=driver_service
@@ -224,7 +218,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logger.info(f"Storing vector index and hash table on Redis hash_table_{NEW_INDEX_ID}..")
+    logger.info("Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -240,7 +234,7 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logger.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{NEW_INDEX_ID} is now on Redis.")
+    logger.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
 
     logger.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
@@ -277,7 +271,7 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(NEW_INDEX_ID)
     put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logger.info(f"Created vector index ${NEW_INDEX_ID} successfully and stored on Redis.")
+    logger.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
@@ -325,7 +319,7 @@ def load_automerging_index_redis(
 
 def delete_old_index():
 
-    if INDEX_ID: # is in ssm there is nothing, INDEX_ID = None
+    if INDEX_ID != "default-index": # if in ssm there is nothing, INDEX_ID = None
         for key in REDIS_CLIENT.scan_iter():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
