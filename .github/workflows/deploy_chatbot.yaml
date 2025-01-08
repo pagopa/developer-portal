@@ -1,0 +1,138 @@
+name: Deploy Chatbot
+
+on:
+  push:
+    branches: ['main']
+    # Run only if there are at least one change matching the following paths
+    paths:
+      - 'apps/chatbot/**'
+      - '.github/workflows/deploy_chatbot.yaml'
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - prod
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - warning
+
+defaults:
+  run:
+    shell: bash
+    working-directory: apps/chatbot
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+
+  cd_deploy_chatbot:
+    name: Build and push Chatbot API lambda image (on ${{ matrix.environment }})
+    if: github.event_name == 'push' && github.event.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    strategy:
+      matrix:
+        environment: [ 'dev' ]
+    environment: ${{ matrix.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: ${{ env.AWS_REGION || 'eu-south-1' }}
+          role_to_assume: ${{ secrets.IAM_ROLE_DEPLOY_CHATBOT }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: Build Push and Tag
+        # Enabling the "continue on error" option allows for a manual rollback
+        # to be performed in case of any issues. Without this option, the step
+        # will fail if the image already exists in the Elastic Container
+        # Registry (ECR). However, by activating this option, the deployment
+        # process will proceed to the next steps even if the ECR image already
+        # exists
+        continue-on-error: true
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: chatbot
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+            context: apps/chatbot
+            file: docker/app.Dockerfile
+            push: true
+            tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            provenance: false
+
+      - name: AWS set lambda function image
+        run: |
+            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
+
+  manual_deploy:
+    name: Build and push Chatbot API lambda image (manual trigger) - (${{ inputs.environment }})
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: ${{ env.AWS_REGION || 'eu-south-1' }}
+          role_to_assume: ${{ secrets.IAM_ROLE_DEPLOY_CHATBOT }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: Build Push and Tag
+        # Enabling the "continue on error" option allows for a manual rollback
+        # to be performed in case of any issues. Without this option, the step
+        # will fail if the image already exists in the Elastic Container
+        # Registry (ECR). However, by activating this option, the deployment
+        # process will proceed to the next steps even if the ECR image already
+        # exists
+        continue-on-error: true
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: chatbot
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+            context: apps/chatbot
+            push: true
+            tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            provenance: false
+
+      - name: AWS set lambda function image
+        run: |
+            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
