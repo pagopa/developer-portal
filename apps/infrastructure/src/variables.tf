@@ -118,3 +118,33 @@ variable "chatbot_ecs_redis" {
     port      = 6379
   }
 }
+
+################################################################################
+# ECS - Chatbot Monitoring
+################################################################################
+
+variable "chatbot_ecs_monitoring" {
+  type = object({
+    cpu       = optional(number, 2048)
+    memory    = optional(number, 4096)
+    image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")
+    port      = optional(number, 3000)
+  })
+  description = "Redis configuration for the AI chatbot"
+
+  default = {
+    cpu       = 2048
+    memory    = 4096
+    image_uri = "ghcr.io/langfuse/langfuse:sha-9375250"
+    port      = 3000
+  }
+}
+
+################################################################################
+# Active Campaign integration
+################################################################################
+variable "ac_integration_is_enabled" {
+  type        = bool
+  description = "Defines if Active Campaign integration should be enabled"
+  default     = false
+}

@@ -106,3 +106,48 @@ resource "aws_iam_role_policy_attachment" "deploy_chatbot" {
   policy_arn = aws_iam_policy.deploy_chatbot.arn
 }
 
+###############################################################################
+#                      IAM Role used by Monitoring ECS                        #
+###############################################################################
+module "ecs_monitoring_task_iam_role" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "${local.prefix}-monitoring-ecs-task-role"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
+    module.iam_policy_ecs_task_role_ssm.arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  role_requires_mfa = false
+}
+
+module "iam_role_ecs_monitoring_task_execution" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  create_role = true
+  role_name   = "${local.prefix}-ecs-monitoring-task-execution-role"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    module.iam_policy_ecs_monitoring_task_role_ssm.arn
+  ]
+  number_of_custom_role_policy_arns = 3
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  role_requires_mfa = false
+}
+
+module "iam_policy_ecs_monitoring_task_role_ssm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name   = "ECSMonitoringTaskRolePoliciesSSM"
+  path   = "/"
+  policy = data.aws_iam_policy_document.ecs_monitoring_ssm_policy.json
+}

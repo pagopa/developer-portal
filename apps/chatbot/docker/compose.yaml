@@ -1,8 +1,10 @@
+---
 services:
   api:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
+    command: "./scripts/run.local.sh"
     ports:
       - "8080:8080"
     volumes:
@@ -14,9 +16,28 @@ services:
         condition: service_started
       dynamodb:
         condition: service_started
+      langfuse:
+        condition: service_started
+    env_file: ../.env.local
     networks:
       - ntw
-  
+
+  postgres:
+    image: postgres:17.2-alpine
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: ../.env.local
+    networks:
+      - ntw
+
   dynamodb:
     image: amazon/dynamodb-local:2.5.2
     environment:
@@ -27,12 +48,14 @@ services:
       - "8000:8000"
     networks:
       - ntw
-  
+
   redis:
     image: redis/redis-stack:7.2.0-v13
     ports:
       - "6379:6379"
       - "8001:8001"
+    volumes:
+      - redis_data:/data
     networks:
       - ntw
 
@@ -40,18 +63,36 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
+    command: "python src/modules/create_vector_index.py --params config/params.yaml"
     ports:
       - "8080:8080"
     volumes:
       - ..:/app
       - ../../nextjs-website/out:/app/build-devp/out
-    command: "python src/modules/create_vector_index.py --params config/params.yaml"
     tty: true
     depends_on:
       redis:
         condition: service_started
+    env_file: ../.env.local
     networks:
       - ntw
+
+  langfuse:
+    image: langfuse/langfuse:2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3000"
+    env_file: ../.env.local
+    networks:
+      - ntw
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
 
 networks:
   ntw:

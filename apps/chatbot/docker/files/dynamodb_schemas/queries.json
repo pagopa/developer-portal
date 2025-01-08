@@ -1,0 +1,51 @@
+{
+  "TableName": "chatbot-local-queries",
+  "KeySchema": [
+    {
+      "AttributeName": "sessionId",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "id",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "id",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "sessionId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "createdAt",
+      "AttributeType": "S"
+    }
+  ],
+  "LocalSecondaryIndexes": [
+    {
+      "IndexName": "QueriesByCreatedAtIndex",
+      "KeySchema": [
+        {
+          "AttributeName": "sessionId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "createdAt",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      }
+   }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  },
+  "TableClass": "STANDARD",
+  "DeletionProtectionEnabled": false
+}

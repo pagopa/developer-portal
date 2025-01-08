@@ -8,12 +8,12 @@ from src.modules.vector_database import build_automerging_index_redis
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logging.basicConfig(level=logging.INFO)
+
 
 DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR")
-AWS_S3_BUCKET = os.getenv("CHB_AWS_S3_BUCKET", os.getenv("AWS_S3_BUCKET"))
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -34,4 +34,3 @@ if __name__ == "__main__":
         chunk_sizes=params["vector_index"]["chunk_sizes"],
         chunk_overlap=params["vector_index"]["chunk_overlap"]
     )
-    

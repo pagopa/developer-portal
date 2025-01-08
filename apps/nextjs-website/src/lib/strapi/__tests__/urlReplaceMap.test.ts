@@ -59,12 +59,10 @@ describe('UrlReplaceMapCodec', () => {
     const result = pipe(
       validation,
       Either.fold(
-        (left) => {
-          console.error('Error:', left);
+        () => {
           return null; // or handle the error as needed
         },
         (right) => {
-          console.log('Success:', right);
           return right;
         }
       )

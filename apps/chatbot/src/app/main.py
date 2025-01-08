@@ -1,14 +1,15 @@
+import os
 import yaml
 import mangum
 import uvicorn
+import logging
 import json
-import os
+import hashlib
 import uuid
 import boto3
 import datetime
-import time
 import jwt
-from typing import Annotated
+from typing import Annotated, List
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
@@ -17,6 +18,7 @@ from pydantic import BaseModel
 
 from src.modules.chatbot import Chatbot
 
+logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
@@ -24,9 +26,15 @@ AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_
 chatbot = Chatbot(params, prompts)
 
 
+class QueryFromThePast(BaseModel):
+  id: str | None = None
+  question: str
+  answer: str | None = None
+
 class Query(BaseModel):
   question: str
   queriedAt: str | None = None
+  history: List[QueryFromThePast] | None = None
 
 class QueryFeedback(BaseModel):
   badAnswer: bool
@@ -53,6 +61,9 @@ table_queries = dynamodb.Table(
 table_sessions = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
 )
+table_salts = dynamodb.Table(
+  f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -62,6 +73,10 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+def hash_func(user_id: str, salt: str) -> str:
+  salted_user_id = user_id + salt
+  return hashlib.sha256(salted_user_id.encode()).hexdigest()
 
 @app.get("/healthz")
 async def healthz ():
@@ -73,9 +88,19 @@ async def query_creation (
   authorization: Annotated[str | None, Header()] = None
 ):
   now = datetime.datetime.now(datetime.UTC)
+  trace_id = str(uuid.uuid4())
   userId = current_user_id(authorization)
   session = find_or_create_session(userId, now=now)
-  answer = chatbot.generate(query.question)
+  salt = session_salt(session['id'])
+
+  answer = chatbot.chat_generate(
+    query_str = query.question,
+    messages = [item.dict() for item in query.history] if query.history else None,
+    trace_id = trace_id,
+    user_id = hash_func(userId, salt),
+    session_id = session["id"]
+  )
+
 
   if query.queriedAt is None:
     queriedAt = now.isoformat()
@@ -83,7 +108,7 @@ async def query_creation (
     queriedAt = query.queriedAt
 
   bodyToReturn = {
-    "id": f'{uuid.uuid4()}',
+    "id": trace_id,
     "sessionId": session['id'],
     "question": query.question,
     "answer": answer,
@@ -102,7 +127,7 @@ async def query_creation (
   return bodyToReturn
 
 
-def current_user_id(authorization: str):
+def current_user_id(authorization: str) -> str:
   if authorization is None:
     # TODO remove fake user and return None
     # return None
@@ -146,7 +171,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
       "createdAt": now.isoformat()
     }
     try:
-      table_sessions.put_item(Item = body)
+      create_session_record(body)
     except (BotoCoreError, ClientError) as e:
       raise HTTPException(status_code=422, detail=f"[find_or_create_session] body: {body}, error: {e}")
 
@@ -154,6 +179,30 @@ def find_or_create_session(userId: str, now: datetime.datetime):
     body = items[0]
 
   return body
+
+def create_session_record(body: dict):
+  saltValue = str(uuid.uuid4())
+  saltBody = {
+    'sessionId': body['id'],
+    'value': saltValue
+  }
+  # TODO: transaction https://github.com/boto/boto3/pull/4010
+  table_sessions.put_item(Item = body)
+  table_salts.put_item(Item = saltBody)
+
+def session_salt(sessionId: str):
+  try:
+    dbResponse = table_salts.query(
+      KeyConditionExpression=Key("sessionId").eq(sessionId)
+    )
+  except (BotoCoreError, ClientError) as e:
+    raise HTTPException(status_code=422, detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}")
+  result = dbResponse.get('Items', [])
+  if len(result) == 0:
+    result = None
+  else:
+    result = result[0]
+  return result.get('value', None)
 
 
 @app.get("/queries")
@@ -226,7 +275,7 @@ async def session_delete(
       KeyConditionExpression=Key("sessionId").eq(id)
     )
     # TODO: use batch writer
-#    with table_sessions.batch_writer() as batch:
+    # with table_sessions.batch_writer() as batch:
     for query in dbResponse_queries['Items']:
       table_queries.delete_item(
         Key={
@@ -281,6 +330,14 @@ async def query_feedback (
       },
       ReturnValues='ALL_NEW'
     )
+    
+    chatbot.add_langfuse_score(
+      trace_id = id,
+      name = 'user-feedback',
+      value = (-1 if query.badAnswer else 1),
+      data_type = 'NUMERIC'
+    )
+
   except (BotoCoreError, ClientError) as e:
     raise HTTPException(status_code=422, detail=f"[query_feedback] id: {id}, sessionId: {sessionId}, error: {e}")
 
@@ -290,6 +347,7 @@ async def query_feedback (
     raise HTTPException(status_code=404, detail="Record not found")
 
 handler = mangum.Mangum(app, lifespan="off")
+
 
 if __name__ == "__main__":
   uvicorn.run(

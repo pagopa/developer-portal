@@ -1,5 +1,29 @@
 # strapi-cms
 
+## 3.2.1
+
+### Patch Changes
+
+- 175eef7: Rename "version" to "subPath" in "components_products_url_to_guides"
+
+## 3.2.0
+
+### Minor Changes
+
+- 38fc70b: Fix webinar validateSlug on update
+- 82b7d4b: Add Active Campaign integration to create and delete lists when creating and deleting webinars
+
+### Patch Changes
+
+- fbd9da8: Refactor move ACTIVE_CAMPAIGN_INTEGRATION_ENABLED env var in getter function
+- fb6d962: Fix env variable in lifecycle
+
+## 3.1.1
+
+### Patch Changes
+
+- 63a2efc: Update .env.default files for strapi and nextjs, update README.md
+
 ## 3.1.0
 
 ### Minor Changes

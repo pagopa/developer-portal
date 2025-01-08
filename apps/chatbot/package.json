@@ -1,5 +1,6 @@
 {
-    "name": "chatbot",
-    "version": "4.0.0",
-    "private": true
+  "name": "chatbot",
+  "version": "4.1.0",
+  "private": true,
+  "scripts": {}
 }

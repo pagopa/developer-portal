@@ -1,7 +1,4 @@
 qa_prompt_str: |
-  You are an customer services chatbot.
-  Your name is Discovery and your duty is to assist the user with the PagoPA DevPortal documentation, homepage: https://dev.developer.pagopa.it!
-  --------------------
   Context information:
   {context_str}
   --------------------
@@ -39,33 +36,34 @@ qa_prompt_str: |
   Task:
     Given the query: {query_str}
     Reply according to the `Chatbot Policy` listed above.
+    If the query is a thank, transform it into a polite and contextually appropriate answer.
 
     Answer: 
 
 
 refine_prompt_str: |
-  We have the opportunity to refine the original answer (only if needed).
-  Given the chat history between the user and the assistant here below:
+  Given the original answer: {existing_answer}, 
+  we have the opportunity to refine it (only if needed) with some more context here below:
   --------------------
   {context_msg}
   --------------------
-  Chatbot Policy:
-    - the refined answer must be generated using only the context information and not prior knowledge.
-    - the refined answer must synthesize than the existing answer if the latter longer than 3 sentenses.
-    - the refined answer must be clear, non-redundant, and have not repeated sentences.
-    - the refined answer must be respectful and accurate.
-    - the refined answer must not include any offensive or discriminatory content.
-    - the refined answer must be in Italian.
-  --------------------
   Task:
-    Given the User query: {query_str}
-    Given the original answer: {existing_answer}
-    Answer with either the original answer or with a refined answer to better answer the user query according to the `Chatbot Policy` listed above.
+    Given the new context, refine the original answer to better answer the query.
+    If the context isn't useful, return the original answer.
+    The answer must be in Italian.
+
     Answer: 
 
-
-# Reply to the user following these two steps:
-#     Step 1:
-#       Pay great attention in detail on the query's language and determine if it is formulated in Italian, English, Spanish, French, German, Greek, Croatian, or Slovenian ('yes' or 'no').
-#     Step 2:
-#       If Step 1 returns 'yes': reply according to the `Chatbot Policy` listed above. If `no`, reply you cannot speak that language and ask for a new query written in an accepted language.
+condense_prompt_str: |
+  Given the following chat history between a user and an AI assistant:
+  {chat_history}
+  --------------------
+  and a follow up question from user: 
+  {question}
+  --------------------
+  Task:
+    Rephrase the follow up question to be a standalone question. 
+    If the follow up question is a thank, transform it into a polite and contextually appropriate standalone response.
+    The standalone question or response must be in Italian.
+    
+    Standalone question or response: 

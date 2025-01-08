@@ -48,7 +48,9 @@ data "aws_iam_policy_document" "lambda_dynamodb_policy" {
       module.dynamodb_chatbot_queries.dynamodb_table_arn,
       "${module.dynamodb_chatbot_queries.dynamodb_table_arn}/*",
       module.dynamodb_chatbot_sessions.dynamodb_table_arn,
-      "${module.dynamodb_chatbot_sessions.dynamodb_table_arn}/*"
+      "${module.dynamodb_chatbot_sessions.dynamodb_table_arn}/*",
+      module.dynamodb_chatbot_salts.dynamodb_table_arn,
+      "${module.dynamodb_chatbot_salts.dynamodb_table_arn}/*"
     ]
   }
 }
@@ -192,4 +194,16 @@ resource "aws_iam_policy" "deploy_chatbot" {
       }
     ]
   })
+}
+
+data "aws_iam_policy_document" "ecs_monitoring_ssm_policy" {
+  statement {
+    sid    = "AllowSSMOperations"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters"
+    ]
+    resources = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/monitoring/*"]
+  }
 }

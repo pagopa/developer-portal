@@ -3,16 +3,13 @@ import re
 import time
 import json
 import tqdm
-import logging
 import hashlib
 import html2text
 import pytz
+from logging import getLogger
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.chrome.service import Service
-# from chromedriver_py import binary_path
 from typing import List, Tuple
 
 from llama_index.core import (
@@ -38,15 +35,17 @@ from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
+logger = getLogger(__name__)
+
 
 PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
 TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"))
-NEW_INDEX_ID = f"index--{TODAY}"
-
+INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), "default-index")
+NEW_INDEX_ID = f"index--{TODAY}" if INDEX_ID != "default-index" else "default-index"
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
@@ -56,7 +55,8 @@ REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 EMBEDDING_DIMS = {
     "models/text-embedding-004": 768,
-    "cohere.embed-multilingual-v3": 1024
+    "cohere.embed-multilingual-v3": 1024,
+    "amazon.titan-embed-text-v2:0": 1024
 }
 REDIS_SCHEMA = IndexSchema.from_dict({
     "index": {"name": f"{INDEX_ID}", "prefix": f"{INDEX_ID}/vector"},
@@ -147,22 +147,26 @@ def create_documentation(
     hash_table = {}
     empty_pages = []
 
-    # full_text = ""
+    driver_exe_path = "/usr/bin/chromedriver"
+    if os.path.exists(driver_exe_path):
+        driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
+    else:
+        driver_service = None
+    driver_options = webdriver.ChromeOptions()
+    driver_options.add_argument('--headless')
+    driver_options.add_argument('--disable-gpu')
+    driver_options.add_argument('--no-sandbox')
+    driver_options.add_argument('--disable-dev-shm-usage')
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Extracting HTML"):
 
-        # FIX: resolve webdriver.Chrome "self.assert_process_still_running" error in docker
         if file in dynamic_htmls or "/webinars/" in file or "/api/" in file:
-        # if 6 == 9:
             url = file.replace(documentation_dir, f"{website_url}/").replace(".html", "")
 
-            # svc = webdriver.ChromeService(executable_path=binary_path)
-            # service = Service(executable_path=binary_path)
-            # options = webdriver.ChromeOptions()
-            # options.add_argument('--headless=new')
-            # options.add_argument('--no-sandbox')
-            # options.add_argument('user-agent=fake-useragent')
-            driver = webdriver.Chrome() #(service=service, options=options)
+            driver = webdriver.Chrome(
+                options=driver_options,
+                service=driver_service
+            )
 
             driver.get(url)
             time.sleep(5)
@@ -172,7 +176,6 @@ def create_documentation(
             title, text = html2markdown(open(file))
 
         if text is None or text == "" or text == "None" or text=="404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non esiste":
-            # print(file)
             empty_pages.append(file)
 
         else:
@@ -199,8 +202,8 @@ def create_documentation(
                 }
             ))
 
-    logging.info(f"[vector_database.py - create_documentation] Number of documents with content: {len(documents)}")
-    logging.info(f"[vector_database.py - create_documentation] Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
+    logger.info(f"Number of documents with content: {len(documents)}")
+    logger.info(f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out.")
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
     
@@ -215,7 +218,7 @@ def build_automerging_index_redis(
         chunk_overlap: int
     ) -> VectorStoreIndex:
 
-    logging.info("[vector_database.py - build_automerging_index_redis] Storing vector index and hash table on Redis..")
+    logger.info("Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -231,9 +234,9 @@ def build_automerging_index_redis(
             key=key,
             val=value
         )
-    logging.info(f"[vector_database.py - build_automerging_index_redis] hash_table_{INDEX_ID} is now on Redis.")
+    logger.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
 
-    logging.info(f"[vector_database.py - build_automerging_index_redis] Creating index {NEW_INDEX_ID} ...")
+    logger.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
@@ -268,7 +271,7 @@ def build_automerging_index_redis(
     )
     automerging_index.set_index_id(NEW_INDEX_ID)
     put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logging.info("[vector_database.py - build_automerging_index_redis] Created vector index successfully and stored on Redis.")
+    logger.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
@@ -297,7 +300,7 @@ def load_automerging_index_redis(
             schema=REDIS_SCHEMA
         )
 
-        logging.info("[vector_database.py - load_automerging_index_redis] Loading vector index from Redis...")
+        logger.info("Loading vector index from Redis...")
         storage_context = StorageContext.from_defaults(
             vector_store=redis_vector_store,
             docstore=REDIS_DOCSTORE,
@@ -311,14 +314,14 @@ def load_automerging_index_redis(
 
         return automerging_index
     else:
-        logging.error("[vector_database.py - load_automerging_index_redis] No index_id provided.")
+        logger.error("No index_id provided.")
 
 
 def delete_old_index():
 
-    if INDEX_ID: # is in ssm there is nothing, INDEX_ID = None
+    if INDEX_ID != "default-index": # if in ssm there is nothing, INDEX_ID = None
         for key in REDIS_CLIENT.scan_iter():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
 
-        logging.info(f"[vector_database.py - delete_old_index] Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        logger.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")

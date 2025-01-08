@@ -59,12 +59,13 @@ variable "cognito_user_pool" {
 
 variable "vpc" {
   type = object({
-    id                  = string
-    cidr_block          = string
-    public_subnets      = list(string)
-    database_subnets    = list(string)
-    private_subnets     = list(string)
-    elasticache_subnets = list(string)
+    id                         = string
+    cidr_block                 = string
+    public_subnets             = list(string)
+    database_subnets           = list(string)
+    private_subnets            = list(string)
+    elasticache_subnets        = list(string)
+    database_subnet_group_name = string
   })
 
   description = "The VPC used to deploy the resources"
@@ -111,4 +112,18 @@ variable "api_gateway" {
   default = {
     integration_timeout_sec = 60
   }
+}
+
+################################################################################
+# ECS - Monitoring
+################################################################################
+
+variable "ecs_monitoring" {
+  type = object({
+    cpu       = number
+    memory    = number
+    image_uri = string
+    port      = number
+  })
+  description = "Langfuse configuration for the AI chatbot"
 }

@@ -7,9 +7,15 @@ Even though the provider is the Google one, we stored its API key in AWS. So, be
 
 The Retrieval-Augmented Generation (RAG) was implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the parameters and prompts used are stored in `config`.
 
+The monitoring is done using [Langfuse](https://langfuse.com/) deployed on AWS.
+
 ## Environment Variables
 
 Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
+
+cp .env.example .env
+
+Note that the envirables inside `.env` file should be pointing to the AWS infrastructure.s
 
 ## Virtual environment
 
@@ -36,24 +42,44 @@ In this way, `PYTHONPATH` points to where the Python packages and modules are, n
 
 To reach the remote redis instance, it is necessary to open a tunnel:
 
-```
     ./scripts/redis-tunnel.sh
-```
 
 Verify that the HTML files that compose the Developer Portal documentation exist in a directory. Otherwise create the documentation. Once you have the documentation directory ready, put its path in `params` and, in the end, create the vector index doing:
 
-```
     python src/modules/create_vector_index.py --params config/params.yaml
-```
 
 This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis.
 
 Check out the params in order to store your vector index accordingly.
 
-## Web App
+## Test
 
-    python src/webapp/app.py
+In order to test the chatbot and its APIs, run:
 
-This scripts uses [Gradio](https://www.gradio.app/) framework to lunch a web application at the [default link](http://127.0.0.1:7860) where the user can interact with the chatbot.
+    pytest
 
-Both [`user icon`](https://www.flaticon.com/free-icon/user_1077012) and [`chatbot icon`](https://www.flaticon.com/free-icon/chatbot_8943377) are made by [Freepick](https://www.freepik.com/) and they were downloaded from [Flaticon](https://www.flaticon.com/).
+For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
+
+## Docker
+
+In order to run the chatbot locally for the first time, you need to:
+
+- install [Docker Compose](https://docs.docker.com/compose/install/),
+- create `.env.local` file running:
+
+        cp .env.example .env.local
+
+  and fill it in,
+
+- run the following bash scripts:
+
+        ./docker/docker-compose-build-local.sh
+        ./docker/docker-compose-run-create_index.sh
+
+In this way, the docker images are built and the vector index is stored in Redis.
+
+Now you can start the API running:
+
+    ./docker/docker-compose-up-api.sh
+
+Note that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
