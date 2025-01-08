@@ -148,6 +148,8 @@ module "cicd" {
 
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
+
+  chatbot_env_vars = var.create_chatbot ? module.chatbot[0].lambda_env_variables : {}
 }
 
 module "active_campaign" {
