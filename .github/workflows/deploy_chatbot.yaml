@@ -116,6 +116,8 @@ jobs:
       - name: Debug
         run: | 
           ls -alh
+          which docker
+          pwd
 
       - name: Build Push and Tag
         # Enabling the "continue on error" option allows for a manual rollback
