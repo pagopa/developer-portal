@@ -25,6 +25,7 @@ runs:
         installer-parallel: true
 
     - name: Install python libraries
+      shell: bash
       run: |
         cd apps/chatbot
         poetry install --no-interaction
