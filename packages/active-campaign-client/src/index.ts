@@ -1,12 +1,15 @@
-import { APIGatewayProxyResult, SQSEvent } from 'aws-lambda';
-import { addContact } from './handlers/addContact';
+import { SQSEvent } from 'aws-lambda';
+import { sqsQueueHandler } from './handlers/sqsQueueHandler';
+import { resyncUserHandler } from './handlers/resyncUserHandler';
 
-export async function handler(event: {
+export async function sqsQueue(event: {
   readonly Records: SQSEvent['Records'];
-}): Promise<APIGatewayProxyResult> {
-  console.log('Event:', event);
-  return {
-    statusCode: 200,
-    body: JSON.stringify(event),
-  };
+}) {
+  return await sqsQueueHandler(event);
+}
+
+export async function resyncQueue(event: {
+  readonly Records: SQSEvent['Records'];
+}) {
+  return await resyncUserHandler(event);
 }

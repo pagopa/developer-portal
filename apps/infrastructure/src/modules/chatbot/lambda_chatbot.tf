@@ -3,7 +3,6 @@ locals {
     CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
-    CHB_AWS_BEDROCK_REGION    = var.aws_chatbot_region
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     CHB_WEBSITE_URL           = "https://${var.dns_domain_name}"
     CORS_DOMAINS              = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
@@ -11,18 +10,22 @@ locals {
     LOG_LEVEL                 = "INFO"
     LLAMA_INDEX_CACHE_DIR     = "/tmp"
     NLTK_DATA                 = "_static/nltk_cache/"
-
+    CHB_LANGFUSE_HOST         = "https://${local.priv_monitoring_host}"
+    CHB_LANGFUSE_PUBLIC_KEY   = module.langfuse_public_key.ssm_parameter_name
+    CHB_LANGFUSE_SECRET_KEY   = module.langfuse_secret_key.ssm_parameter_name
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER            = "aws"
-    CHB_MODEL_ID            = "mistral.mistral-large-2402-v1:0"
-    CHB_EMBED_MODEL_ID      = "cohere.embed-multilingual-v3"
-    CHB_MODEL_MAXTOKENS     = "768"
-    CHB_MODEL_TEMPERATURE   = "0.3"
-    CHB_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
-    CHB_QUERY_TABLE_PREFIX  = local.prefix
-    CHB_LLAMAINDEX_INDEX_ID = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_PROVIDER                 = "aws"
+    CHB_AWS_BEDROCK_LLM_REGION   = var.aws_chatbot_region
+    CHB_MODEL_ID                 = "mistral.mistral-large-2402-v1:0"
+    CHB_AWS_BEDROCK_EMBED_REGION = "eu-central-1"
+    CHB_EMBED_MODEL_ID           = "amazon.titan-embed-text-v2:0"
+    CHB_MODEL_MAXTOKENS          = "768"
+    CHB_MODEL_TEMPERATURE        = "0.3"
+    CHB_GOOGLE_API_KEY           = module.google_api_key_ssm_parameter.ssm_parameter_name
+    CHB_QUERY_TABLE_PREFIX       = local.prefix
+    CHB_LLAMAINDEX_INDEX_ID      = module.index_id_ssm_parameter.ssm_parameter_name
   }
 }
 
