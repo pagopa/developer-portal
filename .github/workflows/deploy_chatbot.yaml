@@ -64,10 +64,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
-      
-      - name: Debug
-        run: |
-            ls -alh
 
       - name: Build Push and Tag
         # Enabling the "continue on error" option allows for a manual rollback
@@ -83,8 +79,8 @@ jobs:
           ECR_REPOSITORY: chatbot
           IMAGE_TAG: ${{ github.sha }}
         with:
-            context: apps/chatbot/docker
-            file: app.Dockerfile
+            context: .
+            file: docker/app.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
