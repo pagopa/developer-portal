@@ -87,7 +87,7 @@ jobs:
 
       - name: AWS set lambda function image
         run: |
-            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
+            aws lambda update-function-code --function-name ${{ env.CHATBOT_LAMBDA_NAME }} --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
 
   manual_deploy:
     name: Build and push Chatbot API lambda image (manual trigger) - (${{ inputs.environment }})
@@ -135,4 +135,4 @@ jobs:
 
       - name: AWS set lambda function image
         run: |
-            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
+            aws lambda update-function-code --function-name ${{ env.CHATBOT_LAMBDA_NAME }} --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
