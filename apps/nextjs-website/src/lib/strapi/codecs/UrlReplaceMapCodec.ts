@@ -5,7 +5,7 @@ import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 const UrlToGuideCodec = t.strict({
   id: t.number,
   url: t.string,
-  version: t.union([NullToUndefinedCodec, t.string]),
+  subPath: t.union([NullToUndefinedCodec, t.string]),
   guide: t.strict({
     data: t.union([NullToUndefinedCodec, GuideCodec]),
   }),
