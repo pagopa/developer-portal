@@ -13,6 +13,15 @@ resource "aws_codebuild_project" "github_runner" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+    dynamic "environment_variable" {
+      for_each = var.chatbot_env_vars
+      
+      content {
+        name  = environment_variable.key
+        value = environment_variable.value
+      }
+    }
   }
 
   source {
