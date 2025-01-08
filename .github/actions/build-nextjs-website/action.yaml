@@ -84,6 +84,7 @@ runs:
         NEXT_PUBLIC_ORGANIZATION_LOGO: ${{ inputs.organization_logo }}
         NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS: ${{ inputs.organization_social_links }}
         NEXT_PUBLIC_CHATBOT_ACTIVE: ${{ inputs.chatbot_active }}
+        NEXT_PUBLIC_MATOMO_SCRIPT_SRC: ${{ inputs.matomo_script_src}}
         STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}

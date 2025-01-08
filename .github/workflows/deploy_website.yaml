@@ -75,6 +75,7 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
 
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})
@@ -116,3 +117,4 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
