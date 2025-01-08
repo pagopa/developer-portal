@@ -85,24 +85,6 @@ jobs:
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
 
-      - name: Generate task-definition file
-        run: aws ecs describe-task-definition --task-definition chatbot-task-def --query taskDefinition > task-definition.json
-
-      - name: Update ImageTag in task-definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@4225e0b507142a2e432b018bc3ccb728559b437a # v1.2.0
-        with:
-           task-definition: apps/chatbot/task-definition.json
-           container-name: chatbot-docker
-           image: ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
-
-      - name: Deploy new ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1.4.11
-        with:
-            task-definition: ${{ steps.task-def.outputs.task-definition }}
-            service: chatbot-ecs
-            cluster: chatbot-ecs-cluster
-
       - name: AWS set lambda function image
         run: |
             aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
@@ -151,24 +133,6 @@ jobs:
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
 
-      - name: Generate task-definition file
-        run: aws ecs describe-task-definition --task-definition chatbot-task-def --query taskDefinition > task-definition.json
-
-      - name: Update ImageTag in task-definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@4225e0b507142a2e432b018bc3ccb728559b437a # v1.2.0
-        with:
-           task-definition: apps/chatbot/task-definition.json
-           container-name: chatbot-docker
-           image: ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
-
-      - name: Deploy new ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1.4.11
-        with:
-            task-definition: ${{ steps.task-def.outputs.task-definition }}
-            service: chatbot-ecs
-            cluster: chatbot-ecs-cluster
-      
       - name: AWS set lambda function image
         run: |
             aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
