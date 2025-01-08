@@ -13,7 +13,7 @@ runs:
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: Setup Python
-      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      uses: kishaningithub/setup-python-amazon-linux@282d998c8f2c4678ac4f872e4dc3b7d167b59fa7 # v1
       with:
         python-version: '3.12'
 
