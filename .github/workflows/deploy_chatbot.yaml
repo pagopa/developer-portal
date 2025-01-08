@@ -29,7 +29,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: apps/chatbot
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -132,7 +131,7 @@ jobs:
           ECR_REPOSITORY: chatbot
           IMAGE_TAG: ${{ github.sha }}
         with:
-            context: ..
+            context: apps/chatbot/
             file: docker/app.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
