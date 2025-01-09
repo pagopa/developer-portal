@@ -76,3 +76,9 @@ jobs:
           aws lambda update-function-code \
           --function-name ac-${{ github.event.inputs.environment || 'dev' }}-sync-lambda \
           --zip-file fileb://packages/active-campaign-client/target/function.zip
+
+      - name: Deploy Lambda function (${{ github.event.inputs.environment || 'dev' }})
+        run: |
+          aws lambda update-function-code \
+          --function-name ac-${{ github.event.inputs.environment || 'dev' }}-resync-lambda \
+          --zip-file fileb://packages/active-campaign-client/target/function.zip
