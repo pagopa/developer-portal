@@ -5,7 +5,7 @@ resource "aws_sqs_queue" "fifo_queue" {
   content_based_deduplication = true
   deduplication_scope         = "queue"
   fifo_throughput_limit       = "perQueue"
-  visibility_timeout_seconds = 40
+  visibility_timeout_seconds  = 40
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.fifo_dlq_queue.arn
@@ -59,10 +59,10 @@ resource "aws_sqs_queue" "fifo_queue" {
 
 # Dead Letter Queue (DLQ)
 resource "aws_sqs_queue" "fifo_dlq_queue" {
-  name       = "${local.prefix}-events-dlq.fifo"
-  fifo_queue = true
+  name                       = "${local.prefix}-events-dlq.fifo"
+  fifo_queue                 = true
   visibility_timeout_seconds = 360
- 
+
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.fifo_resync_dlq_queue.arn
     maxReceiveCount     = 1
