@@ -80,14 +80,14 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
             context: apps/chatbot
-            file: docker/app.Dockerfile
+            file: apps/chatbot/docker/app.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
 
       - name: AWS set lambda function image
         run: |
-            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
+            aws lambda update-function-code --function-name ${{ env.CHATBOT_LAMBDA_NAME }} --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
 
   manual_deploy:
     name: Build and push Chatbot API lambda image (manual trigger) - (${{ inputs.environment }})
@@ -129,10 +129,13 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
             context: apps/chatbot
+            file: apps/chatbot/docker/app.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
 
       - name: AWS set lambda function image
+        env:
+          CHATBOT_LAMBDA_NAME: ${{ vars.CHATBOT_LAMBDA_NAME }}
         run: |
-            aws lambda update-function-code --function-name env.CHATBOT_LAMBDA_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
+            aws lambda update-function-code --function-name ${{ env.CHATBOT_LAMBDA_NAME }} --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot:${{ github.sha }}
