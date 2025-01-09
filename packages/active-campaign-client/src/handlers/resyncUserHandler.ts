@@ -42,19 +42,21 @@ export async function resyncUserHandler(event: {
       process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
     );
 
-    const subscriptionsresult = await addArrayOfListToContact({
+    const succesfullyUpdateSubscriptions = await addArrayOfListToContact({
       webinarSlugs: newWebinarSlugs,
       cognitoUsername: cognitoUsername,
       resyncTimeoutMilliseconds,
     });
 
-    const unsubscriptionsResult = await removeArrayOfListFromContact({
-      listsToUnsubscribe,
-      contactId: contactResponse.contact.id,
-      resyncTimeoutMilliseconds,
-    });
+    const succesfullyUpdateUnsubscriptions = await removeArrayOfListFromContact(
+      {
+        listsToUnsubscribe,
+        contactId: contactResponse.contact.id,
+        resyncTimeoutMilliseconds,
+      }
+    );
 
-    if (!subscriptionsresult || !unsubscriptionsResult) {
+    if (!succesfullyUpdateSubscriptions || !succesfullyUpdateUnsubscriptions) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Error managing list subscriptions');
     }

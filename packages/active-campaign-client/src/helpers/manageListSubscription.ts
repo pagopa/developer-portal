@@ -24,6 +24,12 @@ export async function addContactToList(
     }
 
     const response = await acClient.addContactToList(contactId, listId);
+    if (!response.contactList) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: 'Failed to add contact to list' }),
+      };
+    }
     return {
       statusCode: 200,
       body: JSON.stringify(response),

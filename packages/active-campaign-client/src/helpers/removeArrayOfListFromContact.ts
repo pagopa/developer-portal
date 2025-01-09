@@ -14,6 +14,9 @@ export async function removeArrayOfListFromContact(event: {
       try {
         const result = await acClient.removeContactFromList(contactId, id);
         console.log('Remove contact from list result:', result, id); // TODO: Remove after testing
+        if (!result.contactList) {
+          unsubscriptionsWithErrors.push(id.toString());
+        }
         await new Promise((resolve) =>
           setTimeout(resolve, resyncTimeoutMilliseconds)
         ); // wait to avoid rate limiting
