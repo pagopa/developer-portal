@@ -27,6 +27,7 @@ const LinkCards = ({ cards }: LinkCardsProps) => {
                   href,
                   label,
                 }}
+                variant='h3'
               />
             </Grid>
           );
