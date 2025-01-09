@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid, Typography, useTheme } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Variant } from '@mui/material/styles/createTypography';
 
 export interface FeatureProps {
   title: string;
@@ -10,10 +11,18 @@ export interface FeatureProps {
   items: FeatureItem[];
   background?: string;
   useDarkTheme?: boolean;
+  variant?: Variant;
 }
 
 const Feature = (props: FeatureProps) => {
-  const { title, subtitle, items, background, useDarkTheme = false } = props;
+  const {
+    title,
+    subtitle,
+    items,
+    background,
+    useDarkTheme = false,
+    variant = 'h4',
+  } = props;
   const { palette } = useTheme();
   const theme = palette.mode;
   const isDarkMode = useDarkTheme || theme !== 'light';
@@ -31,7 +40,15 @@ const Feature = (props: FeatureProps) => {
       }}
     >
       <Grid textAlign={'center'} item xs={12}>
-        <Typography variant='h4' color={themeStyle} textAlign='center'>
+        <Typography
+          variant={variant}
+          color={themeStyle}
+          textAlign='center'
+          sx={{
+            fontSize: '2rem !important',
+            lineHeight: '1.125 !important',
+          }}
+        >
           {title}
         </Typography>
         {subtitle && (
@@ -59,6 +76,7 @@ const Feature = (props: FeatureProps) => {
                 theme={theme}
                 item={item}
                 useDarkTheme={useDarkTheme}
+                variant='h3'
               />
             </Grid>
           ))}
