@@ -8,6 +8,7 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
 export const cookieDomainScript = process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const matomoScriptSrc = process.env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC;
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';

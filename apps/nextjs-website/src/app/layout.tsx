@@ -3,6 +3,7 @@ import {
   cookieDomainScript,
   isChatbotActive,
   isProduction,
+  matomoScriptSrc,
 } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
@@ -23,22 +24,16 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
-const MATOMO_SCRIPT = `
-var _paq = (window._paq = window._paq || []);
-/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-_paq.push(["trackPageView"]);
-_paq.push(["enableLinkTracking"]);
-(function () {
-  var u = "https://pagopa.matomo.cloud/";
-  _paq.push(["setTrackerUrl", u + "matomo.php"]);
-  _paq.push(["setSiteId", "8"]);
-  var d = document,
-    g = d.createElement("script"),
-    s = d.getElementsByTagName("script")[0];
-  g.async = true;
-  g.src = "//cdn.matomo.cloud/pagopa.matomo.cloud/matomo.js";
-  s.parentNode.insertBefore(g, s);
-})();
+const MATOMO_SCRIPT =
+  `
+var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='` +
+  matomoScriptSrc +
+  `'; s.parentNode.insertBefore(g,s);
+  })();
 `;
 
 const titilliumWeb = Titillium_Web({
