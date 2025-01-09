@@ -39,7 +39,13 @@ const PostIntegration = ({
 
   return (
     <Box py={8} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <SectionTitle margin={0} title={title} subtitle={subtitle} cta={cta} />
+      <SectionTitle
+        margin={0}
+        title={title}
+        subtitle={subtitle}
+        cta={cta}
+        variant='h2'
+      />
       <EContainer>
         {listTitle && (
           <Typography
