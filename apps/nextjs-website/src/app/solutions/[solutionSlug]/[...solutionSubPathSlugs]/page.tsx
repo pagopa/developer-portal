@@ -104,6 +104,7 @@ const Page = async ({ params }: { params: Params }) => {
     <>
       {structuredData}
       <GitBookTemplate
+        hasHeader={false}
         menuName={props.solution.title}
         breadcrumbs={[
           ...pageToBreadcrumbs('solutions', [

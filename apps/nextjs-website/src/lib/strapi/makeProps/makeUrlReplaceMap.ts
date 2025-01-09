@@ -11,7 +11,7 @@ export function makeUrlReplaceMap(
       [obj.url]: `/${
         obj.guide.data?.attributes.product.data.attributes.slug
       }/guides/${obj.guide.data?.attributes.slug}${
-        obj.version ? `/${obj.version}` : ''
+        obj.subPath ? `/${obj.subPath}` : ''
       }`,
     };
   }, {} as UrlReplaceMap);

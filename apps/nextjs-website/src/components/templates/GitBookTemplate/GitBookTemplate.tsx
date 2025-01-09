@@ -17,6 +17,7 @@ export type GitBookTemplateProps = {
   contentMarginTop?: number;
   versions?: GuideMenuItemsProps['versions'];
   versionName?: GuideMenuItemsProps['versionName'];
+  hasHeader?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -34,8 +35,11 @@ const GitBookTemplate = ({
   breadcrumbs,
   menuDistanceFromTop,
   contentMarginTop = 75,
+  hasHeader = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
+  const paddingTop = hasHeader ? '60px' : '-80px';
+
   return (
     <FragmentProvider>
       <Box
@@ -48,6 +52,7 @@ const GitBookTemplate = ({
       >
         {menu && (
           <GuideMenu
+            hasHeader={hasHeader}
             menu={menu}
             assetsPrefix={bodyConfig.assetsPrefix}
             linkPrefix={pathPrefix}
@@ -68,7 +73,7 @@ const GitBookTemplate = ({
             },
           }}
         >
-          <Box sx={{ paddingTop: '60px', paddingX: '40px' }}>
+          <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '32px 40px' }}>
@@ -79,7 +84,7 @@ const GitBookTemplate = ({
           sx={{
             display: { xs: 'none', lg: 'initial' },
             position: 'relative',
-            padding: { lg: '80px 64px' },
+            padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
             width: { lg: '378px' },
           }}
         >
@@ -87,7 +92,7 @@ const GitBookTemplate = ({
             sx={{
               position: 'sticky',
               maxWidth: '378px',
-              top: 144,
+              top: hasHeader ? 144 : 64,
             }}
           >
             <GuideInPageMenu

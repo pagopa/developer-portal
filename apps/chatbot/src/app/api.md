@@ -1,87 +1,94 @@
-POST /queries
-{
-  "sessionId": string,
-  "question": string,
-  "queriedAt": string
-}
+### POST /queries
+
+    {
+      "sessionId": string,
+      "question": string,
+      "queriedAt": string
+    }
 
 response:
-{
-  "id": string,
-  "sessionId": string,
-  "question": string,
-  "answer": string,
-  "createdAt": string,
-  "queriedAt": string
-}
 
----------------------------------------------
+    {
+      "id": string,
+      "sessionId": string,
+      "question": string,
+      "answer": string,
+      "createdAt": string,
+      "queriedAt": string
+    }
 
-GET /healthz
+---
 
-response:
-{
-  "message": "OK"
-}
-
----------------------------------------------
-
-GET /queries/{id}
+### GET /healthz
 
 response:
-{
-  "id": string,
-  "sessionId": string,
-  "question": string,
-  "answer": string,
-  "createdAt": string,
-  "queriedAt": string
-}
 
----------------------------------------------
+    {
+      "message": "OK"
+    }
 
-GET /sessions
+---
+
+### GET /queries/{id}
 
 response:
-[
-  {
-    "id": string,
-    "title": string,
-    "createdAt": string
-  }
-]
 
----------------------------------------------
+    {
+      "id": string,
+      "sessionId": string,
+      "question": string,
+      "answer": string,
+      "createdAt": string,
+      "queriedAt": string
+    }
 
-POST /sessions
+---
 
-response:
-{
-  "id": string,
-  "title": string,
-  "createdAt": string
-}
-
----------------------------------------------
-
-GET /queries?sessionId={sessionId}
+### GET /sessions
 
 response:
-[
-  {
-    "id": string,
-    "sessionId": string,
-    "question": string,
-    "answer": string,
-    "createdAt": string,
-    "queriedAt": string
-  }
-]
 
----------------------------------------------
+    [
+      {
+        "id": string,
+        "title": string,
+        "createdAt": string
+      }
+    ]
 
-PATCH /queries/{id}
+---
 
-{
-  "badAnswer": boolean
-}
+### POST /sessions
+
+response:
+
+    {
+      "id": string,
+      "title": string,
+      "createdAt": string
+    }
+
+---
+
+### GET /queries?sessionId={sessionId}
+
+response:
+
+    [
+      {
+        "id": string,
+        "sessionId": string,
+        "question": string,
+        "answer": string,
+        "createdAt": string,
+        "queriedAt": string
+      }
+    ]
+
+---
+
+### PATCH /queries/{id}
+
+    {
+      "badAnswer": boolean
+    }
