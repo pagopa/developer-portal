@@ -10,64 +10,57 @@ import { removeArrayOfListFromContact } from '../helpers/removeArrayOfListFromCo
 export async function resyncUserHandler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
-  try {
-    console.log('resyncUserHandler: Event:', event); // TODO: Remove after testing
-    const queueEvent = queueEventParser(event);
-    const cognitoUsername = queueEvent.detail.additionalEventData.sub;
+  console.log('resyncUserHandler: Event:', event); // TODO: Remove after testing
+  const queueEvent = queueEventParser(event);
+  const cognitoUsername = queueEvent.detail.additionalEventData.sub;
 
-    const user = await getUserFromCognitoUsername(cognitoUsername);
+  const user = await getUserFromCognitoUsername(cognitoUsername);
 
-    console.log('user:', user); // TODO: Remove after testing
+  console.log('user:', user); // TODO: Remove after testing
 
-    if (!user) {
-      const deletionResult = await deleteContact(cognitoUsername);
-      if (
-        deletionResult.statusCode !== 200 &&
-        deletionResult.statusCode !== 404
-      ) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Error deleting contact');
-      }
-    } else {
-      const contactResponse = await addOrUpdateContact(user);
+  if (!user) {
+    const deletionResult = await deleteContact(cognitoUsername);
+    if (
+      deletionResult.statusCode !== 200 &&
+      deletionResult.statusCode !== 404
+    ) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Error deleting contact');
+    }
+  } else {
+    const contactResponse = await addOrUpdateContact(user);
 
-      console.log('contactResponse:', contactResponse); // TODO: Remove after testing
+    console.log('contactResponse:', contactResponse); // TODO: Remove after testing
 
-      const { listsToUnsubscribe, newWebinarSlugs } =
-        await getNewWebinarsAndUnsubsriptionLists(
-          contactResponse,
-          cognitoUsername
-        );
-
-      const resyncTimeoutMilliseconds: number = parseInt(
-        process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
+    const { listsToUnsubscribe, newWebinarSlugs } =
+      await getNewWebinarsAndUnsubsriptionLists(
+        contactResponse,
+        cognitoUsername
       );
 
-      const subscriptionsresult = await addArrayOfListToContact({
-        webinarSlugs: newWebinarSlugs,
-        cognitoUsername: cognitoUsername,
-        resyncTimeoutMilliseconds,
-      });
+    const resyncTimeoutMilliseconds: number = parseInt(
+      process.env.AC_RESYNC_TIMEOUT_IN_MS || '1000'
+    );
 
-      const unsubscriptionsResult = await removeArrayOfListFromContact({
-        listsToUnsubscribe,
-        contactId: contactResponse.contact.id,
-        resyncTimeoutMilliseconds,
-      });
+    const subscriptionsresult = await addArrayOfListToContact({
+      webinarSlugs: newWebinarSlugs,
+      cognitoUsername: cognitoUsername,
+      resyncTimeoutMilliseconds,
+    });
 
-      if (!subscriptionsresult || !unsubscriptionsResult) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Error managing list subscriptions');
-      }
+    const unsubscriptionsResult = await removeArrayOfListFromContact({
+      listsToUnsubscribe,
+      contactId: contactResponse.contact.id,
+      resyncTimeoutMilliseconds,
+    });
+
+    if (!subscriptionsresult || !unsubscriptionsResult) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Error managing list subscriptions');
     }
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'User resynced' }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: error }),
-    };
   }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'User resynced' }),
+  };
 }
