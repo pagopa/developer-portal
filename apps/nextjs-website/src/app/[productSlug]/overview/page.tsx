@@ -164,6 +164,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           items={feature.items}
           title={feature.title}
           subtitle={feature.subtitle}
+          variant='h2'
         />
       )}
       {startInfo && (

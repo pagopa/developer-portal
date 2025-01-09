@@ -40,7 +40,10 @@ const StartInfo = ({
     <>
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
         <Box mb={2}>
-          <SectionTitle title={title || t('overview.startInfo.title')} />
+          <SectionTitle
+            title={title || t('overview.startInfo.title')}
+            variant='h2'
+          />
         </Box>
         <CardsGrid
           ctaButtonsVariant={cardVariant}

@@ -44,6 +44,7 @@ const PostIntegration = ({
         title={title || t('overview.postIntegration.title')}
         subtitle={subtitle}
         cta={cta}
+        variant='h2'
       />
       <EContainer>
         {listTitle && (
