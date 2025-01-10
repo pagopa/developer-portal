@@ -1,7 +1,7 @@
 # EventBridge Pipe for DynamoDB Stream -> SQS FIFO
 resource "aws_pipes_pipe" "dynamodb_to_sqs" {
   name     = "${local.prefix}-webinar-subscriptions-pipe"
-  source   = var.webinar_subscriptions_ddb_stream_arn
+  source   = var.webinar_subscriptions_ddb.stream_arn
   target   = aws_sqs_queue.fifo_queue.arn
   role_arn = aws_iam_role.pipes_role.arn
 
