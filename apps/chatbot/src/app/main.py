@@ -215,6 +215,9 @@ async def queries_fetching(
   userId = current_user_id(authorization)
   if sessionId is None:
     sessionId = last_session_id(userId)
+  else
+    session = get_user_session(userId, sessionId)
+    sessionId = session.get('id', None)
 
   if sessionId is None:
     result = []
@@ -306,6 +309,15 @@ def last_session_id(userId: str):
   )
   items = dbResponse.get('Items', [])
   return items[0].get('id', None) if items else None
+
+def get_user_session(userId: str, sessionId: str):
+  dbResponse = table_sessions.query(
+    IndexName='SessionsByCreatedAtIndex',
+    KeyConditionExpression=Key('userId').eq(userId),
+    KeyConditionExpression=Key('sessionId').eq(sessionId)
+  )
+  items = dbResponse.get('Items', [])
+  return items[0] if items else None
 
 @app.patch("/sessions/{sessionId}/queries/{id}")
 async def query_feedback (
