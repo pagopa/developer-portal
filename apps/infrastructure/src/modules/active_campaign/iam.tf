@@ -31,7 +31,7 @@ resource "aws_iam_policy" "pipes" {
         ]
         Effect = "Allow"
         Resource = [
-          var.webinar_subscriptions_ddb_stream_arn
+          var.webinar_subscriptions_ddb.stream_arn
         ]
       },
       {
@@ -65,6 +65,17 @@ resource "aws_iam_policy" "lambda_policy" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
+      {
+        Action = [
+          "dynamodb:BatchGetItem",
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+        ]
+        Effect = "Allow"
+        Resource = [
+          var.webinar_subscriptions_ddb.arn
+        ]
+      },
       {
         Action   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
         Effect   = "Allow",

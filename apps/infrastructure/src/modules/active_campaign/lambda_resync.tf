@@ -6,9 +6,10 @@ module "lambda_resync" {
   description   = "Lambda function that resyncs Active Campaign failed events"
 
   environment_variables = {
-    AC_API_KEY_PARAM     = module.active_campaign_api_key.ssm_parameter_name
-    AC_BASE_URL_PARAM    = module.active_campaign_base_url.ssm_parameter_name
-    COGNITO_USER_POOL_ID = var.cognito_user_pool.id
+    AC_API_KEY_PARAM           = module.active_campaign_api_key.ssm_parameter_name
+    AC_BASE_URL_PARAM          = module.active_campaign_base_url.ssm_parameter_name
+    COGNITO_USER_POOL_ID       = var.cognito_user_pool.id
+    DYNAMO_WEBINARS_TABLE_NAME = var.webinar_subscriptions_ddb.name
   }
 
   runtime       = "nodejs20.x"
