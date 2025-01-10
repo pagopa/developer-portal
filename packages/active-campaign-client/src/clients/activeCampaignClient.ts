@@ -9,7 +9,6 @@ import {
   ContactResponseWithLists,
 } from '../types/contactResponse';
 import { ActiveCampaignList } from '../types/activeCampaignList';
-import { ContactList } from '../types/contactList';
 
 const MAX_NUMBER_OF_LISTS = '1000';
 
@@ -202,7 +201,7 @@ export class ActiveCampaignClient {
   }
 
   async addContactToList(contactId: string, listId: number) {
-    return this.makeRequest<ContactList>('POST', `/api/3/contactLists`, {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
       contactList: {
         contact: contactId,
         list: listId,
@@ -212,7 +211,7 @@ export class ActiveCampaignClient {
   }
 
   async removeContactFromList(contactId: string, listId: number) {
-    return this.makeRequest<ContactList>('POST', `/api/3/contactLists`, {
+    return this.makeRequest('POST', `/api/3/contactLists`, {
       contactList: {
         contact: contactId,
         list: listId,
