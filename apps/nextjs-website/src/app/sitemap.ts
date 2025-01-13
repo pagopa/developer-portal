@@ -36,18 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Auth routes
-  const authRoutes = [
-    '/auth/login',
-    '/auth/sign-up',
-    '/auth/password-reset',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.3,
-  }));
-
   // Profile routes
   const profileRoutes = ['/profile/agreements', '/profile/personal-data'].map(
     (route) => ({
@@ -112,9 +100,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const tutorials = await getTutorialsProps();
   const tutorialRoutes = tutorials.map((tutorial) => ({
-    // eslint-disable-next-line prettier/prettier
-    url: `${baseUrl}/${tutorial.productSlug}/tutorials/${tutorial.parts?.join('/') ?? ''
-    }`,
+    url: `${baseUrl}${tutorial.path}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
@@ -122,7 +108,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const guides = await getGuidesProps();
   const guideRoutes = guides.map((guide) => ({
-    url: `${baseUrl}/${guide.product.slug}/guides/${guide.guide.path}`,
+    url: `${baseUrl}${guide.page.path}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
@@ -169,7 +155,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...routes,
-    ...authRoutes,
     ...profileRoutes,
     ...caseHistoryRoutes,
     ...productRoutes,
