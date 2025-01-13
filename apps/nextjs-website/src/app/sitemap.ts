@@ -155,7 +155,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...routes,
-    ...profileRoutes,
     ...caseHistoryRoutes,
     ...productRoutes,
     ...apiRoutes,
