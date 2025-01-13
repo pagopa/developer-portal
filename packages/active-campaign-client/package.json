@@ -1,16 +1,17 @@
 {
   "name": "active-campaign-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Implements ActiveCampaign API to add, update and delete Accounts and to add and update lists",
   "scripts": {
     "lint": "eslint src",
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "sync-all-users": "ts-node src/scripts/sync_all_users.ts"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.1",
-    "dotenv": "16.4.5",
+    "dotenv": "^16.4.5",
     "eslint": "^8.57.1",
     "eslint-config-custom": "^0.1.0"
   },

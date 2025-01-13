@@ -1,6 +1,7 @@
 'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 import React from 'react';
 
 export type LinkCardProps = {
@@ -11,9 +12,16 @@ export type LinkCardProps = {
     readonly label: string;
     readonly href: string;
   };
+  readonly variant?: Variant;
 };
 
-const LinkCard = ({ title, description, minHeight, link }: LinkCardProps) => {
+const LinkCard = ({
+  title,
+  description,
+  minHeight,
+  link,
+  variant = 'h6',
+}: LinkCardProps) => {
   return (
     <Card
       style={{
@@ -25,7 +33,14 @@ const LinkCard = ({ title, description, minHeight, link }: LinkCardProps) => {
       }}
     >
       <CardContent sx={{ minHeight: minHeight || 'auto', pb: 0 }}>
-        <Typography variant='h6' gutterBottom>
+        <Typography
+          variant={variant}
+          sx={{
+            fontSize: '1.5rem !important',
+            lineHeight: '1.15 !important',
+          }}
+          gutterBottom
+        >
           {title}
         </Typography>
         <Typography variant='body2'>{description}</Typography>

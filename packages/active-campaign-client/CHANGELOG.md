@@ -1,5 +1,17 @@
 # active-campaign-client
 
+## 0.3.0
+
+### Minor Changes
+
+- 5e861a0: Add resync user handler
+- 3f202f7: Refactor resyncUserHandler to align contacts and subscriptions in Active Campaign
+- a7e0508: Add SSM client to mange secrets
+
+### Patch Changes
+
+- 4e4933d: Add bulk import of contacts
+
 ## 0.2.0
 
 ### Minor Changes

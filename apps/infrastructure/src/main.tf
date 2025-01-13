@@ -131,6 +131,7 @@ module "chatbot" {
   security_groups         = module.cms.security_groups
   dns_domain_name         = var.dns_domain_name
   ecs_redis               = var.chatbot_ecs_redis
+  github_repository       = var.github_repository
   ecs_monitoring          = var.chatbot_ecs_monitoring
 }
 
@@ -157,6 +158,6 @@ module "active_campaign" {
   environment = var.environment
   tags        = var.tags
 
-  cognito_user_pool                    = module.website.cognito_user_pool
-  webinar_subscriptions_ddb_stream_arn = module.website.webinar_subscriptions_ddb_stream_arn
+  cognito_user_pool         = module.website.cognito_user_pool
+  webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
 }
