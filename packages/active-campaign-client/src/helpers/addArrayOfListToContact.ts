@@ -14,6 +14,9 @@ export async function addArrayOfListToContact(event: {
       try {
         const result = await addContactToList(cognitoUsername, webinarSlug);
         console.log('Add contact to list result:', result, webinarSlug); // TODO: Remove after testing
+        if (!result.statusCode || result.statusCode !== 200) {
+          subscriptionsWithErrors.push(webinarSlug);
+        }
         await new Promise((resolve) =>
           setTimeout(resolve, resyncTimeoutMilliseconds)
         ); // wait to avoid rate limiting

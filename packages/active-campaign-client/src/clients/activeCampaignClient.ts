@@ -187,10 +187,12 @@ export class ActiveCampaignClient {
         last_name: payload.contact.lastName,
         phone: payload.contact.phone,
         customer_acct_name: payload.contact.lastName,
-        fields: payload.contact.fieldValues.map((field) => ({
-          id: Number(field.field),
-          value: field.value,
-        })),
+        fields: payload.contact.fieldValues
+          .filter((field) => field.value)
+          .map((field) => ({
+            id: Number(field.field),
+            value: field.value,
+          })),
         subscribe: payload.listIds.map((listId) => ({ listid: listId })),
       })),
     };

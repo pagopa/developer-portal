@@ -39,7 +39,10 @@ variable "cognito_user_pool" {
   description = "The cognito user pool used to authenticate api calls"
 }
 
-variable "webinar_subscriptions_ddb_stream_arn" {
-  type        = string
-  description = "The ARN of the webinar subscriptions ddb stream"
+variable "webinar_subscriptions_ddb" {
+  type = object({
+    name       = string
+    arn        = string
+    stream_arn = string
+  })
 }
