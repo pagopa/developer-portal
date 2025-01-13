@@ -74,14 +74,12 @@ export default async function RootLayout({
   return (
     <html lang='it' className={titilliumWeb.variable}>
       <head>
-        {isProduction && (
-          <Script
-            id='matomo'
-            key='script-matomo'
-            dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
-            strategy='lazyOnload'
-          />
-        )}
+        <Script
+          id='matomo'
+          key='script-matomo'
+          dangerouslySetInnerHTML={{ __html: MATOMO_SCRIPT }}
+          strategy='lazyOnload'
+        />
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
