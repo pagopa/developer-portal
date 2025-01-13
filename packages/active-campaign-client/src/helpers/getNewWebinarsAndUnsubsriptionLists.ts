@@ -22,6 +22,11 @@ export async function getNewWebinarsAndUnsubsriptionLists(
     cognitoUsername
   );
 
+  if (userWebinarsSubscriptions.statusCode !== 200) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Error fetching user webinars subscriptions');
+  }
+
   const webinarSlugs: readonly string[] = JSON.parse(
     userWebinarsSubscriptions.body
   )

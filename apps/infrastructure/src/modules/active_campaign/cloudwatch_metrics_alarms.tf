@@ -17,8 +17,8 @@ resource "aws_cloudwatch_metric_alarm" "pipe_failed" {
   alarm_actions             = [aws_sns_topic.alerts.arn]
 }
 
-resource "aws_cloudwatch_metric_alarm" "dlq" {
-  alarm_name          = "${local.prefix}-sqs-messages-in-dlq"
+resource "aws_cloudwatch_metric_alarm" "resync_dlq" {
+  alarm_name          = "${local.prefix}-sqs-messages-in-resync-dlq"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   period              = 60
@@ -27,7 +27,7 @@ resource "aws_cloudwatch_metric_alarm" "dlq" {
   metric_name         = "ApproximateNumberOfMessagesVisible"
   namespace           = "AWS/SQS"
   dimensions = {
-    QueueName = aws_sqs_queue.fifo_dlq_queue.name
+    QueueName = aws_sqs_queue.fifo_resync_dlq_queue.name
   }
   alarm_description         = "This metric monitors messages put in the dead letter queue"
   insufficient_data_actions = []
