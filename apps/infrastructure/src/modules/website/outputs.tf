@@ -24,6 +24,10 @@ output "cognito_user_pool" {
   sensitive = true
 }
 
-output "webinar_subscriptions_ddb_stream_arn" {
-  value = module.dynamodb_webinar_subscriptions.dynamodb_table_stream_arn
+output "webinar_subscriptions_ddb" {
+  value = {
+    name       = module.dynamodb_webinar_subscriptions.dynamodb_table_id
+    arn        = module.dynamodb_webinar_subscriptions.dynamodb_table_arn
+    stream_arn = module.dynamodb_webinar_subscriptions.dynamodb_table_stream_arn
+  }
 }
