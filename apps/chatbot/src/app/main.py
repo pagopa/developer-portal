@@ -313,7 +313,7 @@ def last_session_id(userId: str):
 def get_user_session(userId: str, sessionId: str):
   logging.info(f"--------------------------userId: {userId}")
   logging.info(f"--------------------------sessionId: {sessionId}")
-  dbResponse = table_queries.get_item(
+  dbResponse = table_sessions.get_item(
     Key={
      "userId": userId,
      "id": sessionId
