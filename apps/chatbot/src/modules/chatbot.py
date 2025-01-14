@@ -383,7 +383,7 @@ class Chatbot():
                     context += f"URL: {url}\n\n{node.text}\n\n------------------\n\n"
 
             except Exception as e:
-                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a chiedermi una nuova domanda."
+                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda."
                 context = ""
                 logger.error(f"Exception: {e}")
 
