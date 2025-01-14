@@ -129,9 +129,7 @@ async def query_creation (
 
 def current_user_id(authorization: str) -> str:
   if authorization is None:
-    # TODO remove fake user and return None
-    # return None
-    return '--'
+    return None
   else:
     token = authorization.split(' ')[1]
     decoded = jwt.decode(
@@ -143,9 +141,8 @@ def current_user_id(authorization: str) -> str:
 
 
 def find_or_create_session(userId: str, now: datetime.datetime):
-  # TODO: return if userId is None
   if userId is None:
-    userId = '-'
+    return None
   
   SESSION_MAX_DURATION_DAYS = float(os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1'))
   datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
@@ -311,8 +308,6 @@ def last_session_id(userId: str):
   return items[0].get('id', None) if items else None
 
 def get_user_session(userId: str, sessionId: str):
-  logging.info(f"--------------------------userId: {userId}")
-  logging.info(f"--------------------------sessionId: {sessionId}")
   dbResponse = table_sessions.get_item(
     Key={
      "userId": userId,
