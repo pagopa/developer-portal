@@ -36,16 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Profile routes
-  const profileRoutes = ['/profile/agreements', '/profile/personal-data'].map(
-    (route) => ({
-      url: `${baseUrl}${route}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.4,
-    })
-  );
-
   // Case histories
   const caseHistoryRoutes = caseHistories.map((history) => ({
     url: `${baseUrl}/case-histories/${history.slug}`,
