@@ -21,7 +21,7 @@ export const publicEnv = {
   NEXT_PUBLIC_COGNITO_USER_POOL_ID:
     process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
-    process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+    process.env.secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
 };
 
 export const makeBrowserConfig = (
