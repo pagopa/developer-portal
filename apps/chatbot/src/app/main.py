@@ -131,7 +131,7 @@ def current_user_id(authorization: str) -> str:
   if authorization is None:
     # TODO remove fake user and return None
     # return None
-    return '-'
+    return '--'
   else:
     token = authorization.split(' ')[1]
     decoded = jwt.decode(
@@ -215,7 +215,7 @@ async def queries_fetching(
   userId = current_user_id(authorization)
   if sessionId is None:
     sessionId = last_session_id(userId)
-  else
+  else:
     session = get_user_session(userId, sessionId)
     sessionId = session.get('id', None)
 
@@ -311,13 +311,16 @@ def last_session_id(userId: str):
   return items[0].get('id', None) if items else None
 
 def get_user_session(userId: str, sessionId: str):
-  dbResponse = table_sessions.query(
-    IndexName='SessionsByCreatedAtIndex',
-    KeyConditionExpression=Key('userId').eq(userId),
-    KeyConditionExpression=Key('sessionId').eq(sessionId)
+  logging.info(f"--------------------------userId: {userId}")
+  logging.info(f"--------------------------sessionId: {sessionId}")
+  dbResponse = table_queries.get_item(
+    Key={
+     "userId": userId,
+     "id": sessionId
+    }
   )
-  items = dbResponse.get('Items', [])
-  return items[0] if items else None
+  item = dbResponse.get('Item')
+  return item if item else None
 
 @app.patch("/sessions/{sessionId}/queries/{id}")
 async def query_feedback (
