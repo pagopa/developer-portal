@@ -54,7 +54,7 @@ import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig(process.env),
+  makeBuildConfig({...process.env, ...process.env.secrets}),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
