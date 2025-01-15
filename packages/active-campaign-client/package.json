@@ -1,6 +1,6 @@
 {
   "name": "active-campaign-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Implements ActiveCampaign API to add, update and delete Accounts and to add and update lists",
   "scripts": {
     "lint": "eslint src",
