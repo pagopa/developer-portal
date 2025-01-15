@@ -14,7 +14,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
 from starlette.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.modules.chatbot import Chatbot
 
@@ -28,11 +28,11 @@ chatbot = Chatbot(params, prompts)
 
 class QueryFromThePast(BaseModel):
   id: str | None = None
-  question: str
+  question: str = Field(max_length=800)
   answer: str | None = None
 
 class Query(BaseModel):
-  question: str
+  question: str = Field(max_length=800)
   queriedAt: str | None = None
   history: List[QueryFromThePast] | None = None
 
