@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 4.14.0
+
+### Minor Changes
+
+- 637390c: Fix headers order in overview and tutorial
+- 3a805e0: Add title metadata to Solutions, Privacy Policy and TOS pages
+
+### Patch Changes
+
+- 22d2f66: Fix UrlReplaceMap codec, simplify populate and cache the result
+- 58a536a: Fix empty space on top of Solution page
+- 50111b7: Switch to h1 in abstract
+- d69c97f: Rename "version" to "subPath" in UrlReplaceMapCodec
+
 ## 4.13.1
 
 ### Patch Changes
