@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.3.1
+
+### Patch Changes
+
+- 7deef83: Add sync users script
+
 ## 0.3.0
 
 ### Minor Changes
