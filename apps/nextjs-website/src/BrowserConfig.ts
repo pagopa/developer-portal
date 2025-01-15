@@ -19,8 +19,7 @@ export type BrowserConfig = t.TypeOf<typeof BrowserConfigCodec>;
 const secrets = JSON.parse(process.env.secrets!);
 export const publicEnv = {
   NEXT_PUBLIC_COGNITO_REGION: process.env.NEXT_PUBLIC_COGNITO_REGION,
-  NEXT_PUBLIC_COGNITO_USER_POOL_ID:
-    secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+  NEXT_PUBLIC_COGNITO_USER_POOL_ID: secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
     secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
 };
