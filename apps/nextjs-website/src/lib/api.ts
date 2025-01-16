@@ -21,6 +21,7 @@ import { Tutorial } from './types/tutorialData';
 import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
 import { makeSolution } from '@/_contents/makeDocs';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { withCache } from './redis';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -38,12 +39,14 @@ export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
 ): Promise<GuidePage> {
-  const guidesProps = await getGuidesProps();
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
   const props = manageUndefined(
-    guidesProps.find(({ page }) => page.path === path)
+    await withCache(`guides:${path}`, async () => {
+      const guidesProps = await getGuidesProps();
+      return guidesProps.find(({ page }) => page.path === path);
+    })
   );
 
   return {
@@ -62,18 +65,22 @@ export function getProductGuidePath(path: string) {
 
 export async function getGuideListPages(productSlug?: string) {
   const props = manageUndefined(
-    (await getGuideListPagesProps()).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await withCache(`guide-list-pages:${productSlug || 'all'}`, async () => {
+      const pages = await getGuideListPagesProps();
+      return pages.find(({ product }) => product.slug === productSlug);
+    })
   );
   return manageUndefinedAndAddProducts(props);
 }
 
 export async function getOverview(productSlug?: string) {
   return manageUndefined(
-    (await getOverviewsProps()).find(
-      (overviewData) => overviewData.product.slug === productSlug
-    )
+    await withCache(`overview:${productSlug || 'all'}`, async () => {
+      const overviews = await getOverviewsProps();
+      return overviews.find(
+        (overviewData) => overviewData.product.slug === productSlug
+      );
+    })
   );
 }
 
@@ -91,9 +98,10 @@ export async function getProducts(): Promise<readonly Product[]> {
 
 export async function getQuickStartGuide(productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartGuidesProps()).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await withCache(`quickstart-guide:${productSlug || 'all'}`, async () => {
+      const guides = await getQuickStartGuidesProps();
+      return guides.find(({ product }) => product.slug === productSlug);
+    })
   );
   return manageUndefinedAndAddProducts(props);
 }
@@ -105,20 +113,21 @@ export async function getStrapiTutorial(
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps(
-    productSlug
-  );
+  return withCache(`tutorials:${tutorialPath}`, async () => {
+    const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps(
+      productSlug
+    );
+    const tutorialFromStrapi = tutorialsFromStrapi.find(
+      ({ path }) => path === tutorialPath
+    );
 
-  const tutorialFromStrapi = tutorialsFromStrapi.find(
-    ({ path }) => path === tutorialPath
-  );
-
-  return tutorialFromStrapi
-    ? {
-        ...tutorialFromStrapi,
-        product: products.find(({ slug }) => slug === productSlug),
-      }
-    : undefined;
+    return tutorialFromStrapi
+      ? {
+          ...tutorialFromStrapi,
+          product: products.find(({ slug }) => slug === productSlug),
+        }
+      : undefined;
+  });
 }
 
 export async function getStaticTutorial(
@@ -127,8 +136,11 @@ export async function getStaticTutorial(
 ) {
   const tutorialPath = productTutorialPage?.join('/');
   const path = `/${productSlug}/tutorials/${tutorialPath}`;
+
   const props = manageUndefined(
-    tutorials.find(({ page }) => page.path === path)
+    await withCache(`static-tutorials:${path}`, async () =>
+      tutorials.find(({ page }) => page.path === path)
+    )
   );
 
   return {
@@ -161,10 +173,16 @@ export async function getTutorialPaths() {
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
-  const tutorialListPages = await getTutorialListPagesProps();
-  const props =
-    tutorialListPages.find(({ product }) => product.slug === productSlug) ||
-    null;
+  const props = await withCache(
+    `tutorial-list-pages:${productSlug || 'all'}`,
+    async () => {
+      const tutorialListPages = await getTutorialListPagesProps();
+      return (
+        tutorialListPages.find(({ product }) => product.slug === productSlug) ||
+        null
+      );
+    }
+  );
 
   return manageUndefinedAndAddProducts(props);
 }
@@ -172,98 +190,111 @@ export async function getTutorialListPageProps(productSlug?: string) {
 export async function getTutorials(
   productSlug?: string
 ): Promise<readonly Tutorial[]> {
-  const { tutorials } = await getTutorialListPageProps(productSlug);
-  const tutorialsFromCMS = await getTutorialsProps(productSlug);
-  return [...tutorials, ...tutorialsFromCMS];
+  return withCache(`tutorials-combined:${productSlug || 'all'}`, async () => {
+    const { tutorials } = await getTutorialListPageProps(productSlug);
+    const tutorialsFromCMS = await getTutorialsProps(productSlug);
+    return [...tutorials, ...tutorialsFromCMS];
+  });
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinarsProps()).filter(
-    (webinar) => webinar.isVisibleInList
-  );
+  return withCache('webinars-visible:all', async () => {
+    const webinars = await getWebinarsProps();
+    return webinars.filter((webinar) => webinar.isVisibleInList);
+  });
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
-  const props = manageUndefined(
-    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
+  return manageUndefined(
+    await withCache(`webinar:${webinarSlug || 'all'}`, async () => {
+      const webinars = await getWebinarsProps();
+      return webinars.find(({ slug }) => slug === webinarSlug);
+    })
   );
-  return props;
 }
 
 export async function getCaseHistory(caseHistorySlug?: string) {
   return manageUndefined(
-    (await getCaseHistoriesProps()).find(
-      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
-    )
+    await withCache(`case-history:${caseHistorySlug || 'all'}`, async () => {
+      const histories = await getCaseHistoriesProps();
+      return histories.find(({ slug }) => slug === caseHistorySlug);
+    })
   );
 }
 
 export async function getApiDataParams() {
-  const props = (await getApiDataListPagesProps()).flatMap(
-    (apiDataListPageProps) =>
-      apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
-        productSlug: apiDataListPageProps.product.slug,
-        apiDataSlug,
-      }))
-  );
-
-  return props || [];
+  return withCache('api-data-params:all', async () => {
+    const props = (await getApiDataListPagesProps()).flatMap(
+      (apiDataListPageProps) =>
+        apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
+          productSlug: apiDataListPageProps.product.slug,
+          apiDataSlug,
+        }))
+    );
+    return props || [];
+  });
 }
 
 export async function getApiDataListPages(productSlug: string) {
-  const props = (await getApiDataListPagesProps()).find(
-    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
-  );
-  return props;
+  return withCache(`api-data-list-pages:${productSlug}`, async () => {
+    const pages = await getApiDataListPagesProps();
+    return pages.find(
+      (apiDataListPageProps) =>
+        apiDataListPageProps.product.slug === productSlug
+    );
+  });
 }
 
 export async function getProduct(productSlug: string) {
-  const props = (await getProductsProps()).find(
-    (product) => product.slug === productSlug
-  );
-  return props;
+  return withCache(`product:${productSlug}`, async () => {
+    const products = await getProductsProps();
+    return products.find((product) => product.slug === productSlug);
+  });
 }
 
 export async function getApiData(apiDataSlug: string) {
-  const props = (await getApiDataProps()).find(
-    (apiData) => apiData.apiDataSlug === apiDataSlug
-  );
-  return props;
+  return withCache(`api-data:${apiDataSlug}`, async () => {
+    const apiDataList = await getApiDataProps();
+    return apiDataList.find((apiData) => apiData.apiDataSlug === apiDataSlug);
+  });
 }
 
 export async function getSolution(solutionSlug?: string) {
-  const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+  return manageUndefined(
+    await withCache(`solution:${solutionSlug || 'all'}`, async () => {
+      const solutions = await getSolutionsProps();
+      return solutions.find(({ slug }) => slug === solutionSlug);
+    })
   );
-  return props;
 }
 
 export async function getSolutionListPage() {
-  const solutionListPageProps = await getSolutionListPageProps();
-  return manageUndefined(solutionListPageProps);
+  return manageUndefined(
+    await withCache('solution-list-page:all', async () => {
+      return getSolutionListPageProps();
+    })
+  );
 }
 
 export async function getSolutionDetail(
   solutionSlug: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsFromStrapi = await getSolutionsProps();
+  const path = `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`;
 
-  const solutionFromStrapi = solutionsFromStrapi.find(
-    ({ slug }) => slug === solutionSlug
-  );
+  return withCache(`solution-detail:${path}`, async () => {
+    const solutionsFromStrapi = await getSolutionsProps();
+    const solutionFromStrapi = solutionsFromStrapi.find(
+      ({ slug }) => slug === solutionSlug
+    );
 
-  if (!solutionFromStrapi) {
-    return undefined;
-  }
+    if (!solutionFromStrapi) {
+      return undefined;
+    }
 
-  const parsedSolutions = makeSolution(solutionFromStrapi);
-
-  return parsedSolutions.find(
-    ({ page }) =>
-      page.path ===
-      `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
-  );
+    const parsedSolutions = makeSolution(solutionFromStrapi);
+    return parsedSolutions.find(({ page }) => page.path === path);
+  });
 }
 
 export function getSolutionSubPaths(
