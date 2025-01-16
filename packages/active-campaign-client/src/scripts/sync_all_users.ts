@@ -85,7 +85,7 @@ function splitArray(array: {
 
 async function main() {
   const users = await listAllUsers();
-  const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT && parseInt(process.env.USERS_TO_IMPORT_LIMIT);
+  const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT ? parseInt(process.env.USERS_TO_IMPORT_LIMIT) : undefined;
 
   console.log(process.env.DYNAMO_WEBINARS_TABLE_NAME);
 
@@ -95,7 +95,7 @@ async function main() {
 
   const totalUsers = limitedUsers.length;
   let processedUsers = 0;
-  fs.readFile('data.json', 'utf8', async (err, data) => {
+  await fs.readFile('data.json', 'utf8', async (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
       for (const user of limitedUsers) {
@@ -125,7 +125,7 @@ async function main() {
   });
 
   const allLists: any = await activeCampaignClient.getLists();
-  await new Promise((resolve) => setTimeout(resolve, 2500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   const webinarIdByName = allLists.lists.reduce((acc: any, list: any) => {
     acc[list.name] = Number(list.id);
@@ -145,14 +145,14 @@ async function main() {
     return true;
   });
 
-  const limitedUniqueUsersAndWebinars = usersToImportLimit ? uniqueUsersAndWebinars
+  const limitedUniqueUsersAndWebinars = !!usersToImportLimit ? uniqueUsersAndWebinars
     .slice(0, usersToImportLimit)
     : uniqueUsersAndWebinars;
 
 
-  // console.log('limitedUniqueUsersAndWebinars', limitedUniqueUsersAndWebinars.map((userAndWebinars) => userAndWebinars.username.Username));
-  const selectedUsers = limitedUniqueUsersAndWebinars; //.splice(0, 399);
-  const chunks = splitArray(selectedUsers, 100);
+  const totalUniqueUsers = limitedUniqueUsersAndWebinars.length;
+  let processedUniqueUsers = 0;
+  const chunks = splitArray(limitedUniqueUsersAndWebinars, 50);
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     const acPayload = chunk.map((userAndWebinars, index) => ({
@@ -182,7 +182,8 @@ async function main() {
     const response = await activeCampaignClient.bulkAddContactToList(acPayload);
   
     console.log(response);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log('Processed', processedUniqueUsers += chunk.length, '/', totalUniqueUsers);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
   }
 }
 
