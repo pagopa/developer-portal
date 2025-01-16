@@ -31,6 +31,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { title } from 'process';
 
 type Params = {
   productSlug: string;
@@ -99,7 +100,7 @@ const Page = async ({ params }: { params: Params }) => {
       breadcrumbsItems: [
         productToBreadcrumb(strapiTutorialProps.product),
         {
-          name: strapiTutorialProps.seo?.metaTitle,
+          name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
           item: breadcrumbItemByProduct(strapiTutorialProps.product, [
             'guides',
             ...(params?.productTutorialPage || []),
