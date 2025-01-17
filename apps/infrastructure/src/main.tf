@@ -172,7 +172,5 @@ module "docs_redirect" {
   
   environment = var.environment
   tags        = var.tags
-
-  hosted_zone_id = module.core.hosted_zone_id
-
+  use_custom_certificate = false
 }

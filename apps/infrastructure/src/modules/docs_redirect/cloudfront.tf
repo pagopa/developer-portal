@@ -5,7 +5,7 @@ resource "aws_cloudfront_function" "redirect_viewer_request_handler" {
   comment = "Redirects ${var.domain_to_redirect.from} requests to the correct domain"
   # publish this version only if the env is true
   publish = true
-  code    = file("${path.root}/../../cloudfront-functions/dist/viewer-request-handler.js")
+  code    = file("${path.root}/../../docs-redirect/src/rewriter.js")
 }
 
 resource "aws_cloudfront_distribution" "redirect" {
@@ -13,6 +13,13 @@ resource "aws_cloudfront_distribution" "redirect" {
   origin {
     domain_name = "hosting.gitbook.io"
     origin_id   = "hosting.gitbook.io"
+
+    custom_origin_config {
+      http_port = 80
+      https_port = 443
+      origin_protocol_policy = "match-viewer"
+      origin_ssl_protocols = ["TLSv1.1", "TLSv1.2"]
+    }
   }
 
   enabled             = true # enable CloudFront distribution
@@ -24,13 +31,13 @@ resource "aws_cloudfront_distribution" "redirect" {
 
   default_cache_behavior {
     # HTTPS requests we permit the distribution to serve
-    allowed_methods            = ["GET", "HEAD", "OPTIONS", "POST"]
-    cached_methods             = []
+    allowed_methods            = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
+    cached_methods             = ["GET", "HEAD"]
     target_origin_id           = "hosting.gitbook.io"
 
-    cache_policy_id          = data.aws_cloudfront_cache_policy.this.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.this.id
-
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
+    
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0     # min time for objects to live in the distribution cache
     default_ttl            = 3600  # default time for objects to live in the distribution cache
