@@ -19,6 +19,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { title } from 'process';
 
 export async function generateStaticParams() {
   return [...getProductsSlugs('quickStart')].map((productSlug) => ({
@@ -73,7 +74,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     breadcrumbsItems: [
       productToBreadcrumb(product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || abstract?.title,
         item: breadcrumbItemByProduct(product, ['quick-start']),
       },
     ],
