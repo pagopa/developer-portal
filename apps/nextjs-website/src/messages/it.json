@@ -290,7 +290,7 @@
         "company": "Tipologia Ente o Azienda",
         "role": "Ruolo",
         "requiredFieldError": "Questo campo non può essere vuoto",
-        "emailFieldError": "Inserisci un indirizzo email valido",
+        "emailFieldError": "Inserisci un indirizzo email valido. Utilizza soltanto lettere minuscole e non utilizzare caratteri speciali",
         "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
         "goToGuide": "Vai alla guida",
         "goToModel": "Vai al modello",
