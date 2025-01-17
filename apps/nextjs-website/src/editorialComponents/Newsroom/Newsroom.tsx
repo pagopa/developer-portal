@@ -4,6 +4,7 @@ import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
+import { useTranslations } from 'next-intl';
 import { Variant } from '@mui/material/styles/createTypography';
 
 interface INewsroomItem {
@@ -34,6 +35,7 @@ export interface INewsroom {
 const Item = (props: INewsroomItem) => {
   const { variant = 'h6' } = props;
   const theme = useTheme();
+  const t = useTranslations();
 
   const {
     comingSoonLabel,
@@ -128,7 +130,7 @@ const Item = (props: INewsroomItem) => {
           <LinkButton
             disabled={!!comingSoonLabel}
             href={href.link}
-            label={href.label}
+            label={t(href.label)}
           />
         </Stack>
       </div>

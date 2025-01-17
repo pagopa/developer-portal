@@ -1,5 +1,4 @@
 import React from 'react';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
@@ -41,17 +40,14 @@ export async function generateMetadata({
     params?.solutionSubPathSlugs
   );
 
-  return (
-    {} ||
-    makeMetadata({
-      title: props?.solution.title,
-      url: props
-        ? `/solutions/${
-            props?.solution.slug
-          }/${params.solutionSubPathSlugs.join('/')}`
-        : '',
-    })
-  );
+  return makeMetadata({
+    title: props?.solution.title,
+    url: props
+      ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
+          '/'
+        )}`
+      : '',
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -74,9 +70,9 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
       urlReplaces: urlReplaceMap,
+      gitBookPagesWithTitle: [],
+      spaceToPrefix: [],
     },
   };
 

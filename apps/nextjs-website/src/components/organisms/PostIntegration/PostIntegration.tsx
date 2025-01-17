@@ -11,7 +11,7 @@ import {
 import LinkCards from '@/components/molecules/LinkCards/LinkCards';
 
 type PostIntegrationProps = {
-  title: string;
+  title?: string;
   subtitle: string;
   cta?: {
     label: string;
@@ -41,7 +41,7 @@ const PostIntegration = ({
     <Box py={8} sx={{ backgroundColor: theme.palette.grey[50] }}>
       <SectionTitle
         margin={0}
-        title={title}
+        title={title || t('overview.postIntegration.title')}
         subtitle={subtitle}
         cta={cta}
         variant='h2'

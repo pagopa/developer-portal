@@ -12,6 +12,12 @@ import { ActiveCampaignList } from '../types/activeCampaignList';
 
 const MAX_NUMBER_OF_LISTS = '1000';
 
+function getSizeInKB(obj: any): number {
+  const objectAsString = JSON.stringify(obj);
+  const sizeInBytes = new Blob([objectAsString]).size;
+  return sizeInBytes / 1024;
+}
+
 async function getParameter(
   paramName: string,
   ssmClient: SSMClient,
@@ -97,6 +103,7 @@ export class ActiveCampaignClient {
               reject(new Error('Failed to parse response data'));
             }
           } else {
+            console.log('Request failed', data);
             reject(
               new Error(`Request failed with status code ${res.statusCode}`)
             );
@@ -197,6 +204,8 @@ export class ActiveCampaignClient {
       })),
     };
 
+    const sizeInKB = getSizeInKB(body);
+    console.log(`Size in KB: ${sizeInKB.toFixed(2)} KB`);
     return this.makeRequest('POST', `/api/3/import/bulk_import`, body);
   }
 

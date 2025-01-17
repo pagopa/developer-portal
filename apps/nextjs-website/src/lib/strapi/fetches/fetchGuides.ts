@@ -1,20 +1,21 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { GuidesCodec } from '@/lib/strapi/codecs/GuidesCodec';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiGuidesPopulate = () =>
   qs.stringify({
-    populate: [
-      'image',
-      'mobileImage',
-      'listItems',
-      'versions',
-      'bannerLinks.icon',
-      'seo',
-      'seo.metaSocial.image',
-      'product.logo',
-      'product.bannerLinks.icon',
-    ],
+    populate: {
+      image: { populate: '*' },
+      mobileImage: { populate: '*' },
+      listItems: { populate: '*' },
+      versions: { populate: '*' },
+      bannerLinks: { populate: ['icon'] },
+      seo: { populate: 'metaSocial.image' },
+      product: {
+        ...productRelationsPopulate,
+      },
+    },
   });
 
 export const fetchGuides = fetchFromStrapi(

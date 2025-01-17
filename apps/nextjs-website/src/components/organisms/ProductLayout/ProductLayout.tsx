@@ -6,14 +6,14 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Path } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
   readonly path?: string;
-  readonly paths?: Path[];
+  readonly breadcrumbSegments?: BreadcrumbSegment[];
   readonly bannerLinks?: readonly BannerLinkProps[];
   readonly showBreadcrumbs?: boolean;
   readonly structuredData?: ReactNode;
@@ -25,7 +25,7 @@ type LayoutPropsWithChildren = {
 
 const ProductLayout: FC<LayoutPropsWithChildren> = ({
   path,
-  paths,
+  breadcrumbSegments: paths,
   product,
   bannerLinks,
   children,
@@ -39,7 +39,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       {product && showBreadcrumbs && (
         <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
           <ProductBreadcrumbs
-            breadcrumbs={[...productPageToBreadcrumbs(product, path, paths)]}
+            breadcrumbs={[...productPageToBreadcrumbs(product, paths)]}
           />
         </EContainer>
       )}
