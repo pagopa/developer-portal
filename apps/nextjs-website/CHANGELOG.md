@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 4.14.1
+
+### Patch Changes
+
+- 590fe5f: Fix emailMatcher regular expression in order to allow only lowercase letters
+
 ## 4.14.0
 
 ### Minor Changes
