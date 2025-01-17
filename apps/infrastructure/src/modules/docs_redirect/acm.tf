@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "redirect" {
-  domain_name               = var.dns_domain_name
+  domain_name               = var.domain_to_redirect.from
   validation_method         = "DNS"
   subject_alternative_names = [var.domain_to_redirect.from]
 
