@@ -1,5 +1,11 @@
 # chatbot
 
+## 4.2.0
+
+### Minor Changes
+
+- 1bf3dcf: GET /queries API security fix
+
 ## 4.1.0
 
 ### Minor Changes
