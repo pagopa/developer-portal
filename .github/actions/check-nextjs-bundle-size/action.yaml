@@ -20,7 +20,7 @@ runs:
       run: npx -p nextjs-bundle-analysis@0.5.0 report
 
     - name: Upload bundle
-      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
       with:
         name: bundle
         path: ${{ inputs.upload_path }}
@@ -29,7 +29,7 @@ runs:
       id: base-branch-stats
       # Use this action instead actions/download-artifact because the official
       # one doesn't allow to download an artifact from different workflow
-      uses: dawidd6/action-download-artifact@246dbf436b23d7c49e21a7ab8204ca9ecd1fe615 # v2.27.0
+      uses: dawidd6/action-download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       if: success() && github.event.number
       with:
         branch: ${{ github.event.pull_request.base.ref }}
