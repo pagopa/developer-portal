@@ -4,7 +4,6 @@ import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
-import { translations } from '@/_contents/translations';
 import { InfoCardItemProfileProps } from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
@@ -15,16 +14,17 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
+import { companyRoles } from '@/config';
 
 const PersonalData = () => {
-  const {
-    auth: {
-      signUp: { companyRoles },
-    },
-  } = translations;
-  const t = useTranslations('profile');
+  const t = useTranslations();
   const router = useRouter();
   const { user, setUserAttributes } = useUser();
+
+  const companyRolesValues = companyRoles.map((role) => ({
+    title: t('auth.signUp.companyRoles.' + role),
+    value: role,
+  }));
 
   const [profileDataSectionItems, setProfileDataSectionItems] = useState<
     InfoCardItemProfileProps[]
@@ -33,32 +33,32 @@ const PersonalData = () => {
   useEffect(() => {
     setProfileDataSectionItems([
       {
-        title: t('personalData.fields.name'),
+        title: t('profile.personalData.fields.name'),
         value: user?.attributes.given_name,
         editable: true,
         type: 'text',
         required: true,
       },
       {
-        title: t('personalData.fields.surname'),
+        title: t('profile.personalData.fields.surname'),
         value: user?.attributes.family_name,
         editable: true,
         type: 'text',
         required: true,
       },
       {
-        title: t('personalData.fields.role'),
+        title: t('profile.personalData.fields.role'),
         value: user?.attributes['custom:job_role'],
         editable: true,
         type: 'text',
         required: false,
       },
       {
-        title: t('personalData.fields.sector'),
+        title: t('profile.personalData.fields.sector'),
         value: user?.attributes['custom:company_type'],
         editable: true,
         type: 'select',
-        values: companyRoles,
+        values: companyRolesValues,
         required: false,
       },
     ]);
@@ -85,13 +85,13 @@ const PersonalData = () => {
   const accountSectionItems: InfoCardItemProps[] = [
     {
       name: 'email',
-      title: t('personalData.fields.email'),
+      title: t('profile.personalData.fields.email'),
       value: user?.attributes.email,
       editable: true,
     },
     {
       name: 'password',
-      title: t('personalData.fields.password'),
+      title: t('profile.personalData.fields.password'),
       value: '••••••••••••',
       editable: true,
     },
@@ -139,10 +139,10 @@ const PersonalData = () => {
         <ConfirmationModal
           setOpen={() => null}
           open={true}
-          title={t('changePassword.dialog.title')}
-          text={t('changePassword.dialog.text')}
+          title={t('profile.changePassword.dialog.title')}
+          text={t('profile.changePassword.dialog.text')}
           confirmCta={{
-            label: t('changePassword.dialog.confirmLabel'),
+            label: t('profile.changePassword.dialog.confirmLabel'),
             onClick: () => {
               Auth.signOut().then(() => {
                 router.replace('/auth/login');
@@ -156,10 +156,10 @@ const PersonalData = () => {
         <ConfirmationModal
           setOpen={() => null}
           open={true}
-          title={t('changeEmail.dialog.title')}
-          text={t('changeEmail.dialog.text')}
+          title={t('profile.changeEmail.dialog.title')}
+          text={t('profile.changeEmail.dialog.text')}
           confirmCta={{
-            label: t('changeEmail.dialog.confirmLabel'),
+            label: t('profile.changeEmail.dialog.confirmLabel'),
             onClick: () => {
               setEditItem(null);
               setShowConfirmationModal(null);
@@ -172,9 +172,9 @@ const PersonalData = () => {
         gap={5}
         sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
       >
-        <Typography variant='h4'>{t('personalData.title')}</Typography>
+        <Typography variant='h4'>{t('profile.personalData.title')}</Typography>
         <InfoCardProfile
-          cardTitle={t('personalData.dataSection')}
+          cardTitle={t('profile.personalData.dataSection')}
           items={profileDataSectionItems}
           onValue={(items: InfoCardItemProfileProps[]) => {
             const oldItems = [...profileDataSectionItems];
@@ -205,7 +205,7 @@ const PersonalData = () => {
           }}
         />
         <ProfileInfoCard
-          cardTitle={t('personalData.accountSection')}
+          cardTitle={t('profile.personalData.accountSection')}
           items={accountSectionItems}
           renderItem={renderItem}
         />

@@ -1,13 +1,14 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
       backgroundImage: '*',
       product: {
-        populate: ['logo', 'bannerLinks.icon'],
+        ...productRelationsPopulate,
       },
       relatedLinks: {
         populate: ['links'],
