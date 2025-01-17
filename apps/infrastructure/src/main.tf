@@ -169,8 +169,8 @@ module "docs_redirect" {
     aws           = aws
     aws.us-east-1 = aws.us-east-1
   }
-  
-  environment = var.environment
-  tags        = var.tags
+
+  environment            = var.environment
+  tags                   = var.tags
   use_custom_certificate = false
 }
