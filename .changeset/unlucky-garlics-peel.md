@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Fix empty metadata field in listitems
+Fix missing name field in listitems
