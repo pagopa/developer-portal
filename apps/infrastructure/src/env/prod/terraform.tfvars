@@ -34,3 +34,4 @@ dns_domain_name_cms = {
 
 create_chatbot            = true
 ac_integration_is_enabled = true
+docs_redirect_is_enabled  = true

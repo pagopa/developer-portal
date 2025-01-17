@@ -161,3 +161,18 @@ module "active_campaign" {
   cognito_user_pool         = module.website.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
 }
+
+module "docs_redirect" {
+  count  = var.docs_redirect_is_enabled ? 1 : 0
+  source = "./modules/docs_redirect"
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+  
+  environment = var.environment
+  tags        = var.tags
+
+  hosted_zone_id = module.core.hosted_zone_id
+
+}
