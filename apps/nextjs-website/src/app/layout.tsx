@@ -2,7 +2,6 @@ import {
   baseUrl,
   cookieDomainScript,
   isChatbotActive,
-  isProduction,
   matomoScriptSrc,
 } from '@/config';
 import { Metadata } from 'next';
