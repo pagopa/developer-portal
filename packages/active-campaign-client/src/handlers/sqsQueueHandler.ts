@@ -58,6 +58,12 @@ export async function sqsQueueHandler(event: {
         ),
         [500, 404]
       );
+    case 'DynamoMODIFY':
+      // There is no need to manage this event because it can only be triggered on duplicate events
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'DynamoMODIFY event' }),
+      };
     default:
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Unknown event');

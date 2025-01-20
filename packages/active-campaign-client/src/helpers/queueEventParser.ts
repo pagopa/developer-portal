@@ -7,11 +7,13 @@ const queueEvents: readonly QueueEventType[] = [
   'DeleteUser',
   'DynamoINSERT',
   'DynamoREMOVE',
+  'DynamoMODIFY',
 ];
 
 const dynamoEvents: readonly QueueEventType[] = [
   'DynamoINSERT',
   'DynamoREMOVE',
+  'DynamoMODIFY',
 ];
 
 export function queueEventParser(event: {
