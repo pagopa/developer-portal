@@ -48,7 +48,7 @@ const Page = async ({ params }: { params: Params }) => {
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
-        name: caseHistory.seo?.metaTitle || params.caseHistorySlug,
+        name: caseHistory.seo?.metaTitle || caseHistory.title,
         item: getItemFromPaths(['case-histories', caseHistory.slug]),
       },
     ],
