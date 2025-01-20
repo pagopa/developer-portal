@@ -36,6 +36,7 @@ const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
         }}
       >
         <IconWrapper
+          id={'chatbotIcon'}
           icon={'/icons/chatbotAvatar.svg'}
           useSrc={true}
           color={palette.text.secondary}

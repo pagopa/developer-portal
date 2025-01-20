@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ICON_MAP } from './IconMap';
 
 export type IconWrapperProps = {
+  id?: string;
   icon: string;
   useSrc: boolean;
   color?: string;
@@ -15,6 +16,7 @@ export type IconWrapperProps = {
 type IconName = keyof typeof ICON_MAP;
 
 const IconWrapper = ({
+  id,
   icon,
   useSrc,
   color = 'text.primary',
@@ -23,7 +25,14 @@ const IconWrapper = ({
 }: IconWrapperProps) => {
   if (useSrc) {
     return (
-      <Icon sx={{ width: size, height: size, color, ...sx }}>
+      <Icon id={id} sx={{ width: size, height: size, color, ...sx }}>
+        <Image
+          id={id ? `${id}Image` : undefined}
+          alt={icon}
+          src={icon}
+          height={size}
+          width={size}
+        />
         <Image alt={icon} src={icon} height={size} width={size} />
       </Icon>
     );
