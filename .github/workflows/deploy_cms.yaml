@@ -89,14 +89,14 @@ jobs:
 
       - name: Update ImageTag in task-definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@4225e0b507142a2e432b018bc3ccb728559b437a # v1.2.0
+        uses: aws-actions/amazon-ecs-render-task-definition@f87d1f66e0c6e10caeeb51f8344a0d25c899c533 # v1.6.2
         with:
            task-definition: apps/strapi-cms/task-definition.json
            container-name: cms-docker
            image: ${{ steps.login-ecr.outputs.registry }}/strapi:${{ github.sha }}
 
       - name: Deploy new ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1.4.11
+        uses: aws-actions/amazon-ecs-deploy-task-definition@0e82244a9c6dac43d70151a94c67ebc4bab18fc5 # v2.2.0
         with:
             task-definition: ${{ steps.task-def.outputs.task-definition }}
             service: cms-ecs
