@@ -89,7 +89,7 @@ jobs:
 
       - name: Update ImageTag in task-definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@0e82244a9c6dac43d70151a94c67ebc4bab18fc5 # v2.2.0
+        uses: aws-actions/amazon-ecs-render-task-definition@4225e0b507142a2e432b018bc3ccb728559b437a # v1.2.0
         with:
            task-definition: apps/strapi-cms/task-definition.json
            container-name: cms-docker
