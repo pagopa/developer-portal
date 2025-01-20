@@ -1,15 +1,12 @@
-import { translations } from '@/_contents/translations';
-import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+'use client';
+import ErrorPage from '@/components/atoms/ErrorPage/ErrorPage';
 
 export default function PageNotFound() {
-  const { pageNotFound } = translations;
-
   return (
-    <Abstract
-      layout='center'
-      overline={pageNotFound.overline}
-      title={pageNotFound.title}
-      description={pageNotFound.description}
+    <ErrorPage
+      overline={'pageNotFound.overline'}
+      title={'pageNotFound.title'}
+      description={'pageNotFound.description'}
     />
   );
 }

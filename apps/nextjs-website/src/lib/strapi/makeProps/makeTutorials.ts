@@ -5,6 +5,7 @@ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
 
 export type TutorialsProps = readonly (Tutorial & {
   readonly productSlug: string;
@@ -13,10 +14,9 @@ export type TutorialsProps = readonly (Tutorial & {
 })[];
 
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials,
-  productSlug?: string
+  strapiTutorials: StrapiTutorials
 ): TutorialsProps {
-  const tutorialsProps = strapiTutorials.data.map(({ attributes }) => ({
+  return strapiTutorials.data.map(({ attributes }) => ({
     image: attributes.image.data
       ? {
           url: attributes.image.data.attributes.url,
@@ -33,6 +33,7 @@ export function makeTutorialsProps(
         .map((part) => makePartProps(part))
         .filter((part) => !!part) as ReadonlyArray<Part>),
     ],
+    product: makeBaseProductWithoutLogoProps(attributes.product.data),
     productSlug: attributes.product.data.attributes.slug,
     relatedLinks: attributes.relatedLinks,
     bannerLinks:
@@ -43,8 +44,4 @@ export function makeTutorialsProps(
           ),
     seo: attributes.seo,
   }));
-
-  return productSlug
-    ? tutorialsProps.filter((tutorial) => tutorial.productSlug === productSlug)
-    : tutorialsProps;
 }

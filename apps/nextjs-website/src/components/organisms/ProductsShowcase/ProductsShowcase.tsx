@@ -4,7 +4,7 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box, GridSize, useTheme } from '@mui/material';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
-type ProductsShowcaseProps = {
+export type ProductsShowcaseProps = {
   title: string;
   verticalPadding?: number;
   backgroundColor?: string;

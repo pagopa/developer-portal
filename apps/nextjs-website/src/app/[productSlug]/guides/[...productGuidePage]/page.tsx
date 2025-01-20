@@ -4,7 +4,6 @@ import ProductLayout, {
 import { getGuide, getProductGuidePath } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -77,9 +76,19 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
+
   const urlReplaceMap = await getCachedUrlReplaceMapProps();
-  const { product, page, guide, version, versions, source, bannerLinks, seo } =
-    guideProps;
+  const {
+    product,
+    page,
+    guide,
+    version,
+    versions,
+    source,
+    bannerLinks,
+    seo,
+    bodyConfig,
+  } = guideProps;
   const props: ProductGuidePageProps = {
     ...page,
     product,
@@ -89,21 +98,17 @@ const Page = async ({ params }: { params: Params }) => {
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
-      isPageIndex: page.isIndex,
-      pagePath: page.path,
-      assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
+      ...bodyConfig,
       urlReplaces: urlReplaceMap,
     },
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(props.product),
       {
         name: seo?.metaTitle || page.title,
-        item: breadcrumbItemByProduct(product, [
+        item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),
         ]),
@@ -123,7 +128,14 @@ const Page = async ({ params }: { params: Params }) => {
       <GitBookTemplate
         menuName={props.guide.name}
         breadcrumbs={[
-          ...productPageToBreadcrumbs(props.product, props.path, [
+          ...productPageToBreadcrumbs(props.product, [
+            {
+              translate: true,
+              name: 'devPortal.productHeader.guides',
+              path: props.product.hasGuideListPage
+                ? `/${props.product.slug}/guides`
+                : '/',
+            },
             {
               name: props.guide.name,
               path: props.guide.path,
