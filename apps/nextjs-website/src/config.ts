@@ -84,3 +84,19 @@ export const organizationInfo = {
     'https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa'
   ).split(','),
 };
+
+export const companyRoles = [
+  'ente-pubblico',
+  'partner-tecnologico',
+  'psp',
+  'gestore-di-pubblico-servizio',
+  'azienda-privata',
+  'altro',
+];
+
+export const signUpAdvantages = [
+  'exclusive_contents',
+  'product_updates',
+  'api_keys',
+  'support',
+];

@@ -6,6 +6,7 @@
 import { ActiveCampaignClient } from "../clients/activeCampaignClient";
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -71,24 +72,60 @@ async function listAllUsers() {
   }
 }
 
+function splitArray(array: {
+  username: any;
+  subscribedWebinars: any[];
+}[], chunkSize: number) {
+  const result = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+  return result;
+}
+
 async function main() {
   const users = await listAllUsers();
+  const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT ? parseInt(process.env.USERS_TO_IMPORT_LIMIT) : undefined;
 
   console.log(process.env.DYNAMO_WEBINARS_TABLE_NAME);
 
-  const usersAndWebinars = [];
+  let usersAndWebinars: any[] = [];
 
-  for (const user of users) {
-    const subscribedWebinars = await getSubscribedWebinars(user.Username);
-    usersAndWebinars.push({
-      username: user,
-      subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
-    });
-  }
+  const limitedUsers = usersToImportLimit ? users.slice(0, usersToImportLimit) : users;
 
-  const subscribedWebinarNames = usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
+  const totalUsers = limitedUsers.length;
+  let processedUsers = 0;
+  await fs.readFile('data.json', 'utf8', async (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      for (const user of limitedUsers) {
+        processedUsers++;
+        console.log(processedUsers, '/', totalUsers);
+        const subscribedWebinars = await getSubscribedWebinars(user.Username);
+        usersAndWebinars.push({
+          username: user,
+          subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
+        });
+      }
+    
+      usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
+    
+      const jsonString = JSON.stringify(usersAndWebinars); 
+      fs.writeFile('data.json', jsonString, (err) => {
+        if (err) {
+          console.error('Error writing file:', err);
+        } else {
+          console.log('JSON saved to data.json');
+        }
+      });
+    } else {
+      console.log('JSON read from data.json');
+      usersAndWebinars = JSON.parse(data);
+    }
+  });
 
   const allLists: any = await activeCampaignClient.getLists();
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   const webinarIdByName = allLists.lists.reduce((acc: any, list: any) => {
     acc[list.name] = Number(list.id);
@@ -108,39 +145,46 @@ async function main() {
     return true;
   });
 
-  const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT && parseInt(process.env.USERS_TO_IMPORT_LIMIT);
-  const limitedUniqueUsersAndWebinars = usersToImportLimit ? uniqueUsersAndWebinars
-    .filter((userAndWebinars) => userAndWebinars.subscribedWebinars.length > 0)
+  const limitedUniqueUsersAndWebinars = !!usersToImportLimit ? uniqueUsersAndWebinars
     .slice(0, usersToImportLimit)
     : uniqueUsersAndWebinars;
 
-  const acPayload = limitedUniqueUsersAndWebinars.map((userAndWebinars, index) => ({
-    contact: {
-      email: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'email')?.Value,
-      firstName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'given_name')?.Value,
-      lastName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'family_name')?.Value,
-      phone: `cognito:${userAndWebinars.username.Username}`,
-      fieldValues: [
-        {
-          field: '2',
-          value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:company_type')?.Value,
-        },
-        {
-          field: '1',
-          value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:job_role')?.Value,
-        },
-        {
-          field: '3',
-          value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:mailinglist_accepted')?.Value === 'true' ? 'TRUE' : 'FALSE',
-        },
-      ],
-    },
-    listIds: userAndWebinars.subscribedWebinars.map((webinar: any) => webinarIdByName[webinar]).filter(Boolean),
-  }));
 
-  const response = await activeCampaignClient.bulkAddContactToList(acPayload);
-
-  console.log(response);
+  const totalUniqueUsers = limitedUniqueUsersAndWebinars.length;
+  let processedUniqueUsers = 0;
+  const chunks = splitArray(limitedUniqueUsersAndWebinars, 50);
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    const acPayload = chunk.map((userAndWebinars, index) => ({
+      contact: {
+        email: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'email')?.Value,
+        firstName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'given_name')?.Value,
+        lastName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'family_name')?.Value,
+        phone: `cognito:${userAndWebinars.username.Username}`,
+        fieldValues: [
+          {
+            field: '2',
+            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:company_type')?.Value,
+          },
+          {
+            field: '1',
+            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:job_role')?.Value,
+          },
+          {
+            field: '3',
+            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:mailinglist_accepted')?.Value === 'true' ? 'TRUE' : 'FALSE',
+          },
+        ],
+      },
+      listIds: userAndWebinars.subscribedWebinars.map((webinar: any) => webinarIdByName[webinar]).filter(Boolean),
+    }));
+  
+    const response = await activeCampaignClient.bulkAddContactToList(acPayload);
+  
+    console.log(response);
+    console.log('Processed', processedUniqueUsers += chunk.length, '/', totalUniqueUsers);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  }
 }
 
 // Execute the main function

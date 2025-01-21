@@ -23,10 +23,9 @@ import {
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-
-import { companyRoles } from '@/_contents/auth';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
+import { companyRoles } from '@/config';
 
 const defaults = {
   username: '',
@@ -59,9 +58,7 @@ const SignUpForm = ({
   userAlreadyExist,
   submitting = false,
 }: SignUpFormProps) => {
-  const login = useTranslations('auth.login');
-  const signUp = useTranslations('auth.signUp');
-  const shared = useTranslations('shared');
+  const t = useTranslations();
   const { palette } = useTheme();
   const [userData, setUserData] = useState<SignUpUserData>(defaults);
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
@@ -83,25 +80,28 @@ const SignUpForm = ({
     let errors = {};
 
     if (nameError) {
-      errors = { ...errors, name: shared('requiredFieldError') };
+      errors = { ...errors, name: t('shared.requiredFieldError') };
     }
 
     if (surnameError) {
-      errors = { ...errors, surname: shared('requiredFieldError') };
+      errors = { ...errors, surname: t('shared.requiredFieldError') };
     }
 
     if (emailEmptyError) {
-      errors = { ...errors, email: shared('requiredFieldError') };
+      errors = { ...errors, email: t('shared.requiredFieldError') };
     } else if (emailError) {
-      errors = { ...errors, email: shared(emailError) };
+      errors = { ...errors, email: t('shared.' + emailError) };
     }
 
     if (passwordError) {
-      errors = { ...errors, password: signUp('passwordPolicy') };
+      errors = { ...errors, password: t('auth.signUp.passwordPolicy') };
     }
 
     if (confirmPasswordError) {
-      errors = { ...errors, confirmPassword: signUp('passwordMismatchError') };
+      errors = {
+        ...errors,
+        confirmPassword: t('auth.signUp.passwordMismatchError'),
+      };
     }
 
     setFieldErrors(errors);
@@ -113,16 +113,16 @@ const SignUpForm = ({
       !passwordError &&
       !confirmPasswordError
     );
-  }, [shared, signUp, userData]);
+  }, [userData, t]);
 
   const setEmailErrorIfUserExists = useCallback(() => {
     if (userAlreadyExist) {
       setFieldErrors((prevFieldErrors) => ({
         ...prevFieldErrors,
-        email: shared('emailAlreadyTaken'),
+        email: t('shared.emailAlreadyTaken'),
       }));
     }
-  }, [userAlreadyExist, shared]);
+  }, [userAlreadyExist, t]);
 
   const onSignUpClick = useCallback(() => {
     if (validateForm()) {
@@ -163,10 +163,10 @@ const SignUpForm = ({
         <Grid container justifyContent='center'>
           <Grid item xs={11}>
             <Typography variant='h4' pt={4} mb={4} textAlign='center'>
-              {signUp('createYourAccount')}
+              {t('auth.signUp.createYourAccount')}
             </Typography>
             <Typography variant='body2' mb={2}>
-              {shared('requiredFields')}
+              {t('shared.requiredFields')}
             </Typography>
             <Box component='form' display='flex' flexDirection='column' gap={2}>
               <Grid container spacing={2}>
@@ -175,7 +175,7 @@ const SignUpForm = ({
                     error={!!fieldErrors.name}
                     helperText={fieldErrors.name}
                     inputProps={{ 'aria-label': 'firstname' }}
-                    label={shared('firstName')}
+                    label={t('shared.firstName')}
                     name='firstName'
                     required
                     sx={{
@@ -192,7 +192,7 @@ const SignUpForm = ({
                     error={!!fieldErrors.surname}
                     helperText={fieldErrors.surname}
                     inputProps={{ 'aria-label': 'lastname' }}
-                    label={shared('lastName')}
+                    label={t('shared.lastName')}
                     name='lastName'
                     required
                     sx={{
@@ -211,7 +211,7 @@ const SignUpForm = ({
                   error={!!fieldErrors.email}
                   helperText={fieldErrors.email}
                   inputProps={{ 'aria-label': 'email' }}
-                  label={shared('emailAddress')}
+                  label={t('shared.emailAddress')}
                   name='username'
                   required
                   sx={{
@@ -225,12 +225,16 @@ const SignUpForm = ({
               </Stack>
               <PasswordTextField
                 id='password'
-                label={`${shared('password')}`}
+                label={`${t('shared.password')}`}
                 hasError={!!fieldErrors.password}
                 helperText={
                   <>
-                    {fieldErrors.password ? `${signUp('passwordError')} ` : ''}
-                    <Box component='span'>{signUp('passwordPolicy')}</Box>
+                    {fieldErrors.password
+                      ? `${t('auth.signUp.passwordError')} `
+                      : ''}
+                    <Box component='span'>
+                      {t('auth.signUp.passwordPolicy')}
+                    </Box>
                   </>
                 }
                 value={password}
@@ -238,10 +242,12 @@ const SignUpForm = ({
               />
               <PasswordTextField
                 id='confirmPassword'
-                label={`${shared('confirmPassword')}`}
+                label={`${t('shared.confirmPassword')}`}
                 hasError={hasConfirmPasswordError}
                 helperText={
-                  hasConfirmPasswordError ? signUp('passwordMismatchError') : ''
+                  hasConfirmPasswordError
+                    ? t('auth.signUp.passwordMismatchError')
+                    : ''
                 }
                 value={confirmPassword}
                 onChange={handleInputChange}
@@ -253,7 +259,7 @@ const SignUpForm = ({
                     inputProps={{
                       sx: { padding: '8.5px 14px' },
                     }}
-                    label={shared('company')}
+                    label={t('shared.company')}
                     name='company'
                     select={true}
                     size='small'
@@ -262,7 +268,7 @@ const SignUpForm = ({
                   >
                     {companyRoles.map((role) => (
                       <MenuItem key={role} value={role}>
-                        {signUp(`companyRoles.${role}`)}
+                        {t(`auth.signUp.companyRoles.${role}`)}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -270,7 +276,7 @@ const SignUpForm = ({
               </Stack>
               <Stack spacing={2}>
                 <TextField
-                  label={shared('role')}
+                  label={t('shared.role')}
                   name='role'
                   sx={{
                     backgroundColor: palette.background.paper,
@@ -291,7 +297,7 @@ const SignUpForm = ({
                       onChange={handleInputChange}
                     />
                   }
-                  label={signUp('confirmComunications')}
+                  label={t('auth.signUp.confirmComunications')}
                   sx={{ alignItems: 'flex-start' }}
                 />
               </Grid>
@@ -302,7 +308,7 @@ const SignUpForm = ({
                     onClick={onSignUpClick}
                     disabled={submitting}
                   >
-                    {signUp('action')}
+                    {t('auth.signUp.action')}
                   </Button>
                 </Stack>
               </Stack>
@@ -322,7 +328,7 @@ const SignUpForm = ({
               flexDirection='row'
             >
               <Typography variant='body2' mr={1}>
-                {signUp('alreadyHaveAnAccount')}
+                {t('auth.signUp.alreadyHaveAnAccount')}
               </Typography>
               <Typography
                 component={Link}
@@ -331,7 +337,7 @@ const SignUpForm = ({
                 variant='caption-semibold'
                 color={palette.primary.main}
               >
-                {login('action')}
+                {t('auth.login.action')}
               </Typography>
             </Stack>
           </Grid>

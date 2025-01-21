@@ -1,5 +1,5 @@
 import * as t from 'io-ts/lib';
-import { BaseProductWithBannerLinksCodec } from './ProductCodec';
+import { BaseProductWithRelationsCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { BannerLinkCodec } from './BannerLinkCodec';
 import { BaseTutorialCodec } from './TutorialCodec';
@@ -13,7 +13,7 @@ export const TutorialListPageCodec = t.strict({
     description: t.string,
     tutorials: t.strict({ data: t.array(BaseTutorialCodec) }),
     bannerLinks: t.array(BannerLinkCodec),
-    product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+    product: t.strict({ data: BaseProductWithRelationsCodec }),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
   }),
 });

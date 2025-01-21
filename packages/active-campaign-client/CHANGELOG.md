@@ -1,5 +1,21 @@
 # active-campaign-client
 
+## 0.4.0
+
+### Minor Changes
+
+- e73c258: Update script adding batch of users and progress logs
+
+### Patch Changes
+
+- 7fabbee: Fix error mangement in sqsQueueHandler
+
+## 0.3.1
+
+### Patch Changes
+
+- 7deef83: Add sync users script
+
 ## 0.3.0
 
 ### Minor Changes

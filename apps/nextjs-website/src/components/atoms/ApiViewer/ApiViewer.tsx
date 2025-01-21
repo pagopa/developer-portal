@@ -12,16 +12,13 @@ type ApiViewerProps = {
 const ApiViewer: FC<ApiViewerProps> = ({
   hideTryIt = true,
   specURL,
-  product: {
-    path,
-    subpaths: { api },
-  },
+  product,
 }) => {
   return (
     <API
       apiDescriptionUrl={specURL}
       hideTryIt={hideTryIt}
-      basePath={`${api?.path}` ?? `${path}/api`}
+      basePath={`/${product.slug}/api`}
       router={typeof window === 'undefined' ? 'memory' : 'hash'}
     />
   );
