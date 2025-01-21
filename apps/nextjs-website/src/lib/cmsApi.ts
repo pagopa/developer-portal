@@ -36,6 +36,7 @@ import {
   makeUrlReplaceMap,
   UrlReplaceMap,
 } from './strapi/makeProps/makeUrlReplaceMap';
+import { withCache, getCacheKey } from './cache';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -48,38 +49,80 @@ const buildEnv = pipe(
 );
 
 export const getHomepageProps = async () => {
-  const strapiHomepage = await fetchHomepage(buildEnv);
-  return makeHomepageProps(strapiHomepage);
+  return withCache(
+    getCacheKey('getHomepageProps'),
+    async () => {
+      const strapiHomepage = await fetchHomepage(buildEnv);
+      return makeHomepageProps(strapiHomepage);
+    },
+    900 // 15 minutes in seconds
+  );
 };
 
 export const getWebinarsProps = async () => {
-  const strapiWebinars = await fetchWebinars(buildEnv);
-  return makeWebinarsProps(strapiWebinars);
+  return withCache(
+    getCacheKey('getWebinarsProps'),
+    async () => {
+      const strapiWebinars = await fetchWebinars(buildEnv);
+      return makeWebinarsProps(strapiWebinars);
+    },
+    900
+  );
 };
 
 export const getProductsProps = async () => {
-  const strapiProducts = await fetchProducts(buildEnv);
-  return makeProductsProps(strapiProducts);
+  return withCache(
+    getCacheKey('getProductsProps'),
+    async () => {
+      const strapiProducts = await fetchProducts(buildEnv);
+      return makeProductsProps(strapiProducts);
+    },
+    900
+  );
 };
 
 export const getTutorialsProps = async () => {
-  const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials);
+  return withCache(
+    getCacheKey('getTutorialsProps'),
+    async () => {
+      const strapiTutorials = await fetchTutorials(buildEnv);
+      return makeTutorialsProps(strapiTutorials);
+    },
+    900
+  );
 };
 
 export const getTutorialListPagesProps = async () => {
-  const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-  return makeTutorialListPagesProps(strapiTutorialListPages);
+  return withCache(
+    getCacheKey('getTutorialListPagesProps'),
+    async () => {
+      const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
+      return makeTutorialListPagesProps(strapiTutorialListPages);
+    },
+    900
+  );
 };
 
 export const getQuickStartGuidesProps = async () => {
-  const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
-  return makeQuickStartGuidesProps(strapiQuickStartGuides);
+  return withCache(
+    getCacheKey('getQuickStartGuidesProps'),
+    async () => {
+      const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
+      return makeQuickStartGuidesProps(strapiQuickStartGuides);
+    },
+    900
+  );
 };
 
 export const getUrlReplaceMapProps = async () => {
-  const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-  return makeUrlReplaceMap(strapiUrlReplaceMap);
+  return withCache(
+    getCacheKey('getUrlReplaceMapProps'),
+    async () => {
+      const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+      return makeUrlReplaceMap(strapiUrlReplaceMap);
+    },
+    900
+  );
 };
 
 // eslint-disable-next-line functional/no-let
@@ -90,7 +133,11 @@ let areUrlReplaceMapCached = false;
 export const getCachedUrlReplaceMapProps = async () => {
   if (!areUrlReplaceMapCached) {
     // eslint-disable-next-line functional/no-expression-statements
-    cachedUrlReplaceMapProps = await getUrlReplaceMapProps();
+    cachedUrlReplaceMapProps = await withCache(
+      getCacheKey('getUrlReplaceMapProps'),
+      async () => getUrlReplaceMapProps(),
+      900
+    );
     // eslint-disable-next-line functional/no-expression-statements
     areUrlReplaceMapCached = true;
   }
@@ -98,38 +145,80 @@ export const getCachedUrlReplaceMapProps = async () => {
 };
 
 export const getApiDataListPagesProps = async () => {
-  const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
-  return makeApiDataListPagesProps(strapiApiDataListPages);
+  return withCache(
+    getCacheKey('getApiDataListPagesProps'),
+    async () => {
+      const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
+      return makeApiDataListPagesProps(strapiApiDataListPages);
+    },
+    900
+  );
 };
 
 export const getApiDataProps = async () => {
-  const strapiApiDataList = await fetchApiDataList(buildEnv);
-  return makeApiDataListProps(strapiApiDataList);
+  return withCache(
+    getCacheKey('getApiDataProps'),
+    async () => {
+      const strapiApiDataList = await fetchApiDataList(buildEnv);
+      return makeApiDataListProps(strapiApiDataList);
+    },
+    900
+  );
 };
 
 export const getCaseHistoriesProps = async () => {
-  const strapiCaseHistories = await fetchCaseHistories(buildEnv);
-  return makeCaseHistoriesProps(strapiCaseHistories);
+  return withCache(
+    getCacheKey('getCaseHistoriesProps'),
+    async () => {
+      const strapiCaseHistories = await fetchCaseHistories(buildEnv);
+      return makeCaseHistoriesProps(strapiCaseHistories);
+    },
+    900
+  );
 };
 
 export const getSolutionsProps = async () => {
-  const strapiSolutions = await fetchSolutions(buildEnv);
-  return makeSolutionsProps(strapiSolutions);
+  return withCache(
+    getCacheKey('getSolutionsProps'),
+    async () => {
+      const strapiSolutions = await fetchSolutions(buildEnv);
+      return makeSolutionsProps(strapiSolutions);
+    },
+    900
+  );
 };
 
 export const getSolutionListPageProps = async () => {
-  const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
-  return makeSolutionListPageProps(strapiSolutionListPage);
+  return withCache(
+    getCacheKey('getSolutionListPageProps'),
+    async () => {
+      const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+      return makeSolutionListPageProps(strapiSolutionListPage);
+    },
+    900
+  );
 };
 
 export const getOverviewsProps = async () => {
-  const strapiOverviews = await fetchOverviews(buildEnv);
-  return makeOverviewsProps(strapiOverviews);
+  return withCache(
+    getCacheKey('getOverviewsProps'),
+    async () => {
+      const strapiOverviews = await fetchOverviews(buildEnv);
+      return makeOverviewsProps(strapiOverviews);
+    },
+    900
+  );
 };
 
 export const getGuideListPagesProps = async () => {
-  const strapiGuideList = await fetchGuideListPages(buildEnv);
-  return makeGuideListPagesProps(strapiGuideList);
+  return withCache(
+    getCacheKey('getGuideListPagesProps'),
+    async () => {
+      const strapiGuideList = await fetchGuideListPages(buildEnv);
+      return makeGuideListPagesProps(strapiGuideList);
+    },
+    900
+  );
 };
 
 // Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
@@ -151,6 +240,12 @@ export const getGuidesProps = async () => {
 
 // TODO: Manage all fetched resources with cache in a dedicated helper function
 export const getGuidesPropsCache = async () => {
-  const strapiGuides = await fetchGuides(buildEnv);
-  return makeGuidesProps(strapiGuides).flatMap(makeGuide);
+  return withCache(
+    getCacheKey('getGuidesPropsCache'),
+    async () => {
+      const strapiGuides = await fetchGuides(buildEnv);
+      return makeGuidesProps(strapiGuides).flatMap(makeGuide);
+    },
+    900
+  );
 };
