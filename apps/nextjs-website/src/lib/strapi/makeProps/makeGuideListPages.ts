@@ -18,12 +18,14 @@ export function makeGuideListPagesProps(
           description: {
             title: 'guideListPage.cardSection.listItemsTitle', // this is translations path and it will be translated by the component
             listItems: attributes.listItems.map(({ text }) => text),
+            translate: true,
           },
           imagePath: attributes.image.data.attributes.url,
           mobileImagePath: attributes.mobileImage.data.attributes.url,
           link: {
             label: 'guideListPage.cardSection.linkLabel', // this is translations path and it will be translated by the component
             href: `/${product.slug}/guides/${attributes.slug}`,
+            translate: true,
           },
         })),
       })),

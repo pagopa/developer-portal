@@ -76,12 +76,14 @@ export function makeOverviewsProps(
             description: {
               content: document.content,
               title: 'guideListPage.cardSection.listItemsTitle',
+              translate: false,
             },
             imagePath: document.image.data.attributes.url,
             mobileImagePath: document.mobileImage.data.attributes.url,
             link: {
               label: document.linkText,
               href: document.linkHref,
+              translate: false,
             },
           })),
           ...attributes.postIntegration.guides.data.map((guide) => ({
@@ -89,12 +91,14 @@ export function makeOverviewsProps(
             description: {
               listItems: guide.attributes.listItems.map((item) => item.text),
               title: 'guideListPage.cardSection.listItemsTitle',
+              translate: false,
             },
             imagePath: guide.attributes.image.data.attributes.url,
             mobileImagePath: guide.attributes.mobileImage.data.attributes.url,
             link: {
               label: 'shared.goToGuide',
               href: `guides/${guide.attributes.slug}`,
+              translate: true,
             },
           })),
         ],
