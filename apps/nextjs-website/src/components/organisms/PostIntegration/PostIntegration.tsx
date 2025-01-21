@@ -82,11 +82,18 @@ const PostIntegration = ({
                   key={index}
                   {...props}
                   description={{
-                    title: t(props.description.title),
+                    title: props.description.translate
+                      ? t(props.description.title)
+                      : props.description.title,
                     content: props.description.content,
                     listItems: props.description.listItems,
                   }}
-                  link={{ label: t(props.link.label), href: props.link.href }}
+                  link={{
+                    label: props.link.translate
+                      ? t(props.link.label)
+                      : props.link.label,
+                    href: props.link.href,
+                  }}
                 />
               ))}
           </Box>

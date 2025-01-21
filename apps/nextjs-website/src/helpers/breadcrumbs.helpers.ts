@@ -1,4 +1,4 @@
-import { BreadcrumbSegment, Path } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/types/path';
 import { Product } from '@/lib/types/product';
 
 export function productPageToBreadcrumbs(
@@ -7,7 +7,7 @@ export function productPageToBreadcrumbs(
 ): readonly BreadcrumbSegment[] {
   return [
     {
-      name: 'home',
+      name: 'breadcrumbs.home',
       path: '/',
       translate: true,
     },
@@ -25,16 +25,16 @@ export function productPageToBreadcrumbs(
 
 export function pageToBreadcrumbs(
   pagePath: string,
-  paths?: readonly Path[]
+  paths?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
   return [
     {
-      name: 'home',
+      name: 'breadcrumbs.home',
       path: '/',
       translate: true,
     },
     {
-      name: pagePath,
+      name: `breadcrumbs.${pagePath}`,
       path: `/${pagePath}`,
       translate: true,
     },
