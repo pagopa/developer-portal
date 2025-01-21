@@ -3,15 +3,15 @@
   "version": "4.14.1",
   "private": true,
   "scripts": {
-    "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
-    "update-docs-ci": "./scripts/update-docs-ci.sh",
-    "update-docs": "./scripts/fetch-local-docs.sh",
+    "build": "next build",
     "compile": "tsc --noEmit",
     "dev": "next dev",
-    "build": "next build",
-    "start": "npx serve@latest out",
+    "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
     "lint": "next lint",
-    "test": "jest -i"
+    "start": "npx serve@latest out",
+    "test": "jest -i",
+    "update-docs": "./scripts/fetch-local-docs.sh",
+    "update-docs-ci": "./scripts/update-docs-ci.sh"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
@@ -46,6 +46,7 @@
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
     "schema-dts": "^1.1.2",
+    "sst": "3.6.2",
     "swagger-ui": "^5.9.1",
     "swiper": "^10.0.3",
     "swr": "^2.2.4"
