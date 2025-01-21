@@ -1,3 +1,6 @@
 [submodule "apps/nextjs-website/.tmp-docs"]
 	path = apps/nextjs-website/.tmp-docs
 	url = https://github.com/pagopa/devportal-docs.git
+[submodule "apps/docs-redirect"]
+	path = apps/docs-redirect
+	url = https://github.com/pagopa/docs-redirect

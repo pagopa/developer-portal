@@ -148,3 +148,12 @@ variable "ac_integration_is_enabled" {
   description = "Defines if Active Campaign integration should be enabled"
   default     = false
 }
+
+################################################################################
+# Docs redirect
+################################################################################
+variable "docs_redirect_is_enabled" {
+  type        = bool
+  description = "Defines if Docs redirect should be enabled"
+  default     = false
+}
