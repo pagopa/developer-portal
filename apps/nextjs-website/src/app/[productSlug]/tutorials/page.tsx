@@ -102,6 +102,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
               href: {
                 label: 'shared.readTutorial',
                 link: tutorial.path,
+                translate: true,
               },
               img: {
                 alt: tutorial.image?.alternativeText || '',
