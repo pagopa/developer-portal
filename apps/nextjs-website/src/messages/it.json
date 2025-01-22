@@ -160,7 +160,7 @@
         }
     },
     "webinars": {
-        "title": "Partecipa agli eventi live e guarda i webinar passati ",
+        "title": "Partecipa agli eventi live e accedi ai webinar passati ",
         "subtitle": "Con i webinar di PagoPA DevPortal hai l'opportunità di approfondire argomenti legati all'integrazione con i nostri prodotti, attraverso la guida e i consigli esperti del nostro team.",
         "nextWebinars": "I prossimi appuntamenti",
         "pastWebinars": "Webinar passati"
@@ -428,7 +428,7 @@
         },
         "tutorial": {
             "title": "Esplora i tutorial",
-            "ctaLabel": "Vedi tutti i tutorial"
+            "ctaLabel": "Accedi a tutti i tutorial"
         },
         "postIntegration": {
             "title": "Dopo l'integrazione"
@@ -559,7 +559,7 @@
     "swagger": {
         "errorCard": {
             "header": "Oops, manca qualcosa.",
-            "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
+            "message": "Non siamo riusciti a trovare la fonte originale per ottenere questo contenuto."
         },
         "parameters": {
             "header": "Parametri",
