@@ -23,6 +23,7 @@ interface INewsroomItem {
     label: string;
     title?: string;
     link: string;
+    translate?: boolean;
   };
   variant?: Variant;
 }
@@ -130,7 +131,7 @@ const Item = (props: INewsroomItem) => {
           <LinkButton
             disabled={!!comingSoonLabel}
             href={href.link}
-            label={t(href.label)}
+            label={href.translate ? t(href.label) : href.label}
           />
         </Stack>
       </div>
