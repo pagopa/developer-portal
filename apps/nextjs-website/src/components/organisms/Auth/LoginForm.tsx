@@ -74,7 +74,12 @@ const LoginForm = ({
   );
 
   const handleChangeInput = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (
+      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      options: { transformInputToLowerCase: boolean } = {
+        transformInputToLowerCase: false,
+      }
+    ) => {
       if (fieldErrors.email || fieldErrors.password) {
         setFieldErrors({
           email: null,
@@ -82,7 +87,12 @@ const LoginForm = ({
         });
       }
 
-      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: options.transformInputToLowerCase
+          ? e.target.value.toLowerCase()
+          : e.target.value,
+      }));
     },
     [fieldErrors]
   );
@@ -159,7 +169,9 @@ const LoginForm = ({
                   }}
                   value={formData.username}
                   variant='outlined'
-                  onChange={handleChangeInput}
+                  onChange={(e) =>
+                    handleChangeInput(e, { transformInputToLowerCase: true })
+                  }
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
