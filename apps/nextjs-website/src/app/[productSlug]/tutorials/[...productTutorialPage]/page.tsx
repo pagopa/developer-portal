@@ -56,7 +56,7 @@ const Page = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(strapiTutorialProps.product),
       {
-        name: strapiTutorialProps.seo?.metaTitle,
+        name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
         item: breadcrumbItemByProduct(strapiTutorialProps.product, [
           'guides',
           ...(params?.productTutorialPage || []),
