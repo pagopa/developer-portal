@@ -17,7 +17,7 @@ const NewsItemCodec = t.strict({
 
 export const NewsShowcaseCodec = t.strict({
   title: t.string,
-  subTitle: t.union([NullToUndefinedCodec, LinkCodec]),
+  subTitle: t.union([NullToUndefinedCodec, t.string]),
   link: t.union([NullToUndefinedCodec, LinkCodec]),
   items: t.strict({
     data: t.array(NewsItemCodec),
