@@ -50,7 +50,6 @@ const NewsShowcase = ({
             date: {
               date: item.publishedAt,
             },
-            label: 'yoooo',
             href: { link: item.link.url, label: item.link.text },
             img: item.image
               ? {
