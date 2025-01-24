@@ -7,7 +7,7 @@ import EContainer from '../EContainer/EContainer';
 import { useTranslations } from 'next-intl';
 import { Variant } from '@mui/material/styles/createTypography';
 
-interface INewsroomItem {
+export interface INewsroomItem {
   comingSoonLabel?: string;
   img: {
     src: string;
