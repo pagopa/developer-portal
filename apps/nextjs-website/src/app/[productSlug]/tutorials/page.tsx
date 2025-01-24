@@ -104,12 +104,10 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 link: tutorial.path,
                 translate: true,
               },
-              img: tutorial.image
-                ? {
-                    alt: tutorial.image?.alternativeText || '',
-                    src: tutorial.image?.url || '/images/news.png',
-                  }
-                : undefined,
+              img: {
+                alt: tutorial.image?.alternativeText || '',
+                src: tutorial.image?.url || '/images/news.png',
+              },
             }))}
           />
         </Box>

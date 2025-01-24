@@ -56,7 +56,6 @@ const Item = (props: INewsroomItem) => {
     href,
   } = props;
 
-  console.log(theme.palette);
   return (
     <Grid
       item
