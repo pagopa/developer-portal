@@ -56,6 +56,7 @@ const Item = (props: INewsroomItem) => {
     href,
   } = props;
 
+  console.log(theme.palette);
   return (
     <Grid
       item
@@ -122,11 +123,7 @@ const Item = (props: INewsroomItem) => {
               backgroundColor: '#C4DCF5',
             }}
           >
-            <Typography
-              fontSize={14}
-              fontWeight={600}
-              sx={{ marginLeft: '2px' }}
-            >
+            <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>
               {label}
             </Typography>
           </Box>
@@ -137,7 +134,7 @@ const Item = (props: INewsroomItem) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexGrow: '1',
+          flexGrow: '0',
         }}
       >
         <Typography
