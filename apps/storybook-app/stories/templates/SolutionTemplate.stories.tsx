@@ -3,6 +3,8 @@ import SolutionTemplate from '../../../nextjs-website/src/components/templates/S
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { authProviderDecorator } from '../auth-provider.helper';
 import { mockTextBlock } from '../mock-content.helper';
+import { productsFixture } from '../fixtures/productsFixture';
+import { bannerLinksFixture } from '../fixtures/bannerLinksFixtures';
 
 const meta: Meta<typeof SolutionTemplate> = {
   title: 'Templates/SolutionTemplate',
@@ -15,36 +17,6 @@ const meta: Meta<typeof SolutionTemplate> = {
 };
 
 export default meta;
-
-const products = [
-  {
-    name: 'pagoPA',
-    shortName: 'pagoPa',
-    description: 'Il portale per gli sviluppatori di PagoPA',
-    slug: 'pagopa',
-    logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
-    },
-  },
-  {
-    name: 'App IO',
-    shortName: 'App IO',
-    description: 'Il portale per gli sviluppatori di App IO',
-    slug: 'app-io',
-    logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
-    },
-  },
-  {
-    name: 'SEND',
-    shortName: 'SEND',
-    description: 'Il portale per gli sviluppatori di Send',
-    slug: 'send',
-    logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
-    },
-  },
-];
 
 export const Showcase: StoryObj<typeof SolutionTemplate> = {
   args: {
@@ -61,7 +33,7 @@ export const Showcase: StoryObj<typeof SolutionTemplate> = {
             text: 'Violazione commessa dal cittadino e generazione dell’avviso pagoPA',
           }),
         ],
-        products: [products[1]],
+        products: [productsFixture[1]],
       },
       {
         title: '02',
@@ -70,7 +42,7 @@ export const Showcase: StoryObj<typeof SolutionTemplate> = {
             text: 'Emissione e pagamento del preavviso di accertamento',
           }),
         ],
-        products: [products[0], products[2]],
+        products: [productsFixture[0], productsFixture[2]],
       },
       {
         title: '03',
@@ -79,25 +51,12 @@ export const Showcase: StoryObj<typeof SolutionTemplate> = {
             text: 'Emissione, consegna e pagamento del verbale di contestazione',
           }),
         ],
-        products: products,
+        products: productsFixture,
       },
     ],
     dirName: 'DFDSFDFDFSDF',
     landingUseCaseFile: 'SUMMARY.md',
-    bannerLinks: [
-      {
-        theme: 'dark',
-        title: 'Hai bisogno di aiuto?',
-        decoration: 'HeadsetMic',
-        body: 'Scrivi un’email in cui descrivi il tuo problema o dubbio all’indirizzo <a href="mailto:onboarding@io.italia.it">onboarding@io.italia.it</a>',
-      },
-      {
-        theme: 'light',
-        title: 'Dicci cosa ne pensi',
-        decoration: 'Feedback',
-        body: 'Per segnalare problemi o dare feedback, lascia un commento nello <a href="https://github.com/pagopa/io-app/issues/new/choose">spazio Github</a> dell’app IO',
-      },
-    ],
+    bannerLinks: bannerLinksFixture,
     stats: [
       {
         title: '+50%',
@@ -112,7 +71,7 @@ export const Showcase: StoryObj<typeof SolutionTemplate> = {
         description: 'di riduzione effettiva dei tempi di incasso',
       },
     ],
-    products: products,
+    products: productsFixture,
     webinars: [
       {
         title: 'Test Webinar',
