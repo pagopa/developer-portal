@@ -23,7 +23,6 @@ const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
         id='chatbot'
         aria-label='chat'
         onClick={(e) => {
-          //matomoEvent();
           onOpenChat(e);
         }}
         size={size}
