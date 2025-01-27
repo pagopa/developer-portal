@@ -27,7 +27,11 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { validateEmail, validateField } from '@/helpers/auth.helpers';
+import {
+  basicEmailMatcher,
+  validateEmail,
+  validateField,
+} from '@/helpers/auth.helpers';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -74,12 +78,7 @@ const LoginForm = ({
   );
 
   const handleChangeInput = useCallback(
-    (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      options: { transformInputToLowerCase: boolean } = {
-        transformInputToLowerCase: false,
-      }
-    ) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       if (fieldErrors.email || fieldErrors.password) {
         setFieldErrors({
           email: null,
@@ -87,18 +86,15 @@ const LoginForm = ({
         });
       }
 
-      setFormData((prev) => ({
-        ...prev,
-        [e.target.name]: options.transformInputToLowerCase
-          ? e.target.value.toLowerCase()
-          : e.target.value,
-      }));
+      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     },
     [fieldErrors]
   );
 
   const validateForm = useCallback(() => {
-    const emailError = validateEmail(formData.username);
+    const emailError = validateEmail(formData.username, {
+      regex: basicEmailMatcher,
+    });
     const passwordError = validateField(formData.password);
 
     setFieldErrors({
@@ -128,7 +124,10 @@ const LoginForm = ({
 
     if (!valid) return;
 
-    onLogin(formData);
+    onLogin({
+      ...formData,
+      username: formData.username.toLowerCase(),
+    });
   }, [validateForm, onLogin, formData]);
 
   return (
@@ -169,9 +168,7 @@ const LoginForm = ({
                   }}
                   value={formData.username}
                   variant='outlined'
-                  onChange={(e) =>
-                    handleChangeInput(e, { transformInputToLowerCase: true })
-                  }
+                  onChange={handleChangeInput}
                 />
               </Stack>
               <Stack spacing={2} mb={2}>
