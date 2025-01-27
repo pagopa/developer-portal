@@ -122,6 +122,16 @@
         }
       },
       "component": "shared.seo"
+    },
+    "whatsNew": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "common.news-showcase"
     }
   }
 }
