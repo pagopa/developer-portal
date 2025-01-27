@@ -41,7 +41,7 @@
       },
       "type": "string",
       "required": true,
-      "default": "summary.md"
+      "default": "README.md"
     },
     "seo": {
       "type": "component",
