@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.4.1
+
+### Patch Changes
+
+- dff2b55: Manage 'DynamoMODIFY' event
+
 ## 0.4.0
 
 ### Minor Changes

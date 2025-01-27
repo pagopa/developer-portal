@@ -1,5 +1,18 @@
 # nextjs-website
 
+## 4.15.0
+
+### Minor Changes
+
+- 4a4cff9: Remove all static content
+- 4a4cff9: Filter product based on the presence of the overview data, Product menu depends on strapi configured relations with pages
+- 6cb24a4: Fix missing name field in listitems
+
+### Patch Changes
+
+- cbda80a: Add sitemap
+- c9b5838: Remove NextIntl warnings
+
 ## 4.14.1
 
 ### Patch Changes
