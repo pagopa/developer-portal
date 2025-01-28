@@ -16,7 +16,6 @@ resource "aws_codebuild_project" "github_runner" {
 
     dynamic "environment_variable" {
       for_each = var.chatbot_env_vars
-      
       content {
         name  = environment_variable.key
         value = environment_variable.value

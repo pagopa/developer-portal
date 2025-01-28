@@ -1,13 +1,25 @@
 import * as t from 'io-ts/lib';
-import { GuideCodec } from './GuidesCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 
+const CustomGuideCodec = t.strict({
+  attributes: t.strict({
+    title: t.string,
+    slug: t.string,
+    product: t.strict({
+      data: t.strict({
+        attributes: t.strict({
+          slug: t.string,
+        }),
+      }),
+    }),
+  }),
+});
 const UrlToGuideCodec = t.strict({
   id: t.number,
   url: t.string,
   subPath: t.union([NullToUndefinedCodec, t.string]),
   guide: t.strict({
-    data: t.union([NullToUndefinedCodec, GuideCodec]),
+    data: t.union([NullToUndefinedCodec, CustomGuideCodec]),
   }),
 });
 

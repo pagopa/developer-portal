@@ -1,5 +1,15 @@
 # infrastructure
 
+## 1.6.0
+
+### Minor Changes
+
+- 1333a4b: Active campaign resync lambda implemented
+
+### Patch Changes
+
+- cd06c06: Enabled active campaign syncer on prod
+
 ## 1.5.0
 
 ### Minor Changes

@@ -49,8 +49,10 @@ import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
-import build from 'next/dist/build';
-import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
+import {
+  makeUrlReplaceMap,
+  UrlReplaceMap,
+} from './strapi/makeProps/makeUrlReplaceMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -150,6 +152,21 @@ export const getUrlReplaceMapProps = async () => {
     return { ...staticUrlReplaceMap, ...makeUrlReplaceMap(urlReplaceMap) };
   }
   return staticUrlReplaceMap;
+};
+
+// eslint-disable-next-line functional/no-let
+let cachedUrlReplaceMapProps: UrlReplaceMap = {}; // We need to use any[] because of the type issue makeGuide derived type are not statically defined
+// eslint-disable-next-line functional/no-let
+let areUrlReplaceMapCached = false;
+
+export const getCachedUrlReplaceMapProps = async () => {
+  if (!areUrlReplaceMapCached) {
+    // eslint-disable-next-line functional/no-expression-statements
+    cachedUrlReplaceMapProps = await getUrlReplaceMapProps();
+    // eslint-disable-next-line functional/no-expression-statements
+    areUrlReplaceMapCached = true;
+  }
+  return cachedUrlReplaceMapProps;
 };
 
 export const getApiDataListPagesProps = async () => {
