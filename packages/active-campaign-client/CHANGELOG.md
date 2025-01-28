@@ -1,5 +1,21 @@
 # active-campaign-client
 
+## 0.4.1
+
+### Patch Changes
+
+- dff2b55: Manage 'DynamoMODIFY' event
+
+## 0.4.0
+
+### Minor Changes
+
+- e73c258: Update script adding batch of users and progress logs
+
+### Patch Changes
+
+- 7fabbee: Fix error mangement in sqsQueueHandler
+
 ## 0.3.1
 
 ### Patch Changes

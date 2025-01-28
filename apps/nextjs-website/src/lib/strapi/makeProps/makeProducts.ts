@@ -1,34 +1,60 @@
-import { products } from '@/_contents/products';
 import {
+  BaseProductWithRelationsCodec,
   StrapiProducts,
-  StrapiProduct,
-  StrapiBaseProduct,
 } from '../codecs/ProductCodec';
 import { Product } from '../../types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 
-export function mergeProductWithStaticContent(
-  attributes: Partial<StrapiProduct['attributes']> &
-    StrapiBaseProduct['attributes']
-): Product {
-  const staticProduct =
-    products.find((product) => product.slug === attributes.slug) || products[0];
+export function makeProductsProps(
+  strapiProducts: StrapiProducts
+): ReadonlyArray<Product> {
+  return strapiProducts.data.map(makeProductProps);
+}
+
+export function makeProductProps(product: StrapiProducts['data'][0]): Product {
   return {
-    ...staticProduct,
-    ...attributes,
-    logo: attributes.logo?.data.attributes || staticProduct.logo,
-    bannerLinks: attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+    ...makeBaseProductWithoutLogoProps(product),
+    description: product.attributes.description,
+    logo: product.attributes.logo?.data.attributes,
   };
 }
 
-export function makeProductsProps(
-  products: StrapiProducts,
-  staticProducts: ReadonlyArray<Product>
-): ReadonlyArray<Product> {
-  return [
-    ...staticProducts,
-    ...products.data.map(({ attributes }) => {
-      return mergeProductWithStaticContent(attributes);
-    }),
-  ];
+function getApiDataListPageUrl(
+  product: BaseProductWithRelationsCodec
+): string | undefined {
+  const apiDataList = product.attributes.api_data_list_page.data;
+  // if there is no api data, return undefined
+  if (!apiDataList || apiDataList.attributes.apiData.data.length === 0) return;
+
+  const productSlug = product.attributes.slug;
+  const apiData = apiDataList.attributes.apiData.data[0];
+
+  if (
+    apiDataList &&
+    apiDataList.attributes.apiData.data.length === 1 &&
+    apiData.attributes.apiRestDetail?.slug
+  ) {
+    return `/${productSlug}/api/${apiData.attributes.apiRestDetail.slug}`;
+  }
+
+  return `/${productSlug}/api`;
+}
+
+export function makeBaseProductWithoutLogoProps(
+  product: BaseProductWithRelationsCodec
+): Product {
+  return {
+    ...product.attributes,
+    description: undefined,
+    hasApiDataListPage:
+      product.attributes.api_data_list_page.data &&
+      product.attributes.api_data_list_page.data.attributes.apiData.data
+        .length > 0,
+    apiDataListPageUrl: getApiDataListPageUrl(product),
+    hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
+    hasGuideListPage: !!product.attributes.guide_list_page.data,
+    hasOverviewPage: !!product.attributes.overview.data,
+    hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
+    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+  };
 }

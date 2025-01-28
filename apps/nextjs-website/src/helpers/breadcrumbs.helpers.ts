@@ -1,41 +1,40 @@
-import { BreadcrumbSegment, Path } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/types/path';
 import { Product } from '@/lib/types/product';
 
 export function productPageToBreadcrumbs(
   product: Product,
-  path?: string,
-  paths?: readonly Path[]
+  breadcrumbSegments?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
-  const subpath = Object.entries(product.subpaths)
-    .filter(([, subpath]) => path?.includes(subpath.path))
-    .map(([, subpath]) => subpath);
   return [
     {
-      name: 'home',
+      name: 'breadcrumbs.home',
       path: '/',
       translate: true,
     },
     {
       name: product.name,
-      path: product.subpaths.overview.path,
+      path: product.hasOverviewPage
+        ? `${
+            product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
+          }/overview`
+        : '',
     },
-    ...subpath,
-    ...(paths || []),
+    ...(breadcrumbSegments || []),
   ];
 }
 
 export function pageToBreadcrumbs(
   pagePath: string,
-  paths?: readonly Path[]
+  paths?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
   return [
     {
-      name: 'home',
+      name: 'breadcrumbs.home',
       path: '/',
       translate: true,
     },
     {
-      name: pagePath,
+      name: `breadcrumbs.${pagePath}`,
       path: `/${pagePath}`,
       translate: true,
     },

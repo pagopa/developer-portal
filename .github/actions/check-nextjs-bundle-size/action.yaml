@@ -8,6 +8,9 @@ inputs:
   upload_path:
     description: 'The path where the report should be uploaded'
     required: true
+  environment:
+    description: 'The environment where the report should be uploaded'
+    required: true
 
 runs:
   using: "composite"
@@ -20,10 +23,11 @@ runs:
       run: npx -p nextjs-bundle-analysis@0.5.0 report
 
     - name: Upload bundle
-      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
       with:
-        name: bundle
+        name: bundle-${{ inputs.environment }}
         path: ${{ inputs.upload_path }}
+        include-hidden-files: true
 
     - name: Download base branch bundle stats
       id: base-branch-stats

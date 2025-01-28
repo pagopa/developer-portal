@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import TutorialTemplate from 'nextjs-website/src/components/templates/TutorialTemplate/TutorialTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-import { appIo } from 'nextjs-website/src/_contents/appIo/appIo';
+import { productsFixture } from '../fixtures/productsFixture';
 
 const meta: Meta<typeof TutorialTemplate> = {
   title: 'Templates/TutorialPageTemplate',
@@ -69,7 +69,7 @@ export const Showcase: StoryObj<typeof TutorialTemplate> = {
         ],
       },
     ],
-    product: appIo,
+    product: productsFixture[1],
   },
   decorators: [nextIntlContextDecorator],
 };

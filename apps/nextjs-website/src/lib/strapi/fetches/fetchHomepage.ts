@@ -23,6 +23,13 @@ const makeStrapiHomepagePopulate = () =>
         populate: [
           'products.logo',
           'products.bannerLinks.icon',
+          'products.overview',
+          'products.quickstart_guide',
+          'products.api_data_list_page',
+          'products.api_data_list_page.apiData.*',
+          'products.api_data_list_page.apiData.apiRestDetail.*',
+          'products.guide_list_page',
+          'products.tutorial_list_page',
           'solutions.icon',
           'solutions.product.logo',
           'solutionsCta.link',

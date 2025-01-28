@@ -10,7 +10,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getApiDataListPages, getProductsSlugs } from '@/lib/api';
+import { getApiDataListPages, getProducts } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
@@ -18,8 +18,9 @@ type Params = {
 };
 
 export async function generateStaticParams() {
-  return getProductsSlugs('api').map((productSlug) => ({
-    productSlug,
+  const products = await getProducts();
+  return products.map((product) => ({
+    productSlug: product.slug,
   }));
 }
 
@@ -48,7 +49,9 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(apiDataListPageProps?.product),
       {
-        name: apiDataListPageProps?.seo?.metaTitle,
+        name:
+          apiDataListPageProps?.seo?.metaTitle ||
+          apiDataListPageProps?.hero.title,
         item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api']),
       },
     ],
@@ -59,7 +62,7 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
     return (
       <ProductLayout
         product={apiDataListPageProps.product}
-        path={apiDataListPageProps.product.path.concat('/api')}
+        path={`/${apiDataListPageProps.product.slug}/api`}
         showBreadcrumbs
         structuredData={structuredData}
       >

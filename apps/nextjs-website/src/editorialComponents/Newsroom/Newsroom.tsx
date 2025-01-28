@@ -4,11 +4,13 @@ import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
+import { useTranslations } from 'next-intl';
 import { Variant } from '@mui/material/styles/createTypography';
 
-interface INewsroomItem {
+export interface INewsroomItem {
   comingSoonLabel?: string;
-  img: {
+  label?: string;
+  img?: {
     src: string;
     alt: string;
   };
@@ -22,6 +24,7 @@ interface INewsroomItem {
     label: string;
     title?: string;
     link: string;
+    translate?: boolean;
   };
   variant?: Variant;
 }
@@ -34,9 +37,11 @@ export interface INewsroom {
 const Item = (props: INewsroomItem) => {
   const { variant = 'h6' } = props;
   const theme = useTheme();
+  const t = useTranslations();
 
   const {
     comingSoonLabel,
+    label,
     img,
     date: {
       date,
@@ -97,22 +102,38 @@ const Item = (props: INewsroomItem) => {
           />
         )}
       </Box>
-      {date && (
-        <Typography
-          color='text.secondary'
-          fontSize={16}
-          fontWeight={400}
-          mb={2}
-        >
-          {new Intl.DateTimeFormat(locale, options).format(date)}
-        </Typography>
-      )}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {date && (
+          <Typography
+            color='text.secondary'
+            fontSize={16}
+            fontWeight={400}
+            mb={2}
+          >
+            {new Intl.DateTimeFormat(locale, options).format(date)}
+          </Typography>
+        )}
+        {label && (
+          <Box
+            sx={{
+              borderRadius: 1,
+              maxHeight: '24px',
+              flexGrow: '0',
+              backgroundColor: '#C4DCF5',
+            }}
+          >
+            <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>
+              {label}
+            </Typography>
+          </Box>
+        )}
+      </Box>
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexGrow: '1',
+          flexGrow: '0',
         }}
       >
         <Typography
@@ -128,7 +149,7 @@ const Item = (props: INewsroomItem) => {
           <LinkButton
             disabled={!!comingSoonLabel}
             href={href.link}
-            label={href.label}
+            label={href.translate ? t(href.label) : href.label}
           />
         </Stack>
       </div>

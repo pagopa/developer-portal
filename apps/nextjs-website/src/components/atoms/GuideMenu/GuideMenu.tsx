@@ -27,7 +27,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
   const { palette } = useTheme();
-  const t = useTranslations('productGuidePage');
+  const t = useTranslations();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const scrollUp = useScrollUp();
   const currentPath = usePathname();
@@ -107,7 +107,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('tableOfContents')}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
               size='small'
@@ -140,7 +140,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('tableOfContents')}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
               aria-label='close'

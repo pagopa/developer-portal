@@ -1,6 +1,6 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
-import { getProductsSlugs, getTutorialListPageProps } from '@/lib/api';
+import { getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
@@ -9,7 +9,6 @@ import ProductLayout, {
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
-import { translations } from '@/_contents/translations';
 import { ProductParams } from '@/lib/types/productParams';
 import {
   makeMetadata,
@@ -21,10 +20,11 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { getTutorialListPagesProps } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('tutorials')].map((productSlug) => ({
-    productSlug,
+  return (await getTutorialListPagesProps()).map(({ product }) => ({
+    productSlug: product.slug,
   }));
 }
 
@@ -56,22 +56,20 @@ export async function generateMetadata(
     title: product.name,
     description: abstract?.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url,
   });
 }
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, product, tutorials, seo } =
+  const { abstract, bannerLinks, path, tutorials, seo, product } =
     await getTutorialListPageProps(productSlug);
-
-  const { shared } = translations;
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || abstract?.title,
         item: breadcrumbItemByProduct(product, ['tutorials']),
       },
     ],
@@ -93,7 +91,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
           title={abstract?.title}
         />
       )}
-      {product.subpaths.tutorials && tutorials && (
+      {tutorials && (
         <Box>
           <Newsroom
             items={tutorials.map((tutorial) => ({
@@ -102,9 +100,9 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 date: tutorial.publishedAt,
               },
               href: {
-                label: shared.readTutorial,
+                label: 'shared.readTutorial',
                 link: tutorial.path,
-                title: shared.readTutorial,
+                translate: true,
               },
               img: {
                 alt: tutorial.image?.alternativeText || '',

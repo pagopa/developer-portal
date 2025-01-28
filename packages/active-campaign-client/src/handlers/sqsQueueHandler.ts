@@ -9,10 +9,13 @@ import {
   removeContactFromList,
 } from '../helpers/manageListSubscription';
 
-function manageError(result: APIGatewayProxyResult) {
-  if (result.statusCode === 500) {
+function manageError(
+  result: APIGatewayProxyResult,
+  errorStatusCodes: readonly number[] = [500]
+): APIGatewayProxyResult {
+  if (errorStatusCodes.includes(result.statusCode)) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Internal server error');
+    throw new Error(`Error: ${result.statusCode} - ${result.body}`);
   }
 
   return {
@@ -24,45 +27,45 @@ function manageError(result: APIGatewayProxyResult) {
 export async function sqsQueueHandler(event: {
   readonly Records: SQSEvent['Records'];
 }): Promise<APIGatewayProxyResult> {
-  try {
-    console.log('Event:', event); // TODO: Remove after testing
-    const queueEvent = queueEventParser(event);
-    switch (queueEvent.detail.eventName) {
-      case 'ConfirmSignUp':
-        return manageError(
-          await addContact(await getUserFromCognito(queueEvent))
-        );
-      case 'UpdateUserAttributes':
-        return manageError(
-          await updateContact(await getUserFromCognito(queueEvent))
-        );
-      case 'DeleteUser':
-        return manageError(
-          await deleteContact(queueEvent.detail.additionalEventData.sub)
-        );
-      case 'DynamoINSERT':
-        return manageError(
-          await addContactToList(
-            queueEvent.detail.additionalEventData.sub,
-            queueEvent.webinarId || ''
-          )
-        );
-      case 'DynamoREMOVE':
-        return manageError(
-          await removeContactFromList(
-            queueEvent.detail.additionalEventData.sub,
-            queueEvent.webinarId || ''
-          )
-        );
-      default:
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Unknown event');
-    }
-  } catch (error) {
-    console.error('Error:', error); // TODO: Remove after testing
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Internal server error' }),
-    };
+  console.log('Event:', event); // TODO: Remove after testing
+  const queueEvent = queueEventParser(event);
+  switch (queueEvent.detail.eventName) {
+    case 'ConfirmSignUp':
+      return manageError(
+        await addContact(await getUserFromCognito(queueEvent))
+      );
+    case 'UpdateUserAttributes':
+      return manageError(
+        await updateContact(await getUserFromCognito(queueEvent))
+      );
+    case 'DeleteUser':
+      return manageError(
+        await deleteContact(queueEvent.detail.additionalEventData.sub)
+      );
+    case 'DynamoINSERT':
+      return manageError(
+        await addContactToList(
+          queueEvent.detail.additionalEventData.sub,
+          queueEvent.webinarId || ''
+        ),
+        [500, 404]
+      );
+    case 'DynamoREMOVE':
+      return manageError(
+        await removeContactFromList(
+          queueEvent.detail.additionalEventData.sub,
+          queueEvent.webinarId || ''
+        ),
+        [500, 404]
+      );
+    case 'DynamoMODIFY':
+      // There is no need to manage this event because it can only be triggered on duplicate events
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'DynamoMODIFY event' }),
+      };
+    default:
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Unknown event');
   }
 }
