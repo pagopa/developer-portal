@@ -125,25 +125,6 @@ export const getUrlReplaceMapProps = async () => {
   );
 };
 
-// eslint-disable-next-line functional/no-let
-let cachedUrlReplaceMapProps: UrlReplaceMap = {}; // We need to use any[] because of the type issue makeGuide derived type are not statically defined
-// eslint-disable-next-line functional/no-let
-let areUrlReplaceMapCached = false;
-
-export const getCachedUrlReplaceMapProps = async () => {
-  if (!areUrlReplaceMapCached) {
-    // eslint-disable-next-line functional/no-expression-statements
-    cachedUrlReplaceMapProps = await withCache(
-      getCacheKey('getUrlReplaceMapProps'),
-      async () => getUrlReplaceMapProps(),
-      900
-    );
-    // eslint-disable-next-line functional/no-expression-statements
-    areUrlReplaceMapCached = true;
-  }
-  return cachedUrlReplaceMapProps;
-};
-
 export const getApiDataListPagesProps = async () => {
   return withCache(
     getCacheKey('getApiDataListPagesProps'),
