@@ -47,6 +47,7 @@ jobs:
         with:
           name: active-campaign-client
           path: packages/active-campaign-client/dist/function.zip
+          include-hidden-files: true
 
   deploy:
     name: Deploy Lambda Active Campaign Syncer
