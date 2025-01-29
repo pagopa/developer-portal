@@ -5,7 +5,7 @@ import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
 import { redirect } from 'next/navigation';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, use } from 'react';
 
 export const useUser = () => {
   const [isLoaded, setLoading] = useState<boolean>(true);
@@ -15,15 +15,17 @@ export const useUser = () => {
     readonly WebinarSubscription[]
   >([]);
 
-  const signOutUser = async () => {
+  const signOutUser = async (user?: DevPortalUser | null) => {
     await Auth.signOut();
-    setUser(null);
+    if (user?.username) {
+      setUser(null);
+    }
   };
 
-  const checkUser = async () => {
-    const user = await Auth.currentUserInfo();
-    if (!user?.username) {
-      signOutUser();
+  const checkUser = async (user?: DevPortalUser | null) => {
+    const info = await Auth.currentUserInfo();
+    if (!info?.username) {
+      signOutUser(user);
     }
   };
 
@@ -73,13 +75,15 @@ export const useUser = () => {
   }, [fetchUserAndSubscriptions]);
 
   useEffect(() => {
-    checkUser();
+    checkUser(user);
+  }, [user]);
+
+  useEffect(() => {
     fetchUserAndSubscriptions();
   }, []);
 
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
-      console.log('event', event);
       switch (event.payload.event) {
         case 'signIn':
         case 'autoSignIn': {
