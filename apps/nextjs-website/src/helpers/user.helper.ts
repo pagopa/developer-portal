@@ -5,7 +5,7 @@ import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
 import { redirect } from 'next/navigation';
-import { useCallback, useState, useEffect, use } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
   const [isLoaded, setLoading] = useState<boolean>(true);
