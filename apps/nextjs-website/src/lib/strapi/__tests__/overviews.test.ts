@@ -2,6 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 import { baseProductJson, productJson } from './fixtures/product';
 import { mediaRasterJson, mediaVectorJson } from './fixtures/media';
+import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 
 const serviceModels = [
   {
@@ -281,6 +282,7 @@ const makeStrapiResponseJson = () => ({
           serviceModels,
         },
         bannerLinks,
+        whatsNew: newsShowcase,
       },
     },
     {
@@ -302,6 +304,7 @@ const makeStrapiResponseJson = () => ({
         tutorialSection: null,
         postIntegration: null,
         bannerLinks: [],
+        whatsNew: null,
       },
     },
     {
@@ -369,6 +372,7 @@ const makeStrapiResponseJson = () => ({
           link: null,
         },
         bannerLinks: [],
+        whatsNew: null,
       },
     },
   ],
