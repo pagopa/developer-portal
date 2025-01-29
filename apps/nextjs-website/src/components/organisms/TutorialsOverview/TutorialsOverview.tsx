@@ -28,9 +28,9 @@ const TutorialsOverview = ({
       marginTop={8}
       title={title || t('overview.tutorial.title')}
       subtitle={subtitle}
-      cta={{
-        label: ctaLabel || t('overview.tutorial.ctaLabel'),
-        href: tutorialPath.path,
+      link={{
+        text: ctaLabel || t('overview.tutorial.ctaLabel'),
+        url: tutorialPath.path,
       }}
       items={tutorials.map((tutorial) => ({
         ...tutorial,

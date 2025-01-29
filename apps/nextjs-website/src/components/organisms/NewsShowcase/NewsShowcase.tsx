@@ -1,55 +1,87 @@
 'use client';
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import { useTranslations } from 'next-intl';
 
-type NewsShowcaseProps = {
-  title: string;
-  subtitle?: string;
-  cta?: {
-    label: string;
-    href: string;
+type NewsShowcaseItemProps = {
+  readonly comingSoon?: boolean;
+  readonly title: string;
+  readonly publishedAt?: Date;
+  readonly label?: string;
+  readonly link: {
+    readonly text: string;
+    readonly url: string;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
   };
-  marginTop?: number;
-  newsMarginTop?: number;
-  items: {
-    comingSoon?: boolean;
-    title: string;
-    publishedAt?: Date;
-    image?: {
-      url: string;
-      alternativeText?: string;
-    };
-    link: {
-      url: string;
-      text: string;
-    };
-  }[];
+  readonly image?: {
+    readonly url: string;
+    readonly alternativeText?: string;
+  };
+};
+
+export type NewsShowcaseProps = {
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly link?: {
+    readonly text: string;
+    readonly url: string;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+  };
+  readonly marginTop?: number;
+  readonly newsMarginTop?: number;
+  readonly items: readonly NewsShowcaseItemProps[];
+  readonly backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const NewsShowcase = ({
   title,
   subtitle,
-  cta,
+  link,
   marginTop,
   items,
   newsMarginTop = 2,
+  backgroundVariant = 'white',
 }: NewsShowcaseProps) => {
-  const t = useTranslations('shared');
-  const coomingSoonLabel = t('comingSoon');
+  const theme = useTheme();
+  const t = useTranslations();
+
+  const backgroundColor = {
+    white: theme.palette.background.paper,
+    lightGrey: theme.palette.grey[50],
+  };
+
+  const sectionMargin = {
+    white: 0,
+    lightGrey: '4rem 0 0',
+  };
+
   return (
-    <Box marginTop={marginTop}>
-      <SectionTitle title={title} subtitle={subtitle} cta={cta} variant='h2' />
+    <Box
+      sx={{
+        marginTop: marginTop,
+        backgroundColor: backgroundColor[backgroundVariant],
+      }}
+    >
+      <SectionTitle
+        margin={sectionMargin[backgroundVariant]}
+        title={title}
+        subtitle={subtitle}
+        link={link}
+        variant='h2'
+      />
       <Box mt={newsMarginTop}>
         <Newsroom
           items={items.map((item) => ({
-            comingSoonLabel: !item.comingSoon ? undefined : coomingSoonLabel,
+            comingSoonLabel: item.comingSoon
+              ? t('shared.comingSoon')
+              : undefined,
             title: item.title,
             date: {
               date: item.publishedAt,
             },
+            label: item.label,
             href: { link: item.link.url, label: item.link.text },
             img: item.image
               ? {

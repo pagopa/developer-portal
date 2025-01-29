@@ -1,6 +1,8 @@
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
+import NewsShowcase, {
+  NewsShowcaseProps,
+} from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
   makeMetadata,
@@ -14,28 +16,10 @@ import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { websiteWithContext } from '@/helpers/structuredData.helpers';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
-
-type NewsShowcaseItemProps = {
-  readonly comingSoon?: boolean;
-  readonly title: string;
-  readonly publishedAt?: Date;
-  readonly link: {
-    readonly text: string;
-    readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
-  };
-  readonly image?: Media;
-};
-
-type NewsShowcaseProps = {
-  readonly title: string;
-  readonly items: readonly NewsShowcaseItemProps[];
-};
 
 type EcosystemSolutionsCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';

@@ -24,6 +24,7 @@ type PostIntegrationProps = {
     href: string;
   }[];
   guides?: GuideCardProps[];
+  backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const PostIntegration = ({
@@ -33,17 +34,34 @@ const PostIntegration = ({
   listTitle,
   serviceModels,
   guides,
+  backgroundVariant = 'white',
 }: PostIntegrationProps) => {
   const theme = useTheme();
   const t = useTranslations();
 
+  const backgroundStyles = {
+    white: {
+      backgroundColor: theme.palette.background.paper,
+      paddingBottom: 0,
+    },
+    lightGrey: {
+      backgroundColor: theme.palette.grey[50],
+      paddingBottom: 8,
+    },
+  };
+
   return (
-    <Box py={8} sx={{ backgroundColor: theme.palette.grey[50] }}>
+    <Box
+      sx={{
+        paddingTop: 8,
+        ...backgroundStyles[backgroundVariant],
+      }}
+    >
       <SectionTitle
         margin={0}
         title={title || t('overview.postIntegration.title')}
         subtitle={subtitle}
-        cta={cta}
+        link={cta ? { text: cta.label, url: cta.href } : undefined}
         variant='h2'
       />
       <EContainer>
