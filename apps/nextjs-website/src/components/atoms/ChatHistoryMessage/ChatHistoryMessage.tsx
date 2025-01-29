@@ -31,7 +31,7 @@ const ChatHistoryMessage = ({
 }: ChatMessageProps) => {
   const { palette } = useTheme();
   const textColor = palette.text.primary;
-  const parsedChatMessage = parseChatMessage(text);
+  const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
   const iconSize = 28;
 
   const timeLabel =
