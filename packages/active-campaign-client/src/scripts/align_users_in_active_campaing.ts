@@ -1,6 +1,6 @@
 // To run this script you need to have proper environment variables set up.
 // Must be logged in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
-// Then run 'npm run sync-all-users -w active-campaign-client'
+// Then run 'npm run align-users-in-active-campaing -w active-campaign-client'
 
 /* eslint-disable */
 import { ActiveCampaignClient } from "../clients/activeCampaignClient";
@@ -10,6 +10,14 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+// create logs folder if not exists
+if (!fs.existsSync('src/scripts/logs')) {
+  fs.mkdirSync('src/scripts/logs');
+}
+const filePrefix = `src/scripts/logs/${process.env.FILE_ENV_PREFIX}`;
+
+const sideEffect = process.env.SIDE_EFFECT === 'true';
 
 const activeCampaignClient = new ActiveCampaignClient(
   process.env.AC_BASE_URL!,
@@ -85,44 +93,68 @@ function splitArray(array: {
 
 async function main() {
   const users = await listAllUsers();
+
+  let usersToAlign = users;
+  // get usernames to align or align all users
+  const usernamesToAlignFile = process.env.USERNAMES_TO_ALIGN_FILE;
+  if (!!usernamesToAlignFile) {
+    const usernamesToAlign: string[] = JSON.parse(fs.readFileSync(usernamesToAlignFile, 'utf8'));
+    usersToAlign = users.filter((user: any) => usernamesToAlign.includes(user.Username));
+  }
+  
+  // Limit the number of users to import to test
   const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT ? parseInt(process.env.USERS_TO_IMPORT_LIMIT) : undefined;
-
+  const limitedUsers = usersToImportLimit ? users.slice(0, usersToImportLimit) : usersToAlign;
+  
   console.log(process.env.DYNAMO_WEBINARS_TABLE_NAME);
-
   let usersAndWebinars: any[] = [];
-
-  const limitedUsers = usersToImportLimit ? users.slice(0, usersToImportLimit) : users;
-
   const totalUsers = limitedUsers.length;
   let processedUsers = 0;
-  await fs.readFile('data.json', 'utf8', async (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      for (const user of limitedUsers) {
-        processedUsers++;
-        console.log(processedUsers, '/', totalUsers);
-        const subscribedWebinars = await getSubscribedWebinars(user.Username);
-        usersAndWebinars.push({
-          username: user,
-          subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
-        });
-      }
-    
-      usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
-    
-      const jsonString = JSON.stringify(usersAndWebinars); 
-      fs.writeFile('data.json', jsonString, (err) => {
-        if (err) {
-          console.error('Error writing file:', err);
-        } else {
-          console.log('JSON saved to data.json');
-        }
+  if (fs.existsSync(`${filePrefix}_cached_data.json`)) {
+    const data = fs.readFileSync(`${filePrefix}_cached_data.json`, 'utf8');
+    usersAndWebinars = JSON.parse(data);
+    console.log('JSON read from data.json');
+  } else {
+    console.error('file not found');
+    for (const user of limitedUsers) {
+      processedUsers++;
+      console.log(processedUsers, '/', totalUsers);
+      const subscribedWebinars = await getSubscribedWebinars(user.Username);
+      usersAndWebinars.push({
+        username: user,
+        subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
       });
-    } else {
-      console.log('JSON read from data.json');
-      usersAndWebinars = JSON.parse(data);
     }
-  });
+  
+    usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
+  
+    const jsonString = JSON.stringify(usersAndWebinars); 
+    await fs.writeFileSync(`${filePrefix}_cached_data.json`, jsonString);
+  }
+
+  // await fs.readFile(`${filePrefix}_cached_data.json`, 'utf8', async (err, data) => {
+  //   if (err) {
+  //     console.error('Error reading file:', err);
+  //     for (const user of limitedUsers) {
+  //       processedUsers++;
+  //       console.log(processedUsers, '/', totalUsers);
+  //       const subscribedWebinars = await getSubscribedWebinars(user.Username);
+  //       usersAndWebinars.push({
+  //         username: user,
+  //         subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
+  //       });
+  //     }
+    
+  //     usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
+    
+  //     const jsonString = JSON.stringify(usersAndWebinars); 
+  //     return await fs.writeFileSync(`${filePrefix}_cached_data.json`, jsonString);
+  //   } else {
+  //     console.log('JSON read from data.json');
+  //     usersAndWebinars = JSON.parse(data);
+  //     return;
+  //   }
+  // });
 
   const allLists: any = await activeCampaignClient.getLists();
   await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -145,10 +177,15 @@ async function main() {
     return true;
   });
 
+  // Limit the number of users to import to test
   const limitedUniqueUsersAndWebinars = !!usersToImportLimit ? uniqueUsersAndWebinars
     .slice(0, usersToImportLimit)
     : uniqueUsersAndWebinars;
 
+  if (!sideEffect) {
+    console.log('User NOT sync sideEffect is set to false');
+    return;
+  }
 
   const totalUniqueUsers = limitedUniqueUsersAndWebinars.length;
   let processedUniqueUsers = 0;
