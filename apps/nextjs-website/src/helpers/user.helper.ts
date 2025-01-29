@@ -15,8 +15,20 @@ export const useUser = () => {
     readonly WebinarSubscription[]
   >([]);
 
+  const signOutUser = async () => {
+    await Auth.signOut();
+    setUser(null);
+  };
+
+  const checkUser = async () => {
+    const user = await Auth.currentUserInfo();
+    if (!user?.username) {
+      signOutUser();
+    }
+  };
+
   const fetchUserAndSubscriptions = useCallback(async () => {
-    const user = await Auth.currentAuthenticatedUser().catch(() => {
+    const user = await Auth.currentAuthenticatedUser().catch((e) => {
       setLoading(false);
       setAligned(true);
       setUser(null);
@@ -61,11 +73,13 @@ export const useUser = () => {
   }, [fetchUserAndSubscriptions]);
 
   useEffect(() => {
+    checkUser();
     fetchUserAndSubscriptions();
   }, []);
 
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
+      console.log('event', event);
       switch (event.payload.event) {
         case 'signIn':
         case 'autoSignIn': {
@@ -73,6 +87,9 @@ export const useUser = () => {
           setUser(user);
           break;
         }
+        case 'updateUserAttributes_failure':
+          signOutUser();
+          break;
         case 'signOut':
           setUser(null);
           break;
