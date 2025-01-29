@@ -1,8 +1,9 @@
 import { Decorator, Meta, StoryObj } from '@storybook/react';
 import { Box } from '@mui/material';
 import ChatbotHistoryLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
-import { sessionsList } from '../fixtures/chatbotFixture';
+import { sessionsList } from '../fixtures/chatbotFixtures';
 import React from 'react';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotHistoryLayout> = {
   title: 'Organisms/ChatbotHistoryLayout',
@@ -28,5 +29,5 @@ export const NewChatSession: StoryObj<typeof ChatbotHistoryLayout> = {
       return null;
     },
   },
-  decorators: [decorator],
+  decorators: [decorator, nextIntlContextDecorator],
 };
