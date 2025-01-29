@@ -39,6 +39,9 @@ const makeStrapiOverviewsPopulate = () =>
       bannerLinks: {
         populate: ['icon'],
       },
+      whatsNew: {
+        populate: ['link', 'items.image', 'items.link'],
+      },
     },
   });
 
