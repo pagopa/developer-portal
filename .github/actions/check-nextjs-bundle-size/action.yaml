@@ -27,6 +27,7 @@ runs:
       with:
         name: bundle-${{ inputs.environment }}
         path: ${{ inputs.upload_path }}
+        include-hidden-files: true
 
     - name: Download base branch bundle stats
       id: base-branch-stats

@@ -9,7 +9,8 @@ import { Variant } from '@mui/material/styles/createTypography';
 
 export interface INewsroomItem {
   comingSoonLabel?: string;
-  img: {
+  label?: string;
+  img?: {
     src: string;
     alt: string;
   };
@@ -40,6 +41,7 @@ const Item = (props: INewsroomItem) => {
 
   const {
     comingSoonLabel,
+    label,
     img,
     date: {
       date,
@@ -100,22 +102,38 @@ const Item = (props: INewsroomItem) => {
           />
         )}
       </Box>
-      {date && (
-        <Typography
-          color='text.secondary'
-          fontSize={16}
-          fontWeight={400}
-          mb={2}
-        >
-          {new Intl.DateTimeFormat(locale, options).format(date)}
-        </Typography>
-      )}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {date && (
+          <Typography
+            color='text.secondary'
+            fontSize={16}
+            fontWeight={400}
+            mb={2}
+          >
+            {new Intl.DateTimeFormat(locale, options).format(date)}
+          </Typography>
+        )}
+        {label && (
+          <Box
+            sx={{
+              borderRadius: 1,
+              maxHeight: '24px',
+              flexGrow: '0',
+              backgroundColor: '#C4DCF5',
+            }}
+          >
+            <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>
+              {label}
+            </Typography>
+          </Box>
+        )}
+      </Box>
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexGrow: '1',
+          flexGrow: '0',
         }}
       >
         <Typography
