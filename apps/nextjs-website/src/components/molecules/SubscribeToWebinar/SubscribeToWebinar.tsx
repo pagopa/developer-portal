@@ -107,7 +107,7 @@ const SubscribeToWebinar = ({
 
   const onSubscribeClick = async () => {
     const userLoggedIn = await isUserLoggedIn(user);
-    if (userLoggedIn || !username) {
+    if (userLoggedIn || username) {
       return onSubscribe();
     } else {
       return onSubscribeWithoutUser();
