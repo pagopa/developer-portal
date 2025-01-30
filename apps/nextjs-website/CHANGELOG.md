@@ -1,5 +1,20 @@
 # nextjs-website
 
+## 5.0.0
+
+### Major Changes
+
+- 2eb0c2e: Add whatsNew attribute to OverviewCodec, add label attribute to NewsItemCodec and fix populate in overview fetch
+
+### Minor Changes
+
+- 394de79: Refactor NewsroomItem component and its storybook view
+
+### Patch Changes
+
+- 03387c8: Add normalize-and-delete-duplicated-users script and refactor sync all user
+  Check the user token and log out the user if it has expired
+
 ## 4.15.1
 
 ### Patch Changes
