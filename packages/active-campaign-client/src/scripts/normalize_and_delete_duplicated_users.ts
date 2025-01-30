@@ -1,5 +1,5 @@
-// To run this script you need to have proper environment variables set up.
-// Must be logged in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
+// To run this script you need to set the appropriate environment variables.
+// You must be signed in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
 // Then run 'npm run normalize-and-delete-duplicated-users -w active-campaign-client'
 
 /* eslint-disable */
@@ -151,9 +151,6 @@ async function getDuplicatedUsers() {
   return duplicatedUsers;
 }
 
-// async funtion getDuplicatedUsersWebinars(duplicatedUsersMap: { [email: string]: any[] }) {
-
-// }
 type TargetUserMap = { [email: string]: {
   targetUser: any,
   webinarsSlugToSubscribe: string[],

@@ -1,6 +1,6 @@
 // To run this script you need to have proper environment variables set up.
 // Must be logged in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
-// Then run 'npm run align-users-in-active-campaing -w active-campaign-client'
+// Then run 'npm run align-users-in-active-campaign -w active-campaign-client'
 
 /* eslint-disable */
 import { ActiveCampaignClient } from "../clients/activeCampaignClient";
@@ -102,7 +102,7 @@ async function main() {
     usersToAlign = users.filter((user: any) => usernamesToAlign.includes(user.Username));
   }
   
-  // Limit the number of users to import to test
+  // Limit the number of users to import for test purposes
   const usersToImportLimit = !!process.env.USERS_TO_IMPORT_LIMIT ? parseInt(process.env.USERS_TO_IMPORT_LIMIT) : undefined;
   const limitedUsers = usersToImportLimit ? users.slice(0, usersToImportLimit) : usersToAlign;
   
@@ -132,29 +132,6 @@ async function main() {
     await fs.writeFileSync(`${filePrefix}_cached_data.json`, jsonString);
   }
 
-  // await fs.readFile(`${filePrefix}_cached_data.json`, 'utf8', async (err, data) => {
-  //   if (err) {
-  //     console.error('Error reading file:', err);
-  //     for (const user of limitedUsers) {
-  //       processedUsers++;
-  //       console.log(processedUsers, '/', totalUsers);
-  //       const subscribedWebinars = await getSubscribedWebinars(user.Username);
-  //       usersAndWebinars.push({
-  //         username: user,
-  //         subscribedWebinars: subscribedWebinars.map((webinar: any) => webinar?.webinarId?.S).filter(Boolean)
-  //       });
-  //     }
-    
-  //     usersAndWebinars.flatMap((userAndWebinars) => userAndWebinars.subscribedWebinars);
-    
-  //     const jsonString = JSON.stringify(usersAndWebinars); 
-  //     return await fs.writeFileSync(`${filePrefix}_cached_data.json`, jsonString);
-  //   } else {
-  //     console.log('JSON read from data.json');
-  //     usersAndWebinars = JSON.parse(data);
-  //     return;
-  //   }
-  // });
 
   const allLists: any = await activeCampaignClient.getLists();
   await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -183,7 +160,7 @@ async function main() {
     : uniqueUsersAndWebinars;
 
   if (!sideEffect) {
-    console.log('User NOT sync sideEffect is set to false');
+    console.log('Users NOT synced because sideEffect variable is set to false');
     return;
   }
 

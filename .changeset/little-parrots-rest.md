@@ -4,4 +4,4 @@
 ---
 
 Add normalize-and-delete-duplicated-users script and refactor sync all user
-Check user token and logout user if is expired
+Check the user token and log out the user if it has expired
