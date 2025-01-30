@@ -51,10 +51,12 @@ const NewsShowcase = ({
               date: item.publishedAt,
             },
             href: { link: item.link.url, label: item.link.text },
-            img: {
-              alt: (item.image && item.image.alternativeText) || '',
-              src: (item.image && item.image.url) || '/images/news.png',
-            },
+            img: item.image
+              ? {
+                  alt: (item.image && item.image.alternativeText) || '',
+                  src: (item.image && item.image.url) || '/images/news.png',
+                }
+              : undefined,
           }))}
         />
       </Box>

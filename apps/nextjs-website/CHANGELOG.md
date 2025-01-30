@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 4.15.1
+
+### Patch Changes
+
+- 6c83ed0: Add newsroom Storybook
+
 ## 4.15.0
 
 ### Minor Changes

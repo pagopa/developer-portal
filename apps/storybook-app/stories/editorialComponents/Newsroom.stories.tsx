@@ -18,6 +18,7 @@ const items: INewsroomItem[] = [
       src: 'https://cdn.developer.pagopa.it/homepage_validatore_075dd7ab63.png',
       alt: 'Allegare i documenti',
     },
+    label: 'Placeholder',
     title: 'Placeholder newsroom',
     date: {
       date: new Date(),
