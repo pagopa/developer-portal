@@ -221,13 +221,15 @@ async function updateUserEmailToLowerCase(user: any) {
         Name: 'email',
         Value: email,
       },
+      {
+        Name: 'email_verified',
+        Value: 'true'
+      }
     ],
   };
 
   try {
     await cognito.adminUpdateUserAttributes(params).promise();
-    // logut user
-    // await cognito.adminUserGlobalSignOut({ UserPoolId: userPoolId, Username: username }).promise();
   } catch (error) {
     console.error(`Error updating email for user ${username}:`, error);
   }
