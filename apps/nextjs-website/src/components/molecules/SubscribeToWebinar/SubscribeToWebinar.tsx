@@ -108,11 +108,10 @@ const SubscribeToWebinar = ({
   const onSubscribeClick = async () => {
     const userLoggedIn = await isUserLoggedIn(user);
     if (userLoggedIn || !username) {
-      onSubscribe();
+      return onSubscribe();
     } else {
-      onSubscribeWithoutUser();
+      return onSubscribeWithoutUser();
     }
-    return username ? onSubscribe() : onSubscribeWithoutUser();
   };
 
   useEffect(() => {
