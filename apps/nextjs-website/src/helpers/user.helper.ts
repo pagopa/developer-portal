@@ -22,11 +22,12 @@ export const useUser = () => {
     }
   };
 
-  const checkUser = async (user?: DevPortalUser | null) => {
+  const isUserLoggedIn = async (user?: DevPortalUser | null) => {
     const info = await Auth.currentUserInfo();
     if (!info?.username) {
       signOutUser(user);
     }
+    return !!info?.username;
   };
 
   const fetchUserAndSubscriptions = useCallback(async () => {
@@ -75,7 +76,7 @@ export const useUser = () => {
   }, [fetchUserAndSubscriptions]);
 
   useEffect(() => {
-    checkUser(user);
+    isUserLoggedIn(user);
   }, [user]);
 
   useEffect(() => {
@@ -110,6 +111,7 @@ export const useUser = () => {
     setUserAttributes,
     aligned,
     reloadUser,
+    isUserLoggedIn,
   };
 };
 

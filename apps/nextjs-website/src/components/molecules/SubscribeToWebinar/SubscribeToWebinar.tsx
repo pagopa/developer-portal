@@ -31,7 +31,8 @@ const SubscribeToWebinar = ({
   const action = searchParams.get('action');
   const isSubscribeAction = action === 'subscribe';
 
-  const { user, webinarSubscriptions, reloadUser, aligned } = useUser();
+  const { user, webinarSubscriptions, reloadUser, aligned, isUserLoggedIn } =
+    useUser();
   const username = user?.username;
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const SubscribeToWebinar = ({
     }
   }, [setIsSubscribed, username, webinarSubscriptions, webinarSlug]);
 
-  const onSubscribe = useCallback(() => {
+  const onSubscribe = useCallback(async () => {
     if (!webinarSlug || !username) {
       handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
       return null;
@@ -70,6 +71,7 @@ const SubscribeToWebinar = ({
     pathname,
     reloadUser,
     router,
+    isUserLoggedIn,
   ]);
 
   const onSubscribeWithoutUser = () => {
@@ -83,8 +85,9 @@ const SubscribeToWebinar = ({
     return null;
   };
 
-  const onUnsubscribe = () => {
-    if (!webinarSlug || !username) {
+  const onUnsubscribe = async () => {
+    const userLoggedIn = await isUserLoggedIn(user);
+    if (!userLoggedIn || !webinarSlug || !username) {
       handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
       return null;
     }
@@ -102,8 +105,15 @@ const SubscribeToWebinar = ({
     return null;
   };
 
-  const onSubscribeClick = () =>
-    username ? onSubscribe() : onSubscribeWithoutUser();
+  const onSubscribeClick = async () => {
+    const userLoggedIn = await isUserLoggedIn(user);
+    if (userLoggedIn || !username) {
+      onSubscribe();
+    } else {
+      onSubscribeWithoutUser();
+    }
+    return username ? onSubscribe() : onSubscribeWithoutUser();
+  };
 
   useEffect(() => {
     if (username && isSubscribeAction) {
