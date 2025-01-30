@@ -8,9 +8,10 @@ import React, { ReactNode } from 'react';
 type SectionTitleProps = {
   title: string;
   subtitle?: string;
-  cta?: {
-    label: string;
-    href: string;
+  link?: {
+    text: string;
+    url: string;
+    target?: '_self' | '_blank' | '_parent' | '_top';
   };
   children?: ReactNode | ReactNode[];
   margin?: number | string;
@@ -20,7 +21,7 @@ type SectionTitleProps = {
 const SectionTitle = ({
   title,
   subtitle,
-  cta,
+  link,
   margin,
   children,
   variant = 'h4',
@@ -57,7 +58,7 @@ const SectionTitle = ({
             {subtitle}
           </Typography>
         )}
-        {cta && <LinkButton href={cta.href} label={cta.label} />}
+        {link && <LinkButton href={link.url} label={link.text} />}
       </Stack>
       {children}
     </EContainer>
