@@ -15,6 +15,7 @@ import {
   getTutorialListPagesProps,
   getTutorialsProps,
   getWebinarsProps,
+  getReleaseNotesProps,
 } from './cmsApi';
 import { makeSolution } from '@/helpers/makeDocs.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
@@ -192,6 +193,14 @@ export async function getApiData(apiDataSlug: string) {
     )
   );
   return props;
+}
+
+export async function getReleaseNote(productSlug?: string) {
+  return manageUndefined(
+    (await getReleaseNotesProps()).find(
+      (releaseNoteData) => releaseNoteData.product.slug === productSlug
+    )
+  );
 }
 
 export async function getSolution(solutionSlug?: string) {

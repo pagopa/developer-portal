@@ -36,6 +36,8 @@ import {
   makeUrlReplaceMap,
   UrlReplaceMap,
 } from './strapi/makeProps/makeUrlReplaceMap';
+import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -125,6 +127,11 @@ export const getSolutionListPageProps = async () => {
 export const getOverviewsProps = async () => {
   const strapiOverviews = await fetchOverviews(buildEnv);
   return makeOverviewsProps(strapiOverviews);
+};
+
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes(buildEnv);
+  return makeReleaseNotesProps(strapiReleaseNotes);
 };
 
 export const getGuideListPagesProps = async () => {
