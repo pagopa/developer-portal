@@ -52,5 +52,14 @@ export function productToMenuItems(
           theme,
         }
       : null,
+    // if there's release notes data, add it to the menu
+    product.hasReleaseNotePage
+      ? {
+          label: 'devPortal.productHeader.releaseNote',
+          href: `/${product.slug}/release-note`,
+          active: path.startsWith(`/${product.slug}/release-note`),
+          theme,
+        }
+      : null,
   ].filter((item) => item !== null) as readonly MenuDropdownProp[];
 }
