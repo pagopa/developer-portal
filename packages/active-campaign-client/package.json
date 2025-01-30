@@ -6,7 +6,8 @@
     "lint": "eslint src",
     "test": "jest",
     "build": "tsc",
-    "sync-all-users": "ts-node src/scripts/sync_all_users.ts"
+    "align-users-in-active-campaign": "ts-node src/scripts/alignUsersInActiveCampaign.ts",
+    "normalize-and-delete-duplicated-users": "ts-node src/scripts/normalizeAndDeleteDuplicatedUsers.ts"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.1.4",
