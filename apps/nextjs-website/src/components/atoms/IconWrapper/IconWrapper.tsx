@@ -33,7 +33,6 @@ const IconWrapper = ({
           height={size}
           width={size}
         />
-        <Image alt={icon} src={icon} height={size} width={size} />
       </Icon>
     );
   } else {
