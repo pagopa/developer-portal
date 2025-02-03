@@ -39,4 +39,4 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot
-        poetry run python src/modules/create_vector_index.py --params config/params.yaml
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py --params config/params.yaml
