@@ -56,6 +56,13 @@ resource "aws_iam_policy" "deploy_website" {
         Resource = [
           var.website_cdn.arn
         ]
+      },
+      {
+        Action = [
+          "ssm:GetParameter"
+        ]
+        Effect = "Allow"
+        Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"]
       }
     ]
   })
