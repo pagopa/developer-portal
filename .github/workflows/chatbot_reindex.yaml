@@ -1,11 +1,12 @@
+---
 name: Chatbot Reindex
 
 on:
   pull_request:
     types:
-      - closed # Trigger when the PR is closed
+      - closed
     branches:
-      - 'main' # Target branch is main
+      - 'main'
   workflow_dispatch:
     inputs:
       environment:
@@ -36,8 +37,8 @@ jobs:
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
-        environment: [ 'dev' ]
-      fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
+        environment: ['dev']
+      fail-fast: false
 
     environment: ${{ matrix.environment }}
 
