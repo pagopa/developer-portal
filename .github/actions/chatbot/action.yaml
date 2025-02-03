@@ -17,19 +17,17 @@ runs:
       with:
         python-version: '3.12'
 
-    - name: Install and configure Poetry
-      uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
-      with:
-        version: 1.8.3
-        virtualenvs-create: false
-        installer-parallel: true
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
 
     - name: Install python libraries
       shell: bash
       run: |
         cd apps/chatbot
         poetry install --no-interaction
-    
+
 #    - name: Run tests
 #      run: |
 #        cd apps/chatbot
