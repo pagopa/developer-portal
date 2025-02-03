@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.6.1
+
+### Patch Changes
+
+- 9410de4: Added chatbot env vars to codebuild project
+
 ## 1.6.0
 
 ### Minor Changes
