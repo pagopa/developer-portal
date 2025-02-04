@@ -111,7 +111,11 @@ def get_html_files(root_folder: str) -> List[str]:
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
-    return sorted(filter_html_files(html_files))
+
+    logger.info(f"[get_html_file] html_files: {len(html_files)}")
+    sorted_and_filtered = sorted(filter_html_files(html_files))
+    logger.info(f"[get_html_file] sorted_and_filtered: {len(sorted_and_filtered)}")
+    return sorted_and_filtered
 
 
 def html2markdown(html):
