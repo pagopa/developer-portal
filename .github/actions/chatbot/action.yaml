@@ -39,4 +39,4 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot
-        PYTHONPATH=. DOCUMENTATION_DIR=${{ github.workspace }}/apps/nextjs-website/docs poetry run python src/modules/create_vector_index.py --params config/params.yaml
+        PYTHONPATH=. DOCUMENTATION_DIR=${{ github.workspace }}/apps/nextjs-website/out poetry run python src/modules/create_vector_index.py --params config/params.yaml

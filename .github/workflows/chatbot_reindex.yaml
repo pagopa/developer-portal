@@ -149,9 +149,13 @@ jobs:
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
 
-      - name: ls DOCUMENT_DIR
+      - name: ls apps/nextjs-website/docs
         shell: bash
         run: ls ${{ github.workspace }}/apps/nextjs-website/docs -l
+
+      - name: ls apps/nextjs-website/out
+        shell: bash
+        run: ls ${{ github.workspace }}/apps/nextjs-website/out -l
 
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
