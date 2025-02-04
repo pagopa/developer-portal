@@ -37,7 +37,9 @@ const Agreements = () => {
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
 
-  useEffect(() => {document.title = "DevPortal | Agreements";}, []);
+  useEffect(() => {
+    document.title = 'DevPortal | Agreements';
+  }, []);
 
   const handleSubscribe = () => {
     if (user) {
