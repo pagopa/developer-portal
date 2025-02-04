@@ -204,7 +204,7 @@ export async function getReleaseNote(
   const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
   const path = `/${productSlug}/${releaseNotesPath}`;
 
-  const releaseNoteDefinition = manageUndefined(
+  const releaseNoteProps = manageUndefined(
     (await getReleaseNotesProps()).find(
       (releaseNoteData) => releaseNoteData.page.path === path
     )
@@ -221,12 +221,12 @@ export async function getReleaseNote(
   }));
 
   return {
-    ...releaseNoteDefinition,
+    ...releaseNoteProps,
     products,
     bodyConfig: {
-      isPageIndex: releaseNoteDefinition.page.isIndex,
-      pagePath: releaseNoteDefinition.page.path,
-      assetsPrefix: releaseNoteDefinition.source.assetsPrefix,
+      isPageIndex: releaseNoteProps.page.isIndex,
+      pagePath: releaseNoteProps.page.path,
+      assetsPrefix: releaseNoteProps.source.assetsPrefix,
       gitBookPagesWithTitle,
       spaceToPrefix,
     },
