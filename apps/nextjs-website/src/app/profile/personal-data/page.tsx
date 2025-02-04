@@ -31,10 +31,6 @@ const PersonalData = () => {
   >([]);
 
   useEffect(() => {
-    document.title = "DevPortal | Personal-Data";
-  }, []);
-
-  useEffect(() => {
     setProfileDataSectionItems([
       {
         title: t('profile.personalData.fields.name'),
@@ -113,27 +109,30 @@ const PersonalData = () => {
     const isEditing = editItem?.name === item.name;
 
     return (
-      <Box key={index}>
-        {isPasswordItem && (
-          <PasswordFormWrapper
-            item={item}
-            isEditing={isEditing}
-            onCancel={() => setEditItem(null)}
-            onSave={handleChangePassword}
-            onEdit={() => setEditItem(item)}
-          />
-        )}
-        {isEmailItem && (
-          <EmailFormWrapper
-            item={item}
-            isEditing={isEditing}
-            onCancel={() => setEditItem(null)}
-            onSave={handleChangeEmail}
-            onEdit={() => setEditItem(item)}
-          />
-        )}
-        {showDivider && <Divider />}
-      </Box>
+      <>
+        <title>DevPortal | Personal Data</title>
+        <Box key={index}>
+          {isPasswordItem && (
+            <PasswordFormWrapper
+              item={item}
+              isEditing={isEditing}
+              onCancel={() => setEditItem(null)}
+              onSave={handleChangePassword}
+              onEdit={() => setEditItem(item)}
+            />
+          )}
+          {isEmailItem && (
+            <EmailFormWrapper
+              item={item}
+              isEditing={isEditing}
+              onCancel={() => setEditItem(null)}
+              onSave={handleChangeEmail}
+              onEdit={() => setEditItem(item)}
+            />
+          )}
+          {showDivider && <Divider />}
+        </Box>
+      </>
     );
   };
 

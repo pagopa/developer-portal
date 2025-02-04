@@ -37,10 +37,6 @@ const Agreements = () => {
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
 
-  useEffect(() => {
-    document.title = 'DevPortal | Agreements';
-  }, []);
-
   const handleSubscribe = () => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
@@ -110,6 +106,7 @@ const Agreements = () => {
 
   return (
     <>
+      <title>DevPortal | Agreements</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
