@@ -59,10 +59,23 @@ resource "aws_iam_policy" "deploy_website" {
       },
       {
         Action = [
-          "ssm:GetParameter"
+          "ssm:GetParameter",
+          "ssm:PutParameter"
         ]
         Effect   = "Allow"
         Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "bedrock:ApplyGuardrail",
+          "bedrock:ListGuardrails",
+          "bedrock:GetGuardrail",
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream",
+          "bedrock:ListFoundationModels"
+        ]
+        Resource = ["*"]
       }
     ]
   })
