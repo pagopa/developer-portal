@@ -232,6 +232,7 @@ def build_automerging_index_redis(
         chunk_overlap=chunk_overlap
     )
     
+    logger.info(f"[build_automerging_index_redis] calling create_documentation({WEBSITE_URL}, {documentation_dir})")
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
