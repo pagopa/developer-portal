@@ -112,6 +112,7 @@ def get_html_files(root_folder: str) -> List[str]:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
 
+    logger.info(f"[get_html_file] root_folder: {root_folder}")
     logger.info(f"[get_html_file] html_files: {len(html_files)}")
     sorted_and_filtered = sorted(filter_html_files(html_files))
     logger.info(f"[get_html_file] sorted_and_filtered: {len(sorted_and_filtered)}")
