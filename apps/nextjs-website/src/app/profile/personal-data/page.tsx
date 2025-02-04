@@ -31,6 +31,10 @@ const PersonalData = () => {
   >([]);
 
   useEffect(() => {
+    document.title = "DevPortal | Personal-Data";
+  }, []);
+
+  useEffect(() => {
     setProfileDataSectionItems([
       {
         title: t('profile.personalData.fields.name'),

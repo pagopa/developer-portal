@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useTranslations } from 'next-intl';
 import { Box, Stack, Typography } from '@mui/material';
@@ -9,7 +9,7 @@ import {
   useChatbot,
 } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
-import { isChatbotActive } from '@/config';
+import { baseUrl, isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -28,6 +28,10 @@ const ChatbotHistory = () => {
 
   const { getSession, deleteChatbotSession } = useChatbot(true);
   const [session, setSession] = useState<Query[]>([]);
+
+  useEffect(() => {
+    document.title = "DevPortal | Chatbot History";
+  }, []);
 
   useEffect(() => {
     if (sessionId) {

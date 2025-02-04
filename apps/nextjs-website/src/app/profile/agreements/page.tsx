@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
 import { snackbarAutoHideDurationMs } from '@/config';
@@ -36,6 +36,8 @@ const Agreements = () => {
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
+
+  useEffect(() => {document.title = "DevPortal | Agreements";}, []);
 
   const handleSubscribe = () => {
     if (user) {
