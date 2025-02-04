@@ -1,3 +1,4 @@
+---
 name: chatbot
 description: Recreate Chatbot LLamaindex Vector Index
 
@@ -10,10 +11,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: ls apps/nextjs-website/out
-      shell: bash
-      run: ls ${{ github.workspace }}/apps/nextjs-website/out -l
-
     #    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
     #    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
     - name: Setup Python
@@ -43,4 +40,5 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot
+        ls ${{ github.workspace }}/apps/nextjs-website/out -l
         PYTHONPATH=. DOCUMENTATION_DIR=${{ github.workspace }}/apps/nextjs-website/out poetry run python src/modules/create_vector_index.py --params config/params.yaml
