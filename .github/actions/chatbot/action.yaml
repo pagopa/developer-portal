@@ -42,6 +42,8 @@ runs:
         PYTHONPATH=. CHB_DOCUMENTATION_DIR=${{ github.workspace }}/apps/nextjs-website/out poetry run python src/modules/create_vector_index.py --params config/params.yaml
 
     - name: Restart backend lambda function
+      env:
+        CHATBOT_LAMBDA_NAME: ${{ vars.CHATBOT_LAMBDA_NAME }}
       shell: bash
       run: |
         aws lambda update-function-code --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --image-uri $(aws lambda get-function --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --query 'Code.ImageUri' --output text)
