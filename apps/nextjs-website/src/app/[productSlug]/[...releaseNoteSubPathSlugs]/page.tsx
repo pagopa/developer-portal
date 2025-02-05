@@ -17,6 +17,11 @@ import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import React from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Metadata } from 'next';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
@@ -32,6 +37,29 @@ export async function generateStaticParams() {
         ...getGitBookSubPaths(releaseNoteProps.page.path),
       ],
     };
+  });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: ReleaseNotePageStaticParams;
+}): Promise<Metadata> {
+  const {
+    page: { path, title },
+    seo,
+  } = await getReleaseNote(
+    params?.productSlug,
+    params?.releaseNoteSubPathSlugs
+  );
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
+
+  return makeMetadata({
+    title,
+    url: path,
   });
 }
 
