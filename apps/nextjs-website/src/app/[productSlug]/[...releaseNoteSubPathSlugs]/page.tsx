@@ -143,6 +143,7 @@ const ReleaseNotePage = async ({
             ...breadcrumbs,
           ]),
         ]}
+        hasInPageMenu={false}
         {...props}
       />
     </ProductLayout>
