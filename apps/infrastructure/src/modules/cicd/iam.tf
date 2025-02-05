@@ -76,6 +76,13 @@ resource "aws_iam_policy" "deploy_website" {
           "bedrock:ListFoundationModels"
         ]
         Resource = ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:*",
+        ]
+        Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function/*chatbot*"]
       }
     ]
   })
