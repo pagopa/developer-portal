@@ -13,7 +13,10 @@ import {
   getCachedUrlReplaceMapProps,
   getReleaseNotesProps,
 } from '@/lib/cmsApi';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import {
+  gitBookPageToBreadcrumbs,
+  productPageToBreadcrumbs,
+} from '@/helpers/breadcrumbs.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import React from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
@@ -22,6 +25,8 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
+import { BreadcrumbSegment } from '@/lib/types/path';
+import { baseUrl } from '@/config';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
@@ -78,11 +83,8 @@ const ReleaseNotePage = async ({
 }: {
   params: ReleaseNotePageStaticParams;
 }) => {
-  const { bannerLinks, page, path, product, seo, source, title } =
-    await getReleaseNote(
-      params.productSlug,
-      params.releaseNoteSubPathSlugs ?? ['']
-    );
+  const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
+    await getReleaseNote(params.productSlug, params.releaseNoteSubPathSlugs);
 
   const urlReplaceMap = await getCachedUrlReplaceMapProps();
 
@@ -90,17 +92,35 @@ const ReleaseNotePage = async ({
     ...page,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
+      ...bodyConfig,
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
       urlReplaces: urlReplaceMap,
-      gitBookPagesWithTitle: [],
-      spaceToPrefix: [],
     },
   };
 
+  const breadcrumbs: readonly BreadcrumbSegment[] = gitBookPageToBreadcrumbs(
+    bodyConfig.pagePath,
+    bodyConfig.gitBookPagesWithTitle
+  );
+
+  const breadcrumbsItems: { name?: string; item?: string }[] = breadcrumbs.map(
+    (breadcrumb) => ({
+      name: breadcrumb.name,
+      item: [baseUrl, breadcrumb.path].join(''),
+    })
+  );
+
   const structuredData = generateStructuredDataScripts({
-    breadcrumbsItems: [productToBreadcrumb(product)],
+    breadcrumbsItems: [
+      productToBreadcrumb(product),
+      {
+        name: title,
+        item: `${baseUrl}/${product.slug}/release-note`,
+      },
+      ...breadcrumbsItems,
+    ],
     seo: seo,
     things: [convertSeoToStructuredDataArticle(seo)],
   });
@@ -120,6 +140,7 @@ const ReleaseNotePage = async ({
               name: title,
               path: `/${product.slug}/release-note`,
             },
+            ...breadcrumbs,
           ]),
         ]}
         {...props}
