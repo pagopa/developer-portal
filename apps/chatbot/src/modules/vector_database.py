@@ -111,7 +111,12 @@ def get_html_files(root_folder: str) -> List[str]:
         for file in files:
             if file.endswith(".html"):
                 html_files.append(os.path.join(root, file))
-    return sorted(filter_html_files(html_files))
+
+    logger.info(f"[get_html_file] root_folder: {root_folder}")
+    logger.info(f"[get_html_file] html_files: {len(html_files)}")
+    sorted_and_filtered = sorted(filter_html_files(html_files))
+    logger.info(f"[get_html_file] sorted_and_filtered: {len(sorted_and_filtered)}")
+    return sorted_and_filtered
 
 
 def html2markdown(html):
@@ -227,6 +232,7 @@ def build_automerging_index_redis(
         chunk_overlap=chunk_overlap
     )
     
+    logger.info(f"[build_automerging_index_redis] calling create_documentation({WEBSITE_URL}, {documentation_dir})")
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(
