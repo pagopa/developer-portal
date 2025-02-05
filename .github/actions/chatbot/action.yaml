@@ -7,6 +7,10 @@ inputs:
     description: 'The AWS region selected'
     required: false
     default: 'eu-south-1'
+  chatbot_lambda_name:
+    description: the name of the chatbot lambda function
+    required: true
+    default: ''
 
 runs:
   using: "composite"
@@ -43,7 +47,7 @@ runs:
 
     - name: Restart backend lambda function
       env:
-        CHATBOT_LAMBDA_NAME: ${{ vars.CHATBOT_LAMBDA_NAME }}
+        CHATBOT_LAMBDA_NAME: ${{ inputs.CHATBOT_LAMBDA_NAME }}
       shell: bash
       run: |
         aws lambda update-function-code --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --image-uri $(aws lambda get-function --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --query 'Code.ImageUri' --output text)
