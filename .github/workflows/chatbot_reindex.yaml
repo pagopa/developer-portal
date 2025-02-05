@@ -28,8 +28,6 @@ permissions:
   id-token: write
   contents: read
 
-.deploy_steps: &deploy_steps
-
 jobs:
 
   cd_deploy:
