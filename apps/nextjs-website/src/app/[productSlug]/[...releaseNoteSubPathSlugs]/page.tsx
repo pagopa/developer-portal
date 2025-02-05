@@ -28,6 +28,7 @@ export async function generateStaticParams() {
     return {
       productSlug: releaseNoteProps.product.slug,
       releaseNoteSubPathSlugs: [
+        'release-note',
         ...getGitBookSubPaths(releaseNoteProps.page.path),
       ],
     };
