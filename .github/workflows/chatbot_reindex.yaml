@@ -89,7 +89,7 @@ jobs:
       cancel-in-progress: false
 
     steps:
-      - *deploy_steps
+      *deploy_steps
 
   manual_deploy:
     name: Llama reindex (manual on ${{ inputs.environment }})
@@ -102,4 +102,4 @@ jobs:
       cancel-in-progress: false
 
     steps:
-      - *deploy_steps
+      *deploy_steps
