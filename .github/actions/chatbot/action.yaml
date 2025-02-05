@@ -44,4 +44,4 @@ runs:
     - name: Restart backend lambda function
       shell: bash
       run: |
-        aws lambda update-function-configuration --function-name ${{ env.CHATBOT_LAMBDA_NAME }}
+        aws lambda update-function-code --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --image-uri $(aws lambda get-function --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --query 'Code.ImageUri' --output text)
