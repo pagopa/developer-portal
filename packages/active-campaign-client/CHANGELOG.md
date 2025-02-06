@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.5.1
+
+### Patch Changes
+
+- cd0e879: Fix update email function in script
+
 ## 0.5.0
 
 ### Minor Changes
