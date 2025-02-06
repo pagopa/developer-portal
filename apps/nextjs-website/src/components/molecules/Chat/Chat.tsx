@@ -25,7 +25,7 @@ type ChatProps = {
   ) => null;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
-  isChatbotLoaded: boolean;
+  areChatbotQueriesLoaded: boolean;
   error: ChatbotErrorsType | null;
   disabled?: boolean;
 };
@@ -36,7 +36,7 @@ const Chat = ({
   onSendFeedback,
   scrollToBottom,
   isAwaitingResponse,
-  isChatbotLoaded,
+  areChatbotQueriesLoaded,
   error,
   disabled,
 }: ChatProps) => {
@@ -125,7 +125,7 @@ const Chat = ({
           height: '100%',
         }}
       >
-        {!messages.length && !isChatbotLoaded && <ChatSkeleton />}
+        {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
         {messages.map((message, index) => (
           <Stack
             key={index}
