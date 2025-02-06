@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
 import { snackbarAutoHideDurationMs } from '@/config';
@@ -106,7 +106,7 @@ const Agreements = () => {
 
   return (
     <>
-      <title>DevPortal | Agreements</title>
+      <title>{'DevPortal | ' + t('title')}</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },

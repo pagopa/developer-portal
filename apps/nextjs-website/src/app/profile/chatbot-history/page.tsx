@@ -54,7 +54,7 @@ const ChatbotHistory = () => {
   if (sessionId) {
     return (
       <>
-        <title>DevPortal | Chatbot History</title>
+        <title>{'DevPortal | ' + t('profile.chatbot.title')}</title>
         <Box
           sx={{
             padding: { xs: '40px 24px', md: '80px 40px' },
@@ -91,7 +91,7 @@ const ChatbotHistory = () => {
 
   return (
     <>
-      <title>DevPortal | Chatbot History</title>
+      <title>{'DevPortal | ' + t('profile.chatbot.title')}</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
