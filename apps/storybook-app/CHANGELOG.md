@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.14.0
+
+### Minor Changes
+
+- 394de79: Refactor NewsroomItem component and its storybook view
+
 ## 0.13.1
 
 ### Patch Changes

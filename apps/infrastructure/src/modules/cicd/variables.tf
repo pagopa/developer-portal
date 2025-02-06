@@ -79,3 +79,9 @@ variable "create_chatbot" {
   description = "Defines if chatbot should be created"
   default     = false
 }
+
+variable "chatbot_env_vars" {
+  type        = map(string)
+  description = "Chatbot environment variables"
+  default     = {}
+}
