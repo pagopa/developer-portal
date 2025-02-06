@@ -106,7 +106,7 @@ const Agreements = () => {
 
   return (
     <>
-      <title>{'DevPortal | ' + t('title')}</title>
+      <title>{`${t('devPortal.title')} | ${t('title')}`}</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
