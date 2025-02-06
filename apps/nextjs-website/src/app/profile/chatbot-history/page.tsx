@@ -38,7 +38,7 @@ const ChatbotHistory = () => {
     if (sessionId) {
       setIsSessionLoaded(false);
       getSession(sessionId).then((response) => {
-        setSession(response!);
+        setSession(response);
         setIsSessionLoaded(true);
       });
     }
