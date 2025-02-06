@@ -14,6 +14,7 @@ import {
   getReleaseNotesProps,
 } from '@/lib/cmsApi';
 import {
+  BreadcrumbItem,
   gitBookPageToBreadcrumbs,
   productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
@@ -105,12 +106,10 @@ const ReleaseNotePage = async ({
     bodyConfig.gitBookPagesWithTitle
   );
 
-  const breadcrumbsItems: { name?: string; item?: string }[] = breadcrumbs.map(
-    (breadcrumb) => ({
-      name: breadcrumb.name,
-      item: [baseUrl, breadcrumb.path].join(''),
-    })
-  );
+  const breadcrumbsItems: BreadcrumbItem[] = breadcrumbs.map((breadcrumb) => ({
+    name: breadcrumb.name,
+    item: [baseUrl, breadcrumb.path].join(''),
+  }));
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
