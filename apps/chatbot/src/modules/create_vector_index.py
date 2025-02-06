@@ -13,7 +13,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 
-DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR")
+DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR", "./PagoPADevPortal/out/")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
