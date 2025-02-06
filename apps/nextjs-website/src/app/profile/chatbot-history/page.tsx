@@ -19,8 +19,13 @@ import { Query } from '@/lib/chatbot/queries';
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
-  const { paginatedSessions, paginatedSessionsLoading, getSessionsByPage } =
-    useChatbot(true);
+  const {
+    paginatedSessions,
+    paginatedSessionsLoading,
+    setIsSessionLoaded,
+    isSessionLoaded,
+    getSessionsByPage,
+  } = useChatbot(true);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -31,8 +36,10 @@ const ChatbotHistory = () => {
 
   useEffect(() => {
     if (sessionId) {
+      setIsSessionLoaded(false);
       getSession(sessionId).then((response) => {
         setSession(response);
+        setIsSessionLoaded(true);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,28 +68,31 @@ const ChatbotHistory = () => {
           maxWidth: '694px',
         }}
       >
-        <ChatbotHistoryDetailLayout
-          queries={session}
-          userName={`${user.attributes.given_name} `}
-          onDeleteChatSession={(
-            sessionId: string,
-            sessionDate: string | null
-          ) => {
-            deleteChatbotSession(sessionId).then(() => {
-              const date = sessionDate ? new Date(sessionDate) : null;
-              const currentDate = new Date();
-              if (date && date.getDate() === currentDate.getDate()) {
-                flushChatQueriesFromLocalStorage();
-              }
-              if (typeof window !== 'undefined') {
-                // router.replace() or push() are not enough because they will not clean current state of components
-                // eslint-disable-next-line functional/immutable-data
-                window.location.href = '/profile/chatbot-history';
-              }
-            });
-            return null;
-          }}
-        />
+        {!isSessionLoaded && <Spinner />}
+        {isSessionLoaded && (
+          <ChatbotHistoryDetailLayout
+            queries={session}
+            userName={`${user.attributes.given_name} `}
+            onDeleteChatSession={(
+              sessionId: string,
+              sessionDate: string | null
+            ) => {
+              deleteChatbotSession(sessionId).then(() => {
+                const date = sessionDate ? new Date(sessionDate) : null;
+                const currentDate = new Date();
+                if (date && date.getDate() === currentDate.getDate()) {
+                  flushChatQueriesFromLocalStorage();
+                }
+                if (typeof window !== 'undefined') {
+                  // router.replace() or push() are not enough because they will not clean current state of components
+                  // eslint-disable-next-line functional/immutable-data
+                  window.location.href = '/profile/chatbot-history';
+                }
+              });
+              return null;
+            }}
+          />
+        )}
       </Box>
     );
   }
