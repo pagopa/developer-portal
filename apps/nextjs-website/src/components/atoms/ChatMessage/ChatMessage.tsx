@@ -46,7 +46,7 @@ const ChatMessage = ({
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
   const isWelcomeMessage = !timestamp;
-  const parsedChatMessage = parseChatMessage(text);
+  const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
 
   const timeLabel =
     timestamp &&
