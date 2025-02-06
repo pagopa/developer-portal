@@ -110,7 +110,9 @@ const PersonalData = () => {
 
     return (
       <>
-        <title>{`${t('devPortal.title')} | ${t('profile.personalData.title')}`}</title>
+        <title>{`${t('devPortal.title')} | ${t(
+          'profile.personalData.title'
+        )}`}</title>
         <Box key={index}>
           {isPasswordItem && (
             <PasswordFormWrapper

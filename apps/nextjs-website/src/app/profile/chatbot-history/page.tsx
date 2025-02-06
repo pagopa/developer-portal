@@ -54,7 +54,9 @@ const ChatbotHistory = () => {
   if (sessionId) {
     return (
       <>
-        <title>{`${t('devPortal.title')} | ${t('profile.chatbot.title')}`}</title>
+        <title>{`${t('devPortal.title')} | ${t(
+          'profile.chatbot.title'
+        )}`}</title>
         <Box
           sx={{
             padding: { xs: '40px 24px', md: '80px 40px' },
