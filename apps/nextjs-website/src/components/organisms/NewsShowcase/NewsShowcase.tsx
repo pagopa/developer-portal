@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box, useTheme } from '@mui/material';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
@@ -47,15 +47,21 @@ const NewsShowcase = ({
   const theme = useTheme();
   const t = useTranslations();
 
-  const backgroundColor = {
-    white: theme.palette.background.paper,
-    lightGrey: theme.palette.grey[50],
-  };
+  const backgroundColor = useMemo(
+    () => ({
+      white: theme.palette.background.paper,
+      lightGrey: theme.palette.grey[50],
+    }),
+    [theme]
+  );
 
-  const sectionMargin = {
-    white: 0,
-    lightGrey: '4rem 0 0',
-  };
+  const sectionMargin = useMemo(
+    () => ({
+      white: 0,
+      lightGrey: '4rem 0 0',
+    }),
+    []
+  );
 
   return (
     <Box

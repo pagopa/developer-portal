@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
@@ -39,16 +39,19 @@ const PostIntegration = ({
   const theme = useTheme();
   const t = useTranslations();
 
-  const backgroundStyles = {
-    white: {
-      backgroundColor: theme.palette.background.paper,
-      paddingBottom: 0,
-    },
-    lightGrey: {
-      backgroundColor: theme.palette.grey[50],
-      paddingBottom: 8,
-    },
-  };
+  const backgroundStyles = useMemo(
+    () => ({
+      white: {
+        backgroundColor: theme.palette.background.paper,
+        paddingBottom: 0,
+      },
+      lightGrey: {
+        backgroundColor: theme.palette.grey[50],
+        paddingBottom: 8,
+      },
+    }),
+    [theme]
+  );
 
   return (
     <Box

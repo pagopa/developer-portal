@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 interface ListingItem {
   text: string;
@@ -76,10 +77,14 @@ const Listing = ({
   backgroundVariant = 'white',
 }: ListingsProps) => {
   const theme = useTheme();
-  const backgroundColor = {
-    white: theme.palette.background.paper,
-    lightGrey: theme.palette.grey[50],
-  };
+
+  const backgroundColor = useMemo(
+    () => ({
+      white: theme.palette.background.paper,
+      lightGrey: theme.palette.grey[50],
+    }),
+    [theme]
+  );
 
   return (
     <EContainer
