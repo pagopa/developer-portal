@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 5.1.0
+
+### Minor Changes
+
+- 73fcca1: Add loader to chat page
+
+### Patch Changes
+
+- f45aa71: Add conditional parsing to chat and history
+- ce2b81e: Add title to profile pages
+
 ## 5.0.0
 
 ### Major Changes
