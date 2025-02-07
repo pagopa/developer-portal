@@ -44,6 +44,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          submodules: recursive
 
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
@@ -56,6 +58,9 @@ jobs:
 
       - name: Build Cognito Functions
         run: npm run build -w cognito-functions
+      
+      - name: Pull & update submodules recursively
+        run: git submodule update --init --recursive
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
