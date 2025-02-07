@@ -22,10 +22,9 @@ resource "aws_cloudfront_distribution" "redirect" {
     }
   }
 
-  enabled             = true # enable CloudFront distribution
-  is_ipv6_enabled     = true
-  comment             = "CloudFront distribution for ${var.domain_to_redirect.from} redirect."
-  default_root_object = "index.html"
+  enabled         = true # enable CloudFront distribution
+  is_ipv6_enabled = true
+  comment         = "CloudFront distribution for ${var.domain_to_redirect.from} redirect."
 
   aliases = var.use_custom_certificate && var.domain_to_redirect.from != "" ? [var.domain_to_redirect.from] : []
 
@@ -39,9 +38,9 @@ resource "aws_cloudfront_distribution" "redirect" {
     origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
 
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0   # min time for objects to live in the distribution cache
-    default_ttl            = 0   # default time for objects to live in the distribution cache
-    max_ttl                = 0   # max time for objects to live in the distribution cache
+    min_ttl                = 0 # min time for objects to live in the distribution cache
+    default_ttl            = 0 # default time for objects to live in the distribution cache
+    max_ttl                = 0 # max time for objects to live in the distribution cache
 
     function_association {
       event_type   = "viewer-request"
@@ -57,6 +56,6 @@ resource "aws_cloudfront_distribution" "redirect" {
   viewer_certificate {
     cloudfront_default_certificate = var.use_custom_certificate ? false : true
     acm_certificate_arn            = var.use_custom_certificate ? module.redirect_certificate.acm_certificate_arn : null
-    ssl_support_method             = var.use_custom_certificate ? "sni-only" : null
+    ssl_support_method = var.use_custom_certificate ? "sni-only" : null
   }
 }

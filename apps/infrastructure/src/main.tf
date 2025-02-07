@@ -174,5 +174,4 @@ module "docs_redirect" {
 
   environment            = var.environment
   tags                   = var.tags
-  use_custom_certificate = false
 }
