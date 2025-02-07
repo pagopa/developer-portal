@@ -19,8 +19,13 @@ import { Query } from '@/lib/chatbot/queries';
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
-  const { paginatedSessions, paginatedSessionsLoading, getSessionsByPage } =
-    useChatbot(true);
+  const {
+    paginatedSessions,
+    paginatedSessionsLoading,
+    setIsSessionLoaded,
+    isSessionLoaded,
+    getSessionsByPage,
+  } = useChatbot(true);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -31,8 +36,10 @@ const ChatbotHistory = () => {
 
   useEffect(() => {
     if (sessionId) {
+      setIsSessionLoaded(false);
       getSession(sessionId).then((response) => {
         setSession(response);
+        setIsSessionLoaded(true);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,63 +61,74 @@ const ChatbotHistory = () => {
 
   if (sessionId) {
     return (
-      <Box
+      <>
+        <title>{`${t('devPortal.title')} | ${t(
+          'profile.chatbot.title'
+        )}`}</title>
+        <Box
+          sx={{
+            padding: { xs: '40px 24px', md: '80px 40px' },
+            width: '100%',
+            maxWidth: '694px',
+          }}
+        >
+          {!isSessionLoaded && <Spinner />}
+          {isSessionLoaded && (
+            <ChatbotHistoryDetailLayout
+              queries={session}
+              userName={`${user.attributes.given_name} `}
+              onDeleteChatSession={(
+                sessionId: string,
+                sessionDate: string | null
+              ) => {
+                deleteChatbotSession(sessionId).then(() => {
+                  const date = sessionDate ? new Date(sessionDate) : null;
+                  const currentDate = new Date();
+                  if (date && date.getDate() === currentDate.getDate()) {
+                    flushChatQueriesFromLocalStorage();
+                  }
+                  if (typeof window !== 'undefined') {
+                    // router.replace() or push() are not enough because they will not clean current state of components
+                    // eslint-disable-next-line functional/immutable-data
+                    window.location.href = '/profile/chatbot-history';
+                  }
+                });
+                return null;
+              }}
+            />
+          )}
+        </Box>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <title>{`${t('devPortal.title')} | ${t('profile.chatbot.title')}`}</title>
+      <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
           width: '100%',
           maxWidth: '694px',
         }}
       >
-        <ChatbotHistoryDetailLayout
-          queries={session}
-          userName={`${user.attributes.given_name} `}
-          onDeleteChatSession={(
-            sessionId: string,
-            sessionDate: string | null
-          ) => {
-            deleteChatbotSession(sessionId).then(() => {
-              const date = sessionDate ? new Date(sessionDate) : null;
-              const currentDate = new Date();
-              if (date && date.getDate() === currentDate.getDate()) {
-                flushChatQueriesFromLocalStorage();
-              }
-              if (typeof window !== 'undefined') {
-                // router.replace() or push() are not enough because they will not clean current state of components
-                // eslint-disable-next-line functional/immutable-data
-                window.location.href = '/profile/chatbot-history';
-              }
-            });
-            return null;
-          }}
-        />
-      </Box>
-    );
-  }
-
-  return (
-    <Stack
-      sx={{
-        padding: { xs: '40px 24px', md: '80px 40px' },
-        width: '100%',
-        maxWidth: '694px',
-      }}
-    >
-      <Typography variant='h4' sx={{ marginBottom: '40px' }}>
-        {t('profile.chatbot.title')}
-      </Typography>
-      {(loading || paginatedSessionsLoading) && <Spinner />}
-      {!loading &&
-        !paginatedSessionsLoading &&
-        (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
-          <Typography>{t('profile.chatbot.noSessions')}</Typography>
+        <Typography variant='h4' sx={{ marginBottom: '40px' }}>
+          {t('profile.chatbot.title')}
+        </Typography>
+        {(loading || paginatedSessionsLoading) && <Spinner />}
+        {!loading &&
+          !paginatedSessionsLoading &&
+          (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
+            <Typography>{t('profile.chatbot.noSessions')}</Typography>
+          )}
+        {!loading && !paginatedSessionsLoading && paginatedSessions && (
+          <ChatbotHistoryLayout
+            paginatedSessions={paginatedSessions}
+            getSessionsByPage={getSessionsByPage}
+          />
         )}
-      {!loading && !paginatedSessionsLoading && paginatedSessions && (
-        <ChatbotHistoryLayout
-          paginatedSessions={paginatedSessions}
-          getSessionsByPage={getSessionsByPage}
-        />
-      )}
-    </Stack>
+      </Stack>
+    </>
   );
 };
 
