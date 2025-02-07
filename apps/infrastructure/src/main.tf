@@ -172,6 +172,6 @@ module "docs_redirect" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  environment            = var.environment
-  tags                   = var.tags
+  environment = var.environment
+  tags        = var.tags
 }
