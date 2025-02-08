@@ -25,10 +25,10 @@ type Params = {
   solutionSubPathSlugs: string[];
 };
 
-export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
-  return solutions.flatMap(getSolutionSubPaths);
-}
+// export async function generateStaticParams() {
+//   const solutions = await getSolutionsProps();
+//   return solutions.flatMap(getSolutionSubPaths);
+// }
 
 export async function generateMetadata({
   params,

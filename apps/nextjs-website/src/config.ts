@@ -7,7 +7,12 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  */
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
-export const cookieDomainScript = process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const secrets = process.env.secrets
+  ? JSON.parse(process.env.secrets)
+  : {};
+export const cookieDomainScript =
+  secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
+  process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
@@ -20,8 +25,11 @@ export const chatMaxHistoryMessages =
 export const amplifyConfig = {
   Auth: {
     region: process.env.NEXT_PUBLIC_COGNITO_REGION,
-    userPoolId: process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+    userPoolId:
+      secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID ||
+      process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
     userPoolWebClientId:
+      secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID ||
       process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
   },
   authenticationFlowType: 'CUSTOM_AUTH',
