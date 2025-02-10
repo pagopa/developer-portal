@@ -87,6 +87,8 @@ jobs:
 
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
 
   manual_deploy:
     name: Llama reindex (manual on ${{ inputs.environment }})
@@ -139,3 +141,5 @@ jobs:
 
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}

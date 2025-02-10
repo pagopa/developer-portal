@@ -109,27 +109,32 @@ const PersonalData = () => {
     const isEditing = editItem?.name === item.name;
 
     return (
-      <Box key={index}>
-        {isPasswordItem && (
-          <PasswordFormWrapper
-            item={item}
-            isEditing={isEditing}
-            onCancel={() => setEditItem(null)}
-            onSave={handleChangePassword}
-            onEdit={() => setEditItem(item)}
-          />
-        )}
-        {isEmailItem && (
-          <EmailFormWrapper
-            item={item}
-            isEditing={isEditing}
-            onCancel={() => setEditItem(null)}
-            onSave={handleChangeEmail}
-            onEdit={() => setEditItem(item)}
-          />
-        )}
-        {showDivider && <Divider />}
-      </Box>
+      <>
+        <title>{`${t('devPortal.title')} | ${t(
+          'profile.personalData.title'
+        )}`}</title>
+        <Box key={index}>
+          {isPasswordItem && (
+            <PasswordFormWrapper
+              item={item}
+              isEditing={isEditing}
+              onCancel={() => setEditItem(null)}
+              onSave={handleChangePassword}
+              onEdit={() => setEditItem(item)}
+            />
+          )}
+          {isEmailItem && (
+            <EmailFormWrapper
+              item={item}
+              isEditing={isEditing}
+              onCancel={() => setEditItem(null)}
+              onSave={handleChangeEmail}
+              onEdit={() => setEditItem(item)}
+            />
+          )}
+          {showDivider && <Divider />}
+        </Box>
+      </>
     );
   };
 

@@ -82,7 +82,7 @@ resource "aws_iam_policy" "deploy_website" {
         Action = [
           "lambda:*",
         ]
-        Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function/*chatbot*"]
+        Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function/*chatbot*"]
       }
     ]
   })
