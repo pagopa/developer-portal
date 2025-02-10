@@ -26,7 +26,7 @@ import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { makeGuide } from '@/helpers/makeDocs.helpers';
+import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
@@ -36,6 +36,8 @@ import {
   makeUrlReplaceMap,
   UrlReplaceMap,
 } from './strapi/makeProps/makeUrlReplaceMap';
+import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -125,6 +127,11 @@ export const getSolutionListPageProps = async () => {
 export const getOverviewsProps = async () => {
   const strapiOverviews = await fetchOverviews(buildEnv);
   return makeOverviewsProps(strapiOverviews);
+};
+
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes(buildEnv);
+  return makeReleaseNotesProps(strapiReleaseNotes).flatMap(makeReleaseNote);
 };
 
 export const getGuideListPagesProps = async () => {
