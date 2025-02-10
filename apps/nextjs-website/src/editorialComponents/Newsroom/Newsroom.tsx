@@ -120,6 +120,11 @@ const Item = (props: INewsroomItem) => {
               maxHeight: '24px',
               flexGrow: '0',
               backgroundColor: '#C4DCF5',
+              maxWidth: '50%',
+              textAlign: 'center',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              display: 'inline-block',
             }}
           >
             <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>

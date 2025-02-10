@@ -25,6 +25,9 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import NewsShowcase, {
+  NewsShowcaseProps,
+} from '@/components/organisms/NewsShowcase/NewsShowcase';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -73,6 +76,7 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
   };
+  readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
     readonly title?: string;
     readonly subtitle: string;
@@ -125,6 +129,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     feature,
     path,
     tutorials,
+    whatsNew,
     postIntegration,
     relatedLinks,
     bannerLinks,
@@ -185,6 +190,16 @@ const OverviewPage = async ({ params }: ProductParams) => {
           tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
+      {whatsNew && (
+        <NewsShowcase
+          marginTop={15}
+          title={whatsNew.title}
+          subtitle={whatsNew.subtitle}
+          link={whatsNew.link}
+          items={[...whatsNew.items]}
+          backgroundVariant='lightGrey'
+        />
+      )}
       {product?.hasGuideListPage && postIntegration && (
         <PostIntegration
           title={postIntegration.title}
@@ -200,10 +215,15 @@ const OverviewPage = async ({ params }: ProductParams) => {
             postIntegration.serviceModels && [...postIntegration.serviceModels]
           }
           guides={postIntegration.guides}
+          backgroundVariant={whatsNew ? 'white' : 'lightGrey'}
         />
       )}
       {relatedLinks && (
-        <RelatedLinks title={relatedLinks.title} links={relatedLinks.links} />
+        <RelatedLinks
+          title={relatedLinks.title}
+          links={relatedLinks.links}
+          backgroundVariant={whatsNew ? 'lightGrey' : 'white'}
+        />
       )}
     </ProductLayout>
   );
