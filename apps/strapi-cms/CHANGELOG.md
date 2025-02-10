@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.4.0
+
+### Minor Changes
+
+- 44d8bdd: Add ReleaseNote collection
+
 ## 3.3.0
 
 ### Minor Changes
