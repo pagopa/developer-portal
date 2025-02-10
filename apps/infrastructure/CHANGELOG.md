@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.7.0
+
+### Minor Changes
+
+- 7dd971c: Added docs redirect infrastructure
+
 ## 1.6.1
 
 ### Patch Changes
