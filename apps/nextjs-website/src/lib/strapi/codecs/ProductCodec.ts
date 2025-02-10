@@ -55,6 +55,9 @@ export const ProductRelationsCodec = t.strict({
   guide_list_page: t.strict({
     data: t.union([NullToUndefinedCodec, t.strict({ id: t.number })]),
   }),
+  release_note: t.strict({
+    data: t.union([NullToUndefinedCodec, t.strict({ id: t.number })]),
+  }),
 });
 
 export const BaseProductWithRelationsCodec = t.strict({

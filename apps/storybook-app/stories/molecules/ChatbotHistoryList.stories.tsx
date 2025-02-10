@@ -2,7 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/react';
 import ChatbotHistoryList from '../../../nextjs-website/src/components/molecules/ChatbotHistoryList/ChatbotHistoryList';
 import React from 'react';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-import { sessionsList } from '../fixtures/chatbotFixture';
+import { sessionsList } from '../fixtures/chatbotFixtures';
 
 const meta: Meta<typeof ChatbotHistoryList> = {
   title: 'Molecules/ChatbotHistoryList',

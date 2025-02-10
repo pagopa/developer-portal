@@ -13,7 +13,7 @@ const makeStrapiHomepagePopulate = () =>
         populate: ['backgroundImage', 'callToAction.link'],
       },
       newsShowcase: {
-        populate: ['items.image', 'items.link'],
+        populate: ['link', 'items.image', 'items.link'],
       },
       productsShowcase: {
         populate: ['products.logo'],
@@ -24,6 +24,7 @@ const makeStrapiHomepagePopulate = () =>
           'products.logo',
           'products.bannerLinks.icon',
           'products.overview',
+          'products.release_note',
           'products.quickstart_guide',
           'products.api_data_list_page',
           'products.api_data_list_page.apiData.*',

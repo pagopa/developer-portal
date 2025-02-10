@@ -49,7 +49,9 @@ const ApiDataListPage = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(apiDataListPageProps?.product),
       {
-        name: apiDataListPageProps?.seo?.metaTitle,
+        name:
+          apiDataListPageProps?.seo?.metaTitle ||
+          apiDataListPageProps?.hero.title,
         item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api']),
       },
     ],

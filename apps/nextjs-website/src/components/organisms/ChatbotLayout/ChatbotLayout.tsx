@@ -24,7 +24,7 @@ type ChatbotLayoutProps = {
     chatId: string
   ) => null;
   isAwaitingResponse: boolean;
-  isChatbotLoaded: boolean;
+  areChatbotQueriesLoaded: boolean;
   error: ChatbotErrorsType | null;
   disabled?: boolean;
 };
@@ -34,7 +34,7 @@ const ChatbotLayout = ({
   onSendQuery,
   onSendFeedback,
   isAwaitingResponse,
-  isChatbotLoaded,
+  areChatbotQueriesLoaded,
   error,
   disabled,
 }: ChatbotLayoutProps) => {
@@ -144,7 +144,7 @@ const ChatbotLayout = ({
             onSendQuery={onSendQuery}
             onSendFeedback={onSendFeedback}
             isAwaitingResponse={isAwaitingResponse}
-            isChatbotLoaded={isChatbotLoaded}
+            areChatbotQueriesLoaded={areChatbotQueriesLoaded}
             scrollToBottom={true}
             error={error}
             disabled={disabled}

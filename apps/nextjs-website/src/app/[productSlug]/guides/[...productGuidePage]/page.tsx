@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getCachedUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getCachedUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -107,7 +107,7 @@ const Page = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(props.product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),

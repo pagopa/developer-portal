@@ -39,6 +39,7 @@
     "image": {
       "type": "media",
       "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
       ],
@@ -56,6 +57,14 @@
       },
       "type": "boolean",
       "default": false
+    },
+    "label": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }
