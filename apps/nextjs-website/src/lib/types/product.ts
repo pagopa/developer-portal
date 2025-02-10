@@ -16,4 +16,5 @@ export type Product = {
   readonly hasGuideListPage?: boolean;
   readonly hasOverviewPage?: boolean;
   readonly hasQuickstartGuidePage?: boolean;
+  readonly hasReleaseNotePage?: boolean;
 };

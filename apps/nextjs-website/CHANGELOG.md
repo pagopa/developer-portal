@@ -1,5 +1,50 @@
 # nextjs-website
 
+## 5.1.0
+
+### Minor Changes
+
+- 73fcca1: Add loader to chat page
+
+### Patch Changes
+
+- f45aa71: Add conditional parsing to chat and history
+- ce2b81e: Add title to profile pages
+
+## 5.0.0
+
+### Major Changes
+
+- 2eb0c2e: Add whatsNew attribute to OverviewCodec, add label attribute to NewsItemCodec and fix populate in overview fetch
+
+### Minor Changes
+
+- 394de79: Refactor NewsroomItem component and its storybook view
+
+### Patch Changes
+
+- 03387c8: Add normalize-and-delete-duplicated-users script and refactor sync all user
+  Check the user token and log out the user if it has expired
+
+## 4.15.1
+
+### Patch Changes
+
+- 6c83ed0: Add newsroom Storybook
+
+## 4.15.0
+
+### Minor Changes
+
+- 4a4cff9: Remove all static content
+- 4a4cff9: Filter product based on the presence of the overview data, Product menu depends on strapi configured relations with pages
+- 6cb24a4: Fix missing name field in listitems
+
+### Patch Changes
+
+- cbda80a: Add sitemap
+- c9b5838: Remove NextIntl warnings
+
 ## 4.14.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # storybook-app
 
+## 0.14.0
+
+### Minor Changes
+
+- 394de79: Refactor NewsroomItem component and its storybook view
+
+## 0.13.1
+
+### Patch Changes
+
+- 6c83ed0: Add newsroom Storybook
+- 875a76a: Fix broken stories and move products and bannerLinks to fixtures
+
 ## 0.13.0
 
 ### Minor Changes

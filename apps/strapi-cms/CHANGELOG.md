@@ -1,5 +1,17 @@
 # strapi-cms
 
+## 3.4.0
+
+### Minor Changes
+
+- 44d8bdd: Add ReleaseNote collection
+
+## 3.3.0
+
+### Minor Changes
+
+- e9a7020: Add whatsNew object to Overview schema, add label to newsItem and refactor newsShowcase Strapi components
+
 ## 3.2.1
 
 ### Patch Changes

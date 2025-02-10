@@ -84,7 +84,8 @@ function setFeedbackByQueryId(
 }
 
 export const useChatbot = (isUserAuthenticated: boolean) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [areChatbotQueriesLoaded, setAreChatbotQueriesLoaded] = useState(false);
+  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [chatQueries, setChatQueries] = useState<Query[]>([]);
   const [historyQueries, setHistoryQueries] = useState<Query[]>([]);
@@ -106,7 +107,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
         setChatQueries(getChatQueriesFromLocalStorage());
         setHistoryQueries(response);
       })
-      .finally(() => setIsLoaded(true));
+      .finally(() => setAreChatbotQueriesLoaded(true));
   }, [isUserAuthenticated]);
 
   const sendQuery = (queryMessage: string) => {
@@ -190,9 +191,11 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const getSession = (sessionId: string) => getChatbotQueries(sessionId);
 
   return {
-    isLoaded,
+    areChatbotQueriesLoaded,
     isAwaitingResponse,
+    isSessionLoaded,
     historyQueries,
+    setIsSessionLoaded,
     chatQueries,
     sendQuery,
     sendFeedback,

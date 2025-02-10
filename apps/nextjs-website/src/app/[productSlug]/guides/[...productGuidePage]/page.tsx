@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide, getGitBookSubPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -28,7 +28,7 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.page.path),
+    productGuidePage: getGitBookSubPaths(guidePage.page.path),
   }));
 }
 
@@ -107,7 +107,7 @@ const Page = async ({ params }: { params: Params }) => {
     breadcrumbsItems: [
       productToBreadcrumb(props.product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),

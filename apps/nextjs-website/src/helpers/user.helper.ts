@@ -15,8 +15,23 @@ export const useUser = () => {
     readonly WebinarSubscription[]
   >([]);
 
+  const signOutUser = async (user?: DevPortalUser | null) => {
+    await Auth.signOut();
+    if (user?.username) {
+      setUser(null);
+    }
+  };
+
+  const isUserLoggedIn = async (user?: DevPortalUser | null) => {
+    const info = await Auth.currentUserInfo();
+    if (!info?.username) {
+      signOutUser(user);
+    }
+    return !!info?.username;
+  };
+
   const fetchUserAndSubscriptions = useCallback(async () => {
-    const user = await Auth.currentAuthenticatedUser().catch(() => {
+    const user = await Auth.currentAuthenticatedUser().catch((e) => {
       setLoading(false);
       setAligned(true);
       setUser(null);
@@ -61,6 +76,10 @@ export const useUser = () => {
   }, [fetchUserAndSubscriptions]);
 
   useEffect(() => {
+    isUserLoggedIn(user);
+  }, [user]);
+
+  useEffect(() => {
     fetchUserAndSubscriptions();
   }, []);
 
@@ -73,6 +92,9 @@ export const useUser = () => {
           setUser(user);
           break;
         }
+        case 'updateUserAttributes_failure':
+          signOutUser();
+          break;
         case 'signOut':
           setUser(null);
           break;
@@ -89,6 +111,7 @@ export const useUser = () => {
     setUserAttributes,
     aligned,
     reloadUser,
+    isUserLoggedIn,
   };
 };
 

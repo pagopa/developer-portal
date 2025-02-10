@@ -19,7 +19,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
     sendQuery,
     sendFeedback,
     isAwaitingResponse,
-    isLoaded,
+    areChatbotQueriesLoaded,
     chatbotError,
   } = useChatbot(!!user);
 
@@ -31,7 +31,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           onSendQuery={sendQuery}
           onSendFeedback={sendFeedback}
           isAwaitingResponse={isAwaitingResponse}
-          isChatbotLoaded={isLoaded}
+          areChatbotQueriesLoaded={areChatbotQueriesLoaded}
           error={chatbotError}
           disabled={!user}
         />

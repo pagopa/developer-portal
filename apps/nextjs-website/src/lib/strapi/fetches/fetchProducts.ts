@@ -9,6 +9,7 @@ export const productRelationsPopulate = {
     'bannerLinks.icon',
     'overview',
     'quickstart_guide',
+    'release_note',
     'api_data_list_page',
     'api_data_list_page.apiData.*',
     'api_data_list_page.apiData.apiRestDetail.*',

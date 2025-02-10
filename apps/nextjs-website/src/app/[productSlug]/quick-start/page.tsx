@@ -74,7 +74,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     breadcrumbsItems: [
       productToBreadcrumb(product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || abstract?.title,
         item: breadcrumbItemByProduct(product, ['quick-start']),
       },
     ],

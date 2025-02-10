@@ -3,7 +3,8 @@ export type QueueEventType =
   | 'DeleteUser'
   | 'ConfirmSignUp'
   | 'DynamoINSERT'
-  | 'DynamoREMOVE';
+  | 'DynamoREMOVE'
+  | 'DynamoMODIFY';
 
 export type QueueEvent = {
   readonly detail: {
