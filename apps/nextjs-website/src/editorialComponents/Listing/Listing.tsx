@@ -1,7 +1,14 @@
 'use client';
-import { Box, Divider, Typography, Link as LinkMUI } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Typography,
+  Link as LinkMUI,
+  useTheme,
+} from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 interface ListingItem {
   text: string;
@@ -23,6 +30,7 @@ export interface ListingsProps {
   name?: string;
   linksColor?: string;
   items: ListingItem[];
+  backgroundVariant?: 'white' | 'lightGrey';
 }
 
 const ListingItem = (props: ListingItem) => {
@@ -60,10 +68,30 @@ const ListingItem = (props: ListingItem) => {
   );
 };
 
-const Listing = (props: ListingsProps) => {
-  const { title, date, name = '', items, linksColor } = props;
+const Listing = ({
+  title,
+  date,
+  name = '',
+  items,
+  linksColor,
+  backgroundVariant = 'white',
+}: ListingsProps) => {
+  const theme = useTheme();
+
+  const backgroundColor = useMemo(
+    () => ({
+      white: theme.palette.background.paper,
+      lightGrey: theme.palette.grey[50],
+    }),
+    [theme]
+  );
+
   return (
-    <EContainer py={8} background='background.paper' direction='column'>
+    <EContainer
+      py={8}
+      background={backgroundColor[backgroundVariant]}
+      direction='column'
+    >
       {title && (
         <Typography variant='h5' mb={2}>
           {title}

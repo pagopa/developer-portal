@@ -62,6 +62,30 @@ export function makeOverviewsProps(
             path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
           })) || [],
       },
+      whatsNew: attributes.whatsNew && {
+        title: attributes.whatsNew.title,
+        subtitle: attributes.whatsNew.subTitle,
+        ...(attributes.whatsNew.link && {
+          link: {
+            text: attributes.whatsNew.link.text,
+            url: attributes.whatsNew.link.href,
+            target: attributes.whatsNew.link.target,
+          },
+        }),
+        items: attributes.whatsNew.items.data.map((item) => ({
+          comingSoon: item.attributes.comingSoon,
+          title: item.attributes.title,
+          publishedAt: item.attributes.publishedAt,
+          label: item.attributes.label,
+          link: {
+            text: item.attributes.link.text,
+            url: item.attributes.link.href,
+            target: item.attributes.link.target,
+          },
+          image:
+            item.attributes.image.data && item.attributes.image.data.attributes,
+        })),
+      },
       postIntegration: attributes.postIntegration && {
         title: attributes.postIntegration.title,
         subtitle: attributes.postIntegration.description,
