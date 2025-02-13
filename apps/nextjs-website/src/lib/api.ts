@@ -6,7 +6,7 @@ import {
   getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
-  getGuidesProps,
+  getGuideProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
@@ -36,23 +36,22 @@ export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
 ): Promise<GuidePage> {
+  if (!productSlug || !productGuidePage || productGuidePage?.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Product slug is missing');
+  }
+
+  const guides = await getGuideProps(productGuidePage[0], productSlug);
   const products = await getProducts();
-  const guidesProps = await getGuidesProps();
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const guideDefinition = manageUndefined(
-    guidesProps.find((guideDefinition) => guideDefinition.page.path === path)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const guideDefinition: any = manageUndefined(
+    guides.find((guideDefinition) => {
+      return guideDefinition.page.path === path;
+    })
   );
-
-  const gitBookPagesWithTitle = guidesProps.map((content) => ({
-    title: content.page.title,
-    path: content.page.path,
-  }));
-  const spaceToPrefix = guidesProps.map((content) => ({
-    spaceId: content.source.spaceId,
-    pathPrefix: content.source.pathPrefix,
-  }));
 
   return {
     ...guideDefinition,
@@ -61,8 +60,8 @@ export async function getGuide(
       isPageIndex: guideDefinition.page.isIndex,
       pagePath: guideDefinition.page.path,
       assetsPrefix: guideDefinition.source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix,
+      gitBookPagesWithTitle: [],
+      spaceToPrefix: [],
     },
   };
 }

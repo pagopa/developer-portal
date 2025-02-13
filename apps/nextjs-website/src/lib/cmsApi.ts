@@ -24,9 +24,8 @@ import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
 import { makeProductsProps } from './strapi/makeProps/makeProducts';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
-import { fetchGuides } from './strapi/fetches/fetchGuides';
+import { fetchGuide, fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { makeGuide } from '@/helpers/makeDocs.helpers';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
@@ -36,11 +35,14 @@ import {
   makeUrlReplaceMap,
   UrlReplaceMap,
 } from './strapi/makeProps/makeUrlReplaceMap';
-import { secrets } from '@/config';
+import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
+import { makeGuide as makeGuideS3 } from '@/helpers/makeS3Docs.helpers';
+import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig({ ...process.env, ...secrets }),
+  makeBuildConfig(process.env),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
@@ -128,6 +130,11 @@ export const getOverviewsProps = async () => {
   return makeOverviewsProps(strapiOverviews);
 };
 
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes(buildEnv);
+  return makeReleaseNotesProps(strapiReleaseNotes).flatMap(makeReleaseNote);
+};
+
 export const getGuideListPagesProps = async () => {
   const strapiGuideList = await fetchGuideListPages(buildEnv);
   return makeGuideListPagesProps(strapiGuideList);
@@ -154,4 +161,15 @@ export const getGuidesProps = async () => {
 export const getGuidesPropsCache = async () => {
   const strapiGuides = await fetchGuides(buildEnv);
   return makeGuidesProps(strapiGuides).flatMap(makeGuide);
+};
+
+export const getGuideProps = async (guideSlug: string, productSlug: string) => {
+  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+  if (!strapiGuides || strapiGuides.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const strapiGuide = makeGuidesProps(strapiGuides);
+  const t = await makeGuideS3(strapiGuide[0]);
+  return t;
 };

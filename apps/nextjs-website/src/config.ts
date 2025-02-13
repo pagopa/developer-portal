@@ -7,6 +7,16 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  */
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
+export const s3DocsPath = process.env.S3_PATH_TO_GITBOOK_DOCS;
+export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
+export const credentials =
+  process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY
+    ? {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      }
+    : undefined;
+export const bucketName = process.env.S3_BUCKET_NAME || '';
 export const secrets = process.env.secrets
   ? JSON.parse(process.env.secrets)
   : {};
@@ -15,6 +25,8 @@ export const cookieDomainScript =
   process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
+export const docsS3AssetsPath =
+  process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS || '/gitbook/docs';
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
 export const isChatbotActive =
