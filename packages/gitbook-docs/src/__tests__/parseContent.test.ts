@@ -869,7 +869,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should parse html table with image', () => {
+  it('should parse html table with an image inside a table data cell', () => {
     const table =
       '<table data-header-hidden>' +
       '<thead><tr>' +
