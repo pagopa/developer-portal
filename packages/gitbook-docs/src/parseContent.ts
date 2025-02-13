@@ -44,7 +44,7 @@ const pairedHtmlTag = (tag: string) => ({
   replace: `{% ${tag}$1 %}$2{% /${tag} %}`,
 });
 const unpairedHtmlTag = (tag: string) => ({
-  regex: new RegExp(`<${tag}(.*?)>`, 'g'),
+  regex: new RegExp(`(?<!<td>)<${tag}(.*?)>`, 'g'),
   replace: `{% ${tag}$1 / %}`,
 });
 
@@ -79,6 +79,7 @@ const schema: ConfigType = {
     htmlli: item,
     htmltable: table,
     htmla: link,
+    htmlimg: img,
     htmlbr: br,
     htmlstrong: styled.strong,
   },
