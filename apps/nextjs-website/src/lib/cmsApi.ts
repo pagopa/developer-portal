@@ -32,10 +32,7 @@ import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
-import {
-  makeUrlReplaceMap,
-  UrlReplaceMap,
-} from './strapi/makeProps/makeUrlReplaceMap';
+import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
@@ -50,7 +47,7 @@ const buildEnv = pipe(
   })
 );
 
-const CACHE_EXPIRY_SECONDS = 900;  // 15 minutes in seconds
+const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
 
 export const getHomepageProps = async () => {
   return withCache(
@@ -59,7 +56,7 @@ export const getHomepageProps = async () => {
       const strapiHomepage = await fetchHomepage(buildEnv);
       return makeHomepageProps(strapiHomepage);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -70,7 +67,7 @@ export const getWebinarsProps = async () => {
       const strapiWebinars = await fetchWebinars(buildEnv);
       return makeWebinarsProps(strapiWebinars);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -81,7 +78,7 @@ export const getProductsProps = async () => {
       const strapiProducts = await fetchProducts(buildEnv);
       return makeProductsProps(strapiProducts);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -92,7 +89,7 @@ export const getTutorialsProps = async () => {
       const strapiTutorials = await fetchTutorials(buildEnv);
       return makeTutorialsProps(strapiTutorials);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -103,7 +100,7 @@ export const getTutorialListPagesProps = async () => {
       const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
       return makeTutorialListPagesProps(strapiTutorialListPages);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -114,7 +111,7 @@ export const getQuickStartGuidesProps = async () => {
       const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
       return makeQuickStartGuidesProps(strapiQuickStartGuides);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -125,7 +122,7 @@ export const getUrlReplaceMapProps = async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
       return makeUrlReplaceMap(strapiUrlReplaceMap);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -136,7 +133,7 @@ export const getApiDataListPagesProps = async () => {
       const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
       return makeApiDataListPagesProps(strapiApiDataListPages);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -147,7 +144,7 @@ export const getApiDataProps = async () => {
       const strapiApiDataList = await fetchApiDataList(buildEnv);
       return makeApiDataListProps(strapiApiDataList);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -158,7 +155,7 @@ export const getCaseHistoriesProps = async () => {
       const strapiCaseHistories = await fetchCaseHistories(buildEnv);
       return makeCaseHistoriesProps(strapiCaseHistories);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -169,7 +166,7 @@ export const getSolutionsProps = async () => {
       const strapiSolutions = await fetchSolutions(buildEnv);
       return makeSolutionsProps(strapiSolutions);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -180,7 +177,7 @@ export const getSolutionListPageProps = async () => {
       const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
       return makeSolutionListPageProps(strapiSolutionListPage);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -191,7 +188,7 @@ export const getOverviewsProps = async () => {
       const strapiOverviews = await fetchOverviews(buildEnv);
       return makeOverviewsProps(strapiOverviews);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -207,7 +204,7 @@ export const getGuideListPagesProps = async () => {
       const strapiGuideList = await fetchGuideListPages(buildEnv);
       return makeGuideListPagesProps(strapiGuideList);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };
 
@@ -236,6 +233,6 @@ export const getGuidesPropsCache = async () => {
       const strapiGuides = await fetchGuides(buildEnv);
       return makeGuidesProps(strapiGuides).flatMap(makeGuide);
     },
-    CACHE_EXPIRY_SECONDS
+    CACHE_EXPIRY_IN_SECONDS
   );
 };

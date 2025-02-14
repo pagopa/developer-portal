@@ -13,7 +13,7 @@ export const getCacheKey = (prefix: string, ...args: readonly string[]) =>
 export const withCache = async <T>(
   key: string,
   fetchFn: () => Promise<T>,
-  ttl: number = parseInt(process.env.REDIS_CACHE_TTL || '300')
+  cache_expiry_in_seconds: number
 ): Promise<T> => {
   const now = Date.now();
   const cached = cacheStore.get(key);
@@ -30,7 +30,7 @@ export const withCache = async <T>(
     // eslint-disable-next-line functional/no-expression-statements
     cacheStore.set(key, {
       data,
-      expiry: now + ttl * 1000, // Convert TTL to milliseconds
+      expiry: now + cache_expiry_in_seconds * 1000,
     });
     return data;
   } catch (error) {
