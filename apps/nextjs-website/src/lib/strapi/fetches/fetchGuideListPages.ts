@@ -1,12 +1,13 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { GuideListPagesCodec } from '@/lib/strapi/codecs/GuideListPagesCodec';
+import { productRelationsPopulate } from './fetchProducts';
 
 const makeStrapiGuideListPopulate = () =>
   qs.stringify({
     populate: {
       product: {
-        populate: ['logo', 'bannerLinks.icon'],
+        ...productRelationsPopulate,
       },
       guidesByCategory: {
         populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],

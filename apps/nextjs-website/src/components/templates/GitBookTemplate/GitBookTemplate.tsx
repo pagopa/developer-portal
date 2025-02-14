@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import { ProductGuidePageProps } from '@/app/[productSlug]/guides/[...productGuidePage]/page';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import { GuideMenuItemsProps } from '@/components/atoms/GuideMenu/Menu';
@@ -9,6 +8,7 @@ import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -17,6 +17,8 @@ export type GitBookTemplateProps = {
   contentMarginTop?: number;
   versions?: GuideMenuItemsProps['versions'];
   versionName?: GuideMenuItemsProps['versionName'];
+  hasHeader?: boolean;
+  hasInPageMenu?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -34,7 +36,12 @@ const GitBookTemplate = ({
   breadcrumbs,
   menuDistanceFromTop,
   contentMarginTop = 75,
+  hasHeader = true,
+  hasInPageMenu = true,
 }: GitBookTemplateProps) => {
+  const t = useTranslations();
+  const paddingTop = hasHeader ? '60px' : '-80px';
+
   return (
     <FragmentProvider>
       <Box
@@ -47,6 +54,7 @@ const GitBookTemplate = ({
       >
         {menu && (
           <GuideMenu
+            hasHeader={hasHeader}
             menu={menu}
             assetsPrefix={bodyConfig.assetsPrefix}
             linkPrefix={pathPrefix}
@@ -67,36 +75,38 @@ const GitBookTemplate = ({
             },
           }}
         >
-          <Box sx={{ paddingTop: '60px', paddingX: '40px' }}>
+          <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '32px 40px' }}>
             <GitBookContent content={body} config={bodyConfig} />
           </Box>
         </Stack>
-        <Box
-          sx={{
-            display: { xs: 'none', lg: 'initial' },
-            position: 'relative',
-            padding: { lg: '80px 64px' },
-            width: { lg: '378px' },
-          }}
-        >
+        {hasInPageMenu && (
           <Box
             sx={{
-              position: 'sticky',
-              maxWidth: '378px',
-              top: 144,
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
+              width: { lg: '378px' },
             }}
           >
-            <GuideInPageMenu
-              assetsPrefix={bodyConfig.assetsPrefix}
-              pagePath={path}
-              inPageMenu={body}
-              title={translations.productGuidePage.onThisPage}
-            />
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '378px',
+                top: hasHeader ? 144 : 64,
+              }}
+            >
+              <GuideInPageMenu
+                assetsPrefix={bodyConfig.assetsPrefix}
+                pagePath={path}
+                inPageMenu={body}
+                title={t('productGuidePage.onThisPage')}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     </FragmentProvider>
   );

@@ -1,5 +1,17 @@
 # chatbot
 
+## 4.2.0
+
+### Minor Changes
+
+- 1bf3dcf: GET /queries API security fix
+
+## 4.1.0
+
+### Minor Changes
+
+- 2345af9: Implemented llm monitoring with LangFuse
+
 ## 4.0.0
 
 ### Major Changes

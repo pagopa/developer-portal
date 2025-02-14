@@ -10,6 +10,7 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
@@ -29,6 +30,7 @@ export type CtaCardProps = {
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
   readonly tags?: { readonly label: string; readonly path?: string }[];
+  readonly variant?: Variant;
 };
 
 const StyledCardContent = styled(CardContent)(() => ({
@@ -46,6 +48,7 @@ const CtaCard = ({
   icon,
   children,
   tags,
+  variant = 'h3',
 }: CtaCardProps) => {
   return (
     <Card
@@ -63,7 +66,16 @@ const CtaCard = ({
           sx={{ minHeight: minHeight || 'auto', height: '100%' }}
         >
           {icon}
-          <Typography sx={titleStyle} mt={2} variant='h6' gutterBottom>
+          <Typography
+            sx={{
+              ...titleStyle,
+              fontSize: '1.5rem !important',
+              lineHeight: '1.15 !important',
+              marginTop: 2,
+            }}
+            variant={variant}
+            gutterBottom
+          >
             {title}
           </Typography>
           {text && <Typography variant='body2'>{text}</Typography>}

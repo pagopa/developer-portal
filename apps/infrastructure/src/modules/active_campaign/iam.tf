@@ -31,7 +31,7 @@ resource "aws_iam_policy" "pipes" {
         ]
         Effect = "Allow"
         Resource = [
-          var.webinar_subscriptions_ddb_stream_arn
+          var.webinar_subscriptions_ddb.stream_arn
         ]
       },
       {
@@ -66,9 +66,20 @@ resource "aws_iam_policy" "lambda_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Action = [
+          "dynamodb:BatchGetItem",
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+        ]
+        Effect = "Allow"
+        Resource = [
+          var.webinar_subscriptions_ddb.arn
+        ]
+      },
+      {
         Action   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
         Effect   = "Allow",
-        Resource = [aws_sqs_queue.fifo_queue.arn, aws_sqs_queue.fifo_dlq_queue.arn]
+        Resource = [aws_sqs_queue.fifo_queue.arn, aws_sqs_queue.fifo_dlq_queue.arn, aws_sqs_queue.fifo_resync_dlq_queue.arn]
       },
       {
         Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
@@ -91,5 +102,15 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
 
 resource "aws_iam_role_policy_attachment" "lambda_cognito_policy_attach" {
   role       = module.lambda_sync.lambda_role_name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_resync_policy_attach" {
+  role       = module.lambda_resync.lambda_role_name
+  policy_arn = aws_iam_policy.lambda_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_resync_cognito_policy_attach" {
+  role       = module.lambda_resync.lambda_role_name
   policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoReadOnly"
 }

@@ -1,5 +1,4 @@
 'use client';
-import { translations } from '@/_contents/translations';
 import RequiredTextField from '@/components/molecules/RequiredTextField/RequiredTextField';
 import {
   FormControl,
@@ -34,7 +33,7 @@ export type InfoCardItemEditingProfileProps = {
 export const InfoCardItemProfile = (
   infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps
 ) => {
-  const t = useTranslations('profile');
+  const t = useTranslations();
 
   if (infoCardItem.editing) {
     return (
@@ -48,7 +47,7 @@ export const InfoCardItemProfile = (
                 onChange={({ target: { value } }) => {
                   infoCardItem.onValue && infoCardItem.onValue(value);
                 }}
-                helperText={translations.shared.requiredFieldError}
+                helperText={t('shared.requiredFieldError')}
               />
             ) : (
               <TextField
@@ -148,7 +147,7 @@ export const InfoCardItemProfile = (
           color='primary'
           sx={{ paddingLeft: 0, paddingRight: 0 }}
         >
-          {t('insert')}
+          {t('profile.insert')}
         </ButtonNaked>
       )}
     </Stack>

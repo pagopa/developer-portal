@@ -1,5 +1,33 @@
 # infrastructure
 
+## 1.6.1
+
+### Patch Changes
+
+- 9410de4: Added chatbot env vars to codebuild project
+
+## 1.6.0
+
+### Minor Changes
+
+- 1333a4b: Active campaign resync lambda implemented
+
+### Patch Changes
+
+- cd06c06: Enabled active campaign syncer on prod
+
+## 1.5.0
+
+### Minor Changes
+
+- 2345af9: Implemented llm monitoring with LangFuse
+
+### Patch Changes
+
+- 22aea81: Change ac sync lambda handler to index.sqsQueue
+- 8664295: Use the ddb stream event id as message group id in sqs
+- 8f7d007: Added environment variables that allow strapi to integrate with active campaign
+
 ## 1.4.0
 
 ### Minor Changes

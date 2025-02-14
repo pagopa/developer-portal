@@ -1,10 +1,9 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide, getGitBookSubPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
@@ -13,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getGuidesProps, getCachedUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -29,7 +28,7 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.page.path),
+    productGuidePage: getGitBookSubPaths(guidePage.page.path),
   }));
 }
 
@@ -77,9 +76,19 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug,
     params?.productGuidePage ?? ['']
   );
-  const urlReplaceMap = await getUrlReplaceMapProps();
-  const { product, page, guide, version, versions, source, bannerLinks, seo } =
-    guideProps;
+
+  const urlReplaceMap = await getCachedUrlReplaceMapProps();
+  const {
+    product,
+    page,
+    guide,
+    version,
+    versions,
+    source,
+    bannerLinks,
+    seo,
+    bodyConfig,
+  } = guideProps;
   const props: ProductGuidePageProps = {
     ...page,
     product,
@@ -89,21 +98,17 @@ const Page = async ({ params }: { params: Params }) => {
     bannerLinks,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
-      isPageIndex: page.isIndex,
-      pagePath: page.path,
-      assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
+      ...bodyConfig,
       urlReplaces: urlReplaceMap,
     },
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(props.product),
       {
-        name: seo?.metaTitle,
-        item: breadcrumbItemByProduct(product, [
+        name: seo?.metaTitle || page.title,
+        item: breadcrumbItemByProduct(props.product, [
           'guides',
           ...(params?.productGuidePage || []),
         ]),
@@ -123,7 +128,14 @@ const Page = async ({ params }: { params: Params }) => {
       <GitBookTemplate
         menuName={props.guide.name}
         breadcrumbs={[
-          ...productPageToBreadcrumbs(props.product, props.path, [
+          ...productPageToBreadcrumbs(props.product, [
+            {
+              translate: true,
+              name: 'devPortal.productHeader.guides',
+              path: props.product.hasGuideListPage
+                ? `/${props.product.slug}/guides`
+                : '/',
+            },
             {
               name: props.guide.name,
               path: props.guide.path,

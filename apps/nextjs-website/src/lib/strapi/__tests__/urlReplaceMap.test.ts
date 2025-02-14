@@ -16,7 +16,7 @@ const strapiResponse = {
         {
           id: 1,
           url: 'aaaa',
-          version: '2',
+          subPath: '2',
           guide: {
             data: {
               id: 1,

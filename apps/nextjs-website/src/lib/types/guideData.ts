@@ -3,6 +3,7 @@ import { Path } from '@/lib/types/path';
 import { DocPage } from 'gitbook-docs/parseDoc';
 import { Product } from './product';
 import { SEO } from './seo';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 export type Guide = {
   readonly title: string;
@@ -38,5 +39,6 @@ export type GuidePage = NonNullable<
     readonly assetsPrefix: string;
     readonly redirect?: boolean;
     readonly seo?: SEO;
+    readonly bodyConfig: Omit<ParseContentConfig, 'urlReplaces'>;
   }>
 >;

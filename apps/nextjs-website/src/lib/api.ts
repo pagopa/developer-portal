@@ -1,25 +1,23 @@
-import { products, tutorials } from '@/_contents/products';
-import { Product, ProductSubpathsKeys } from './types/product';
+import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import { GuidePage } from './types/guideData';
 import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
-  getSolutionsProps,
   getGuideListPagesProps,
   getGuidesProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
+  getReleaseNotesProps,
   getSolutionListPageProps,
+  getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
-import { Tutorial } from './types/tutorialData';
-import { TutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { makeSolution } from '@/_contents/makeDocs';
+import { makeSolution } from '@/helpers/makeDocs.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 function manageUndefined<T>(props: undefined | null | T) {
@@ -38,23 +36,38 @@ export async function getGuide(
   productSlug?: string,
   productGuidePage?: ReadonlyArray<string>
 ): Promise<GuidePage> {
+  const products = await getProducts();
   const guidesProps = await getGuidesProps();
   const guidePath = productGuidePage?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
-  const props = manageUndefined(
-    guidesProps.find(({ page }) => page.path === path)
+  const guideDefinition = manageUndefined(
+    guidesProps.find((guideDefinition) => guideDefinition.page.path === path)
   );
 
+  const gitBookPagesWithTitle = guidesProps.map((content) => ({
+    title: content.page.title,
+    path: content.page.path,
+  }));
+  const spaceToPrefix = guidesProps.map((content) => ({
+    spaceId: content.source.spaceId,
+    pathPrefix: content.source.pathPrefix,
+  }));
+
   return {
-    ...props,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
+    ...guideDefinition,
+    products,
+    bodyConfig: {
+      isPageIndex: guideDefinition.page.isIndex,
+      pagePath: guideDefinition.page.path,
+      assetsPrefix: guideDefinition.source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix,
+    },
   };
 }
 
-export function getProductGuidePath(path: string) {
+export function getGitBookSubPaths(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
   return path.split('/').filter((p, index) => index > 2);
@@ -77,16 +90,8 @@ export async function getOverview(productSlug?: string) {
   );
 }
 
-export function getProductsSlugs(
-  page?: ProductSubpathsKeys
-): readonly string[] {
-  return products
-    .filter((p) => !page || Object.keys(p.subpaths).includes(page))
-    .map(({ slug }) => slug);
-}
-
 export async function getProducts(): Promise<readonly Product[]> {
-  return [...products];
+  return await getProductsProps();
 }
 
 export async function getQuickStartGuide(productSlug?: string) {
@@ -98,47 +103,21 @@ export async function getQuickStartGuide(productSlug?: string) {
   return manageUndefinedAndAddProducts(props);
 }
 
-export async function getStrapiTutorial(
-  productSlug?: string,
+export async function getTutorial(
+  productSlug: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const tutorialsFromStrapi: TutorialsProps = await getTutorialsProps(
-    productSlug
-  );
+  const product = await getProduct(productSlug);
 
-  const tutorialFromStrapi = tutorialsFromStrapi.find(
-    ({ path }) => path === tutorialPath
-  );
-
-  return tutorialFromStrapi
-    ? {
-        ...tutorialFromStrapi,
-        product: products.find(({ slug }) => slug === productSlug),
-      }
-    : undefined;
-}
-
-export async function getStaticTutorial(
-  productSlug?: string,
-  productTutorialPage?: ReadonlyArray<string>
-) {
-  const tutorialPath = productTutorialPage?.join('/');
-  const path = `/${productSlug}/tutorials/${tutorialPath}`;
   const props = manageUndefined(
-    tutorials.find(({ page }) => page.path === path)
+    (await getTutorialsProps()).find(({ path }) => path === tutorialPath)
   );
-
   return {
     ...props,
-    product: props.product,
-    pathPrefix: props.source.pathPrefix,
-    assetsPrefix: props.source.assetsPrefix,
-    products: [...(await getProducts())],
-    bannerLinks: props.bannerLinks,
-    relatedLinks: props.relatedLinks,
+    product,
   };
 }
 
@@ -148,16 +127,7 @@ export async function getTutorialPaths() {
     slug: path.split('/')[1],
     tutorialPaths: [path.split('/').at(-1)],
   }));
-
-  const tutorialPaths = tutorials.map((tutorial) => ({
-    slug: tutorial.product.slug,
-    tutorialPaths: tutorial.page.path
-      .split('/')
-      // the filter is to remove the first 3 elements of the path which are
-      // an empty string (the path begins with a / symbol), the product slug and 'tutorials' hard-coded string
-      .filter((p, index) => index > 2),
-  }));
-  return [...tutorialPaths, ...tutorialPathsFromCMS];
+  return tutorialPathsFromCMS;
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
@@ -167,14 +137,6 @@ export async function getTutorialListPageProps(productSlug?: string) {
     null;
 
   return manageUndefinedAndAddProducts(props);
-}
-
-export async function getTutorials(
-  productSlug?: string
-): Promise<readonly Tutorial[]> {
-  const { tutorials } = await getTutorialListPageProps(productSlug);
-  const tutorialsFromCMS = await getTutorialsProps(productSlug);
-  return [...tutorials, ...tutorialsFromCMS];
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
@@ -225,10 +187,50 @@ export async function getProduct(productSlug: string) {
 }
 
 export async function getApiData(apiDataSlug: string) {
-  const props = (await getApiDataProps()).find(
-    (apiData) => apiData.apiDataSlug === apiDataSlug
+  const props = manageUndefined(
+    (await getApiDataProps()).find(
+      (apiData) => apiData.apiDataSlug === apiDataSlug
+    )
   );
   return props;
+}
+
+export async function getReleaseNote(
+  productSlug?: string,
+  releaseNoteSubPathSlugs?: readonly string[]
+) {
+  const products = await getProducts();
+  const releaseNotesProps = await getReleaseNotesProps();
+  const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
+  const path = `/${productSlug}/${releaseNotesPath}`;
+
+  const releaseNoteProps = manageUndefined(
+    (await getReleaseNotesProps()).find(
+      (releaseNoteData) => releaseNoteData.page.path === path
+    )
+  );
+
+  const gitBookPagesWithTitle = releaseNotesProps.map((content) => ({
+    title: content.page.title,
+    path: content.page.path,
+  }));
+
+  const spaceToPrefix = releaseNotesProps.map((content) => ({
+    spaceId: content.source.spaceId,
+    pathPrefix: content.source.pathPrefix,
+  }));
+
+  return {
+    ...releaseNoteProps,
+    products,
+    bodyConfig: {
+      isPageIndex: releaseNoteProps.page.isIndex,
+      pagePath: releaseNoteProps.page.path,
+      assetsPrefix: releaseNoteProps.source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix,
+    },
+  };
 }
 
 export async function getSolution(solutionSlug?: string) {

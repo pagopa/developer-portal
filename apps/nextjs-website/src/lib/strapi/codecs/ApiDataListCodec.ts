@@ -2,7 +2,7 @@ import * as t from 'io-ts/lib';
 import { MediaCodec } from './MediaCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
-import { BaseProductWithBannerLinksCodec } from '@/lib/strapi/codecs/ProductCodec';
+import { BaseProductWithRelationsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 
 const UrlCodec = t.strict({
@@ -36,7 +36,7 @@ export const ApiDataCodec = t.strict({
   attributes: t.intersection([
     BaseApiDataAttributesCodec,
     t.strict({
-      product: t.strict({ data: BaseProductWithBannerLinksCodec }),
+      product: t.strict({ data: BaseProductWithRelationsCodec }),
       bannerLinks: t.array(BannerLinkCodec),
       seo: t.union([NullToUndefinedCodec, SEOCodec]),
     }),

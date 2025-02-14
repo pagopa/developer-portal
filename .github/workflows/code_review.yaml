@@ -131,3 +131,4 @@ jobs:
         with:
           path_to_nextjs_folder: ./apps/nextjs-website
           upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
+          environment: ${{ matrix.environment }}

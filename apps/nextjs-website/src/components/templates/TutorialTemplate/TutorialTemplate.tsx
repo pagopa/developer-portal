@@ -53,7 +53,14 @@ const TutorialTemplate = ({
         >
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...productPageToBreadcrumbs(product, path, [
+              ...productPageToBreadcrumbs(product, [
+                {
+                  translate: true,
+                  name: 'devPortal.productHeader.tutorials',
+                  path: product.hasTutorialListPage
+                    ? `/${product.slug}/tutorials`
+                    : '',
+                },
                 {
                   name: title,
                   path: path,

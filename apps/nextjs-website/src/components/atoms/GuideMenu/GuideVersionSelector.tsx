@@ -1,7 +1,7 @@
 import Dropdown from '@/components/atoms/Dropdown/Dropdown';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { translations } from '@/_contents/translations';
 import { useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 export type GuideVersionSelectorProps = {
   versionName: string;
@@ -13,10 +13,11 @@ const GuideVersionSelector = ({
   versions,
 }: GuideVersionSelectorProps) => {
   const { palette } = useTheme();
-  const { shared } = translations;
+  const t = useTranslations();
+
   return (
     <Dropdown
-      label={`${shared.version} ${versionName}`}
+      label={`${t('shared.version')} ${versionName}`}
       items={versions.map((version) => ({
         href: version.path,
         label: version.name,

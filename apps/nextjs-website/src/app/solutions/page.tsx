@@ -2,6 +2,17 @@ import SolutionListTemplate from '@/components/templates/SolutionListTemplate/So
 import { getSolutionListPage } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { Metadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
+import { baseUrl } from '@/config';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return makeMetadata({
+    title: 'Soluzioni',
+    url: `${baseUrl}/solutions`,
+    locale: 'it_IT',
+  });
+}
 
 const Page = async () => {
   const solutionsList = await getSolutionListPage();

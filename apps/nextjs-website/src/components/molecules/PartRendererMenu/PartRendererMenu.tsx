@@ -5,9 +5,9 @@ import React, { ReactNode } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 
 import BlocksRendererClientMenu from '../BlocksRendererClientMenu/BlocksRendererClientMenu';
-import { translations } from '@/_contents/translations';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
 import MUILink from '@mui/material/Link';
+import { useTranslations } from 'next-intl';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
@@ -29,6 +29,7 @@ const getFontSizeByLevel = (level: number): number => {
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   const { palette } = useTheme();
+  const t = useTranslations();
   const menuItems = props.parts
     .map((part) => {
       switch (part.component) {
@@ -115,7 +116,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         textTransform={'uppercase'}
         marginBottom={'18px'}
       >
-        {translations.productGuidePage.onThisPage}
+        {t('productGuidePage.onThisPage')}
       </Typography>
       {menuItems}
     </Box>

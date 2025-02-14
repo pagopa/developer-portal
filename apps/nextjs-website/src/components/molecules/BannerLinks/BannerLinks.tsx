@@ -26,6 +26,7 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
   >
     {bannerLinks?.map((bannerLink, index) => (
       <BannerLink
+        variant='h3'
         contentJustification={CalculateJustify(index, bannerLinks.length)}
         key={index}
         title={bannerLink.title}

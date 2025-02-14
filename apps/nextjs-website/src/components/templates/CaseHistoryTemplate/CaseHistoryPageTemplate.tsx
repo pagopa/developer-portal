@@ -4,7 +4,9 @@ import { Product } from '@/lib/types/product';
 import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { useTranslations } from 'next-intl';
-import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
+import ProductsShowcase, {
+  ProductsShowcaseProps,
+} from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -31,6 +33,20 @@ const CaseHistoryPageTemplate = ({
 }: CaseHistoryPageTemplateProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
+
+  const cards = products
+    .map((product) => {
+      if (!product.description || !product.logo) {
+        return null;
+      }
+      return {
+        title: product.name,
+        text: product.description,
+        href: `/${product.slug}/overview`,
+        logoUrl: product.logo?.url,
+      };
+    })
+    .filter(Boolean) as ProductsShowcaseProps['cards'];
 
   return (
     <>
@@ -73,18 +89,13 @@ const CaseHistoryPageTemplate = ({
           </Box>
         )
       )}
-      {products.length > 0 && (
+      {cards.length > 0 && (
         <ProductsShowcase
           verticalPadding={10}
           cardSize={{ xs: 12, md: 4 }}
           backgroundColor={palette.background.paper}
           title={t('caseHistory.productShowcaseLabel')}
-          cards={products.map((product) => ({
-            title: product.name,
-            text: product.description || '',
-            href: `/${product.slug}/overview`,
-            logoUrl: product.logo.url,
-          }))}
+          cards={cards}
         />
       )}
     </>

@@ -36,12 +36,14 @@ qa_prompt_str: |
   Task:
     Given the query: {query_str}
     Reply according to the `Chatbot Policy` listed above.
+    If the query is a thank, transform it into a polite and contextually appropriate answer.
 
     Answer: 
 
 
 refine_prompt_str: |
-  Given the original answer: {existing_answer}, we have the opportunity to refine it (only if needed) with some more context here below:
+  Given the original answer: {existing_answer}, 
+  we have the opportunity to refine it (only if needed) with some more context here below:
   --------------------
   {context_msg}
   --------------------
@@ -53,15 +55,15 @@ refine_prompt_str: |
     Answer: 
 
 condense_prompt_str: |
-  Given a conversation (between Human and Assistant) and a follow up message from Human, rewrite the message to be a standalone question that captures all relevant context from the conversation.
-
-  The standalone question must be in Italian.
-
-  <Chat History>
+  Given the following chat history between a user and an AI assistant:
   {chat_history}
-
-  <Follow Up Message>
+  --------------------
+  and a follow up question from user: 
   {question}
-
-  <Standalone question>
-
+  --------------------
+  Task:
+    Rephrase the follow up question to be a standalone question. 
+    If the follow up question is a thank, transform it into a polite and contextually appropriate standalone response.
+    The standalone question or response must be in Italian.
+    
+    Standalone question or response: 

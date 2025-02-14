@@ -1,5 +1,4 @@
 import * as t from 'io-ts/lib';
-import * as tt from 'io-ts-types';
 import { BlocksContentCodec } from './BlocksContentCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
@@ -9,6 +8,7 @@ import { WebinarCodec } from './WebinarsCodec';
 import { ProductCodec } from './ProductCodec';
 import { SEOCodec } from './SeoCodec';
 import { BaseSolutionCodec } from './SolutionsCodec';
+import { NewsShowcaseCodec } from '@/lib/strapi/codecs/NewsShowcaseCodec';
 
 const CallToActionCodec = t.strict({
   link: LinkCodec,
@@ -43,30 +43,12 @@ const HeroSlideCodec = t.strict({
   }),
 });
 
-const NewsItemCodec = t.strict({
-  attributes: t.strict({
-    comingSoon: t.boolean,
-    title: t.string,
-    link: LinkCodec,
-    publishedAt: tt.DateFromISOString,
-    image: t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
-  }),
-});
-
 export const HomepageCodec = t.strict({
   data: t.strict({
     attributes: t.strict({
       comingsoonDocumentation: RelatedLinksCodec,
       heroSlider: t.array(HeroSlideCodec),
-      newsShowcase: t.union([
-        NullToUndefinedCodec,
-        t.strict({
-          title: t.string,
-          items: t.strict({
-            data: t.array(NewsItemCodec),
-          }),
-        }),
-      ]),
+      newsShowcase: t.union([NullToUndefinedCodec, NewsShowcaseCodec]),
       ecosystem: t.union([
         NullToUndefinedCodec,
         t.strict({

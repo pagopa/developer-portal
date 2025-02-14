@@ -5,6 +5,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Image from 'next/image';
 import { ReactNode } from 'react';
+import { Variant } from '@mui/material/styles/createTypography';
 
 export interface FeatureItem {
   iconName?: string;
@@ -22,12 +23,14 @@ interface FeatureStackItemProps {
   item: FeatureItem;
   theme: 'dark' | 'light';
   useDarkTheme?: boolean;
+  variant?: Variant;
 }
 
 export const FeatureStackItem = ({
   item,
   theme,
   useDarkTheme,
+  variant = 'h6',
 }: FeatureStackItemProps) => {
   const isDarkMode = useDarkTheme || theme !== 'light';
   const textStyle = isDarkMode ? 'background.paper' : 'text.primary';
@@ -96,7 +99,14 @@ export const FeatureStackItem = ({
         )}
       </Box>
       <Stack color={textStyle} spacing={1} textAlign='center'>
-        <Typography color='inherit' variant='h6'>
+        <Typography
+          color='inherit'
+          variant={variant}
+          sx={{
+            fontSize: '1.5rem !important',
+            lineHeight: '1.15 !important',
+          }}
+        >
           {item.title}
         </Typography>
         {renderSubtitleOrContent()}

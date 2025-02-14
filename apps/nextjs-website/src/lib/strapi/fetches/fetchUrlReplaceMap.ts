@@ -8,17 +8,7 @@ const makeStrapiUrlReplaceMapPopulate = () =>
       urlToGuide: {
         populate: {
           guide: {
-            populate: [
-              'image',
-              'mobileImage',
-              'listItems',
-              'versions',
-              'bannerLinks.icon',
-              'seo',
-              'seo.metaSocial.image',
-              'product.logo',
-              'product.bannerLinks.icon',
-            ],
+            populate: ['product'],
           },
         },
       },

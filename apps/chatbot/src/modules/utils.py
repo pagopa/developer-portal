@@ -1,10 +1,10 @@
 import os
 import boto3
-import logging
+from logging import getLogger
 from dotenv import load_dotenv
 
 load_dotenv()
-
+logger = getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
@@ -26,7 +26,7 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     :return: The value of the requested parameter.
     """
 
-    logging.debug(f"[utils.py - get_ssm_parameter] Getting parameter {name} from SSM")
+    logger.debug(f"Getting parameter {name} from SSM")
     try: 
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(
@@ -34,16 +34,16 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
             WithDecryption=True
         )
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logging.warning(f"Parameter {name} not found in SSM, returning default")
+        logger.warning(f"Parameter {name} not found in SSM, returning default")
         return default
     
-    logging.debug(f"[utils.py - get_ssm_parameter] Parameter {name} retrieved from SSM")
+    logger.debug(f"Parameter {name} retrieved from SSM")
     return response["Parameter"]["Value"]
 
 
 def put_ssm_parameter(name: str, value: str) -> None:
 
-    logging.debug(f"[utils.py - put_ssm_parameter] Putting parameter {name} to SSM")
+    logger.debug(f"Putting parameter {name} to SSM")
     try: 
         # Get the requested parameter
         SSM_CLIENT.put_parameter(
@@ -52,5 +52,5 @@ def put_ssm_parameter(name: str, value: str) -> None:
             Overwrite=True
         )
     except Exception as e:
-        logging.error(e)
+        logger.error(e)
         

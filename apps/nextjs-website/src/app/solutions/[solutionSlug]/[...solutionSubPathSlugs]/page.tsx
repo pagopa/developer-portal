@@ -1,12 +1,11 @@
 import React from 'react';
-import { gitBookPagesWithTitle, spaceToPrefixMap } from '@/_contents/products';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getSolutionsProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getSolutionsProps, getCachedUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
@@ -41,17 +40,14 @@ export async function generateMetadata({
     params?.solutionSubPathSlugs
   );
 
-  return (
-    {} ||
-    makeMetadata({
-      title: props?.solution.title,
-      url: props
-        ? `/solutions/${
-            props?.solution.slug
-          }/${params.solutionSubPathSlugs.join('/')}`
-        : '',
-    })
-  );
+  return makeMetadata({
+    title: props?.solution.title,
+    url: props
+      ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
+          '/'
+        )}`
+      : '',
+  });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -60,7 +56,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  const urlReplaceMap = await getCachedUrlReplaceMapProps();
   if (!solutionProps) {
     return null;
   }
@@ -74,9 +70,9 @@ const Page = async ({ params }: { params: Params }) => {
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix: spaceToPrefixMap,
       urlReplaces: urlReplaceMap,
+      gitBookPagesWithTitle: [],
+      spaceToPrefix: [],
     },
   };
 
@@ -108,6 +104,7 @@ const Page = async ({ params }: { params: Params }) => {
     <>
       {structuredData}
       <GitBookTemplate
+        hasHeader={false}
         menuName={props.solution.title}
         breadcrumbs={[
           ...pageToBreadcrumbs('solutions', [

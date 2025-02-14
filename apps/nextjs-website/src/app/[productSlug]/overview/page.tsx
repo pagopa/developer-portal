@@ -7,7 +7,6 @@ import ProductLayout, {
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
-import { translations } from '@/_contents/translations';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 import Feature from '@/editorialComponents/Feature/Feature';
@@ -26,6 +25,9 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import NewsShowcase, {
+  NewsShowcaseProps,
+} from '@/components/organisms/NewsShowcase/NewsShowcase';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -74,6 +76,7 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
   };
+  readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
     readonly title?: string;
     readonly subtitle: string;
@@ -115,7 +118,7 @@ export async function generateMetadata(
     title: product.name,
     description: product.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url,
   });
 }
 
@@ -124,15 +127,15 @@ const OverviewPage = async ({ params }: ProductParams) => {
     hero,
     startInfo,
     feature,
-    product,
     path,
     tutorials,
+    whatsNew,
     postIntegration,
     relatedLinks,
     bannerLinks,
     seo,
+    product,
   } = await getOverview(params.productSlug);
-  const { overview } = translations;
 
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
@@ -166,27 +169,40 @@ const OverviewPage = async ({ params }: ProductParams) => {
           items={feature.items}
           title={feature.title}
           subtitle={feature.subtitle}
+          variant='h2'
         />
       )}
       {startInfo && (
         <StartInfo
-          title={startInfo.title || overview.startInfo.title}
+          title={startInfo.title}
           cta={startInfo.cta}
           cards={startInfo.cards}
         />
       )}
-      {product.subpaths.tutorials && tutorials && (
+      {product?.hasTutorialListPage && tutorials && (
         <TutorialsOverview
-          title={tutorials.title || overview.tutorial.title}
+          title={tutorials.title}
           subtitle={tutorials.subtitle}
-          ctaLabel={overview.tutorial.ctaLabel}
-          tutorialPath={product.subpaths.tutorials}
+          tutorialPath={{
+            path: `/${product.slug}/tutorials`,
+            name: 'tutorials',
+          }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
       )}
-      {product.subpaths.guides && postIntegration && (
+      {whatsNew && (
+        <NewsShowcase
+          marginTop={15}
+          title={whatsNew.title}
+          subtitle={whatsNew.subtitle}
+          link={whatsNew.link}
+          items={[...whatsNew.items]}
+          backgroundVariant='lightGrey'
+        />
+      )}
+      {product?.hasGuideListPage && postIntegration && (
         <PostIntegration
-          title={postIntegration.title || overview.postIntegration.title}
+          title={postIntegration.title}
           subtitle={postIntegration.subtitle}
           cta={
             postIntegration.cta && {
@@ -199,12 +215,14 @@ const OverviewPage = async ({ params }: ProductParams) => {
             postIntegration.serviceModels && [...postIntegration.serviceModels]
           }
           guides={postIntegration.guides}
+          backgroundVariant={whatsNew ? 'white' : 'lightGrey'}
         />
       )}
       {relatedLinks && (
         <RelatedLinks
-          title={relatedLinks.title || overview.relatedLinks.title}
+          title={relatedLinks.title}
           links={relatedLinks.links}
+          backgroundVariant={whatsNew ? 'lightGrey' : 'white'}
         />
       )}
     </ProductLayout>

@@ -23,7 +23,7 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
-          href: product.subpaths.overview.path,
+          href: `/${product.slug}/overview`,
           label: product.name,
         }))}
       />

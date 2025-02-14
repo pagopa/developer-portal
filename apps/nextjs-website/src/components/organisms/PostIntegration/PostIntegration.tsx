@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
@@ -11,7 +11,7 @@ import {
 import LinkCards from '@/components/molecules/LinkCards/LinkCards';
 
 type PostIntegrationProps = {
-  title: string;
+  title?: string;
   subtitle: string;
   cta?: {
     label: string;
@@ -24,6 +24,7 @@ type PostIntegrationProps = {
     href: string;
   }[];
   guides?: GuideCardProps[];
+  backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const PostIntegration = ({
@@ -33,13 +34,39 @@ const PostIntegration = ({
   listTitle,
   serviceModels,
   guides,
+  backgroundVariant = 'white',
 }: PostIntegrationProps) => {
   const theme = useTheme();
   const t = useTranslations();
 
+  const backgroundStyles = useMemo(
+    () => ({
+      white: {
+        backgroundColor: theme.palette.background.paper,
+        paddingBottom: 0,
+      },
+      lightGrey: {
+        backgroundColor: theme.palette.grey[50],
+        paddingBottom: 8,
+      },
+    }),
+    [theme]
+  );
+
   return (
-    <Box py={8} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      <SectionTitle margin={0} title={title} subtitle={subtitle} cta={cta} />
+    <Box
+      sx={{
+        paddingTop: 8,
+        ...backgroundStyles[backgroundVariant],
+      }}
+    >
+      <SectionTitle
+        margin={0}
+        title={title || t('overview.postIntegration.title')}
+        subtitle={subtitle}
+        link={cta ? { text: cta.label, url: cta.href } : undefined}
+        variant='h2'
+      />
       <EContainer>
         {listTitle && (
           <Typography
@@ -76,11 +103,18 @@ const PostIntegration = ({
                   key={index}
                   {...props}
                   description={{
-                    title: t(props.description.title),
+                    title: props.description.translate
+                      ? t(props.description.title)
+                      : props.description.title,
                     content: props.description.content,
                     listItems: props.description.listItems,
                   }}
-                  link={{ label: t(props.link.label), href: props.link.href }}
+                  link={{
+                    label: props.link.translate
+                      ? t(props.link.label)
+                      : props.link.label,
+                    href: props.link.href,
+                  }}
                 />
               ))}
           </Box>

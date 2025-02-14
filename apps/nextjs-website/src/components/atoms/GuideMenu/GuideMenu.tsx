@@ -19,12 +19,15 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 
-type GuideMenuProps = GuideMenuItemsProps & { distanceFromTop?: number };
+type GuideMenuProps = GuideMenuItemsProps & {
+  distanceFromTop?: number;
+  hasHeader: boolean;
+};
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
   const { palette } = useTheme();
-  const t = useTranslations('productGuidePage');
+  const t = useTranslations();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const scrollUp = useScrollUp();
   const currentPath = usePathname();
@@ -35,6 +38,14 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
   const height = `calc(100vh - ${top}px)`;
+
+  const topStyle = menuProps.hasHeader
+    ? { xs: top + 62, sm: top + 90, md: top + 77 }
+    : {
+        xs: top,
+        sm: top,
+        md: top,
+      };
 
   const handleClick = useCallback(() => {
     setOpen((prev) => !prev);
@@ -61,7 +72,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           backgroundColor: palette.grey[50],
           flexShrink: 0,
           position: 'sticky',
-          top: { xs: top + 62, sm: top + 90, md: top + 77 },
+          top: topStyle,
           height: { lg: height },
           overflowY: 'auto',
           transition: 'all 0.5s linear',
@@ -96,7 +107,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('tableOfContents')}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
               size='small'
@@ -129,7 +140,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 color: palette.primary.main,
               }}
             >
-              {t('tableOfContents')}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
               aria-label='close'

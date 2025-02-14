@@ -1,6 +1,8 @@
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
+import NewsShowcase, {
+  NewsShowcaseProps,
+} from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
   makeMetadata,
@@ -14,28 +16,10 @@ import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { websiteWithContext } from '@/helpers/structuredData.helpers';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
-
-type NewsShowcaseItemProps = {
-  readonly comingSoon?: boolean;
-  readonly title: string;
-  readonly publishedAt?: Date;
-  readonly link: {
-    readonly text: string;
-    readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
-  };
-  readonly image?: Media;
-};
-
-type NewsShowcaseProps = {
-  readonly title: string;
-  readonly items: readonly NewsShowcaseItemProps[];
-};
 
 type EcosystemSolutionsCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -65,8 +49,8 @@ type ComingSoonDocumentationProps = {
 
 export type HomepageProps = {
   readonly hero: readonly CtaSlideProps[];
-  readonly newsShowcase: NewsShowcaseProps;
-  readonly ecosystem: EcosystemProps;
+  readonly newsShowcase?: NewsShowcaseProps;
+  readonly ecosystem?: EcosystemProps;
   readonly webinars: readonly Webinar[];
   readonly comingsoonDocumentation: ComingSoonDocumentationProps;
   readonly seo?: SEO;
@@ -96,10 +80,17 @@ const NotSsrWebinarsSection = dynamic(
 );
 
 const Home = async () => {
-  const homepage: HomepageProps = await getHomepageProps();
+  const {
+    webinars,
+    hero,
+    newsShowcase,
+    ecosystem,
+    comingsoonDocumentation,
+    seo,
+  }: HomepageProps = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
-    seo: homepage.seo,
+    seo: seo,
     things: [websiteWithContext],
   });
 
@@ -107,10 +98,10 @@ const Home = async () => {
     <>
       {structuredData}
       <ContentWrapper>
-        <NotSsrWebinarHeaderBanner webinars={[...homepage.webinars]} />
+        <NotSsrWebinarHeaderBanner webinars={[...webinars]} />
 
         <HeroSwiper
-          cards={homepage.hero.map((itemProp, index) => ({
+          cards={hero.map((itemProp, index) => ({
             ...itemProp,
             child: itemProp.subhead && (
               <BlocksRendererClient
@@ -121,16 +112,18 @@ const Home = async () => {
             ),
           }))}
         />
-        <NewsShowcase
-          marginTop={5}
-          title={homepage.newsShowcase.title}
-          items={[...homepage.newsShowcase.items]}
-        />
-        <Ecosystem {...homepage.ecosystem} />
-        <NotSsrWebinarsSection webinars={[...homepage.webinars]} />
+        {newsShowcase && (
+          <NewsShowcase
+            marginTop={5}
+            title={newsShowcase.title}
+            items={[...newsShowcase.items]}
+          />
+        )}
+        {ecosystem && <Ecosystem {...ecosystem} />}
+        <NotSsrWebinarsSection webinars={[...webinars]} />
         <RelatedLinks
-          title={homepage.comingsoonDocumentation.title}
-          links={[...homepage.comingsoonDocumentation.links]}
+          title={comingsoonDocumentation.title}
+          links={[...comingsoonDocumentation.links]}
         />
       </ContentWrapper>
     </>

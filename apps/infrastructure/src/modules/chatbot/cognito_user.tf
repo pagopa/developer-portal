@@ -121,7 +121,7 @@ resource "aws_cognito_user_pool_client" "langfuse" {
 }
 
 resource "aws_cognito_user_pool_domain" "monitoring" {
-  domain       = "monitoring"
+  domain       = "monitoring${var.environment}"
   user_pool_id = aws_cognito_user_pool.monitoring.id
 }
 

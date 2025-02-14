@@ -19,6 +19,7 @@ type Description = {
   readonly listItems?: ReadonlyArray<string>;
   readonly content?: BlocksContent;
   readonly title: string;
+  readonly translate?: boolean;
 };
 
 export type GuideCardProps = {
@@ -28,6 +29,7 @@ export type GuideCardProps = {
   link: {
     label: string;
     href: string;
+    translate?: boolean;
   };
   mobileImagePath: string;
   title: string;
@@ -100,7 +102,10 @@ export const GuideCard: FC<GuideCardProps> = ({
                 <BlocksRendererClient content={description.content} />
               )}
             </Box>
-            <LinkButton label={t(link.label)} href={link.href}></LinkButton>
+            <LinkButton
+              label={link.translate ? t(link.label) : link.label}
+              href={link.href}
+            ></LinkButton>
           </CardContent>
         </Box>
         <CardMedia

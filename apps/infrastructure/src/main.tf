@@ -131,6 +131,7 @@ module "chatbot" {
   security_groups         = module.cms.security_groups
   dns_domain_name         = var.dns_domain_name
   ecs_redis               = var.chatbot_ecs_redis
+  github_repository       = var.github_repository
   ecs_monitoring          = var.chatbot_ecs_monitoring
 }
 
@@ -148,6 +149,8 @@ module "cicd" {
 
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
+
+  chatbot_env_vars = var.create_chatbot ? module.chatbot[0].lambda_env_variables : {}
 }
 
 module "active_campaign" {
@@ -157,6 +160,18 @@ module "active_campaign" {
   environment = var.environment
   tags        = var.tags
 
-  cognito_user_pool                    = module.website.cognito_user_pool
-  webinar_subscriptions_ddb_stream_arn = module.website.webinar_subscriptions_ddb_stream_arn
+  cognito_user_pool         = module.website.cognito_user_pool
+  webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
+}
+
+module "docs_redirect" {
+  count  = var.docs_redirect_is_enabled ? 1 : 0
+  source = "./modules/docs_redirect"
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment = var.environment
+  tags        = var.tags
 }

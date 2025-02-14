@@ -13,7 +13,7 @@ interface IActiveCampaignListPayload {
 }
 
 function getActiveCampaignIntegrationIsEnabled() {
-  return env('ACTIVE_CAMPAIGN_INTEGRATION_ENABLED', 'false') === 'true';
+  return env('ACTIVE_CAMPAIGN_INTEGRATION_IS_ENABLED', 'False') === 'True';
 }
 
 function getHeaders() {

@@ -3,7 +3,7 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getProductsSlugs, getQuickStartGuide } from '@/lib/api';
+import { getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/types/step';
@@ -19,10 +19,11 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { getQuickStartGuidesProps } from '@/lib/cmsApi';
 
 export async function generateStaticParams() {
-  return [...getProductsSlugs('quickStart')].map((productSlug) => ({
-    productSlug,
+  return (await getQuickStartGuidesProps()).map(({ product }) => ({
+    productSlug: product.slug,
   }));
 }
 export type QuickStartGuidePageProps = {
@@ -54,7 +55,7 @@ export async function generateMetadata(
     title: abstract?.title,
     description: abstract?.description,
     url: path,
-    image: product.logo.url,
+    image: product.logo?.url,
   });
 }
 
@@ -64,16 +65,16 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     bannerLinks,
     defaultStepAnchor,
     path,
-    product,
     steps,
     seo,
+    product,
   } = await getQuickStartGuide(params?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(product),
       {
-        name: seo?.metaTitle,
+        name: seo?.metaTitle || abstract?.title,
         item: breadcrumbItemByProduct(product, ['quick-start']),
       },
     ],

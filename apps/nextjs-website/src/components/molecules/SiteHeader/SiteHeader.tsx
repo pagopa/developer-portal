@@ -3,7 +3,7 @@ import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton
 import { Product } from '@/lib/types/product';
 import { Box, Divider, Stack, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef, useMemo } from 'react';
 import MobileSiteHeader from '../MobileSiteHeader/MobileSiteHeader';
 import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopSiteHeader';
 
@@ -20,6 +20,11 @@ const SiteHeader = (
 ) => {
   const { palette } = useTheme();
   const t = useTranslations('devPortal');
+
+  const productsWithOverview = useMemo(
+    () => products.filter((product: Product) => product.hasOverviewPage),
+    [products]
+  );
 
   return (
     <Box
@@ -48,8 +53,8 @@ const SiteHeader = (
         alignItems='center'
       >
         <HomepageButton title={t('title')} boldTitle={t('company')} />
-        <MobileSiteHeader products={products} />
-        <DesktopSiteHeader products={products} />
+        <MobileSiteHeader products={productsWithOverview} />
+        <DesktopSiteHeader products={productsWithOverview} />
       </Stack>
       <Divider />
     </Box>
