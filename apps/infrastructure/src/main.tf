@@ -74,6 +74,7 @@ module "core" {
   dns_delegate_records = var.dns_delegate_records
 
   create_chatbot = var.create_chatbot
+  ac_integration_is_enabled = var.ac_integration_is_enabled
 }
 
 module "website" {
