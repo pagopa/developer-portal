@@ -34,3 +34,8 @@ variable "use_custom_certificate" {
   default     = true
   description = "Use custom certificate for the cloudfront distribution"
 }
+
+variable "cloudfront_function_code" {
+  type        = string
+  description = "The code of the cloudfront function"
+}
