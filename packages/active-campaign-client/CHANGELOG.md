@@ -1,5 +1,18 @@
 # active-campaign-client
 
+## 0.5.1
+
+### Patch Changes
+
+- cd0e879: Fix update email function in script
+
+## 0.5.0
+
+### Minor Changes
+
+- 03387c8: Add normalize-and-delete-duplicated-users script and refactor sync all user
+  Check the user token and log out the user if it has expired
+
 ## 0.4.1
 
 ### Patch Changes
