@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Caching strapi apis
+Implement caching for API responses

@@ -4,7 +4,6 @@ interface CacheEntry<T> {
   readonly expiry: number;
 }
 
-// Replace any with unknown for better type safety
 const cacheStore = new Map<string, CacheEntry<unknown>>();
 
 export const getCacheKey = (prefix: string, ...args: readonly string[]) =>
