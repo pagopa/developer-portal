@@ -5,7 +5,7 @@ resource "aws_cloudfront_function" "redirect_viewer_request_handler" {
   comment = "Redirects ${var.domain_to_redirect.from} requests to the correct domain"
   # publish this version only if the env is true
   publish = true
-  code    = file("${path.root}/../../docs-redirect/src/rewriter.js")
+  code    = var.cloudfront_function_code
 }
 
 resource "aws_cloudfront_distribution" "redirect" {
