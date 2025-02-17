@@ -869,6 +869,43 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse html table with an image inside a table data cell', () => {
+    const table =
+      '<table data-header-hidden>' +
+      '<thead><tr>' +
+      '<th width="165">col A</th>' +
+      '<th width="518">col B</th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr><td><img src="img-src.jpg" alt="anAlt"></td><td>1 - B</td></tr><tr><td>2 - A</td><td>2 - B</td></tr>' +
+      '</tbody></table>';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: true }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, [
+              new Markdoc.Tag('Image', {
+                src: `${config.assetsPrefix}/img-src.jpg`,
+                alt: 'anAlt',
+              }),
+            ]),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
   it('should parse html table viewed as cards', () => {
     const table =
       '<table data-card-size="large" data-view="cards">' +
