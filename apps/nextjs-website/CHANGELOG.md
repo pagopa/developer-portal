@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 6.0.0
+
+### Major Changes
+
+- 70ea7cf: Add whatsNew section to Overview page
+- 53d7e31: Add release note page to product section
+
+### Patch Changes
+
+- 3e1eb2f: Implement caching for API responses
+
 ## 5.1.0
 
 ### Minor Changes
