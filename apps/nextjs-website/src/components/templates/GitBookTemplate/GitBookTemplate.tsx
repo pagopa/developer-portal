@@ -18,6 +18,7 @@ export type GitBookTemplateProps = {
   versions?: GuideMenuItemsProps['versions'];
   versionName?: GuideMenuItemsProps['versionName'];
   hasHeader?: boolean;
+  hasInPageMenu?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -36,6 +37,7 @@ const GitBookTemplate = ({
   menuDistanceFromTop,
   contentMarginTop = 75,
   hasHeader = true,
+  hasInPageMenu = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const paddingTop = hasHeader ? '60px' : '-80px';
@@ -80,29 +82,31 @@ const GitBookTemplate = ({
             <GitBookContent content={body} config={bodyConfig} />
           </Box>
         </Stack>
-        <Box
-          sx={{
-            display: { xs: 'none', lg: 'initial' },
-            position: 'relative',
-            padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
-            width: { lg: '378px' },
-          }}
-        >
+        {hasInPageMenu && (
           <Box
             sx={{
-              position: 'sticky',
-              maxWidth: '378px',
-              top: hasHeader ? 144 : 64,
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
+              padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
+              width: { lg: '378px' },
             }}
           >
-            <GuideInPageMenu
-              assetsPrefix={bodyConfig.assetsPrefix}
-              pagePath={path}
-              inPageMenu={body}
-              title={t('productGuidePage.onThisPage')}
-            />
+            <Box
+              sx={{
+                position: 'sticky',
+                maxWidth: '378px',
+                top: hasHeader ? 144 : 64,
+              }}
+            >
+              <GuideInPageMenu
+                assetsPrefix={bodyConfig.assetsPrefix}
+                pagePath={path}
+                inPageMenu={body}
+                title={t('productGuidePage.onThisPage')}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     </FragmentProvider>
   );

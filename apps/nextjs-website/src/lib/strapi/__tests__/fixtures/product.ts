@@ -32,6 +32,7 @@ export const productJson = {
       api_data_list_page: { data: null },
       tutorial_list_page: { data: null },
       guide_list_page: { data: null },
+      release_note: { data: null },
     },
   },
 };
