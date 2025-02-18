@@ -1,7 +1,7 @@
 'use client';
 import React, { useCallback, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import NavigationArrow from '@/components/atoms/NavigationArrow/NavigationArrow';
 import CtaSlide, { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Swiper as SwiperCore } from 'swiper';
@@ -9,6 +9,8 @@ import { Swiper as SwiperCore } from 'swiper';
 export type HeroSwiperProps = {
   cards: CtaSlideProps[];
 };
+
+const SWIPER_AUTOPLAY_DELAY_IN_MS = 5 * 1000;
 
 const HeroSwiper = ({ cards }: HeroSwiperProps) => {
   const [swiperCore, setSwiperCore] = useState<SwiperCore>();
@@ -32,8 +34,12 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
         setSwiperIndex(swiperCore.activeIndex);
       }}
       pagination={{ clickable: true }}
+      autoplay={{
+        delay: SWIPER_AUTOPLAY_DELAY_IN_MS,
+        disableOnInteraction: false,
+      }}
       loop={true}
-      modules={[Navigation, Pagination]}
+      modules={[Autoplay, Navigation, Pagination]}
     >
       {cards.length > 1 && (
         <>
