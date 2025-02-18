@@ -45,7 +45,7 @@ export type GuideDefinition = {
   };
 };
 
-const env = makeParseS3DocsEnv(region, credentials, bucketName);
+const env = makeParseS3DocsEnv(bucketName, region, credentials);
 
 const parseDocOrThrow = async <T>(
   docs: readonly DocSource<T>[]

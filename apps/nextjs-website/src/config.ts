@@ -7,7 +7,11 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  */
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
-export const s3DocsPath = process.env.S3_PATH_TO_GITBOOK_DOCS;
+export const secrets = process.env.secrets
+  ? JSON.parse(process.env.secrets)
+  : {};
+export const s3DocsPath =
+  secrets.S3_PATH_TO_GITBOOK_DOCS || process.env.S3_PATH_TO_GITBOOK_DOCS;
 export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
 export const credentials =
   process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY
@@ -17,9 +21,6 @@ export const credentials =
       }
     : undefined;
 export const bucketName = process.env.S3_BUCKET_NAME || '';
-export const secrets = process.env.secrets
-  ? JSON.parse(process.env.secrets)
-  : {};
 export const cookieDomainScript =
   secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
   process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;

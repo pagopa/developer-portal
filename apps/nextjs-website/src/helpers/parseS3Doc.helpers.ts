@@ -34,16 +34,17 @@ export type ParseDocS3Env = {
 };
 
 export const makeParseS3DocsEnv = (
-  region: string,
-  credentials:
-    | {
-        readonly accessKeyId: string;
-        readonly secretAccessKey: string;
-      }
-    | undefined,
-  bucketName: string
+  bucketName: string,
+  region?: string,
+  credentials?: {
+    readonly accessKeyId: string;
+    readonly secretAccessKey: string;
+  }
 ): ParseDocS3Env => {
-  const s3 = new S3Client({ region, credentials });
+  const s3 =
+    !!region && !!credentials
+      ? new S3Client({ region, credentials })
+      : new S3Client();
   return {
     readFile: async (key) => {
       // eslint-disable-next-line functional/no-expression-statements
