@@ -9,10 +9,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getGitBookSubPaths, getReleaseNote } from '@/lib/api';
-import {
-  getCachedUrlReplaceMapProps,
-  getReleaseNotesProps,
-} from '@/lib/cmsApi';
+import { getUrlReplaceMapProps, getReleaseNotesProps } from '@/lib/cmsApi';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
@@ -87,7 +84,7 @@ const ReleaseNotePage = async ({
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
     await getReleaseNote(params.productSlug, params.releaseNoteSubPathSlugs);
 
-  const urlReplaceMap = await getCachedUrlReplaceMapProps();
+  const urlReplaceMap = await getUrlReplaceMapProps();
 
   const props = {
     ...page,
