@@ -143,19 +143,20 @@ async function updateUserCompanyType(user: any) {
   }
 }
 
-// async function setUsersToLowerCase(users: any[]) {
-//   const count = users.length;
-//   for (let i = 0; i < count; i++) {
-//     const user = users[i];
-//     await updateUserEmailToLowerCase(user);
-//     console.log(`Updated ${i + 1}/${count} users`);
-//   }
-// }
+async function setUsersCompanyType(users: any[]) {
+  const count = users.length;
+  for (let i = 0; i < count; i++) {
+    const user = users[i];
+    await updateUserCompanyType(user);
+    console.log(`Updated ${i + 1}/${count} users`);
+  }
+}
 
 async function main() {
   console.log('SIDE EFFECT', sideEffect);
   
   const users = await getDeprecatedCompanyTypeUsers();
+  await setUsersCompanyType(users);
 }
 
 // Execute the main function
