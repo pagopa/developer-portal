@@ -150,7 +150,6 @@ jobs:
           # Then, push the new tag again:
           git push origin ${{ vars.LAST_DEPLOYED_TAG }}
 
-
   scheduled_deploy:
     name: Scheduled Deploy to S3
     if: github.event_name == 'schedule'
