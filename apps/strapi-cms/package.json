@@ -15,26 +15,26 @@
   },
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
-    "@strapi/plugin-i18n": "4.24.2",
+    "@strapi/plugin-i18n": "4.25.20",
     "@strapi/plugin-seo": "^1.9.8",
-    "@strapi/plugin-users-permissions": "4.24.2",
+    "@strapi/plugin-users-permissions": "4.25.20",
     "@strapi/provider-upload-aws-s3": "^4.24.2",
-    "@strapi/strapi": "4.24.2",
+    "@strapi/strapi": "4.25.20",
     "axios": "^1.7.8",
     "better-sqlite3": "8.6.0",
     "pg": "^8.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
-    "strapi-plugin-sso": "^0.4.4",
-    "strapi-plugin-update-static-content": "^1.0.8",
+    "strapi-plugin-sso": "^0.4.5",
+    "strapi-plugin-update-static-content": "^1.0.9",
     "strapi-provider-upload-custom": "*",
     "styled-components": "^5.3.11"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
+    "eslint": "^9.20.0",
     "eslint-config-custom": "*",
-    "typescript": "^5.0.2"
+    "typescript": "^5.7.3"
   },
   "strapi": {
     "uuid": "1ae9c07f-4fbf-400a-9d32-bba36247aed0"
