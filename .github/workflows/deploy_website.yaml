@@ -16,10 +16,6 @@ on:
         options:
           - dev
           - prod
-      tag:
-        description: 'The tag to deploy'
-        type: string
-        required: true
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -99,7 +95,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ github.ref_name }}
 
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
@@ -131,22 +127,34 @@ jobs:
 
       - name: Move ${{ vars.LATEST_DEPLOYED_TAG }} tag to the commit just deployed
         shell: bash
-        env:
-          TAG: ${{ inputs.tag }}
         run: |
-          # Get commit hash associated with the input tag, if it exists
-          COMMIT_HASH=$(git rev-list -n 1 $TAG || echo "")
-          # Exit if the tag doesn't exist
-          if [ -z "$COMMIT_HASH" ]; then
-            echo "Error: Tag '$TAG' does not exist. Skipping tag update."
+          # Extract tag from GitHub ref
+          TAG=${{ github.ref_name }}
+
+          # Ensure we are dealing with a tag
+          if [[ ! $TAG =~ ^v?[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "Error: '$TAG' is not a valid version tag. Skipping tag update."
             exit 0
           fi
+
+          # Get commit hash associated with the tag
+          COMMIT_HASH=$(git rev-list -n 1 $TAG || echo "")
+
+          # Exit if the commit hash is empty
+          if [ -z "$COMMIT_HASH" ]; then
+            echo "Error: No commit found for tag '$TAG'. Skipping tag update."
+            exit 0
+          fi
+
           # Set up Git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Get package name
-          PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f1)
+
+          # Move the LATEST_DEPLOYED_TAG to the commit just deployed
+          PACKAGE_NAME=$(echo $TAG | cut -d'@' -f1)
           git tag -f $PACKAGE_NAME@${{ vars.LATEST_DEPLOYED_TAG }} $COMMIT_HASH
+
           # Some remote repositories (e.g., GitHub) may not update tags automatically.
           # Ensure old tag is deleted remotely before pushing the new one
           git push --delete origin ${{ vars.LATEST_DEPLOYED_TAG }} || true
