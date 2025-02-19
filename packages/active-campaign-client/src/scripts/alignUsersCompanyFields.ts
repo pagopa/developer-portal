@@ -121,7 +121,7 @@ async function updateUserCompanyType(user: any) {
   }
 
   if (!sideEffect) {
-    console.log('Side effect disabled for updateUserToLowerCase', username, deprecatedCompanyType);
+    console.log('Side effect disabled for updateUserCompanyType', username, deprecatedCompanyType);
     return;
   }
 
@@ -139,7 +139,7 @@ async function updateUserCompanyType(user: any) {
   try {
     await cognito.adminUpdateUserAttributes(params).promise();
   } catch (error) {
-    console.error(`Error updating email for user ${username}:`, error);
+    console.error(`Error updating company_type for user ${username}:`, error);
   }
 }
 
