@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getProductGuidePath } from '@/lib/api';
+import { getGuide, getGitBookSubPaths } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getCachedUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -28,7 +28,7 @@ type Params = {
 export async function generateStaticParams() {
   return (await getGuidesProps()).map((guidePage) => ({
     productSlug: guidePage.product.slug,
-    productGuidePage: getProductGuidePath(guidePage.page.path),
+    productGuidePage: getGitBookSubPaths(guidePage.page.path),
   }));
 }
 
@@ -77,7 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? ['']
   );
 
-  const urlReplaceMap = await getCachedUrlReplaceMapProps();
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const {
     product,
     page,

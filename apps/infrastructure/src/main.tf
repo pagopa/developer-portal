@@ -50,6 +50,14 @@ provider "awscc" {
   region = var.aws_chatbot_region
 }
 
+data "http" "docs_redirect_cf_function_code" {
+  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/src/rewriter.js"
+
+  request_headers = {
+    Accept = "text/plain"
+  }
+}
+
 # Init IaC resources ##########################################################
 module "identity" {
   source            = "./identity"
@@ -149,6 +157,8 @@ module "cicd" {
 
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
+
+  chatbot_env_vars = var.create_chatbot ? module.chatbot[0].lambda_env_variables : {}
 }
 
 module "active_campaign" {
@@ -160,4 +170,18 @@ module "active_campaign" {
 
   cognito_user_pool         = module.website.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
+}
+
+module "docs_redirect" {
+  count  = var.docs_redirect_is_enabled ? 1 : 0
+  source = "./modules/docs_redirect"
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  cloudfront_function_code = data.http.docs_redirect_cf_function_code.body
+
+  environment = var.environment
+  tags        = var.tags
 }

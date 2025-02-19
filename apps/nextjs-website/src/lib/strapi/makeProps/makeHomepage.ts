@@ -16,9 +16,10 @@ export const makeHomepageProps = (
       title: strapiHomepage.data.attributes.newsShowcase.title,
       items: strapiHomepage.data.attributes.newsShowcase.items.data.map(
         (item) => ({
-          comingSoon: item.attributes.comingSoon || undefined,
+          comingSoon: item.attributes.comingSoon,
           title: item.attributes.title,
           publishedAt: item.attributes.publishedAt,
+          label: item.attributes.label,
           link: {
             text: item.attributes.link.text,
             url: item.attributes.link.href,

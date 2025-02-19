@@ -105,6 +105,12 @@
       "relation": "oneToOne",
       "target": "api::guide-list-page.guide-list-page",
       "inversedBy": "product"
+    },
+    "release_note": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::release-note.release-note",
+      "inversedBy": "product"
     }
   }
 }

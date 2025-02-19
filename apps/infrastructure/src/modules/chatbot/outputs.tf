@@ -102,6 +102,11 @@ output "lambda_role_name" {
   value       = module.lambda_function.lambda_role_name
 }
 
+output "lambda_env_variables" {
+  description = "Environment variables of the Lambda Function"
+  value       = local.lambda_env_variables
+}
+
 # CloudWatch Log Group
 output "lambda_cloudwatch_log_group_arn" {
   description = "The ARN of the Cloudwatch Log Group"
@@ -110,6 +115,6 @@ output "lambda_cloudwatch_log_group_arn" {
 
 output "security_groups" {
   value = {
-    redis = aws_security_group.redis.id
+    redis = aws_security_group.nlb.id
   }
 }

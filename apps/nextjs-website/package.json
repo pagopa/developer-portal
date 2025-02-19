@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "4.15.1",
+  "version": "5.1.0",
   "private": true,
   "scripts": {
     "download-docs": "./scripts/fetch-docs.sh docs/from-gitbook",
@@ -47,7 +47,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "schema-dts": "^1.1.2",
     "swagger-ui": "^5.9.1",
-    "swiper": "^10.0.3",
+    "swiper": "^11.2.4",
     "swr": "^2.2.4"
   },
   "devDependencies": {

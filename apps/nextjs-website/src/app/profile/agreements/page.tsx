@@ -24,7 +24,7 @@ interface Info {
 }
 
 const Agreements = () => {
-  const t = useTranslations('profile.agreements');
+  const t = useTranslations();
   const { user, loading, setUserAttributes } = useUser();
 
   const { palette } = useTheme();
@@ -50,7 +50,10 @@ const Agreements = () => {
           return null;
         },
         () => {
-          setInfo({ message: t('newsletter.error.subscribe'), isError: true });
+          setInfo({
+            message: t('profile.agreements.newsletter.error.subscribe'),
+            isError: true,
+          });
           setIsSubscriptionButtonDisabled(false);
           return null;
         }
@@ -71,7 +74,7 @@ const Agreements = () => {
         },
         () => {
           setInfo({
-            message: t('newsletter.error.unsubscribe'),
+            message: t('profile.agreements.newsletter.error.unsubscribe'),
             isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
@@ -87,14 +90,16 @@ const Agreements = () => {
       color='primary.main'
       underline='none'
       href={'/privacy-policy'}
-      aria-label={t('privacy.statement.labelOfLinkToReplace')}
-      title={t('privacy.statement.labelOfLinkToReplace')}
+      aria-label={t(
+        'profile.agreements.privacy.statement.labelOfLinkToReplace'
+      )}
+      title={t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
     >
-      {t('privacy.statement.labelOfLinkToReplace')}
+      {t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
     </LinkMui>
   );
 
-  const privacyStatement = t('privacy.statement.text')
+  const privacyStatement = t('profile.agreements.privacy.statement.text')
     .split('$')
     .reduce((acc: ReactNode[], curr: ReactNode) => {
       if (curr === 'labelOfLinkToReplace') {
@@ -106,6 +111,9 @@ const Agreements = () => {
 
   return (
     <>
+      <title>{`${t('devPortal.title')} | ${t(
+        'profile.agreements.title'
+      )}`}</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
@@ -114,7 +122,7 @@ const Agreements = () => {
         }}
       >
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
-          {t('title')}
+          {t('profile.agreements.title')}
         </Typography>
         <Typography
           variant='h6'
@@ -124,7 +132,7 @@ const Agreements = () => {
             fontWeight: '600',
           }}
         >
-          {t('newsletter.title')}
+          {t('profile.agreements.newsletter.title')}
         </Typography>
         <Box
           sx={{
@@ -140,7 +148,7 @@ const Agreements = () => {
               color: palette.text.secondary,
             }}
           >
-            {t('newsletter.description')}
+            {t('profile.agreements.newsletter.description')}
           </Typography>
           <Box
             sx={{
@@ -159,7 +167,7 @@ const Agreements = () => {
                 }}
                 onClick={handleUnsubscribe}
               >
-                {t('newsletter.unsubscribe')}
+                {t('profile.agreements.newsletter.unsubscribe')}
               </ButtonNaked>
             ) : (
               <ButtonNaked
@@ -168,7 +176,7 @@ const Agreements = () => {
                 onClick={handleSubscribe}
                 color='primary'
               >
-                {t('newsletter.subscribe')}
+                {t('profile.agreements.newsletter.subscribe')}
               </ButtonNaked>
             )}
           </Box>
@@ -182,7 +190,7 @@ const Agreements = () => {
             fontWeight: '600',
           }}
         >
-          {t('privacy.title')}
+          {t('profile.agreements.privacy.title')}
         </Typography>
         <Typography
           variant='body2'
@@ -192,7 +200,7 @@ const Agreements = () => {
             color: palette.text.secondary,
           }}
         >
-          {t('privacy.basicData')}
+          {t('profile.agreements.privacy.basicData')}
         </Typography>
         <Typography
           variant='body2'

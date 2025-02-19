@@ -14,8 +14,8 @@ export type SubscribeButtonProps = {
   disabled?: boolean;
   isLoading: boolean;
   isSubscribed?: boolean;
-  onSubscribe: () => null;
-  onCancelSubscription: () => null;
+  onSubscribe: () => Promise<null>;
+  onCancelSubscription: () => Promise<null>;
   subscribeLabel?: string;
 };
 
