@@ -134,21 +134,23 @@ jobs:
         env:
           TAG: ${{ inputs.tag }}
         run: |
-          # Get commit hash associated with the input tag
-          COMMIT_HASH=$(git rev-list -n 1 ${{ inputs.tag }})
+          # Get commit hash associated with the input tag, if it exists
+          COMMIT_HASH=$(git rev-list -n 1 $TAG || echo "")
+          # Exit if the tag doesn't exist
+          if [ -z "$COMMIT_HASH" ]; then
+            echo "Error: Tag '$TAG' does not exist. Skipping tag update."
+            exit 0
+          fi
           # Set up Git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Get package name
           PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f1)
-          git tag -f $PACKAGE_NAME@${{ vars.LATEST_DEPLOYED_TAG }} ${{ COMMIT_HASH }}
-          # TODO: Check next line
-          git push --tags --force
+          git tag -f $PACKAGE_NAME@${{ vars.LATEST_DEPLOYED_TAG }} $COMMIT_HASH
           # Some remote repositories (e.g., GitHub) may not update tags automatically.
-          # To ensure consistency, delete the old remote tag before pushing the new one:
-          git push --delete origin ${{ vars.LATEST_DEPLOYED_TAG }}
-          # Then, push the new tag again:
-          git push origin ${{ vars.LATEST_DEPLOYED_TAG }}
+          # Ensure old tag is deleted remotely before pushing the new one
+          git push --delete origin ${{ vars.LATEST_DEPLOYED_TAG }} || true
+          git push origin ${{ vars.LATEST_DEPLOYED_TAG }} --force
 
   scheduled_deploy:
     name: Scheduled Deploy to S3
