@@ -13,7 +13,8 @@
             "quickStartGuide": "Quick Start",
             "api": "API",
             "tutorials": "Tutorial",
-            "guides": "Guide e manuali"
+            "guides": "Guide e manuali",
+            "releaseNote": "Release note"
         },
         "title": "DevPortal"
     },

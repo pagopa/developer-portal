@@ -55,6 +55,7 @@ export function makeBaseProductWithoutLogoProps(
     hasGuideListPage: !!product.attributes.guide_list_page.data,
     hasOverviewPage: !!product.attributes.overview.data,
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
+    hasReleaseNotePage: !!product.attributes.release_note.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
   };
 }

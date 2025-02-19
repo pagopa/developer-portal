@@ -5,13 +5,14 @@ import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
-  getSolutionsProps,
   getGuideListPagesProps,
   getGuidesProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
+  getReleaseNotesProps,
   getSolutionListPageProps,
+  getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
   getWebinarsProps,
@@ -66,7 +67,7 @@ export async function getGuide(
   };
 }
 
-export function getProductGuidePath(path: string) {
+export function getGitBookSubPaths(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
   return path.split('/').filter((p, index) => index > 2);
@@ -192,6 +193,44 @@ export async function getApiData(apiDataSlug: string) {
     )
   );
   return props;
+}
+
+export async function getReleaseNote(
+  productSlug?: string,
+  releaseNoteSubPathSlugs?: readonly string[]
+) {
+  const products = await getProducts();
+  const releaseNotesProps = await getReleaseNotesProps();
+  const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
+  const path = `/${productSlug}/${releaseNotesPath}`;
+
+  const releaseNoteProps = manageUndefined(
+    (await getReleaseNotesProps()).find(
+      (releaseNoteData) => releaseNoteData.page.path === path
+    )
+  );
+
+  const gitBookPagesWithTitle = releaseNotesProps.map((content) => ({
+    title: content.page.title,
+    path: content.page.path,
+  }));
+
+  const spaceToPrefix = releaseNotesProps.map((content) => ({
+    spaceId: content.source.spaceId,
+    pathPrefix: content.source.pathPrefix,
+  }));
+
+  return {
+    ...releaseNoteProps,
+    products,
+    bodyConfig: {
+      isPageIndex: releaseNoteProps.page.isIndex,
+      pagePath: releaseNoteProps.page.path,
+      assetsPrefix: releaseNoteProps.source.assetsPrefix,
+      gitBookPagesWithTitle,
+      spaceToPrefix,
+    },
+  };
 }
 
 export async function getSolution(solutionSlug?: string) {
