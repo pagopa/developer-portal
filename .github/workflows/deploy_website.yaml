@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      
+
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
 
@@ -150,6 +150,7 @@ jobs:
           # Then, push the new tag again:
           git push origin ${{ vars.LAST_DEPLOYED_TAG }}
 
+
   scheduled_deploy:
     name: Scheduled Deploy to S3
     if: github.event_name == 'schedule'
@@ -164,7 +165,7 @@ jobs:
       - name: Checkout specific tag
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          ref: 'currently_in_production'
+          ref: ${{ vars.LAST_DEPLOYED_TAG }}
 
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
