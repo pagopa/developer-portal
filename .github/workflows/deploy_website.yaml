@@ -129,7 +129,7 @@ jobs:
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           webinar_question_lifetime_in_seconds: 259200
 
-      - name: Move ${{ vars.LAST_DEPLOYED_TAG }} tag to the commit just deployed
+      - name: Move ${{ vars.LATEST_DEPLOYED_TAG }} tag to the commit just deployed
         shell: bash
         env:
           TAG: ${{ inputs.tag }}
@@ -141,14 +141,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Get package name
           PACKAGE_NAME=$(echo $GITHUB_REF_NAME | cut -d'@' -f1)
-          git tag -f $PACKAGE_NAME@${{ vars.LAST_DEPLOYED_TAG }} ${{ COMMIT_HASH }}
+          git tag -f $PACKAGE_NAME@${{ vars.LATEST_DEPLOYED_TAG }} ${{ COMMIT_HASH }}
           # TODO: Check next line
           git push --tags --force
           # Some remote repositories (e.g., GitHub) may not update tags automatically.
           # To ensure consistency, delete the old remote tag before pushing the new one:
-          git push --delete origin ${{ vars.LAST_DEPLOYED_TAG }}
+          git push --delete origin ${{ vars.LATEST_DEPLOYED_TAG }}
           # Then, push the new tag again:
-          git push origin ${{ vars.LAST_DEPLOYED_TAG }}
+          git push origin ${{ vars.LATEST_DEPLOYED_TAG }}
 
   scheduled_deploy:
     name: Scheduled Deploy to S3
@@ -164,7 +164,7 @@ jobs:
       - name: Checkout specific tag
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          ref: ${{ vars.LAST_DEPLOYED_TAG }}
+          ref: ${{ vars.LATEST_DEPLOYED_TAG }}
 
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
