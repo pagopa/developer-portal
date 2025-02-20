@@ -62,6 +62,8 @@ export const getHomepageProps = async () => {
   return withCache(
     getCacheKey('getHomepageProps'),
     async () => {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.log('env', process.env);
       const strapiHomepage = await fetchHomepage(buildEnv);
       return makeHomepageProps(strapiHomepage);
     },
