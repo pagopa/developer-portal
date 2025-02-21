@@ -1,7 +1,30 @@
+import jwt
+import datetime
 from fastapi.testclient import TestClient
 from src.app.main import app
 
 client = TestClient(app)
+
+def create_token():
+  with open("private.pem", "r") as f:
+    private_key = f.read()
+
+  AWS_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', 'eu-south-1')
+  USER_POOL_ID = '1'
+  payload = {
+    "sub": "test-user-id",
+    "event_id": "test-event",
+    "token_use": "id",
+    "auth_time": int(datetime.datetime.utcnow().timestamp()),
+    "iss": f"https://cognito-idp.{AWS_REGION}.amazonaws.com/{USER_POOL_ID}",
+    "exp": int((datetime.datetime.utcnow() + datetime.timedelta(hours=16)).timestamp()),
+    "iat": int(datetime.datetime.utcnow().timestamp()),
+    "email": "test@example.com",
+    "username": "testuser"
+  }
+  token = jwt.encode(payload, private_key, algorithm="RS256")
+  return token
+
 
 def test_get_healthz():
   response = client.get("/healthz")

@@ -8,7 +8,11 @@ import hashlib
 import uuid
 import boto3
 import datetime
-import jwt
+import nh3
+import time
+import urllib.request
+from jose import jwk, jwt
+from jose.utils import base64url_decode
 from typing import Annotated, List
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
@@ -22,6 +26,9 @@ logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+ENVIRONMENT = os.getenv('environment', 'dev')
+AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
+AUTH_COGNITO_CLIENT_ID = os.getenv('AUTH_COGNITO_CLIENT_ID')
 
 chatbot = Chatbot(params, prompts)
 
@@ -43,7 +50,7 @@ boto3_session = boto3.session.Session(
   region_name=AWS_DEFAULT_REGION
 )
 
-if (os.getenv('environment', 'dev') == 'local'):
+if (ENVIRONMENT == 'local'):
   dynamodb = boto3_session.resource(    
     'dynamodb',
     endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
@@ -94,13 +101,12 @@ async def query_creation (
   salt = session_salt(session['id'])
 
   answer = chatbot.chat_generate(
-    query_str = query.question,
+    query_str = nh3.clean(query.question),
     messages = [item.dict() for item in query.history] if query.history else None,
     trace_id = trace_id,
     user_id = hash_func(userId, salt),
     session_id = session["id"]
   )
-
 
   if query.queriedAt is None:
     queriedAt = now.isoformat()
@@ -126,17 +132,68 @@ async def query_creation (
     raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return bodyToReturn
 
+def get_token_public_key(token: str):
+  if ENVIRONMENT == 'test':
+    with open("public.pem", "r") as f:
+      public_key = f.read()
+  else:
+    KEYS_URL = f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/{AWS_DEFAULT_REGION}_{AUTH_COGNITO_USERPOOL_ID}/.well-known/jwks.json"
+    with urllib.request.urlopen(KEYS_URL) as f:
+      response = f.read()
+    keys = json.loads(response.decode('utf-8'))['keys']
+
+    headers = jwt.get_unverified_headers(token)
+    kid = headers['kid']
+    # search for the kid in the downloaded public keys
+    key_index = -1
+    for i in range(len(keys)):
+      if kid == keys[i]['kid']:
+        key_index = i
+        break
+    if key_index == -1:
+      # Public key not found in jwks.json
+      return False
+
+    # construct the public key
+    public_key = jwk.construct(keys[key_index])
+
+  return public_key
+
+def decode_token(token: str):
+  # https://github.com/awslabs/aws-support-tools/blob/master/Cognito/decode-verify-jwt/decode-verify-jwt.py
+  public_key = get_token_public_key(token)
+  # get the last two sections of the token,
+  # message and signature (encoded in base64)
+  message, encoded_signature = str(token).rsplit('.', 1)
+  # decode the signature
+  decoded_signature = base64url_decode(encoded_signature.encode('utf-8'))
+  # verify the signature
+  if not public_key.verify(message.encode("utf8"), decoded_signature):
+    # Signature verification failed
+    return False
+  # Signature successfully verified
+
+  # since we passed the verification, we can now safely
+  # use the unverified claims
+  claims = jwt.get_unverified_claims(token)
+  # additionally we can verify the token expiration
+  if time.time() > claims['exp']:
+    # Token is expired
+    return False
+  # now we can use the claims
+  return claims
 
 def current_user_id(authorization: str) -> str:
   if authorization is None:
     return None
   else:
     token = authorization.split(' ')[1]
-    decoded = jwt.decode(
-      token, 
-      algorithms=["RS256"], 
-      options={"verify_signature": False}
-    )
+#    decoded = jwt.decode(
+#      token, 
+#      algorithms=["RS256"], 
+#      options={"verify_signature": False}
+#    )
+    decoded = decode_token(token)
     return decoded['cognito:username']
 
 
