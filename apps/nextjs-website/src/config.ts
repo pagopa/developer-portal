@@ -19,10 +19,10 @@ console.log('s3DocsPath', s3DocsPath);
 export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
 console.log('region', region);
 export const credentials =
-  process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY
+  process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
     ? {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
       }
     : undefined;
 console.log('credentials', credentials);
