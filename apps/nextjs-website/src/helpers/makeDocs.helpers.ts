@@ -51,8 +51,10 @@ export const makeTutorials = ({
   product,
   dirName,
   bannerLinks,
-}: TutorialsDefinition) =>
-  pipe(
+}: TutorialsDefinition) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('docHelpers makeTutorials', product, dirName);
+  return pipe(
     [
       {
         product: product,
@@ -72,6 +74,7 @@ export const makeTutorials = ({
     // This is a workaround that removes the 'index' space from tutorial docs
     RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
   );
+};
 
 export const makeGuide = ({
   product,
@@ -79,6 +82,9 @@ export const makeGuide = ({
   versions,
   bannerLinks,
 }: GuideDefinition) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('docHelpers makeDoc', product, guide.slug);
+
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
     versions,
@@ -119,8 +125,10 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = (solution: SolutionTemplateProps) =>
-  pipe(
+export const makeSolution = (solution: SolutionTemplateProps) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('docHelpers makeSolution', solution.slug);
+  return pipe(
     [
       {
         solution,
@@ -134,9 +142,12 @@ export const makeSolution = (solution: SolutionTemplateProps) =>
     ],
     parseDocOrThrow
   );
+};
 
-export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) =>
-  pipe(
+export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('docHelpers makeSolution', releaseNote.path);
+  return pipe(
     [
       {
         ...releaseNote,
@@ -150,3 +161,4 @@ export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) =>
     ],
     parseDocOrThrow
   );
+};
