@@ -131,8 +131,8 @@ jobs:
           # Extract tag from GitHub ref
           TAG=${{ github.ref_name }}
 
-          # Ensure we are dealing with a tag
-          if [[ ! $TAG =~ ^v?[0-9]+(\.[0-9]+)*$ ]]; then
+          # Ensure we are dealing with a valid front-end tag
+          if [[ ! $TAG =~ ^nextjs-website@[0-9]+(\.[0-9]+)*$ ]]; then
             echo "Error: '$TAG' is not a valid version tag. Skipping tag update."
             exit 0
           fi
