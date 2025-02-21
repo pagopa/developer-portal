@@ -26,7 +26,7 @@ export const credentials =
       }
     : undefined;
 console.log('credentials', credentials);
-export const bucketName = process.env.S3_BUCKET_NAME || '';
+export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
 console.log('bucketName', bucketName);
 export const cookieDomainScript =
   secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
