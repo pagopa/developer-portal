@@ -1,5 +1,22 @@
 # nextjs-website
 
+## 6.0.0
+
+### Major Changes
+
+- 70ea7cf: Add whatsNew section to Overview page
+- 53d7e31: Add release note page to product section
+
+### Minor Changes
+
+- 47201b9: Add autoplay to the swiper in Home page
+
+### Patch Changes
+
+- 3e1eb2f: Implement caching for API responses
+- Updated dependencies [04c6ae4]
+  - gitbook-docs@0.3.1
+
 ## 5.1.0
 
 ### Minor Changes
