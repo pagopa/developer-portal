@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGitBookSubPaths } from '@/lib/api';
+import { getGuide } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -25,12 +25,12 @@ type Params = {
   productGuidePage: Array<string>;
 };
 
-export async function generateStaticParams() {
-  return (await getGuidesProps()).map((guidePage) => ({
-    productSlug: guidePage.product.slug,
-    productGuidePage: getGitBookSubPaths(guidePage.page.path),
-  }));
-}
+// export async function generateStaticParams() {
+//   return (await getGuidesProps()).map((guidePage) => ({
+//     productSlug: guidePage.product.slug,
+//     productGuidePage: getProductGuidePath(guidePage.page.path),
+//   }));
+// }
 
 export type ProductGuidePageProps = {
   product: Product;
