@@ -1,11 +1,11 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
+import { getSolutionDetail } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getSolutionsProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
@@ -24,11 +24,6 @@ type Params = {
   solutionSlug: string;
   solutionSubPathSlugs: string[];
 };
-
-// export async function generateStaticParams() {
-//   const solutions = await getSolutionsProps();
-//   return solutions.flatMap(getSolutionSubPaths);
-// }
 
 export async function generateMetadata({
   params,

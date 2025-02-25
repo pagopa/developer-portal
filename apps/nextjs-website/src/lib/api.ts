@@ -10,8 +10,10 @@ import {
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
+  getReleaseNoteProps,
   getReleaseNotesProps,
   getSolutionListPageProps,
+  getSolutionProps,
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
@@ -195,11 +197,14 @@ export async function getApiData(apiDataSlug: string) {
 }
 
 export async function getReleaseNote(
-  productSlug?: string,
+  productSlug: string,
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesProps = await getReleaseNotesProps();
+  const releaseNotesProps = await getReleaseNoteProps(
+    productSlug,
+    releaseNoteSubPathSlugs || []
+  );
   const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
   const path = `/${productSlug}/${releaseNotesPath}`;
 
@@ -248,7 +253,10 @@ export async function getSolutionDetail(
   solutionSlug: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsFromStrapi = await getSolutionsProps();
+  const solutionsFromStrapi = await getSolutionProps(
+    solutionSlug,
+    solutionSubPathSlugs.slice(1)
+  );
 
   const solutionFromStrapi = solutionsFromStrapi.find(
     ({ slug }) => slug === solutionSlug

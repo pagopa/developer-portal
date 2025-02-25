@@ -31,18 +31,6 @@ type ReleaseNotePageStaticParams = {
   releaseNoteSubPathSlugs: string[];
 };
 
-// export async function generateStaticParams() {
-//   return (await getReleaseNotesProps()).map((releaseNoteProps) => {
-//     return {
-//       productSlug: releaseNoteProps.product.slug,
-//       releaseNoteSubPathSlugs: [
-//         'release-note',
-//         ...getGitBookSubPaths(releaseNoteProps.page.path),
-//       ],
-//     };
-//   });
-// }
-
 export async function generateMetadata({
   params,
 }: {

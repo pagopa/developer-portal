@@ -53,7 +53,7 @@ export const makeTutorials = ({
   bannerLinks,
 }: TutorialsDefinition) => {
   // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeTutorials', product, dirName);
+  console.log('docHelpers makeTutorials', dirName);
   return pipe(
     [
       {
@@ -83,7 +83,7 @@ export const makeGuide = ({
   bannerLinks,
 }: GuideDefinition) => {
   // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeDoc', product, guide.slug);
+  console.log('docHelpers makeGuide', guide.slug);
 
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
@@ -146,7 +146,7 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
 
 export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
   // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeSolution', releaseNote.path);
+  console.log('docHelpers makeReleaseNote', releaseNote.path);
   return pipe(
     [
       {

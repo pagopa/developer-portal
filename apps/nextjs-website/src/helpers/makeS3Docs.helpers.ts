@@ -14,6 +14,8 @@ import {
   makeParseS3DocsEnv,
   parseS3Doc,
 } from './parseS3Doc.helpers';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -55,33 +57,32 @@ const parseDocOrThrow = async <T>(
   return await Promise.all(parsedDocs).then((results) => results.flat());
 };
 
-// export const makeTutorials = async ({
-//   product,
-//   dirName,
-//   bannerLinks,
-// }: TutorialsDefinition) => {
-//   const docs = [
-//     {
-//       product: product,
-//       source: {
-//         pathPrefix: `/${product.slug}/tutorials`,
-//         assetsPrefix: `${docsS3AssetsPath}/${dirName}`,
-//         dirPath: `${s3DocsPath}/${dirName}`,
-//         spaceId: dirName,
-//       },
-//       bannerLinks: bannerLinks,
-//       relatedLinks: {
-//         links: [],
-//       },
-//     },
-//   ];
+export const makeTutorials = async (props: {
+  readonly tutorialsDefinition: TutorialsDefinition;
+  readonly tutorialPaths: readonly string[];
+}) => {
+  const { product, dirName, bannerLinks } = props.tutorialsDefinition;
+  const docs = [
+    {
+      product: product,
+      source: {
+        pathPrefix: `/${product.slug}/tutorials`,
+        assetsPrefix: `${docsS3AssetsPath}/${dirName}`,
+        dirPath: `${s3DocsPath}/${dirName}`,
+        spaceId: dirName,
+      },
+      bannerLinks: bannerLinks,
+      relatedLinks: {
+        links: [],
+      },
+    },
+  ];
 
-//   // eslint-disable-next-line functional/prefer-readonly-type
-//   const parsedDocs = await parseDocOrThrow(docs);
-//   return parsedDocs.filter(
-//     ({ page: { path } }) => path !== `/${product.slug}/tutorials`
-//   );
-// };
+  const parsedDocs = await parseDocOrThrow(docs, props.tutorialPaths);
+  return parsedDocs.filter(
+    ({ page: { path } }) => path !== `/${product.slug}/tutorials`
+  );
+};
 
 export const makeGuide = (props: {
   readonly guideDefinition: GuideDefinition;
@@ -129,34 +130,40 @@ export const makeGuide = (props: {
   return parseDocOrThrow(docs, guidePaths);
 };
 
-// export const makeSolution = (solution: SolutionTemplateProps) => {
-//   const docs = [
-//     {
-//       solution,
-//       source: {
-//         pathPrefix: `/solutions/${solution.slug}/details`,
-//         assetsPrefix: `${docsS3AssetsPath}/${solution.dirName}`,
-//         dirPath: `${s3DocsPath}/${solution.dirName}`,
-//         spaceId: solution.dirName,
-//       },
-//     },
-//   ];
+export const makeSolution = (
+  solution: SolutionTemplateProps,
+  solutionPaths: readonly string[]
+) => {
+  const docs = [
+    {
+      ...solution,
+      source: {
+        pathPrefix: `/solutions/${solution.slug}/details`,
+        assetsPrefix: `${docsS3AssetsPath}/${solution.dirName}`,
+        dirPath: `${s3DocsPath}/${solution.dirName}`,
+        spaceId: solution.dirName,
+      },
+    },
+  ];
 
-//   return parseDocOrThrow(docs);
-// };
+  return parseDocOrThrow(docs, solutionPaths);
+};
 
-// export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
-//   const docs = [
-//     {
-//       ...releaseNote,
-//       source: {
-//         pathPrefix: `/${releaseNote.product.slug}/release-note`,
-//         assetsPrefix: `${docsS3AssetsPath}/${releaseNote.dirName}`,
-//         dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
-//         spaceId: releaseNote.dirName,
-//       },
-//     },
-//   ];
+export const makeReleaseNote = (
+  releaseNote: ReleaseNotePageProps,
+  releaseNotePaths: readonly string[]
+) => {
+  const docs = [
+    {
+      ...releaseNote,
+      source: {
+        pathPrefix: `/${releaseNote.product.slug}/release-note`,
+        assetsPrefix: `${docsS3AssetsPath}/${releaseNote.dirName}`,
+        dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
+        spaceId: releaseNote.dirName,
+      },
+    },
+  ];
 
-//   return parseDocOrThrow(docs);
-// };
+  return parseDocOrThrow(docs, releaseNotePaths);
+};
