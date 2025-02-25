@@ -34,16 +34,16 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
 
 export async function getGuide(
   productSlug?: string,
-  productGuidePage?: ReadonlyArray<string>
+  productGuideSlugs?: ReadonlyArray<string>
 ): Promise<GuidePage> {
-  if (!productSlug || !productGuidePage || productGuidePage?.length < 1) {
+  if (!productSlug || !productGuideSlugs || productGuideSlugs?.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Product slug is missing');
   }
 
-  const guides = await getGuideProps(productGuidePage[0], productSlug);
+  const guides = await getGuideProps(productGuideSlugs, productSlug);
   const products = await getProducts();
-  const guidePath = productGuidePage?.join('/');
+  const guidePath = productGuideSlugs?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

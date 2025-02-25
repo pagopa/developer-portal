@@ -238,13 +238,16 @@ export const getGuidesPropsCache = async () => {
   );
 };
 
-export const getGuideProps = async (guideSlug: string, productSlug: string) => {
+export const getGuideProps = async (
+  guidePaths: ReadonlyArray<string>,
+  productSlug: string
+) => {
+  const guideSlug = guidePaths[0];
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
   const strapiGuide = makeGuidesProps(strapiGuides);
-  const t = await makeGuideS3(strapiGuide[0]);
-  return t;
+  return await makeGuideS3({ guideDefinition: strapiGuide[0], guidePaths });
 };

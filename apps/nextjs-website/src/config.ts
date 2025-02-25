@@ -7,17 +7,17 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  @deprecated
  */
 // TODO: Add environment parser
+
+// console.log('env', process.env);
+// console.log('secret', process.env);
+
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
-console.log('docsPath', docsPath);
 export const secrets = process.env.secrets
   ? JSON.parse(process.env.secrets)
   : {};
-console.log('secrets', secrets);
 export const s3DocsPath =
   secrets.S3_PATH_TO_GITBOOK_DOCS || process.env.S3_PATH_TO_GITBOOK_DOCS;
-console.log('s3DocsPath', s3DocsPath);
 export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
-console.log('region', region);
 export const credentials =
   process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
     ? {
@@ -25,30 +25,20 @@ export const credentials =
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
       }
     : undefined;
-console.log('credentials', credentials);
 export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
-console.log('bucketName', bucketName);
 export const cookieDomainScript =
   secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
   process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
-console.log('cookieDomainScript', cookieDomainScript);
 export const environment = process.env.ENVIRONMENT;
-console.log('environment', environment);
 export const docsAssetsPath = '/gitbook/docs';
-console.log('docsAssetsPath', docsAssetsPath);
 export const docsS3AssetsPath =
   process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS || '/gitbook/docs';
-console.log('docsS3AssetsPath', docsS3AssetsPath);
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
-console.log('allowCrawler', allowCrawler);
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
-console.log('isProduction', isProduction);
 export const isChatbotActive =
   process.env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
-console.log('isChatbotActive', isChatbotActive);
 export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
-console.log('chatMaxHistoryMessages', chatMaxHistoryMessages);
 
 export const amplifyConfig = {
   Auth: {
@@ -62,7 +52,6 @@ export const amplifyConfig = {
   },
   authenticationFlowType: 'CUSTOM_AUTH',
 };
-console.log('amplifyConfig', amplifyConfig);
 
 const defaultItems = [
   { label: 'personalData.title', href: '/profile/personal-data' },

@@ -16,11 +16,8 @@ export type BuildConfig = t.TypeOf<typeof BuildConfigCodec>;
 
 export const makeBuildConfig = (
   env: Record<string, undefined | string>
-): E.Either<string, BuildConfig> => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('makeBuildConfig', process.env);
-  return pipe(
+): E.Either<string, BuildConfig> =>
+  pipe(
     BuildConfigCodec.decode(env),
     E.mapLeft((errors) => PR.failure(errors).join('\n'))
   );
-};
