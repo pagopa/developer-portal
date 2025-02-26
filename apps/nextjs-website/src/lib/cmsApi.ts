@@ -254,8 +254,8 @@ export const getGuideProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const strapiGuide = makeGuidesProps(strapiGuides);
-  return await makeGuideS3({ guideDefinition: strapiGuide[0], guidePaths });
+  const guide = makeGuidesProps(strapiGuides)[0];
+  return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
 export const getSolutionProps = async (
@@ -267,8 +267,8 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const strapiSolution = makeSolutionsProps(strapiSolutions);
-  return await makeSolutionS3(strapiSolution[0], solutionPaths);
+  const solution = makeSolutionsProps(strapiSolutions)[0];
+  return await makeSolutionS3(solution, solutionPaths);
 };
 
 export const getReleaseNoteProps = async (
@@ -280,6 +280,6 @@ export const getReleaseNoteProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const strapiReleaseNote = makeReleaseNotesProps(strapiReleaseNotes);
-  return await makeReleaseNoteS3(strapiReleaseNote[0], releaseNotePaths);
+  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  return await makeReleaseNoteS3(releaseNote, releaseNotePaths);
 };

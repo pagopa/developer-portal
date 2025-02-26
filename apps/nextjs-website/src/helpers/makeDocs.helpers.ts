@@ -40,8 +40,6 @@ export type GuideDefinition = {
 const parseDocOrThrow = flow(
   RA.traverse(E.Applicative)(parseDoc),
   E.fold((e) => {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log(e);
     // eslint-disable-next-line functional/no-throw-statements
     throw e;
   }, RA.flatten)
@@ -52,8 +50,6 @@ export const makeTutorials = ({
   dirName,
   bannerLinks,
 }: TutorialsDefinition) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeTutorials', dirName);
   return pipe(
     [
       {
@@ -82,9 +78,6 @@ export const makeGuide = ({
   versions,
   bannerLinks,
 }: GuideDefinition) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeGuide', guide.slug);
-
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
     versions,
@@ -126,8 +119,6 @@ export const makeGuide = ({
 };
 
 export const makeSolution = (solution: SolutionTemplateProps) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeSolution', solution.slug);
   return pipe(
     [
       {
@@ -145,8 +136,6 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
 };
 
 export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('docHelpers makeReleaseNote', releaseNote.path);
   return pipe(
     [
       {

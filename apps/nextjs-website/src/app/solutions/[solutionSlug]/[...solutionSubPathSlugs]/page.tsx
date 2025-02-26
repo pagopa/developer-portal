@@ -36,11 +36,9 @@ export async function generateMetadata({
   );
 
   return makeMetadata({
-    title: props?.solution.title,
+    title: props?.title,
     url: props
-      ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
-          '/'
-        )}`
+      ? `/solutions/${props?.slug}/${params.solutionSubPathSlugs.join('/')}`
       : '',
   });
 }
@@ -56,9 +54,11 @@ const Page = async ({ params }: { params: Params }) => {
     return null;
   }
 
-  const { page, solution, source } = solutionProps;
+  const solution = solutionProps;
+  const page = solution.page;
+  const source = solution.source;
   const props: SolutionDetailPageTemplateProps = {
-    ...page,
+    ...solution.page,
     solution,
     pathPrefix: source.pathPrefix,
     bodyConfig: {

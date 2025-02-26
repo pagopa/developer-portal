@@ -255,35 +255,12 @@ export async function getSolutionDetail(
 ) {
   const solutionsFromStrapi = await getSolutionProps(
     solutionSlug,
-    solutionSubPathSlugs.slice(1)
+    solutionSubPathSlugs
   );
 
-  const solutionFromStrapi = solutionsFromStrapi.find(
-    ({ slug }) => slug === solutionSlug
-  );
-
-  if (!solutionFromStrapi) {
-    return undefined;
-  }
-
-  const parsedSolutions = makeSolution(solutionFromStrapi);
-
-  return parsedSolutions.find(
+  return solutionsFromStrapi.find(
     ({ page }) =>
       page.path ===
       `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
   );
-}
-
-export function getSolutionSubPaths(
-  solutionTemplateProps: SolutionTemplateProps
-) {
-  return makeSolution(solutionTemplateProps).map(({ page, solution }) => {
-    const path = page.path.split('/').filter((_, index) => index > 2);
-
-    return {
-      solutionSlug: solution.slug,
-      solutionSubPathSlugs: path,
-    };
-  });
 }
