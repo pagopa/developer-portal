@@ -93,7 +93,8 @@ const transformPath = (
 
 export const parseS3Doc = async <T>(
   env: ParseDocS3Env,
-  source: DocSource<T>
+  source: DocSource<T>,
+  paths: readonly string[]
   // eslint-disable-next-line functional/prefer-readonly-type
 ): Promise<DocPage<T>[]> => {
   // eslint-disable-next-line functional/no-try-statements
@@ -102,38 +103,37 @@ export const parseS3Doc = async <T>(
     const menuPath = [dirPath, 'SUMMARY.md'].join('/');
     const menu = await env.readFile(menuPath);
     const files = await env.readDir(dirPath);
+    const slugToPath = [dirPath, ...paths.slice(1)].join('/');
+    const filePath = files.find(
+      (file) => file.includes(slugToPath) && file.endsWith('.md')
+    );
 
-    // eslint-disable-next-line functional/prefer-readonly-type
-    const docPages: DocPage<T>[] = [];
-    // eslint-disable-next-line functional/no-loop-statements
-    for (const abs of files) {
-      if (abs !== menuPath && abs.endsWith('.md')) {
-        const body = await env.readFile(abs);
-        const paths = abs;
-        // eslint-disable-next-line functional/immutable-data
-        const title = paths.split('/').pop(); // TODO: should parse title from markdown
-        if (!title || typeof title !== 'string') {
-          // eslint-disable-next-line functional/no-throw-statements
-          throw new Error(`Title (h1) not found for '${abs}'`);
-        }
-        // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
-        docPages.push({
-          ...source,
-          page: {
-            path: transformPath(
-              abs,
-              source.source.dirPath,
-              source.source.pathPrefix
-            ),
-            isIndex: path.parse(abs).name === 'README',
-            title,
-            menu,
-            body,
-          },
-        });
-      }
+    if (!filePath) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`File not found for '${filePath}'`);
     }
-    return docPages;
+    const body = await env.readFile(filePath);
+    // eslint-disable-next-line functional/immutable-data
+    const title = filePath.split('/').pop(); // TODO: should parse title from markdown
+    if (!title || typeof title !== 'string') {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`Title (h1) not found for '${filePath}'`);
+    }
+    const docPage: DocPage<T> = {
+      ...source,
+      page: {
+        path: transformPath(
+          filePath,
+          source.source.dirPath,
+          source.source.pathPrefix
+        ),
+        isIndex: path.parse(filePath).name === 'README',
+        title,
+        menu,
+        body,
+      },
+    };
+    return [docPage];
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(error);

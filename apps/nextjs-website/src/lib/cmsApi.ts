@@ -12,7 +12,7 @@ import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
-import { fetchSolutions } from './strapi/fetches/fetchSolutions';
+import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -34,8 +34,15 @@ import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
-import { makeGuide as makeGuideS3 } from '@/helpers/makeS3Docs.helpers';
+import {
+  fetchReleaseNote,
+  fetchReleaseNotes,
+} from '@/lib/strapi/fetches/fetchReleaseNotes';
+import {
+  makeGuide as makeGuideS3,
+  makeSolution as makeSolutionS3,
+  makeReleaseNote as makeReleaseNoteS3,
+} from '@/helpers/makeS3Docs.helpers';
 import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 
 // a BuildEnv instance ready to be used
@@ -238,13 +245,41 @@ export const getGuidesPropsCache = async () => {
   );
 };
 
-export const getGuideProps = async (guideSlug: string, productSlug: string) => {
-  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+export const getGuideProps = async (
+  guidePaths: ReadonlyArray<string>,
+  productSlug: string
+) => {
+  const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const strapiGuide = makeGuidesProps(strapiGuides);
-  const t = await makeGuideS3(strapiGuide[0]);
-  return t;
+  const guide = makeGuidesProps(strapiGuides)[0];
+  return await makeGuideS3({ guideDefinition: guide, guidePaths });
+};
+
+export const getSolutionProps = async (
+  solutionsSlug: string,
+  solutionPaths: ReadonlyArray<string>
+) => {
+  const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
+  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const solution = makeSolutionsProps(strapiSolutions)[0];
+  return await makeSolutionS3(solution, solutionPaths);
+};
+
+export const getReleaseNoteProps = async (
+  productSlug: string,
+  releaseNotePaths: ReadonlyArray<string>
+) => {
+  const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
+  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  return await makeReleaseNoteS3(releaseNote, releaseNotePaths);
 };
