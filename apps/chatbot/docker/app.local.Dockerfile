@@ -6,6 +6,7 @@ RUN apt-get update && \
   gcc \
   curl \
   wget \
+  jq \
   zip
 
 RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64.deb && \

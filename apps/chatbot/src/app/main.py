@@ -10,7 +10,6 @@ import boto3
 import datetime
 import nh3
 import time
-import urllib.request
 from jose import jwk, jwt
 from jose.utils import base64url_decode
 from typing import Annotated, List
@@ -19,6 +18,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from urllib.request import Request, urlopen
 
 from src.modules.chatbot import Chatbot
 
@@ -50,7 +50,8 @@ boto3_session = boto3.session.Session(
   region_name=AWS_DEFAULT_REGION
 )
 
-if (ENVIRONMENT == 'local'):
+# endpoint_url is set by AWS_ENDPOINT_URL_DYNAMODB
+if (ENVIRONMENT in ['local', 'test']):
   dynamodb = boto3_session.resource(    
     'dynamodb',
     endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
@@ -134,34 +135,41 @@ async def query_creation (
 
 def get_token_public_key(token: str):
   if ENVIRONMENT == 'test':
-    with open("public.pem", "r") as f:
-      public_key = f.read()
+    KEYS_URL = f"http://motoserver:3001/userpoolid/.well-known/jwks.json"
+    req = Request(KEYS_URL)
+    # https://github.com/getmoto/moto/issues/5225
+    req.add_header('Authorization', 'AWS4-HMAC-SHA256 Credential=mock_access_key/20220524/us-east-1/cognito-idp/aws4_request, SignedHeaders=content-length;content-type;host;x-amz-date, Signature=asdf')
+    # response: 
+    # {"keys": [{"alg": "RS256", "e": "AQAB", "kid": "dummy", "kty": "RSA", "n": "j1pT3xKbswmMySvCefmiD3mfDaRFpZ9Y3Jl4fF0hMaCRVAt_e0yR7BeueDfqmj_NhVSO0WB5ao5e8V-9RFQOtK8SrqKl3i01-CyWYPICwybaGKhbJJR0S_6cZ8n5kscF1MjpIlsJcCzm-yKgTc3Mxk6KtrLoNgRvMwGLeHUXPkhS9YHfDKRe864iMFOK4df69brIYEICG2VLduh0hXYa0i-J3drwm7vxNdX7pVpCDu34qJtYoWq6CXt3Tzfi3YfWp8cFjGNbaDa3WnCd2IXpp0TFsFS-cEsw5rJjSl5OllJGeZKBtLeyVTy9PYwnk7MW43WSYeYstbk9NluX4H8Iuw", "use": "sig"}]}
+    response = urlopen(req).read()
   else:
     KEYS_URL = f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/{AWS_DEFAULT_REGION}_{AUTH_COGNITO_USERPOOL_ID}/.well-known/jwks.json"
-    with urllib.request.urlopen(KEYS_URL) as f:
-      response = f.read()
-    keys = json.loads(response.decode('utf-8'))['keys']
+    req = Request(KEYS_URL)
+    response = urlopen(req).read()
+  
+  keys = json.loads(response.decode('utf-8'))['keys']
+  headers = jwt.get_unverified_headers(token)
+  kid = headers['kid']
+  # search for the kid in the downloaded public keys
+  key_index = -1
+  for i in range(len(keys)):
+    if kid == keys[i]['kid']:
+      key_index = i
+      break
+  if key_index == -1:
+    # Public key not found in jwks.json
+    return False
 
-    headers = jwt.get_unverified_headers(token)
-    kid = headers['kid']
-    # search for the kid in the downloaded public keys
-    key_index = -1
-    for i in range(len(keys)):
-      if kid == keys[i]['kid']:
-        key_index = i
-        break
-    if key_index == -1:
-      # Public key not found in jwks.json
-      return False
-
-    # construct the public key
-    public_key = jwk.construct(keys[key_index])
+  # construct the public key
+  public_key = jwk.construct(keys[key_index])
 
   return public_key
 
 def decode_token(token: str):
   # https://github.com/awslabs/aws-support-tools/blob/master/Cognito/decode-verify-jwt/decode-verify-jwt.py
   public_key = get_token_public_key(token)
+  if public_key is False:
+    return False
   # get the last two sections of the token,
   # message and signature (encoded in base64)
   message, encoded_signature = str(token).rsplit('.', 1)
@@ -194,7 +202,13 @@ def current_user_id(authorization: str) -> str:
 #      options={"verify_signature": False}
 #    )
     decoded = decode_token(token)
-    return decoded['cognito:username']
+    if decoded is False:
+      return None
+    else:
+      if "cognito:username" in decoded:
+        return decoded['cognito:username']
+      else:
+        return decoded['username']
 
 
 def find_or_create_session(userId: str, now: datetime.datetime):
@@ -267,6 +281,10 @@ async def queries_fetching(
   authorization: Annotated[str | None, Header()] = None
 ):
   userId = current_user_id(authorization)
+  
+  if userId is None:
+    raise HTTPException(status_code=401, detail="Unauthorized")
+
   if sessionId is None:
     sessionId = last_session_id(userId)
   else:
