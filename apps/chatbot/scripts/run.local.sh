@@ -3,7 +3,7 @@
 echo '-=-=-=-=-=-=-=-=-= init DynamoDB -==-=-=-=-=-=-=-=-'
 ./scripts/dynamodb-init.sh
 
-#echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
+echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
 ./scripts/create_redis_index.sh
 
 echo '-=-=-=-=-=-=-=-=-= run FastAPI =-==-=-=-=-=-=-=-=-'

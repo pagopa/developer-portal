@@ -2,64 +2,35 @@ import os
 import datetime
 import requests
 import boto3
+from moto import mock_aws
 from requests_auth_aws_sigv4 import AWSSigV4
-from jose import jwt
+from jose import jwt, jwk
+from jose import exceptions as jwt_exceptions
+from jose.utils import base64url_decode
 from fastapi.testclient import TestClient
 from src.app.main import app
-from src.app.mock_cognito_jwt import mock_signup_and_get_jwt
+from src.app.mock_cognito import mock_signup
 
 client = TestClient(app)
 
-def get_moto_jwks():
-    """Fetch JWKS from Moto using an AWS SigV4 signed request."""
-    MOTO_URL = "http://motoserver:3001"
+cognito_mock = mock_signup()
+os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 
-    session = boto3.Session(
-        aws_access_key_id="mock_access_key",
-        aws_secret_access_key="mock_secret_key",
-        region_name="eu-south-1"
-    )
-
-    auth = AWSSigV4("cognito-idp", session=session)
-    response = requests.get(f"{MOTO_URL}/.well-known/jwks.json", auth=auth)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Failed to fetch JWKS: {response.text}")
-
-def verify_moto_jwt(token: str):
-    """Verify JWT against Moto's JWKS."""
-    jwks = get_moto_jwks()
-    public_keys = {key["kid"]: key for key in jwks["keys"]}
-
-    try:
-        headers = jwt.get_unverified_header(token)
-        kid = headers["kid"]
-        if kid not in public_keys:
-            raise HTTPException(status_code=401, detail="Invalid token key")
-
-        public_key = jwt.algorithms.ECAlgorithm.from_jwk(public_keys[kid])
-        
-        decoded = jwt.decode(token, public_key, algorithms=["ES256"], audience=None)
-        return decoded
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
-    except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
 
 def test_get_healthz():
     response = client.get("/healthz")
     assert response.status_code == 200
     assert response.json() == {"message": "OK"}
 
+@mock_aws
 def test_post_queries():
     response = client.post(
         "/queries",
         json={
             "question": "come ti chiami?",
             "queriedAt": "2024-11-11"
-        }
+        },
+        headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
     # response example
     # {
@@ -71,8 +42,8 @@ def test_post_queries():
     #   "queriedAt": "2024-11-11", 
     #   "badAnswer": False
     # }
-    assert response.status_code == 200
     json = response.json()
+    assert response.status_code == 200
     assert 'id' in json.keys()
     assert 'sessionId' in json.keys()
     assert 'question' in json.keys()
@@ -87,10 +58,11 @@ def test_get_queries_no_auth():
     )
     assert response.status_code == 401
 
+@mock_aws
 def test_get_queries():
     response = client.get(
         "/queries",
-        headers={"Authorization": f"Bearer {mock_signup_and_get_jwt()}"}
+        headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
     # json = response.json()
     assert response.status_code == 200

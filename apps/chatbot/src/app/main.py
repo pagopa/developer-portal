@@ -10,25 +10,22 @@ import boto3
 import datetime
 import nh3
 import time
-from jose import jwk, jwt
-from jose.utils import base64url_decode
 from typing import Annotated, List
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from urllib.request import Request, urlopen
 
 from src.modules.chatbot import Chatbot
+from src.app.jwt_check import get_jwks, verify_jwt
 
 logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
-ENVIRONMENT = os.getenv('environment', 'dev')
 AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
-AUTH_COGNITO_CLIENT_ID = os.getenv('AUTH_COGNITO_CLIENT_ID')
+ENVIRONMENT = os.getenv('environment', 'dev')
 
 chatbot = Chatbot(params, prompts)
 
@@ -51,17 +48,10 @@ boto3_session = boto3.session.Session(
 )
 
 # endpoint_url is set by AWS_ENDPOINT_URL_DYNAMODB
-if (ENVIRONMENT in ['local', 'test']):
-  dynamodb = boto3_session.resource(    
-    'dynamodb',
-    endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
-    region_name=AWS_DEFAULT_REGION
-  )
-else:
-  dynamodb = boto3_session.resource(    
-    'dynamodb',
-    region_name=AWS_DEFAULT_REGION
-  )
+dynamodb = boto3_session.resource(
+  'dynamodb',
+  region_name=AWS_DEFAULT_REGION
+)
 
 table_queries = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
@@ -133,83 +123,20 @@ async def query_creation (
     raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return bodyToReturn
 
-def get_token_public_key(token: str):
-  if ENVIRONMENT == 'test':
-    KEYS_URL = f"http://motoserver:3001/userpoolid/.well-known/jwks.json"
-    req = Request(KEYS_URL)
-    # https://github.com/getmoto/moto/issues/5225
-    req.add_header('Authorization', 'AWS4-HMAC-SHA256 Credential=mock_access_key/20220524/us-east-1/cognito-idp/aws4_request, SignedHeaders=content-length;content-type;host;x-amz-date, Signature=asdf')
-    # response: 
-    # {"keys": [{"alg": "RS256", "e": "AQAB", "kid": "dummy", "kty": "RSA", "n": "j1pT3xKbswmMySvCefmiD3mfDaRFpZ9Y3Jl4fF0hMaCRVAt_e0yR7BeueDfqmj_NhVSO0WB5ao5e8V-9RFQOtK8SrqKl3i01-CyWYPICwybaGKhbJJR0S_6cZ8n5kscF1MjpIlsJcCzm-yKgTc3Mxk6KtrLoNgRvMwGLeHUXPkhS9YHfDKRe864iMFOK4df69brIYEICG2VLduh0hXYa0i-J3drwm7vxNdX7pVpCDu34qJtYoWq6CXt3Tzfi3YfWp8cFjGNbaDa3WnCd2IXpp0TFsFS-cEsw5rJjSl5OllJGeZKBtLeyVTy9PYwnk7MW43WSYeYstbk9NluX4H8Iuw", "use": "sig"}]}
-    response = urlopen(req).read()
-  else:
-    KEYS_URL = f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/{AWS_DEFAULT_REGION}_{AUTH_COGNITO_USERPOOL_ID}/.well-known/jwks.json"
-    req = Request(KEYS_URL)
-    response = urlopen(req).read()
-  
-  keys = json.loads(response.decode('utf-8'))['keys']
-  headers = jwt.get_unverified_headers(token)
-  kid = headers['kid']
-  # search for the kid in the downloaded public keys
-  key_index = -1
-  for i in range(len(keys)):
-    if kid == keys[i]['kid']:
-      key_index = i
-      break
-  if key_index == -1:
-    # Public key not found in jwks.json
-    return False
-
-  # construct the public key
-  public_key = jwk.construct(keys[key_index])
-
-  return public_key
-
-def decode_token(token: str):
-  # https://github.com/awslabs/aws-support-tools/blob/master/Cognito/decode-verify-jwt/decode-verify-jwt.py
-  public_key = get_token_public_key(token)
-  if public_key is False:
-    return False
-  # get the last two sections of the token,
-  # message and signature (encoded in base64)
-  message, encoded_signature = str(token).rsplit('.', 1)
-  # decode the signature
-  decoded_signature = base64url_decode(encoded_signature.encode('utf-8'))
-  # verify the signature
-  if not public_key.verify(message.encode("utf8"), decoded_signature):
-    # Signature verification failed
-    return False
-  # Signature successfully verified
-
-  # since we passed the verification, we can now safely
-  # use the unverified claims
-  claims = jwt.get_unverified_claims(token)
-  # additionally we can verify the token expiration
-  if time.time() > claims['exp']:
-    # Token is expired
-    return False
-  # now we can use the claims
-  return claims
-
 def current_user_id(authorization: str) -> str:
   if authorization is None:
-    return None
+    raise HTTPException(status_code=401, detail="Unauthorized")
+
   else:
     token = authorization.split(' ')[1]
-#    decoded = jwt.decode(
-#      token, 
-#      algorithms=["RS256"], 
-#      options={"verify_signature": False}
-#    )
-    decoded = decode_token(token)
+    decoded = verify_jwt(token)
     if decoded is False:
-      return None
+      raise HTTPException(status_code=401, detail="Unauthorized")
     else:
       if "cognito:username" in decoded:
         return decoded['cognito:username']
       else:
         return decoded['username']
-
 
 def find_or_create_session(userId: str, now: datetime.datetime):
   if userId is None:
@@ -282,9 +209,6 @@ async def queries_fetching(
 ):
   userId = current_user_id(authorization)
   
-  if userId is None:
-    raise HTTPException(status_code=401, detail="Unauthorized")
-
   if sessionId is None:
     sessionId = last_session_id(userId)
   else:
