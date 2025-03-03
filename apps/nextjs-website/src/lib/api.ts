@@ -10,8 +10,10 @@ import {
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
+  getReleaseNoteProps,
   getReleaseNotesProps,
   getSolutionListPageProps,
+  getSolutionProps,
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
@@ -34,16 +36,16 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
 
 export async function getGuide(
   productSlug?: string,
-  productGuidePage?: ReadonlyArray<string>
+  productGuideSlugs?: ReadonlyArray<string>
 ): Promise<GuidePage> {
-  if (!productSlug || !productGuidePage || productGuidePage?.length < 1) {
+  if (!productSlug || !productGuideSlugs || productGuideSlugs?.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Product slug is missing');
   }
 
-  const guides = await getGuideProps(productGuidePage[0], productSlug);
+  const guides = await getGuideProps(productGuideSlugs, productSlug);
   const products = await getProducts();
-  const guidePath = productGuidePage?.join('/');
+  const guidePath = productGuideSlugs?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -195,11 +197,14 @@ export async function getApiData(apiDataSlug: string) {
 }
 
 export async function getReleaseNote(
-  productSlug?: string,
+  productSlug: string,
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesProps = await getReleaseNotesProps();
+  const releaseNotesProps = await getReleaseNoteProps(
+    productSlug,
+    releaseNoteSubPathSlugs || []
+  );
   const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
   const path = `/${productSlug}/${releaseNotesPath}`;
 
@@ -248,34 +253,14 @@ export async function getSolutionDetail(
   solutionSlug: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsFromStrapi = await getSolutionsProps();
-
-  const solutionFromStrapi = solutionsFromStrapi.find(
-    ({ slug }) => slug === solutionSlug
+  const solutionsFromStrapi = await getSolutionProps(
+    solutionSlug,
+    solutionSubPathSlugs
   );
 
-  if (!solutionFromStrapi) {
-    return undefined;
-  }
-
-  const parsedSolutions = makeSolution(solutionFromStrapi);
-
-  return parsedSolutions.find(
+  return solutionsFromStrapi.find(
     ({ page }) =>
       page.path ===
       `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
   );
-}
-
-export function getSolutionSubPaths(
-  solutionTemplateProps: SolutionTemplateProps
-) {
-  return makeSolution(solutionTemplateProps).map(({ page, solution }) => {
-    const path = page.path.split('/').filter((_, index) => index > 2);
-
-    return {
-      solutionSlug: solution.slug,
-      solutionSubPathSlugs: path,
-    };
-  });
 }
