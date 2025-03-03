@@ -18,7 +18,7 @@ from ragas.embeddings.base import LangchainEmbeddingsWrapper, BaseRagasEmbedding
 from ragas.metrics import (
     Faithfulness,
     ResponseRelevancy,
-    LLMContextPrecisionWithoutReference
+    LLMContextPrecisionWithoutReference,
 )
 
 from src.modules.utils import get_ssm_parameter
@@ -46,17 +46,13 @@ EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 if PROVIDER == "aws":
     LLM = LangchainLLMWrapper(
-            ChatBedrockConverse(
+        ChatBedrockConverse(
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS)
+            max_tokens=int(MODEL_MAXTOKENS),
         )
     )
-    EMBEDDER = LangchainEmbeddingsWrapper(
-        BedrockEmbeddings(
-            model_id = EMBED_MODEL_ID
-        )
-    )
+    EMBEDDER = LangchainEmbeddingsWrapper(BedrockEmbeddings(model_id=EMBED_MODEL_ID))
     logger.info("Loaded evaluation model successfully!")
 else:
 
@@ -69,9 +65,7 @@ else:
             if resp.generation_info is not None:
                 finish_reason = resp.generation_info.get("finish_reason")
                 if finish_reason is not None:
-                    is_finished_list.append(
-                        finish_reason in ["STOP", "MAX_TOKENS"]
-                    )
+                    is_finished_list.append(finish_reason in ["STOP", "MAX_TOKENS"])
                     continue
 
             # Check response_metadata as fallback
@@ -83,7 +77,7 @@ else:
                     )
                 elif metadata.get("stop_reason"):
                     is_finished_list.append(
-                        metadata["stop_reason"] in ["STOP", "MAX_TOKENS"] 
+                        metadata["stop_reason"] in ["STOP", "MAX_TOKENS"]
                     )
 
             # If no finish reason found, default to True
@@ -99,41 +93,48 @@ else:
             credentials=creds,
             model_name=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS)
+            max_tokens=int(MODEL_MAXTOKENS),
         ),
-        is_finished_parser=gemini_is_finished_parser
+        is_finished_parser=gemini_is_finished_parser,
     )
     EMBEDDER = LangchainEmbeddingsWrapper(
-        VertexAIEmbeddings(
-            credentials=creds,
-            model_name=EMBED_MODEL_ID
-        )
+        VertexAIEmbeddings(credentials=creds, model_name=EMBED_MODEL_ID)
     )
 
 
-class Evaluator():
+class Evaluator:
 
-
-    def __init__(self, llm: BaseRagasLLM | None = None, embedder: BaseRagasEmbeddings | None = None):
+    def __init__(
+        self,
+        llm: BaseRagasLLM | None = None,
+        embedder: BaseRagasEmbeddings | None = None,
+    ):
 
         self.llm = llm if llm else LLM
         self.embedder = embedder if embedder else EMBEDDER
 
-        self.response_relevancy = ResponseRelevancy(llm=self.llm, embeddings=self.embedder)
+        self.response_relevancy = ResponseRelevancy(
+            llm=self.llm, embeddings=self.embedder
+        )
         self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
         self.faithfulness = Faithfulness(llm=self.llm)
 
-
-    def evaluate(self, query_str: str, response_str: str, retrieved_contexts: List[str]) -> dict:
+    def evaluate(
+        self, query_str: str, response_str: str, retrieved_contexts: List[str]
+    ) -> dict:
 
         sample = SingleTurnSample(
-            user_input = query_str,
-            response = response_str,
-            retrieved_contexts = retrieved_contexts
+            user_input=query_str,
+            response=response_str,
+            retrieved_contexts=retrieved_contexts,
         )
 
         return {
-            "response_relevancy": asyncio_run(self.response_relevancy.single_turn_ascore(sample)),
-            "context_precision": asyncio_run(self.context_precision.single_turn_ascore(sample)),
+            "response_relevancy": asyncio_run(
+                self.response_relevancy.single_turn_ascore(sample)
+            ),
+            "context_precision": asyncio_run(
+                self.context_precision.single_turn_ascore(sample)
+            ),
             "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
         }

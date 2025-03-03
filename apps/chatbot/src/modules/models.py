@@ -36,14 +36,14 @@ EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 def get_llm() -> LLM:
 
     if PROVIDER == "aws":
-        
+
         llm = BedrockConverse(
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
             max_tokens=int(MODEL_MAXTOKENS),
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_LLM_REGION
+            region_name=AWS_BEDROCK_LLM_REGION,
         )
 
     else:
@@ -56,7 +56,7 @@ def get_llm() -> LLM:
                 HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
                 HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
                 HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE
+                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
             },
             api_key=GOOGLE_API_KEY,
         )
@@ -70,10 +70,10 @@ def get_embed_model() -> BaseEmbedding:
 
     if PROVIDER == "aws":
         embed_model = BedrockEmbedding(
-            model_name = EMBED_MODEL_ID,
+            model_name=EMBED_MODEL_ID,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_EMBED_REGION
+            region_name=AWS_BEDROCK_EMBED_REGION,
         )
     else:
         embed_model = GeminiEmbedding(
