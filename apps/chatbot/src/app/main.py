@@ -1,6 +1,4 @@
-import boto3
 import datetime
-import hashlib
 import json
 import logging
 import mangum
@@ -13,61 +11,27 @@ import yaml
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
-from pydantic import BaseModel, Field
-from src.app.jwt_check import verify_jwt
+
 from starlette.middleware.cors import CORSMiddleware
-from typing import Annotated, List
+from typing import Annotated
 
 from src.modules.chatbot import Chatbot
+from src.app.models import Query, QueryFeedback, tables
+from src.app.sessions import (
+    current_user_id,
+    find_or_create_session,
+    session_salt,
+    hash_func
+)
 
 logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-AWS_DEFAULT_REGION = os.getenv(
-    'CHB_AWS_DEFAULT_REGION',
-    os.getenv('AWS_DEFAULT_REGION', None)
-)
+
 AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
 ENVIRONMENT = os.getenv('environment', 'dev')
 
 chatbot = Chatbot(params, prompts)
-
-
-class QueryFromThePast(BaseModel):
-    id: str | None = None
-    question: str = Field(max_length=800)
-    answer: str | None = None
-
-
-class Query(BaseModel):
-    question: str = Field(max_length=800)
-    queriedAt: str | None = None
-    history: List[QueryFromThePast] | None = None
-
-
-class QueryFeedback(BaseModel):
-    badAnswer: bool
-
-
-boto3_session = boto3.session.Session(
-  region_name=AWS_DEFAULT_REGION
-)
-
-# endpoint_url is set by AWS_ENDPOINT_URL_DYNAMODB
-dynamodb = boto3_session.resource(
-    'dynamodb',
-    region_name=AWS_DEFAULT_REGION
-)
-
-table_queries = dynamodb.Table(
-    f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
-)
-table_sessions = dynamodb.Table(
-    f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
-)
-table_salts = dynamodb.Table(
-    f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"
-)
 
 app = FastAPI()
 app.add_middleware(
@@ -77,11 +41,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-def hash_func(user_id: str, salt: str) -> str:
-    salted_user_id = user_id + salt
-    return hashlib.sha256(salted_user_id.encode()).hexdigest()
 
 
 @app.get("/healthz")
@@ -129,103 +88,13 @@ async def query_creation(
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = chatbot.mask_pii(answer)
     try:
-        table_queries.put_item(Item=bodyToSave)
+        tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
             status_code=422,
             detail=f"[POST /queries] error: {e}"
         )
     return bodyToReturn
-
-
-def current_user_id(authorization: str) -> str:
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    else:
-        token = authorization.split(' ')[1]
-        decoded = verify_jwt(token)
-        if decoded is False:
-            raise HTTPException(status_code=401, detail="Unauthorized")
-        else:
-            if "cognito:username" in decoded:
-                return decoded['cognito:username']
-            else:
-                return decoded['username']
-
-
-def find_or_create_session(userId: str, now: datetime.datetime):
-    if userId is None:
-        return None
-
-    SESSION_MAX_DURATION_DAYS = float(
-        os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1')
-    )
-    datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
-    startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
-    # trovare una sessione con createdAt > datetimeLimit
-    try:
-        dbResponse = table_sessions.query(
-            KeyConditionExpression=Key("userId").eq(userId) &
-            Key('createdAt').gt(startOfDay.isoformat()),
-            IndexName='SessionsByCreatedAtIndex',
-            ScanIndexForward=False,
-            Limit=1
-        )
-    except (BotoCoreError, ClientError) as e:
-        raise HTTPException(
-            status_code=422,
-            detail=f"[find_or_create_session] userId: {userId}, error: {e}"
-        )
-
-    items = dbResponse.get('Items', [])
-    if len(items) == 0:
-        body = {
-            "id": f'{uuid.uuid4()}',
-            "title": now.strftime("%Y-%m-%d"),
-            "userId": userId,
-            "createdAt": now.isoformat()
-        }
-        try:
-            create_session_record(body)
-        except (BotoCoreError, ClientError) as e:
-            raise HTTPException(
-                status_code=422,
-                detail=f"[find_or_create_session] body: {body}, error: {e}"
-            )
-
-    else:
-        body = items[0]
-
-    return body
-
-
-def create_session_record(body: dict):
-    saltValue = str(uuid.uuid4())
-    saltBody = {
-        'sessionId': body['id'],
-        'value': saltValue
-    }
-    # TODO: transaction https://github.com/boto/boto3/pull/4010
-    table_sessions.put_item(Item=body)
-    table_salts.put_item(Item=saltBody)
-
-
-def session_salt(sessionId: str):
-    try:
-        dbResponse = table_salts.query(
-            KeyConditionExpression=Key("sessionId").eq(sessionId)
-        )
-    except (BotoCoreError, ClientError) as e:
-        raise HTTPException(
-            status_code=422,
-            detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}"
-        )
-    result = dbResponse.get('Items', [])
-    if len(result) == 0:
-        result = None
-    else:
-        result = result[0]
-    return result.get('value', None)
 
 
 @app.get("/queries")
@@ -247,7 +116,7 @@ async def queries_fetching(
         result = []
     else:
         try:
-            dbResponse = table_queries.query(
+            dbResponse = tables["queries"].query(
                 KeyConditionExpression=Key('sessionId').eq(sessionId),
                 IndexName='QueriesByCreatedAtIndex',
                 ScanIndexForward=True
@@ -272,7 +141,7 @@ async def sessions_fetching(
     userId = current_user_id(authorization)
 
     try:
-        dbResponse = table_sessions.query(
+        dbResponse = tables["sessions"].query(
             KeyConditionExpression=Key("userId").eq(userId),
             IndexName='SessionsByCreatedAtIndex',
             ScanIndexForward=False
@@ -305,20 +174,20 @@ async def session_delete(
         "id": id,
     }
     try:
-        dbResponse_queries = table_queries.query(
+        dbResponse_queries = tables["queries"].query(
             KeyConditionExpression=Key("sessionId").eq(id)
         )
         # TODO: use batch writer
-        # with table_sessions.batch_writer() as batch:
+        # with tables["sessions"].batch_writer() as batch:
         for query in dbResponse_queries['Items']:
-            table_queries.delete_item(
+            tables["queries"].delete_item(
                 Key={
                     "id": query["id"],
                     "sessionId": id
                 }
             )
 
-        table_sessions.delete_item(
+        tables["sessions"].delete_item(
             Key={
                 "id": id,
                 "userId": userId,
@@ -335,7 +204,7 @@ async def session_delete(
 
 
 def last_session_id(userId: str):
-    dbResponse = table_sessions.query(
+    dbResponse = tables["sessions"].query(
         IndexName='SessionsByCreatedAtIndex',
         KeyConditionExpression=Key('userId').eq(userId),
         ScanIndexForward=False,
@@ -346,7 +215,7 @@ def last_session_id(userId: str):
 
 
 def get_user_session(userId: str, sessionId: str):
-    dbResponse = table_sessions.get_item(
+    dbResponse = tables["sessions"].get_item(
         Key={
           "userId": userId,
           "id": sessionId
@@ -365,7 +234,7 @@ async def query_feedback(
 ):
 
     try:
-        dbResponse = table_queries.update_item(
+        dbResponse = tables["queries"].update_item(
             Key={
                 'sessionId': sessionId,
                 'id': id
