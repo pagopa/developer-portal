@@ -1,9 +1,10 @@
 import os
 from logging import getLogger
 
+from llama_index.core.llms.llm import LLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.llms.bedrock_converse import BedrockConverse
 from llama_index.embeddings.bedrock import BedrockEmbedding
-
 from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
@@ -32,7 +33,7 @@ MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
-def get_llm():
+def get_llm() -> LLM:
 
     if PROVIDER == "aws":
         
@@ -65,7 +66,7 @@ def get_llm():
     return llm
 
 
-def get_embed_model():
+def get_embed_model() -> BaseEmbedding:
 
     if PROVIDER == "aws":
         embed_model = BedrockEmbedding(

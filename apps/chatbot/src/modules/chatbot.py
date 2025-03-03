@@ -23,6 +23,7 @@ from src.modules.vector_database import load_automerging_index_redis, REDIS_KVST
 from src.modules.engine import get_automerging_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
+from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
 from dotenv import load_dotenv
@@ -45,6 +46,14 @@ SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
     "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
+)
+CONDENSE_PROMPT = (
+    "Given the following conversation between a user and an AI assistant and a follow up question from user, "
+    "rephrase the follow up question to be a standalone question.\n\n"
+    "Chat History:\n"
+    "{chat_history}\n"
+    "Follow Up Input: {query_str}\n"
+    "Standalone question:"
 )
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"))
 LANGFUSE_SECRET_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"))
@@ -72,6 +81,7 @@ class Chatbot():
             self.pii = PresidioPII(config=params["config_presidio"])
 
         self.model = get_llm()
+        self.judge = Evaluator()
         self.embed_model = get_embed_model()
         self.index = load_automerging_index_redis(
             self.model,
@@ -282,11 +292,17 @@ class Chatbot():
             self,
             trace_id: str,
             name: str, 
-            value: float, 
+            value: float,
+            session_id: str | None = None,
+            user_id: str | None = None,
             data_type: Literal['NUMERIC', 'BOOLEAN'] | None = None
         ) -> None:
 
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
+        with self.instrumentor.observe(
+            trace_id = trace_id,
+            session_id = session_id,
+            user_id = user_id
+            ) as trace:
             trace_info = self.get_trace(trace_id, as_dict=False)
             flag = True
             for score in trace_info.scores:
@@ -374,21 +390,52 @@ class Chatbot():
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
 
-                context = ""
+                retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
                         collection=f"hash_table_{INDEX_ID}", 
                         key=node.metadata["filename"]
                     )
-                    context += f"URL: {url}\n\n{node.text}\n\n------------------\n\n"
+                    retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
 
             except Exception as e:
                 response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda."
-                context = ""
+                retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
-            trace.update(output=self.mask_pii(response_str), metadata={"context": context})
+            trace.update(output=self.mask_pii(response_str), metadata={"context": retrieved_contexts})
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
-        return response_str
+        return response_str, retrieved_contexts
+    
+    def evaluate(
+        self,
+        query_str: str,
+        response_str: str,
+        retrieved_contexts: List[str],
+        trace_id: str,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        messages: Optional[List[Dict[str, str]]] | None = None,
+    ) -> None:
+        
+        chat_history = self._messages_to_chathistory(messages)
+        condense_prompt = CONDENSE_PROMPT.format(chat_history=chat_history, query_str=query_str)
+        condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+        
+        scores = self.judge.evaluate(
+            query_str = condense_query_response.text,
+            response_str = response_str,
+            retrieved_contexts = retrieved_contexts
+        )
+        
+        for key, value in scores.items():
+            self.add_langfuse_score(
+                trace_id = trace_id,
+                session_id = session_id,
+                user_id = user_id,
+                name = key,
+                value = value,
+                data_type = "NUMERIC"
+            )
