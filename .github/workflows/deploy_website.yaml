@@ -32,7 +32,7 @@ permissions:
   contents: read
 
 env:
-  LATEST_DEPLOYED_TAG: latest-deployed
+  LATEST_DEPLOYED_TAG: latest-deployed-in-production
 
 jobs:
 
@@ -137,6 +137,12 @@ jobs:
           # Ensure we are dealing with a valid front-end tag
           if [[ ! $TAG =~ ^nextjs-website@[0-9]+(\.[0-9]+)*$ ]]; then
             echo "Error: '$TAG' is not a valid version tag. Skipping tag update."
+            exit 0
+          fi
+
+          # Check if the environment is "prod"
+          if [[ "${{ inputs.environment }}" != "prod" ]]; then
+            echo "Error: ${{ inputs.environment }} environment is not 'prod'. Skipping tag update."
             exit 0
           fi
 
