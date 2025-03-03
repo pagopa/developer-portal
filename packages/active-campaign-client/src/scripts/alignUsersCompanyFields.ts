@@ -26,7 +26,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// create logs folder if not exists
+// Create logs folder if it doesn't exist
 if (!fs.existsSync('src/scripts/logs')) {
   fs.mkdirSync('src/scripts/logs');
 }
@@ -153,10 +153,11 @@ async function setUsersCompanyType(users: any[]) {
 }
 
 async function main() {
-  console.log('SIDE EFFECT', sideEffect);
+  console.log('Running with SIDE EFFECT:', sideEffect);
   
   const users = await getDeprecatedCompanyTypeUsers();
   await setUsersCompanyType(users);
+  console.log('done');
 }
 
 // Execute the main function
