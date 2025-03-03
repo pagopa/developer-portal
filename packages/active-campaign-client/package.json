@@ -8,7 +8,7 @@
     "build": "tsc",
     "align-users-in-active-campaign": "ts-node src/scripts/alignUsersInActiveCampaign.ts",
     "normalize-and-delete-duplicated-users": "ts-node src/scripts/normalizeAndDeleteDuplicatedUsers.ts",
-    "align_users_company_fields": "ts-node src/scripts/alignUsersCompanyFields.ts"
+    "align-users-company-fields": "ts-node src/scripts/alignUsersCompanyFields.ts"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.1.4",

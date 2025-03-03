@@ -1,22 +1,7 @@
 // To run this script you need to set the appropriate environment variables.
 // You must be signed in to AWS CLI and have the proper permissions to access the Cognito User Pool and DynamoDB tables.
-// Then run 'npm run normalize-and-delete-duplicated-users -w active-campaign-client'
+// Then run 'npm run align-users-company-fields -w active-campaign-client'
 
-// auth: {
-//   signUp: {
-//     companyRoles: [
-//       { title: 'Ente pubblico', value: 'public-authority' },
-//       { title: 'Partner tecnologico', value: 'tech-partner' },
-//       { title: 'PSP', value: 'psp' },
-//       {
-//         title: 'Gestore di pubblico servizio',
-//         value: 'operator-of-public-service',
-//       },
-//       { title: 'Azienda privata', value: 'private-company' },
-//       { title: 'Altro', value: 'other' },
-//     ],
-//   },
-// },
 
 /* eslint-disable */
 import { ActiveCampaignClient } from "../clients/activeCampaignClient";
@@ -49,11 +34,6 @@ const targetCompanyRolesMap = [
   { key: "private-company", target: "azienda-privata" },
   { key: "other", target: "altro" },
 ];
-
-const activeCampaignClient = new ActiveCampaignClient(
-  process.env.AC_BASE_URL!,
-  process.env.AC_API_KEY!
-);
 
 const userPoolId = process.env.COGNITO_USER_POOL_ID!;
 
