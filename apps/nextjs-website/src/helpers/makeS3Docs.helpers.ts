@@ -58,10 +58,14 @@ const parseDocOrThrow = async <T>(
 };
 
 export const makeTutorials = async (props: {
-  readonly tutorialsDefinition: TutorialsDefinition;
+  readonly tutorial: {
+    readonly product: Product;
+    readonly dirName: string;
+    readonly bannerLinks: readonly BannerLinkProps[];
+  };
   readonly tutorialPaths: readonly string[];
 }) => {
-  const { product, dirName, bannerLinks } = props.tutorialsDefinition;
+  const { product, dirName, bannerLinks } = props.tutorial;
   const docs = [
     {
       product: product,
