@@ -1,21 +1,22 @@
-import os
-import yaml
-import mangum
-import uvicorn
-import logging
-import json
-import hashlib
-import uuid
 import boto3
 import datetime
+import hashlib
+import json
+import logging
+import mangum
 import nh3
-from typing import Annotated, List
+import os
+import uvicorn
+import uuid
+import yaml
+
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
-from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from src.app.jwt_check import verify_jwt
+from starlette.middleware.cors import CORSMiddleware
+from typing import Annotated, List
 
 from src.modules.chatbot import Chatbot
 
