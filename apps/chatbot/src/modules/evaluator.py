@@ -30,14 +30,12 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
-GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
+
 GOOGLE_PROJECT_ID = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_PROJECT_ID"))
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
 AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
-AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
-AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
@@ -50,9 +48,18 @@ if PROVIDER == "aws":
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
             max_tokens=int(MODEL_MAXTOKENS),
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=AWS_BEDROCK_LLM_REGION,
         )
     )
-    EMBEDDER = LangchainEmbeddingsWrapper(BedrockEmbeddings(model_id=EMBED_MODEL_ID))
+    EMBEDDER = LangchainEmbeddingsWrapper(
+        BedrockEmbeddings(
+            model_id=EMBED_MODEL_ID,
+            credentials_profile_name="default",
+            region_name=AWS_BEDROCK_EMBED_REGION,
+        )
+    )
     logger.info("Loaded evaluation model successfully!")
 else:
 
