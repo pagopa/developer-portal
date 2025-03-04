@@ -343,21 +343,19 @@ async function main() {
         }
 
         // Write the sitemap items to a file
-        const outputPath = path.join(
-            process.cwd(),
-            'guides-metadata.json'
-        );
-
-        fs.writeFileSync(outputPath, JSON.stringify(sitemapItems, null, 2));
-        console.log(`Sitemap JSON written to ${outputPath} with ${sitemapItems.length} items`);
+        const sitemapJson = JSON.stringify(sitemapItems, null, 2);
 
         // Write the file to the S3 bucket
         const s3OutputPath = `${S3_PATH_TO_GITBOOK_DOCS}/guides-metadata.json`;
+        console.log(`Uploading sitemap JSON to S3: ${s3OutputPath}`);
+
         await s3Client.send(new PutObjectCommand({
             Bucket: S3_BUCKET_NAME,
             Key: s3OutputPath,
-            Body: JSON.stringify(sitemapItems, null, 2)
+            Body: sitemapJson
         }));
+
+        console.log(`Sitemap JSON successfully uploaded to S3 with ${sitemapItems.length} items`);
 
         // Also write a sample item to the console
         if (sitemapItems.length > 0) {
