@@ -5,10 +5,12 @@ import {
 } from '@aws-sdk/client-s3';
 import * as path from 'path';
 import { Readable } from 'stream';
+import Markdoc, { Node } from '@markdoc/markdoc';
 
 export type DocSource<T> = T & {
   readonly source: {
     readonly pathPrefix: string;
+    readonly version?: string;
     readonly assetsPrefix: string;
     readonly dirPath: string;
     readonly spaceId: string;
@@ -23,6 +25,28 @@ export type DocPage<T> = T & {
     readonly body: string;
     readonly isIndex: boolean;
   };
+};
+
+const parseText = ({ type, attributes }: Node): string | null =>
+  type === 'text' && typeof attributes.content === 'string'
+    ? attributes.content
+    : null;
+
+export const parseTitle = (markdown: string): string | null => {
+  const nodes = Array.from(Markdoc.parse(markdown).walk());
+  const headingNode = nodes.find(
+    ({ type, attributes }) => type === 'heading' && attributes.level === 1
+  );
+
+  if (!headingNode) {
+    return null;
+  }
+
+  const textNodes = Array.from(headingNode.walk())
+    .map(parseText)
+    .filter((text): text is string => text !== null);
+
+  return textNodes.join('');
 };
 
 export type PageTitlePath = Pick<DocPage<unknown>['page'], 'title' | 'path'>;
@@ -103,18 +127,24 @@ export const parseS3Doc = async <T>(
     const menuPath = [dirPath, 'SUMMARY.md'].join('/');
     const menu = await env.readFile(menuPath);
     const files = await env.readDir(dirPath);
-    const slugToPath = [dirPath, ...paths.slice(1)].join('/');
+    // eslint-disable-next-line functional/no-let
+    let slugToPath = [
+      dirPath,
+      ...paths.filter((path) => path !== source.source.version).slice(1),
+    ].join('/');
+    // eslint-disable-next-line functional/no-expression-statements
+    slugToPath = slugToPath !== dirPath ? slugToPath : `${dirPath}/README`;
     const filePath = files.find(
       (file) => file.includes(slugToPath) && file.endsWith('.md')
     );
 
     if (!filePath) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error(`File not found for '${filePath}'`);
+      // eslint-disable-next-line functional/no-expression-statements
+      console.log(`File not found for '${filePath}'`);
+      return [];
     }
     const body = await env.readFile(filePath);
-    // eslint-disable-next-line functional/immutable-data
-    const title = filePath.split('/').pop(); // TODO: should parse title from markdown
+    const title = parseTitle(body);
     if (!title || typeof title !== 'string') {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error(`Title (h1) not found for '${filePath}'`);
