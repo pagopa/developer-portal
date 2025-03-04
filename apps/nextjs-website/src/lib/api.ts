@@ -11,7 +11,6 @@ import {
   getProductsProps,
   getQuickStartGuidesProps,
   getReleaseNoteProps,
-  getReleaseNotesProps,
   getSolutionListPageProps,
   getSolutionProps,
   getSolutionsProps,
@@ -19,8 +18,6 @@ import {
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
-import { makeSolution } from '@/helpers/makeDocs.helpers';
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -201,28 +198,13 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesProps = await getReleaseNoteProps(
-    productSlug,
-    releaseNoteSubPathSlugs || []
-  );
   const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
   const path = `/${productSlug}/${releaseNotesPath}`;
-
   const releaseNoteProps = manageUndefined(
-    (await getReleaseNotesProps()).find(
-      (releaseNoteData) => releaseNoteData.page.path === path
-    )
+    (
+      await getReleaseNoteProps(productSlug, releaseNoteSubPathSlugs || [])
+    ).find(({ page }) => page.path === path)
   );
-
-  const gitBookPagesWithTitle = releaseNotesProps.map((content) => ({
-    title: content.page.title,
-    path: content.page.path,
-  }));
-
-  const spaceToPrefix = releaseNotesProps.map((content) => ({
-    spaceId: content.source.spaceId,
-    pathPrefix: content.source.pathPrefix,
-  }));
 
   return {
     ...releaseNoteProps,
@@ -231,8 +213,18 @@ export async function getReleaseNote(
       isPageIndex: releaseNoteProps.page.isIndex,
       pagePath: releaseNoteProps.page.path,
       assetsPrefix: releaseNoteProps.source.assetsPrefix,
-      gitBookPagesWithTitle,
-      spaceToPrefix,
+      gitBookPagesWithTitle: [
+        {
+          title: releaseNoteProps.page.title,
+          path: releaseNoteProps.page.path,
+        },
+      ],
+      spaceToPrefix: [
+        {
+          spaceId: releaseNoteProps.source.spaceId,
+          pathPrefix: releaseNoteProps.source.pathPrefix,
+        },
+      ],
     },
   };
 }
