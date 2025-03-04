@@ -121,6 +121,7 @@ export const makeGuide = (props: {
         })),
         source: {
           pathPrefix: `${guidePath}/${version}`,
+          version,
           assetsPrefix: `${docsS3AssetsPath}/${dirName}`,
           dirPath: `${s3DocsPath}/${dirName}`,
           spaceId: dirName,
@@ -131,6 +132,7 @@ export const makeGuide = (props: {
         ? [item, { ...item, source: { ...item.source, pathPrefix: guidePath } }]
         : [item];
     });
+
   return parseDocOrThrow(docs, guidePaths);
 };
 
