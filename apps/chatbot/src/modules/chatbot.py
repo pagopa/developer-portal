@@ -41,10 +41,11 @@ RESPONSE_TYPE = Union[
     Response, StreamingResponse, AsyncStreamingResponse, PydanticResponse,
     AgentChatResponse, StreamingAgentChatResponse
 ] 
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
-    "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
+    f"the PagoPA DevPortal documentation available at: {WEBSITE_URL}"
 )
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"))
 LANGFUSE_SECRET_KEY = get_ssm_parameter(os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"))

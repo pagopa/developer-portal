@@ -127,3 +127,27 @@ variable "ecs_monitoring" {
   })
   description = "Langfuse configuration for the AI chatbot"
 }
+
+################################################################################
+# WAF
+################################################################################
+
+variable "waf_ip_rate_limit_limit" {
+  type    = number
+  default = 100
+}
+
+variable "waf_ip_rate_limit_evaluation_window_sec" {
+  type    = number
+  default = 60
+}
+
+variable "waf_block_requests_to_queries_limit" {
+  type    = number
+  default = 100
+}
+
+variable "waf_block_requests_to_queries_evaluation_window_sec" {
+  type    = number
+  default = 60
+}
