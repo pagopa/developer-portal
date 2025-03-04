@@ -4,18 +4,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import Download from '@mui/icons-material/Download';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import { useTranslations } from 'next-intl';
-
-const getReadableFileSizeString = (kilobytes: number) => {
-  if (kilobytes <= 0) {
-    return '0KB';
-  }
-
-  const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const unitIndex = Math.ceil(Math.log(kilobytes) / Math.log(1024));
-  const size = Math.ceil(kilobytes / Math.pow(1024, unitIndex));
-  const formattedSize = size.toFixed(0);
-  return `${formattedSize}${units[unitIndex]}`;
-};
+import { getHumanReadableFileSize } from '@/helpers/humanReadableFileSize.helper';
 
 export type DownloadableDocumentsProps = {
   documents: {
@@ -66,7 +55,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                             {size
                               ? `${t(
                                   'shared.download'
-                                )} - ${getReadableFileSizeString(size)}`
+                                )} - ${getHumanReadableFileSize(size)}`
                               : t('shared.download')}{' '}
                           </Typography>
                           <Download
