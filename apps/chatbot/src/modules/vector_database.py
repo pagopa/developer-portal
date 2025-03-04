@@ -123,7 +123,7 @@ def html2markdown(html):
 
     converter = html2text.HTML2Text()
     converter.ignore_images = True
-    converter.ignore_links = True
+    converter.ignore_links = False
     converter.ignore_mailto_links = True
 
     soup = BeautifulSoup(html, "html.parser")
