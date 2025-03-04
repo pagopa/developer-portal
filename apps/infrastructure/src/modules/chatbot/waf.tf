@@ -65,7 +65,7 @@ resource "aws_wafv2_web_acl" "chatbot" {
   # The following rule apply a rate limit of N requests from the same IP
   rule {
     name     = "ip-rate-limit"
-    priority = 0
+    priority = 1
 
     action {
       count {} # To test with use `count {}` instead of `block {}`
@@ -89,7 +89,7 @@ resource "aws_wafv2_web_acl" "chatbot" {
   # The following rule blocks requests that are identified as bot control
   rule {
     name     = "block-bot-control-requests"
-    priority = 1
+    priority = 2
 
     override_action {
       count {} # To test with use `count {}` instead of `block {}`
@@ -110,7 +110,7 @@ resource "aws_wafv2_web_acl" "chatbot" {
 }
 
 resource "aws_wafv2_web_acl_association" "chatbot" {
-  resource_arn = aws_api_gateway_deployment.stage.execution_arn
+  resource_arn = "${aws_api_gateway_rest_api.api.arn}/stages/${aws_api_gateway_deployment.stage.stage_name}"
   web_acl_arn  = aws_wafv2_web_acl.chatbot.arn
 
   depends_on = [
