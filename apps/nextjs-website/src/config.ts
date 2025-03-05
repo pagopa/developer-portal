@@ -7,6 +7,11 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  @deprecated
  */
 // TODO: Add environment parser
+
+// TODO: remove this logs only to debug
+console.log('process.env', JSON.stringify(process.env, null, 2));
+console.log('secret', process.env.secrets);
+
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
 export const secrets = process.env.secrets
   ? JSON.parse(process.env.secrets)
