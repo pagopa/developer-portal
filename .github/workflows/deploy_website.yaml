@@ -24,7 +24,7 @@ on:
 
   # Runs at 2 p.m. UTC every day
   schedule:
-    - cron: '0 14 * * *'
+    - cron: '0 15 * * *'
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
