@@ -104,3 +104,25 @@ def session_salt(sessionId: str):
 def hash_func(user_id: str, salt: str) -> str:
     salted_user_id = user_id + salt
     return hashlib.sha256(salted_user_id.encode()).hexdigest()
+
+
+def last_session_id(userId: str):
+    dbResponse = tables["sessions"].query(
+        IndexName='SessionsByCreatedAtIndex',
+        KeyConditionExpression=Key('userId').eq(userId),
+        ScanIndexForward=False,
+        Limit=1
+    )
+    items = dbResponse.get('Items', [])
+    return items[0].get('id', None) if items else None
+
+
+def get_user_session(userId: str, sessionId: str):
+    dbResponse = tables["sessions"].get_item(
+        Key={
+          "userId": userId,
+          "id": sessionId
+        }
+    )
+    item = dbResponse.get('Item')
+    return item if item else None
