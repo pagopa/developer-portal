@@ -32,7 +32,7 @@ permissions:
   contents: read
 
 env:
-  LATEST_DEPLOYED_TAG: latest-deployed-in-production
+  LATEST_DEPLOYED_IN_PRODUCTION_TAG: latest-deployed-in-production
 
 jobs:
 
@@ -128,7 +128,7 @@ jobs:
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           webinar_question_lifetime_in_seconds: 259200
 
-      - name: Move $LATEST_DEPLOYED_TAG tag to the commit just deployed
+      - name: Move $LATEST_DEPLOYED_IN_PRODUCTION_TAG tag to the commit just deployed
         shell: bash
         run: |
           # Extract tag from GitHub ref
@@ -160,14 +160,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Get package name
 
-          # Move the LATEST_DEPLOYED_TAG to the commit just deployed
+          # Move the LATEST_DEPLOYED_IN_PRODUCTION_TAG to the commit just deployed
           PACKAGE_NAME=$(echo $TAG | cut -d'@' -f1)
-          git tag -f $PACKAGE_NAME@$LATEST_DEPLOYED_TAG $COMMIT_HASH
+          git tag -f $PACKAGE_NAME@$LATEST_DEPLOYED_IN_PRODUCTION_TAG $COMMIT_HASH
 
           # Some remote repositories (e.g., GitHub) may not update tags automatically.
           # Ensure old tag is deleted remotely before pushing the new one
-          git push --delete origin $LATEST_DEPLOYED_TAG || true
-          git push origin $LATEST_DEPLOYED_TAG --force
+          git push --delete origin $LATEST_DEPLOYED_IN_PRODUCTION_TAG || true
+          git push origin $LATEST_DEPLOYED_IN_PRODUCTION_TAG --force
 
   scheduled_deploy:
     name: Scheduled Deploy to S3
@@ -183,7 +183,7 @@ jobs:
       - name: Checkout specific tag
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          ref: $LATEST_DEPLOYED_TAG
+          ref: $LATEST_DEPLOYED_IN_PRODUCTION_TAG
 
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
