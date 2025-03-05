@@ -20,16 +20,20 @@ const RelatedResources = ({
   const t = useTranslations();
 
   return (
-    <EContainer containerSx={{ paddingBottom: '48px' }}>
-      <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
-        {title || t('webinar.webinarsSection.relatedResources.title')}
-      </Typography>
-      <Box>
-        {resources &&
-          resources.map((props, index) => <GuideCard key={index} {...props} />)}
-      </Box>
-      <DownloadableDocuments documents={downloadableDocuments} />
-    </EContainer>
+    (resources.length > 0 || downloadableDocuments.length > 0) && (
+      <EContainer containerSx={{ paddingBottom: '48px' }}>
+        <Typography variant='h4' sx={{ mt: 8, mb: 4, width: '100%' }}>
+          {title || t('webinar.webinarsSection.relatedResources.title')}
+        </Typography>
+        <Box>
+          {resources &&
+            resources.map((props, index) => (
+              <GuideCard key={index} {...props} />
+            ))}
+        </Box>
+        <DownloadableDocuments documents={downloadableDocuments} />
+      </EContainer>
+    )
   );
 };
 
