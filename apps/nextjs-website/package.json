@@ -8,8 +8,8 @@
     "update-docs": "./scripts/fetch-local-docs.sh",
     "compile": "tsc --noEmit",
     "dev": "next dev",
-    "build": "next build",
-    "start": "npx serve@latest out",
+    "build": "next build --debug",
+    "start": "next start",
     "lint": "next lint",
     "test": "jest -i"
   },

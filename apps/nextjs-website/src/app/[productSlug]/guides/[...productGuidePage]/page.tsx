@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGitBookSubPaths } from '@/lib/api';
+import { getGuide } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -24,13 +24,6 @@ type Params = {
   productSlug: string;
   productGuidePage: Array<string>;
 };
-
-export async function generateStaticParams() {
-  return (await getGuidesProps()).map((guidePage) => ({
-    productSlug: guidePage.product.slug,
-    productGuidePage: getGitBookSubPaths(guidePage.page.path),
-  }));
-}
 
 export type ProductGuidePageProps = {
   product: Product;

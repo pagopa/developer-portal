@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statements */
 /**
 This file is going to be removed after few refactoring phases.
 The following environments are going to be moved in dedicated config files or environments.
@@ -7,9 +8,26 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  */
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
-export const cookieDomainScript = process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const secrets = process.env.secrets
+  ? JSON.parse(process.env.secrets)
+  : {};
+export const s3DocsPath =
+  secrets.S3_PATH_TO_GITBOOK_DOCS || process.env.S3_PATH_TO_GITBOOK_DOCS;
+export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
+export const credentials =
+  process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
+    ? {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+      }
+    : undefined;
+export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
+export const cookieDomainScript =
+  secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
+  process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
+export const docsS3AssetsPath = process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS;
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
 export const isChatbotActive =
@@ -20,8 +38,11 @@ export const chatMaxHistoryMessages =
 export const amplifyConfig = {
   Auth: {
     region: process.env.NEXT_PUBLIC_COGNITO_REGION,
-    userPoolId: process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+    userPoolId:
+      secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID ||
+      process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
     userPoolWebClientId:
+      secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID ||
       process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
   },
   authenticationFlowType: 'CUSTOM_AUTH',
