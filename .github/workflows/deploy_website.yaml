@@ -22,10 +22,17 @@ on:
     types:
       - webhook
 
+  # Runs at 2 p.m. UTC every day
+  schedule:
+    - cron: '0 15 * * *'
+
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
   id-token: write
   contents: read
+
+env:
+  LATEST_DEPLOYED_IN_PRODUCTION_TAG: latest-deployed-in-production
 
 jobs:
 
@@ -48,7 +55,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      
+
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
 
@@ -75,6 +82,7 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          webinar_question_lifetime_in_seconds: 259200
 
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})
@@ -89,10 +97,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      
+        with:
+          ref: ${{ github.ref_name }}
+
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
-      
+
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
@@ -116,3 +126,87 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          webinar_question_lifetime_in_seconds: 259200
+
+      - name: Move $LATEST_DEPLOYED_IN_PRODUCTION_TAG tag to the commit just deployed
+        shell: bash
+        run: |
+          # Extract tag from GitHub ref
+          TAG=${{ github.ref_name }}
+
+          # Ensure we are dealing with a valid front-end tag
+          if [[ ! $TAG =~ ^nextjs-website@[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "Error: '$TAG' is not a valid version tag. Skipping tag update."
+            exit 0
+          fi
+
+          # Check if the environment is "prod"
+          if [[ "${{ inputs.environment }}" != "prod" ]]; then
+            echo "Error: ${{ inputs.environment }} environment is not 'prod'. Skipping tag update."
+            exit 0
+          fi
+
+          # Get commit hash associated with the tag
+          COMMIT_HASH=$(git rev-list -n 1 $TAG || echo "")
+
+          # Exit if the commit hash is empty
+          if [ -z "$COMMIT_HASH" ]; then
+            echo "Error: No commit found for tag '$TAG'. Skipping tag update."
+            exit 0
+          fi
+
+          # Set up Git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Move the LATEST_DEPLOYED_IN_PRODUCTION_TAG to the commit just deployed
+          git tag -f nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG $COMMIT_HASH
+
+          # Some remote repositories (e.g., GitHub) may not update tags automatically.
+          # Ensure old tag is deleted remotely before pushing the new one
+          git push --delete origin nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG || true
+          git push origin nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG --force
+
+  scheduled_deploy:
+    name: Scheduled Deploy to S3
+    if: github.event_name == 'schedule'
+    runs-on: codebuild-prod-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    environment: prod
+
+    concurrency:
+      group: ${{ github.workflow }}-scheduled
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout specific tag
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          ref: $LATEST_DEPLOYED_IN_PRODUCTION_TAG
+
+      - name: Increase action disk space
+        uses: ./.github/actions/increase-disk-space
+
+      - name: Deploy website
+        uses: ./.github/actions/deploy
+        with:
+          environment: ${{ matrix.environment }}
+          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
+          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
+          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          bucket: ${{ vars.S3_BUCKET_NAME }}
+          cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
+          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
+          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
+          chatbot_host: ${{ vars.NEXT_PUBLIC_CHATBOT_HOST }}
+          chat_max_history_messages: ${{ vars.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES }}
+          website_name: ${{ vars.NEXT_PUBLIC_WEBSITE_NAME }}
+          organization_name: ${{ vars.NEXT_PUBLIC_ORGANIZATION_NAME }}
+          organization_logo: ${{ vars.NEXT_PUBLIC_ORGANIZATION_LOGO }}
+          organization_social_links: ${{ vars.NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS }}
+          chatbot_active: ${{ vars.NEXT_PUBLIC_CHATBOT_ACTIVE }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          webinar_question_lifetime_in_seconds: 259200
