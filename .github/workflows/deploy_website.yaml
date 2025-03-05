@@ -158,16 +158,14 @@ jobs:
           # Set up Git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Get package name
 
           # Move the LATEST_DEPLOYED_IN_PRODUCTION_TAG to the commit just deployed
-          PACKAGE_NAME=$(echo $TAG | cut -d'@' -f1)
-          git tag -f $PACKAGE_NAME@$LATEST_DEPLOYED_IN_PRODUCTION_TAG $COMMIT_HASH
+          git tag -f nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG $COMMIT_HASH
 
           # Some remote repositories (e.g., GitHub) may not update tags automatically.
           # Ensure old tag is deleted remotely before pushing the new one
-          git push --delete origin $LATEST_DEPLOYED_IN_PRODUCTION_TAG || true
-          git push origin $LATEST_DEPLOYED_IN_PRODUCTION_TAG --force
+          git push --delete origin nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG || true
+          git push origin nextjs-website@$LATEST_DEPLOYED_IN_PRODUCTION_TAG --force
 
   scheduled_deploy:
     name: Scheduled Deploy to S3
