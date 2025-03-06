@@ -1,3 +1,4 @@
+---
 services:
   api-test:
     build:
@@ -16,8 +17,10 @@ services:
         condition: service_started
       dynamodb:
         condition: service_started
+      motoserver:
+        condition: service_started
     networks:
-      - ntw
+      - ntwtest
 
   dynamodb:
     image: amazon/dynamodb-local:2.5.2
@@ -25,22 +28,20 @@ services:
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_DEFAULT_REGION=local
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          '[ "$(curl -s -o /dev/null -I -w ''%{http_code}'' http://localhost:8000)" == "400" ]',
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 10
     networks:
-      - ntw
+      - ntwtest
 
   redis:
     image: redis/redis-stack:7.2.0-v13
     networks:
-      - ntw
+      - ntwtest
+
+  motoserver:
+    image: motoserver/moto:5.1.0
+    environment:
+      - MOTO_PORT=3001
+    networks:
+      - ntwtest
 
 networks:
-  ntw:
+  ntwtest:

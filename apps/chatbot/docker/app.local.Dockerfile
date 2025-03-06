@@ -3,8 +3,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
   apt-get install -y \
+  gcc \
   curl \
   wget \
+  jq \
   zip
 
 RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64.deb && \
