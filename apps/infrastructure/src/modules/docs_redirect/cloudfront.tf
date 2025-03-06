@@ -57,5 +57,6 @@ resource "aws_cloudfront_distribution" "redirect" {
     cloudfront_default_certificate = var.use_custom_certificate ? false : true
     acm_certificate_arn            = var.use_custom_certificate ? module.redirect_certificate.acm_certificate_arn : null
     ssl_support_method             = var.use_custom_certificate ? "sni-only" : null
+    minimum_protocol_version       = var.use_custom_certificate ? "TLSv1.2_2021" : null
   }
 }
