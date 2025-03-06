@@ -22,9 +22,9 @@ on:
     types:
       - webhook
 
-  # Runs at 8 a.m. UTC every day
+  # Runs at 2 a.m. UTC every day
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 2 * * *'
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
