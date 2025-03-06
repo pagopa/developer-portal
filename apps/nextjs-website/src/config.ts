@@ -20,10 +20,12 @@ export const s3DocsPath =
   secrets.S3_PATH_TO_GITBOOK_DOCS || process.env.S3_PATH_TO_GITBOOK_DOCS;
 export const region = process.env.NEXT_PUBLIC_COGNITO_REGION || '';
 export const credentials =
-  process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
+  (secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID) &&
+  (secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY)
     ? {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        accessKeyId: secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey:
+          secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY,
       }
     : undefined;
 export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
