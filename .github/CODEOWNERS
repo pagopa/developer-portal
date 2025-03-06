@@ -1,6 +1,9 @@
 # Default owners
 * @pagopa/devportal-maintain
 
+# GitHub actions and workflows
+.github/ @MarcoPonchia @marcobottaro @tommaso1
+
 # Website
 apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1
 
