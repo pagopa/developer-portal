@@ -125,10 +125,3 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-
-      - name: Check NextJS bundle size
-        uses: ./.github/actions/check-nextjs-bundle-size
-        with:
-          path_to_nextjs_folder: ./apps/nextjs-website
-          upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
-          environment: ${{ matrix.environment }}

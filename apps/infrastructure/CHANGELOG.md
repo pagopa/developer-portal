@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.7.1
+
+### Patch Changes
+
+- 79e8e16: Add local variable and new script for Matomo tag manager
+
 ## 1.7.0
 
 ### Minor Changes
