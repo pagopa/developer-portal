@@ -9,7 +9,7 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
 // TODO: Add environment parser
 
 // TODO: remove this logs only to debug
-console.log('process.env', JSON.stringify(process.env, null, 2));
+console.log('process.env', process.env);
 console.log('secret', process.env.secrets);
 
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
@@ -52,6 +52,8 @@ export const amplifyConfig = {
   },
   authenticationFlowType: 'CUSTOM_AUTH',
 };
+// TODO: remove this logs only to debug
+console.log('amplifyConfig', amplifyConfig);
 
 const defaultItems = [
   { label: 'personalData.title', href: '/profile/personal-data' },
