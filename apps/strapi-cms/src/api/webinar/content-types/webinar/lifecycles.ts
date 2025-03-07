@@ -65,10 +65,29 @@ const validateDates = (event: IWebinarEvent): boolean => {
   return true;
 };
 
-const validateSlug = async (event: IWebinarEvent): Promise<boolean> => {
-  if (!event.params.data.slug || !getActiveCampaignIntegrationIsEnabled()) {
+const validateSlug = (slug?: string): boolean => {
+  if (!getActiveCampaignIntegrationIsEnabled()) {
     return true;
   }
+
+  if (!slug) {
+    throw new errors.ApplicationError(
+      'The slug of a webinar cannot be an empty string'
+    );
+  }
+
+  return true;
+};
+
+const validateSlugBeforeCreate = (event: IWebinarEvent): boolean =>
+  validateSlug(event.params.data.slug);
+
+const validateSlugBeforeUpdate = async (
+  event: IWebinarEvent
+): Promise<boolean> => {
+  const { slug } = event.params.data;
+
+  validateSlug(slug);
 
   const id = event.params.where?.id;
   if (!id) {
@@ -192,6 +211,7 @@ module.exports = {
   },
   beforeCreate(event: IWebinarEvent) {
     validateDates(event);
+    validateSlugBeforeCreate(event);
   },
   async beforeDelete(event: IWebinarEvent) {
     await deleteActiveCampaignList(event);
@@ -205,6 +225,6 @@ module.exports = {
   },
   async beforeUpdate(event: IWebinarEvent) {
     validateDates(event);
-    await validateSlug(event);
+    await validateSlugBeforeUpdate(event);
   },
 };
