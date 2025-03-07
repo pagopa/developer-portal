@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 6.0.1
+
+### Patch Changes
+
+- 79e8e16: Add local variable and new script for Matomo tag manager
+
 ## 6.0.0
 
 ### Major Changes
