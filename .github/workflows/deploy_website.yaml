@@ -22,9 +22,9 @@ on:
     types:
       - webhook
 
-  # Runs at 2 a.m. UTC every day
+  # Runs at 3 p.m. UTC every day
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 15 * * *'
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
@@ -90,7 +90,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
-
+    env:
+      SKIP_HUSKY_PRE_PUSH: true
     concurrency:
       group: ${{ github.workflow }}-${{ inputs.environment }}
       cancel-in-progress: false
@@ -191,7 +192,7 @@ jobs:
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
-          environment: ${{ matrix.environment }}
+          environment: prod
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
@@ -211,4 +212,5 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
           webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
