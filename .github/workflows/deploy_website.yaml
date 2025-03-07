@@ -83,7 +83,7 @@ jobs:
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
-          webinar_question_lifetime_in_seconds: 259200
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})
@@ -129,7 +129,7 @@ jobs:
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
-          webinar_question_lifetime_in_seconds: 259200
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
       - name: Move nextjs-website@latest-deployed-in-production tag to the commit just deployed
         shell: bash
@@ -213,4 +213,4 @@ jobs:
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
-          webinar_question_lifetime_in_seconds: 259200
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
