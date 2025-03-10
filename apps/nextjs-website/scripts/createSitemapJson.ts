@@ -163,7 +163,6 @@ interface StrapiGuide {
         };
       };
     };
-    [key: string]: any;
   };
 }
 
