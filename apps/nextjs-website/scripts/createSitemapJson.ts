@@ -374,11 +374,6 @@ async function main() {
       `Sitemap JSON successfully uploaded to S3 with ${sitemapItems.length} items`
     );
 
-    // Also write a sample item to the console
-    if (sitemapItems.length > 0) {
-      console.log('Sample sitemap item:');
-      console.log(JSON.stringify(sitemapItems[0], null, 2));
-    }
   } catch (error) {
     console.error('Error:', error);
   }
