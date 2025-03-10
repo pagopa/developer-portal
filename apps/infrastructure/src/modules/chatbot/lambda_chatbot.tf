@@ -25,6 +25,7 @@ locals {
     CHB_MODEL_TEMPERATURE        = "0.3"
     CHB_GOOGLE_API_KEY           = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_PROJECT_ID        = module.google_project_id_ssm_parameter.ssm_parameter_name
+    CHB_GOOGLE_SERVICE_ACCOUNT   = module.google_service_account_ssm_parameter.ssm_parameter_name
     CHB_QUERY_TABLE_PREFIX       = local.prefix
     CHB_LLAMAINDEX_INDEX_ID      = module.index_id_ssm_parameter.ssm_parameter_name
     CHB_ENGINE_USE_ASYNC         = "False"
@@ -106,6 +107,16 @@ module "google_project_id_ssm_parameter" {
 
   name                 = "/chatbot/google_project_id"
   value                = "Set the Google Gemini Project ID in the AWS console"
+  type                 = "SecureString"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+module "google_service_account_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/google_service_account"
+  value                = "Set the Google Gemini Service Account in the AWS console"
   type                 = "SecureString"
   secure_type          = true
   ignore_value_changes = true
