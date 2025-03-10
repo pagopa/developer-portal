@@ -31,7 +31,6 @@ const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION;
 
-
 // Define interfaces
 interface DirectoryStructure {
   [dirName: string]: {
@@ -163,6 +162,12 @@ interface StrapiGuide {
         };
       };
     };
+    versions: {
+      id: number;
+      main: boolean;
+      version: string;
+      dirName: string;
+    }[];
   };
 }
 
@@ -180,7 +185,7 @@ async function fetchStrapiGuides(): Promise<StrapiGuide[]> {
 
     // Using pagination with a large page size to fetch all guides in one request
     const response = await fetch(
-      `${strapiEndpoint}/api/guides?populate=product&pagination[pageSize]=1000&pagination[page]=1`,
+      `${strapiEndpoint}/api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1`,
       {
         headers: {
           Authorization: `Bearer ${strapiApiToken}`,
@@ -195,6 +200,7 @@ async function fetchStrapiGuides(): Promise<StrapiGuide[]> {
     }
 
     const data = await response.json();
+    console.log(data.data[0].attributes.versions[0]);
     console.log(
       `Successfully fetched ${data.data?.length || 0} guides from Strapi`
     );
@@ -282,11 +288,14 @@ async function main() {
       }
     }
 
-    // Map directories to guides - this is a simplified approach
-    // You might need to implement a more sophisticated matching logic
     const dirNames = Object.keys(dirStructure);
     for (let i = 0; i < Math.min(dirNames.length, strapiGuides.length); i++) {
-      dirToGuideMap[dirNames[i]] = strapiGuides[i];
+      const strapiDirName = strapiGuides[i].attributes.versions.find(
+        (v) => v.main
+      )?.dirName;
+      if (strapiDirName) {
+        dirToGuideMap[strapiDirName] = strapiGuides[i];
+      }
     }
 
     console.log(
@@ -325,7 +334,6 @@ async function main() {
           const urlPath = generateUrlPathWithStrapiData(
             dirName,
             contentFile,
-            strapiGuides,
             dirToGuideMap
           );
 
@@ -373,7 +381,6 @@ async function main() {
     console.log(
       `Sitemap JSON successfully uploaded to S3 with ${sitemapItems.length} items`
     );
-
   } catch (error) {
     console.error('Error:', error);
   }
