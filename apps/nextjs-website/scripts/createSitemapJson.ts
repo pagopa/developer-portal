@@ -31,14 +31,6 @@ const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const AWS_REGION = 'eu-south-1'; // Using the region from your .env file
 
-// Debug environment variables
-console.log('Environment variables:');
-console.log(`S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID ? '****' : 'not set'}`);
-console.log(
-  `S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY ? '****' : 'not set'}`
-);
-console.log(`S3_BUCKET_NAME: ${S3_BUCKET_NAME || 'not set'}`);
-console.log(`S3_PATH_TO_GITBOOK_DOCS: ${S3_PATH_TO_GITBOOK_DOCS}`);
 
 // Define interfaces
 interface DirectoryStructure {
