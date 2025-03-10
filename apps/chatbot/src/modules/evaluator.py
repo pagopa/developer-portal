@@ -1,9 +1,10 @@
 import os
+import json
 from logging import getLogger
 from dotenv import load_dotenv
 from typing import List
 
-import google.auth
+from google.oauth2 import service_account
 
 from llama_index.core.async_utils import asyncio_run
 
@@ -31,23 +32,25 @@ PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
 
-GOOGLE_PROJECT_ID = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_PROJECT_ID"))
+GOOGLE_CREDENTIALS_PARAMS = get_ssm_parameter(
+    name=os.getenv("CHB_GOOGLE_CREDENTIALS_PARAMS")
+)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
 AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
-MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
-MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+MODEL_TEMPERATURE = 0.0
+MODEL_MAXTOKENS = 256
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 if PROVIDER == "aws":
     LLM = LangchainLLMWrapper(
         ChatBedrockConverse(
             model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_BEDROCK_LLM_REGION,
@@ -93,19 +96,20 @@ else:
 
         return all(is_finished_list)
 
-    creds, _ = google.auth.default(quota_project_id=GOOGLE_PROJECT_ID)
+    gcp_param = json.loads(GOOGLE_CREDENTIALS_PARAMS)
+    credentials = service_account.Credentials.from_service_account_info(gcp_param)
 
     LLM = LangchainLLMWrapper(
         ChatVertexAI(
-            credentials=creds,
+            credentials=credentials,
             model_name=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
         ),
         is_finished_parser=gemini_is_finished_parser,
     )
     EMBEDDER = LangchainEmbeddingsWrapper(
-        VertexAIEmbeddings(credentials=creds, model_name=EMBED_MODEL_ID)
+        VertexAIEmbeddings(credentials=credentials, model_name=EMBED_MODEL_ID)
     )
 
 
