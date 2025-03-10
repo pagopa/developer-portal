@@ -29,7 +29,7 @@ const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
 const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
-const AWS_REGION = 'eu-south-1'; // Using the region from your .env file
+const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION;
 
 
 // Define interfaces
