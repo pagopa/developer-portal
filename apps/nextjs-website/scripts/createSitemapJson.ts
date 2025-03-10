@@ -210,7 +210,6 @@ async function fetchStrapiGuides(): Promise<StrapiGuide[]> {
 function generateUrlPathWithStrapiData(
   dirName: string,
   filePath: string,
-  strapiGuides: StrapiGuide[],
   dirToGuideMap: Record<string, StrapiGuide>
 ): string {
   // Get the guide for this directory
