@@ -17,8 +17,8 @@ const s3Client = new S3Client({
   region: process.env.AWS_REGION || 'us-east-1',
 });
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'your-bucket-name';
-const S3_PATH_TO_GITBOOK_DOCS =
-  process.env.S3_PATH_TO_GITBOOK_DOCS || 'path/to/gitbook/docs';
+const S3_GUIDE_METADATA_JSON_PATH =
+  process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 
 // Define interface for guide metadata
 interface GuideMetadata {
@@ -33,11 +33,10 @@ interface GuideMetadata {
 async function fetchGuidesMetadataFromS3(): Promise<readonly GuideMetadata[]> {
   // eslint-disable-next-line functional/no-try-statements
   try {
-    const s3Path = `${S3_PATH_TO_GITBOOK_DOCS}/guides-metadata.json`;
     const response = await s3Client.send(
       new GetObjectCommand({
         Bucket: S3_BUCKET_NAME,
-        Key: s3Path,
+        Key: S3_GUIDE_METADATA_JSON_PATH,
       })
     );
 
