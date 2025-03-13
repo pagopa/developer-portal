@@ -36,12 +36,12 @@ async def query_creation(
 
     answer = chatbot.chat_generate(
         query_str=nh3.clean(query.question),
+        trace_id=trace_id,
+        session_id=session["id"],
+        user_id=hash_func(userId, salt),
         messages=(
             [item.dict() for item in query.history] if query.history else None
         ),
-        trace_id=trace_id,
-        user_id=hash_func(userId, salt),
-        session_id=session["id"]
     )
 
     if query.queriedAt is None:
