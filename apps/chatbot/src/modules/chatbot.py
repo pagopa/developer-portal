@@ -259,11 +259,20 @@ class Chatbot:
         chat_history = [self.system_message]
         if messages:
             for message in messages:
+                user_content = message["question"]
+                assistant_content = (
+                    message["answer"].split("Rif:")[0].strip()
+                    if message and message.get("answer")
+                    else None
+                )
                 chat_history += [
-                    ChatMessage(role=MessageRole.USER, content=message["question"]),
+                    ChatMessage(
+                        role=MessageRole.USER,
+                        content=user_content,
+                    ),
                     ChatMessage(
                         role=MessageRole.ASSISTANT,
-                        content=message["answer"].split("Rif:")[0].strip(),
+                        content=assistant_content,
                     ),
                 ]
 
@@ -396,6 +405,8 @@ class Chatbot:
         tags: Optional[Union[str, List[str]]] | None = None,
     ) -> str:
 
+        logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
+
         if isinstance(tags, str):
             tags = [tags]
 
@@ -408,7 +419,10 @@ class Chatbot:
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id, tags=tags
+            trace_id=trace_id,
+            session_id=session_id,
+            user_id=user_id,
+            tags=tags
         ) as trace:
 
             try:
@@ -426,6 +440,8 @@ class Chatbot:
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
 
+                logger.info(f" ------>>> [chat_generate] response_str: {response_str}")
+                
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
