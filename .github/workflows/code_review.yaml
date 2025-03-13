@@ -57,7 +57,7 @@ jobs:
         run: npm run compile
 
       - name: Store in cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         id: restore-build
         with:
           path: ./*
@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Restore cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         id: restore-build
         with:
           path: ./*
@@ -96,7 +96,7 @@ jobs:
 
     steps:
       - name: Restore cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         id: restore-build
         with:
           path: ./*
@@ -125,10 +125,4 @@ jobs:
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-
-      - name: Check NextJS bundle size
-        uses: ./.github/actions/check-nextjs-bundle-size
-        with:
-          path_to_nextjs_folder: ./apps/nextjs-website
-          upload_path: apps/nextjs-website/.next/analyze/__bundle_analysis.json
-          environment: ${{ matrix.environment }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}

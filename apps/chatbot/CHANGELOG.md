@@ -1,5 +1,11 @@
 # chatbot
 
+## 4.3.0
+
+### Minor Changes
+
+- 06b5572: use url from env var
+
 ## 4.2.0
 
 ### Minor Changes

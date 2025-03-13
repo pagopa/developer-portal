@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.5.2
+
+### Patch Changes
+
+- 59c27d3: Add script to align users company type field
+
 ## 0.5.1
 
 ### Patch Changes

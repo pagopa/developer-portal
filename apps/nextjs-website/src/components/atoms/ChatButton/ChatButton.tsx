@@ -9,20 +9,14 @@ type ChatButtonProps = {
   size: 'medium' | 'large';
 };
 
-const matomoEvent = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const _paq = (window as any)._paq || [];
-  // eslint-disable-next-line functional/immutable-data
-  _paq.push(['trackEvent', 'Chatbot interaction', 'Click chatbot', 'Click']);
-};
 const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
   const { palette } = useTheme();
   return (
     <Box sx={{ opacity: isChatOpen ? 0 : 1 }}>
       <Fab
+        id='chatbot'
         aria-label='chat'
         onClick={(e) => {
-          matomoEvent();
           onOpenChat(e);
         }}
         size={size}
@@ -35,6 +29,7 @@ const ChatButton = ({ isChatOpen, onOpenChat, size }: ChatButtonProps) => {
         }}
       >
         <IconWrapper
+          id={'chatbotIcon'}
           icon={'/icons/chatbotAvatar.svg'}
           useSrc={true}
           color={palette.text.secondary}
