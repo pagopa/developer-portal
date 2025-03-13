@@ -2,6 +2,9 @@ import boto3
 import os
 from moto import mock_aws
 
+COGNITO_USERNAME = "test_user"
+COGNITO_PASSWORD = "TestPassword123!"
+
 @mock_aws
 def mock_client():
     return boto3.client('cognito-idp', region_name=os.getenv('AWS_DEFAULT_REGION'))
@@ -28,14 +31,14 @@ def mock_signup():
     # Sign up a new user
     client.sign_up(
         ClientId=client_id,
-        Username='test_user',
-        Password='TestPassword123!'
+        Username=COGNITO_USERNAME,
+        Password=COGNITO_PASSWORD
     )
 
     # Admin confirm the user (bypassing the confirmation step)
     client.admin_confirm_sign_up(
         UserPoolId=user_pool_id,
-        Username='test_user'
+        Username=COGNITO_USERNAME,
     )
 
     # Initiate auth to obtain JWT tokens
@@ -43,8 +46,8 @@ def mock_signup():
         ClientId=client_id,
         AuthFlow='USER_PASSWORD_AUTH',
         AuthParameters={
-            'USERNAME': 'test_user',
-            'PASSWORD': 'TestPassword123!'
+            'USERNAME': COGNITO_USERNAME,
+            'PASSWORD': COGNITO_PASSWORD,
         }
     )
 
