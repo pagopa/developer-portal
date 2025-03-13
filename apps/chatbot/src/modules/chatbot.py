@@ -386,7 +386,7 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
-    ) -> str:
+    ) -> Tuple[str, List[str]]:
 
         if isinstance(tags, str):
             tags = [tags]
