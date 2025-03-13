@@ -43,6 +43,9 @@ requests-auth-aws-sigv4 = "^0.7"
 moto = {extras = ["cognitoidp"], version = "^5.1.0"}
 flake8 = "^7.1.2"
 flake8-bugbear = "^24.12.12"
+ragas = "^0.2.13"
+langchain-aws = "^0.2.2"
+langchain-google-vertexai = "^2.0.5"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.27.2"

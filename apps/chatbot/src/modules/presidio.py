@@ -4,7 +4,12 @@ from langdetect import detect_langs
 
 from presidio_anonymizer.operators import Operator, OperatorType
 
-from presidio_analyzer import AnalyzerEngine, Pattern, PatternRecognizer, RecognizerResult
+from presidio_analyzer import (
+    AnalyzerEngine,
+    Pattern,
+    PatternRecognizer,
+    RecognizerResult,
+)
 from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
@@ -25,7 +30,7 @@ GLOBAL_ENTITIES = [
     "LOCATION",
     "PERSON",
     "PHONE_NUMBER",
-    "MEDICAL_LICENSE"
+    "MEDICAL_LICENSE",
 ]
 
 IT_ENTITIES = [
@@ -34,7 +39,7 @@ IT_ENTITIES = [
     "IT_VAT_CODE",
     "IT_PASSPORT",
     "IT_IDENTITY_CARD",
-    "IT_PHYSICAL_ADDRESS"
+    "IT_PHYSICAL_ADDRESS",
 ]
 
 
@@ -82,18 +87,17 @@ class EntityTypeCountAnonymizer(Operator):
         return OperatorType.Anonymize
 
 
-class PresidioPII():
-    """Uses a presidio to analyse PIIs.
-    """
+class PresidioPII:
+    """Uses a presidio to analyse PIIs."""
 
     def __init__(
-            self,
-            config: dict,
-            entity_mapping: Dict[str, Dict] = {},
-            mapping: Dict[str, str] = {},
-            entities: List[str] | None = None,
-            analyzer_threshold: float = 0.4
-        ):
+        self,
+        config: dict,
+        entity_mapping: Dict[str, Dict] = {},
+        mapping: Dict[str, str] = {},
+        entities: List[str] | None = None,
+        analyzer_threshold: float = 0.4,
+    ):
         self.config = config
         self.languages = [item["lang_code"] for item in config["models"]]
         self.entity_mapping = entity_mapping
@@ -108,19 +112,17 @@ class PresidioPII():
         nlp_engine = self.provider.create_engine()
         self.nlp_engine = nlp_engine
         self.analyzer = AnalyzerEngine(
-            nlp_engine = self.nlp_engine,
-            supported_languages = self.languages,
-            default_score_threshold = analyzer_threshold
+            nlp_engine=self.nlp_engine,
+            supported_languages=self.languages,
+            default_score_threshold=analyzer_threshold,
         )
         self._add_italian_physical_address_entity()
         self.engine = AnonymizerEngine()
         self.engine.add_anonymizer(EntityTypeCountAnonymizer)
 
-
     @classmethod
     def class_name(cls) -> str:
         return "PresidioPII"
-
 
     def detect_language(self, text: str) -> str:
 
@@ -137,14 +139,13 @@ class PresidioPII():
             elif "it" in lang_list:
                 lang = "it"
             else:
-                lang = lang_list[0]           
+                lang = lang_list[0]
         except:
             logger.warning("No detected language.")
             lang = "it"
 
         logger.debug(f"Set presidio to detect PII in {lang} language.")
         return lang
-
 
     def detect_pii(self, text: str) -> List[RecognizerResult]:
 
@@ -153,11 +154,10 @@ class PresidioPII():
             text=text,
             language=lang,
             entities=self.entities + IT_ENTITIES if lang == "it" else self.entities,
-            allow_list=self.config["allow_list"]
+            allow_list=self.config["allow_list"],
         )
 
         return results
-
 
     def mask_pii(self, text: str, results: List[RecognizerResult] | None = None):
 
@@ -180,27 +180,24 @@ class PresidioPII():
 
         return new_text.text
 
-
     def _add_italian_physical_address_entity(self) -> None:
 
         italian_address_pattern = Pattern(
             name="italian_address_pattern",
             regex=r"\b(via|viale|piazza|corso|vicolo)\s+[A-Za-z\s]+\s*\d{1,4}.*\b",
-            score=0.8
+            score=0.8,
         )
 
         address_recognizer = PatternRecognizer(
             supported_entity="IT_PHYSICAL_ADDRESS",
             patterns=[italian_address_pattern],
-            supported_language="it"
+            supported_language="it",
         )
 
         self.analyzer.registry.add_recognizer(address_recognizer)
 
-    
     def get_entities(self) -> List[str]:
         return self.entities
-    
 
     def get_supported_entities(self) -> List[str]:
         return self.analyzer.get_supported_entities()

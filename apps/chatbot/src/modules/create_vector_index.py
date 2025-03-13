@@ -17,7 +17,9 @@ DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR", "./PagoPADevPortal/out/")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--params", type=str, default="config/params.yaml", help="params path")
+    parser.add_argument(
+        "--params", type=str, default="config/params.yaml", help="params path"
+    )
     args = parser.parse_args()
 
     # load parameters
@@ -32,5 +34,5 @@ if __name__ == "__main__":
         embed_model,
         documentation_dir=DOCUMENTATION_DIR,
         chunk_sizes=params["vector_index"]["chunk_sizes"],
-        chunk_overlap=params["vector_index"]["chunk_overlap"]
+        chunk_overlap=params["vector_index"]["chunk_overlap"],
     )

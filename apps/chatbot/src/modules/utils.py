@@ -13,7 +13,7 @@ SSM_CLIENT = boto3.client(
     "ssm",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_DEFAULT_REGION
+    region_name=AWS_DEFAULT_REGION,
 )
 
 
@@ -27,16 +27,13 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     """
 
     logger.debug(f"Getting parameter {name} from SSM")
-    try: 
+    try:
         # Get the requested parameter
-        response = SSM_CLIENT.get_parameter(
-            Name=name,
-            WithDecryption=True
-        )
+        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
     except SSM_CLIENT.exceptions.ParameterNotFound:
         logger.warning(f"Parameter {name} not found in SSM, returning default")
         return default
-    
+
     logger.debug(f"Parameter {name} retrieved from SSM")
     return response["Parameter"]["Value"]
 
@@ -44,13 +41,8 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
 def put_ssm_parameter(name: str, value: str) -> None:
 
     logger.debug(f"Putting parameter {name} to SSM")
-    try: 
+    try:
         # Get the requested parameter
-        SSM_CLIENT.put_parameter(
-            Name=name,
-            Value=value,
-            Overwrite=True
-        )
+        SSM_CLIENT.put_parameter(Name=name, Value=value, Overwrite=True)
     except Exception as e:
         logger.error(e)
-        
