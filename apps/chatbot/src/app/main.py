@@ -8,7 +8,8 @@ import hashlib
 import uuid
 import boto3
 import datetime
-import jwt
+import nh3
+import time
 from typing import Annotated, List
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
@@ -17,11 +18,14 @@ from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from src.modules.chatbot import Chatbot
+from src.app.jwt_check import get_jwks, verify_jwt
 
 logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 AWS_DEFAULT_REGION = os.getenv('CHB_AWS_DEFAULT_REGION', os.getenv('AWS_DEFAULT_REGION', None))
+AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
+ENVIRONMENT = os.getenv('environment', 'dev')
 
 chatbot = Chatbot(params, prompts)
 
@@ -43,17 +47,11 @@ boto3_session = boto3.session.Session(
   region_name=AWS_DEFAULT_REGION
 )
 
-if (os.getenv('environment', 'dev') == 'local'):
-  dynamodb = boto3_session.resource(    
-    'dynamodb',
-    endpoint_url=os.getenv('CHB_DYNAMODB_URL', 'http://localhost:8000'),
-    region_name=AWS_DEFAULT_REGION
-  )
-else:
-  dynamodb = boto3_session.resource(    
-    'dynamodb',
-    region_name=AWS_DEFAULT_REGION
-  )
+# endpoint_url is set by AWS_ENDPOINT_URL_DYNAMODB
+dynamodb = boto3_session.resource(
+  'dynamodb',
+  region_name=AWS_DEFAULT_REGION
+)
 
 table_queries = dynamodb.Table(
   f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
@@ -94,13 +92,12 @@ async def query_creation (
   salt = session_salt(session['id'])
 
   answer = chatbot.chat_generate(
-    query_str = query.question,
+    query_str = nh3.clean(query.question),
     messages = [item.dict() for item in query.history] if query.history else None,
     trace_id = trace_id,
     user_id = hash_func(userId, salt),
     session_id = session["id"]
   )
-
 
   if query.queriedAt is None:
     queriedAt = now.isoformat()
@@ -126,19 +123,20 @@ async def query_creation (
     raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
   return bodyToReturn
 
-
 def current_user_id(authorization: str) -> str:
   if authorization is None:
-    return None
+    raise HTTPException(status_code=401, detail="Unauthorized")
+
   else:
     token = authorization.split(' ')[1]
-    decoded = jwt.decode(
-      token, 
-      algorithms=["RS256"], 
-      options={"verify_signature": False}
-    )
-    return decoded['cognito:username']
-
+    decoded = verify_jwt(token)
+    if decoded is False:
+      raise HTTPException(status_code=401, detail="Unauthorized")
+    else:
+      if "cognito:username" in decoded:
+        return decoded['cognito:username']
+      else:
+        return decoded['username']
 
 def find_or_create_session(userId: str, now: datetime.datetime):
   if userId is None:
@@ -210,6 +208,7 @@ async def queries_fetching(
   authorization: Annotated[str | None, Header()] = None
 ):
   userId = current_user_id(authorization)
+  
   if sessionId is None:
     sessionId = last_session_id(userId)
   else:

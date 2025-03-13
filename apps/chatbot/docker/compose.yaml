@@ -5,6 +5,7 @@ services:
       context: ..
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.local.sh"
+    env_file: ../.env.local
     ports:
       - "8080:8080"
     volumes:
@@ -18,7 +19,6 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
-    env_file: ../.env.local
     networks:
       - ntw
 
