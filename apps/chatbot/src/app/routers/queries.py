@@ -4,9 +4,9 @@ import uuid
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
-from src.app.models import Query, QueryFeedback, tables
+from src.app.models import Query, tables
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -104,4 +104,3 @@ async def queries_fetching(
         result = dbResponse.get('Items', [])
 
     return result
-

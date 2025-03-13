@@ -8,12 +8,6 @@ from fastapi import FastAPI
 
 from starlette.middleware.cors import CORSMiddleware
 
-from src.app.sessions import (
-    current_user_id,
-    find_or_create_session,
-    session_salt,
-    hash_func
-)
 from src.app.routers import queries, sessions
 
 logging.basicConfig(level=logging.INFO)
