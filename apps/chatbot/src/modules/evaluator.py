@@ -135,18 +135,34 @@ class Evaluator:
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
     ) -> dict:
 
+        # logger.info(f"------>>>> AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
+        # logger.info(f"------>>>> AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}")
+        # logger.info(f"------>>>> AWS_BEDROCK_LLM_REGION: {AWS_BEDROCK_LLM_REGION}")
+        # logger.info(f"------>>>> AWS_BEDROCK_EMBED_REGION: {AWS_BEDROCK_EMBED_REGION}")
+
         sample = SingleTurnSample(
             user_input=query_str,
             response=response_str,
             retrieved_contexts=retrieved_contexts,
         )
 
+        logger.info(f"------>>>>>>>> sample: {sample}")
+
+        response_relevancy = asyncio_run(
+            self.response_relevancy.single_turn_ascore(sample)
+        )
+        logger.info(f"------>>>>>>>> response_relevancy: {response_relevancy}")
+
+        context_precision = asyncio_run(
+            self.context_precision.single_turn_ascore(sample)
+        )
+        logger.info(f"------>>>>>>>> context_precision: {context_precision}")
+
+        faithfulness = asyncio_run(self.faithfulness.single_turn_ascore(sample))
+        logger.info(f"------>>>>>>>> faithfulness: {faithfulness}")
+
         return {
-            "response_relevancy": asyncio_run(
-                self.response_relevancy.single_turn_ascore(sample)
-            ),
-            "context_precision": asyncio_run(
-                self.context_precision.single_turn_ascore(sample)
-            ),
-            "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
+            "response_relevancy": response_relevancy,
+            "context_precision": context_precision,
+            "faithfulness": faithfulness,
         }
