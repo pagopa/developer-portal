@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.4.1
+
+### Patch Changes
+
+- 76940fc: Fix webinar slug validator
+
 ## 3.4.0
 
 ### Minor Changes

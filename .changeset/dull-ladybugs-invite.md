@@ -1,5 +1,0 @@
----
-"chatbot": minor
----
-
-linting
