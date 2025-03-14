@@ -5,6 +5,7 @@ import os
 import uvicorn
 
 from fastapi import FastAPI
+
 from starlette.middleware.cors import CORSMiddleware
 
 from src.app.routers import queries, sessions
@@ -34,9 +35,11 @@ handler = mangum.Mangum(app, lifespan="off")
 
 
 if __name__ == "__main__":
+    # TODO: use hypercorn
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
         port=8080,
-        log_level=os.getenv("LOG_LEVEL", "info")
+        log_level=os.getenv("LOG_LEVEL", "info"),
+        loop='asyncio'
     )
