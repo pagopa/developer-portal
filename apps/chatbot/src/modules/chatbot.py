@@ -51,7 +51,9 @@ USE_PRESIDIO = (
     True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 )
 USE_CHAT_ENGINE = (
-    True if (os.getenv("CHB_USE_CHAT_ENGINE", "True")).lower() == "true" else False
+    True
+    if (os.getenv("CHB_ENGINE_USE_CHAT_ENGINE", "True")).lower() == "true"
+    else False
 )
 USE_ASYNC = (
     True if (os.getenv("CHB_ENGINE_USE_ASYNC", "True")).lower() == "true" else False
