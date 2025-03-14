@@ -1,5 +1,6 @@
 import datetime
 import nh3
+import os
 import uuid
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
@@ -50,17 +51,19 @@ async def query_creation(
         messages=messages,
     )
 
-    logger.info(f" ------>>> [queries] call evaluate(response_str={answer})")
-    evaluation_result = chatbot.evaluate(
-        query_str=query_str,
-        response_str=answer,
-        retrieved_contexts=retrived_context,
-        trace_id=trace_id,
-        session_id=session["id"],
-        user_id=user_id,
-        messages=messages
-    )
-    logger.info(f" ------>>> [chat_generate] evaluation_result: {evaluation_result}")
+    # TODO: add langfuse to compose.test.yaml
+    if os.getenv("environment") != "test":
+        logger.info(f" ------>>> [queries] call evaluate(response_str={answer})")
+        evaluation_result = chatbot.evaluate(
+            query_str=query_str,
+            response_str=answer,
+            retrieved_contexts=retrived_context,
+            trace_id=trace_id,
+            session_id=session["id"],
+            user_id=user_id,
+            messages=messages
+        )
+        logger.info(f" ------>>> [chat_generate] evaluation_result: {evaluation_result}")
     
     if query.queriedAt is None:
         queriedAt = now.isoformat()
