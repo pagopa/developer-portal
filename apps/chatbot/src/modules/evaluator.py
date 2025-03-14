@@ -63,7 +63,6 @@ if PROVIDER == "aws":
             region_name=AWS_BEDROCK_EMBED_REGION,
         )
     )
-    logger.info("Loaded evaluation models successfully!")
 else:
 
     def gemini_is_finished_parser(response: LLMResult) -> bool:
@@ -111,7 +110,8 @@ else:
     EMBEDDER = LangchainEmbeddingsWrapper(
         VertexAIEmbeddings(credentials=credentials, model_name=EMBED_MODEL_ID)
     )
-    logger.info("Loaded evaluation models successfully!")
+    logger.info(f"Loaded {MODEL_ID} as judge LLM successfully!")
+    logger.info(f"Loaded {EMBED_MODEL_ID} as judge embedder successfully!")
 
 
 class Evaluator:
