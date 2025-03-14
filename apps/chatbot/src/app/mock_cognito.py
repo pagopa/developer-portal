@@ -5,11 +5,17 @@ from moto import mock_aws
 COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
+
 @mock_aws
 def mock_client():
-    return boto3.client('cognito-idp', region_name=os.getenv('AWS_DEFAULT_REGION'))
+    return boto3.client(
+        'cognito-idp',
+        region_name=os.getenv('AWS_DEFAULT_REGION')
+    )
+
 
 client = mock_client()
+
 
 @mock_aws
 def mock_user_pool_id():
@@ -17,6 +23,7 @@ def mock_user_pool_id():
     user_pool_response = client.create_user_pool(PoolName='test_pool')
     user_pool_id = user_pool_response['UserPool']['Id']
     return user_pool_id
+
 
 @mock_aws
 def mock_signup():
@@ -61,6 +68,6 @@ def mock_signup():
         "user_pool_id": user_pool_id
     }
 
+
 if __name__ == "__main__":
     mock_signup()
-
