@@ -14,11 +14,11 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel, Field
-from src.app.jwt_check import verify_jwt
 from starlette.middleware.cors import CORSMiddleware
 from typing import Annotated, List
 
 from src.modules.chatbot import Chatbot
+from src.app.jwt_check import verify_jwt
 
 logging.basicConfig(level=logging.INFO)
 params = yaml.safe_load(open("config/params.yaml", "r"))
@@ -124,7 +124,6 @@ async def query_creation(
         "queriedAt": queriedAt,
         "badAnswer": False
     }
-
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = chatbot.mask_pii(answer)

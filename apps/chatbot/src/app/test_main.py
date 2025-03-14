@@ -28,7 +28,7 @@ def test_post_queries():
     )
     # response example
     # {
-    #   "id": '8a0f7f9a-b794-483e-9e09-809c31b75334',
+    #   "id": "8a0f7f9a-b794-483e-9e09-809c31b75334",
     #   "sessionId": "f163a47d-12b4-483d-9847-df6147a84370",
     #   "question": "come ti chiami?",
     #   "answer": "Scusa, non sono riuscito ad elaborare questa domanda.\n
