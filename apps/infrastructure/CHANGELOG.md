@@ -1,5 +1,11 @@
 # infrastructure
 
+## 1.7.2
+
+### Patch Changes
+
+- d212a8f: Set minimum tls version of cloudfront distributions to TLS 1.2
+
 ## 1.7.1
 
 ### Patch Changes
