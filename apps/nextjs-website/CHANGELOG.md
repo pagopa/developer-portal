@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 6.0.2
+
+### Patch Changes
+
+- c8d07ef: Add the cursor pointer to the profile menu
+
 ## 6.0.1
 
 ### Patch Changes
