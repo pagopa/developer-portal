@@ -4,8 +4,8 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    # command: "./scripts/run.test.sh"
-    command: "./scripts/run.local.sh"
+    command: "./scripts/run.test.sh"
+      # command: "./scripts/run.local.sh"
     env_file: "../.env.test"
     ports:
       - "8080:8080"
