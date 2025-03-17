@@ -131,7 +131,7 @@ class Evaluator:
             llm=self.llm, embeddings=self.embedder
         )
         self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
-        self.faithfulness = Faithfulness(llm=self.llm)
+        # self.faithfulness = Faithfulness(llm=self.llm)
 
     def evaluate(
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
@@ -143,26 +143,12 @@ class Evaluator:
             retrieved_contexts=retrieved_contexts,
         )
 
-        try:
-            faithfulness_score = asyncio_run(self.faithfulness.single_turn_ascore(sample))
-        except Exception as e:
-            faithfulness_score: None
-            logger.info(e)
-        
-        try:
-            response_relevancy_score = asyncio_run(self.faithfulness.single_turn_ascore(sample))
-        except Exception as e:
-            response_relevancy_score: None
-            logger.info(e)
-        
-        try:
-            context_precision_score = asyncio_run(self.faithfulness.single_turn_ascore(sample))
-        except Exception as e:
-            context_precision_score = None
-            logger.info(e)
-
         return {
-            "faithfulness": faithfulness_score,
-            "response_relevancy": response_relevancy_score,
-            "context_precision": context_precision_score,
+            # "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
+            "response_relevancy": asyncio_run(
+                self.response_relevancy.single_turn_ascore(sample)
+            ),
+            "context_precision": asyncio_run(
+                self.context_precision.single_turn_ascore(sample)
+            ),
         }
