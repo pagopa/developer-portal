@@ -1,5 +1,29 @@
 # infrastructure
 
+## 1.7.2
+
+### Patch Changes
+
+- d212a8f: Set minimum tls version of cloudfront distributions to TLS 1.2
+
+## 1.7.1
+
+### Patch Changes
+
+- 79e8e16: Add local variable and new script for Matomo tag manager
+
+## 1.7.0
+
+### Minor Changes
+
+- 187a6e5: Removed docs-redirect submodule and getting the cloudfront function code from github
+- 7dd971c: Added docs redirect infrastructure
+
+### Patch Changes
+
+- ba335c4: Fixed codebuild cicd lambda permissions
+- a2b334d: Added GCP project id ssm parameter
+
 ## 1.6.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # chatbot
 
+## 4.4.0
+
+### Minor Changes
+
+- eca70c0: linting
+- 0a549b2: sanitize query input via API, increase login security.
+
+## 4.3.0
+
+### Minor Changes
+
+- 06b5572: use url from env var
+
 ## 4.2.0
 
 ### Minor Changes

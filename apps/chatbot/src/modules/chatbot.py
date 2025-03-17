@@ -71,10 +71,11 @@ RESPONSE_TYPE = Union[
     AgentChatResponse,
     StreamingAgentChatResponse,
 ]
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
     "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
-    "the PagoPA DevPortal documentation available at: https://dev.developer.pagopa.it"
+    f"the PagoPA DevPortal documentation available at: {WEBSITE_URL}"
 )
 CONDENSE_PROMPT = (
     "Given the following conversation between a user and an AI assistant and a follow up question from user, "
@@ -466,11 +467,12 @@ class Chatbot:
         )
 
         for key, value in scores.items():
-            self.add_langfuse_score(
-                trace_id=trace_id,
-                session_id=session_id,
-                user_id=user_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
+            if value:
+                self.add_langfuse_score(
+                    trace_id=trace_id,
+                    session_id=session_id,
+                    user_id=user_id,
+                    name=key,
+                    value=value,
+                    data_type="NUMERIC",
+                )

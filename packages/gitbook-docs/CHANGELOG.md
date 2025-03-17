@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 0.3.1
+
+### Patch Changes
+
+- b3e21b9: Fix heading level to variant
+- 04c6ae4: Update doc parsing to show images in tables
+
 ## 0.3.0
 
 ### Minor Changes
