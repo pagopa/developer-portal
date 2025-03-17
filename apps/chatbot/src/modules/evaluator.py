@@ -1,4 +1,5 @@
 import os
+import boto3
 import json
 from logging import getLogger
 from dotenv import load_dotenv
@@ -58,8 +59,14 @@ if PROVIDER == "aws":
     )
     EMBEDDER = LangchainEmbeddingsWrapper(
         BedrockEmbeddings(
+            client=boto3.client(
+                "bedrock-runtime",
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_BEDROCK_EMBED_REGION,
+            ),
             model_id=EMBED_MODEL_ID,
-            credentials_profile_name="default",
+            credentials_profile_name=None,
             region_name=AWS_BEDROCK_EMBED_REGION,
         )
     )
@@ -134,11 +141,6 @@ class Evaluator:
     def evaluate(
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
     ) -> dict:
-
-        # logger.info(f"------>>>> AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
-        # logger.info(f"------>>>> AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}")
-        # logger.info(f"------>>>> AWS_BEDROCK_LLM_REGION: {AWS_BEDROCK_LLM_REGION}")
-        # logger.info(f"------>>>> AWS_BEDROCK_EMBED_REGION: {AWS_BEDROCK_EMBED_REGION}")
 
         sample = SingleTurnSample(
             user_input=query_str,

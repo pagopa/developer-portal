@@ -73,6 +73,7 @@ RESPONSE_TYPE = Union[
     AgentChatResponse,
     StreamingAgentChatResponse,
 ]
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
     "Your role is to provide accurate, professional, and helpful responses to users' "
@@ -406,7 +407,7 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
-    ) -> str:
+    ) -> Tuple[str, List[str]]:
 
         logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
 
@@ -444,7 +445,7 @@ class Chatbot:
                 response_str = self._get_response_str(engine_response)
 
                 logger.info(f" ------>>> [chat_generate] response_str: {response_str}")
-                
+
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -494,11 +495,12 @@ class Chatbot:
         )
 
         for key, value in scores.items():
-            self.add_langfuse_score(
-                trace_id=trace_id,
-                session_id=session_id,
-                user_id=user_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
+            if value:
+                self.add_langfuse_score(
+                    trace_id=trace_id,
+                    session_id=session_id,
+                    user_id=user_id,
+                    name=key,
+                    value=value,
+                    data_type="NUMERIC",
+                )

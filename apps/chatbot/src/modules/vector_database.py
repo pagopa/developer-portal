@@ -187,7 +187,10 @@ def create_documentation(
             or text == ""
             or text == "None"
             or text
-            == "404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non esiste"
+            == (
+                "404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non "
+                "esiste"
+            )
         ):
             empty_pages.append(file)
 
@@ -214,7 +217,8 @@ def create_documentation(
 
     logger.info(f"Number of documents with content: {len(documents)}")
     logger.info(
-        f"Number of empty pages in the documentation: {len(empty_pages)}. These are left out."
+        f"Number of empty pages in the documentation: {len(empty_pages)}. "
+        "These are left out."
     )
     with open("empty_htmls.json", "w") as f:
         json.dump(empty_pages, f, indent=4)
@@ -239,7 +243,8 @@ def build_automerging_index_redis(
     )
 
     logger.info(
-        f"[build_automerging_index_redis] calling create_documentation({WEBSITE_URL}, {documentation_dir})"
+        f"[build_automerging_index_redis] calling create_documentation({WEBSITE_URL}, "
+        "{documentation_dir})"
     )
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
