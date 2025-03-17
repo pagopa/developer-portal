@@ -47,7 +47,7 @@ import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig(process.env),
+  makeBuildConfig(process.secrets),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
