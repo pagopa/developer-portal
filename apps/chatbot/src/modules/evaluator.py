@@ -43,7 +43,7 @@ AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = 0.0
-MODEL_MAXTOKENS = 256
+MODEL_MAXTOKENS = 768
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 if PROVIDER == "aws":
@@ -148,23 +148,20 @@ class Evaluator:
             retrieved_contexts=retrieved_contexts,
         )
 
-        logger.info(f"------>>>>>>>> sample: {sample}")
-
         response_relevancy = asyncio_run(
             self.response_relevancy.single_turn_ascore(sample)
         )
-        logger.info(f"------>>>>>>>> response_relevancy: {response_relevancy}")
 
         context_precision = asyncio_run(
             self.context_precision.single_turn_ascore(sample)
         )
-        logger.info(f"------>>>>>>>> context_precision: {context_precision}")
 
         faithfulness = asyncio_run(self.faithfulness.single_turn_ascore(sample))
-        logger.info(f"------>>>>>>>> faithfulness: {faithfulness}")
-
-        return {
+        
+        result = {
             "response_relevancy": response_relevancy,
             "context_precision": context_precision,
             "faithfulness": faithfulness,
         }
+        logger.info(f"[Evaluator.evaluate result: {result}")
+        return result

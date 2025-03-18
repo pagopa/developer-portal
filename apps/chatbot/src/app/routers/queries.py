@@ -53,7 +53,7 @@ async def query_creation(
 
     # TODO: add langfuse to compose.test.yaml
     if os.getenv("environment") != "test":
-        logger.info(f" ------>>> [queries] call evaluate(response_str={answer})")
+        logger.info(f" ------>>> [queries] call evaluate(response_str={answer}, trace_id={trace_id}, session_d={session["id"]})")
         evaluation_result = chatbot.evaluate(
             query_str=query_str,
             response_str=answer,
@@ -63,7 +63,8 @@ async def query_creation(
             user_id=user_id,
             messages=messages
         )
-        logger.info(f" ------>>> [chat_generate] evaluation_result: {evaluation_result}")
+        logger.info(" ------>>> [chat_generate] evaluation_result:")
+        logger.info(evaluation_result)
     
     if query.queriedAt is None:
         queriedAt = now.isoformat()

@@ -95,7 +95,9 @@ LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
     os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
 )
+
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
+
 LANGFUSE = Langfuse(
     public_key=LANGFUSE_PUBLIC_KEY, secret_key=LANGFUSE_SECRET_KEY, host=LANGFUSE_HOST
 )
@@ -108,7 +110,6 @@ class Chatbot:
         prompts: dict | None = None,
         use_chat_engine: bool | None = None,
     ):
-
         self.params = (
             params
             if params
@@ -408,7 +409,12 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
     ) -> Tuple[str, List[str]]:
-
+        logger.info("-------------------------------")
+        logger.info(f"LANGFUSE_PUBLIC_KEY: {LANGFUSE_PUBLIC_KEY}")
+        logger.info(f"LANGFUSE_SECRET_KEY: {LANGFUSE_SECRET_KEY}")
+        logger.info(f"LANGFUSE_HOST: {LANGFUSE_HOST}")
+        # logger.info(LANGFUSE.auth_check())
+        logger.info("-------------------------------")
         logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
 
         if isinstance(tags, str):
@@ -480,7 +486,7 @@ class Chatbot:
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> None:
+    ) -> dict:
 
         chat_history = self._messages_to_chathistory(messages)
         condense_prompt = CONDENSE_PROMPT.format(
@@ -504,3 +510,5 @@ class Chatbot:
                     value=value,
                     data_type="NUMERIC",
                 )
+        
+        return scores
