@@ -148,20 +148,15 @@ class Evaluator:
             retrieved_contexts=retrieved_contexts,
         )
 
-        response_relevancy = asyncio_run(
-            self.response_relevancy.single_turn_ascore(sample)
-        )
-
-        context_precision = asyncio_run(
-            self.context_precision.single_turn_ascore(sample)
-        )
-
-        faithfulness = asyncio_run(self.faithfulness.single_turn_ascore(sample))
-        
         result = {
-            "response_relevancy": response_relevancy,
-            "context_precision": context_precision,
-            "faithfulness": faithfulness,
+            "response_relevancy": asyncio_run(
+                self.response_relevancy.single_turn_ascore(sample)
+            ),
+            "context_precision": asyncio_run(
+                self.context_precision.single_turn_ascore(sample)
+            ),
+            "faithfulness": asyncio_run(
+                self.faithfulness.single_turn_ascore(sample)
+            )
         }
-        logger.info(f"[Evaluator.evaluate result: {result}")
         return result
