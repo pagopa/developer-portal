@@ -159,5 +159,3 @@ class Evaluator:
                 self.context_precision.single_turn_ascore(sample)
             ),
         }
-        logger.info(f"[Evaluator.evaluate result: {result}")
-        return result
