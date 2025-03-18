@@ -44,6 +44,7 @@ AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = 0.0
 MODEL_MAXTOKENS = 768
+MODEL_MAXTOKENS = 768
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 if PROVIDER == "aws":
@@ -137,6 +138,7 @@ class Evaluator:
         )
         self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
         self.faithfulness = Faithfulness(llm=self.llm)
+        self.faithfulness = Faithfulness(llm=self.llm)
 
     def evaluate(
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
@@ -148,7 +150,7 @@ class Evaluator:
             retrieved_contexts=retrieved_contexts,
         )
 
-        result = {
+        return {
             "faithfulness": asyncio_run(
                 self.faithfulness.single_turn_ascore(sample)
             ),
@@ -157,6 +159,5 @@ class Evaluator:
             ),
             "context_precision": asyncio_run(
                 self.context_precision.single_turn_ascore(sample)
-            )
+            ),
         }
-        return result
