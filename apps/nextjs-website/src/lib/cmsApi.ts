@@ -48,7 +48,7 @@ import { secrets } from '@/config';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig(secrets),
+  makeBuildConfig(Object.keys(secrets).length > 0 ? secrets : process.env),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
