@@ -5,6 +5,7 @@ services:
       context: ..
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.test.sh"
+      # command: "./scripts/run.local.sh"
     env_file: "../.env.test"
     ports:
       - "8080:8080"
@@ -40,6 +41,8 @@ services:
     image: motoserver/moto:5.1.0
     environment:
       - MOTO_PORT=3001
+    ports:
+      - "3001:5000"
     networks:
       - ntwtest
 

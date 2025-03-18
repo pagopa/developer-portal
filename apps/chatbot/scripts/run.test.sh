@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo '-=-=-=-=-=-=-=-=-= init DynamoDB -==-=-=-=-=-=-=-=-'
-./scripts/dynamodb-init.sh
+./scripts/dynamodb-init-test.sh
 
 echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
 ./scripts/create_redis_index.sh
 
 echo '-=-=-=-=-=-=-=-=-=- run pytest -=-==-=-=-=-=-=-=-=-'
-pytest -vv -p no:warnings
+poetry run pytest src/app/

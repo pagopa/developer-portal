@@ -50,6 +50,7 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 USE_PRESIDIO = (
     True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 )
+
 USE_CHAT_ENGINE = (
     True
     if (os.getenv("CHB_ENGINE_USE_CHAT_ENGINE", "True")).lower() == "true"
@@ -63,6 +64,7 @@ USE_STREAMING = (
     if (os.getenv("CHB_ENGINE_USE_STREAMING", "False")).lower() == "true"
     else False
 )
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,
@@ -74,11 +76,13 @@ RESPONSE_TYPE = Union[
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 SYSTEM_PROMPT = (
     "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
-    "Your role is to provide accurate, professional, and helpful responses to users' queries regarding "
+    "Your role is to provide accurate, professional, and helpful responses to users' "
+    "queries regarding "
     f"the PagoPA DevPortal documentation available at: {WEBSITE_URL}"
 )
 CONDENSE_PROMPT = (
-    "Given the following conversation between a user and an AI assistant and a follow up question from user, "
+    "Given the following conversation between a user and an AI assistant and a "
+    "follow up question from user, "
     "rephrase the follow up question to be a standalone question.\n\n"
     "Chat History:\n"
     "{chat_history}\n"
@@ -91,7 +95,9 @@ LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
     os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
 )
+
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
+
 LANGFUSE = Langfuse(
     public_key=LANGFUSE_PUBLIC_KEY, secret_key=LANGFUSE_SECRET_KEY, host=LANGFUSE_HOST
 )
@@ -104,7 +110,6 @@ class Chatbot:
         prompts: dict | None = None,
         use_chat_engine: bool | None = None,
     ):
-
         self.params = (
             params
             if params
@@ -204,7 +209,11 @@ class Chatbot:
             or response_str == ""
             or len(nodes) == 0
         ):
-            response_str = "Mi dispiace, posso rispondere solo a domande riguardo la documentazione del DevPortal di PagoPA.\nProva a riformulare la domanda."
+            response_str = (
+                "Mi dispiace, posso rispondere solo a domande riguardo la "
+                "documentazione del DevPortal di PagoPA.\nProva a riformulare la "
+                "domanda."
+            )
         else:
             response_str = self._unmask_reference(response_str, nodes)
 
@@ -218,7 +227,8 @@ class Chatbot:
         hashed_urls = re.findall(pattern, response_str)
 
         logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
+            f"Generated answer has {len(hashed_urls)} references taken "
+            "from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
         )
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
@@ -254,11 +264,20 @@ class Chatbot:
         chat_history = [self.system_message]
         if messages:
             for message in messages:
+                user_content = message["question"]
+                assistant_content = (
+                    message["answer"].split("Rif:")[0].strip()
+                    if message and message.get("answer")
+                    else None
+                )
                 chat_history += [
-                    ChatMessage(role=MessageRole.USER, content=message["question"]),
+                    ChatMessage(
+                        role=MessageRole.USER,
+                        content=user_content,
+                    ),
                     ChatMessage(
                         role=MessageRole.ASSISTANT,
-                        content=message["answer"].split("Rif:")[0].strip(),
+                        content=assistant_content,
                     ),
                 ]
 
@@ -390,6 +409,13 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
     ) -> Tuple[str, List[str]]:
+        logger.info("-------------------------------")
+        logger.info(f"LANGFUSE_PUBLIC_KEY: {LANGFUSE_PUBLIC_KEY}")
+        logger.info(f"LANGFUSE_SECRET_KEY: {LANGFUSE_SECRET_KEY}")
+        logger.info(f"LANGFUSE_HOST: {LANGFUSE_HOST}")
+        # logger.info(LANGFUSE.auth_check())
+        logger.info("-------------------------------")
+        logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
 
         if isinstance(tags, str):
             tags = [tags]
@@ -397,13 +423,16 @@ class Chatbot:
         chat_history = self._messages_to_chathistory(messages)
 
         if not trace_id:
-            logger.debug(f"[Langfuse] Trace id not provided. Generating a new one")
+            logger.debug("[Langfuse] Trace id not provided. Generating a new one")
             trace_id = str(uuid.uuid4())
 
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id, tags=tags
+            trace_id=trace_id,
+            session_id=session_id,
+            user_id=user_id,
+            tags=tags
         ) as trace:
 
             try:
@@ -421,6 +450,8 @@ class Chatbot:
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
 
+                logger.info(f" ------>>> [chat_generate] response_str: {response_str}")
+
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -430,7 +461,10 @@ class Chatbot:
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
 
             except Exception as e:
-                response_str = "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda."
+                response_str = (
+                    "Scusa, non posso elaborare la tua richiesta.\nProva a "
+                    "formulare una nuova domanda."
+                )
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
@@ -452,7 +486,7 @@ class Chatbot:
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> None:
+    ) -> dict:
 
         chat_history = self._messages_to_chathistory(messages)
         condense_prompt = CONDENSE_PROMPT.format(
@@ -476,3 +510,5 @@ class Chatbot:
                     value=value,
                     data_type="NUMERIC",
                 )
+        
+        return scores

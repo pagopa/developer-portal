@@ -11,7 +11,8 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
+      # - ../../nextjs-website/out:/app/build-devp/out
+      - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
@@ -83,7 +84,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "3001:3000"
+      - "4001:3000"
     env_file: ../.env.local
     networks:
       - ntw

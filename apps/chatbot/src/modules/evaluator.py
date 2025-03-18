@@ -44,6 +44,7 @@ AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = 0.0
 MODEL_MAXTOKENS = 768
+MODEL_MAXTOKENS = 768
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 if PROVIDER == "aws":
@@ -70,7 +71,6 @@ if PROVIDER == "aws":
             region_name=AWS_BEDROCK_EMBED_REGION,
         )
     )
-
 else:
 
     def gemini_is_finished_parser(response: LLMResult) -> bool:
@@ -118,9 +118,8 @@ else:
     EMBEDDER = LangchainEmbeddingsWrapper(
         VertexAIEmbeddings(credentials=credentials, model_name=EMBED_MODEL_ID)
     )
-
-logger.info(f"Loaded {MODEL_ID} as judge LLM successfully!")
-logger.info(f"Loaded {EMBED_MODEL_ID} as judge embedder successfully!")
+    logger.info(f"Loaded {MODEL_ID} as judge LLM successfully!")
+    logger.info(f"Loaded {EMBED_MODEL_ID} as judge embedder successfully!")
 
 
 class Evaluator:
@@ -138,6 +137,7 @@ class Evaluator:
             llm=self.llm, embeddings=self.embedder
         )
         self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
+        self.faithfulness = Faithfulness(llm=self.llm)
         self.faithfulness = Faithfulness(llm=self.llm)
 
     def evaluate(
@@ -159,3 +159,5 @@ class Evaluator:
                 self.context_precision.single_turn_ascore(sample)
             ),
         }
+        logger.info(f"[Evaluator.evaluate result: {result}")
+        return result
