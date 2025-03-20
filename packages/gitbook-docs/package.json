@@ -19,7 +19,8 @@
     "clean": "shx rm -rf dist/",
     "compile": "npm run clean && tsc",
     "lint": "eslint src",
-    "test": "jest -i"
+    "test": "jest -i",
+    "generate-guide-metadata": "ts-node src/scripts/generateGuideMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
