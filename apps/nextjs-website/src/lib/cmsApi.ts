@@ -44,10 +44,11 @@ import {
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
 import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
+import { secrets } from '@/config';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig(process.env),
+  makeBuildConfig(Object.keys(secrets).length > 0 ? secrets : process.env),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
