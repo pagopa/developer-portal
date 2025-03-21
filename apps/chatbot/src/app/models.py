@@ -21,6 +21,16 @@ class QueryFeedback(BaseModel):
     badAnswer: bool
 
 
+class EvaluationData(BaseModel):
+    query_str: str
+    response_str: str
+    retrieved_contexts: List[str]
+    trace_id: str
+    session_id: str
+    user_id: str
+    messages: List[QueryFromThePast] | None
+
+
 AWS_DEFAULT_REGION = os.getenv(
     'CHB_AWS_DEFAULT_REGION',
     os.getenv('AWS_DEFAULT_REGION', None)

@@ -39,10 +39,10 @@ from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
-load_dotenv()
+# load_dotenv()
 logger = getLogger(__name__)
 
 CWF = Path(__file__)
@@ -409,13 +409,6 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
     ) -> Tuple[str, List[str]]:
-        logger.info("-------------------------------")
-        logger.info(f"LANGFUSE_PUBLIC_KEY: {LANGFUSE_PUBLIC_KEY}")
-        logger.info(f"LANGFUSE_SECRET_KEY: {LANGFUSE_SECRET_KEY}")
-        logger.info(f"LANGFUSE_HOST: {LANGFUSE_HOST}")
-        # logger.info(LANGFUSE.auth_check())
-        logger.info("-------------------------------")
-        logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
 
         if isinstance(tags, str):
             tags = [tags]
@@ -487,19 +480,21 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-
+        logger.info("[chatbot.evaluate] -- 01 --")
         chat_history = self._messages_to_chathistory(messages)
+        logger.info("[chatbot.evaluate] -- 02 --")
         condense_prompt = CONDENSE_PROMPT.format(
             chat_history=chat_history, query_str=query_str
         )
+        logger.info("[chatbot.evaluate] -- 03 --")
         condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-
+        logger.info("[chatbot.evaluate] -- 04 --")
         scores = self.judge.evaluate(
             query_str=condense_query_response.text,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-
+        logger.info("[chatbot.evaluate] -- 05 --")
         for key, value in scores.items():
             if value:
                 self.add_langfuse_score(
@@ -510,5 +505,5 @@ class Chatbot:
                     value=value,
                     data_type="NUMERIC",
                 )
-        
+        logger.info("[chatbot.evaluate] -- 06 --")
         return scores

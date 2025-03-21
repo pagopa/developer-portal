@@ -14,16 +14,33 @@ services:
       - ./files/.aws:/root/.aws
       - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
-      redis:
-        condition: service_started
-      dynamodb:
+      create-redis-index-test:
+        condition: service_completed_successfully
+      dynamodb-test:
         condition: service_started
       motoserver:
         condition: service_started
     networks:
       - ntwtest
 
-  dynamodb:
+  create-redis-index-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
+    env_file: "../.env.test"
+    volumes:
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis-test:
+        condition: service_started
+      motoserver:
+        condition: service_started
+    networks:
+      - ntwtest
+
+  dynamodb-test:
     image: amazon/dynamodb-local:2.5.2
     environment:
       - AWS_ACCESS_KEY_ID=dummy
@@ -32,7 +49,7 @@ services:
     networks:
       - ntwtest
 
-  redis:
+  redis-test:
     image: redis/redis-stack:7.2.0-v13
     networks:
       - ntwtest

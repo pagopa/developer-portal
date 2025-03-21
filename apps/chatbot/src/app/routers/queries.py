@@ -2,7 +2,9 @@ import datetime
 import nh3
 import os
 import uuid
+import json
 import yaml
+import requests
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
@@ -19,11 +21,45 @@ from src.app.sessions import (
 )
 from src.modules.chatbot import Chatbot
 
+EVALUATION_API_URL = os.getenv("CHB_EVALUATION_API_URL", "http://api:8080/evaluations")
+
 logger = getLogger(__name__)
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
+
+
+def evaluate(evaluation_data: dict, authorization: str) -> dict:
+    # TODO: make it async
+    evaluation_result = {}
+    EVALUATION_USE_API = os.getenv("CHB_EVALUATION_USE_API", "false")
+    if EVALUATION_USE_API == "false":
+        logger.info("[queries.evaluate] call chatbot.evaluate...") 
+        evaluation_result = chatbot.evaluate(
+            query_str=evaluation_data["query_str"],
+            response_str=evaluation_data["answer"],
+            retrieved_contexts=evaluation_data["retrived_context"],
+            trace_id=evaluation_data["trace_id"],
+            session_id=evaluation_data["session_id"],
+            user_id=evaluation_data["user_id"],
+            messages=evaluation_data["messages"]
+        )
+    else:
+        logger.info(
+            f"[queries.evaluate] call requests.post {EVALUATION_API_URL}..."
+        )
+        evaluation_result = requests.post(
+            EVALUATION_API_URL,
+            data=json.dumps(evaluation_data),
+            headers={
+                "Authorization": authorization,
+                "Content-Type": "application/json"
+            }
+        )
+
+    logger.info(f" ------>>> [queries] evaluation_result={evaluation_result.json()})")
+    return evaluation_result.json()
 
 
 @router.post("/queries")
@@ -53,15 +89,16 @@ async def query_creation(
 
     # TODO: add langfuse to compose.test.yaml
     if os.getenv("environment") != "test":
-        chatbot.evaluate(
-            query_str=query_str,
-            response_str=answer,
-            retrieved_contexts=retrived_context,
-            trace_id=trace_id,
-            session_id=session["id"],
-            user_id=user_id,
-            messages=messages
-        )
+        evaluation_data = {
+            "query_str": query_str,
+            "response_str": answer,
+            "retrieved_contexts": retrived_context,
+            "trace_id": trace_id,
+            "session_id": session["id"],
+            "user_id": user_id,
+            "messages": messages
+        }
+        evaluate(evaluation_data=evaluation_data, authorization=authorization)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
