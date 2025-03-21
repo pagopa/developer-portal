@@ -85,6 +85,45 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS website.
 
+### Run Strapi CMS with Docker
+
+#### Run PostgreSQL
+``` bash
+docker run -it --rm --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:14
+```
+
+#### Create a network and connect the postgres container to it
+``` bash
+docker network create strapi-network  # Only needed if it doesn't exist
+docker network connect strapi-network postgres
+```
+
+#### Build Strapi container
+``` bash
+docker build -t strapi-cms apps/strapi-cms
+```
+
+#### Create a .env file for the Strapi container using the following values for the PostgreSQL connection
+``` bash
+...
+DATABASE_CLIENT=postgres
+DATABASE_HOST=postgres
+DATABASE_NAME=postgres
+DATABASE_PASSWORD=password
+DATABASE_PORT=5432
+DATABASE_SCHEMA=public
+DATABASE_SSL=false
+DATABASE_USERNAME=postgres
+...
+```
+
+#### Run Strapi container in the same network
+``` bash
+docker run --name strapi-cms --network strapi-network -p 1337:1337 --env-file apps/strapi-cms/.env-docker strapi-cms
+```
+
+Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS backoffice.
+
 ### Run test locally
 
 Run the following command from the root folder.
@@ -105,7 +144,7 @@ or run the following command to keep watching changes while updating code or tes
 npm run test -w <workspace> -- --watch
 ```
 
-## Enable the chatbot for local developement
+### Enable the chatbot for local developement
 
 In the `nextjs-website` app (`apps/nextjs-websites`) add (or update if already present) the following lines: 
 
@@ -114,9 +153,7 @@ NEXT_PUBLIC_CHATBOT_HOST="https://api.chatbot.dev.developer.pagopa.it"
 NEXT_PUBLIC_CHATBOT_ACTIVE="true"
 ```
 
-##
 ## Commands Cheat Sheet
-
 
 ### Workspace
 
