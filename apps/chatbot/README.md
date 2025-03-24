@@ -54,12 +54,20 @@ Check out the params in order to store your vector index accordingly.
 
 ## Test
 
+### Chatbot module
 In order to test the chatbot and its APIs, run:
 
     pytest
 
 For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
 
+### API
+The FastAPI application is in the `src`app` directory.
+
+From the root directory (`apps/chatbot`), run
+```
+./docker/docker-compose-run-tests.sh
+```
 ## Docker
 
 In order to run the chatbot locally for the first time, you need to:
