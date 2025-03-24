@@ -5,7 +5,6 @@ services:
       context: ..
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.test.sh"
-      # command: "./scripts/run.local.sh"
     env_file: "../.env.test"
     ports:
       - "8080:8080"
@@ -16,6 +15,28 @@ services:
     depends_on:
       create-redis-index-test:
         condition: service_completed_successfully
+      dynamodb-test:
+        condition: service_started
+      motoserver:
+        condition: service_started
+      api-chatbot-test:
+        condition: service_started
+    networks:
+      - ntwtest
+
+  api-chatbot-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "./scripts/run.local.sh"
+    env_file: "../.env.test"
+    volumes:
+      - ..:/app
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis-test:
+        condition: service_started
       dynamodb-test:
         condition: service_started
       motoserver:
