@@ -2,6 +2,12 @@
  * webinar router
  */
 
-import { factories } from '@strapi/strapi';
-
-export default factories.createCoreRouter('api::webinar.webinar');
+export default {
+  routes: [
+    {
+      handler: 'webinar.deleteWithoutHooks',
+      method: 'DELETE',
+      path: '/webinars/delete-without-hooks/:id', // Only match when the first parameter contains 2 or 3 digits.
+    },
+  ],
+};
