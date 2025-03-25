@@ -1,5 +1,11 @@
 # chatbot
 
+## 4.4.1
+
+### Patch Changes
+
+- 293f19c: FastAPI refactoring
+
 ## 4.4.0
 
 ### Minor Changes
