@@ -7,4 +7,4 @@ echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
 ./scripts/create_redis_index.sh
 
 echo '-=-=-=-=-=-=-=-=-=- run pytest -=-==-=-=-=-=-=-=-=-'
-pytest  -p no:warnings
+pytest -vv -p no:warnings
