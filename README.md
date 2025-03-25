@@ -204,6 +204,14 @@ and you will get a message like this:
 ```
 Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
 
+## Deploy in dev and production environments
+Currently, the deployment happens automatically in the `dev` environment when a push is made to the `main` branch of the repository, while it is done manually in the `production` environment.
+The CMS runs in an Amazon ECS container as defined in the `apps/strapi-cms/Dockerfile`.
+In the Docker container, the `package.json` and `package-lock.json` files located in the `apps/strapi-cms` folder are copied, npm packages are installed, and the `npm run start` command is executed to start the Strapi server.
+
+### Update the package-lock.json file whenever a dependency changes
+Whenever a `dependency` or `devDependency` is added in a PR to the CMS's `package.json`, it is necessary to update the `apps/strapi-cms/package-lock.json` file by running the command
+`npm run prune:strapi -w strapi-cms` from the root of the project.
 
 ## Changelog
 This project utilizes [changesets](https://github.com/changesets/changesets) to generate the changelog. Here's how you can use it:
