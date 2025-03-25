@@ -80,17 +80,18 @@ def test_chat_generation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        res, _ = CHATBOT.chat_generate(
+        response_json, _ = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
-        res, _ = CHATBOT.chat_generate(
+        response = CHATBOT.get_final_response(response_json)
+        response_json, _ = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
             trace_id="fghik",
-            messages=[{"question": query_str, "answer": res}],
+            messages=[{"question": query_str, "answer": response}],
             user_id="user-test",
             session_id="session-test",
             tags="test",
@@ -112,16 +113,17 @@ def test_evaluation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        res, contexts = CHATBOT.chat_generate(
+        response_json, contexts = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
+        response = CHATBOT.get_final_response(response_json)
         CHATBOT.evaluate(
             query_str=query_str,
-            response_str=res,
+            response_str=response,
             retrieved_contexts=contexts,
             trace_id="abcde",
             user_id="user-test",
