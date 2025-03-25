@@ -19,30 +19,9 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
-      api-chatbot:
-        condition: service_started
     networks:
       - ntw
 
-  api-chatbot:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.local.sh"
-    env_file: ../.env.local
-    volumes:
-      - ..:/app
-      - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
-    depends_on:
-      redis:
-        condition: service_started
-      dynamodb:
-        condition: service_started
-      langfuse:
-        condition: service_started
-    networks:
-      - ntw
 
   create-redis-index:
     build:

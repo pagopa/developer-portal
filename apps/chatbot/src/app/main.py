@@ -7,7 +7,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from src.app.routers import evaluations, queries, sessions
+from src.app.routers import queries, sessions
 
 logging.basicConfig(level=logging.INFO)
 AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
@@ -21,7 +21,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(evaluations.router)
 app.include_router(queries.router)
 app.include_router(sessions.router)
 

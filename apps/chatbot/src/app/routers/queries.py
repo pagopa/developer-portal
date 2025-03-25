@@ -1,6 +1,5 @@
 import datetime
 import nh3
-import httpx
 import os
 import uuid
 import yaml
@@ -29,39 +28,12 @@ prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
 
-async def evaluate(evaluation_data: dict, authorization: str) -> dict:
-    # TODO: make it async
-    evaluation_result = {}
-    EVALUATION_USE_API = os.getenv("CHB_EVALUATION_USE_API", "false")
-    if EVALUATION_USE_API == "false":
-        logger.info("[queries.evaluate] call chatbot.evaluate...") 
-        evaluation_result = chatbot.evaluate(
-            query_str=evaluation_data["query_str"],
-            response_str=evaluation_data["response_str"],
-            retrieved_contexts=evaluation_data["retrieved_contexts"],
-            trace_id=evaluation_data["trace_id"],
-            session_id=evaluation_data["session_id"],
-            user_id=evaluation_data["user_id"],
-            messages=evaluation_data["messages"]
-        )
+async def evaluate(evaluation_data: dict) -> dict:
+    if os.getenv("environment", "development") != "test":
+        evaluation_result = chatbot.evaluate(**evaluation_data)
+        logger.info(f"[queries] evaluation_result={evaluation_result})")
     else:
-        logger.info(
-            f"[queries.evaluate] call requests.post {EVALUATION_API_URL}..."
-        )
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                EVALUATION_API_URL,
-                json=evaluation_data,
-                headers={
-                    "Authorization": authorization,
-                    "Content-Type": "application/json"
-                },
-                timeout=None
-            )
-            response.raise_for_status()
-            evaluation_result = response.json()
-
-    logger.info(f" ------>>> [queries] evaluation_result={evaluation_result})")
+        evaluation_result = {}
     return evaluation_result
 
 
@@ -82,7 +54,6 @@ async def query_creation(
         [item.dict() for item in query.history] if query.history else None
     )
 
-    logger.info(f" ------>>> [queries] call chat_generate(query_str={query_str})")
     answer, retrieved_contexts = chatbot.chat_generate(
         query_str=query_str,
         trace_id=trace_id,
@@ -91,23 +62,19 @@ async def query_creation(
         messages=messages,
     )
 
-    # TODO: add langfuse to compose.test.yaml
-    if os.getenv("environment") != "test":
-        evaluation_data = {
-            "query_str": query_str,
-            "response_str": answer,
-            "retrieved_contexts": retrieved_contexts,
-            "trace_id": trace_id,
-            "session_id": session["id"],
-            "user_id": user_id,
-            "messages": messages
-        }
-        background_tasks.add_task(
-            evaluate,
-            evaluation_data=evaluation_data,
-            authorization=authorization
-        )
-        # await evaluate(evaluation_data=evaluation_data, authorization=authorization)
+    evaluation_data = {
+        "query_str": query_str,
+        "response_str": answer,
+        "retrieved_contexts": retrieved_contexts,
+        "trace_id": trace_id,
+        "session_id": session["id"],
+        "user_id": user_id,
+        "messages": messages
+    }
+    background_tasks.add_task(
+        evaluate,
+        evaluation_data=evaluation_data
+    )
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()

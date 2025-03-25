@@ -445,8 +445,6 @@ class Chatbot:
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
 
-                logger.info(f" ------>>> [chat_generate] response_str: {response_str}")
-
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -482,22 +480,16 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-        logger.info(f"[chatbot.evaluate] -- 01 -- messages: {messages}")
         chat_history = self._messages_to_chathistory(messages)
-        logger.info(f"[chatbot.evaluate] -- 01,5 -- chat_history: {chat_history}")
-        logger.info("[chatbot.evaluate] -- 02 --")
         condense_prompt = CONDENSE_PROMPT.format(
             chat_history=chat_history, query_str=query_str
         )
-        logger.info("[chatbot.evaluate] -- 03 --")
         condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-        logger.info("[chatbot.evaluate] -- 04 --")
         scores = self.judge.evaluate(
             query_str=condense_query_response.text,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        logger.info("[chatbot.evaluate] -- 05 --")
         for key, value in scores.items():
             if value:
                 self.add_langfuse_score(
@@ -508,5 +500,4 @@ class Chatbot:
                     value=value,
                     data_type="NUMERIC",
                 )
-        logger.info("[chatbot.evaluate] -- 06 --")
         return scores
