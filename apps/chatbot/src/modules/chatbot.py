@@ -1,5 +1,6 @@
 import os
 import re
+import json
 import yaml
 import uuid
 from pathlib import Path
@@ -201,6 +202,9 @@ class Chatbot:
             response_str = engine_response.response
 
         response_str = response_str.strip()
+
+        logger.info(f"------->>> {response_str}")
+
         nodes = engine_response.source_nodes
 
         if (
@@ -209,11 +213,7 @@ class Chatbot:
             or response_str == ""
             or len(nodes) == 0
         ):
-            response_str = (
-                "Mi dispiace, posso rispondere solo a domande riguardo la "
-                "documentazione del DevPortal di PagoPA.\nProva a riformulare la "
-                "domanda."
-            )
+            response_str = '{"response": "Mi dispiace, posso rispondere solo a domande riguardo la documentazione del DevPortal di PagoPA. Prova a riformulare la domanda.", "topics": ["none"], "references": []}'
         else:
             response_str = self._unmask_reference(response_str, nodes)
 
@@ -346,10 +346,14 @@ class Chatbot:
         trace_id: str,
         name: str,
         value: float,
+        comment: str | None,
         session_id: str | None = None,
         user_id: str | None = None,
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
     ) -> None:
+
+        if comment:
+            comment = self.mask_pii(comment)
 
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
@@ -363,10 +367,18 @@ class Chatbot:
                     break
 
             if flag:
-                trace.score(name=name, value=value, data_type=data_type)
+                trace.score(
+                    name=name, value=value, data_type=data_type, comment=comment
+                )
                 logger.warning(f"Add score {name}: {value} in trace {trace_id}")
             else:
-                trace.score(id=score_id, name=name, value=value, data_type=data_type)
+                trace.score(
+                    id=score_id,
+                    name=name,
+                    value=value,
+                    data_type=data_type,
+                    comment=comment,
+                )
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
     def _mask_trace(self, data: Any) -> None:
@@ -408,14 +420,7 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
-    ) -> Tuple[str, List[str]]:
-        logger.info("-------------------------------")
-        logger.info(f"LANGFUSE_PUBLIC_KEY: {LANGFUSE_PUBLIC_KEY}")
-        logger.info(f"LANGFUSE_SECRET_KEY: {LANGFUSE_SECRET_KEY}")
-        logger.info(f"LANGFUSE_HOST: {LANGFUSE_HOST}")
-        # logger.info(LANGFUSE.auth_check())
-        logger.info("-------------------------------")
-        logger.info(f" ------>>> [chat_generate] query_str: {query_str}")
+    ) -> Tuple[dict, List[str]]:
 
         if isinstance(tags, str):
             tags = [tags]
@@ -429,10 +434,7 @@ class Chatbot:
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
-            trace_id=trace_id,
-            session_id=session_id,
-            user_id=user_id,
-            tags=tags
+            trace_id=trace_id, session_id=session_id, user_id=user_id, tags=tags
         ) as trace:
 
             try:
@@ -449,9 +451,6 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
                 response_str = self._get_response_str(engine_response)
-
-                logger.info(f" ------>>> [chat_generate] response_str: {response_str}")
-
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -468,14 +467,29 @@ class Chatbot:
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
+            response_json = json.loads(response_str)
+
             trace.update(
-                output=self.mask_pii(response_str),
+                output=self.mask_pii(response_json["response"]),
                 metadata={"context": retrieved_contexts},
+                tags=response_json["topics"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
-        return response_str, retrieved_contexts
+        return response_json, retrieved_contexts
+
+    def get_final_response(self, response_json: dict) -> str:
+
+        final_response = response_json["response"]
+        if response_json["references"]:
+            final_response += "\n\nRif:"
+            for ref in response_json["references"]:
+                title = ref["title"]
+                link = ref["filename"]
+                final_response += f"\n[{title}]({link})"
+
+        return final_response
 
     def evaluate(
         self,
@@ -510,5 +524,5 @@ class Chatbot:
                     value=value,
                     data_type="NUMERIC",
                 )
-        
+
         return scores
