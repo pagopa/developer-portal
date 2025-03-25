@@ -6,7 +6,7 @@ import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { theme as muiItaliaTheme } from '@pagopa/mui-italia';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { Options } from '@emotion/cache/dist/declarations/types';
+import type { Options } from '@emotion/cache';
 
 export const theme = createTheme(muiItaliaTheme);
 
