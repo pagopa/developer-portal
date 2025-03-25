@@ -1,5 +1,5 @@
 ---
-"chatbot": major
+"chatbot": patch
 ---
 
-divide FastAPI code in more files
+FastAPI refactoring
