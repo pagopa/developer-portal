@@ -12,7 +12,7 @@
     "build": "strapi build",
     "lint": "eslint",
     "strapi": "strapi",
-    "prune:strapi": "turbo prune --scope=strapi-cms --docker && mv ../../out/package-lock.json . && rm -R ../../out/"
+    "prune:strapi": "turbo prune --scope=strapi-cms --docker && mv -f ../../out/package-lock.json . && rm -R ../../out/"
   },
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
