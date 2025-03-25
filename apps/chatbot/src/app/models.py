@@ -2,7 +2,7 @@ import boto3
 import os
 
 from pydantic import BaseModel, Field
-from typing import List
+from typing import Dict, List
 
 
 class QueryFromThePast(BaseModel):
@@ -26,9 +26,9 @@ class EvaluationData(BaseModel):
     response_str: str
     retrieved_contexts: List[str]
     trace_id: str
-    session_id: str
-    user_id: str
-    messages: List[QueryFromThePast] | None
+    session_id: str | None
+    user_id: str | None
+    messages: List[Dict[str, str]] | None
 
 
 AWS_DEFAULT_REGION = os.getenv(

@@ -413,7 +413,9 @@ class Chatbot:
         if isinstance(tags, str):
             tags = [tags]
 
+        logger.info(f"[chatbot.chat_generate] -- 01 -- messages: {messages}")
         chat_history = self._messages_to_chathistory(messages)
+        logger.info(f"[chatbot.chat_generate] -- 01,5 -- chat_history: {chat_history}")
 
         if not trace_id:
             logger.debug("[Langfuse] Trace id not provided. Generating a new one")
@@ -480,8 +482,9 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-        logger.info("[chatbot.evaluate] -- 01 --")
+        logger.info(f"[chatbot.evaluate] -- 01 -- messages: {messages}")
         chat_history = self._messages_to_chathistory(messages)
+        logger.info(f"[chatbot.evaluate] -- 01,5 -- chat_history: {chat_history}")
         logger.info("[chatbot.evaluate] -- 02 --")
         condense_prompt = CONDENSE_PROMPT.format(
             chat_history=chat_history, query_str=query_str

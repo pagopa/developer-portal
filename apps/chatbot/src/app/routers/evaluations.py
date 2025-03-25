@@ -30,7 +30,7 @@ async def evaluation_creation(
                 user_id=evaluationData.user_id,
                 messages=evaluationData.messages
             )
-            logger.info("[evaluations] evaluation_result: {evaluation_result}")
+            logger.info(f"[evaluations] evaluation_result: {evaluation_result}")
         except Exception as e:
             raise HTTPException(
                 status_code=422,
