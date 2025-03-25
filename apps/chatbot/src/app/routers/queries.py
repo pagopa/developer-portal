@@ -19,9 +19,8 @@ from src.app.sessions import (
 )
 from src.modules.chatbot import Chatbot
 
-EVALUATION_API_URL = os.getenv("CHB_EVALUATION_API_URL", "http://api:8080/evaluations")
-
 logger = getLogger(__name__)
+
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))

@@ -2,7 +2,7 @@ import boto3
 import os
 
 from pydantic import BaseModel, Field
-from typing import Dict, List
+from typing import List
 
 
 class QueryFromThePast(BaseModel):
