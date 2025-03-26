@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.64.0"
+      version = "~> 5.0"
     }
 
     awscc = {
@@ -96,6 +96,18 @@ module "website" {
   use_custom_certificate       = var.use_custom_certificate
   hosted_zone_id               = module.core.hosted_zone_id
   ses_domain_identity_arn      = module.core.ses_domain_identity_arn
+
+  website_is_standalone = var.website_is_standalone
+  nextjs_version = "13.4.19"
+  create_chatbot = var.create_chatbot
+
+  environment_information = {
+    prefix          = "devportal"
+    env_short       = local.env_short[var.environment]
+    location        = var.aws_region
+    app_name        = "website"
+    instance_number = "01"
+  }
 }
 
 module "cms" {

@@ -7,7 +7,7 @@ output "website_bucket" {
 
 output "website_cdn" {
   value = {
-    arn = aws_cloudfront_distribution.website.arn
+    arn = var.website_is_standalone ? null : aws_cloudfront_distribution.website["static"].arn
   }
 }
 
