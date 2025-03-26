@@ -44,6 +44,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "website" {
 }
 
 resource "aws_s3_bucket_policy" "cloudfront" {
+  for_each = local.is_static
   bucket = aws_s3_bucket.website.id
-  policy = data.aws_iam_policy_document.website_iam_policy.json
+  policy = data.aws_iam_policy_document.website_iam_policy["static"].json
 }
