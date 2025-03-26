@@ -194,7 +194,7 @@ resource "aws_cognito_user_pool_client" "devportal_website" {
 }
 
 resource "aws_cognito_user_pool_domain" "devportal" {
-  depends_on = [aws_route53_record.website, module.amplify]
+  depends_on      = [aws_route53_record.website, module.amplify]
   domain          = aws_acm_certificate.auth.domain_name
   certificate_arn = aws_acm_certificate.auth.arn
   user_pool_id    = aws_cognito_user_pool.devportal.id

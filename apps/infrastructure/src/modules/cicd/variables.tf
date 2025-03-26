@@ -9,6 +9,17 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "environment_information" {
+  type = object({
+    prefix          = string
+    env_short       = string
+    location        = string
+    domain          = optional(string)
+    app_name        = string
+    instance_number = string
+  })
+}
+
 variable "tags" {
   type = map(any)
   default = {
@@ -84,4 +95,10 @@ variable "chatbot_env_vars" {
   type        = map(string)
   description = "Chatbot environment variables"
   default     = {}
+}
+
+variable "website_is_standalone" {
+  type        = bool
+  description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
+  default     = false
 }
