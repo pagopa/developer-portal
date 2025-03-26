@@ -33,7 +33,8 @@
       },
       "type": "string",
       "required": true,
-      "unique": true
+      "unique": true,
+      "regex": "^[a-zA-Z0-9-]+$"
     },
     "listItems": {
       "displayName": "ListItem",
