@@ -670,7 +670,7 @@ module "cognito_pre_sign_up_lambda_concurrent_executions_alarm" {
 ## Number of requests with 5xx status code
 module "cloudfront_5xx_error_rate_alarm" {
   for_each = local.is_static
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | CloudFront 5xxErrorRate"
   actions_enabled   = true
@@ -696,7 +696,7 @@ module "cloudfront_5xx_error_rate_alarm" {
 ## Origin latency
 module "cloudfront_origin_latency_alarm" {
   for_each = local.is_static
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | CloudFront Origin Latency"
   actions_enabled   = true
@@ -722,7 +722,7 @@ module "cloudfront_origin_latency_alarm" {
 ## Number of validation errors of the CloudFront Function
 module "cloudfront_function_validation_errors_alarm" {
   for_each = local.is_static
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | CloudFront Function | FunctionValidationErrors"
   actions_enabled   = true
@@ -749,7 +749,7 @@ module "cloudfront_function_validation_errors_alarm" {
 ## Number of errors of the CloudFront Function
 module "cloudfront_function_execution_errors_alarm" {
   for_each = local.is_static
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | CloudFront Function | Execution Errors"
   actions_enabled   = true
@@ -776,7 +776,7 @@ module "cloudfront_function_execution_errors_alarm" {
 ## Check CloudFront Function is throttled
 module "cloudfront_function_throttled_alarm" {
   for_each = local.is_static
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
 
   alarm_name        = "DevPortal | Website | CloudFront Function | Throttle"
   actions_enabled   = true

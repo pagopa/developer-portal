@@ -73,7 +73,7 @@ module "core" {
   dns_domain_name      = var.dns_domain_name
   dns_delegate_records = var.dns_delegate_records
 
-  create_chatbot = var.create_chatbot
+  create_chatbot            = var.create_chatbot
   ac_integration_is_enabled = var.ac_integration_is_enabled
 }
 
@@ -98,8 +98,8 @@ module "website" {
   ses_domain_identity_arn      = module.core.ses_domain_identity_arn
 
   website_is_standalone = var.website_is_standalone
-  nextjs_version = "13.4.19"
-  create_chatbot = var.create_chatbot
+  nextjs_version        = "13.4.19"
+  create_chatbot        = var.create_chatbot
 
   environment_information = {
     prefix          = "devportal"
@@ -128,6 +128,11 @@ module "cms" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
+}
+
+import {
+  to = module.cms.module.iam_user_cms.aws_iam_user.this[0]
+  id = "strapi"
 }
 
 module "chatbot" {
@@ -160,7 +165,15 @@ module "cicd" {
   source = "./modules/cicd"
 
   environment = var.environment
-  tags        = var.tags
+  environment_information = {
+    prefix          = "devportal"
+    env_short       = local.env_short[var.environment]
+    location        = var.aws_region
+    app_name        = "cicd"
+    instance_number = "01"
+  }
+
+  tags = var.tags
 
   create_chatbot    = var.create_chatbot
   vpc               = module.cms.vpc
@@ -170,6 +183,8 @@ module "cicd" {
 
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
+
+  website_is_standalone = var.website_is_standalone
 
   chatbot_env_vars = var.create_chatbot ? module.chatbot[0].lambda_env_variables : {}
 }

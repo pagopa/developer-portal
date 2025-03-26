@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_dashboard" "main" {
-  for_each = local.is_static
+  for_each       = local.is_static
   dashboard_name = "Main"
 
   dashboard_body = jsonencode({

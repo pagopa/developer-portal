@@ -12,13 +12,13 @@ locals {
 
 resource "aws_cloudfront_origin_access_identity" "main" {
   for_each = local.is_static
-  comment = "Identity to access S3 bucket."
+  comment  = "Identity to access S3 bucket."
 }
 
 resource "aws_cloudfront_response_headers_policy" "websites" {
   for_each = local.is_static
-  name    = "websites"
-  comment = "Response custom headers for public static website"
+  name     = "websites"
+  comment  = "Response custom headers for public static website"
 
   dynamic "custom_headers_config" {
     for_each = length(var.cdn_custom_headers) > 0 ? ["dummy"] : []
@@ -45,8 +45,8 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
 ## Function to manipulate the request
 resource "aws_cloudfront_function" "website_viewer_request_handler" {
   for_each = local.is_static
-  name    = "website-viewer-request-handler"
-  runtime = "cloudfront-js-1.0"
+  name     = "website-viewer-request-handler"
+  runtime  = "cloudfront-js-1.0"
   # publish this version only if the env is true
   publish = var.publish_cloudfront_functions
   code    = file("${path.root}/../../cloudfront-functions/dist/viewer-request-handler.js")
