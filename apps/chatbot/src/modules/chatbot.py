@@ -202,9 +202,6 @@ class Chatbot:
             response_str = engine_response.response
 
         response_str = response_str.strip()
-
-        logger.info(f"------->>> {response_str}")
-
         nodes = engine_response.source_nodes
 
         if (
@@ -420,7 +417,7 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
         tags: Optional[Union[str, List[str]]] | None = None,
-    ) -> Tuple[dict, List[str]]:
+    ) -> dict:
 
         if isinstance(tags, str):
             tags = [tags]
@@ -468,6 +465,8 @@ class Chatbot:
                 logger.error(f"Exception: {e}")
 
             response_json = json.loads(response_str)
+            if "context" not in response_json.keys():
+                response_json["context"] = retrieved_contexts
 
             trace.update(
                 output=self.mask_pii(response_json["response"]),
@@ -477,7 +476,7 @@ class Chatbot:
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
-        return response_json, retrieved_contexts
+        return response_json
 
     def get_final_response(self, response_json: dict) -> str:
 

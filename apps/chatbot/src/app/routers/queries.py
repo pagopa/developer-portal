@@ -39,8 +39,7 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.dict() for item in query.history] if query.history else None
 
-    logger.info(f" ------>>> [queries] call chat_generate(query_str={query_str})")
-    answer_json, retrived_context = chatbot.chat_generate(
+    answer_json = chatbot.chat_generate(
         query_str=query_str,
         trace_id=trace_id,
         session_id=session["id"],
@@ -51,19 +50,15 @@ async def query_creation(
 
     # TODO: add langfuse to compose.test.yaml
     if os.getenv("environment") != "test":
-        logger.info(
-            f" ------>>> [queries] call evaluate(response_str={answer}, trace_id={trace_id}, session_d={session["id"]})"
-        )
         evaluation_result = chatbot.evaluate(
             query_str=query_str,
             response_str=answer,
-            retrieved_contexts=retrived_context,
+            retrieved_contexts=answer_json["context"],
             trace_id=trace_id,
             session_id=session["id"],
             user_id=user_id,
             messages=messages,
         )
-        logger.info(" ------>>> [chat_generate] evaluation_result:")
         logger.info(evaluation_result)
 
     if query.queriedAt is None:
