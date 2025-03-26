@@ -62,7 +62,7 @@ In order to test the chatbot and its APIs, run:
 For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
 
 ### API
-The FastAPI application is in the `src`app` directory.
+The FastAPI application is in the `src/app` directory.
 
 From the root directory (`apps/chatbot`), run
 ```
