@@ -5,7 +5,6 @@ services:
       context: ..
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.test.sh"
-      # command: "./scripts/run.local.sh"
     env_file: "../.env.test"
     ports:
       - "8080:8080"
@@ -14,16 +13,67 @@ services:
       - ./files/.aws:/root/.aws
       - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
-      redis:
+      create-redis-index-test:
+        condition: service_completed_successfully
+      dynamodb-test:
         condition: service_started
-      dynamodb:
+      motoserver:
+        condition: service_started
+      api-chatbot-test:
+        condition: service_started
+    networks:
+      - ntwtest
+
+  api-chatbot-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "./scripts/run.local.sh"
+    env_file: "../.env.test"
+    volumes:
+      - ..:/app
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis-test:
+        condition: service_started
+      dynamodb-test:
         condition: service_started
       motoserver:
         condition: service_started
     networks:
       - ntwtest
 
-  dynamodb:
+  create-redis-index-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
+    env_file: "../.env.test"
+    volumes:
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis-test:
+        condition: service_started
+      motoserver:
+        condition: service_started
+    networks:
+      - ntwtest
+
+  postgres-test:
+    image: postgres:17.2-alpine
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    env_file: ../.env.test
+    networks:
+      - ntwtest
+
+  dynamodb-test:
     image: amazon/dynamodb-local:2.5.2
     environment:
       - AWS_ACCESS_KEY_ID=dummy
@@ -32,8 +82,17 @@ services:
     networks:
       - ntwtest
 
-  redis:
+  redis-test:
     image: redis/redis-stack:7.2.0-v13
+    networks:
+      - ntwtest
+
+  langfuse-test:
+    image: langfuse/langfuse:2
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    env_file: ../.env.test
     networks:
       - ntwtest
 

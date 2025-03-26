@@ -40,10 +40,10 @@ from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
-load_dotenv()
+# load_dotenv()
 logger = getLogger(__name__)
 
 CWF = Path(__file__)
@@ -422,7 +422,9 @@ class Chatbot:
         if isinstance(tags, str):
             tags = [tags]
 
+        logger.info(f"[chatbot.chat_generate] -- 01 -- messages: {messages}")
         chat_history = self._messages_to_chathistory(messages)
+        logger.info(f"[chatbot.chat_generate] -- 01,5 -- chat_history: {chat_history}")
 
         if not trace_id:
             logger.debug("[Langfuse] Trace id not provided. Generating a new one")
@@ -500,19 +502,16 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-
         chat_history = self._messages_to_chathistory(messages)
         condense_prompt = CONDENSE_PROMPT.format(
             chat_history=chat_history, query_str=query_str
         )
         condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-
         scores = self.judge.evaluate(
             query_str=condense_query_response.text,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-
         for key, value in scores.items():
             if value:
                 self.add_langfuse_score(

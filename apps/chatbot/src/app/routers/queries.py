@@ -5,7 +5,7 @@ import uuid
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
 from logging import getLogger
 from typing import Annotated
 from src.app.models import Query, tables
@@ -20,15 +20,27 @@ from src.app.sessions import (
 from src.modules.chatbot import Chatbot
 
 logger = getLogger(__name__)
+
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
 
+async def evaluate(evaluation_data: dict) -> dict:
+    if os.getenv("environment", "development") != "test":
+        evaluation_result = chatbot.evaluate(**evaluation_data)
+        logger.info(f"[queries] evaluation_result={evaluation_result})")
+    else:
+        evaluation_result = {}
+    return evaluation_result
+
+
 @router.post("/queries")
 async def query_creation(
-    query: Query, authorization: Annotated[str | None, Header()] = None
+    background_tasks: BackgroundTasks,
+    query: Query,
+    authorization: Annotated[str | None, Header()] = None,
 ):
     now = datetime.datetime.now(datetime.UTC)
     trace_id = str(uuid.uuid4())
@@ -60,6 +72,17 @@ async def query_creation(
             messages=messages,
         )
         logger.info(evaluation_result)
+
+    evaluation_data = {
+        "query_str": query_str,
+        "response_str": answer,
+        "retrieved_contexts": retrieved_contexts,
+        "trace_id": trace_id,
+        "session_id": session["id"],
+        "user_id": user_id,
+        "messages": messages,
+    }
+    background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()

@@ -1,3 +1,4 @@
+---
 vector_index:
   path: index
   chunk_sizes: [2816, 704, 176]
