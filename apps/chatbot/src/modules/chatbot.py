@@ -467,12 +467,12 @@ class Chatbot:
                 logger.error(f"Exception: {e}")
 
             response_json = json.loads(response_str)
-            if "context" not in response_json.keys():
-                response_json["context"] = retrieved_contexts
+            if "contexts" not in response_json.keys():
+                response_json["contexts"] = retrieved_contexts
 
             trace.update(
                 output=self.mask_pii(response_json["response"]),
-                metadata={"context": retrieved_contexts},
+                metadata={"contexts": retrieved_contexts},
                 tags=response_json["topics"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")

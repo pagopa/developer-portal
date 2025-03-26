@@ -60,23 +60,10 @@ async def query_creation(
     )
     answer = chatbot.get_final_response(answer_json)
 
-    # TODO: add langfuse to compose.test.yaml
-    if os.getenv("environment") != "test":
-        evaluation_result = chatbot.evaluate(
-            query_str=query_str,
-            response_str=answer,
-            retrieved_contexts=answer_json["context"],
-            trace_id=trace_id,
-            session_id=session["id"],
-            user_id=user_id,
-            messages=messages,
-        )
-        logger.info(evaluation_result)
-
     evaluation_data = {
         "query_str": query_str,
         "response_str": answer,
-        "retrieved_contexts": retrieved_contexts,
+        "retrieved_contexts": answer_json["contexts"],
         "trace_id": trace_id,
         "session_id": session["id"],
         "user_id": user_id,
