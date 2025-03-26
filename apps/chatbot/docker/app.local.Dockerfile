@@ -30,4 +30,4 @@ COPY ./scripts ./scripts
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0"]
+CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
