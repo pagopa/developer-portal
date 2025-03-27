@@ -10,47 +10,18 @@ import {
   getSolutionsProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import {
+  fetchMetadataJsonFromS3,
+  JsonMetadata,
+} from '@/helpers/s3Metadata.helpers';
 
-// S3 configuration
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION || 'us-east-1',
-});
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'your-bucket-name';
-const S3_GUIDE_METADATA_JSON_PATH =
-  process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
-
-// Define interface for guide metadata
-interface GuideMetadata {
-  readonly path: string;
-  readonly lastModified?: string;
-  readonly title?: string;
-  readonly product?: string;
-  // Add other properties as needed
-}
-
-// Function to fetch guides metadata from S3
-async function fetchGuidesMetadataFromS3(): Promise<readonly GuideMetadata[]> {
-  // eslint-disable-next-line functional/no-try-statements
-  try {
-    const response = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: S3_GUIDE_METADATA_JSON_PATH,
-      })
-    );
-
-    // Convert stream to string
-    const bodyContents = await response.Body?.transformToString();
-    if (!bodyContents) {
-      return [];
-    }
-
-    return JSON.parse(bodyContents) as readonly GuideMetadata[];
-  } catch (error) {
-    return [];
-  }
-}
+const S3_GUIDES_METADATA_JSON_PATH =
+  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_SOLUTIONS_METADATA_JSON_PATH =
+  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
+const S3_RELEASE_NOTES_METADATA_JSON_PATH =
+  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
+  'release-notes-metadata.json';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
@@ -61,8 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (product) => product.slug
   );
 
-  // Fetch guides metadata from S3
-  const guidesMetadata = await fetchGuidesMetadataFromS3();
+  // Fetch metadata from S3
+  const guidesMetadata = await fetchMetadataJsonFromS3(
+    S3_GUIDES_METADATA_JSON_PATH
+  );
+  const solutionsMetadata = await fetchMetadataJsonFromS3(
+    S3_SOLUTIONS_METADATA_JSON_PATH
+  );
+  const releaseNotesMetadata = await fetchMetadataJsonFromS3(
+    S3_RELEASE_NOTES_METADATA_JSON_PATH
+  );
 
   // Base routes
   const routes = [
@@ -194,12 +173,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Generate routes for guides from S3 metadata
-  const s3GuideRoutes = guidesMetadata.map((guide: GuideMetadata) => ({
+  const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
     url: `${baseUrl}${guide.path}`,
     lastModified: new Date(guide.lastModified || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
+
+  // Generate routes for solutions from S3 metadata
+  const s3SolutionRoutes = solutionsMetadata.map((solution: JsonMetadata) => ({
+    url: `${baseUrl}${solution.path}`,
+    lastModified: new Date(solution.lastModified || new Date().toISOString()),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  // Generate routes for release notes from S3 metadata
+  const s3ReleaseNoteRoutes = releaseNotesMetadata.map(
+    (releaseNote: JsonMetadata) => ({
+      url: `${baseUrl}${releaseNote.path}`,
+      lastModified: new Date(
+        releaseNote.lastModified || new Date().toISOString()
+      ),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })
+  );
 
   return [
     ...routes,
@@ -214,5 +213,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...solutionsDetailRoutes,
     ...sectionRoutes,
     ...s3GuideRoutes,
+    ...s3SolutionRoutes,
+    ...s3ReleaseNoteRoutes,
   ];
 }
