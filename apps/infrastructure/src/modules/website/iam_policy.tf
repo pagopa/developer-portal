@@ -45,7 +45,8 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          format("%s/*", aws_s3_bucket.website.arn)
+          format("%s/*", aws_s3_bucket.website.arn),
+          format("%s/*", aws_s3_bucket.website_standalone.arn)
         ]
       },
       {
@@ -54,7 +55,8 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn
+          aws_s3_bucket.website.arn,
+          aws_s3_bucket.website_standalone.arn
         ]
       },
       {
@@ -84,7 +86,9 @@ data "aws_iam_policy_document" "website_iam_policy" {
     actions = ["s3:GetObject", "s3:ListBucket"]
     resources = [
       aws_s3_bucket.website.arn,
-      "${aws_s3_bucket.website.arn}/*"
+      "${aws_s3_bucket.website.arn}/*",
+      aws_s3_bucket.website_standalone.arn,
+      "${aws_s3_bucket.website_standalone.arn}/*"
     ]
 
     principals {
