@@ -42,7 +42,7 @@ module "amplify" {
     NEXT_TELEMETRY_DISABLED                     = "1"
     PATH_TO_GITBOOK_DOCS                        = "docs"
     S3_PATH_TO_GITBOOK_DOCS                     = "docs"
-    S3_PATH_TO_GITBOOK_DOCS_ASSETS              = "${aws_s3_bucket.website.bucket_regional_domain_name}/docs/"
+    S3_PATH_TO_GITBOOK_DOCS_ASSETS              = "${aws_s3_bucket.website_standalone.bucket_regional_domain_name}/docs/"
     STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
     "_LIVE_UPDATES"                             = jsonencode([{ name = "Next.js version", pkg = "next-version", type = "internal", version = var.nextjs_version }])
   }
@@ -73,7 +73,8 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          "${aws_s3_bucket.website.arn}/*"
+          "${aws_s3_bucket.website.arn}/*",
+          "${aws_s3_bucket.website_standalone.arn}/*"
         ]
       },
       {
@@ -82,7 +83,8 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn
+          aws_s3_bucket.website.arn,
+          aws_s3_bucket.website_standalone.arn
         ]
       }
     ]
