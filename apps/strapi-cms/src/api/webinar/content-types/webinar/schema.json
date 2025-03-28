@@ -137,8 +137,7 @@
           "localized": true
         }
       },
-      "component": "common.question-and-answer",
-      "max": 10
+      "component": "common.question-and-answer"
     },
     "relatedResources": {
       "type": "component",
