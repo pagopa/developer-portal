@@ -12,18 +12,18 @@ import React, { ChangeEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material/styles';
 
-const MESSAGE_MAX_CHARS = 330;
+const MESSAGE_MAX_CHARS = 475;
 
 type ChatbotFeedbackProps = {
   disabled: boolean;
   answerId: string;
-  onClose: () => Promise<void>;
+  onClose: () => null;
   onSend: (
     answerId: string,
     contextScore: number,
     responseScore: number,
     comment: string
-  ) => Promise<void>;
+  ) => null;
 };
 
 const ChatbotFeedbackForm = ({
@@ -83,7 +83,6 @@ const ChatbotFeedbackForm = ({
         </Box>
       )}
       <Stack
-        maxWidth='472px'
         direction={'column'}
         sx={{
           overflow: 'auto',
@@ -164,7 +163,6 @@ const ChatbotFeedbackForm = ({
               : palette.action.disabled,
             fontSize: '0.875rem',
             height: '130px',
-            maxWidth: '504px',
           }}
         />
         <Typography
