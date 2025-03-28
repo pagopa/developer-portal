@@ -5,12 +5,13 @@ import {
   getCaseHistoriesProps,
   getProductsProps,
   getTutorialsProps,
-  getGuidesProps,
   getWebinarsProps,
   getSolutionsProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+
+export const dynamic = 'force-dynamic';
 
 // S3 configuration
 const s3Client = new S3Client({
@@ -146,14 +147,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const guides = await getGuidesProps();
-  const guideRoutes = guides.map((guide) => ({
-    url: `${baseUrl}${guide.page.path}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
   const webinars = await getWebinarsProps();
   const webinarRoutes = webinars.map((webinar) => ({
     url: `${baseUrl}/webinars/${webinar.slug}`,
@@ -208,7 +201,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...apiRoutes,
     ...guidePagesRoutes,
     ...tutorialRoutes,
-    ...guideRoutes,
     ...webinarRoutes,
     ...solutionRoutes,
     ...solutionsDetailRoutes,
