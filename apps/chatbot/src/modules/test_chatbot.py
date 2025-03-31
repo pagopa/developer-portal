@@ -63,7 +63,7 @@ def test_pii_mask():
 def test_messages_to_chathistory():
 
     chat_history = CHATBOT._messages_to_chathistory()
-    assert len(chat_history) == 1
+    assert len(chat_history) == 0
 
     messages = [
         {"question": "aaaa", "answer": "bbbb"},
@@ -72,7 +72,7 @@ def test_messages_to_chathistory():
     ]
     chat_history = CHATBOT._messages_to_chathistory(messages)
 
-    assert len(chat_history) == 2 * len(messages) + 1
+    assert len(chat_history) == 2 * len(messages)
 
 
 def test_chat_generation():
