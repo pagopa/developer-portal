@@ -11,13 +11,23 @@ import { History } from '@mui/icons-material';
 import React, { ChangeEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material/styles';
+import StarIcon from '@mui/icons-material/Star';
 
-const MESSAGE_MAX_CHARS = 475;
+const MESSAGE_MAX_CHARS = 560;
 
 type ChatbotFeedbackProps = {
   disabled: boolean;
   answerId: string;
   onClose: () => null;
+  contextRelevancy: number;
+  // eslint-disable-next-line functional/no-return-void
+  setContextRelevancy: (value: number) => void;
+  responseRelevancy: number;
+  // eslint-disable-next-line functional/no-return-void
+  setResponseRelevancy: (value: number) => void;
+  comment: string;
+  // eslint-disable-next-line functional/no-return-void
+  setComment: (value: string) => void;
   onSend: (
     answerId: string,
     contextScore: number,
@@ -30,13 +40,16 @@ const ChatbotFeedbackForm = ({
   disabled,
   answerId = '',
   onClose,
+  contextRelevancy,
+  setContextRelevancy,
+  responseRelevancy,
+  setResponseRelevancy,
+  comment,
+  setComment,
   onSend,
 }: ChatbotFeedbackProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [contextRelevancy, setContextRelevancy] = useState(0);
-  const [responseRelevancy, setResponseRelevancy] = useState(0);
-  const [comment, setComment] = useState('');
   const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
       color: palette.primary.main,
@@ -112,6 +125,11 @@ const ChatbotFeedbackForm = ({
             onChange={(event, newValue) => {
               setContextRelevancy(newValue || 0);
             }}
+            defaultValue={contextRelevancy}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+            }
+            size='large'
           />
         </Box>
         <Typography
@@ -134,6 +152,11 @@ const ChatbotFeedbackForm = ({
             onChange={(event, newValue) => {
               setResponseRelevancy(newValue || 0);
             }}
+            defaultValue={responseRelevancy}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+            }
+            size='large'
           />
         </Box>
         <Typography
@@ -162,7 +185,7 @@ const ChatbotFeedbackForm = ({
               ? palette.primary.main
               : palette.action.disabled,
             fontSize: '0.875rem',
-            height: '130px',
+            height: '160px',
           }}
         />
         <Typography

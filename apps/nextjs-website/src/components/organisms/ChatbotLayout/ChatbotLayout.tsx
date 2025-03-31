@@ -9,11 +9,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { Query } from '@/lib/chatbot/queries';
 import { useTranslations } from 'next-intl';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 import { getChatbotHealthz } from '@/lib/chatbotApi';
+import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 
 type ChatbotLayoutProps = {
   queries: Query[];
@@ -44,6 +45,10 @@ const ChatbotLayout = ({
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
     undefined
   );
+  const [formVisible, setFormVisible] = React.useState(false);
+  const [contextRelevancy, setContextRelevancy] = useState(0);
+  const [responseRelevancy, setResponseRelevancy] = useState(0);
+  const [comment, setComment] = useState('');
 
   const handleClick = () => {
     if (!open) getChatbotHealthz();
@@ -53,6 +58,11 @@ const ChatbotLayout = ({
 
   const handleClose = () => {
     setAnchorEl(undefined);
+  };
+
+  const closeForm = () => {
+    setFormVisible(false);
+    return null;
   };
 
   const open = Boolean(anchorEl);
@@ -139,16 +149,32 @@ const ChatbotLayout = ({
               <Close sx={{ color: palette.primary.contrastText }} />
             </IconButton>
           </Stack>
-          <Chat
-            queries={queries}
-            onSendQuery={onSendQuery}
-            onSendFeedback={onSendFeedback}
-            isAwaitingResponse={isAwaitingResponse}
-            areChatbotQueriesLoaded={areChatbotQueriesLoaded}
-            scrollToBottom={true}
-            error={error}
-            disabled={disabled}
-          />
+          {formVisible ? (
+            <ChatbotFeedbackForm
+              disabled={false}
+              answerId={'0'}
+              onClose={closeForm}
+              contextRelevancy={contextRelevancy}
+              setContextRelevancy={setContextRelevancy}
+              responseRelevancy={responseRelevancy}
+              setResponseRelevancy={setResponseRelevancy}
+              comment={comment}
+              setComment={setComment}
+              //update with correct callback
+              onSend={closeForm}
+            />
+          ) : (
+            <Chat
+              queries={queries}
+              onSendQuery={onSendQuery}
+              onSendFeedback={onSendFeedback}
+              isAwaitingResponse={isAwaitingResponse}
+              areChatbotQueriesLoaded={areChatbotQueriesLoaded}
+              scrollToBottom={true}
+              error={error}
+              disabled={disabled}
+            />
+          )}
         </Stack>
       </Popover>
     </Box>
