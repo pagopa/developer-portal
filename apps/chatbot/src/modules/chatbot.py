@@ -309,7 +309,7 @@ class Chatbot:
         trace_id: str,
         name: str,
         value: float,
-        comment: str | None,
+        comment: str | None = None,
         session_id: str | None = None,
         user_id: str | None = None,
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
