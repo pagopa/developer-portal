@@ -269,7 +269,10 @@ class Chatbot:
                 user_content = message["question"]
                 assistant_content = (
                     message["answer"].split("Rif:")[0].strip()
-                    if message and message.get("answer")
+                    if (
+                        message and message.get("answer")
+                        and message.get("answer") is not None
+                    )
                     else None
                 )
                 chat_history += [
@@ -324,31 +327,12 @@ class Chatbot:
 
         return traces
 
-    def add_langfuse_tag(self, trace_id: str, tag: str) -> None:
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            if tag not in trace_info.tags:
-                trace.update(tags=trace_info.tags + [tag])
-                logger.info(f"Added tag {tag} to trace {trace_id}")
-            else:
-                logger.warning(f"Tag {tag} already present in trace {trace_id}")
-
-    def remove_langfuse_tag(self, trace_id: str, tag: str) -> None:
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            if tag in trace_info.tags:
-                trace_info.tags.pop(trace_info.tags.index(tag))
-                trace.update(tags=trace_info.tags)
-                logger.info(f"Removed tag {tag} from trace {trace_id}")
-            else:
-                logger.warning(f"Tag {tag} not present in trace {trace_id}")
-
     def add_langfuse_score(
         self,
         trace_id: str,
         name: str,
         value: float,
-        comment: str | None,
+        comment: str | None = None,
         session_id: str | None = None,
         user_id: str | None = None,
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
@@ -429,8 +413,6 @@ class Chatbot:
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
-
-            logger.warning(f"[Chatbot.chat_generate] USE_ASYNC: {USE_ASYNC} USE_STREAMING: {USE_STREAMING}")
             try:
                 if USE_ASYNC and not USE_STREAMING:
                     engine_response = asyncio_run(
@@ -445,9 +427,8 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
                 
-                logger.warning(f"[Chatbot.chat_generate] 01 engine_response: {engine_response}")
                 response_str = self._get_response_str(engine_response)
-                logger.warning(f"[Chatbot.chat_generate] 01 response_str: {response_str}")
+                
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -455,7 +436,6 @@ class Chatbot:
                         key=node.metadata["filename"],
                     )
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
-                logger.warning(f"[Chatbot.chat_generate] 01 response_str: {response_str}")
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -517,10 +497,11 @@ class Chatbot:
             if value:
                 self.add_langfuse_score(
                     trace_id=trace_id,
-                    session_id=session_id,
-                    user_id=user_id,
                     name=key,
                     value=value,
+                    comment=None,
+                    session_id=session_id,
+                    user_id=user_id,
                     data_type="NUMERIC",
                 )
 
