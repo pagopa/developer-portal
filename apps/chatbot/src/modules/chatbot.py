@@ -1,5 +1,6 @@
 import os
 import re
+import json
 import yaml
 import uuid
 from pathlib import Path
@@ -210,9 +211,10 @@ class Chatbot:
             or len(nodes) == 0
         ):
             response_str = (
-                "Mi dispiace, posso rispondere solo a domande riguardo la "
-                "documentazione del DevPortal di PagoPA.\nProva a riformulare la "
-                "domanda."
+                '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
+                'la documentazione del DevPortal di PagoPA. '
+                'Prova a riformulare la domanda.", '
+                '"topics": ["none"], "references": []}'
             )
         else:
             response_str = self._unmask_reference(response_str, nodes)
@@ -267,7 +269,10 @@ class Chatbot:
                 user_content = message["question"]
                 assistant_content = (
                     message["answer"].split("Rif:")[0].strip()
-                    if message and message.get("answer")
+                    if (
+                        message and message.get("answer")
+                        and message.get("answer") is not None
+                    )
                     else None
                 )
                 chat_history += [
@@ -322,34 +327,19 @@ class Chatbot:
 
         return traces
 
-    def add_langfuse_tag(self, trace_id: str, tag: str) -> None:
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            if tag not in trace_info.tags:
-                trace.update(tags=trace_info.tags + [tag])
-                logger.info(f"Added tag {tag} to trace {trace_id}")
-            else:
-                logger.warning(f"Tag {tag} already present in trace {trace_id}")
-
-    def remove_langfuse_tag(self, trace_id: str, tag: str) -> None:
-        with self.instrumentor.observe(trace_id=trace_id) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            if tag in trace_info.tags:
-                trace_info.tags.pop(trace_info.tags.index(tag))
-                trace.update(tags=trace_info.tags)
-                logger.info(f"Removed tag {tag} from trace {trace_id}")
-            else:
-                logger.warning(f"Tag {tag} not present in trace {trace_id}")
-
     def add_langfuse_score(
         self,
         trace_id: str,
         name: str,
         value: float,
+        comment: str | None = None,
         session_id: str | None = None,
         user_id: str | None = None,
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
     ) -> None:
+
+        if comment:
+            comment = self.mask_pii(comment)
 
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
@@ -363,10 +353,18 @@ class Chatbot:
                     break
 
             if flag:
-                trace.score(name=name, value=value, data_type=data_type)
+                trace.score(
+                    name=name, value=value, data_type=data_type, comment=comment
+                )
                 logger.warning(f"Add score {name}: {value} in trace {trace_id}")
             else:
-                trace.score(id=score_id, name=name, value=value, data_type=data_type)
+                trace.score(
+                    id=score_id,
+                    name=name,
+                    value=value,
+                    data_type=data_type,
+                    comment=comment,
+                )
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
     def _mask_trace(self, data: Any) -> None:
@@ -413,9 +411,7 @@ class Chatbot:
         if isinstance(tags, str):
             tags = [tags]
 
-        logger.info(f"[chatbot.chat_generate] -- 01 -- messages: {messages}")
         chat_history = self._messages_to_chathistory(messages)
-        logger.info(f"[chatbot.chat_generate] -- 01,5 -- chat_history: {chat_history}")
 
         if not trace_id:
             logger.debug("[Langfuse] Trace id not provided. Generating a new one")
@@ -429,7 +425,6 @@ class Chatbot:
             user_id=user_id,
             tags=tags
         ) as trace:
-
             try:
                 if USE_ASYNC and not USE_STREAMING:
                     engine_response = asyncio_run(
@@ -443,8 +438,8 @@ class Chatbot:
                     )
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
+                
                 response_str = self._get_response_str(engine_response)
-
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -452,23 +447,41 @@ class Chatbot:
                         key=node.metadata["filename"],
                     )
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
-
             except Exception as e:
                 response_str = (
-                    "Scusa, non posso elaborare la tua richiesta.\nProva a "
-                    "formulare una nuova domanda."
+                    '{"response": "Scusa, non posso elaborare la tua richiesta. '
+                    'Prova a formulare una nuova domanda.", '
+                    '"topics": ["none"], "references": []}'
                 )
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
+            response_json = json.loads(response_str)
+            if "contexts" not in response_json.keys():
+                response_json["contexts"] = retrieved_contexts
+
+            # TODO: contexts is retrieved_contexts or response_json["contexts"]?
             trace.update(
-                output=self.mask_pii(response_str),
-                metadata={"context": retrieved_contexts},
+                output=self.mask_pii(response_json["response"]),
+                metadata={"contexts": retrieved_contexts},
+                tags=response_json["topics"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
-        return response_str, retrieved_contexts
+        return response_json
+
+    def get_final_response(self, response_json: dict) -> str:
+
+        final_response = response_json["response"]
+        if response_json["references"]:
+            final_response += "\n\nRif:"
+            for ref in response_json["references"]:
+                title = ref["title"]
+                link = ref["filename"]
+                final_response += f"\n[{title}]({link})"
+
+        return final_response
 
     def evaluate(
         self,
@@ -494,10 +507,12 @@ class Chatbot:
             if value:
                 self.add_langfuse_score(
                     trace_id=trace_id,
-                    session_id=session_id,
-                    user_id=user_id,
                     name=key,
                     value=value,
+                    comment=None,
+                    session_id=session_id,
+                    user_id=user_id,
                     data_type="NUMERIC",
                 )
+
         return scores

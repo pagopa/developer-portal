@@ -18,7 +18,8 @@ from presidio_anonymizer.entities import OperatorConfig
 logger = getLogger(__name__)
 
 
-# see supported entities by Presidio with their description at: https://microsoft.github.io/presidio/supported_entities/
+# see supported entities by Presidio with their description at: 
+# https://microsoft.github.io/presidio/supported_entities/
 GLOBAL_ENTITIES = [
     "CREDIT_CARD",
     "CRYPTO",
@@ -93,15 +94,15 @@ class PresidioPII:
     def __init__(
         self,
         config: dict,
-        entity_mapping: Dict[str, Dict] = {},
-        mapping: Dict[str, str] = {},
+        entity_mapping: Dict[str, Dict] = None,
+        mapping: Dict[str, str] = None,
         entities: List[str] | None = None,
         analyzer_threshold: float = 0.4,
     ):
         self.config = config
         self.languages = [item["lang_code"] for item in config["models"]]
-        self.entity_mapping = entity_mapping
-        self.mapping = mapping
+        self.entity_mapping = entity_mapping if entity_mapping is not None else {}
+        self.mapping = mapping if mapping is not None else {}
         self.entities = entities if entities else GLOBAL_ENTITIES
         self.analyzer_threshold = analyzer_threshold
 
@@ -134,17 +135,15 @@ class PresidioPII:
                     lang_list.append(detected_lang.lang)
 
             if not lang_list:
-                logger.warning("No detected language.")
                 lang = "it"
             elif "it" in lang_list:
                 lang = "it"
             else:
                 lang = lang_list[0]
-        except:
+        except Exception:
             logger.warning("No detected language.")
             lang = "it"
 
-        logger.debug(f"Set presidio to detect PII in {lang} language.")
         return lang
 
     def detect_pii(self, text: str) -> List[RecognizerResult]:

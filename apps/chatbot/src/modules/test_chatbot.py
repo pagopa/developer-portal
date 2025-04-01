@@ -27,11 +27,11 @@ def test_connection_redis():
     except Exception as e:
         logger.error(e)
 
-    assert flag == True
+    assert flag is True
 
 
 def test_connection_langfuse():
-    assert LANGFUSE.auth_check() == True
+    assert LANGFUSE.auth_check() is True
 
 
 def test_cloud_connection():
@@ -80,17 +80,18 @@ def test_chat_generation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        res, _ = CHATBOT.chat_generate(
+        response_json = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
-        res, _ = CHATBOT.chat_generate(
+        response = CHATBOT.get_final_response(response_json)
+        response_json = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
             trace_id="fghik",
-            messages=[{"question": query_str, "answer": res}],
+            messages=[{"question": query_str, "answer": response}],
             user_id="user-test",
             session_id="session-test",
             tags="test",
@@ -102,9 +103,9 @@ def test_chat_generation():
         print("trace 2:", trace2)
     except Exception as e:
         logger.error(e)
-        res = f"Something went wrong!"
+        res = "Something went wrong!"
 
-    assert res != f"Something went wrong!"
+    assert res != "Something went wrong!"
 
 
 def test_evaluation():
@@ -112,23 +113,24 @@ def test_evaluation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        res, contexts = CHATBOT.chat_generate(
+        response_json = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
+        response = CHATBOT.get_final_response(response_json)
         CHATBOT.evaluate(
             query_str=query_str,
-            response_str=res,
-            retrieved_contexts=contexts,
+            response_str=response,
+            retrieved_contexts=response_json["context"],
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
         )
     except Exception as e:
         logger.error(e)
-        res = f"Something went wrong!"
+        res = "Something went wrong!"
 
-    assert res != f"Something went wrong!"
+    assert res != "Something went wrong!"
