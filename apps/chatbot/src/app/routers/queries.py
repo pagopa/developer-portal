@@ -49,7 +49,9 @@ async def query_creation(
     salt = session_salt(session["id"])
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
-    messages = [item.dict() for item in query.history] if query.history else None
+    messages = (
+        [item.dict() for item in query.history] if query.history else None
+    )
 
     answer_json = chatbot.chat_generate(
         query_str=query_str,
@@ -69,7 +71,11 @@ async def query_creation(
         "user_id": user_id,
         "messages": messages,
     }
-    background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
+    background_tasks.add_task(
+        evaluate,
+        evaluation_data=evaluation_data
+    )
+    answer = chatbot.get_final_response(answer_json)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
@@ -89,6 +95,7 @@ async def query_creation(
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = chatbot.mask_pii(answer)
+    bodyToSave["topics"] = answer_json.get("topics", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
