@@ -149,7 +149,9 @@ class Evaluator:
         )
 
         return {
-            "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
+            "faithfulness": asyncio_run(
+                self.faithfulness.single_turn_ascore(sample)
+            ),
             "response_relevancy": asyncio_run(
                 self.response_relevancy.single_turn_ascore(sample)
             ),

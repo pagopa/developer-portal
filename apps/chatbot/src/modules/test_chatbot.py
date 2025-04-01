@@ -27,11 +27,11 @@ def test_connection_redis():
     except Exception as e:
         logger.error(e)
 
-    assert flag == True
+    assert flag is True
 
 
 def test_connection_langfuse():
-    assert LANGFUSE.auth_check() == True
+    assert LANGFUSE.auth_check() is True
 
 
 def test_cloud_connection():
@@ -103,9 +103,9 @@ def test_chat_generation():
         print("trace 2:", trace2)
     except Exception as e:
         logger.error(e)
-        res = f"Something went wrong!"
+        res = "Something went wrong!"
 
-    assert res != f"Something went wrong!"
+    assert res != "Something went wrong!"
 
 
 def test_evaluation():
@@ -131,6 +131,6 @@ def test_evaluation():
         )
     except Exception as e:
         logger.error(e)
-        res = f"Something went wrong!"
+        res = "Something went wrong!"
 
-    assert res != f"Something went wrong!"
+    assert res != "Something went wrong!"

@@ -401,17 +401,29 @@ class Chatbot:
     def chat_generate(
         self,
         query_str: str,
-        trace_id: str,
+        trace_id: str | None = None,
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
+        tags: Optional[Union[str, List[str]]] | None = None,
+    ) -> Tuple[str, List[str]]:
+
+        if isinstance(tags, str):
+            tags = [tags]
 
         chat_history = self._messages_to_chathistory(messages)
+
+        if not trace_id:
+            logger.debug("[Langfuse] Trace id not provided. Generating a new one")
+            trace_id = str(uuid.uuid4())
+
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id
+            trace_id=trace_id,
+            session_id=session_id,
+            user_id=user_id,
+            tags=tags
         ) as trace:
             try:
                 if USE_ASYNC and not USE_STREAMING:
@@ -428,7 +440,6 @@ class Chatbot:
                     engine_response = self.engine.chat(query_str, chat_history)
                 
                 response_str = self._get_response_str(engine_response)
-                
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -444,12 +455,12 @@ class Chatbot:
                 )
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
-                logger.warning(f"[Chatbot.chat_generate] Exception: {e}")
 
             response_json = json.loads(response_str)
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 
+            # TODO: contexts is retrieved_contexts or response_json["contexts"]?
             trace.update(
                 output=self.mask_pii(response_json["response"]),
                 metadata={"contexts": retrieved_contexts},
@@ -458,7 +469,6 @@ class Chatbot:
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
-        logger.warning(f"[Chatbot.chat_generate] response_json: {response_json}")
         return response_json
 
     def get_final_response(self, response_json: dict) -> str:
