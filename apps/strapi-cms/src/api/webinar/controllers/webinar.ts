@@ -4,9 +4,11 @@
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreController(
-  'api::webinar.webinar',
-  ({ strapi }) => ({
+export default factories.createCoreController('api::webinar.webinar', ({ strapi }) => {
+  const defaultController = factories.createCoreController('api::webinar.webinar');
+
+  return {
+    ...defaultController,
     async deleteWithoutHooks(event) {
       // eslint-disable-next-line functional/no-try-statements
       try {
@@ -30,5 +32,5 @@ export default factories.createCoreController(
         return { error: 'Failed to delete webinar' };
       }
     },
-  })
-);
+  };
+});

@@ -1,5 +1,0 @@
----
-"chatbot": patch
----
-
-FastAPI refactoring
