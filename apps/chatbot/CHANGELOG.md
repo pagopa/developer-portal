@@ -1,5 +1,15 @@
 # chatbot
 
+## 5.0.0
+
+### Major Changes
+
+- ace11c8: Add trace evaluation using ragas framework
+
+### Patch Changes
+
+- 293f19c: FastAPI refactoring
+
 ## 4.4.0
 
 ### Minor Changes
