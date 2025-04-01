@@ -1,5 +1,20 @@
 # strapi-cms
 
+## 3.5.0
+
+### Minor Changes
+
+- 250eaff: Remove the maximum question and answer limit from the Webinar schema
+
+### Patch Changes
+
+- 038b6e8: Add a custom route to bypass lifecycle hooks when deleting webinars
+- f5ea38d: Upgrade to Strapi version 4.25.20:
+  - Set 18.18 as default Node.js version
+  - Set fixed versions in nextjs-website/package.json to compile with node 18.18.0
+  - Add 'use client' to Hero component
+  - Add a workaround to avoid "Page is missing 'generateStaticParams()'" error
+
 ## 3.4.1
 
 ### Patch Changes
