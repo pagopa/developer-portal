@@ -2,7 +2,6 @@ import os
 import re
 import json
 import yaml
-import uuid
 from pathlib import Path
 from datetime import datetime
 from logging import getLogger
@@ -17,7 +16,6 @@ from llama_index.core.base.response.schema import (
     PydanticResponse,
 )
 from llama_index.core.chat_engine.types import (
-    BaseChatEngine,
     AgentChatResponse,
     StreamingAgentChatResponse,
 )
@@ -51,12 +49,6 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 USE_PRESIDIO = (
     True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 )
-
-USE_CHAT_ENGINE = (
-    True
-    if (os.getenv("CHB_ENGINE_USE_CHAT_ENGINE", "True")).lower() == "true"
-    else False
-)
 USE_ASYNC = (
     True if (os.getenv("CHB_ENGINE_USE_ASYNC", "True")).lower() == "true" else False
 )
@@ -65,7 +57,6 @@ USE_STREAMING = (
     if (os.getenv("CHB_ENGINE_USE_STREAMING", "False")).lower() == "true"
     else False
 )
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,
@@ -74,31 +65,13 @@ RESPONSE_TYPE = Union[
     AgentChatResponse,
     StreamingAgentChatResponse,
 ]
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
-SYSTEM_PROMPT = (
-    "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
-    "Your role is to provide accurate, professional, and helpful responses to users' "
-    "queries regarding "
-    f"the PagoPA DevPortal documentation available at: {WEBSITE_URL}"
-)
-CONDENSE_PROMPT = (
-    "Given the following conversation between a user and an AI assistant and a "
-    "follow up question from user, "
-    "rephrase the follow up question to be a standalone question.\n\n"
-    "Chat History:\n"
-    "{chat_history}\n"
-    "Follow Up Input: {query_str}\n"
-    "Standalone question:"
-)
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
     os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
 )
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
     os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
 )
-
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
-
 LANGFUSE = Langfuse(
     public_key=LANGFUSE_PUBLIC_KEY, secret_key=LANGFUSE_SECRET_KEY, host=LANGFUSE_HOST
 )
@@ -109,7 +82,6 @@ class Chatbot:
         self,
         params: dict | None = None,
         prompts: dict | None = None,
-        use_chat_engine: bool | None = None,
     ):
         self.params = (
             params
@@ -121,7 +93,6 @@ class Chatbot:
             if prompts
             else yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
         )
-        self.use_chat_engine = use_chat_engine if use_chat_engine else USE_CHAT_ENGINE
 
         if USE_PRESIDIO:
             self.pii = PresidioPII(config=params["config_presidio"])
@@ -141,16 +112,11 @@ class Chatbot:
         self.engine = get_automerging_engine(
             self.index,
             llm=self.model,
+            system_prompt=self.prompts["system_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
             condense_template=self.condense_prompt_tmpl,
             verbose=self.params["engine"]["verbose"],
-            use_chat_engine=self.use_chat_engine,
-        )
-        self.system_message = (
-            ChatMessage(role=self.model.metadata.system_role, content=SYSTEM_PROMPT)
-            if isinstance(self.engine, BaseChatEngine)
-            else None
         )
         self.instrumentor = LlamaIndexInstrumentor(
             public_key=LANGFUSE_PUBLIC_KEY,
@@ -263,7 +229,7 @@ class Chatbot:
         self, messages: Optional[List[Dict[str, str]]] = None
     ) -> List[ChatMessage]:
 
-        chat_history = [self.system_message]
+        chat_history = []
         if messages:
             for message in messages:
                 user_content = message["question"]
@@ -401,29 +367,17 @@ class Chatbot:
     def chat_generate(
         self,
         query_str: str,
-        trace_id: str | None = None,
+        trace_id: str,
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
-        tags: Optional[Union[str, List[str]]] | None = None,
-    ) -> Tuple[str, List[str]]:
-
-        if isinstance(tags, str):
-            tags = [tags]
+    ) -> dict:
 
         chat_history = self._messages_to_chathistory(messages)
-
-        if not trace_id:
-            logger.debug("[Langfuse] Trace id not provided. Generating a new one")
-            trace_id = str(uuid.uuid4())
-
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
         with self.instrumentor.observe(
-            trace_id=trace_id,
-            session_id=session_id,
-            user_id=user_id,
-            tags=tags
+            trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
                 if USE_ASYNC and not USE_STREAMING:
@@ -438,7 +392,7 @@ class Chatbot:
                     )
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
-                
+            
                 response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
@@ -460,7 +414,6 @@ class Chatbot:
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 
-            # TODO: contexts is retrieved_contexts or response_json["contexts"]?
             trace.update(
                 output=self.mask_pii(response_json["response"]),
                 metadata={"contexts": retrieved_contexts},
@@ -494,7 +447,7 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
         chat_history = self._messages_to_chathistory(messages)
-        condense_prompt = CONDENSE_PROMPT.format(
+        condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
             chat_history=chat_history, query_str=query_str
         )
         condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
@@ -507,11 +460,10 @@ class Chatbot:
             if value:
                 self.add_langfuse_score(
                     trace_id=trace_id,
-                    name=key,
-                    value=value,
-                    comment=None,
                     session_id=session_id,
                     user_id=user_id,
+                    name=key,
+                    value=value,
                     data_type="NUMERIC",
                 )
 

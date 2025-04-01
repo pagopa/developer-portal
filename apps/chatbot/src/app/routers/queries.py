@@ -75,6 +75,7 @@ async def query_creation(
         evaluate,
         evaluation_data=evaluation_data
     )
+    answer = chatbot.get_final_response(answer_json)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()

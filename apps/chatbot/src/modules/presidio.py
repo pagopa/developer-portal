@@ -140,6 +140,7 @@ class PresidioPII:
                 lang = "it"
             else:
                 lang = lang_list[0]
+
         except Exception:
             logger.warning("No detected language.")
             lang = "it"

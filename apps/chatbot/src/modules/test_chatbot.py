@@ -44,7 +44,7 @@ def test_cloud_connection():
     except Exception as e:
         logger.error(e)
 
-    assert flag == True
+    assert flag is True
 
 
 def test_prompt_templates():
@@ -63,7 +63,7 @@ def test_pii_mask():
 def test_messages_to_chathistory():
 
     chat_history = CHATBOT._messages_to_chathistory()
-    assert len(chat_history) == 1
+    assert len(chat_history) == 0
 
     messages = [
         {"question": "aaaa", "answer": "bbbb"},
@@ -72,7 +72,7 @@ def test_messages_to_chathistory():
     ]
     chat_history = CHATBOT._messages_to_chathistory(messages)
 
-    assert len(chat_history) == 2 * len(messages) + 1
+    assert len(chat_history) == 2 * len(messages)
 
 
 def test_chat_generation():
@@ -80,21 +80,20 @@ def test_chat_generation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        response_json = CHATBOT.chat_generate(
+        res = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
-            tags="test",
+            tags="test"
         )
-        response = CHATBOT.get_final_response(response_json)
-        response_json = CHATBOT.chat_generate(
+        res = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
             trace_id="fghik",
-            messages=[{"question": query_str, "answer": response}],
+            messages=[{"question": query_str, "answer": res}],
             user_id="user-test",
             session_id="session-test",
-            tags="test",
+            tags="test"
         )
 
         trace1 = CHATBOT.get_trace("abcde")
