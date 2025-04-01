@@ -89,6 +89,7 @@ async def query_creation(
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = chatbot.mask_pii(answer)
+    bodyToSave["topics"] = answer_json.get("topics", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
