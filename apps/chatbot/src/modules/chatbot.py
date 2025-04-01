@@ -210,7 +210,12 @@ class Chatbot:
             or response_str == ""
             or len(nodes) == 0
         ):
-            response_str = '{"response": "Mi dispiace, posso rispondere solo a domande riguardo la documentazione del DevPortal di PagoPA. Prova a riformulare la domanda.", "topics": ["none"], "references": []}'
+            response_str = (
+                '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
+                'la documentazione del DevPortal di PagoPA. '
+                'Prova a riformulare la domanda.", '
+                '"topics": ["none"], "references": []}'
+            )
         else:
             response_str = self._unmask_reference(response_str, nodes)
 
@@ -425,6 +430,7 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
 
+            logger.warning(f"[Chatbot.chat_generate] USE_ASYNC: {USE_ASYNC} USE_STREAMING: {USE_STREAMING}")
             try:
                 if USE_ASYNC and not USE_STREAMING:
                     engine_response = asyncio_run(
@@ -438,7 +444,10 @@ class Chatbot:
                     )
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
+                
+                logger.warning(f"[Chatbot.chat_generate] 01 engine_response: {engine_response}")
                 response_str = self._get_response_str(engine_response)
+                logger.warning(f"[Chatbot.chat_generate] 01 response_str: {response_str}")
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
                     url = REDIS_KVSTORE.get(
@@ -446,14 +455,16 @@ class Chatbot:
                         key=node.metadata["filename"],
                     )
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
-
+                logger.warning(f"[Chatbot.chat_generate] 01 response_str: {response_str}")
             except Exception as e:
                 response_str = (
-                    "Scusa, non posso elaborare la tua richiesta.\nProva a "
-                    "formulare una nuova domanda."
+                    '{"response": "Scusa, non posso elaborare la tua richiesta. '
+                    'Prova a formulare una nuova domanda.", '
+                    '"topics": ["none"], "references": []}'
                 )
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
+                logger.warning(f"[Chatbot.chat_generate] Exception: {e}")
 
             response_json = json.loads(response_str)
             if "contexts" not in response_json.keys():
@@ -467,6 +478,7 @@ class Chatbot:
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
+        logger.warning(f"[Chatbot.chat_generate] response_json: {response_json}")
         return response_json
 
     def get_final_response(self, response_json: dict) -> str:
