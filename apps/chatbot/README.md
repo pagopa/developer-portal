@@ -81,7 +81,7 @@ In order to run the chatbot locally for the first time, you need to:
 
 - run the following bash scripts:
 
-        ./docker/docker-compose-build-local.sh
+        ./docker/docker-compose-build-api.sh
         ./docker/docker-compose-run-create_index.sh
 
 In this way, the docker images are built and the vector index is stored in Redis.
