@@ -42,7 +42,11 @@ def put_ssm_parameter(name: str, value: str) -> None:
 
     logger.debug(f"Putting parameter {name} to SSM")
     try:
-        # Get the requested parameter
-        SSM_CLIENT.put_parameter(Name=name, Value=value, Overwrite=True)
+        SSM_CLIENT.put_parameter(
+            Name=name,
+            Value=value,
+            Type='String',
+            Overwrite=True,
+        )
     except Exception as e:
         logger.error(e)

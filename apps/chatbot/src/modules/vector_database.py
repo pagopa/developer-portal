@@ -243,8 +243,10 @@ def build_automerging_index_redis(
     )
 
     logger.info(
-        f"[build_automerging_index_redis] calling create_documentation({WEBSITE_URL}, "
-        "{documentation_dir})"
+        (
+            f"[build_automerging_index_redis] calling create_documentation("
+            f"{WEBSITE_URL}, {documentation_dir})"
+        )
     )
     documents, hash_table = create_documentation(WEBSITE_URL, documentation_dir)
     for key, value in hash_table.items():
