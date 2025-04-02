@@ -34,16 +34,13 @@ import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import {
-  fetchReleaseNote,
-  fetchReleaseNotes,
-} from '@/lib/strapi/fetches/fetchReleaseNotes';
+import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
   makeSolution as makeSolutionS3,
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
-import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
+// import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { secrets } from '@/config';
 
 // a BuildEnv instance ready to be used
@@ -201,11 +198,6 @@ export const getOverviewsProps = async () => {
   );
 };
 
-export const getReleaseNotesProps = async () => {
-  const strapiReleaseNotes = await fetchReleaseNotes(buildEnv);
-  return makeReleaseNotesProps(strapiReleaseNotes).flatMap(makeReleaseNote);
-};
-
 export const getGuideListPagesProps = async () => {
   return withCache(
     getCacheKey('getGuideListPagesProps'),
@@ -217,33 +209,9 @@ export const getGuideListPagesProps = async () => {
   );
 };
 
-// Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
-// we had to manage cache with two dedicated variables
-// eslint-disable-next-line
-let cachedGuides: any[] = []; // We need to use any[] because of the type issue makeGuide derived type are not statically defined
-// eslint-disable-next-line
-let isCached: boolean = false;
-
-export const getGuidesProps = async () => {
-  if (!isCached) {
-    // eslint-disable-next-line functional/no-expression-statements
-    cachedGuides = await getGuidesPropsCache();
-    // eslint-disable-next-line functional/no-expression-statements
-    isCached = true;
-  }
-  return cachedGuides;
-};
-
-// TODO: Manage all fetched resources with cache in a dedicated helper function
-export const getGuidesPropsCache = async () => {
-  return withCache(
-    getCacheKey('getGuidesPropsCache'),
-    async () => {
-      const strapiGuides = await fetchGuides(buildEnv);
-      return makeGuidesProps(strapiGuides).flatMap(makeGuide);
-    },
-    CACHE_EXPIRY_IN_SECONDS
-  );
+export const getGuides = async () => {
+  const strapiGuides = await fetchGuides(buildEnv);
+  return makeGuidesProps(strapiGuides);
 };
 
 export const getGuideProps = async (

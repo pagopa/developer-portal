@@ -8,8 +8,8 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { getGitBookSubPaths, getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps, getReleaseNotesProps } from '@/lib/cmsApi';
+import { getReleaseNote } from '@/lib/api';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
