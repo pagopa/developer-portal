@@ -38,10 +38,7 @@ from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
-# from dotenv import load_dotenv
 
-
-# load_dotenv()
 logger = getLogger(__name__)
 
 CWF = Path(__file__)
@@ -170,6 +167,8 @@ class Chatbot:
         response_str = response_str.strip()
         nodes = engine_response.source_nodes
 
+        logger.info(f">>>>>>>>>>>>>>>>>> response_str: {response_str}")
+
         if (
             response_str is None
             or response_str == "Empty Response"
@@ -178,7 +177,7 @@ class Chatbot:
         ):
             response_str = (
                 '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
-                'la documentazione del DevPortal di PagoPA. '
+                "la documentazione del DevPortal di PagoPA. "
                 'Prova a riformulare la domanda.", '
                 '"topics": ["none"], "references": []}'
             )
@@ -195,8 +194,7 @@ class Chatbot:
         hashed_urls = re.findall(pattern, response_str)
 
         logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken "
-            "from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
+            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
         )
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
@@ -236,7 +234,8 @@ class Chatbot:
                 assistant_content = (
                     message["answer"].split("Rif:")[0].strip()
                     if (
-                        message and message.get("answer")
+                        message
+                        and message.get("answer")
                         and message.get("answer") is not None
                     )
                     else None
@@ -303,6 +302,10 @@ class Chatbot:
         user_id: str | None = None,
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
     ) -> None:
+
+        logger.info(
+            f">>>>>>>>>>>>>>>>> trace id: {trace_id} {isinstance(trace_id, str)}"
+        )
 
         if comment:
             comment = self.mask_pii(comment)
@@ -373,6 +376,8 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
+        logger.info(f">>>>>>>>>>>>>> system prmpt: {self.prompts["system_prompt_str"]}")
+
         chat_history = self._messages_to_chathistory(messages)
         logger.info(f"[Langfuse] Trace id: {trace_id}")
 
@@ -392,7 +397,7 @@ class Chatbot:
                     )
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
-            
+
                 response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:

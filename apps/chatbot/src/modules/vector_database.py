@@ -33,10 +33,7 @@ from redisvl.schema import IndexSchema
 
 from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
-from dotenv import load_dotenv
 
-
-load_dotenv()
 logger = getLogger(__name__)
 
 
@@ -293,7 +290,8 @@ def build_automerging_index_redis(
 
     automerging_index = VectorStoreIndex(leaf_nodes, storage_context=storage_context)
     automerging_index.set_index_id(NEW_INDEX_ID)
-    put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
+    if NEW_INDEX_ID != "default-index":
+        put_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
     logger.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
@@ -338,7 +336,7 @@ def load_automerging_index_redis(
 
 def delete_old_index():
 
-    if INDEX_ID != "default-index":  # if in ssm there is nothing, INDEX_ID = None
+    if INDEX_ID != "default-index":
         for key in REDIS_CLIENT.scan_iter():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)

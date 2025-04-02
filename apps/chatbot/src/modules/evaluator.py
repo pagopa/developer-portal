@@ -2,7 +2,8 @@ import os
 import boto3
 import json
 from logging import getLogger
-from dotenv import load_dotenv
+
+# from dotenv import load_dotenv
 from typing import List
 
 from google.oauth2 import service_account
@@ -26,7 +27,7 @@ from ragas.metrics import (
 from src.modules.utils import get_ssm_parameter
 
 
-load_dotenv()
+# load_dotenv()
 logger = getLogger(__name__)
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
@@ -149,9 +150,7 @@ class Evaluator:
         )
 
         return {
-            "faithfulness": asyncio_run(
-                self.faithfulness.single_turn_ascore(sample)
-            ),
+            "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
             "response_relevancy": asyncio_run(
                 self.response_relevancy.single_turn_ascore(sample)
             ),

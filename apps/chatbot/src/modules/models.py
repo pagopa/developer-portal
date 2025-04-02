@@ -9,11 +9,9 @@ from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
-from dotenv import load_dotenv
-
 from src.modules.utils import get_ssm_parameter
 
-load_dotenv()
+
 logger = getLogger(__name__)
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")

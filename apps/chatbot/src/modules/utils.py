@@ -1,9 +1,8 @@
 import os
 import boto3
 from logging import getLogger
-from dotenv import load_dotenv
 
-load_dotenv()
+
 logger = getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
@@ -17,7 +16,7 @@ SSM_CLIENT = boto3.client(
 )
 
 
-def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 
@@ -31,7 +30,9 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logger.warning(f"Parameter {name} not found in SSM, returning default")
+        logger.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
         return default
 
     logger.debug(f"Parameter {name} retrieved from SSM")
@@ -45,7 +46,7 @@ def put_ssm_parameter(name: str, value: str) -> None:
         SSM_CLIENT.put_parameter(
             Name=name,
             Value=value,
-            Type='String',
+            Type="String",
             Overwrite=True,
         )
     except Exception as e:
