@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml -p chatbot --remove-orphans up api
+docker compose -f docker/compose.yaml -p chatbot up api --remove-orphans 
