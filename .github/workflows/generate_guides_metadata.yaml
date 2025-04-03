@@ -10,9 +10,6 @@ on:
         default: dev
         options:
           - dev
-  push:
-    branches:
-      - DEV-2158-pipelines
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint
 permissions:
