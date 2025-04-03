@@ -167,8 +167,6 @@ class Chatbot:
         response_str = response_str.strip()
         nodes = engine_response.source_nodes
 
-        logger.info(f">>>>>>>>>>>>>>>>>> response_str: {response_str}")
-
         if (
             response_str is None
             or response_str == "Empty Response"
@@ -180,6 +178,14 @@ class Chatbot:
                 "la documentazione del DevPortal di PagoPA. "
                 'Prova a riformulare la domanda.", '
                 '"topics": ["none"], "references": []}'
+            )
+        elif (
+            re.search(r'"response":', response_str) is None
+            and re.search(r'"topics":', response_str) is None
+            and re.search(r'"references":', response_str) is None
+        ):
+            response_str = '{{"response": "{response_str}", "topics": ["none"], "references": []}}'.format(
+                response_str=response_str
             )
         else:
             response_str = self._unmask_reference(response_str, nodes)
@@ -303,10 +309,6 @@ class Chatbot:
         data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
     ) -> None:
 
-        logger.info(
-            f">>>>>>>>>>>>>>>>> trace id: {trace_id} {isinstance(trace_id, str)}"
-        )
-
         if comment:
             comment = self.mask_pii(comment)
 
@@ -375,8 +377,6 @@ class Chatbot:
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-
-        logger.info(f">>>>>>>>>>>>>> system prmpt: {self.prompts["system_prompt_str"]}")
 
         chat_history = self._messages_to_chathistory(messages)
         logger.info(f"[Langfuse] Trace id: {trace_id}")
