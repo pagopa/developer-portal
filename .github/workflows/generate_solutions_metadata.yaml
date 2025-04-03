@@ -11,6 +11,9 @@ on:
         options:
           - dev
           - prod
+  push:
+    branches:
+      - DEV-2158-pipelines
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint
 permissions:
@@ -21,7 +24,8 @@ jobs:
   generate_metadata:
     name: Generate Solutions Metadata
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    # Use dev environment for automatic runs from pushes
+    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
 
     steps:
       - name: Checkout
@@ -44,7 +48,7 @@ jobs:
 
       - name: Generate solutions metadata
         env:
-          ENVIRONMENT: ${{ inputs.environment }}
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'docs' }}
           S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
