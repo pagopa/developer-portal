@@ -15,13 +15,40 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
-// Load environment variables from .env file
-dotenv.config();
+// Try to load environment variables from .env file, but don't fail if it doesn't exist
+try {
+  dotenv.config({ path: '.env' });
+  console.log('Loaded environment variables from .env file');
+} catch (error) {
+  console.log(
+    'No .env file found or error loading it, using environment variables'
+  );
+}
 
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+// Support both variable names for S3 bucket
+const S3_BUCKET_NAME =
+  process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
+
+// Check for required environment variables
+const requiredEnvVars = ['STRAPI_ENDPOINT', 'STRAPI_API_TOKEN'];
+const missingEnvVars = requiredEnvVars.filter(
+  (varName) => !process.env[varName]
+);
+
+// Add bucket check separately since we look for either of two names
+if (!S3_BUCKET_NAME) {
+  missingEnvVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
+}
+
+if (missingEnvVars.length > 0) {
+  console.warn(
+    `Warning: Missing environment variables: ${missingEnvVars.join(', ')}`
+  );
+  console.log('Continuing with available environment variables...');
+}
 
 const s3Client = makeS3Client();
 
@@ -129,6 +156,7 @@ async function main() {
     );
   } catch (error) {
     console.error('Error:', error);
+    process.exit(1); // Exit with error code for CI pipeline visibility
   }
 }
 
