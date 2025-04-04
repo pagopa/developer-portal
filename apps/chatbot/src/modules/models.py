@@ -9,11 +9,9 @@ from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
-from dotenv import load_dotenv
-
 from src.modules.utils import get_ssm_parameter
 
-load_dotenv()
+
 logger = getLogger(__name__)
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
@@ -24,8 +22,6 @@ AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
 AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
-AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
-AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
