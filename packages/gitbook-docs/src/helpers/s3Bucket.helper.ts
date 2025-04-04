@@ -22,8 +22,15 @@ export function makeS3Client(): S3Client {
 
   // Check if required environment variables are set
   if (!S3_ACCESS_KEY_ID || !S3_SECRET_ACCESS_KEY || !S3_BUCKET_NAME) {
+    const missingVars = [];
+    if (!S3_ACCESS_KEY_ID) missingVars.push('S3_ACCESS_KEY_ID');
+    if (!S3_SECRET_ACCESS_KEY) missingVars.push('S3_SECRET_ACCESS_KEY');
+    if (!S3_BUCKET_NAME)
+      missingVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
     console.error(
-      'Missing required environment variables. Please check your .env file.'
+      `Missing required environment variables: ${missingVars.join(
+        ', '
+      )}. Please check your .env file.`
     );
     process.exit(1);
   }
