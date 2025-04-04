@@ -27,6 +27,60 @@ prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
 
+def evaluate_go_ahead() -> bool:
+    """
+    Decide whether to evaluate the query or not.
+    This is based on the amount of daily query
+    """
+    return count_queries_created_today() < os.getenv("CHB_MAX_DAILY_EVALUATIONS", 200)
+
+
+def get_session_ids_created_today() -> list:
+    today = datetime.datetime.utcnow().date().isoformat()
+    start_of_day = f"{today}T00:00:00Z"
+    end_of_day = f"{today}T23:59:59Z"
+
+    response = tables["sessions"].query(
+        IndexName="SessionsByCreatedAtIndex",
+        KeyConditionExpression="createdAt BETWEEN :start AND :end",
+        ExpressionAttributeValues={
+            ":start": {"S": start_of_day},
+            ":end": {"S": end_of_day},
+        },
+        ProjectionExpression="id",
+    )
+
+    session_ids = [item["id"]["S"] for item in response.get("Items", [])]
+    return session_ids
+
+
+def count_queries_for_sessions(session_ids: list) -> int:
+    total_count = 0
+
+    for session_id in session_ids:
+        response = tables["queries"].query(
+            KeyConditionExpression="sessionId = :sessionId",
+            ExpressionAttributeValues={
+                ":sessionId": {"S": session_id},
+            },
+            Select="COUNT",
+        )
+        total_count += response["Count"]
+
+    return total_count
+
+
+def count_queries_created_today():
+    session_ids = get_session_ids_created_today()
+    if not session_ids:
+        print("No sessions created today.")
+        return 0
+
+    total_queries = count_queries_for_sessions(session_ids)
+    print(f"Total queries created today: {total_queries}")
+    return total_queries
+
+
 async def evaluate(evaluation_data: dict) -> dict:
     if os.getenv("environment", "development") != "test":
         evaluation_result = chatbot.evaluate(**evaluation_data)
@@ -62,19 +116,20 @@ async def query_creation(
     )
     answer = chatbot.get_final_response(answer_json)
 
-    evaluation_data = {
-        "query_str": query_str,
-        "response_str": answer,
-        "retrieved_contexts": answer_json["contexts"],
-        "trace_id": trace_id,
-        "session_id": session["id"],
-        "user_id": user_id,
-        "messages": messages,
-    }
-    background_tasks.add_task(
-        evaluate,
-        evaluation_data=evaluation_data
-    )
+    if evaluate_go_ahead():
+        evaluation_data = {
+            "query_str": query_str,
+            "response_str": answer,
+            "retrieved_contexts": answer_json["contexts"],
+            "trace_id": trace_id,
+            "session_id": session["id"],
+            "user_id": user_id,
+            "messages": messages,
+        }
+        background_tasks.add_task(
+            evaluate,
+            evaluation_data=evaluation_data
+        )
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
