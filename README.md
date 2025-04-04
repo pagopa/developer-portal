@@ -153,6 +153,8 @@ NEXT_PUBLIC_CHATBOT_HOST="https://api.chatbot.dev.developer.pagopa.it"
 NEXT_PUBLIC_CHATBOT_ACTIVE="true"
 ```
 
+If wou want to lanuch the Chatbot backend locally, read `apps/chatbot/README.md`.
+
 ## Commands Cheat Sheet
 
 ### Workspace

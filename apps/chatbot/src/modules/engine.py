@@ -5,11 +5,6 @@ from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.chat_engine import CondensePlusContextChatEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
 
-from dotenv import load_dotenv
-
-
-load_dotenv()
-
 
 SIMILARITY_TOPK = os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5")
 SIMILARITY_CUTOFF = os.getenv("CHB_ENGINE_SIMILARITY_CUTOFF", "0.55")

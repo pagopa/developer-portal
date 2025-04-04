@@ -6,10 +6,7 @@ import logging
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import build_automerging_index_redis
 
-from dotenv import load_dotenv
 
-
-load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 

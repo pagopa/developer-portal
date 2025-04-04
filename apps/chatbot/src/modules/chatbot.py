@@ -38,10 +38,7 @@ from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
-# from dotenv import load_dotenv
 
-
-# load_dotenv()
 logger = getLogger(__name__)
 
 CWF = Path(__file__)
@@ -178,9 +175,17 @@ class Chatbot:
         ):
             response_str = (
                 '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
-                'la documentazione del DevPortal di PagoPA. '
+                "la documentazione del DevPortal di PagoPA. "
                 'Prova a riformulare la domanda.", '
                 '"topics": ["none"], "references": []}'
+            )
+        elif (
+            re.search(r'"response":', response_str) is None
+            and re.search(r'"topics":', response_str) is None
+            and re.search(r'"references":', response_str) is None
+        ):
+            response_str = '{{"response": "{response_str}", "topics": ["none"], "references": []}}'.format(
+                response_str=response_str
             )
         else:
             response_str = self._unmask_reference(response_str, nodes)
@@ -195,8 +200,7 @@ class Chatbot:
         hashed_urls = re.findall(pattern, response_str)
 
         logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken "
-            "from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
+            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
         )
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
@@ -236,7 +240,8 @@ class Chatbot:
                 assistant_content = (
                     message["answer"].split("Rif:")[0].strip()
                     if (
-                        message and message.get("answer")
+                        message
+                        and message.get("answer")
                         and message.get("answer") is not None
                     )
                     else None
@@ -392,7 +397,7 @@ class Chatbot:
                     )
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
-            
+
                 response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
