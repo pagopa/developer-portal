@@ -1,5 +1,6 @@
 locals {
   lambda_env_variables = {    
+    AUTH_COGNITO_USERPOOL_ID     = var.cognito_user_pool.id
     CHB_AWS_BEDROCK_EMBED_REGION = "eu-central-1"
     CHB_AWS_BEDROCK_LLM_REGION   = var.aws_chatbot_region
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
