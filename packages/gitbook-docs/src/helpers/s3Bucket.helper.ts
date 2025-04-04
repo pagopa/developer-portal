@@ -15,8 +15,10 @@ import { SitemapItem } from '../sitemapItem';
 export function makeS3Client(): S3Client {
   const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
   const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
-  const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-  const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION;
+  // Support both bucket name variables
+  const S3_BUCKET_NAME =
+    process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
+  const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1';
 
   // Check if required environment variables are set
   if (!S3_ACCESS_KEY_ID || !S3_SECRET_ACCESS_KEY || !S3_BUCKET_NAME) {

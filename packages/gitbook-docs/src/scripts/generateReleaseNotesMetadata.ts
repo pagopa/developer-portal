@@ -25,17 +25,24 @@ try {
   );
 }
 
+// Support both variable names for S3 bucket
+const S3_BUCKET_NAME =
+  process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
+const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const S3_RELEASE_NOTES_METADATA_JSON_PATH =
+  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
+  'release-notes-metadata.json';
+
 // Check for required environment variables
-const requiredEnvVars = [
-  'S3_BUCKET_NAME',
-  'S3_ACCESS_KEY_ID',
-  'S3_SECRET_ACCESS_KEY',
-  'STRAPI_ENDPOINT',
-  'STRAPI_API_TOKEN',
-];
+const requiredEnvVars = ['STRAPI_ENDPOINT', 'STRAPI_API_TOKEN'];
 const missingEnvVars = requiredEnvVars.filter(
   (varName) => !process.env[varName]
 );
+
+// Add bucket check separately since we look for either of two names
+if (!S3_BUCKET_NAME) {
+  missingEnvVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
+}
 
 if (missingEnvVars.length > 0) {
   console.warn(
@@ -43,12 +50,6 @@ if (missingEnvVars.length > 0) {
   );
   console.log('Continuing with available environment variables...');
 }
-
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.json';
 
 const s3Client = makeS3Client();
 
