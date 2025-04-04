@@ -26,6 +26,7 @@ COPY ./poetry.lock .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
+COPY ./notebooks ./notebooks
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
