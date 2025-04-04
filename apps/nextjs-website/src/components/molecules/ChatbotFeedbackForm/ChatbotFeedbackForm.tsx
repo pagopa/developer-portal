@@ -1,21 +1,20 @@
 import {
   Box,
   Button,
-  InputBase,
   Rating,
   Stack,
+  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
-import { History } from '@mui/icons-material';
 import React, { ChangeEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material/styles';
+import StarIcon from '@mui/icons-material/Star';
 
-const MESSAGE_MAX_CHARS = 475;
+const MESSAGE_MAX_CHARS = 500;
 
 type ChatbotFeedbackProps = {
-  disabled: boolean;
   answerId: string;
   onClose: () => null;
   onSend: (
@@ -27,7 +26,6 @@ type ChatbotFeedbackProps = {
 };
 
 const ChatbotFeedbackForm = ({
-  disabled,
   answerId = '',
   onClose,
   onSend,
@@ -59,29 +57,6 @@ const ChatbotFeedbackForm = ({
 
   return (
     <>
-      {!disabled && (
-        <Box
-          sx={{
-            backgroundColor: palette.background.paper,
-            borderBottom: '2px solid',
-            borderBottomColor: palette.action.disabled,
-            width: 'auto',
-          }}
-        >
-          <Stack direction={'row'} paddingY={'0.25rem'}>
-            <Button
-              href='/profile/chatbot-history'
-              size='small'
-              sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
-            >
-              <History fontSize='small' />
-              <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
-                {t('chatBot.history')}
-              </span>
-            </Button>
-          </Stack>
-        </Box>
-      )}
       <Stack
         direction={'column'}
         sx={{
@@ -112,6 +87,10 @@ const ChatbotFeedbackForm = ({
             onChange={(event, newValue) => {
               setContextRelevancy(newValue || 0);
             }}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+            }
+            size='large'
           />
         </Box>
         <Typography
@@ -134,6 +113,10 @@ const ChatbotFeedbackForm = ({
             onChange={(event, newValue) => {
               setResponseRelevancy(newValue || 0);
             }}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+            }
+            size='large'
           />
         </Box>
         <Typography
@@ -144,25 +127,37 @@ const ChatbotFeedbackForm = ({
         >
           {t('chatBot.feedback.comment')}
         </Typography>
-        <InputBase
+        <TextField
           inputRef={(input) => input && input.focus()}
           fullWidth
-          placeholder={t('chatBot.feedback.inputPlaceholder')}
           value={comment}
+          label={t('chatBot.feedback.inputPlaceholder')}
+          InputLabelProps={{
+            style: {
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '21px',
+              letterSpacing: '0px',
+            },
+          }}
           onChange={handleChange}
           multiline
+          rows={5}
           sx={{
-            alignItems: 'flex-start',
-            borderWidth: '2px',
-            paddingX: { xs: 1.5, md: 2 },
-            paddingY: 1,
-            borderRadius: 2,
-            borderStyle: 'solid',
-            borderColor: comment.length
-              ? palette.primary.main
-              : palette.action.disabled,
-            fontSize: '0.875rem',
-            height: '130px',
+            '& .MuiInputBase-input': {
+              color: palette.text.primary,
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '21px',
+              letterSpacing: '0px',
+            },
+            '& .MuiInputBase-input::placeholder': {
+              color: palette.text.secondary,
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '21px',
+              letterSpacing: '0px',
+            },
           }}
         />
         <Typography
