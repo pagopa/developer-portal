@@ -135,7 +135,8 @@ export const parseS3Doc = async <T>(
     // eslint-disable-next-line functional/no-expression-statements
     slugToPath = slugToPath !== dirPath ? slugToPath : `${dirPath}/README`;
     const filePath = files.find(
-      (file) => file.includes(slugToPath) && file.endsWith('.md')
+      (file) =>
+        file.endsWith('.md') && file.replace('.md', '').endsWith(slugToPath)
     );
 
     if (!filePath) {
