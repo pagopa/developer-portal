@@ -1,19 +1,14 @@
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
-from src.app.models import Query, QueryFeedback, tables
+from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
 
 
 from src.app.sessions import (
-    current_user_id,
-    find_or_create_session,
-    session_salt,
-    hash_func,
-    last_session_id,
-    get_user_session
+    current_user_id
 )
 
 router = APIRouter()
