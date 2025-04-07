@@ -55,6 +55,7 @@ Check out the params in order to store your vector index accordingly.
 ## Test
 
 ### Chatbot module
+
 In order to test the chatbot and its APIs, run:
 
     pytest
@@ -62,12 +63,15 @@ In order to test the chatbot and its APIs, run:
 For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
 
 ### API
+
 The FastAPI application is in the `src/app` directory.
 
 From the root directory (`apps/chatbot`), run
+
 ```
 ./docker/docker-compose-run-tests.sh
 ```
+
 ## Docker
 
 In order to run the chatbot locally for the first time, you need to:
@@ -80,19 +84,30 @@ In order to run the chatbot locally for the first time, you need to:
   and fill it in,
 
 - run the following bash scripts:
+
 ```
-        ./docker/docker-compose-build-api.sh
-        ./docker/docker-compose-run-create_index.sh
+./docker/docker-compose-build-api.sh
+./docker/docker-compose-run-create_index.sh
 ```
+
 In this way, the docker images are built and the vector index is stored in Redis.
 
 Now you can start the API running:
+
 ```
-    ./docker/docker-compose-up-api.sh
+./docker/docker-compose-up-api.sh
 ```
+
 Note that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
 
 Every time you update the frontend documents, you should to reindex with
+
 ```
-        ./docker/docker-compose-run-create_index.sh
+./docker/docker-compose-run-create_index.sh
+```
+
+In the end, if you need to work with `jupyter-lab` and test yourself the chatbot components, you can run:
+
+```
+./docker/docker-compose-run-jupyter.sh
 ```
