@@ -27,58 +27,41 @@ prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
 
-def evaluate_go_ahead() -> bool:
+def can_evaluate() -> bool:
     """
     Decide whether to evaluate the query or not.
     This is based on the amount of daily query
     """
-    return count_queries_created_today() < os.getenv("CHB_MAX_DAILY_EVALUATIONS", 200)
+    max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", 200))
+    return count_queries_created_today() < max_daily_evaluations
 
 
-def get_session_ids_created_today() -> list:
+def count_queries_created_today() -> int:
     today = datetime.datetime.utcnow().date().isoformat()
-    start_of_day = f"{today}T00:00:00Z"
-    end_of_day = f"{today}T23:59:59Z"
 
-    response = tables["sessions"].query(
-        IndexName="SessionsByCreatedAtIndex",
-        KeyConditionExpression="createdAt BETWEEN :start AND :end",
-        ExpressionAttributeValues={
-            ":start": {"S": start_of_day},
-            ":end": {"S": end_of_day},
-        },
-        ProjectionExpression="id",
+    response = tables["queries"].query(
+        IndexName="QueriesByCreatedAtDateIndex",
+        KeyConditionExpression=Key("createdAtDate").eq(today),
+        Select="COUNT"
     )
 
-    session_ids = [item["id"]["S"] for item in response.get("Items", [])]
-    return session_ids
+    return response["Count"]
 
 
-def count_queries_for_sessions(session_ids: list) -> int:
-    total_count = 0
+def backfill_created_at_date():
+    """
+    Backfill the `createdAtDate` field for all existing items in the table.
+    """
+    response = tables["queries"].scan()
+    items = response.get("Items", [])
 
-    for session_id in session_ids:
-        response = tables["queries"].query(
-            KeyConditionExpression="sessionId = :sessionId",
-            ExpressionAttributeValues={
-                ":sessionId": {"S": session_id},
-            },
-            Select="COUNT",
-        )
-        total_count += response["Count"]
+    for item in items:
+        created_at_date = item["createdAt"][:10]
+        item["createdAtDate"] = created_at_date
 
-    return total_count
+        tables["queries"].put_item(Item=item)
 
-
-def count_queries_created_today():
-    session_ids = get_session_ids_created_today()
-    if not session_ids:
-        print("No sessions created today.")
-        return 0
-
-    total_queries = count_queries_for_sessions(session_ids)
-    print(f"Total queries created today: {total_queries}")
-    return total_queries
+    logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
 async def evaluate(evaluation_data: dict) -> dict:
@@ -116,7 +99,7 @@ async def query_creation(
     )
     answer = chatbot.get_final_response(answer_json)
 
-    if evaluate_go_ahead():
+    if can_evaluate():
         evaluation_data = {
             "query_str": query_str,
             "response_str": answer,
@@ -136,12 +119,15 @@ async def query_creation(
     else:
         queriedAt = query.queriedAt
 
+    createdAt = now.isoformat()
+    createdAtDate = createdAt[:10]
     bodyToReturn = {
         "id": trace_id,
         "sessionId": session["id"],
         "question": query.question,
         "answer": answer,
-        "createdAt": now.isoformat(),
+        "createdAt": createdAt,
+        "createdAtDate": createdAtDate,
         "queriedAt": queriedAt,
         "badAnswer": False,
     }
