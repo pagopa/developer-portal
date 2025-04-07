@@ -3,6 +3,7 @@ locals {
     CHB_AWS_S3_BUCKET         = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_GUARDRAIL_ID      = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION = awscc_bedrock_guardrail_version.guardrail.version
+    CHB_MAX_DAILY_EVALUATIONS = "200"
     CHB_REDIS_URL             = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     CHB_WEBSITE_URL           = "https://${var.dns_domain_name}"
     CORS_DOMAINS              = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
