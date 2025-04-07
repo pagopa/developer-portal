@@ -20,27 +20,12 @@ export function makeS3Client(): S3Client {
     process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
   const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1';
 
-  // Check if required environment variables are set
-  if (!S3_ACCESS_KEY_ID || !S3_SECRET_ACCESS_KEY || !S3_BUCKET_NAME) {
-    const missingVars = [];
-    if (!S3_ACCESS_KEY_ID) missingVars.push('S3_ACCESS_KEY_ID');
-    if (!S3_SECRET_ACCESS_KEY) missingVars.push('S3_SECRET_ACCESS_KEY');
-    if (!S3_BUCKET_NAME)
-      missingVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
-    console.error(
-      `Missing required environment variables: ${missingVars.join(
-        ', '
-      )}. Please check your .env file.`
-    );
-    process.exit(1);
-  }
-
   return new S3Client({
     region: AWS_REGION,
-    credentials: {
-      accessKeyId: S3_ACCESS_KEY_ID,
-      secretAccessKey: S3_SECRET_ACCESS_KEY,
-    },
+    // credentials: {
+    //   accessKeyId: S3_ACCESS_KEY_ID,
+    //   secretAccessKey: S3_SECRET_ACCESS_KEY,
+    // },
   });
 }
 
