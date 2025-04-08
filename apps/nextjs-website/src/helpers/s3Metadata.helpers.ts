@@ -5,7 +5,7 @@ const s3Client = new S3Client({
   region: process.env.AWS_REGION || 'us-east-1',
   credentials: credentials,
 });
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'your-bucket-name';
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || '';
 
 export interface JsonMetadata {
   readonly path: string;
