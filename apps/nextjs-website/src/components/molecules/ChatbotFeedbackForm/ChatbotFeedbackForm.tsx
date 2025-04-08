@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 
-const MESSAGE_MAX_CHARS = 500;
+const MESSAGE_MAX_CHARS = 800;
 
 type ChatbotFeedbackProps = {
   sessionId: string;
