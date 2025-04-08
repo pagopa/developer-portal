@@ -15,20 +15,26 @@ import StarIcon from '@mui/icons-material/Star';
 const MESSAGE_MAX_CHARS = 500;
 
 type ChatbotFeedbackProps = {
-  answerId: string;
+  sessionId: string;
+  id: string;
   onClose: () => null;
   onSend: (
-    answerId: string,
-    contextScore: number,
-    responseScore: number,
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    chatId: string,
+    contextScore: number | null,
+    responseScore: number | null,
     comment: string
   ) => null;
+  setIsFormVisible: (boolean: boolean) => null;
 };
 
 const ChatbotFeedbackForm = ({
-  answerId = '',
+  sessionId,
+  id,
   onClose,
   onSend,
+  setIsFormVisible,
 }: ChatbotFeedbackProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -191,8 +197,11 @@ const ChatbotFeedbackForm = ({
             disabled={!comment.length}
             variant={'contained'}
             onClick={() => {
+              setIsFormVisible(false);
               return onSend(
-                answerId,
+                true,
+                sessionId,
+                id,
                 contextRelevancy,
                 responseRelevancy,
                 comment
