@@ -103,12 +103,14 @@ async def query_feedback(
                 'sessionId': sessionId,
                 'id': id
             },
-            UpdateExpression='SET #badAnswer = :badAnswer',
+            UpdateExpression='SET #badAnswer = :badAnswer, #feedback = :feedback',
             ExpressionAttributeNames={
-                '#badAnswer': 'badAnswer'
+                '#badAnswer': 'badAnswer',
+                '#feedback': 'feedback'
             },
             ExpressionAttributeValues={
-                ':badAnswer': query.badAnswer
+                ':badAnswer': query.badAnswer,
+                ':feedback': query.feedback.model_dump() if query.feedback else None
             },
             ReturnValues='ALL_NEW'
         )
