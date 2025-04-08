@@ -35,7 +35,7 @@ jobs:
     name: Llama reindex (on ${{ matrix.environment }})
     # Trigger when the PR is merged or on a webhook (e.g. trigger deploy from CMS)
     if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'repository_dispatch'
-    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-devportal-${{ matrix.environment }}-cicd-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
         environment: ['dev']
@@ -94,7 +94,7 @@ jobs:
   manual_deploy:
     name: Llama reindex (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
-    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-devportal-${{ inputs.environment }}-cicd-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
 
     concurrency:
