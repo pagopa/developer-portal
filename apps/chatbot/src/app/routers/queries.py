@@ -48,7 +48,7 @@ def count_queries_created_today() -> int:
     return response["Count"]
 
 
-def backfill_created_at_date():
+def backfill_created_at_date() -> None:
     """
     Backfill the `createdAtDate` field for all existing items in the table.
     """
