@@ -89,6 +89,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [chatQueries, setChatQueries] = useState<Query[]>([]);
   const [historyQueries, setHistoryQueries] = useState<Query[]>([]);
+  const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
   const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
     useState(true);
   const [paginatedSessions, setPaginatedSessions] =
@@ -161,17 +162,17 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     hasNegativeFeedback: boolean,
     sessionId: string,
     queryId: string,
-    contextScore: number | null,
-    responseScore: number | null,
-    comment: string
+    user_response_relevancy: number | null,
+    user_faithfullness: number | null,
+    user_comment: string
   ) => {
     sendChatbotFeedback(
       hasNegativeFeedback,
       sessionId,
       queryId,
-      contextScore,
-      responseScore,
-      comment
+      user_response_relevancy,
+      user_faithfullness,
+      user_comment
     );
     const updatedChatQueries = setFeedbackByQueryId(
       chatQueries,
@@ -215,5 +216,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     paginatedSessionsLoading,
     deleteChatbotSession,
     chatbotError,
+    isFeedbackFormVisible,
+    setIsFeedbackFormVisible,
   };
 };

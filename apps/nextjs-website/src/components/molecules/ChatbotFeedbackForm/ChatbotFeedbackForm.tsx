@@ -38,9 +38,9 @@ const ChatbotFeedbackForm = ({
 }: ChatbotFeedbackProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [contextRelevancy, setContextRelevancy] = useState(0);
-  const [responseRelevancy, setResponseRelevancy] = useState(0);
-  const [comment, setComment] = useState('');
+  const [userResponseRelevancy, setUserResponseRelevancy] = useState(0);
+  const [userFaithfullness, setUserFaithfullness] = useState(0);
+  const [userComment, setUserComment] = useState('');
   const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
       color: palette.primary.main,
@@ -54,7 +54,7 @@ const ChatbotFeedbackForm = ({
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setComment(
+    setUserComment(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
         .replace(/(\r\n|\n|\r)/gm, '')
@@ -89,9 +89,9 @@ const ChatbotFeedbackForm = ({
           }}
         >
           <StyledRating
-            value={contextRelevancy}
+            value={userResponseRelevancy}
             onChange={(event, newValue) => {
-              setContextRelevancy(newValue || 0);
+              setUserResponseRelevancy(newValue || 0);
             }}
             emptyIcon={
               <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
@@ -115,9 +115,9 @@ const ChatbotFeedbackForm = ({
           }}
         >
           <StyledRating
-            value={responseRelevancy}
+            value={userFaithfullness}
             onChange={(event, newValue) => {
-              setResponseRelevancy(newValue || 0);
+              setUserFaithfullness(newValue || 0);
             }}
             emptyIcon={
               <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
@@ -136,7 +136,7 @@ const ChatbotFeedbackForm = ({
         <TextField
           inputRef={(input) => input && input.focus()}
           fullWidth
-          value={comment}
+          value={userComment}
           label={t('chatBot.feedback.inputPlaceholder')}
           InputLabelProps={{
             style: {
@@ -194,7 +194,7 @@ const ChatbotFeedbackForm = ({
             {t(`chatBot.feedback.undo`)}
           </Button>
           <Button
-            disabled={!comment.length}
+            disabled={!userComment.length}
             variant={'contained'}
             onClick={() => {
               setIsFormVisible(false);
@@ -202,9 +202,9 @@ const ChatbotFeedbackForm = ({
                 true,
                 sessionId,
                 id,
-                contextRelevancy,
-                responseRelevancy,
-                comment
+                userResponseRelevancy ? userResponseRelevancy / 5 : null,
+                userFaithfullness ? userFaithfullness / 5 : null,
+                userComment
               );
             }}
           >

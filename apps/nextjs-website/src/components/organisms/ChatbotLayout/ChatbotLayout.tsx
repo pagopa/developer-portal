@@ -31,6 +31,9 @@ type ChatbotLayoutProps = {
   error: ChatbotErrorsType | null;
   disabled?: boolean;
   mustFillFeedbackForm: boolean;
+  isFeedbackFormVisible: boolean;
+  // eslint-disable-next-line functional/no-return-void
+  setIsFeedbackFormVisible: (isFeedbackFormVisible: boolean) => void;
 };
 
 const ChatbotLayout = ({
@@ -42,6 +45,8 @@ const ChatbotLayout = ({
   error,
   disabled,
   mustFillFeedbackForm = false,
+  isFeedbackFormVisible,
+  setIsFeedbackFormVisible,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -154,6 +159,8 @@ const ChatbotLayout = ({
             scrollToBottom={true}
             error={error}
             disabled={disabled}
+            isFeedbackFormVisible={isFeedbackFormVisible}
+            setIsFeedbackFormVisible={setIsFeedbackFormVisible}
           />
         </Stack>
       </Popover>

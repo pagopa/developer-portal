@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@/helpers/user.helper';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import ChatbotLayout from '@/components/organisms/ChatbotLayout/ChatbotLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 
@@ -21,6 +21,8 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
     isAwaitingResponse,
     areChatbotQueriesLoaded,
     chatbotError,
+    isFeedbackFormVisible,
+    setIsFeedbackFormVisible,
   } = useChatbot(!!user);
 
   return (
@@ -34,6 +36,8 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           areChatbotQueriesLoaded={areChatbotQueriesLoaded}
           error={chatbotError}
           disabled={!user}
+          isFeedbackFormVisible={isFeedbackFormVisible}
+          setIsFeedbackFormVisible={setIsFeedbackFormVisible}
           mustFillFeedbackForm={
             user != null &&
             (user.attributes.email.includes('pagopa') ||

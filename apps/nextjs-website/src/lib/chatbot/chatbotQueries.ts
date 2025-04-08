@@ -96,9 +96,9 @@ export const patchFeedback = (
   badAnswer: boolean,
   sessionId: string,
   queryId: string,
-  contextScore: number | null,
-  responseScore: number | null,
-  comment: string
+  user_response_relevancy: number | null,
+  user_faithfullness: number | null,
+  user_comment: string
 ) =>
   pipe(
     R.ask<ChatbotEnv>(),
@@ -117,9 +117,9 @@ export const patchFeedback = (
               body: JSON.stringify({
                 badAnswer: badAnswer,
                 feedback: {
-                  context_relevancy: contextScore,
-                  response_relevancy: responseScore,
-                  description: comment,
+                  user_response_relevancy: user_response_relevancy,
+                  user_faithfullness: user_faithfullness,
+                  user_comment: user_comment,
                 },
               }),
             })

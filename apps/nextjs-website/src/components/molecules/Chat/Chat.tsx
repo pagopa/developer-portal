@@ -33,6 +33,9 @@ type ChatProps = {
   areChatbotQueriesLoaded: boolean;
   error: ChatbotErrorsType | null;
   disabled?: boolean;
+  isFeedbackFormVisible: boolean;
+  // eslint-disable-next-line functional/no-return-void
+  setIsFeedbackFormVisible: (isFeedbackFormVisible: boolean) => void;
 };
 
 const Chat = ({
@@ -45,10 +48,11 @@ const Chat = ({
   areChatbotQueriesLoaded,
   error,
   disabled,
+  isFeedbackFormVisible,
+  setIsFeedbackFormVisible,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const { user } = useUser();
   const [sessionId, setSessionId] = useState<string>('');
@@ -58,7 +62,8 @@ const Chat = ({
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
-          : t('chatBot.guestMessage', { host: baseUrl })
+          : t('chatBot.guestMessage', { host: baseUrl }),
+        mustFillFeedbackForm
       ),
       ...compact(
         queries.flatMap((q) => [
@@ -70,6 +75,7 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.queriedAt,
                 hasNegativeFeedback: false,
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
           q.answer && q.createdAt
@@ -80,12 +86,13 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.createdAt,
                 hasNegativeFeedback: q.badAnswer || false,
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
         ])
       ),
     ],
-    [queries, t, user]
+    [queries, t, user, isFeedbackFormVisible]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -97,7 +104,7 @@ const Chat = ({
       });
     }
     setInstantScroll(false);
-  }, [queries, instantScroll, setInstantScroll]);
+  }, [queries, instantScroll, setInstantScroll, isFeedbackFormVisible]);
 
   return (
     <>
@@ -124,17 +131,17 @@ const Chat = ({
           </Stack>
         </Box>
       )}
-      {isFormVisible ? (
+      {isFeedbackFormVisible ? (
         <ChatbotFeedbackForm
           sessionId={sessionId}
           id={id}
           onClose={() => {
-            setIsFormVisible(false);
+            setIsFeedbackFormVisible(false);
             return null;
           }}
           onSend={onSendFeedback}
           setIsFormVisible={(isVisible) => {
-            setIsFormVisible(isVisible);
+            setIsFeedbackFormVisible(isVisible);
             return null;
           }}
         />
@@ -163,12 +170,13 @@ const Chat = ({
               >
                 <ChatMessage
                   {...message}
+                  mustFillFeedbackForm={mustFillFeedbackForm}
                   onToggleNegativeFeedback={(negativeFeedback) => {
-                    if (mustFillFeedbackForm && negativeFeedback)
-                      setIsFormVisible(true);
-                    else {
-                      setSessionId(message.sessionId);
-                      setId(message.id);
+                    setSessionId(message.sessionId);
+                    setId(message.id);
+                    if (mustFillFeedbackForm) {
+                      if (negativeFeedback) setIsFeedbackFormVisible(true);
+                    } else {
                       onSendFeedback(
                         negativeFeedback,
                         message.sessionId,
@@ -215,12 +223,13 @@ const Chat = ({
 
 export default Chat;
 
-function firstMessage(text: string): Message {
+function firstMessage(text: string, mustFillFeedbackForm: boolean): Message {
   return {
     id: '',
     text: text,
     isQuestion: false,
     sessionId: '',
     hasNegativeFeedback: false,
+    mustFillFeedbackForm: mustFillFeedbackForm,
   };
 }
