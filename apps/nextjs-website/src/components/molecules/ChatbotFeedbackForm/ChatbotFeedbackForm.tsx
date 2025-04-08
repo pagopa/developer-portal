@@ -77,7 +77,7 @@ const ChatbotFeedbackForm = ({
           fontWeight={600}
           fontSize={16}
           letterSpacing={0}
-          sx={{ paddingTop: '28px', paddingBottom: '8px' }}
+          sx={{ paddingTop: '20px', paddingBottom: '8px' }}
         >
           {t('chatBot.feedback.contextRelevancy')}
         </Typography>
@@ -103,7 +103,7 @@ const ChatbotFeedbackForm = ({
           fontWeight={600}
           fontSize={16}
           letterSpacing={0}
-          sx={{ paddingTop: '24px', paddingBottom: '8px' }}
+          sx={{ paddingTop: '20px', paddingBottom: '8px' }}
         >
           {t('chatBot.feedback.responseRelevancy')}
         </Typography>
@@ -129,12 +129,11 @@ const ChatbotFeedbackForm = ({
           fontWeight={600}
           fontSize={16}
           letterSpacing={0}
-          sx={{ paddingTop: '24px', paddingBottom: '16px' }}
+          sx={{ paddingTop: '20px', paddingBottom: '16px' }}
         >
           {t('chatBot.feedback.comment')}
         </Typography>
         <TextField
-          inputRef={(input) => input && input.focus()}
           fullWidth
           value={userComment}
           label={t('chatBot.feedback.inputPlaceholder')}
@@ -148,7 +147,7 @@ const ChatbotFeedbackForm = ({
           }}
           onChange={handleChange}
           multiline
-          rows={5}
+          rows={4}
           sx={{
             '& .MuiInputBase-input': {
               color: palette.text.primary,
@@ -183,7 +182,7 @@ const ChatbotFeedbackForm = ({
           direction='row'
           spacing='10px'
           sx={{
-            paddingTop: '24px',
+            paddingTop: '20px',
             paddingBottom: '20px',
             display: 'flex',
             justifyContent: 'end',
