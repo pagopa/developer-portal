@@ -228,20 +228,16 @@ export const getGuideProps = async (
 };
 
 export const getGuidePageProps = async (
-  guidePaths: ReadonlyArray<string>,
+  guideSlug: string,
   productSlug: string
 ) => {
-  const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
+  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const guideProps = makeGuidesProps(strapiGuides)[0];
-  if (!guideProps) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
-  }
-  return guideProps;
+  const guidesProps = makeGuidesProps(strapiGuides);
+  return guidesProps[0];
 };
 
 export const getSolutionProps = async (
