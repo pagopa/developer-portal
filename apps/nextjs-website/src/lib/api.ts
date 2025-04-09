@@ -19,7 +19,7 @@ import {
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
-import { parseS3DocPage } from '@/helpers/parseS3Doc.helpers';
+import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
@@ -39,7 +39,10 @@ export async function getGuidePage(
   productSlug: string
 ) {
   const products = await getProducts();
-  const guideProps = await getGuidePageProps(guidePaths, productSlug);
+  const guideProps = await getGuidePageProps(
+    guidePaths.length > 0 ? guidePaths[0] : '',
+    productSlug
+  );
   const guidesMetadata = await getGuidesMetadata();
   const guidePath = [
     `/${guideProps.product.slug}`,
@@ -47,10 +50,9 @@ export async function getGuidePage(
     ...guidePaths,
   ].join('/');
   return manageUndefined(
-    parseS3DocPage({
+    await parseS3GuidePage({
       guideProps,
       guidePath,
-      guidePaths,
       guidesMetadata,
       products,
     })
