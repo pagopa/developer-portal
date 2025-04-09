@@ -95,7 +95,7 @@ async function convertReleaseNoteToSitemapItems(
           path,
           dirName,
           contentS3Path: filePath,
-          manuS3Path: menuPath,
+          menuS3Path: menuPath,
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
