@@ -21,7 +21,6 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
     isAwaitingResponse,
     areChatbotQueriesLoaded,
     chatbotError,
-    isFeedbackFormVisible,
   } = useChatbot(!!user);
 
   return (
