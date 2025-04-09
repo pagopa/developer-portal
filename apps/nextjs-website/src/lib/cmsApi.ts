@@ -227,6 +227,23 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
+export const getGuidePageProps = async (
+  guidePaths: ReadonlyArray<string>,
+  productSlug: string
+) => {
+  const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
+  if (!strapiGuides || strapiGuides.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const guideProps = makeGuidesProps(strapiGuides)[0];
+  if (!guideProps) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  return guideProps;
+};
+
 export const getSolutionProps = async (
   solutionsSlug: string,
   solutionPaths: ReadonlyArray<string>
