@@ -2,6 +2,30 @@
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-try-statements */
 
+// Validate Strapi environment variables
+export function validateStrapiEnvironment(customRequiredVars: string[] = []): {
+  missingVars: string[];
+} {
+  // Check for required environment variables
+  const defaultRequiredVars = ['STRAPI_ENDPOINT', 'STRAPI_API_TOKEN'];
+  const requiredEnvVars = [...defaultRequiredVars, ...customRequiredVars];
+
+  const missingEnvVars = requiredEnvVars.filter(
+    (varName) => !process.env[varName]
+  );
+
+  if (missingEnvVars.length > 0) {
+    console.warn(
+      `Warning: Missing Strapi environment variables: ${missingEnvVars.join(
+        ', '
+      )}`
+    );
+    console.log('Continuing with available environment variables...');
+  }
+
+  return { missingVars: missingEnvVars };
+}
+
 // Function to fetch solutions from Strapi
 export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
   try {
