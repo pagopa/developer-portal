@@ -64,7 +64,7 @@ moved {
 
 moved {
   from = module.website.module.cloudfront_function_validation_errors_alarm
-  to = module.website.module.cloudfront_function_validation_errors_alarm["static"]
+  to   = module.website.module.cloudfront_function_validation_errors_alarm["static"]
 }
 
 moved {
