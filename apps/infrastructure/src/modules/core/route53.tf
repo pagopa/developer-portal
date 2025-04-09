@@ -49,7 +49,6 @@ resource "aws_route53_record" "devportal_google_site_verification_txt" {
 # Active Campaign Records
 module "active_campaign_dns_records" {
   source  = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records?ref=bc63328714550fd903d2574b263833c9ce1c867e" # v2.11.0"
-  count   = var.ac_integration_is_enabled ? 1 : 0
   zone_id = aws_route53_zone.dev_portal.id
   # Create only on production environment
   create = var.environment == "prod"
