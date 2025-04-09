@@ -12,13 +12,14 @@ export interface JsonMetadata {
   readonly dirName: string;
   readonly contentS3Path: string;
   readonly title: string;
-  readonly manuS3Path?: string; // check if this is optional
+  readonly menuS3Path?: string; // check if this is optional
+  readonly version?: string;
   readonly lastModified?: string;
 }
 
-export async function fetchMetadataJsonFromS3(
+export async function fetchFileFromS3(
   key: string
-): Promise<readonly JsonMetadata[]> {
+): Promise<string | undefined> {
   // eslint-disable-next-line functional/no-try-statements
   try {
     const response = await s3Client.send(
@@ -27,8 +28,20 @@ export async function fetchMetadataJsonFromS3(
         Key: key,
       })
     );
-    // Convert stream to string
-    const bodyContents = await response.Body?.transformToString();
+    return await response.Body?.transformToString();
+  } catch (error) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('Error fetching File from S3:', error);
+    return;
+  }
+}
+
+export async function fetchMetadataJsonFromS3(
+  key: string
+): Promise<readonly JsonMetadata[]> {
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const bodyContents = await fetchFileFromS3(key);
     if (!bodyContents) {
       return [];
     }
