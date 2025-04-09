@@ -16,7 +16,7 @@ jobs:
   infrastructure_checks:
     strategy:
       matrix:
-        environment: [dev, prod]
+        environment: [dev, uat, prod]
       fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
     name: Infra checks
     runs-on: ubuntu-latest

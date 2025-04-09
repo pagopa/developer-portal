@@ -17,6 +17,7 @@ on:
         default: dev
         options:
           - dev
+          - uat
           - prod
       logLevel:
         description: 'Log level'
