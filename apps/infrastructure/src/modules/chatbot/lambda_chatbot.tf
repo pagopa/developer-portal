@@ -8,6 +8,9 @@ locals {
     CHB_AWS_S3_BUCKET            = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_EMBED_MODEL_ID           = "amazon.titan-embed-text-v2:0"
     CHB_ENGINE_USE_ASYNC         = "False"
+    CHB_ENGINE_USE_STREAMING     = "False"
+    CHB_ENGINE_SIMILARITY_CUTOFF = "0.2"
+    CHB_ENGINE_SIMILARITY_TOPK   = "5"
     CHB_GOOGLE_API_KEY           = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_PROJECT_ID        = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_SERVICE_ACCOUNT   = module.google_service_account_ssm_parameter.ssm_parameter_name
@@ -24,13 +27,13 @@ locals {
     CHB_PROVIDER           = "aws"
     CHB_QUERY_TABLE_PREFIX = local.prefix
     CHB_REDIS_URL          = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+    CHB_USE_PRESIDIO       = "True"
     CHB_WEBSITE_URL        = "https://${var.dns_domain_name}"
     CORS_DOMAINS           = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
     ENVIRONMENT            = var.environment
     LLAMA_INDEX_CACHE_DIR  = "/tmp"
     LOG_LEVEL              = "INFO"
     NLTK_DATA              = "_static/nltk_cache/"
-
   }
 }
 
