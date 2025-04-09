@@ -22,7 +22,6 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
     areChatbotQueriesLoaded,
     chatbotError,
     isFeedbackFormVisible,
-    setIsFeedbackFormVisible,
   } = useChatbot(!!user);
 
   return (
@@ -36,8 +35,6 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           areChatbotQueriesLoaded={areChatbotQueriesLoaded}
           error={chatbotError}
           disabled={!user}
-          isFeedbackFormVisible={isFeedbackFormVisible}
-          setIsFeedbackFormVisible={setIsFeedbackFormVisible}
           mustFillFeedbackForm={
             user != null &&
             (user.attributes.email.includes('pagopa') ||

@@ -33,9 +33,6 @@ type ChatProps = {
   areChatbotQueriesLoaded: boolean;
   error: ChatbotErrorsType | null;
   disabled?: boolean;
-  isFeedbackFormVisible: boolean;
-  // eslint-disable-next-line functional/no-return-void
-  setIsFeedbackFormVisible: (isFeedbackFormVisible: boolean) => void;
 };
 
 const Chat = ({
@@ -48,8 +45,6 @@ const Chat = ({
   areChatbotQueriesLoaded,
   error,
   disabled,
-  isFeedbackFormVisible,
-  setIsFeedbackFormVisible,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -57,6 +52,7 @@ const Chat = ({
   const { user } = useUser();
   const [sessionId, setSessionId] = useState<string>('');
   const [id, setId] = useState<string>('');
+  const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
   const messages = useMemo(
     () => [
       firstMessage(

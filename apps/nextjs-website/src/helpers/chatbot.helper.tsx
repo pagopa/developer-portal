@@ -89,7 +89,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [chatQueries, setChatQueries] = useState<Query[]>([]);
   const [historyQueries, setHistoryQueries] = useState<Query[]>([]);
-  const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
   const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
     useState(true);
   const [paginatedSessions, setPaginatedSessions] =
@@ -216,7 +215,5 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     paginatedSessionsLoading,
     deleteChatbotSession,
     chatbotError,
-    isFeedbackFormVisible,
-    setIsFeedbackFormVisible,
   };
 };
