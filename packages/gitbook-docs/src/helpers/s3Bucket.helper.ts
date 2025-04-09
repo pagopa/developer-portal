@@ -3,6 +3,7 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import {
   S3Client,
   ListObjectsV2Command,
@@ -11,22 +12,61 @@ import {
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { SitemapItem } from '../sitemapItem';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+export function loadEnvConfig(): { result: 'success' | 'not_found' } {
+  try {
+    dotenv.config({ path: '.env' });
+    return { result: 'success' };
+  } catch (error) {
+    return { result: 'not_found' };
+  }
+}
+
+// Function to validate S3 environment variables
+export function validateS3Environment(customRequiredVars: string[] = []): {
+  missingVars: string[];
+  s3BucketName: string;
+} {
+  // Support both variable names for S3 bucket
+  const s3BucketName =
+    process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
+
+  const missingEnvVars = [...customRequiredVars].filter(
+    (varName) => !process.env[varName]
+  );
+
+  // Add bucket check separately since we look for either of two names
+  if (!s3BucketName) {
+    missingEnvVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
+  }
+
+  if (missingEnvVars.length > 0) {
+    console.warn(
+      `Warning: Missing S3 environment variables: ${missingEnvVars.join(', ')}`
+    );
+    console.log('Continuing with available environment variables...');
+  }
+
+  return { missingVars: missingEnvVars, s3BucketName: s3BucketName || '' };
+}
 
 export function makeS3Client(): S3Client {
   const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
   const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
-  // Support both bucket name variables
-  const S3_BUCKET_NAME =
-    process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
   const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1';
 
-  return new S3Client({
-    region: AWS_REGION,
-    // credentials: {
-    //   accessKeyId: S3_ACCESS_KEY_ID,
-    //   secretAccessKey: S3_SECRET_ACCESS_KEY,
-    // },
-  });
+  // Create client with credentials if available, otherwise use default credentials
+  return !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
+    ? new S3Client({
+        region: AWS_REGION,
+        credentials: {
+          accessKeyId: S3_ACCESS_KEY_ID,
+          secretAccessKey: S3_SECRET_ACCESS_KEY,
+        },
+      })
+    : new S3Client({ region: AWS_REGION });
 }
 
 // Function to list all objects in the S3 bucket with a specific prefix
@@ -42,7 +82,6 @@ export async function listS3Files(
   const objects: string[] = [];
   let continuationToken: string | undefined;
 
-  // eslint-disable-next-line functional/no-try-statements
   try {
     do {
       const command = new ListObjectsV2Command({
@@ -78,7 +117,6 @@ export async function downloadS3File(
   bucketName: string,
   client: S3Client
 ): Promise<string> {
-  // eslint-disable-next-line functional/no-try-statements
   try {
     const command = new GetObjectCommand({
       Bucket: bucketName,

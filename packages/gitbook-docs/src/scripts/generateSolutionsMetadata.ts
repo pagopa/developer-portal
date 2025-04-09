@@ -3,52 +3,39 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
-import dotenv from 'dotenv';
-import { SitemapItem } from '../sitemapItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
   writeSitemapJson,
+  loadEnvConfig,
+  validateS3Environment,
 } from '../helpers/s3Bucket.helper';
+import { SitemapItem } from '../sitemapItem';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import {
+  fetchFromStrapi,
+  validateStrapiEnvironment,
+} from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
-// Try to load environment variables from .env file, but don't fail if it doesn't exist
-try {
-  dotenv.config({ path: '.env' });
+// Load environment variables from .env file
+const envLoadResult = loadEnvConfig();
+if (envLoadResult.result === 'success') {
   console.log('Loaded environment variables from .env file');
-} catch (error) {
+} else {
   console.log(
     'No .env file found or error loading it, using environment variables'
   );
 }
 
-// Support both variable names for S3 bucket
-const S3_BUCKET_NAME =
-  process.env.S3_BUCKET_NAME || process.env.S3_DOC_EXTRACTION_BUCKET_NAME;
+// Validate environment variables
+validateStrapiEnvironment();
+const { s3BucketName } = validateS3Environment();
+
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-
-// Check for required environment variables
-const requiredEnvVars = ['STRAPI_ENDPOINT', 'STRAPI_API_TOKEN'];
-const missingEnvVars = requiredEnvVars.filter(
-  (varName) => !process.env[varName]
-);
-
-// Add bucket check separately since we look for either of two names
-if (!S3_BUCKET_NAME) {
-  missingEnvVars.push('S3_BUCKET_NAME or S3_DOC_EXTRACTION_BUCKET_NAME');
-}
-
-if (missingEnvVars.length > 0) {
-  console.warn(
-    `Warning: Missing environment variables: ${missingEnvVars.join(', ')}`
-  );
-  console.log('Continuing with available environment variables...');
-}
 
 const s3Client = makeS3Client();
 
@@ -84,7 +71,7 @@ async function convertSolutionToSitemapItems(
     const solutionFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
-        `${S3_BUCKET_NAME}`,
+        `${s3BucketName}`,
         s3Client
       )
     ).filter((file) => file.endsWith('.md'));
@@ -98,7 +85,7 @@ async function convertSolutionToSitemapItems(
       }
       const content = await downloadS3File(
         filePath,
-        `${S3_BUCKET_NAME}`,
+        `${s3BucketName}`,
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
@@ -136,7 +123,7 @@ async function main() {
     await writeSitemapJson(
       sitemapItems,
       S3_SOLUTIONS_METADATA_JSON_PATH,
-      `${S3_BUCKET_NAME}`,
+      `${s3BucketName}`,
       s3Client
     );
   } catch (error) {
