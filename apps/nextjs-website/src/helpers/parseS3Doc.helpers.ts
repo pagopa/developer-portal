@@ -7,15 +7,9 @@ import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
 import { GuideDefinition } from './makeDocs.helpers';
-import {
-  bucketName,
-  credentials,
-  docsS3AssetsPath,
-  region,
-  s3DocsPath,
-} from '@/config';
+import { docsS3AssetsPath, s3DocsPath } from '@/config';
 import { Product } from '@/lib/types/product';
-import { JsonMetadata } from './s3Metadata.helpers';
+import { fetchFileFromS3, JsonMetadata } from './s3Metadata.helpers';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -182,24 +176,21 @@ export const parseS3Doc = async <T>(
   }
 };
 
-export const parseS3DocPage = async (props: {
+export const parseS3GuidePage = async (props: {
   readonly guideProps: GuideDefinition;
   readonly guidePath: string;
-  readonly guidePaths: ReadonlyArray<string>;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
 }) => {
-  const { guideProps, guidePath, guidePaths, guidesMetadata, products } = props;
-  const parseS3Doc = makeParseS3DocsEnv(bucketName, region, credentials);
+  const { guideProps, guidePath, guidesMetadata, products } = props;
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
     (data) => data.path === guidePath
   );
   const versions = guideProps.versions;
-  const version = versions.find(
-    ({ version, main }) =>
-      guidePaths.some((path) => path === version) || main === true
-  );
+  const version = guidePageMetadata?.version
+    ? versions.find(({ version }) => version === guidePageMetadata.version)
+    : versions.find(({ main }) => !!main);
   if (
     !version ||
     !guidePageMetadata ||
@@ -218,19 +209,20 @@ export const parseS3DocPage = async (props: {
   }
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
   const source = {
-    pathPrefix: `${baseGuidePath}/${version.version}`,
+    pathPrefix: version.main
+      ? baseGuidePath
+      : `${baseGuidePath}/${version.version}`,
     version,
     assetsPrefix: `${docsS3AssetsPath}/${guidePageMetadata.dirName}`,
     dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
     spaceId: guidePageMetadata.dirName,
   };
   const menu =
-    guidePageMetadata.manuS3Path &&
-    (await parseS3Doc.readFile(guidePageMetadata.manuS3Path));
-  const body = await parseS3Doc.readFile(guidePageMetadata.contentS3Path);
+    guidePageMetadata.menuS3Path &&
+    (await fetchFileFromS3(guidePageMetadata.menuS3Path));
+  const body = await fetchFileFromS3(guidePageMetadata.contentS3Path);
   return {
-    seo: guideProps.seo,
-    product: guideProps.product,
+    ...guideProps,
     guide: {
       name: guideProps.guide.name,
       path: guidePath,
@@ -238,7 +230,9 @@ export const parseS3DocPage = async (props: {
     version: {
       main: version.main || false,
       name: version.version,
-      path: `${baseGuidePath}/${version.version}`,
+      path: version.main
+        ? baseGuidePath
+        : `${baseGuidePath}/${version.version}`,
     },
     versions: versions.map(({ main = false, version }) => ({
       main,
@@ -246,7 +240,6 @@ export const parseS3DocPage = async (props: {
       path: `${baseGuidePath}/${version}`,
     })),
     source,
-    bannerLinks: guideProps.bannerLinks,
     page: {
       path: guidePath,
       isIndex,
