@@ -1,5 +1,11 @@
 # chatbot
 
+## 5.0.1
+
+### Patch Changes
+
+- 8cb1289: Fix bug env variables
+
 ## 5.0.0
 
 ### Major Changes
