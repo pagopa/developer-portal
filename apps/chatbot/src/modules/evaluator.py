@@ -34,9 +34,7 @@ PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
 
-GOOGLE_CREDENTIALS_PARAMS = get_ssm_parameter(
-    name=os.getenv("CHB_GOOGLE_CREDENTIALS_PARAMS")
-)
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_SERVICE_ACCOUNT"))
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
@@ -103,7 +101,7 @@ else:
 
         return all(is_finished_list)
 
-    gcp_param = json.loads(GOOGLE_CREDENTIALS_PARAMS)
+    gcp_param = json.loads(GOOGLE_SERVICE_ACCOUNT)
     credentials = service_account.Credentials.from_service_account_info(gcp_param)
 
     LLM = LangchainLLMWrapper(
