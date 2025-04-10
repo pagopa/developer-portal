@@ -4,9 +4,7 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    # uncomment one of two commands below
-    # command: "./scripts/run.test.sh"
-    command: "./scripts/run.local.sh"
+    command: "./scripts/run.test.sh"
     env_file: "../.env.test"
     volumes:
       - ..:/app

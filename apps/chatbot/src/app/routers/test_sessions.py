@@ -9,6 +9,9 @@ logging.basicConfig(level=logging.INFO)
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
+
+mock_ssm()
+
 client = TestClient(app)
 
 
