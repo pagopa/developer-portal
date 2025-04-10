@@ -3,7 +3,7 @@ import logging
 from moto import mock_aws
 from fastapi.testclient import TestClient
 from src.app.main import app
-from src.app.mock_cognito import mock_signup
+from app.mock_aws_services import mock_signup, mock_ssm
 
 logging.basicConfig(level=logging.INFO)
 
@@ -29,24 +29,7 @@ def test_query_feedback():
         },
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
-    # response example
-    # {
-    #   "id": '8a0f7f9a-b794-483e-9e09-809c31b75334',
-    #   "sessionId": "f163a47d-12b4-483d-9847-df6147a84370",
-    #   "question": "come ti chiami?",
-    #   "answer": "Scusa, non sono riuscito ad elaborare questa domanda.\n
-    #     Chiedimi un'altra domanda.",
-    #   "createdAt": "2024-11-19T10:02:13.348758+00:00",
-    #   "queriedAt": "2024-11-11",
-    #   "badAnswer": False,
-    #   "feedback": {
-    #     "user_response_relevancy": float (0-1) | null,
-    #     "user_faithfullness": float (0-1) | null, 
-    #     "user_comment": "non mi piace"
-    #   }
-    # }
-    
-    # logging.warning(f"[test_post_queries] response.json(): {response.json()}")
+
     json = response.json()
     assert response.status_code == 200
     assert 'id' in json.keys()

@@ -4,10 +4,10 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.test.sh"
+    # uncomment one of two commands below
+    # command: "./scripts/run.test.sh"
+    command: "./scripts/run.local.sh"
     env_file: "../.env.test"
-    ports:
-      - "8080:8080"
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
@@ -19,30 +19,11 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
-      api-chatbot-test:
+      langfuse-test:
         condition: service_started
     networks:
       - ntwtest
 
-  api-chatbot-test:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.local.sh"
-    env_file: "../.env.test"
-    volumes:
-      - ..:/app
-      - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
-    depends_on:
-      redis-test:
-        condition: service_started
-      dynamodb-test:
-        condition: service_started
-      motoserver:
-        condition: service_started
-    networks:
-      - ntwtest
 
   create-redis-index-test:
     build:

@@ -69,5 +69,6 @@ def mock_signup():
     }
 
 
-if __name__ == "__main__":
-    mock_signup()
+
+@mock_aws
+def mock_ssm():

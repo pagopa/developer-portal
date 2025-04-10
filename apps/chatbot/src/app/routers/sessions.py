@@ -1,3 +1,4 @@
+import logging
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
@@ -5,11 +6,9 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
+from src.app.sessions import current_user_id
 
-
-from src.app.sessions import (
-    current_user_id
-)
+logging.basicConfig(level=logging.INFO)
 
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
@@ -98,6 +97,11 @@ async def query_feedback(
 ):
 
     try:
+        query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
+        query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
+        feedback = query.feedback.model_dump() if query.feedback else None
+        logging.warning(f"feedback: {feedback}")
+        bad_answer = query.badAnswer
         dbResponse = tables["queries"].update_item(
             Key={
                 'sessionId': sessionId,
@@ -109,8 +113,8 @@ async def query_feedback(
                 '#feedback': 'feedback'
             },
             ExpressionAttributeValues={
-                ':badAnswer': query.badAnswer,
-                ':feedback': query.feedback.model_dump() if query.feedback else None
+                ':badAnswer': bad_answer,
+                ':feedback': feedback
             },
             ReturnValues='ALL_NEW'
         )
