@@ -51,19 +51,33 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const {
-    page: { path, title },
-    seo,
-  } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+  const porps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
+  );
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
+  if (porps?.seo) {
+    return makeMetadataFromStrapi(porps?.seo);
   }
 
   return makeMetadata({
-    title,
-    url: path,
+    title: porps?.page.title,
+    url: porps?.page.path,
   });
+  // TODO: remove commented code before merge
+  // const {
+  //   page: { path, title },
+  //   seo,
+  // } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+
+  // if (seo) {
+  //   return makeMetadataFromStrapi(seo);
+  // }
+
+  // return makeMetadata({
+  //   title,
+  //   url: path,
+  // });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -72,8 +86,6 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug
   );
   // TODO: remove commented code before merge
-  // fs.writeFileSync('./guideProps2.json', JSON.stringify(guideProps, null, 2));
-  // console.log('guideProps', guideProps);
   // const guideProps = await getGuide(
   //   params?.productSlug,
   //   params?.productGuidePage ?? ['']
