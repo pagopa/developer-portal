@@ -20,7 +20,9 @@
     "compile": "npm run clean && tsc",
     "lint": "eslint src",
     "test": "jest -i",
-    "generate-guide-metadata": "ts-node src/scripts/generateGuideMetadata.ts"
+    "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
+    "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
+    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
