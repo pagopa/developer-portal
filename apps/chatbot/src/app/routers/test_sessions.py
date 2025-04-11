@@ -3,22 +3,32 @@ import logging
 from moto import mock_aws
 from fastapi.testclient import TestClient
 from src.app.main import app
-from app.mock_aws_services import mock_signup
+from app.mock_aws_services import mock_signup, mock_ssm
 
 logging.basicConfig(level=logging.INFO)
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
+
+mock_ssm()
+
 client = TestClient(app)
 
 
 @mock_aws
-def test_post_queries():
-    response = client.post(
-        "/queries",
+def test_query_feedback():
+    # TODO use Query factory
+    sessionId = "f163a47d-12b4-483d-9847-df6147a84370"
+    id = "8a0f7f9a-b794-483e-9e09-809c31b75334"
+    response = client.patch(
+        f"/sessions/{sessionId}/queries/{id}",
         json={
-            "question": "come ti chiami?",
-            "queriedAt": "2024-11-11"
+            "badAnswer": True,
+            "feedback": {
+                "user_response_relevancy": 0.2,
+                "user_faithfullness": 0.4,
+                "user_comment": "I don't like it"
+            }
         },
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
@@ -32,6 +42,7 @@ def test_post_queries():
     assert 'createdAt' in json.keys()
     assert 'queriedAt' in json.keys()
     assert 'badAnswer' in json.keys()
+    assert 'feedback' in json.keys()
 
 
 def test_get_queries_no_auth():

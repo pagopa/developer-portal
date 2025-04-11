@@ -50,7 +50,7 @@ async def query_creation(
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
     messages = (
-        [item.dict() for item in query.history] if query.history else None
+        [item.model_dump() for item in query.history] if query.history else None
     )
 
     answer_json = chatbot.chat_generate(

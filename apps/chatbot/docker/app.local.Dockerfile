@@ -16,6 +16,7 @@ RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64
   mv chromedriver /usr/bin/chromedriver
 
 ENV PYTHONPATH=/app
+ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip install --upgrade pip \
   && pip install poetry awscli

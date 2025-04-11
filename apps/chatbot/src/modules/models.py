@@ -17,7 +17,6 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
-GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
@@ -43,7 +42,9 @@ def get_llm() -> LLM:
         )
 
     else:
-
+        GOOGLE_API_KEY = get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY")
+        )
         llm = Gemini(
             model=MODEL_ID,
             temperature=float(MODEL_TEMPERATURE),
@@ -72,6 +73,9 @@ def get_embed_model() -> BaseEmbedding:
             region_name=AWS_BEDROCK_EMBED_REGION,
         )
     else:
+        GOOGLE_API_KEY = get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY")
+        )
         embed_model = GeminiEmbedding(
             api_key=GOOGLE_API_KEY,
             model_name=EMBED_MODEL_ID,
