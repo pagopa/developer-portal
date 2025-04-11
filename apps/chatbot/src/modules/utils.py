@@ -2,7 +2,6 @@ import os
 import boto3
 from logging import getLogger
 
-
 logger = getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
