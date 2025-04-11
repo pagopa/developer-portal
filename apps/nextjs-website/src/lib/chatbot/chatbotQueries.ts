@@ -93,9 +93,12 @@ export const getQueries = (query: string) =>
   );
 
 export const patchFeedback = (
-  feedback: boolean,
+  badAnswer: boolean,
   sessionId: string,
-  queryId: string
+  queryId: string,
+  user_response_relevancy: number | null,
+  user_faithfullness: number | null,
+  user_comment: string
 ) =>
   pipe(
     R.ask<ChatbotEnv>(),
@@ -111,7 +114,14 @@ export const patchFeedback = (
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
-              body: JSON.stringify({ badAnswer: feedback }),
+              body: JSON.stringify({
+                badAnswer: badAnswer,
+                feedback: {
+                  user_response_relevancy: user_response_relevancy,
+                  user_faithfullness: user_faithfullness,
+                  user_comment: user_comment,
+                },
+              }),
             })
         ),
         TE.chain((response) => {
