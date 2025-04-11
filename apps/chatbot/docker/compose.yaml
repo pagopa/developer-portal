@@ -59,8 +59,6 @@ services:
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_DEFAULT_REGION=local
-    ports:
-      - "8000:8000"
     networks:
       - ntw
 
