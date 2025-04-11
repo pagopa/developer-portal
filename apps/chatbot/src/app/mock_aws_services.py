@@ -13,12 +13,14 @@ def mock_client_cognito():
         region_name=os.getenv('AWS_DEFAULT_REGION')
     )
 
+
 @mock_aws
 def mock_client_ssm():
     return boto3.client(
         'ssm',
         region_name=os.getenv('AWS_DEFAULT_REGION')
     )
+
 
 client_cognito = mock_client_cognito()
 client_ssm = mock_client_ssm()
@@ -88,6 +90,7 @@ def ssm_put_parameter(name: str, value: str) -> str:
 
 
 def mock_ssm() -> None:
-    ssm_put_parameter("/chatbot/index_id_local", "49c13f0d-d164-49f1-b5d4-8bdc0632d0de")
-    # TODO: load this value from a json file
-    ssm_put_parameter("/chatbot/google_service_account", "json file content")
+    ssm_put_parameter("/chatbot/index-id-test", "49c13f0d-d164-49f1-b5d4-8bdc0632d0de")
+    ssm_put_parameter("/chatbot/google_service_account", "{}")
+    ssm_put_parameter("/path/to/ssm-langfuse-public-key", "langfuse-public-key")
+    ssm_put_parameter("/path/to/ssm-langfuse-secret-key", "langfuse-secret-key")
