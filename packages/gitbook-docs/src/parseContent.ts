@@ -74,6 +74,7 @@ const schema: ConfigType = {
     tabs,
     htmldetails: details,
     'content-ref': pageLink,
+    htmlp: paragraph,
     htmlul: list,
     htmlol: list,
     htmlli: item,
