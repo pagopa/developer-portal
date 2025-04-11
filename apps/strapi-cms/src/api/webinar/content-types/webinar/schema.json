@@ -158,6 +158,11 @@
         }
       },
       "component": "shared.seo"
+    },
+    "webinar_category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::webinar-category.webinar-category"
     }
   }
 }
