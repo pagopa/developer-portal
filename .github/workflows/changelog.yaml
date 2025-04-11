@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - .changeset/** # Only on changes to ./changeset/*
+  workflow_dispatch: # Allows manual trigger from GitHub UI
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
