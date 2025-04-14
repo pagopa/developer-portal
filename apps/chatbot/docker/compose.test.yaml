@@ -4,8 +4,7 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    # command: "./scripts/run.test.sh"
-    command: "bash"
+    command: "./scripts/run.test.sh"
     env_file: ../.env.test
     volumes:
       - ..:/app
