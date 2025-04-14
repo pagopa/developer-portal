@@ -12,6 +12,6 @@ export function makeWebinarCategoryProps(
 ): WebinarCategory {
   return {
     name: webinarCategory.attributes.name,
-    icon: webinarCategory.attributes.icon.data.attributes,
+    icon: webinarCategory.attributes.icon,
   };
 }
