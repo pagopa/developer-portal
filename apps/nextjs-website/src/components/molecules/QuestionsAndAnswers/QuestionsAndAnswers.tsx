@@ -24,12 +24,14 @@ export type QuestionsAndAnswersProps = {
 const QuestionsAndAnswers = ({
   items,
   minQuestionsToShow = 5,
-  maxQuestionsToShow = 10,
+  maxQuestionsToShow,
 }: QuestionsAndAnswersProps) => {
   const theme = useTheme();
   const t = useTranslations();
   const [showMore, toggleShowMore] = useState(false);
-  const questionsToShow = showMore ? maxQuestionsToShow : minQuestionsToShow;
+  const questionsToShow = showMore
+    ? maxQuestionsToShow || items.length
+    : minQuestionsToShow;
 
   const [expanded, setExpanded] = React.useState<number | false>(false);
 

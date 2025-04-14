@@ -1,5 +1,17 @@
 # chatbot
 
+## 5.0.0
+
+### Major Changes
+
+- d22015c: Add trace evaluation using ragas framework
+
+### Patch Changes
+
+- 2d35fc4: fix docker scripts and AWS SSM vars put
+- b2fcf25: Update chatbot engine including its system prompt
+- 290c438: Add jupyter service in the docker compose
+
 ## 4.4.0
 
 ### Minor Changes

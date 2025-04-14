@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-FastAPI refactoring
+Fix bug env variables

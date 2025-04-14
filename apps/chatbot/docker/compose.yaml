@@ -22,6 +22,21 @@ services:
     networks:
       - ntw
 
+  create-redis-index:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
+    env_file: "../.env.local"
+    volumes:
+      - ./files/.aws:/root/.aws
+      - ../../nextjs-website/out:/app/build-devp/out
+    depends_on:
+      redis:
+        condition: service_started
+    networks:
+      - ntw
+
   postgres:
     image: postgres:17.2-alpine
     restart: always
@@ -59,32 +74,30 @@ services:
     networks:
       - ntw
 
-  create_index:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "python src/modules/create_vector_index.py --params config/params.yaml"
-    ports:
-      - "8080:8080"
-    volumes:
-      - ..:/app
-      - ../../nextjs-website/out:/app/build-devp/out
-    tty: true
-    depends_on:
-      redis:
-        condition: service_started
-    env_file: ../.env.local
-    networks:
-      - ntw
-
   langfuse:
     image: langfuse/langfuse:2
     depends_on:
       postgres:
         condition: service_healthy
     ports:
-      - "3001:3000"
+      - "4001:3000"
     env_file: ../.env.local
+    networks:
+      - ntw
+
+  jupyter:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    ports:
+      - 8888:8888
+    env_file: ../.env.local
+    depends_on:
+      redis:
+        condition: service_started
+      langfuse:
+        condition: service_started
+    command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
     networks:
       - ntw
 

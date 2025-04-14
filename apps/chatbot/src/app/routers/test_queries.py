@@ -1,8 +1,11 @@
 import os
+import logging
 from moto import mock_aws
 from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_cognito import mock_signup
+
+logging.basicConfig(level=logging.INFO)
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
@@ -30,6 +33,8 @@ def test_post_queries():
     #   "queriedAt": "2024-11-11",
     #   "badAnswer": False
     # }
+    
+    # logging.warning(f"[test_post_queries] response.json(): {response.json()}")
     json = response.json()
     assert response.status_code == 200
     assert 'id' in json.keys()
