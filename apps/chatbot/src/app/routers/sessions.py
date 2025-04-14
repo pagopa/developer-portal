@@ -97,27 +97,44 @@ async def query_feedback(
 ):
 
     try:
-        query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
-        query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
-        feedback = query.feedback.model_dump() if query.feedback else None
-        logging.warning(f"feedback: {feedback}")
         bad_answer = query.badAnswer
-        dbResponse = tables["queries"].update_item(
-            Key={
-                'sessionId': sessionId,
-                'id': id
-            },
-            UpdateExpression='SET #badAnswer = :badAnswer, #feedback = :feedback',
-            ExpressionAttributeNames={
-                '#badAnswer': 'badAnswer',
-                '#feedback': 'feedback'
-            },
-            ExpressionAttributeValues={
-                ':badAnswer': bad_answer,
-                ':feedback': feedback
-            },
-            ReturnValues='ALL_NEW'
-        )
+
+        if not query.feedback:
+            dbResponse = tables["queries"].update_item(
+                Key={
+                    'sessionId': sessionId,
+                    'id': id
+                },
+                UpdateExpression='SET #badAnswer = :badAnswer',
+                ExpressionAttributeNames={
+                    '#badAnswer': 'badAnswer'
+                },
+                ExpressionAttributeValues={
+                    ':badAnswer': bad_answer
+                },
+                ReturnValues='ALL_NEW'
+            )
+        else:
+            query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
+            query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
+            feedback = query.feedback.model_dump() if query.feedback else None
+        
+            dbResponse = tables["queries"].update_item(
+                Key={
+                    'sessionId': sessionId,
+                    'id': id
+                },
+                UpdateExpression='SET #badAnswer = :badAnswer, #feedback = :feedback',
+                ExpressionAttributeNames={
+                    '#badAnswer': 'badAnswer',
+                    '#feedback': 'feedback'
+                },
+                ExpressionAttributeValues={
+                    ':badAnswer': bad_answer,
+                    ':feedback': feedback
+                },
+                ReturnValues='ALL_NEW'
+            )
 
         chatbot.add_langfuse_score(
             trace_id=id,
