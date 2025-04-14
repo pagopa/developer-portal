@@ -128,22 +128,17 @@ const ChatbotFeedbackForm = ({
           {t('chatBot.feedback.comment')}
         </Typography>
         <TextField
+          id={'outlined-suffix-shrink'}
+          variant={'outlined'}
           inputRef={(input) => input && input.focus()}
           fullWidth
           value={comment}
           label={t('chatBot.feedback.inputPlaceholder')}
-          InputLabelProps={{
-            style: {
-              fontSize: '14px',
-              fontWeight: 400,
-              lineHeight: '21px',
-              letterSpacing: '0px',
-            },
-          }}
           onChange={handleChange}
           multiline
           rows={5}
           sx={{
+            '& fieldset > legend > span': { fontSize: '11px' },
             '& .MuiInputBase-input': {
               color: palette.text.primary,
               fontSize: '14px',
@@ -151,24 +146,23 @@ const ChatbotFeedbackForm = ({
               lineHeight: '21px',
               letterSpacing: '0px',
             },
-            '& .MuiInputBase-input::placeholder': {
-              color: palette.text.secondary,
+            '& .MuiFormLabel-root': {
               fontSize: '14px',
-              fontWeight: 400,
-              lineHeight: '21px',
-              letterSpacing: '0px',
+              fontWeight: 600,
+              color: '#A2ADB8',
+              paddingLeft: '4px',
             },
           }}
         />
         <Typography
           sx={{
             paddingLeft: '14px',
-            fontWeight: '600',
+            fontWeight: 600,
             fontSize: '12px',
             lineHeight: '16px',
             letterSpacing: '0px',
             verticalAlign: 'middle',
-            color: palette.action.disabled,
+            color: palette.text.secondary,
           }}
         >
           {t('chatBot.feedback.mandatoryFields')}
