@@ -3,7 +3,7 @@ import logging
 from moto import mock_aws
 from fastapi.testclient import TestClient
 from src.app.main import app
-from app.mock_aws_services import mock_signup
+from src.app.mock_aws_services import mock_signup
 
 logging.basicConfig(level=logging.INFO)
 
@@ -12,16 +12,21 @@ os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 client = TestClient(app)
 
 
-@mock_aws
-def test_post_queries():
+def post_queries(data: dict):
     response = client.post(
         "/queries",
-        json={
-            "question": "come ti chiami?",
-            "queriedAt": "2024-11-11"
-        },
+        json=data,
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
+    return response
+
+@mock_aws
+def test_post_queries():
+    data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11"
+    }
+    response = post_queries(data)
 
     json = response.json()
     assert response.status_code == 200

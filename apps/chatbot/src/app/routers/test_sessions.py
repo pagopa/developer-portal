@@ -3,7 +3,8 @@ import logging
 from moto import mock_aws
 from fastapi.testclient import TestClient
 from src.app.main import app
-from app.mock_aws_services import mock_signup, mock_ssm
+from src.app.mock_aws_services import mock_signup, mock_ssm
+from src.app.routers.test_queries import post_queries
 
 logging.basicConfig(level=logging.INFO)
 
@@ -14,12 +15,17 @@ mock_ssm()
 
 client = TestClient(app)
 
-
 @mock_aws
 def test_query_feedback():
-    # TODO use Query factory
-    sessionId = "f163a47d-12b4-483d-9847-df6147a84370"
-    id = "8a0f7f9a-b794-483e-9e09-809c31b75334"
+    query_data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11"
+    }
+    response_queries = post_queries(query_data)
+    json_queries = response_queries.json()
+    sessionId = json_queries['sessionId']
+    id = json_queries['id']
+
     response = client.patch(
         f"/sessions/{sessionId}/queries/{id}",
         json={
