@@ -24,7 +24,8 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
-const MATOMO_TAG_MANAGER_SCRIPT =
+// TODO: remove before merge
+const OLD_MATOMO_TAG_MANAGER_SCRIPT =
   `
 var _mtm = window._mtm = window._mtm || [];
   _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
@@ -34,6 +35,35 @@ var _mtm = window._mtm = window._mtm || [];
   matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
   })();
+`;
+
+const OnetrustActiveGroups = process.env.COOKIE_CATEGORY;
+const NEW_MATOMO_TAG_MANAGER_SCRIPT = `
+  var _mtm = window._mtm = window._mtm || [];
+  var waitForTrackerCount = 0;
+  function matomoWaitForTracker() {
+    if (typeof _mtm === 'undefined' || typeof OnetrustActiveGroups === 'undefined') {
+      if (waitForTrackerCount < 40) {
+        setTimeout(matomoWaitForTracker, 250);
+        waitForTrackerCount++;
+        return;
+      }
+    } else {
+      window.addEventListener('OneTrustGroupsUpdated', function () {
+        consentSet();
+      });
+    }
+  }
+
+  function consentSet() {
+    if (OnetrustActiveGroups.includes("${OnetrustActiveGroups}")) {
+      _mtm.push({ event: 'consent_given' });
+    } else {
+      _mtm.push({ event: 'consent_withdrawn' });
+    }
+  }
+
+  matomoWaitForTracker();
 `;
 
 const titilliumWeb = Titillium_Web({
@@ -78,7 +108,7 @@ export default async function RootLayout({
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{ __html: MATOMO_TAG_MANAGER_SCRIPT }}
+            dangerouslySetInnerHTML={{ __html: NEW_MATOMO_TAG_MANAGER_SCRIPT }}
             strategy='lazyOnload'
           />
         )}
