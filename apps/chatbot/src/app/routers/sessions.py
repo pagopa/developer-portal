@@ -1,4 +1,3 @@
-import logging
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
@@ -6,7 +5,7 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
-from src.app.sessions import current_user_id
+from src.app.sessions import current_user_id, add_langfuse_score_query
 
 
 router = APIRouter()
@@ -98,14 +97,12 @@ async def query_feedback(
     try:
         bad_answer = (-1 if query.badAnswer else 1)
 
-        chatbot.add_langfuse_score(
-            trace_id=id,
-            name='user-feedback',
-            value=bad_answer,
-            comment=query.feedback.user_comment,
-            data_type='NUMERIC'
-        )
         if query.feedback:
+            add_langfuse_score_query(
+                query_id=id,
+                query_feedback=query
+            )
+
             query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
             query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
             feedback = query.feedback.model_dump()
