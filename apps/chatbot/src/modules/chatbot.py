@@ -263,6 +263,7 @@ class Chatbot:
         self, trace_id: str, as_dict: bool = False
     ) -> TraceWithFullDetails | dict:
 
+        logger.warning(f"Getting trace {trace_id} from Langfuse")  
         try:
             trace = LANGFUSE.fetch_trace(trace_id)
             trace = trace.data

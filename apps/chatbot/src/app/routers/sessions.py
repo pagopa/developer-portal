@@ -1,3 +1,4 @@
+import logging
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
@@ -5,11 +6,9 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
+from src.app.sessions import current_user_id
 
-
-from src.app.sessions import (
-    current_user_id
-)
+logging.basicConfig(level=logging.INFO)
 
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
@@ -98,20 +97,44 @@ async def query_feedback(
 ):
 
     try:
-        dbResponse = tables["queries"].update_item(
-            Key={
-                'sessionId': sessionId,
-                'id': id
-            },
-            UpdateExpression='SET #badAnswer = :badAnswer',
-            ExpressionAttributeNames={
-                '#badAnswer': 'badAnswer'
-            },
-            ExpressionAttributeValues={
-                ':badAnswer': query.badAnswer
-            },
-            ReturnValues='ALL_NEW'
-        )
+        bad_answer = query.badAnswer
+
+        if not query.feedback:
+            dbResponse = tables["queries"].update_item(
+                Key={
+                    'sessionId': sessionId,
+                    'id': id
+                },
+                UpdateExpression='SET #badAnswer = :badAnswer',
+                ExpressionAttributeNames={
+                    '#badAnswer': 'badAnswer'
+                },
+                ExpressionAttributeValues={
+                    ':badAnswer': bad_answer
+                },
+                ReturnValues='ALL_NEW'
+            )
+        else:
+            query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
+            query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
+            feedback = query.feedback.model_dump() if query.feedback else None
+        
+            dbResponse = tables["queries"].update_item(
+                Key={
+                    'sessionId': sessionId,
+                    'id': id
+                },
+                UpdateExpression='SET #badAnswer = :badAnswer, #feedback = :feedback',
+                ExpressionAttributeNames={
+                    '#badAnswer': 'badAnswer',
+                    '#feedback': 'feedback'
+                },
+                ExpressionAttributeValues={
+                    ':badAnswer': bad_answer,
+                    ':feedback': feedback
+                },
+                ReturnValues='ALL_NEW'
+            )
 
         chatbot.add_langfuse_score(
             trace_id=id,

@@ -33,14 +33,11 @@ logger = getLogger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 assert PROVIDER in ["aws", "google"]
 
-
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
 AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_ENDPOINT_URL", None)
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = 0.0
@@ -56,6 +53,7 @@ if PROVIDER == "aws":
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_BEDROCK_LLM_REGION,
+            endpoint_url=AWS_ENDPOINT_URL,
         )
     )
     EMBEDDER = LangchainEmbeddingsWrapper(
@@ -65,6 +63,7 @@ if PROVIDER == "aws":
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                 region_name=AWS_BEDROCK_EMBED_REGION,
+                endpoint_url=AWS_ENDPOINT_URL,
             ),
             model_id=EMBED_MODEL_ID,
             credentials_profile_name=None,
@@ -72,6 +71,9 @@ if PROVIDER == "aws":
         )
     )
 else:
+    GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+        name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+    )
 
     def gemini_is_finished_parser(response: LLMResult) -> bool:
         is_finished_list = []
