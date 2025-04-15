@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-sanitize feedback comment with presidio
+sanitize feedback comment with Presidio
