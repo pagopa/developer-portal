@@ -2,7 +2,6 @@
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-try-statements */
 
-// Function to fetch solutions from Strapi
 export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
   try {
     console.log('Fetching solutions from Strapi...');
@@ -28,13 +27,11 @@ export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
       );
     }
 
-    const solutionsData = await response.json();
+    const output = await response.json();
     console.log(
-      `Successfully fetched ${
-        solutionsData.data?.length || 0
-      } solutions from Strapi`
+      `Successfully fetched ${output.data?.length || 0} ${url} from Strapi`
     );
-    return solutionsData.data || [];
+    return output.data || [];
   } catch (error) {
     console.error('Error fetching solutions from Strapi:', error);
     return [];
