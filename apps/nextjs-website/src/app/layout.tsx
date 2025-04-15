@@ -1,6 +1,8 @@
 import {
   baseUrl,
+  cookieCategory,
   cookieDomainScript,
+  cookieScript,
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
@@ -24,21 +26,8 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
-// TODO: remove before merge
-const OLD_MATOMO_TAG_MANAGER_SCRIPT =
+const MATOMO_TAG_MANAGER_SCRIPT =
   `
-var _mtm = window._mtm = window._mtm || [];
-  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-  (function() {
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src='` +
-  matomoScriptSrc +
-  `'; s.parentNode.insertBefore(g,s);
-  })();
-`;
-
-const OnetrustActiveGroups = process.env.COOKIE_CATEGORY;
-const NEW_MATOMO_TAG_MANAGER_SCRIPT = `
   var _mtm = window._mtm = window._mtm || [];
   var waitForTrackerCount = 0;
   function matomoWaitForTracker() {
@@ -56,8 +45,13 @@ const NEW_MATOMO_TAG_MANAGER_SCRIPT = `
   }
 
   function consentSet() {
-    if (OnetrustActiveGroups.includes("${OnetrustActiveGroups}")) {
+    if (OnetrustActiveGroups.includes("${cookieCategory}")) {
       _mtm.push({ event: 'consent_given' });
+        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='` +
+  matomoScriptSrc +
+  `'; s.parentNode.insertBefore(g,s);
     } else {
       _mtm.push({ event: 'consent_withdrawn' });
     }
@@ -108,7 +102,7 @@ export default async function RootLayout({
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{ __html: NEW_MATOMO_TAG_MANAGER_SCRIPT }}
+            dangerouslySetInnerHTML={{ __html: MATOMO_TAG_MANAGER_SCRIPT }}
             strategy='lazyOnload'
           />
         )}
@@ -120,7 +114,10 @@ export default async function RootLayout({
           timeZone='Europe/Rome'
         >
           <BodyWrapper>
-            <CookieBannerScript cookieDomainScript={cookieDomainScript} />
+            <CookieBannerScript
+              cookieDomainScript={cookieDomainScript}
+              cookieScript={cookieScript}
+            />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
                 <SiteHeader products={products} />
