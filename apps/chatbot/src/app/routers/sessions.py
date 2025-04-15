@@ -7,7 +7,6 @@ from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
 from src.app.sessions import current_user_id, add_langfuse_score_query
 
-
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
