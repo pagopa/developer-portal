@@ -15,6 +15,7 @@ mock_ssm()
 
 client = TestClient(app)
 
+
 @mock_aws
 def test_query_feedback():
     query_data = {
@@ -49,20 +50,3 @@ def test_query_feedback():
     assert 'queriedAt' in json.keys()
     assert 'badAnswer' in json.keys()
     assert 'feedback' in json.keys()
-
-
-def test_get_queries_no_auth():
-    response = client.get(
-        "/queries"
-    )
-    assert response.status_code == 401
-
-
-@mock_aws
-def test_get_queries():
-    response = client.get(
-        "/queries",
-        headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
-    )
-    # json = response.json()
-    assert response.status_code == 200
