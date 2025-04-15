@@ -353,6 +353,9 @@ const makeStrapiResponseJson = () => ({
                         },
                         relatedResources: null,
                         seo: null,
+                        webinarCategory: {
+                          data: null,
+                        },
                       },
                     },
                   ],
@@ -477,6 +480,9 @@ const makeStrapiResponseJson = () => ({
               questionsAndAnswers: [],
               relatedResources: null,
               seo: null,
+              webinarCategory: {
+                data: null,
+              },
             },
           },
         ],
