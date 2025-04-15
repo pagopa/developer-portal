@@ -15,6 +15,7 @@ mock_ssm()
 
 client = TestClient(app)
 
+
 @mock_aws
 def test_query_feedback():
     query_data = {

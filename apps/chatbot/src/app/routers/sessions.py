@@ -8,7 +8,6 @@ from src.app.models import QueryFeedback, tables
 from src.modules.chatbot import Chatbot
 from src.app.sessions import current_user_id
 
-logging.basicConfig(level=logging.INFO)
 
 router = APIRouter()
 params = yaml.safe_load(open("config/params.yaml", "r"))
@@ -97,27 +96,20 @@ async def query_feedback(
 ):
 
     try:
-        bad_answer = query.badAnswer
+        bad_answer = (-1 if query.badAnswer else 1)
 
-        if not query.feedback:
-            dbResponse = tables["queries"].update_item(
-                Key={
-                    'sessionId': sessionId,
-                    'id': id
-                },
-                UpdateExpression='SET #badAnswer = :badAnswer',
-                ExpressionAttributeNames={
-                    '#badAnswer': 'badAnswer'
-                },
-                ExpressionAttributeValues={
-                    ':badAnswer': bad_answer
-                },
-                ReturnValues='ALL_NEW'
-            )
-        else:
+        chatbot.add_langfuse_score(
+            trace_id=id,
+            name='user-feedback',
+            value=bad_answer,
+            comment=query.feedback.user_comment,
+            data_type='NUMERIC'
+        )
+        if query.feedback:
             query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
             query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
-            feedback = query.feedback.model_dump() if query.feedback else None
+            feedback = query.feedback.model_dump()
+            feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
         
             dbResponse = tables["queries"].update_item(
                 Key={
@@ -135,13 +127,22 @@ async def query_feedback(
                 },
                 ReturnValues='ALL_NEW'
             )
-
-        chatbot.add_langfuse_score(
-            trace_id=id,
-            name='user-feedback',
-            value=(-1 if query.badAnswer else 1),
-            data_type='NUMERIC'
-        )
+            
+        else:
+            dbResponse = tables["queries"].update_item(
+                Key={
+                    'sessionId': sessionId,
+                    'id': id
+                },
+                UpdateExpression='SET #badAnswer = :badAnswer',
+                ExpressionAttributeNames={
+                    '#badAnswer': 'badAnswer'
+                },
+                ExpressionAttributeValues={
+                    ':badAnswer': bad_answer
+                },
+                ReturnValues='ALL_NEW'
+            )
 
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
