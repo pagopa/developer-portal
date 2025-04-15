@@ -3,4 +3,4 @@
 "chatbot": patch
 ---
 
-Feedback API
+add user feedback to PATCH /sessions/{sessionId}/queries/{id} API
