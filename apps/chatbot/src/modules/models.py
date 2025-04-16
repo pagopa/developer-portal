@@ -5,9 +5,8 @@ from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.llms.bedrock_converse import BedrockConverse
 from llama_index.embeddings.bedrock import BedrockEmbedding
-from llama_index.llms.gemini import Gemini
-from llama_index.embeddings.gemini import GeminiEmbedding
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+from llama_index.llms.google_genai import GoogleGenAI
+from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
 from src.modules.utils import get_ssm_parameter
 
@@ -24,8 +23,8 @@ AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
 AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
-MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
-MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+MODEL_TEMPERATURE = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
+MODEL_MAXTOKENS = int(os.getenv("CHB_MODEL_MAXTOKENS", "768"))
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
@@ -35,8 +34,8 @@ def get_llm() -> LLM:
 
         llm = BedrockConverse(
             model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_BEDROCK_LLM_REGION,
@@ -44,16 +43,10 @@ def get_llm() -> LLM:
 
     else:
 
-        llm = Gemini(
+        llm = GoogleGenAI(
             model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
-            safety_settings={
-                HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-            },
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             api_key=GOOGLE_API_KEY,
         )
 
@@ -72,9 +65,9 @@ def get_embed_model() -> BaseEmbedding:
             region_name=AWS_BEDROCK_EMBED_REGION,
         )
     else:
-        embed_model = GeminiEmbedding(
-            api_key=GOOGLE_API_KEY,
+        embed_model = GoogleGenAIEmbedding(
             model_name=EMBED_MODEL_ID,
+            api_key=GOOGLE_API_KEY,
         )
     logger.info(f"{EMBED_MODEL_ID} embegging model loaded successfully!")
 

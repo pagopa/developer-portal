@@ -95,7 +95,7 @@ class Chatbot:
             self.pii = PresidioPII(config=params["config_presidio"])
 
         self.model = get_llm()
-        self.judge = Evaluator()
+        self.judge = Evaluator(llm=get_llm())
         self.embed_model = get_embed_model()
         self.index = load_automerging_index_redis(
             self.model,
