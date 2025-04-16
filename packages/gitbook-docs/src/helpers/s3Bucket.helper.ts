@@ -18,8 +18,12 @@ import dotenv from 'dotenv';
 export function loadEnvConfig(): { result: 'success' | 'not_found' } {
   try {
     dotenv.config({ path: '.env' });
+    console.log('Loaded environment variables from .env file');
     return { result: 'success' };
   } catch (error) {
+    console.log(
+      'No .env file found or error loading it, using environment variables'
+    );
     return { result: 'not_found' };
   }
 }
@@ -82,6 +86,7 @@ export async function listS3Files(
   const objects: string[] = [];
   let continuationToken: string | undefined;
 
+  // eslint-disable-next-line functional/no-try-statements
   try {
     do {
       const command = new ListObjectsV2Command({
@@ -117,6 +122,7 @@ export async function downloadS3File(
   bucketName: string,
   client: S3Client
 ): Promise<string> {
+  // eslint-disable-next-line functional/no-try-statements
   try {
     const command = new GetObjectCommand({
       Bucket: bucketName,

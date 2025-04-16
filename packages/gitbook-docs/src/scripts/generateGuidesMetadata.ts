@@ -3,6 +3,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
+import dotenv from 'dotenv';
 import {
   downloadS3File,
   listS3Files,
@@ -20,14 +21,7 @@ import {
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
-const envLoadResult = loadEnvConfig();
-if (envLoadResult.result === 'success') {
-  console.log('Loaded environment variables from .env file');
-} else {
-  console.log(
-    'No .env file found or error loading it, using environment variables'
-  );
-}
+loadEnvConfig();
 
 // Validate environment variables
 validateStrapiEnvironment();
