@@ -8,7 +8,7 @@ import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
-import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
+import { ChatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
 import { baseUrl } from '@/config';
@@ -187,7 +187,7 @@ const Chat = ({
                 />
               </Stack>
             ))}
-            {isAwaitingResponse && <ChatCatbotWriting />}
+            {isAwaitingResponse && <ChatbotWriting />}
             {error && (
               <Paper
                 elevation={4}

@@ -2,7 +2,7 @@ import { Box, Stack, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import styles from './ChatChatbotWriting.module.css';
 
-export const ChatCatbotWriting = () => {
+export const ChatbotWriting = () => {
   const { palette } = useTheme();
   return (
     <Box borderRadius={{ xs: '0.75rem' }}>
