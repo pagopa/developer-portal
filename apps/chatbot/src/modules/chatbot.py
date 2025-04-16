@@ -63,10 +63,10 @@ RESPONSE_TYPE = Union[
     StreamingAgentChatResponse,
 ]
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
 )
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
 )
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE = Langfuse(
@@ -184,9 +184,9 @@ class Chatbot:
             and re.search(r'"topics":', response_str) is None
             and re.search(r'"references":', response_str) is None
         ):
-            response_str = '{{"response": "{response_str}", "topics": ["none"], "references": []}}'.format(
-                response_str=response_str
-            )
+            response_str = (
+                '{{"response": "{response_str}", "topics": ["none"], "references": []}}'
+            ).format(response_str=response_str)
         else:
             response_str = self._unmask_reference(response_str, nodes)
 
@@ -200,7 +200,8 @@ class Chatbot:
         hashed_urls = re.findall(pattern, response_str)
 
         logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. First node has score: {nodes[0].score:.4f}."
+            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. "
+            f"First node has score: {nodes[0].score:.4f}."
         )
         for hashed_url in hashed_urls:
             url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
@@ -263,6 +264,7 @@ class Chatbot:
         self, trace_id: str, as_dict: bool = False
     ) -> TraceWithFullDetails | dict:
 
+        logger.warning(f"Getting trace {trace_id} from Langfuse")  
         try:
             trace = LANGFUSE.fetch_trace(trace_id)
             trace = trace.data
