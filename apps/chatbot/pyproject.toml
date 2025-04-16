@@ -1,44 +1,54 @@
 [tool.poetry]
-name = "chatbot"
-version = "0.1.0"
+authors = [
+    "Marco Domenico Cirillo <marco.cirillo@uqido.com>",
+    "Devis Battisti <devis.battisti@uqido.com>",
+]
 description = "Chatbot repository for PagoPA"
-authors = ["Marco Domenico Cirillo <marco.cirillo@uqido.com>", "Devis Battisti <devis.battisti@uqido.com>"]
-readme = "README.md"
+name = "chatbot"
 package-mode = false
+readme = "README.md"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = "==3.12.9"
+cryptography = "^44.0.2"
+fastapi = "^0.115.12"
+google-cloud-discoveryengine = "^0.13.8"
+gunicorn = "^23.0.0"
+html2text = "^2024.2.26"
+hypercorn = "^0.17.3"
+jupyterlab = "^4.4.0"
+langdetect = "^1.0.9"
+langfuse = "^2.60.2"
 llama-index = "^0.12.30"
 llama-index-embeddings-bedrock = "^0.5.0"
-llama-index-llms-bedrock-converse = "^0.4.15"
-llama-index-postprocessor-bedrock-rerank = "^0.3.2"
-llama-index-llms-google-genai = "^0.1.7"
 llama-index-embeddings-google-genai = "^0.1.0"
-jupyterlab = "^4.4.0"
-nh3 = "^0.2.21"
-pyproject-hooks = "^1.2.0"
-python-jose = "^3.4.0"
-requests-auth-aws-sigv4 = "^0.7"
-gunicorn = "^23.0.0"
-hypercorn = "^0.17.3"
-selenium = "^4.31.0"
-fastapi = "^0.115.12"
-toml = "^0.10.2"
-langdetect = "^1.0.9"
-pyyaml = "^6.0.2"
-pyjwt = "^2.10.1"
-cryptography = "^44.0.2"
-python-dotenv = "^1.1.0"
-langfuse = "^2.60.2"
-llama-index-vector-stores-redis = "^0.5.0"
+llama-index-llms-bedrock-converse = "^0.4.15"
+llama-index-llms-google-genai = "^0.1.7"
+llama-index-postprocessor-bedrock-rerank = "^0.3.2"
+llama-index-postprocessor-presidio = "^0.3.0"
 llama-index-storage-docstore-redis = "^0.3.0"
 llama-index-storage-index-store-redis = "^0.4.0"
-html2text = "^2024.2.26"
-jupyter = "^1.1.1"
-llama-index-postprocessor-presidio = "^0.3.0"
-google-cloud-discoveryengine = "^0.13.8"
+llama-index-vector-stores-redis = "^0.5.0"
+moto = { extras = ["cognitoidp"], version = "^5.1.0" }
+nh3 = "^0.2.21"
+pyjwt = "^2.10.1"
+pyproject-hooks = "^1.2.0"
+python = "==3.12.9"
+python-dotenv = "^1.1.0"
+python-jose = "^3.4.0"
+pyyaml = "^6.0.2"
 ragas = "^0.2.14"
+requests-auth-aws-sigv4 = "^0.7"
+selenium = "^4.31.0"
+toml = "^0.10.2"
+
+[tool.poetry.group.test.dependencies]
+httpx = "^0.28.1"
+pytest = "^8.3.5"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
