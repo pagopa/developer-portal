@@ -1,6 +1,5 @@
 ---
 "nextjs-website": major
-"chatbot": major
 "storybook-app": patch
 ---
 
