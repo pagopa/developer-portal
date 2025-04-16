@@ -63,10 +63,12 @@ RESPONSE_TYPE = Union[
     StreamingAgentChatResponse,
 ]
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
 )
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
 )
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE = Langfuse(

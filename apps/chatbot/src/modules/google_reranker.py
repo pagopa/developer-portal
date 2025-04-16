@@ -19,7 +19,9 @@ from google.cloud import discoveryengine_v1 as discoveryengine
 from src.modules.utils import get_ssm_parameter
 
 
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_SERVICE_ACCOUNT"))
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+    name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+)
 GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
     GOOGLE_JSON_ACCOUNT_INFO

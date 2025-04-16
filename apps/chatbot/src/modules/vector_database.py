@@ -41,7 +41,9 @@ PROVIDER = os.getenv("CHB_PROVIDER")
 assert PROVIDER in ["google", "aws"]
 
 TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-INDEX_ID = get_ssm_parameter(os.getenv("CHB_LLAMAINDEX_INDEX_ID"), "default-index")
+INDEX_ID = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
+)
 NEW_INDEX_ID = f"index--{TODAY}" if INDEX_ID != "default-index" else "default-index"
 REDIS_URL = os.getenv("CHB_REDIS_URL")
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
