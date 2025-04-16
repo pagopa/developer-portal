@@ -11,7 +11,8 @@ export default meta;
 
 export const Showcase: StoryObj<typeof ChatbotFeedbackForm> = {
   args: {
-    disabled: false,
+    sessionId: '',
+    id: '',
   },
   decorators: [nextIntlContextDecorator],
 };
