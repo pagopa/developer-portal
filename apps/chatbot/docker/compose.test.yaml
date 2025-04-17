@@ -5,58 +5,19 @@ services:
       context: ..
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.test.sh"
-    env_file: "../.env.test"
-    ports:
-      - "8080:8080"
+    env_file: ../.env.test
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
       - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
-      create-redis-index-test:
-        condition: service_completed_successfully
       dynamodb-test:
         condition: service_started
       motoserver:
         condition: service_started
-      api-chatbot-test:
+      langfuse-test:
         condition: service_started
-    networks:
-      - ntwtest
-
-  api-chatbot-test:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.local.sh"
-    env_file: "../.env.test"
-    volumes:
-      - ..:/app
-      - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
-    depends_on:
       redis-test:
-        condition: service_started
-      dynamodb-test:
-        condition: service_started
-      motoserver:
-        condition: service_started
-    networks:
-      - ntwtest
-
-  create-redis-index-test:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
-    env_file: "../.env.test"
-    volumes:
-      - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
-    depends_on:
-      redis-test:
-        condition: service_started
-      motoserver:
         condition: service_started
     networks:
       - ntwtest
@@ -93,15 +54,13 @@ services:
       postgres-test:
         condition: service_healthy
     env_file: ../.env.test
+    ports:
+      - "4002:3000"
     networks:
       - ntwtest
 
   motoserver:
     image: motoserver/moto:5.1.0
-    environment:
-      - MOTO_PORT=3001
-    ports:
-      - "3001:5000"
     networks:
       - ntwtest
 

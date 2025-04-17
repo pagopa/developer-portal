@@ -27,6 +27,43 @@ prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
 
+def can_evaluate() -> bool:
+    """
+    Decide whether to evaluate the query or not.
+    This is based on the amount of daily query
+    """
+    max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
+    return count_queries_created_today() < max_daily_evaluations
+
+
+def count_queries_created_today() -> int:
+    today = datetime.datetime.utcnow().date().isoformat()
+
+    response = tables["queries"].query(
+        IndexName="QueriesByCreatedAtDateIndex",
+        KeyConditionExpression=Key("createdAtDate").eq(today),
+        Select="COUNT"
+    )
+
+    return response["Count"]
+
+
+def backfill_created_at_date() -> None:
+    """
+    Backfill the `createdAtDate` field for all existing items in the table.
+    """
+    response = tables["queries"].scan()
+    items = response.get("Items", [])
+
+    for item in items:
+        created_at_date = item["createdAt"][:10]
+        item["createdAtDate"] = created_at_date
+
+        tables["queries"].put_item(Item=item)
+
+    logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
+
+
 async def evaluate(evaluation_data: dict) -> dict:
     if os.getenv("environment", "development") != "test":
         evaluation_result = chatbot.evaluate(**evaluation_data)
@@ -50,7 +87,7 @@ async def query_creation(
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
     messages = (
-        [item.dict() for item in query.history] if query.history else None
+        [item.model_dump() for item in query.history] if query.history else None
     )
 
     answer_json = chatbot.chat_generate(
@@ -62,32 +99,35 @@ async def query_creation(
     )
     answer = chatbot.get_final_response(answer_json)
 
-    evaluation_data = {
-        "query_str": query_str,
-        "response_str": answer,
-        "retrieved_contexts": answer_json["contexts"],
-        "trace_id": trace_id,
-        "session_id": session["id"],
-        "user_id": user_id,
-        "messages": messages,
-    }
-    background_tasks.add_task(
-        evaluate,
-        evaluation_data=evaluation_data
-    )
-    answer = chatbot.get_final_response(answer_json)
+    if can_evaluate():
+        evaluation_data = {
+            "query_str": query_str,
+            "response_str": answer,
+            "retrieved_contexts": answer_json["contexts"],
+            "trace_id": trace_id,
+            "session_id": session["id"],
+            "user_id": user_id,
+            "messages": messages,
+        }
+        background_tasks.add_task(
+            evaluate,
+            evaluation_data=evaluation_data
+        )
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
     else:
         queriedAt = query.queriedAt
 
+    createdAt = now.isoformat()
+    createdAtDate = createdAt[:10]
     bodyToReturn = {
         "id": trace_id,
         "sessionId": session["id"],
         "question": query.question,
         "answer": answer,
-        "createdAt": now.isoformat(),
+        "createdAt": createdAt,
+        "createdAtDate": createdAtDate,
         "queriedAt": queriedAt,
         "badAnswer": False,
     }

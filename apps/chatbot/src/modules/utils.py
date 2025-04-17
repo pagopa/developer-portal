@@ -2,7 +2,6 @@ import os
 import boto3
 from logging import getLogger
 
-
 logger = getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
@@ -27,7 +26,9 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    logger.debug(f"Getting parameter {name} from SSM")
+    logger.warning(
+        f"Getting parameter {name} from SSM. AWS_ENDPOINT_URL: {AWS_ENDPOINT_URL}"
+    )
     if name is None:
         name = "none-params-in-ssm"
     try:
