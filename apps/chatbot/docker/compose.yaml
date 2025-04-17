@@ -19,6 +19,8 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
+      motoserver:
+        condition: service_started
     networks:
       - ntw
 
@@ -99,6 +101,10 @@ services:
     networks:
       - ntw
 
+  motoserver:
+    image: motoserver/moto:5.1.0
+    networks:
+      - ntw
 volumes:
   postgres_data:
     driver: local
