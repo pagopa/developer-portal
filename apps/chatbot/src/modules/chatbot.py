@@ -466,14 +466,13 @@ class Chatbot:
             retrieved_contexts=retrieved_contexts,
         )
         for key, value in scores.items():
-            if value:
-                self.add_langfuse_score(
-                    trace_id=trace_id,
-                    session_id=session_id,
-                    user_id=user_id,
-                    name=key,
-                    value=value,
-                    data_type="NUMERIC",
-                )
+            self.add_langfuse_score(
+                trace_id=trace_id,
+                session_id=session_id,
+                user_id=user_id,
+                name=key,
+                value=value,
+                data_type="NUMERIC",
+            )
 
         return scores

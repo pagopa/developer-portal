@@ -59,5 +59,5 @@ def get_automerging_engine(
         context_prompt=text_qa_template,
         context_refine_prompt=refine_template,
         condense_prompt=condense_template,
-        node_postprocessors=[reranker, similarity_postprocessor],
+        node_postprocessors=[similarity_postprocessor, reranker],
     )
