@@ -3,6 +3,7 @@ locals {
     AUTH_COGNITO_USERPOOL_ID           = var.cognito_user_pool.id
     CHB_AWS_BEDROCK_EMBED_REGION       = "eu-central-1"
     CHB_AWS_BEDROCK_LLM_REGION         = var.aws_chatbot_region
+    CHB_AWS_BEDROCK_RERANKER_REGION    = "eu-central-1"
     CHB_AWS_GUARDRAIL_ID               = awscc_bedrock_guardrail.guardrail.guardrail_id
     CHB_AWS_GUARDRAIL_VERSION          = awscc_bedrock_guardrail_version.guardrail.version
     CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
@@ -27,6 +28,7 @@ locals {
     CHB_PROVIDER           = "aws"
     CHB_QUERY_TABLE_PREFIX = local.prefix
     CHB_REDIS_URL          = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+    CHB_RERANKER_ID        = "amazon.rerank-v1:0"
     CHB_USE_PRESIDIO       = "True"
     CHB_WEBSITE_URL        = "https://${var.dns_domain_name}"
     CORS_DOMAINS           = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])

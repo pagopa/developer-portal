@@ -26,7 +26,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    logger.warning(f"Getting parameter {name} from SSM. AWS_ENDPOINT_URL: {AWS_ENDPOINT_URL}")
+    logger.warning(
+        f"Getting parameter {name} from SSM. AWS_ENDPOINT_URL: {AWS_ENDPOINT_URL}"
+    )
+    if name is None:
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)

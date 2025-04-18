@@ -36,6 +36,8 @@ services:
     depends_on:
       redis:
         condition: service_started
+      motoserver:
+        condition: service_started
     networks:
       - ntw
 
