@@ -4,10 +4,8 @@ import WebinarCategoryButton from '@/components/atoms/WebinarCategoryButton/Webi
 
 type WebinarCategorySelectorProps = {
   selectedWebinarCategory: number;
-  setSelectedWebinarCategory: (
-    selectedWebinarCategory: number
-    // eslint-disable-next-line functional/no-return-void
-  ) => void;
+  // eslint-disable-next-line functional/no-return-void
+  setSelectedWebinarCategory: (selectedWebinarCategory: number) => void;
   webinarCategories: WebinarCategory[];
   isMobile: boolean;
 };
@@ -38,6 +36,7 @@ const WebinarCategorySelector = ({
         <WebinarCategoryButton
           key={index}
           onClick={() => {
+            setSelectedWebinarCategory(index);
             return;
           }}
           isSelected={index === selectedWebinarCategory}

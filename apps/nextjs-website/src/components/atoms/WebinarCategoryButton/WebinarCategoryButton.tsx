@@ -34,7 +34,11 @@ const WebinarCategoryButton = ({
           fontWeight: 700,
           color: palette.text.primary,
           backgroundColor: isSelected ? palette.background.paper : '#EBF4FD',
+          '&:hover': {
+            backgroundColor: '#D9E9F8',
+          },
         }}
+        onClick={onClick}
       >
         {label}
       </Button>
