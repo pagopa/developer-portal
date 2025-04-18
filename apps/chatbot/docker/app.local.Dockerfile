@@ -16,6 +16,7 @@ RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64
   mv chromedriver /usr/bin/chromedriver
 
 ENV PYTHONPATH=/app
+ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip install --upgrade pip \
   && pip install poetry awscli
@@ -30,5 +31,8 @@ COPY ./notebooks ./notebooks
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
+
+RUN python ./scripts/nltk_download.py
+RUN python ./scripts/spacy_download.py
 
 CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
