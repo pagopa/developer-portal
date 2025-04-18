@@ -11,61 +11,42 @@ export default meta;
 
 export const Showcase: StoryObj<typeof WebinarCategorySelector> = {
   args: {
-    selectedWebinarCategory: {
-      name: 'prova',
-      icon: {
-        name: 'headset.svg',
-        alternativeText: null,
-        caption: null,
-        width: 60,
-        height: 61,
-        size: 0.54,
-        ext: '.svg',
-        mime: 'image/svg+xml',
-        url: '/icons/headset.svg',
-      },
-    },
+    selectedWebinarCategory: 0,
     webinarCategories: [
       {
         name: 'miao',
         icon: {
-          name: 'headset.svg',
-          alternativeText: null,
-          caption: null,
-          width: 60,
-          height: 61,
-          size: 0.54,
-          ext: '.svg',
-          mime: 'image/svg+xml',
-          url: '/icons/headset.svg',
+          data: {
+            attributes: {
+              name: 'headset.svg',
+              alternativeText: null,
+              caption: null,
+              width: 60,
+              height: 61,
+              size: 0.54,
+              ext: '.svg',
+              mime: 'image/svg+xml',
+              url: '/icons/headset.svg',
+            },
+          },
         },
       },
       {
         name: 'bau',
         icon: {
-          name: 'headset.svg',
-          alternativeText: null,
-          caption: null,
-          width: 60,
-          height: 61,
-          size: 0.54,
-          ext: '.svg',
-          mime: 'image/svg+xml',
-          url: '/icons/headset.svg',
-        },
-      },
-      {
-        name: 'quack',
-        icon: {
-          name: 'headset.svg',
-          alternativeText: null,
-          caption: null,
-          width: 60,
-          height: 61,
-          size: 0.54,
-          ext: '.svg',
-          mime: 'image/svg+xml',
-          url: '/icons/headset.svg',
+          data: {
+            attributes: {
+              name: 'headset.svg',
+              alternativeText: null,
+              caption: null,
+              width: 60,
+              height: 61,
+              size: 0.54,
+              ext: '.svg',
+              mime: 'image/svg+xml',
+              url: '/icons/headset.svg',
+            },
+          },
         },
       },
     ],

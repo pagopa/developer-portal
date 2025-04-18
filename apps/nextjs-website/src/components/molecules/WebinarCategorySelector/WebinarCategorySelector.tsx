@@ -1,10 +1,11 @@
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import WebinarCategoryButton from '@/components/atoms/WebinarCategoryButton/WebinarCategoryButton';
 
 type WebinarCategorySelectorProps = {
-  selectedWebinarCategory: WebinarCategory;
+  selectedWebinarCategory: number;
   setSelectedWebinarCategory: (
-    selectedWebinarCategory: WebinarCategory
+    selectedWebinarCategory: number
     // eslint-disable-next-line functional/no-return-void
   ) => void;
   webinarCategories: WebinarCategory[];
@@ -18,23 +19,33 @@ const WebinarCategorySelector = ({
   isMobile,
 }: WebinarCategorySelectorProps) => {
   return (
-    <Box
+    <Stack
       component='section'
+      spacing={'56px'}
+      direction={'row'}
       sx={{
         backgroundColor: '#EBF4FD',
-        direction: 'row',
         minHeight: '112px',
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
         width: '100%',
       }}
     >
       {webinarCategories.map((category, index) => (
-        <Typography key={index}>{category.name}</Typography>
+        <WebinarCategoryButton
+          key={index}
+          onClick={() => {
+            return;
+          }}
+          isSelected={index === selectedWebinarCategory}
+          label={category.name}
+          icon={category.icon.data.attributes}
+        ></WebinarCategoryButton>
       ))}
-    </Box>
+    </Stack>
   );
 };
 
