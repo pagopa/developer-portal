@@ -73,7 +73,8 @@ resource "aws_iam_policy" "deploy_website" {
           "bedrock:GetGuardrail",
           "bedrock:InvokeModel",
           "bedrock:InvokeModelWithResponseStream",
-          "bedrock:ListFoundationModels"
+          "bedrock:ListFoundationModels",
+          "bedrock:Rerank"
         ]
         Resource = ["*"]
       },

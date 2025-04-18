@@ -47,7 +47,7 @@ resource "aws_codebuild_project" "github_runner" {
 
 resource "aws_codebuild_webhook" "github_webhook" {
   project_name = aws_codebuild_project.github_runner.name
-
+  build_type   = "BUILD"
   filter_group {
     filter {
       type    = "EVENT"
