@@ -7,7 +7,7 @@ logger = getLogger(__name__)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
-AWS_ENDPOINT_URL = os.getenv("CHB_AWS_ENDPOINT_URL", None)
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
 SSM_CLIENT = boto3.client(
     "ssm",
     aws_access_key_id=AWS_ACCESS_KEY_ID,

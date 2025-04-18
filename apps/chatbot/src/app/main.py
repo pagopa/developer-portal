@@ -2,9 +2,10 @@ import json
 import logging
 import mangum
 import os
-import uvicorn
 
 from fastapi import FastAPI
+from hypercorn.config import Config
+from hypercorn.asyncio import serve
 from starlette.middleware.cors import CORSMiddleware
 
 from src.app.routers import queries, sessions
@@ -32,13 +33,9 @@ async def healthz():
 
 handler = mangum.Mangum(app, lifespan="off")
 
-
 if __name__ == "__main__":
-    # TODO: use hypercorn
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8080,
-        log_level=os.getenv("LOG_LEVEL", "info"),
-        loop='asyncio'
-    )
+    config = Config()
+    config.bind = ["0.0.0.0:8080"]
+    config.loglevel = os.getenv("LOG_LEVEL", "info")
+    import asyncio
+    asyncio.run(serve(app, config))

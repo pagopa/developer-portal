@@ -1,11 +1,8 @@
 import os
-import logging
-from moto import mock_aws
 from fastapi.testclient import TestClient
+from moto import mock_aws
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
-
-logging.basicConfig(level=logging.INFO)
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
@@ -19,6 +16,7 @@ def post_queries(data: dict):
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
     return response
+
 
 @mock_aws
 def test_post_queries():
@@ -45,12 +43,10 @@ def test_get_queries_no_auth():
     )
     assert response.status_code == 401
 
-
 @mock_aws
 def test_get_queries():
     response = client.get(
         "/queries",
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
-    # json = response.json()
     assert response.status_code == 200
