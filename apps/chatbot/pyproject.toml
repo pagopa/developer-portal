@@ -1,8 +1,4 @@
 [tool.poetry]
-authors = [
-    "Marco Domenico Cirillo <marco.cirillo@uqido.com>",
-    "Devis Battisti <devis.battisti@uqido.com>",
-]
 description = "Chatbot repository for PagoPA"
 name = "chatbot"
 package-mode = false
