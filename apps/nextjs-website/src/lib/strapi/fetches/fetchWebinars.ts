@@ -27,6 +27,7 @@ export const webinarPopulate = {
       populate: '*,metaImage,metaSocial.image',
     },
     questionsAndAnswers: '*',
+    webinarCategory: { populate: ['icon'] },
   },
 };
 

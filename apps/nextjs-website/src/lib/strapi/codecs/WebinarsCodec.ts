@@ -6,6 +6,7 @@ import { MediaCodec } from './MediaCodec';
 import { RelatedLinksCodec } from './RelatedLinksCodec';
 import { PaginationCodec } from './PaginationCodec';
 import { SEOCodec } from './SeoCodec';
+import { WebinarCategoryCodec } from './WebinarCategoryCodec';
 
 const WebinarSpeakerCodec = t.strict({
   id: t.number,
@@ -59,6 +60,9 @@ export const WebinarCodec = t.strict({
     webinarSpeakers: t.strict({ data: t.array(WebinarSpeakerCodec) }),
     questionsAndAnswers: t.array(QuestionAndAnswerCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
+    webinarCategory: t.strict({
+      data: t.union([NullToUndefinedCodec, WebinarCategoryCodec]),
+    }),
   }),
 });
 
