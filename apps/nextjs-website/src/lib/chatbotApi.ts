@@ -34,8 +34,19 @@ export const getChatbotHealthz = () => getHealthz()(chatbotApiEnv);
 export const sendChatbotFeedback = (
   feedback: boolean,
   sessionId: string,
-  queryId: string
-) => patchFeedback(feedback, sessionId, queryId)(chatbotApiEnv);
+  queryId: string,
+  user_response_relevancy: number | null,
+  user_faithfullness: number | null,
+  user_comment: string
+) =>
+  patchFeedback(
+    feedback,
+    sessionId,
+    queryId,
+    user_response_relevancy,
+    user_faithfullness,
+    user_comment
+  )(chatbotApiEnv);
 
 export const getChatbotSessionsHistory = (page: number, pageSize: number) =>
   getSessions(page, pageSize)(chatbotApiEnv);

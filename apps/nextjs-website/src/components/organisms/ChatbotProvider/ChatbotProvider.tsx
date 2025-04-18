@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@/helpers/user.helper';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import ChatbotLayout from '@/components/organisms/ChatbotLayout/ChatbotLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 
@@ -34,6 +34,11 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           areChatbotQueriesLoaded={areChatbotQueriesLoaded}
           error={chatbotError}
           disabled={!user}
+          mustFillFeedbackForm={
+            user != null &&
+            (user.attributes.email.includes('pagopa') ||
+              user.attributes.email.includes('uqido'))
+          }
         />
       )}
       {children}
