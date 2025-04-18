@@ -1,6 +1,6 @@
 import { Box, Stack, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import styles from './ChatChatbotWriting.module.css';
+import styles from './ChatbotWriting.module.css';
 
 export const ChatbotWriting = () => {
   const { palette } = useTheme();
