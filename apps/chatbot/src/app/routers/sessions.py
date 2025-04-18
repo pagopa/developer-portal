@@ -118,7 +118,7 @@ async def query_feedback(
                     '#feedback': 'feedback'
                 },
                 ExpressionAttributeValues={
-                    ':badAnswer': bad_answer,
+                    ':badAnswer': query.bad_answer,
                     ':feedback': feedback
                 },
                 ReturnValues='ALL_NEW'
@@ -135,7 +135,7 @@ async def query_feedback(
                     '#badAnswer': 'badAnswer'
                 },
                 ExpressionAttributeValues={
-                    ':badAnswer': bad_answer
+                    ':badAnswer': query.bad_answer
                 },
                 ReturnValues='ALL_NEW'
             )
