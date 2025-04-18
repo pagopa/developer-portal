@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.6.0
+
+### Minor Changes
+
+- 7e6b487: Add WebinarCategory to Webinars in Strapi
+
 ## 3.5.0
 
 ### Minor Changes

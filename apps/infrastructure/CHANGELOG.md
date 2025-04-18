@@ -1,5 +1,18 @@
 # infrastructure
 
+## 1.8.0
+
+### Minor Changes
+
+- e7a23d5: Calls the response evaluation function only if the queries of the day are less than CHB_MAX_DAILY_EVALUATIONS env var.
+- 5cc13f4: Extracted chatbot lambda resources from module
+
+### Patch Changes
+
+- 1d8988a: add user feedback to PATCH /sessions/{sessionId}/queries/{id} API
+- 6061915: insert CHB_AWS_SSM prefix for the env vars whose value is an SSM path
+- 7c36bf5: Disable ECS autoscaling in dev
+
 ## 1.7.2
 
 ### Patch Changes
