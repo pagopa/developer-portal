@@ -37,13 +37,11 @@ locals {
     LOG_LEVEL              = "INFO"
     NLTK_DATA              = "_static/nltk_cache/"
   }
-
-  lambda_function_name = "${local.prefix}-api-lambda"
 }
 
 # Diretta implementazione delle risorse che il modulo lambda creerebbe
 resource "aws_lambda_function" "chatbot_lambda" {
-  function_name = local.lambda_function_name
+  function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
   image_uri    = "${module.ecr.repository_url}:latest"
@@ -76,7 +74,7 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name                  = local.lambda_function_name
+  name                  = "${local.prefix}-api-lambda"
   force_detach_policies = true
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
