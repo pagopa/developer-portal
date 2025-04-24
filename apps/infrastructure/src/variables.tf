@@ -104,16 +104,16 @@ variable "create_chatbot" {
 
 variable "chatbot_ecs_redis" {
   type = object({
-    cpu       = optional(number, 2048)
-    memory    = optional(number, 4096)
+    cpu       = optional(number, 1024)
+    memory    = optional(number, 6144)
     image_uri = optional(string, "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186")
     port      = optional(number, 6379)
   })
   description = "Redis configuration for the AI chatbot"
 
   default = {
-    cpu       = 2048
-    memory    = 4096
+    cpu       = 1024
+    memory    = 6144
     image_uri = "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
     port      = 6379
   }
@@ -125,16 +125,16 @@ variable "chatbot_ecs_redis" {
 
 variable "chatbot_ecs_monitoring" {
   type = object({
-    cpu       = optional(number, 2048)
-    memory    = optional(number, 4096)
+    cpu       = optional(number, 1024)
+    memory    = optional(number, 2048)
     image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")
     port      = optional(number, 3000)
   })
   description = "Redis configuration for the AI chatbot"
 
   default = {
-    cpu       = 2048
-    memory    = 4096
+    cpu       = 1024
+    memory    = 2048
     image_uri = "ghcr.io/langfuse/langfuse:sha-9375250"
     port      = 3000
   }
