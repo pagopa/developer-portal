@@ -1,23 +1,18 @@
 import os
-import logging
-from moto import mock_aws
 from fastapi.testclient import TestClient
+from moto import mock_aws
 from src.app.main import app
-from src.app.mock_aws_services import mock_signup, mock_ssm
+from src.app.mock_aws_services import mock_signup
 from src.app.routers.test_queries import post_queries
-
-logging.basicConfig(level=logging.INFO)
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
-
-mock_ssm()
 
 client = TestClient(app)
 
 
 @mock_aws
-def test_query_feedback():
+def test_query_feedback() -> None:
     query_data = {
         "question": "come ti chiami?",
         "queriedAt": "2024-11-11"

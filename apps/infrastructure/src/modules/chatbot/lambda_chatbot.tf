@@ -15,7 +15,6 @@ locals {
     CHB_EMBED_MODEL_ID                 = "amazon.titan-embed-text-v2:0"
     CHB_ENGINE_USE_ASYNC               = "False"
     CHB_ENGINE_USE_STREAMING           = "False"
-    CHB_ENGINE_SIMILARITY_CUTOFF       = "0.2"
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"

@@ -37,6 +37,7 @@ ragas = "^0.2.14"
 requests-auth-aws-sigv4 = "^0.7"
 selenium = "^4.31.0"
 toml = "^0.10.2"
+mangum = "^0.19.0"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.28.1"
