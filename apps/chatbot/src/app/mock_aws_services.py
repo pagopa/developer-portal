@@ -1,40 +1,53 @@
 import boto3
 import os
-from moto import mock_aws
+
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
 
-@mock_aws
-def mock_client_cognito():
-    return boto3.client(
-        'cognito-idp',
-        region_name=os.getenv('AWS_DEFAULT_REGION')
+
+def mock_client_cognito() -> boto3.client:
+    client = boto3.client(
+        "cognito-idp",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_DEFAULT_REGION,
+        endpoint_url=AWS_ENDPOINT_URL,
     )
+    return client
 
 
-@mock_aws
-def mock_client_ssm():
-    return boto3.client(
-        'ssm',
-        region_name=os.getenv('AWS_DEFAULT_REGION')
+def mock_client_ssm() -> boto3.client:
+    client = boto3.client(
+        "ssm",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_DEFAULT_REGION,
+        endpoint_url=AWS_ENDPOINT_URL,
     )
+    return client
 
 
 client_cognito = mock_client_cognito()
 client_ssm = mock_client_ssm()
 
-@mock_aws
-def mock_user_pool_id():
+
+def mock_user_pool_id() -> str:
     # Create a user pool
     user_pool_response = client_cognito.create_user_pool(PoolName='test_pool')
     user_pool_id = user_pool_response['UserPool']['Id']
     return user_pool_id
 
 
-@mock_aws
-def mock_signup():
+def mock_signup() -> dict:
     user_pool_id = mock_user_pool_id()
     # Create a user pool client
     client_response = client_cognito.create_user_pool_client(
@@ -68,16 +81,12 @@ def mock_signup():
 
     access_token = response['AuthenticationResult']['AccessToken']
 
-    print('Access Token:', access_token)
-    print('User Pool ID:', user_pool_id)
-
     return {
         "access_token": access_token,
         "user_pool_id": user_pool_id
     }
 
 
-@mock_aws
 def ssm_put_parameter(name: str, value: str) -> str:
     client_ssm.put_parameter(
         Name=name,
@@ -87,10 +96,3 @@ def ssm_put_parameter(name: str, value: str) -> str:
     )
 
     return value
-
-
-def mock_ssm() -> None:
-    ssm_put_parameter("/chatbot/index-id-test", "49c13f0d-d164-49f1-b5d4-8bdc0632d0de")
-    ssm_put_parameter("/chatbot/google_service_account", "{}")
-    ssm_put_parameter("/path/to/ssm-langfuse-public-key", "langfuse-public-key")
-    ssm_put_parameter("/path/to/ssm-langfuse-secret-key", "langfuse-secret-key")

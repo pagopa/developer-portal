@@ -109,7 +109,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
       period      = "60"
       stat        = "Sum"
       dimensions = {
-        FunctionName = module.lambda_function.lambda_function_name
+        FunctionName = aws_lambda_function.chatbot_lambda.function_name
       }
     }
   }
@@ -139,7 +139,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_increased_invocations" {
       period      = "60"
       stat        = "Sum"
       dimensions = {
-        FunctionName = module.lambda_function.lambda_function_name
+        FunctionName = aws_lambda_function.chatbot_lambda.function_name
       }
     }
   }
@@ -169,7 +169,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
       period      = "60"
       stat        = "Average"
       dimensions = {
-        FunctionName = module.lambda_function.lambda_function_name
+        FunctionName = aws_lambda_function.chatbot_lambda.function_name
       }
     }
   }

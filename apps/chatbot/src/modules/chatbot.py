@@ -63,10 +63,12 @@ RESPONSE_TYPE = Union[
     StreamingAgentChatResponse,
 ]
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
 )
 LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"), os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY")
+    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
 )
 LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE = Langfuse(
@@ -95,7 +97,7 @@ class Chatbot:
             self.pii = PresidioPII(config=params["config_presidio"])
 
         self.model = get_llm()
-        self.judge = Evaluator()
+        self.judge = Evaluator(llm=get_llm())
         self.embed_model = get_embed_model()
         self.index = load_automerging_index_redis(
             self.model,
@@ -264,7 +266,7 @@ class Chatbot:
         self, trace_id: str, as_dict: bool = False
     ) -> TraceWithFullDetails | dict:
 
-        logger.warning(f"Getting trace {trace_id} from Langfuse")  
+        logger.warning(f"Getting trace {trace_id} from Langfuse")
         try:
             trace = LANGFUSE.fetch_trace(trace_id)
             trace = trace.data
@@ -464,14 +466,13 @@ class Chatbot:
             retrieved_contexts=retrieved_contexts,
         )
         for key, value in scores.items():
-            if value:
-                self.add_langfuse_score(
-                    trace_id=trace_id,
-                    session_id=session_id,
-                    user_id=user_id,
-                    name=key,
-                    value=value,
-                    data_type="NUMERIC",
-                )
+            self.add_langfuse_score(
+                trace_id=trace_id,
+                session_id=session_id,
+                user_id=user_id,
+                name=key,
+                value=value,
+                data_type="NUMERIC",
+            )
 
         return scores
