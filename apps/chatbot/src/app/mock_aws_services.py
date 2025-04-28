@@ -14,7 +14,7 @@ AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
 AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
 
 
-def mock_client_cognito():
+def mock_client_cognito() -> boto3.client:
     client = boto3.client(
         "cognito-idp",
         aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -25,7 +25,7 @@ def mock_client_cognito():
     return client
 
 
-def mock_client_ssm():
+def mock_client_ssm() -> boto3.client:
     client = boto3.client(
         "ssm",
         aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -40,14 +40,14 @@ client_cognito = mock_client_cognito()
 client_ssm = mock_client_ssm()
 
 
-def mock_user_pool_id():
+def mock_user_pool_id() -> str:
     # Create a user pool
     user_pool_response = client_cognito.create_user_pool(PoolName='test_pool')
     user_pool_id = user_pool_response['UserPool']['Id']
     return user_pool_id
 
 
-def mock_signup():
+def mock_signup() -> dict:
     user_pool_id = mock_user_pool_id()
     # Create a user pool client
     client_response = client_cognito.create_user_pool_client(
