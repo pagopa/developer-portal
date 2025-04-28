@@ -12,7 +12,7 @@ client = TestClient(app)
 
 
 @mock_aws
-def test_query_feedback():
+def test_query_feedback() -> None:
     query_data = {
         "question": "come ti chiami?",
         "queriedAt": "2024-11-11"

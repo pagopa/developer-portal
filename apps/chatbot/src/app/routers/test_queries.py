@@ -9,7 +9,7 @@ os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 client = TestClient(app)
 
 
-def post_queries(data: dict):
+def post_queries(data: dict) -> dict:
     response = client.post(
         "/queries",
         json=data,
@@ -19,7 +19,7 @@ def post_queries(data: dict):
 
 
 @mock_aws
-def test_post_queries():
+def test_post_queries() -> None:
     data = {
         "question": "come ti chiami?",
         "queriedAt": "2024-11-11"
@@ -37,14 +37,14 @@ def test_post_queries():
     assert 'badAnswer' in json.keys()
 
 
-def test_get_queries_no_auth():
+def test_get_queries_no_auth() -> None:
     response = client.get(
         "/queries"
     )
     assert response.status_code == 401
 
 @mock_aws
-def test_get_queries():
+def test_get_queries() -> None:
     response = client.get(
         "/queries",
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
