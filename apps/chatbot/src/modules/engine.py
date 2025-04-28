@@ -9,7 +9,6 @@ from llama_index.core.postprocessor import SimilarityPostprocessor
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
-SIMILARITY_CUTOFF = float(os.getenv("CHB_ENGINE_SIMILARITY_CUTOFF", "0.25"))
 
 
 def get_automerging_engine(
@@ -48,10 +47,6 @@ def get_automerging_engine(
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
 
-    similarity_postprocessor = SimilarityPostprocessor(
-        similarity_cutoff=SIMILARITY_CUTOFF
-    )
-
     return CondensePlusContextChatEngine.from_defaults(
         retriever=retriever,
         llm=llm,
@@ -59,5 +54,5 @@ def get_automerging_engine(
         context_prompt=text_qa_template,
         context_refine_prompt=refine_template,
         condense_prompt=condense_template,
-        node_postprocessors=[similarity_postprocessor, reranker],
+        node_postprocessors=[reranker],
     )
