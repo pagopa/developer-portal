@@ -96,7 +96,7 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
         properties = {
           metrics = [
             [{ "expression" = "ANOMALY_DETECTION_BAND(m1, 2)", "label" = "Anomaly Detection Band", "id" = "e1", "color" = "#666666" }],
-            ["AWS/Lambda", "Errors", "FunctionName", module.lambda_function.lambda_function_name, { "id" = "m1", "stat" = "Sum" }]
+            ["AWS/Lambda", "Errors", "FunctionName", aws_lambda_function.chatbot_lambda.function_name, { "id" = "m1", "stat" = "Sum" }]
           ]
           view    = "timeSeries"
           stacked = false
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
         properties = {
           metrics = [
             [{ "expression" = "ANOMALY_DETECTION_BAND(m1, 2)", "label" = "Anomaly Detection Band", "id" = "e1", "color" = "#666666" }],
-            ["AWS/Lambda", "Duration", "FunctionName", module.lambda_function.lambda_function_name, { "id" = "m1", "stat" = "Average" }]
+            ["AWS/Lambda", "Duration", "FunctionName", aws_lambda_function.chatbot_lambda.function_name, { "id" = "m1", "stat" = "Average" }]
           ]
           view    = "timeSeries"
           stacked = false
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/Lambda", "Invocations", "FunctionName", module.lambda_function.lambda_function_name],
+            ["AWS/Lambda", "Invocations", "FunctionName", aws_lambda_function.chatbot_lambda.function_name],
             [".", "ConcurrentExecutions", ".", "."],
             [".", "Throttles", ".", "."]
           ]
@@ -141,7 +141,7 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/Lambda", "ColdStart", "FunctionName", module.lambda_function.lambda_function_name, { "stat" = "Sum" }]
+            ["AWS/Lambda", "ColdStart", "FunctionName", aws_lambda_function.chatbot_lambda.function_name, { "stat" = "Sum" }]
           ]
           view    = "timeSeries"
           stacked = false
