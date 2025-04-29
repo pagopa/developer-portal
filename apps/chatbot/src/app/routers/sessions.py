@@ -94,8 +94,6 @@ async def query_feedback(
 ):
 
     try:
-        bad_answer = (-1 if query.badAnswer else 1)
-
         if query.feedback:
             add_langfuse_score_query(
                 query_id=id,
@@ -135,7 +133,7 @@ async def query_feedback(
                     '#badAnswer': 'badAnswer'
                 },
                 ExpressionAttributeValues={
-                    ':badAnswer': query.bad_answer
+                    ':badAnswer': query.badAnswer
                 },
                 ReturnValues='ALL_NEW'
             )

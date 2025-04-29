@@ -7,6 +7,7 @@ import yaml
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
+from logging import getLogger
 
 from src.modules.chatbot import Chatbot
 from src.app.models import QueryFeedback, tables
@@ -16,6 +17,7 @@ params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
+logger = getLogger(__name__)
 
 def current_user_id(authorization: str) -> str:
     if authorization is None:
@@ -137,6 +139,7 @@ def get_user_session(userId: str, sessionId: str):
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
     bad_answer = (-1 if query_feedback.badAnswer else 1)
 
+    logger.info(f"Adding Langfuse scores user-feedback for query_id: {query_id} with value: {bad_answer}")
     chatbot.add_langfuse_score(
         trace_id=query_id,
         name='user-feedback',
