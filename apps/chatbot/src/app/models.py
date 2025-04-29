@@ -1,6 +1,7 @@
 import boto3
 import os
 
+from decimal import Decimal
 from pydantic import BaseModel, Field
 from typing import List
 
@@ -18,8 +19,8 @@ class Query(BaseModel):
 
 
 class Feedback(BaseModel):
-    user_response_relevancy: float | None = None
-    user_faithfullness: float | None = None
+    user_response_relevancy: Decimal | None = None
+    user_faithfullness: Decimal | None = None
     user_comment: str | None = None
 
 

@@ -329,9 +329,16 @@ class Chatbot:
 
             if flag:
                 trace.score(
-                    name=name, value=value, data_type=data_type, comment=comment
+                    name=name,
+                    value=value,
+                    data_type=data_type,
+                    comment=comment
                 )
-                logger.warning(f"Add score {name}: {value} in trace {trace_id}")
+                logger.warning(
+                    f"Add score {name}: {value} in trace {trace_id}.\n"
+                    f"data_type: {data_type}\n"
+                    f"type(value): {type(value)}"
+                )
             else:
                 trace.score(
                     id=score_id,
@@ -419,6 +426,9 @@ class Chatbot:
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
+            logger.debug(
+                f"Response: {response_str} \n\n Retrieved contexts: {retrieved_contexts}"
+            )
             response_json = json.loads(response_str)
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts

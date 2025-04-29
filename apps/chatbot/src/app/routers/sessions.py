@@ -1,6 +1,7 @@
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
+from decimal import Decimal
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
@@ -100,8 +101,12 @@ async def query_feedback(
                 query_feedback=query
             )
 
-            query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
-            query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
+            query.feedback.user_response_relevancy = Decimal(
+                str(query.feedback.user_response_relevancy)
+            )
+            query.feedback.user_faithfullness = Decimal(
+                str(query.feedback.user_faithfullness)
+            )
             feedback = query.feedback.model_dump()
             feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
         
