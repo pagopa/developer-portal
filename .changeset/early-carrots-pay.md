@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-save badAnswer field to boolean
+Save badAnswer field to boolean
