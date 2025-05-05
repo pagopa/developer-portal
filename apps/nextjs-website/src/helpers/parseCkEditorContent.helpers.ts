@@ -1,7 +1,7 @@
 import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPart';
 import { JSDOM } from 'jsdom';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
-import DOMPurify from 'isomorphic-dompurify';
+import DOMPurify from 'dompurify';
 
 export function parseCkEditorContent(content: string): {
   readonly parsedContent: string;
