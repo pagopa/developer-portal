@@ -19,6 +19,8 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
+      motoserver:
+        condition: service_started
     networks:
       - ntw
 
@@ -33,6 +35,8 @@ services:
       - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
+        condition: service_started
+      motoserver:
         condition: service_started
     networks:
       - ntw
@@ -59,8 +63,6 @@ services:
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_DEFAULT_REGION=local
-    ports:
-      - "8000:8000"
     networks:
       - ntw
 
@@ -101,6 +103,10 @@ services:
     networks:
       - ntw
 
+  motoserver:
+    image: motoserver/moto:5.1.0
+    networks:
+      - ntw
 volumes:
   postgres_data:
     driver: local
