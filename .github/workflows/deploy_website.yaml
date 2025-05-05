@@ -41,7 +41,7 @@ jobs:
     name: Deploy to S3 (on ${{ matrix.environment }})
     # Trigger when the PR is merged or on a webhook (e.g. trigger deploy from CMS)
     if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'repository_dispatch'
-    runs-on: codebuild-devportal-${{ matrix.environment }}-cicd-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
         environment: [ 'dev' ]
@@ -89,7 +89,7 @@ jobs:
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
-    runs-on: codebuild-devportal-${{ inputs.environment }}-cicd-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
     env:
       SKIP_HUSKY_PRE_PUSH: true
@@ -174,7 +174,7 @@ jobs:
   scheduled_deploy:
     name: Scheduled Deploy to S3
     if: github.event_name == 'schedule'
-    runs-on: codebuild-devportal-prod-cicd-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-prod-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: prod
 
     concurrency:
