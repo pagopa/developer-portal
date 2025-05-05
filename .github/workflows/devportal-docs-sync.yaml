@@ -1,0 +1,39 @@
+name: DevPortal Docs Sync
+
+on:
+  push:
+    branches:
+      - poc-standalone
+  workflow_dispatch:
+
+# Permissions needed for AWS OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync_docs:
+    name: Sync Docs to S3
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout devportal-docs repo
+        uses: actions/checkout@v4
+        with:
+          repository: pagopa/devportal-docs
+          ref: docs/from-gitbook
+          path: devportal-docs
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Sync docs folder to S3
+        run: |
+          aws s3 sync devportal-docs/docs s3://${{ vars.S3_BUCKET_NAME }}/docs --delete
