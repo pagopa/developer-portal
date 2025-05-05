@@ -3,7 +3,7 @@ name: DevPortal Docs Sync
 on:
   push:
     branches:
-      - DEV-2157
+      - poc-standalone
   workflow_dispatch:
 
 # Permissions needed for AWS OIDC authentication
