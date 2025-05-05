@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-let */
+/* eslint-disable functional/no-expression-statements */
 import { credentials, region } from '@/config';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
@@ -62,9 +64,33 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
 
-export const getGuidesMetadata = async () =>
-  await fetchMetadataJsonFromS3(S3_GUIDES_METADATA_JSON_PATH);
-export const getSolutionsMetadata = async () =>
-  await fetchMetadataJsonFromS3(S3_SOLUTIONS_METADATA_JSON_PATH);
-export const getReleaseNotesMetadata = async () =>
-  await fetchMetadataJsonFromS3(S3_RELEASE_NOTES_METADATA_JSON_PATH);
+let guidesMetadataCache: readonly JsonMetadata[] | null = null;
+let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
+let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
+
+export const getGuidesMetadata = async () => {
+  if (!guidesMetadataCache) {
+    guidesMetadataCache = await fetchMetadataJsonFromS3(
+      S3_GUIDES_METADATA_JSON_PATH
+    );
+  }
+  return guidesMetadataCache;
+};
+
+export const getSolutionsMetadata = async () => {
+  if (!solutionsMetadataCache) {
+    solutionsMetadataCache = await fetchMetadataJsonFromS3(
+      S3_SOLUTIONS_METADATA_JSON_PATH
+    );
+  }
+  return solutionsMetadataCache;
+};
+
+export const getReleaseNotesMetadata = async () => {
+  if (!releaseNotesMetadataCache) {
+    releaseNotesMetadataCache = await fetchMetadataJsonFromS3(
+      S3_RELEASE_NOTES_METADATA_JSON_PATH
+    );
+  }
+  return releaseNotesMetadataCache;
+};
