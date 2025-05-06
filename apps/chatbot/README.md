@@ -64,12 +64,31 @@ For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/
 
 ### API
 
-The FastAPI application is in the `src/app` directory.
+The working directory is `apps/chatbot`.
 
-From the root directory (`apps/chatbot`), run
-
+In order to run all API test, just launch
 ```
 ./docker/docker-compose-run-tests.sh
+```
+
+If you want to run only a subset of tests, enter into the container bash
+```
+docker compose -f docker/compose.test.yaml -p chatbot-test run bash
+```
+
+Initialize dynamodb and redis (these are the first two steps of `./scripts/run.test.sh`:
+```
+./scripts/dynamodb-init-test.sh
+poetry run python src/modules/create_vector_index.py --params config/params.yaml
+```
+then launch a test, ex
+```
+poetry run pytest src/app/routers/test_sessions.py::test_query_feedback
+```
+
+When you're done, shut down all the containers with
+```
+./docker/docker-compose-down-tests.sh
 ```
 
 ## Docker
