@@ -39,9 +39,9 @@ const config = {
 };
 
 describe('parseContent', () => {
-  it('should ignore any <p> tag', () => {
+  it('should properly parse the <p> tag', () => {
     expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
-      'Hello there!',
+      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
     ]);
   });
   it('should parse heading', () => {
@@ -826,6 +826,33 @@ describe('parseContent', () => {
         new Markdoc.Tag('TableBody', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse paragraph inside table td', () => {
+    const table =
+      '| col A | col B |\n| --------- | --------- |\n| <p>1 - A</p>     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, [
+              new Markdoc.Tag('Paragraph', {}, ['1 - A']),
+            ]),
             new Markdoc.Tag('TableD', {}, ['1 - B']),
           ]),
           new Markdoc.Tag('TableR', {}, [
