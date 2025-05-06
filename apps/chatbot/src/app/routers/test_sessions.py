@@ -45,3 +45,68 @@ def test_query_feedback() -> None:
     assert 'queriedAt' in json.keys()
     assert 'badAnswer' in json.keys()
     assert 'feedback' in json.keys()
+
+@mock_aws
+def test_query_feedback_with_null_values() -> None:
+    query_data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11"
+    }
+    response_queries = post_queries(query_data)
+    json_queries = response_queries.json()
+    sessionId = json_queries['sessionId']
+    id = json_queries['id']
+
+    response = client.patch(
+        f"/sessions/{sessionId}/queries/{id}",
+        json={
+            "badAnswer": True,
+            "feedback":{
+                "user_response_relevancy": None,
+                "user_faithfullness": None,
+                "user_comment": ""
+            }
+        },
+        headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
+    )
+
+    json = response.json()
+    assert response.status_code == 200
+    assert 'id' in json.keys()
+    assert 'sessionId' in json.keys()
+    assert 'question' in json.keys()
+    assert 'answer' in json.keys()
+    assert 'createdAt' in json.keys()
+    assert 'queriedAt' in json.keys()
+    assert 'badAnswer' in json.keys()
+    assert 'feedback' in json.keys()
+
+
+@mock_aws
+def test_query_feedback_with_only_bad_answer() -> None:
+    query_data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11"
+    }
+    response_queries = post_queries(query_data)
+    json_queries = response_queries.json()
+    sessionId = json_queries['sessionId']
+    id = json_queries['id']
+
+    response = client.patch(
+        f"/sessions/{sessionId}/queries/{id}",
+        json={
+            "badAnswer": True
+        },
+        headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
+    )
+
+    json = response.json()
+    assert response.status_code == 200
+    assert 'id' in json.keys()
+    assert 'sessionId' in json.keys()
+    assert 'question' in json.keys()
+    assert 'answer' in json.keys()
+    assert 'createdAt' in json.keys()
+    assert 'queriedAt' in json.keys()
+    assert 'badAnswer' in json.keys()

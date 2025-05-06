@@ -101,15 +101,23 @@ async def query_feedback(
                 query_feedback=query
             )
 
+            if query.feedback.user_response_relevancy is None:
+                query.feedback.user_response_relevancy = 0
+
             query.feedback.user_response_relevancy = Decimal(
                 str(query.feedback.user_response_relevancy)
             )
+
+            if query.feedback.user_faithfullness is None:
+                query.feedback.user_faithfullness = 0
+
             query.feedback.user_faithfullness = Decimal(
                 str(query.feedback.user_faithfullness)
             )
+
             feedback = query.feedback.model_dump()
             feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
-        
+
             dbResponse = tables["queries"].update_item(
                 Key={
                     'sessionId': sessionId,

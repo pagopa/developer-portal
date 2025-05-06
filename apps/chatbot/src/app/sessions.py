@@ -19,6 +19,7 @@ chatbot = Chatbot(params, prompts)
 
 logger = getLogger(__name__)
 
+
 def current_user_id(authorization: str) -> str:
     if authorization is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -137,26 +138,28 @@ def get_user_session(userId: str, sessionId: str):
 
 
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
-    bad_answer = (-1 if query_feedback.badAnswer else 1)
+    if query_feedback.badAnswer is not None:
+        bad_answer = (-1 if query_feedback.badAnswer else 1)
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-feedback',
+            value=bad_answer,
+            comment=query_feedback.feedback.user_comment,
+            data_type='NUMERIC'
+        )
 
-    logger.info(f"Adding Langfuse scores user-feedback for query_id: {query_id} with value: {bad_answer}")
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-feedback',
-        value=bad_answer,
-        comment=query_feedback.feedback.user_comment,
-        data_type='NUMERIC'
-    )
+    if query_feedback.feedback.user_response_relevancy is not None:
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-response-relevancy',
+            value=float(query_feedback.feedback.user_response_relevancy),
+            data_type='NUMERIC'
+        )
 
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-response-relevancy',
-        value=float(query_feedback.feedback.user_response_relevancy),
-        data_type='NUMERIC'
-    )
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-faithfullness',
-        value=float(query_feedback.feedback.user_faithfullness),
-        data_type='NUMERIC'
-    )
+    if query_feedback.feedback.user_faithfullness is not None:
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-faithfullness',
+            value=float(query_feedback.feedback.user_faithfullness),
+            data_type='NUMERIC'
+        )
