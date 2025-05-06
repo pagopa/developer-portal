@@ -20,6 +20,12 @@ crash.*.log
 *.tfvars
 *.tfvars.json
 
+# Eccezioni per file in specifiche directory
+!src/env/
+!src/env/*/
+!src/env/*/*.tfvars
+!src/env/*/*.tfvars.json
+
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
