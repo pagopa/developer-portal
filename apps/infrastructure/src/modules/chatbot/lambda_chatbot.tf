@@ -197,7 +197,7 @@ resource "aws_lambda_permission" "allow_eventbridge" {
 
 # IAM Policy Resources
 resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
-  name = "chatbot-dev-api-lambda-s3-bedrock"
+  name = "chatbot-${var.environment}-api-lambda-s3-bedrock"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -233,7 +233,7 @@ resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
 }
 
 resource "aws_iam_policy" "lambda_dynamodb_policy" {
-  name = "chatbot-dev-api-lambda-dynamodb"
+  name = "chatbot-${var.environment}-api-lambda-dynamodb"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -267,7 +267,7 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
 }
 
 resource "aws_iam_policy" "lambda_ssm_policy" {
-  name = "chatbot-dev-api-lambda-ssm"
+  name = "chatbot-${var.environment}-api-lambda-ssm"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
