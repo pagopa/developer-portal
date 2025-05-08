@@ -89,7 +89,7 @@ resource "aws_api_gateway_integration" "chatbot" {
   resource_id             = aws_api_gateway_resource.chatbot.id
   http_method             = aws_api_gateway_method.chatbot[each.key].http_method
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.chatbot_lambda.arn}/invocations"
   integration_http_method = "POST"
   timeout_milliseconds    = var.api_gateway.integration_timeout_sec * 1000
   request_parameters = {
@@ -102,7 +102,7 @@ resource "aws_api_gateway_integration" "chatbot_cors" {
   resource_id             = aws_api_gateway_resource.chatbot.id
   http_method             = aws_api_gateway_method.chatbot_cors.http_method
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.chatbot_lambda.arn}/invocations"
   integration_http_method = "POST"
   timeout_milliseconds    = var.api_gateway.integration_timeout_sec * 1000
   request_parameters = {

@@ -1,40 +1,31 @@
 import os
-import logging
-from moto import mock_aws
 from fastapi.testclient import TestClient
+from moto import mock_aws
 from src.app.main import app
-from src.app.mock_cognito import mock_signup
-
-logging.basicConfig(level=logging.INFO)
+from src.app.mock_aws_services import mock_signup
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 client = TestClient(app)
 
 
-@mock_aws
-def test_post_queries():
+def post_queries(data: dict) -> dict:
     response = client.post(
         "/queries",
-        json={
-            "question": "come ti chiami?",
-            "queriedAt": "2024-11-11"
-        },
+        json=data,
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
-    # response example
-    # {
-    #   "id": '8a0f7f9a-b794-483e-9e09-809c31b75334',
-    #   "sessionId": "f163a47d-12b4-483d-9847-df6147a84370",
-    #   "question": "come ti chiami?",
-    #   "answer": "Scusa, non sono riuscito ad elaborare questa domanda.\n
-    #     Chiedimi un'altra domanda.",
-    #   "createdAt": "2024-11-19T10:02:13.348758+00:00",
-    #   "queriedAt": "2024-11-11",
-    #   "badAnswer": False
-    # }
-    
-    # logging.warning(f"[test_post_queries] response.json(): {response.json()}")
+    return response
+
+
+@mock_aws
+def test_post_queries() -> None:
+    data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11"
+    }
+    response = post_queries(data)
+
     json = response.json()
     assert response.status_code == 200
     assert 'id' in json.keys()
@@ -46,18 +37,16 @@ def test_post_queries():
     assert 'badAnswer' in json.keys()
 
 
-def test_get_queries_no_auth():
+def test_get_queries_no_auth() -> None:
     response = client.get(
         "/queries"
     )
     assert response.status_code == 401
 
-
 @mock_aws
-def test_get_queries():
+def test_get_queries() -> None:
     response = client.get(
         "/queries",
         headers={"Authorization": f"Bearer {cognito_mock['access_token']}"}
     )
-    # json = response.json()
     assert response.status_code == 200

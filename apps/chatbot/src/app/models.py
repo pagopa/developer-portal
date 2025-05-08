@@ -1,6 +1,7 @@
 import boto3
 import os
 
+from decimal import Decimal
 from pydantic import BaseModel, Field
 from typing import List
 
@@ -17,8 +18,15 @@ class Query(BaseModel):
     history: List[QueryFromThePast] | None = None
 
 
+class Feedback(BaseModel):
+    user_response_relevancy: Decimal | None = None
+    user_faithfullness: Decimal | None = None
+    user_comment: str | None = None
+
+
 class QueryFeedback(BaseModel):
-    badAnswer: bool
+    badAnswer: bool = False
+    feedback: Feedback | None = None
 
 
 AWS_DEFAULT_REGION = os.getenv(

@@ -1,32 +1,33 @@
 locals {
   lambda_env_variables = {
-    AUTH_COGNITO_USERPOOL_ID     = var.cognito_user_pool.id
-    CHB_AWS_BEDROCK_EMBED_REGION = "eu-central-1"
-    CHB_AWS_BEDROCK_LLM_REGION   = var.aws_chatbot_region
-    CHB_AWS_GUARDRAIL_ID         = awscc_bedrock_guardrail.guardrail.guardrail_id
-    CHB_AWS_GUARDRAIL_VERSION    = awscc_bedrock_guardrail_version.guardrail.version
-    CHB_AWS_S3_BUCKET            = module.s3_bucket_llamaindex.s3_bucket_id
-    CHB_EMBED_MODEL_ID           = "amazon.titan-embed-text-v2:0"
-    CHB_ENGINE_USE_ASYNC         = "False"
-    CHB_ENGINE_USE_STREAMING     = "False"
-    CHB_ENGINE_SIMILARITY_CUTOFF = "0.2"
-    CHB_ENGINE_SIMILARITY_TOPK   = "5"
-    CHB_GOOGLE_API_KEY           = module.google_api_key_ssm_parameter.ssm_parameter_name
-    CHB_GOOGLE_PROJECT_ID        = module.google_project_id_ssm_parameter.ssm_parameter_name
-    CHB_GOOGLE_SERVICE_ACCOUNT   = module.google_service_account_ssm_parameter.ssm_parameter_name
-    CHB_LANGFUSE_HOST            = "https://${local.priv_monitoring_host}"
-    CHB_LANGFUSE_PUBLIC_KEY      = module.langfuse_public_key.ssm_parameter_name
-    CHB_LANGFUSE_SECRET_KEY      = module.langfuse_secret_key.ssm_parameter_name
-    CHB_LLAMAINDEX_INDEX_ID      = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_MODEL_ID                 = "mistral.mistral-large-2402-v1:0"
-    CHB_MODEL_MAXTOKENS          = "768"
-    CHB_MODEL_TEMPERATURE        = "0.3"
+    AUTH_COGNITO_USERPOOL_ID           = var.cognito_user_pool.id
+    CHB_AWS_BEDROCK_EMBED_REGION       = "eu-central-1"
+    CHB_AWS_BEDROCK_LLM_REGION         = var.aws_chatbot_region
+    CHB_AWS_BEDROCK_RERANKER_REGION    = "eu-central-1"
+    CHB_AWS_GUARDRAIL_ID               = awscc_bedrock_guardrail.guardrail.guardrail_id
+    CHB_AWS_GUARDRAIL_VERSION          = awscc_bedrock_guardrail_version.guardrail.version
+    CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
+    CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
+    CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
+    CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
+    CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
+    CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_EMBED_MODEL_ID                 = "amazon.titan-embed-text-v2:0"
+    CHB_ENGINE_USE_ASYNC               = "False"
+    CHB_ENGINE_USE_STREAMING           = "False"
+    CHB_ENGINE_SIMILARITY_TOPK         = "5"
+    CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
+    CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
+    CHB_MODEL_ID                       = "mistral.mistral-large-2402-v1:0"
+    CHB_MODEL_MAXTOKENS                = "768"
+    CHB_MODEL_TEMPERATURE              = "0.3"
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
     CHB_PROVIDER           = "aws"
     CHB_QUERY_TABLE_PREFIX = local.prefix
     CHB_REDIS_URL          = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+    CHB_RERANKER_ID        = "amazon.rerank-v1:0"
     CHB_USE_PRESIDIO       = "True"
     CHB_WEBSITE_URL        = "https://${var.dns_domain_name}"
     CORS_DOMAINS           = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
@@ -37,40 +38,60 @@ locals {
   }
 }
 
-module "lambda_function" {
-  source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
-
+# Diretta implementazione delle risorse che il modulo lambda creerebbe
+resource "aws_lambda_function" "chatbot_lambda" {
   function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
-  environment_variables = local.lambda_env_variables
-  create_package        = false
+  image_uri    = "${module.ecr.repository_url}:latest"
+  package_type = "Image"
 
-  package_type  = "Image"
+  timeout       = local.lambda_timeout
+  memory_size   = 4092
   architectures = ["x86_64"]
+  role          = aws_iam_role.lambda_role.arn
 
-  image_uri = "${module.ecr.repository_url}:latest"
+  vpc_config {
+    subnet_ids         = var.vpc.private_subnets
+    security_group_ids = [aws_security_group.lambda.id]
+  }
 
-  timeout     = local.lambda_timeout
-  memory_size = 4092
+  environment {
+    variables = local.lambda_env_variables
+  }
 
-  vpc_subnet_ids         = var.vpc.private_subnets
-  vpc_security_group_ids = [aws_security_group.lambda.id]
-  attach_network_policy  = true
+  lifecycle {
+    ignore_changes = [
+      image_uri
+    ]
+  }
+}
 
-  attach_policy_jsons    = true
-  number_of_policy_jsons = 3
+resource "aws_cloudwatch_log_group" "lambda_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.chatbot_lambda.function_name}"
+  retention_in_days = 14
+}
 
-  policy_jsons = [
-    data.aws_iam_policy_document.lambda_s3_policy.json,
-    data.aws_iam_policy_document.lambda_dynamodb_policy.json,
-    data.aws_iam_policy_document.lambda_ssm_policy.json
-  ]
+resource "aws_iam_role" "lambda_role" {
+  name                  = "${local.prefix}-api-lambda"
+  force_detach_policies = true
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_lambda_permission" "rest_apigw_lambda" {
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda_function.lambda_function_name
+  function_name = aws_lambda_function.chatbot_lambda.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -156,7 +177,7 @@ resource "aws_cloudwatch_event_rule" "lambda_invocation_rule" {
 resource "aws_cloudwatch_event_target" "lambda_target" {
   rule      = aws_cloudwatch_event_rule.lambda_invocation_rule.name
   target_id = "keep-chatbot-lambda-warm"
-  arn       = module.lambda_function.lambda_function_arn
+  arn       = aws_lambda_function.chatbot_lambda.arn
   input = jsonencode({
     resource                        = "/{proxy+}",
     path                            = "/healthz",
@@ -168,8 +189,124 @@ resource "aws_cloudwatch_event_target" "lambda_target" {
 
 resource "aws_lambda_permission" "allow_eventbridge" {
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda_function.lambda_function_name
+  function_name = aws_lambda_function.chatbot_lambda.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.lambda_invocation_rule.arn
   statement_id  = "AllowExecutionFromEventBridge"
+}
+
+# IAM Policy Resources
+resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
+  name = "chatbot-${var.environment}-api-lambda-s3-bedrock"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "ListObjectsInBucket"
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = [module.s3_bucket_llamaindex.s3_bucket_arn, module.s3_bucket_kb.s3_bucket_arn]
+      },
+      {
+        Sid      = "ReadWriteInBucket"
+        Effect   = "Allow"
+        Action   = "s3:*Object"
+        Resource = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
+      },
+      {
+        Sid    = "BedrockPermissions"
+        Effect = "Allow"
+        Action = [
+          "bedrock:ApplyGuardrail",
+          "bedrock:ListGuardrails",
+          "bedrock:GetGuardrail",
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream",
+          "bedrock:ListFoundationModels",
+          "bedrock:Rerank"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+  tags = var.tags
+}
+
+resource "aws_iam_policy" "lambda_dynamodb_policy" {
+  name = "chatbot-${var.environment}-api-lambda-dynamodb"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowDynamoDBItemOperations"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:UpdateItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:PutItem",
+          "dynamodb:GetRecords",
+          "dynamodb:GetItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:BatchGetItem"
+        ]
+        Resource = [
+          module.dynamodb_chatbot_queries.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_queries.dynamodb_table_arn}/*",
+          module.dynamodb_chatbot_sessions.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_sessions.dynamodb_table_arn}/*",
+          module.dynamodb_chatbot_salts.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_salts.dynamodb_table_arn}/*"
+        ]
+      }
+    ]
+  })
+  tags = var.tags
+}
+
+resource "aws_iam_policy" "lambda_ssm_policy" {
+  name = "chatbot-${var.environment}-api-lambda-ssm"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowSSMOperations"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameter"
+        ]
+        Resource = "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"
+      }
+    ]
+  })
+  tags = var.tags
+}
+
+# IAM Role Policy Attachments
+resource "aws_iam_role_policy_attachment" "lambda_s3_bedrock_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_s3_bedrock_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_dynamodb_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_ssm_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_ssm_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_logs_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }

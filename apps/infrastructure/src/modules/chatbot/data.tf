@@ -22,7 +22,8 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
       "bedrock:GetGuardrail",
       "bedrock:InvokeModel",
       "bedrock:InvokeModelWithResponseStream",
-      "bedrock:ListFoundationModels"
+      "bedrock:ListFoundationModels",
+      "bedrock:Rerank"
     ]
     resources = ["*"]
   }
