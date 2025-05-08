@@ -34,7 +34,6 @@ const MobileWebinarCategorySelector = ({
       sx={{
         backgroundColor: '#EBF4FD',
         padding: '24px',
-        minHeight: '112px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -100,9 +99,9 @@ const MobileWebinarCategorySelector = ({
                   setSelectedWebinarCategory(index);
                   return;
                 }}
-                isHeader={false}
                 label={category.name}
                 icon={category.icon.data.attributes}
+                isLast={index == webinarCategories.length - 1}
               />
             ))}
           </Stack>

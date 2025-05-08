@@ -1,15 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
-import WebinarCategorySelector from 'nextjs-website/src/components/organisms/WebinarCategorySelector/WebinarCategorySelector';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-
-const meta: Meta<typeof WebinarCategorySelector> = {
-  title: 'Organisms/WebinarCategorySelector',
-  component: WebinarCategorySelector,
+import DesktopWebinarCategorySelector from 'nextjs-website/src/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
+const meta: Meta<typeof DesktopWebinarCategorySelector> = {
+  title: 'Molecules/DesktopWebinarCategorySelector',
+  component: DesktopWebinarCategorySelector,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof WebinarCategorySelector> = {
+export const Showcase: StoryObj<typeof DesktopWebinarCategorySelector> = {
   args: {
     selectedWebinarCategory: 0,
     webinarCategories: [

@@ -8,14 +8,16 @@ type MobileWebinarCategoryButtonProps = {
   onClick: () => void;
   label: string;
   icon: Media;
-  isHeader: boolean;
+  isHeader?: boolean;
+  isLast?: boolean;
 };
 
 const MobileWebinarCategoryButton = ({
   onClick,
   icon,
   label,
-  isHeader,
+  isHeader = false,
+  isLast = false,
 }: MobileWebinarCategoryButtonProps) => {
   const { palette } = useTheme();
   const height = isHeader ? 32 : 61;
@@ -40,8 +42,9 @@ const MobileWebinarCategoryButton = ({
           height: '100%',
           width: '100%',
           fontWeight: 700,
+          borderBottomLeftRadius: isLast ? '16px' : 0,
+          borderBottomRightRadius: isLast ? '16px' : 0,
           color: palette.text.primary,
-          borderRadius: '16px',
           backgroundColor: '#FFFFFF',
           '&:hover': {
             backgroundColor: '#FAFAFA',
