@@ -27,6 +27,7 @@ export function validateStrapiEnvironment(customRequiredVars: string[] = []): {
 }
 
 // Function to fetch solutions from Strapi
+
 export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
   try {
     console.log('Fetching solutions from Strapi...');

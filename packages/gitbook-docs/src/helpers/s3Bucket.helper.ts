@@ -71,6 +71,28 @@ export function makeS3Client(): S3Client {
         },
       })
     : new S3Client({ region: AWS_REGION });
+
+export function makeS3Client(): S3Client {
+  const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
+  const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
+  const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+  const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION;
+
+  // Check if required environment variables are set
+  if (!S3_ACCESS_KEY_ID || !S3_SECRET_ACCESS_KEY || !S3_BUCKET_NAME) {
+    console.error(
+      'Missing required environment variables. Please check your .env file.'
+    );
+    process.exit(1);
+  }
+
+  return new S3Client({
+    region: AWS_REGION,
+    credentials: {
+      accessKeyId: S3_ACCESS_KEY_ID,
+      secretAccessKey: S3_SECRET_ACCESS_KEY,
+    },
+  });
 }
 
 // Function to list all objects in the S3 bucket with a specific prefix

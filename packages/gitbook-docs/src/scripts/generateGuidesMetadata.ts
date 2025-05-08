@@ -4,6 +4,7 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
+import { SitemapItem } from '../sitemapItem';
 import {
   downloadS3File,
   listS3Files,
@@ -26,6 +27,14 @@ loadEnvConfig();
 // Validate environment variables
 validateStrapiEnvironment();
 const { s3BucketName } = validateS3Environment();
+
+} from '../helpers/s3Bucket.helper';
+import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_GUIDE_METADATA_JSON_PATH =
