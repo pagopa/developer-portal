@@ -1,6 +1,6 @@
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { Stack, Typography } from '@mui/material';
-import WebinarCategoryButton from '@/components/atoms/WebinarCategoryButton/WebinarCategoryButton';
+import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
+import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarCategorySelector/MobileWebinarCategorySelector';
 
 type WebinarCategorySelectorProps = {
   selectedWebinarCategory: number;
@@ -16,36 +16,22 @@ const WebinarCategorySelector = ({
   webinarCategories,
   isMobile,
 }: WebinarCategorySelectorProps) => {
-  return (
-    <Stack
-      component='section'
-      spacing={'56px'}
-      direction={'row'}
-      sx={{
-        backgroundColor: '#EBF4FD',
-        minHeight: '112px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        maxWidth: { xs: '100%', md: '100%' },
-        textAlign: 'center',
-        width: '100%',
-      }}
-    >
-      {webinarCategories.map((category, index) => (
-        <WebinarCategoryButton
-          key={index}
-          onClick={() => {
-            setSelectedWebinarCategory(index);
-            return;
-          }}
-          isSelected={index === selectedWebinarCategory}
-          label={category.name}
-          icon={category.icon.data.attributes}
-        ></WebinarCategoryButton>
-      ))}
-    </Stack>
-  );
+  if (isMobile)
+    return (
+      <MobileWebinarCategorySelector
+        selectedWebinarCategory={selectedWebinarCategory}
+        setSelectedWebinarCategory={setSelectedWebinarCategory}
+        webinarCategories={webinarCategories}
+      />
+    );
+  else
+    return (
+      <DesktopWebinarCategorySelector
+        selectedWebinarCategory={selectedWebinarCategory}
+        setSelectedWebinarCategory={setSelectedWebinarCategory}
+        webinarCategories={webinarCategories}
+      />
+    );
 };
 
 export default WebinarCategorySelector;
