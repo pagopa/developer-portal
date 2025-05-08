@@ -14,7 +14,7 @@ export interface JsonMetadata {
   readonly dirName: string;
   readonly contentS3Path: string;
   readonly title: string;
-  readonly menuS3Path?: string; // check if this is optional
+  readonly menuS3Path: string;
   readonly version?: string;
   readonly lastModified?: string;
 }

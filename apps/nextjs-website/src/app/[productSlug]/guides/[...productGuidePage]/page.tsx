@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGuidePage } from '@/lib/api';
+import { getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -20,7 +20,6 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
-// import * as fs from 'fs';
 
 type Params = {
   productSlug: string;
@@ -64,20 +63,6 @@ export async function generateMetadata({
     title: porps?.page.title,
     url: porps?.page.path,
   });
-  // TODO: remove commented code before merge
-  // const {
-  //   page: { path, title },
-  //   seo,
-  // } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
-
-  // if (seo) {
-  //   return makeMetadataFromStrapi(seo);
-  // }
-
-  // return makeMetadata({
-  //   title,
-  //   url: path,
-  // });
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -85,11 +70,6 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
-  // TODO: remove commented code before merge
-  // const guideProps = await getGuide(
-  //   params?.productSlug,
-  //   params?.productGuidePage ?? ['']
-  // );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
   if (!guideProps) {

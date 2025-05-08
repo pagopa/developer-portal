@@ -219,8 +219,7 @@ export const parseS3GuidePage = async (props: {
     spaceId: guidePageMetadata.dirName,
   };
   const menu =
-    guidePageMetadata.menuS3Path &&
-    (await fetchFileFromS3(guidePageMetadata.menuS3Path));
+    guidePageMetadata && (await fetchFileFromS3(guidePageMetadata.menuS3Path));
   const body = await fetchFileFromS3(guidePageMetadata.contentS3Path);
   return {
     ...guideProps,
@@ -256,7 +255,6 @@ export const parseS3GuidePage = async (props: {
       gitBookPagesWithTitle: guidesMetadata,
       spaceToPrefix: guidesMetadata.map((metadata) => ({
         spaceId: metadata.dirName,
-        // take the first 4 parts of the path
         pathPrefix: metadata.path.split('/').slice(0, 4).join('/'),
       })),
     },
