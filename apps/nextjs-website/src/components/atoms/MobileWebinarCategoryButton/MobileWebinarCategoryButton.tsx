@@ -33,6 +33,7 @@ const MobileWebinarCategoryButton = ({
     >
       <Button
         startIcon={<IconWrapper icon={icon.url} useSrc={true} size={32} />}
+        disabled={isHeader}
         sx={{
           justifyContent: 'flex-start',
           paddingLeft: paddingLeft,
@@ -44,6 +45,12 @@ const MobileWebinarCategoryButton = ({
           backgroundColor: '#FFFFFF',
           '&:hover': {
             backgroundColor: '#FAFAFA',
+          },
+          '&:disabled': {
+            fontWeight: 700,
+            color: palette.text.primary,
+            borderRadius: '16px',
+            backgroundColor: '#FFFFFF',
           },
         }}
         onClick={onClick}
