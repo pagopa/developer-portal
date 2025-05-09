@@ -36,6 +36,8 @@ import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
+import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
+import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -77,6 +79,17 @@ export const getProductsProps = async () => {
     async () => {
       const strapiProducts = await fetchProducts(buildEnv);
       return makeProductsProps(strapiProducts);
+    },
+    CACHE_EXPIRY_IN_SECONDS
+  );
+};
+
+export const getWebinarCategoriesProps = async () => {
+  return withCache(
+    getCacheKey('getWebinarCategoriesProps'),
+    async () => {
+      const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
+      return makeWebinarCategoriesProps(strapiWebinarCategories);
     },
     CACHE_EXPIRY_IN_SECONDS
   );

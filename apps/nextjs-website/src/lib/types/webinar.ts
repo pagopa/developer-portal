@@ -2,6 +2,7 @@ import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { Media } from '../strapi/codecs/MediaCodec';
 import { SEO } from './seo';
+import { WebinarCategory } from '@/lib/types/webinarCategory';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -46,4 +47,5 @@ export type Webinar = {
   readonly imagePath: string;
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
   readonly seo?: SEO;
+  readonly webinarCategory?: WebinarCategory;
 };
