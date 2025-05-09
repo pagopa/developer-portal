@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.4.0
+
+### Minor Changes
+
+- e685237: Add paragraph parsing
+
 ## 0.3.1
 
 ### Patch Changes
