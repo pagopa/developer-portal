@@ -1,5 +1,16 @@
 # strapi-cms
 
+## 3.6.0
+
+### Minor Changes
+
+- 7e6b487: Add WebinarCategory to Webinars in Strapi
+
+### Patch Changes
+
+- 30a529e: Fix webinar slug validation
+- d2c5500: Fix webinar slug validation
+
 ## 3.5.0
 
 ### Minor Changes
