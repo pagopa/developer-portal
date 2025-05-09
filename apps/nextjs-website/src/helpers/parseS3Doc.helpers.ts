@@ -6,6 +6,10 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
+import { GuideDefinition } from './makeDocs.helpers';
+import { docsS3AssetsPath, s3DocsPath } from '@/config';
+import { Product } from '@/lib/types/product';
+import { fetchFileFromS3, JsonMetadata } from './s3Metadata.helpers';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -171,4 +175,88 @@ export const parseS3Doc = async <T>(
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   }
+};
+
+export const parseS3GuidePage = async (props: {
+  readonly guideProps: GuideDefinition;
+  readonly guidePath: string;
+  readonly guidesMetadata: readonly JsonMetadata[];
+  readonly products: readonly Product[];
+}) => {
+  const { guideProps, guidePath, guidesMetadata, products } = props;
+  const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
+  const guidePageMetadata = guidesMetadata.find(
+    (data) => data.path === guidePath
+  );
+  const versions = guideProps.versions;
+  const version = guidePageMetadata?.version
+    ? versions.find(({ version }) => version === guidePageMetadata.version)
+    : versions.find(({ main }) => !!main);
+  if (
+    !version ||
+    !guidePageMetadata ||
+    guidePageMetadata.dirName !== version.dirName
+  ) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      'path',
+      guidePath,
+      'Missing version:',
+      version,
+      'or guidePageMetadata',
+      guidePageMetadata
+    );
+    return undefined;
+  }
+  const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
+  const source = {
+    pathPrefix: version.main
+      ? baseGuidePath
+      : `${baseGuidePath}/${version.version}`,
+    version,
+    assetsPrefix: `${docsS3AssetsPath}/${guidePageMetadata.dirName}`,
+    dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
+    spaceId: guidePageMetadata.dirName,
+  };
+  const menu =
+    guidePageMetadata && (await fetchFileFromS3(guidePageMetadata.menuS3Path));
+  const body = await fetchFileFromS3(guidePageMetadata.contentS3Path);
+  return {
+    ...guideProps,
+    guide: {
+      name: guideProps.guide.name,
+      path: guidePath,
+    },
+    version: {
+      main: version.main || false,
+      name: version.version,
+      path: version.main
+        ? baseGuidePath
+        : `${baseGuidePath}/${version.version}`,
+    },
+    versions: versions.map(({ main = false, version }) => ({
+      main,
+      name: version,
+      path: `${baseGuidePath}/${version}`,
+    })),
+    source,
+    page: {
+      path: guidePath,
+      isIndex,
+      title: guidePageMetadata.title || '',
+      menu: menu || '',
+      body: body || '',
+    },
+    products: products,
+    bodyConfig: {
+      isPageIndex: isIndex,
+      pagePath: guidePath,
+      assetsPrefix: `${docsS3AssetsPath}/${guidePageMetadata.dirName}`,
+      gitBookPagesWithTitle: guidesMetadata,
+      spaceToPrefix: guidesMetadata.map((metadata) => ({
+        spaceId: metadata.dirName,
+        pathPrefix: metadata.path.split('/').slice(0, 4).join('/'),
+      })),
+    },
+  };
 };

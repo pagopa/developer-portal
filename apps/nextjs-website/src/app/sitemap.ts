@@ -10,17 +10,11 @@ import {
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
-  fetchMetadataJsonFromS3,
+  getGuidesMetadata,
+  getReleaseNotesMetadata,
+  getSolutionsMetadata,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-
-const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.json';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
@@ -32,15 +26,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Fetch metadata from S3
-  const guidesMetadata = await fetchMetadataJsonFromS3(
-    S3_GUIDES_METADATA_JSON_PATH
-  );
-  const solutionsMetadata = await fetchMetadataJsonFromS3(
-    S3_SOLUTIONS_METADATA_JSON_PATH
-  );
-  const releaseNotesMetadata = await fetchMetadataJsonFromS3(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
-  );
+  const guidesMetadata = await getGuidesMetadata();
+  const solutionsMetadata = await getSolutionsMetadata();
+  const releaseNotesMetadata = await getReleaseNotesMetadata();
 
   // Base routes
   const routes = [

@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide } from '@/lib/api';
+import { getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -19,6 +19,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import PageNotFound from '@/app/not-found';
 
 type Params = {
   productSlug: string;
@@ -49,28 +50,31 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const {
-    page: { path, title },
-    seo,
-  } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+  const porps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
+  );
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
+  if (porps?.seo) {
+    return makeMetadataFromStrapi(porps?.seo);
   }
 
   return makeMetadata({
-    title,
-    url: path,
+    title: porps?.page.title,
+    url: porps?.page.path,
   });
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const guideProps = await getGuide(
-    params?.productSlug,
-    params?.productGuidePage ?? ['']
+  const guideProps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
+  if (!guideProps) {
+    return PageNotFound;
+  }
   const {
     product,
     page,

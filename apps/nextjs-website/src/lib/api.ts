@@ -6,6 +6,7 @@ import {
   getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
+  getGuidePageProps,
   getGuideProps,
   getOverviewsProps,
   getProductsProps,
@@ -18,6 +19,8 @@ import {
   getTutorialsProps,
   getWebinarsProps,
 } from './cmsApi';
+import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
+import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -31,6 +34,31 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
 }
 
+export async function getGuidePage(
+  guidePaths: ReadonlyArray<string>,
+  productSlug: string
+) {
+  const products = await getProducts();
+  const guideProps = await getGuidePageProps(
+    guidePaths.length > 0 ? guidePaths[0] : '',
+    productSlug
+  );
+  const guidesMetadata = await getGuidesMetadata();
+  const guidePath = [
+    `/${guideProps.product.slug}`,
+    'guides',
+    ...guidePaths,
+  ].join('/');
+  return manageUndefined(
+    await parseS3GuidePage({
+      guideProps,
+      guidePath,
+      guidesMetadata,
+      products,
+    })
+  );
+}
+
 export async function getGuide(
   productSlug?: string,
   productGuideSlugs?: ReadonlyArray<string>
@@ -41,9 +69,9 @@ export async function getGuide(
   }
 
   const guides = await getGuideProps(productGuideSlugs, productSlug);
-  const products = await getProducts();
   const guidePath = productGuideSlugs?.join('/');
   const path = `/${productSlug}/guides/${guidePath}`;
+  const products = await getProducts();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const guideDefinition: any = manageUndefined(
