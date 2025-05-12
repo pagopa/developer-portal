@@ -99,7 +99,7 @@ const validateSlugBeforeUpdate = async (
   const slug = event.params.data.slug || previousWebinar?.slug;
   validateSlug(slug);
 
-  if (previousWebinar && event.params.data.slug && previousWebinar.slug !== event.params.data.slug) {
+  if ((event.params.data.slug || event.params.data.slug === null) && (previousWebinar && previousWebinar.slug !== event.params.data.slug)) {
     throw new errors.ApplicationError(
       'The slug of a webinar cannot be changed'
     );
