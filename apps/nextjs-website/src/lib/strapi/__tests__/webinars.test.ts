@@ -183,7 +183,17 @@ const makeStrapiResponseJson = () => ({
         ],
         seo: null,
         webinarCategory: {
-          data: null,
+          data: {
+            id: 1,
+            attributes: {
+              name: 'Prova',
+              createdAt: '2025-05-09T16:00:24.164Z',
+              updatedAt: '2025-05-09T16:00:25.254Z',
+              publishedAt: '2025-05-09T16:00:25.251Z',
+              locale: 'it',
+              icon: mediaRasterJson,
+            },
+          },
         },
       },
     },
