@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Mange cookies using matomo tag manager
+Manage cookies using matomo tag manager
