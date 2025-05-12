@@ -1,6 +1,7 @@
 import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
+from decimal import Decimal
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
@@ -94,19 +95,29 @@ async def query_feedback(
 ):
 
     try:
-        bad_answer = (-1 if query.badAnswer else 1)
-
         if query.feedback:
             add_langfuse_score_query(
                 query_id=id,
                 query_feedback=query
             )
 
-            query.feedback.user_response_relevancy = str(query.feedback.user_response_relevancy)
-            query.feedback.user_faithfullness = str(query.feedback.user_faithfullness)
+            if query.feedback.user_response_relevancy is None:
+                query.feedback.user_response_relevancy = 0
+
+            query.feedback.user_response_relevancy = Decimal(
+                str(query.feedback.user_response_relevancy)
+            )
+
+            if query.feedback.user_faithfullness is None:
+                query.feedback.user_faithfullness = 0
+
+            query.feedback.user_faithfullness = Decimal(
+                str(query.feedback.user_faithfullness)
+            )
+
             feedback = query.feedback.model_dump()
             feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
-        
+
             dbResponse = tables["queries"].update_item(
                 Key={
                     'sessionId': sessionId,
@@ -118,7 +129,7 @@ async def query_feedback(
                     '#feedback': 'feedback'
                 },
                 ExpressionAttributeValues={
-                    ':badAnswer': bad_answer,
+                    ':badAnswer': query.badAnswer,
                     ':feedback': feedback
                 },
                 ReturnValues='ALL_NEW'
@@ -135,7 +146,7 @@ async def query_feedback(
                     '#badAnswer': 'badAnswer'
                 },
                 ExpressionAttributeValues={
-                    ':badAnswer': bad_answer
+                    ':badAnswer': query.badAnswer
                 },
                 ReturnValues='ALL_NEW'
             )

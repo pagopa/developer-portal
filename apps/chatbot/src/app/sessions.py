@@ -7,6 +7,7 @@ import yaml
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
+from logging import getLogger
 
 from src.modules.chatbot import Chatbot
 from src.app.models import QueryFeedback, tables
@@ -15,6 +16,8 @@ from src.app.jwt_check import verify_jwt
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
+
+logger = getLogger(__name__)
 
 
 def current_user_id(authorization: str) -> str:
@@ -135,25 +138,28 @@ def get_user_session(userId: str, sessionId: str):
 
 
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
-    bad_answer = (-1 if query_feedback.badAnswer else 1)
+    if query_feedback.badAnswer is not None:
+        bad_answer = (-1 if query_feedback.badAnswer else 1)
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-feedback',
+            value=bad_answer,
+            comment=query_feedback.feedback.user_comment,
+            data_type='NUMERIC'
+        )
 
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-feedback',
-        value=bad_answer,
-        comment=query_feedback.feedback.user_comment,
-        data_type='NUMERIC'
-    )
+    if query_feedback.feedback.user_response_relevancy is not None:
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-response-relevancy',
+            value=float(query_feedback.feedback.user_response_relevancy),
+            data_type='NUMERIC'
+        )
 
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-response-relevancy',
-        value=query_feedback.feedback.user_response_relevancy,
-        data_type='NUMERIC'
-    )
-    chatbot.add_langfuse_score(
-        trace_id=query_id,
-        name='user-faithfullness',
-        value=query_feedback.feedback.user_faithfullness,
-        data_type='NUMERIC'
-    )
+    if query_feedback.feedback.user_faithfullness is not None:
+        chatbot.add_langfuse_score(
+            trace_id=query_id,
+            name='user-faithfullness',
+            value=float(query_feedback.feedback.user_faithfullness),
+            data_type='NUMERIC'
+        )

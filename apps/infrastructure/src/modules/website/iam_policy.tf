@@ -35,7 +35,7 @@ resource "aws_iam_policy" "deploy_website" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
+    Statement = concat([
       {
         Action = [
           "s3:PutObject",
@@ -45,7 +45,8 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          format("%s/*", aws_s3_bucket.website.arn)
+          format("%s/*", aws_s3_bucket.website.arn),
+          format("%s/*", aws_s3_bucket.website_standalone.arn)
         ]
       },
       {
@@ -54,16 +55,8 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn
-        ]
-      },
-      {
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          aws_cloudfront_distribution.website.arn
+          aws_s3_bucket.website.arn,
+          aws_s3_bucket.website_standalone.arn
         ]
       },
       {
@@ -75,11 +68,20 @@ resource "aws_iam_policy" "deploy_website" {
           "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:ac-${var.environment}-*"
         ]
       }
-    ]
+      ], (!var.website_is_standalone ? [{
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_cloudfront_distribution.website["static"].arn
+        ]
+    }] : []))
   })
 }
 
 data "aws_iam_policy_document" "website_iam_policy" {
+  for_each = local.is_static
   statement {
     actions = ["s3:GetObject", "s3:ListBucket"]
     resources = [
@@ -89,7 +91,7 @@ data "aws_iam_policy_document" "website_iam_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+      identifiers = [aws_cloudfront_origin_access_identity.main["static"].iam_arn]
     }
   }
 }
