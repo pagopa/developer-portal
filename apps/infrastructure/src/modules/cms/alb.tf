@@ -51,3 +51,48 @@ module "cms_load_balancer" {
     }
   }
 }
+
+
+# CMS Internal Load Balancer
+module "cms_load_balancer_internal" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
+
+  name                  = "cms-load-balancer_internal"
+  vpc_id                = module.vpc.vpc_id
+  subnets               = module.vpc.private_subnets
+  security_groups       = [aws_security_group.cms_lb.id]
+  internal              = true
+  create_security_group = false
+  load_balancer_type    = "application"
+
+  listeners = {
+    front_end_http = {
+      port     = 8080
+      protocol = "HTTP"
+      forward = {
+        target_group_key = "cms-target-group"
+      }
+    }
+  }
+
+  target_groups = {
+    cms-target-group = {
+      name        = "cms-target-group"
+      protocol    = "HTTP"
+      port        = var.cms_app_port
+      target_type = "ip"
+      vpc_id      = module.vpc.vpc_id
+
+      health_check = {
+        healthy_threshold   = "3"
+        interval            = "30"
+        protocol            = "HTTP"
+        matcher             = "204"
+        timeout             = "3"
+        path                = "/_health"
+        unhealthy_threshold = "2"
+      }
+      create_attachment = false
+    }
+  }
+}
