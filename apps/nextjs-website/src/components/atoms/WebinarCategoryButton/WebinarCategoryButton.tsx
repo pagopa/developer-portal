@@ -29,6 +29,10 @@ const WebinarCategoryButton = ({
         variant='contained'
         startIcon={<IconWrapper icon={icon.url} useSrc={true} size={32} />}
         sx={{
+          padding: '24px',
+          lineHeight: '22px',
+          letterSpacing: '0.3px',
+          fontSize: '18px',
           borderRadius: '16px',
           height: '64px',
           fontWeight: 700,

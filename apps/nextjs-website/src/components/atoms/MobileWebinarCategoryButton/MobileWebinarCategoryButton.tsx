@@ -20,8 +20,8 @@ const MobileWebinarCategoryButton = ({
   isLast = false,
 }: MobileWebinarCategoryButtonProps) => {
   const { palette } = useTheme();
-  const height = isHeader ? 32 : 61;
-  const paddingLeft = isHeader ? '8px' : '24px';
+  const height = isHeader ? 32 : 64;
+  const paddingLeft = isHeader ? '16px' : '24px';
   return (
     <Box
       width={'100%'}
@@ -39,21 +39,22 @@ const MobileWebinarCategoryButton = ({
         sx={{
           justifyContent: 'flex-start',
           paddingLeft: paddingLeft,
+          fontSize: '18px',
           height: '100%',
           width: '100%',
           fontWeight: 700,
           borderBottomLeftRadius: isLast ? '16px' : 0,
           borderBottomRightRadius: isLast ? '16px' : 0,
           color: palette.text.primary,
-          backgroundColor: '#FFFFFF',
+          backgroundColor: palette.background.paper,
           '&:hover': {
-            backgroundColor: '#FAFAFA',
+            backgroundColor: palette.grey[50],
           },
           '&:disabled': {
             fontWeight: 700,
             color: palette.text.primary,
             borderRadius: '16px',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: palette.background.paper,
           },
         }}
         onClick={onClick}

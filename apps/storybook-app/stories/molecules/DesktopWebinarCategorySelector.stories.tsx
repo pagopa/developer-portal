@@ -17,16 +17,16 @@ export const Showcase: StoryObj<typeof DesktopWebinarCategorySelector> = {
         icon: {
           data: {
             attributes: {
-              name: 'all.svg',
+              name: 'all.png',
               alternativeText: null,
               caption: null,
               color: 'blue',
               width: 60,
               height: 61,
               size: 0.54,
-              ext: '.svg',
-              mime: 'image/svg+xml',
-              url: 'icons/all.svg',
+              ext: '.png',
+              mime: 'image/png',
+              url: 'icons/all.png',
             },
           },
         },
@@ -36,16 +36,16 @@ export const Showcase: StoryObj<typeof DesktopWebinarCategorySelector> = {
         icon: {
           data: {
             attributes: {
-              name: 'devtalks.svg',
+              name: 'devtalks.jpg',
               alternativeText: null,
               caption: null,
               color: 'blue',
               width: 60,
               height: 61,
               size: 0.54,
-              ext: '.svg',
-              mime: 'image/svg+xml',
-              url: '/icons/devtalks.svg',
+              ext: '.jpg',
+              mime: 'image/jpg',
+              url: '/icons/devtalks.jpg',
             },
           },
         },
