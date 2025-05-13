@@ -17,7 +17,7 @@ const DesktopWebinarCategorySelector = ({
   return (
     <Stack
       component='section'
-      spacing={'32px'}
+      spacing={{ md: '32px', sm: '16px' }}
       direction={'row'}
       sx={{
         backgroundColor: '#EBF4FD',
