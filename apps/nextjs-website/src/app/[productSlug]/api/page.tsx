@@ -12,13 +12,29 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages, getProducts } from '@/lib/api';
 import { Metadata } from 'next';
+import { cache } from 'react';
 
 type Params = {
   productSlug: string;
 };
 
-export async function generateStaticParams() {
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the API data list pages fetching
+const getCachedApiDataListPages = cache(async (productSlug: string) => {
+  const apiDataListPages = await getApiDataListPages(productSlug);
+  return apiDataListPages;
+});
+
+// Cache the products fetching for static params
+const getCachedProducts = cache(async () => {
   const products = await getProducts();
+  return products;
+});
+
+export async function generateStaticParams() {
+  const products = await getCachedProducts();
   return products.map((product) => ({
     productSlug: product.slug,
   }));
@@ -29,7 +45,8 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const apiDataListPage = await getApiDataListPages(params?.productSlug);
+  // Use the cached version for metadata generation
+  const apiDataListPage = await getCachedApiDataListPages(params?.productSlug);
 
   if (apiDataListPage?.seo) {
     return makeMetadataFromStrapi(apiDataListPage.seo);
@@ -43,7 +60,10 @@ export async function generateMetadata({
 }
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
-  const apiDataListPageProps = await getApiDataListPages(params.productSlug);
+  // Use the cached version in the page component
+  const apiDataListPageProps = await getCachedApiDataListPages(
+    params.productSlug
+  );
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

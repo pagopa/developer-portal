@@ -28,11 +28,29 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { cache } from 'react';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the overviews props fetching
+const getCachedOverviewsProps = cache(async () => {
+  const overviewsProps = await getOverviewsProps();
+  return overviewsProps;
+});
+
+// Cache the overview fetching
+const getCachedOverview = cache(async (productSlug: string) => {
+  const overview = await getOverview(productSlug);
+  return overview;
+});
+
 export async function generateStaticParams() {
-  return (await getOverviewsProps())
+  // Use cached version for static params generation
+  const props = await getCachedOverviewsProps();
+  return props
     .map(({ product }) => ({
       productSlug: product.slug,
     }))
@@ -107,7 +125,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, path, seo } = await getOverview(params.productSlug);
+  // Use cached version for metadata generation
+  const { product, path, seo } = await getCachedOverview(params.productSlug);
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -123,6 +142,7 @@ export async function generateMetadata(
 }
 
 const OverviewPage = async ({ params }: ProductParams) => {
+  // Use cached version in the page component
   const {
     hero,
     startInfo,
@@ -135,7 +155,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     bannerLinks,
     seo,
     product,
-  } = await getOverview(params.productSlug);
+  } = await getCachedOverview(params.productSlug);
 
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)

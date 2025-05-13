@@ -9,6 +9,24 @@ import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache solution detail data fetching
+const getCachedSolutionDetail = cache(
+  async (solutionSlug: string, subPaths: string[]) => {
+    const solutionDetail = await getSolutionDetail(solutionSlug, subPaths);
+    return solutionDetail;
+  }
+);
+
+// Cache URL replace map props fetching
+const getCachedUrlReplaceMapProps = cache(async () => {
+  const urlReplaceMap = await getUrlReplaceMapProps();
+  return urlReplaceMap;
+});
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -30,7 +48,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const props = await getSolutionDetail(
+  const props = await getCachedSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs
   );
@@ -44,12 +62,12 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const solutionProps = await getSolutionDetail(
+  const solutionProps = await getCachedSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  const urlReplaceMap = await getCachedUrlReplaceMapProps();
   if (!solutionProps) {
     return null;
   }

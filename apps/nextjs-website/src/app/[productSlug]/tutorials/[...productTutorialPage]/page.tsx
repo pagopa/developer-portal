@@ -10,14 +10,32 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { cache } from 'react';
 
 type Params = {
   productSlug: string;
   productTutorialPage: Array<string>;
 };
 
-export async function generateStaticParams() {
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache tutorial paths fetching
+const getCachedTutorialPaths = cache(async () => {
   const tutorialPaths = await getTutorialPaths();
+  return tutorialPaths;
+});
+
+// Cache individual tutorial data fetching
+const getCachedTutorial = cache(
+  async (productSlug: string, tutorialPath: readonly string[]) => {
+    const tutorial = await getTutorial(productSlug, tutorialPath);
+    return tutorial;
+  }
+);
+
+export async function generateStaticParams() {
+  const tutorialPaths = await getCachedTutorialPaths();
   return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({
     productSlug: slug,
     productTutorialPage: tutorialPaths,
@@ -31,7 +49,7 @@ export async function generateMetadata({
 }): Promise<Metadata | undefined> {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const tutorialProps = await getCachedTutorial(productSlug, [tutorialPath]);
   if (tutorialProps) {
     const { title, path, seo } = tutorialProps;
 
@@ -50,7 +68,9 @@ const Page = async ({ params }: { params: Params }) => {
   const productSlug = params?.productSlug;
   const tutorialPath = params?.productTutorialPage?.join('/');
 
-  const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const strapiTutorialProps = await getCachedTutorial(productSlug, [
+    tutorialPath,
+  ]);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

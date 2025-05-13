@@ -20,6 +20,16 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getQuickStartGuidesProps } from '@/lib/cmsApi';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the quick start guide data fetching with a 1 hour revalidation
+const getCachedQuickStartGuide = cache(async (productSlug: string) => {
+  const quickStartGuide = await getQuickStartGuide(productSlug);
+  return quickStartGuide;
+});
 
 export async function generateStaticParams() {
   return (await getQuickStartGuidesProps()).map(({ product }) => ({
@@ -68,7 +78,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     steps,
     seo,
     product,
-  } = await getQuickStartGuide(params?.productSlug);
+  } = await getCachedQuickStartGuide(params?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
