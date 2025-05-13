@@ -98,7 +98,7 @@ export default async function RootLayout({
   return (
     <html lang='it' className={titilliumWeb.variable}>
       <head>
-        {(isProduction || true) && ( // TODO: only for test in dev remove before merge
+        {isProduction && (
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
