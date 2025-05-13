@@ -5,12 +5,28 @@ resource "awscc_bedrock_guardrail" "guardrail" {
   blocked_outputs_messaging = "Mi dispiace, non mi è consentito elaborare contenuti inappropriati.\nRiformula la domanda in modo che non violi queste linee guida."
   description               = "Guardrail that blocks offensive language and PII entities"
 
+  topic_policy_config                 = null
+  word_policy_config                  = null
+  contextual_grounding_policy_config  = null
+  kms_key_arn                         = null
+  sensitive_information_policy_config = null
+
   content_policy_config = {
     filters_config = [
       {
         input_strength  = "MEDIUM",
         output_strength = "MEDIUM",
-        type            = "SEXUAL"
+        type            = "VIOLENCE"
+      },
+      {
+        input_strength  = "MEDIUM",
+        output_strength = "NONE",
+        type            = "PROMPT_ATTACK"
+      },
+      {
+        input_strength  = "MEDIUM",
+        output_strength = "MEDIUM",
+        type            = "MISCONDUCT"
       },
       {
         input_strength  = "MEDIUM",
@@ -20,22 +36,12 @@ resource "awscc_bedrock_guardrail" "guardrail" {
       {
         input_strength  = "MEDIUM",
         output_strength = "MEDIUM",
-        type            = "VIOLENCE"
+        type            = "SEXUAL"
       },
       {
         input_strength  = "MEDIUM",
         output_strength = "MEDIUM",
         type            = "INSULTS"
-      },
-      {
-        input_strength  = "MEDIUM",
-        output_strength = "MEDIUM",
-        type            = "MISCONDUCT"
-      },
-      {
-        input_strength  = "MEDIUM",
-        output_strength = "NONE",
-        type            = "PROMPT_ATTACK"
       }
     ]
 

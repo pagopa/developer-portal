@@ -1,137 +1,78 @@
-import os
-import boto3
-import json
 from logging import getLogger
+from typing import List, Optional, Any
 
-# from dotenv import load_dotenv
-from typing import List
+from llama_index.core.llms.llm import BaseLLM
+from llama_index.core.embeddings import BaseEmbedding
 
-from google.oauth2 import service_account
-
-from llama_index.core.async_utils import asyncio_run
-
-from langchain_core.outputs import LLMResult, ChatGeneration
-from langchain_aws import ChatBedrockConverse
-from langchain_aws import BedrockEmbeddings
-from langchain_google_vertexai import ChatVertexAI, VertexAIEmbeddings
-
-from ragas import SingleTurnSample
-from ragas.llms import LangchainLLMWrapper, BaseRagasLLM
-from ragas.embeddings.base import LangchainEmbeddingsWrapper, BaseRagasEmbeddings
+from ragas import SingleTurnSample, EvaluationDataset, evaluate
+from ragas.run_config import RunConfig
+from ragas.llms import LlamaIndexLLMWrapper
+from ragas.embeddings.base import LlamaIndexEmbeddingsWrapper
 from ragas.metrics import (
     Faithfulness,
     ResponseRelevancy,
     LLMContextPrecisionWithoutReference,
 )
+from langchain_core.callbacks import Callbacks
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.models import get_llm, get_embed_model
 
 
-# load_dotenv()
 logger = getLogger(__name__)
 
-PROVIDER = os.getenv("CHB_PROVIDER", "google")
-assert PROVIDER in ["aws", "google"]
 
+class RagasWrapper(LlamaIndexLLMWrapper):
+    def __init__(
+        self,
+        llm: BaseLLM,
+        run_config: Optional[RunConfig] = None,
+    ):
+        self.llm = llm
+        self._signature = type(self.llm).__name__.lower()
+        if run_config is None:
+            run_config = RunConfig()
+        self.set_run_config(run_config)
 
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
-AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
-
-MODEL_ID = os.getenv("CHB_MODEL_ID")
-MODEL_TEMPERATURE = 0.0
-MODEL_MAXTOKENS = 768
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
-
-if PROVIDER == "aws":
-    LLM = LangchainLLMWrapper(
-        ChatBedrockConverse(
-            model=MODEL_ID,
-            temperature=MODEL_TEMPERATURE,
-            max_tokens=MODEL_MAXTOKENS,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_LLM_REGION,
-        )
-    )
-    EMBEDDER = LangchainEmbeddingsWrapper(
-        BedrockEmbeddings(
-            client=boto3.client(
-                "bedrock-runtime",
-                aws_access_key_id=AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                region_name=AWS_BEDROCK_EMBED_REGION,
-            ),
-            model_id=EMBED_MODEL_ID,
-            credentials_profile_name=None,
-            region_name=AWS_BEDROCK_EMBED_REGION,
-        )
-    )
-else:
-
-    def gemini_is_finished_parser(response: LLMResult) -> bool:
-        is_finished_list = []
-        for g in response.flatten():
-            resp = g.generations[0][0]
-
-            # Check generation_info first
-            if resp.generation_info is not None:
-                finish_reason = resp.generation_info.get("finish_reason")
-                if finish_reason is not None:
-                    is_finished_list.append(finish_reason in ["STOP", "MAX_TOKENS"])
-                    continue
-
-            # Check response_metadata as fallback
-            if isinstance(resp, ChatGeneration) and resp.message is not None:
-                metadata = resp.message.response_metadata
-                if metadata.get("finish_reason"):
-                    is_finished_list.append(
-                        metadata["finish_reason"] in ["STOP", "MAX_TOKENS"]
-                    )
-                elif metadata.get("stop_reason"):
-                    is_finished_list.append(
-                        metadata["stop_reason"] in ["STOP", "MAX_TOKENS"]
-                    )
-
-            # If no finish reason found, default to True
-            if not is_finished_list:
-                is_finished_list.append(True)
-
-        return all(is_finished_list)
-
-    gcp_param = json.loads(GOOGLE_SERVICE_ACCOUNT)
-    credentials = service_account.Credentials.from_service_account_info(gcp_param)
-
-    LLM = LangchainLLMWrapper(
-        ChatVertexAI(
-            credentials=credentials,
-            model_name=MODEL_ID,
-            temperature=MODEL_TEMPERATURE,
-            max_tokens=MODEL_MAXTOKENS,
-        ),
-        is_finished_parser=gemini_is_finished_parser,
-    )
-    EMBEDDER = LangchainEmbeddingsWrapper(
-        VertexAIEmbeddings(credentials=credentials, model_name=EMBED_MODEL_ID)
-    )
-    logger.info(f"Loaded {MODEL_ID} as judge LLM successfully!")
-    logger.info(f"Loaded {EMBED_MODEL_ID} as judge embedder successfully!")
+    def check_args(
+        self,
+        n: int,
+        temperature: float,
+        stop: Optional[List[str]],
+        callbacks: Callbacks,
+    ) -> dict[str, Any]:
+        if n != 1:
+            logger.warning("n values greater than 1 not support for LlamaIndex LLMs")
+        if temperature != 1e-8:
+            logger.info("temperature kwarg passed to LlamaIndex LLM")
+        if stop is not None:
+            logger.info("stop kwarg passed to LlamaIndex LLM")
+        if callbacks is not None:
+            logger.info(
+                "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
+            )
+        if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:
+            return {"temperature": temperature}
+        else:
+            return {
+                "n": n,
+                "temperature": temperature,
+                "stop": stop,
+            }
 
 
 class Evaluator:
 
     def __init__(
         self,
-        llm: BaseRagasLLM | None = None,
-        embedder: BaseRagasEmbeddings | None = None,
+        llm: BaseLLM | None = None,
+        embedder: BaseEmbedding | None = None,
     ):
 
-        self.llm = llm if llm else LLM
-        self.embedder = embedder if embedder else EMBEDDER
+        llm = llm if llm else get_llm()
+        llm.temperature = 0.0
+        self.llm = RagasWrapper(llm=llm)
+        embedder = embedder if embedder else get_embed_model()
+        self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
 
         self.response_relevancy = ResponseRelevancy(
             llm=self.llm, embeddings=self.embedder
@@ -148,13 +89,22 @@ class Evaluator:
             response=response_str,
             retrieved_contexts=retrieved_contexts,
         )
+        dataset = EvaluationDataset([sample])
 
-        return {
-            "faithfulness": asyncio_run(self.faithfulness.single_turn_ascore(sample)),
-            "response_relevancy": asyncio_run(
-                self.response_relevancy.single_turn_ascore(sample)
-            ),
-            "context_precision": asyncio_run(
-                self.context_precision.single_turn_ascore(sample)
-            ),
-        }
+        result = evaluate(
+            dataset=dataset,
+            metrics=[
+                self.response_relevancy,
+                self.context_precision,
+                self.faithfulness,
+            ],
+            llm=self.llm,
+            embeddings=self.embedder,
+            show_progress=False,
+        )
+        scores = result.scores[0]
+        scores["context_precision"] = scores.pop(
+            "llm_context_precision_without_reference"
+        )
+
+        return scores

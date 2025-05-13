@@ -6,8 +6,6 @@ services:
       dockerfile: docker/app.local.Dockerfile
     command: "./scripts/run.test.sh"
     env_file: ../.env.test
-    ports:
-      - "8080:8080"
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
@@ -19,9 +17,10 @@ services:
         condition: service_started
       langfuse-test:
         condition: service_started
+      redis-test:
+        condition: service_started
     networks:
       - ntwtest
-
 
   postgres-test:
     image: postgres:17.2-alpine
@@ -55,15 +54,13 @@ services:
       postgres-test:
         condition: service_healthy
     env_file: ../.env.test
+    ports:
+      - "4002:3000"
     networks:
       - ntwtest
 
   motoserver:
     image: motoserver/moto:5.1.0
-    environment:
-      - MOTO_PORT=3001
-    ports:
-      - "3001:5000"
     networks:
       - ntwtest
 

@@ -37,9 +37,6 @@ from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 logger = getLogger(__name__)
 
 
-PROVIDER = os.getenv("CHB_PROVIDER")
-assert PROVIDER in ["google", "aws"]
-
 TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
 INDEX_ID = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"

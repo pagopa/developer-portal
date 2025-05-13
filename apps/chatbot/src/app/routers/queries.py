@@ -32,7 +32,7 @@ def can_evaluate() -> bool:
     Decide whether to evaluate the query or not.
     This is based on the amount of daily query
     """
-    max_daily_evaluations = os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200")
+    max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
     return count_queries_created_today() < max_daily_evaluations
 
 
@@ -87,7 +87,7 @@ async def query_creation(
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
     messages = (
-        [item.dict() for item in query.history] if query.history else None
+        [item.model_dump() for item in query.history] if query.history else None
     )
 
     answer_json = chatbot.chat_generate(
