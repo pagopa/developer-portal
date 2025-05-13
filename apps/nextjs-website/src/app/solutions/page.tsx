@@ -5,6 +5,10 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { baseUrl } from '@/config';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -14,8 +18,14 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const Page = async () => {
+// Cache solution list page data fetching
+const getCachedSolutionListPage = cache(async () => {
   const solutionsList = await getSolutionListPage();
+  return solutionsList;
+});
+
+const Page = async () => {
+  const solutionsList = await getCachedSolutionListPage();
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

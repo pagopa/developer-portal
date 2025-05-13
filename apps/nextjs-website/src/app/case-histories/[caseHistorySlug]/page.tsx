@@ -12,13 +12,29 @@ import {
   convertSeoToStructuredDataArticle,
   getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache case histories list props fetching
+const getCachedCaseHistoriesProps = cache(async () => {
+  const caseHistories = await getCaseHistoriesProps();
+  return caseHistories;
+});
+
+// Cache individual case history data fetching
+const getCachedCaseHistory = cache(async (slug: string) => {
+  const caseHistory = await getCaseHistory(slug);
+  return caseHistory;
+});
 
 type Params = {
   caseHistorySlug: string;
 };
 
 export async function generateStaticParams() {
-  const caseHistories = await getCaseHistoriesProps();
+  const caseHistories = await getCachedCaseHistoriesProps();
   return [...caseHistories].map(({ slug }) => ({
     caseHistorySlug: slug,
   }));
@@ -29,7 +45,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+  const caseHistory = await getCachedCaseHistory(params?.caseHistorySlug);
 
   if (caseHistory?.seo) {
     return makeMetadataFromStrapi(caseHistory.seo);
@@ -43,7 +59,7 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+  const caseHistory = await getCachedCaseHistory(params?.caseHistorySlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -25,6 +25,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { baseUrl } from '@/config';
+import { cache } from 'react';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
@@ -64,15 +65,39 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the getReleaseNote function to avoid duplicate requests
+const getCachedReleaseNote = cache(
+  async (productSlug: string, releaseNoteSubPathSlugs: string[]) => {
+    const releaseNote = await getReleaseNote(
+      productSlug,
+      releaseNoteSubPathSlugs
+    );
+    return releaseNote;
+  }
+);
+
+// Cache the URL replace map fetching
+const getCachedUrlReplaceMap = cache(async () => {
+  return await getUrlReplaceMapProps();
+});
+
 const ReleaseNotePage = async ({
   params,
 }: {
   params: ReleaseNotePageStaticParams;
 }) => {
+  // Use the cached version of getReleaseNote
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
-    await getReleaseNote(params.productSlug, params.releaseNoteSubPathSlugs);
+    await getCachedReleaseNote(
+      params.productSlug,
+      params.releaseNoteSubPathSlugs
+    );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  // Use the cached version of getUrlReplaceMap
+  const urlReplaceMap = await getCachedUrlReplaceMap();
 
   const props = {
     ...page,

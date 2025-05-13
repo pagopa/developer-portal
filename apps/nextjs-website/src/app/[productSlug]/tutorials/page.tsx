@@ -8,7 +8,7 @@ import ProductLayout, {
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
-import React from 'react';
+import React, { cache } from 'react';
 import { ProductParams } from '@/lib/types/productParams';
 import {
   makeMetadata,
@@ -27,6 +27,14 @@ export async function generateStaticParams() {
     productSlug: product.slug,
   }));
 }
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache tutorial list page props fetching
+const getCachedTutorialListPageProps = cache(async (productSlug: string) => {
+  const tutorialListProps = await getTutorialListPageProps(productSlug);
+  return tutorialListProps;
+});
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -43,7 +51,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path, seo } = await getTutorialListPageProps(
+  const { product, abstract, path, seo } = await getCachedTutorialListPageProps(
     params.productSlug
   );
 
@@ -63,7 +71,7 @@ export async function generateMetadata(
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
   const { abstract, bannerLinks, path, tutorials, seo, product } =
-    await getTutorialListPageProps(productSlug);
+    await getCachedTutorialListPageProps(productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -20,6 +20,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
+import { cache } from 'react';
 
 type Params = {
   productSlug: string;
@@ -45,33 +46,53 @@ export type ProductGuidePageProps = {
   bodyConfig: ParseContentConfig;
 } & ProductLayoutProps;
 
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the guide page fetching
+const getCachedGuidePage = cache(
+  async (productGuidePage: string[], productSlug: string) => {
+    const guidePage = await getGuidePage(productGuidePage, productSlug);
+    return guidePage;
+  }
+);
+
+// Cache the URL replace map fetching
+const getCachedUrlReplaceMap = cache(async () => {
+  return await getUrlReplaceMapProps();
+});
+
 export async function generateMetadata({
   params,
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const porps = await getGuidePage(
+  // Use the cached version for metadata generation
+  const props = await getCachedGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  if (porps?.seo) {
-    return makeMetadataFromStrapi(porps?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
   return makeMetadata({
-    title: porps?.page.title,
-    url: porps?.page.path,
+    title: props?.page.title,
+    url: props?.page.path,
   });
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const guideProps = await getGuidePage(
+  // Use the cached version in the page component
+  const guideProps = await getCachedGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  // Use the cached version of URL replace map
+  const urlReplaceMap = await getCachedUrlReplaceMap();
+
   if (!guideProps) {
     return PageNotFound;
   }

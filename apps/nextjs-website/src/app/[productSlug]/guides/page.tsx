@@ -22,9 +22,27 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the guide list pages props fetching
+const getCachedGuideListPagesProps = cache(async () => {
+  const guideListPagesProps = await getGuideListPagesProps();
+  return guideListPagesProps;
+});
+
+// Cache the guide list pages fetching
+const getCachedGuideListPages = cache(async (productSlug: string) => {
+  const guideListPages = await getGuideListPages(productSlug);
+  return guideListPages;
+});
 
 export async function generateStaticParams() {
-  return (await getGuideListPagesProps()).map(({ product }) => ({
+  // Use cached version for static params generation
+  const props = await getCachedGuideListPagesProps();
+  return props.map(({ product }) => ({
     productSlug: product.slug,
   }));
 }
@@ -44,7 +62,10 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const { path, abstract, seo } = await getGuideListPages(params?.productSlug);
+  // Use cached version for metadata generation
+  const { path, abstract, seo } = await getCachedGuideListPages(
+    params?.productSlug
+  );
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -59,8 +80,9 @@ export const generateMetadata = async (
 };
 
 const GuideListPage = async ({ params }: ProductParams) => {
+  // Use cached version in the page component
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
-    await getGuideListPages(params?.productSlug);
+    await getCachedGuideListPages(params?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

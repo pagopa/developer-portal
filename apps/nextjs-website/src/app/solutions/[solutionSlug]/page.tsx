@@ -9,13 +9,29 @@ import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTe
 import { getSolutionsProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { cache } from 'react';
+
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
 
 type Params = {
   solutionSlug: string;
 };
 
-export async function generateStaticParams() {
+// Cache solutions list props fetching
+const getCachedSolutionsProps = cache(async () => {
   const solutions = await getSolutionsProps();
+  return solutions;
+});
+
+// Cache individual solution data fetching
+const getCachedSolution = cache(async (slug: string) => {
+  const solution = await getSolution(slug);
+  return solution;
+});
+
+export async function generateStaticParams() {
+  const solutions = await getCachedSolutionsProps();
   return [...solutions].map(({ slug }) => ({
     solutionSlug: slug,
   }));
@@ -26,7 +42,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const solution = await getSolution(params?.solutionSlug);
+  const solution = await getCachedSolution(params?.solutionSlug);
 
   if (solution.seo) {
     return makeMetadataFromStrapi(solution.seo);
@@ -40,7 +56,7 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: Params }) => {
-  const solution = await getSolution(params?.solutionSlug);
+  const solution = await getCachedSolution(params?.solutionSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { getApiData, getApiDataParams } from '@/lib/api';
 import ProductLayout, {
   ProductLayoutProps,
@@ -32,6 +33,15 @@ export type ApiDataPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
+// Set revalidation time to 1 hour
+export const revalidate = 3600;
+
+// Cache the API data fetching
+const getCachedApiData = cache(async (apiDataSlug: string) => {
+  const apiData = await getApiData(apiDataSlug);
+  return apiData;
+});
+
 export async function generateStaticParams() {
   return getApiDataParams();
 }
@@ -41,7 +51,8 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.apiDataSlug);
+  // Use the cached version for metadata generation
+  const ApiDataProps = await getCachedApiData(params.apiDataSlug);
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -56,7 +67,8 @@ export const generateMetadata = async (
 };
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
-  const apiDataProps = await getApiData(params.apiDataSlug);
+  // Use the cached version in the page component
+  const apiDataProps = await getCachedApiData(params.apiDataSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
