@@ -11,7 +11,7 @@ const CookieBannerScript = ({
   cookieScript,
 }: CookieBannerScriptProps) => {
   return (
-    isProduction && (
+    (isProduction || true) && ( // TODO: only for test in dev remove before merge
       <>
         <Script
           src={cookieScript}
