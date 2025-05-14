@@ -15,7 +15,7 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarCategorySelector/MobileWebinarCategorySelector';
 import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
