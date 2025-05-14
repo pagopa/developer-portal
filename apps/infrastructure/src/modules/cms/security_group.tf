@@ -18,7 +18,7 @@ resource "aws_security_group" "cms_lb" {
     protocol  = "tcp"
     from_port = 8080
     to_port   = 8080
-    #TODO: replca the cidr block with security group of the backend.
+    #TODO: replace the cidr block with security group of the backend.
     cidr_blocks = [module.vpc.vpc_cidr_block]
   }
 
