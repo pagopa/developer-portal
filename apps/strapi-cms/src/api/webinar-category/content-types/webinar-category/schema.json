@@ -4,7 +4,8 @@
   "info": {
     "singularName": "webinar-category",
     "pluralName": "webinar-categories",
-    "displayName": "WebinarCategory"
+    "displayName": "WebinarCategory",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -26,18 +27,17 @@
       "unique": true
     },
     "icon": {
-      "allowedTypes": [
-        "images",
-        "files"
-      ],
       "type": "media",
       "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "required": true
+      }
     }
   }
 }
