@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
-import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Link, useMediaQuery, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
@@ -16,6 +16,7 @@ import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarC
 import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { useSearchParams } from 'next/navigation';
+import { Container } from '@mui/system';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
@@ -26,6 +27,27 @@ type WebinarsTemplateProps = {
 
 const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
   const t = useTranslations();
+  const updatedCategories = [
+    {
+      name: t('webinars.all'),
+      icon: {
+        data: {
+          attributes: {
+            name: 'all.svg',
+            alternativeText: '',
+            caption: '',
+            width: 32,
+            height: 32,
+            size: 32,
+            ext: '.svg',
+            mime: 'image/svg',
+            url: ' icons/all.svg',
+          },
+        },
+      },
+    },
+    ...categories,
+  ];
   const { palette } = useTheme();
   const [futureWebinars, setFutureWebinars] = useState<readonly Webinar[]>([]);
   const [pastWebinars, setPastWebinars] = useState<readonly Webinar[]>([]);
@@ -33,9 +55,24 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
   const parsedCategory = parseInt(searchParams.get('category') || '0');
   const categoryValue = Math.max(
     0,
-    Math.min(isNaN(parsedCategory) ? 0 : parsedCategory, categories.length - 1)
+    Math.min(
+      isNaN(parsedCategory) ? 0 : parsedCategory,
+      updatedCategories.length - 1
+    )
   );
   const [selectedCategory, setSelectedCategory] = useState(categoryValue);
+
+  // eslint-disable-next-line functional/no-return-void
+  const setSelectedWebinarCategory = (newCategory: number): void => {
+    if (newCategory === selectedCategory) return;
+    addQueryParam('category', `${newCategory}`);
+    // eslint-disable-next-line functional/immutable-data
+    //window.location.href = '#webinarsHeader';
+    document
+      .getElementById('webinarsHeader')
+      ?.scrollIntoView({ behavior: 'smooth' });
+    setSelectedCategory(newCategory);
+  };
 
   const addQueryParam = (key: string, value: string) => {
     const url = new URL(window.location.href);
@@ -92,6 +129,7 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
           <Box
             pt={8}
             pb={2}
+            id={'webinarsHeader'}
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -103,22 +141,14 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
           {isSmallScreen ? (
             <MobileWebinarCategorySelector
               selectedWebinarCategory={selectedCategory}
-              setSelectedWebinarCategory={(i) => {
-                if (i === selectedCategory) return;
-                addQueryParam('category', '' + i);
-                setSelectedCategory(i);
-              }}
-              webinarCategories={categories}
+              setSelectedWebinarCategory={setSelectedWebinarCategory}
+              webinarCategories={updatedCategories}
             />
           ) : (
             <DesktopWebinarCategorySelector
               selectedWebinarCategory={selectedCategory}
-              setSelectedWebinarCategory={(i) => {
-                if (i === selectedCategory) return;
-                addQueryParam('category', '' + i);
-                setSelectedCategory(i);
-              }}
-              webinarCategories={categories}
+              setSelectedWebinarCategory={setSelectedWebinarCategory}
+              webinarCategories={updatedCategories}
             />
           )}
           <EContainer
@@ -132,7 +162,7 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
                     return (
                       selectedCategory === 0 ||
                       cat.webinarCategory?.name ===
-                        categories[selectedCategory].name
+                        updatedCategories[selectedCategory].name
                     );
                   })
                   .map((webinar, i) => (
