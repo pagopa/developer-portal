@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
-import { Box, Grid, Link, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
@@ -16,7 +16,6 @@ import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarC
 import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { useSearchParams } from 'next/navigation';
-import { Container } from '@mui/system';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 

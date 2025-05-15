@@ -5,8 +5,6 @@ import { baseUrl } from '@/config';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { getWebinarCategoriesProps } from '@/lib/cmsApi';
-import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { useTranslations } from 'next-intl';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
