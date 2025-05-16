@@ -61,6 +61,12 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
   );
   const [selectedCategory, setSelectedCategory] = useState(categoryValue);
 
+  const filteredWebinars = pastWebinars.filter((cat) => {
+    return (
+      selectedCategory === 0 ||
+      cat.webinarCategory?.name === updatedCategories[selectedCategory].name
+    );
+  });
   // eslint-disable-next-line functional/no-return-void
   const setSelectedWebinarCategory = (newCategory: number): void => {
     if (newCategory === selectedCategory) return;
@@ -137,7 +143,7 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
           >
             <SectionTitle title={t('webinars.pastWebinars')} />
           </Box>
-          {isSmallScreen ? (
+          {categories.length <= 0 ? null : isSmallScreen ? (
             <MobileWebinarCategorySelector
               selectedWebinarCategory={selectedCategory}
               setSelectedWebinarCategory={setSelectedWebinarCategory}
@@ -150,26 +156,32 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
               webinarCategories={updatedCategories}
             />
           )}
-          <EContainer
-            background={palette.background.paper}
-            sx={{ paddingTop: 4, paddingBottom: 8 }}
-          >
-            <Grid item md={12}>
-              <Grid container spacing={4}>
-                {pastWebinars
-                  .filter((cat) => {
-                    return (
-                      selectedCategory === 0 ||
-                      cat.webinarCategory?.name ===
-                        updatedCategories[selectedCategory].name
-                    );
-                  })
-                  .map((webinar, i) => (
+          {filteredWebinars.length <= 0 ? (
+            <Box
+              pt={8}
+              pb={2}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <SectionTitle title={t('webinars.noWebinars')} />
+            </Box>
+          ) : (
+            <EContainer
+              background={palette.background.paper}
+              sx={{ paddingTop: 4, paddingBottom: 8 }}
+            >
+              <Grid item md={12}>
+                <Grid container spacing={4}>
+                  {filteredWebinars.map((webinar, i) => (
                     <WebinarListItem webinar={webinar} key={i} />
                   ))}
+                </Grid>
               </Grid>
-            </Grid>
-          </EContainer>
+            </EContainer>
+          )}
         </>
       )}
     </>
