@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.6.1
+
+### Patch Changes
+
+- d7c5324: Fix webinar category icon to accept only images
+
 ## 3.6.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.15.0
+
+### Minor Changes
+
+- cd2ffa3: Add webinar category selectors
+
 ## 0.14.0
 
 ### Minor Changes
