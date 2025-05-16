@@ -658,6 +658,78 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse a markdown page containing more tha a file tag, with at least one tag closed with {% endfile %}', () => {
+    const prefix = config.assetsPrefix;
+    const markdown =
+      '# H1\n' +
+      '\n' +
+      'This is a paragraph\n' +
+      '{% file src="a.pdf" %}\n' +
+      '\n' +
+      '## H2\n' +
+      '{% file src="a.pdf" %}\n' +
+      '{% file src="a.pdf" %}\n' +
+      '\n' +
+      '### H3\n' +
+      '\n' +
+      'This is a paragraph\n' +
+      '{% file src="a.pdf" %}\n' +
+      'This is a paragraph\n' +
+      '\n' +
+      '{% file src="a.pdf" %}\n' +
+      '{% file src="filewithcaption.pdf" %}\n' +
+      'caption\n' +
+      '{% endfile %}\n' +
+      '\n' +
+      'This is the last paragraph\n' +
+      '{% file src="a.pdf" %}\n';
+
+    expect(parseContent(markdown, config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1, id: 'h1' }, ['H1']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2' }, ['H2']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Heading', { level: 3, id: 'h3' }, ['H3']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/filewithcaption.pdf`,
+        filename: 'filewithcaption',
+        caption: 'caption',
+      }),
+      new Markdoc.Tag('Paragraph', {}, ['This is the last paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+    ]);
+  });
+
   it('should parse styled text', () => {
     expect(parseContent('This is **Bold**', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
