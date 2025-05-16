@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { getWebinarCategoriesProps } from '@/lib/cmsApi';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -24,8 +25,9 @@ const NotSsrWebinarsTemplate = dynamic(
 
 const Webinars = async () => {
   const webinars = await getVisibleInListWebinars();
+  const categories = await getWebinarCategoriesProps();
 
-  return <NotSsrWebinarsTemplate webinars={webinars} />;
+  return <NotSsrWebinarsTemplate webinars={webinars} categories={categories} />;
 };
 
 export default Webinars;
