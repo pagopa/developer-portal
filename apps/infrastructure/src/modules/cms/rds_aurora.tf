@@ -18,10 +18,7 @@ module "cms_rds" {
   manage_master_user_password = false
   backup_retention_period     = 1
 
-  serverlessv2_scaling_configuration = {
-    min_capacity = 0.5
-    max_capacity = 1
-  }
+  serverlessv2_scaling_configuration = var.rds_scaling_configuration
 
   instance_class = "db.serverless"
   instances = {
