@@ -38,9 +38,8 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         )
         return default
 
-    # TODO: remove log value
     logger.warning(
-        f"Parameter {name} retrieved value: {value}"
+        f"SSM Parameter {name} retrieved."
     )
     return value
 
