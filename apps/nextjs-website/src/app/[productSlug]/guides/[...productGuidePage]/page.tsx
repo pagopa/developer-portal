@@ -57,6 +57,9 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const {
+    product,
+    guide: { name },
+    version,
     page: { path, title },
     seo,
   } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
@@ -64,9 +67,8 @@ export async function generateMetadata({
   if (seo) {
     return makeMetadataFromStrapi(seo);
   }
-
   return makeMetadata({
-    title,
+    title: name + ' | ' + title + ' | ' + version.name + ' | ' + product.name,
     url: path,
   });
 }

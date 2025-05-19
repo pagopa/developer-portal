@@ -40,7 +40,7 @@ export async function generateMetadata({
     }
 
     return makeMetadata({
-      title,
+      title: title + ' | ' + tutorialProps.product?.name,
       url: path,
     });
   }

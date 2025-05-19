@@ -48,7 +48,7 @@ export const generateMetadata = async (
   }
 
   return makeMetadata({
-    title: ApiDataProps?.specURLsName,
+    title: ApiDataProps?.specURLsName + ' | ' + ApiDataProps?.product?.name,
     description: ApiDataProps?.product?.description,
     url: ApiDataProps?.path,
     parent: resolvedParent,

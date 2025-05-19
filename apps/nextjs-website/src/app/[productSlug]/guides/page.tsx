@@ -44,14 +44,16 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const { path, abstract, seo } = await getGuideListPages(params?.productSlug);
+  const { path, abstract, seo, product } = await getGuideListPages(
+    params?.productSlug
+  );
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
   }
 
   return makeMetadata({
-    title: abstract?.title,
+    title: abstract?.title + ' | ' + product.name,
     description: abstract?.description,
     url: path,
     parent: resolvedParent,
