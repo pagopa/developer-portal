@@ -2,7 +2,7 @@ import {
   baseUrl,
   cookieCategory,
   cookieDomainScript,
-  cookieScript,
+  cookieScriptUrl,
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
@@ -25,6 +25,20 @@ import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
+
+// TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
+const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
+  `
+var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='` +
+  matomoScriptSrc +
+  `'; s.parentNode.insertBefore(g,s);
+  })();
+`;
+const usePreviousScript = !cookieCategory || cookieCategory === 'false';
 
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
@@ -102,7 +116,11 @@ export default async function RootLayout({
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{ __html: MATOMO_TAG_MANAGER_SCRIPT }}
+            dangerouslySetInnerHTML={{
+              __html: usePreviousScript
+                ? PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT
+                : MATOMO_TAG_MANAGER_SCRIPT,
+            }}
             strategy='lazyOnload'
           />
         )}
@@ -116,7 +134,11 @@ export default async function RootLayout({
           <BodyWrapper>
             <CookieBannerScript
               cookieDomainScript={cookieDomainScript}
-              cookieScript={cookieScript}
+              cookieScript={
+                usePreviousScript
+                  ? 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
+                  : cookieScriptUrl
+              }
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
