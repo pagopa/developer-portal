@@ -115,15 +115,25 @@ export const parseAst = (markdown: string) => {
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
-    .replaceAll(fileR.regex, fileR.replace)
     .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
+
+  const updatedMarkdoc = markdoc
+    .split('{% file')
+    .map((part, i) => {
+      if (i === 0) return part;
+      const fullPart = '{% file' + part;
+      return fullPart
+        .replaceAll('{% endfile %}', '{% /file %}')
+        .replaceAll(fileR.regex, fileR.replace);
+    })
+    .join('');
 
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
   const tokenizer = new Markdoc.Tokenizer({ html: true });
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
-  const tokens = processHtmlTokens(tokenizer.tokenize(markdoc));
+  const tokens = processHtmlTokens(tokenizer.tokenize(updatedMarkdoc));
   return Markdoc.parse([...tokens]);
 };
 
