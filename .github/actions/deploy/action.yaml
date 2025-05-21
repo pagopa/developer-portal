@@ -5,12 +5,10 @@ inputs:
   environment:
     description: 'The environment target'
     required: true
-  ref:
-    description: >
-      The branch, tag or SHA to checkout. When checking out the repository that
-      triggered a workflow, this defaults to the reference or SHA for that
-      event.  Otherwise, uses the default branch.
+  skip_checkout:
+    description: 'skip ckeckout step'
     required: false
+    default: 'false'
   path_to_gitbook_docs:
     description: 'The absolute path to GitBook content'
     required: true
@@ -73,8 +71,7 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      with:
-        ref: ${{ inputs.ref }}
+      if: ${{ inputs.skip_checkout == 'true' }}
 
     - name: Setup Node.JS
       uses: ./.github/actions/setup-node
