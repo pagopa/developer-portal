@@ -6,6 +6,7 @@ import {
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  useNewCookie,
 } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
@@ -29,6 +30,7 @@ import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvi
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `
+// Previous Matomo Cookie Manager script
 var _mtm = window._mtm = window._mtm || [];
   _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
   (function() {
@@ -38,10 +40,10 @@ var _mtm = window._mtm = window._mtm || [];
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
-const usePreviousScript = !cookieCategory || cookieCategory === 'false';
 
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
+  // New Matomo Cookie Manager script
   var _mtm = window._mtm = window._mtm || [];
   var waitForTrackerCount = 0;
   function matomoWaitForTracker() {
@@ -117,9 +119,9 @@ export default async function RootLayout({
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
-              __html: usePreviousScript
-                ? PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT
-                : MATOMO_TAG_MANAGER_SCRIPT,
+              __html: useNewCookie
+                ? MATOMO_TAG_MANAGER_SCRIPT
+                : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
             strategy='lazyOnload'
           />
@@ -135,9 +137,9 @@ export default async function RootLayout({
             <CookieBannerScript
               cookieDomainScript={cookieDomainScript}
               cookieScript={
-                usePreviousScript
-                  ? 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
-                  : cookieScriptUrl
+                useNewCookie
+                  ? cookieScriptUrl
+                  : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
               }
             />
             <AuthProvider>
