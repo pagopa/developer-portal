@@ -70,8 +70,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Print echo
+      shell: bash
+      run: echo "Deploying to S3 bucket ${{ inputs.bucket }} in region ${{ inputs.aws_region }} with ${{ inputs.skip_checkout }}"
+
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      if: ${{ inputs.skip_checkout != 'true' }}
+      with:
+        ref: 'nextjs-website@latest-deployed-in-production'
 
     - name: Setup Node.JS
       uses: ./.github/actions/setup-node
