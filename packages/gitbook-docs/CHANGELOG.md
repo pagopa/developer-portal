@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.4.1
+
+### Patch Changes
+
+- 85736d0: Fix tag file parsing
+
 ## 0.4.0
 
 ### Minor Changes

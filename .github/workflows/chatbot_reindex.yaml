@@ -72,6 +72,7 @@ jobs:
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
@@ -128,6 +129,7 @@ jobs:
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}

@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 6.2.0
+
+### Minor Changes
+
+- cd2ffa3: Add webinar category selectors
+- 95ebd68: Add WebinarCategory Codec, fetch and make to nextjs-website
+
+### Patch Changes
+
+- 88ac6e3: Make matomo cookie script retrocompatible
+- aad01ad: Manage cookies using matomo tag manager
+- Updated dependencies [85736d0]
+  - gitbook-docs@0.4.1
+
 ## 6.1.0
 
 ### Minor Changes
