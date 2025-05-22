@@ -200,6 +200,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: prod
+          ref: nextjs-website@${{ env.LATEST_DEPLOYED_IN_PRODUCTION_TAG }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
