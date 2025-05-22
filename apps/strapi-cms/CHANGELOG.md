@@ -1,5 +1,12 @@
 # strapi-cms
 
+## 3.6.1
+
+### Patch Changes
+
+- f31e464: Add product association validator to release note entity
+- d7c5324: Fix webinar category icon to accept only images
+
 ## 3.6.0
 
 ### Minor Changes
