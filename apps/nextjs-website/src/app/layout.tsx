@@ -1,9 +1,12 @@
 import {
   baseUrl,
+  cookieCategory,
   cookieDomainScript,
+  cookieScriptUrl,
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  useNewCookie,
 } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
@@ -24,8 +27,10 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
-const MATOMO_TAG_MANAGER_SCRIPT =
+// TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
+const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `
+// Previous Matomo Cookie Manager script
 var _mtm = window._mtm = window._mtm || [];
   _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
   (function() {
@@ -34,6 +39,41 @@ var _mtm = window._mtm = window._mtm || [];
   matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
   })();
+`;
+
+const MATOMO_TAG_MANAGER_SCRIPT =
+  `
+  // New Matomo Cookie Manager script
+  var _mtm = window._mtm = window._mtm || [];
+  var waitForTrackerCount = 0;
+  function matomoWaitForTracker() {
+    if (typeof _mtm === 'undefined' || typeof OnetrustActiveGroups === 'undefined') {
+      if (waitForTrackerCount < 40) {
+        setTimeout(matomoWaitForTracker, 250);
+        waitForTrackerCount++;
+        return;
+      }
+    } else {
+      window.addEventListener('OneTrustGroupsUpdated', function () {
+        consentSet();
+      });
+    }
+  }
+
+  function consentSet() {
+    if (OnetrustActiveGroups.includes("${cookieCategory}")) {
+      _mtm.push({ event: 'consent_given' });
+        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='` +
+  matomoScriptSrc +
+  `'; s.parentNode.insertBefore(g,s);
+    } else {
+      _mtm.push({ event: 'consent_withdrawn' });
+    }
+  }
+
+  matomoWaitForTracker();
 `;
 
 const titilliumWeb = Titillium_Web({
@@ -78,7 +118,11 @@ export default async function RootLayout({
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{ __html: MATOMO_TAG_MANAGER_SCRIPT }}
+            dangerouslySetInnerHTML={{
+              __html: useNewCookie
+                ? MATOMO_TAG_MANAGER_SCRIPT
+                : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
+            }}
             strategy='lazyOnload'
           />
         )}
@@ -90,7 +134,14 @@ export default async function RootLayout({
           timeZone='Europe/Rome'
         >
           <BodyWrapper>
-            <CookieBannerScript cookieDomainScript={cookieDomainScript} />
+            <CookieBannerScript
+              cookieDomainScript={cookieDomainScript}
+              cookieScript={
+                useNewCookie
+                  ? cookieScriptUrl
+                  : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
+              }
+            />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
                 <SiteHeader products={products} />

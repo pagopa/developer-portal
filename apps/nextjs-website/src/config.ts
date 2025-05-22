@@ -7,7 +7,10 @@ See BrowserConfig.ts and BrowserEnv.ts as examples.
  */
 // TODO: Add environment parser
 export const docsPath = process.env.PATH_TO_GITBOOK_DOCS;
+export const useNewCookie = process.env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
 export const cookieDomainScript = process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const cookieScriptUrl = process.env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
+export const cookieCategory = process.env.NEXT_PUBLIC_COOKIE_CATEGORY;
 export const matomoScriptSrc =
   process.env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC ||
   'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
