@@ -2,10 +2,11 @@ import {
   baseUrl,
   cookieCategory,
   cookieDomainScript,
-  cookieScript,
+  cookieScriptUrl,
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  useNewCookie,
 } from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
@@ -26,8 +27,23 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 
+// TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
+const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
+  `
+// Previous Matomo Cookie Manager script
+var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='` +
+  matomoScriptSrc +
+  `'; s.parentNode.insertBefore(g,s);
+  })();
+`;
+
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
+  // New Matomo Cookie Manager script
   var _mtm = window._mtm = window._mtm || [];
   var waitForTrackerCount = 0;
   function matomoWaitForTracker() {
@@ -102,7 +118,11 @@ export default async function RootLayout({
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{ __html: MATOMO_TAG_MANAGER_SCRIPT }}
+            dangerouslySetInnerHTML={{
+              __html: useNewCookie
+                ? MATOMO_TAG_MANAGER_SCRIPT
+                : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
+            }}
             strategy='lazyOnload'
           />
         )}
@@ -116,7 +136,11 @@ export default async function RootLayout({
           <BodyWrapper>
             <CookieBannerScript
               cookieDomainScript={cookieDomainScript}
-              cookieScript={cookieScript}
+              cookieScript={
+                useNewCookie
+                  ? cookieScriptUrl
+                  : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
+              }
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
