@@ -3,19 +3,23 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from './fetchProducts';
 import { ReleaseNotesCodec } from '@/lib/strapi/codecs/ReleaseNotesCodec';
 
+const releaseNotesPopulate = {
+  populate: {
+    bannerLinks: {
+      populate: ['icon'],
+    },
+    product: {
+      ...productRelationsPopulate,
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+  },
+};
+
 const makeStrapiReleaseNotesPopulate = () =>
   qs.stringify({
-    populate: {
-      bannerLinks: {
-        populate: ['icon'],
-      },
-      product: {
-        ...productRelationsPopulate,
-      },
-      seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
-    },
+    ...releaseNotesPopulate,
   });
 
 export const fetchReleaseNotes = fetchFromStrapi(
@@ -23,3 +27,20 @@ export const fetchReleaseNotes = fetchFromStrapi(
   makeStrapiReleaseNotesPopulate(),
   ReleaseNotesCodec
 );
+
+const makeStrapiReleaseNotePopulate = (productSlug: string) =>
+  qs.stringify({
+    ...releaseNotesPopulate,
+    filters: {
+      product: {
+        slug: productSlug,
+      },
+    },
+  });
+
+export const fetchReleaseNote = (productSlug: string) =>
+  fetchFromStrapi(
+    'release-notes',
+    makeStrapiReleaseNotePopulate(productSlug),
+    ReleaseNotesCodec
+  );
