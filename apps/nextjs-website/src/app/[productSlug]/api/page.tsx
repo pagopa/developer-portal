@@ -36,7 +36,7 @@ export async function generateMetadata({
   }
 
   return makeMetadata({
-    title: apiDataListPage?.hero.title + ' | ' + apiDataListPage?.product.name,
+    title: [apiDataListPage?.hero.title, apiDataListPage?.product.name].filter(Boolean).join(' | ')
     url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
     locale: 'it_IT',
   });
