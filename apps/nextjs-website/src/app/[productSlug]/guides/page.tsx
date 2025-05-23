@@ -53,7 +53,7 @@ export const generateMetadata = async (
   }
 
   return makeMetadata({
-    title: abstract?.title + ' | ' + product.name,
+    title: [abstract?.title, product.name].filter(Boolean).join(' | ' ),
     description: abstract?.description,
     url: path,
     parent: resolvedParent,
