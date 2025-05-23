@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 6.3.0
+
+### Minor Changes
+
+- 8cc06ee: Add Webinar category selector to webinar template
+
+### Patch Changes
+
+- 02b9f97: Remove comments from Matomo Tag Manager script and fix indentation
+
 ## 6.2.0
 
 ### Minor Changes
