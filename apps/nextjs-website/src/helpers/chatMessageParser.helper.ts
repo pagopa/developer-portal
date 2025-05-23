@@ -1,6 +1,7 @@
 import ChatLink from '@/components/atoms/ChatLink/ChatLink';
 import Markdoc, { Config, ConfigType, Node } from '@markdoc/markdoc';
 import React, { ReactNode } from 'react';
+import { transformAndReplaceUrlInMessage } from '@/helpers/chatMessageUrlReplacer.helper';
 
 const chatMarkdocConfig: ConfigType = {
   nodes: {
@@ -25,7 +26,7 @@ const chatMarkdocConfig: ConfigType = {
 
 export function parseChatMessage(markdown: string): ReactNode {
   const ast = Markdoc.parse(markdown);
-  const content = Markdoc.transform(ast, chatMarkdocConfig);
+  const content = transformAndReplaceUrlInMessage(ast, chatMarkdocConfig);
   return Markdoc.renderers.react(content, React, {
     components: {
       Link: ChatLink,
