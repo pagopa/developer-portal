@@ -16,7 +16,7 @@ from presidio_anonymizer.entities import OperatorConfig
 
 
 logger = getLogger(__name__)
-
+logger.setLevel(logging.ERROR)
 
 # see supported entities by Presidio with their description at: 
 # https://microsoft.github.io/presidio/supported_entities/
