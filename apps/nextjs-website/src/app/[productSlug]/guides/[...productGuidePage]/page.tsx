@@ -68,7 +68,9 @@ export async function generateMetadata({
     return makeMetadataFromStrapi(seo);
   }
   return makeMetadata({
-    title: name + ' | ' + title + ' | ' + version.name + ' | ' + product.name,
+    title: [name, title, version.name, product.name]
+      .filter(Boolean)
+      .join(' | '),
     url: path,
   });
 }
