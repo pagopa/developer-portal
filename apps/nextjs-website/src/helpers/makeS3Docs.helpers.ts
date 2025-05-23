@@ -159,6 +159,10 @@ export const makeReleaseNote = (
   releaseNote: ReleaseNotePageProps,
   releaseNotePaths: readonly string[]
 ) => {
+  const paths =
+    releaseNotePaths.length > 2
+      ? releaseNotePaths
+      : [...releaseNotePaths, 'README'];
   const docs = [
     {
       ...releaseNote,
@@ -171,5 +175,5 @@ export const makeReleaseNote = (
     },
   ];
 
-  return parseDocOrThrow(docs, releaseNotePaths);
+  return parseDocOrThrow(docs, paths);
 };

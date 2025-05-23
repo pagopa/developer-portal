@@ -36,29 +36,33 @@ except ImportError:
     )
 
 from logging import getLogger
-from dotenv import load_dotenv
 
 
-load_dotenv()
 logger = getLogger(__name__)
 
 
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 LLMS_COST = {
-    "mistral.mistral-large-2402-v1:0": {"input_cost": 0.0052 * 1.e-3, "output_cost": 0.0156 * 1.e-3},
-    "models/gemini-1.5-flash": {"input_cost": 0.075 * 1.e-6, "output_cost": 0.30 * 1.e-6}
+    "mistral.mistral-large-2402-v1:0": {
+        "input_cost": 0.0052 * 1.0e-3,
+        "output_cost": 0.0156 * 1.0e-3,
+    },
+    "models/gemini-1.5-flash": {
+        "input_cost": 0.075 * 1.0e-6,
+        "output_cost": 0.30 * 1.0e-6,
+    },
 }
 EMBEDDERS_COST = {
-    "cohere.embed-multilingual-v3": 0.0001 * 1.e-3,
-    "models/models/text-embedding-004": 0
+    "cohere.embed-multilingual-v3": 0.0001 * 1.0e-3,
+    "models/models/text-embedding-004": 0,
 }
 
 
 class EventHandler(BaseEventHandler, extra="allow"):
     def __init__(self, *, langfuse_client: Langfuse):
         super().__init__()
-        
+
         self._langfuse = langfuse_client
         self._token_counter = TokenCounter()
         self._context = InstrumentorContext()
@@ -122,7 +126,9 @@ class EventHandler(BaseEventHandler, extra="allow"):
 
         if isinstance(event, (LLMCompletionEndEvent, LLMChatEndEvent)):
             if event.response:
-                usage = self._parse_token_usage(event.response) if event.response else None
+                usage = (
+                    self._parse_token_usage(event.response) if event.response else None
+                )
                 logger.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
                 logger.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
 
@@ -134,7 +140,11 @@ class EventHandler(BaseEventHandler, extra="allow"):
                 "input": 0,
                 "output": 0,
                 "total": token_count or 0,
-                "total_cost": token_count * EMBEDDERS_COST[EMBED_MODEL_ID] if MODEL_ID in LLMS_COST.keys() else 0
+                "total_cost": (
+                    token_count * EMBEDDERS_COST[EMBED_MODEL_ID]
+                    if MODEL_ID in LLMS_COST.keys()
+                    else 0
+                ),
             }
             logger.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
 
@@ -142,16 +152,11 @@ class EventHandler(BaseEventHandler, extra="allow"):
             usage=usage, end_time=_get_timestamp()
         )
 
-
     def _parse_token_usage(
         self, response: Union[ChatResponse, CompletionResponse]
     ) -> Optional[ModelUsage]:
-        if (
-            (raw := getattr(response, "raw", None))
-            and hasattr(raw, "get")
-        ) and (
-            (usage := raw.get("usage"))
-            or (usage := raw.get("usage_metadata"))
+        if ((raw := getattr(response, "raw", None)) and hasattr(raw, "get")) and (
+            (usage := raw.get("usage")) or (usage := raw.get("usage_metadata"))
         ):
             return _parse_usage_from_mapping(usage)
 
@@ -194,29 +199,44 @@ def _parse_usage_from_object(usage: object) -> ModelUsage:
         "output_cost": None,
         "total_cost": None,
     }
-    
-    if (
-        (prompt_tokens := getattr(usage, "prompt_tokens", None)) is not None # openai
-        or (prompt_tokens := getattr(usage, "inputTokens", None)) is not None # bedrock
-        or (prompt_tokens := getattr(usage, "prompt_token_count", None)) is not None # gemini
-    ):
-        model_usage["input"] = prompt_tokens
-        model_usage["input_cost"] = prompt_tokens * LLMS_COST[MODEL_ID]["input_cost"] if MODEL_ID in LLMS_COST.keys() else 0
 
     if (
-        (completion_tokens := getattr(usage, "completion_tokens", None)) is not None # openai
-        or (completion_tokens := getattr(usage, "outputTokens", None)) is not None # bedrock
-        or (completion_tokens := getattr(usage, "candidates_token_count", None)) is not None # gemini
+        (prompt_tokens := getattr(usage, "prompt_tokens", None)) is not None  # openai
+        or (prompt_tokens := getattr(usage, "inputTokens", None)) is not None  # bedrock
+        or (prompt_tokens := getattr(usage, "prompt_token_count", None))
+        is not None  # gemini
+    ):
+        model_usage["input"] = prompt_tokens
+        model_usage["input_cost"] = (
+            prompt_tokens * LLMS_COST[MODEL_ID]["input_cost"]
+            if MODEL_ID in LLMS_COST.keys()
+            else 0
+        )
+
+    if (
+        (completion_tokens := getattr(usage, "completion_tokens", None))
+        is not None  # openai
+        or (completion_tokens := getattr(usage, "outputTokens", None))
+        is not None  # bedrock
+        or (completion_tokens := getattr(usage, "candidates_token_count", None))
+        is not None  # gemini
     ):
         model_usage["output"] = completion_tokens
-        model_usage["output_cost"] = completion_tokens * LLMS_COST[MODEL_ID]["input_cost"] if MODEL_ID in LLMS_COST.keys() else 0
+        model_usage["output_cost"] = (
+            completion_tokens * LLMS_COST[MODEL_ID]["input_cost"]
+            if MODEL_ID in LLMS_COST.keys()
+            else 0
+        )
     if (
-        (total_tokens := getattr(usage, "total_tokens", None)) is not None # openai
-        or (total_tokens := getattr(usage, "totalTokens", None)) is not None # bedrock
-        or (total_tokens := getattr(usage, "total_token_count", None)) is not None # gemini
+        (total_tokens := getattr(usage, "total_tokens", None)) is not None  # openai
+        or (total_tokens := getattr(usage, "totalTokens", None)) is not None  # bedrock
+        or (total_tokens := getattr(usage, "total_token_count", None))
+        is not None  # gemini
     ):
         model_usage["total"] = total_tokens
-        model_usage["total_cost"] = model_usage["input_cost"] + model_usage["output_cost"]
+        model_usage["total_cost"] = (
+            model_usage["input_cost"] + model_usage["output_cost"]
+        )
 
     return model_usage
 
@@ -234,26 +254,41 @@ def _get_token_counts_from_mapping(
         "total_cost": None,
     }
     if (
-        (prompt_tokens := usage_mapping.get("prompt_tokens")) is not None # openai
-        or (prompt_tokens := usage_mapping.get("inputTokens")) is not None # bedrock
-        or (prompt_tokens := usage_mapping.get("prompt_token_count")) is not None # gemini
+        (prompt_tokens := usage_mapping.get("prompt_tokens")) is not None  # openai
+        or (prompt_tokens := usage_mapping.get("inputTokens")) is not None  # bedrock
+        or (prompt_tokens := usage_mapping.get("prompt_token_count"))
+        is not None  # gemini
     ):
         model_usage["input"] = prompt_tokens
-        model_usage["input_cost"] = prompt_tokens * LLMS_COST[MODEL_ID]["input_cost"] if MODEL_ID in LLMS_COST.keys() else 0
+        model_usage["input_cost"] = (
+            prompt_tokens * LLMS_COST[MODEL_ID]["input_cost"]
+            if MODEL_ID in LLMS_COST.keys()
+            else 0
+        )
 
     if (
-        (completion_tokens := usage_mapping.get("completion_tokens")) is not None # openai
-        or (completion_tokens := usage_mapping.get("outputTokens")) is not None # bedrock
-        or (completion_tokens := usage_mapping.get("candidates_token_count")) is not None # gemini
+        (completion_tokens := usage_mapping.get("completion_tokens"))
+        is not None  # openai
+        or (completion_tokens := usage_mapping.get("outputTokens"))
+        is not None  # bedrock
+        or (completion_tokens := usage_mapping.get("candidates_token_count"))
+        is not None  # gemini
     ):
         model_usage["output"] = completion_tokens
-        model_usage["output_cost"] = completion_tokens * LLMS_COST[MODEL_ID]["input_cost"] if MODEL_ID in LLMS_COST.keys() else 0
+        model_usage["output_cost"] = (
+            completion_tokens * LLMS_COST[MODEL_ID]["input_cost"]
+            if MODEL_ID in LLMS_COST.keys()
+            else 0
+        )
     if (
-        (total_tokens := usage_mapping.get("total_tokens")) is not None # openai
-        or (total_tokens := usage_mapping.get("totalTokens")) is not None # bedrock
-        or (total_tokens := usage_mapping.get("total_token_count")) is not None # gemini
+        (total_tokens := usage_mapping.get("total_tokens")) is not None  # openai
+        or (total_tokens := usage_mapping.get("totalTokens")) is not None  # bedrock
+        or (total_tokens := usage_mapping.get("total_token_count"))
+        is not None  # gemini
     ):
         model_usage["total"] = total_tokens
-        model_usage["total_cost"] = model_usage["input_cost"] + model_usage["output_cost"]
+        model_usage["total_cost"] = (
+            model_usage["input_cost"] + model_usage["output_cost"]
+        )
 
     return model_usage

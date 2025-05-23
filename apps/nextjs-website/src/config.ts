@@ -28,6 +28,12 @@ export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
 export const cookieDomainScript =
   secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
   process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const useNewCookie = process.env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
+export const cookieScriptUrl = process.env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
+export const cookieCategory = process.env.NEXT_PUBLIC_COOKIE_CATEGORY;
+export const matomoScriptSrc =
+  process.env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC ||
+  'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
 export const docsS3AssetsPath = process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS;

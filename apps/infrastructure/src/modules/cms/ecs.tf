@@ -71,6 +71,9 @@ module "cms_ecs_service" {
   tasks_iam_role_arn             = module.iam_role_task_role.iam_role_arn
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
   ignore_task_definition_changes = true # CMS Deployment is managed by the "Deploy CMS" GitHub Action
+  enable_autoscaling             = var.environment == "prod"
+  autoscaling_max_capacity       = var.environment == "prod" ? 10 : 1
+  autoscaling_min_capacity       = var.environment == "prod" ? 2 : 1
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
   subnet_ids         = module.vpc.private_subnets

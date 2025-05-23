@@ -137,8 +137,7 @@
           "localized": true
         }
       },
-      "component": "common.question-and-answer",
-      "max": 10
+      "component": "common.question-and-answer"
     },
     "relatedResources": {
       "type": "component",
@@ -159,6 +158,11 @@
         }
       },
       "component": "shared.seo"
+    },
+    "webinarCategory": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::webinar-category.webinar-category"
     }
   }
 }

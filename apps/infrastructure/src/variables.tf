@@ -86,6 +86,20 @@ variable "dns_domain_name_cms" {
   default     = null
 }
 
+# RDS Aurora PostgreSQL Serverless for CMS Strapi
+# RDS aurora
+variable "rds_cms_scaling_configuration" {
+  type = object({
+    min_capacity = number
+    max_capacity = number
+  })
+  description = "Scaling configuration for the RDS Aurora instance"
+  default = {
+    min_capacity = 0.5
+    max_capacity = 1
+  }
+}
+
 variable "aws_chatbot_region" {
   type        = string
   description = "AWS region to create AI chatbot's resources"
@@ -155,5 +169,11 @@ variable "ac_integration_is_enabled" {
 variable "docs_redirect_is_enabled" {
   type        = bool
   description = "Defines if Docs redirect should be enabled"
+  default     = false
+}
+
+variable "website_is_standalone" {
+  type        = bool
+  description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
   default     = false
 }

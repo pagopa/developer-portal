@@ -42,6 +42,8 @@ import {
 } from '@/helpers/makeS3Docs.helpers';
 // import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { secrets } from '@/config';
+import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
+import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -83,6 +85,17 @@ export const getProductsProps = async () => {
     async () => {
       const strapiProducts = await fetchProducts(buildEnv);
       return makeProductsProps(strapiProducts);
+    },
+    CACHE_EXPIRY_IN_SECONDS
+  );
+};
+
+export const getWebinarCategoriesProps = async () => {
+  return withCache(
+    getCacheKey('getWebinarCategoriesProps'),
+    async () => {
+      const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
+      return makeWebinarCategoriesProps(strapiWebinarCategories);
     },
     CACHE_EXPIRY_IN_SECONDS
   );

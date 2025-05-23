@@ -1,8 +1,8 @@
 {
-  "TableName": "chatbot-local-queries",
+  "TableName": "chatbot-test-sessions",
   "KeySchema": [
     {
-      "AttributeName": "sessionId",
+      "AttributeName": "userId",
       "KeyType": "HASH"
     },
     {
@@ -16,7 +16,7 @@
       "AttributeType": "S"
     },
     {
-      "AttributeName": "sessionId",
+      "AttributeName": "userId",
       "AttributeType": "S"
     },
     {
@@ -26,10 +26,10 @@
   ],
   "LocalSecondaryIndexes": [
     {
-      "IndexName": "QueriesByCreatedAtIndex",
+      "IndexName": "SessionsByCreatedAtIndex",
       "KeySchema": [
         {
-          "AttributeName": "sessionId",
+          "AttributeName": "userId",
           "KeyType": "HASH"
         },
         {

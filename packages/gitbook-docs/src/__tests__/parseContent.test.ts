@@ -39,9 +39,9 @@ const config = {
 };
 
 describe('parseContent', () => {
-  it('should ignore any <p> tag', () => {
+  it('should properly parse the <p> tag', () => {
     expect(parseContent('<p>Hello there!</p>', config)).toStrictEqual([
-      'Hello there!',
+      new Markdoc.Tag('Paragraph', {}, ['Hello there!']),
     ]);
   });
   it('should parse heading', () => {
@@ -658,6 +658,78 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse a markdown page containing more tha a file tag, with at least one tag closed with {% endfile %}', () => {
+    const prefix = config.assetsPrefix;
+    const markdown =
+      '# H1\n' +
+      '\n' +
+      'This is a paragraph\n' +
+      '{% file src="a.pdf" %}\n' +
+      '\n' +
+      '## H2\n' +
+      '{% file src="a.pdf" %}\n' +
+      '{% file src="a.pdf" %}\n' +
+      '\n' +
+      '### H3\n' +
+      '\n' +
+      'This is a paragraph\n' +
+      '{% file src="a.pdf" %}\n' +
+      'This is a paragraph\n' +
+      '\n' +
+      '{% file src="a.pdf" %}\n' +
+      '{% file src="filewithcaption.pdf" %}\n' +
+      'caption\n' +
+      '{% endfile %}\n' +
+      '\n' +
+      'This is the last paragraph\n' +
+      '{% file src="a.pdf" %}\n';
+
+    expect(parseContent(markdown, config)).toStrictEqual([
+      new Markdoc.Tag('Heading', { level: 1, id: 'h1' }, ['H1']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Heading', { level: 2, id: 'h2' }, ['H2']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Heading', { level: 3, id: 'h3' }, ['H3']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('Paragraph', {}, ['This is a paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/filewithcaption.pdf`,
+        filename: 'filewithcaption',
+        caption: 'caption',
+      }),
+      new Markdoc.Tag('Paragraph', {}, ['This is the last paragraph']),
+      new Markdoc.Tag('File', {
+        src: `${prefix}/a.pdf`,
+        filename: 'a',
+        caption: undefined,
+      }),
+    ]);
+  });
+
   it('should parse styled text', () => {
     expect(parseContent('This is **Bold**', config)).toStrictEqual([
       new Markdoc.Tag('Paragraph', {}, [
@@ -826,6 +898,33 @@ describe('parseContent', () => {
         new Markdoc.Tag('TableBody', {}, [
           new Markdoc.Tag('TableR', {}, [
             new Markdoc.Tag('TableD', {}, ['1 - A']),
+            new Markdoc.Tag('TableD', {}, ['1 - B']),
+          ]),
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['2 - A']),
+            new Markdoc.Tag('TableD', {}, ['2 - B']),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse paragraph inside table td', () => {
+    const table =
+      '| col A | col B |\n| --------- | --------- |\n| <p>1 - A</p>     | 1 - B     |\n| 2 - A     | 2 - B     |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['col A']),
+            new Markdoc.Tag('TableH', {}, ['col B']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, [
+              new Markdoc.Tag('Paragraph', {}, ['1 - A']),
+            ]),
             new Markdoc.Tag('TableD', {}, ['1 - B']),
           ]),
           new Markdoc.Tag('TableR', {}, [

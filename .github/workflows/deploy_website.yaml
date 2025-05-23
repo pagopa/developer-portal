@@ -15,6 +15,7 @@ on:
         default: dev
         options:
           - dev
+          - uat
           - prod
 
   # Allows external webhook trigger
@@ -22,14 +23,14 @@ on:
     types:
       - webhook
 
-  # Runs at 2 p.m. UTC every day
+  # Runs at 11 p.m. UTC every day
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '0 23 * * *'
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint.
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 env:
   LATEST_DEPLOYED_IN_PRODUCTION_TAG: latest-deployed-in-production
@@ -65,6 +66,9 @@ jobs:
           environment: ${{ matrix.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
+          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
@@ -84,14 +88,16 @@ jobs:
           s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
           s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-          webinar_question_lifetime_in_seconds: 259200
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
-
+    env:
+      SKIP_HUSKY_PRE_PUSH: true
     concurrency:
       group: ${{ github.workflow }}-${{ inputs.environment }}
       cancel-in-progress: false
@@ -111,6 +117,9 @@ jobs:
           environment: ${{ inputs.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
+          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
@@ -130,9 +139,10 @@ jobs:
           s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
           s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-          webinar_question_lifetime_in_seconds: 259200
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
-      - name: Move $LATEST_DEPLOYED_IN_PRODUCTION_TAG tag to the commit just deployed
+      - name: Move nextjs-website@latest-deployed-in-production tag to the commit just deployed
         shell: bash
         run: |
           # Extract tag from GitHub ref
@@ -185,7 +195,7 @@ jobs:
       - name: Checkout specific tag
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          ref: $LATEST_DEPLOYED_IN_PRODUCTION_TAG
+          ref: nextjs-website@${{ env.LATEST_DEPLOYED_IN_PRODUCTION_TAG }}
 
       - name: Increase action disk space
         uses: ./.github/actions/increase-disk-space
@@ -193,9 +203,13 @@ jobs:
       - name: Deploy website
         uses: ./.github/actions/deploy
         with:
-          environment: ${{ matrix.environment }}
+          environment: prod
+          ref: nextjs-website@${{ env.LATEST_DEPLOYED_IN_PRODUCTION_TAG }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
+          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
@@ -215,4 +229,5 @@ jobs:
           s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
           s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-          webinar_question_lifetime_in_seconds: 259200
+          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
+          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}

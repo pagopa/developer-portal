@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo '-=-=-=-=-=-=-=-=-= init DynamoDB -==-=-=-=-=-=-=-=-'
-./scripts/dynamodb-init.sh
+./scripts/dynamodb-init-test.sh
 
-echo '-=-=-=-=-=-=-= create redis index =-=-=-=-=-=-=-=-'
-./scripts/create_redis_index.sh
+echo '-=-=-=-=-=-=-=-=-= init Redis -==-=-=-=-=-=-=-=-'
+poetry run python src/modules/create_vector_index.py --params config/params.yaml
 
 echo '-=-=-=-=-=-=-=-=-=- run pytest -=-==-=-=-=-=-=-=-=-'
-pytest  -p no:warnings
+poetry run pytest src/app/

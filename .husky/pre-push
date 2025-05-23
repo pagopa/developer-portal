@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run compile && npm run lint
+if [ "$SKIP_HUSKY_PRE_PUSH" != "true" ]; then
+  npm run compile && npm run lint
+fi

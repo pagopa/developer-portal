@@ -74,3 +74,17 @@ variable "ac_api_key_param" {
   description = "Active Campaign API key SSM parameter ARN"
   default     = null
 }
+
+
+# RDS aurora
+variable "rds_scaling_configuration" {
+  type = object({
+    min_capacity = number
+    max_capacity = number
+  })
+  description = "Scaling configuration for the RDS Aurora instance"
+  default = {
+    min_capacity = 0.5
+    max_capacity = 1
+  }
+}

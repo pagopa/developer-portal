@@ -1,84 +1,84 @@
 import os
 from logging import getLogger
 
-from llama_index.llms.bedrock_converse import BedrockConverse
-from llama_index.embeddings.bedrock import BedrockEmbedding
-
-from llama_index.llms.gemini import Gemini
-from llama_index.embeddings.gemini import GeminiEmbedding
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
-
-from dotenv import load_dotenv
+from llama_index.core.llms.llm import LLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 
 from src.modules.utils import get_ssm_parameter
 
-load_dotenv()
+
 logger = getLogger(__name__)
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
-assert PROVIDER in ["aws", "google"]
-
-GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
-AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
-AWS_GUARDRAIL_ID = os.getenv("CHB_AWS_GUARDRAIL_ID")
-AWS_GUARDRAIL_VERSION = os.getenv("CHB_AWS_GUARDRAIL_VERSION")
-
 MODEL_ID = os.getenv("CHB_MODEL_ID")
-MODEL_TEMPERATURE = os.getenv("CHB_MODEL_TEMPERATURE", "0.3")
-MODEL_MAXTOKENS = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+MODEL_TEMPERATURE = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
+MODEL_MAXTOKENS = int(os.getenv("CHB_MODEL_MAXTOKENS", "768"))
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
-def get_llm():
+def get_llm() -> LLM:
 
     if PROVIDER == "aws":
-        
+        from llama_index.llms.bedrock_converse import BedrockConverse
+
+        AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+        AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+        AWS_BEDROCK_LLM_REGION = os.getenv("CHB_AWS_BEDROCK_LLM_REGION")
+
         llm = BedrockConverse(
             model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_LLM_REGION
+            region_name=AWS_BEDROCK_LLM_REGION,
         )
 
-    else:
+    elif PROVIDER == "google":
+        from llama_index.llms.google_genai import GoogleGenAI
 
-        llm = Gemini(
+        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"))
+
+        llm = GoogleGenAI(
             model=MODEL_ID,
-            temperature=float(MODEL_TEMPERATURE),
-            max_tokens=int(MODEL_MAXTOKENS),
-            safety_settings={
-                HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE
-            },
+            temperature=MODEL_TEMPERATURE,
+            max_tokens=MODEL_MAXTOKENS,
             api_key=GOOGLE_API_KEY,
         )
+    else:
+        raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
 
     logger.info(f"{MODEL_ID} LLM loaded successfully!")
 
     return llm
 
 
-def get_embed_model():
+def get_embed_model() -> BaseEmbedding:
 
     if PROVIDER == "aws":
+        from llama_index.embeddings.bedrock import BedrockEmbedding
+
+        AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+        AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+        AWS_BEDROCK_EMBED_REGION = os.getenv("CHB_AWS_BEDROCK_EMBED_REGION")
+
         embed_model = BedrockEmbedding(
-            model_name = EMBED_MODEL_ID,
+            model_name=EMBED_MODEL_ID,
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_EMBED_REGION
+            region_name=AWS_BEDROCK_EMBED_REGION,
+        )
+    elif PROVIDER == "google":
+        from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
+
+        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
+
+        embed_model = GoogleGenAIEmbedding(
+            model_name=EMBED_MODEL_ID,
+            api_key=GOOGLE_API_KEY,
         )
     else:
-        embed_model = GeminiEmbedding(
-            api_key=GOOGLE_API_KEY,
-            model_name=EMBED_MODEL_ID,
-        )
+        raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
     logger.info(f"{EMBED_MODEL_ID} embegging model loaded successfully!")
 
     return embed_model
