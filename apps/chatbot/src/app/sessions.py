@@ -22,17 +22,15 @@ logger = getLogger(__name__)
 
 def current_user_id(authorization: str) -> str:
     if authorization is None:
-        logger.warning("[current_user_id] Authorization header is missing, exit with 401")
+        logger.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
     else:
         token = authorization.split(' ')[1]
         decoded = verify_jwt(token)
-        logger.warning(f"[current_user_id] decoded: {decoded}")
         if decoded is False:
-            logger.warning("[current_user_id] decoded is false, exit with 401")
+            logger.error("[current_user_id] decoded is false, exit with 401")
             raise HTTPException(status_code=401, detail="Unauthorized")
         else:
-            logger.warning("[current_user_id] returning cognito username")
             if "cognito:username" in decoded:
                 return decoded['cognito:username']
             else:

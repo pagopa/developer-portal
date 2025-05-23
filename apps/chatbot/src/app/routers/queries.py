@@ -145,7 +145,6 @@ async def queries_fetching(
     pageSize: int | None = 10,
     authorization: Annotated[str | None, Header()] = None,
 ):
-    logger.info(f"[queries_fetching] sessionId={sessionId}, authorization={authorization}")
     userId = current_user_id(authorization)
 
     if sessionId is None:
