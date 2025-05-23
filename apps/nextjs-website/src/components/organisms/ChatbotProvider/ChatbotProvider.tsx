@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@/helpers/user.helper';
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import ChatbotLayout from '@/components/organisms/ChatbotLayout/ChatbotLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
 
