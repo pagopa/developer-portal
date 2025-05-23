@@ -27,6 +27,7 @@ def current_user_id(authorization: str) -> str:
     else:
         token = authorization.split(' ')[1]
         decoded = verify_jwt(token)
+        logger.debug(f"[current_user_id] decoded: {decoded}")
         if decoded is False:
             raise HTTPException(status_code=401, detail="Unauthorized")
         else:
