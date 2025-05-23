@@ -88,7 +88,7 @@ jobs:
     strategy:
       matrix:
         # We want to make sure the env variables are set correctly
-        environment: [ 'dev', 'prod' ]
+        environment: [ 'dev', 'uat', 'prod' ]
       fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
     environment: ${{ matrix.environment }}
 
@@ -110,6 +110,9 @@ jobs:
         with:
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
+          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}

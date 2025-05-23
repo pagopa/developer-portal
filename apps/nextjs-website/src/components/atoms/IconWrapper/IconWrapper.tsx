@@ -32,6 +32,7 @@ const IconWrapper = ({
           src={icon}
           height={size}
           width={size}
+          color={color}
         />
       </Icon>
     );

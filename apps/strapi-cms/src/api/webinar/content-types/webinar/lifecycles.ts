@@ -85,10 +85,6 @@ const validateSlugBeforeCreate = (event: IWebinarEvent): boolean =>
 const validateSlugBeforeUpdate = async (
   event: IWebinarEvent
 ): Promise<boolean> => {
-  const { slug } = event.params.data;
-
-  validateSlug(slug);
-
   const id = event.params.where?.id;
   if (!id) {
     throw new errors.ApplicationError('Webinar id not found');
@@ -99,7 +95,11 @@ const validateSlugBeforeUpdate = async (
       select: ['slug'],
       where: { id },
     });
-  if (previousWebinar && previousWebinar.slug !== event.params.data.slug) {
+
+  const slug = event.params.data.slug || previousWebinar?.slug;
+  validateSlug(slug);
+
+  if ((event.params.data.slug || event.params.data.slug === null) && (previousWebinar && previousWebinar.slug !== event.params.data.slug)) {
     throw new errors.ApplicationError(
       'The slug of a webinar cannot be changed'
     );

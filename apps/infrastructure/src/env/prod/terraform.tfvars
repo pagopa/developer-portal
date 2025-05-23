@@ -32,6 +32,11 @@ dns_domain_name_cms = {
   }
 }
 
+rds_cms_scaling_configuration = {
+  min_capacity = 1.0
+  max_capacity = 3.0
+}
+
 create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = true

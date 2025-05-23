@@ -6,7 +6,7 @@ resource "random_password" "cms_database_password" {
 }
 
 module "secret_cms_database_password" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/database/password"
   value       = random_password.cms_database_password.result
@@ -20,7 +20,7 @@ resource "random_password" "cms_admin_jwt_secret" {
 }
 
 module "secret_cms_admin_jwt_secret" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/admin_jwt_secret"
   value       = random_password.cms_admin_jwt_secret.result
@@ -34,7 +34,7 @@ resource "random_password" "cms_jwt_secret" {
 }
 
 module "secret_cms_jwt_secret" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/jwt_secret"
   value       = random_password.cms_jwt_secret.result
@@ -48,7 +48,7 @@ resource "random_password" "cms_app_keys" {
 }
 
 module "secret_cms_app_keys" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/app_keys"
   value       = random_password.cms_app_keys.result
@@ -62,7 +62,7 @@ resource "random_password" "cms_api_token_salt" {
 }
 
 module "secret_cms_api_token_salt" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/api_token_salt"
   value       = random_password.cms_api_token_salt.result
@@ -76,7 +76,7 @@ resource "random_password" "cms_transfer_token_salt" {
 }
 
 module "secret_cms_transfer_token_salt" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/transfer_token_salt"
   value       = random_password.cms_transfer_token_salt.result
@@ -90,7 +90,7 @@ resource "random_password" "cms_github_pat" {
 }
 
 module "secret_cms_github_pat" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name                 = "/cms/github_pat"
   value                = random_password.cms_github_pat.result
@@ -99,7 +99,7 @@ module "secret_cms_github_pat" {
 }
 
 module "secret_cms_google_oauth_client_id" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name  = "/cms/google_oauth_client_id"
   value = "update-me"
@@ -108,7 +108,7 @@ module "secret_cms_google_oauth_client_id" {
 }
 
 module "secret_cms_google_oauth_client_secret" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/google_oauth_client_secret"
   value       = "update-me"
@@ -118,7 +118,7 @@ module "secret_cms_google_oauth_client_secret" {
 }
 
 module "secret_cms_google_gsuite_hd" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name  = "/cms/google_gsuite_hd"
   value = "update-me"
@@ -127,7 +127,7 @@ module "secret_cms_google_gsuite_hd" {
 }
 
 module "secret_cms_access_key_id" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/access_key_id"
   value       = module.iam_user_cms.iam_access_key_id
@@ -135,7 +135,7 @@ module "secret_cms_access_key_id" {
 }
 
 module "secret_cms_access_key_secret" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
   name        = "/cms/access_key_secret"
   value       = module.iam_user_cms.iam_access_key_secret
