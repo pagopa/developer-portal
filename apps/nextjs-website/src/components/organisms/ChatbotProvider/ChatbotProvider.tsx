@@ -34,6 +34,11 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           areChatbotQueriesLoaded={areChatbotQueriesLoaded}
           error={chatbotError}
           disabled={!user}
+          mustFillFeedbackForm={
+            user != null &&
+            (user.attributes.email.includes('pagopa') ||
+              user.attributes.email.includes('uqido'))
+          }
         />
       )}
       {children}

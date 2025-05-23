@@ -21,12 +21,16 @@ type ChatbotLayoutProps = {
   onSendFeedback: (
     hasNegativeFeedback: boolean,
     sessionId: string,
-    chatId: string
+    chatId: string,
+    contextScore: number | null,
+    responseScore: number | null,
+    comment: string
   ) => null;
   isAwaitingResponse: boolean;
   areChatbotQueriesLoaded: boolean;
   error: ChatbotErrorsType | null;
   disabled?: boolean;
+  mustFillFeedbackForm: boolean;
 };
 
 const ChatbotLayout = ({
@@ -37,6 +41,7 @@ const ChatbotLayout = ({
   areChatbotQueriesLoaded,
   error,
   disabled,
+  mustFillFeedbackForm = false,
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -145,6 +150,7 @@ const ChatbotLayout = ({
             onSendFeedback={onSendFeedback}
             isAwaitingResponse={isAwaitingResponse}
             areChatbotQueriesLoaded={areChatbotQueriesLoaded}
+            mustFillFeedbackForm={mustFillFeedbackForm}
             scrollToBottom={true}
             error={error}
             disabled={disabled}
