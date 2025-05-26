@@ -222,6 +222,17 @@ export const getGuideListPagesProps = async () => {
   );
 };
 
+export const getGuidesProps = async () => {
+  return withCache(
+    getCacheKey('getGuidesPropsCache'),
+    async () => {
+      const strapiGuides = await fetchGuides(buildEnv);
+      return makeGuidesProps(strapiGuides);
+    },
+    CACHE_EXPIRY_IN_SECONDS
+  );
+};
+
 export const getGuides = async () => {
   const strapiGuides = await fetchGuides(buildEnv);
   return makeGuidesProps(strapiGuides);

@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -20,6 +20,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
+import { REVALIDATE_LONG_INTERVAL } from '@/config';
 
 type Params = {
   productSlug: string;
@@ -63,6 +64,20 @@ export async function generateMetadata({
     title: porps?.page.title,
     url: porps?.page.path,
   });
+}
+
+export const revalidate = REVALIDATE_LONG_INTERVAL;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const guides = await getGuidesProps();
+  const guideParams = guides.map((guide) => {
+    return {
+      productSlug: guide.product.slug,
+      productGuidePage: [guide.guide.slug],
+    };
+  });
+  return guideParams;
 }
 
 const Page = async ({ params }: { params: Params }) => {
