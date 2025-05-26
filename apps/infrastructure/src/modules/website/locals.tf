@@ -1,4 +1,3 @@
 locals {
-  is_standalone = var.website_is_standalone ? toset(["standalone"]) : toset([])
-  is_static     = var.website_is_standalone ? toset([]) : toset(["static"])
+  opennext_domain = "open-next.${var.dns_domain_name}"
 }
