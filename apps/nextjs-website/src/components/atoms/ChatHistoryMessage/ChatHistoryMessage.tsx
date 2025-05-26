@@ -2,6 +2,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 
 type DateFormatOptions = {
   locale?: string;
@@ -23,15 +24,18 @@ type ChatMessageProps = {
   timestamp?: string;
 };
 
-const ChatHistoryMessage = ({
+const ChatHistoryMessage = async ({
   text,
   timestamp,
   isQuestion,
   sender,
 }: ChatMessageProps) => {
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const { palette } = useTheme();
   const textColor = palette.text.primary;
-  const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
+  const parsedChatMessage = isQuestion
+    ? text
+    : parseChatMessage(text, urlReplaceMap);
   const iconSize = 28;
 
   const timeLabel =

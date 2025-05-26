@@ -1,9 +1,10 @@
 import { transformAndReplaceUrlInMessage } from '@/helpers/chatMessageUrlReplacer.helper';
 import Markdoc, { Config, ConfigType, Node } from '@markdoc/markdoc';
 import { validatePassword } from '@/helpers/auth.helpers';
+import { UrlReplaceMap } from '@/lib/strapi/makeProps/makeUrlReplaceMap';
 
 describe('transformAndReplaceUrlInMessage', () => {
-  it('transform a node to a ReactNode', () => {
+  it('transform markdown to a RenderableTreeNode', () => {
     const chatMarkdocConfig: ConfigType = {
       nodes: {
         link: {
@@ -24,10 +25,29 @@ describe('transformAndReplaceUrlInMessage', () => {
         },
       },
     };
+    const urlReplaceMap: UrlReplaceMap = {
+      'https://www.google.com': 'www.turbocacca.com',
+    };
     const markdown = '[link to stuff](https://www.google.com)';
-    const ast = Markdoc.parse(markdown);
-    const result = transformAndReplaceUrlInMessage(ast, chatMarkdocConfig);
-    console.log(result);
-    expect(result).toBe(false);
+    const result = transformAndReplaceUrlInMessage(
+      markdown,
+      urlReplaceMap,
+      chatMarkdocConfig
+    );
+    const target = new Markdoc.Tag('article', {}, [
+      new Markdoc.Tag('p', {}, [
+        new Markdoc.Tag(
+          'Link',
+          { href: 'https://www.google.com', target: '_blank' },
+          ['link to stuff']
+        ),
+      ]),
+    ]);
+    console.log('Result is ', JSON.stringify(result, null, 2));
+    console.log('target is ', JSON.stringify(target, null, 2));
+
+    expect(JSON.stringify(result, null, 2)).toStrictEqual(
+      JSON.stringify(target, null, 2)
+    );
   });
 });

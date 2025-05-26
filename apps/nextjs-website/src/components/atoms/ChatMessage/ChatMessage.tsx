@@ -5,6 +5,7 @@ import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/Chat
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
 import { useTranslations } from 'next-intl';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 
 type DateFormatOptions = {
   locale?: string;
@@ -33,7 +34,7 @@ type ChatMessageProps = Message & {
   onToggleNegativeFeedback: (negativeFeedback: boolean) => null;
 };
 
-const ChatMessage = ({
+const ChatMessage = async ({
   text,
   isQuestion,
   timestamp,
@@ -41,12 +42,16 @@ const ChatMessage = ({
   hasNegativeFeedback,
   onToggleNegativeFeedback,
 }: ChatMessageProps) => {
+  const urlReplaceMap = await getUrlReplaceMapProps();
+
   const t = useTranslations();
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
   const isWelcomeMessage = !timestamp;
-  const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
+  const parsedChatMessage = isQuestion
+    ? text
+    : parseChatMessage(text, urlReplaceMap);
 
   const timeLabel =
     timestamp &&
