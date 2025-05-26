@@ -26,22 +26,20 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    logger.warning(
-        f"Getting parameter {name} from SSM. AWS_ENDPOINT_URL: {AWS_ENDPOINT_URL}"
-    )
     if name is None:
         name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logger.warning(
+        logger.info(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
         return default
 
-    logger.debug(f"Parameter {name} retrieved from SSM")
-    return response["Parameter"]["Value"]
+    logger.info(f"SSM Parameter {name} retrieved.")
+    return value
 
 
 def put_ssm_parameter(name: str, value: str) -> None:

@@ -2,7 +2,6 @@ import datetime
 import nh3
 import os
 import uuid
-import yaml
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
@@ -17,14 +16,10 @@ from src.app.sessions import (
     last_session_id,
     get_user_session,
 )
-from src.modules.chatbot import Chatbot
+from src.app.chatbot_init import chatbot
 
 logger = getLogger(__name__)
-
 router = APIRouter()
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
 
 
 def can_evaluate() -> bool:

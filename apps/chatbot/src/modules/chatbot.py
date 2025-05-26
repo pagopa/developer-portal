@@ -228,7 +228,7 @@ class Chatbot:
                     masked_message = masked_message + "Rif:" + split_message[1]
                 return masked_message
             except Exception as e:
-                logger.warning(f"Exception: {e}")
+                logger.debug(f"Exception: {e}")
         else:
             return message
 
