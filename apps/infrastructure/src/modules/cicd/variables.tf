@@ -85,6 +85,16 @@ variable "website_cdn" {
   description = "The CloudFront distribution used to serve the website"
 }
 
+variable "assets_opennext_bucket" {
+  type = object({
+    name = string
+    arn  = string
+  })
+
+  description = "The S3 bucket used to store the assets"
+
+}
+
 variable "create_chatbot" {
   type        = bool
   description = "Defines if chatbot should be created"

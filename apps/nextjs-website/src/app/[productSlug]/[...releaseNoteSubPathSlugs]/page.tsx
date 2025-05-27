@@ -8,8 +8,8 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { getGitBookSubPaths, getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps, getReleaseNotesProps } from '@/lib/cmsApi';
+import { getReleaseNote } from '@/lib/api';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
@@ -31,28 +31,6 @@ type ReleaseNotePageStaticParams = {
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
-
-export async function generateStaticParams() {
-  const releaseNoteProps = await getReleaseNotesProps();
-  if (releaseNoteProps.length === 0) {
-    return [
-      {
-        productSlug: 'unknown',
-        releaseNoteSubPathSlugs: ['release-note'],
-      },
-    ];
-  }
-
-  return releaseNoteProps.map((releaseNoteProps) => {
-    return {
-      productSlug: releaseNoteProps.product.slug,
-      releaseNoteSubPathSlugs: [
-        'release-note',
-        ...getGitBookSubPaths(releaseNoteProps.page.path),
-      ],
-    };
-  });
-}
 
 export async function generateMetadata({
   params,

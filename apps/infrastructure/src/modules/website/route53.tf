@@ -24,27 +24,25 @@ resource "aws_route53_record" "certificate" {
 
 // This Route53 record will point at our CloudFront distribution.
 resource "aws_route53_record" "www_website" {
-  for_each = local.is_static
-  zone_id  = var.hosted_zone_id
-  name     = format("www.%s", var.dns_domain_name)
-  type     = "A"
+  zone_id = var.hosted_zone_id
+  name    = format("www.%s", var.dns_domain_name)
+  type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.website["static"].domain_name
-    zone_id                = aws_cloudfront_distribution.website["static"].hosted_zone_id
+    name                   = aws_cloudfront_distribution.website.domain_name
+    zone_id                = aws_cloudfront_distribution.website.hosted_zone_id
     evaluate_target_health = false
   }
 }
 
 resource "aws_route53_record" "website" {
-  for_each = local.is_static
-  zone_id  = var.hosted_zone_id
-  name     = var.dns_domain_name
-  type     = "A"
+  zone_id = var.hosted_zone_id
+  name    = var.dns_domain_name
+  type    = "A"
 
   alias {
-    name                   = aws_route53_record.www_website["static"].name
-    zone_id                = aws_route53_record.www_website["static"].zone_id
+    name                   = aws_route53_record.www_website.name
+    zone_id                = aws_route53_record.www_website.zone_id
     evaluate_target_health = false
   }
 }
