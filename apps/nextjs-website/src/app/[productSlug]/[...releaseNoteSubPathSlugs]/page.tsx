@@ -32,6 +32,7 @@ type ReleaseNotePageStaticParams = {
   releaseNoteSubPathSlugs: string[];
 };
 
+// export const revalidate = REVALIDATE_SHORT_INTERVAL; TODO: uncomment this line which is omitted for testing purposes
 export async function generateMetadata({
   params,
 }: {

@@ -114,6 +114,9 @@ export const organizationInfo = {
   ).split(','),
 };
 
+export const REVALIDATE_LONG_INTERVAL = 3600; // 1 hour
+export const REVALIDATE_SHORT_INTERVAL = 300; // 5 minutes
+
 export const companyRoles = [
   'ente-pubblico',
   'partner-tecnologico',
