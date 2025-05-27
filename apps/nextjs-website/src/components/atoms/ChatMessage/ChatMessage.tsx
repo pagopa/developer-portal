@@ -5,7 +5,7 @@ import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/Chat
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
 import { useTranslations } from 'next-intl';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { UrlReplaceMap } from '@/lib/strapi/makeProps/makeUrlReplaceMap';
 
 type DateFormatOptions = {
   locale?: string;
@@ -28,27 +28,28 @@ export type Message = {
   timestamp?: string;
   dateHeader?: string;
   hasNegativeFeedback: boolean;
+  urlReplaceMap?: UrlReplaceMap;
 };
 
 type ChatMessageProps = Message & {
   onToggleNegativeFeedback: (negativeFeedback: boolean) => null;
 };
 
-const ChatMessage = async ({
+const ChatMessage = ({
   text,
   isQuestion,
   timestamp,
   dateHeader,
   hasNegativeFeedback,
   onToggleNegativeFeedback,
+  urlReplaceMap = {},
 }: ChatMessageProps) => {
-  const urlReplaceMap = await getUrlReplaceMapProps();
-
   const t = useTranslations();
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
   const isWelcomeMessage = !timestamp;
+  console.log('urlReplaceMap', urlReplaceMap);
   const parsedChatMessage = isQuestion
     ? text
     : parseChatMessage(text, urlReplaceMap);

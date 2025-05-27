@@ -26,6 +26,10 @@ export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
     isQuestion: false,
     timestamp: '2024-07-24T17:14:07.129Z',
     dateHeader: 'Oggi',
+    urlReplaceMap: {
+      'https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti':
+        'https://www.google.com',
+    },
   },
   decorators: [decorator, nextIntlContextDecorator],
 };

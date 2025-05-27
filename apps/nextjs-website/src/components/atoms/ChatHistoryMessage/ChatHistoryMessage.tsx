@@ -2,7 +2,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { UrlReplaceMap } from '@/lib/strapi/makeProps/makeUrlReplaceMap';
 
 type DateFormatOptions = {
   locale?: string;
@@ -22,15 +22,16 @@ type ChatMessageProps = {
   sender: string;
   isQuestion: boolean;
   timestamp?: string;
+  urlReplaceMap?: UrlReplaceMap;
 };
 
-const ChatHistoryMessage = async ({
+const ChatHistoryMessage = ({
   text,
   timestamp,
   isQuestion,
   sender,
+  urlReplaceMap = {},
 }: ChatMessageProps) => {
-  const urlReplaceMap = await getUrlReplaceMapProps();
   const { palette } = useTheme();
   const textColor = palette.text.primary;
   const parsedChatMessage = isQuestion
