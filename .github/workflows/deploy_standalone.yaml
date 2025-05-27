@@ -71,11 +71,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Install dependencies
-        run: npm ci --audit=false --fund=false
+        run: npm i --audit=false --fund=false
 
       - name: Build NextJS website
-        run: npm run build --workspace=apps/nextjs-website 
-
+        run: npm run build -w nextjs-website 
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
