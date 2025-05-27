@@ -33,7 +33,7 @@ export async function fetchFileFromS3(
     return await response.Body?.transformToString();
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error('Error fetching File from S3:', error);
+    console.error('Error fetching File from S3:', error, 'key:', key);
     return;
   }
 }

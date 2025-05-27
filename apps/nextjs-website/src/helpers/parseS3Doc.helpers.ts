@@ -208,7 +208,9 @@ export const parseS3GuidePage = async (props: {
       'Missing version:',
       version,
       'or guidePageMetadata',
-      guidePageMetadata
+      guidePageMetadata,
+      'guidesMetadataLength',
+      guidesMetadata.length
     );
     return undefined;
   }
