@@ -68,6 +68,7 @@ jobs:
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
@@ -116,6 +117,7 @@ jobs:
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
@@ -198,10 +200,12 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           environment: prod
+          ref: nextjs-website@${{ env.LATEST_DEPLOYED_IN_PRODUCTION_TAG }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}

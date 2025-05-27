@@ -35,6 +35,7 @@ locals {
     LLAMA_INDEX_CACHE_DIR  = "/tmp"
     LOG_LEVEL              = "INFO"
     NLTK_DATA              = "_static/nltk_cache/"
+    TIKTOKEN_CACHE_DIR     = "/tmp/tiktoken"
   }
 }
 
