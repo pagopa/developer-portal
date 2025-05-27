@@ -31,3 +31,14 @@ output "webinar_subscriptions_ddb" {
     stream_arn = module.dynamodb_webinar_subscriptions.dynamodb_table_stream_arn
   }
 }
+
+output "assets_opennext_bucket" {
+  value = {
+    name = module.opennext.assets.bucket.name
+    arn  = module.opennext.assets.bucket.arn
+  }
+}
+
+output "standalone_server" {
+  value = module.opennext.server
+}

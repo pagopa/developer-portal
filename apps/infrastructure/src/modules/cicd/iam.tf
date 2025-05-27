@@ -70,3 +70,47 @@ resource "aws_iam_role_policy_attachment" "deploy_website" {
   role       = module.codebuild.iam_role.name
   policy_arn = aws_iam_policy.deploy_website.arn
 }
+
+resource "aws_iam_role" "github_deploy_opennext" {
+  name               = "${local.prefix}-deploy-opennext"
+  description        = "Role to deploy lambda functions with github actions."
+  assume_role_policy = local.assume_role_policy_github
+}
+
+
+# Role to deploy lambda functions with github actions.
+resource "aws_iam_policy" "github_deploy_opennext" {
+  name        = "${local.prefix}-deploy-lambda"
+  description = "Policy to deploy Lambda functions"
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:CreateFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration"
+        ]
+        Resource = "*"
+      },
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${var.assets_opennext_bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
+  role       = aws_iam_role.github_deploy_opennext.name
+  policy_arn = aws_iam_policy.github_deploy_opennext.arn
+}
