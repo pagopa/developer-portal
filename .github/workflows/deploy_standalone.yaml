@@ -1,4 +1,4 @@
-name: Deploy Lambda Standalone website
+name: Deploy Standalone Website
 
 on:
   push:
@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.setmatrix.outputs.matrix }}
+    
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Set Dynamic Env Matrix
@@ -31,7 +35,7 @@ jobs:
           echo "event name ${{ github.event_name }}"
           
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            matrixStringifiedObject="{\"include\":[{\"environment\":\"${{ github.event.inputs.environment }}\"]}"
+            matrixStringifiedObject="{\"include\":[{\"environment\":\"${{ github.event.inputs.environment }}\"}]}"
           else
             matrixStringifiedObject="{\"include\":[{\"environment\":\"dev\"}, {\"environment\":\"uat\"}]}"
           fi
