@@ -11,7 +11,6 @@ const ApiSection = ({ apiData }: ApiPageProps) => {
     return null;
   }
 
-  // TODO: Add check for api type (SOAP or REST) and render the appropriate section
   return (
     <ApiRestSection
       apiSlug={apiData.apiDataSlug}
