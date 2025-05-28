@@ -92,7 +92,8 @@ resource "aws_iam_policy" "github_deploy_opennext" {
         Action = [
           "lambda:CreateFunction",
           "lambda:UpdateFunctionCode",
-          "lambda:UpdateFunctionConfiguration"
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:GetFunctionConfiguration"
         ]
         Resource = "*"
       },

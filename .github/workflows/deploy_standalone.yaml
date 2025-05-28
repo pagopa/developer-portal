@@ -71,17 +71,32 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Install dependencies
-        run: npm i --audit=false --fund=false
+        run: npm ci --audit=false --fund=false
 
-      - name: Build NextJS website
-        run: npm run build -w nextjs-website 
+      - name: Compile
+        run: npm run compile
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
         with:
-          role-to-assume: ${{ vars.IAM_ROLE_DEPLOY_LAMBDA }}
+          role-to-assume: ${{ secrets.IAM_ROLE_DEPLOY_LAMBDA }}
           aws-region: eu-south-1
-      
+
+      - name: Setup env variables
+        working-directory: apps/nextjs-website
+        run: |
+          aws lambda get-function-configuration \
+          --function-name devportal-${{ env.ENV_SHORT }}-website-opnext-server-lambda-01 | jq -r '.Environment.Variables | to_entries[] | "\(.key)=\(.value)"' > .env
+
+      - name: build open-next
+        working-directory: apps/nextjs-website
+        run: npx @opennextjs/aws build
+        env:
+          AWS_REGION: eu-south-1
+          S3_ACCESS_KEY_ID: ${{ AWS_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ AWS_SECRET_ACCESS_KEY }}
+          S3_SESSION_TOKEN: ${{ AWS_SESSION_TOKEN }}
+
       - name: Deploy Lambda function (${{ matrix.environment }})
         run: |
           aws lambda update-function-code \
