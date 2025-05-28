@@ -22,6 +22,7 @@ export const credentials =
         accessKeyId: secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID,
         secretAccessKey:
           secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY,
+        sessionToken: secrets.S3_SESSION_TOKEN || process.env.S3_SESSION_TOKEN,
       }
     : undefined;
 export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;

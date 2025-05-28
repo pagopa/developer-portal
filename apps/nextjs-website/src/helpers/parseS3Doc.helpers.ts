@@ -67,6 +67,7 @@ export const makeParseS3DocsEnv = (
   credentials?: {
     readonly accessKeyId: string;
     readonly secretAccessKey: string;
+    readonly sessionToken?: string;
   }
 ): ParseDocS3Env => {
   const s3 =
