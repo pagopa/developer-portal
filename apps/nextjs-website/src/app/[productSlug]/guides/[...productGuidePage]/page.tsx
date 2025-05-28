@@ -67,7 +67,6 @@ export async function generateMetadata({
 }
 
 export const revalidate = REVALIDATE_LONG_INTERVAL;
-export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
