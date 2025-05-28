@@ -14,6 +14,7 @@ type Params = {
   solutionSlug: string;
 };
 
+export const dynamic = 'force-dynamic';
 export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   const solutions = await getSolutionsProps();
