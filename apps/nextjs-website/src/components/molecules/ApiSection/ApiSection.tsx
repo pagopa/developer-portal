@@ -1,7 +1,7 @@
 'use client';
 
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import ApiRestSection from '@/components/molecules/ApiSection/ApiRestSection';
+import ApiRestSection from '@/components/molecules/ApiRestSection/ApiRestSection';
 
 export type ApiPageProps = {
   readonly apiData: ApiDataPageProps;

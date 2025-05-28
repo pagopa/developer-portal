@@ -13,7 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
-import { getStyles } from '@/components/molecules/ApiSection/ApiSection.styles';
+import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
