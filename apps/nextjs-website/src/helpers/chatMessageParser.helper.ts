@@ -27,19 +27,6 @@ export function parseChatMessage(
         },
       },
     },
-    variables: {
-      assetsPrefix: '',
-      pagePath: '',
-      isPageIndex: false,
-      gitBookPagesWithTitle: [],
-      spaceToPrefix: [
-        {
-          spaceId: '',
-          pathPrefix: '',
-        },
-      ],
-      urlReplaces: urlReplaceMap,
-    },
   };
 
   // eslint-disable-next-line functional/no-expression-statements
