@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Refactor ApiSection to ApiRestSection and add generic ApiSection
+Rename the existing ApiSection component to ApiRestSection and add a more generic ApiSection component to replace it
