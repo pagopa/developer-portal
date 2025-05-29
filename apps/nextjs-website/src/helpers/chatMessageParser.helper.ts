@@ -32,7 +32,8 @@ export function parseChatMessage(
   // eslint-disable-next-line functional/no-expression-statements
   const parsedMarkdown = transformAndReplaceUrlInMessage(
     markdown,
-    chatMarkdocConfig
+    chatMarkdocConfig,
+    urlReplaceMap
   );
   return Markdoc.renderers.react(parsedMarkdown, React, {
     components: {
