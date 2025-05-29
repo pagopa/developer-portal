@@ -329,10 +329,7 @@ class Chatbot:
 
             if flag:
                 trace.score(
-                    name=name,
-                    value=value,
-                    data_type=data_type,
-                    comment=comment
+                    name=name, value=value, data_type=data_type, comment=comment
                 )
                 logger.warning(
                     f"Add score {name}: {value} in trace {trace_id}.\n"
@@ -434,7 +431,7 @@ class Chatbot:
                 response_json["contexts"] = retrieved_contexts
 
             trace.update(
-                output=self.mask_pii(response_json["response"]),
+                output=response_json["response"],
                 metadata={"contexts": retrieved_contexts},
                 tags=response_json["topics"],
             )
