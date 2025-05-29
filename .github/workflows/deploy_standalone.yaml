@@ -105,19 +105,7 @@ jobs:
         working-directory: apps/nextjs-website
         run: |
           aws s3 sync ./.open-next/cache s3://devportal-${{ env.ENV_SHORT }}-website-opnext-assets-01/_cache
-      
-      - name: Package the application
-        working-directory: apps/nextjs-website/.open-next
-        run: |
-          
-          echo "Packaging Dynamo provider..."
-          cd ../dynamodb-provider
-          zip -r ./dynamodb-provider.zip .
-
-          echo "Packaging Revalidation function..."
-          cd ../revalidation-function
-          zip -r ./revalidation-function.zip .
-          
+            
       - name: Deploy Lambda Server Function
         uses: ./.github/actions/deploy_lambda
         with:
