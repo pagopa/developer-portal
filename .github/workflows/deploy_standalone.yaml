@@ -124,15 +124,13 @@ jobs:
           echo "Packaging Server function..."
           cd ../server-functions/default
           zip -r ./server-functions.zip .
-
-      - name: Update Server function
+    
+      - name: Deploy Lambda Server Function
         working-directory: apps/nextjs-website/.open-next
         run: |
-          aws s3 cp ./server-functions/default/server-functions.zip \
-          s3://devportal-${{ matrix.environment }}-website-opennext-lambda-code-01
           
-      - name: Deploy Lambda Server Function
-        run: |
+          aws s3 cp ./server-functions/default/server-functions.zip s3://devportal-${{ matrix.environment }}-website-opennext-lambda-code-01/server-functions.zip
+
           aws lambda update-function-code \
           --function-name devportal-${{ env.ENV_SHORT }}-website-opnext-server-lambda-01 \
           --s3-bucket devportal-${{ matrix.environment }}-website-opennext-lambda-code-01 \
