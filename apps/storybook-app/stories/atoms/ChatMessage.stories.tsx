@@ -21,14 +21,13 @@ export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
       GPD gestisce i pagamenti spontanei attraverso il nodo dei pagamenti.  
         
       Rif:  
-      [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+      [PagoPA DevPortal | Overview delle componenti](https://docs.pagopa.it/io-guida-tecnica-1.3/)
     `,
     isQuestion: false,
     timestamp: '2024-07-24T17:14:07.129Z',
     dateHeader: 'Oggi',
     urlReplaceMap: {
-      'https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti':
-        'https://www.google.com',
+      'https://docs.pagopa.it/io-guida-tecnica-1.3/': 'https://www.google.com',
     },
   },
   decorators: [decorator, nextIntlContextDecorator],
