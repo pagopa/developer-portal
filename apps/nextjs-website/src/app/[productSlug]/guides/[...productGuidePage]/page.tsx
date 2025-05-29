@@ -68,7 +68,7 @@ export async function generateMetadata({
     return makeMetadataFromStrapi(seo);
   }
   return makeMetadata({
-    title: [title, name, version.name, product.name]
+    title: [title, [name, version.name].filter(Boolean).join(' '), product.name]
       .filter(Boolean)
       .join(' | '),
     url: path,
