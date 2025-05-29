@@ -67,18 +67,17 @@ export async function generateMetadata({
 }
 
 export const revalidate = REVALIDATE_LONG_INTERVAL;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const guides = await getGuidesProps();
-  const guideParams = guides.map((guide) => {
-    return {
-      productSlug: guide.product.slug,
-      productGuidePage: [guide.guide.slug],
-    };
-  });
-  return guideParams;
-}
+// export const dynamicParams = true;
+// export async function generateStaticParams() {
+//   const guides = await getGuidesProps();
+//   const guideParams = guides.map((guide) => {
+//     return {
+//       productSlug: guide.product.slug,
+//       productGuidePage: [guide.guide.slug],
+//     };
+//   });
+//   return guideParams;
+// }
 
 const Page = async ({ params }: { params: Params }) => {
   const guideProps = await getGuidePage(
