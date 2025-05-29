@@ -59,16 +59,21 @@ export async function generateMetadata({
   const {
     page: { path, title },
     seo,
+    version,
   } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
   }
 
-  return makeMetadata({
-    title,
-    url: path,
-  });
+  const robots = version.main ? '' : 'noindex, follow';
+  return {
+    robots: robots,
+    ...makeMetadata({
+      title,
+      url: path,
+    }),
+  };
 }
 
 const Page = async ({ params }: { params: Params }) => {
