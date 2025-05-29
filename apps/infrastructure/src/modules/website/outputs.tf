@@ -39,6 +39,13 @@ output "assets_opennext_bucket" {
   }
 }
 
+output "lambda_code_opennext_bucket" {
+  value = {
+    name = module.opennext.common.lambda_code_bucket.name
+    arn  = module.opennext.common.lambda_code_bucket.arn
+  }
+}
+
 output "standalone_server" {
   value = module.opennext.server
 }

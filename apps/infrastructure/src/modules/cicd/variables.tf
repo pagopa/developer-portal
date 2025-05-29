@@ -95,6 +95,15 @@ variable "assets_opennext_bucket" {
 
 }
 
+variable "lambda_code_opennext_bucket" {
+  type = object({
+    name = string
+    arn  = string
+  })
+
+  description = "The S3 bucket used to store the lambda code"
+}
+
 variable "create_chatbot" {
   type        = bool
   description = "Defines if chatbot should be created"

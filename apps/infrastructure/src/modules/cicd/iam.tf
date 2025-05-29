@@ -100,11 +100,23 @@ resource "aws_iam_policy" "github_deploy_opennext" {
       {
         Action = [
           "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${var.assets_opennext_bucket.arn}/*",
+          "${var.assets_opennext_bucket.arn}"
+        ]
+      },
+      {
+        Action = [
+          "s3:PutObject",
           "s3:GetObject"
         ]
         Effect = "Allow"
         Resource = [
-          "${var.assets_opennext_bucket.arn}/*"
+          "${var.lambda_code_opennext_bucket.arn}/*"
         ]
       }
     ]

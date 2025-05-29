@@ -1,6 +1,3 @@
-# website
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -19,7 +16,6 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_amplify"></a> [amplify](#module\_amplify) | github.com/pagopa/dx//infra/modules/aws_web_app | static-websites-module |
 | <a name="module_cloudfront_5xx_error_rate_alarm"></a> [cloudfront\_5xx\_error\_rate\_alarm](#module\_cloudfront\_5xx\_error\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_cloudfront_function_execution_errors_alarm"></a> [cloudfront\_function\_execution\_errors\_alarm](#module\_cloudfront\_function\_execution\_errors\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_cloudfront_function_throttled_alarm"></a> [cloudfront\_function\_throttled\_alarm](#module\_cloudfront\_function\_throttled\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
@@ -65,6 +61,7 @@
 | <a name="module_dynamodb_webinar_subscriptions"></a> [dynamodb\_webinar\_subscriptions](#module\_dynamodb\_webinar\_subscriptions) | git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git | 715399dbe24f6443820bf5de80f6100b35d56355 |
 | <a name="module_dynamodb_write_capacity_utilization_alarm"></a> [dynamodb\_write\_capacity\_utilization\_alarm](#module\_dynamodb\_write\_capacity\_utilization\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_dynamodb_write_throttle_events_webinar_questions_alarm"></a> [dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm](#module\_dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_opennext"></a> [opennext](#module\_opennext) | github.com/pagopa/dx//infra/modules/aws_open_next | opennext-module |
 | <a name="module_ses_bounce_rate_alarm"></a> [ses\_bounce\_rate\_alarm](#module\_ses\_bounce\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_daily_sending_quota_alarm"></a> [ses\_daily\_sending\_quota\_alarm](#module\_ses\_daily\_sending\_quota\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_reputation_complaint_rate_alarm"></a> [ses\_reputation\_complaint\_rate\_alarm](#module\_ses\_reputation\_complaint\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
@@ -75,6 +72,7 @@
 | Name | Type |
 |------|------|
 | [aws_acm_certificate.auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
+| [aws_acm_certificate.opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate.website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_cloudfront_distribution.website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_function.website_viewer_request_handler](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_function) | resource |
@@ -98,6 +96,7 @@
 | [aws_iam_role_policy_attachment.deploy_website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_route53_record.certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.devportal_cognito_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.www_website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_s3_bucket.website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
@@ -116,27 +115,29 @@
 | [aws_iam_policy_document.authenticated_users_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.deploy_github](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.website_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_ssm_parameter.cookie_domain_script](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.strapi_api_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br>    {<br>      header   = string<br>      override = bool<br>      value    = string<br>    }<br>  ))</pre> | `[]` | no |
-| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
-| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
-| <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br>    prefix          = string<br>    env_short       = string<br>    location        = string<br>    domain          = optional(string)<br>    app_name        = string<br>    instance_number = string<br>  })</pre> | n/a | yes |
+| <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
+| <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
+| <a name="input_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#input\_ses\_domain\_identity\_arn) | The ARN of the SES domain identity | `string` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
+| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
+| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
+| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_mfa_code_duration_in_minutes"></a> [mfa\_code\_duration\_in\_minutes](#input\_mfa\_code\_duration\_in\_minutes) | The duration for which the MFA code is valid in minutes | `number` | `15` | no |
-| <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
-| <a name="input_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#input\_ses\_domain\_identity\_arn) | The ARN of the SES domain identity | `string` | n/a | yes |
-| <a name="input_signup_allowed_email_domains"></a> [signup\_allowed\_email\_domains](#input\_signup\_allowed\_email\_domains) | List of allowed email domains for signup | `list(string)` | <pre>[<br>  "pagopa.it",<br>  "uqido.com",<br>  "aizoongroup.com"<br>]</pre> | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_signup_allowed_email_domains"></a> [signup\_allowed\_email\_domains](#input\_signup\_allowed\_email\_domains) | List of allowed email domains for signup | `list(string)` | <pre>[<br/>  "pagopa.it",<br/>  "uqido.com",<br/>  "aizoongroup.com"<br/>]</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |
 | <a name="input_website_is_standalone"></a> [website\_is\_standalone](#input\_website\_is\_standalone) | If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront) | `bool` | `false` | no |
 
@@ -144,8 +145,9 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_assets_opennext_bucket"></a> [assets\_opennext\_bucket](#output\_assets\_opennext\_bucket) | n/a |
 | <a name="output_cognito_user_pool"></a> [cognito\_user\_pool](#output\_cognito\_user\_pool) | n/a |
+| <a name="output_standalone_server"></a> [standalone\_server](#output\_standalone\_server) | n/a |
 | <a name="output_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#output\_webinar\_subscriptions\_ddb) | n/a |
 | <a name="output_website_bucket"></a> [website\_bucket](#output\_website\_bucket) | n/a |
 | <a name="output_website_cdn"></a> [website\_cdn](#output\_website\_cdn) | n/a |
-<!-- END_TF_DOCS -->

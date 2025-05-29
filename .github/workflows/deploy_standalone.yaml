@@ -109,21 +109,31 @@ jobs:
       - name: Package the application
         working-directory: apps/nextjs-website/.open-next
         run: |
+          echo "Packaging Image optimization..."
           cd image-optimization-function
           zip -r ./image-optimization-function.zip .
           
+          echo "Packaging Dynamo provider..."
           cd ../dynamodb-provider
           zip -r ./dynamodb-provider.zip .
 
+          echo "Packaging Revalidation function..."
           cd ../revalidation-function
           zip -r ./revalidation-function.zip .
 
-          cd ../server-functions
+          echo "Packaging Server function..."
+          cd ../server-functions/default
           zip -r ./server-functions.zip .
-          
 
-      - name: Deploy Lambda function (${{ matrix.environment }})
+      - name: Update Server function
+        working-directory: apps/nextjs-website/.open-next
+        run: |
+          aws s3 cp ./server-functions/default/server-functions.zip \
+          s3://devportal-${{ matrix.environment }}-website-opennext-lambda-code-01
+          
+      - name: Deploy Lambda Server Function
         run: |
           aws lambda update-function-code \
           --function-name devportal-${{ env.ENV_SHORT }}-website-opnext-server-lambda-01 \
-          --zip-file fileb://nextjs-app.zip --region eu-south-1
+          --s3-bucket devportal-${{ matrix.environment }}-website-opennext-lambda-code-01 \
+          --s3-key server-functions.zip
