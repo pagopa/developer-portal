@@ -95,8 +95,33 @@ jobs:
         run: npx @opennextjs/aws build
         env:
           AWS_REGION: eu-south-1
+
+      - name: Sync Assets to S3
+        working-directory: apps/nextjs-website
+        run: |
+          aws s3 sync ./.open-next/assets s3://devportal-${{ env.ENV_SHORT }}-website-opnext-assets-01/_assets
+
+      - name: Sync Cache to S3
+        working-directory: apps/nextjs-website
+        run: |
+          aws s3 sync ./.open-next/cache s3://devportal-${{ env.ENV_SHORT }}-website-opnext-assets-01/_cache
+      
+      - name: Package the application
+        working-directory: apps/nextjs-website/.open-next
+        run: |
+          cd image-optimization-function
+          zip -r ./image-optimization-function.zip .
           
+          cd ../dynamodb-provider
+          zip -r ./dynamodb-provider.zip .
+
+          cd ../revalidation-function
+          zip -r ./revalidation-function.zip .
+
+          cd ../server-functions
+          zip -r ./server-functions.zip .
           
+
       - name: Deploy Lambda function (${{ matrix.environment }})
         run: |
           aws lambda update-function-code \
