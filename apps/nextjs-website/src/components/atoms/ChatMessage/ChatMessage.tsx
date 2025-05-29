@@ -27,6 +27,7 @@ export type Message = {
   timestamp?: string;
   dateHeader?: string;
   hasNegativeFeedback: boolean;
+  mustFillFeedbackForm: boolean;
 };
 
 type ChatMessageProps = Message & {
@@ -40,6 +41,7 @@ const ChatMessage = ({
   dateHeader,
   hasNegativeFeedback,
   onToggleNegativeFeedback,
+  mustFillFeedbackForm,
 }: ChatMessageProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -144,6 +146,7 @@ const ChatMessage = ({
                       tooltipPlacement='bottom'
                     />
                     <ChatbotFeedbackButton
+                      mustFillFeedbackForm={mustFillFeedbackForm}
                       isNegativeFeedbackGiven={hasNegativeFeedback}
                       onToggleNegativeFeedback={onToggleNegativeFeedback}
                     />
