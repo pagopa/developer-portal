@@ -49,3 +49,10 @@ output "lambda_code_opennext_bucket" {
 output "standalone_server" {
   value = module.opennext.server
 }
+
+output "lambda_initializer" {
+  value = {
+    name = module.opennext.initializer.lambda_function.name
+    arn  = module.opennext.initializer.lambda_function.arn
+  }
+}

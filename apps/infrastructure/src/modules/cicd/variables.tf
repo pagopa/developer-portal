@@ -121,3 +121,9 @@ variable "website_is_standalone" {
   description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
   default     = false
 }
+
+
+variable "lambda_initializer_arn" {
+  type        = string
+  description = "The ARN of the lambda initializer function"
+}

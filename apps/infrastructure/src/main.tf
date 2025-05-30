@@ -187,7 +187,8 @@ module "cicd" {
   website_cdn    = module.website.website_cdn
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket
-  lambda_code_opennext_bucket = module.website.assets_opennext_bucket
+  lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
+  lambda_initializer_arn      = module.website.lambda_initializer.arn
 
   website_is_standalone = var.website_is_standalone
 

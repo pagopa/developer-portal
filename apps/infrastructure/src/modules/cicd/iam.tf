@@ -116,8 +116,14 @@ resource "aws_iam_policy" "github_deploy_opennext" {
         ]
         Effect = "Allow"
         Resource = [
-          "${var.lambda_code_opennext_bucket.arn}/*"
+          "${var.lambda_code_opennext_bucket.arn}/*",
+
         ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "lambda:InvokeFunction"
+        Resource = "${var.lambda_initializer_arn}"
       }
     ]
   })
