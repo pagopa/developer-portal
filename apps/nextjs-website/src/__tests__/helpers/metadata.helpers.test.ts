@@ -168,18 +168,18 @@ it('should return the correct metadata when parent is missing', () => {
   });
 
   expect(metadataWithoutParent).toEqual({
-    title: `${websiteName} | Title`,
+    title: `Title | ${websiteName}`,
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: `${websiteName} | Title`,
+      title: `Title | ${websiteName}`,
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: `${websiteName} | Title`,
+      title: `Title | ${websiteName}`,
       description: 'Description',
       images: 'Image',
       card: 'summary',
