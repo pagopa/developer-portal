@@ -1,0 +1,192 @@
+body {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 1rem;
+    color: rgba(58, 58, 58, 1);
+}
+
+h1 {
+    font-weight: 600;
+    letter-spacing: 0;
+    font-size: 2.75rem;
+    line-height: 3.625rem;
+    margin: 0 3px;
+}
+
+.blank-divider {
+    background-color: white;
+    padding-top: 40px;
+}
+
+.port-container {
+    background-color: rgba(44, 57, 78, 1);
+    padding: 20px;
+    color: #ffffff;
+    font-family: 'Titillium Web', sans-serif;
+    margin-top: 40px;
+}
+
+.port-row {
+    background-color: rgba(33, 42, 59, 1);
+    margin-bottom: 8px;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.port-label {
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: 6px;
+}
+
+.port-value {
+    color: #ffffff;
+}
+ol.port-value {
+    margin-left: 0.875rem;
+}
+
+.port-operations .port-value {
+    padding-inline-start: 1.313rem;
+    margin-block-start: 1.313rem;
+    margin-block-end: 0;
+}
+
+.port-row.port-operations {
+    display: flex;
+    flex-direction: column;
+}
+
+.details-container {
+    background-color: rgba(236, 238, 245, 1);
+    color: rgba(58, 58, 58, 1);
+    padding-bottom: 40px;
+    font-size: 0.875rem;
+    margin-top: 40px;
+}
+
+.details-header {
+    background-color: rgba(219, 225, 235, 1);
+    padding: 8px 24px   ;
+}
+.details-header h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.details-row {
+    background-color: rgba(224, 230, 240, 1);
+    padding: 8px 24px;
+}
+.details-row h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.details-container ol {
+    list-style-position: inside;
+    padding: 0;
+}
+.details-container .operation {
+    margin: 40px 32px 0 32px;
+    padding-left: 8px;
+}
+.details-container ol li::marker {
+    color: rgba(0, 98, 195, 1);
+    font-size: 1rem;
+    line-height: 1.313rem;
+    font-weight: 600;
+}
+
+.details-container ol h4 {
+    color: rgba(0, 98, 195, 1);
+    font-size: 1rem;
+    line-height: 1.313rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin: 0;
+    display: inline;
+}
+
+.details-container .label {
+    float: left;
+    width: auto;
+    text-align: left;
+    font-weight: 600;
+    color: rgba(58, 58, 58, 1);
+    margin-right: 4px;
+}
+
+.details-container .value {
+    margin-left: 0;
+    color: rgba(58, 58, 58, 1);
+}
+
+.inner-details-container {
+    background-color: rgba(224, 230, 240, 1);
+    margin-bottom: 1rem;
+    margin-left: -8px;
+    padding-top: 8px;
+}
+.inner-details-container .label {
+    font-size: 0.875rem;
+    margin-left: 8px;
+}
+.inner-details-container .box {
+    border: none;
+    background-color: rgba(229, 233, 239, 1);
+}
+
+
+.operation-message-label {
+    font-weight: 600;
+    color: rgba(58, 58, 58, 1);
+    font-size: 1rem;
+    line-height: 1.313rem;
+    margin-right: 4px;
+}
+
+.inner-details-container .type-label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-right: 4px;
+    font-style: italic;
+    color: rgba(58, 58, 58, 1);
+}
+.inner-details-container .type-name {
+    font-weight: 400;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.313rem;
+    color: rgba(0, 98, 195, 1);
+}
+
+.subtypes-list {
+    margin: 0;
+}
+
+.subtype {
+    margin: 10px 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.subtype-label {
+    color: rgba(0, 98, 195, 1);
+}
+
+.source-block {
+    padding: 32px;
+    color: rgba(58, 58, 58, 1);
+    line-height: 1.875rem;
+}
+.source-block a {
+    color: rgba(58, 58, 58, 1);
+    pointer-events: none;
+    text-decoration: none;
+}
