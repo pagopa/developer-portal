@@ -67,6 +67,14 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
         with:
@@ -140,3 +148,27 @@ jobs:
             --function-name devportal-${{ env.ENV_SHORT }}-website-opnext-init-lambda-01 \
             --region eu-south-1 \
             --payload '{}'
+      
+      - name: Publish new Lambda version for Server function  
+        uses: ./.github/actions/publish_new_lambda_version
+        with:
+          function_name: devportal-${{ env.ENV_SHORT }}-website-opnext-server-lambda-01
+          alias_name: production
+
+      - name: Publish new Lambda version for Image Optimization function
+        uses: ./.github/actions/publish_new_lambda_version
+        with:
+          function_name: devportal-${{ env.ENV_SHORT }}-website-opnext-img-opt-lambda-01
+          alias_name: production
+
+      - name: Publish new Lambda version for Revalidation function
+        uses: ./.github/actions/publish_new_lambda_version
+        with:
+          function_name: devportal-${{ env.ENV_SHORT }}-website-opnext-isr-lambda-01
+          alias_name: production
+
+      - name: Publish new Lambda version for DynamoDB Provider function
+        uses: ./.github/actions/publish_new_lambda_version
+        with:
+          function_name: devportal-${{ env.ENV_SHORT }}-website-opnext-init-lambda-01
+          alias_name: production
