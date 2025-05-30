@@ -22,7 +22,7 @@ export const makeMetadata: MakeMetadataFunction = ({
   locale,
 }) => {
   const previousTitle = parent?.title?.absolute || websiteName;
-  const metadataTitle = title ? `${previousTitle} | ${title}` : previousTitle;
+  const metadataTitle = title ? `${title} | ${previousTitle}` : previousTitle;
   const image = imageParam || defaultOgTagImage;
   const openGraph = getOpenGraphMetadata(
     metadataTitle,
