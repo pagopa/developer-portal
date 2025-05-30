@@ -41,7 +41,9 @@ export async function generateMetadata({
   );
 
   return makeMetadata({
-    title: props?.solution.title,
+    title: [props?.page.title, props?.solution.title]
+      .filter(Boolean)
+      .join(' | '),
     url: props
       ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
           '/'
