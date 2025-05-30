@@ -1,5 +1,12 @@
 # chatbot
 
+## 5.1.1
+
+### Patch Changes
+
+- 1c942c4: fixed auth JWT decode
+- 873b4ab: Fix double run of Presidio in Langfuse
+
 ## 5.1.0
 
 ### Minor Changes
