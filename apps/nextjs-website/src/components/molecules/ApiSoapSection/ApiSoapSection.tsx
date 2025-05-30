@@ -37,6 +37,7 @@ const ApiSoapSection = ({
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -75,6 +76,7 @@ const ApiSoapSection = ({
     const spec = apiUrls.find((item) => item?.url === urlItem);
 
     if (apisName && spec?.name) {
+      // update the url with the spec query param
       router.replace(
         `/${product.slug}/api/${apisSlug}?spec=${encodeURIComponent(spec.name)}`
       );
@@ -111,7 +113,6 @@ const ApiSoapSection = ({
           <Box
             sx={{
               width: 280,
-              bgcolor: palette.background.default,
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
@@ -175,6 +176,7 @@ const ApiSoapSection = ({
           <Stack
             direction='column'
             sx={{
+              paddingX: '100px',
               width: '100%',
               height: '100%',
             }}
