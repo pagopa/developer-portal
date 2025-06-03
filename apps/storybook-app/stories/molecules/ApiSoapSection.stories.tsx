@@ -27,19 +27,19 @@ export const Showcase: StoryObj<typeof ApiSoapSection> = {
     apiUrls: [
       {
         name: 'nodeForPa',
-        url: '/wsdl/wsdl/nodeForPa.wsdl.xml',
+        url: '/soap-api/wsdl/nodeForPa.wsdl.xml',
       },
       {
         name: 'nodeForPsp',
-        url: '/wsdl/wsdl/nodeForPsp.wsdl.xml',
+        url: '/soap-api/wsdl/nodeForPsp.wsdl.xml',
       },
       {
         name: 'paForNodeVeryLongNameOverflowing',
-        url: '/wsdl/wsdl/paForNode.wsdl.xml',
+        url: '/soap-api/wsdl/paForNode.wsdl.xml',
       },
       {
         name: 'pspForNode',
-        url: '/wsdl/wsdl/pspForNode.wsdl.xml',
+        url: '/soap-api/wsdl/pspForNode.wsdl.xml',
       },
     ],
   },
