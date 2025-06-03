@@ -148,7 +148,8 @@ jobs:
           aws lambda invoke \
             --function-name devportal-${{ env.ENV_SHORT }}-website-opnext-init-lambda-01 \
             --region eu-south-1 \
-            --payload '{}'
+            --payload '{}' \
+            response.json
       
       - name: Publish new Lambda version for Server function  
         uses: ./.github/actions/publish_new_lambda_version
