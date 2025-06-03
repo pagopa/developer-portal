@@ -2484,9 +2484,9 @@
 
 			<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&amp;display=swap" rel="stylesheet" />
 
-			<link rel="stylesheet" type="text/css" href="http://localhost:3000/wsdl/wsdl-viewer/src/wsdl-viewer.css" />
+			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl-viewer/src/wsdl-viewer.css" />
 
-			<link rel="stylesheet" type="text/css" href="http://localhost:3000/wsdl/wsdl-viewer/wsdl-pagopa-style.css" />
+			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl-viewer/wsdl-pagopa-style.css" />
 
         </head>
         
