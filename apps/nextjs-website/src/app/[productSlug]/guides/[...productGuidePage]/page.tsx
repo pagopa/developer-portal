@@ -72,7 +72,11 @@ export async function generateMetadata({
   return {
     robots: robots,
     ...makeMetadata({
-      title: [title, [name, version.name].filter(Boolean).join(' '), product.name]
+      title: [
+        title,
+        [name, version.name].filter(Boolean).join(' '),
+        product.name,
+      ]
         .filter(Boolean)
         .join(' | '),
       url: path,
