@@ -57,9 +57,11 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const {
+    product,
+    guide: { name },
+    version,
     page: { path, title },
     seo,
-    version,
   } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
 
   if (seo) {
@@ -70,7 +72,9 @@ export async function generateMetadata({
   return {
     robots: robots,
     ...makeMetadata({
-      title,
+      title: [title, [name, version.name].filter(Boolean).join(' '), product.name]
+        .filter(Boolean)
+        .join(' | '),
       url: path,
     }),
   };

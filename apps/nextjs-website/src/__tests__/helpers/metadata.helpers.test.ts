@@ -18,18 +18,18 @@ it('should return the correct metadata when all fields are present', () => {
   });
 
   expect(metadata).toEqual({
-    title: 'Parent title | Title',
+    title: 'Title | Parent title',
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       description: 'Description',
       images: 'Image',
       card: 'summary',
@@ -78,18 +78,18 @@ it('should return the correct metadata when description is missing', () => {
   });
 
   expect(metadataWithoutDescription).toEqual({
-    title: 'Parent title | Title',
+    title: 'Title | Parent title',
     description: '',
     url: 'Url',
     openGraph: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       type: 'website',
       locale: 'it_IT',
       description: '',
       images: 'Image',
     },
     twitter: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       description: '',
       images: 'Image',
       card: 'summary',
@@ -108,18 +108,18 @@ it('should return the correct metadata when url is missing', () => {
   });
 
   expect(metadataWithoutUrl).toEqual({
-    title: 'Parent title | Title',
+    title: 'Title | Parent title',
     description: 'Description',
     url: '',
     openGraph: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       description: 'Description',
       images: 'Image',
       card: 'summary',
@@ -138,18 +138,18 @@ it('should return the correct metadata when image is missing', () => {
   });
 
   expect(metadataWithoutImage).toEqual({
-    title: 'Parent title | Title',
+    title: 'Title | Parent title',
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: `${baseUrl}/images/dev-portal-home.jpg`,
     },
     twitter: {
-      title: 'Parent title | Title',
+      title: 'Title | Parent title',
       description: 'Description',
       images: `${baseUrl}/images/dev-portal-home.jpg`,
       card: 'summary',
@@ -168,18 +168,18 @@ it('should return the correct metadata when parent is missing', () => {
   });
 
   expect(metadataWithoutParent).toEqual({
-    title: `${websiteName} | Title`,
+    title: `Title | ${websiteName}`,
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: `${websiteName} | Title`,
+      title: `Title | ${websiteName}`,
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: `${websiteName} | Title`,
+      title: `Title | ${websiteName}`,
       description: 'Description',
       images: 'Image',
       card: 'summary',
