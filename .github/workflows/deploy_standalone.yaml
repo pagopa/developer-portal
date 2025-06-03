@@ -68,7 +68,8 @@ jobs:
           submodules: recursive
 
       - name: Cache npm dependencies
-        uses: actions/cache@v5a3ec84eff668545956fd18022155c47e93e2684
+        id: cache-npm
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
