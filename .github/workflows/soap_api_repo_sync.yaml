@@ -1,0 +1,44 @@
+name: DevPortal Docs Sync
+
+on:
+  push:
+    branches:
+      - poc-standalone
+  workflow_dispatch:
+
+# Permissions needed for AWS OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync_docs:
+    name: Sync Docs to S3
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout pagopa-api repos
+        uses: actions/checkout@v4
+        with:
+          repository: /pagopa/pagopa-api
+          ref: docs/from-gitbook
+          path: devportal-soap-api
+
+      - name: Add Stylesheet Reference to WSDLs
+        uses: ./.github/actions/add-stylesheet-ref-to-wsdls
+        with:
+          dir: devportal-soap-api
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Sync devportal-soap-api folder to S3
+        run: |
+          aws s3 sync devportal-soap-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api --delete
