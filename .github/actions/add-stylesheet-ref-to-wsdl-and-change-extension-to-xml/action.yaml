@@ -17,3 +17,10 @@ runs:
             sed -i '2i<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"
           fi
         done
+
+    - name: Find all WDSL file and change the extension to XML
+      shell: bash
+      run: |
+          find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
+          mv "$file" "${file%.wsdl}.xml"
+          done
