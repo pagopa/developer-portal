@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_ecosystem",
+  "info": {
+    "displayName": "Ecosystem",
+    "icon": "file",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "productsTabName": {
+      "type": "string",
+      "required": true
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "solutionsTabName": {
+      "type": "string",
+      "required": true
+    },
+    "solutions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::solution.solution"
+    },
+    "solutionsCta": {
+        "type": "component",
+        "repeatable": false,
+        "component": "common.call-to-action"
+    }
+  }
+}

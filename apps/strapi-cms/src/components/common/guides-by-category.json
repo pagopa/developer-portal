@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_common_guides_by_categories",
+  "info": {
+    "displayName": "GuidesByCategory",
+    "icon": "command"
+  },
+  "options": {},
+  "attributes": {
+    "category": {
+      "type": "string",
+      "required": true
+    },
+    "guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::guide.guide"
+    }
+  }
+}

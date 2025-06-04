@@ -1,0 +1,48 @@
+{
+  "name": "strapi-cms",
+  "private": true,
+  "version": "3.6.1",
+  "scripts": {
+    "clean": "shx rm -rf dist/",
+    "generate": "strapi ts:generate-types",
+    "precompile": "npm run clean && npm run generate",
+    "compile": "tsc --noEmit",
+    "dev": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "lint": "eslint",
+    "strapi": "strapi",
+    "prune:strapi": "turbo prune --scope=strapi-cms --docker && mv -f ../../out/package-lock.json . && rm -R ../../out/"
+  },
+  "dependencies": {
+    "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
+    "@strapi/plugin-i18n": "4.25.20",
+    "@strapi/plugin-seo": "^1.9.8",
+    "@strapi/plugin-users-permissions": "4.25.20",
+    "@strapi/provider-upload-aws-s3": "^4.24.2",
+    "@strapi/strapi": "4.25.20",
+    "axios": "^1.6.0",
+    "better-sqlite3": "8.6.0",
+    "pg": "^8.11.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "strapi-plugin-sso": "^0.4.5",
+    "strapi-plugin-update-static-content": "^1.0.9",
+    "strapi-provider-upload-custom": "*",
+    "styled-components": "^5.3.11"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "eslint-config-custom": "*",
+    "typescript": "^5.7.3"
+  },
+  "strapi": {
+    "uuid": "1ae9c07f-4fbf-400a-9d32-bba36247aed0"
+  },
+  "engines": {
+    "node": "18.18.0",
+    "npm": "9.8.1"
+  },
+  "license": "MIT"
+}

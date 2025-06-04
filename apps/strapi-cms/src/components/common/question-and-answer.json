@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_common_question_and_answers",
+  "info": {
+    "displayName": "QuestionAndAnswer",
+    "icon": "discuss"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "text",
+      "required": true
+    },
+    "answer": {
+      "type": "blocks",
+      "required": true
+    }
+  }
+}

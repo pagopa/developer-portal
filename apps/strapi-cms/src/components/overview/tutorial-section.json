@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_overview_tutorial_sections",
+  "info": {
+    "displayName": "TutorialSection",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "tutorials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tutorial.tutorial"
+    }
+  }
+}

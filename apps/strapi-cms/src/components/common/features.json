@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_common_features",
+  "info": {
+    "displayName": "Features",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.banner-link",
+      "max": 4,
+      "min": 3
+    }
+  }
+}

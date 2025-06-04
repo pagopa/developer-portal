@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_overview_start_info_sections",
+  "info": {
+    "displayName": "StartInfoSection",
+    "icon": "information",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "overview.start-info"
+    },
+    "bottomLabel": {
+      "type": "text"
+    },
+    "bottomLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.link"
+    }
+  }
+}
