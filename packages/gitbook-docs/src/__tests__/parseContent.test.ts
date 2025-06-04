@@ -488,6 +488,25 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse img with external assets', () => {
+    const updatedConfig = {
+      ...config,
+      assetsPrefix:
+        'https://static-contents.dev.developer.pagopa.it/docs/B4pRrrcvPlijCdPoKvwc',
+    };
+    expect(
+      parseContent(
+        '<img src=".gitbook/assets/image.png" alt="anAlt">',
+        updatedConfig
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${updatedConfig.assetsPrefix}/.gitbook/assets/image.png`,
+        alt: 'anAlt',
+      }),
+    ]);
+  });
+
   it('should parse img', () => {
     expect(
       parseContent('<img src="img-src.jpg" alt="anAlt">', config)
