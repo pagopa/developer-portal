@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
+  Link as LinkMui,
   MenuItem,
   MenuList,
   Stack,
@@ -11,6 +12,7 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/lib/types/product';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Link from 'next/link';
 
 export type ApiSoapSectionProps = {
   readonly product: Product;
@@ -29,6 +31,26 @@ const ApiSoapSection = ({
   apiUrls,
 }: ApiSoapSectionProps) => {
   const { palette } = useTheme();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+
+    const resizeIframe = () => {
+      if (iframe && iframe.contentWindow?.document?.body) {
+        const newHeight = iframe.contentWindow.document.body.scrollHeight;
+        // eslint-disable-next-line functional/immutable-data
+        iframe.style.height = `${newHeight}px`;
+      }
+    };
+
+    // Wait until the iframe content is loaded
+    iframe?.addEventListener('load', resizeIframe);
+
+    return () => {
+      iframe?.removeEventListener('load', resizeIframe);
+    };
+  }, []);
 
   const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
 
@@ -81,6 +103,7 @@ const ApiSoapSection = ({
           alignContent='center'
           sx={{
             height: '100%',
+            overflowY: 'auto',
           }}
         >
           <Box
@@ -88,6 +111,9 @@ const ApiSoapSection = ({
               width: 280,
               bgcolor: '#F2F2F2',
               paddingTop: '2rem',
+              position: 'sticky',
+              top: 0,
+              height: 'calc(100% - 2rem)',
             }}
           >
             <Typography
@@ -127,6 +153,7 @@ const ApiSoapSection = ({
                     justifyContent='space-between'
                     alignItems='center'
                     width='100%'
+                    spacing={1}
                   >
                     <Typography
                       noWrap={true}
@@ -143,24 +170,39 @@ const ApiSoapSection = ({
               ))}
             </MenuList>
           </Box>
-          <Box
+          <Stack
             sx={{
-              paddingX: '100px',
-              width: '100%',
+              width: '80%',
               height: '100%',
             }}
           >
-            <iframe
-              src={selectedApi.url}
-              style={{
-                border: 'none',
-                height: '100%',
+            <Box
+              sx={{
+                paddingX: '100px',
+                paddingBlock: 4,
+                paddingTop: 7,
+                width: '100%',
               }}
-              height='100%'
-              width='100%'
-              title='API SOAP Documentation'
-            />
-          </Box>
+            >
+              <iframe
+                ref={iframeRef}
+                src={selectedApi.url}
+                style={{
+                  border: 'none',
+                  width: '100%',
+                }}
+                title='API SOAP Documentation'
+              />
+            </Box>
+            <LinkMui
+              component={Link}
+              color='primary.main'
+              underline='none'
+              href='https://github.com/pagopa/pagopa-api/tree/develop/wsdl'
+            >
+              https://github.com/pagopa/pagopa-api/tree/develop/wsdl
+            </LinkMui>
+          </Stack>
         </Stack>
       )}
     </Box>
