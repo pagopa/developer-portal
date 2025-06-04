@@ -79,7 +79,7 @@ module "opennext" {
       NEXT_TELEMETRY_DISABLED                     = "1"
       PATH_TO_GITBOOK_DOCS                        = "docs"
       S3_PATH_TO_GITBOOK_DOCS                     = "docs"
-      S3_PATH_TO_GITBOOK_DOCS_ASSETS              = "https://${aws_s3_bucket.website_standalone.bucket_regional_domain_name}/docs/"
+      S3_PATH_TO_GITBOOK_DOCS_ASSETS              = format("https://static-contents.%s/docs", var.dns_domain_name)
       STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
       COOKIE_DOMAIN_SCRIPT                        = data.aws_ssm_parameter.cookie_domain_script.value
       STRAPI_API_TOKEN                            = data.aws_ssm_parameter.strapi_api_token.value
