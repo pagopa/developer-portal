@@ -40,19 +40,19 @@ export async function fetchFileFromS3(
 
 export async function fetchMetadataJsonFromS3(
   key: string
-): Promise<readonly JsonMetadata[]> {
+): Promise<readonly JsonMetadata[] | null> {
   // eslint-disable-next-line functional/no-try-statements
   try {
     const bodyContents = await fetchFileFromS3(key);
     if (!bodyContents) {
-      return [];
+      return null;
     }
 
     return JSON.parse(bodyContents) as readonly JsonMetadata[];
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error('Error fetching metadata from S3:', error);
-    return [];
+    return null;
   }
 }
 
@@ -74,7 +74,7 @@ export const getGuidesMetadata = async () => {
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
-  return guidesMetadataCache;
+  return guidesMetadataCache || [];
 };
 
 export const getSolutionsMetadata = async () => {
@@ -83,7 +83,7 @@ export const getSolutionsMetadata = async () => {
       S3_SOLUTIONS_METADATA_JSON_PATH
     );
   }
-  return solutionsMetadataCache;
+  return solutionsMetadataCache || [];
 };
 
 export const getReleaseNotesMetadata = async () => {
@@ -92,5 +92,5 @@ export const getReleaseNotesMetadata = async () => {
       S3_RELEASE_NOTES_METADATA_JSON_PATH
     );
   }
-  return releaseNotesMetadataCache;
+  return releaseNotesMetadataCache || [];
 };
