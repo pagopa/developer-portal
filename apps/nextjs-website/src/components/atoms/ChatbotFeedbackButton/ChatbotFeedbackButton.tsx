@@ -17,10 +17,13 @@ const ChatbotFeedbackButton = ({
   onToggleNegativeFeedback,
 }: ChatbotFeedbackButtonProps) => {
   const t = useTranslations();
+  const isFormEnabled = !(
+    process.env.NEXT_PUBLIC_FEEDBACK_FORM_DISABLED === 'true'
+  );
   const [feedbackGiven, setFeedbackGiven] = useState(false);
 
   const onToggle = (negativeFeedback: boolean) => {
-    if (!mustFillFeedbackForm || negativeFeedback) {
+    if (!mustFillFeedbackForm || !isFormEnabled || negativeFeedback) {
       onToggleNegativeFeedback(negativeFeedback);
       setFeedbackGiven(true);
       setTimeout(() => setFeedbackGiven(false), TOOLTIP_DURATION);
