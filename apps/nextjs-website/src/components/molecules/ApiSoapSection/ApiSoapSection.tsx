@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/lib/types/product';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export type ApiSoapSectionProps = {
   readonly product: Product;
@@ -121,15 +122,23 @@ const ApiSoapSection = ({
                     },
                   }}
                 >
-                  <Typography
-                    noWrap={true}
-                    sx={{
-                      fontWeight: 400,
-                      fontSize: '0.875rem',
-                    }}
+                  <Stack
+                    direction='row'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    width='100%'
                   >
-                    {item.name || item.url}
-                  </Typography>
+                    <Typography
+                      noWrap={true}
+                      sx={{
+                        fontWeight: 400,
+                        fontSize: '0.875rem',
+                      }}
+                    >
+                      {item.name || item.url}
+                    </Typography>
+                    <ArrowForwardIosIcon sx={{ fontSize: '0.75rem' }} />
+                  </Stack>
                 </MenuItem>
               ))}
             </MenuList>
