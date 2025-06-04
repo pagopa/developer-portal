@@ -12,22 +12,22 @@ locals {
     CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
     CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_EMBED_MODEL_ID                 = "amazon.titan-embed-text-v2:0"
+    CHB_EMBED_MODEL_ID                 = "text-embedding-004"
     CHB_ENGINE_USE_ASYNC               = "False"
     CHB_ENGINE_USE_STREAMING           = "False"
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
-    CHB_MODEL_ID                       = "mistral.mistral-large-2402-v1:0"
+    CHB_MODEL_ID                       = "gemini-2.0-flash"
     CHB_MODEL_MAXTOKENS                = "768"
     CHB_MODEL_TEMPERATURE              = "0.3"
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER           = "aws"
+    CHB_PROVIDER           = "google"
     CHB_QUERY_TABLE_PREFIX = local.prefix
     CHB_REDIS_URL          = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-    CHB_RERANKER_ID        = "amazon.rerank-v1:0"
+    CHB_RERANKER_ID        = "semantic-ranker-512-003"
     CHB_USE_PRESIDIO       = "True"
     CHB_WEBSITE_URL        = "https://${var.dns_domain_name}"
     CORS_DOMAINS           = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
