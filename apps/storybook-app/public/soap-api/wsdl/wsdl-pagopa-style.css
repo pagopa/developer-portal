@@ -60,7 +60,6 @@ ol.port-value {
 .details-container {
     background-color: rgba(236, 238, 245, 1);
     color: rgba(58, 58, 58, 1);
-    padding-bottom: 40px;
     font-size: 0.875rem;
     margin-top: 40px;
 }
@@ -182,7 +181,7 @@ ol.port-value {
 .source-block {
     padding: 32px;
     color: rgba(58, 58, 58, 1);
-    line-height: 1.875rem;
+    line-height: 1.5rem;
 }
 .source-block a {
     color: rgba(58, 58, 58, 1);
