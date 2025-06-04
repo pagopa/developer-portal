@@ -50,7 +50,7 @@ resource "aws_s3_bucket_policy" "cloudfront" {
 
 # Standalone static content
 resource "aws_s3_bucket" "website_standalone" {
-  bucket = "devportal-${var.environment}-website-static-content"
+  bucket = "devportal-${var.environment_information.env_short}-website-static-content"
 }
 
 resource "aws_s3_bucket_public_access_block" "website_standalone" {
@@ -83,4 +83,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "website_standalone" {
 
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_policy" "website_standalone" {
+  bucket = aws_s3_bucket.website_standalone.id
+  policy = data.aws_iam_policy_document.website_standalone_iam_policy.json
 }

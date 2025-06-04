@@ -97,7 +97,7 @@ resource "aws_iam_policy" "github_deploy_opennext" {
           "lambda:PublishVersion",
           "lambda:UpdateAlias"
         ]
-        Resource = "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*opnext-init*"
+        Resource = "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*"
       },
       {
         Action = [

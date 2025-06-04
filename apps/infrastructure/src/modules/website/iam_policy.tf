@@ -95,6 +95,21 @@ data "aws_iam_policy_document" "website_iam_policy" {
   }
 }
 
+data "aws_iam_policy_document" "website_standalone_iam_policy" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      aws_s3_bucket.website_standalone.arn,
+      "${aws_s3_bucket.website_standalone.arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+    }
+  }
+}
+
 data "aws_iam_policy_document" "authenticated_users_policy" {
   statement {
     effect  = "Allow"

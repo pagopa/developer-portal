@@ -87,6 +87,7 @@ module "opennext" {
       S3_GUIDE_METADATA_JSON_PATH                 = "guides-metadata.json"
       S3_RELEASE_NOTES_METADATA_JSON_PATH         = "release-notes-metadata.json"
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
+      STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
     }
   }
 

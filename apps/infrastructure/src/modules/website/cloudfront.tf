@@ -60,14 +60,6 @@ resource "aws_cloudfront_distribution" "website" {
     }
   }
 
-  origin {
-    domain_name = aws_s3_bucket.website_standalone.bucket_regional_domain_name
-    origin_id   = aws_s3_bucket.website_standalone.bucket
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
-    }
-  }
-
   enabled             = true # enable CloudFront distribution
   is_ipv6_enabled     = true
   comment             = "CloudFront distribution for the static website."
@@ -107,30 +99,6 @@ resource "aws_cloudfront_distribution" "website" {
     }
   }
 
-  # Add a cache behavior for the new origin (example: for /static2/* paths)
-  ordered_cache_behavior {
-    path_pattern     = "/docs/*"
-    target_origin_id = aws_s3_bucket.website_standalone.bucket
-
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods  = ["GET", "HEAD"]
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = false
-      headers      = []
-      cookies {
-        forward = "none"
-      }
-    }
-
-    min_ttl     = 0
-    default_ttl = 3600
-    max_ttl     = 86400
-  }
-
-
   restrictions {
     geo_restriction {
       restriction_type = "none"
@@ -142,5 +110,69 @@ resource "aws_cloudfront_distribution" "website" {
     acm_certificate_arn            = var.use_custom_certificate ? aws_acm_certificate.website.arn : null
     ssl_support_method             = var.use_custom_certificate ? "sni-only" : null
     minimum_protocol_version       = var.use_custom_certificate ? "TLSv1.2_2021" : null
+  }
+}
+
+
+# cloudfront distribution for standalone static content
+
+## Static website CDN
+resource "aws_cloudfront_distribution" "static_contents" {
+
+  origin {
+    domain_name = aws_s3_bucket.website_standalone.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.website_standalone.bucket
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
+    }
+  }
+
+
+  enabled         = true # enable CloudFront distribution
+  is_ipv6_enabled = true
+  comment         = "CloudFront distribution for the static contetnts."
+
+
+  aliases = [local.dns_domain_name_static_contents]
+
+
+  default_cache_behavior {
+    # HTTPS requests we permit the distribution to serve
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = aws_s3_bucket.website_standalone.bucket
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.websites.id
+
+    forwarded_values {
+      query_string = false
+      headers      = []
+      cookies {
+        forward = "none"
+      }
+    }
+
+
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0     # min time for objects to live in the distribution cache
+    default_ttl            = 3600  # default time for objects to live in the distribution cache
+    max_ttl                = 86400 # max time for objects to live in the distribution cache
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
+    }
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    cloudfront_default_certificate = false
+    acm_certificate_arn            = aws_acm_certificate.static_contents.arn
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1.2_2021"
   }
 }
