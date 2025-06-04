@@ -2484,9 +2484,9 @@
 
 			<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&amp;display=swap" rel="stylesheet" />
 
-			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl-viewer/src/wsdl-viewer.css" />
+			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/src/wsdl-viewer.css" />
 
-			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl-viewer/wsdl-pagopa-style.css" />
+			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/wsdl-pagopa-style.css" />
 
         </head>
         
@@ -2766,7 +2766,7 @@
                 	
             </div>
             	
-            <xsl:apply-templates select="/*/*[local-name() = 'import'][@location]/@location" mode="src.import"/>
+<!--            <xsl:apply-templates select="/*/*[local-name() = 'import'][@location]/@location" mode="src.import"/>-->
             	
             <xsl:apply-templates select="$consolidated-wsdl/*[local-name() = 'types']//xsd:import[@schemaLocation]/@schemaLocation | $consolidated-wsdl/*[local-name() = 'types']//xsd:include[@schemaLocation]/@schemaLocation" mode="src.import"/>
             

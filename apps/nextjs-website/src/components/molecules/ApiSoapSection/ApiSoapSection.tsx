@@ -108,6 +108,7 @@ const ApiSoapSection = ({
                   onClick={() => handleItemSelect(item.url)}
                   sx={{
                     paddingX: '2rem',
+                    paddingY: '0.5rem',
                     background:
                       selectedItemUrl === item.url
                         ? 'rgba(0, 115, 230, 0.08)'
