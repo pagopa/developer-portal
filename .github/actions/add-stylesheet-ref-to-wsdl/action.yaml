@@ -28,5 +28,5 @@ runs:
       shell: bash
       run: |
           find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
-          mv "$file" "${file%}.xml"
+          mv "$file" "${file}.xml"
           done
