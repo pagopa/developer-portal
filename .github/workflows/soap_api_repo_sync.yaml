@@ -25,11 +25,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: /pagopa/pagopa-api
-          ref: docs/from-gitbook
+          ref: develop
           path: devportal-soap-api
 
       - name: Add Stylesheet Reference to WSDLs
-        uses: ./.github/actions/add-stylesheet-ref-to-wsdl-and-change-extension-to-xml
+        uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:
           dir: devportal-soap-api
 
@@ -41,4 +41,4 @@ jobs:
 
       - name: Sync devportal-soap-api folder to S3
         run: |
-          aws s3 sync devportal-soap-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api --delete
+          aws s3 sync pagopa-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api/pagopa-api --delete
