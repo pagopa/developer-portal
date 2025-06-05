@@ -1,4 +1,4 @@
-name: DevPortal Docs Sync
+name: SOAP API Repo Sync
 
 on:
   push:
