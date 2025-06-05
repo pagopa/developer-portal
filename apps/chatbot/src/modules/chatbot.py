@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
 
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -346,39 +346,28 @@ class Chatbot:
                 )
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
-    def _mask_trace(self, data: Any) -> None:
+    def _mask_trace(self, data: Any) -> Any:
+
+        if isinstance(data, str):
+            data = self.mask_pii(data)
+
         if isinstance(data, dict):
             for key, value in data.items():
+                data[key] = self._mask_trace(value)
 
-                if isinstance(value, str):
-                    data[key] = self.mask_pii(value)
+        if isinstance(data, list):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
 
-                elif isinstance(value, list):
-                    for i, message in enumerate(value):
-                        if isinstance(message, ChatMessage):
-                            self._mask_chat_message(message)
-                        elif isinstance(message, str):
-                            value[i] = self.mask_pii(message)
+        if isinstance(data, tuple):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
 
-                elif isinstance(value, dict):
-                    for k, v in value.items():
-                        if isinstance(v, list):
-                            for j, message in enumerate(v):
-                                if isinstance(message, ChatMessage):
-                                    self._mask_chat_message(message)
-                                elif isinstance(message, str):
-                                    v[j] = self.mask_pii(message)
-                        elif isinstance(v, str):
-                            value[k] = self.mask_pii(v)
+        if isinstance(data, ChatMessage):
+            for i, block in enumerate(data.blocks):
+                data.blocks[i].text = self._mask_trace(block.text)
 
-    def _mask_chat_message(self, message: ChatMessage) -> None:
-        # Gemini returns blocks instead of single string content
-        if hasattr(message, "blocks") and message.blocks:
-            for block in message.blocks:
-                if hasattr(block, "text") and isinstance(block.text, str):
-                    block.text = self.mask_pii(block.text)
-        elif hasattr(message, "content") and isinstance(message.content, str):
-            message.content = self.mask_pii(message.content)
+        return data
 
     def chat_generate(
         self,
