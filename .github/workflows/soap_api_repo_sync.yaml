@@ -21,17 +21,17 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Checkout pagopa-api repos
+      - name: Checkout pagopa-api repository
         uses: actions/checkout@v4
         with:
           repository: /pagopa/pagopa-api
           ref: develop
-          path: devportal-soap-api
+          path: soap-api
 
       - name: Add Stylesheet Reference to WSDLs
         uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:
-          dir: devportal-soap-api
+          dir: soap-api
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
@@ -39,6 +39,6 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Sync devportal-soap-api folder to S3
+      - name: Sync soap-api folder to S3
         run: |
-          aws s3 sync pagopa-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api/pagopa-api --delete
+          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api --delete
