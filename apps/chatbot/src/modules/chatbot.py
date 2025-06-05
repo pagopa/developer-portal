@@ -347,35 +347,38 @@ class Chatbot:
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
     def _mask_trace(self, data: Any) -> None:
-
         if isinstance(data, dict):
             for key, value in data.items():
 
                 if isinstance(value, str):
                     data[key] = self.mask_pii(value)
 
-                if isinstance(value, list):
-                    for message in value:
+                elif isinstance(value, list):
+                    for i, message in enumerate(value):
                         if isinstance(message, ChatMessage):
-                            message.content = self.mask_pii(message.content)
-                        if isinstance(message, str):
-                            message = self.mask_pii(message)
+                            self._mask_chat_message(message)
+                        elif isinstance(message, str):
+                            value[i] = self.mask_pii(message)
 
-                if isinstance(value, dict):
+                elif isinstance(value, dict):
                     for k, v in value.items():
                         if isinstance(v, list):
-                            for message in v:
+                            for j, message in enumerate(v):
                                 if isinstance(message, ChatMessage):
-                                    message.content = self.mask_pii(message.content)
-                                if isinstance(message, str):
-                                    message = self.mask_pii(message)
-                        if isinstance(v, str):
+                                    self._mask_chat_message(message)
+                                elif isinstance(message, str):
+                                    v[j] = self.mask_pii(message)
+                        elif isinstance(v, str):
                             value[k] = self.mask_pii(v)
 
-        if isinstance(data, str):
-            data = self.mask_pii(data)
-
-        return data
+    def _mask_chat_message(self, message: ChatMessage) -> None:
+        # Gemini returns blocks instead of single string content
+        if hasattr(message, "blocks") and message.blocks:
+            for block in message.blocks:
+                if hasattr(block, "text") and isinstance(block.text, str):
+                    block.text = self.mask_pii(block.text)
+        elif hasattr(message, "content") and isinstance(message.content, str):
+            message.content = self.mask_pii(message.content)
 
     def chat_generate(
         self,
@@ -426,6 +429,7 @@ class Chatbot:
             logger.debug(
                 f"Response: {response_str} \n\n Retrieved contexts: {retrieved_contexts}"
             )
+            response_str = response_str.strip("```json").strip("```")
             response_json = json.loads(response_str)
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
