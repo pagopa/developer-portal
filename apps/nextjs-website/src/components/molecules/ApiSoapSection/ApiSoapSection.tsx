@@ -200,24 +200,13 @@ const ApiSoapSection = ({
                 title='API SOAP Documentation'
               />
             </Box>
-            <Stack
-              alignItems='center'
-              direction='row'
-              spacing={0.3}
+            <Box
               sx={{
                 paddingLeft: 20,
                 paddingBottom: 8,
                 paddingTop: 2,
               }}
             >
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  fontSize: '0.625rem',
-                }}
-              >
-                {t('soapApiSection.apiRepoMessage')}
-              </Typography>
               <LinkMui
                 component={Link}
                 underline='none'
@@ -233,7 +222,7 @@ const ApiSoapSection = ({
                   {t('soapApiSection.apiRepoLink')}
                 </Typography>
               </LinkMui>
-            </Stack>
+            </Box>
           </Stack>
         </Stack>
       )}

@@ -606,8 +606,7 @@
         "explore": "Esplora le API"
     },
     "soapApiSection": {
-        "apiRepoMessage": "Per visualizzare il codice sorgente",
-        "apiRepoLink": " visita la repository"
+        "apiRepoLink": "Vai alla repository del codice sorgente"
     },
     "chatBot": {
         "title": "Discovery",
