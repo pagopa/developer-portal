@@ -26,6 +26,7 @@ import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
 import { convertEmojiToUnicode } from './convertEmojiToUnicode';
+import { readFileSync } from 'fs';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -102,7 +103,7 @@ const schema: ConfigType = {
   },
 };
 
-export const parseAst = (markdown: string) => {
+export const parseAst = (markdown: string, prefix: string) => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
@@ -128,12 +129,17 @@ export const parseAst = (markdown: string) => {
     })
     .join('');
 
+  const parsedMarkdoc = updatedMarkdoc
+    .replaceAll(/\{%\s*include.*?%\}/g, '')
+    .replaceAll('{% endinclude %}', '')
+    .replaceAll(/^---\s*\n^title:\s*(.*?)\s*\n^---\s*$/gm, '');
+
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
   const tokenizer = new Markdoc.Tokenizer({ html: true });
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
-  const tokens = processHtmlTokens(tokenizer.tokenize(updatedMarkdoc));
+  const tokens = processHtmlTokens(tokenizer.tokenize(parsedMarkdoc));
   return Markdoc.parse([...tokens]);
 };
 
@@ -141,6 +147,6 @@ export const parseContent = (
   markdown: string,
   config: ParseContentConfig
 ): ReadonlyArray<RenderableTreeNode> => {
-  const ast = parseAst(markdown);
+  const ast = parseAst(markdown, config.assetsPrefix);
   return Markdoc.transform([ast], { ...schema, variables: config });
 };

@@ -114,6 +114,17 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse include', () => {
+    expect(
+      parseContent(
+        'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}middle{% endinclude %} post',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['pre middle', ' ', ' post']),
+    ]);
+  });
+
   it('should preserve a single space into a td tag nested into other tags', () => {
     expect(
       parseContent(
