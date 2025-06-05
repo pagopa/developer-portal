@@ -1,5 +1,5 @@
 name: Add Stylesheet Reference to WSDLs
-description: Add a stylesheet reference to WSDL files in the devportal-api directory
+description: Add a stylesheet reference to WSDL files in the directory
 
 inputs:
   dir:
@@ -12,17 +12,21 @@ runs:
     - name: Find and Update WSDL Files
       shell: bash
       run: |
-        find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
-            if ! grep -q '<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"; then
-          sed -i '' '2i\
-        <?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>
-        ' "$file"
-        fi
+        find "$1" -type f -name "*.wsdl" | while read -r file; do
+          if ! grep -q '<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"; then
+            awk '{
+              print
+              if (!inserted && $0 ~ /^\s*<\?xml.*\?>\s*$/) {
+              print "<?xml-stylesheet type=\"text/xsl\" href=\"../wsdl-viewer/wsdl-viewer.xsl\"?>"
+              inserted=1
+              }
+            }' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
+          fi
         done
 
     - name: Find all WDSL file and change the extension to XML
       shell: bash
       run: |
           find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
-          mv "$file" "${file%.wsdl}.wsdl.xml"
+          mv "$file" "${file%}.xml"
           done
