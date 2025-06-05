@@ -175,17 +175,19 @@ const ApiSoapSection = ({
             </MenuList>
           </Box>
           <Stack
+            direction='column'
             sx={{
-              width: '80%',
+              width: '100%',
               height: '100%',
             }}
           >
             <Box
               sx={{
-                paddingLeft: '100px',
+                marginX: '100px',
                 paddingBlock: 4,
                 paddingTop: 7,
-                width: '100%',
+                width: '90%',
+                minWidth: 800,
               }}
             >
               <iframe
@@ -210,7 +212,7 @@ const ApiSoapSection = ({
             >
               <Typography
                 sx={{
-                  fontWeight: 400,
+                  fontWeight: 600,
                   fontSize: '0.625rem',
                 }}
               >
@@ -223,7 +225,7 @@ const ApiSoapSection = ({
               >
                 <Typography
                   sx={{
-                    fontWeight: 400,
+                    fontWeight: 600,
                     fontSize: '0.625rem',
                     textDecoration: 'underline',
                   }}
