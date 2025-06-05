@@ -182,7 +182,7 @@ const ApiSoapSection = ({
           >
             <Box
               sx={{
-                paddingX: '100px',
+                paddingLeft: '100px',
                 paddingBlock: 4,
                 paddingTop: 7,
                 width: '100%',
@@ -201,28 +201,35 @@ const ApiSoapSection = ({
             <Stack
               alignItems='center'
               direction='row'
-              spacing={1}
+              spacing={0.3}
               sx={{
-                paddingX: 20,
+                paddingLeft: 20,
                 paddingBottom: 8,
                 paddingTop: 2,
-                width: '100%',
               }}
             >
               <Typography
                 sx={{
-                  fontWeight: 600,
+                  fontWeight: 400,
+                  fontSize: '0.625rem',
                 }}
               >
-                {t('shared.repository')}
+                {t('soapApiSection.apiRepoMessage')}
               </Typography>
               <LinkMui
                 component={Link}
-                color='primary.main'
                 underline='none'
                 href={apiRepositoryUrl}
               >
-                {apiRepositoryUrl}
+                <Typography
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: '0.625rem',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  {t('soapApiSection.apiRepoLink')}
+                </Typography>
               </LinkMui>
             </Stack>
           </Stack>
