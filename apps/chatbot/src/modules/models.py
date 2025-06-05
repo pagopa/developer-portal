@@ -76,6 +76,7 @@ def get_embed_model() -> BaseEmbedding:
         embed_model = GoogleGenAIEmbedding(
             model_name=EMBED_MODEL_ID,
             api_key=GOOGLE_API_KEY,
+            embed_batch_size=100,
         )
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
