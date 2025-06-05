@@ -1,7 +1,7 @@
 import {
   bucketName,
   credentials,
-  docsS3AssetsPath,
+  staticContentsUrl,
   region,
   s3DocsPath,
 } from '@/config';
@@ -71,7 +71,7 @@ export const makeTutorials = async (props: {
       product: product,
       source: {
         pathPrefix: `/${product.slug}/tutorials`,
-        assetsPrefix: `${docsS3AssetsPath}/${dirName}`,
+        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
         dirPath: `${s3DocsPath}/${dirName}`,
         spaceId: dirName,
       },
@@ -122,7 +122,7 @@ export const makeGuide = (props: {
         source: {
           pathPrefix: `${guidePath}/${version}`,
           version,
-          assetsPrefix: `${docsS3AssetsPath}/${dirName}`,
+          assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
           dirPath: `${s3DocsPath}/${dirName}`,
           spaceId: dirName,
         },
@@ -145,7 +145,7 @@ export const makeSolution = (
       ...solution,
       source: {
         pathPrefix: `/solutions/${solution.slug}/details`,
-        assetsPrefix: `${docsS3AssetsPath}/${solution.dirName}`,
+        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${solution.dirName}`,
         dirPath: `${s3DocsPath}/${solution.dirName}`,
         spaceId: solution.dirName,
       },
@@ -168,7 +168,7 @@ export const makeReleaseNote = (
       ...releaseNote,
       source: {
         pathPrefix: `/${releaseNote.product.slug}/release-note`,
-        assetsPrefix: `${docsS3AssetsPath}/${releaseNote.dirName}`,
+        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${releaseNote.dirName}`,
         dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
         spaceId: releaseNote.dirName,
       },
