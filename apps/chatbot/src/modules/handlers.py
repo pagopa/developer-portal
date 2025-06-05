@@ -174,15 +174,14 @@ class EventHandler(BaseEventHandler, extra="allow"):
             logger.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
 
         if isinstance(event, ReRankEndEvent):
-            logger.info(f"=============> {5555}")
 
-            num_chuncks = len(event.nodes)
+            num_chunks = len(event.nodes)
 
             usage = {
                 "total_cost": np.ceil(num_chunks / 100) * RERANK_COST[RERANKER_ID],
             }
 
-            logger.info(f"[{RERANKER_ID}] reranking {num_chuncks} chunks")
+            logger.info(f"[{RERANKER_ID}] reranking {num_chunks} chunks")
 
         self._get_generation_client(event.span_id).update(
             usage=usage, end_time=_get_timestamp()
