@@ -18,7 +18,6 @@ export async function downloadFileAsText(
   // eslint-disable-next-line functional/no-try-statements
   try {
     const url = `${staticContentsUrl}/${path}`;
-    console.log(`Downloading file from URL: ${url}`);
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -30,7 +29,6 @@ export async function downloadFileAsText(
 
     // Read the response body as text
     const fileContent = await response.text();
-    console.log('File downloaded successfully.', fileContent);
     return fileContent;
   } catch (error) {
     console.error('Error downloading file:', error);
@@ -49,16 +47,11 @@ export async function fetchMetadataFromCDN(
         'STATIC_CONTENTS_URL is not defined in the environment variables.'
       );
     }
-    const url = `${staticContentsUrl}/${path}`;
-    console.log('Fetching metadata from CDN:', url);
-
     const response = await fetch(`${staticContentsUrl}/${path}`);
-
-    console.log('Response ssss:', response);
     if (!response.ok) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error(
-        `Failed to fetch metadata from ${url}: ${response.statusText}`
+        `Failed to fetch metadata from ${staticContentsUrl}/${path}: ${response.statusText}`
       );
     }
     const bodyContent = await response.json();
