@@ -48,14 +48,14 @@ LLMS_COST = {
         "input_cost": 0.0052 * 1.0e-3,
         "output_cost": 0.0156 * 1.0e-3,
     },
-    "models/gemini-1.5-flash": {
-        "input_cost": 0.075 * 1.0e-6,
-        "output_cost": 0.30 * 1.0e-6,
+    "gemini-2.0-flash": {
+        "input_cost": 0.1 * 1.0e-6,
+        "output_cost": 0.4 * 1.0e-6,
     },
 }
 EMBEDDERS_COST = {
     "cohere.embed-multilingual-v3": 0.0001 * 1.0e-3,
-    "models/models/text-embedding-004": 0,
+    "text-embedding-004": 0,
 }
 
 
