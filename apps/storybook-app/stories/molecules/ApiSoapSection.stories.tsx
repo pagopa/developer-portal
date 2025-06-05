@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import ApiSoapSection from 'nextjs-website/src/components/molecules/ApiSoapSection/ApiSoapSection';
 import { Product } from 'nextjs-website/src/lib/types/product';
+import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ApiSoapSection> = {
   title: 'Molecules/ApiSoapSection',
@@ -24,6 +25,7 @@ export const Showcase: StoryObj<typeof ApiSoapSection> = {
     } satisfies Product,
     apisName: 'API Name',
     apisSlug: 'api-slug',
+    apiRepositoryUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
     apiUrls: [
       {
         name: 'nodeForPa',
@@ -51,4 +53,5 @@ export const Showcase: StoryObj<typeof ApiSoapSection> = {
       },
     },
   },
+  decorators: [nextIntlContextDecorator],
 };

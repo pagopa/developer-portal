@@ -13,11 +13,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/lib/types/product';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export type ApiSoapSectionProps = {
   readonly product: Product;
   readonly apisName: string;
   readonly apisSlug: string;
+  readonly apiRepositoryUrl: string;
   readonly apiUrls: {
     name?: string;
     url: string;
@@ -28,8 +30,10 @@ const ApiSoapSection = ({
   product,
   apisName,
   apisSlug,
+  apiRepositoryUrl,
   apiUrls,
 }: ApiSoapSectionProps) => {
+  const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -194,14 +198,33 @@ const ApiSoapSection = ({
                 title='API SOAP Documentation'
               />
             </Box>
-            <LinkMui
-              component={Link}
-              color='primary.main'
-              underline='none'
-              href='https://github.com/pagopa/pagopa-api/tree/develop/wsdl'
+            <Stack
+              alignItems='center'
+              direction='row'
+              spacing={1}
+              sx={{
+                paddingX: 20,
+                paddingBottom: 8,
+                paddingTop: 2,
+                width: '100%',
+              }}
             >
-              https://github.com/pagopa/pagopa-api/tree/develop/wsdl
-            </LinkMui>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                }}
+              >
+                {t('shared.repository')}
+              </Typography>
+              <LinkMui
+                component={Link}
+                color='primary.main'
+                underline='none'
+                href={apiRepositoryUrl}
+              >
+                {apiRepositoryUrl}
+              </LinkMui>
+            </Stack>
           </Stack>
         </Stack>
       )}
