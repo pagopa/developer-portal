@@ -71,7 +71,7 @@ def get_embed_model() -> BaseEmbedding:
     elif PROVIDER == "google":
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
-        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
+        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"))
 
         embed_model = GoogleGenAIEmbedding(
             model_name=EMBED_MODEL_ID,
