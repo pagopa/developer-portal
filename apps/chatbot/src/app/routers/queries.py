@@ -151,7 +151,7 @@ async def queries_fetching(
         sessionId = last_session_id(userId)
     else:
         session = get_user_session(userId, sessionId)
-        sessionId = session.get("id", None)
+        sessionId = session.get("id", None) if session else None
 
     if sessionId is None:
         result = []
