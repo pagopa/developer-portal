@@ -1,13 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { credentials, region } from '@/config';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-
-const s3Client =
-  !!region && !!credentials
-    ? new S3Client({ region, credentials })
-    : new S3Client();
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || '';
+import { staticContentsUrl } from '@/config';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -19,39 +12,52 @@ export interface JsonMetadata {
   readonly lastModified?: string;
 }
 
-export async function fetchFileFromS3(
-  key: string
+export async function downloadFileAsText(
+  path: string
 ): Promise<string | undefined> {
   // eslint-disable-next-line functional/no-try-statements
   try {
-    const response = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: key,
-      })
-    );
-    return await response.Body?.transformToString();
+    const url = `${staticContentsUrl}/${path}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(
+        `Failed to download file from ${url}: ${response.statusText}`
+      );
+    }
+
+    // Read the response body as text
+    const fileContent = await response.text();
+    return fileContent;
   } catch (error) {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.error('Error fetching File from S3:', error, 'key:', key);
+    console.error('Error downloading file:', error);
     return;
   }
 }
 
-export async function fetchMetadataJsonFromS3(
-  key: string
+export async function fetchMetadataFromCDN(
+  path: string
 ): Promise<readonly JsonMetadata[] | null> {
   // eslint-disable-next-line functional/no-try-statements
   try {
-    const bodyContents = await fetchFileFromS3(key);
-    if (!bodyContents) {
-      return null;
+    if (!staticContentsUrl) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(
+        'STATIC_CONTENTS_URL is not defined in the environment variables.'
+      );
     }
-
-    return JSON.parse(bodyContents) as readonly JsonMetadata[];
+    const response = await fetch(`${staticContentsUrl}/${path}`);
+    if (!response.ok) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(
+        `Failed to fetch metadata from ${staticContentsUrl}/${path}: ${response.statusText}`
+      );
+    }
+    const bodyContent = await response.json();
+    return bodyContent as readonly JsonMetadata[];
   } catch (error) {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.error('Error fetching metadata from S3:', error);
+    console.error('Error fetching metadata from CDN:', error);
     return null;
   }
 }
@@ -70,7 +76,7 @@ let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 
 export const getGuidesMetadata = async () => {
   if (!guidesMetadataCache) {
-    guidesMetadataCache = await fetchMetadataJsonFromS3(
+    guidesMetadataCache = await fetchMetadataFromCDN(
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
@@ -79,7 +85,7 @@ export const getGuidesMetadata = async () => {
 
 export const getSolutionsMetadata = async () => {
   if (!solutionsMetadataCache) {
-    solutionsMetadataCache = await fetchMetadataJsonFromS3(
+    solutionsMetadataCache = await fetchMetadataFromCDN(
       S3_SOLUTIONS_METADATA_JSON_PATH
     );
   }
@@ -88,7 +94,7 @@ export const getSolutionsMetadata = async () => {
 
 export const getReleaseNotesMetadata = async () => {
   if (!releaseNotesMetadataCache) {
-    releaseNotesMetadataCache = await fetchMetadataJsonFromS3(
+    releaseNotesMetadataCache = await fetchMetadataFromCDN(
       S3_RELEASE_NOTES_METADATA_JSON_PATH
     );
   }

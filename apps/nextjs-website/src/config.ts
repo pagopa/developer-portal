@@ -37,7 +37,7 @@ export const matomoScriptSrc =
   'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
-export const docsS3AssetsPath = process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS;
+export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
 export const isChatbotActive =
