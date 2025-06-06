@@ -6,13 +6,28 @@ logger = getLogger(__name__)
 
 def clear_empty_sessions() -> None:
     """
-    Clear all empty sessions from the database.
-    An empty session is defined as one that has no queries associated with it.
+    Clear all sessions without queries from the database.
     """
     from src.app.models import tables
 
-    response = tables["sessions"].scan()
-    items = response.get("Items", [])
+    items = []
+    last_evaluated_key = None
+    page_size = 200
+    while True:
+        if last_evaluated_key:
+            response = tables["sessions"].scan(
+                ExclusiveStartKey=last_evaluated_key,
+                Limit=page_size
+            )
+        else:
+            response = tables["sessions"].scan(
+                Limit=page_size
+            )
+        items.extend(response.get("Items", []))
+        last_evaluated_key = response.get("LastEvaluatedKey")
+
+        if not last_evaluated_key:
+            break
 
     for item in items:
         session_id = item["sessionId"]
