@@ -605,6 +605,9 @@
     "apiDataListPage": {
         "explore": "Esplora le API"
     },
+    "soapApiSection": {
+        "apiRepoLink": "Vai alla repository del codice sorgente"
+    },
     "chatBot": {
         "title": "Discovery",
         "sessionTitle": "Sessione del ",
