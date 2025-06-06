@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
-import { baseUrl } from '@/config';
+import { baseUrl, isFeedbackFormEnabled } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
@@ -170,7 +170,7 @@ const Chat = ({
                   onToggleNegativeFeedback={(negativeFeedback) => {
                     setSessionId(message.sessionId);
                     setId(message.id);
-                    if (mustFillFeedbackForm) {
+                    if (mustFillFeedbackForm && isFeedbackFormEnabled) {
                       if (negativeFeedback) setIsFeedbackFormVisible(true);
                     } else {
                       onSendFeedback(
