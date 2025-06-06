@@ -19,7 +19,7 @@ locals {
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
-    CHB_MODEL_ID                       = "models/gemini-2.0-flash"    
+    CHB_MODEL_ID                       = "gemini-2.0-flash"
     CHB_MODEL_MAXTOKENS                = "768"
     CHB_MODEL_TEMPERATURE              = "0.3"
     # Be extremely careful when changing the provider
