@@ -114,7 +114,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should parse include', () => {
+  it('should remove include tags', () => {
     expect(
       parseContent(
         'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}middle{% endinclude %} post',

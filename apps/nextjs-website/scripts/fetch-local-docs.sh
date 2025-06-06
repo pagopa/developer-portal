@@ -6,6 +6,7 @@ cd .tmp-docs
 git clean -fd
 git checkout docs/from-gitbook 
 git pull
+./../include_replacer.sh ./docs
 cd ..
 mkdir -p docs
 # remove old docs if any
