@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 7.0.0
+
+### Major Changes
+
+- 79f59c3: Add Feedback form to chatbot for Pagopa Users. Update Feedback API
+
+### Minor Changes
+
+- 8cc06ee: Add Webinar category selector to webinar template
+
+### Patch Changes
+
+- 4887227: Add content to some pages' title
+- af4c64e: Add "noindex, follow" rules to the robots meta tag on all non-main guide pages
+- 02b9f97: Remove comments from Matomo Tag Manager script and fix indentation
+
 ## 6.2.0
 
 ### Minor Changes
