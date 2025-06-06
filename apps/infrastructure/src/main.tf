@@ -186,6 +186,10 @@ module "cicd" {
   website_bucket = module.website.website_bucket
   website_cdn    = module.website.website_cdn
 
+  assets_opennext_bucket      = module.website.assets_opennext_bucket
+  lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
+  lambda_initializer_arn      = module.website.lambda_initializer.arn
+
   website_is_standalone = var.website_is_standalone
 
   chatbot_env_vars = var.create_chatbot ? module.chatbot[0].lambda_env_variables : {}

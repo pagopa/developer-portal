@@ -9,7 +9,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
@@ -78,6 +78,8 @@ const NotSsrWebinarsSection = dynamic(
   () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
   { ssr: false }
 );
+
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 
 const Home = async () => {
   const {

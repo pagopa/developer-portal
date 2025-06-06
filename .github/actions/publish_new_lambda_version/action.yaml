@@ -1,0 +1,36 @@
+name: Publish New Lambda Version
+description: Publish a new lambda version and move the alias
+
+inputs:
+  function_name:
+    description: 'The name of the lambda'
+    required: true
+  alias_name:
+    description: 'The name of the alias to move to the new version'
+    required: true
+  aws_region:
+    description: 'The AWS region where the lambda is deployed'
+    required: false
+    default: 'eu-south-1'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Publish new Lambda version ${{ inputs.function_name }}
+      shell: bash
+      id: publish_version
+      run: |
+        VERSION=$(aws lambda publish-version \
+          --function-name ${{ inputs.function_name }} \
+          --region ${{ inputs.aws_region }} \
+          --query 'Version' --output text)
+        echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
+    
+    - name: Move alias ${{ inputs.alias_name }} to new version ${{ env.NEW_VERSION }}
+      shell: bash
+      run: |
+        aws lambda update-alias \
+          --function-name ${{ inputs.function_name }} \
+          --name ${{ inputs.alias_name }} \
+          --function-version ${{ env.NEW_VERSION }} \
+          --region ${{ inputs.aws_region }}
