@@ -7,9 +7,9 @@ import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
 import { GuideDefinition } from './makeDocs.helpers';
-import { docsS3AssetsPath, s3DocsPath } from '@/config';
+import { staticContentsUrl, s3DocsPath } from '@/config';
 import { Product } from '@/lib/types/product';
-import { fetchFileFromS3, JsonMetadata } from './s3Metadata.helpers';
+import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -221,13 +221,14 @@ export const parseS3GuidePage = async (props: {
       ? baseGuidePath
       : `${baseGuidePath}/${version.version}`,
     version,
-    assetsPrefix: `${docsS3AssetsPath}/${guidePageMetadata.dirName}`,
+    assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
     dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
     spaceId: guidePageMetadata.dirName,
   };
   const menu =
-    guidePageMetadata && (await fetchFileFromS3(guidePageMetadata.menuS3Path));
-  const body = await fetchFileFromS3(guidePageMetadata.contentS3Path);
+    guidePageMetadata &&
+    (await downloadFileAsText(guidePageMetadata.menuS3Path));
+  const body = await downloadFileAsText(guidePageMetadata.contentS3Path);
   return {
     ...guideProps,
     guide: {
@@ -258,7 +259,7 @@ export const parseS3GuidePage = async (props: {
     bodyConfig: {
       isPageIndex: isIndex,
       pagePath: guidePath,
-      assetsPrefix: `${docsS3AssetsPath}/${guidePageMetadata.dirName}`,
+      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
       gitBookPagesWithTitle: guidesMetadata,
       spaceToPrefix: guidesMetadata.map((metadata) => ({
         spaceId: metadata.dirName,

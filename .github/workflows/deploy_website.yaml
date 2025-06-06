@@ -72,6 +72,7 @@ jobs:
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
+          static_contents_url: ${{ vars.STATIC_CONTENTS_URL }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
@@ -123,6 +124,7 @@ jobs:
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
+          static_contents_url: ${{ vars.STATIC_CONTENTS_URL }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
@@ -213,6 +215,7 @@ jobs:
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
+          static_contents_url: ${{ vars.STATIC_CONTENTS_URL }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
