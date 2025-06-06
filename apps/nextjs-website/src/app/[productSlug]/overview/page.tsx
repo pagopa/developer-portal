@@ -109,7 +109,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, path, seo } = await getOverview(params.productSlug);
+  const { product, path, seo, hero } = await getOverview(params.productSlug);
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -117,7 +117,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: product.name,
+    title: [hero?.title, product.name].filter(Boolean).join(' | '),
     description: product.description,
     url: path,
     image: product.logo?.url,

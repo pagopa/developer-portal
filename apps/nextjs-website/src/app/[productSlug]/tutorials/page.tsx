@@ -55,7 +55,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: product.name,
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
     image: product.logo?.url,
