@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.15.1
+
+### Patch Changes
+
+- 79f59c3: Add Feedback form to chatbot for Pagopa Users. Update Feedback API
+
 ## 0.15.0
 
 ### Minor Changes
