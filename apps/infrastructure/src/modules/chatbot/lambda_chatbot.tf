@@ -12,7 +12,7 @@ locals {
     CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
     CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_EMBED_MODEL_ID                 = "models/text-embedding-004"
+    CHB_EMBED_MODEL_ID                 = "text-embedding-004"
     CHB_ENGINE_USE_ASYNC               = "False"
     CHB_ENGINE_USE_STREAMING           = "False"
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
