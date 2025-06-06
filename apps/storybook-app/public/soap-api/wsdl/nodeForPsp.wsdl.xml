@@ -11,8 +11,8 @@
 	targetNamespace="http://pagopa-api.pagopa.gov.it/nodeForPsp">
 	<wsdl:types>
 		<xsd:schema>
-			<xsd:import schemaLocation="/soap-api/wsdl/xsd/nodeForPsp.xsd" namespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" />
-			<xsd:import schemaLocation="/soap-api/wsdl/xsd/nodoPerPsp.xsd" namespace="http://ws.pagamenti.telematici.gov/" />
+			<xsd:import schemaLocation="xsd/nodeForPsp.xsd" namespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" />
+			<xsd:import schemaLocation="xsd/nodoPerPsp.xsd" namespace="http://ws.pagamenti.telematici.gov/" />
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="demandPaymentNotice">
