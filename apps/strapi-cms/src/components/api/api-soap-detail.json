@@ -11,7 +11,7 @@
       "type": "string",
       "required": true
     },
-    "dirNameUrl": {
+    "dirName": {
       "type": "string",
       "required": true
     },
