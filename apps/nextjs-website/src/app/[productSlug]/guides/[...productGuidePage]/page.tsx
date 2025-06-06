@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
