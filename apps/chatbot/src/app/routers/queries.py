@@ -127,10 +127,13 @@ async def query_creation(
         "badAnswer": False,
     }
 
+    expires_at = int((now + datetime.timedelta(days=90)).timestamp())
+
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = chatbot.mask_pii(answer)
     bodyToSave["topics"] = answer_json.get("topics", [])
+    bodyToSave["expiresAt"] = expires_at
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
