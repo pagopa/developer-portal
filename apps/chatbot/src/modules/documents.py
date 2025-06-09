@@ -7,7 +7,6 @@ import tqdm
 import hashlib
 import requests
 import html2text
-from logging import getLogger
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urllib.parse import quote
@@ -15,8 +14,10 @@ from typing import List, Tuple
 
 from llama_index.core import Document
 
+from src.modules.logger import get_logger
 
-LOGGER = getLogger(__name__)
+
+LOGGER = get_logger(__name__)
 DYNAMIC_HTMLS = [
     "case-histories/tari-cagliari.html",
     "firma-con-io/api/firma-con-io-main.html",

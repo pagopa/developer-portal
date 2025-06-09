@@ -1,14 +1,13 @@
 import os
-from logging import getLogger
 
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 
+from src.modules.logger import get_logger
 from src.modules.utils import get_ssm_parameter
 
 
-logger = getLogger(__name__)
-
+LOGGER = get_logger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))

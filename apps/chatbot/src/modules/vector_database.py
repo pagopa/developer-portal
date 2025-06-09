@@ -1,8 +1,6 @@
 import os
 import pytz
-from logging import getLogger
 from datetime import datetime
-from typing import List
 
 from llama_index.core import (
     Settings,
@@ -12,11 +10,7 @@ from llama_index.core import (
 )
 from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core.node_parser import (
-    SentenceSplitter,
-    HierarchicalNodeParser,
-    get_leaf_nodes,
-)
+from llama_index.core.node_parser import SentenceSplitter
 from llama_index.storage.docstore.redis import RedisDocumentStore
 from llama_index.storage.index_store.redis import RedisIndexStore
 from llama_index.storage.kvstore.redis import RedisKVStore
@@ -26,13 +20,12 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
+from src.modules.logger import get_logger
 from src.modules.documents import get_api_docs, get_guide_docs
 from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 
-logger = getLogger(__name__)
-
-
+LOGGER = get_logger(__name__)
 TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
 INDEX_ID = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
@@ -104,7 +97,7 @@ def build_index_redis(
         VectorStoreIndex: The newly created vector store index.
     """
 
-    logger.info("Storing vector index and hash table on Redis..")
+    LOGGER.info("Storing vector index and hash table on Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -114,7 +107,7 @@ def build_index_redis(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
 
-    logger.info(
+    LOGGER.info(
         (
             f"[build_index_redis] calling create_documentation("
             f"{WEBSITE_URL}, {documentation_dir})"
@@ -125,9 +118,9 @@ def build_index_redis(
     documents = guide_docs + api_docs
     for key, value in hash_table.items():
         REDIS_KVSTORE.put(collection=f"hash_table_{NEW_INDEX_ID}", key=key, val=value)
-    logger.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
+    LOGGER.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
 
-    logger.info(f"Creating index {NEW_INDEX_ID} ...")
+    LOGGER.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
@@ -168,7 +161,7 @@ def build_index_redis(
     index.set_index_id(NEW_INDEX_ID)
     if NEW_INDEX_ID != "default-index":
         put_ssm_parameter(os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
-    logger.info("Created vector index successfully and stored on Redis.")
+    LOGGER.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
@@ -206,7 +199,7 @@ def load_index_redis(
             redis_client=REDIS_CLIENT, overwrite=False, schema=REDIS_SCHEMA
         )
 
-        logger.info("Loading vector index from Redis...")
+        LOGGER.info("Loading vector index from Redis...")
         storage_context = StorageContext.from_defaults(
             vector_store=redis_vector_store,
             docstore=REDIS_DOCSTORE,
@@ -219,7 +212,7 @@ def load_index_redis(
 
         return index
     else:
-        logger.error("No index_id provided.")
+        LOGGER.error("No index_id provided.")
 
 
 def delete_old_index():
@@ -233,4 +226,4 @@ def delete_old_index():
             if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
                 REDIS_CLIENT.delete(key)
 
-        logger.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        LOGGER.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")

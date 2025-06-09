@@ -1,4 +1,3 @@
-from logging import getLogger
 from typing import List, Optional, Any
 
 from llama_index.core.llms.llm import BaseLLM
@@ -15,10 +14,11 @@ from ragas.metrics import (
 )
 from langchain_core.callbacks import Callbacks
 
+from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 class RagasWrapper(LlamaIndexLLMWrapper):
