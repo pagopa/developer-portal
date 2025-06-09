@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
 
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -346,34 +346,26 @@ class Chatbot:
                 )
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
-    def _mask_trace(self, data: Any) -> None:
-
-        if isinstance(data, dict):
-            for key, value in data.items():
-
-                if isinstance(value, str):
-                    data[key] = self.mask_pii(value)
-
-                if isinstance(value, list):
-                    for message in value:
-                        if isinstance(message, ChatMessage):
-                            message.content = self.mask_pii(message.content)
-                        if isinstance(message, str):
-                            message = self.mask_pii(message)
-
-                if isinstance(value, dict):
-                    for k, v in value.items():
-                        if isinstance(v, list):
-                            for message in v:
-                                if isinstance(message, ChatMessage):
-                                    message.content = self.mask_pii(message.content)
-                                if isinstance(message, str):
-                                    message = self.mask_pii(message)
-                        if isinstance(v, str):
-                            value[k] = self.mask_pii(v)
+    def _mask_trace(self, data: Any) -> Any:
 
         if isinstance(data, str):
             data = self.mask_pii(data)
+
+        if isinstance(data, dict):
+            for key, value in data.items():
+                data[key] = self._mask_trace(value)
+
+        if isinstance(data, list):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
+
+        if isinstance(data, tuple):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
+
+        if isinstance(data, ChatMessage):
+            for i, block in enumerate(data.blocks):
+                data.blocks[i].text = self._mask_trace(block.text)
 
         return data
 
@@ -426,6 +418,7 @@ class Chatbot:
             logger.debug(
                 f"Response: {response_str} \n\n Retrieved contexts: {retrieved_contexts}"
             )
+            response_str = response_str.strip("```json").strip("```")
             response_json = json.loads(response_str)
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
