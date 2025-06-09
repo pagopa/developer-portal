@@ -15,6 +15,12 @@ dir_name="${hash//\//-}"
 # unzip the content of the zip
 unzip -o -q -d ./.tmp ./.tmp/docs.zip
 
+# remove old docs if any
+rm -r ./docs
+
+# move on nextjs-website root the docs folder extracted from the zip
+mv ./.tmp/devportal-docs-$dir_name*/docs .
+
 ./scripts/include_replacer.sh ./docs
 
 # remove all temporary files
