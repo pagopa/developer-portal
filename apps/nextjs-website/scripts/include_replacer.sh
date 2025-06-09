@@ -30,7 +30,7 @@ for file in $md_files; do
     if [[ $line =~ \{\%\ include\ \"([^\"]+)\"\ \%\} ]]; then
       include_path="${BASH_REMATCH[1]}"
 
-      mapped_path="${include_path/..\/.gitbook\/includes/.\/$hash_dir\/.gitbook\/includes}"
+      mapped_path=$(echo "$include_path" | sed "s|\(\(\.\./\)*\)\.gitbook/includes|./$hash_dir/.gitbook/includes|")
 
       echo "$line" >> "$tmp_file"
 
