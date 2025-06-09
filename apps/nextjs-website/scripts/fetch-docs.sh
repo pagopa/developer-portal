@@ -21,6 +21,10 @@ rm -r ./docs
 # move on nextjs-website root the docs folder extracted from the zip
 mv ./.tmp/devportal-docs-$dir_name*/docs .
 
+echo '===================='
+pwd
+echo '===================='
+
 ./scripts/include_replacer.sh ./docs
 
 # remove all temporary files

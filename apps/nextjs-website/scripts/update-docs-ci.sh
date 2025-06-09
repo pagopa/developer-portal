@@ -1,6 +1,13 @@
 # remove old docs if any
 rm -rf ./docs
 mv ./checkout_path/docs .
+
+echo '===================='
+pwd
+echo '===================='
+
+./scripts/include_replacer.sh ./docs
+
 # copy all the gitbook assets to public assets of nextjs-website
 dest='public/gitbook/'
 # create all the assets folder otherwise the copy will fail
