@@ -17,6 +17,7 @@ from llama_index.core import Document
 
 
 LOGGER = getLogger(__name__)
+STRAPI_API_KEY = os.getenv("CHB_STRAPI_API_KEY")
 DYNAMIC_HTMLS = [
     "case-histories/tari-cagliari.html",
     "firma-con-io/api/firma-con-io-main.html",
@@ -124,12 +125,14 @@ def get_apidata(website_url: str) -> dict:
 
     url = website_url.replace("https://", "https://cms.")
     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
+    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
 
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
+    LOGGER.info(f"Fetching API data from {url}")
     if response.status_code == 200:
         return json.loads(response.text)
     else:
-        raise Exception(
+        LOGGER.error(
             f"Failed to fetch data from API. Status code: {response.status_code}"
         )
 
