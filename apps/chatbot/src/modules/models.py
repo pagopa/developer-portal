@@ -17,6 +17,15 @@ EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 
 
 def get_llm() -> LLM:
+    """
+    Returns an instance of the LLM based on the provider specified in the environment variable.
+    The provider can be either 'aws' or 'google'. The function initializes the LLM with the model ID,
+    temperature, and max tokens specified in the environment variables.
+    Returns:
+        LLM: An instance of the LLM class configured with the specified model ID, temperature, and max tokens.
+    Raises:
+        AssertionError: If the provider is not 'aws' or 'google'.
+    """
 
     if PROVIDER == "aws":
         from llama_index.llms.bedrock_converse import BedrockConverse
@@ -54,6 +63,15 @@ def get_llm() -> LLM:
 
 
 def get_embed_model() -> BaseEmbedding:
+    """
+    Returns an instance of the embedding model based on the provider specified in the environment variable.
+    The provider can be either 'aws' or 'google'. The function initializes the embedding model with the
+    model ID specified in the environment variables.
+    Returns:
+        BaseEmbedding: An instance of the BaseEmbedding class configured with the specified model ID.
+    Raises:
+        AssertionError: If the provider is not 'aws' or 'google'.
+    """
 
     if PROVIDER == "aws":
         from llama_index.embeddings.bedrock import BedrockEmbedding
@@ -71,11 +89,12 @@ def get_embed_model() -> BaseEmbedding:
     elif PROVIDER == "google":
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
-        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_GOOGLE_API_KEY"))
+        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"))
 
         embed_model = GoogleGenAIEmbedding(
             model_name=EMBED_MODEL_ID,
             api_key=GOOGLE_API_KEY,
+            embed_batch_size=100,
         )
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")

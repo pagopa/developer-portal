@@ -20,6 +20,21 @@ def get_automerging_engine(
     condense_template: PromptTemplate | None = None,
     verbose: bool = True,
 ) -> CondensePlusContextChatEngine:
+    """
+    Creates a CondensePlusContextChatEngine with an AutoMergingRetriever and a reranker.
+    Args:
+        index (VectorStoreIndex): The vector store index to use for retrieval.
+        llm (LLM): The language model to use for generating responses.
+        system_prompt (str | None): Optional system prompt for the chat engine.
+        text_qa_template (PromptTemplate | None): Optional template for text QA.
+        refine_template (PromptTemplate | None): Optional template for refining context.
+        condense_template (PromptTemplate | None): Optional template for condensing context.
+        verbose (bool): Whether to enable verbose logging.
+    Returns:
+        CondensePlusContextChatEngine: An instance of the chat engine configured with the provided parameters.
+    Raises:
+        AssertionError: If the provider is not 'aws' or 'google'.
+    """
 
     base_retriever = index.as_retriever(similarity_top_k=SIMILARITY_TOPK)
     retriever = AutoMergingRetriever(
