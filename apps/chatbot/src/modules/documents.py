@@ -82,7 +82,7 @@ def get_html_files(root_folder: str) -> List[str]:
                 html_files.append(os.path.join(root, file))
 
     LOGGER.info(f"root_folder: {root_folder}")
-    LOGGER.info(f"html_files: {len(html_files)}")
+    LOGGER.info(f"Total html_files: {len(html_files)}")
     sorted_and_filtered = sorted(filter_html_files(html_files))
     LOGGER.info(f"sorted_and_filtered: {len(sorted_and_filtered)}")
     return sorted_and_filtered
@@ -188,7 +188,7 @@ def get_api_docs(website_url: str) -> list:
     api_data = get_apidata(website_url)
 
     num_apis = len(api_data["data"])
-    LOGGER.info(f"{num_apis} API to read.")
+    LOGGER.info(f"{num_apis} API documents to read.")
 
     docs = []
     for data in tqdm.tqdm(api_data["data"], total=num_apis, desc="Getting API docs"):
@@ -303,9 +303,9 @@ def get_guide_docs(
                 )
             )
 
-    LOGGER.info(f"Number of documents with content: {len(documents)}")
+    LOGGER.info(f"Number of guides documents with content: {len(documents)}")
     LOGGER.info(
-        f"Number of empty pages in the documentation: {len(empty_pages)}. "
+        f"Number of empty pages in the guides documentation: {len(empty_pages)}. "
         "These are left out."
     )
     with open("empty_htmls.json", "w") as f:
