@@ -1913,7 +1913,6 @@
 
     <xsl:template match="@*" mode="src.import">
         <xsl:param name="src.import.stack"/>
-        <xsl:param name="base-uri"/>
         <xsl:variable name="recursion.label" select="concat('[', string(.), ']')"/>
         <xsl:variable name="recursion.check" select="concat($src.import.stack, $recursion.label)"/>
         <xsl:choose>
@@ -1923,17 +1922,7 @@
                 </h2>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="resolved-uri">
-                    <xsl:choose>
-                        <xsl:when test="contains(., '://')">
-                            <xsl:value-of select="."/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="concat($base-uri, .)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:variable name="imported-doc" select="document($resolved-uri)"/>
+                <xsl:variable name="imported-doc" select="document(string(.))"/>
                 <xsl:if test="$imported-doc">
                     <div class="blank-divider">
                         <div class="details-header">
@@ -1962,7 +1951,6 @@
                     </xsl:apply-templates>
                     <xsl:apply-templates select="$imported-doc//xsd:import[@schemaLocation]/@schemaLocation" mode="src.import">
                         <xsl:with-param name="src.import.stack" select="$recursion.check"/>
-                        <xsl:with-param name="base-uri" select="substring-before($resolved-uri, substring-after($resolved-uri, '/'))"/>
                     </xsl:apply-templates>
                 </xsl:if>
             </xsl:otherwise>
