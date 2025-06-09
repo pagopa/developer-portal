@@ -6,14 +6,17 @@ from typing import List
 
 from llama_index.core import (
     Settings,
-    Document,
     VectorStoreIndex,
     StorageContext,
     load_index_from_storage,
 )
 from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
+from llama_index.core.node_parser import (
+    SentenceSplitter,
+    HierarchicalNodeParser,
+    get_leaf_nodes,
+)
 from llama_index.storage.docstore.redis import RedisDocumentStore
 from llama_index.storage.index_store.redis import RedisIndexStore
 from llama_index.storage.kvstore.redis import RedisKVStore
@@ -82,11 +85,11 @@ DYNAMIC_HTMLS = [
 ]
 
 
-def build_automerging_index_redis(
+def build_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
     documentation_dir: str,
-    chunk_sizes: List[int],
+    chunk_size: int,
     chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
@@ -105,13 +108,15 @@ def build_automerging_index_redis(
 
     Settings.llm = llm
     Settings.embed_model = embed_model
-    Settings.node_parser = HierarchicalNodeParser.from_defaults(
-        chunk_sizes=chunk_sizes, chunk_overlap=chunk_overlap
+    Settings.chunk_size = chunk_size
+    Settings.chunk_overlap = chunk_overlap
+    Settings.node_parser = SentenceSplitter(
+        chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
 
     logger.info(
         (
-            f"[build_automerging_index_redis] calling create_documentation("
+            f"[build_index_redis] calling create_documentation("
             f"{WEBSITE_URL}, {documentation_dir})"
         )
     )
@@ -124,7 +129,6 @@ def build_automerging_index_redis(
 
     logger.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
-    leaf_nodes = get_leaf_nodes(nodes)
 
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
@@ -160,21 +164,21 @@ def build_automerging_index_redis(
     )
     storage_context.docstore.add_documents(nodes)
 
-    automerging_index = VectorStoreIndex(leaf_nodes, storage_context=storage_context)
-    automerging_index.set_index_id(NEW_INDEX_ID)
+    index = VectorStoreIndex(nodes, storage_context=storage_context)
+    index.set_index_id(NEW_INDEX_ID)
     if NEW_INDEX_ID != "default-index":
         put_ssm_parameter(os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), NEW_INDEX_ID)
     logger.info("Created vector index successfully and stored on Redis.")
 
     delete_old_index()
 
-    return automerging_index
+    return index
 
 
-def load_automerging_index_redis(
+def load_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
-    chunk_sizes: List[int],
+    chunk_size: int,
     chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
@@ -192,8 +196,10 @@ def load_automerging_index_redis(
 
         Settings.llm = llm
         Settings.embed_model = embed_model
-        Settings.node_parser = HierarchicalNodeParser.from_defaults(
-            chunk_sizes=chunk_sizes, chunk_overlap=chunk_overlap
+        Settings.chunk_size = chunk_size
+        Settings.chunk_overlap = chunk_overlap
+        Settings.node_parser = SentenceSplitter(
+            chunk_size=chunk_size, chunk_overlap=chunk_overlap
         )
 
         redis_vector_store = RedisVectorStore(
@@ -207,11 +213,11 @@ def load_automerging_index_redis(
             index_store=REDIS_INDEX_STORE,
         )
 
-        automerging_index = load_index_from_storage(
+        index = load_index_from_storage(
             storage_context=storage_context, index_id=INDEX_ID
         )
 
-        return automerging_index
+        return index
     else:
         logger.error("No index_id provided.")
 

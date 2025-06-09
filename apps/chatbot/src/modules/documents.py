@@ -191,6 +191,7 @@ def get_api_docs(website_url: str) -> list:
 
     docs = []
     for data in tqdm.tqdm(api_data["data"], total=num_apis, desc="Getting API docs"):
+        title = data["attributes"]["title"]
         product_slug = data["attributes"]["product"]["data"]["attributes"]["slug"]
         if data["attributes"]["apiRestDetail"] is not None:
             api_slug = data["attributes"]["apiRestDetail"]["slug"]
@@ -205,7 +206,7 @@ def get_api_docs(website_url: str) -> list:
                         text=api_txt,
                         metadata={
                             "filepath": api_url.replace(website_url, ""),
-                            "title": "title",
+                            "title": title,
                         },
                     )
                 )

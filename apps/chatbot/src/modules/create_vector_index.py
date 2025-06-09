@@ -4,7 +4,7 @@ import argparse
 import logging
 
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import build_automerging_index_redis
+from src.modules.vector_database import build_index_redis
 
 
 logging.basicConfig(level=logging.INFO)
@@ -26,10 +26,10 @@ if __name__ == "__main__":
     embed_model = get_embed_model()
 
     # create vector index
-    index = build_automerging_index_redis(
+    index = build_index_redis(
         model,
         embed_model,
         documentation_dir=DOCUMENTATION_DIR,
-        chunk_sizes=params["vector_index"]["chunk_sizes"],
+        chunk_sizes=params["vector_index"]["chunk_size"],
         chunk_overlap=params["vector_index"]["chunk_overlap"],
     )

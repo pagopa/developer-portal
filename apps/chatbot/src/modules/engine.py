@@ -11,7 +11,7 @@ RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
 
 
-def get_automerging_engine(
+def get_engine(
     index: VectorStoreIndex,
     llm: LLM,
     system_prompt: str | None = None,
