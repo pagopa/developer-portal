@@ -147,6 +147,7 @@ module "secret_chb_strapi_api_key" {
 
   name  = "/cms/chb_strapi_api_key"
   value = "update-me"
+  secure_type = true
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
 }
