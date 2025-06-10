@@ -51,7 +51,7 @@ provider "awscc" {
 }
 
 data "http" "docs_redirect_cf_function_code" {
-  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/src/rewriter.js"
+  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/dist/rewriter.js"
 
   request_headers = {
     Accept = "text/plain"
