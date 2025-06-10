@@ -145,8 +145,8 @@ module "secret_cms_access_key_secret" {
 module "secret_chb_strapi_api_key" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
-  name  = "/cms/chb_strapi_api_key"
-  value = "update-me"
+  name        = "/cms/chb_strapi_api_key"
+  value       = "update-me"
   secure_type = true
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
