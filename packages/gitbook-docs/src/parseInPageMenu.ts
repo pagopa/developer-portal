@@ -22,7 +22,7 @@ export const parseInPageMenu = (
   markdown: string,
   config: ParseInPageMenuConfig
 ): ReadonlyArray<RenderableTreeNode> => {
-  const ast = Array.from(parseAst(markdown, config.assetsPrefix).walk()).filter(
+  const ast = Array.from(parseAst(markdown).walk()).filter(
     ({ type, attributes }) =>
       type === 'heading' && HEADING_LEVELS_TO_SHOW.includes(attributes.level)
   );
