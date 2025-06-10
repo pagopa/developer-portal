@@ -15,9 +15,11 @@ from typing import List, Tuple
 
 from llama_index.core import Document
 
+from src.modules.utils import get_ssm_parameter
+
 
 LOGGER = getLogger(__name__)
-STRAPI_API_KEY = os.getenv("CHB_STRAPI_API_KEY")
+STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
 DYNAMIC_HTMLS = [
     "case-histories/tari-cagliari.html",
     "firma-con-io/api/firma-con-io-main.html",
