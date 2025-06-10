@@ -14,6 +14,7 @@ MODEL_ID = os.getenv("CHB_MODEL_ID")
 MODEL_TEMPERATURE = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
 MODEL_MAXTOKENS = int(os.getenv("CHB_MODEL_MAXTOKENS", "768"))
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
+EMBED_BATCH_SIZE = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
 
 
 def get_llm() -> LLM:
@@ -94,7 +95,7 @@ def get_embed_model() -> BaseEmbedding:
         embed_model = GoogleGenAIEmbedding(
             model_name=EMBED_MODEL_ID,
             api_key=GOOGLE_API_KEY,
-            embed_batch_size=100,
+            embed_batch_size=EMBED_BATCH_SIZE,
         )
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
