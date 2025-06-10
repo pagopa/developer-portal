@@ -67,12 +67,21 @@ export async function generateMetadata({
   if (seo) {
     return makeMetadataFromStrapi(seo);
   }
-  return makeMetadata({
-    title: [title, [name, version.name].filter(Boolean).join(' '), product.name]
-      .filter(Boolean)
-      .join(' | '),
-    url: path,
-  });
+
+  const robots = version.main ? '' : 'noindex, follow';
+  return {
+    robots: robots,
+    ...makeMetadata({
+      title: [
+        title,
+        [name, version.name].filter(Boolean).join(' '),
+        product.name,
+      ]
+        .filter(Boolean)
+        .join(' | '),
+      url: path,
+    }),
+  };
 }
 
 const Page = async ({ params }: { params: Params }) => {
