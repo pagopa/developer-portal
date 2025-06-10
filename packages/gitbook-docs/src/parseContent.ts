@@ -26,7 +26,6 @@ import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
 import { convertEmojiToUnicode } from './convertEmojiToUnicode';
-import { readFileSync } from 'fs';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
