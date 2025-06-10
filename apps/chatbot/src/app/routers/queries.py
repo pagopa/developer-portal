@@ -47,8 +47,25 @@ def backfill_created_at_date() -> None:
     """
     Backfill the `createdAtDate` field for all existing items in the table.
     """
-    response = tables["queries"].scan()
-    items = response.get("Items", [])
+
+    items = []
+    last_evaluated_key = None
+    page_size = 200
+    while True:
+        if last_evaluated_key:
+            response = tables["queries"].scan(
+                ExclusiveStartKey=last_evaluated_key,
+                Limit=page_size
+            )
+        else:
+            response = tables["queries"].scan(
+                Limit=page_size
+            )
+        items.extend(response.get("Items", []))
+        last_evaluated_key = response.get("LastEvaluatedKey")
+
+        if not last_evaluated_key:
+            break
 
     for item in items:
         created_at_date = item["createdAt"][:10]
@@ -57,6 +74,50 @@ def backfill_created_at_date() -> None:
         tables["queries"].put_item(Item=item)
 
     logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
+
+
+def backfill_expires_at() -> None:
+    """
+    Backfill the `expiresAt` field for all existing items in the table with no value.
+    """
+    
+    items = []
+    last_evaluated_key = None
+    page_size = 200
+    while True:
+        if last_evaluated_key:
+            response = tables["queries"].scan(
+                ExclusiveStartKey=last_evaluated_key,
+                Limit=page_size
+            )
+        else:
+            response = tables["queries"].scan(
+                Limit=page_size
+            )
+        items.extend(response.get("Items", []))
+        last_evaluated_key = response.get("LastEvaluatedKey")
+
+        if not last_evaluated_key:
+            break
+
+    total = 0
+    for item in items:
+        if item["expiresAt"] is None:
+            created_at_datetime = datetime.datetime.fromisoformat(
+                item["createdAt"]
+            )
+            days = int(os.getenv("EXPIRE_DAYS", 90))
+            expires_at = int(
+                (
+                    created_at_datetime + datetime.timedelta(days=days)
+                ).timestamp()
+            )        
+            item["expiresAt"] = expires_at
+            tables["queries"].put_item(Item=item)
+            total += 1
+
+    logger.info(f"Backfilled {total} items with `expiresAt`.")
+    print(f"Backfilled {total} items with `expiresAt`.")
 
 
 async def evaluate(evaluation_data: dict) -> dict:
@@ -127,7 +188,8 @@ async def query_creation(
         "badAnswer": False,
     }
 
-    expires_at = int((now + datetime.timedelta(days=90)).timestamp())
+    days = int(os.getenv("EXPIRE_DAYS", 90))
+    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
