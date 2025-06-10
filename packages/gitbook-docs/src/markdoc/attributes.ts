@@ -92,6 +92,6 @@ export class SrcAttr {
     // The path.join('/', value) do the trick. It removes any '../' before join
     // it with assetsPrefix. E.g.: ../../../a/b => /a/b
     value && !value.startsWith('http')
-      ? path.join(variables?.assetsPrefix, path.join('/', value))
+      ? `${variables?.assetsPrefix}${path.join('/', value)}`
       : value;
 }
