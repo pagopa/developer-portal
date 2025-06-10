@@ -116,6 +116,32 @@ resource "aws_cloudfront_distribution" "website" {
 
 # cloudfront distribution for standalone static content
 
+resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
+  name    = "cors-policy"
+  comment = "Cors policy for static contents"
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+    #TODO: restroct this to the specific domain
+    access_control_allow_origins {
+      items = ["*"]
+    }
+
+    origin_override = true
+  }
+}
+
+
 ## Static website CDN
 resource "aws_cloudfront_distribution" "static_contents" {
 
@@ -141,7 +167,7 @@ resource "aws_cloudfront_distribution" "static_contents" {
     allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]
     target_origin_id           = aws_s3_bucket.website_standalone.bucket
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.websites.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.static_content_cors.id
 
     forwarded_values {
       query_string = false
