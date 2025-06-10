@@ -99,7 +99,7 @@ class Chatbot:
         self.index = load_index_redis(
             self.model,
             self.embed_model,
-            chunk_sizes=params["vector_index"]["chunk_size"],
+            chunk_size=params["vector_index"]["chunk_size"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
         self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
