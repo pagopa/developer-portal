@@ -1,7 +1,7 @@
 import os
 from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.llms.llm import LLM
-from llama_index.core.retrievers import AutoMergingRetriever
+from llama_index.core.retrievers import AutoMergingRetriever, VectorIndexRetriever
 from llama_index.core.chat_engine import CondensePlusContextChatEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
 
