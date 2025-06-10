@@ -146,6 +146,6 @@ export const parseContent = (
   markdown: string,
   config: ParseContentConfig
 ): ReadonlyArray<RenderableTreeNode> => {
-  const ast = parseAst(markdown, config.assetsPrefix);
+  const ast = parseAst(markdown);
   return Markdoc.transform([ast], { ...schema, variables: config });
 };
