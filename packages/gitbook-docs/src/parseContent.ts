@@ -103,7 +103,7 @@ const schema: ConfigType = {
   },
 };
 
-export const parseAst = (markdown: string, prefix: string) => {
+export const parseAst = (markdown: string) => {
   // Workaround to convert from "GitBook Markdown" to "MarkDoc Markdown"
   // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
