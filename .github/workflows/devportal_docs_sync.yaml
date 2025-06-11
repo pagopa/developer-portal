@@ -36,4 +36,4 @@ jobs:
 
       - name: Sync docs folder to S3
         run: |
-          aws s3 sync devportal-docs/docs s3://${{ vars.S3_BUCKET_NAME }}/docs --delete
+          aws s3 sync devportal-docs/docs s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_GITBOOK_DOCS }} --delete
