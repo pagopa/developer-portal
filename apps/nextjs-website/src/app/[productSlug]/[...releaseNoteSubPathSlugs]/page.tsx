@@ -24,15 +24,33 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_LONG_INTERVAL } from '@/config';
 import PageNotFound from '@/app/not-found';
+import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
 
-// export const revalidate = REVALIDATE_SHORT_INTERVAL; TODO: uncomment this line which is omitted for testing purposes
+export const revalidate = REVALIDATE_LONG_INTERVAL;
+
+const PRODUCT_SLUG_PATH_INDEX = 1;
+const RELEASE_NOTE_SUB_PATH_INDEX = 2;
+export async function generateStaticParams() {
+  const releaseNotes = await getReleaseNotesMetadata();
+  const releaseNoteParams = releaseNotes
+    .map(({ path }) => path.split('/'))
+    .filter((paths) => paths.length > RELEASE_NOTE_SUB_PATH_INDEX)
+    .map((paths) => {
+      return {
+        productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
+        productGuidePage: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX),
+      };
+    });
+  return releaseNoteParams;
+}
+
 export async function generateMetadata({
   params,
 }: {
