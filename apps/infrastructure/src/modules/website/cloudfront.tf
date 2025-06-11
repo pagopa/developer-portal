@@ -132,9 +132,9 @@ resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
       items = ["GET", "HEAD"]
     }
 
-    #TODO: restroct this to the specific domain
+
     access_control_allow_origins {
-      items = ["*"]
+      items = ["https://${local.opennext_domain}"]
     }
 
     origin_override = true
