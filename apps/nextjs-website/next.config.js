@@ -18,6 +18,9 @@ const nextConfig = {
       transform: '@mui/icons-material/{{member}}',
     },
   },
+  experimental: {
+    instrumentationHook: true,
+  },
 };
 
 module.exports = nextConfig;
