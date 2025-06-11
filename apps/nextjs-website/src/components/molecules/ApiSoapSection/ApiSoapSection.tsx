@@ -36,6 +36,9 @@ const ApiSoapSection = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -48,7 +51,6 @@ const ApiSoapSection = ({
       }
     };
 
-    // Wait until the iframe content is loaded
     iframe?.addEventListener('load', resizeIframe);
 
     return () => {
@@ -56,12 +58,6 @@ const ApiSoapSection = ({
     };
   }, []);
 
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // if a spec query param is present, try to match it with the specURLs, if found, set it as selectedItemURL
   useEffect(() => {
     const specName = searchParams.get('spec');
     if (specName) {
@@ -79,11 +75,12 @@ const ApiSoapSection = ({
     const spec = apiUrls.find((item) => item?.url === urlItem);
 
     if (apisName && spec?.name) {
-      // update the url with the spec query param
       router.replace(
         `/${product.slug}/api/${apisSlug}?spec=${encodeURIComponent(spec.name)}`
       );
     }
+
+    document.getElementById('soapApiStack')?.scroll(0, 0);
   };
 
   const selectedApi = useMemo(
@@ -102,6 +99,7 @@ const ApiSoapSection = ({
     >
       {apiUrls.length > 1 && apisName && (
         <Stack
+          id='soapApiStack'
           direction='row'
           justifyContent='flex-start'
           alignContent='center'
