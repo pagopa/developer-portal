@@ -137,6 +137,7 @@ def get_apidata(website_url: str) -> dict:
         LOGGER.error(
             f"Failed to fetch data from API. Status code: {response.status_code}"
         )
+        return response.text
 
 
 def read_api_url(url: str) -> str:
