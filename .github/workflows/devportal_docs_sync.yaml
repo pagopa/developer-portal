@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - poc-standalone
-      - DEV-2158-pipelines
   workflow_dispatch:
 
 # Permissions needed for AWS OIDC authentication
