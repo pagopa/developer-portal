@@ -1,5 +1,17 @@
 # chatbot
 
+## 5.2.0
+
+### Minor Changes
+
+- e0705a8: Add API documentation to the vector index
+
+### Patch Changes
+
+- 1c942c4: fixed auth JWT decode
+- 5483b3d: Fix bug user-feedback on Langfuse
+- 873b4ab: Fix double run of Presidio in Langfuse
+
 ## 5.1.0
 
 ### Minor Changes
