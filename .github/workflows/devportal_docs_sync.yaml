@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - poc-standalone
+      - DEV-2349-include-replacer-in-sync
   workflow_dispatch:
 
 # Permissions needed for AWS OIDC authentication
@@ -27,6 +28,10 @@ jobs:
           repository: pagopa/devportal-docs
           ref: docs/from-gitbook
           path: devportal-docs
+
+      - name: Replace include tags in docs
+        run: |
+          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
