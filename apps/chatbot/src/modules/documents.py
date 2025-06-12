@@ -21,15 +21,13 @@ from src.modules.utils import get_ssm_parameter
 LOGGER = getLogger(__name__)
 STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
 DYNAMIC_HTMLS = [
-    "case-histories/tari-cagliari.html",
-    "firma-con-io/api/firma-con-io-main.html",
+    "/case-histories/",
+    "/release-notes/",
+    "/solutions/",
+    "/webinars/",
     "index.html",
     "privacy-policy.html",
-    "send/api/send-main.html",
-    "solutions/multe-per-violazioni-al-codice-della-strada.html",
-    "solutions/tassa-sui-rifiuti-tari.html",
     "terms-of-service.html",
-    "webinars.html",
 ]
 
 
@@ -62,8 +60,13 @@ def filter_html_files(html_files: List[str]) -> List[str]:
         if not pattern.search(file)
         and not pattern2.search(file)
         and "/auth/" not in file
-        and "/api/" not in file
+        and "/app-io/api/" not in file
+        and "/firma-con-io/api/" not in file
+        and "/pago-pa/api/" not in file
+        and "/pdnd-interoperabilita/api/" not in file
+        and "/send/api/" not in file
         and "/profile/" not in file
+        and "questions.html" not in file
     ]
     return filtered_files
 
@@ -256,7 +259,9 @@ def get_guide_docs(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Getting guide docs"):
 
-        if file in dynamic_htmls or "/webinars/" in file:
+        if any(
+            part in file for part in DYNAMIC_HTMLS
+        ):  # file in dynamic_htmls or "/webinars/" in file:
             url = file.replace(documentation_dir, f"{website_url}/").replace(
                 ".html", ""
             )
