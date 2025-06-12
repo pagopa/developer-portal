@@ -24,6 +24,11 @@ const BaseApiDataAttributesCodec = t.strict({
     }),
   ]),
   apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
+  apiSoapDetail: t.strict({
+    slug: t.string,
+    repositoryUrl: t.string,
+    dirName: t.string,
+  }),
 });
 
 export const BaseApiDataCodec = t.strict({

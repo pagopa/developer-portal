@@ -14,31 +14,36 @@ import { Product } from '@/lib/types/product';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import _ from 'lodash';
 
 export type ApiSoapSectionProps = {
   readonly product: Product;
-  readonly apisName: string;
-  readonly apisSlug: string;
-  readonly apiRepositoryUrl: string;
-  readonly apiUrls: {
-    name?: string;
-    url: string;
-  }[];
+  readonly apiName: string;
+  readonly apiSlug: string;
+  readonly apiRepositoryUrl?: string;
+  readonly apiUrls: string[];
 };
 
 const ApiSoapSection = ({
   product,
-  apisName,
-  apisSlug,
+  apiName,
+  apiSlug,
   apiRepositoryUrl,
   apiUrls,
 }: ApiSoapSectionProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const apiMenuItems = apiUrls
+    .map((url) => ({
+      url: url,
+      // eslint-disable-next-line functional/immutable-data
+      name: _.split(_.split(url, '/').pop(), '.')[0] || '',
+    }))
+    .filter((item) => !!item.name);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiMenuItems[0].url);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -62,21 +67,21 @@ const ApiSoapSection = ({
     const specName = searchParams.get('spec');
     if (specName) {
       const decodedSpecName = decodeURIComponent(specName as string);
-      const spec = apiUrls.find((item) => item?.name === decodedSpecName);
+      const spec = apiMenuItems.find((item) => item?.name === decodedSpecName);
       if (spec) {
         setSelectedItemUrl(spec.url);
       }
     }
-  }, [searchParams, apiUrls]);
+  }, [searchParams, apiMenuItems]);
 
   const handleItemSelect = (urlItem: string) => {
     setSelectedItemUrl(urlItem);
 
-    const spec = apiUrls.find((item) => item?.url === urlItem);
+    const spec = apiMenuItems.find((item) => item?.url === urlItem);
 
-    if (apisName && spec?.name) {
+    if (spec?.name) {
       router.replace(
-        `/${product.slug}/api/${apisSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
       );
     }
 
@@ -84,8 +89,8 @@ const ApiSoapSection = ({
   };
 
   const selectedApi = useMemo(
-    () => apiUrls.find((item) => item?.url === selectedItemUrl) || apiUrls[0],
-    [selectedItemUrl, apiUrls]
+    () => apiMenuItems.find((item) => item?.url === selectedItemUrl) || apiMenuItems[0],
+    [selectedItemUrl, apiMenuItems]
   );
   const borderColor = palette.divider;
 
@@ -97,7 +102,7 @@ const ApiSoapSection = ({
         height: '100vh',
       }}
     >
-      {apiUrls.length > 1 && apisName && (
+      {apiMenuItems.length > 1 && apiName && (
         <Stack
           id='soapApiStack'
           direction='row'
@@ -128,10 +133,10 @@ const ApiSoapSection = ({
                 fontSize: '1rem',
               }}
             >
-              {apisName}
+              {apiName}
             </Typography>
             <MenuList dense>
-              {apiUrls.map((item) => (
+              {apiMenuItems.map((item) => (
                 <MenuItem
                   key={item.url}
                   onClick={() => handleItemSelect(item.url)}
@@ -198,29 +203,31 @@ const ApiSoapSection = ({
                 title='API SOAP Documentation'
               />
             </Box>
-            <Box
-              sx={{
-                paddingLeft: 20,
-                paddingBottom: 8,
-                paddingTop: 2,
-              }}
-            >
-              <LinkMui
-                component={Link}
-                underline='none'
-                href={apiRepositoryUrl}
+            {apiRepositoryUrl && (
+              <Box
+                sx={{
+                  paddingLeft: 20,
+                  paddingBottom: 8,
+                  paddingTop: 2,
+                }}
               >
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: '0.625rem',
-                    textDecoration: 'underline',
-                  }}
+                <LinkMui
+                  component={Link}
+                  underline='none'
+                  href={apiRepositoryUrl}
                 >
-                  {t('soapApiSection.apiRepoLink')}
-                </Typography>
-              </LinkMui>
-            </Box>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '0.625rem',
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    {t('soapApiSection.apiRepoLink')}
+                  </Typography>
+                </LinkMui>
+              </Box>
+            )}
           </Stack>
         </Stack>
       )}
