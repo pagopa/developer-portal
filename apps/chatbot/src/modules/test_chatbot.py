@@ -23,7 +23,7 @@ def test_connection_redis():
         REDIS_CLIENT.ping()
         flag = True
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
 
     assert flag is True
 
@@ -40,7 +40,7 @@ def test_cloud_connection():
         _ = get_embed_model()
         flag = True
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
 
     assert flag is True
 
@@ -99,7 +99,7 @@ def test_chat_generation():
         trace2 = CHATBOT.get_trace("fghik")
         print("trace 2:", trace2)
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
         res = "Something went wrong!"
 
     assert res != "Something went wrong!"
@@ -127,7 +127,7 @@ def test_evaluation():
             session_id="session-test",
         )
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
         res = "Something went wrong!"
 
     assert res != "Something went wrong!"

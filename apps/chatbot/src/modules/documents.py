@@ -15,19 +15,19 @@ from typing import List, Tuple
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
+from src.modules.utils import get_ssm_parameter
 
 
 LOGGER = get_logger(__name__)
+STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
 DYNAMIC_HTMLS = [
-    "case-histories/tari-cagliari.html",
-    "firma-con-io/api/firma-con-io-main.html",
+    "/case-histories/",
+    "/release-notes/",
+    "/solutions/",
+    "/webinars/",
     "index.html",
     "privacy-policy.html",
-    "send/api/send-main.html",
-    "solutions/multe-per-violazioni-al-codice-della-strada.html",
-    "solutions/tassa-sui-rifiuti-tari.html",
     "terms-of-service.html",
-    "webinars.html",
 ]
 
 
@@ -60,8 +60,13 @@ def filter_html_files(html_files: List[str]) -> List[str]:
         if not pattern.search(file)
         and not pattern2.search(file)
         and "/auth/" not in file
-        and "/api/" not in file
+        and "/app-io/api/" not in file
+        and "/firma-con-io/api/" not in file
+        and "/pago-pa/api/" not in file
+        and "/pdnd-interoperabilita/api/" not in file
+        and "/send/api/" not in file
         and "/profile/" not in file
+        and "questions.html" not in file
     ]
     return filtered_files
 
@@ -82,7 +87,7 @@ def get_html_files(root_folder: str) -> List[str]:
                 html_files.append(os.path.join(root, file))
 
     LOGGER.info(f"root_folder: {root_folder}")
-    LOGGER.info(f"Total html_files: {len(html_files)}")
+    LOGGER.info(f"html_files: {len(html_files)}")
     sorted_and_filtered = sorted(filter_html_files(html_files))
     LOGGER.info(f"sorted_and_filtered: {len(sorted_and_filtered)}")
     return sorted_and_filtered
@@ -125,14 +130,17 @@ def get_apidata(website_url: str) -> dict:
 
     url = website_url.replace("https://", "https://cms.")
     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
+    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
 
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
+    LOGGER.info(f"Fetching API data from {url}")
     if response.status_code == 200:
         return json.loads(response.text)
     else:
-        raise Exception(
+        LOGGER.error(
             f"Failed to fetch data from API. Status code: {response.status_code}"
         )
+        return response.text
 
 
 def read_api_url(url: str) -> str:
@@ -251,7 +259,7 @@ def get_guide_docs(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Getting guide docs"):
 
-        if file in dynamic_htmls or "/webinars/" in file:
+        if any(part in file for part in DYNAMIC_HTMLS):
             url = file.replace(documentation_dir, f"{website_url}/").replace(
                 ".html", ""
             )
@@ -303,9 +311,9 @@ def get_guide_docs(
                 )
             )
 
-    LOGGER.info(f"Number of guides documents with content: {len(documents)}")
+    LOGGER.info(f"Number of documents with content: {len(documents)}")
     LOGGER.info(
-        f"Number of empty pages in the guides documentation: {len(empty_pages)}. "
+        f"Number of empty pages in the documentation: {len(empty_pages)}. "
         "These are left out."
     )
     with open("empty_htmls.json", "w") as f:

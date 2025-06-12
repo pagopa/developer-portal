@@ -30,6 +30,6 @@ if __name__ == "__main__":
         model,
         embed_model,
         documentation_dir=DOCUMENTATION_DIR,
-        chunk_sizes=params["vector_index"]["chunk_size"],
+        chunk_size=params["vector_index"]["chunk_size"],
         chunk_overlap=params["vector_index"]["chunk_overlap"],
     )

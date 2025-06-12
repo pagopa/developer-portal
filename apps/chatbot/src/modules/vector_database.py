@@ -91,7 +91,7 @@ def build_index_redis(
         llm (BaseLLM): The language model to use for the index.
         embed_model (BaseEmbedding): The embedding model to use for the index.
         documentation_dir (str): Directory containing the documentation files.
-        chunk_sizes (List[int]): List of chunk sizes for the node parser.
+        chunk_size (int): chunk size for the node parser.
         chunk_overlap (int): Overlap size for the node parser.
     Returns:
         VectorStoreIndex: The newly created vector store index.
@@ -179,7 +179,7 @@ def load_index_redis(
     Args:
         llm (BaseLLM): The language model to use for the index.
         embed_model (BaseEmbedding): The embedding model to use for the index.
-        chunk_sizes (List[int]): List of chunk sizes for the node parser.
+        chunk_size (int): chunk size for the node parser.
         chunk_overlap (int): Overlap size for the node parser.
     Returns:
         VectorStoreIndex: The loaded vector store index.

@@ -98,7 +98,11 @@ class Chatbot:
         self.index = load_index_redis(
             self.model,
             self.embed_model,
+<<<<<<< HEAD
             chunk_sizes=params["vector_index"]["chunk_size"],
+=======
+            chunk_size=params["vector_index"]["chunk_size"],
+>>>>>>> main
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
         self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
@@ -367,6 +371,11 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
+                retrieved_contexts = []
+                for node in engine_response.source_nodes:
+                    url = WEBSITE_URL + node.metadata["filepath"]
+                    retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
                 response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
@@ -382,10 +391,6 @@ class Chatbot:
             response_str = response_str.strip()
             response_json = json.loads(response_str)
 
-            retrieved_contexts = []
-            for node in engine_response.source_nodes:
-                url = WEBSITE_URL + node.metadata["filepath"]
-                retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 

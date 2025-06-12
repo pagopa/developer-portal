@@ -41,13 +41,13 @@ class RagasWrapper(LlamaIndexLLMWrapper):
         callbacks: Callbacks,
     ) -> dict[str, Any]:
         if n != 1:
-            logger.warning("n values greater than 1 not support for LlamaIndex LLMs")
+            LOGGER.warning("n values greater than 1 not support for LlamaIndex LLMs")
         if temperature != 1e-8:
-            logger.info("temperature kwarg passed to LlamaIndex LLM")
+            LOGGER.info("temperature kwarg passed to LlamaIndex LLM")
         if stop is not None:
-            logger.info("stop kwarg passed to LlamaIndex LLM")
+            LOGGER.info("stop kwarg passed to LlamaIndex LLM")
         if callbacks is not None:
-            logger.info(
+            LOGGER.info(
                 "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
             )
         if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:

@@ -128,12 +128,17 @@ export const parseAst = (markdown: string) => {
     })
     .join('');
 
+  const parsedMarkdoc = updatedMarkdoc
+    .replaceAll(/\{%\s*include.*?%\}/g, '')
+    .replaceAll('{% endinclude %}', '')
+    .replaceAll(/^---\s*\n^title:\s*(.*?)\s*\n^---\s*$/gm, '');
+
   // Enable the parsing of html elements (e.g. <table>). During the parse phase
   // the html content is handled as a token of type html_block.
   const tokenizer = new Markdoc.Tokenizer({ html: true });
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
-  const tokens = processHtmlTokens(tokenizer.tokenize(updatedMarkdoc));
+  const tokens = processHtmlTokens(tokenizer.tokenize(parsedMarkdoc));
   return Markdoc.parse([...tokens]);
 };
 
