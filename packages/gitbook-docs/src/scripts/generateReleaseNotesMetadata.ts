@@ -3,22 +3,29 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
-import dotenv from 'dotenv';
-import { SitemapItem } from '../sitemapItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
   writeSitemapJson,
+  loadEnvConfig,
+  validateS3Environment,
 } from '../helpers/s3Bucket.helper';
+import { SitemapItem } from '../sitemapItem';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import {
+  fetchFromStrapi,
+  validateStrapiEnvironment,
+} from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
-dotenv.config();
+loadEnvConfig();
 
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+// Validate environment variables
+validateStrapiEnvironment();
+const { s3BucketName } = validateS3Environment();
+
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
@@ -65,7 +72,7 @@ async function convertReleaseNoteToSitemapItems(
     const releaseNoteFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
-        `${S3_BUCKET_NAME}`,
+        `${s3BucketName}`,
         s3Client
       )
     ).filter((file) => file.endsWith('.md'));
@@ -79,7 +86,7 @@ async function convertReleaseNoteToSitemapItems(
       }
       const content = await downloadS3File(
         filePath,
-        `${S3_BUCKET_NAME}`,
+        `${s3BucketName}`,
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
@@ -119,11 +126,12 @@ async function main() {
     await writeSitemapJson(
       sitemapItems,
       S3_RELEASE_NOTES_METADATA_JSON_PATH,
-      `${S3_BUCKET_NAME}`,
+      `${s3BucketName}`,
       s3Client
     );
   } catch (error) {
     console.error('Error:', error);
+    process.exit(1); // Exit with error code for CI pipeline visibility
   }
 }
 
