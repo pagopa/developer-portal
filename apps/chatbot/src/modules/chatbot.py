@@ -266,7 +266,7 @@ class Chatbot:
         self, trace_id: str, as_dict: bool = False
     ) -> TraceWithFullDetails | dict:
 
-        logger.warning(f"Getting trace {trace_id} from Langfuse")
+        logger.info(f"Getting trace {trace_id} from Langfuse")
         try:
             trace = LANGFUSE.fetch_trace(trace_id)
             trace = trace.data
@@ -331,7 +331,7 @@ class Chatbot:
                 trace.score(
                     name=name, value=value, data_type=data_type, comment=comment
                 )
-                logger.warning(
+                logger.info(
                     f"Add score {name}: {value} in trace {trace_id}.\n"
                     f"data_type: {data_type}\n"
                     f"type(value): {type(value)}"
@@ -344,7 +344,7 @@ class Chatbot:
                     data_type=data_type,
                     comment=comment,
                 )
-                logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
+                logger.info(f"Updating score {name} to {value} in trace {trace_id}")
 
     def _mask_trace(self, data: Any) -> Any:
 

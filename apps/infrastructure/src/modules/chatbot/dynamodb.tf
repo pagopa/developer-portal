@@ -26,7 +26,16 @@ module "dynamodb_chatbot_queries" {
       name = "createdAtDate"
       type = "S"
     },
+    {
+      name = "expiresAt"
+      type = "S"
+    },
   ]
+
+  ttl {
+    attribute_name = "expiresAt"
+    enabled        = true
+  }
 
   # LSI for query on created_at
   local_secondary_indexes = [
