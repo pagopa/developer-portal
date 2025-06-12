@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - poc-standalone
-      - DEV-2349-include-replacer-in-sync
   workflow_dispatch:
 
 # Permissions needed for AWS OIDC authentication
