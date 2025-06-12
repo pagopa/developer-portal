@@ -199,8 +199,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
-.env*.test
+.env*.*
 
 # vercel
 .vercel
@@ -411,6 +410,12 @@ apps/chatbot/empty_htmls.json
 
 # terraform
 apps/infrastructure/src/builds
+
+# Eccetto i file in specifiche directory env
+!apps/infrastructure/src/env/
+!apps/infrastructure/src/env/*/
+!apps/infrastructure/src/env/*/*.tfvars
+!apps/infrastructure/src/env/*/*.tfvars.json
 
 ## Python ##
 __pycache__/

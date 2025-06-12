@@ -38,3 +38,12 @@ variable "create_chatbot" {
   description = "Defines if chatbot should be created"
   default     = false
 }
+
+################################################################################
+# Active Campaign integration
+################################################################################
+variable "ac_integration_is_enabled" {
+  type        = bool
+  description = "Defines if Active Campaign integration should be enabled"
+  default     = false
+}

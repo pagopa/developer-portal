@@ -7,7 +7,7 @@ output "website_bucket" {
 
 output "website_cdn" {
   value = {
-    arn = aws_cloudfront_distribution.website.arn
+    arn = var.website_is_standalone ? null : aws_cloudfront_distribution.website.arn
   }
 }
 
@@ -29,5 +29,30 @@ output "webinar_subscriptions_ddb" {
     name       = module.dynamodb_webinar_subscriptions.dynamodb_table_id
     arn        = module.dynamodb_webinar_subscriptions.dynamodb_table_arn
     stream_arn = module.dynamodb_webinar_subscriptions.dynamodb_table_stream_arn
+  }
+}
+
+output "assets_opennext_bucket" {
+  value = {
+    name = module.opennext.assets.bucket.name
+    arn  = module.opennext.assets.bucket.arn
+  }
+}
+
+output "lambda_code_opennext_bucket" {
+  value = {
+    name = module.opennext.common.lambda_code_bucket.name
+    arn  = module.opennext.common.lambda_code_bucket.arn
+  }
+}
+
+output "standalone_server" {
+  value = module.opennext.server
+}
+
+output "lambda_initializer" {
+  value = {
+    name = module.opennext.initializer.lambda_function.name
+    arn  = module.opennext.initializer.lambda_function.arn
   }
 }

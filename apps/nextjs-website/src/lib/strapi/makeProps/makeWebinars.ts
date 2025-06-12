@@ -44,6 +44,7 @@ export const makeWebinarFromStrapi = (
     subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
     imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
     seo: strapiWebinar.attributes.seo,
+    webinarCategory: strapiWebinar.attributes.webinarCategory.data?.attributes,
   };
 };
 

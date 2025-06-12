@@ -22,7 +22,9 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return (await getGuideListPagesProps()).map(({ product }) => ({
     productSlug: product.slug,
@@ -44,14 +46,16 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const { path, abstract, seo } = await getGuideListPages(params?.productSlug);
+  const { path, abstract, seo, product } = await getGuideListPages(
+    params?.productSlug
+  );
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
   }
 
   return makeMetadata({
-    title: abstract?.title,
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
     parent: resolvedParent,

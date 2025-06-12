@@ -6,6 +6,10 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
+import { GuideDefinition } from './makeDocs.helpers';
+import { staticContentsUrl, s3DocsPath } from '@/config';
+import { Product } from '@/lib/types/product';
+import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -63,6 +67,7 @@ export const makeParseS3DocsEnv = (
   credentials?: {
     readonly accessKeyId: string;
     readonly secretAccessKey: string;
+    readonly sessionToken?: string;
   }
 ): ParseDocS3Env => {
   const s3 =
@@ -171,4 +176,95 @@ export const parseS3Doc = async <T>(
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   }
+};
+
+export const parseS3GuidePage = async (props: {
+  readonly guideProps: GuideDefinition;
+  readonly guidePath: string;
+  readonly guidesMetadata: readonly JsonMetadata[];
+  readonly products: readonly Product[];
+}) => {
+  const { guideProps, guidePath, guidesMetadata, products } = props;
+  const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
+  const guidePageMetadata = guidesMetadata.find(
+    (data) => data.path === guidePath
+  );
+  const versions = guideProps.versions;
+  const version = guidePageMetadata?.version
+    ? versions.find(({ version }) => version === guidePageMetadata.version)
+    : versions.find(({ main }) => !!main);
+  if (
+    !version ||
+    !guidePageMetadata ||
+    guidePageMetadata.dirName !== version.dirName
+  ) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('Missing version or guidePageMetadata for guidePath');
+    // eslint-disable-next-line functional/no-expression-statements
+    console.log(
+      'path',
+      guidePath,
+      'baseGuidePath',
+      baseGuidePath,
+      'Missing version:',
+      version,
+      'or guidePageMetadata',
+      guidePageMetadata,
+      'guidesMetadataLength',
+      guidesMetadata.length
+    );
+    return undefined;
+  }
+  const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
+  const source = {
+    pathPrefix: version.main
+      ? baseGuidePath
+      : `${baseGuidePath}/${version.version}`,
+    version,
+    assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
+    dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
+    spaceId: guidePageMetadata.dirName,
+  };
+  const menu =
+    guidePageMetadata &&
+    (await downloadFileAsText(guidePageMetadata.menuS3Path));
+  const body = await downloadFileAsText(guidePageMetadata.contentS3Path);
+  return {
+    ...guideProps,
+    guide: {
+      name: guideProps.guide.name,
+      path: guidePath,
+    },
+    version: {
+      main: version.main || false,
+      name: version.version,
+      path: version.main
+        ? baseGuidePath
+        : `${baseGuidePath}/${version.version}`,
+    },
+    versions: versions.map(({ main = false, version }) => ({
+      main,
+      name: version,
+      path: `${baseGuidePath}/${version}`,
+    })),
+    source,
+    page: {
+      path: guidePath,
+      isIndex,
+      title: guidePageMetadata.title || '',
+      menu: menu || '',
+      body: body || '',
+    },
+    products: products,
+    bodyConfig: {
+      isPageIndex: isIndex,
+      pagePath: guidePath,
+      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
+      gitBookPagesWithTitle: guidesMetadata,
+      spaceToPrefix: guidesMetadata.map((metadata) => ({
+        spaceId: metadata.dirName,
+        pathPrefix: metadata.path.split('/').slice(0, 4).join('/'),
+      })),
+    },
+  };
 };

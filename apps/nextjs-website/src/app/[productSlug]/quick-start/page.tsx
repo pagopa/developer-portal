@@ -20,7 +20,9 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getQuickStartGuidesProps } from '@/lib/cmsApi';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return (await getQuickStartGuidesProps()).map(({ product }) => ({
     productSlug: product.slug,
@@ -52,7 +54,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: abstract?.title,
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
     image: product.logo?.url,

@@ -160,9 +160,19 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const sendFeedback = (
     hasNegativeFeedback: boolean,
     sessionId: string,
-    queryId: string
+    queryId: string,
+    user_response_relevancy: number | null,
+    user_faithfullness: number | null,
+    user_comment: string
   ) => {
-    sendChatbotFeedback(hasNegativeFeedback, sessionId, queryId);
+    sendChatbotFeedback(
+      hasNegativeFeedback,
+      sessionId,
+      queryId,
+      user_response_relevancy,
+      user_faithfullness,
+      user_comment
+    );
     const updatedChatQueries = setFeedbackByQueryId(
       chatQueries,
       queryId,

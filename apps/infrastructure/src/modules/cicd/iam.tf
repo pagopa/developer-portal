@@ -1,32 +1,10 @@
-resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-${var.environment}-github-runner-service-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "codebuild.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "codebuild_policy" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"
-}
-
 resource "aws_iam_policy" "deploy_website" {
   name        = "${local.prefix}-deploy-website"
   description = "Policy to allow to deploy the website"
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
+    Statement = concat([
       {
         Action = [
           "s3:PutObject",
@@ -50,15 +28,6 @@ resource "aws_iam_policy" "deploy_website" {
       },
       {
         Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          var.website_cdn.arn
-        ]
-      },
-      {
-        Action = [
           "ssm:GetParameter",
           "ssm:PutParameter"
         ]
@@ -73,125 +42,96 @@ resource "aws_iam_policy" "deploy_website" {
           "bedrock:GetGuardrail",
           "bedrock:InvokeModel",
           "bedrock:InvokeModelWithResponseStream",
-          "bedrock:ListFoundationModels"
+          "bedrock:ListFoundationModels",
+          "bedrock:Rerank"
         ]
         Resource = ["*"]
       },
       {
         Effect = "Allow"
         Action = [
-          "lambda:*",
+          "lambda:*"
         ]
         Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*chatbot*"]
       }
-    ]
+      ], var.website_is_standalone ? [] : [{
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+        Effect = "Allow"
+        Resource = [
+          var.website_cdn.arn
+        ]
+    }])
   })
 }
 
 resource "aws_iam_role_policy_attachment" "deploy_website" {
-  role       = aws_iam_role.codebuild_role.name
+  role       = module.codebuild.iam_role.name
   policy_arn = aws_iam_policy.deploy_website.arn
 }
 
-resource "aws_iam_policy" "github_connection" {
-  name        = "${local.prefix}-github-connection"
-  description = "Policy to allow to use the github connection"
+resource "aws_iam_role" "github_deploy_opennext" {
+  name               = "${local.prefix}-deploy-opennext"
+  description        = "Role to deploy lambda functions with github actions."
+  assume_role_policy = local.assume_role_policy_github
+}
+
+
+# Role to deploy lambda functions with github actions.
+resource "aws_iam_policy" "github_deploy_opennext" {
+  name        = "${local.prefix}-deploy-lambda"
+  description = "Policy to deploy Lambda functions"
 
   policy = jsonencode({
+
     Version = "2012-10-17"
     Statement = [
       {
-        Action = [
-          "codeconnections:*",
-          "codestar-connections:*"
-        ]
         Effect = "Allow"
-        Resource = [
-          "*"
+        Action = [
+          "lambda:CreateFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:GetFunctionConfiguration",
+          "lambda:PublishVersion",
+          "lambda:UpdateAlias"
         ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "github_connection" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = aws_iam_policy.github_connection.arn
-}
-
-resource "aws_iam_policy" "vpc_connection" {
-  name        = "${local.prefix}-vpc-connection"
-  description = "Policy to allow to use the vpc connection"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
+        Resource = "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*"
+      },
       {
         Action = [
-          "ec2:CreateNetworkInterface",
-          "ec2:DescribeDhcpOptions",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:DeleteNetworkInterface",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeVpcs"
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
         ]
         Effect = "Allow"
         Resource = [
-          "*"
+          "${var.assets_opennext_bucket.arn}/*",
+          "${var.assets_opennext_bucket.arn}"
         ]
       },
       {
         Action = [
-          "ec2:CreateNetworkInterfacePermission"
+          "s3:PutObject",
+          "s3:GetObject"
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*"
+          "${var.lambda_code_opennext_bucket.arn}/*",
+
         ]
-        Condition = {
-          StringEquals = {
-            "ec2:AuthorizedService" = "codebuild.amazonaws.com"
-          }
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "vpc_connection" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = aws_iam_policy.vpc_connection.arn
-}
-
-resource "aws_iam_policy" "cloudwatch" {
-  name        = "${local.prefix}-cloudwatch"
-  description = "Policy to allow to log in cloudwatch"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
+      },
       {
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:DescribeLogGroups",
-          "logs:DescribeLogStreams",
-          "logs:PutLogEvents",
-          "logs:GetLogEvents",
-          "logs:FilterLogEvents",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/${var.environment}-github-runner:*",
-          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/${var.environment}-github-runner:log-stream:log-stream/*"
-        ]
+        Effect   = "Allow"
+        Action   = "lambda:InvokeFunction"
+        Resource = "${var.lambda_initializer_arn}"
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "cloudwatch" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = aws_iam_policy.cloudwatch.arn
+resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
+  role       = aws_iam_role.github_deploy_opennext.name
+  policy_arn = aws_iam_policy.github_deploy_opennext.arn
 }

@@ -22,19 +22,28 @@ export const credentials =
         accessKeyId: secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID,
         secretAccessKey:
           secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY,
+        sessionToken: secrets.S3_SESSION_TOKEN || process.env.S3_SESSION_TOKEN,
       }
     : undefined;
 export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
 export const cookieDomainScript =
   secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
   process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+export const useNewCookie = process.env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
+export const cookieScriptUrl = process.env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
+export const cookieCategory = process.env.NEXT_PUBLIC_COOKIE_CATEGORY;
+export const matomoScriptSrc =
+  process.env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC ||
+  'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
-export const docsS3AssetsPath = process.env.S3_PATH_TO_GITBOOK_DOCS_ASSETS;
+export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
 export const isChatbotActive =
   process.env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
+export const isFeedbackFormEnabled =
+  process.env.NEXT_PUBLIC_FEEDBACK_FORM_ENABLED === 'true';
 export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
 
@@ -107,6 +116,9 @@ export const organizationInfo = {
     'https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa'
   ).split(','),
 };
+
+export const REVALIDATE_LONG_INTERVAL = 3600; // 1 hour
+export const REVALIDATE_SHORT_INTERVAL = 300; // 5 minutes
 
 export const companyRoles = [
   'ente-pubblico',

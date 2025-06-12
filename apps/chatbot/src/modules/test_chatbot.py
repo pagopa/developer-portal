@@ -27,11 +27,11 @@ def test_connection_redis():
     except Exception as e:
         logger.error(e)
 
-    assert flag == True
+    assert flag is True
 
 
 def test_connection_langfuse():
-    assert LANGFUSE.auth_check() == True
+    assert LANGFUSE.auth_check() is True
 
 
 def test_cloud_connection():
@@ -44,13 +44,13 @@ def test_cloud_connection():
     except Exception as e:
         logger.error(e)
 
-    assert flag == True
+    assert flag is True
 
 
 def test_prompt_templates():
 
     for prompt_str, template in zip(PROMPTS.values(), CHATBOT._get_prompt_templates()):
-        vars_str = re.findall(r'\{(.*?)\}', prompt_str)
+        vars_str = re.findall(r"\{(.*?)\}", prompt_str)
         vars_tmp = list(template.template_var_mappings.keys())
         assert vars_str == vars_tmp
 
@@ -63,7 +63,7 @@ def test_pii_mask():
 def test_messages_to_chathistory():
 
     chat_history = CHATBOT._messages_to_chathistory()
-    assert len(chat_history) == 1
+    assert len(chat_history) == 0
 
     messages = [
         {"question": "aaaa", "answer": "bbbb"},
@@ -72,7 +72,7 @@ def test_messages_to_chathistory():
     ]
     chat_history = CHATBOT._messages_to_chathistory(messages)
 
-    assert len(chat_history) == 2 * len(messages) + 1
+    assert len(chat_history) == 2 * len(messages)
 
 
 def test_chat_generation():
@@ -81,27 +81,55 @@ def test_chat_generation():
 
     try:
         res = CHATBOT.chat_generate(
-            query_str = query_str,
-            trace_id = "abcde",
-            user_id = "user-test",
-            session_id = "session-test",
-            tags = "test"
+            query_str=query_str,
+            trace_id="abcde",
+            user_id="user-test",
+            session_id="session-test",
+            tags="test"
         )
         res = CHATBOT.chat_generate(
-            query_str = "sai dirmi di più?",
-            trace_id = "fghik", 
-            messages = [{"question": query_str, "answer": res}],
-            user_id = "user-test",
-            session_id = "session-test",
-            tags = "test"
+            query_str="sai dirmi di più?",
+            trace_id="fghik",
+            messages=[{"question": query_str, "answer": res}],
+            user_id="user-test",
+            session_id="session-test",
+            tags="test"
         )
 
         trace1 = CHATBOT.get_trace("abcde")
-        print("trace 1:", trace1) 
+        print("trace 1:", trace1)
         trace2 = CHATBOT.get_trace("fghik")
-        print("trace 2:", trace2) 
+        print("trace 2:", trace2)
     except Exception as e:
         logger.error(e)
-        res = f"Something went wrong!"
+        res = "Something went wrong!"
 
-    assert res != f"Something went wrong!"
+    assert res != "Something went wrong!"
+
+
+def test_evaluation():
+
+    query_str = "GPD gestisce i pagamenti spontanei?"
+
+    try:
+        response_json = CHATBOT.chat_generate(
+            query_str=query_str,
+            trace_id="abcde",
+            user_id="user-test",
+            session_id="session-test",
+            tags="test",
+        )
+        response = CHATBOT.get_final_response(response_json)
+        CHATBOT.evaluate(
+            query_str=query_str,
+            response_str=response,
+            retrieved_contexts=response_json["context"],
+            trace_id="abcde",
+            user_id="user-test",
+            session_id="session-test",
+        )
+    except Exception as e:
+        logger.error(e)
+        res = "Something went wrong!"
+
+    assert res != "Something went wrong!"
