@@ -3,7 +3,6 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
-import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
@@ -19,6 +18,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { REVALIDATE_SHORT_INTERVAL } from '@/config';
+import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export type ApiDataPageProps = {
   readonly title?: string;
@@ -100,12 +100,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
         showBreadcrumbs
         structuredData={structuredData}
       >
-        <ApiSection
-          apiSlug={params.apiDataSlug}
-          specURLs={apiDataProps.specURLs}
-          product={apiDataProps.product}
-          specURLsName={apiDataProps.specURLsName}
-        />
+        <ApiSection apiData={apiDataProps} />
       </ProductLayout>
     );
   }

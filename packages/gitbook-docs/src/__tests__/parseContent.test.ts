@@ -114,6 +114,30 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should remove include tags', () => {
+    expect(
+      parseContent(
+        'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}middle{% endinclude %} post',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['pre middle', ' ', ' post']),
+    ]);
+  });
+
+  it('should remove include tags for multiline string', () => {
+    expect(
+      parseContent(
+        'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}This is a test\n \n \n test test\n\n test{% endinclude %} post',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['pre This is a test']),
+      new Markdoc.Tag('Paragraph', {}, ['test test']),
+      new Markdoc.Tag('Paragraph', {}, ['test', ' ', ' post']),
+    ]);
+  });
+
   it('should preserve a single space into a td tag nested into other tags', () => {
     expect(
       parseContent(
