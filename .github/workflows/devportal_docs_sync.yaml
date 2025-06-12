@@ -28,6 +28,10 @@ jobs:
           ref: docs/from-gitbook
           path: devportal-docs
 
+      - name: Replace include tags in docs
+        run: |
+          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
