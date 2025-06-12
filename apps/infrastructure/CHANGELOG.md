@@ -1,5 +1,11 @@
 # infrastructure
 
+## 2.1.1
+
+### Patch Changes
+
+- 13a91da: Change rewriter function code path
+
 ## 2.1.0
 
 ### Minor Changes
