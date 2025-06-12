@@ -27,6 +27,7 @@
     "@mui/material": "5.14.5",
     "@mui/utils": "5.14.5",
     "@opennextjs/aws": "^3.6.3",
+    "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.57.2",
     "@opentelemetry/instrumentation": "^0.57.2",
     "@opentelemetry/sdk-logs": "^0.57.2",
