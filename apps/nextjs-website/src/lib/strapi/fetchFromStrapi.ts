@@ -27,7 +27,6 @@ export const fetchFromStrapi = <A, O, I>(
           // handle any promise result
           TE.tryCatch(() => {
             // eslint-disable-next-line functional/no-expression-statements
-            console.log('API Populate2', populate);
             return fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
               method: 'GET',
               headers: {
