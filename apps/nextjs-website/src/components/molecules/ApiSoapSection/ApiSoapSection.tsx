@@ -89,7 +89,9 @@ const ApiSoapSection = ({
   };
 
   const selectedApi = useMemo(
-    () => apiMenuItems.find((item) => item?.url === selectedItemUrl) || apiMenuItems[0],
+    () =>
+      apiMenuItems.find((item) => item?.url === selectedItemUrl) ||
+      apiMenuItems[0],
     [selectedItemUrl, apiMenuItems]
   );
   const borderColor = palette.divider;

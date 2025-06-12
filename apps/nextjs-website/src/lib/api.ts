@@ -163,7 +163,7 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 export async function getApiDataParams() {
   const props = (await getApiDataListPagesProps()).flatMap(
     (apiDataListPageProps) =>
-      apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
+      apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
         apiDataSlug,
       }))
