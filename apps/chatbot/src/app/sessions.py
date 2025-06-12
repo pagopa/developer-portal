@@ -25,56 +25,54 @@ def current_user_id(authorization: str) -> str:
         logger.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
     else:
-        token = authorization.split(' ')[1]
+        token = authorization.split(" ")[1]
         decoded = verify_jwt(token)
         if decoded is False:
             logger.error("[current_user_id] decoded is false, exit with 401")
             raise HTTPException(status_code=401, detail="Unauthorized")
         else:
             if "cognito:username" in decoded:
-                return decoded['cognito:username']
+                return decoded["cognito:username"]
             else:
-                return decoded['username']
+                return decoded["username"]
 
 
 def find_or_create_session(userId: str, now: datetime.datetime):
     if userId is None:
         return None
 
-    SESSION_MAX_DURATION_DAYS = float(
-        os.getenv('CHB_SESSION_MAX_DURATION_DAYS', '1')
-    )
+    SESSION_MAX_DURATION_DAYS = float(os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1"))
     datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
     startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
     # trovare una sessione con createdAt > datetimeLimit
     try:
         dbResponse = tables["sessions"].query(
-            KeyConditionExpression=Key("userId").eq(userId) &
-            Key('createdAt').gt(startOfDay.isoformat()),
-            IndexName='SessionsByCreatedAtIndex',
+            KeyConditionExpression=Key("userId").eq(userId)
+            & Key("createdAt").gt(startOfDay.isoformat()),
+            IndexName="SessionsByCreatedAtIndex",
             ScanIndexForward=False,
-            Limit=1
+            Limit=1,
         )
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
             status_code=422,
-            detail=f"[find_or_create_session] userId: {userId}, error: {e}"
+            detail=f"[find_or_create_session] userId: {userId}, error: {e}",
         )
 
-    items = dbResponse.get('Items', [])
+    items = dbResponse.get("Items", [])
     if len(items) == 0:
         body = {
-            "id": f'{uuid.uuid4()}',
+            "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
             "userId": userId,
-            "createdAt": now.isoformat()
+            "createdAt": now.isoformat(),
         }
         try:
             create_session_record(body)
         except (BotoCoreError, ClientError) as e:
             raise HTTPException(
                 status_code=422,
-                detail=f"[find_or_create_session] body: {body}, error: {e}"
+                detail=f"[find_or_create_session] body: {body}, error: {e}",
             )
 
     else:
@@ -85,10 +83,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
 def create_session_record(body: dict):
     saltValue = str(uuid.uuid4())
-    saltBody = {
-        'sessionId': body['id'],
-        'value': saltValue
-    }
+    saltBody = {"sessionId": body["id"], "value": saltValue}
     # TODO: transaction https://github.com/boto/boto3/pull/4010
     tables["sessions"].put_item(Item=body)
     tables["salts"].put_item(Item=saltBody)
@@ -102,14 +97,14 @@ def session_salt(sessionId: str):
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
             status_code=422,
-            detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}"
+            detail=f"[salts_fetching] sessionId: {sessionId}, error: {e}",
         )
-    result = dbResponse.get('Items', [])
+    result = dbResponse.get("Items", [])
     if len(result) == 0:
         result = None
     else:
         result = result[0]
-    return result.get('value', None)
+    return result.get("value", None)
 
 
 def hash_func(user_id: str, salt: str) -> str:
@@ -119,49 +114,44 @@ def hash_func(user_id: str, salt: str) -> str:
 
 def last_session_id(userId: str):
     dbResponse = tables["sessions"].query(
-        IndexName='SessionsByCreatedAtIndex',
-        KeyConditionExpression=Key('userId').eq(userId),
+        IndexName="SessionsByCreatedAtIndex",
+        KeyConditionExpression=Key("userId").eq(userId),
         ScanIndexForward=False,
-        Limit=1
+        Limit=1,
     )
-    items = dbResponse.get('Items', [])
-    return items[0].get('id', None) if items else None
+    items = dbResponse.get("Items", [])
+    return items[0].get("id", None) if items else None
 
 
 def get_user_session(userId: str, sessionId: str):
-    dbResponse = tables["sessions"].get_item(
-        Key={
-          "userId": userId,
-          "id": sessionId
-        }
-    )
-    item = dbResponse.get('Item')
+    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
+    item = dbResponse.get("Item")
     return item if item else None
 
 
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
     if query_feedback.badAnswer is not None:
-        bad_answer = (-1 if query_feedback.badAnswer else 1)
+        bad_answer = -1 if query_feedback.badAnswer else 0
         chatbot.add_langfuse_score(
             trace_id=query_id,
-            name='user-feedback',
+            name="user-feedback",
             value=bad_answer,
             comment=query_feedback.feedback.user_comment,
-            data_type='NUMERIC'
+            data_type="NUMERIC",
         )
 
     if query_feedback.feedback.user_response_relevancy is not None:
         chatbot.add_langfuse_score(
             trace_id=query_id,
-            name='user-response-relevancy',
+            name="user-response-relevancy",
             value=float(query_feedback.feedback.user_response_relevancy),
-            data_type='NUMERIC'
+            data_type="NUMERIC",
         )
 
     if query_feedback.feedback.user_faithfullness is not None:
         chatbot.add_langfuse_score(
             trace_id=query_id,
-            name='user-faithfullness',
+            name="user-faithfullness",
             value=float(query_feedback.feedback.user_faithfullness),
-            data_type='NUMERIC'
+            data_type="NUMERIC",
         )
