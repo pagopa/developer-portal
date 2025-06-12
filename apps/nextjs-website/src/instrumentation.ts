@@ -1,8 +1,6 @@
 import { registerOTel } from '@vercel/otel';
 import { AWSXRayPropagator } from '@opentelemetry/propagator-aws-xray';
-import { AlwaysOnSampler } from '@opentelemetry/core';
-
-
+import { AlwaysOnSampler } from '@opentelemetry/sdk-trace-node';
 
 export function register() {
   const telemetry = registerOTel({
