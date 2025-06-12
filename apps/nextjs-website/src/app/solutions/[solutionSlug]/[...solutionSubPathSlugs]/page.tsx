@@ -9,6 +9,7 @@ import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_LONG_INTERVAL } from '@/config';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -25,6 +26,7 @@ type Params = {
   solutionSubPathSlugs: string[];
 };
 
+export const revalidate = REVALIDATE_LONG_INTERVAL;
 export async function generateMetadata({
   params,
 }: {

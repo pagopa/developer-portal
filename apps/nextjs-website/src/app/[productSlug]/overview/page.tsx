@@ -28,9 +28,11 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return (await getOverviewsProps())
     .map(({ product }) => ({
@@ -107,7 +109,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, path, seo } = await getOverview(params.productSlug);
+  const { product, path, seo, hero } = await getOverview(params.productSlug);
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -115,7 +117,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: product.name,
+    title: [hero?.title, product.name].filter(Boolean).join(' | '),
     description: product.description,
     url: path,
     image: product.logo?.url,

@@ -1,7 +1,8 @@
 locals {
   domain_validations_options = setunion(
     aws_acm_certificate.website.domain_validation_options,
-    aws_acm_certificate.auth.domain_validation_options
+    aws_acm_certificate.auth.domain_validation_options,
+    aws_acm_certificate.static_contents.domain_validation_options,
   )
 }
 
@@ -57,5 +58,19 @@ resource "aws_route53_record" "devportal_cognito_A" {
 
     name    = aws_cognito_user_pool_domain.devportal.cloudfront_distribution
     zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
+  }
+}
+
+
+# This Route53 record will point at our CloudFront distribution for static contents.
+resource "aws_route53_record" "static_contents" {
+  zone_id = var.hosted_zone_id
+  name    = local.dns_domain_name_static_contents
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.website.domain_name
+    zone_id                = aws_cloudfront_distribution.website.hosted_zone_id
+    evaluate_target_health = false
   }
 }

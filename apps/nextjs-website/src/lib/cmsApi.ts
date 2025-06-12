@@ -42,6 +42,8 @@ import {
 } from '@/helpers/makeS3Docs.helpers';
 // import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { secrets } from '@/config';
+import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
+import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -83,6 +85,17 @@ export const getProductsProps = async () => {
     async () => {
       const strapiProducts = await fetchProducts(buildEnv);
       return makeProductsProps(strapiProducts);
+    },
+    CACHE_EXPIRY_IN_SECONDS
+  );
+};
+
+export const getWebinarCategoriesProps = async () => {
+  return withCache(
+    getCacheKey('getWebinarCategoriesProps'),
+    async () => {
+      const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
+      return makeWebinarCategoriesProps(strapiWebinarCategories);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
@@ -209,6 +222,17 @@ export const getGuideListPagesProps = async () => {
   );
 };
 
+export const getGuidesProps = async () => {
+  return withCache(
+    getCacheKey('getGuidesPropsCache'),
+    async () => {
+      const strapiGuides = await fetchGuides(buildEnv);
+      return makeGuidesProps(strapiGuides);
+    },
+    CACHE_EXPIRY_IN_SECONDS
+  );
+};
+
 export const getGuides = async () => {
   const strapiGuides = await fetchGuides(buildEnv);
   return makeGuidesProps(strapiGuides);
@@ -225,6 +249,19 @@ export const getGuideProps = async (
   }
   const guide = makeGuidesProps(strapiGuides)[0];
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
+};
+
+export const getGuidePageProps = async (
+  guideSlug: string,
+  productSlug: string
+) => {
+  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+  if (!strapiGuides || strapiGuides.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const guidesProps = makeGuidesProps(strapiGuides);
+  return guidesProps[0];
 };
 
 export const getSolutionProps = async (

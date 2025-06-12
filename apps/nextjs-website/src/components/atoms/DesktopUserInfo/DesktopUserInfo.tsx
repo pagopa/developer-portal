@@ -97,6 +97,7 @@ const DesktopUserInfo: FC = () => {
             justifyContent='flex-end'
             onClick={handleClick}
             gap={{ xs: 0, sm: 1 }}
+            sx={{ cursor: 'pointer' }}
           >
             <PersonOutline
               sx={{

@@ -3,7 +3,6 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
-import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
@@ -18,6 +17,8 @@ import {
   convertApiToStructuredDataSoftwareApplication,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
+import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export type ApiDataPageProps = {
   readonly title?: string;
@@ -32,6 +33,7 @@ export type ApiDataPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return getApiDataParams();
 }
@@ -48,7 +50,9 @@ export const generateMetadata = async (
   }
 
   return makeMetadata({
-    title: ApiDataProps?.specURLsName,
+    title: [ApiDataProps?.specURLsName, ApiDataProps?.product?.name]
+      .filter(Boolean)
+      .join(' | '),
     description: ApiDataProps?.product?.description,
     url: ApiDataProps?.path,
     parent: resolvedParent,
@@ -96,12 +100,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
         showBreadcrumbs
         structuredData={structuredData}
       >
-        <ApiSection
-          apiSlug={params.apiDataSlug}
-          specURLs={apiDataProps.specURLs}
-          product={apiDataProps.product}
-          specURLsName={apiDataProps.specURLsName}
-        />
+        <ApiSection apiData={apiDataProps} />
       </ProductLayout>
     );
   }

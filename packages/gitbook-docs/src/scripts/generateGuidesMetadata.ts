@@ -56,35 +56,49 @@ interface StrapiGuide {
 function generateUrlPath(
   filePath: string,
   guideSlug: string,
-  productSlug: string
+  productSlug: string,
+  versionName?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath);
-  return `/${productSlug}/guides/${guideSlug}/${restOfPath}`;
+  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+    .filter(Boolean)
+    .join('/');
 }
+
+type GuideInfo = {
+  versionName: string;
+  isMainVersion: boolean;
+  dirName: string;
+  guideSlug: string;
+  productSlug: string;
+};
 
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]
 ): Promise<SitemapItem[]> {
-  const versions = strapiGuides.flatMap((guide) => {
-    return guide.attributes.versions.map((version) => ({
-      version: version,
-      guideSlug: guide.attributes.slug,
-      productSlug: guide.attributes.product?.data?.attributes?.slug,
-    }));
-  });
+  const guideInfoList: GuideInfo[] = strapiGuides
+    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .flatMap((guide) =>
+      guide.attributes.versions.map((version) => ({
+        versionName: version.version,
+        isMainVersion: version.main,
+        dirName: version.dirName,
+        guideSlug: guide.attributes.slug,
+        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+      }))
+    );
 
   const items: SitemapItem[] = [];
-  for (const version of versions) {
-    const dirName = version.version.dirName;
+  for (const guideInfo of guideInfoList) {
     const guideFiles = (
       await listS3Files(
-        `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
+        `${S3_PATH_TO_GITBOOK_DOCS}/${guideInfo.dirName}`,
         `${s3BucketName}`,
         s3Client
       )
     ).filter((file) => file.endsWith('.md'));
     const menuPath = guideFiles.find((file) =>
-      file.includes(dirName + '/SUMMARY.md')
+      file.includes(guideInfo.dirName + '/SUMMARY.md')
     );
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
@@ -97,19 +111,33 @@ async function convertGuideToSitemapItems(
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
-      if (dirName && menuPath && content && version.productSlug) {
+      if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
-          version.guideSlug,
-          version.productSlug
+          guideInfo.guideSlug,
+          guideInfo.productSlug,
+          guideInfo.versionName
         );
-        items.push({
+        const item = {
           path,
-          dirName,
+          dirName: guideInfo.dirName,
           contentS3Path: filePath,
-          manuS3Path: menuPath,
+          menuS3Path: menuPath,
           title: title || path.split('/').pop() || 'Untitled',
-        });
+          version: guideInfo.versionName,
+        };
+        items.push(item);
+        if (guideInfo.isMainVersion) {
+          const path = generateUrlPath(
+            filePath,
+            guideInfo.guideSlug,
+            guideInfo.productSlug
+          );
+          items.push({
+            ...item,
+            path,
+          });
+        }
       }
     }
   }

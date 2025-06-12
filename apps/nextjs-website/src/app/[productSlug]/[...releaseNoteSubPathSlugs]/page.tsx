@@ -25,17 +25,25 @@ import {
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { baseUrl } from '@/config';
+import PageNotFound from '@/app/not-found';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
 
+// export const revalidate = REVALIDATE_SHORT_INTERVAL; TODO: uncomment this line which is omitted for testing purposes
 export async function generateMetadata({
   params,
 }: {
   params: ReleaseNotePageStaticParams;
 }): Promise<Metadata> {
+  if (params.productSlug === 'unknown') {
+    return makeMetadata({
+      title: 'unknown',
+      url: 'unknown',
+    });
+  }
   const {
     page: { path, title },
     seo,
@@ -69,6 +77,9 @@ const ReleaseNotePage = async ({
 }: {
   params: ReleaseNotePageStaticParams;
 }) => {
+  if (params.productSlug === 'unknown') {
+    return <PageNotFound />;
+  }
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
     await getReleaseNote(params.productSlug, params.releaseNoteSubPathSlugs);
 

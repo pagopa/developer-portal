@@ -1,5 +1,40 @@
 # chatbot
 
+## 5.1.0
+
+### Minor Changes
+
+- e7a23d5: Calls the response evaluation function only if the queries of the day are less than CHB_MAX_DAILY_EVALUATIONS env var.
+- a76b74f: add reranker in the engine as postprocessor
+
+### Patch Changes
+
+- 4056f09: Save badAnswer field to boolean
+- 7409287: Removed similarity postprocessing from the RAG engine
+- 1d8988a: add user feedback to PATCH /sessions/{sessionId}/queries/{id} API
+- 720f6b5: Sanitize feedback comment with Presidio
+- 6061915: insert CHB_AWS_SSM prefix for the env vars whose value is an SSM path
+- e7ba94a: Mock AWS SSM in local environment, fix python import errors
+
+## 5.0.0
+
+### Major Changes
+
+- d22015c: Add trace evaluation using ragas framework
+
+### Patch Changes
+
+- 2d35fc4: fix docker scripts and AWS SSM vars put
+- b2fcf25: Update chatbot engine including its system prompt
+- 290c438: Add jupyter service in the docker compose
+
+## 4.4.0
+
+### Minor Changes
+
+- eca70c0: linting
+- 0a549b2: sanitize query input via API, increase login security.
+
 ## 4.3.0
 
 ### Minor Changes

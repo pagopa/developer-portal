@@ -1,23 +1,23 @@
 import os
 import boto3
 from logging import getLogger
-from dotenv import load_dotenv
 
-load_dotenv()
 logger = getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
 SSM_CLIENT = boto3.client(
     "ssm",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_DEFAULT_REGION
+    region_name=AWS_DEFAULT_REGION,
+    endpoint_url=AWS_ENDPOINT_URL,
 )
 
 
-def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 
@@ -26,31 +26,31 @@ def get_ssm_parameter(name: str, default: str | None = None) -> str | None:
     :return: The value of the requested parameter.
     """
 
-    logger.debug(f"Getting parameter {name} from SSM")
-    try: 
+    if name is None:
+        name = "none-params-in-ssm"
+    try:
         # Get the requested parameter
-        response = SSM_CLIENT.get_parameter(
-            Name=name,
-            WithDecryption=True
-        )
+        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logger.warning(f"Parameter {name} not found in SSM, returning default")
+        logger.info(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
         return default
-    
-    logger.debug(f"Parameter {name} retrieved from SSM")
-    return response["Parameter"]["Value"]
+
+    logger.info(f"SSM Parameter {name} retrieved.")
+    return value
 
 
 def put_ssm_parameter(name: str, value: str) -> None:
 
     logger.debug(f"Putting parameter {name} to SSM")
-    try: 
-        # Get the requested parameter
+    try:
         SSM_CLIENT.put_parameter(
             Name=name,
             Value=value,
-            Overwrite=True
+            Type="String",
+            Overwrite=True,
         )
     except Exception as e:
         logger.error(e)
-        

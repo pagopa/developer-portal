@@ -1,5 +1,45 @@
 # nextjs-website
 
+## 6.2.0
+
+### Minor Changes
+
+- cd2ffa3: Add webinar category selectors
+- 95ebd68: Add WebinarCategory Codec, fetch and make to nextjs-website
+
+### Patch Changes
+
+- 88ac6e3: Make matomo cookie script retrocompatible
+- aad01ad: Manage cookies using matomo tag manager
+- Updated dependencies [85736d0]
+  - gitbook-docs@0.4.1
+
+## 6.1.0
+
+### Minor Changes
+
+- 4a8e071: Show all input items in QuestionsAndAnswers component if no limit is specified
+
+### Patch Changes
+
+- f5ea38d: Upgrade to Strapi version 4.25.20:
+  - Set 18.18 as default Node.js version
+  - Set fixed versions in nextjs-website/package.json to compile with node 18.18.0
+  - Add 'use client' to Hero component
+  - Add a workaround to avoid "Page is missing 'generateStaticParams()'" error
+
+## 6.0.2
+
+### Patch Changes
+
+- c8d07ef: Add the cursor pointer to the profile menu
+
+## 6.0.1
+
+### Patch Changes
+
+- 79e8e16: Add local variable and new script for Matomo tag manager
+
 ## 6.0.0
 
 ### Major Changes
