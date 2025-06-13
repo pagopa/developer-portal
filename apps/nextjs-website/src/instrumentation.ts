@@ -7,5 +7,6 @@ export function register() {
     serviceName: 'next-app',
     propagators: [new AWSXRayPropagator()],
     traceSampler: new AlwaysOnSampler(),
+    traceExporter: 'auto',
   });
 }
