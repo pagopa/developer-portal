@@ -126,6 +126,13 @@ resource "aws_iam_policy" "github_deploy_opennext" {
         Effect   = "Allow"
         Action   = "lambda:InvokeFunction"
         Resource = "${var.lambda_initializer_arn}"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+        Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${var.opennext_cdn_distribution_id}"
       }
     ]
   })

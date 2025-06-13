@@ -92,7 +92,7 @@ module "opennext" {
     }
   }
 
-  enable_alarms = true
+  enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
 
 
