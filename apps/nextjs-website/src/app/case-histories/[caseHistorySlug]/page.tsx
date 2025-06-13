@@ -3,7 +3,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_LONG_INTERVAL } from '@/config';
 import { getCaseHistoriesProps } from '@/lib/cmsApi';
 import { getCaseHistory } from '@/lib/api';
 import CaseHistoryPageTemplate from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
@@ -17,6 +17,7 @@ type Params = {
   caseHistorySlug: string;
 };
 
+export const revalidate = REVALIDATE_LONG_INTERVAL;
 export async function generateStaticParams() {
   const caseHistories = await getCaseHistoriesProps();
   return [...caseHistories].map(({ slug }) => ({

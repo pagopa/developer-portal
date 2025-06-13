@@ -3,7 +3,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { getSolutionsProps } from '@/lib/cmsApi';
@@ -14,6 +14,7 @@ type Params = {
   solutionSlug: string;
 };
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   const solutions = await getSolutionsProps();
   return [...solutions].map(({ slug }) => ({

@@ -85,6 +85,30 @@ variable "website_cdn" {
   description = "The CloudFront distribution used to serve the website"
 }
 
+variable "opennext_cdn_distribution_id" {
+  type        = string
+  description = "The ID of the CloudFront distribution used to serve the OpenNext website"
+}
+
+variable "assets_opennext_bucket" {
+  type = object({
+    name = string
+    arn  = string
+  })
+
+  description = "The S3 bucket used to store the assets"
+
+}
+
+variable "lambda_code_opennext_bucket" {
+  type = object({
+    name = string
+    arn  = string
+  })
+
+  description = "The S3 bucket used to store the lambda code"
+}
+
 variable "create_chatbot" {
   type        = bool
   description = "Defines if chatbot should be created"
@@ -101,4 +125,10 @@ variable "website_is_standalone" {
   type        = bool
   description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
   default     = false
+}
+
+
+variable "lambda_initializer_arn" {
+  type        = string
+  description = "The ARN of the lambda initializer function"
 }

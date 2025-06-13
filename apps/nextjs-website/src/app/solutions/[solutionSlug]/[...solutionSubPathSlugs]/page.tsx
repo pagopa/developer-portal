@@ -1,14 +1,15 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { getSolutionDetail, getSolutionSubPaths } from '@/lib/api';
+import { getSolutionDetail } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getSolutionsProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_LONG_INTERVAL } from '@/config';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -25,11 +26,7 @@ type Params = {
   solutionSubPathSlugs: string[];
 };
 
-export async function generateStaticParams() {
-  const solutions = await getSolutionsProps();
-  return solutions.flatMap(getSolutionSubPaths);
-}
-
+export const revalidate = REVALIDATE_LONG_INTERVAL;
 export async function generateMetadata({
   params,
 }: {
@@ -41,13 +38,9 @@ export async function generateMetadata({
   );
 
   return makeMetadata({
-    title: [props?.page.title, props?.solution.title]
-      .filter(Boolean)
-      .join(' | '),
+    title: props?.title,
     url: props
-      ? `/solutions/${props?.solution.slug}/${params.solutionSubPathSlugs.join(
-          '/'
-        )}`
+      ? `/solutions/${props?.slug}/${params.solutionSubPathSlugs.join('/')}`
       : '',
   });
 }
@@ -63,9 +56,11 @@ const Page = async ({ params }: { params: Params }) => {
     return null;
   }
 
-  const { page, solution, source } = solutionProps;
+  const solution = solutionProps;
+  const page = solution.page;
+  const source = solution.source;
   const props: SolutionDetailPageTemplateProps = {
-    ...page,
+    ...solution.page,
     solution,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
