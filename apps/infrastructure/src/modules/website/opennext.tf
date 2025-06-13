@@ -5,8 +5,6 @@
 
 */
 
-
-
 resource "aws_acm_certificate" "opennext" {
 
   provider = aws.us-east-1

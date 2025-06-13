@@ -58,5 +58,5 @@ output "lambda_initializer" {
 }
 
 output "opennext_cdn_distribution_id" {
-  value = module.opennext.cloudfront.distribution.id
+  value = module.opennext.cloudfront.distribution_id
 }
