@@ -1,11 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "clean": {
       "cache": false
     },
     "compile": {
-      "dependsOn": ["^compile"],
+      "dependsOn": [
+        "^compile"
+      ],
       "outputs": [
         "dist/**"
       ]
@@ -20,12 +22,15 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["compile"]
+      "dependsOn": [
+        "compile"
+      ]
     },
-    "lint": {
-    },
+    "lint": {},
     "test": {
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "storybook": {
       "cache": false
