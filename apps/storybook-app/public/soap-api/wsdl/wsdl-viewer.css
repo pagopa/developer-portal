@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements. See the NOTICE file distributed with
@@ -16,30 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
--->
 
-<!--
-* ====================================================================
-* wsdl-viewer-css.xsl
-* Author: tomi vanek
-* ====================================================================
-* Description:
-* 		web-page graphical design
-* ====================================================================
--->
-
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns="http://www.w3.org/1999/xhtml">
-
-<!--
-==================================================================
-	CSS
-==================================================================
-<xsl:variable name="css">@import url("wsdl-viewer.css");</xsl:variable>
--->
-<xsl:variable name="css">
-<![CDATA[
 /**
 	wsdl-viewer.css
 */
@@ -50,7 +25,6 @@
 =========================================
 */
 html {
-	background-color: teal;
 }
 
 body {
@@ -58,19 +32,17 @@ body {
 	padding: 0;
 	height: auto;
 	color: white;
-	background-color: teal;
-	font: normal 80%/120% Arial, Helvetica, sans-serif;
 }
 
 #outer_box {
-	padding: 3px 3px 3px 194px;
+	padding: 0;
 }
 
 #inner_box {
 	width: auto;
 	background-color: white;
 	color: black;
-	border: 1px solid navy;
+	border: 0;
 }
 
 /**
@@ -251,7 +223,7 @@ body {
 
 #content {
 	margin: 0;
-	padding: 0 2em .5em;
+	padding: 0;
 }
 
 #footer {
@@ -300,9 +272,7 @@ html>body #rightColumn {
 */
 
 .page {
-	border-bottom: 3px dotted navy;
-	margin: 0;
-	padding: 10px 0 20px 0;
+	padding-top: 30px;
 }
 
 .value, .label {
@@ -444,76 +414,45 @@ html .floatcontainer {
 	padding: 2px 0 2px 0;
 }
 
-.xml-element {
-	word-spacing: 3px;
-	color: red;
-	font-weight: bold;
-	font-style:normal;
-	border-left: 1px dotted silver;
-}
+/*.xml-element {*/
+/*	word-spacing: 3px;*/
+/*	color: red;*/
+/*	font-weight: bold;*/
+/*	font-style:normal;*/
+/*	border-left: 1px dotted silver;*/
+/*}*/
 
 .xml-element div {
-	margin: 2px 0 2px 40px;
+	margin: 2px 0 2px 20px;
 }
 
-.xml-att {
-	color: blue;
-	font-weight: bold;
-}
+/*.xml-att {*/
+/*	color: blue;*/
+/*	font-weight: bold;*/
+/*}*/
 
-.xml-att-val {
-	color: blue;
-	font-weight: normal;
-}
+/*.xml-att-val {*/
+/*	color: blue;*/
+/*	font-weight: normal;*/
+/*}*/
 
-.xml-proc {
-	color: darkred;
-	font-weight: normal;
-	font-style: italic;
-}
+/*.xml-proc {*/
+/*	color: darkred;*/
+/*	font-weight: normal;*/
+/*	font-style: italic;*/
+/*}*/
 
-.xml-comment {
-	color: green;
-	font-weight: normal;
-	font-style: italic;
-}
+/*.xml-comment {*/
+/*	color: green;*/
+/*	font-weight: normal;*/
+/*	font-style: italic;*/
+/*}*/
 
-.xml-text {
-	color: green;
-	font-weight: normal;
-	font-style: normal;
-}
-
-
-/**
-=========================================
-	Heading
-=========================================
-*/
-h1, h2, h3 {
-	margin: 10px 10px 2px;
-	font-family: Georgia, Times New Roman, Times, Serif;
-	font-weight: normal;
-	}
-
-h1 {
-	font-weight: bold;
-	letter-spacing: 3px;
-	font-size: 220%;
-	line-height: 100%;
-}
-
-h2 {
-	font-weight: bold;
-	font-size: 175%;
-	line-height: 200%;
-}
-
-h3 {
-	font-size: 150%;
-	line-height: 150%;
-	font-style: italic;
-}
+/*.xml-text {*/
+/*	color: green;*/
+/*	font-weight: normal;*/
+/*	font-style: normal;*/
+/*}*/
 
 /**
 =========================================
@@ -523,35 +462,5 @@ h3 {
 .port {
 	margin-bottom: 10px;
 	padding-bottom: 10px;
-	border-bottom: 1px dashed gray;
 }
 
-.operation {
-	margin-bottom: 20px;
-	padding-bottom: 10px;
-	border-bottom: 1px dashed gray;
-}
-
-
-/* --------------------------------------------------------
-	Printing
-*/
-
-/*
-@media print
-{
-	#outer_links, #outer_nav { 
-		display: none;
-	}
-*/
-
-	#outer_box {
-		padding: 3px;
-	}
-/* END print media definition
-}
-*/
-]]>
-</xsl:variable>
-
-</xsl:stylesheet>

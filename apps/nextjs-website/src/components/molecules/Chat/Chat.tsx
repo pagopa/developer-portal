@@ -8,12 +8,13 @@ import { History } from '@mui/icons-material';
 import { Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
-import { ChatCatbotWriting } from '@/components/atoms/ChatChatbotWriting/ChatChatbotWriting';
+import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
-import { baseUrl } from '@/config';
+import { baseUrl, isFeedbackFormEnabled } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
+import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 
 type ChatProps = {
   queries: Query[];
@@ -21,8 +22,12 @@ type ChatProps = {
   onSendFeedback: (
     hasNegativeFeedback: boolean,
     sessionId: string,
-    chatId: string
+    chatId: string,
+    contextScore: number | null,
+    responseScore: number | null,
+    comment: string
   ) => null;
+  mustFillFeedbackForm: boolean;
   scrollToBottom: boolean;
   isAwaitingResponse: boolean;
   areChatbotQueriesLoaded: boolean;
@@ -34,6 +39,7 @@ const Chat = ({
   queries,
   onSendQuery,
   onSendFeedback,
+  mustFillFeedbackForm,
   scrollToBottom,
   isAwaitingResponse,
   areChatbotQueriesLoaded,
@@ -44,12 +50,16 @@ const Chat = ({
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const { user } = useUser();
+  const [sessionId, setSessionId] = useState<string>('');
+  const [id, setId] = useState<string>('');
+  const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
   const messages = useMemo(
     () => [
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
-          : t('chatBot.guestMessage', { host: baseUrl })
+          : t('chatBot.guestMessage', { host: baseUrl }),
+        mustFillFeedbackForm
       ),
       ...compact(
         queries.flatMap((q) => [
@@ -61,6 +71,7 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.queriedAt,
                 hasNegativeFeedback: false,
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
           q.answer && q.createdAt
@@ -71,12 +82,13 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.createdAt,
                 hasNegativeFeedback: q.badAnswer || false,
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
         ])
       ),
     ],
-    [queries, t, user]
+    [queries, t, user, isFeedbackFormVisible]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -88,7 +100,7 @@ const Chat = ({
       });
     }
     setInstantScroll(false);
-  }, [queries, instantScroll, setInstantScroll]);
+  }, [queries, instantScroll, setInstantScroll, isFeedbackFormVisible]);
 
   return (
     <>
@@ -115,58 +127,91 @@ const Chat = ({
           </Stack>
         </Box>
       )}
-      <Stack
-        direction={'column'}
-        sx={{
-          overflow: 'auto',
-          paddingRight: '0.5rem',
-          paddingX: { xs: 1, md: 4 },
-          backgroundColor: palette.background.paper,
-          height: '100%',
-        }}
-      >
-        {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
-        {messages.map((message, index) => (
-          <Stack
-            key={index}
-            ref={index === messages.length - 1 ? scrollRef : null}
-            direction='row'
-            width='100%'
-            justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-            marginTop={index === 0 ? 2 : 0}
-            marginBottom={2}
-          >
-            <ChatMessage
-              {...message}
-              onToggleNegativeFeedback={(negativeFeedback) =>
-                onSendFeedback(negativeFeedback, message.sessionId, message.id)
-              }
-            />
-          </Stack>
-        ))}
-        {isAwaitingResponse && <ChatCatbotWriting />}
-        {error && (
-          <Paper
-            elevation={4}
-            sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
-          >
-            <AlertPart
-              title={t('chatBot.errors.title')}
-              text={t(`chatBot.errors.${error}`)}
-              severity={'error'}
-              alertStyle={{
-                backgroundColor: palette.background.paper,
-                marginBottom: 0,
-              }}
-            />
-          </Paper>
-        )}
-      </Stack>
-      {!disabled && (
-        <ChatInputText
-          onSubmit={onSendQuery}
-          sendDisabled={isAwaitingResponse}
+      {isFeedbackFormVisible ? (
+        <ChatbotFeedbackForm
+          sessionId={sessionId}
+          id={id}
+          onClose={() => {
+            setIsFeedbackFormVisible(false);
+            return null;
+          }}
+          onSend={onSendFeedback}
+          setIsFormVisible={(isVisible) => {
+            setIsFeedbackFormVisible(isVisible);
+            return null;
+          }}
         />
+      ) : (
+        <>
+          <Stack
+            direction={'column'}
+            sx={{
+              overflow: 'auto',
+              paddingRight: '0.5rem',
+              paddingX: { xs: 1, md: 4 },
+              backgroundColor: palette.background.paper,
+              height: '100%',
+            }}
+          >
+            {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
+            {messages.map((message, index) => (
+              <Stack
+                key={index}
+                ref={index === messages.length - 1 ? scrollRef : null}
+                direction='row'
+                width='100%'
+                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
+                marginTop={index === 0 ? 2 : 0}
+                marginBottom={2}
+              >
+                <ChatMessage
+                  {...message}
+                  mustFillFeedbackForm={mustFillFeedbackForm}
+                  onToggleNegativeFeedback={(negativeFeedback) => {
+                    setSessionId(message.sessionId);
+                    setId(message.id);
+                    if (mustFillFeedbackForm && isFeedbackFormEnabled) {
+                      if (negativeFeedback) setIsFeedbackFormVisible(true);
+                    } else {
+                      onSendFeedback(
+                        negativeFeedback,
+                        message.sessionId,
+                        message.id,
+                        null,
+                        null,
+                        ''
+                      );
+                    }
+                    return null;
+                  }}
+                />
+              </Stack>
+            ))}
+            {isAwaitingResponse && <ChatbotWriting />}
+            {error && (
+              <Paper
+                elevation={4}
+                sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
+              >
+                <AlertPart
+                  title={t('chatBot.errors.title')}
+                  text={t(`chatBot.errors.${error}`)}
+                  severity={'error'}
+                  alertStyle={{
+                    backgroundColor: palette.background.paper,
+                    marginBottom: 0,
+                  }}
+                />
+              </Paper>
+            )}
+          </Stack>
+          {!disabled && (
+            <ChatInputText
+              onSubmit={onSendQuery}
+              sendDisabled={isAwaitingResponse}
+            />
+          )}
+        </>
       )}
     </>
   );
@@ -174,12 +219,13 @@ const Chat = ({
 
 export default Chat;
 
-function firstMessage(text: string): Message {
+function firstMessage(text: string, mustFillFeedbackForm: boolean): Message {
   return {
     id: '',
     text: text,
     isQuestion: false,
     sessionId: '',
     hasNegativeFeedback: false,
+    mustFillFeedbackForm: mustFillFeedbackForm,
   };
 }

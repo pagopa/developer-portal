@@ -2459,7 +2459,7 @@
 
 			<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&amp;display=swap" rel="stylesheet" />
 
-			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/src/wsdl-viewer.css" />
+			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/wsdl-viewer.css" />
 
 			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/wsdl-pagopa-style.css" />
 

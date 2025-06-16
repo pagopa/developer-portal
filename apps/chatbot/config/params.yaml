@@ -1,8 +1,8 @@
 ---
 vector_index:
   path: index
-  chunk_sizes: [2816, 704, 176]
-  chunk_overlap: 20
+  chunk_size: 1024
+  chunk_overlap: 25
 
 engine:
   response_mode: compact
