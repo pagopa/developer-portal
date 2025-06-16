@@ -1,3 +1,7 @@
+:root {
+    --accent-color: rgba(79, 85, 175, 1);
+}
+
 body {
     font-family: 'Titillium Web', sans-serif;
     font-size: 1rem;
@@ -66,7 +70,7 @@ ol.port-value {
 
 .details-header {
     background-color: rgba(219, 225, 235, 1);
-    padding: 8px 24px   ;
+    padding: 8px 24px;
 }
 .details-header h2 {
     font-size: 1.5rem;
@@ -88,21 +92,20 @@ ol.port-value {
 
 .details-container ol {
     list-style-position: inside;
-    padding: 0;
+    padding: 40px 32px;
 }
 .details-container .operation {
-    margin: 40px 32px 0 32px;
     padding-left: 8px;
 }
 .details-container ol li::marker {
-    color: rgba(0, 98, 195, 1);
+    color: var(--accent-color);
     font-size: 1rem;
     line-height: 1.313rem;
     font-weight: 600;
 }
 
 .details-container ol h4 {
-    color: rgba(0, 98, 195, 1);
+    color: var(--accent-color);
     font-size: 1rem;
     line-height: 1.313rem;
     font-weight: 600;
@@ -161,7 +164,7 @@ ol.port-value {
     font-size: 0.875rem;
     font-style: italic;
     line-height: 1.313rem;
-    color: rgba(0, 98, 195, 1);
+    color: var(--accent-color);
 }
 
 .subtypes-list {
@@ -175,7 +178,7 @@ ol.port-value {
 }
 
 .subtype-label {
-    color: rgba(0, 98, 195, 1);
+    color: var(--accent-color);
 }
 
 .source-block {

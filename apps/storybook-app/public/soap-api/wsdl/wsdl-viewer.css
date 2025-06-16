@@ -223,7 +223,7 @@ body {
 
 #content {
 	margin: 0;
-	padding: 0 2em .5em;
+	padding: 0;
 }
 
 #footer {
@@ -461,11 +461,6 @@ html .floatcontainer {
 */
 .port {
 	margin-bottom: 10px;
-	padding-bottom: 10px;
-}
-
-.operation {
-	margin-bottom: 20px;
 	padding-bottom: 10px;
 }
 
