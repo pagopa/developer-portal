@@ -27,6 +27,12 @@ jobs:
           ref: develop
           path: soap-api
 
+      - name: Copy WSDL Viewer Library to SOAP Repos
+        uses: ./.github/actions/copy-wsdl-viewer-lib-to-soap-repos
+        with:
+          wsdl_viewer_lib_path: ./apps/nextjs-website/public/wsdl-viewer
+          soap_repos_path: soap-api
+
       - name: Add Stylesheet Reference to WSDLs
         uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:

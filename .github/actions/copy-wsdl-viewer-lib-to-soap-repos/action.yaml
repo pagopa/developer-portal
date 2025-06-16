@@ -1,0 +1,27 @@
+name: Copy WSDL Viewer Library to SOAP Repos
+description: Copy the WSDL Viewer library to SOAP repositories
+
+inputs:
+  wsdl_viewer_lib_path:
+    description: Path to the WSDL Viewer library
+    required: true
+  soap_repos_path:
+    description: Path to the SOAP repositories
+    required: true
+
+runs:
+    using: "composite"
+    steps:
+      - name: Copy WSDL Viewer Library
+        shell: bash
+        run: |
+          if [ -d ${{ inputs.wsdl_viewer_lib_path }} ]; then
+            find ${{ inputs.soap_repos_path }} -type f -name "*.wsdl" | while read -r wsdl_file; do
+            target_dir="$(dirname "$wsdl_file")"
+            mkdir -p "$target_dir"
+            cp -r "${{ inputs.wsdl_viewer_lib_path }}/." "$target_dir/"
+            done
+          else
+            echo "WSDL Viewer library path does not exist: ${{ inputs.wsdl_viewer_lib_path }}"
+            exit 1
+          fi
