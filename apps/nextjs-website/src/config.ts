@@ -20,6 +20,8 @@ export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
 export const isChatbotActive =
   process.env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
+export const isFeedbackFormEnabled =
+  process.env.NEXT_PUBLIC_FEEDBACK_FORM_ENABLED === 'true';
 export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
 

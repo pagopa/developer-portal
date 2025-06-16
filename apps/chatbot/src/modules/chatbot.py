@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
 
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -27,12 +27,8 @@ from langfuse.api.resources.trace.types.traces import Traces
 from langfuse.model import TraceWithFullDetails
 
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import (
-    load_automerging_index_redis,
-    REDIS_KVSTORE,
-    INDEX_ID,
-)
-from src.modules.engine import get_automerging_engine
+from src.modules.vector_database import load_index_redis
+from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
@@ -43,6 +39,7 @@ logger = getLogger(__name__)
 
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 USE_PRESIDIO = (
     True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 )
@@ -99,16 +96,16 @@ class Chatbot:
         self.model = get_llm()
         self.judge = Evaluator(llm=get_llm())
         self.embed_model = get_embed_model()
-        self.index = load_automerging_index_redis(
+        self.index = load_index_redis(
             self.model,
             self.embed_model,
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
+            chunk_size=params["vector_index"]["chunk_size"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
         self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
             self._get_prompt_templates()
         )
-        self.engine = get_automerging_engine(
+        self.engine = get_engine(
             self.index,
             llm=self.model,
             system_prompt=self.prompts["system_prompt_str"],
@@ -181,7 +178,7 @@ class Chatbot:
                 'Prova a riformulare la domanda.", '
                 '"topics": ["none"], "references": []}'
             )
-        elif (
+        if (
             re.search(r'"response":', response_str) is None
             and re.search(r'"topics":', response_str) is None
             and re.search(r'"references":', response_str) is None
@@ -189,33 +186,6 @@ class Chatbot:
             response_str = (
                 '{{"response": "{response_str}", "topics": ["none"], "references": []}}'
             ).format(response_str=response_str)
-        else:
-            response_str = self._unmask_reference(response_str, nodes)
-
-        return response_str
-
-    def _unmask_reference(self, response_str: str, nodes) -> str:
-
-        pattern = r"[a-fA-F0-9]{64}"
-
-        # Find all matches in the text
-        hashed_urls = re.findall(pattern, response_str)
-
-        logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. "
-            f"First node has score: {nodes[0].score:.4f}."
-        )
-        for hashed_url in hashed_urls:
-            url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
-            if url is None:
-                url = "{URL}"
-
-            response_str = response_str.replace(hashed_url, url)
-
-        # remove sentences with generated masked url: {URL}
-        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
-        filtered_parts = [part for part in parts if "{URL}" not in part]
-        response_str = "".join(filtered_parts)
 
         return response_str
 
@@ -346,34 +316,26 @@ class Chatbot:
                 )
                 logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
-    def _mask_trace(self, data: Any) -> None:
-
-        if isinstance(data, dict):
-            for key, value in data.items():
-
-                if isinstance(value, str):
-                    data[key] = self.mask_pii(value)
-
-                if isinstance(value, list):
-                    for message in value:
-                        if isinstance(message, ChatMessage):
-                            message.content = self.mask_pii(message.content)
-                        if isinstance(message, str):
-                            message = self.mask_pii(message)
-
-                if isinstance(value, dict):
-                    for k, v in value.items():
-                        if isinstance(v, list):
-                            for message in v:
-                                if isinstance(message, ChatMessage):
-                                    message.content = self.mask_pii(message.content)
-                                if isinstance(message, str):
-                                    message = self.mask_pii(message)
-                        if isinstance(v, str):
-                            value[k] = self.mask_pii(v)
+    def _mask_trace(self, data: Any) -> Any:
 
         if isinstance(data, str):
             data = self.mask_pii(data)
+
+        if isinstance(data, dict):
+            for key, value in data.items():
+                data[key] = self._mask_trace(value)
+
+        if isinstance(data, list):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
+
+        if isinstance(data, tuple):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
+
+        if isinstance(data, ChatMessage):
+            for i, block in enumerate(data.blocks):
+                data.blocks[i].text = self._mask_trace(block.text)
 
         return data
 
@@ -406,14 +368,12 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
-                response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
-                    url = REDIS_KVSTORE.get(
-                        collection=f"hash_table_{INDEX_ID}",
-                        key=node.metadata["filename"],
-                    )
+                    url = WEBSITE_URL + node.metadata["filepath"]
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+                response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -423,10 +383,11 @@ class Chatbot:
                 retrieved_contexts = [""]
                 logger.error(f"Exception: {e}")
 
-            logger.debug(
-                f"Response: {response_str} \n\n Retrieved contexts: {retrieved_contexts}"
-            )
+            if response_str[:7] == "```json" and response_str[-3:] == "```":
+                response_str = response_str[7:-3]
+            response_str = response_str.strip()
             response_json = json.loads(response_str)
+
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 
@@ -447,8 +408,8 @@ class Chatbot:
             final_response += "\n\nRif:"
             for ref in response_json["references"]:
                 title = ref["title"]
-                link = ref["filename"]
-                final_response += f"\n[{title}]({link})"
+                url = WEBSITE_URL + ref["filepath"]
+                final_response += f"\n[{title}]({url})"
 
         return final_response
 
