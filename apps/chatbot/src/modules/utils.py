@@ -1,8 +1,8 @@
 import os
 import boto3
-from logging import getLogger
+import logging
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
@@ -15,6 +15,24 @@ SSM_CLIENT = boto3.client(
     region_name=AWS_DEFAULT_REGION,
     endpoint_url=AWS_ENDPOINT_URL,
 )
+
+
+def get_logger(name: str) -> logging.Logger:
+    formatter = logging.Formatter(
+        fmt="%(asctime)s %(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
+    )
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+
+    if not logger.handlers:  # Prevent adding multiple handlers
+        logger.addHandler(handler)
+        logger.propagate = False
+
+    return logger
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -33,9 +51,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logger.info(
-            f"Parameter {name} not found in SSM, returning default: {default}"
-        )
+        logger.info(f"Parameter {name} not found in SSM, returning default: {default}")
         return default
 
     logger.info(f"SSM Parameter {name} retrieved.")
@@ -43,6 +59,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
 
 
 def put_ssm_parameter(name: str, value: str) -> None:
+    """
+    Puts a specific value into AWS Systems Manager's Parameter Store.
+    :param name: The name of the parameter to put.
+    :param value: The value to store in the parameter.
+    """
 
     logger.debug(f"Putting parameter {name} to SSM")
     try:
