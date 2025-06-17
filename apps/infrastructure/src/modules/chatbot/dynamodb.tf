@@ -28,10 +28,6 @@ module "dynamodb_chatbot_queries" {
       name = "createdAtDate"
       type = "S"
     },
-    {
-      name = "expiresAt"
-      type = "S"
-    },
   ]
 
   # LSI for query on created_at
