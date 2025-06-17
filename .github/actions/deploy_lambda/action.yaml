@@ -1,0 +1,34 @@
+name: Deploy Lambda funtion
+description: Deploy Lambda function 
+
+inputs:
+  function_name:
+    description: 'The name of the lambda'
+    required: true
+  working-directory:
+    description: 'The working directory where the lambda is located'
+    required: true
+  s3_bucket:
+    description: 'The S3 bucket where the lambda code will be uploaded'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Package the application ${{ inputs.function_name }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        zip -r ./${{ inputs.function_name }}.zip .
+    
+    - name: Deploy Lambda function ${{ inputs.function_name }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        aws s3 cp ./${{ inputs.function_name }}.zip \
+        s3://${{ inputs.s3_bucket }}/${{ inputs.function_name }}.zip
+
+        aws lambda update-function-code \
+          --function-name ${{ inputs.function_name }} \
+          --s3-bucket ${{ inputs.s3_bucket }} \
+          --s3-key ${{ inputs.function_name }}.zip
