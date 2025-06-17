@@ -73,7 +73,7 @@ moved {
 }
 
 ## Import ##
-
+/*
 import {
   to = module.website.data.aws_ssm_parameter.cookie_domain_script
   id = "COOKIE_DOMAIN_SCRIPT"
@@ -83,3 +83,5 @@ import {
   to = module.website.data.aws_ssm_parameter.strapi_api_token
   id = "STRAPI_API_TOKEN"
 }
+
+*/
