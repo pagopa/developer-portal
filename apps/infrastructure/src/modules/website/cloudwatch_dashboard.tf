@@ -1,5 +1,4 @@
 resource "aws_cloudwatch_dashboard" "main" {
-  for_each       = local.is_static
   dashboard_name = "Main"
 
   dashboard_body = jsonencode({
@@ -26,8 +25,8 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website["static"].id, { "region" : "us-east-1" }],
-            [".", "FunctionInvocations", "FunctionName", aws_cloudfront_function.website_viewer_request_handler["static"].id, "Region", "Global", { "region" : "us-east-1" }],
+            ["AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }],
+            [".", "FunctionInvocations", "FunctionName", aws_cloudfront_function.website_viewer_request_handler.id, "Region", "Global", { "region" : "us-east-1" }],
           ],
           "title" : "Requests"
         }
@@ -44,7 +43,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "FunctionComputeUtilization", "FunctionName", aws_cloudfront_function.website_viewer_request_handler["static"].id, "Region", "Global", { "region" : "us-east-1" }]
+            ["AWS/CloudFront", "FunctionComputeUtilization", "FunctionName", aws_cloudfront_function.website_viewer_request_handler.id, "Region", "Global", { "region" : "us-east-1" }]
           ],
           "legend" : {
             "position" : "right"
@@ -64,7 +63,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website["static"].id, { "region" : "us-east-1" }],
+            ["AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }],
             [".", "5xxErrorRate", ".", ".", ".", ".", { "region" : "us-east-1" }]
           ],
           "title" : "4xxErrorRate, 5xxErrorRate"
@@ -82,7 +81,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           "view" : "timeSeries",
           "stacked" : false,
           "metrics" : [
-            ["AWS/CloudFront", "BytesDownloaded", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website["static"].id, { "region" : "us-east-1" }]
+            ["AWS/CloudFront", "BytesDownloaded", "Region", "Global", "DistributionId", aws_cloudfront_distribution.website.id, { "region" : "us-east-1" }]
           ],
           "title" : "BytesDownloaded"
         }
