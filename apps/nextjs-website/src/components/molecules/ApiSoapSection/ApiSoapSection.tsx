@@ -217,7 +217,7 @@ const ApiSoapSection = ({
                     textDecoration: 'underline',
                   }}
                 >
-                  {t('soapApiSection.repoLink')}
+                  {t('apiDataPage.soap.repoLink')}
                 </Typography>
               </LinkMui>
             </Box>
