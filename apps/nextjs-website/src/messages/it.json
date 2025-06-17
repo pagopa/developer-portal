@@ -605,8 +605,10 @@
     "apiDataListPage": {
         "explore": "Esplora le API"
     },
-    "soapApiSection": {
-        "apiRepoLink": "Vai alla repository del codice sorgente"
+    "apiDataPage": {
+        "soap": {
+            "repoLink": "Vai alla repository del codice sorgente"
+        }
     },
     "chatBot": {
         "title": "Discovery",
