@@ -12,6 +12,7 @@ locals {
     CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
     CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_LLAMAINDEX_INDEX_ID            = module.index_id_ssm_parameter.ssm_parameter_name
     CHB_EMBED_MODEL_ID                 = var.models.embeddings
     CHB_ENGINE_USE_ASYNC               = "False"
     CHB_ENGINE_USE_STREAMING           = "False"
@@ -22,6 +23,7 @@ locals {
     CHB_MODEL_ID                       = var.models.generation
     CHB_MODEL_MAXTOKENS                = "768"
     CHB_MODEL_TEMPERATURE              = "0.3"
+    CHB_AWS_SSM_STRAPI_API_KEY         = module.strapi_api_key_ssm_parameter.ssm_parameter_name
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
@@ -166,6 +168,16 @@ module "index_id_ssm_parameter_local" {
   name                 = "/chatbot/index_id_local"
   value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0de"
   type                 = "String"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+module "strapi_api_key_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/chb_strapi_api_key"
+  value                = "Set the Strapi API Key in the AWS console"
+  type                 = "SecureString"
   secure_type          = true
   ignore_value_changes = true
 }
