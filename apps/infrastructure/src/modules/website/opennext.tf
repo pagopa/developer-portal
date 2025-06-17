@@ -5,8 +5,6 @@
 
 */
 
-
-
 resource "aws_acm_certificate" "opennext" {
 
   provider = aws.us-east-1
@@ -91,6 +89,9 @@ module "opennext" {
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
     }
   }
+
+  enable_alarms  = true
+  alarms_actions = [aws_sns_topic.metric_alarm.arn]
 
 
   tags = var.tags

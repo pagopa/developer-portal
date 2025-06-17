@@ -242,7 +242,11 @@ export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   productSlug: string
 ) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('[Guide] get guide from strapi');
   const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('[Guide] get guide completed');
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
@@ -255,7 +259,11 @@ export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('[Guide] get guide from strapi');
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+  // eslint-disable-next-line functional/no-expression-statements
+  console.log('[Guide] get guide completed');
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
