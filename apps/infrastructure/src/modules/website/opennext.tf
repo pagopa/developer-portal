@@ -101,8 +101,8 @@ module "opennext" {
       S3_PATH_TO_GITBOOK_DOCS                     = "docs"
       S3_PATH_TO_GITBOOK_DOCS_ASSETS              = format("https://static-contents.%s/docs", var.dns_domain_name)
       STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
-      COOKIE_DOMAIN_SCRIPT                        = data.aws_ssm_parameter.cookie_domain_script.value
-      STRAPI_API_TOKEN                            = data.aws_ssm_parameter.strapi_api_token.value
+      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value
+      STRAPI_API_TOKEN                            = aws_ssm_parameter.strapi_api_token.value
       S3_BUCKET_NAME                              = aws_s3_bucket.website_standalone.bucket
       S3_GUIDE_METADATA_JSON_PATH                 = "guides-metadata.json"
       S3_RELEASE_NOTES_METADATA_JSON_PATH         = "release-notes-metadata.json"
