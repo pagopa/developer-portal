@@ -16,7 +16,7 @@ AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
 def get_jwks():
     KEYS_URL = (
         f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/"
-        f"{AWS_DEFAULT_REGION}_{AUTH_COGNITO_USERPOOL_ID}/"
+        f"{AUTH_COGNITO_USERPOOL_ID}/"
         ".well-known/jwks.json"
     )
     response = requests.get(KEYS_URL)
