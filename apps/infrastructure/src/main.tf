@@ -161,6 +161,7 @@ module "chatbot" {
   ecs_redis               = var.chatbot_ecs_redis
   github_repository       = var.github_repository
   ecs_monitoring          = var.chatbot_ecs_monitoring
+  models                  = var.chatbot_models
 }
 
 module "cicd" {
