@@ -25,16 +25,17 @@ export const fetchFromStrapi = <A, O, I>(
       }) =>
         pipe(
           // handle any promise result
-          TE.tryCatch(() => {
-            // eslint-disable-next-line functional/no-expression-statements
-            return fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${strapiApiToken}`,
-              },
-              cache: 'no-store',
-            });
-          }, E.toError),
+          TE.tryCatch(
+            () =>
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${strapiApiToken}`,
+                },
+                cache: 'no-store',
+              }),
+            E.toError
+          ),
           TE.chain((response) => {
             if (response.status === 200) {
               return TE.tryCatch(() => response.json(), E.toError);
