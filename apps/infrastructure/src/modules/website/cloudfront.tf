@@ -11,14 +11,12 @@ locals {
 }
 
 resource "aws_cloudfront_origin_access_identity" "main" {
-  for_each = local.is_static
-  comment  = "Identity to access S3 bucket."
+  comment = "Identity to access S3 bucket."
 }
 
 resource "aws_cloudfront_response_headers_policy" "websites" {
-  for_each = local.is_static
-  name     = "websites"
-  comment  = "Response custom headers for public static website"
+  name    = "websites"
+  comment = "Response custom headers for public static website"
 
   dynamic "custom_headers_config" {
     for_each = length(var.cdn_custom_headers) > 0 ? ["dummy"] : []
@@ -44,9 +42,8 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
 
 ## Function to manipulate the request
 resource "aws_cloudfront_function" "website_viewer_request_handler" {
-  for_each = local.is_static
-  name     = "website-viewer-request-handler"
-  runtime  = "cloudfront-js-1.0"
+  name    = "website-viewer-request-handler"
+  runtime = "cloudfront-js-1.0"
   # publish this version only if the env is true
   publish = var.publish_cloudfront_functions
   code    = file("${path.root}/../../cloudfront-functions/dist/viewer-request-handler.js")
@@ -54,13 +51,12 @@ resource "aws_cloudfront_function" "website_viewer_request_handler" {
 
 ## Static website CDN
 resource "aws_cloudfront_distribution" "website" {
-  for_each = local.is_static
   origin {
     domain_name = aws_s3_bucket.website.bucket_regional_domain_name
     origin_id   = aws_s3_bucket.website.bucket
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.main["static"].cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
     }
   }
 
@@ -82,7 +78,7 @@ resource "aws_cloudfront_distribution" "website" {
     allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]
     target_origin_id           = aws_s3_bucket.website.bucket
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.websites["static"].id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.websites.id
 
     forwarded_values {
       query_string = false
@@ -99,9 +95,10 @@ resource "aws_cloudfront_distribution" "website" {
 
     function_association {
       event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.website_viewer_request_handler["static"].arn
+      function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
     }
   }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"
@@ -113,5 +110,96 @@ resource "aws_cloudfront_distribution" "website" {
     acm_certificate_arn            = var.use_custom_certificate ? aws_acm_certificate.website.arn : null
     ssl_support_method             = var.use_custom_certificate ? "sni-only" : null
     minimum_protocol_version       = var.use_custom_certificate ? "TLSv1.2_2021" : null
+  }
+}
+
+
+# cloudfront distribution for standalone static content
+
+resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
+  name    = "cors-policy"
+  comment = "Cors policy for static contents"
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+
+    access_control_allow_origins {
+      items = ["https://${local.opennext_domain}"]
+    }
+
+    origin_override = true
+  }
+}
+
+
+## Static website CDN
+resource "aws_cloudfront_distribution" "static_contents" {
+
+  origin {
+    domain_name = aws_s3_bucket.website_standalone.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.website_standalone.bucket
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
+    }
+  }
+
+
+  enabled         = true # enable CloudFront distribution
+  is_ipv6_enabled = true
+  comment         = "CloudFront distribution for the static contetnts."
+
+
+  aliases = [local.dns_domain_name_static_contents]
+
+
+  default_cache_behavior {
+    # HTTPS requests we permit the distribution to serve
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = aws_s3_bucket.website_standalone.bucket
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.static_content_cors.id
+
+    forwarded_values {
+      query_string = false
+      headers      = []
+      cookies {
+        forward = "none"
+      }
+    }
+
+
+    viewer_protocol_policy = "redirect-to-https"
+    # aggerssive caching for versioned static contents
+    min_ttl     = 3600
+    default_ttl = 86400
+    max_ttl     = 31536000
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
+    }
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    cloudfront_default_certificate = false
+    acm_certificate_arn            = aws_acm_certificate.static_contents.arn
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1.2_2021"
   }
 }
