@@ -8,6 +8,8 @@ module "dynamodb_chatbot_queries" {
   hash_key                       = "sessionId"
   range_key                      = "id"
   server_side_encryption_enabled = true
+  ttl_attribute_name             = "expiresAt"
+  ttl_enabled                    = true
 
   attributes = [
     {
@@ -31,11 +33,6 @@ module "dynamodb_chatbot_queries" {
       type = "S"
     },
   ]
-
-  ttl {
-    attribute_name = "expiresAt"
-    enabled        = true
-  }
 
   # LSI for query on created_at
   local_secondary_indexes = [
