@@ -208,6 +208,608 @@
     End of included transformation: wsdl-viewer-css.xsl
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 -->
+
+    <xsl:variable name="css">
+        /**
+        =========================================
+        Body
+        =========================================
+        */
+        html {
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: auto;
+            color: white;
+        }
+
+        #outer_box {
+            padding: 0;
+        }
+
+        #inner_box {
+            width: auto;
+            background-color: white;
+            color: black;
+            border: 0;
+        }
+
+        /**
+        =========================================
+        Fixed box with links
+        =========================================
+        */
+        #outer_links {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            margin: 3px;
+            padding: 1px;
+            z-index: 200;
+            width: 180px;
+            height: auto;
+            background-color: gainsboro;
+            padding-top: 2px;
+            border: 1px solid navy;
+        }
+
+        * html #outer_links /* Override above rule for IE */
+        {
+            position: absolute;
+            width: 188px;
+            top: expression(offsetParent.scrollTop + 0);
+        }
+
+        #links {
+            margin: 1px;
+            padding: 3px;
+            background-color: white;
+            height: 350px;
+            overflow: auto;
+            border: 1px solid navy;
+        }
+
+        #links ul {
+            left: -999em;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 100;
+        }
+
+        #links li {
+            margin: 0;
+            padding: 2px 4px;
+            width: auto;
+            z-index: 100;
+        }
+
+        #links ul li {
+            margin: 0;
+            padding: 2px 4px;
+            width: auto;
+            z-index: 100;
+        }
+
+        #links a {
+            display: block;
+            padding: 0 2px;
+            color: blue;
+            width: auto;
+            border: 1px solid white;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        #links a:hover {
+            color: white;
+            background-color: gray;
+            border: 1px solid gray;
+        }
+
+
+        /**
+        =========================================
+        Navigation tabs
+        =========================================
+        */
+
+        #outer_nav {
+            background-color: yellow;
+            padding: 0;
+            margin: 0;
+        }
+
+        #nav {
+            height: 100%;
+            width: auto;
+            margin: 0;
+            padding: 0;
+            background-color: gainsboro;
+            border-top: 1px solid gray;
+            border-bottom: 3px solid gray;
+            z-index: 100;
+            font: bold 90%/120% Arial, Helvetica, sans-serif;
+            letter-spacing: 2px;
+        }
+
+        #nav ul {
+            background-color: gainsboro;
+            height: auto;
+            width: auto;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 100;
+            border: 1px solid silver;
+            border-top-color: black;
+            border-width: 1px 0 9px;
+        }
+
+        #nav li {
+            display: inline;
+            padding: 0;
+            margin: 0;
+        }
+
+        #nav a {
+            position: relative;
+            top: 3px;
+            float:left;
+            width:auto;
+            padding: 8px 10px 6px 10px;
+            margin: 3px 3px 0;
+            border: 1px solid gray;
+            border-width: 2px 2px 3px 2px;
+            color: black;
+            background-color: silver;
+            text-decoration:none;
+            text-transform: uppercase;
+        }
+
+        #nav a:hover {
+            margin-top: 1px;
+            padding-top: 9px;
+            padding-bottom: 7px;
+            color: blue;
+            background-color: gainsboro;
+        }
+
+        #nav a.current:link,
+        #nav a.current:visited,
+        #nav a.current:hover {
+            background: white;
+            color: black;
+            text-shadow:none;
+            margin-top: 0;
+            padding-top: 11px;
+            padding-bottom: 9px;
+            border-bottom-width: 0;
+            border-color: red;
+        }
+
+        #nav a:active {
+            background-color: silver;
+            color: white;
+        }
+
+
+
+        /**
+        =========================================
+        Content
+        =========================================
+        */
+        #header {
+            margin: 0;
+            padding: .5em 4em;
+            color: white;
+            background-color: red;
+            border: 1px solid darkred;
+        }
+
+        #content {
+            margin: 0;
+            padding: 0;
+        }
+
+        #footer {
+            clear: both;
+            margin: 0;
+            padding: .5em 2em;
+            color: gray;
+            background-color: gainsboro;
+            font-size: 80%;
+            border-top: 1px dotted gray;
+            text-align: right
+        }
+
+        .single_column {
+            padding: 10px 10px 10px 10px;
+            margin: 3px 0;
+        }
+
+        #flexi_column {
+            padding: 10px 10px 10px 10px;
+            margin: 0px 212px 0px 0px;
+        }
+
+        #fix_column {
+            float: right;
+            padding: 10px 10px 10px 10px;
+            margin: 0px;
+            width: 205px;
+            voice-family: "\"}\"";
+            voice-family:inherit;
+            width: 205px;
+        }
+        html>body #rightColumn {
+            width: 205px; /* ie5win fudge ends */
+        } /* Opera5.02 shows a 2px gap between. N6.01Win sometimes does.
+        Depends on amount of fill and window size and wind direction. */
+
+        /**
+        =========================================
+        Label / value
+        =========================================
+        */
+
+        .page {
+            padding-top: 30px;
+        }
+
+        .value, .label {
+            margin: 0;
+            padding: 0;
+        }
+
+        .label {
+            float: left;
+            width: 140px;
+            text-align: right;
+            font-weight: bold;
+            padding-bottom: .5em;
+            margin-right: 0;
+            color: darkblue;
+        }
+
+        .value {
+            margin-left: 147px;
+            color: darkblue;
+            padding-bottom: .5em;
+        }
+
+        strong, strong a {
+            color: darkblue;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-left: 2px;
+        }
+
+        /**
+        =========================================
+        Links
+        =========================================
+        */
+
+        a.local:link,
+        a.local:visited {
+            color: blue;
+            margin-left: 10px;
+            border-bottom: 1px dotted blue;
+            text-decoration: none;
+            font-style: italic;
+        }
+
+        a.local:hover {
+            background-color: gainsboro;
+            color: darkblue;
+            padding-bottom: 1px;
+            border-bottom: 1px solid darkblue;
+        }
+
+        a.target:link,
+        a.target:visited,
+        a.target:hover {
+            text-decoration: none;
+            background-color: transparent;
+            border-bottom-type: none;
+        }
+
+        /**
+        =========================================
+        Box, Shadow
+        =========================================
+        */
+
+        .box {
+            padding: 6px;
+            color: black;
+            background-color: gainsboro;
+            border: 1px solid gray;
+        }
+
+        .shadow {
+            background: silver;
+            position: relative;
+            top: 5px;
+            left: 4px;
+        }
+
+        .shadow div {
+            position: relative;
+            top: -5px;
+            left: -4px;
+        }
+
+        /**
+        =========================================
+        Floatcontainer
+        =========================================
+        */
+
+        .spacer {
+            display: block;
+            height: 0;
+            font-size: 0;
+            line-height: 0;
+            margin: 0;
+            padding: 0;
+            border-style: none;
+            clear: both;
+            visibility:hidden;
+        }
+
+        .floatcontainer:after {
+            content: ".";
+            display: block;
+            height: 0;
+            font-size:0;
+            clear: both;
+            visibility:hidden;
+        }
+        .floatcontainer{
+            display: inline-table;
+        } /* Mark Hadley's fix for IE Mac */ /* Hides from IE Mac \*/ *
+        html .floatcontainer {
+            height: 1%;
+        }
+        .floatcontainer{
+            display:block;
+        } /* End Hack
+        */
+
+        /**
+        =========================================
+        Source code
+        =========================================
+        */
+
+        .indent {
+            margin: 2px 0 2px 20px;
+        }
+
+        .xml-element, .xml-proc, .xml-comment {
+            margin: 2px 0;
+            padding: 2px 0 2px 0;
+        }
+
+        .xml-element div {
+            margin: 2px 0 2px 20px;
+        }
+
+        /**
+        =========================================
+        Content formatting
+        =========================================
+        */
+        .port {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        =========================================
+        Custom PagoPA style
+        =========================================
+
+
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 1rem;
+            color: rgba(58, 58, 58, 1);
+        }
+
+        h1 {
+            font-family: 'Titillium Web', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0;
+            font-size: 2.75rem;
+            line-height: 3.625rem;
+            margin: 0 3px;
+        }
+
+        .blank-divider {
+            background-color: white;
+            padding-top: 40px;
+        }
+
+        .port-container {
+            background-color: rgba(44, 57, 78, 1);
+            padding: 32px 32px 24px;
+            color: #ffffff;
+            font-family: 'Titillium Web', sans-serif;
+            margin-top: 40px;
+        }
+
+        .port-row {
+            background-color: rgba(33, 42, 59, 1);
+            margin-bottom: 8px;
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .port-label {
+            font-weight: bold;
+            color: #ffffff;
+            margin-right: 6px;
+        }
+
+        .port-value {
+            color: #ffffff;
+        }
+        ol.port-value {
+            margin-left: 0.875rem;
+        }
+
+        .port-operations .port-value {
+            padding-inline-start: 1.313rem;
+            margin-block-start: 1.313rem;
+            margin-block-end: 0;
+        }
+
+        .port-row.port-operations {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .details-container {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: rgba(236, 238, 245, 1);
+            color: rgba(58, 58, 58, 1);
+            font-size: 0.875rem;
+            margin-top: 40px;
+        }
+
+        .details-header {
+            background-color: rgba(219, 225, 235, 1);
+            padding: 8px 24px;
+        }
+        .details-header h2 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .details-row {
+            background-color: rgba(224, 230, 240, 1);
+            padding: 8px 24px;
+        }
+        .details-row h3 {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .details-container ol {
+            list-style-position: inside;
+            padding: 40px 32px;
+        }
+        .details-container .operation {
+            padding-left: 8px;
+        }
+        .details-container ol li::marker {
+            color: rgba(79, 85, 175, 1);
+            font-size: 1rem;
+            line-height: 1.313rem;
+            font-weight: 600;
+        }
+
+        .details-container ol h4 {
+            color: rgba(79, 85, 175, 1);
+            font-size: 1rem;
+            line-height: 1.313rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            margin: 0;
+            display: inline;
+        }
+
+        .details-container .label {
+            float: left;
+            width: auto;
+            text-align: left;
+            font-weight: 600;
+            color: rgba(58, 58, 58, 1);
+            margin-right: 4px;
+        }
+
+        .details-container .value {
+            margin-left: 0;
+            color: rgba(58, 58, 58, 1);
+        }
+
+        .inner-details-container {
+            background-color: rgba(224, 230, 240, 1);
+            margin-bottom: 1rem;
+            margin-left: -8px;
+            padding-top: 8px;
+        }
+        .inner-details-container .label {
+            font-size: 0.875rem;
+            margin-left: 8px;
+        }
+        .inner-details-container .box {
+            border: none;
+            background-color: rgba(229, 233, 239, 1);
+        }
+
+
+        .operation-message-label {
+            font-weight: 600;
+            color: rgba(58, 58, 58, 1);
+            font-size: 1rem;
+            line-height: 1.313rem;
+            margin-right: 4px;
+        }
+
+        .inner-details-container .type-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-style: italic;
+            color: rgba(58, 58, 58, 1);
+        }
+        .inner-details-container .type-name {
+            font-weight: 400;
+            font-size: 0.875rem;
+            font-style: italic;
+            line-height: 1.313rem;
+            color: rgba(79, 85, 175, 1);
+        }
+
+        .subtypes-list {
+            margin: 0;
+        }
+
+        .subtype {
+            margin: 10px 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .subtype-label {
+            color: rgba(79, 85, 175, 1);
+        }
+
+        .source-block {
+            padding: 32px;
+            color: rgba(58, 58, 58, 1);
+            line-height: 1.5rem;
+        }
+        .source-block a {
+            color: rgba(58, 58, 58, 1);
+            pointer-events: none;
+            text-decoration: none;
+        }
+
+
+    </xsl:variable>
     
     <!--
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -2459,10 +3061,10 @@
 
 			<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&amp;display=swap" rel="stylesheet" />
 
-			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/wsdl-viewer.css" />
-
-			<link rel="stylesheet" type="text/css" href="/soap-api/wsdl/wsdl-pagopa-style.css" />
-
+            <style type="text/css">
+                <xsl:value-of select="$css" disable-output-escaping="yes"/>
+            </style>
+            
         </head>
         
     </xsl:template>
