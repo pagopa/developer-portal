@@ -142,7 +142,7 @@
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_mfa_code_duration_in_minutes"></a> [mfa\_code\_duration\_in\_minutes](#input\_mfa\_code\_duration\_in\_minutes) | The duration for which the MFA code is valid in minutes | `number` | `15` | no |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
-| <a name="input_signup_allowed_email_domains"></a> [signup\_allowed\_email\_domains](#input\_signup\_allowed\_email\_domains) | List of allowed email domains for signup | `list(string)` | <pre>[<br/>  "pagopa.it",<br/>  "uqido.com",<br/>  "aizoongroup.com"<br/>]</pre> | no |
+| <a name="input_signup_allowed_email_domains"></a> [signup\_allowed\_email\_domains](#input\_signup\_allowed\_email\_domains) | List of allowed email domains for signup | `list(string)` | <pre>[<br/>  "pagopa.it",<br/>  "uqido.com",<br/>  "aizoongroup.com",<br/>  "dgsspa.com"<br/>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |
 | <a name="input_website_is_standalone"></a> [website\_is\_standalone](#input\_website\_is\_standalone) | If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront) | `bool` | `false` | no |
@@ -160,4 +160,3 @@
 | <a name="output_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#output\_webinar\_subscriptions\_ddb) | n/a |
 | <a name="output_website_bucket"></a> [website\_bucket](#output\_website\_bucket) | n/a |
 | <a name="output_website_cdn"></a> [website\_cdn](#output\_website\_cdn) | n/a |
-
