@@ -39,12 +39,33 @@ resource "aws_route53_record" "opennext" {
 }
 
 
-data "aws_ssm_parameter" "cookie_domain_script" {
-  name = "COOKIE_DOMAIN_SCRIPT"
+resource "aws_ssm_parameter" "cookie_domain_script" {
+  name        = "COOKIE_DOMAIN_SCRIPT"
+  description = "Cookie domain script for OpenNext"
+  type        = "SecureString"
+  value       = "TODO"
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
 }
 
-data "aws_ssm_parameter" "strapi_api_token" {
+resource "aws_ssm_parameter" "strapi_api_token" {
   name = "STRAPI_API_TOKEN"
+
+  description = "Cookie domain script for OpenNext"
+  type        = "SecureString"
+  value       = "TODO"
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
 }
 
 
