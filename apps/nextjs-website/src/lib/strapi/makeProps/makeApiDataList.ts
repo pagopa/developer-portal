@@ -8,7 +8,10 @@ export function makeApiDataListProps(
   strapiApiDataList: StrapiApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = strapiApiDataList.data
-    .filter((apiPage) => apiPage.attributes.apiRestDetail)
+    .filter(
+      (apiPage) =>
+        apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
+    )
     .map(async ({ attributes }) => {
       const product = makeBaseProductWithoutLogoProps(attributes.product.data);
       return {
@@ -19,12 +22,12 @@ export function makeApiDataListProps(
           attributes.apiRestDetail?.slug ||
           attributes.apiSoapDetail?.slug ||
           '',
-        specUrls: attributes.apiRestDetail
+        restApiSpecUrls: attributes.apiRestDetail
           ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
           : [],
         apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
         specUrlsName: attributes.title,
-        apiSoapWsdlUrlList: attributes.apiSoapDetail
+        apiSoapUrlList: attributes.apiSoapDetail
           ? await makeApiSoapUrlList(attributes.apiSoapDetail.dirName)
           : [],
         bannerLinks:
