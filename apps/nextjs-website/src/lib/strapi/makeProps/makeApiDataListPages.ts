@@ -24,10 +24,10 @@ export function makeApiDataListPagesProps(
         .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data.map((item) => ({
         target: soapApiPageActive
-          ? ((item.attributes.apiSoapUrl ? '_blank' : '_self') as
+          ? '_self'
+          : ((item.attributes.apiSoapUrl ? '_blank' : '_self') as
               | '_blank'
-              | '_self')
-          : '_self',
+              | '_self'),
         tags: [
           {
             label: item.attributes.apiSoapUrl ? 'SOAP' : 'REST',
@@ -37,13 +37,13 @@ export function makeApiDataListPagesProps(
         text: item?.attributes?.description || '',
         icon: item?.attributes?.icon?.data?.attributes.url || '',
         externalUrl: !!item.attributes.apiSoapUrl,
-        href: `/${attributes.product.data?.attributes.slug}/api/${
-          item.attributes.apiRestDetail
-            ? item.attributes.apiRestDetail?.slug
-            : soapApiPageActive
-            ? item.attributes.apiSoapUrl
-            : item.attributes.apiSoapDetail?.slug
-        }`,
+        href: soapApiPageActive
+          ? `/${attributes.product.data?.attributes.slug}/api/${
+              item.attributes.apiRestDetail
+                ? item.attributes.apiRestDetail?.slug
+                : item.attributes.apiSoapDetail?.slug
+            }`
+          : item.attributes.apiSoapUrl,
       })),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
       seo: attributes.seo,
