@@ -11,6 +11,9 @@ const makeStrapiApiDataListPagePopulate = () =>
           apiRestDetail: {
             populate: ['slug', 'specUrls'],
           },
+          ApiSoapDetail: {
+            populate: ['slug', 'repositoryUrl', 'dirName'],
+          },
           icon: { populate: '*' },
           product: { populate: 'logo' },
         },
