@@ -16,15 +16,17 @@ export function makeApiDataListProps(
         product,
         apiType: attributes.apiRestDetail ? 'rest' : 'soap',
         apiDataSlug:
-          attributes.apiRestDetail?.slug || attributes.apiSoapDetail?.slug,
+          attributes.apiRestDetail?.slug ||
+          attributes.apiSoapDetail?.slug ||
+          '',
         specUrls: attributes.apiRestDetail
           ? [...attributes.apiRestDetail.specUrls.map((spec) => ({ ...spec }))]
           : [],
         apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
         specUrlsName: attributes.title,
-        apiSoapWsdlUrlList: await makeApiSoapUrlList(
-          attributes.apiSoapDetail.dirName
-        ),
+        apiSoapWsdlUrlList: attributes.apiSoapDetail
+          ? await makeApiSoapUrlList(attributes.apiSoapDetail.dirName)
+          : [],
         bannerLinks:
           attributes.bannerLinks.length > 0
             ? attributes.bannerLinks.map(makeBannerLinkProps)
