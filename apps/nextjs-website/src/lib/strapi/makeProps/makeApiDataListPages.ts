@@ -2,6 +2,7 @@ import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataList
 import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { soapApiPageActive } from '@/config';
 
 export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
@@ -22,10 +23,14 @@ export function makeApiDataListPagesProps(
         )
         .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data.map((item) => ({
-        target: '_self',
+        target: soapApiPageActive
+          ? ((item.attributes.apiSoapUrl ? '_blank' : '_self') as
+              | '_blank'
+              | '_self')
+          : '_self',
         tags: [
           {
-            label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
+            label: item.attributes.apiSoapUrl ? 'SOAP' : 'REST',
           },
         ],
         title: item?.attributes?.title,
@@ -35,6 +40,8 @@ export function makeApiDataListPagesProps(
         href: `/${attributes.product.data?.attributes.slug}/api/${
           item.attributes.apiRestDetail
             ? item.attributes.apiRestDetail?.slug
+            : soapApiPageActive
+            ? item.attributes.apiSoapUrl
             : item.attributes.apiSoapDetail?.slug
         }`,
       })),
