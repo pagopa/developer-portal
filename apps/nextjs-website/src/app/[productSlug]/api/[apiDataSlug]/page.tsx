@@ -26,13 +26,13 @@ export type ApiDataPageProps = {
   readonly apiType: 'rest' | 'soap';
   readonly apiDataSlug: string;
   readonly specUrlsName?: string;
-  readonly specUrls: {
+  readonly restApiSpecUrls: {
     name?: string;
     url: string;
     hideTryIt?: boolean;
   }[];
   readonly apiSoapUrl?: string;
-  readonly apiSoapWsdlUrlList: string[];
+  readonly apiSoapUrlList: string[];
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
