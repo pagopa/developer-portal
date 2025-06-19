@@ -95,7 +95,8 @@ module "opennext" {
       NEXT_PUBLIC_ENVIRONMENT                     = var.environment
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS       = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
       NEXT_PUBLIC_WEBSITE_NAME                    = "DevPortal"
-      NEXT_PUBLIC_FEEDBACK_FORM_ENABLED           = var.environment == "dev" ? "true" : "false"
+      NEXT_PUBLIC_FEEDBACK_FORM_ENABLED           = var.next_public_feedback_form_enabled
+      NEXT_PUBLIC_SOAP_API_PAGE_ACTIVE            = var.next_public_soap_api_page_active
       NEXT_TELEMETRY_DISABLED                     = "1"
       PATH_TO_GITBOOK_DOCS                        = "docs"
       S3_PATH_TO_GITBOOK_DOCS                     = "docs"
