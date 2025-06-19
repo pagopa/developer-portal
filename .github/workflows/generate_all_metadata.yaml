@@ -21,9 +21,6 @@ on:
           - guides
           - solutions
           - release_notes
-  push:
-    branches:
-      - DEV-2158-pipelines
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint
 permissions:
