@@ -112,3 +112,15 @@ variable "create_chatbot" {
   description = "Defines if chatbot should be created"
   default     = false
 }
+
+variable "next_public_feedback_form_enabled" {
+  type        = bool
+  description = "Defines if the feedback form should be enabled"
+  default     = false
+}
+
+variable "next_public_soap_api_page_active" {
+  type        = bool
+  description = "Defines if the SOAP API page should be active"
+  default     = false
+}
