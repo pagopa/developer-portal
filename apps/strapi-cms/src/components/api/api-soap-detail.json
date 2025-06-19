@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_api_api_soap_details",
+  "info": {
+    "displayName": "ApiSoapDetail",
+    "icon": "chartBubble",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "repositoryUrl": {
+      "type": "string",
+      "required": true
+    },
+    "dirName": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
