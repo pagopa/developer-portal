@@ -321,8 +321,6 @@ class Chatbot:
         response_str: str,
         retrieved_contexts: List[str],
         trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
         chat_history = self._messages_to_chathistory(messages)
