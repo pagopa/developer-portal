@@ -47,18 +47,12 @@ export async function getGuidePage(
     guidePaths.length > 0 ? guidePaths[0] : '',
     productSlug
   );
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guides metadata from s3');
   const guidesMetadata = await getGuidesMetadata();
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guides metadata completed');
   const guidePath = [
     `/${guideProps.product.slug}`,
     'guides',
     ...guidePaths,
   ].join('/');
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] parsing guide page from S3');
   const parsedGuidePage = manageUndefined(
     await parseS3GuidePage({
       guideProps,
@@ -67,8 +61,6 @@ export async function getGuidePage(
       products,
     })
   );
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] parsing guide page completed');
   return parsedGuidePage;
 }
 
