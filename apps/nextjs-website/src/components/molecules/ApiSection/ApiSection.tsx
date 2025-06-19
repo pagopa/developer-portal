@@ -19,7 +19,7 @@ const ApiSection = ({ apiData }: ApiPageProps) => {
           apiName={apiData.specUrlsName || ''}
           apiRepositoryUrl={apiData.apiSoapUrl}
           apiSlug={apiData.apiDataSlug}
-          apiUrls={apiData.apiSoapWsdlUrlList}
+          apiUrls={apiData.apiSoapUrlList}
           product={apiData.product}
         />
       );
@@ -27,7 +27,7 @@ const ApiSection = ({ apiData }: ApiPageProps) => {
       return (
         <ApiRestSection
           apiSlug={apiData.apiDataSlug}
-          specURLs={apiData.specUrls}
+          specURLs={apiData.restApiSpecUrls}
           product={apiData.product}
           specURLsName={apiData.specUrlsName}
         />
