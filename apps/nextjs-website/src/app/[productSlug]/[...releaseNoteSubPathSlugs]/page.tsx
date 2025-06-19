@@ -37,7 +37,9 @@ export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const PRODUCT_SLUG_PATH_INDEX = 1;
 const RELEASE_NOTE_SUB_PATH_INDEX = 2;
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<
+  ReleaseNotePageStaticParams[]
+> {
   const releaseNotes = await getReleaseNotesMetadata();
   const releaseNoteParams = releaseNotes
     .map(({ path }) => path.split('/'))
@@ -45,7 +47,7 @@ export async function generateStaticParams() {
     .map((paths) => {
       return {
         productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
-        productGuidePage: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX),
+        releaseNoteSubPathSlugs: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX),
       };
     });
   return releaseNoteParams;
