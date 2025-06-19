@@ -195,7 +195,7 @@ const ApiSoapSection = ({
                   border: 'none',
                   width: '100%',
                 }}
-                title='API SOAP Documentation'
+                title={t('apiDataPage.soap.iframeTitle')}
               />
             </Box>
             <Box
@@ -209,6 +209,7 @@ const ApiSoapSection = ({
                 component={Link}
                 underline='none'
                 href={apiRepositoryUrl}
+                target='_blank'
               >
                 <Typography
                   sx={{
