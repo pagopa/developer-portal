@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Set as static page coming from gitbook
+Set content coming from gitbook as static page

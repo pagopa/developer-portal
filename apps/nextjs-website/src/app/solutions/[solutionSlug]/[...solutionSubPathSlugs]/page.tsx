@@ -31,7 +31,7 @@ export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const SOLUTION_SLUG_PATH_INDEX = 2;
 const SOLUTION_SUB_PATH_INDEX = 3;
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<Params[]> {
   const solutions = await getSolutionsMetadata();
   const solutionParams = solutions
     .map(({ path }) => path.split('/'))

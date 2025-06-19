@@ -71,7 +71,7 @@ export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const PRODUCT_SLUG_PATH_INDEX = 1;
 const GUIDE_SUB_PATH_INDEX = 3;
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<Params[]> {
   const guides = await getGuidesMetadata();
   const guideParams = guides
     .map(({ path }) => path.split('/'))
