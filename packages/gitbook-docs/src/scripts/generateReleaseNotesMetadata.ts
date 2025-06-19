@@ -74,7 +74,7 @@ async function convertReleaseNoteToSitemapItems(
     );
     for (const filePath of releaseNoteFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2) {
+      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
         continue;
       }
       const content = await downloadS3File(

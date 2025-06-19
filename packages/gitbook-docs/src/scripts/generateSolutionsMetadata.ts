@@ -66,7 +66,7 @@ async function convertSolutionToSitemapItems(
     );
     for (const filePath of solutionFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2) {
+      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
         continue;
       }
       const content = await downloadS3File(
