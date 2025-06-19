@@ -4,11 +4,10 @@ import json
 import yaml
 from pathlib import Path
 from datetime import datetime
-from logging import getLogger
 from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
 
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
+from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -26,6 +25,7 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 from langfuse.api.resources.trace.types.traces import Traces
 from langfuse.model import TraceWithFullDetails
 
+from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
@@ -35,8 +35,7 @@ from src.modules.evaluator import Evaluator
 from src.modules.utils import get_ssm_parameter
 
 
-logger = getLogger(__name__)
-
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
@@ -198,7 +197,7 @@ class Chatbot:
                     masked_message = masked_message + "Rif:" + split_message[1]
                 return masked_message
             except Exception as e:
-                logger.debug(f"Exception: {e}")
+                LOGGER.debug(f"Exception: {e}")
         else:
             return message
 
@@ -236,12 +235,12 @@ class Chatbot:
         self, trace_id: str, as_dict: bool = False
     ) -> TraceWithFullDetails | dict:
 
-        logger.info(f"Getting trace {trace_id} from Langfuse")
+        LOGGER.warning(f"Getting trace {trace_id} from Langfuse")
         try:
             trace = LANGFUSE.fetch_trace(trace_id)
             trace = trace.data
         except Exception as e:
-            logger.error(e)
+            LOGGER.error(e)
 
         if as_dict:
             return trace.dict()
@@ -268,7 +267,7 @@ class Chatbot:
                 tags=tags,
             )
         except Exception as e:
-            logger.error(e)
+            LOGGER.error(e)
 
         return traces
 
@@ -301,7 +300,7 @@ class Chatbot:
                 trace.score(
                     name=name, value=value, data_type=data_type, comment=comment
                 )
-                logger.info(
+                LOGGER.warning(
                     f"Add score {name}: {value} in trace {trace_id}.\n"
                     f"data_type: {data_type}\n"
                     f"type(value): {type(value)}"
@@ -314,7 +313,7 @@ class Chatbot:
                     data_type=data_type,
                     comment=comment,
                 )
-                logger.info(f"Updating score {name} to {value} in trace {trace_id}")
+                LOGGER.warning(f"Updating score {name} to {value} in trace {trace_id}")
 
     def _mask_trace(self, data: Any) -> Any:
 
@@ -349,7 +348,7 @@ class Chatbot:
     ) -> dict:
 
         chat_history = self._messages_to_chathistory(messages)
-        logger.info(f"[Langfuse] Trace id: {trace_id}")
+        LOGGER.info(f"Langfuse trace id: {trace_id}")
 
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
@@ -368,12 +367,14 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
+                response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
-                    url = WEBSITE_URL + node.metadata["filepath"]
+                    url = REDIS_KVSTORE.get(
+                        collection=f"hash_table_{INDEX_ID}",
+                        key=node.metadata["filename"],
+                    )
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
-
-                response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -381,13 +382,12 @@ class Chatbot:
                     '"topics": ["none"], "references": []}'
                 )
                 retrieved_contexts = [""]
-                logger.error(f"Exception: {e}")
+                LOGGER.error(f"Exception: {e}")
 
             if response_str[:7] == "```json" and response_str[-3:] == "```":
                 response_str = response_str[7:-3]
             response_str = response_str.strip()
             response_json = json.loads(response_str)
-
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 

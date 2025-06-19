@@ -1,9 +1,10 @@
 import os
 import boto3
-import logging
 
-logger = logging.getLogger(__name__)
+from src.modules.logger import get_logger
 
+
+LOGGER = get_logger(__name__)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
@@ -15,24 +16,6 @@ SSM_CLIENT = boto3.client(
     region_name=AWS_DEFAULT_REGION,
     endpoint_url=AWS_ENDPOINT_URL,
 )
-
-
-def get_logger(name: str) -> logging.Logger:
-    formatter = logging.Formatter(
-        fmt="%(asctime)s %(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
-    )
-
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-
-    if not logger.handlers:  # Prevent adding multiple handlers
-        logger.addHandler(handler)
-        logger.propagate = False
-
-    return logger
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -51,10 +34,10 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        logger.info(f"Parameter {name} not found in SSM, returning default: {default}")
+        LOGGER.info(f"Parameter {name} not found in SSM, returning default: {default}")
         return default
 
-    logger.info(f"SSM Parameter {name} retrieved.")
+    LOGGER.info(f"SSM Parameter {name} retrieved.")
     return value
 
 
@@ -65,7 +48,7 @@ def put_ssm_parameter(name: str, value: str) -> None:
     :param value: The value to store in the parameter.
     """
 
-    logger.debug(f"Putting parameter {name} to SSM")
+    LOGGER.debug(f"Putting parameter {name} to SSM")
     try:
         SSM_CLIENT.put_parameter(
             Name=name,
@@ -74,4 +57,4 @@ def put_ssm_parameter(name: str, value: str) -> None:
             Overwrite=True,
         )
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
