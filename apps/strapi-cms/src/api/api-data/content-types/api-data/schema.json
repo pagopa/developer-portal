@@ -94,7 +94,7 @@
       "component": "common.banner-link",
       "max": 2
     },
-    "ApiSoapDetail": {
+    "apiSoapDetail": {
       "type": "component",
       "repeatable": false,
       "pluginOptions": {
