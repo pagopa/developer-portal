@@ -34,6 +34,7 @@ const ApiSoapSection = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
   const router = useRouter();
   const searchParams = useSearchParams();
   const apiMenuItems = apiUrls
@@ -118,7 +119,7 @@ const ApiSoapSection = ({
           <Box
             sx={{
               width: 280,
-              bgcolor: '#F2F2F2',
+              bgcolor: palette.background.default,
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
