@@ -35,7 +35,7 @@ export const TableHead = styled(MUITableHead)(({ theme }) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
 }));
 export const TableBody = styled(MUITableBody)(() => ({
-  fontSize: 16,
+  fontSize: 18,
   'span.MuiTypography-body1': {
     fontSize: '1rem !important',
   },
@@ -44,7 +44,7 @@ export const TableR = MUITableRow;
 
 export const TableH = styled(MUITableCell)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider} !important`,
-  fontSize: 16,
+  fontSize: 18,
   fontWeight: 600,
   padding: '0.5rem 1rem',
 }));
