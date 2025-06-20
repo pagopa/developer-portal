@@ -35,8 +35,7 @@
   "devDependencies": {
     "eslint": "^8.50.0",
     "eslint-config-custom": "*",
-    "typescript": "^5.7.3",
-    "turbo": "^1.10.12"
+    "typescript": "^5.7.3"
   },
   "strapi": {
     "uuid": "1ae9c07f-4fbf-400a-9d32-bba36247aed0"
