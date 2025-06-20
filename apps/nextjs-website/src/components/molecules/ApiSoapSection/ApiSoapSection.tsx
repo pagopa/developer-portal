@@ -111,7 +111,7 @@ const ApiSoapSection = ({
           <Box
             sx={{
               width: 280,
-              bgcolor: '#F2F2F2',
+              bgcolor: palette.background.default,
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
