@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.4.2
+
+### Patch Changes
+
+- 5b72c01: Add script to add included text in .md files. Update documentation parsing
+
 ## 0.4.1
 
 ### Patch Changes
