@@ -34,7 +34,7 @@ const ApiSoapSection = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const apiMenuItems = apiUrls
@@ -44,7 +44,6 @@ const ApiSoapSection = ({
       name: _.split(_.split(url, '/').pop(), '.')[0] || '',
     }))
     .filter((item) => !!item.name);
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiMenuItems[0].url);
 
   useEffect(() => {
     const iframe = iframeRef.current;
