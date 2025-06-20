@@ -7,7 +7,6 @@ import tqdm
 import hashlib
 import requests
 import html2text
-from logging import getLogger
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urllib.parse import quote
@@ -15,10 +14,11 @@ from typing import List, Tuple
 
 from llama_index.core import Document
 
+from src.modules.logger import get_logger
 from src.modules.utils import get_ssm_parameter
 
 
-LOGGER = getLogger(__name__)
+LOGGER = get_logger(__name__)
 STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
 DYNAMIC_HTMLS = [
     "/case-histories/",
@@ -196,7 +196,7 @@ def get_api_docs(website_url: str) -> list:
     api_data = get_apidata(website_url)
 
     num_apis = len(api_data["data"])
-    LOGGER.info(f"{num_apis} API to read.")
+    LOGGER.info(f"{num_apis} API documents to read.")
 
     docs = []
     for data in tqdm.tqdm(api_data["data"], total=num_apis, desc="Getting API docs"):
@@ -259,9 +259,7 @@ def get_guide_docs(
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Getting guide docs"):
 
-        if any(
-            part in file for part in DYNAMIC_HTMLS
-        ):  # file in dynamic_htmls or "/webinars/" in file:
+        if any(part in file for part in DYNAMIC_HTMLS):
             url = file.replace(documentation_dir, f"{website_url}/").replace(
                 ".html", ""
             )
