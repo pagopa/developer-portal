@@ -34,6 +34,7 @@ const ApiSoapSection = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const apiMenuItems = apiUrls
@@ -43,7 +44,6 @@ const ApiSoapSection = ({
       name: _.split(_.split(url, '/').pop(), '.')[0] || '',
     }))
     .filter((item) => !!item.name);
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiMenuItems[0].url);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -118,7 +118,7 @@ const ApiSoapSection = ({
           <Box
             sx={{
               width: 280,
-              bgcolor: '#F2F2F2',
+              bgcolor: palette.background.default,
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
@@ -202,7 +202,7 @@ const ApiSoapSection = ({
                   border: 'none',
                   width: '100%',
                 }}
-                title='API SOAP Documentation'
+                title={t('apiDataPage.soap.iframeTitle')}
               />
             </Box>
             {apiRepositoryUrl && (
@@ -217,6 +217,7 @@ const ApiSoapSection = ({
                   component={Link}
                   underline='none'
                   href={apiRepositoryUrl}
+                  target='_blank'
                 >
                   <Typography
                     sx={{
@@ -225,7 +226,7 @@ const ApiSoapSection = ({
                       textDecoration: 'underline',
                     }}
                   >
-                    {t('soapApiSection.apiRepoLink')}
+                    {t('apiDataPage.soap.repoLink')}
                   </Typography>
                 </LinkMui>
               </Box>
