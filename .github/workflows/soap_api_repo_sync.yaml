@@ -46,4 +46,4 @@ jobs:
 
       - name: Sync soap-api folder to S3
         run: |
-          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api --delete
+          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_API_SOAP }} --delete
