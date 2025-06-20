@@ -155,7 +155,7 @@ export const getApiDataProps = async () => {
     getCacheKey('getApiDataProps'),
     async () => {
       const strapiApiDataList = await fetchApiDataList(buildEnv);
-      return makeApiDataListProps(strapiApiDataList);
+      return await makeApiDataListProps(strapiApiDataList);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
