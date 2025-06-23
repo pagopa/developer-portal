@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   sync_docs:
-    name: Sync Docs to S3
+    name: Sync SOAP API to S3
     runs-on: ubuntu-latest
     environment: dev
 
@@ -25,12 +25,12 @@ jobs:
         with:
           repository: /pagopa/pagopa-api
           ref: develop
-          path: soap-api
+          path: soap-api/pagopa-api
 
       - name: Copy WSDL Viewer Library to SOAP Repos
-        uses: ./.github/actions/copy-wsdl-viewer-lib-to-soap-repos
+        uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
         with:
-          wsdl_viewer_lib_path: ./apps/nextjs-website/public/wsdl-viewer
+          stylesheet_path: ./apps/nextjs-website/public/wsdl-viewer
           soap_repos_path: soap-api
 
       - name: Add Stylesheet Reference to WSDLs
