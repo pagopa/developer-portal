@@ -1,6 +1,6 @@
 
 
-/*
+
 resource "aws_acm_certificate" "opennext" {
 
   provider = aws.us-east-1
@@ -17,6 +17,7 @@ resource "aws_acm_certificate" "opennext" {
   }
 }
 
+/*
 resource "aws_route53_record" "opennext" {
   for_each = {
     for dvo in aws_acm_certificate.opennext.domain_validation_options : dvo.domain_name => {

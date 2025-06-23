@@ -24,6 +24,7 @@ resource "aws_route53_record" "certificate" {
 }
 
 // This Route53 record will point at our CloudFront distribution.
+/* This records will be created inside the opennext module.
 resource "aws_route53_record" "www_website" {
   zone_id = var.hosted_zone_id
   name    = format("www.%s", var.dns_domain_name)
@@ -47,7 +48,7 @@ resource "aws_route53_record" "website" {
     evaluate_target_health = false
   }
 }
-
+*/
 // This Route53 record point to Cognito UI.
 resource "aws_route53_record" "devportal_cognito_A" {
   name    = aws_cognito_user_pool_domain.devportal.domain

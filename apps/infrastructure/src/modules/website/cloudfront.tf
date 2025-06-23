@@ -134,7 +134,7 @@ resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
 
 
     access_control_allow_origins {
-      items = ["https://${local.opennext_domain}"]
+      items = ["https://${var.dns_domain_name}"]
     }
 
     origin_override = true
