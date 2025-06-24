@@ -43,7 +43,8 @@ export function makeApiDataListPagesProps(
                 ? item.attributes.apiRestDetail?.slug
                 : item.attributes.apiSoapDetail?.slug
             }`
-          : item.attributes.apiSoapUrl,
+          : item.attributes.apiSoapUrl ||
+            `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
       })),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
       seo: attributes.seo,
