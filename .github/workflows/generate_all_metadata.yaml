@@ -21,6 +21,8 @@ on:
           - guides
           - solutions
           - release_notes
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint
 permissions:
