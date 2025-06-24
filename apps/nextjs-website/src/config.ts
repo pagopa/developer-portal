@@ -40,7 +40,6 @@ export const docsAssetsPath = '/gitbook/docs';
 export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
-export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const isChatbotActive =
   process.env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
 export const isFeedbackFormEnabled =
