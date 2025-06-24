@@ -95,7 +95,7 @@ async function convertGuideToSitemapItems(
     );
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2) {
+      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
         continue;
       }
       const content = await downloadS3File(

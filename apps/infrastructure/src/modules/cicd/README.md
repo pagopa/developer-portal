@@ -14,7 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | github.com/pagopa/dx//infra/modules/github_selfhosted_runner_on_codebuild | self-hosted-runner-on-aws-module |
+| <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | pagopa-dx/github-selfhosted-runner-on-codebuild/aws | ~> 0.0 |
 
 ## Resources
 

@@ -44,6 +44,7 @@ import {
 import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
 import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
+import { JsonMetadata } from '@/helpers/s3Metadata.helpers';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -242,11 +243,7 @@ export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   productSlug: string
 ) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guide from strapi');
   const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guide completed');
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
@@ -259,11 +256,7 @@ export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guide from strapi');
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('[Guide] get guide completed');
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
@@ -274,7 +267,7 @@ export const getGuidePageProps = async (
 
 export const getSolutionProps = async (
   solutionsSlug: string,
-  solutionPaths: ReadonlyArray<string>
+  jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
@@ -282,12 +275,12 @@ export const getSolutionProps = async (
     throw new Error('Failed to fetch data');
   }
   const solution = makeSolutionsProps(strapiSolutions)[0];
-  return await makeSolutionS3(solution, solutionPaths);
+  return await makeSolutionS3(solution, jsonMetadata);
 };
 
 export const getReleaseNoteProps = async (
   productSlug: string,
-  releaseNotePaths: ReadonlyArray<string>
+  jsonMetadata?: JsonMetadata
 ) => {
   const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
@@ -295,5 +288,5 @@ export const getReleaseNoteProps = async (
     throw new Error('Failed to fetch data');
   }
   const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
-  return await makeReleaseNoteS3(releaseNote, releaseNotePaths);
+  return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };
