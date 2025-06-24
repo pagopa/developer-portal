@@ -52,18 +52,33 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const porps = await getGuidePage(
+  const props = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  if (porps?.seo) {
-    return makeMetadataFromStrapi(porps?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
+  const pagePath = props.page.path.split('/');
+  const parentName = pagePath[pagePath.length - 2]
+    .toLowerCase()
+    .replaceAll('-', ' ')
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
   return makeMetadata({
-    title: porps?.page.title,
-    url: porps?.page.path,
+    title: [
+      props.page.title,
+      parentName,
+      [props.guide.name, props.version.name].filter(Boolean).join(' '),
+      props.product.name,
+    ]
+      .filter(Boolean)
+      .join(' | '),
+    url: props?.page.path,
   });
 }
 
