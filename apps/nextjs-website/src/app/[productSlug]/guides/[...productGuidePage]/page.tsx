@@ -76,7 +76,9 @@ export async function generateMetadata({
     title: [
       props.page.title,
       parentName,
-      [props.guide.name, props.version.name].filter(Boolean).join(' '),
+      [props.guide.name, !props.version.main && props.version.name]
+        .filter(Boolean)
+        .join(' '),
       props.product.name,
     ]
       .filter(Boolean)
