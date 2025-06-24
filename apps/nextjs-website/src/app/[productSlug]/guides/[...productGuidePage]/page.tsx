@@ -66,6 +66,7 @@ export async function generateMetadata({
     pagePath.length >= 2
       ? pagePath[pagePath.length - 2]
           .toLowerCase()
+          .replaceAll(' ', '')
           .replaceAll('-', ' ')
           .split(' ')
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
