@@ -62,12 +62,15 @@ export async function generateMetadata({
   }
 
   const pagePath = props.page.path.split('/');
-  const parentName = pagePath[pagePath.length - 2]
-    .toLowerCase()
-    .replaceAll('-', ' ')
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  const parentName =
+    pagePath.length >= 2
+      ? pagePath[pagePath.length - 2]
+          .toLowerCase()
+          .replaceAll('-', ' ')
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      : '';
 
   return makeMetadata({
     title: [
