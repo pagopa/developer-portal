@@ -37,7 +37,7 @@ def count_queries_created_today() -> int:
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
         KeyConditionExpression=Key("createdAtDate").eq(today),
-        Select="COUNT"
+        Select="COUNT",
     )
 
     return response["Count"]
@@ -81,9 +81,7 @@ async def query_creation(
     salt = session_salt(session["id"])
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
-    messages = (
-        [item.model_dump() for item in query.history] if query.history else None
-    )
+    messages = [item.model_dump() for item in query.history] if query.history else None
 
     answer_json = chatbot.chat_generate(
         query_str=query_str,
@@ -100,14 +98,9 @@ async def query_creation(
             "response_str": answer,
             "retrieved_contexts": answer_json["contexts"],
             "trace_id": trace_id,
-            "session_id": session["id"],
-            "user_id": user_id,
             "messages": messages,
         }
-        background_tasks.add_task(
-            evaluate,
-            evaluation_data=evaluation_data
-        )
+        background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
