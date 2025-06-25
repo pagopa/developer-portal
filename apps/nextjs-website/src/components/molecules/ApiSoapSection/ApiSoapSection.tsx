@@ -21,7 +21,7 @@ export type ApiSoapSectionProps = {
   readonly apiName: string;
   readonly apiSlug: string;
   readonly apiRepositoryUrl?: string;
-  readonly apiUrls: string[];
+  readonly apiUrls: readonly string[];
 };
 
 const ApiSoapSection = ({
