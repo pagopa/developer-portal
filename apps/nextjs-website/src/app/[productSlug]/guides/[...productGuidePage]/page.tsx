@@ -20,8 +20,12 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
-import { REVALIDATE_LONG_INTERVAL } from '@/config';
-import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
+// import { REVALIDATE_LONG_INTERVAL } from '@/config';
+// import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
+
+// OPTIMIZATION 7: Force dynamic rendering to ensure all optimizations work properly
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 type Params = {
   productSlug: string;
@@ -67,34 +71,36 @@ export async function generateMetadata({
   });
 }
 
-export const revalidate = REVALIDATE_LONG_INTERVAL;
+// Comment out static generation to make it dynamic
+// export const revalidate = REVALIDATE_LONG_INTERVAL;
 
-const PRODUCT_SLUG_PATH_INDEX = 1;
-const GUIDE_SUB_PATH_INDEX = 3;
-export async function generateStaticParams(): Promise<Params[]> {
-  const guides = await getGuidesMetadata();
-  const guideParams = guides
-    .map(({ path }) => path.split('/'))
-    .filter((paths) => paths.length > GUIDE_SUB_PATH_INDEX)
-    .map((paths) => {
-      return {
-        productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
-        productGuidePage: paths.slice(GUIDE_SUB_PATH_INDEX),
-      };
-    });
-  return guideParams;
-}
+// const PRODUCT_SLUG_PATH_INDEX = 1;
+// const GUIDE_SUB_PATH_INDEX = 3;
+// export async function generateStaticParams(): Promise<Params[]> {
+//   const guides = await getGuidesMetadata();
+//   const guideParams = guides
+//     .map(({ path }) => path.split('/'))
+//     .filter((paths) => paths.length > GUIDE_SUB_PATH_INDEX)
+//     .map((paths) => {
+//       return {
+//         productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
+//         productGuidePage: paths.slice(GUIDE_SUB_PATH_INDEX),
+//       };
+//     });
+//   return guideParams;
+// }
 
 const Page = async ({ params }: { params: Params }) => {
-  const guideProps = await getGuidePage(
-    params?.productGuidePage ?? [''],
-    params?.productSlug
-  );
+  // OPTIMIZATION 5: Fetch guide data and URL replace map in parallel
+  const [guideProps, urlReplaceMap] = await Promise.all([
+    getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
+    getUrlReplaceMapProps(),
+  ]);
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!guideProps) {
     return PageNotFound;
   }
+
   const {
     product,
     page,
@@ -106,6 +112,7 @@ const Page = async ({ params }: { params: Params }) => {
     seo,
     bodyConfig,
   } = guideProps;
+
   const props: ProductGuidePageProps = {
     ...page,
     product,
@@ -135,6 +142,22 @@ const Page = async ({ params }: { params: Params }) => {
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
+  const breadcrumbs = [
+    ...productPageToBreadcrumbs(props.product, [
+      {
+        translate: true,
+        name: 'devPortal.productHeader.guides',
+        path: props.product.hasGuideListPage
+          ? `/${props.product.slug}/guides`
+          : '/',
+      },
+      {
+        name: props.guide.name,
+        path: props.guide.path,
+      },
+    ]),
+  ];
+
   return (
     <ProductLayout
       product={props.product}
@@ -144,21 +167,7 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <GitBookTemplate
         menuName={props.guide.name}
-        breadcrumbs={[
-          ...productPageToBreadcrumbs(props.product, [
-            {
-              translate: true,
-              name: 'devPortal.productHeader.guides',
-              path: props.product.hasGuideListPage
-                ? `/${props.product.slug}/guides`
-                : '/',
-            },
-            {
-              name: props.guide.name,
-              path: props.guide.path,
-            },
-          ]),
-        ]}
+        breadcrumbs={breadcrumbs}
         versionName={props.version.name}
         {...props}
       />
