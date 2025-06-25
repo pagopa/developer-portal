@@ -23,7 +23,7 @@ import PageNotFound from '@/app/not-found';
 // import { REVALIDATE_LONG_INTERVAL } from '@/config';
 // import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
-// OPTIMIZATION 7: Force dynamic rendering to ensure all optimizations work properly
+// Force dynamic rendering to ensure all optimizations work properly
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -91,7 +91,7 @@ export async function generateMetadata({
 // }
 
 const Page = async ({ params }: { params: Params }) => {
-  // OPTIMIZATION 5: Fetch guide data and URL replace map in parallel
+  // Fetch guide data and URL replace map in parallel
   const [guideProps, urlReplaceMap] = await Promise.all([
     getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
     getUrlReplaceMapProps(),
