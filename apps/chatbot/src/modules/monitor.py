@@ -94,4 +94,4 @@ def add_langfuse_score(
         data_type=data_type,
         comment=comment,
     )
-    LOGGER.warning("Add score {name}: {value} in trace {trace_id}.")
+    LOGGER.warning(f"Add score {name}: {value} in trace {trace_id}.")
