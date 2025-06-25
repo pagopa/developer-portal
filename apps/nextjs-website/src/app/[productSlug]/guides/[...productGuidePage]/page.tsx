@@ -71,7 +71,6 @@ export async function generateMetadata({
   });
 }
 
-// Comment out static generation to make it dynamic
 // export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 // const PRODUCT_SLUG_PATH_INDEX = 1;
