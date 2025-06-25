@@ -40,3 +40,11 @@ jobs:
       - name: Sync docs folder to S3
         run: |
           aws s3 sync devportal-docs/docs s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_GITBOOK_DOCS }} --delete
+
+      - name: Trigger metadata generation
+        run: |
+          gh workflow run generate_all_metadata.yaml \
+            --field environment=dev \
+            --field metadata_type=all
+        env:
+          GH_TOKEN: ${{ github.token }}
