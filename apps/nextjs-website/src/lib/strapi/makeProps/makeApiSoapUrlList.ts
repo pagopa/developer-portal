@@ -1,9 +1,13 @@
-import { listS3Files, makeS3Client } from '@/helpers/s3SoapApi.helpers';
-import { staticContentsUrl } from '@/config';
+import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
 
 export async function makeApiSoapUrlList(apiDirName: string) {
-  const files = listS3Files('.wsd.xml', makeS3Client());
+  const soapApiMetadata = await getSoapApiMetadata().then((metadata) =>
+    metadata.find((item) => item.dirName === apiDirName)
+  );
+  if (!soapApiMetadata) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(`No metadata found for API directory: ${apiDirName}`);
+  }
 
-  const fileList = await files;
-  return fileList.map((file) => `${staticContentsUrl}/${apiDirName}/${file}`);
+  return soapApiMetadata.contentS3Paths;
 }

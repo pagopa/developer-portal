@@ -32,7 +32,7 @@ export type ApiDataPageProps = {
     hideTryIt?: boolean;
   }[];
   readonly apiSoapUrl?: string;
-  readonly apiSoapUrlList: string[];
+  readonly apiSoapUrlList: readonly string[];
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
