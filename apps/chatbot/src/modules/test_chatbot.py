@@ -78,31 +78,27 @@ def test_chat_generation():
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        res = CHATBOT.chat_generate(
+        response_json = CHATBOT.chat_generate(
             query_str=query_str,
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
-        res = CHATBOT.chat_generate(
+        response_json = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
             trace_id="fghik",
-            messages=[{"question": query_str, "answer": res}],
+            messages=[{"question": query_str, "answer": response_json["response"]}],
             user_id="user-test",
             session_id="session-test",
             tags="test",
         )
 
-        trace1 = CHATBOT.get_trace("abcde")
-        print("trace 1:", trace1)
-        trace2 = CHATBOT.get_trace("fghik")
-        print("trace 2:", trace2)
     except Exception as e:
         LOGGER.error(e)
-        res = "Something went wrong!"
+        response_json = {}
 
-    assert res != "Something went wrong!"
+    assert response_json != {}
 
 
 def test_evaluation():
@@ -117,10 +113,9 @@ def test_evaluation():
             session_id="session-test",
             tags="test",
         )
-        response = CHATBOT.get_final_response(response_json)
         CHATBOT.evaluate(
             query_str=query_str,
-            response_str=response,
+            response_str=response_json["response"],
             retrieved_contexts=response_json["context"],
             trace_id="abcde",
             user_id="user-test",
@@ -128,6 +123,6 @@ def test_evaluation():
         )
     except Exception as e:
         LOGGER.error(e)
-        res = "Something went wrong!"
+        response_json = {}
 
-    assert res != "Something went wrong!"
+    assert response_json != {}

@@ -1,49 +1,68 @@
 import os
 import re
+import boto3
+import logging
 import time
 import json
 import yaml
 import tqdm
-import hashlib
 import requests
 import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urllib.parse import quote
 from typing import List, Tuple
+import xml.etree.ElementTree as ET
 
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
 from src.modules.utils import get_ssm_parameter
 
+import dotenv
 
+dotenv.load_dotenv(".env.local")
+
+logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
-DYNAMIC_HTMLS = [
-    "/case-histories/",
-    "/release-notes/",
-    "/solutions/",
-    "/webinars/",
-    "index.html",
-    "privacy-policy.html",
-    "terms-of-service.html",
-]
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
+AWS_S3_CLIENT = boto3.client(
+    "s3",
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_DEFAULT_REGION,
+)
+AWS_S3_STATIC_CONTENT_BUCKET_NAME = "devportal-d-website-static-content"
 
 
-def hash_url(url: str) -> str:
-    """
-    Generates a SHA-256 hash for the given URL.
+def remove_figure_blocks(md_text):
+    """Removes <figure> blocks from Markdown text.
     Args:
-        url (str): The URL to hash.
+        md_text (str): The Markdown text to process.
     Returns:
-        str: The SHA-256 hash of the URL.
+        str: The Markdown text with <figure> blocks removed.
     """
+    return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
-    return hashlib.sha256(url.encode()).hexdigest()
+
+def extract_md_title(text):
+    """Extracts the title from Markdown text.
+    Args:
+        text (str): The Markdown text to process.
+    Returns:
+        str: The extracted title, or None if no title is found.
+    """
+    match = re.search(r"^# (.+)", text, re.MULTILINE)
+    if match:
+        return match.group(1).strip()
+    return None
 
 
-def filter_html_files(html_files: List[str]) -> List[str]:
+def filter_urls(urls: List[str]) -> List[str]:
     """
     Filters out HTML files that match specific patterns.
     Args:
@@ -54,9 +73,9 @@ def filter_html_files(html_files: List[str]) -> List[str]:
 
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
-    filtered_files = [
+    filtered_urls = [
         file
-        for file in html_files
+        for file in urls
         if not pattern.search(file)
         and not pattern2.search(file)
         and "/auth/" not in file
@@ -66,31 +85,63 @@ def filter_html_files(html_files: List[str]) -> List[str]:
         and "/pdnd-interoperabilita/api/" not in file
         and "/send/api/" not in file
         and "/profile/" not in file
-        and "questions.html" not in file
     ]
-    return filtered_files
+    return filtered_urls
 
 
-def get_html_files(root_folder: str) -> List[str]:
+def get_sitemap_urls(website_url: str | None = None) -> List[str]:
     """
-    Retrieves all HTML files from the specified root folder and its subdirectories.
+    Fetches URLs from a sitemap XML file.
     Args:
-        root_folder (str): The root folder to search for HTML files.
+        sitemap_url (str): The URL of the sitemap XML file. If None, uses the default WEBSITE_URL.
     Returns:
-        List[str]: A list of paths to HTML files, filtered and sorted.
+        List[str]: A list of URLs extracted from the sitemap.
     """
 
-    html_files = []
-    for root, _, files in os.walk(root_folder):
-        for file in files:
-            if file.endswith(".html"):
-                html_files.append(os.path.join(root, file))
+    if website_url is None:
+        sitemap_url = f"{WEBSITE_URL}/sitemap.xml"
+    else:
+        sitemap_url = f"{website_url}/sitemap.xml"
 
-    LOGGER.info(f"root_folder: {root_folder}")
-    LOGGER.info(f"html_files: {len(html_files)}")
-    sorted_and_filtered = sorted(filter_html_files(html_files))
-    LOGGER.info(f"sorted_and_filtered: {len(sorted_and_filtered)}")
-    return sorted_and_filtered
+    LOGGER.info(f"Fetching sitemap from {sitemap_url}")
+    response = requests.get(sitemap_url)
+    if response.status_code == 200:
+        LOGGER.info("Sitemap fetched successfully.")
+        root = ET.fromstring(response.content)
+        ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
+        sitemap = []
+        for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
+            loc = entry.find("ns:loc", ns)
+            lastmod = entry.find("ns:lastmod", ns)
+            sitemap.append(
+                {
+                    "url": loc.text if loc is not None else "N/A",
+                    "lastmod": lastmod.text if lastmod is not None else "N/A",
+                }
+            )
+        LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
+
+        return sitemap
+    else:
+        LOGGER.error(f"Error fetching data: {response.status_code}")
+        return []
+
+
+def read_file_from_s3(file_path: str) -> str:
+    """Reads a file from an S3 bucket.
+    Args:
+        file_path (str): The path to the file in the S3 bucket.
+    Returns:
+        str: The content of the file as a string.
+    """
+
+    response = AWS_S3_CLIENT.get_object(
+        Bucket=AWS_S3_STATIC_CONTENT_BUCKET_NAME,
+        Key=file_path,
+    )
+    text = response["Body"].read().decode("utf-8")
+    return text
 
 
 def html2markdown(html: str) -> Tuple[str, str]:
@@ -119,16 +170,18 @@ def html2markdown(html: str) -> Tuple[str, str]:
     return title, content.strip()
 
 
-def get_apidata(website_url: str) -> dict:
+def get_apidata(website_url: str | None = None) -> dict:
     """
     Fetches API data from a remote source.
     Args:
-        website_url (str): The base URL of the website.
+        website_url (str): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
         dict: Parsed JSON data from the API response.
     """
-
-    url = website_url.replace("https://", "https://cms.")
+    if website_url is None:
+        url = WEBSITE_URL.replace("https://", "https://cms.")
+    else:
+        url = website_url.replace("https://", "https://cms.")
     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
     headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
 
@@ -182,7 +235,7 @@ def read_api_url(url: str) -> str:
         )
 
 
-def get_api_docs(website_url: str) -> list:
+def get_api_docs(website_url: str | None = None) -> list:
     """
     Creates API documentation in Markdown format from the provided API data.
 
@@ -206,15 +259,15 @@ def get_api_docs(website_url: str) -> list:
             api_slug = data["attributes"]["apiRestDetail"]["slug"]
             for spec_urls in data["attributes"]["apiRestDetail"]["specUrls"]:
                 api_txt = read_api_url(spec_urls["url"].strip())
-                api_url = os.path.join(website_url, product_slug, "api", api_slug)
+                api_url = os.path.join(WEBSITE_URL, product_slug, "api", api_slug)
                 if spec_urls["name"] is not None:
                     api_url += f"?spec={quote(spec_urls['name'])}"
                 docs.append(
                     Document(
-                        id_=api_url.replace(website_url, ""),
+                        id_=api_url.replace(WEBSITE_URL, ""),
                         text=api_txt,
                         metadata={
-                            "filepath": api_url.replace(website_url, ""),
+                            "filepath": api_url.replace(WEBSITE_URL, ""),
                             "title": title,
                         },
                     )
@@ -223,28 +276,94 @@ def get_api_docs(website_url: str) -> list:
     return docs
 
 
-def get_guide_docs(
-    website_url: str,
-    documentation_dir: str = "./PagoPADevPortal/out/",
-) -> Tuple[List[Document], dict]:
+def get_static_and_dynamic_lists(
+    website_url: str | None = None,
+) -> Tuple[List[dict], List[str]]:
     """
-    Extracts documentation from HTML files in the specified directory and converts them to Markdown format.
+    Fetches static and dynamic URLs from the sitemap and metadata files.
     Args:
-        website_url (str): The base URL of the website.
-        documentation_dir (str): The directory containing the HTML files.
-
+        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
-        Tuple[List[Document], dict]: A tuple containing a list of Document objects and a hash table mapping masked URLs to original URLs.
+        Tuple[List[dict], List[str]]: A tuple containing two lists:
+            - A list of dictionaries with static URLs and their S3 file paths.
+            - A list of dynamic URLs.
     """
 
-    if documentation_dir[-1] != "/":
-        documentation_dir += "/"
+    sitemap = get_sitemap_urls(website_url)
+    if not sitemap:
+        return [], []
+    else:
+        urls_list = [item["url"] for item in sitemap]
+        filtered_urls = filter_urls(urls_list)
 
-    html_files = get_html_files(documentation_dir)
-    dynamic_htmls = [os.path.join(documentation_dir, path) for path in DYNAMIC_HTMLS]
-    documents = []
-    hash_table = {}
-    empty_pages = []
+        static_urls = []
+        dynamic_urls = []
+
+        guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
+        release_notes_metadata = json.loads(
+            read_file_from_s3("release-notes-metadata.json")
+        )
+        solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
+
+        for item in guides_metadata + release_notes_metadata + solutions_metadata:
+
+            url = WEBSITE_URL + item["path"]
+            if url in filtered_urls:
+                static_urls.append({"url": url, "s3_file_path": item["contentS3Path"]})
+
+        static_urls_list = [url["url"] for url in static_urls]
+        for url in filtered_urls:
+            if url not in static_urls_list:
+                dynamic_urls.append(url)
+
+    LOGGER.info(
+        f"Found {len(static_urls)} static URLs and {len(dynamic_urls)} dynamic URLs."
+    )
+    return static_urls, dynamic_urls
+
+
+def get_static_docs(static_urls: List[dict]) -> List[Document]:
+    """
+    Fetches static documents from the provided URLs.
+    Args:
+        static_urls (List[dict]): A list of dictionaries containing URLs and S3 file paths.
+    Returns:
+        List[Document]: A list of Document objects containing the content and metadata.
+    """
+
+    static_docs = []
+    for item in tqdm.tqdm(
+        static_urls, total=len(static_urls), desc="Getting static documents"
+    ):
+
+        url = item["url"]
+        text = read_file_from_s3(item["s3_file_path"])
+        text = remove_figure_blocks(text)
+        title = extract_md_title(text)
+
+        static_docs.append(
+            Document(
+                id_=url.replace(WEBSITE_URL, ""),
+                text=text,
+                metadata={
+                    "filepath": url.replace(WEBSITE_URL, ""),
+                    "title": title,
+                    "language": "it",
+                },
+            )
+        )
+
+    return static_docs
+
+
+def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
+    """
+    Fetches dynamic documents from the provided URLs using Selenium.
+    Args:
+        dynamic_urls (List[str]): A list of URLs to fetch dynamic documents from.
+    Returns:
+        List[Document]: A list of Document objects containing the content and metadata.
+    """
 
     driver_exe_path = "/usr/bin/chromedriver"
     if os.path.exists(driver_exe_path):
@@ -256,67 +375,67 @@ def get_guide_docs(
     driver_options.add_argument("--disable-gpu")
     driver_options.add_argument("--no-sandbox")
     driver_options.add_argument("--disable-dev-shm-usage")
+    dynamic_docs = []
+    discarded_docs = 0
 
-    for file in tqdm.tqdm(html_files, total=len(html_files), desc="Getting guide docs"):
-
-        if any(part in file for part in DYNAMIC_HTMLS):
-            url = file.replace(documentation_dir, f"{website_url}/").replace(
-                ".html", ""
-            )
-
-            driver = webdriver.Chrome(options=driver_options, service=driver_service)
-
-            driver.get(url)
-            time.sleep(5)
-            title, text = html2markdown(driver.page_source)
-            driver.quit()
-        else:
-            title, text = html2markdown(open(file))
-
+    for url in tqdm.tqdm(
+        dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
+    ):
+        driver = webdriver.Chrome(options=driver_options, service=driver_service)
+        driver.get(url)
+        time.sleep(5)
+        title, text = html2markdown(driver.page_source)
+        driver.quit()
         if (
-            text is None
-            or text == ""
-            or text == "None"
-            or text
-            == (
-                "404\n\n#### Pagina non trovata\n\nLa pagina che stai cercando non "
-                "esiste"
+            text is not None
+            and text != ""
+            and text != "None"
+            and text
+            != (
+                "404\n\n#### Pagina non trovata\n\n"
+                "La pagina che stai cercando non esiste"
             )
         ):
-            empty_pages.append(file)
-
-        else:
 
             text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
-
-            url = file.replace(documentation_dir, f"{website_url}/").replace(
-                ".html", ""
-            )
-            masked_url = hash_url(url)
-            if masked_url not in hash_table.keys():
-                hash_table[masked_url] = url
-
             if title == "":
-                title = f"PagoPA DevPortal | {os.path.basename(url)}"
+                title = os.path.basename(url).replace("-", " ")
 
-            documents.append(
+            dynamic_docs.append(
                 Document(
-                    id_=url.replace(website_url, ""),
+                    id_=url.replace(WEBSITE_URL, ""),
                     text=text,
                     metadata={
-                        "filepath": url.replace(website_url, ""),
+                        "filepath": url.replace(WEBSITE_URL, ""),
                         "title": title,
                         "language": "it",
                     },
                 )
             )
-
-    LOGGER.info(f"Number of documents with content: {len(documents)}")
-    LOGGER.info(
-        f"Number of empty pages in the documentation: {len(empty_pages)}. "
-        "These are left out."
+        else:
+            discarded_docs += 1
+    LOGGER.warning(
+        f"Discarded {discarded_docs} dynamic documents due to empty content or 404 errors."
     )
-    with open("empty_htmls.json", "w") as f:
-        json.dump(empty_pages, f, indent=4)
 
-    return documents, hash_table
+    return dynamic_docs
+
+
+def get_documents(website_url: str | None = None) -> List[Document]:
+    """
+    Fetches documents from static and dynamic sources.
+    Args:
+        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
+    Returns:
+        List[Document]: A list of Document objects containing the content and metadata.
+    """
+
+    static_urls, dynamic_urls = get_static_and_dynamic_lists(website_url)
+
+    api_docs = get_api_docs(website_url)
+    static_docs = get_static_docs(static_urls)
+    dynamic_docs = get_dynamic_docs(dynamic_urls)
+    docs = static_docs + dynamic_docs + api_docs
+
+    LOGGER.info(f"Total number of fetched documents: {len(docs)}")
+    return docs

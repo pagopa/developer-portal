@@ -21,7 +21,7 @@ import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
 from src.modules.logger import get_logger
-from src.modules.documents import get_api_docs, get_guide_docs
+from src.modules.documents import get_documents
 from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 
@@ -107,13 +107,7 @@ def build_index_redis(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
 
-    api_docs = get_api_docs(WEBSITE_URL)
-    guide_docs, hash_table = get_guide_docs(WEBSITE_URL, documentation_dir)
-    documents = guide_docs + api_docs
-    for key, value in hash_table.items():
-        REDIS_KVSTORE.put(collection=f"hash_table_{NEW_INDEX_ID}", key=key, val=value)
-    LOGGER.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
-
+    documents = get_documents()
     LOGGER.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
 
