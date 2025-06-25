@@ -25,18 +25,19 @@ locals {
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER           = "google"
-    CHB_QUERY_TABLE_PREFIX = local.prefix
-    CHB_REDIS_URL          = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-    CHB_RERANKER_ID        = "semantic-ranker-512-003"
-    CHB_USE_PRESIDIO       = "True"
-    CHB_WEBSITE_URL        = "https://${var.dns_domain_name}"
-    CORS_DOMAINS           = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
-    ENVIRONMENT            = var.environment
-    LLAMA_INDEX_CACHE_DIR  = "/tmp"
-    LOG_LEVEL              = "INFO"
-    NLTK_DATA              = "_static/nltk_cache/"
-    TIKTOKEN_CACHE_DIR     = "/tmp/tiktoken"
+    CHB_PROVIDER               = "google"
+    CHB_QUERY_TABLE_PREFIX     = local.prefix
+    CHB_REDIS_URL              = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+    CHB_RERANKER_ID            = "semantic-ranker-512-003"
+    CHB_AWS_SSM_STRAPI_API_KEY = "/chatbot/chb_strapi_api_key"
+    CHB_USE_PRESIDIO           = "True"
+    CHB_WEBSITE_URL            = "https://${var.dns_domain_name}"
+    CORS_DOMAINS               = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
+    ENVIRONMENT                = var.environment
+    LLAMA_INDEX_CACHE_DIR      = "/tmp"
+    LOG_LEVEL                  = "INFO"
+    NLTK_DATA                  = "_static/nltk_cache/"
+    TIKTOKEN_CACHE_DIR         = "/tmp/tiktoken"
   }
 }
 
