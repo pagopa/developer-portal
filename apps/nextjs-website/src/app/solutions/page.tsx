@@ -4,7 +4,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -13,6 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
     locale: 'it_IT',
   });
 }
+
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 
 const Page = async () => {
   const solutionsList = await getSolutionListPage();

@@ -45,7 +45,7 @@ jobs:
   deploy:
     name: Deploy standalone website ${{ matrix.environment }}
     if: ${{ needs.setup.outputs.matrix != '' }}
-    runs-on: ubuntu-24.04
+    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     needs: [ setup ]
     
     strategy:

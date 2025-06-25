@@ -21,7 +21,9 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getTutorialListPagesProps } from '@/lib/cmsApi';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return (await getTutorialListPagesProps()).map(({ product }) => ({
     productSlug: product.slug,

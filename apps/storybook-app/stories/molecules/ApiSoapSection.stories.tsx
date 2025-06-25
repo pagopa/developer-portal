@@ -23,26 +23,14 @@ export const Showcase: StoryObj<typeof ApiSoapSection> = {
         alt: 'Product Logo',
       },
     } satisfies Product,
-    apisName: 'API Name',
-    apisSlug: 'api-slug',
+    apiName: 'API Name',
+    apiSlug: 'api-slug',
     apiRepositoryUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
     apiUrls: [
-      {
-        name: 'nodeForPa',
-        url: '/soap-api/wsdl/nodeForPa.wsdl.xml',
-      },
-      {
-        name: 'nodeForPsp',
-        url: '/soap-api/wsdl/nodeForPsp.wsdl.xml',
-      },
-      {
-        name: 'paForNodeVeryLongNameOverflowing',
-        url: '/soap-api/wsdl/paForNode.wsdl.xml',
-      },
-      {
-        name: 'pspForNode',
-        url: '/soap-api/wsdl/pspForNode.wsdl.xml',
-      },
+      '/soap-api/wsdl/nodeForPa.wsdl.xml',
+      '/soap-api/wsdl/nodeForPsp.wsdl.xml',
+      '/soap-api/wsdl/paForNode.wsdl.xml',
+      '/soap-api/wsdl/pspForNode.wsdl.xml',
     ],
   },
   parameters: {

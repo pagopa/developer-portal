@@ -10,12 +10,14 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
 type Params = {
   productSlug: string;
   productTutorialPage: Array<string>;
 };
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   const tutorialPaths = await getTutorialPaths();
   return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({

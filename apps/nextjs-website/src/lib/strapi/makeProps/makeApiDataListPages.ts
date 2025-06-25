@@ -14,25 +14,29 @@ export function makeApiDataListPagesProps(
         subtitle: attributes.description || '',
       },
       product: makeBaseProductWithoutLogoProps(attributes.product.data),
-      apiRestDetailSlugs: attributes.apiData.data
-        .map(({ attributes }) => attributes.apiRestDetail?.slug)
+      apiDetailSlugs: attributes.apiData.data
+        .map(({ attributes }) =>
+          attributes.apiRestDetail
+            ? attributes.apiRestDetail.slug
+            : attributes.apiSoapDetail?.slug
+        )
         .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data.map((item) => ({
-        target: (item.attributes.apiSoapUrl ? '_blank' : '_self') as
-          | '_blank'
-          | '_self',
+        target: '_self',
         tags: [
           {
-            label: item.attributes.apiSoapUrl ? 'SOAP' : 'REST',
+            label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
           },
         ],
         title: item?.attributes?.title,
         text: item?.attributes?.description || '',
         icon: item?.attributes?.icon?.data?.attributes.url || '',
         externalUrl: !!item.attributes.apiSoapUrl,
-        href:
-          item.attributes.apiSoapUrl ||
-          `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
+        href: `/${attributes.product.data?.attributes.slug}/api/${
+          item.attributes.apiRestDetail
+            ? item.attributes.apiRestDetail?.slug
+            : item.attributes.apiSoapDetail?.slug
+        }`,
       })),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
       seo: attributes.seo,
