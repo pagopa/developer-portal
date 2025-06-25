@@ -234,8 +234,10 @@ class Chatbot:
                 data[i] = self._mask_trace(value)
 
         if isinstance(data, tuple):
-            for i, value in enumerate(data):
-                data[i] = self._mask_trace(value)
+            data_as_list = list(data)
+            for i, value in enumerate(data_as_list):
+                data_as_list[i] = self._mask_trace(value)
+            data = tuple(data_as_list)
 
         if isinstance(data, ChatMessage):
             for i, block in enumerate(data.blocks):
