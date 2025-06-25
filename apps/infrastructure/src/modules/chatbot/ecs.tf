@@ -68,8 +68,8 @@ module "ecs_service" {
   tasks_iam_role_arn             = module.ecs_redis_task_iam_role.iam_role_arn
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
   ignore_task_definition_changes = false
-  enable_autoscaling             = var.environment == "prod"
-  autoscaling_max_capacity       = var.environment == "prod" ? 3 : 1
+  enable_autoscaling             = false
+  autoscaling_max_capacity       = 1
   autoscaling_min_capacity       = 1
 
   security_group_ids = [aws_security_group.redis.id]
@@ -167,8 +167,8 @@ module "monitoring_ecs_service" {
   tasks_iam_role_arn             = module.ecs_monitoring_task_iam_role.iam_role_arn
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
   ignore_task_definition_changes = false
-  enable_autoscaling             = var.environment == "prod"
-  autoscaling_max_capacity       = var.environment == "prod" ? 3 : 1
+  enable_autoscaling             = false
+  autoscaling_max_capacity       = 1
   autoscaling_min_capacity       = 1
 
   security_group_ids = [aws_security_group.monitoring_ecs.id]
