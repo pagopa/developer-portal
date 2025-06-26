@@ -40,12 +40,8 @@ export const docsAssetsPath = '/gitbook/docs';
 export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
 export const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
-<<<<<<< DEV-2358-api-soap-section-feature-flag
-export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
 export const soapApiPageActive =
   process.env.NEXT_PUBLIC_SOAP_API_PAGE_ACTIVE === 'true';
-=======
->>>>>>> DEV-2299-api-soap-section
 export const isChatbotActive =
   process.env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
 export const isFeedbackFormEnabled =
