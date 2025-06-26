@@ -18,24 +18,6 @@ SSM_CLIENT = boto3.client(
 )
 
 
-def get_logger(name: str) -> logging.Logger:
-    formatter = logging.Formatter(
-        fmt="%(asctime)s %(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
-    )
-
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-
-    if not logger.handlers:  # Prevent adding multiple handlers
-        logger.addHandler(handler)
-        logger.propagate = False
-
-    return logger
-
-
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
