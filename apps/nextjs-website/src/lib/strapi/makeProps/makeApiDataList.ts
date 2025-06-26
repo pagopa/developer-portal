@@ -17,7 +17,11 @@ export async function makeApiDataListProps(
       return {
         ...attributes,
         product,
-        apiType: attributes.apiRestDetail ? 'rest' : 'soap',
+        apiType: attributes.apiRestDetail
+          ? 'rest'
+          : attributes.apiSoapDetail
+          ? 'soap'
+          : undefined,
         apiDataSlug:
           attributes.apiRestDetail?.slug ||
           attributes.apiSoapDetail?.slug ||

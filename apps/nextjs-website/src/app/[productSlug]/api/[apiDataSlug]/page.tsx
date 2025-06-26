@@ -23,7 +23,7 @@ import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 export type ApiDataPageProps = {
   readonly title?: string;
   readonly product?: Product;
-  readonly apiType: 'rest' | 'soap';
+  readonly apiType?: 'rest' | 'soap';
   readonly apiDataSlug: string;
   readonly specUrlsName?: string;
   readonly restApiSpecUrls: {
