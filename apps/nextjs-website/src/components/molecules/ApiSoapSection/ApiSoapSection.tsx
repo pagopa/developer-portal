@@ -122,7 +122,7 @@ const ApiSoapSection = ({
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
-              height: 'calc(100% - 2rem)',
+              height: 'calc(100% - 1px)',
             }}
           >
             <Typography
