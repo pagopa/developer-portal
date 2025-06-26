@@ -1,5 +1,34 @@
 # nextjs-website
 
+## 8.0.0
+
+### Major Changes
+
+- 0a87d37: Refactor pages that use gitbook to fetch data using S3
+
+### Minor Changes
+
+- 0a87d37: Use CDN instead of S3 client to get data from gitbook
+- 0a87d37: Update sitemap and add metadata generate functions for release-notes and solutions
+- 0a87d37: Update render of guide from gitbook
+- 0a87d37: Fix guide version subpages and release note pages
+- 0a87d37: Add ISR to Next.JS
+
+### Patch Changes
+
+- 0a87d37: Add logs to guides
+- 0a87d37: Fix S3 doc parser to match file path that ends like site path
+- 0a87d37: Add error page for generic Nextjs errors
+- 0a87d37: Refactor sitemap generation to use new environment variable for guide metadata path and add script for generating guide metadata from S3 and Strapi.
+- 0a87d37: Fix dompurify warning
+- 0a87d37: Set content coming from gitbook as static page
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+  - gitbook-docs@0.5.0
+
 ## 7.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # chatbot
 
+## 5.2.1
+
+### Patch Changes
+
+- 4bb3a3d: Add monitor.py as refactor of the code
+
 ## 5.2.0
 
 ### Minor Changes
