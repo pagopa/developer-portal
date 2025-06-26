@@ -28,6 +28,14 @@ LANGFUSE_CLIENT = Langfuse(
 
 
 def get_trace(trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | dict:
+    """
+    Get a trace from Langfuse by its ID.
+    Args:
+        trace_id (str): The ID of the trace to retrieve.
+        as_dict (bool): If True, return the trace as a dictionary. Defaults to False.
+    Returns:
+        TraceWithFullDetails | dict: The trace object or its dictionary representation.
+    """
 
     LOGGER.warning(f"Getting trace {trace_id} from Langfuse")
     try:
@@ -50,6 +58,18 @@ def get_traces(
     order_by: str | None = None,
     tags: str | Sequence[str] | None = None,
 ) -> Traces:
+    """
+    Get traces from Langfuse based on various filters.
+    Args:
+        user_id (str, optional): The ID of the user associated with the traces. Defaults to None.
+        session_id (str, optional): The ID of the session associated with the traces. Defaults to None.
+        from_timestamp (datetime, optional): The start timestamp for filtering traces. Defaults to None.
+        to_timestamp (datetime, optional): The end timestamp for filtering traces. Defaults to None.
+        order_by (str, optional): The field by which to order the traces. Defaults to None.
+        tags (str | Sequence[str], optional): Tags to filter the traces. Defaults to None.
+    Returns:
+        Traces: A collection of traces matching the specified filters.
+    """
 
     try:
         traces = LANGFUSE_CLIENT.get_traces(
@@ -94,4 +114,4 @@ def add_langfuse_score(
         data_type=data_type,
         comment=comment,
     )
-    LOGGER.warning(f"Add score {name}: {value} in trace {trace_id}.")
+    LOGGER.info(f"Add score {name}: {value} in trace {trace_id}.")
