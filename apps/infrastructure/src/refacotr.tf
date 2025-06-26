@@ -72,16 +72,9 @@ moved {
   from = module.website.module.cloudfront_origin_latency_alarm["static"]
 }
 
-## Import ##
-/*
-import {
-  to = module.website.data.aws_ssm_parameter.cookie_domain_script
-  id = "COOKIE_DOMAIN_SCRIPT"
-}
+
 
 import {
-  to = module.website.data.aws_ssm_parameter.strapi_api_token
-  id = "STRAPI_API_TOKEN"
+  to = module.core.module.ses_developer_pagopa_it.aws_iam_user.ses_user[0]
+  id = "DevPortal"
 }
-
-*/
