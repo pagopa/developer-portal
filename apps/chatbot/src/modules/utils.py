@@ -2,9 +2,6 @@ import os
 import boto3
 
 from src.modules.logger import get_logger
-import dotenv
-
-dotenv.load_dotenv(".env.local")
 
 
 LOGGER = get_logger(__name__)

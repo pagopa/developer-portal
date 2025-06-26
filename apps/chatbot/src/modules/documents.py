@@ -19,9 +19,6 @@ from llama_index.core import Document
 from src.modules.logger import get_logger
 from src.modules.utils import get_ssm_parameter
 
-import dotenv
-
-dotenv.load_dotenv(".env.local")
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
