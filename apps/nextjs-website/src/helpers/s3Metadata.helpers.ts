@@ -75,7 +75,8 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
-  process.env.S3_SOAP_API_METADATA_JSON_PATH || 'soap-api-metadata.json';
+  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
+  'soap-api/soap-api-metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
