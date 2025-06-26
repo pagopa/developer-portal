@@ -6,7 +6,7 @@ from pathlib import Path
 from src.modules.logger import get_logger
 from src.modules.vector_database import REDIS_CLIENT
 from src.modules.models import get_llm, get_embed_model
-from src.modules.chatbot import Chatbot, LANGFUSE
+from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
 LOGGER = get_logger(__name__)
@@ -29,7 +29,7 @@ def test_connection_redis():
 
 
 def test_connection_langfuse():
-    assert LANGFUSE.auth_check() is True
+    assert LANGFUSE_CLIENT.auth_check() is True
 
 
 def test_cloud_connection():
