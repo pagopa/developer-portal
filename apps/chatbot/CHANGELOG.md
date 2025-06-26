@@ -1,5 +1,11 @@
 # chatbot
 
+## 5.2.2
+
+### Patch Changes
+
+- 1e90cde: Fix log bug
+
 ## 5.2.1
 
 ### Patch Changes
