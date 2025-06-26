@@ -13,6 +13,7 @@ import {
 import { Readable } from 'stream';
 import { SitemapItem } from '../sitemapItem';
 import dotenv from 'dotenv';
+import { UrlParsingItem } from '../scripts/generateUrlParsingMetadata';
 
 // Load environment variables from .env file
 export function loadEnvConfig(): { result: 'success' | 'not_found' } {
@@ -169,4 +170,23 @@ export async function writeSitemapJson(
     })
   );
   console.log(`Uploaded sitemap JSON to S3: ${jsonPath}`);
+}
+
+export async function writeUrlParsingMetadataJson(
+  items: UrlParsingItem[],
+  jsonPath: string,
+  bucketName: string,
+  client: S3Client
+): Promise<void> {
+  const urlParsingMetadata = JSON.stringify(items, null, 2);
+  console.log(`Uploading UrlParsing metadata JSON to S3: ${jsonPath}`);
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucketName,
+      Key: jsonPath,
+      Body: urlParsingMetadata,
+    })
+  );
+  console.log(`Uploaded UrlParsing metadata JSON to S3: ${jsonPath}`);
 }

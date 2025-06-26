@@ -10,7 +10,9 @@ import {
   writeSitemapJson,
   loadEnvConfig,
   validateS3Environment,
+  writeUrlParsingMetadataJson,
 } from '../helpers/s3Bucket.helper';
+import * as pathParser from 'path';
 import { SitemapItem } from '../sitemapItem';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -65,7 +67,7 @@ function generateUrlPath(
     .join('/');
 }
 
-type UrlParsingItem = {
+export type UrlParsingItem = {
   dirName: string;
   isPageIndex: boolean;
   pagePath: string;
@@ -82,7 +84,7 @@ type GuideInfo = {
 
 async function convertGuideToUrlParsingItems(
   strapiGuides: StrapiGuide[]
-): Promise<SitemapItem[]> {
+): Promise<UrlParsingItem[]> {
   const guideInfoList: GuideInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
@@ -126,25 +128,12 @@ async function convertGuideToUrlParsingItems(
           guideInfo.versionName
         );
         const item = {
-          path,
           dirName: guideInfo.dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
-          title: title || path.split('/').pop() || 'Untitled',
-          version: guideInfo.versionName,
+          isPageIndex: pathParser.parse(filePath).name === 'README',
+          pagePath: guideInfo.guideSlug,
+          spaceToPrefix: [],
         };
         items.push(item);
-        if (guideInfo.isMainVersion) {
-          const path = generateUrlPath(
-            filePath,
-            guideInfo.guideSlug,
-            guideInfo.productSlug
-          );
-          items.push({
-            ...item,
-            path,
-          });
-        }
       }
     }
   }
@@ -160,11 +149,13 @@ async function main() {
     );
     console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
-    const sitemapItems = await convertGuideToUrlParsingItems(strapiGuides);
-    console.log(`Converted guides to ${sitemapItems.length} url parsing items`);
+    const urlParsingItems = await convertGuideToUrlParsingItems(strapiGuides);
+    console.log(
+      `Converted guides to ${urlParsingItems.length} url parsing items`
+    );
 
-    await writeSitemapJson(
-      sitemapItems,
+    await writeUrlParsingMetadataJson(
+      urlParsingItems,
       S3_GUIDE_METADATA_JSON_PATH,
       `${s3BucketName}`,
       s3Client
