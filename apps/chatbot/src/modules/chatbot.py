@@ -367,14 +367,12 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
-                response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
-                    url = REDIS_KVSTORE.get(
-                        collection=f"hash_table_{INDEX_ID}",
-                        key=node.metadata["filename"],
-                    )
+                    url = WEBSITE_URL + node.metadata["filepath"]
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+                response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -388,6 +386,7 @@ class Chatbot:
                 response_str = response_str[7:-3]
             response_str = response_str.strip()
             response_json = json.loads(response_str)
+
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 

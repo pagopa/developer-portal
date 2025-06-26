@@ -320,13 +320,19 @@
         "relatedLinks": "Link utili",
         "downloadableDocuments": "Materiali scaricabili",
         "download": "Scarica",
-        "topics": "Argomenti trattati"
+        "topics": "Argomenti trattati",
+        "repository": "Repository"
     },
     "pageNotFound": {
         "overline": "404",
         "title": "Pagina non trovata",
         "description": "La pagina che stai cercando non esiste"
     },
+    "genericError": {
+    "overline": "Oops",
+    "title": "Qualcosa è andato storto",
+    "description": "C'è stato un errore imprevisto. Riprova più tardi."
+  },
     "productGuidePage": {
         "onThisPage": "In questa pagina",
         "tableOfContents": "Tabella dei contenuti"
