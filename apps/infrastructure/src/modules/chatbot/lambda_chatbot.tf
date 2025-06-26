@@ -12,24 +12,25 @@ locals {
     CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
     CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_EMBED_MODEL_ID                 = "text-embedding-004"
+    CHB_LLAMAINDEX_INDEX_ID            = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_EMBED_MODEL_ID                 = var.models.embeddings
     CHB_ENGINE_USE_ASYNC               = "False"
     CHB_ENGINE_USE_STREAMING           = "False"
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
-    CHB_MODEL_ID                       = "gemini-2.0-flash"
+    CHB_MODEL_ID                       = var.models.generation
     CHB_MODEL_MAXTOKENS                = "768"
     CHB_MODEL_TEMPERATURE              = "0.3"
+    CHB_AWS_SSM_STRAPI_API_KEY         = module.strapi_api_key_ssm_parameter.ssm_parameter_name
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER               = "google"
+    CHB_PROVIDER               = var.models.provider
     CHB_QUERY_TABLE_PREFIX     = local.prefix
     CHB_REDIS_URL              = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-    CHB_RERANKER_ID            = "semantic-ranker-512-003"
-    CHB_AWS_SSM_STRAPI_API_KEY = "/chatbot/chb_strapi_api_key"
+    CHB_RERANKER_ID            = var.models.reranker
     CHB_USE_PRESIDIO           = "True"
     CHB_WEBSITE_URL            = "https://${var.dns_domain_name}"
     CORS_DOMAINS               = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
@@ -38,6 +39,7 @@ locals {
     LOG_LEVEL                  = "INFO"
     NLTK_DATA                  = "_static/nltk_cache/"
     TIKTOKEN_CACHE_DIR         = "/tmp/tiktoken"
+    CHB_AWS_SSM_STRAPI_API_KEY = "/chatbot/chb_strapi_api_key"
   }
 }
 
@@ -167,6 +169,16 @@ module "index_id_ssm_parameter_local" {
   name                 = "/chatbot/index_id_local"
   value                = "49c13f0d-d164-49f1-b5d4-8bdc0632d0de"
   type                 = "String"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
+module "strapi_api_key_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/chb_strapi_api_key"
+  value                = "Set the Strapi API Key in the AWS console"
+  type                 = "SecureString"
   secure_type          = true
   ignore_value_changes = true
 }
