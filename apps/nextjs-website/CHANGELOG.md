@@ -1,5 +1,30 @@
 # nextjs-website
 
+## 7.0.0
+
+### Major Changes
+
+- 79f59c3: Add Feedback form to chatbot for Pagopa Users. Update Feedback API
+- 3696915: Fix package-lock
+
+### Minor Changes
+
+- 30ccdc9: Add ApiSoapSection a new component to display a structured and styled representation of a WSDL file for SOAP API and a showcase Storybook's story for it
+- 8cc06ee: Add Webinar category selector to webinar template
+- 609c665: Rename the existing ApiSection component to ApiRestSection and add a more generic ApiSection component to replace it
+
+### Patch Changes
+
+- 5b72c01: Add script to add included text in .md files. Update documentation parsing
+- 2111ace: Fix dependencies
+- 4887227: Add content to some pages' title
+- af4c64e: Add "noindex, follow" rules to the robots meta tag on all non-main guide pages
+- 2f130c8: Fix include_replacer call to update ./docs
+- e362faf: Add feature flag for feedback form
+- 02b9f97: Remove comments from Matomo Tag Manager script and fix indentation
+- Updated dependencies [5b72c01]
+  - gitbook-docs@0.4.2
+
 ## 6.2.0
 
 ### Minor Changes
