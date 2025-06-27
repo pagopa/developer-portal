@@ -23,7 +23,7 @@
       "type": "string",
       "required": true
     },
-    "pathToWsdlFolder": {
+    "pathToWsdlDir": {
       "type": "string",
       "required": false
     }
