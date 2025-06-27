@@ -32,9 +32,9 @@ export function makeApiDataListPagesProps(
           tags: [
             {
               label: soapApiPageActive
-                ? item.attributes.apiSoapUrl
+                ? item.attributes.apiSoapDetail
                   ? 'SOAP'
-                  : item.attributes.apiSoapUrl
+                  : item.attributes.apiRestDetail
                   ? 'REST'
                   : ''
                 : item.attributes.apiSoapUrl
