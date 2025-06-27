@@ -1,6 +1,3 @@
-# chatbot
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -173,25 +170,25 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_api_gateway"></a> [api\_gateway](#input\_api\_gateway) | n/a | <pre>object({<br>    integration_timeout_sec = optional(number, 60)<br>  })</pre> | <pre>{<br>  "integration_timeout_sec": 60<br>}</pre> | no |
 | <a name="input_aws_chatbot_region"></a> [aws\_chatbot\_region](#input\_aws\_chatbot\_region) | AWS region to create AI chatbot's resources | `string` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br>    id        = string<br>    arn       = string<br>    domain    = string<br>    region    = string<br>    client_id = string<br>    endpoint  = string<br>  })</pre> | n/a | yes |
-| <a name="input_dns_chatbot_hosted_zone"></a> [dns\_chatbot\_hosted\_zone](#input\_dns\_chatbot\_hosted\_zone) | The name of the chatbot hosted zone | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
+| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br/>    id        = string<br/>    arn       = string<br/>    domain    = string<br/>    region    = string<br/>    client_id = string<br/>    endpoint  = string<br/>  })</pre> | n/a | yes |
+| <a name="input_dns_chatbot_hosted_zone"></a> [dns\_chatbot\_hosted\_zone](#input\_dns\_chatbot\_hosted\_zone) | The name of the chatbot hosted zone | <pre>object({<br/>    name = string<br/>    id   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
-| <a name="input_ecs_monitoring"></a> [ecs\_monitoring](#input\_ecs\_monitoring) | Langfuse configuration for the AI chatbot | <pre>object({<br>    cpu       = number<br>    memory    = number<br>    image_uri = string<br>    port      = number<br>  })</pre> | n/a | yes |
-| <a name="input_ecs_redis"></a> [ecs\_redis](#input\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br>    cpu       = number<br>    memory    = number<br>    image_uri = string<br>    port      = number<br>  })</pre> | n/a | yes |
+| <a name="input_ecs_monitoring"></a> [ecs\_monitoring](#input\_ecs\_monitoring) | Langfuse configuration for the AI chatbot | <pre>object({<br/>    cpu       = number<br/>    memory    = number<br/>    image_uri = string<br/>    port      = number<br/>  })</pre> | n/a | yes |
+| <a name="input_ecs_redis"></a> [ecs\_redis](#input\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = number<br/>    memory    = number<br/>    image_uri = string<br/>    port      = number<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
-| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"chatbot"` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CostCenter": "BD110 - PORTALS E TOOLS",<br>  "CreatedBy": "Terraform",<br>  "ManagementTeam": "team_cloudgaap_ai",<br>  "Owner": "CloudGaaP-AI",<br>  "Wbs": "BD110 - PORTALS E TOOLS"<br>}</pre> | no |
-| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br>    id                         = string<br>    cidr_block                 = string<br>    public_subnets             = list(string)<br>    database_subnets           = list(string)<br>    private_subnets            = list(string)<br>    elasticache_subnets        = list(string)<br>    database_subnet_group_name = string<br>  })</pre> | n/a | yes |
+| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                         = string<br/>    cidr_block                 = string<br/>    public_subnets             = list(string)<br/>    database_subnets           = list(string)<br/>    private_subnets            = list(string)<br/>    elasticache_subnets        = list(string)<br/>    database_subnet_group_name = string<br/>  })</pre> | n/a | yes |
+| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | The name of the website bucket | `string` | n/a | yes |
+| <a name="input_api_gateway"></a> [api\_gateway](#input\_api\_gateway) | n/a | <pre>object({<br/>    integration_timeout_sec = optional(number, 60)<br/>  })</pre> | <pre>{<br/>  "integration_timeout_sec": 60<br/>}</pre> | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
+| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"chatbot"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CostCenter": "BD110 - PORTALS E TOOLS",<br/>  "CreatedBy": "Terraform",<br/>  "ManagementTeam": "team_cloudgaap_ai",<br/>  "Owner": "CloudGaaP-AI",<br/>  "Wbs": "BD110 - PORTALS E TOOLS"<br/>}</pre> | no |
 | <a name="input_waf_block_requests_to_queries_evaluation_window_sec"></a> [waf\_block\_requests\_to\_queries\_evaluation\_window\_sec](#input\_waf\_block\_requests\_to\_queries\_evaluation\_window\_sec) | n/a | `number` | `60` | no |
 | <a name="input_waf_block_requests_to_queries_limit"></a> [waf\_block\_requests\_to\_queries\_limit](#input\_waf\_block\_requests\_to\_queries\_limit) | n/a | `number` | `100` | no |
 | <a name="input_waf_ip_rate_limit_evaluation_window_sec"></a> [waf\_ip\_rate\_limit\_evaluation\_window\_sec](#input\_waf\_ip\_rate\_limit\_evaluation\_window\_sec) | n/a | `number` | `60` | no |
 | <a name="input_waf_ip_rate_limit_limit"></a> [waf\_ip\_rate\_limit\_limit](#input\_waf\_ip\_rate\_limit\_limit) | n/a | `number` | `100` | no |
-| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | The name of the website bucket | `string` | n/a | yes |
 
 ## Outputs
 
@@ -203,4 +200,3 @@
 | <a name="output_lambda_role_arn"></a> [lambda\_role\_arn](#output\_lambda\_role\_arn) | The ARN of the IAM role created for the Lambda Function |
 | <a name="output_lambda_role_name"></a> [lambda\_role\_name](#output\_lambda\_role\_name) | The name of the IAM role created for the Lambda Function |
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | n/a |
-<!-- END_TF_DOCS -->
