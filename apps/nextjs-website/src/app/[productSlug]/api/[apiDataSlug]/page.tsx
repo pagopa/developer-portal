@@ -17,6 +17,7 @@ import {
   convertApiToStructuredDataSoftwareApplication,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export type ApiDataPageProps = {
@@ -32,6 +33,7 @@ export type ApiDataPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return getApiDataParams();
 }

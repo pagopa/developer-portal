@@ -6,8 +6,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
-import { getWebinarsProps } from '@/lib/cmsApi';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 
@@ -15,12 +14,12 @@ type Params = {
   webinarSlug: string;
 };
 
-export async function generateStaticParams() {
-  const webinars = await getWebinarsProps();
-  return [...webinars].map(({ slug }) => ({
-    webinarSlug: slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   const webinars = await getWebinarsProps();
+//   return [...webinars].map(({ slug }) => ({
+//     webinarSlug: slug,
+//   }));
+// }
 
 export async function generateMetadata({
   params,
@@ -40,6 +39,8 @@ export async function generateMetadata({
     image: webinar.imagePath,
   });
 }
+
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 
 const NotSsrWebinarDetailTemplate = dynamic(
   () =>
