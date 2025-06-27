@@ -7,12 +7,12 @@ type Params = {
   webinarSlug: string;
 };
 
-export async function generateStaticParams() {
-  const webinars = await getWebinarsProps();
-  return [...webinars].map(({ slug }) => ({
-    webinarSlug: slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   const webinars = await getWebinarsProps();
+//   return [...webinars].map(({ slug }) => ({
+//     webinarSlug: slug,
+//   }));
+// }
 
 const WebinarQuestionsPage = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);

@@ -10,6 +10,7 @@ from fastapi import HTTPException
 from logging import getLogger
 
 from src.modules.chatbot import Chatbot
+from src.modules.monitor import add_langfuse_score
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
@@ -137,7 +138,7 @@ def get_user_session(userId: str, sessionId: str) -> dict | None:
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
     if query_feedback.badAnswer is not None:
         bad_answer = -1 if query_feedback.badAnswer else 0
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-feedback",
             value=bad_answer,
@@ -146,7 +147,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         )
 
     if query_feedback.feedback.user_response_relevancy is not None:
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-response-relevancy",
             value=float(query_feedback.feedback.user_response_relevancy),
@@ -154,7 +155,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         )
 
     if query_feedback.feedback.user_faithfullness is not None:
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-faithfullness",
             value=float(query_feedback.feedback.user_faithfullness),
