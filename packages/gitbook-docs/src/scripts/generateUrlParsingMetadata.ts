@@ -7,17 +7,19 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeSitemapJson,
   loadEnvConfig,
   validateS3Environment,
+  writeUrlParsingMetadataJson,
 } from '../helpers/s3Bucket.helper';
-import { SitemapItem } from '../sitemapItem';
-import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
   fetchFromStrapi,
   validateStrapiEnvironment,
 } from '../helpers/fetchFromStrapi';
-import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+import {
+  GuideInfo,
+  StrapiGuide,
+  generateUrlPath,
+} from './generateGuidesMetadata';
 
 // Load environment variables from .env file
 loadEnvConfig();
@@ -27,55 +29,22 @@ validateStrapiEnvironment();
 const { s3BucketName } = validateS3Environment();
 
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
-const S3_GUIDE_METADATA_JSON_PATH =
-  process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_URL_PARSING_METADATA_JSON_PATH =
+  process.env.S3_URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 const s3Client = makeS3Client();
 
-export interface StrapiGuide {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    versions: {
-      id: number;
-      main: boolean;
-      version: string;
-      dirName: string;
-    }[];
-  };
-}
-
-export function generateUrlPath(
-  filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
-): string {
-  const restOfPath = sitePathFromS3Path(filePath);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
-}
-
-export type GuideInfo = {
-  versionName: string;
-  isMainVersion: boolean;
+export type UrlParsingItem = {
   dirName: string;
-  guideSlug: string;
-  productSlug: string;
+  guides: {
+    guideName: string;
+    guideUrl: string;
+  }[];
 };
 
-async function convertGuideToSitemapItems(
+async function convertGuideToUrlParsingItems(
   strapiGuides: StrapiGuide[]
-): Promise<SitemapItem[]> {
+): Promise<UrlParsingItem[]> {
   const guideInfoList: GuideInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
@@ -88,7 +57,7 @@ async function convertGuideToSitemapItems(
       }))
     );
 
-  const items: SitemapItem[] = [];
+  const items: UrlParsingItem[] = [];
   for (const guideInfo of guideInfoList) {
     const guideFiles = (
       await listS3Files(
@@ -100,6 +69,10 @@ async function convertGuideToSitemapItems(
     const menuPath = guideFiles.find((file) =>
       file.includes(guideInfo.dirName + '/SUMMARY.md')
     );
+    const item = {
+      dirName: guideInfo.dirName,
+      guides: [] as { guideName: string; guideUrl: string }[],
+    };
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
       if (parts.length <= 2) {
@@ -110,7 +83,6 @@ async function convertGuideToSitemapItems(
         `${s3BucketName}`,
         s3Client
       );
-      const title = extractTitleFromMarkdown(content);
       if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
@@ -118,28 +90,13 @@ async function convertGuideToSitemapItems(
           guideInfo.productSlug,
           guideInfo.versionName
         );
-        const item = {
-          path,
-          dirName: guideInfo.dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
-          title: title || path.split('/').pop() || 'Untitled',
-          version: guideInfo.versionName,
-        };
-        items.push(item);
-        if (guideInfo.isMainVersion) {
-          const path = generateUrlPath(
-            filePath,
-            guideInfo.guideSlug,
-            guideInfo.productSlug
-          );
-          items.push({
-            ...item,
-            path,
-          });
-        }
+        item.guides.push({
+          guideName: path.split('/').at(-1) || '',
+          guideUrl: path,
+        });
       }
     }
+    items.push(<UrlParsingItem>item);
   }
   return items;
 }
@@ -153,12 +110,14 @@ async function main() {
     );
     console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
-    const sitemapItems = await convertGuideToSitemapItems(strapiGuides);
-    console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
+    const urlParsingItems = await convertGuideToUrlParsingItems(strapiGuides);
+    console.log(
+      `Converted guides to ${urlParsingItems.length} url parsing items`
+    );
 
-    await writeSitemapJson(
-      sitemapItems,
-      S3_GUIDE_METADATA_JSON_PATH,
+    await writeUrlParsingMetadataJson(
+      urlParsingItems,
+      S3_URL_PARSING_METADATA_JSON_PATH,
       `${s3BucketName}`,
       s3Client
     );
