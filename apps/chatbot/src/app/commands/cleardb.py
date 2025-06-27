@@ -1,7 +1,7 @@
-from logging import getLogger
+from src.modules.logger import get_logger
 from boto3.dynamodb.conditions import Key
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 def clear_empty_sessions() -> None:
@@ -38,10 +38,10 @@ def clear_empty_sessions() -> None:
         query_count = queries_response["Count"]
 
         if query_count == 0:
-            logger.info(f"Deleting empty session: {session_id}")
+            LOGGER.info(f"Deleting empty session: {session_id}")
             tables["sessions"].delete_item(Key={"sessionId": session_id})
 
-    logger.info("Cleared all empty sessions.")
+    LOGGER.info("Cleared all empty sessions.")
 
 
 if __name__ == "__main__":

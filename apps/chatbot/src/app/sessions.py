@@ -21,7 +21,7 @@ chatbot = Chatbot(params, prompts)
 logger = getLogger(__name__)
 
 
-def current_user_id(authorization: str | None) -> str:
+def current_user_id(authorization: str | None = None) -> str:
     if authorization is None:
         logger.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
