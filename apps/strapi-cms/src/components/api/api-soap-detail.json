@@ -11,6 +11,10 @@
       "type": "string",
       "required": true
     },
+    "branch": {
+      "type": "string",
+      "required": true
+    },
     "dirName": {
       "type": "string",
       "required": true
@@ -18,6 +22,10 @@
     "slug": {
       "type": "string",
       "required": true
+    },
+    "pathToWsdlFolder": {
+      "type": "string",
+      "required": false
     }
   }
 }
