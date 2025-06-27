@@ -32,7 +32,7 @@ const S3_GUIDE_METADATA_JSON_PATH =
 
 const s3Client = makeS3Client();
 
-interface StrapiGuide {
+export interface StrapiGuide {
   id: number;
   attributes: {
     slug: string;
@@ -53,7 +53,7 @@ interface StrapiGuide {
   };
 }
 
-function generateUrlPath(
+export function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
@@ -65,7 +65,7 @@ function generateUrlPath(
     .join('/');
 }
 
-type GuideInfo = {
+export type GuideInfo = {
   versionName: string;
   isMainVersion: boolean;
   dirName: string;

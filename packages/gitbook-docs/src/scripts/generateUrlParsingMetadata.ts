@@ -7,19 +7,19 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeSitemapJson,
   loadEnvConfig,
   validateS3Environment,
   writeUrlParsingMetadataJson,
 } from '../helpers/s3Bucket.helper';
-import * as pathParser from 'path';
-import { SitemapItem } from '../sitemapItem';
-import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
   fetchFromStrapi,
   validateStrapiEnvironment,
 } from '../helpers/fetchFromStrapi';
-import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+import {
+  GuideInfo,
+  StrapiGuide,
+  generateUrlPath,
+} from './generateGuidesMetadata';
 
 // Load environment variables from .env file
 loadEnvConfig();
@@ -34,52 +34,12 @@ const S3_GUIDE_METADATA_JSON_PATH =
 
 const s3Client = makeS3Client();
 
-interface StrapiGuide {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    versions: {
-      id: number;
-      main: boolean;
-      version: string;
-      dirName: string;
-    }[];
-  };
-}
-
-function generateUrlPath(
-  filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
-): string {
-  const restOfPath = sitePathFromS3Path(filePath);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
-}
-
 export type UrlParsingItem = {
   dirName: string;
-  isPageIndex: boolean;
-  pagePath: string;
-  spaceToPrefix: { spaceID: string; pathPrefix: string }[];
-};
-
-type GuideInfo = {
-  versionName: string;
-  isMainVersion: boolean;
-  dirName: string;
-  guideSlug: string;
-  productSlug: string;
+  guides: {
+    guideName: string;
+    guideUrl: string;
+  }[];
 };
 
 async function convertGuideToUrlParsingItems(
@@ -109,6 +69,10 @@ async function convertGuideToUrlParsingItems(
     const menuPath = guideFiles.find((file) =>
       file.includes(guideInfo.dirName + '/SUMMARY.md')
     );
+    const item = {
+      dirName: guideInfo.dirName,
+      guides: [] as { guideName: string; guideUrl: string }[],
+    };
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
       if (parts.length <= 2) {
@@ -119,7 +83,6 @@ async function convertGuideToUrlParsingItems(
         `${s3BucketName}`,
         s3Client
       );
-      const title = extractTitleFromMarkdown(content);
       if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
@@ -127,15 +90,13 @@ async function convertGuideToUrlParsingItems(
           guideInfo.productSlug,
           guideInfo.versionName
         );
-        const item = {
-          dirName: guideInfo.dirName,
-          isPageIndex: pathParser.parse(filePath).name === 'README',
-          pagePath: guideInfo.guideSlug,
-          spaceToPrefix: [],
-        };
-        items.push(item);
+        item.guides.push({
+          guideName: path.split('/').at(-1) || '',
+          guideUrl: path,
+        });
       }
     }
+    items.push(<UrlParsingItem>item);
   }
   return items;
 }
