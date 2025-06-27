@@ -1,0 +1,27 @@
+name: Copy WSDL stylesheet to SOAP Repos
+description: Copy the WSDL Viewer stylesheet to SOAP repositories
+
+inputs:
+  stylesheet_path:
+    description: Path to the WSDL stylesheet
+    required: true
+  soap_repos_path:
+    description: Path to the SOAP repositories
+    required: true
+
+runs:
+    using: "composite"
+    steps:
+      - name: Copy WSDL stylesheet
+        shell: bash
+        run: |
+          if [ -d ${{ inputs.stylesheet_path }} ]; then
+            find ${{ inputs.soap_repos_path }} -type f -name "*.wsdl" | while read -r wsdl_file; do
+            target_dir="$(dirname "$wsdl_file")"
+            mkdir -p "$target_dir"
+            cp -r "${{ inputs.stylesheet_path }}/." "$target_dir/"
+            done
+          else
+            echo "WSDL stylesheet path does not exist: ${{ inputs.stylesheet_path }}"
+            exit 1
+          fi
