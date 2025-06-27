@@ -3,6 +3,8 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import ApiRestSection from '@/components/molecules/ApiRestSection/ApiRestSection';
 import ApiSoapSection from '@/components/molecules/ApiSoapSection/ApiSoapSection';
+import PageNotFound from '@/app/not-found';
+import React from 'react';
 
 export type ApiPageProps = {
   readonly apiData: ApiDataPageProps;
@@ -32,6 +34,8 @@ const ApiSection = ({ apiData }: ApiPageProps) => {
           specURLsName={apiData.specUrlsName}
         />
       );
+    default:
+      return <PageNotFound />;
   }
 };
 
