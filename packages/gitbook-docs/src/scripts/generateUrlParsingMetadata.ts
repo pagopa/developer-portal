@@ -29,8 +29,8 @@ validateStrapiEnvironment();
 const { s3BucketName } = validateS3Environment();
 
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
-const S3_GUIDE_METADATA_JSON_PATH =
-  process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_URL_PARSING_METADATA_JSON_PATH =
+  process.env.S3_URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 const s3Client = makeS3Client();
 
@@ -117,7 +117,7 @@ async function main() {
 
     await writeUrlParsingMetadataJson(
       urlParsingItems,
-      S3_GUIDE_METADATA_JSON_PATH,
+      S3_URL_PARSING_METADATA_JSON_PATH,
       `${s3BucketName}`,
       s3Client
     );
