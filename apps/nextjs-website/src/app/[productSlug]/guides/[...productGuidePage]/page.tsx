@@ -61,10 +61,11 @@ export async function generateMetadata({
     return makeMetadataFromStrapi(props?.seo);
   }
 
+  const minimumPathLength = 2;
   const pagePath = props.page.path.split('/');
   const parentName =
-    pagePath.length >= 2
-      ? pagePath[pagePath.length - 2]
+    pagePath.length >= minimumPathLength
+      ? pagePath[pagePath.length - minimumPathLength]
           .toLowerCase()
           .replaceAll(' ', '')
           .replaceAll('-', ' ')
