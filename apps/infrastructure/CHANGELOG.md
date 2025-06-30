@@ -1,5 +1,17 @@
 # infrastructure
 
+## 2.1.2
+
+### Patch Changes
+
+- 0a87d37: Fixed codebuild cicd lambda permissions
+
+## 2.1.1
+
+### Patch Changes
+
+- 13a91da: Change rewriter function code path
+
 ## 2.1.0
 
 ### Minor Changes
