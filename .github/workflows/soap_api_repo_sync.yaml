@@ -1,0 +1,49 @@
+name: SOAP API Repo Sync
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs at 00:00 UTC every day
+  workflow_dispatch:
+
+# Permissions needed for AWS OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync_docs:
+    name: Sync SOAP API to S3
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout pagopa-api repository
+        uses: actions/checkout@v4
+        with:
+          repository: /pagopa/pagopa-api
+          ref: develop
+          path: soap-api/pagopa-api
+
+      - name: Copy WSDL Viewer Library to SOAP Repos
+        uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
+        with:
+          stylesheet_path: ./apps/nextjs-website/public/wsdl-viewer
+          soap_repos_path: soap-api
+
+      - name: Add Stylesheet Reference to WSDLs
+        uses: ./.github/actions/add-stylesheet-ref-to-wsdl
+        with:
+          dir: soap-api
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Sync soap-api folder to S3
+        run: |
+          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_API_SOAP }} --delete
