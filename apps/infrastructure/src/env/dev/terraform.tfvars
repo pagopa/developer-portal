@@ -22,6 +22,8 @@ dns_domain_name = "dev.developer.pagopa.it"
 
 use_custom_certificate = true
 
+next_open_telemetry_enabled = true
+
 # CMS Strapi DNS
 dns_domain_name_cms = {
   "cms.dev.developer.pagopa.it" = {

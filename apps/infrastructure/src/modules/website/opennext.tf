@@ -63,7 +63,7 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 resource "aws_lambda_layer_version" "opentelemetry" {
-  count = var.next_open_telemetry_enabled ? 1 : 0
+  count      = var.next_open_telemetry_enabled ? 1 : 0
   filename   = "../../lib/opentelemetry/layer.zip"
   layer_name = "opentelemetry-layer"
 
@@ -114,10 +114,10 @@ module "opennext" {
       S3_RELEASE_NOTES_METADATA_JSON_PATH         = "release-notes-metadata.json"
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
-    }, 
-     var.next_open_telemetry_enabled ? {
-        AWS_LAMBDA_EXEC_WRAPPER              = "/opt/otel-handler"
-        OPENTELEMETRY_COLLECTOR_CONFIG_URI   = "file:/var/task/collector.yaml"
+      },
+      var.next_open_telemetry_enabled ? {
+        AWS_LAMBDA_EXEC_WRAPPER            = "/opt/otel-handler"
+        OPENTELEMETRY_COLLECTOR_CONFIG_URI = "file:/var/task/collector.yaml"
       } : {}
     )
   }

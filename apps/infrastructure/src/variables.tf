@@ -195,3 +195,10 @@ variable "website_is_standalone" {
   description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
   default     = false
 }
+
+variable "next_open_telemetry_enabled" {
+  type        = bool
+  description = "Defines if OpenNext OTLP is enabled"
+  default     = false
+
+}
