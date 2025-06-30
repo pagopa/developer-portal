@@ -114,6 +114,30 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should remove include tags', () => {
+    expect(
+      parseContent(
+        'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}middle{% endinclude %} post',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['pre middle', ' ', ' post']),
+    ]);
+  });
+
+  it('should remove include tags for multiline string', () => {
+    expect(
+      parseContent(
+        'pre {% include "../.gitbook/includes/banner-promemoria-automatici.md" %}This is a test\n \n \n test test\n\n test{% endinclude %} post',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, ['pre This is a test']),
+      new Markdoc.Tag('Paragraph', {}, ['test test']),
+      new Markdoc.Tag('Paragraph', {}, ['test', ' ', ' post']),
+    ]);
+  });
+
   it('should preserve a single space into a td tag nested into other tags', () => {
     expect(
       parseContent(
@@ -485,6 +509,25 @@ describe('parseContent', () => {
         [new Markdoc.Tag('Paragraph', {}, ['Text'])]
       ),
       new Markdoc.Tag('Paragraph', {}, ['Text']),
+    ]);
+  });
+
+  it('should parse img with external assets', () => {
+    const updatedConfig = {
+      ...config,
+      assetsPrefix:
+        'https://static-contents.dev.developer.pagopa.it/docs/B4pRrrcvPlijCdPoKvwc',
+    };
+    expect(
+      parseContent(
+        '<img src=".gitbook/assets/image.png" alt="anAlt">',
+        updatedConfig
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Image', {
+        src: `${updatedConfig.assetsPrefix}/.gitbook/assets/image.png`,
+        alt: 'anAlt',
+      }),
     ]);
   });
 

@@ -51,7 +51,7 @@ provider "awscc" {
 }
 
 data "http" "docs_redirect_cf_function_code" {
-  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/src/rewriter.js"
+  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/dist/rewriter.js"
 
   request_headers = {
     Accept = "text/plain"
@@ -161,6 +161,7 @@ module "chatbot" {
   ecs_redis               = var.chatbot_ecs_redis
   github_repository       = var.github_repository
   ecs_monitoring          = var.chatbot_ecs_monitoring
+  models                  = var.chatbot_models
 }
 
 module "cicd" {
@@ -183,8 +184,13 @@ module "cicd" {
   redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
 
-  website_bucket = module.website.website_bucket
-  website_cdn    = module.website.website_cdn
+  website_bucket               = module.website.website_bucket
+  website_cdn                  = module.website.website_cdn
+  opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
+
+  assets_opennext_bucket      = module.website.assets_opennext_bucket
+  lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
+  lambda_initializer_arn      = module.website.lambda_initializer.arn
 
   website_is_standalone = var.website_is_standalone
 

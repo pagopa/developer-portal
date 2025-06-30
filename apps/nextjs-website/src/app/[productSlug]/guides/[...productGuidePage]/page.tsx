@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuide, getGitBookSubPaths } from '@/lib/api';
+import { getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -12,25 +12,21 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getGuidesProps, getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import PageNotFound from '@/app/not-found';
+import { REVALIDATE_LONG_INTERVAL } from '@/config';
+import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
 type Params = {
   productSlug: string;
   productGuidePage: Array<string>;
 };
-
-export async function generateStaticParams() {
-  return (await getGuidesProps()).map((guidePage) => ({
-    productSlug: guidePage.product.slug,
-    productGuidePage: getGitBookSubPaths(guidePage.page.path),
-  }));
-}
 
 export type ProductGuidePageProps = {
   product: Product;
@@ -56,28 +52,49 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const {
-    page: { path, title },
-    seo,
-  } = await getGuide(params?.productSlug, params?.productGuidePage ?? ['']);
+  const porps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
+  );
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
+  if (porps?.seo) {
+    return makeMetadataFromStrapi(porps?.seo);
   }
 
   return makeMetadata({
-    title,
-    url: path,
+    title: porps?.page.title,
+    url: porps?.page.path,
   });
 }
 
+export const revalidate = REVALIDATE_LONG_INTERVAL;
+
+const PRODUCT_SLUG_PATH_INDEX = 1;
+const GUIDE_SUB_PATH_INDEX = 3;
+export async function generateStaticParams(): Promise<Params[]> {
+  const guides = await getGuidesMetadata();
+  const guideParams = guides
+    .map(({ path }) => path.split('/'))
+    .filter((paths) => paths.length > GUIDE_SUB_PATH_INDEX)
+    .map((paths) => {
+      return {
+        productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
+        productGuidePage: paths.slice(GUIDE_SUB_PATH_INDEX),
+      };
+    });
+  return guideParams;
+}
+
 const Page = async ({ params }: { params: Params }) => {
-  const guideProps = await getGuide(
-    params?.productSlug,
-    params?.productGuidePage ?? ['']
+  const guideProps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
+  if (!guideProps) {
+    return PageNotFound;
+  }
   const {
     product,
     page,

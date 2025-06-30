@@ -30,8 +30,7 @@ import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvi
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `
-// Previous Matomo Cookie Manager script
-var _mtm = window._mtm = window._mtm || [];
+  var _mtm = window._mtm = window._mtm || [];
   _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
   (function() {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
@@ -43,7 +42,6 @@ var _mtm = window._mtm = window._mtm || [];
 
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
-  // New Matomo Cookie Manager script
   var _mtm = window._mtm = window._mtm || [];
   var waitForTrackerCount = 0;
   function matomoWaitForTracker() {

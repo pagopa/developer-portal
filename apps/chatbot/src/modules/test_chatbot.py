@@ -1,17 +1,15 @@
 import os
 import re
 import yaml
-from logging import getLogger
 from pathlib import Path
 
+from src.modules.logger import get_logger
 from src.modules.vector_database import REDIS_CLIENT
 from src.modules.models import get_llm, get_embed_model
-from src.modules.chatbot import Chatbot, LANGFUSE
+from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
-logger = getLogger(__name__)
-
-
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
@@ -25,13 +23,13 @@ def test_connection_redis():
         REDIS_CLIENT.ping()
         flag = True
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
 
     assert flag is True
 
 
 def test_connection_langfuse():
-    assert LANGFUSE.auth_check() is True
+    assert LANGFUSE_CLIENT.auth_check() is True
 
 
 def test_cloud_connection():
@@ -42,7 +40,7 @@ def test_cloud_connection():
         _ = get_embed_model()
         flag = True
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
 
     assert flag is True
 
@@ -85,7 +83,7 @@ def test_chat_generation():
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
-            tags="test"
+            tags="test",
         )
         res = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
@@ -93,7 +91,7 @@ def test_chat_generation():
             messages=[{"question": query_str, "answer": res}],
             user_id="user-test",
             session_id="session-test",
-            tags="test"
+            tags="test",
         )
 
         trace1 = CHATBOT.get_trace("abcde")
@@ -101,7 +99,7 @@ def test_chat_generation():
         trace2 = CHATBOT.get_trace("fghik")
         print("trace 2:", trace2)
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
         res = "Something went wrong!"
 
     assert res != "Something went wrong!"
@@ -129,7 +127,7 @@ def test_evaluation():
             session_id="session-test",
         )
     except Exception as e:
-        logger.error(e)
+        LOGGER.error(e)
         res = "Something went wrong!"
 
     assert res != "Something went wrong!"

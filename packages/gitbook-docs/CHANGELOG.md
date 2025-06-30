@@ -1,5 +1,30 @@
 # gitbook-docs
 
+## 0.5.0
+
+### Minor Changes
+
+- 0a87d37: Update sitemap and add metadata generate functions for release-notes and solutions
+- 0a87d37: Update render of guide from gitbook
+- 0a87d37: Fix json metadata generation skipping SUMMARY files
+
+### Patch Changes
+
+- 0a87d37: Fix absolute url path transform
+- 0a87d37: Refactor sitemap generation to use new environment variable for guide metadata path and add script for generating guide metadata from S3 and Strapi.
+
+## 0.4.2
+
+### Patch Changes
+
+- 5b72c01: Add script to add included text in .md files. Update documentation parsing
+
+## 0.4.1
+
+### Patch Changes
+
+- 85736d0: Fix tag file parsing
+
 ## 0.4.0
 
 ### Minor Changes

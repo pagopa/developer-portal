@@ -1,6 +1,6 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -17,6 +17,7 @@ type Params = {
   productSlug: string;
 };
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   const products = await getProducts();
   return products.map((product) => ({
@@ -36,7 +37,9 @@ export async function generateMetadata({
   }
 
   return makeMetadata({
-    title: apiDataListPage?.hero.title,
+    title: [apiDataListPage?.hero.title, apiDataListPage?.product.name]
+      .filter(Boolean)
+      .join(' | '),
     url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
     locale: 'it_IT',
   });

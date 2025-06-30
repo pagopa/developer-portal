@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -19,7 +19,10 @@
     "clean": "shx rm -rf dist/",
     "compile": "npm run clean && tsc",
     "lint": "eslint src",
-    "test": "jest -i"
+    "test": "jest -i",
+    "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
+    "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
+    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

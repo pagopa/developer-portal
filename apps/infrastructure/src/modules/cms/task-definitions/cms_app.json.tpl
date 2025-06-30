@@ -157,7 +157,7 @@
       {
         "name": "AC_API_KEY",
         "valueFrom": "${ac_api_key}"
-      }        
+      }
     ]
   }
 ]
