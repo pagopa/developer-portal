@@ -295,9 +295,7 @@ class Chatbot:
                 response_str = response_str[7:-3]
             response_str = response_str.strip()
             response_json = json.loads(response_str)
-            LOGGER.debug(
-                f"Generated response in {time.time() - start_time:.4f} seconds"
-            )
+            LOGGER.info(f"Generated response in {time.time() - start_time:.4f} seconds")
 
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
@@ -347,7 +345,7 @@ class Chatbot:
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        LOGGER.debug(f"Evaluation completed in {time.time() - start_time:.4f} seconds")
+        LOGGER.info(f"Evaluation completed in {time.time() - start_time:.4f} seconds")
         for key, value in scores.items():
             add_langfuse_score(
                 trace_id=trace_id,
