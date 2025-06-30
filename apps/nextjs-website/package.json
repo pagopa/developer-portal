@@ -27,16 +27,11 @@
     "@mui/material": "5.14.5",
     "@mui/utils": "5.14.5",
     "@opennextjs/aws": "^3.6.3",
-<<<<<<< Updated upstream
-    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
-    "@opentelemetry/resources": "^2.0.1",
-=======
     "@opentelemetry/api-logs": "^0.57.2",
     "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
     "@opentelemetry/instrumentation": "^0.57.2",
     "@opentelemetry/resources": "^2.0.1",
     "@opentelemetry/sdk-logs": "^0.57.2",
->>>>>>> Stashed changes
     "@opentelemetry/sdk-node": "^0.202.0",
     "@opentelemetry/sdk-trace-node": "^2.0.1",
     "@opentelemetry/semantic-conventions": "^1.34.0",
