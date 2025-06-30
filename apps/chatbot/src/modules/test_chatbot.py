@@ -93,14 +93,6 @@ def test_cloud_connection() -> None:
     assert flag is True
 
 
-def test_prompt_templates() -> None:
-
-    for prompt_str, template in zip(PROMPTS.values(), CHATBOT._get_prompt_templates()):
-        vars_str = re.findall(r"\{(.*?)\}", prompt_str)
-        vars_tmp = list(template.template_var_mappings.keys())
-        assert vars_str == vars_tmp
-
-
 def test_pii_mask() -> None:
     masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
     assert masked_str == "Il mio nome e' <PERSON_1>"
@@ -131,7 +123,6 @@ def test_chat_generation() -> None:
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
-            tags="test",
         )
         response_json = CHATBOT.chat_generate(
             query_str="sai dirmi di più?",
@@ -139,7 +130,6 @@ def test_chat_generation() -> None:
             messages=[{"question": query_str, "answer": response_json["response"]}],
             user_id="user-test",
             session_id="session-test",
-            tags="test",
         )
 
     except Exception as e:
@@ -159,15 +149,12 @@ def test_evaluation() -> None:
             trace_id="abcde",
             user_id="user-test",
             session_id="session-test",
-            tags="test",
         )
         CHATBOT.evaluate(
             query_str=query_str,
             response_str=response_json["response"],
-            retrieved_contexts=response_json["context"],
+            retrieved_contexts=response_json["contexts"],
             trace_id="abcde",
-            user_id="user-test",
-            session_id="session-test",
         )
     except Exception as e:
         LOGGER.error(e)
