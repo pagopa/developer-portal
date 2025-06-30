@@ -46,6 +46,12 @@ inputs:
   strapi_api_token:
     description: 'The API key to use to invoke Strapi endpoint'
     required: true
+  s3_access_key_id:
+    description: 'The access key to use to upload files to S3'
+    required: true
+  s3_secret_access_key:
+    description: 'The secret key to use to upload files to S3'
+    required: true
   fetch_from_strapi:
     description: 'If true, then fetch content from Strapi; otherwise, use only static contents'
     required: false
@@ -99,6 +105,8 @@ runs:
         NEXT_PUBLIC_MATOMO_SCRIPT_SRC: ${{ inputs.matomo_script_src }}
         STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
+        S3_ACCESS_KEY_ID:  ${{ inputs.s3_access_key_id }}
+        S3_SECRET_ACCESS_KEY:  ${{ inputs.s3_secret_access_key }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
       shell: bash
       run: |

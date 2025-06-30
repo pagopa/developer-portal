@@ -3,8 +3,7 @@ import re
 import json
 import yaml
 from pathlib import Path
-from datetime import datetime
-from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
+from typing import Union, Tuple, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -19,11 +18,7 @@ from llama_index.core.chat_engine.types import (
     StreamingAgentChatResponse,
 )
 from llama_index.core.async_utils import asyncio_run
-
-from langfuse import Langfuse
 from langfuse.llama_index import LlamaIndexInstrumentor
-from langfuse.api.resources.trace.types.traces import Traces
-from langfuse.model import TraceWithFullDetails
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
@@ -32,7 +27,13 @@ from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
-from src.modules.utils import get_ssm_parameter
+from src.modules.monitor import (
+    LANGFUSE_PUBLIC_KEY,
+    LANGFUSE_SECRET_KEY,
+    LANGFUSE_HOST,
+    LANGFUSE_CLIENT,
+    add_langfuse_score,
+)
 
 
 LOGGER = get_logger(__name__)
@@ -58,18 +59,6 @@ RESPONSE_TYPE = Union[
     AgentChatResponse,
     StreamingAgentChatResponse,
 ]
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-)
-LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-)
-LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
-LANGFUSE = Langfuse(
-    public_key=LANGFUSE_PUBLIC_KEY, secret_key=LANGFUSE_SECRET_KEY, host=LANGFUSE_HOST
-)
 
 
 class Chatbot:
@@ -119,7 +108,7 @@ class Chatbot:
             host=LANGFUSE_HOST,
             mask=self._mask_trace,
         )
-        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE)
+        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 
@@ -231,90 +220,6 @@ class Chatbot:
 
         return chat_history
 
-    def get_trace(
-        self, trace_id: str, as_dict: bool = False
-    ) -> TraceWithFullDetails | dict:
-
-        LOGGER.warning(f"Getting trace {trace_id} from Langfuse")
-        try:
-            trace = LANGFUSE.fetch_trace(trace_id)
-            trace = trace.data
-        except Exception as e:
-            LOGGER.error(e)
-
-        if as_dict:
-            return trace.dict()
-        else:
-            return trace
-
-    def get_traces(
-        self,
-        user_id: str | None = None,
-        session_id: str | None = None,
-        from_timestamp: datetime | None = None,
-        to_timestamp: datetime | None = None,
-        order_by: str | None = None,
-        tags: str | Sequence[str] | None = None,
-    ) -> Traces:
-
-        try:
-            traces = LANGFUSE.get_traces(
-                user_id=user_id,
-                session_id=session_id,
-                from_timestamp=from_timestamp,
-                to_timestamp=to_timestamp,
-                order_by=order_by,
-                tags=tags,
-            )
-        except Exception as e:
-            LOGGER.error(e)
-
-        return traces
-
-    def add_langfuse_score(
-        self,
-        trace_id: str,
-        name: str,
-        value: float,
-        comment: str | None = None,
-        session_id: str | None = None,
-        user_id: str | None = None,
-        data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
-    ) -> None:
-
-        if comment:
-            comment = self.mask_pii(comment)
-
-        with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id
-        ) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            flag = True
-            for score in trace_info.scores:
-                if score.name == name:
-                    flag = False
-                    score_id = score.id
-                    break
-
-            if flag:
-                trace.score(
-                    name=name, value=value, data_type=data_type, comment=comment
-                )
-                LOGGER.warning(
-                    f"Add score {name}: {value} in trace {trace_id}.\n"
-                    f"data_type: {data_type}\n"
-                    f"type(value): {type(value)}"
-                )
-            else:
-                trace.score(
-                    id=score_id,
-                    name=name,
-                    value=value,
-                    data_type=data_type,
-                    comment=comment,
-                )
-                LOGGER.warning(f"Updating score {name} to {value} in trace {trace_id}")
-
     def _mask_trace(self, data: Any) -> Any:
 
         if isinstance(data, str):
@@ -329,8 +234,10 @@ class Chatbot:
                 data[i] = self._mask_trace(value)
 
         if isinstance(data, tuple):
-            for i, value in enumerate(data):
-                data[i] = self._mask_trace(value)
+            data_as_list = list(data)
+            for i, value in enumerate(data_as_list):
+                data_as_list[i] = self._mask_trace(value)
+            data = tuple(data_as_list)
 
         if isinstance(data, ChatMessage):
             for i, block in enumerate(data.blocks):
@@ -367,14 +274,12 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
-                response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
-                    url = REDIS_KVSTORE.get(
-                        collection=f"hash_table_{INDEX_ID}",
-                        key=node.metadata["filename"],
-                    )
+                    url = WEBSITE_URL + node.metadata["filepath"]
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+                response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -388,6 +293,7 @@ class Chatbot:
                 response_str = response_str[7:-3]
             response_str = response_str.strip()
             response_json = json.loads(response_str)
+
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 
@@ -419,8 +325,6 @@ class Chatbot:
         response_str: str,
         retrieved_contexts: List[str],
         trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
         chat_history = self._messages_to_chathistory(messages)
@@ -434,10 +338,8 @@ class Chatbot:
             retrieved_contexts=retrieved_contexts,
         )
         for key, value in scores.items():
-            self.add_langfuse_score(
+            add_langfuse_score(
                 trace_id=trace_id,
-                session_id=session_id,
-                user_id=user_id,
                 name=key,
                 value=value,
                 data_type="NUMERIC",
