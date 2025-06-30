@@ -37,7 +37,7 @@ const s3Client = makeS3Client();
 export type UrlParsingItem = {
   dirName: string;
   guides: {
-    guideName: string;
+    guidePath: string;
     guideUrl: string;
   }[];
 };
@@ -71,7 +71,7 @@ async function convertGuideToUrlParsingItems(
     );
     const item = {
       dirName: guideInfo.dirName,
-      guides: [] as { guideName: string; guideUrl: string }[],
+      guides: [] as { guidePath: string; guideUrl: string }[],
     };
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
@@ -91,12 +91,12 @@ async function convertGuideToUrlParsingItems(
           guideInfo.versionName
         );
         item.guides.push({
-          guideName: path.split('/').at(-1) || '',
+          guidePath: filePath || '',
           guideUrl: path,
         });
       }
     }
-    items.push(<UrlParsingItem>item);
+    items.push(item);
   }
   return items;
 }
