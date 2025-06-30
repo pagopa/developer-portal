@@ -124,3 +124,11 @@ variable "next_public_soap_api_page_active" {
   description = "Defines if the SOAP API page should be active"
   default     = false
 }
+
+// Refer to the open telemetry documentation to build the layer zip file
+// https://github.com/open-telemetry/opentelemetry-lambda/tree/main/nodejs
+variable "next_open_telemetry_enabled" {
+  type        = bool
+  description = "Defines if OpenTelemetry should be enabled for the Next.js application"
+  default     = false
+}

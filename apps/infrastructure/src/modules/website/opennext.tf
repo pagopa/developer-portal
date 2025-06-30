@@ -1,10 +1,3 @@
-/*
-  environment_variables = {
-    
-  }
-
-*/
-
 resource "aws_acm_certificate" "opennext" {
 
   provider = aws.us-east-1
@@ -69,6 +62,15 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 }
 
 
+resource "aws_lambda_layer_version" "opentelemetry" {
+  count = var.next_open_telemetry_enabled ? 1 : 0
+  filename   = "../../lib/opentelemetry/layer.zip"
+  layer_name = "opentelemetry-layer"
+
+  compatible_runtimes = ["nodejs20.x, nodejs18.x, nodejs22.x"]
+}
+
+
 module "opennext" {
   source = "github.com/pagopa/dx//infra/modules/aws_open_next?ref=opennext-module"
 
@@ -82,7 +84,10 @@ module "opennext" {
   environment          = var.environment_information
 
   server = {
-    environment_variables = {
+
+    lambda_layers = var.next_open_telemetry_enabled ? [aws_lambda_layer_version.opentelemetry[0].arn] : []
+
+    environment_variables = merge({
       ENVIRONMENT                                 = var.environment
       FETCH_FROM_STRAPI                           = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
@@ -109,7 +114,12 @@ module "opennext" {
       S3_RELEASE_NOTES_METADATA_JSON_PATH         = "release-notes-metadata.json"
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
-    }
+    }, 
+     var.next_open_telemetry_enabled ? {
+        AWS_LAMBDA_EXEC_WRAPPER              = "/opt/otel-handler"
+        OPENTELEMETRY_COLLECTOR_CONFIG_URI   = "file:/var/task/collector.yaml"
+      } : {}
+    )
   }
 
   enable_alarms  = true
