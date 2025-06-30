@@ -5,9 +5,9 @@ import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
-from logging import getLogger
 from typing import Annotated
 from src.app.models import Query, tables
+from src.modules.logger import get_logger
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -18,7 +18,7 @@ from src.app.sessions import (
 )
 from src.app.chatbot_init import chatbot
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 router = APIRouter()
 
 
@@ -56,13 +56,13 @@ def backfill_created_at_date() -> None:
 
         tables["queries"].put_item(Item=item)
 
-    logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
+    LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
 async def evaluate(evaluation_data: dict) -> dict:
     if os.getenv("environment", "development") != "test":
         evaluation_result = chatbot.evaluate(**evaluation_data)
-        logger.info(f"[queries] evaluation_result={evaluation_result})")
+        LOGGER.info(f"[queries] evaluation_result={evaluation_result})")
     else:
         evaluation_result = {}
     return evaluation_result
