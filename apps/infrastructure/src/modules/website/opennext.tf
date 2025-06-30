@@ -14,6 +14,7 @@ resource "aws_acm_certificate" "opennext" {
   }
 }
 
+/*
 resource "aws_route53_record" "opennext" {
   for_each = {
     for dvo in aws_acm_certificate.opennext.domain_validation_options : dvo.domain_name => {
@@ -30,7 +31,7 @@ resource "aws_route53_record" "opennext" {
   type            = each.value.type
   zone_id         = var.hosted_zone_id
 }
-
+*/
 
 resource "aws_ssm_parameter" "cookie_domain_script" {
   name        = "COOKIE_DOMAIN_SCRIPT"
@@ -75,8 +76,8 @@ module "opennext" {
   source = "github.com/pagopa/dx//infra/modules/aws_open_next?ref=opennext-module"
 
   custom_domain = {
-    domain_name         = local.opennext_domain
-    acm_certificate_arn = aws_acm_certificate.opennext.arn
+    domain_name         = var.dns_domain_name
+    acm_certificate_arn = aws_acm_certificate.website.arn
     hosted_zone_id      = var.hosted_zone_id
   }
 
