@@ -34,7 +34,9 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
-        LOGGER.info(f"Parameter {name} not found in SSM, returning default: {default}")
+        LOGGER.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
         return default
 
     LOGGER.info(f"SSM Parameter {name} retrieved.")
