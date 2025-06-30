@@ -16,7 +16,7 @@ from src.app.sessions import (
     last_session_id,
     get_user_session,
 )
-from src.app.chatbot_init import chatbot
+# from src.app.chatbot_init import chatbot
 
 logger = getLogger(__name__)
 router = APIRouter()
@@ -61,7 +61,9 @@ def backfill_created_at_date() -> None:
 
 async def evaluate(evaluation_data: dict) -> dict:
     if os.getenv("environment", "development") != "test":
-        evaluation_result = chatbot.evaluate(**evaluation_data)
+        # TODO: call lambda
+        evaluation_result = {}
+        # evaluation_result = chatbot.evaluate(**evaluation_data)
         logger.info(f"[queries] evaluation_result={evaluation_result})")
     else:
         evaluation_result = {}
@@ -83,14 +85,17 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.model_dump() for item in query.history] if query.history else None
 
-    answer_json = chatbot.chat_generate(
-        query_str=query_str,
-        trace_id=trace_id,
-        session_id=session["id"],
-        user_id=user_id,
-        messages=messages,
-    )
-    answer = chatbot.get_final_response(answer_json)
+    # TODO: call lambda
+    # answer_json = chatbot.chat_generate(
+    #     query_str=query_str,
+    #     trace_id=trace_id,
+    #     session_id=session["id"],
+    #     user_id=user_id,
+    #     messages=messages,
+    # )
+    # answer = chatbot.get_final_response(answer_json)
+    answer_json = {}
+    answer = {}
 
     if can_evaluate():
         evaluation_data = {

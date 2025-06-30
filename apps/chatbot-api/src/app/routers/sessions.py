@@ -4,7 +4,7 @@ from decimal import Decimal
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 from src.app.models import QueryFeedback, tables
-from src.app.chatbot_init import chatbot
+# from src.app.chatbot_init import chatbot
 from src.app.sessions import (
     current_user_id,
     add_langfuse_score_query
@@ -115,7 +115,8 @@ async def query_feedback(
             )
 
             feedback = query.feedback.model_dump()
-            feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
+            # TODO: call lambda
+            # feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
 
             dbResponse = tables["queries"].update_item(
                 Key={

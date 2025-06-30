@@ -9,19 +9,19 @@ from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 from logging import getLogger
 
-from src.modules.chatbot import Chatbot
-from src.modules.monitor import add_langfuse_score
+# from src.modules.chatbot import Chatbot
+# from src.modules.monitor import add_langfuse_score
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
+# params = yaml.safe_load(open("config/params.yaml", "r"))
+#  prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
+# chatbot = Chatbot(params, prompts)
 
 logger = getLogger(__name__)
 
 
-def current_user_id(authorization: str) -> str:
+def current_user_id(authorization: str | None) -> str:
     if authorization is None:
         logger.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")

@@ -1,0 +1,68 @@
+---
+services:
+  api-test:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: "./scripts/run.test.sh"
+    env_file: ../.env.test
+    volumes:
+      - ..:/app
+      - ./files/.aws:/root/.aws
+      - ./files/nextjs-website/out:/app/build-devp/out
+    depends_on:
+      dynamodb-test:
+        condition: service_started
+      motoserver:
+        condition: service_started
+      langfuse-test:
+        condition: service_started
+      redis-test:
+        condition: service_started
+    networks:
+      - ntwtest
+
+  postgres-test:
+    image: postgres:17.2-alpine
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    env_file: ../.env.test
+    networks:
+      - ntwtest
+
+  dynamodb-test:
+    image: amazon/dynamodb-local:2.5.2
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=local
+    networks:
+      - ntwtest
+
+  redis-test:
+    image: redis/redis-stack:7.2.0-v13
+    networks:
+      - ntwtest
+
+  langfuse-test:
+    image: langfuse/langfuse:2
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    env_file: ../.env.test
+    ports:
+      - "4002:3000"
+    networks:
+      - ntwtest
+
+  motoserver:
+    image: motoserver/moto:5.1.0
+    networks:
+      - ntwtest
+
+networks:
+  ntwtest:

@@ -397,14 +397,23 @@ apps/nextjs-website/docs/
 # Ignore static assets provided by the gitbook-export script
 apps/nextjs-website/public/gitbook/
 
-# chatbot
-apps/chatbot/index
-apps/chatbot/*.ipynb
-apps/chatbot/results
-apps/chatbot/test.py
-!apps/chatbot/docker
-apps/chatbot/.env
-apps/chatbot/empty_htmls.json
+# chatbot-core
+apps/chatbot-core/index
+apps/chatbot-core/*.ipynb
+apps/chatbot-core/results
+apps/chatbot-core/test.py
+!apps/chatbot-core/docker
+apps/chatbot-core/.env
+apps/chatbot-core/empty_htmls.json
+
+# chatbot-api
+apps/chatbot-api/index
+apps/chatbot-api/*.ipynb
+apps/chatbot-api/results
+apps/chatbot-api/test.py
+!apps/chatbot-api/docker
+apps/chatbot-api/.env
+apps/chatbot-api/empty_htmls.json
 
 /results
 

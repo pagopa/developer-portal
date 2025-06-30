@@ -1,0 +1,77 @@
+{
+  "TableName": "chatbot-test-queries",
+  "KeySchema": [
+    {
+      "AttributeName": "sessionId",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "id",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "id",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "sessionId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "createdAt",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "createdAtDate",
+      "AttributeType": "S"
+    }
+  ],
+  "LocalSecondaryIndexes": [
+    {
+      "IndexName": "QueriesByCreatedAtIndex",
+      "KeySchema": [
+        {
+          "AttributeName": "sessionId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "createdAt",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      }
+   }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "QueriesByCreatedAtDateIndex",
+      "KeySchema": [
+        {
+          "AttributeName": "createdAtDate",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "sessionId",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      }
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  },
+  "TableClass": "STANDARD",
+  "DeletionProtectionEnabled": false
+}

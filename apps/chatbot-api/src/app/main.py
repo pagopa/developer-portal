@@ -22,8 +22,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(queries.router)
-app.include_router(sessions.router)
+# app.include_router(queries.router)
+# app.include_router(sessions.router)
 
 
 @app.get("/healthz")

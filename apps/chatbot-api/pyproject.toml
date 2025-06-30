@@ -1,0 +1,38 @@
+[tool.poetry]
+description = "Chatbot repository for PagoPA"
+name = "chatbot"
+package-mode = false
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+cryptography = "^44.0.2"
+fastapi = "^0.115.12"
+gunicorn = "^23.0.0"
+html2text = "^2024.2.26"
+hypercorn = "^0.17.3"
+jupyterlab = "^4.4.0"
+langdetect = "^1.0.9"
+moto = { extras = ["cognitoidp"], version = "^5.1.0" }
+nh3 = "^0.2.21"
+pyjwt = "^2.10.1"
+pyproject-hooks = "^1.2.0"
+python = ">=3.12,<3.14"
+python-dotenv = "^1.1.0"
+python-jose = "^3.4.0"
+pyyaml = "^6.0.2"
+ragas = "^0.2.14"
+requests-auth-aws-sigv4 = "^0.7"
+toml = "^0.10.2"
+mangum = "^0.19.0"
+
+[tool.poetry.group.test.dependencies]
+httpx = "^0.28.1"
+pytest = "^8.3.5"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
