@@ -67,7 +67,7 @@ resource "aws_lambda_layer_version" "opentelemetry" {
   filename   = "../../lib/opentelemetry/layer.zip"
   layer_name = "opentelemetry-layer"
 
-  compatible_runtimes = ["nodejs20.x, nodejs18.x, nodejs22.x"]
+  compatible_runtimes = ["nodejs20.x", "nodejs18.x", "nodejs22.x"]
 }
 
 
