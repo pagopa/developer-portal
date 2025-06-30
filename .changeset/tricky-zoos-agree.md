@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-fixed auth JWT decode
+Fix log bug

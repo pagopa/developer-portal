@@ -22,7 +22,9 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
 export async function generateStaticParams() {
   return (await getGuideListPagesProps()).map(({ product }) => ({
     productSlug: product.slug,

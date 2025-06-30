@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.7.0
+
+### Minor Changes
+
+- 5ba3e83: Add ApiSoapDetail object in ApiData schema
+
 ## 3.6.1
 
 ### Patch Changes
