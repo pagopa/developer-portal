@@ -21,7 +21,7 @@ jobs:
       - name: Checkout pagopa-api repository
         uses: actions/checkout@v4
         with:
-          repository: /pagopa/pagopa-api
+          repository: pagopa/pagopa-api
           ref: develop
           path: soap-api/pagopa-api
 
