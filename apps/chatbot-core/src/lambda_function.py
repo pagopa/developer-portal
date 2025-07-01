@@ -1,7 +1,14 @@
 from src.chatbot_init import chatbot
 
+def ping(payload):
+    return {
+        "statusCode": 200,
+        "result": "pong"
+    }
+
 def lambda_handler(event, context):
     operations = {
+        "ping": ping,
         "chat_generate": chatbot.chat_generate,
         "get_final_response": chatbot.get_final_response
     }

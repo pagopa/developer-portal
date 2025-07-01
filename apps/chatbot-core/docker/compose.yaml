@@ -107,6 +107,7 @@ services:
     image: motoserver/moto:5.1.0
     networks:
       - ntw
+
 volumes:
   postgres_data:
     driver: local

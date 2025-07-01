@@ -1,6 +1,6 @@
 ---
 services:
-  api:
+  core:
     build:
       context: ..
       dockerfile: docker/app.Dockerfile
@@ -48,8 +48,8 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file: ../.env.local
@@ -106,6 +106,7 @@ services:
     image: motoserver/moto:5.1.0
     networks:
       - ntw
+
 volumes:
   postgres_data:
     driver: local
