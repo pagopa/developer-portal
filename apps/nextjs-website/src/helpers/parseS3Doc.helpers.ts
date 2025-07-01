@@ -185,7 +185,6 @@ export const parseS3GuidePage = async (props: {
   readonly products: readonly Product[];
 }) => {
   const { guideProps, guidePath, guidesMetadata, products } = props;
-
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
     (data) => data.path === guidePath
@@ -194,7 +193,6 @@ export const parseS3GuidePage = async (props: {
   const version = guidePageMetadata?.version
     ? versions.find(({ version }) => version === guidePageMetadata.version)
     : versions.find(({ main }) => !!main);
-
   if (
     !version ||
     !guidePageMetadata ||
@@ -217,7 +215,6 @@ export const parseS3GuidePage = async (props: {
     );
     return undefined;
   }
-
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
   const source = {
     pathPrefix: version.main
@@ -228,14 +225,11 @@ export const parseS3GuidePage = async (props: {
     dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
     spaceId: guidePageMetadata.dirName,
   };
-
-  // Download menu and body files in parallel
-  const [menu, body] = await Promise.all([
-    guidePageMetadata && downloadFileAsText(guidePageMetadata.menuS3Path),
-    downloadFileAsText(guidePageMetadata.contentS3Path),
-  ]);
-
-  const result = {
+  const menu =
+    guidePageMetadata &&
+    (await downloadFileAsText(guidePageMetadata.menuS3Path));
+  const body = await downloadFileAsText(guidePageMetadata.contentS3Path);
+  return {
     ...guideProps,
     guide: {
       name: guideProps.guide.name,
@@ -273,8 +267,6 @@ export const parseS3GuidePage = async (props: {
       })),
     },
   };
-
-  return result;
 };
 
 export const parseDoc = async <T>(

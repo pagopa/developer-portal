@@ -157,11 +157,7 @@
       {
         "name": "AC_API_KEY",
         "valueFrom": "${ac_api_key}"
-      },
-      {
-        "name": "CHB_STRAPI_API_KEY",
-        "valueFrom": "${chb_strapi_api_key}"
-      }        
+      }
     ]
   }
 ]

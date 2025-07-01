@@ -260,7 +260,6 @@ export const getGuidePageProps = async (
   productSlug: string
 ) => {
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
-
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');

@@ -12,22 +12,12 @@ export interface JsonMetadata {
   readonly lastModified?: string;
 }
 
-// Cache S3 file downloads to prevent redundant network calls
-const s3FileCache = new Map<string, string>();
-
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  const url = `${staticContentsUrl}/${path}`;
-
-  // Check cache first
-  if (s3FileCache.has(url)) {
-    const cached = s3FileCache.get(url);
-    return cached;
-  }
-
   // eslint-disable-next-line functional/no-try-statements
   try {
+    const url = `${staticContentsUrl}/${path}`;
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -37,14 +27,11 @@ export async function downloadFileAsText(
       );
     }
 
+    // Read the response body as text
     const fileContent = await response.text();
-
-    // Cache the result
-    s3FileCache.set(url, fileContent);
-
     return fileContent;
   } catch (error) {
-    console.error(`[downloadFileAsText] Error downloading ${path}:`, error);
+    console.error('Error downloading file:', error);
     return;
   }
 }
@@ -87,68 +74,29 @@ let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
 let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 
-// Add timestamp-based cache invalidation
-// eslint-disable-next-line functional/no-let
-let guidesMetadataCacheTime = 0;
-
-// eslint-disable-next-line functional/no-let
-let solutionsMetadataCacheTime = 0;
-
-// eslint-disable-next-line functional/no-let
-let releaseNotesMetadataCacheTime = 0;
-
-const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
 export const getGuidesMetadata = async () => {
-  const now = Date.now();
-
-  if (
-    guidesMetadataCache &&
-    now - guidesMetadataCacheTime < METADATA_CACHE_TTL
-  ) {
-    return guidesMetadataCache;
+  if (!guidesMetadataCache) {
+    guidesMetadataCache = await fetchMetadataFromCDN(
+      S3_GUIDES_METADATA_JSON_PATH
+    );
   }
-
-  guidesMetadataCache = await fetchMetadataFromCDN(
-    S3_GUIDES_METADATA_JSON_PATH
-  );
-  guidesMetadataCacheTime = now;
-
   return guidesMetadataCache || [];
 };
 
 export const getSolutionsMetadata = async () => {
-  const now = Date.now();
-
-  if (
-    solutionsMetadataCache &&
-    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL
-  ) {
-    return solutionsMetadataCache;
+  if (!solutionsMetadataCache) {
+    solutionsMetadataCache = await fetchMetadataFromCDN(
+      S3_SOLUTIONS_METADATA_JSON_PATH
+    );
   }
-
-  solutionsMetadataCache = await fetchMetadataFromCDN(
-    S3_SOLUTIONS_METADATA_JSON_PATH
-  );
-  solutionsMetadataCacheTime = now;
-
   return solutionsMetadataCache || [];
 };
 
 export const getReleaseNotesMetadata = async () => {
-  const now = Date.now();
-
-  if (
-    releaseNotesMetadataCache &&
-    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL
-  ) {
-    return releaseNotesMetadataCache;
+  if (!releaseNotesMetadataCache) {
+    releaseNotesMetadataCache = await fetchMetadataFromCDN(
+      S3_RELEASE_NOTES_METADATA_JSON_PATH
+    );
   }
-
-  releaseNotesMetadataCache = await fetchMetadataFromCDN(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
-  );
-  releaseNotesMetadataCacheTime = now;
-
   return releaseNotesMetadataCache || [];
 };
