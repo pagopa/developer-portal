@@ -294,7 +294,17 @@ class Chatbot:
             if response_str[:7] == "```json" and response_str[-3:] == "```":
                 response_str = response_str[7:-3]
             response_str = response_str.strip()
-            response_json = json.loads(response_str)
+
+            try:
+                response_json = json.loads(response_str)
+            except Exception as e:
+                LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
+                response_json = {
+                    "response": "Mi dispiace, non sono riuscito a elaborare la risposta.",
+                    "topics": ["none"],
+                    "references": [],
+                    "contexts": [],
+                }
             LOGGER.info(f"Generated response in {time.time() - start_time:.4f} seconds")
 
             if "contexts" not in response_json.keys():
