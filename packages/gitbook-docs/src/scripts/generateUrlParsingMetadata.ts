@@ -4,13 +4,13 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import {
-  downloadS3File,
-  listS3Files,
-  makeS3Client,
   loadEnvConfig,
   validateS3Environment,
-  writeUrlParsingMetadataJson,
 } from '../helpers/s3Bucket.helper';
+import { writeFile } from 'fs/promises';
+import * as fs from 'fs';
+import { readdir } from 'fs/promises';
+import path from 'path';
 import {
   fetchFromStrapi,
   validateStrapiEnvironment,
@@ -26,18 +26,14 @@ loadEnvConfig();
 
 // Validate environment variables
 validateStrapiEnvironment();
-const { s3BucketName } = validateS3Environment();
 
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
-const S3_URL_PARSING_METADATA_JSON_PATH =
-  process.env.S3_URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
-
-const s3Client = makeS3Client();
+const URL_PARSING_METADATA_JSON_PATH =
+  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 export type UrlParsingItem = {
   dirName: string;
   guides: {
-    guideName: string;
+    guidePath: string;
     guideUrl: string;
   }[];
 };
@@ -59,30 +55,26 @@ async function convertGuideToUrlParsingItems(
 
   const items: UrlParsingItem[] = [];
   for (const guideInfo of guideInfoList) {
-    const guideFiles = (
-      await listS3Files(
-        `${S3_PATH_TO_GITBOOK_DOCS}/${guideInfo.dirName}`,
-        `${s3BucketName}`,
-        s3Client
-      )
-    ).filter((file) => file.endsWith('.md'));
+    const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
+
+    const allFiles = await readdir(guideDir);
+    const guideFiles = allFiles
+      .filter((file) => file.endsWith('.md'))
+      .map((file) => path.join(guideDir, file));
     const menuPath = guideFiles.find((file) =>
       file.includes(guideInfo.dirName + '/SUMMARY.md')
     );
     const item = {
       dirName: guideInfo.dirName,
-      guides: [] as { guideName: string; guideUrl: string }[],
+      guides: [] as { guidePath: string; guideUrl: string }[],
     };
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
       if (parts.length <= 2) {
         continue;
       }
-      const content = await downloadS3File(
-        filePath,
-        `${s3BucketName}`,
-        s3Client
-      );
+      const content = fs.readFileSync(filePath, 'utf8');
+
       if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
@@ -91,12 +83,12 @@ async function convertGuideToUrlParsingItems(
           guideInfo.versionName
         );
         item.guides.push({
-          guideName: path.split('/').at(-1) || '',
+          guidePath: filePath || '',
           guideUrl: path,
         });
       }
     }
-    items.push(<UrlParsingItem>item);
+    items.push(item);
   }
   return items;
 }
@@ -114,12 +106,10 @@ async function main() {
     console.log(
       `Converted guides to ${urlParsingItems.length} url parsing items`
     );
-
-    await writeUrlParsingMetadataJson(
-      urlParsingItems,
-      S3_URL_PARSING_METADATA_JSON_PATH,
-      `${s3BucketName}`,
-      s3Client
+    await writeFile(
+      URL_PARSING_METADATA_JSON_PATH,
+      JSON.stringify(urlParsingItems, null, 2),
+      'utf-8'
     );
   } catch (error) {
     console.error('Error:', error);
