@@ -7,19 +7,19 @@
 type UrlParsingMetadata = {
   dirName: string;
   guides: {
-    guideName: string;
+    guidePath: string;
     guideUrl: string;
   }[];
 };
 
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const URL_PARSING_METADATA_JSON_PATH =
+  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 function loadMetadata(filePath: string): UrlParsingMetadata[] {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { readFileSync } = require('fs');
   const file = readFileSync(filePath, 'utf8');
-  const obj = JSON.parse(file);
-  return obj;
+  return JSON.parse(file);
 }
 
 function replaceUrl(
@@ -31,15 +31,14 @@ function replaceUrl(
   if (!versionMetadata) return value;
   const name = value.split('/').at(-1) || '';
   const guides = versionMetadata.guides.find((guide) =>
-    guide.guideName.includes(name)
+    guide.guidePath.includes(name)
   );
   return guides?.guideUrl || value;
 }
 
 function main() {
   try {
-    const tmpPath = '/home/marbert/Projects/developer-portal/file.json';
-    const metadata = loadMetadata(tmpPath);
+    const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
     console.log(
       replaceUrl(
         'b8HnYwaAzhxRFAZdZBXL',
