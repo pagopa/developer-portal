@@ -20,5 +20,10 @@
     "@changesets/cli": "^2.27.1",
     "husky": "^8.0.3",
     "turbo": "^1.13.4"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "elliptic": "^6.6.1",
+    "koa": "^3.0.0"
   }
 }
