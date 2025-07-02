@@ -28,7 +28,8 @@ function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
   value: string
 ): string {
-  const name = value.split('/').at(-1) || '';
+  const lastPart = value.split('/').at(-1) || '';
+  const name = lastPart.replace('.md', '').replace(' "mention"', '');
   if (metadata) {
     const guides = metadata.guides.find((guide) =>
       guide.guidePath.includes(name)
@@ -64,7 +65,7 @@ async function findMarkdownFiles(
       // eslint-disable-next-line functional/no-let
       let hasUpdated = false;
       for (const match of matches) {
-        if (match[0] === metadata[0]) continue;
+        if (match[2] === metadata[0]) continue;
         hasUpdated = true;
         const replace = replaceUrl(metadata[0], match[2]);
         console.log('REPLACE ', replace);
