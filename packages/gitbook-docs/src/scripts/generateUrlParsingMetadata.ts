@@ -34,7 +34,23 @@ export type UrlParsingItem = {
     guideUrl: string;
   }[];
 };
+async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(
+    entries.map(async (entry) => {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        return getMarkdownFilesRecursively(fullPath); // Ricorsione
+      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+        return [fullPath];
+      } else {
+        return [];
+      }
+    })
+  );
 
+  return files.flat();
+}
 async function convertGuideToUrlParsingItems(
   strapiGuides: StrapiGuide[]
 ): Promise<UrlParsingItem[]> {
@@ -54,10 +70,7 @@ async function convertGuideToUrlParsingItems(
   for (const guideInfo of guideInfoList) {
     const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
 
-    const allFiles = await readdir(guideDir);
-    const guideFiles = allFiles
-      .filter((file) => file.endsWith('.md'))
-      .map((file) => path.join(guideDir, file));
+    const guideFiles = await getMarkdownFilesRecursively(guideDir);
     const menuPath = guideFiles.find((file) =>
       file.includes(guideInfo.dirName + '/SUMMARY.md')
     );
