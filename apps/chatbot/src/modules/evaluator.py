@@ -46,10 +46,6 @@ class RagasWrapper(LlamaIndexLLMWrapper):
             LOGGER.info("temperature kwarg passed to LlamaIndex LLM")
         if stop is not None:
             LOGGER.info("stop kwarg passed to LlamaIndex LLM")
-        if callbacks is not None:
-            LOGGER.info(
-                "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
-            )
         if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:
             return {"temperature": temperature}
         else:
