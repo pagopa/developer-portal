@@ -63,6 +63,7 @@ const schema: ConfigType = {
     hint,
     img,
     figure,
+    openapi: swagger,
     swagger,
     'swagger-description': swaggerDescription,
     'swagger-parameter': swaggerParameter,
