@@ -22,9 +22,11 @@ const INITIAL_RETRY_DELAY_MS = parseInt(
   10
 );
 
-export async function downloadFileAsText(
-  path: string
-): Promise<string | undefined> {
+async function withRetries<T>(
+  operation: () => Promise<T>,
+  operationName: string,
+  fallbackValue: T
+): Promise<T> {
   // eslint-disable-next-line functional/no-let
   let lastError: Error | null = null;
 
@@ -32,31 +34,20 @@ export async function downloadFileAsText(
   for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
     // eslint-disable-next-line functional/no-try-statements
     try {
-      const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error(
-          `Failed to download file from ${url}: ${response.statusText}`
-        );
-      }
-
-      // Read the response body as text
-      const fileContent = await response.text();
+      const result = await operation();
 
       // Log successful retry if this wasn't the first attempt
       if (attempt > 1) {
         console.log(
-          `Successfully downloaded file ${url} on attempt ${attempt}`
+          `Successfully completed ${operationName} on attempt ${attempt}`
         );
       }
 
-      return fileContent;
+      return result;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
       console.error(
-        `Error downloading file (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
+        `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
         error
       );
 
@@ -70,22 +61,40 @@ export async function downloadFileAsText(
   }
 
   console.error(
-    `Failed to download file after ${RETRY_ATTEMPTS} attempts:`,
+    `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
     lastError
   );
-  return;
+  return fallbackValue;
+}
+
+export async function downloadFileAsText(
+  path: string
+): Promise<string | undefined> {
+  return withRetries(
+    async () => {
+      const url = `${staticContentsUrl}/${path}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error(
+          `Failed to download file from ${url}: ${response.statusText}`
+        );
+      }
+
+      // Read the response body as text
+      return await response.text();
+    },
+    `file download from ${path}`,
+    undefined
+  );
 }
 
 export async function fetchMetadataFromCDN(
   path: string
 ): Promise<readonly JsonMetadata[] | null> {
-  // eslint-disable-next-line functional/no-let
-  let lastError: Error | null = null;
-
-  // eslint-disable-next-line functional/no-loop-statements
-  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
-    // eslint-disable-next-line functional/no-try-statements
-    try {
+  return withRetries(
+    async () => {
       if (!staticContentsUrl) {
         // eslint-disable-next-line functional/no-throw-statements
         throw new Error(
@@ -104,36 +113,11 @@ export async function fetchMetadataFromCDN(
       }
 
       const bodyContent = await response.json();
-
-      // Log successful retry if this wasn't the first attempt
-      if (attempt > 1) {
-        console.log(
-          `Successfully fetched metadata from ${url} on attempt ${attempt}`
-        );
-      }
-
       return bodyContent as readonly JsonMetadata[];
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
-      console.error(
-        `Error fetching metadata from CDN (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
-        error
-      );
-
-      // If this isn't the last attempt, wait before retrying
-      if (attempt < RETRY_ATTEMPTS) {
-        const delayMs = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
-        console.log(`Retrying in ${delayMs}ms...`);
-        await delay(delayMs);
-      }
-    }
-  }
-
-  console.error(
-    `Failed to fetch metadata from CDN after ${RETRY_ATTEMPTS} attempts:`,
-    lastError
+    },
+    `metadata fetch from ${path}`,
+    null
   );
-  return null;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
