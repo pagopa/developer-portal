@@ -2,6 +2,16 @@ name: SOAP API Repo Sync
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -12,7 +22,7 @@ jobs:
   sync_docs:
     name: Sync SOAP API to S3
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout current repository
