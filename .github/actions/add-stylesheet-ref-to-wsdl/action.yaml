@@ -12,8 +12,6 @@ runs:
     - name: Find and Update WSDL Files
       shell: bash
       run: |
-        echo "Adding stylesheet reference to WSDL files in directory: ${{ inputs.dir }}"
-        ls -l "${{ inputs.dir }}"
         find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
           if ! grep -q '<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"; then
             awk '{
