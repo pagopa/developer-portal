@@ -12,7 +12,7 @@ jobs:
   sync_docs:
     name: Sync SOAP API to S3
     runs-on: ubuntu-latest
-    environment:
+    environment: dev
 
     steps:
       - name: Checkout current repository
