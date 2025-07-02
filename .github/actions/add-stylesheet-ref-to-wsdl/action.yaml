@@ -12,7 +12,7 @@ runs:
     - name: Find and Update WSDL Files
       shell: bash
       run: |
-        find "$1" -type f -name "*.wsdl" | while read -r file; do
+        find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
           if ! grep -q '<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"; then
             awk '{
               print
