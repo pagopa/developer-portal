@@ -165,15 +165,15 @@ class Chatbot:
                 '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
                 "la documentazione del DevPortal di PagoPA. "
                 'Prova a riformulare la domanda.", '
-                '"topics": ["none"], "references": []}'
+                '"products": ["none"], "references": []}'
             )
         if (
             re.search(r'"response":', response_str) is None
-            and re.search(r'"topics":', response_str) is None
+            and re.search(r'"products":', response_str) is None
             and re.search(r'"references":', response_str) is None
         ):
             response_str = (
-                '{{"response": "{response_str}", "topics": ["none"], "references": []}}'
+                '{{"response": "{response_str}", "products": ["none"], "references": []}}'
             ).format(response_str=response_str)
 
         return response_str
@@ -286,7 +286,7 @@ class Chatbot:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
                     'Prova a formulare una nuova domanda.", '
-                    '"topics": ["none"], "references": []}'
+                    '"products": ["none"], "references": []}'
                 )
                 retrieved_contexts = [""]
                 LOGGER.error(f"Exception: {e}")
@@ -301,7 +301,7 @@ class Chatbot:
                 LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
                 response_json = {
                     "response": "Mi dispiace, non sono riuscito a elaborare la risposta.",
-                    "topics": ["none"],
+                    "products": ["none"],
                     "references": [],
                     "contexts": [],
                 }
@@ -313,7 +313,7 @@ class Chatbot:
             trace.update(
                 output=response_json["response"],
                 metadata={"contexts": retrieved_contexts},
-                tags=response_json["topics"],
+                tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()

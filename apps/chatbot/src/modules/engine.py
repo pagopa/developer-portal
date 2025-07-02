@@ -4,24 +4,15 @@ from typing import List
 from llama_index.core.llms.llm import LLM
 from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.bridge.pydantic import BaseModel, Field
-from llama_index.core.tools import QueryEngineTool
-from llama_index.core.agent.workflow import ReActAgent
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
-
-# from llama_index.core.chat_engine import CondensePlusContextChatEngine
+from llama_index.core.tools import QueryEngineTool
+from llama_index.core.agent.workflow import ReActAgent
 
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
-STRUCTURED_OUTPUT = os.getenv("CHB_STRUCTURED_OUTPUT", "false").lower() == "true"
-
-
-class Product(BaseModel):
-    """a PagoPA product in the Developer Portal."""
-
-    product: str
 
 
 class Reference(BaseModel):
@@ -35,7 +26,7 @@ class RAGOutput(BaseModel):
     """A structured output for a RAG query."""
 
     response: str = Field(..., description="The generated answer to the user's query.")
-    products: List[Product] = Field(
+    products: List[str] = Field(
         ...,
         description=(
             "A list of products. The list contains one or more of the PagoPA products: "
@@ -126,6 +117,6 @@ def get_engine(
         ),
         tools=[query_engine_tool],
         llm=llm,
-        system_prompt=system_prompt,
         verbose=verbose,
+        system_prompt=system_prompt,
     )
