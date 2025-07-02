@@ -15,6 +15,8 @@ type UrlParsingMetadata = {
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
+const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
+
 function loadMetadata(filePath: string): UrlParsingMetadata[] {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { readFileSync } = require('fs');
@@ -23,28 +25,63 @@ function loadMetadata(filePath: string): UrlParsingMetadata[] {
 }
 
 function replaceUrl(
-  dirName: string,
-  metadata: UrlParsingMetadata[],
+  metadata: UrlParsingMetadata | undefined,
   value: string
 ): string {
-  const versionMetadata = metadata.find((item) => item.dirName === dirName);
-  if (!versionMetadata) return value;
   const name = value.split('/').at(-1) || '';
-  const guides = versionMetadata.guides.find((guide) =>
-    guide.guidePath.includes(name)
-  );
-  return guides?.guideUrl || value;
+  if (metadata) {
+    const guides = metadata.guides.find((guide) =>
+      guide.guidePath.includes(name)
+    );
+    return guides?.guideUrl || value;
+  } else return value;
 }
 
-function main() {
+async function findMarkdownFiles(
+  dirPath: string,
+  guideMetadata?: UrlParsingMetadata
+) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const fs = require('fs');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const path = require('path');
+  // eslint-disable-next-line functional/no-let
+
+  const items = await fs.promises.readdir(dirPath, { withFileTypes: true });
+
+  for (const item of items) {
+    const fullPath = path.join(dirPath, item.name);
+    if (item.isDirectory()) {
+      await findMarkdownFiles(
+        fullPath,
+        metadata.find((data) => data.dirName === item.name)
+      );
+    } else if (item.isFile() && fullPath.endsWith('.md')) {
+      // eslint-disable-next-line functional/no-let
+      const fileContent = await fs.promises.readFile(fullPath, 'utf8');
+      const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      const matches = [...fileContent.matchAll(regex)];
+      // eslint-disable-next-line functional/no-let
+      let hasUpdated = false;
+      for (const match of matches) {
+        if (match[0] === metadata[0]) continue;
+        hasUpdated = true;
+        const replace = replaceUrl(metadata[0], match[2]);
+        console.log('REPLACE ', replace);
+        fileContent.replace(match[2] || '', replace);
+      }
+      if (hasUpdated) {
+        console.log('Updating file:', fullPath);
+        fs.writeFileSync(fullPath, fileContent, 'utf8');
+      }
+    }
+  }
+}
+
+async function main() {
   try {
-    const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
-    console.log(
-      replaceUrl(
-        'b8HnYwaAzhxRFAZdZBXL',
-        metadata,
-        'percorso/percorso/percorso/come-integrare-i-propri-servizi-su-pdnd-interoperabilita'
-      )
+    await findMarkdownFiles(
+      '/home/marbert/Projects/developer-portal/apps/nextjs-website/docs'
     );
   } catch (error) {
     console.error('Error:', error);
