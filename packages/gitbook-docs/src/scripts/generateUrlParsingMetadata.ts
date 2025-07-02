@@ -3,10 +3,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
-import {
-  loadEnvConfig,
-  validateS3Environment,
-} from '../helpers/s3Bucket.helper';
+import { loadEnvConfig } from '../helpers/s3Bucket.helper';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import { readdir } from 'fs/promises';
@@ -80,7 +77,8 @@ async function convertGuideToUrlParsingItems(
           filePath,
           guideInfo.guideSlug,
           guideInfo.productSlug,
-          guideInfo.versionName
+          guideInfo.versionName,
+          guideInfo.dirName
         );
         item.guides.push({
           guidePath: filePath || '',
