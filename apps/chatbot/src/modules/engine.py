@@ -1,13 +1,51 @@
 import os
-from llama_index.core import VectorStoreIndex, PromptTemplate
+from typing import List
+
 from llama_index.core.llms.llm import LLM
+from llama_index.core import VectorStoreIndex, PromptTemplate
+from llama_index.core.bridge.pydantic import BaseModel, Field
+from llama_index.core.tools import QueryEngineTool
+from llama_index.core.agent.workflow import ReActAgent
 from llama_index.core.retrievers import AutoMergingRetriever
-from llama_index.core.chat_engine import CondensePlusContextChatEngine
+from llama_index.core.query_engine import RetrieverQueryEngine
+
+# from llama_index.core.chat_engine import CondensePlusContextChatEngine
 
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
+STRUCTURED_OUTPUT = os.getenv("CHB_STRUCTURED_OUTPUT", "false").lower() == "true"
+
+
+class Product(BaseModel):
+    """a PagoPA product in the Developer Portal."""
+
+    product: str
+
+
+class Reference(BaseModel):
+    """a reference that support the generated answer."""
+
+    title: str
+    filepath: str
+
+
+class RAGOutput(BaseModel):
+    """A structured output for a RAG query."""
+
+    response: str = Field(..., description="The generated answer to the user's query.")
+    products: List[Product] = Field(
+        ...,
+        description=(
+            "A list of products. The list contains one or more of the PagoPA products: "
+            "'firma-con-io', 'app-io', 'piattaforma-pago-pa', 'send', and 'pdnd'"
+        ),
+    )
+    references: List[Reference] = Field(
+        ...,
+        description="list where each element reports the title and the filepaths of the relative source node.",
+    )
 
 
 def get_engine(
@@ -18,7 +56,7 @@ def get_engine(
     refine_template: PromptTemplate | None = None,
     condense_template: PromptTemplate | None = None,
     verbose: bool = True,
-) -> CondensePlusContextChatEngine:
+) -> ReActAgent:
     """
     Creates a CondensePlusContextChatEngine with an AutoMergingRetriever and a reranker.
     Args:
@@ -61,12 +99,33 @@ def get_engine(
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
 
-    return CondensePlusContextChatEngine.from_defaults(
+    query_engine = RetrieverQueryEngine.from_args(
         retriever=retriever,
         llm=llm,
-        system_prompt=system_prompt,
-        context_prompt=text_qa_template,
-        context_refine_prompt=refine_template,
-        condense_prompt=condense_template,
+        text_qa_template=text_qa_template,
+        refine_template=refine_template,
+        output_cls=RAGOutput,
         node_postprocessors=[reranker],
+    )
+
+    query_engine_tool = QueryEngineTool.from_defaults(
+        query_engine=query_engine,
+        name="rag_query_engine",
+        description=(
+            "A tool to answer questions using the RAG (Retrieval-Augmented Generation) "
+            "approach. It retrieves relevant information from the index and generates a "
+            "structured response."
+        ),
+    )
+
+    return ReActAgent(
+        name="rag_agent",
+        description=(
+            "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
+            "It retrieves relevant information from the index and generates a structured response."
+        ),
+        tools=[query_engine_tool],
+        llm=llm,
+        system_prompt=system_prompt,
+        verbose=verbose,
     )
