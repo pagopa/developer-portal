@@ -28,6 +28,8 @@ type Params = {
   productGuidePage: Array<string>;
 };
 
+// TEST
+
 export type ProductGuidePageProps = {
   product: Product;
   guide: { name: string; path: string };
