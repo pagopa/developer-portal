@@ -25,7 +25,7 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '18.18.0'
 
     - name: Install dependencies
       shell: bash
@@ -45,8 +45,6 @@ runs:
     - name: Clone each SOAP repository
       shell: bash
       run: |
-        echo pwd
-        ls -la
         json_file="./packages/gitbook-docs/__soap_tmp_output__/soap-api-repositories.json"
         clone_dir="${{ inputs.soap-api-directory }}"
         
