@@ -4,9 +4,9 @@ from jose import jwk, jwt
 from jose import exceptions as jwt_exceptions
 from jose.utils import base64url_decode
 from fastapi import HTTPException
-from logging import getLogger
+from src.modules.logger import get_logger
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 AWS_DEFAULT_REGION = os.getenv(
     'CHB_AWS_DEFAULT_REGION',
@@ -26,7 +26,7 @@ def get_jwks():
     if response.status_code == 200:
         return response.json()
     else:
-        logger.error(f"[get_jwks] KEYS_URL={KEYS_URL}, Response status code: {response.status_code}")
+        LOGGER.error(f"[get_jwks] KEYS_URL={KEYS_URL}, Response status code: {response.status_code}")
         raise HTTPException(status_code=401, detail="Auth error")
 
 
