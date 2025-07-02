@@ -1,6 +1,5 @@
 import os
 import re
-import time
 import json
 import yaml
 from pathlib import Path
@@ -258,7 +257,6 @@ class Chatbot:
         chat_history = self._messages_to_chathistory(messages)
         LOGGER.info(f"Langfuse trace id: {trace_id}")
 
-        start_time = time.time()
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
@@ -292,11 +290,9 @@ class Chatbot:
                 LOGGER.error(f"Exception: {e}")
 
             try:
-                LOGGER.debug(f"Response string: {response_str}")
                 if response_str[:7] == "```json" and response_str[-3:] == "```":
                     response_str = response_str[7:-3]
                 response_str = response_str.strip()
-                LOGGER.debug(f"Cleaned response string: {response_str}")
 
                 response_json = json.loads(response_str)
             except Exception as e:
@@ -307,7 +303,6 @@ class Chatbot:
                     "references": [],
                     "contexts": [],
                 }
-            LOGGER.info(f"Generated response in {time.time() - start_time:.4f} seconds")
 
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
@@ -343,7 +338,6 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
-        start_time = time.time()
         if messages is not None:
             chat_history = self._messages_to_chathistory(messages)
             condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
@@ -357,7 +351,6 @@ class Chatbot:
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        LOGGER.info(f"Evaluation completed in {time.time() - start_time:.4f} seconds")
         for key, value in scores.items():
             add_langfuse_score(
                 trace_id=trace_id,
