@@ -291,11 +291,13 @@ class Chatbot:
                 retrieved_contexts = [""]
                 LOGGER.error(f"Exception: {e}")
 
-            if response_str[:7] == "```json" and response_str[-3:] == "```":
-                response_str = response_str[7:-3]
-            response_str = response_str.strip()
-
             try:
+                LOGGER.debug(f"Response string: {response_str}")
+                if response_str[:7] == "```json" and response_str[-3:] == "```":
+                    response_str = response_str[7:-3]
+                response_str = response_str.strip()
+                LOGGER.debug(f"Cleaned response string: {response_str}")
+
                 response_json = json.loads(response_str)
             except Exception as e:
                 LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
