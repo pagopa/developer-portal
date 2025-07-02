@@ -12,7 +12,7 @@ jobs:
   sync_docs:
     name: Sync SOAP API to S3
     runs-on: ubuntu-latest
-    environment: dev
+    environment:
 
     steps:
       - name: Checkout current repository
@@ -29,12 +29,12 @@ jobs:
         uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
         with:
           stylesheet_path: ./apps/nextjs-website/public/wsdl-viewer
-          soap_repos_path: soap-api
+          soap_repos_path: ./soap-api
 
       - name: Add Stylesheet Reference to WSDLs
         uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:
-          dir: soap-api
+          dir: ./soap-api
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
@@ -44,4 +44,4 @@ jobs:
 
       - name: Sync soap-api folder to S3
         run: |
-          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_API_SOAP }} --delete
+          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/soap-api --delete
