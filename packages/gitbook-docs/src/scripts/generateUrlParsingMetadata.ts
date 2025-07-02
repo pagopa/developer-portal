@@ -12,11 +12,7 @@ import {
   fetchFromStrapi,
   validateStrapiEnvironment,
 } from '../helpers/fetchFromStrapi';
-import {
-  GuideInfo,
-  StrapiGuide,
-  generateUrlPath,
-} from './generateGuidesMetadata';
+import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
 loadEnvConfig();
@@ -26,7 +22,48 @@ validateStrapiEnvironment();
 
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
+interface StrapiGuide {
+  id: number;
+  attributes: {
+    slug: string;
+    title: string;
+    product?: {
+      data?: {
+        attributes?: {
+          slug: string;
+        };
+      };
+    };
+    versions: {
+      id: number;
+      main: boolean;
+      version: string;
+      dirName: string;
+    }[];
+  };
+}
 
+function generateUrlPath(
+  filePath: string,
+  guideSlug: string,
+  productSlug: string,
+  versionName?: string,
+  dirName?: string
+): string {
+  if (dirName === undefined) console.log('dirName is undefined', dirName);
+  const restOfPath = sitePathFromS3Path(filePath, undefined, dirName);
+  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+    .filter(Boolean)
+    .join('/');
+}
+
+type GuideInfo = {
+  versionName: string;
+  isMainVersion: boolean;
+  dirName: string;
+  guideSlug: string;
+  productSlug: string;
+};
 export type UrlParsingItem = {
   dirName: string;
   guides: {
@@ -68,38 +105,45 @@ async function convertGuideToUrlParsingItems(
 
   const items: UrlParsingItem[] = [];
   for (const guideInfo of guideInfoList) {
-    const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
+    if (guideInfo.dirName) {
+      const guideDir = path.join(
+        '/home/marbert/Projects/developer-portal/apps/nextjs-website',
+        'docs',
+        guideInfo.dirName
+      );
 
-    const guideFiles = await getMarkdownFilesRecursively(guideDir);
-    const menuPath = guideFiles.find((file) =>
-      file.includes(guideInfo.dirName + '/SUMMARY.md')
-    );
-    const item = {
-      dirName: guideInfo.dirName,
-      guides: [] as { guidePath: string; guideUrl: string }[],
-    };
-    for (const filePath of guideFiles) {
-      const parts = filePath.split('/');
-      if (parts.length <= 2) {
-        continue;
-      }
-      const content = fs.readFileSync(filePath, 'utf8');
+      const guideFiles = await getMarkdownFilesRecursively(guideDir);
+      const menuPath = guideFiles.find((file) =>
+        file.includes(guideInfo.dirName + '/SUMMARY.md')
+      );
+      const item = {
+        dirName: guideInfo.dirName,
+        guides: [] as { guidePath: string; guideUrl: string }[],
+      };
+      for (const filePath of guideFiles) {
+        const parts = filePath.split('/');
+        if (parts.length <= 2) {
+          continue;
+        }
+        const content = fs.readFileSync(filePath, 'utf8');
 
-      if (menuPath && content) {
-        const path = generateUrlPath(
-          filePath,
-          guideInfo.guideSlug,
-          guideInfo.productSlug,
-          guideInfo.versionName,
-          guideInfo.dirName
-        );
-        item.guides.push({
-          guidePath: filePath || '',
-          guideUrl: path,
-        });
+        if (menuPath && content) {
+          console.log('dirName:', guideInfo.dirName);
+          const path = generateUrlPath(
+            filePath,
+            guideInfo.guideSlug,
+            guideInfo.productSlug,
+            guideInfo.versionName,
+            guideInfo.dirName
+          );
+          item.guides.push({
+            guidePath: filePath || '',
+            guideUrl: path,
+          });
+        }
       }
+      items.push(item);
     }
-    items.push(item);
   }
   return items;
 }
