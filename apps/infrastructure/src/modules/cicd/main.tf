@@ -6,6 +6,9 @@ module "codebuild" {
   # allows to use the self-hosted runner for the current environment according to
   # the standard "environment" input variable
   environment = merge(var.environment_information, { env_short = var.environment })
+
+  tier = "l"
+  
   repository = {
     organization = split("/", var.github_repository)[0]
     name         = split("/", var.github_repository)[1]
