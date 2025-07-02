@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -10,7 +11,7 @@ def get_logger(name: str) -> logging.Logger:
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(os.getenv("LOG_LEVEL", "DEBUG").upper())
 
     if not logger.handlers:  # Prevent adding multiple handlers
         logger.addHandler(handler)

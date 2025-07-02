@@ -19,7 +19,9 @@ from src.modules.utils import get_ssm_parameter
 
 
 LOGGER = get_logger(__name__)
-STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
+STRAPI_API_KEY = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
+)
 DYNAMIC_HTMLS = [
     "/case-histories/",
     "/release-notes/",
@@ -133,7 +135,7 @@ def get_apidata(website_url: str) -> dict:
     headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
 
     response = requests.get(url, headers=headers)
-    LOGGER.info(f"Fetching API data from {url}")
+    LOGGER.info(f"Fetching API data from {url}, headers: {headers}")
     if response.status_code == 200:
         return json.loads(response.text)
     else:

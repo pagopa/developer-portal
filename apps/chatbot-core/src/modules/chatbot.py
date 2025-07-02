@@ -79,7 +79,7 @@ class Chatbot:
         )
 
         if USE_PRESIDIO:
-            self.pii = PresidioPII(config=params["config_presidio"])
+            self.pii = PresidioPII(config=self.params["config_presidio"])
 
         self.model = get_llm()
         self.judge = Evaluator(llm=get_llm())
@@ -87,8 +87,8 @@ class Chatbot:
         self.index = load_index_redis(
             self.model,
             self.embed_model,
-            chunk_size=params["vector_index"]["chunk_size"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"],
+            chunk_size=self.params["vector_index"]["chunk_size"],
+            chunk_overlap=self.params["vector_index"]["chunk_overlap"],
         )
         self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
             self._get_prompt_templates()
@@ -110,7 +110,9 @@ class Chatbot:
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
 
-    def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
+    def _get_prompt_templates(
+        self,
+    ) -> Tuple[PromptTemplate, PromptTemplate, PromptTemplate]:
 
         qa_prompt_tmpl = PromptTemplate(
             self.prompts["qa_prompt_str"],
