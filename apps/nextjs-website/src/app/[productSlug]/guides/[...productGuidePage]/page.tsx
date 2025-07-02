@@ -52,18 +52,40 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const porps = await getGuidePage(
+  const props = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  if (porps?.seo) {
-    return makeMetadataFromStrapi(porps?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
+  const minimumPathLength = 2;
+  const pagePath = props.page.path.split('/');
+  const parentName =
+    pagePath.length >= minimumPathLength
+      ? pagePath[pagePath.length - minimumPathLength]
+          .toLowerCase()
+          .replaceAll(' ', '')
+          .replaceAll('-', ' ')
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      : '';
+
   return makeMetadata({
-    title: porps?.page.title,
-    url: porps?.page.path,
+    title: [
+      props.page.title,
+      parentName,
+      [props.guide.name, !props.version.main && props.version.name]
+        .filter(Boolean)
+        .join(' '),
+      props.product.name,
+    ]
+      .filter(Boolean)
+      .join(' | '),
+    url: props?.page.path,
   });
 }
 
@@ -73,7 +95,7 @@ const PRODUCT_SLUG_PATH_INDEX = 1;
 const GUIDE_SUB_PATH_INDEX = 3;
 export async function generateStaticParams(): Promise<Params[]> {
   const guides = await getGuidesMetadata();
-  const guideParams = guides
+  return guides
     .map(({ path }) => path.split('/'))
     .filter((paths) => paths.length > GUIDE_SUB_PATH_INDEX)
     .map((paths) => {
@@ -82,7 +104,6 @@ export async function generateStaticParams(): Promise<Params[]> {
         productGuidePage: paths.slice(GUIDE_SUB_PATH_INDEX),
       };
     });
-  return guideParams;
 }
 
 const Page = async ({ params }: { params: Params }) => {
