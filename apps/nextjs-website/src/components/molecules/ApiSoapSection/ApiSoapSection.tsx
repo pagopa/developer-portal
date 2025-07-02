@@ -45,25 +45,6 @@ const ApiSoapSection = ({
     }))
     .filter((item) => !!item.name);
 
-  // Uncomment the following code if CROSS-ORIGIN policy issues are resolved or delete if not.
-  // useEffect(() => {
-  //   const iframe = iframeRef.current;
-  //
-  //   const resizeIframe = () => {
-  //     if (iframe && iframe.contentWindow?.document?.body) {
-  //       const newHeight = iframe.contentWindow.document.body.scrollHeight;
-  //       // eslint-disable-next-line functional/immutable-data
-  //       iframe.style.height = `${newHeight}px`;
-  //     }
-  //   };
-  //
-  //   iframe?.addEventListener('load', resizeIframe);
-  //
-  //   return () => {
-  //     iframe?.removeEventListener('load', resizeIframe);
-  //   };
-  // }, []);
-
   useEffect(() => {
     const specName = searchParams.get('spec');
     if (specName) {
