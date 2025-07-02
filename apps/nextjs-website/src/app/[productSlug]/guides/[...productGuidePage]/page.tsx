@@ -70,8 +70,6 @@ export async function generateMetadata({
   });
 }
 
-// Comment out static generation to make it dynamic
-// export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 
 const Page = async ({ params }: { params: Params }) => {
