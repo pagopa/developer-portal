@@ -54,4 +54,5 @@ jobs:
 
       - name: Sync soap-api folder to S3
         run: |
-          aws s3 sync soap-api s3://devportal-${${{ inputs.environment }}:0:1}-website-static-content/soap-api --delete
+          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}" && \
+          aws s3 sync soap-api s3://devportal-${FIRST_LETTER}-website-static-content/soap-api --delete
