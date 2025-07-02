@@ -5,6 +5,16 @@ inputs:
   soap-api-directory:
     description: Directory
     required: true
+  strapi-endpoint:
+    description: Strapi API endpoint
+    required: true
+  strapi-api-token:
+    description: Strapi API token
+    required: true
+  fetch-from-strapi:
+    description: Whether to fetch the SOAP API list from Strapi
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -25,9 +35,9 @@ runs:
       shell: bash
       env:
         OUTPUT_DIR: __soap_tmp_output__
-        STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-        STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-        FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+        STRAPI_ENDPOINT: ${{ inputs.strapi-endpoint }}
+        STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
+        FETCH_FROM_STRAPI: ${{ inputs.fetch-from-strapi }}
       run: |
         echo "Running fetch-soap-api-from-strapi..."
         npm run fetch-soap-api-from-strapi -w gitbook-docs
