@@ -12,7 +12,7 @@ from llama_index.core.agent.workflow import ReActAgent
 
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
-RERANKER_ID = os.getenv("CHB_RERANKER_ID")
+RERANKER_ID = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
 USE_ASYNC = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
