@@ -11,10 +11,6 @@ inputs:
   strapi-api-token:
     description: Strapi API token
     required: true
-  fetch-from-strapi:
-    description: Whether to fetch the SOAP API list from Strapi
-    required: false
-    default: 'true'
 
 runs:
   using: "composite"
@@ -37,7 +33,6 @@ runs:
         OUTPUT_DIR: __soap_tmp_output__
         STRAPI_ENDPOINT: ${{ inputs.strapi-endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
-        FETCH_FROM_STRAPI: ${{ inputs.fetch-from-strapi }}
       run: |
         echo "Running fetch-soap-api-from-strapi..."
         npm run fetch-soap-api-from-strapi -w gitbook-docs
