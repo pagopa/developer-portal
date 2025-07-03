@@ -91,10 +91,11 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!guideProps) {
-    return PageNotFound;
+    return <PageNotFound />;
   }
+
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const {
     product,
     page,
