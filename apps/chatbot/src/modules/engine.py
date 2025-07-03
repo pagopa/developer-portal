@@ -109,7 +109,7 @@ def get_engine(
         ),
     )
 
-    async def identity_fn(query_str: str) -> str:
+    async def identity_fn() -> str:
         """Useful to reply questions about the agent identity."""
         result = llm.complete(identity_prompt)
         return str(result)
@@ -117,7 +117,7 @@ def get_engine(
     identity_tool = FunctionTool.from_defaults(
         fn=identity_fn,
         name="discovery_identity",
-        description="Responds to identity or personality questions like 'Who are you?' or 'What is your name?'",
+        description="Responds to identity or personality questions like 'I am ..., and you?', 'Who are you?' or 'What is your name?'",
     )
 
     obj_index = ObjectIndex.from_objects([identity_tool, query_engine_tool])
