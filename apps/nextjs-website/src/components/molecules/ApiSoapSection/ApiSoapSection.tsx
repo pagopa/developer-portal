@@ -205,7 +205,7 @@ const ApiSoapSection = ({
                   <Typography
                     sx={{
                       fontWeight: 600,
-                      fontSize: '0.625rem',
+                      fontSize: '1rem',
                       textDecoration: 'underline',
                     }}
                   >
