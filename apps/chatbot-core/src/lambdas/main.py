@@ -23,19 +23,15 @@ def lambda_handler(event, context):
             result = ping(payload)
         case "chat_generate":
             # TODO: validate payload
-            result = chatbot.chat_generate(
+            result = chatbot.chat_generate_with_final_response(
                 query_str=payload.get("query_str", ""),
                 trace_id=payload.get("trace_id", ""),
                 session_id=payload.get("session_id", None),
                 user_id=payload.get("user_id", None),
                 messages=payload.get("messages", None),
             )
-        case "get_final_response":
-            result = chatbot.get_final_response(
-                trace_id=payload.get("trace_id", ""),
-                session_id=payload.get("session_id", None),
-                user_id=payload.get("user_id", None),
-            )
+        case "mask_pii":
+            result = chatbot.mask_pii(payload.get("string", ""))
         case _:
             return {"statusCode": 400, "error": "Invalid operation"}
 

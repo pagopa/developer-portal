@@ -17,8 +17,6 @@ RUN poetry install
 #COPY ./config ${LAMBDA_TASK_ROOT}/config
 COPY ./ ${LAMBDA_TASK_ROOT}/
 
-RUN python ./scripts/print_cwd.py
-
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py
 

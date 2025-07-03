@@ -1,13 +1,17 @@
+import boto3
 import datetime
 import nh3
 import os
 import uuid
+import requests
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
 from logging import getLogger
 from typing import Annotated
-from src.app.models import Query, tables
+
+from src.calls import chatbot_generate, chatbot_mask_pii
+from src.app.models import Query, tables, AWS_DEFAULT_REGION
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -16,7 +20,7 @@ from src.app.sessions import (
     last_session_id,
     get_user_session,
 )
-# from src.app.chatbot_init import chatbot
+
 
 logger = getLogger(__name__)
 router = APIRouter()
@@ -85,17 +89,21 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.model_dump() for item in query.history] if query.history else None
 
-    # TODO: call lambda
-    # answer_json = chatbot.chat_generate(
-    #     query_str=query_str,
-    #     trace_id=trace_id,
-    #     session_id=session["id"],
-    #     user_id=user_id,
-    #     messages=messages,
-    # )
-    # answer = chatbot.get_final_response(answer_json)
     answer_json = {}
-    answer = {}
+
+    lambda_generate_event = {
+        "operation": "chat_generate",
+        "payload": {
+            "query_str": query_str,
+            "trace_id": trace_id,
+            "session_id": session["id"],
+            "user_id": user_id,
+            "messages": messages,
+        },
+    }
+
+    answer_json = chatbot_generate(lambda_generate_event)
+    answer = answer_json.get("final_response", "")
 
     if can_evaluate():
         evaluation_data = {
@@ -126,8 +134,8 @@ async def query_creation(
     }
 
     bodyToSave = bodyToReturn.copy()
-    bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = chatbot.mask_pii(answer)
+    bodyToSave["question"] = chatbot_mask_pii(query.question)
+    bodyToSave["answer"] = chatbot_mask_pii(answer)
     bodyToSave["topics"] = answer_json.get("topics", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)

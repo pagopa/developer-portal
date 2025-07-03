@@ -247,6 +247,25 @@ class Chatbot:
 
         return data
 
+    def chat_generate_with_final_response(
+        self,
+        query_str: str,
+        trace_id: str,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        messages: Optional[List[Dict[str, str]]] | None = None,
+    ) -> dict:
+        response_json = self.chat_generate(
+            query_str=query_str,
+            trace_id=trace_id,
+            session_id=session_id,
+            user_id=user_id,
+            messages=messages,
+        )
+
+        response_json["final_response"] = self.get_final_response(response_json)
+        return response_json
+
     def chat_generate(
         self,
         query_str: str,

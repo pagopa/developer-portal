@@ -20,6 +20,8 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
+      core:
+        condition: service_started
     networks:
       - ntw
 
@@ -30,9 +32,10 @@ services:
       - PYTHONPATH=/var/task
     ports:
       - "8081:8080"
-    depends_on:
-      api:
-        condition: service_started
+    volumes:
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambdas.main.lambda_handler"]
     networks:
       - ntw
 
