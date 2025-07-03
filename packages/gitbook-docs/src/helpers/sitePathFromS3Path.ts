@@ -2,10 +2,14 @@
 // Example: docs/0OMsoqOg9GiJ2xusVHMv/suolo-spazi-e-beni-pubblici/segnalazioni-suggerimenti-e-reclami.md -> suolo-spazi-e-beni-pubblici/segnalazioni-suggerimenti-e-reclami
 export function sitePathFromS3Path(
   s3Path: string,
-  landingFile?: string
+  landingFile?: string,
+  dirName?: string
 ): string | undefined {
   const parts = s3Path.split('/');
-  const pathParts = parts.slice(2, parts.length - 1); // Skip "docs/dirName" and remove filename
+  const pathParts =
+    dirName && parts.includes(dirName)
+      ? parts.slice(parts.indexOf(dirName) + 1, parts.length - 1)
+      : parts.slice(2, parts.length - 1); // Skip "docs/dirName" and remove filename
   const lastPart = parts[parts.length - 1];
 
   if (landingFile && pathParts.join('/') === landingFile) {

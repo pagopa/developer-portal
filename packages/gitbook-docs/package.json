@@ -21,6 +21,7 @@
     "lint": "eslint src",
     "test": "jest -i",
     "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
+    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
     "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts"
   },
