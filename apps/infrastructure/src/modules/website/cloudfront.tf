@@ -65,7 +65,7 @@ resource "aws_cloudfront_distribution" "website" {
   comment             = "CloudFront distribution for the static website."
   default_root_object = "index.html"
 
-  aliases = var.use_custom_certificate && var.dns_domain_name != "" ? [format("www.%s", var.dns_domain_name), var.dns_domain_name] : []
+  aliases = var.use_custom_certificate ? [format("www.%s", local.domain_name_static_website), local.domain_name_static_website] : []
 
   custom_error_response {
     error_code         = 404
@@ -107,7 +107,7 @@ resource "aws_cloudfront_distribution" "website" {
 
   viewer_certificate {
     cloudfront_default_certificate = var.use_custom_certificate ? false : true
-    acm_certificate_arn            = var.use_custom_certificate ? aws_acm_certificate.website.arn : null
+    acm_certificate_arn            = var.use_custom_certificate ? aws_acm_certificate.static_website.arn : null
     ssl_support_method             = var.use_custom_certificate ? "sni-only" : null
     minimum_protocol_version       = var.use_custom_certificate ? "TLSv1.2_2021" : null
   }
@@ -134,7 +134,7 @@ resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
 
 
     access_control_allow_origins {
-      items = ["https://${local.opennext_domain}"]
+      items = ["https://${var.dns_domain_name}"]
     }
 
     origin_override = true
