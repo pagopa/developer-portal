@@ -2,6 +2,16 @@ name: SOAP API Repo Sync
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -12,7 +22,7 @@ jobs:
   sync_docs:
     name: Sync SOAP API to S3
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout current repository
@@ -21,7 +31,7 @@ jobs:
       - name: Checkout pagopa-api repository
         uses: actions/checkout@v4
         with:
-          repository: /pagopa/pagopa-api
+          repository: pagopa/pagopa-api
           ref: develop
           path: soap-api/pagopa-api
 
@@ -29,12 +39,12 @@ jobs:
         uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
         with:
           stylesheet_path: ./apps/nextjs-website/public/wsdl-viewer
-          soap_repos_path: soap-api
+          soap_repos_path: ./soap-api
 
       - name: Add Stylesheet Reference to WSDLs
         uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:
-          dir: soap-api
+          dir: ./soap-api
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
@@ -44,4 +54,5 @@ jobs:
 
       - name: Sync soap-api folder to S3
         run: |
-          aws s3 sync soap-api s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_API_SOAP }} --delete
+          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}" && \
+          aws s3 sync soap-api s3://devportal-${FIRST_LETTER}-website-static-content/soap-api --delete
