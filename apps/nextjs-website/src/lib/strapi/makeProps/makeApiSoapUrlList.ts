@@ -11,6 +11,6 @@ export async function makeApiSoapUrlList(apiDirName: string) {
   }
 
   return soapApiMetadata.contentS3Paths.map(
-    (url) => `${staticContentsUrl}/${url}`
+    (url) => `${staticContentsUrl}/soap-api/${url}`
   ) as readonly string[];
 }
