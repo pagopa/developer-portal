@@ -1,0 +1,42 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  otlphttp/logs:
+    compression: gzip
+    logs_endpoint: https://logs.eu-south-1.amazonaws.com/v1/logs
+    headers: 
+      x-aws-log-group: /aws/lambda/devportal-d-website-opnext-server-lambda-01
+      x-aws-log-stream: instrumentation
+    auth:
+      authenticator: sigv4auth/logs
+      
+  otlphttp/traces:
+    compression: gzip
+    traces_endpoint: https://xray.eu-south-1.amazonaws.com/v1/traces
+    auth:
+      authenticator: sigv4auth/traces
+
+extensions:
+  sigv4auth/logs:
+    region: "eu-south-1"
+    service: "logs"
+  sigv4auth/traces:
+    region: "eu-south-1"
+    service: "xray"
+
+service:
+  telemetry:
+  extensions: [sigv4auth/logs, sigv4auth/traces]
+  pipelines:
+    logs:
+      receivers: [otlp]
+      exporters: [otlphttp/logs]
+    traces:
+      receivers: [otlp]
+      exporters: [otlphttp/traces]

@@ -97,6 +97,8 @@ module "website" {
   hosted_zone_id               = module.core.hosted_zone_id
   ses_domain_identity_arn      = module.core.ses_domain_identity_arn
 
+  next_open_telemetry_enabled = var.next_open_telemetry_enabled
+
   website_is_standalone = var.website_is_standalone
   nextjs_version        = "13.4.19"
   create_chatbot        = var.create_chatbot
