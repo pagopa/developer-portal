@@ -96,3 +96,24 @@ module "cms_load_balancer_internal" {
     }
   }
 }
+
+# Private Route53 zone for internal DNS
+resource "aws_route53_zone" "internal" {
+  name = "internal.${var.dns_domain_name}"
+  vpc {
+    vpc_id = module.vpc.vpc_id
+  }
+}
+
+
+# DNS record for the internal load balancer
+resource "aws_route53_record" "cms_internal" {
+  zone_id = aws_route53_zone.internal.zone_id
+  name    = "cms"
+  type    = "A"
+  alias {
+    name                   = module.cms_load_balancer_internal.dns_name
+    zone_id                = module.cms_load_balancer_internal.zone_id
+    evaluate_target_health = true
+  }
+}

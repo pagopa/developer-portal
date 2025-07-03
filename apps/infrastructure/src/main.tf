@@ -110,6 +110,11 @@ module "website" {
   }
 
   next_public_soap_api_page_active = var.environment == "dev" ? "true" : "false"
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
 }
 
 module "cms" {
