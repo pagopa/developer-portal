@@ -9,6 +9,8 @@ interface StrapiSoapApiDetails {
     readonly apiSoapDetail: {
       readonly repositoryUrl: string;
       readonly branch: string;
+      readonly repositoryPath: string;
+      readonly dirName: string;
     };
   };
 }

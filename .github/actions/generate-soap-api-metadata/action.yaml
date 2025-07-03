@@ -12,27 +12,34 @@ runs:
     - name: Generate wsdl.xml index JSON
       shell: bash
       run: |
+        repo_data_json="./soap-api-repositories.json"
         root_dir="${{ inputs.soap-api-directory }}"
         output_json="soap-api-metadata.json"
         tmpfile=$(mktemp)
         echo "[" > "$tmpfile"
+        count=$(jq length "$repo_data_json")
         first=1
-        for repo in "$root_dir"/*; do
-          [ -d "$repo" ] || continue
-          repo_name=$(basename "$repo")
-          mapfile -t wsdl_files < <(find "$repo" -type f -name '*.wsdl.xml')
-          if [ "${#wsdl_files[@]}" -gt 0 ]; then
-            # Build array of relative paths
-            rel_paths=()
-            for f in "${wsdl_files[@]}"; do
-              rel_path=$(realpath --relative-to="$root_dir" "$f")
-              rel_paths+=("\"$rel_path\"")
-            done
-            rel_paths_joined=$(IFS=,; echo "${rel_paths[*]}")
-            # Output JSON object
-            [ $first -eq 1 ] || echo "," >> "$tmpfile"
-            first=0
-            echo "  {\"dirName\": \"$repo_name\", \"contentS3Paths\": [${rel_paths_joined}]}" >> "$tmpfile"
+        for i in $(seq 0 $((count - 1))); do
+          repo_name=$(jq -r ".[$i].dirName" "$repo_data_json")
+          repo_path=$(jq -r ".[$i].repositoryPath" "$repo_data_json")
+          # Remove leading 'tree/<branch>' if present
+          repo_path=$(echo "$repo_path" | sed -E 's|^tree/[^/]+/?||')
+          search_dir="$root_dir/$repo_name"
+          [ -n "$repo_path" ] && search_dir="$search_dir/$repo_path"
+          # Find .wsdl.xml files
+          if [ -d "$search_dir" ]; then
+            mapfile -t wsdl_files < <(find "$search_dir" -type f -name '*.wsdl.xml')
+            if [ "${#wsdl_files[@]}" -gt 0 ]; then
+              rel_paths=()
+              for f in "${wsdl_files[@]}"; do
+                rel_path=$(realpath --relative-to="$root_dir" "$f")
+                rel_paths+=("\"$rel_path\"")
+              done
+              rel_paths_joined=$(IFS=,; echo "${rel_paths[*]}")
+              [ $first -eq 1 ] || echo "," >> "$tmpfile"
+              first=0
+              echo "  {\"dirName\": \"$repo_name\", \"contentS3Paths\": [${rel_paths_joined}]}" >> "$tmpfile"
+            fi
           fi
         done
         echo "]" >> "$tmpfile"

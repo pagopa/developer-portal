@@ -50,9 +50,9 @@ runs:
         for i in $(seq 0 $((count - 1))); do
           url=$(jq -r ".[$i].repositoryUrl" "$json_file")
           branch=$(jq -r ".[$i].branch" "$json_file")
-        
-          repo_name=$(basename "$url" .git | sed 's|/$||')
+          repo_name=$(jq -r ".[$i].dirName" "$json_file")
           echo "Cloning $url (branch: $branch) into $clone_dir/$repo_name"
-        
           git clone --branch "$branch" "$url" "$clone_dir/$repo_name"
         done
+        
+        mv "$json_file" "./soap-api-repositories.json"
