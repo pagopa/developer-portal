@@ -17,7 +17,11 @@ import {
   fetchFromStrapi,
   validateStrapiEnvironment,
 } from '../helpers/fetchFromStrapi';
-import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+import {
+  StrapiGuide,
+  GuideInfo,
+  generateUrlPath,
+} from '../helpers/guidesMetadataHelper';
 
 // Load environment variables from .env file
 loadEnvConfig();
@@ -31,48 +35,6 @@ const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 
 const s3Client = makeS3Client();
-
-export interface StrapiGuide {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    versions: {
-      id: number;
-      main: boolean;
-      version: string;
-      dirName: string;
-    }[];
-  };
-}
-
-export function generateUrlPath(
-  filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string,
-  dirName?: string
-): string {
-  const restOfPath = sitePathFromS3Path(filePath, dirName);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
-}
-
-export type GuideInfo = {
-  versionName: string;
-  isMainVersion: boolean;
-  dirName: string;
-  guideSlug: string;
-  productSlug: string;
-};
 
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]
