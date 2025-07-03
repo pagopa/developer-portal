@@ -28,9 +28,6 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-
       - name: Fetch and clone SOAP APIs
         uses: ./.github/actions/clone-soap-api-repos
         with:
