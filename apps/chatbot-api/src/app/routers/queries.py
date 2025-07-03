@@ -6,12 +6,12 @@ import uuid
 import requests
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from logging import getLogger
 from typing import Annotated
 
-from src.calls import chatbot_generate, chatbot_mask_pii
-from src.app.models import Query, tables, AWS_DEFAULT_REGION
+from src.calls import chatbot_generate, chatbot_mask_pii, chatbot_evaluate
+from src.app.models import Query, tables
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -63,20 +63,8 @@ def backfill_created_at_date() -> None:
     logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
-async def evaluate(evaluation_data: dict) -> dict:
-    if os.getenv("environment", "development") != "test":
-        # TODO: call lambda
-        evaluation_result = {}
-        # evaluation_result = chatbot.evaluate(**evaluation_data)
-        logger.info(f"[queries] evaluation_result={evaluation_result})")
-    else:
-        evaluation_result = {}
-    return evaluation_result
-
-
 @router.post("/queries")
 async def query_creation(
-    background_tasks: BackgroundTasks,
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
@@ -91,18 +79,15 @@ async def query_creation(
 
     answer_json = {}
 
-    lambda_generate_event = {
-        "operation": "chat_generate",
-        "payload": {
-            "query_str": query_str,
-            "trace_id": trace_id,
-            "session_id": session["id"],
-            "user_id": user_id,
-            "messages": messages,
-        },
+    lambda_payload = {
+        "query_str": query_str,
+        "trace_id": trace_id,
+        "session_id": session["id"],
+        "user_id": user_id,
+        "messages": messages,
     }
 
-    answer_json = chatbot_generate(lambda_generate_event)
+    answer_json = chatbot_generate(lambda_payload)
     answer = answer_json.get("final_response", "")
 
     if can_evaluate():
@@ -113,7 +98,7 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
+        chatbot_evaluate(evaluation_data)
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
