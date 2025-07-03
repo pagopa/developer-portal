@@ -1,5 +1,14 @@
 # chatbot
 
+## 5.2.2
+
+### Patch Changes
+
+- 55848bd: Add dignostic logs
+- 003845a: Fix bug that load the generated string as a JSON
+- 1e90cde: Fix log bug
+- 2a9c36f: Remove logs to speed production environment
+
 ## 5.2.1
 
 ### Patch Changes
