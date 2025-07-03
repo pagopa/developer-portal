@@ -28,16 +28,12 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-
       - name: Fetch and clone SOAP APIs
         uses: ./.github/actions/clone-soap-api-repos
         with:
           soap-api-directory: ./soap-api
           strapi-endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi-api-token: ${{ secrets.STRAPI_API_TOKEN }}
-          fetch-from-strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
 
       - name: Copy WSDL Viewer Library to SOAP Repos
         uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
