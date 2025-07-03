@@ -26,7 +26,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   const { palette } = useTheme();
 
   return (
-    <div style={{ backgroundColor: palette.grey[50] }}>
+    <div>
       <EContainer>
         <Stack
           sx={{
