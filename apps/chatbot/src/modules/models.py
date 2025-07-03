@@ -64,7 +64,10 @@ def get_llm(
     elif provider == "google":
         from llama_index.llms.google_genai import GoogleGenAI
 
-        GOOGLE_API_KEY = get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"))
+        GOOGLE_API_KEY = get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
+            default=os.getenv("CHB_AWS_GOOGLE_API_KEY")
+        )
 
         llm = GoogleGenAI(
             model=model_id,
