@@ -1,5 +1,11 @@
 # strapi-cms
 
+## 3.8.0
+
+### Minor Changes
+
+- e067067: Add path to wsdl files and branch field of the SOAP API specs
+
 ## 3.7.0
 
 ### Minor Changes
