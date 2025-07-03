@@ -26,20 +26,24 @@ services:
       - ntw
 
   core:
-    image: chatbot-core-main:0.1
+    #image: chatbot-core-main:0.1
+    build:
+      context: ../../chatbot-core
+      dockerfile: ../chatbot-core/docker/lambda.main.Dockerfile
     env_file: ../.env.local
     environment:
       - PYTHONPATH=/var/task
     ports:
       - "8081:8080"
     volumes:
+      - ../chatbot-core:/app
       - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambdas.main.lambda_handler"]
     networks:
       - ntw
 
-  core-create-index:
+  core-create-vector-index:
     image: chatbot-core-create_vector_index:0.1
     env_file: ../.env.local
     environment:
