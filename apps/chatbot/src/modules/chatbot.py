@@ -23,7 +23,7 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_index_redis
-from src.modules.engine import get_engine, RAGOutput
+from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
