@@ -21,11 +21,14 @@ runs:
         first=1
         for i in $(seq 0 $((count - 1))); do
           repo_name=$(jq -r ".[$i].dirName" "$repo_data_json")
-          repo_path=$(jq -r ".[$i].repositoryPath" "$repo_data_json")
+          repo_path=$(jq -r ".[$i].repositoryPath // empty" "$repo_data_json")
           # Remove leading 'tree/<branch>' if present
-          repo_path=$(echo "$repo_path" | sed -E 's|^tree/[^/]+/?||')
-          search_dir="$root_dir/$repo_name"
-          [ -n "$repo_path" ] && search_dir="$search_dir/$repo_path"
+          if [ -n "$repo_path" ]; then
+            repo_path=$(echo "$repo_path" | sed -E 's|^tree/[^/]+/?||')
+            search_dir="$root_dir/$repo_name/$repo_path"
+          else
+            search_dir="$root_dir/$repo_name"
+          fi
           # Find .wsdl.xml files
           if [ -d "$search_dir" ]; then
             mapfile -t wsdl_files < <(find "$search_dir" -type f -name '*.wsdl.xml')
