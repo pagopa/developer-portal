@@ -7,9 +7,10 @@ import yaml
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
-from logging import getLogger
 
 from src.modules.chatbot import Chatbot
+from src.modules.monitor import add_langfuse_score
+from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
@@ -17,18 +18,18 @@ params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 def current_user_id(authorization: str) -> str:
     if authorization is None:
-        logger.error("[current_user_id] Authorization header is missing, exit with 401")
+        LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
     else:
         token = authorization.split(" ")[1]
         decoded = verify_jwt(token)
         if decoded is False:
-            logger.error("[current_user_id] decoded is false, exit with 401")
+            LOGGER.error("[current_user_id] decoded is false, exit with 401")
             raise HTTPException(status_code=401, detail="Unauthorized")
         else:
             if "cognito:username" in decoded:
@@ -132,7 +133,7 @@ def get_user_session(userId: str, sessionId: str):
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
     if query_feedback.badAnswer is not None:
         bad_answer = -1 if query_feedback.badAnswer else 0
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-feedback",
             value=bad_answer,
@@ -141,7 +142,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         )
 
     if query_feedback.feedback.user_response_relevancy is not None:
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-response-relevancy",
             value=float(query_feedback.feedback.user_response_relevancy),
@@ -149,7 +150,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         )
 
     if query_feedback.feedback.user_faithfullness is not None:
-        chatbot.add_langfuse_score(
+        add_langfuse_score(
             trace_id=query_id,
             name="user-faithfullness",
             value=float(query_feedback.feedback.user_faithfullness),
