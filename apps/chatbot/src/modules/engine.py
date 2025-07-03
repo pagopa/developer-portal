@@ -6,13 +6,15 @@ from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
-from llama_index.core.tools import QueryEngineTool
+from llama_index.core.tools import QueryEngineTool, FunctionTool
+from llama_index.core.objects import ObjectIndex
 from llama_index.core.agent.workflow import ReActAgent
 
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
+USE_ASYNC = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
 
 class Reference(BaseModel):
@@ -42,10 +44,9 @@ class RAGOutput(BaseModel):
 def get_engine(
     index: VectorStoreIndex,
     llm: LLM,
-    system_prompt: str | None = None,
+    identity_prompt: str | None = None,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
-    condense_template: PromptTemplate | None = None,
     verbose: bool = True,
 ) -> ReActAgent:
     """
@@ -53,13 +54,12 @@ def get_engine(
     Args:
         index (VectorStoreIndex): The vector store index to use for retrieval.
         llm (LLM): The language model to use for generating responses.
-        system_prompt (str | None): Optional system prompt for the chat engine.
+        identity_prompt (str | None): Optional prompt for the agent's identity.
         text_qa_template (PromptTemplate | None): Optional template for text QA.
         refine_template (PromptTemplate | None): Optional template for refining context.
-        condense_template (PromptTemplate | None): Optional template for condensing context.
         verbose (bool): Whether to enable verbose logging.
     Returns:
-        CondensePlusContextChatEngine: An instance of the chat engine configured with the provided parameters.
+        ReActAgent: An agent that uses RAG (Retrieval-Augmented Generation) to answer questions.
     Raises:
         AssertionError: If the provider is not 'aws' or 'google'.
     """
@@ -92,16 +92,16 @@ def get_engine(
 
     query_engine = RetrieverQueryEngine.from_args(
         retriever=retriever,
-        llm=llm,
+        llm=llm.as_structured_llm(output_cls=RAGOutput),
         text_qa_template=text_qa_template,
         refine_template=refine_template,
-        output_cls=RAGOutput,
         node_postprocessors=[reranker],
+        use_async=USE_ASYNC,
     )
 
     query_engine_tool = QueryEngineTool.from_defaults(
         query_engine=query_engine,
-        name="rag_query_engine",
+        name="rag_tool",
         description=(
             "A tool to answer questions using the RAG (Retrieval-Augmented Generation) "
             "approach. It retrieves relevant information from the index and generates a "
@@ -109,14 +109,26 @@ def get_engine(
         ),
     )
 
+    async def identity_fn(query_str: str) -> str:
+        """Useful to reply questions about the agent identity."""
+        result = llm.complete(identity_prompt)
+        return str(result)
+
+    identity_tool = FunctionTool.from_defaults(
+        fn=identity_fn,
+        name="discovery_identity",
+        description="Responds to identity or personality questions like 'Who are you?' or 'What is your name?'",
+    )
+
+    obj_index = ObjectIndex.from_objects([identity_tool, query_engine_tool])
+
     return ReActAgent(
         name="rag_agent",
         description=(
             "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
             "It retrieves relevant information from the index and generates a structured response."
         ),
-        tools=[query_engine_tool],
+        tool_retriever=obj_index.as_retriever(similarity_top_k=2),
         llm=llm,
         verbose=verbose,
-        system_prompt=system_prompt,
     )

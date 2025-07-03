@@ -11,10 +11,10 @@ from src.modules.utils import get_ssm_parameter
 
 LOGGER = get_logger(__name__)
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
-MODEL_ID = os.getenv("CHB_MODEL_ID")
+MODEL_ID = os.getenv("CHB_MODEL_ID", "gemini-2.0-flash")
 MODEL_TEMPERATURE = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
 MODEL_MAXTOKENS = int(os.getenv("CHB_MODEL_MAXTOKENS", "768"))
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
+EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID", "text-embedding-004")
 EMBED_BATCH_SIZE = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
 
 

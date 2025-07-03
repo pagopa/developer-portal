@@ -23,7 +23,7 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_index_redis
-from src.modules.engine import get_engine
+from src.modules.engine import get_engine, RAGOutput
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
@@ -56,38 +56,27 @@ class Chatbot:
         params: dict | None = None,
         prompts: dict | None = None,
     ):
-        self.params = (
-            params
-            if params
-            else yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-        )
-        self.prompts = (
-            prompts
-            if prompts
-            else yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-        )
-
+        self.params = params
+        self.prompts = prompts
         self.pii = PresidioPII(config=params["config_presidio"])
-
         self.model = get_llm()
-        self.judge = Evaluator(llm=get_llm(temperature=0.0))
+        self.judge = Evaluator()
         self.embed_model = get_embed_model()
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
+            self._get_prompt_templates()
+        )
         self.index = load_index_redis(
             self.model,
             self.embed_model,
             chunk_size=params["vector_index"]["chunk_size"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
-        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
-            self._get_prompt_templates()
-        )
         self.engine = get_engine(
             self.index,
             llm=self.model,
-            system_prompt=self.prompts["system_prompt_str"],
+            identity_prompt=self.prompts["identity_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            condense_template=self.condense_prompt_tmpl,
             verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(
@@ -131,19 +120,26 @@ class Chatbot:
 
     def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
 
-        raw_output = engine_response.tool_calls[0].tool_output.raw_output
-        response_str = raw_output.response.response.strip()
-        product_list = raw_output.response.products
+        tool_calls = engine_response.tool_calls
+        product_list = []
         references_list = []
-        for ref in raw_output.response.references:
-            references_list.append(f"[{ref.title}]({WEBSITE_URL}{ref.filepath})")
         retrieved_contexts = []
-        for node in raw_output.source_nodes:
-            url = WEBSITE_URL + node.metadata["filepath"]
-            retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+        for tool_call in tool_calls:
+            raw_output = tool_call.tool_output.raw_output
+            product_list += getattr(raw_output, "products", [])
+            references = getattr(raw_output, "references", [])
+
+            for ref in references:
+                references_list.append(f"[{ref.title}]({WEBSITE_URL}{ref.filepath})")
+
+            nodes = getattr(raw_output, "source_nodes", [])
+            for node in nodes:
+                url = WEBSITE_URL + node.metadata["filepath"]
+                retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
 
         response_json = {
-            "response": response_str,
+            "response": engine_response.response.content.strip(),
             "products": product_list,
             "references": references_list,
             "contexts": retrieved_contexts,

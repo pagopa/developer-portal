@@ -47,7 +47,7 @@ class RagasWrapper(LlamaIndexLLMWrapper):
         if stop is not None:
             LOGGER.info("stop kwarg passed to LlamaIndex LLM")
         if callbacks is not None:
-            LOGGER.info(
+            LOGGER.debug(
                 "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
             )
         if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:
@@ -68,8 +68,7 @@ class Evaluator:
         embedder: BaseEmbedding | None = None,
     ):
 
-        llm = llm if llm else get_llm()
-        llm.temperature = 0.0
+        llm = llm if llm else get_llm(temperature=0.0)
         self.llm = RagasWrapper(llm=llm)
         embedder = embedder if embedder else get_embed_model()
         self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
