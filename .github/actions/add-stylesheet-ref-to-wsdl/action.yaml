@@ -13,15 +13,13 @@ runs:
       shell: bash
       run: |
         find "${{ inputs.dir }}" -type f -name "*.wsdl" | while read -r file; do
-          if ! grep -q '<?xml-stylesheet type="text/xsl" href="../wsdl-viewer/wsdl-viewer.xsl"?>' "$file"; then
-            awk '{
-              print
-              if (!inserted && $0 ~ /^\s*<\?xml.*\?>\s*$/) {
-              print "<?xml-stylesheet type=\"text/xsl\" href=\"../wsdl-viewer/wsdl-viewer.xsl\"?>"
-              inserted=1
-              }
-            }' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
-          fi
+          awk '{
+            print
+            if (!inserted && $0 ~ /^\s*<\?xml.*\?>\s*$/) {
+            print "<?xml-stylesheet type=\"text/xsl\" href=\"wsdl-viewer.xsl\"?>"
+            inserted=1
+            }
+          }' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
         done
 
     - name: Find all WDSL file and change the extension to XML
