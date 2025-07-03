@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Manage error correctly
+Manage error 500 correctly
