@@ -1,0 +1,58 @@
+name: SOAP API from Strapi
+description: Get SOAP API from Strapi and clone the listed repositories
+
+inputs:
+  soap-api-directory:
+    description: Directory
+    required: true
+  strapi-endpoint:
+    description: Strapi API endpoint
+    required: true
+  strapi-api-token:
+    description: Strapi API token
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.18.0'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Fetch SOAP API list from Strapi
+      shell: bash
+      env:
+        OUTPUT_DIR: __soap_tmp_output__
+        STRAPI_ENDPOINT: ${{ inputs.strapi-endpoint }}
+        STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
+      run: |
+        echo "Running fetch-soap-api-from-strapi..."
+        npm run fetch-soap-api-from-strapi -w gitbook-docs
+
+    - name: Clone each SOAP repository
+      shell: bash
+      run: |
+        json_file="./packages/gitbook-docs/__soap_tmp_output__/soap-api-repositories.json"
+        clone_dir="${{ inputs.soap-api-directory }}"
+        
+        mkdir -p "$clone_dir"
+        count=$(jq length "$json_file")
+        echo "Found $count repositories to clone"
+        
+        for i in $(seq 0 $((count - 1))); do
+          url=$(jq -r ".[$i].repositoryUrl" "$json_file")
+          branch=$(jq -r ".[$i].branch" "$json_file")
+        
+          repo_name=$(basename "$url" .git | sed 's|/$||')
+          echo "Cloning $url (branch: $branch) into $clone_dir/$repo_name"
+        
+          git clone --branch "$branch" "$url" "$clone_dir/$repo_name"
+        done
