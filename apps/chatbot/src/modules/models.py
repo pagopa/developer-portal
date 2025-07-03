@@ -59,7 +59,7 @@ def get_llm(
             aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
             region_name=os.getenv("CHB_AWS_BEDROCK_LLM_REGION"),
         )
-        LOGGER.info(f"{model_id} LLM loaded successfully!")
+        LOGGER.info(f"{model_id} LLM loaded successfully from AWS Bedrock!")
 
     elif provider == "google":
         from llama_index.llms.google_genai import GoogleGenAI
@@ -75,7 +75,7 @@ def get_llm(
             max_tokens=max_tokens,
             api_key=GOOGLE_API_KEY,
         )
-        LOGGER.info(f"{model_id} LLM loaded successfully!")
+        LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
 
     elif provider == "mock":
         llm = MockLLM(
@@ -125,7 +125,7 @@ def get_embed_model(
             aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
             region_name=os.getenv("CHB_AWS_BEDROCK_EMBED_REGION"),
         )
-        LOGGER.info(f"{model_id} embedding model loaded successfully!")
+        LOGGER.info(f"{model_id} embedding model loaded successfully from AWS Bedrock!")
 
     elif provider == "google":
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
@@ -135,7 +135,7 @@ def get_embed_model(
             api_key=get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY")),
             embed_batch_size=embed_batch_size,
         )
-        LOGGER.info(f"{model_id} embedding model loaded successfully!")
+        LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
 
     elif provider == "mock":
         embed_model = MockEmbedding(embed_dim=5)

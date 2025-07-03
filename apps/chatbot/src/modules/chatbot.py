@@ -1,11 +1,9 @@
 import os
-import re
-import json
-import yaml
 from pathlib import Path
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
+from llama_index.core.async_utils import asyncio_run
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response,
@@ -13,17 +11,19 @@ from llama_index.core.base.response.schema import (
     AsyncStreamingResponse,
     PydanticResponse,
 )
-from llama_index.core.chat_engine.types import (
-    AgentChatResponse,
-    StreamingAgentChatResponse,
+from llama_index.core.agent.workflow import (
+    AgentInput,
+    AgentOutput,
+    ToolCall,
+    ToolCallResult,
+    AgentStream,
 )
-from llama_index.core.async_utils import asyncio_run
 from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_index_redis
-from src.modules.engine import get_engine, RAGOutput
+from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
@@ -45,8 +45,11 @@ RESPONSE_TYPE = Union[
     StreamingResponse,
     AsyncStreamingResponse,
     PydanticResponse,
-    AgentChatResponse,
-    StreamingAgentChatResponse,
+    AgentInput,
+    AgentOutput,
+    ToolCall,
+    ToolCallResult,
+    AgentStream,
 ]
 
 

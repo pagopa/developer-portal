@@ -28,12 +28,12 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Checkout pagopa-api repository
-        uses: actions/checkout@v4
+      - name: Fetch and clone SOAP APIs
+        uses: ./.github/actions/clone-soap-api-repos
         with:
-          repository: pagopa/pagopa-api
-          ref: develop
-          path: soap-api/pagopa-api
+          soap-api-directory: ./soap-api
+          strapi-endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi-api-token: ${{ secrets.STRAPI_API_TOKEN }}
 
       - name: Copy WSDL Viewer Library to SOAP Repos
         uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
@@ -45,6 +45,11 @@ jobs:
         uses: ./.github/actions/add-stylesheet-ref-to-wsdl
         with:
           dir: ./soap-api
+
+      - name: Generate SOAP API metadata
+        uses: ./.github/actions/generate-soap-api-metadata
+        with:
+          soap-api-directory: ./soap-api
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
