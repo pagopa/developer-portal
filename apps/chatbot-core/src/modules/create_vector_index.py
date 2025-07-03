@@ -12,7 +12,8 @@ logging.basicConfig(level=logging.INFO)
 
 DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR", "./PagoPADevPortal/out/")
 
-if __name__ == "__main__":
+
+def create_vector_index():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--params", type=str, default="config/params.yaml", help="params path"
@@ -33,3 +34,7 @@ if __name__ == "__main__":
         chunk_size=params["vector_index"]["chunk_size"],
         chunk_overlap=params["vector_index"]["chunk_overlap"],
     )
+
+
+if __name__ == "__main__":
+    create_vector_index()

@@ -1,5 +1,5 @@
-from src.modules.logger import get_logger
 from src.chatbot_init import chatbot
+from src.modules.logger import get_logger
 
 LOGGER = get_logger(__name__)
 
@@ -9,20 +9,12 @@ def ping(payload):
 
 
 def lambda_handler(event, context):
-    operations = {
-        "ping": ping,
-        "chat_generate": chatbot.chat_generate,
-        "get_final_response": chatbot.get_final_response,
-    }
     LOGGER.debug(f"- - - - - - - - event: {event}")
 
     operation_name = event.get("operation")
     payload = event.get("payload")
 
     LOGGER.debug(
-        f"- - - - - - - - Received operation: {operation_name} with payload: {payload}"
-    )
-    print(
         f"- - - - - - - - Received operation: {operation_name} with payload: {payload}"
     )
 

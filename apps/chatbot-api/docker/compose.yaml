@@ -23,17 +23,32 @@ services:
     networks:
       - ntw
 
-  create-redis-index:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
-    env_file: "../.env.local"
+  core:
+    image: chatbot-core-main:0.1
+    env_file: ../.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8081:8080"
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - ntw
+
+  core-create-index:
+    image: chatbot-core-create_vector_index:0.1
+    env_file: ../.env.local
+    environment:
+      - PYTHONPATH=/var/task
     volumes:
-      - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
+      - ./files/nextjs-website/out:/app/build-devp/out
+    ports:
+      - "8082:8080"
     depends_on:
       redis:
+        condition: service_started
+      langfuse:
         condition: service_started
       motoserver:
         condition: service_started
@@ -48,8 +63,8 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file: ../.env.local
@@ -67,9 +82,9 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
+    # ports:
+    #   - "6379:6379"
+    #   - "8001:8001"
     volumes:
       - redis_data:/data
     networks:
@@ -106,6 +121,7 @@ services:
     image: motoserver/moto:5.1.0
     networks:
       - ntw
+
 volumes:
   postgres_data:
     driver: local

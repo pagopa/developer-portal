@@ -1,25 +1,25 @@
 ---
-services:
+services:  
   core:
     build:
       context: ..
       dockerfile: docker/app.Dockerfile
     env_file: ../.env.local
     ports:
-      - "8080:8080"
+      - "8080:8081"
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
       - ../../nextjs-website/out:/app/build-devp/out
-    depends_on:
-      redis:
-        condition: service_started
-      dynamodb:
-        condition: service_started
-      langfuse:
-        condition: service_started
-      motoserver:
-        condition: service_started
+    #depends_on:
+    #  redis:
+    #    condition: service_started
+    #  dynamodb:
+    #    condition: service_started
+    #  langfuse:
+    #    condition: service_started
+    #  motoserver:
+    #    condition: service_started
     networks:
       - ntw
 
@@ -67,9 +67,9 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
+    # ports:
+    #   - "6379:6379"
+    #   - "8001:8001"
     volumes:
       - redis_data:/data
     networks:
