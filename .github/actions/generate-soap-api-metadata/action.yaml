@@ -22,9 +22,15 @@ runs:
         for i in $(seq 0 $((count - 1))); do
           repo_name=$(jq -r ".[$i].dirName" "$repo_data_json")
           repo_path=$(jq -r ".[$i].repositoryPath // empty" "$repo_data_json")
-          # Remove leading 'tree/<branch>' if present
+          branch_name=$(jq -r ".[$i].branch // empty" "$repo_data_json")
+          # Remove leading 'tree/<branch>/' if present, where branch may contain slashes
           if [ -n "$repo_path" ]; then
-            repo_path=$(echo "$repo_path" | sed -E 's|^tree/[^/]+/?||')
+            if [ -n "$branch_name" ]; then
+              prefix="tree/$branch_name/"
+              if [[ "$repo_path" == "$prefix"* ]]; then
+                repo_path="${repo_path#$prefix}"
+              fi
+            fi
             search_dir="$root_dir/$repo_name/$repo_path"
           else
             search_dir="$root_dir/$repo_name"
