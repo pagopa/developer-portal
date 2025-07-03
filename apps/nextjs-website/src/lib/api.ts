@@ -54,11 +54,26 @@ export async function getGuidePage(
   }
 
   // Fetch data in parallel instead of sequential
-  const [products, guideProps, guidesMetadata] = await Promise.all([
-    getProducts(),
-    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
-    getGuidesMetadata(),
-  ]);
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePage - getProducts');
+  const products = await getProducts();
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePage - getProducts');
+
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePage - getGuidePageProps');
+  const guideProps = await getGuidePageProps(
+    guidePaths.length > 0 ? guidePaths[0] : '',
+    productSlug
+  );
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePage - getGuidePageProps');
+
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePage - getGuidesMetadata');
+  const guidesMetadata = await getGuidesMetadata();
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePage - getGuidesMetadata');
 
   // Path construction
   const guidePath = [
@@ -67,6 +82,8 @@ export async function getGuidePage(
     ...guidePaths,
   ].join('/');
 
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePage - parseS3GuidePage');
   const parsedGuidePage = manageUndefined(
     await parseS3GuidePage({
       guideProps,
@@ -75,6 +92,8 @@ export async function getGuidePage(
       products,
     })
   );
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePage - parseS3GuidePage');
 
   // Cache the result to avoid duplicate work
   // eslint-disable-next-line functional/no-expression-statements

@@ -55,10 +55,12 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
+  console.time('[guide-performance] generateMetadata - getGuidePage');
   const porps = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
+  console.timeEnd('[guide-performance] generateMetadata - getGuidePage');
 
   if (porps?.seo) {
     return makeMetadataFromStrapi(porps?.seo);
@@ -90,10 +92,16 @@ export async function generateMetadata({
 // }
 
 const Page = async ({ params }: { params: Params }) => {
-  const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
-    getUrlReplaceMapProps(),
-  ]);
+  console.time('[guide-performance] Page - getGuidePage');
+  const guideProps = await getGuidePage(
+    params?.productGuidePage ?? [''],
+    params?.productSlug
+  );
+  console.timeEnd('[guide-performance] Page - getGuidePage');
+
+  console.time('[guide-performance] Page - getUrlReplaceMapProps');
+  const urlReplaceMap = await getUrlReplaceMapProps();
+  console.timeEnd('[guide-performance] Page - getUrlReplaceMapProps');
 
   if (!guideProps) {
     return PageNotFound;

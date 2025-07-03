@@ -84,8 +84,20 @@ export const getProductsProps = async () => {
   return withCache(
     getCacheKey('getProductsProps'),
     async () => {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.time('[guide-performance] getProductsProps - fetchProducts');
       const strapiProducts = await fetchProducts(buildEnv);
-      return makeProductsProps(strapiProducts);
+      // eslint-disable-next-line functional/no-expression-statements
+      console.timeEnd('[guide-performance] getProductsProps - fetchProducts');
+
+      // eslint-disable-next-line functional/no-expression-statements
+      console.time('[guide-performance] getProductsProps - makeProductsProps');
+      const result = makeProductsProps(strapiProducts);
+      // eslint-disable-next-line functional/no-expression-statements
+      console.timeEnd(
+        '[guide-performance] getProductsProps - makeProductsProps'
+      );
+      return result;
     },
     CACHE_EXPIRY_IN_SECONDS
   );
@@ -139,8 +151,25 @@ export const getUrlReplaceMapProps = async () => {
   const result = await withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.time(
+        '[guide-performance] getUrlReplaceMapProps - fetchUrlReplaceMap'
+      );
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+      // eslint-disable-next-line functional/no-expression-statements
+      console.timeEnd(
+        '[guide-performance] getUrlReplaceMapProps - fetchUrlReplaceMap'
+      );
+
+      // eslint-disable-next-line functional/no-expression-statements
+      console.time(
+        '[guide-performance] getUrlReplaceMapProps - makeUrlReplaceMap'
+      );
       const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+      // eslint-disable-next-line functional/no-expression-statements
+      console.timeEnd(
+        '[guide-performance] getUrlReplaceMapProps - makeUrlReplaceMap'
+      );
       return processed;
     },
     CACHE_EXPIRY_IN_SECONDS
@@ -259,14 +288,22 @@ export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePageProps - fetchGuide');
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePageProps - fetchGuide');
 
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
 
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] getGuidePageProps - makeGuidesProps');
   const guidesProps = makeGuidesProps(strapiGuides);
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('[guide-performance] getGuidePageProps - makeGuidesProps');
 
   return guidesProps[0];
 };
