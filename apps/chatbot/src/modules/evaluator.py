@@ -1,4 +1,3 @@
-from logging import getLogger
 from typing import List, Optional, Any
 
 from llama_index.core.llms.llm import BaseLLM
@@ -15,10 +14,11 @@ from ragas.metrics import (
 )
 from langchain_core.callbacks import Callbacks
 
+from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 class RagasWrapper(LlamaIndexLLMWrapper):
@@ -41,15 +41,11 @@ class RagasWrapper(LlamaIndexLLMWrapper):
         callbacks: Callbacks,
     ) -> dict[str, Any]:
         if n != 1:
-            logger.warning("n values greater than 1 not support for LlamaIndex LLMs")
+            LOGGER.warning("n values greater than 1 not support for LlamaIndex LLMs")
         if temperature != 1e-8:
-            logger.info("temperature kwarg passed to LlamaIndex LLM")
+            LOGGER.info("temperature kwarg passed to LlamaIndex LLM")
         if stop is not None:
-            logger.info("stop kwarg passed to LlamaIndex LLM")
-        if callbacks is not None:
-            logger.info(
-                "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
-            )
+            LOGGER.info("stop kwarg passed to LlamaIndex LLM")
         if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:
             return {"temperature": temperature}
         else:

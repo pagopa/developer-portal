@@ -51,7 +51,7 @@ provider "awscc" {
 }
 
 data "http" "docs_redirect_cf_function_code" {
-  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/src/rewriter.js"
+  url = "https://raw.githubusercontent.com/pagopa/docs-redirect/refs/heads/main/dist/rewriter.js"
 
   request_headers = {
     Accept = "text/plain"
@@ -108,6 +108,8 @@ module "website" {
     app_name        = "website"
     instance_number = "01"
   }
+
+  next_public_soap_api_page_active = var.environment == "dev" ? "true" : "false"
 }
 
 module "cms" {
@@ -128,6 +130,8 @@ module "cms" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
+
+  rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
 import {
@@ -159,6 +163,7 @@ module "chatbot" {
   ecs_redis               = var.chatbot_ecs_redis
   github_repository       = var.github_repository
   ecs_monitoring          = var.chatbot_ecs_monitoring
+  models                  = var.chatbot_models
 }
 
 module "cicd" {
@@ -181,8 +186,13 @@ module "cicd" {
   redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
 
-  website_bucket = module.website.website_bucket
-  website_cdn    = module.website.website_cdn
+  website_bucket               = module.website.website_bucket
+  website_cdn                  = module.website.website_cdn
+  opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
+
+  assets_opennext_bucket      = module.website.assets_opennext_bucket
+  lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
+  lambda_initializer_arn      = module.website.lambda_initializer.arn
 
   website_is_standalone = var.website_is_standalone
 

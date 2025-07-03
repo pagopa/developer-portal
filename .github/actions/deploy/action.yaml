@@ -5,11 +5,26 @@ inputs:
   environment:
     description: 'The environment target'
     required: true
+  ref:
+    description: >
+      The branch, tag or SHA to checkout. When checking out the repository that
+      triggered a workflow, this defaults to the reference or SHA for that
+      event.  Otherwise, uses the default branch.
+    required: false
   path_to_gitbook_docs:
     description: 'The absolute path to GitBook content'
     required: true
   cookie_domain_script:
     description: 'The data-domain-script code needed by cookie script from One Trust'
+    required: false
+  cookie_script_url:
+    description: 'The URL of the cookie script from One Trust'
+    required: false
+  cookie_category:
+    description: 'The category of the cookie script from One Trust'
+    required: false
+  use_new_cookie:
+    description: 'If true, then the new cookie script is used; otherwise, the old one is used'
     required: false
   allow_crawler:
     description: 'Allow crawler to index the website, by default are not allowed'
@@ -45,6 +60,12 @@ inputs:
   strapi_api_token:
     description: 'The API key to use to invoke Strapi endpoint'
     required: true
+  s3_access_key_id:
+    description: 'The access key to use to upload files to S3'
+    required: true
+  s3_secret_access_key:
+    description: 'The secret key to use to upload files to S3'
+    required: true
   fetch_from_strapi:
     description: 'If true, then fetch content from Strapi; otherwise, use only static contents'
     required: false
@@ -61,6 +82,8 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      with:
+        ref: ${{ inputs.ref }}
 
     - name: Setup Node.JS
       uses: ./.github/actions/setup-node
@@ -91,6 +114,9 @@ runs:
         NEXT_PUBLIC_ENVIRONMENT: ${{ inputs.environment }}
         PATH_TO_GITBOOK_DOCS: ${{ inputs.path_to_gitbook_docs }}
         NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT: ${{ inputs.cookie_domain_script }}
+        NEXT_PUBLIC_COOKIE_SCRIPT_URL: ${{ inputs.cookie_script_url }}
+        NEXT_PUBLIC_COOKIE_CATEGORY: ${{ inputs.cookie_category }}
+        NEXT_PUBLIC_USE_NEW_COOKIE: ${{ inputs.use_new_cookie }}
         ALLOW_CRAWLER: ${{ inputs.allow_crawler }}
         NEXT_TELEMETRY_DISABLED: "1"
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.aws_region }}
@@ -106,6 +132,8 @@ runs:
         NEXT_PUBLIC_CHATBOT_ACTIVE: ${{ inputs.chatbot_active }}
         STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
+        S3_ACCESS_KEY_ID:  ${{ inputs.s3_access_key_id }}
+        S3_SECRET_ACCESS_KEY:  ${{ inputs.s3_secret_access_key }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
       shell: bash
       run: npm run build -w nextjs-website

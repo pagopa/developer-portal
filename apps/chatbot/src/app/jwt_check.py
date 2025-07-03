@@ -4,7 +4,9 @@ from jose import jwk, jwt
 from jose import exceptions as jwt_exceptions
 from jose.utils import base64url_decode
 from fastapi import HTTPException
+from src.modules.logger import get_logger
 
+LOGGER = get_logger(__name__)
 
 AWS_DEFAULT_REGION = os.getenv(
     'CHB_AWS_DEFAULT_REGION',
@@ -16,13 +18,15 @@ AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
 def get_jwks():
     KEYS_URL = (
         f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/"
-        f"{AWS_DEFAULT_REGION}_{AUTH_COGNITO_USERPOOL_ID}/"
+        f"{AUTH_COGNITO_USERPOOL_ID}/"
         ".well-known/jwks.json"
     )
     response = requests.get(KEYS_URL)
+
     if response.status_code == 200:
         return response.json()
     else:
+        LOGGER.error(f"[get_jwks] KEYS_URL={KEYS_URL}, Response status code: {response.status_code}")
         raise HTTPException(status_code=401, detail="Auth error")
 
 

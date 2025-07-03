@@ -1,5 +1,89 @@
 # nextjs-website
 
+## 8.1.0
+
+### Minor Changes
+
+- 765b623: Add wsdl-viewer stylesheet to the public directory
+
+### Patch Changes
+
+- daab8fc: - Added configurable retry logic to `downloadFileAsText()` and `fetchMetadataFromCDN()` functions
+  - Implemented exponential backoff with configurable retry attempts and delay timing
+  - Added environment variables `CDN_RETRY_ATTEMPTS` (default: 3) and `CDN_RETRY_DELAY_MS` (default: 5000ms)
+  - Improved error handling and logging for CDN fetch failures
+  - Fixes issues where guide pages would show 404 errors when CloudFront cache was not warmed up
+- Updated dependencies [8164b76]
+  - gitbook-docs@0.5.1
+
+## 8.0.0
+
+### Major Changes
+
+- 0a87d37: Refactor pages that use gitbook to fetch data using S3
+
+### Minor Changes
+
+- 0a87d37: Use CDN instead of S3 client to get data from gitbook
+- 0a87d37: Update sitemap and add metadata generate functions for release-notes and solutions
+- 0a87d37: Update render of guide from gitbook
+- 0a87d37: Fix guide version subpages and release note pages
+- 0a87d37: Add ISR to Next.JS
+
+### Patch Changes
+
+- 0a87d37: Add logs to guides
+- 0a87d37: Fix S3 doc parser to match file path that ends like site path
+- 0a87d37: Add error page for generic Nextjs errors
+- 0a87d37: Refactor sitemap generation to use new environment variable for guide metadata path and add script for generating guide metadata from S3 and Strapi.
+- 0a87d37: Fix dompurify warning
+- 0a87d37: Set content coming from gitbook as static page
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+- Updated dependencies [0a87d37]
+  - gitbook-docs@0.5.0
+
+## 7.0.0
+
+### Major Changes
+
+- 79f59c3: Add Feedback form to chatbot for Pagopa Users. Update Feedback API
+- 3696915: Fix package-lock
+
+### Minor Changes
+
+- 30ccdc9: Add ApiSoapSection a new component to display a structured and styled representation of a WSDL file for SOAP API and a showcase Storybook's story for it
+- 8cc06ee: Add Webinar category selector to webinar template
+- 609c665: Rename the existing ApiSection component to ApiRestSection and add a more generic ApiSection component to replace it
+
+### Patch Changes
+
+- 5b72c01: Add script to add included text in .md files. Update documentation parsing
+- 2111ace: Fix dependencies
+- 4887227: Add content to some pages' title
+- af4c64e: Add "noindex, follow" rules to the robots meta tag on all non-main guide pages
+- 2f130c8: Fix include_replacer call to update ./docs
+- e362faf: Add feature flag for feedback form
+- 02b9f97: Remove comments from Matomo Tag Manager script and fix indentation
+- Updated dependencies [5b72c01]
+  - gitbook-docs@0.4.2
+
+## 6.2.0
+
+### Minor Changes
+
+- cd2ffa3: Add webinar category selectors
+- 95ebd68: Add WebinarCategory Codec, fetch and make to nextjs-website
+
+### Patch Changes
+
+- 88ac6e3: Make matomo cookie script retrocompatible
+- aad01ad: Manage cookies using matomo tag manager
+- Updated dependencies [85736d0]
+  - gitbook-docs@0.4.1
+
 ## 6.1.0
 
 ### Minor Changes

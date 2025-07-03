@@ -1,4 +1,5 @@
 import os
+import numpy as np
 from typing import Optional, Any, Union, Mapping
 
 from langfuse.client import (
@@ -28,6 +29,10 @@ try:
         LLMChatEndEvent,
         LLMChatStartEvent,
     )
+    from llama_index.core.instrumentation.events.rerank import (
+        ReRankEndEvent,
+        ReRankStartEvent,
+    )
     from llama_index.core.utilities.token_counting import TokenCounter
 
 except ImportError:
@@ -35,27 +40,30 @@ except ImportError:
         "Please install llama-index to use the Langfuse llama-index integration: 'pip install llama-index'"
     )
 
-from logging import getLogger
+from src.modules.logger import get_logger
 
 
-logger = getLogger(__name__)
-
-
+LOGGER = get_logger(__name__)
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
+RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 LLMS_COST = {
     "mistral.mistral-large-2402-v1:0": {
         "input_cost": 0.0052 * 1.0e-3,
         "output_cost": 0.0156 * 1.0e-3,
     },
-    "models/gemini-1.5-flash": {
-        "input_cost": 0.075 * 1.0e-6,
-        "output_cost": 0.30 * 1.0e-6,
+    "gemini-2.0-flash": {
+        "input_cost": 0.1 * 1.0e-6,
+        "output_cost": 0.4 * 1.0e-6,
     },
 }
 EMBEDDERS_COST = {
     "cohere.embed-multilingual-v3": 0.0001 * 1.0e-3,
-    "models/models/text-embedding-004": 0,
+    "text-embedding-004": 0,
+}
+RERANK_COST = {
+    "amazon.rerank-v1:0": 0.001,
+    "semantic-ranker-512-003": 0.001,
 }
 
 
@@ -73,23 +81,35 @@ class EventHandler(BaseEventHandler, extra="allow"):
         return "EventHandler"
 
     def handle(self, event: BaseEvent) -> None:
-        logger.debug(f"Event {type(event).__name__} received: {event}")
+        LOGGER.debug(f"Event {type(event).__name__} received: {event}")
 
         if isinstance(
-            event, (LLMCompletionStartEvent, LLMChatStartEvent, EmbeddingStartEvent)
+            event,
+            (
+                LLMCompletionStartEvent,
+                LLMChatStartEvent,
+                EmbeddingStartEvent,
+                ReRankStartEvent,
+            ),
         ):
             self.update_generation_from_start_event(event)
         elif isinstance(
-            event, (LLMCompletionEndEvent, LLMChatEndEvent, EmbeddingEndEvent)
+            event,
+            (LLMCompletionEndEvent, LLMChatEndEvent, EmbeddingEndEvent, ReRankEndEvent),
         ):
             self.update_generation_from_end_event(event)
 
     def update_generation_from_start_event(
         self,
-        event: Union[LLMCompletionStartEvent, LLMChatStartEvent, EmbeddingStartEvent],
+        event: Union[
+            LLMCompletionStartEvent,
+            LLMChatStartEvent,
+            EmbeddingStartEvent,
+            ReRankStartEvent,
+        ],
     ) -> None:
         if event.span_id is None:
-            logger.warning("Span ID is not set")
+            LOGGER.warning("Span ID is not set")
             return
 
         model_data = event.model_dict
@@ -116,10 +136,13 @@ class EventHandler(BaseEventHandler, extra="allow"):
         )
 
     def update_generation_from_end_event(
-        self, event: Union[LLMCompletionEndEvent, LLMChatEndEvent, EmbeddingEndEvent]
+        self,
+        event: Union[
+            LLMCompletionEndEvent, LLMChatEndEvent, EmbeddingEndEvent, ReRankEndEvent
+        ],
     ) -> None:
         if event.span_id is None:
-            logger.warning("Span ID is not set")
+            LOGGER.warning("Span ID is not set")
             return
 
         usage = None
@@ -129,8 +152,8 @@ class EventHandler(BaseEventHandler, extra="allow"):
                 usage = (
                     self._parse_token_usage(event.response) if event.response else None
                 )
-                logger.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
-                logger.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
+                LOGGER.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
+                LOGGER.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
 
         if isinstance(event, EmbeddingEndEvent):
             token_count = sum(
@@ -146,7 +169,17 @@ class EventHandler(BaseEventHandler, extra="allow"):
                     else 0
                 ),
             }
-            logger.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
+            LOGGER.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
+
+        if isinstance(event, ReRankEndEvent):
+
+            num_chunks = len(event.nodes)
+
+            usage = {
+                "total_cost": np.ceil(num_chunks / 100) * RERANK_COST[RERANKER_ID],
+            }
+
+            LOGGER.info(f"[{RERANKER_ID}] reranking {num_chunks} chunks")
 
         self._get_generation_client(event.span_id).update(
             usage=usage, end_time=_get_timestamp()
@@ -166,7 +199,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
     def _get_generation_client(self, id: str) -> StatefulGenerationClient:
         trace_id = self._context.trace_id
         if trace_id is None:
-            logger.warning(
+            LOGGER.warning(
                 "Trace ID is not set. Creating generation client with new trace id."
             )
             trace_id = str(create_uuid())

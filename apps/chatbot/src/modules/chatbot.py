@@ -3,9 +3,7 @@ import re
 import json
 import yaml
 from pathlib import Path
-from datetime import datetime
-from logging import getLogger
-from typing import Union, Tuple, Sequence, Optional, List, Any, Dict, Literal
+from typing import Union, Tuple, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -20,29 +18,28 @@ from llama_index.core.chat_engine.types import (
     StreamingAgentChatResponse,
 )
 from llama_index.core.async_utils import asyncio_run
-
-from langfuse import Langfuse
 from langfuse.llama_index import LlamaIndexInstrumentor
-from langfuse.api.resources.trace.types.traces import Traces
-from langfuse.model import TraceWithFullDetails
 
+from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import (
-    load_automerging_index_redis,
-    REDIS_KVSTORE,
-    INDEX_ID,
-)
-from src.modules.engine import get_automerging_engine
+from src.modules.vector_database import load_index_redis
+from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.evaluator import Evaluator
-from src.modules.utils import get_ssm_parameter
+from src.modules.monitor import (
+    LANGFUSE_PUBLIC_KEY,
+    LANGFUSE_SECRET_KEY,
+    LANGFUSE_HOST,
+    LANGFUSE_CLIENT,
+    add_langfuse_score,
+)
 
 
-logger = getLogger(__name__)
-
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 USE_PRESIDIO = (
     True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
 )
@@ -62,18 +59,6 @@ RESPONSE_TYPE = Union[
     AgentChatResponse,
     StreamingAgentChatResponse,
 ]
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-)
-LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-)
-LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
-LANGFUSE = Langfuse(
-    public_key=LANGFUSE_PUBLIC_KEY, secret_key=LANGFUSE_SECRET_KEY, host=LANGFUSE_HOST
-)
 
 
 class Chatbot:
@@ -99,16 +84,16 @@ class Chatbot:
         self.model = get_llm()
         self.judge = Evaluator(llm=get_llm())
         self.embed_model = get_embed_model()
-        self.index = load_automerging_index_redis(
+        self.index = load_index_redis(
             self.model,
             self.embed_model,
-            chunk_sizes=params["vector_index"]["chunk_sizes"],
+            chunk_size=params["vector_index"]["chunk_size"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
         self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
             self._get_prompt_templates()
         )
-        self.engine = get_automerging_engine(
+        self.engine = get_engine(
             self.index,
             llm=self.model,
             system_prompt=self.prompts["system_prompt_str"],
@@ -123,7 +108,7 @@ class Chatbot:
             host=LANGFUSE_HOST,
             mask=self._mask_trace,
         )
-        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE)
+        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
 
     def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
 
@@ -181,7 +166,7 @@ class Chatbot:
                 'Prova a riformulare la domanda.", '
                 '"topics": ["none"], "references": []}'
             )
-        elif (
+        if (
             re.search(r'"response":', response_str) is None
             and re.search(r'"topics":', response_str) is None
             and re.search(r'"references":', response_str) is None
@@ -189,33 +174,6 @@ class Chatbot:
             response_str = (
                 '{{"response": "{response_str}", "topics": ["none"], "references": []}}'
             ).format(response_str=response_str)
-        else:
-            response_str = self._unmask_reference(response_str, nodes)
-
-        return response_str
-
-    def _unmask_reference(self, response_str: str, nodes) -> str:
-
-        pattern = r"[a-fA-F0-9]{64}"
-
-        # Find all matches in the text
-        hashed_urls = re.findall(pattern, response_str)
-
-        logger.info(
-            f"Generated answer has {len(hashed_urls)} references taken from {len(nodes)} nodes. "
-            f"First node has score: {nodes[0].score:.4f}."
-        )
-        for hashed_url in hashed_urls:
-            url = REDIS_KVSTORE.get(collection=f"hash_table_{INDEX_ID}", key=hashed_url)
-            if url is None:
-                url = "{URL}"
-
-            response_str = response_str.replace(hashed_url, url)
-
-        # remove sentences with generated masked url: {URL}
-        parts = re.split(r"(?<=[\.\?\!\n])", response_str)
-        filtered_parts = [part for part in parts if "{URL}" not in part]
-        response_str = "".join(filtered_parts)
 
         return response_str
 
@@ -228,7 +186,7 @@ class Chatbot:
                     masked_message = masked_message + "Rif:" + split_message[1]
                 return masked_message
             except Exception as e:
-                logger.warning(f"Exception: {e}")
+                LOGGER.debug(f"Exception: {e}")
         else:
             return message
 
@@ -262,121 +220,28 @@ class Chatbot:
 
         return chat_history
 
-    def get_trace(
-        self, trace_id: str, as_dict: bool = False
-    ) -> TraceWithFullDetails | dict:
-
-        logger.warning(f"Getting trace {trace_id} from Langfuse")
-        try:
-            trace = LANGFUSE.fetch_trace(trace_id)
-            trace = trace.data
-        except Exception as e:
-            logger.error(e)
-
-        if as_dict:
-            return trace.dict()
-        else:
-            return trace
-
-    def get_traces(
-        self,
-        user_id: str | None = None,
-        session_id: str | None = None,
-        from_timestamp: datetime | None = None,
-        to_timestamp: datetime | None = None,
-        order_by: str | None = None,
-        tags: str | Sequence[str] | None = None,
-    ) -> Traces:
-
-        try:
-            traces = LANGFUSE.get_traces(
-                user_id=user_id,
-                session_id=session_id,
-                from_timestamp=from_timestamp,
-                to_timestamp=to_timestamp,
-                order_by=order_by,
-                tags=tags,
-            )
-        except Exception as e:
-            logger.error(e)
-
-        return traces
-
-    def add_langfuse_score(
-        self,
-        trace_id: str,
-        name: str,
-        value: float,
-        comment: str | None = None,
-        session_id: str | None = None,
-        user_id: str | None = None,
-        data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
-    ) -> None:
-
-        if comment:
-            comment = self.mask_pii(comment)
-
-        with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id
-        ) as trace:
-            trace_info = self.get_trace(trace_id, as_dict=False)
-            flag = True
-            for score in trace_info.scores:
-                if score.name == name:
-                    flag = False
-                    score_id = score.id
-                    break
-
-            if flag:
-                trace.score(
-                    name=name,
-                    value=value,
-                    data_type=data_type,
-                    comment=comment
-                )
-                logger.warning(
-                    f"Add score {name}: {value} in trace {trace_id}.\n"
-                    f"data_type: {data_type}\n"
-                    f"type(value): {type(value)}"
-                )
-            else:
-                trace.score(
-                    id=score_id,
-                    name=name,
-                    value=value,
-                    data_type=data_type,
-                    comment=comment,
-                )
-                logger.warning(f"Updating score {name} to {value} in trace {trace_id}")
-
-    def _mask_trace(self, data: Any) -> None:
-
-        if isinstance(data, dict):
-            for key, value in data.items():
-
-                if isinstance(value, str):
-                    data[key] = self.mask_pii(value)
-
-                if isinstance(value, list):
-                    for message in value:
-                        if isinstance(message, ChatMessage):
-                            message.content = self.mask_pii(message.content)
-                        if isinstance(message, str):
-                            message = self.mask_pii(message)
-
-                if isinstance(value, dict):
-                    for k, v in value.items():
-                        if isinstance(v, list):
-                            for message in v:
-                                if isinstance(message, ChatMessage):
-                                    message.content = self.mask_pii(message.content)
-                                if isinstance(message, str):
-                                    message = self.mask_pii(message)
-                        if isinstance(v, str):
-                            value[k] = self.mask_pii(v)
+    def _mask_trace(self, data: Any) -> Any:
 
         if isinstance(data, str):
             data = self.mask_pii(data)
+
+        if isinstance(data, dict):
+            for key, value in data.items():
+                data[key] = self._mask_trace(value)
+
+        if isinstance(data, list):
+            for i, value in enumerate(data):
+                data[i] = self._mask_trace(value)
+
+        if isinstance(data, tuple):
+            data_as_list = list(data)
+            for i, value in enumerate(data_as_list):
+                data_as_list[i] = self._mask_trace(value)
+            data = tuple(data_as_list)
+
+        if isinstance(data, ChatMessage):
+            for i, block in enumerate(data.blocks):
+                data.blocks[i].text = self._mask_trace(block.text)
 
         return data
 
@@ -390,7 +255,7 @@ class Chatbot:
     ) -> dict:
 
         chat_history = self._messages_to_chathistory(messages)
-        logger.info(f"[Langfuse] Trace id: {trace_id}")
+        LOGGER.info(f"Langfuse trace id: {trace_id}")
 
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
@@ -409,14 +274,12 @@ class Chatbot:
                 else:
                     engine_response = self.engine.chat(query_str, chat_history)
 
-                response_str = self._get_response_str(engine_response)
                 retrieved_contexts = []
                 for node in engine_response.source_nodes:
-                    url = REDIS_KVSTORE.get(
-                        collection=f"hash_table_{INDEX_ID}",
-                        key=node.metadata["filename"],
-                    )
+                    url = WEBSITE_URL + node.metadata["filepath"]
                     retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+                response_str = self._get_response_str(engine_response)
             except Exception as e:
                 response_str = (
                     '{"response": "Scusa, non posso elaborare la tua richiesta. '
@@ -424,17 +287,28 @@ class Chatbot:
                     '"topics": ["none"], "references": []}'
                 )
                 retrieved_contexts = [""]
-                logger.error(f"Exception: {e}")
+                LOGGER.error(f"Exception: {e}")
 
-            logger.debug(
-                f"Response: {response_str} \n\n Retrieved contexts: {retrieved_contexts}"
-            )
-            response_json = json.loads(response_str)
+            try:
+                if response_str[:7] == "```json" and response_str[-3:] == "```":
+                    response_str = response_str[7:-3]
+                response_str = response_str.strip()
+
+                response_json = json.loads(response_str)
+            except Exception as e:
+                LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
+                response_json = {
+                    "response": "Mi dispiace, non sono riuscito a elaborare la risposta.",
+                    "topics": ["none"],
+                    "references": [],
+                    "contexts": [],
+                }
+
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
 
             trace.update(
-                output=self.mask_pii(response_json["response"]),
+                output=response_json["response"],
                 metadata={"contexts": retrieved_contexts},
                 tags=response_json["topics"],
             )
@@ -450,8 +324,8 @@ class Chatbot:
             final_response += "\n\nRif:"
             for ref in response_json["references"]:
                 title = ref["title"]
-                link = ref["filename"]
-                final_response += f"\n[{title}]({link})"
+                url = WEBSITE_URL + ref["filepath"]
+                final_response += f"\n[{title}]({url})"
 
         return final_response
 
@@ -461,25 +335,25 @@ class Chatbot:
         response_str: str,
         retrieved_contexts: List[str],
         trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-        chat_history = self._messages_to_chathistory(messages)
-        condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
-            chat_history=chat_history, query_str=query_str
-        )
-        condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+
+        if messages is not None:
+            chat_history = self._messages_to_chathistory(messages)
+            condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
+                chat_history=chat_history, query_str=query_str
+            )
+            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+            query_str = condense_query_response.text.strip()
+
         scores = self.judge.evaluate(
-            query_str=condense_query_response.text,
+            query_str=query_str,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
         for key, value in scores.items():
-            self.add_langfuse_score(
+            add_langfuse_score(
                 trace_id=trace_id,
-                session_id=session_id,
-                user_id=user_id,
                 name=key,
                 value=value,
                 data_type="NUMERIC",

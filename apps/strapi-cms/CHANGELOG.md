@@ -1,5 +1,24 @@
 # strapi-cms
 
+## 3.8.0
+
+### Minor Changes
+
+- e067067: Add path to wsdl files and branch field of the SOAP API specs
+
+## 3.7.0
+
+### Minor Changes
+
+- 5ba3e83: Add ApiSoapDetail object in ApiData schema
+
+## 3.6.1
+
+### Patch Changes
+
+- f31e464: Add product association validator to release note entity
+- d7c5324: Fix webinar category icon to accept only images
+
 ## 3.6.0
 
 ### Minor Changes

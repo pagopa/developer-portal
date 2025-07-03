@@ -49,9 +49,13 @@ jobs:
           environment: ${{ inputs.environment }}
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
           cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
+          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
+          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
           allow_crawler: ${{ vars.ALLOW_CRAWLER }}
           iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           bucket: ${{ vars.S3_BUCKET_NAME }}
+          static_contents_url: ${{ vars.STATIC_CONTENTS_URL }}
           cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
           cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
           cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
@@ -65,5 +69,7 @@ jobs:
           chatbot_active: ${{ vars.NEXT_PUBLIC_CHATBOT_ACTIVE }}
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
+          s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
           matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}

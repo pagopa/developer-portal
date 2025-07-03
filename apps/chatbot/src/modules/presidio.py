@@ -1,4 +1,4 @@
-from logging import getLogger
+import logging
 from typing import Any, Dict, List
 from langdetect import detect_langs
 
@@ -14,11 +14,14 @@ from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
 
+from src.modules.logger import get_logger
 
-logger = getLogger(__name__)
+
+logging.getLogger("presidio-analyzer").setLevel(logging.ERROR)
+LOGGER = get_logger(__name__)
 
 
-# see supported entities by Presidio with their description at: 
+# see supported entities by Presidio with their description at:
 # https://microsoft.github.io/presidio/supported_entities/
 GLOBAL_ENTITIES = [
     "CREDIT_CARD",
@@ -142,7 +145,6 @@ class PresidioPII:
                 lang = lang_list[0]
 
         except Exception:
-            logger.warning("No detected language.")
             lang = "it"
 
         return lang

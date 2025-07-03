@@ -6,11 +6,13 @@ import { useState } from 'react';
 const TOOLTIP_DURATION = 2000;
 
 type ChatbotFeedbackButtonProps = {
+  mustFillFeedbackForm: boolean;
   isNegativeFeedbackGiven: boolean;
   onToggleNegativeFeedback: (negativeFeedback: boolean) => null;
 };
 
 const ChatbotFeedbackButton = ({
+  mustFillFeedbackForm,
   isNegativeFeedbackGiven,
   onToggleNegativeFeedback,
 }: ChatbotFeedbackButtonProps) => {
@@ -18,9 +20,11 @@ const ChatbotFeedbackButton = ({
   const [feedbackGiven, setFeedbackGiven] = useState(false);
 
   const onToggle = (negativeFeedback: boolean) => {
-    onToggleNegativeFeedback(negativeFeedback);
-    setFeedbackGiven(true);
-    setTimeout(() => setFeedbackGiven(false), TOOLTIP_DURATION);
+    if (!mustFillFeedbackForm || negativeFeedback) {
+      onToggleNegativeFeedback(negativeFeedback);
+      setFeedbackGiven(true);
+      setTimeout(() => setFeedbackGiven(false), TOOLTIP_DURATION);
+    }
   };
 
   return (

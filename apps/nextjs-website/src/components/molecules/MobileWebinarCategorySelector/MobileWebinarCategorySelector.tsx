@@ -19,7 +19,7 @@ type MobileWebinarCategorySelectorProps = {
   selectedWebinarCategory: number;
   // eslint-disable-next-line functional/no-return-void
   setSelectedWebinarCategory: (selectedWebinarCategory: number) => void;
-  webinarCategories: WebinarCategory[];
+  webinarCategories: readonly WebinarCategory[];
 };
 
 const MobileWebinarCategorySelector = ({

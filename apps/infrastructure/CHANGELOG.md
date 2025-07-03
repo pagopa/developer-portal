@@ -1,5 +1,23 @@
 # infrastructure
 
+## 2.1.2
+
+### Patch Changes
+
+- 0a87d37: Fixed codebuild cicd lambda permissions
+
+## 2.1.1
+
+### Patch Changes
+
+- 13a91da: Change rewriter function code path
+
+## 2.1.0
+
+### Minor Changes
+
+- 10064fe: Scale out ECS cms service in production in order to always have at least 2 tasks running with the possibility to go up till 10.
+
 ## 2.0.0
 
 ### Major Changes

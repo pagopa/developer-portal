@@ -74,6 +74,7 @@ export const parseDoc = <T>(
         RA.filter((abs) => abs !== menuPath),
         // include only markdown files
         RA.filter((abs) => abs.endsWith('.md')),
+        RA.filter((abs) => !abs.includes('includes')),
         RA.traverse(E.Applicative)((abs) =>
           pipe(
             E.Do,

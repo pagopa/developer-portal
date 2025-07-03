@@ -1,0 +1,2154 @@
+
+[0m[1mInitializing the backend...[0m
+[0m[32m
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.[0m
+[0m[1mInitializing modules...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/random from the dependency lock file
+- Reusing previous version of hashicorp/external from the dependency lock file
+- Reusing previous version of hashicorp/local from the dependency lock file
+- Reusing previous version of hashicorp/null from the dependency lock file
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Reusing previous version of hashicorp/awscc from the dependency lock file
+- Using previously-installed hashicorp/awscc v1.10.0
+- Using previously-installed hashicorp/random v3.6.2
+- Using previously-installed hashicorp/external v2.3.3
+- Using previously-installed hashicorp/local v2.5.1
+- Using previously-installed hashicorp/null v3.2.2
+- Using previously-installed hashicorp/aws v5.64.0
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+module.chatbot[0].random_id.nextauth_secret: Refreshing state... [id=69UIWoyHKPsDxbhaJ-AkHlq3a08gxItmaBJxeF_zYig]
+module.cms.random_password.cms_admin_jwt_secret: Refreshing state... [id=none]
+module.cms.random_password.cms_app_keys: Refreshing state... [id=none]
+module.website.random_integer.website_bucket_random_integer: Refreshing state... [id=5791]
+module.chatbot[0].random_password.master: Refreshing state... [id=none]
+module.chatbot[0].random_uuid.secret_key_uuid: Refreshing state... [id=82d77c4c-abd1-a762-b9cc-f0a4f0d8c6e1]
+module.cms.random_password.cms_transfer_token_salt: Refreshing state... [id=none]
+module.chatbot[0].random_integer.ai_kb_bucket_random_integer: Refreshing state... [id=7234]
+module.chatbot[0].random_password.monitoring_database_password: Refreshing state... [id=none]
+module.cms.random_password.cms_github_pat: Refreshing state... [id=none]
+module.cms.random_password.cms_jwt_secret: Refreshing state... [id=none]
+module.chatbot[0].random_uuid.public_key_uuid: Refreshing state... [id=b056bf61-483b-8147-52ac-63578f78015b]
+module.cms.random_password.cms_database_password: Refreshing state... [id=none]
+module.cms.random_integer.bucket_random_integer: Refreshing state... [id=7698]
+module.chatbot[0].random_id.salt: Refreshing state... [id=ssx3FFLt_5aRSJpFkOYuNAaTBhJWAhTG5Xrt_VhHFU8]
+module.chatbot[0].random_password.encryption_key: Refreshing state... [id=none]
+module.cms.random_password.cms_api_token_salt: Refreshing state... [id=none]
+module.active_campaign[0].module.lambda_sync.data.external.archive_prepare[0]: Reading...
+module.active_campaign[0].module.lambda_resync.data.external.archive_prepare[0]: Reading...
+module.website.aws_cloudfront_origin_access_identity.main: Refreshing state... [id=EG04M70WPP7G9]
+module.active_campaign[0].data.aws_caller_identity.current: Reading...
+module.core.aws_route53_zone.dev_portal: Refreshing state... [id=Z09168633TRICSOONP5YG]
+module.chatbot[0].module.monitoring_ecs_service.data.aws_region.current: Reading...
+module.cms.module.cms_log_group.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/cms/strapi]
+module.chatbot[0].module.monitoring_ecs_service.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.website.module.cognito_post_confirmation_function.data.aws_partition.current: Reading...
+module.website.module.cognito_post_confirmation_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.aws_cloudfront_response_headers_policy.websites: Refreshing state... [id=4d8e7e46-e2ab-4a9c-ade2-20a58ab57757]
+module.active_campaign[0].data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.active_campaign[0].module.lambda_resync.data.aws_region.current: Reading...
+module.cms.module.secret_cms_app_keys.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/app_keys]
+module.active_campaign[0].module.lambda_resync.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.chatbot[0].aws_cloudwatch_event_rule.lambda_invocation_rule: Refreshing state... [id=chatbot-prod-lambda-invocation-rule]
+module.active_campaign[0].module.lambda_resync.data.external.archive_prepare[0]: Read complete after 0s [id=-]
+module.active_campaign[0].module.lambda_sync.data.external.archive_prepare[0]: Read complete after 0s [id=-]
+module.cicd.aws_iam_policy.github_connection: Refreshing state... [id=arn:aws:iam::195239627635:policy/cicd-prod-github-connection]
+module.chatbot[0].aws_cognito_user_pool.monitoring: Refreshing state... [id=eu-south-1_RZeZjj5cQ]
+module.cms.module.cms_ecs_service.data.aws_partition.current: Reading...
+module.cms.module.cms_ecs_service.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.module.cognito_custom_message_function.data.aws_partition.current: Reading...
+module.website.module.cognito_custom_message_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.active_campaign[0].module.lambda_resync.data.aws_caller_identity.current: Reading...
+module.active_campaign[0].module.lambda_resync.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].aws_sns_topic.alerts: Refreshing state... [id=arn:aws:sns:eu-south-1:195239627635:chatbot-prod-cloudwatch-alarms]
+module.identity.aws_s3_bucket.terraform_states: Refreshing state... [id=terraform-backend-20230613123652247300000001]
+module.chatbot[0].module.ecr.data.aws_partition.current: Reading...
+module.chatbot[0].module.ecr.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.cms_ssl_certificate.aws_acm_certificate.this[0]: Refreshing state... [id=arn:aws:acm:eu-south-1:195239627635:certificate/c89bcf5b-55a7-4a85-9fce-275f587a6ca9]
+module.chatbot[0].module.internal_monitoring_load_balancer.data.aws_partition.current: Reading...
+module.chatbot[0].module.internal_monitoring_load_balancer.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_partition.current: Reading...
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.index_id_ssm_parameter.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/index_id]
+module.cms.module.ecr.data.aws_caller_identity.current: Reading...
+module.cms.module.ecr.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.nextauth_secret.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/nextauth_secret]
+module.cms.module.secret_cms_admin_jwt_secret.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/admin_jwt_secret]
+module.website.module.cognito_create_auth_challenge_function.data.aws_partition.current: Reading...
+module.website.module.cognito_create_auth_challenge_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.langfuse_secret_key.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/langfuse_secret_key]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_partition.current: Reading...
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.s3_bucket_cms.data.aws_partition.current: Reading...
+module.cms.module.s3_bucket_cms.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.aws_sns_topic.metric_alarm: Refreshing state... [id=arn:aws:sns:eu-south-1:195239627635:cloudwatch_metric_alarms]
+module.chatbot[0].module.rds.data.aws_partition.current: Reading...
+module.chatbot[0].module.rds.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.lambda_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.chatbot[0].module.lambda_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.cms.module.secret_cms_api_token_salt.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/api_token_salt]
+module.cms.module.iam_user_cms.aws_iam_user.this[0]: Refreshing state... [id=strapi]
+module.chatbot[0].module.index_id_ssm_parameter_local.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/index_id_local]
+module.cms.module.vpc.aws_vpc.this[0]: Refreshing state... [id=vpc-081f56c4c266d609c]
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_caller_identity.current: Reading...
+module.cms.module.cloudfront_cms.aws_cloudfront_origin_access_identity.this["s3_cms"]: Refreshing state... [id=E3C70G29R1NJ6V]
+module.website.module.cognito_custom_message_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/cognito_custom_message]
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.ecr.aws_ecr_repository.this[0]: Refreshing state... [id=chatbot]
+module.chatbot[0].module.ecs_service.data.aws_region.current: Reading...
+module.chatbot[0].module.ecs_service.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.chatbot[0].module.monitoring_ecs_service.data.aws_partition.current: Reading...
+module.chatbot[0].module.monitoring_ecs_service.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.module.cognito_custom_message_function.data.aws_region.current: Reading...
+module.website.module.cognito_custom_message_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.chatbot[0].module.ecs_service.data.aws_partition.current: Reading...
+module.chatbot[0].module.ecs_service.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.master_user_password.aws_ssm_parameter.this[0]: Refreshing state... [id=/chatbot/monitoring/master_user_password]
+module.website.module.cognito_post_confirmation_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/cognito_post_confirmation]
+module.chatbot[0].module.salt.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/salt]
+module.chatbot[0].module.langfuse_public_key.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/langfuse_public_key]
+module.chatbot[0].module.google_api_key_ssm_parameter.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/google_api_key]
+module.cms.module.iam_role_task_role.data.aws_partition.current: Reading...
+module.cms.module.iam_role_task_role.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.module.cognito_create_auth_challenge_function.data.aws_caller_identity.current: Reading...
+module.website.module.cognito_create_auth_challenge_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.module.s3_bucket_cms.data.aws_region.current: Reading...
+module.cms.module.s3_bucket_cms.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.website.aws_s3_bucket.website: Refreshing state... [id=website-bucket-5791]
+module.active_campaign[0].module.lambda_resync.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.active_campaign[0].module.lambda_resync.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.website.aws_cloudfront_function.website_viewer_request_handler: Refreshing state... [id=website-viewer-request-handler]
+module.website.module.cognito_post_confirmation_function.data.aws_region.current: Reading...
+module.website.module.cognito_post_confirmation_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.website.module.dynamodb_webinar_questions.aws_dynamodb_table.this[0]: Refreshing state... [id=WebinarQuestions]
+module.cms.module.secret_cms_github_pat.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/cms/github_pat]
+module.cms.data.aws_iam_policy_document.ecs_task_role_ssm: Reading...
+module.cms.data.aws_iam_policy_document.ecs_task_role_ssm: Read complete after 0s [id=3621793318]
+module.website.module.cognito_verify_auth_challenge_function.data.aws_caller_identity.current: Reading...
+module.identity.aws_dynamodb_table.dynamodb-terraform-state-lock: Refreshing state... [id=terraform-lock]
+module.cms.data.aws_caller_identity.current: Reading...
+module.website.module.cognito_verify_auth_challenge_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.core.module.ses_developer_pagopa_it.aws_iam_user.ses_user[0]: Refreshing state... [id=DevPortal]
+module.website.module.cognito_define_auth_challenge_function.data.aws_partition.current: Reading...
+module.website.module.cognito_define_auth_challenge_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.core.aws_iam_group.developers_read_only: Refreshing state... [id=developers_read_only]
+module.cms.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.module.secret_cms_transfer_token_salt.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/transfer_token_salt]
+module.website.module.cognito_define_auth_challenge_function.data.aws_caller_identity.current: Reading...
+module.website.module.cognito_define_auth_challenge_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.module.iam_role_ecs_task_execution.data.aws_partition.current: Reading...
+module.cms.module.iam_role_ecs_task_execution.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.cms_ecs_service.data.aws_region.current: Reading...
+module.cms.module.cms_ecs_service.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.core.module.ses_developer_pagopa_it.aws_iam_group.ses_users[0]: Refreshing state... [id=DevPortalSES]
+module.website.data.aws_caller_identity.current: Reading...
+module.cms.module.s3_bucket_cms.aws_s3_bucket.this[0]: Refreshing state... [id=cms-medialibrary-7698]
+module.website.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.module.ecr.data.aws_partition.current: Reading...
+module.cms.module.ecr.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.dynamodb_chatbot_queries.aws_dynamodb_table.this[0]: Refreshing state... [id=chatbot-prod-queries]
+module.chatbot[0].module.monitoring_ecs_service.data.aws_caller_identity.current: Reading...
+module.cicd.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.monitoring_ecs_service.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.website.module.cognito_create_auth_challenge_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/cognito_create_auth_challenge]
+module.active_campaign[0].module.lambda_resync.data.aws_partition.current: Reading...
+module.active_campaign[0].module.lambda_resync.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.secret_cms_google_gsuite_hd.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/cms/google_gsuite_hd]
+module.cicd.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.active_campaign[0].module.lambda_sync.data.aws_caller_identity.current: Reading...
+module.active_campaign[0].module.lambda_sync.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.module.cms_rds.data.aws_partition.current: Reading...
+module.cms.module.cms_rds.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_caller_identity.current: Reading...
+module.chatbot[0].data.aws_iam_policy_document.apigateway_cloudwatch: Reading...
+module.chatbot[0].data.aws_iam_policy_document.apigateway_cloudwatch: Read complete after 0s [id=1005217238]
+module.cms.module.iam_role_ecs_task_execution.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_partition.current: Reading...
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].data.aws_availability_zones.available: Reading...
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.identity.data.aws_caller_identity.current: Reading...
+module.cms.module.cms_ecs_service.data.aws_caller_identity.current: Reading...
+module.cms.module.secret_cms_jwt_secret.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/jwt_secret]
+module.identity.data.aws_iam_policy.admin_access: Reading...
+module.cms.module.iam_role_ecs_task_execution.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].data.aws_caller_identity.current: Reading...
+module.cicd.aws_iam_role.codebuild_role: Refreshing state... [id=codebuild-prod-github-runner-service-role]
+module.chatbot[0].module.ecs_service.data.aws_caller_identity.current: Reading...
+module.chatbot[0].data.aws_availability_zones.available: Read complete after 1s [id=eu-south-1]
+module.identity.data.aws_caller_identity.current: Read complete after 1s [id=195239627635]
+module.website.module.cognito_define_auth_challenge_function.data.aws_region.current: Reading...
+module.website.module.cognito_post_confirmation_function.data.aws_caller_identity.current: Reading...
+module.website.module.cognito_define_auth_challenge_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.cms.module.s3_bucket_cms.data.aws_caller_identity.current: Reading...
+module.cms.module.cms_ecs_service.data.aws_caller_identity.current: Read complete after 1s [id=195239627635]
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.website.module.cognito_verify_auth_challenge_function.data.aws_region.current: Reading...
+module.website.module.cognito_verify_auth_challenge_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.cms.module.ecr.aws_ecr_repository.this[0]: Refreshing state... [id=strapi]
+module.chatbot[0].data.aws_caller_identity.current: Read complete after 1s [id=195239627635]
+module.chatbot[0].module.ecs_service.data.aws_caller_identity.current: Read complete after 1s [id=195239627635]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_partition.current: Reading...
+module.chatbot[0].module.monitoring_load_balancer.data.aws_partition.current: Reading...
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.monitoring_load_balancer.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].data.aws_iam_policy_document.apigateway_assume_role: Reading...
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_caller_identity.current: Reading...
+module.chatbot[0].data.aws_iam_policy_document.apigateway_assume_role: Read complete after 0s [id=2699642182]
+module.active_campaign[0].module.lambda_sync.data.aws_partition.current: Reading...
+module.active_campaign[0].module.lambda_sync.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.dynamodb_chatbot_sessions.aws_dynamodb_table.this[0]: Refreshing state... [id=chatbot-prod-sessions]
+module.website.module.cognito_post_confirmation_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.encryption_key.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/encryption_key]
+module.cms.module.iam_role_task_role.data.aws_caller_identity.current: Reading...
+module.cms.module.s3_bucket_cms.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].aws_api_gateway_rest_api.api: Refreshing state... [id=35z2b93836]
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.cms.data.aws_availability_zones.available: Reading...
+module.cms.module.iam_role_task_role.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.lambda_function.data.aws_partition.current: Reading...
+module.chatbot[0].module.lambda_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.secret_cms_database_password.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/database/password]
+module.chatbot[0].module.lambda_function.data.aws_region.current: Reading...
+module.chatbot[0].module.lambda_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.cms.module.cms_load_balancer.data.aws_partition.current: Reading...
+module.cms.module.cms_load_balancer.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.module.cognito_verify_auth_challenge_function.data.aws_partition.current: Reading...
+module.website.module.cognito_verify_auth_challenge_function.data.aws_partition.current: Read complete after 0s [id=aws]
+module.website.module.cognito_verify_auth_challenge_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/cognito_verify_auth_challenge]
+module.cms.data.aws_availability_zones.available: Read complete after 0s [id=eu-south-1]
+module.active_campaign[0].module.lambda_sync.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.active_campaign[0].module.lambda_sync.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.identity.aws_iam_openid_connect_provider.github: Refreshing state... [id=arn:aws:iam::195239627635:oidc-provider/token.actions.githubusercontent.com]
+module.website.module.cognito_define_auth_challenge_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/cognito_define_auth_challenge]
+module.chatbot[0].data.aws_iam_policy_document.ecs_task_role_ssm: Reading...
+module.chatbot[0].data.aws_iam_policy_document.ecs_task_role_ssm: Read complete after 0s [id=3621793318]
+module.chatbot[0].module.dynamodb_chatbot_salts.aws_dynamodb_table.this[0]: Refreshing state... [id=chatbot-prod-salts]
+module.website.module.cognito_create_auth_challenge_function.data.aws_region.current: Reading...
+module.website.module.cognito_create_auth_challenge_function.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.chatbot[0].module.ecs_cluster.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/aws/ecs/chatbot-prod-ecs-cluster]
+module.chatbot[0].module.ecr.data.aws_caller_identity.current: Reading...
+module.active_campaign[0].module.lambda_sync.data.aws_region.current: Reading...
+module.active_campaign[0].module.lambda_sync.data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.chatbot[0].aws_efs_file_system.this: Refreshing state... [id=fs-0f69cc8ad4ef974ac]
+module.chatbot[0].module.ecr.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.website.module.cognito_custom_message_function.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.lambda_function.aws_cloudwatch_log_group.lambda[0]: Refreshing state... [id=/aws/lambda/chatbot-prod-api-lambda]
+module.chatbot[0].module.ecs_log_group.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/chatbot/ecs]
+module.website.module.cognito_custom_message_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.core.module.ses_developer_pagopa_it.aws_ses_domain_identity.this: Refreshing state... [id=developer.pagopa.it]
+module.chatbot[0].module.lambda_function.data.aws_caller_identity.current: Reading...
+module.cms.module.secret_cms_google_oauth_client_id.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/cms/google_oauth_client_id]
+module.chatbot[0].module.lambda_function.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.nlb.data.aws_partition.current: Reading...
+module.chatbot[0].module.nlb.data.aws_partition.current: Read complete after 0s [id=aws]
+module.cms.module.cms_ecs_cluster.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/aws/ecs/cms-ecs-cluster]
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.cms.module.secret_cms_google_oauth_client_secret.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/cms/google_oauth_client_secret]
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.website.module.cognito_custom_message_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.website.module.cognito_custom_message_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.website.module.cognito_verify_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.website.module.cognito_verify_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.website.module.dynamodb_webinar_subscriptions.aws_dynamodb_table.this[0]: Refreshing state... [id=WebinarSubscriptions]
+module.website.module.cognito_define_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.website.module.cognito_define_auth_challenge_function.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=2690255455]
+module.chatbot[0].awscc_bedrock_guardrail.guardrail: Refreshing state... [id=arn:aws:bedrock:eu-west-3:195239627635:guardrail/nx6jtugcv92a]
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_partition.current: Reading...
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.s3_bucket_kb.data.aws_region.current: Reading...
+module.chatbot[0].module.s3_bucket_kb.data.aws_region.current: Read complete after 0s [id=eu-west-3]
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.s3_bucket_kb.aws_s3_bucket.this[0]: Refreshing state... [id=chatbot-knowledge-base-7234]
+module.chatbot[0].module.s3_bucket_llamaindex.aws_s3_bucket.this[0]: Refreshing state... [id=chatbot-llamaindex-7234]
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_caller_identity.current: Read complete after 0s [id=195239627635]
+module.chatbot[0].module.s3_bucket_kb.data.aws_partition.current: Reading...
+module.chatbot[0].module.s3_bucket_kb.data.aws_partition.current: Read complete after 0s [id=aws]
+module.chatbot[0].module.s3_bucket_kb.data.aws_caller_identity.current: Reading...
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_region.current: Reading...
+module.chatbot[0].module.s3_bucket_llamaindex.data.aws_region.current: Read complete after 0s [id=eu-west-3]
+module.website.aws_acm_certificate.website: Refreshing state... [id=arn:aws:acm:us-east-1:195239627635:certificate/f0c75674-aeb1-4832-9888-206f0588d146]
+module.website.aws_acm_certificate.auth: Refreshing state... [id=arn:aws:acm:us-east-1:195239627635:certificate/49f5304c-38e9-41e3-966e-985786d8e875]
+module.cms.module.strapi_media_library_ssl_certificate.aws_acm_certificate.this[0]: Refreshing state... [id=arn:aws:acm:us-east-1:195239627635:certificate/e98ee63f-eaf2-4dad-bdc8-aac8b7c170c6]
+module.chatbot[0].module.s3_bucket_kb.data.aws_caller_identity.current: Read complete after 1s [id=195239627635]
+module.chatbot[0].aws_cognito_user.master: Refreshing state... [id=eu-south-1_RZeZjj5cQ/devportal@pagopa.it]
+module.chatbot[0].aws_cognito_user_pool_domain.monitoring: Refreshing state... [id=monitoringprod]
+module.core.aws_route53_record.devportal_delegate["dev"]: Refreshing state... [id=Z09168633TRICSOONP5YG_dev_NS]
+module.core.aws_route53_zone.chatbot[0]: Refreshing state... [id=Z01097471SBM45J619RP9]
+module.core.aws_route53_record.devportal_google_site_verification_txt[0]: Refreshing state... [id=Z09168633TRICSOONP5YG__TXT]
+module.chatbot[0].module.lambda_function.aws_iam_role.lambda[0]: Refreshing state... [id=chatbot-prod-api-lambda]
+module.website.aws_sns_topic_subscription.metric_alarm: Refreshing state... [id=arn:aws:sns:eu-south-1:195239627635:cloudwatch_metric_alarms:fc23b6ff-d109-42f6-86a3-6d02d3cc09a6]
+module.cms.module.iam_user_cms.aws_iam_access_key.this_no_pgp[0]: Refreshing state... [id=AKIAS25JQJNZYMUKOCHN]
+module.identity.aws_s3_bucket_public_access_block.terraform_states: Refreshing state... [id=terraform-backend-20230613123652247300000001]
+module.identity.aws_s3_bucket_versioning.terraform_states: Refreshing state... [id=terraform-backend-20230613123652247300000001]
+module.identity.aws_s3_bucket_ownership_controls.terraform_states: Refreshing state... [id=terraform-backend-20230613123652247300000001]
+module.cms.data.aws_iam_policy_document.deploy_github: Reading...
+module.cms.data.aws_iam_policy_document.deploy_github: Read complete after 0s [id=1535975330]
+module.chatbot[0].module.ecr.aws_ecr_lifecycle_policy.this[0]: Refreshing state... [id=chatbot]
+module.core.module.ses_developer_pagopa_it.aws_iam_access_key.ses_user[0]: Refreshing state... [id=AKIAS25JQJNZ2K4WXMH7]
+module.website.data.aws_iam_policy_document.deploy_github: Reading...
+module.website.data.aws_iam_policy_document.deploy_github: Read complete after 0s [id=1535975330]
+module.cms.module.ecr.data.aws_iam_policy_document.repository[0]: Reading...
+module.cms.module.ecr.data.aws_iam_policy_document.repository[0]: Read complete after 0s [id=2267337719]
+module.core.aws_iam_group_policy_attachment.read_only: Refreshing state... [id=developers_read_only-20240221150031599300000002]
+module.cicd.aws_iam_policy.cloudwatch: Refreshing state... [id=arn:aws:iam::195239627635:policy/cicd-prod-cloudwatch]
+module.cicd.aws_iam_policy.vpc_connection: Refreshing state... [id=arn:aws:iam::195239627635:policy/cicd-prod-vpc-connection]
+module.core.module.ses_developer_pagopa_it.aws_iam_group_membership.ses_group[0]: Refreshing state... [id=DevPortalSESMembership]
+module.cms.module.vpc.aws_default_security_group.this[0]: Refreshing state... [id=sg-01d20311e56a9b43f]
+module.cms.module.vpc.aws_default_route_table.default[0]: Refreshing state... [id=rtb-0cca30845aaf4a85e]
+module.cms.module.vpc.aws_default_network_acl.this[0]: Refreshing state... [id=acl-04f1aa0288290361a]
+module.identity.aws_iam_role.githubiac: Refreshing state... [id=GitHubActionIACRole]
+module.website.module.cognito_create_auth_challenge_function.aws_iam_role.lambda[0]: Refreshing state... [id=cognito_create_auth_challenge]
+module.chatbot[0].data.aws_iam_policy_document.deploy_github: Reading...
+module.chatbot[0].data.aws_iam_policy_document.deploy_github: Read complete after 0s [id=1535975330]
+module.chatbot[0].aws_sns_topic_policy.alerts: Refreshing state... [id=arn:aws:sns:eu-south-1:195239627635:chatbot-prod-cloudwatch-alarms]
+module.chatbot[0].data.aws_iam_policy_document.lambda_ssm_policy: Reading...
+module.chatbot[0].data.aws_iam_policy_document.lambda_ssm_policy: Read complete after 0s [id=2896752096]
+module.chatbot[0].data.aws_iam_policy_document.ecs_monitoring_ssm_policy: Reading...
+module.chatbot[0].data.aws_iam_policy_document.ecs_monitoring_ssm_policy: Read complete after 0s [id=868641511]
+module.chatbot[0].aws_iam_role.cloudwatch: Refreshing state... [id=api_gateway_cloudwatch_global]
+module.chatbot[0].module.lambda_function.data.aws_iam_policy.vpc[0]: Reading...
+module.cms.module.ecr.aws_ecr_lifecycle_policy.this[0]: Refreshing state... [id=strapi]
+module.website.aws_s3_bucket_public_access_block.website: Refreshing state... [id=website-bucket-5791]
+module.website.aws_s3_bucket_versioning.website: Refreshing state... [id=website-bucket-5791]
+module.website.data.aws_iam_policy_document.website_iam_policy: Reading...
+module.website.data.aws_iam_policy_document.website_iam_policy: Read complete after 0s [id=3412386409]
+module.chatbot[0].aws_cloudwatch_metric_alarm.api_gateway_4xx_errors: Refreshing state... [id=chatbot-prod-api-gateway-4xx-errors]
+module.chatbot[0].aws_api_gateway_resource.chatbot: Refreshing state... [id=kzfma6]
+module.chatbot[0].aws_cloudwatch_metric_alarm.api_gateway_5xx_errors: Refreshing state... [id=chatbot-prod-api-gateway-5xx-errors]
+module.chatbot[0].aws_cloudwatch_metric_alarm.api_gateway_increased_requests: Refreshing state... [id=chatbot-prod-api-gateway-increased-requests]
+module.chatbot[0].module.lambda_function.data.aws_iam_policy.vpc[0]: Read complete after 1s [id=arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess]
+module.cms.module.s3_bucket_cms.aws_s3_bucket_versioning.this[0]: Refreshing state... [id=cms-medialibrary-7698]
+module.cms.module.s3_bucket_cms.aws_s3_bucket_public_access_block.this[0]: Refreshing state... [id=cms-medialibrary-7698]
+module.website.module.cognito_post_confirmation_function.aws_iam_role.lambda[0]: Refreshing state... [id=cognito_post_confirmation]
+module.website.module.cognito_custom_message_function.aws_iam_role.lambda[0]: Refreshing state... [id=cognito_custom_message]
+module.website.module.cognito_verify_auth_challenge_function.aws_iam_role.lambda[0]: Refreshing state... [id=cognito_verify_auth_challenge]
+module.website.module.cognito_define_auth_challenge_function.aws_iam_role.lambda[0]: Refreshing state... [id=cognito_define_auth_challenge]
+module.core.module.ses_developer_pagopa_it.aws_ses_domain_dkim.this[0]: Refreshing state... [id=developer.pagopa.it]
+module.core.module.ses_developer_pagopa_it.data.aws_iam_policy_document.ses_policy[0]: Reading...
+module.core.module.ses_developer_pagopa_it.data.aws_iam_policy_document.ses_policy[0]: Read complete after 0s [id=176639956]
+module.chatbot[0].aws_efs_access_point.this: Refreshing state... [id=fsap-0b762411f3a24c7e9]
+module.cicd.aws_iam_role_policy_attachment.codebuild_policy: Refreshing state... [id=codebuild-prod-github-runner-service-role-20241031084620795500000005]
+module.cicd.aws_iam_role_policy_attachment.github_connection: Refreshing state... [id=codebuild-prod-github-runner-service-role-20241031084620838300000006]
+module.core.module.active_campaign_dns_records.data.aws_route53_zone.this[0]: Reading...
+module.chatbot[0].awscc_bedrock_guardrail_version.guardrail: Refreshing state... [id=nx6jtugcv92a|1]
+module.website.module.dynamodb_user_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | DynamoDB | UserErrors]
+module.website.module.ses_sending_rate_limit_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | SES | Send Rate]
+module.website.module.ses_daily_sending_quota_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | SES | Send Daily Quota]
+module.website.module.dynamodb_write_capacity_utilization_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | DynamoDB | WriteCapacityUtilization]
+module.website.aws_cloudfront_distribution.website: Refreshing state... [id=E2U6BETMBL9NVY]
+module.website.module.ses_reputation_complaint_rate_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | SES | Complaint Rate]
+module.website.module.dynamodb_read_capacity_utilization_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | DynamoDB | ReadCapacityUtilization]
+module.website.module.ses_bounce_rate_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | SES | Bounce Rate]
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.chatbot[0].module.iam_role_ecs_task_execution.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.cms.module.iam_policy_ecs_task_role_ssm.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/CMSTaskRolePoliciesSSM]
+module.identity.data.aws_iam_policy.admin_access: Read complete after 5s [id=arn:aws:iam::aws:policy/AdministratorAccess]
+module.identity.aws_s3_bucket_acl.terraform_states: Refreshing state... [id=terraform-backend-20230613123652247300000001,private]
+module.cms.aws_iam_role.deploy_cms: Refreshing state... [id=GitHubActionDeployCms]
+module.core.module.active_campaign_dns_records.data.aws_route53_zone.this[0]: Read complete after 1s [id=Z09168633TRICSOONP5YG]
+module.core.aws_route53_record.chatbot_ns[0]: Refreshing state... [id=Z09168633TRICSOONP5YG_chatbot.developer.pagopa.it_NS]
+module.website.aws_iam_role.deploy_website: Refreshing state... [id=GitHubActionDeployWebsite]
+module.cms.module.ecr.aws_ecr_repository_policy.this[0]: Refreshing state... [id=strapi]
+module.chatbot[0].module.s3_bucket_kb.aws_s3_bucket_public_access_block.this[0]: Refreshing state... [id=chatbot-knowledge-base-7234]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.chatbot[0].module.s3_bucket_kb.aws_s3_bucket_versioning.this[0]: Refreshing state... [id=chatbot-knowledge-base-7234]
+module.cms.aws_security_group.vpc_endpoints: Refreshing state... [id=sg-0a1622eba7834dd80]
+module.cms.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-0bd7eaa00fc9357e5]
+module.cms.aws_security_group.cms_lb: Refreshing state... [id=sg-0ab7cd242689bbb89]
+module.chatbot[0].module.s3_bucket_llamaindex.aws_s3_bucket_public_access_block.this[0]: Refreshing state... [id=chatbot-llamaindex-7234]
+module.chatbot[0].module.s3_bucket_llamaindex.aws_s3_bucket_versioning.this[0]: Refreshing state... [id=chatbot-llamaindex-7234]
+module.cms.module.vpc.aws_route_table.public[0]: Refreshing state... [id=rtb-0b9cd68f286ad8a84]
+module.cms.module.vpc.aws_internet_gateway.this[0]: Refreshing state... [id=igw-02f11da6ac75b194c]
+module.cms.module.iam_role_ecs_task_execution.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.cms.module.iam_role_ecs_task_execution.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.chatbot[0].aws_cloudwatch_metric_alarm.dynamodb_write_throttle_queries: Refreshing state... [id=chatbot-prod-dynamodb-write-throttle-queries]
+module.chatbot[0].aws_cloudwatch_metric_alarm.dynamodb_read_throttle_queries: Refreshing state... [id=chatbot-prod-dynamodb-read-throttle-queries]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.chatbot[0].module.ecs_monitoring_task_iam_role.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.cms.module.iam_role_task_role.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_iam_policy_document.assume_role[0]: Reading...
+module.cms.module.iam_role_task_role.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.chatbot[0].module.ecs_redis_task_iam_role.data.aws_iam_policy_document.assume_role[0]: Read complete after 0s [id=3479087837]
+module.cicd.aws_iam_role_policy_attachment.cloudwatch: Refreshing state... [id=codebuild-prod-github-runner-service-role-20241031084621580100000008]
+module.cms.module.vpc.aws_subnet.elasticache[1]: Refreshing state... [id=subnet-002ff16ac00599965]
+module.cms.module.vpc.aws_subnet.elasticache[2]: Refreshing state... [id=subnet-052152d93b4e126df]
+module.cms.module.vpc.aws_subnet.elasticache[0]: Refreshing state... [id=subnet-0b9f8cf23110b4fcb]
+module.cms.module.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-05a368aa7f74f6ae5]
+module.cms.module.vpc.aws_subnet.private[2]: Refreshing state... [id=subnet-062d8f934c9ec2fbe]
+module.cms.module.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-07db82f004e40cedb]
+module.cms.module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0df86eae13fae1bad]
+module.cms.module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-0d9f888021fccc128]
+module.cms.module.vpc.aws_subnet.public[2]: Refreshing state... [id=subnet-0426692ee3c8c0664]
+module.cms.module.vpc.aws_subnet.database[2]: Refreshing state... [id=subnet-0d1662fd2a4e4c43d]
+module.cms.module.vpc.aws_subnet.database[0]: Refreshing state... [id=subnet-06b9a2b99fa66bdcb]
+module.cms.module.vpc.aws_subnet.database[1]: Refreshing state... [id=subnet-0f7f51318036ac623]
+module.cicd.aws_iam_role_policy_attachment.vpc_connection: Refreshing state... [id=codebuild-prod-github-runner-service-role-20241031084621202900000007]
+module.website.aws_s3_bucket_policy.cloudfront: Refreshing state... [id=website-bucket-5791]
+module.chatbot[0].module.iam_policy_ecs_task_role_ssm.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/ECSTaskRolePoliciesSSM]
+module.chatbot[0].aws_cloudwatch_metric_alarm.dynamodb_write_throttle_sessions: Refreshing state... [id=chatbot-prod-dynamodb-write-throttle-sessions]
+module.chatbot[0].aws_cloudwatch_metric_alarm.dynamodb_read_throttle_sessions: Refreshing state... [id=chatbot-prod-dynamodb-read-throttle-sessions]
+module.chatbot[0].aws_api_gateway_method.chatbot_cors: Refreshing state... [id=agm-35z2b93836-kzfma6-OPTIONS]
+module.chatbot[0].module.lambda_function.aws_iam_policy.vpc[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/chatbot-prod-api-lambda-vpc]
+module.chatbot[0].module.ecs_cluster.aws_ecs_cluster.this[0]: Refreshing state... [id=arn:aws:ecs:eu-south-1:195239627635:cluster/chatbot-prod-ecs-cluster]
+module.cms.data.aws_iam_policy_document.s3_iam_policy_cms: Reading...
+module.cms.data.aws_iam_policy_document.s3_iam_policy_cms: Read complete after 0s [id=3206184062]
+module.cms.data.aws_iam_policy_document.ecs_task_role_s3: Reading...
+module.cms.data.aws_iam_policy_document.ecs_task_role_s3: Read complete after 0s [id=2920909617]
+module.chatbot[0].data.aws_iam_policy_document.lambda_dynamodb_policy: Reading...
+module.chatbot[0].data.aws_iam_policy_document.lambda_dynamodb_policy: Read complete after 0s [id=2466515379]
+module.cms.module.cms_ecs_cluster.aws_ecs_cluster.this[0]: Refreshing state... [id=arn:aws:ecs:eu-south-1:195239627635:cluster/cms-ecs-cluster]
+module.core.aws_route53_record.devportal_ses_dkim_txt: Refreshing state... [id=Z09168633TRICSOONP5YG__amazonses_TXT]
+module.core.module.ses_developer_pagopa_it.aws_iam_group_policy.ses_group_policy[0]: Refreshing state... [id=DevPortalSES:DevPortalSESPolicy]
+module.chatbot[0].aws_iam_role_policy.cloudwatch: Refreshing state... [id=api_gateway_cloudwatch_global:default]
+module.chatbot[0].aws_api_gateway_account.chatbot: Refreshing state... [id=api-gateway-account]
+module.website.aws_route53_record.certificate["auth.developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__dc67dad8e212e24079ab17f472c31af7.auth.developer.pagopa.it._CNAME]
+module.website.aws_route53_record.certificate["developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__473c5630ecc506cbdbf2ca78bc58b979.developer.pagopa.it._CNAME]
+module.website.aws_route53_record.certificate["www.developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__b2b24fd8133d13fe96f6d2ddcc3a7e10.www.developer.pagopa.it._CNAME]
+module.chatbot[0].module.iam_role_ecs_task_execution.aws_iam_role.this[0]: Refreshing state... [id=chatbot-prod-ecs-task-execution-role]
+module.website.module.cognito_custom_message_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.website.module.cognito_custom_message_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=1975041907]
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=657423986]
+module.identity.aws_iam_role_policy_attachment.githubiac: Refreshing state... [id=GitHubActionIACRole-20230613123653445700000002]
+module.core.module.active_campaign_dns_records.aws_route53_record.this["_dmarc TXT"]: Refreshing state... [id=Z09168633TRICSOONP5YG__dmarc.developer.pagopa.it_TXT]
+module.core.module.active_campaign_dns_records.aws_route53_record.this["acdkim1._domainkey CNAME"]: Refreshing state... [id=Z09168633TRICSOONP5YG_acdkim1._domainkey.developer.pagopa.it_CNAME]
+module.core.module.active_campaign_dns_records.aws_route53_record.this["acdkim2._domainkey CNAME"]: Refreshing state... [id=Z09168633TRICSOONP5YG_acdkim2._domainkey.developer.pagopa.it_CNAME]
+module.core.module.active_campaign_dns_records.aws_route53_record.this["em-3628291 CNAME"]: Refreshing state... [id=Z09168633TRICSOONP5YG_em-3628291.developer.pagopa.it_CNAME]
+module.website.aws_s3_bucket_lifecycle_configuration.website: Refreshing state... [id=website-bucket-5791]
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.website.module.dynamodb_read_throttle_events_webinar_questions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Webinar | Questions | ReadThrottleEvents]
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=4245626550]
+module.website.module.dynamodb_successful_request_latency_query_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Webinar | Questions | Successful Request Latency | Query]
+module.website.module.dynamodb_write_throttle_events_webinar_questions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Webinar | Questions | WriteThrottleEvents]
+module.website.module.dynamodb_successful_request_latency_put_item_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Webinar | Questions | Successful Request Latency | PutItem]
+module.website.module.dynamodb_system_errors_webinar_questions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Webinar | Questions | SystemErrors]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.aws_iam_role.this[0]: Refreshing state... [id=chatbot-prod-ecs-monitoring-task-execution-role]
+module.cms.module.cms_rds.aws_security_group.this[0]: Refreshing state... [id=sg-0b45b863766a1c28f]
+module.cms.module.cms_load_balancer.aws_lb_target_group.this["cms-target-group"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:targetgroup/cms-target-group/278dfa988bd67ba8]
+module.website.aws_iam_policy.deploy_website: Refreshing state... [id=arn:aws:iam::195239627635:policy/DeployWebsite]
+module.website.aws_route53_record.www_website: Refreshing state... [id=Z09168633TRICSOONP5YG_www.developer.pagopa.it_A]
+module.chatbot[0].data.aws_iam_policy_document.lambda_s3_policy: Reading...
+module.cms.aws_security_group.ecs_tasks: Refreshing state... [id=sg-06c2d88664153db45]
+module.chatbot[0].data.aws_iam_policy_document.lambda_s3_policy: Read complete after 0s [id=2359611473]
+module.cms.aws_security_group_rule.vpc_endpoints: Refreshing state... [id=sgrule-3053501722]
+module.cms.module.iam_role_ecs_task_execution.aws_iam_role.this[0]: Refreshing state... [id=ecs-task-execution-role]
+module.chatbot[0].module.iam_policy_ecs_monitoring_task_role_ssm.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/ECSMonitoringTaskRolePoliciesSSM]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.aws_iam_role.this[0]: Refreshing state... [id=chatbot-prod-monitoring-ecs-task-role]
+module.cms.module.iam_role_task_role.aws_iam_role.this[0]: Refreshing state... [id=ecs-task-role]
+module.chatbot[0].module.ecs_redis_task_iam_role.aws_iam_role.this[0]: Refreshing state... [id=chatbot-prod-redis-ecs-task-role]
+module.cms.module.vpc.aws_route_table.private[0]: Refreshing state... [id=rtb-08ec27b17630abdbf]
+module.cms.module.vpc.aws_route.public_internet_gateway[0]: Refreshing state... [id=r-rtb-0b9cd68f286ad8a841080289494]
+module.cms.module.vpc.aws_eip.nat[0]: Refreshing state... [id=eipalloc-0177ba38974529e75]
+module.cms.module.vpc.aws_elasticache_subnet_group.elasticache[0]: Refreshing state... [id=cms]
+module.website.module.cognito_verify_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.website.module.cognito_verify_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=2101758760]
+module.cms.module.vpc.aws_route_table_association.public[2]: Refreshing state... [id=rtbassoc-0e172c3cc0418c1be]
+module.cms.module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0dfc286f78a23de7f]
+module.cms.module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-09936614b5e9ae410]
+module.website.module.cognito_define_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.cms.module.iam_policy_cms.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/S3UploadImages]
+module.cms.module.vpc.aws_network_acl.public[0]: Refreshing state... [id=acl-0321a4d3f668f94ad]
+module.website.module.cognito_define_auth_challenge_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=3257274574]
+module.cms.module.vpc.aws_db_subnet_group.database[0]: Refreshing state... [id=cms]
+module.chatbot[0].module.lambda_function.data.aws_iam_policy_document.logs[0]: Reading...
+module.chatbot[0].module.lambda_function.data.aws_iam_policy_document.logs[0]: Read complete after 0s [id=3888280360]
+module.core.aws_route53_record.devportal_ses_dkim_cname[1]: Refreshing state... [id=Z09168633TRICSOONP5YG_ydgxjjxbxrwb7waq5uh6fmkse7upioxd._domainkey_CNAME]
+module.core.aws_route53_record.devportal_ses_dkim_cname[2]: Refreshing state... [id=Z09168633TRICSOONP5YG_ofaumtqa4oj6qctzuxnyx7ktdjh6uz4y._domainkey_CNAME]
+module.core.aws_route53_record.devportal_ses_dkim_cname[0]: Refreshing state... [id=Z09168633TRICSOONP5YG_ld5el3vsrrl4gfaj4vcoouv2e2hxhsar._domainkey_CNAME]
+module.cms.module.strapi_media_library_ssl_certificate.aws_route53_record.validation[0]: Refreshing state... [id=Z09168633TRICSOONP5YG__d2d71ce28b7d1177104aa698dd059240.cdn.developer.pagopa.it._CNAME]
+module.cms.module.cms_ssl_certificate.aws_route53_record.validation[1]: Refreshing state... [id=Z09168633TRICSOONP5YG__5847f2100966a95d475607e73e867937.www.cms.developer.pagopa.it._CNAME]
+module.cms.module.cms_ssl_certificate.aws_route53_record.validation[0]: Refreshing state... [id=Z09168633TRICSOONP5YG__50cc7596284be01a47682c3bc9255cb8.cms.developer.pagopa.it._CNAME]
+module.cms.module.cms_dns_records.data.aws_route53_zone.this[0]: Reading...
+module.cms.aws_route53_record.certificate["cdn.developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__d2d71ce28b7d1177104aa698dd059240.cdn.developer.pagopa.it._CNAME]
+module.cms.aws_route53_record.certificate["cms.developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__50cc7596284be01a47682c3bc9255cb8.cms.developer.pagopa.it._CNAME]
+module.cms.aws_route53_record.certificate["www.cms.developer.pagopa.it"]: Refreshing state... [id=Z09168633TRICSOONP5YG__5847f2100966a95d475607e73e867937.www.cms.developer.pagopa.it._CNAME]
+module.chatbot[0].module.lambda_function.aws_iam_role_policy_attachment.vpc[0]: Refreshing state... [id=chatbot-prod-api-lambda-20241031084620354400000004]
+module.website.module.cognito_custom_message_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_custom_message-logs]
+module.website.module.cognito_post_confirmation_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_post_confirmation-logs]
+module.website.module.cognito_create_auth_challenge_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_create_auth_challenge-logs]
+module.chatbot[0].module.iam_role_ecs_task_execution.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=chatbot-prod-ecs-task-execution-role-2024103108462194960000000a]
+module.chatbot[0].module.iam_role_ecs_task_execution.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=chatbot-prod-ecs-task-execution-role-20241031084621935300000009]
+module.website.module.cloudfront_origin_latency_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | CloudFront Origin Latency]
+module.website.module.cloudfront_function_execution_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | CloudFront Function | Execution Errors]
+module.website.module.cloudfront_function_validation_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | CloudFront Function | FunctionValidationErrors]
+module.website.module.cloudfront_function_throttled_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | CloudFront Function | Throttle]
+module.website.module.cloudfront_5xx_error_rate_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | CloudFront 5xxErrorRate]
+module.cms.module.cms_dns_records.data.aws_route53_zone.this[0]: Read complete after 0s [id=Z09168633TRICSOONP5YG]
+module.cms.aws_security_group.cms_database: Refreshing state... [id=sg-0d1aa7cf5d27d9428]
+module.website.aws_iam_role_policy_attachment.deploy_website: Refreshing state... [id=GitHubActionDeployWebsite-20230613160410435500000004]
+module.website.aws_route53_record.website: Refreshing state... [id=Z09168633TRICSOONP5YG_developer.pagopa.it_A]
+module.cms.module.vpc.aws_route_table_association.elasticache[1]: Refreshing state... [id=rtbassoc-0666a6147b64c6c73]
+module.cms.module.vpc.aws_route_table_association.elasticache[0]: Refreshing state... [id=rtbassoc-0fee626348ae639a2]
+module.cms.module.vpc.aws_route_table_association.elasticache[2]: Refreshing state... [id=rtbassoc-08660dd39e77fb16c]
+module.cms.module.vpc.aws_route_table_association.database[0]: Refreshing state... [id=rtbassoc-0672e1250cfab2e47]
+module.cms.module.vpc.aws_route_table_association.database[2]: Refreshing state... [id=rtbassoc-07aa1bfd50178e464]
+module.cms.module.vpc.aws_route_table_association.database[1]: Refreshing state... [id=rtbassoc-070f4699be3c10ccb]
+module.cms.module.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-023602879828285e7]
+module.cms.module.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0de1b6eb122c674a0]
+module.cms.module.vpc.aws_route_table_association.private[2]: Refreshing state... [id=rtbassoc-0e24adb18f66b7129]
+module.website.module.cognito_verify_auth_challenge_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_verify_auth_challenge-logs]
+module.cms.aws_vpc_endpoint.ecr_api: Refreshing state... [id=vpce-030848a086a6d9b7d]
+module.cms.aws_vpc_endpoint.ssmmessages: Refreshing state... [id=vpce-0021c7104bf916852]
+module.website.module.cognito_define_auth_challenge_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_define_auth_challenge-logs]
+module.cms.module.s3_bucket_cms.data.aws_iam_policy_document.combined[0]: Reading...
+module.cms.module.s3_bucket_cms.data.aws_iam_policy_document.combined[0]: Read complete after 0s [id=3206184062]
+module.cms.module.iam_policy_ecs_task_role_s3.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/CMSTaskRolePoliciesS3]
+module.chatbot[0].module.lambda_function.aws_iam_policy.logs[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/chatbot-prod-api-lambda-logs]
+module.chatbot[0].module.user_pool_issuer.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/user_pool_issuer]
+module.cms.module.vpc.aws_network_acl_rule.public_inbound[0]: Refreshing state... [id=nacl-1915408432]
+module.cms.module.vpc.aws_network_acl_rule.public_outbound[0]: Refreshing state... [id=nacl-769275257]
+module.chatbot[0].module.ssl_certificate.aws_acm_certificate.this[0]: Refreshing state... [id=arn:aws:acm:eu-south-1:195239627635:certificate/1b8775d1-0c22-4b3e-80e2-9a47dbb91b81]
+module.chatbot[0].module.ssl_certificate_us_east_1.aws_acm_certificate.this[0]: Refreshing state... [id=arn:aws:acm:us-east-1:195239627635:certificate/0e9bf730-1220-4e85-8216-5a7aa666c73e]
+module.cicd.aws_iam_policy.deploy_website: Refreshing state... [id=arn:aws:iam::195239627635:policy/cicd-prod-deploy-website]
+module.website.module.cognito_custom_message_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=cognito_custom_message-20231031164836076900000001]
+module.website.module.cognito_post_confirmation_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=cognito_post_confirmation-20231107123409726700000002]
+module.chatbot[0].module.lambda_function.aws_iam_policy.additional_jsons[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/chatbot-prod-api-lambda-0]
+module.chatbot[0].module.lambda_function.aws_iam_policy.additional_jsons[1]: Refreshing state... [id=arn:aws:iam::195239627635:policy/chatbot-prod-api-lambda-1]
+module.chatbot[0].module.lambda_function.aws_iam_policy.additional_jsons[2]: Refreshing state... [id=arn:aws:iam::195239627635:policy/chatbot-prod-api-lambda-2]
+module.website.module.cognito_create_auth_challenge_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=cognito_create_auth_challenge-20231115120812261800000002]
+module.cms.module.cms_load_balancer.aws_lb.this[0]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:loadbalancer/app/cms-load-balancer/baedf936d0cc5286]
+module.cms.module.s3_bucket_cms.aws_s3_bucket_policy.this[0]: Refreshing state... [id=cms-medialibrary-7698]
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.additional_inline[0]: Reading...
+module.website.module.cognito_post_confirmation_function.data.aws_iam_policy_document.additional_inline[0]: Read complete after 0s [id=1294291114]
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.additional_inline[0]: Reading...
+module.website.module.cognito_create_auth_challenge_function.data.aws_iam_policy_document.additional_inline[0]: Read complete after 0s [id=1294291114]
+module.cms.module.vpc.aws_nat_gateway.this[0]: Refreshing state... [id=nat-09806bb8533390188]
+module.cms.aws_iam_policy.deploy_cms: Refreshing state... [id=arn:aws:iam::195239627635:policy/DeployCms]
+module.chatbot[0].aws_ecs_task_definition.ecs_redis_task_def: Refreshing state... [id=redis-task-def]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=chatbot-prod-monitoring-ecs-task-role-20241218164417372700000004]
+module.chatbot[0].module.ecs_monitoring_task_iam_role.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=chatbot-prod-monitoring-ecs-task-role-20241218164417324800000003]
+module.chatbot[0].module.ecs_redis_task_iam_role.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=chatbot-prod-redis-ecs-task-role-2024103108462612750000000e]
+module.chatbot[0].module.ecs_redis_task_iam_role.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=chatbot-prod-redis-ecs-task-role-2024103108462650430000000f]
+module.website.module.cognito_verify_auth_challenge_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=cognito_verify_auth_challenge-20231115120812265500000003]
+module.website.module.cognito_define_auth_challenge_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=cognito_define_auth_challenge-20231115120812402200000004]
+module.chatbot[0].module.lambda_function.aws_iam_role_policy_attachment.logs[0]: Refreshing state... [id=chatbot-prod-api-lambda-20241031084629220000000011]
+module.website.module.cognito_custom_message_function.aws_lambda_function.this[0]: Refreshing state... [id=cognito_custom_message]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=chatbot-prod-ecs-monitoring-task-execution-role-20241218164417874700000006]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.aws_iam_role_policy_attachment.custom[2]: Refreshing state... [id=chatbot-prod-ecs-monitoring-task-execution-role-20241218164417936400000007]
+module.chatbot[0].module.iam_role_ecs_monitoring_task_execution.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=chatbot-prod-ecs-monitoring-task-execution-role-20241218164417835700000005]
+module.website.module.cognito_post_confirmation_function.aws_iam_policy.additional_inline[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_post_confirmation-inline]
+module.website.module.cognito_create_auth_challenge_function.aws_iam_policy.additional_inline[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/cognito_create_auth_challenge-inline]
+module.cicd.aws_iam_role_policy_attachment.deploy_website: Refreshing state... [id=codebuild-prod-github-runner-service-role-2024103108462535390000000d]
+module.cms.module.iam_user_cms.aws_iam_user_policy_attachment.this["0"]: Refreshing state... [id=strapi-20240215114512906700000004]
+module.cms.module.vpc.aws_route.private_nat_gateway[0]: Refreshing state... [id=r-rtb-08ec27b17630abdbf1080289494]
+module.cms.module.secret_cms_access_key_id.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/access_key_id]
+module.cms.module.secret_cms_access_key_secret.aws_ssm_parameter.this[0]: Refreshing state... [id=/cms/access_key_secret]
+module.chatbot[0].module.lambda_function.aws_iam_role_policy_attachment.additional_jsons[0]: Refreshing state... [id=chatbot-prod-api-lambda-20241031090504508200000001]
+module.chatbot[0].module.lambda_function.aws_iam_role_policy_attachment.additional_jsons[2]: Refreshing state... [id=chatbot-prod-api-lambda-20241031090504512300000002]
+module.chatbot[0].module.lambda_function.aws_iam_role_policy_attachment.additional_jsons[1]: Refreshing state... [id=chatbot-prod-api-lambda-20241031090504646900000003]
+module.cms.module.cms_load_balancer.aws_lb_listener.this["front_end_http"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/cms-load-balancer/baedf936d0cc5286/9a4f021f5b390bba]
+module.cms.module.cms_load_balancer.aws_lb_listener.this["front_end_https"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/cms-load-balancer/baedf936d0cc5286/12802b875402194b]
+module.chatbot[0].module.ssl_certificate.aws_route53_record.validation[0]: Refreshing state... [id=Z01097471SBM45J619RP9__fc2ebbf368f79050d7ec5107134bb2ed.chatbot.developer.pagopa.it._CNAME]
+module.chatbot[0].module.ssl_certificate.aws_route53_record.validation[1]: Refreshing state... [id=Z01097471SBM45J619RP9__d036f4e20c89af587180878e9f1caa63.dummy.chatbot.developer.pagopa.it._CNAME]
+module.cms.module.cloudfront_cms.aws_cloudfront_distribution.this[0]: Refreshing state... [id=E1PEBT69CD9874]
+module.website.module.cognito_verify_auth_challenge_function.aws_lambda_function.this[0]: Refreshing state... [id=cognito_verify_auth_challenge]
+module.website.module.cognito_define_auth_challenge_function.aws_lambda_function.this[0]: Refreshing state... [id=cognito_define_auth_challenge]
+module.chatbot[0].module.ssl_certificate_us_east_1.aws_route53_record.validation[1]: Refreshing state... [id=Z01097471SBM45J619RP9__d036f4e20c89af587180878e9f1caa63.dummy.chatbot.developer.pagopa.it._CNAME]
+module.chatbot[0].module.ssl_certificate_us_east_1.aws_route53_record.validation[0]: Refreshing state... [id=Z01097471SBM45J619RP9__fc2ebbf368f79050d7ec5107134bb2ed.chatbot.developer.pagopa.it._CNAME]
+module.cms.aws_iam_role_policy_attachment.deploy_cms: Refreshing state... [id=GitHubActionDeployCms-20240221150031739800000003]
+module.cicd.aws_security_group.codebuild: Refreshing state... [id=sg-07a58a57303ef7c4b]
+module.chatbot[0].aws_route53_zone.chatbot_internal: Refreshing state... [id=Z0770210SW4DR6SX3R9A]
+module.chatbot[0].aws_security_group.monitoring_lb: Refreshing state... [id=sg-0fcc13e880ac7e291]
+module.chatbot[0].aws_security_group.lambda: Refreshing state... [id=sg-0069a197dd00074c3]
+module.chatbot[0].aws_security_group.monitoring_ecs: Refreshing state... [id=sg-0b411c10a9b57087a]
+module.chatbot[0].aws_security_group.nlb: Refreshing state... [id=sg-071dcb356f05fc044]
+module.chatbot[0].aws_security_group.efs: Refreshing state... [id=sg-00f906b161090d6ac]
+module.chatbot[0].aws_security_group.redis: Refreshing state... [id=sg-0bbd25a0945ee696c]
+module.cms.module.iam_role_task_role.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=ecs-task-role-20240215114512648600000002]
+module.cms.module.iam_role_task_role.aws_iam_role_policy_attachment.custom[2]: Refreshing state... [id=ecs-task-role-20241031084626534500000010]
+module.cms.module.iam_role_task_role.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=ecs-task-role-20240215114512667200000003]
+module.website.module.cognito_post_confirmation_function.aws_iam_role_policy_attachment.additional_inline[0]: Refreshing state... [id=cognito_post_confirmation-20231107123409076700000001]
+module.website.module.cognito_create_auth_challenge_function.aws_iam_role_policy_attachment.additional_inline[0]: Refreshing state... [id=cognito_create_auth_challenge-20231115120811696200000001]
+module.chatbot[0].module.rds.aws_security_group.this[0]: Refreshing state... [id=sg-033a07c40bc6e94dc]
+module.chatbot[0].module.monitoring_load_balancer.aws_lb_target_group.this["monitoring-target-group"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:targetgroup/monitoring-target-group/0dbfbc2f05229a44]
+module.chatbot[0].module.internal_monitoring_load_balancer.aws_lb_target_group.this["internal-monitoring-target-group"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:targetgroup/internal-monitoring-target-group/3511888977a0064e]
+module.chatbot[0].module.nlb.aws_lb_target_group.this["redis-tg"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:targetgroup/redis-tg/503b3be73d356c82]
+module.cicd.aws_security_group_rule.codebuild_egress: Refreshing state... [id=sgrule-1465611209]
+module.cicd.aws_codebuild_project.github_runner: Refreshing state... [id=arn:aws:codebuild:eu-south-1:195239627635:project/prod-github-runner]
+module.cms.module.cms_rds.aws_rds_cluster.this[0]: Refreshing state... [id=cms-database]
+module.chatbot[0].aws_security_group.internal_monitoring_lb: Refreshing state... [id=sg-0dae932ab84e77578]
+module.chatbot[0].aws_security_group_rule.lambda_egress: Refreshing state... [id=sgrule-3909172874]
+module.chatbot[0].aws_security_group_rule.nlb_egress: Refreshing state... [id=sgrule-2508801611]
+module.chatbot[0].aws_security_group_rule.lambda_redis_ingress: Refreshing state... [id=sgrule-21636436]
+module.chatbot[0].aws_security_group_rule.ecs_redis_ingress: Refreshing state... [id=sgrule-2820513732]
+module.chatbot[0].aws_security_group_rule.alb_ingress: Refreshing state... [id=sgrule-1823649639]
+module.chatbot[0].aws_security_group.monitoring_database: Refreshing state... [id=sg-0c3b9f8f3aa27b243]
+module.chatbot[0].aws_security_group_rule.monitoring_ecs_egress: Refreshing state... [id=sgrule-501793860]
+module.chatbot[0].aws_security_group_rule.efs_egress: Refreshing state... [id=sgrule-2982161335]
+module.chatbot[0].aws_efs_mount_target.this[1]: Refreshing state... [id=fsmt-01169a97a54fdee8a]
+module.chatbot[0].aws_efs_mount_target.this[0]: Refreshing state... [id=fsmt-0bba83382376014f8]
+module.chatbot[0].aws_efs_mount_target.this[2]: Refreshing state... [id=fsmt-097afa7fcd5d4a6ce]
+module.chatbot[0].aws_security_group_rule.redis_egress: Refreshing state... [id=sgrule-829887712]
+module.chatbot[0].aws_security_group_rule.efs_redis_ingress: Refreshing state... [id=sgrule-3518932112]
+module.chatbot[0].aws_security_group_rule.nlb_ingress: Refreshing state... [id=sgrule-822902143]
+module.chatbot[0].aws_api_gateway_domain_name.domain_name: Refreshing state... [id=api.chatbot.developer.pagopa.it]
+module.website.module.cognito_post_confirmation_function.aws_lambda_function.this[0]: Refreshing state... [id=cognito_post_confirmation]
+module.website.module.cognito_create_auth_challenge_function.aws_lambda_function.this[0]: Refreshing state... [id=cognito_create_auth_challenge]
+module.chatbot[0].module.internal_monitoring_load_balancer.aws_lb.this[0]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:loadbalancer/app/chatbot-prod-int-monitoring-alb/779ad69e53d672da]
+module.chatbot[0].module.monitoring_load_balancer.aws_lb.this[0]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:loadbalancer/app/chatbot-prod-monitoring-alb/530fa148c1d2b098]
+module.chatbot[0].aws_security_group_rule.internal_alb_ingress: Refreshing state... [id=sgrule-2674741582]
+module.chatbot[0].module.nlb.aws_lb.this[0]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:loadbalancer/net/chatbot-load-balancer/541313c1e11f5b8c]
+module.cms.module.cms_rds.aws_rds_cluster_instance.this["one"]: Refreshing state... [id=cms-database-one]
+module.cicd.aws_codebuild_webhook.github_webhook: Refreshing state... [id=prod-github-runner]
+module.cms.aws_route53_record.strapi_media_library: Refreshing state... [id=Z09168633TRICSOONP5YG_cdn.developer.pagopa.it_A]
+module.website.module.cognito_custom_message_lambda_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CustomMessage | Errors]
+module.website.module.cognito_custom_message_lambda_duration_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CustomMessage | Duration]
+module.website.module.cognito_custom_message_lambda_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CustomMessage | Throttles]
+module.website.module.cognito_custom_message_lambda_concurrent_executions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CustomMessage | ConcurrentExecutions]
+module.website.module.cognito_define_auth_challenge_lambda_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | DefineAuthChallenge | Errors]
+module.website.module.cognito_define_auth_challenge_lambda_concurrent_executions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | DefineAuthChallenge | ConcurrentExecutions]
+module.website.module.cognito_define_auth_challenge_lambda_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | DefineAuthChallenge | Throttles]
+module.website.module.cognito_define_auth_challenge_lambda_duration_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | DefineAuthChallenge | Duration]
+module.website.module.cognito_verify_auth_challenge_lambda_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | VerifyAuthChallenge | Errors]
+module.website.module.cognito_verify_auth_challenge_lambda_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | VerifyAuthChallenge | Throttles]
+module.website.module.cognito_verify_auth_challenge_lambda_concurrent_executions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | VerifyAuthChallenge | ConcurrentExecutions]
+module.website.module.cognito_verify_auth_challenge_lambda_duration_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | VerifyAuthChallenge | Duration]
+module.chatbot[0].aws_route53_record.apigw: Refreshing state... [id=Z01097471SBM45J619RP9_api_A]
+module.chatbot[0].module.internal_ssl_certificate.aws_acm_certificate.this[0]: Refreshing state... [id=arn:aws:acm:eu-south-1:195239627635:certificate/e31e911f-9df2-4ced-928c-5528116b0c92]
+module.chatbot[0].module.rds.aws_rds_cluster.this[0]: Refreshing state... [id=chatbot-prod-monitoring-database]
+module.cms.module.cms_dns_records.aws_route53_record.this["cms A"]: Refreshing state... [id=Z09168633TRICSOONP5YG_cms.developer.pagopa.it_A]
+module.chatbot[0].module.nlb.aws_lb_listener.this["redis_port"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/net/chatbot-load-balancer/541313c1e11f5b8c/3b7006f82a7817ca]
+module.cms.module.iam_policy_ecs_task_execution.aws_iam_policy.policy[0]: Refreshing state... [id=arn:aws:iam::195239627635:policy/CMSTaskExecutionPolicies]
+module.chatbot[0].module.monitoring_load_balancer.aws_lb_listener.this["front_end_https"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/chatbot-prod-monitoring-alb/530fa148c1d2b098/2a9f974a2926573a]
+module.chatbot[0].module.monitoring_load_balancer.aws_lb_listener.this["front_end_http"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/chatbot-prod-monitoring-alb/530fa148c1d2b098/a87117ce2d8de9e1]
+module.cms.aws_ecs_task_definition.cms_task_def: Refreshing state... [id=cms-task-def]
+module.cicd.aws_security_group_rule.codebuild_redis_ingress[0]: Refreshing state... [id=sgrule-1418970848]
+module.website.aws_cognito_user_pool.devportal: Refreshing state... [id=eu-south-1_40C4QDF1U]
+module.chatbot[0].aws_route53_record.internal_monitoring: Refreshing state... [id=Z0770210SW4DR6SX3R9A_mon_A]
+module.chatbot[0].aws_route53_record.monitoring: Refreshing state... [id=Z01097471SBM45J619RP9_mon_A]
+module.chatbot[0].module.rds.aws_rds_cluster_instance.this["one"]: Refreshing state... [id=chatbot-prod-monitoring-database-one]
+module.website.module.cognito_post_confirmation_lambda_duration_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | PostConfirmation | Duration]
+module.website.module.cognito_post_confirmation_lambda_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | PostConfirmation | Errors]
+module.website.module.cognito_post_confirmation_lambda_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | PostConfirmation | Throttles]
+module.website.module.cognito_post_confirmation_lambda_concurrent_executions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | PostConfirmation | ConcurrentExecutions]
+module.website.module.cognito_create_auth_challenge_lambda_errors_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CreateAuthChallenge | Errors]
+module.website.module.cognito_create_auth_challenge_lambda_concurrent_executions_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CreateAuthChallenge | ConcurrentExecutions]
+module.website.module.cognito_create_auth_challenge_lambda_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CreateAuthChallenge | Throttles]
+module.website.module.cognito_create_auth_challenge_lambda_duration_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | Lambda | CreateAuthChallenge | Duration]
+module.chatbot[0].module.internal_ssl_certificate.aws_route53_record.validation[1]: Refreshing state... [id=Z01097471SBM45J619RP9__a718717f9ba7be37677c0fd0d5f945d2.dummy.internal.chatbot.developer.pagopa.it._CNAME]
+module.chatbot[0].module.internal_ssl_certificate.aws_route53_record.validation[0]: Refreshing state... [id=Z01097471SBM45J619RP9__c3dcbcb762b31da699915f6d82f4a945.internal.chatbot.developer.pagopa.it._CNAME]
+module.website.aws_cognito_user_pool_client.devportal_website: Refreshing state... [id=1r5dtmfdsc95dggi5tqhq7q9rn]
+module.website.aws_cognito_user_pool_domain.devportal: Refreshing state... [id=auth.developer.pagopa.it]
+module.cms.module.cms_ecs_service.aws_ecs_service.ignore_task_definition[0]: Refreshing state... [id=arn:aws:ecs:eu-south-1:195239627635:service/cms-ecs-cluster/cms-ecs]
+module.chatbot[0].module.ecs_service.aws_ecs_service.this[0]: Refreshing state... [id=arn:aws:ecs:eu-south-1:195239627635:service/chatbot-prod-ecs-cluster/redis]
+module.website.module.cognito_create_auth_challenge_function.aws_lambda_permission.unqualified_alias_triggers["cognito_devportal"]: Refreshing state... [id=cognito_devportal]
+module.website.module.cognito_custom_message_function.aws_lambda_permission.unqualified_alias_triggers["cognito_devportal"]: Refreshing state... [id=cognito_devportal]
+module.website.module.cognito_define_auth_challenge_function.aws_lambda_permission.unqualified_alias_triggers["cognito_devportal"]: Refreshing state... [id=cognito_devportal]
+module.website.module.cognito_verify_auth_challenge_function.aws_lambda_permission.unqualified_alias_triggers["cognito_devportal"]: Refreshing state... [id=cognito_devportal]
+module.website.module.cognito_post_confirmation_function.aws_lambda_permission.unqualified_alias_triggers["cognito_devportal"]: Refreshing state... [id=cognito_devportal]
+module.cms.module.iam_role_ecs_task_execution.aws_iam_role_policy_attachment.custom[2]: Refreshing state... [id=ecs-task-execution-role-20240215114513597500000007]
+module.cms.module.iam_role_ecs_task_execution.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=ecs-task-execution-role-20240215114513596200000006]
+module.cms.module.iam_role_ecs_task_execution.aws_iam_role_policy_attachment.custom[1]: Refreshing state... [id=ecs-task-execution-role-20240215114513587800000005]
+module.website.aws_cognito_identity_pool.devportal: Refreshing state... [id=eu-south-1:48af63df-b729-47e2-adac-f7a8522ca3d6]
+module.website.aws_cloudwatch_dashboard.main: Refreshing state... [id=Main]
+module.website.aws_route53_record.devportal_cognito_A: Refreshing state... [id=Z09168633TRICSOONP5YG_auth.developer.pagopa.it_A]
+module.chatbot[0].aws_cognito_user_pool_client.langfuse: Refreshing state... [id=5eaepeg83adirc80epno3necl6]
+module.cms.module.cms_ecs_service.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/cms-ecs-cluster/cms-ecs]
+module.website.module.cognito_user_pool_token_refresh_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | TokenRefresh Throttles]
+module.website.module.cognito_user_pool_sign_up_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | SignUp Throttles]
+module.website.module.cognito_user_pool_sign_in_throttles_alarm.aws_cloudwatch_metric_alarm.this[0]: Refreshing state... [id=DevPortal | Website | Cognito | SignIn Throttles]
+module.chatbot[0].module.ecs_service.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/chatbot-prod-ecs-cluster/redis]
+module.chatbot[0].module.postgres_url.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/postgres_url]
+module.chatbot[0].aws_api_gateway_authorizer.authorizer: Refreshing state... [id=8hkre8]
+module.website.data.aws_iam_policy_document.authenticated_users_policy: Reading...
+module.website.data.aws_iam_policy_document.authenticated_users_policy: Read complete after 0s [id=1529093549]
+module.chatbot[0].module.lambda_function.aws_lambda_function.this[0]: Refreshing state... [id=chatbot-prod-api-lambda]
+module.website.aws_iam_role.devportal_authenticated_host_user: Refreshing state... [id=DevPortalAuthenticatedHostUser]
+module.website.aws_iam_role.devportal_authenticated_user: Refreshing state... [id=DevPortalAuthenticatedUser]
+module.chatbot[0].module.internal_monitoring_load_balancer.aws_lb_listener.this["front_end_http"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/chatbot-prod-int-monitoring-alb/779ad69e53d672da/b487a60fb94e9cc7]
+module.chatbot[0].module.internal_monitoring_load_balancer.aws_lb_listener.this["front_end_https"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-south-1:195239627635:listener/app/chatbot-prod-int-monitoring-alb/779ad69e53d672da/6f9fd7d8b1b1125c]
+module.chatbot[0].aws_api_gateway_method.chatbot["POST"]: Refreshing state... [id=agm-35z2b93836-kzfma6-POST]
+module.chatbot[0].aws_api_gateway_method.chatbot["PUT"]: Refreshing state... [id=agm-35z2b93836-kzfma6-PUT]
+module.chatbot[0].aws_api_gateway_method.chatbot["GET"]: Refreshing state... [id=agm-35z2b93836-kzfma6-GET]
+module.chatbot[0].aws_api_gateway_method.chatbot["DELETE"]: Refreshing state... [id=agm-35z2b93836-kzfma6-DELETE]
+module.chatbot[0].aws_api_gateway_method.chatbot["PATCH"]: Refreshing state... [id=agm-35z2b93836-kzfma6-PATCH]
+module.chatbot[0].module.user_pool_client_id.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/user_pool_client_id]
+module.chatbot[0].module.user_pool_client_secret.aws_ssm_parameter.ignore_value[0]: Refreshing state... [id=/chatbot/monitoring/user_pool_client_secret]
+module.chatbot[0].aws_lambda_permission.allow_eventbridge: Refreshing state... [id=AllowExecutionFromEventBridge]
+module.chatbot[0].aws_cloudwatch_metric_alarm.lambda_increased_invocations: Refreshing state... [id=chatbot-prod-lambda-increased-invocations]
+module.chatbot[0].aws_lambda_permission.rest_apigw_lambda: Refreshing state... [id=AllowExecutionFromAPIGateway]
+module.chatbot[0].aws_cloudwatch_metric_alarm.lambda_duration: Refreshing state... [id=chatbot-prod-lambda-duration]
+module.chatbot[0].aws_cloudwatch_metric_alarm.lambda_errors: Refreshing state... [id=chatbot-prod-lambda-errors]
+module.chatbot[0].aws_api_gateway_integration.chatbot_cors: Refreshing state... [id=agi-35z2b93836-kzfma6-OPTIONS]
+module.chatbot[0].aws_cloudwatch_event_target.lambda_target: Refreshing state... [id=chatbot-prod-lambda-invocation-rule-keep-chatbot-lambda-warm]
+module.cms.module.cms_ecs_service.aws_appautoscaling_policy.this["memory"]: Refreshing state... [id=memory]
+module.cms.module.cms_ecs_service.aws_appautoscaling_policy.this["cpu"]: Refreshing state... [id=cpu]
+module.chatbot[0].module.ecs_service.aws_appautoscaling_policy.this["memory"]: Refreshing state... [id=memory]
+module.chatbot[0].module.ecs_service.aws_appautoscaling_policy.this["cpu"]: Refreshing state... [id=cpu]
+module.chatbot[0].aws_api_gateway_integration.chatbot["PATCH"]: Refreshing state... [id=agi-35z2b93836-kzfma6-PATCH]
+module.chatbot[0].aws_api_gateway_integration.chatbot["POST"]: Refreshing state... [id=agi-35z2b93836-kzfma6-POST]
+module.chatbot[0].aws_api_gateway_integration.chatbot["PUT"]: Refreshing state... [id=agi-35z2b93836-kzfma6-PUT]
+module.chatbot[0].aws_api_gateway_integration.chatbot["GET"]: Refreshing state... [id=agi-35z2b93836-kzfma6-GET]
+module.chatbot[0].aws_api_gateway_integration.chatbot["DELETE"]: Refreshing state... [id=agi-35z2b93836-kzfma6-DELETE]
+module.chatbot[0].module.ecr.data.aws_iam_policy_document.repository[0]: Reading...
+module.chatbot[0].module.ecr.data.aws_iam_policy_document.repository[0]: Read complete after 0s [id=1462316520]
+module.chatbot[0].aws_cloudwatch_dashboard.chatbot_dashboard: Refreshing state... [id=chatbot-prod-chatbot-dashboard]
+module.website.aws_iam_role_policy.devportal_authenticated_user: Refreshing state... [id=DevPortalAuthenticatedUser:DevPortalAuthenticatedUserPolicy]
+module.website.aws_cognito_identity_pool_roles_attachment.main: Refreshing state... [id=eu-south-1:48af63df-b729-47e2-adac-f7a8522ca3d6]
+module.website.aws_cognito_user_group.hosts: Refreshing state... [id=eu-south-1_40C4QDF1U/hosts]
+module.website.aws_iam_role_policy.devportal_authenticated_host_user: Refreshing state... [id=DevPortalAuthenticatedHostUser:DevPortalAuthenticatedHostUserPolicy]
+module.chatbot[0].module.ecr.aws_ecr_repository_policy.this[0]: Refreshing state... [id=chatbot]
+module.chatbot[0].aws_api_gateway_deployment.stage: Refreshing state... [id=4y5i4m]
+module.chatbot[0].aws_ecs_task_definition.monitoring_task_def: Refreshing state... [id=langfuse-task-def]
+module.chatbot[0].aws_api_gateway_base_path_mapping.path_mapping: Refreshing state... [id=api.chatbot.developer.pagopa.it/]
+module.chatbot[0].aws_api_gateway_method_settings.chatbot: Refreshing state... [id=35z2b93836-prod-*/*]
+module.chatbot[0].module.monitoring_ecs_service.aws_ecs_service.this[0]: Refreshing state... [id=arn:aws:ecs:eu-south-1:195239627635:service/chatbot-prod-ecs-cluster/langfuse-ecs]
+module.chatbot[0].module.monitoring_ecs_service.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/chatbot-prod-ecs-cluster/langfuse-ecs]
+module.chatbot[0].module.monitoring_ecs_service.aws_appautoscaling_policy.this["memory"]: Refreshing state... [id=memory]
+module.chatbot[0].module.monitoring_ecs_service.aws_appautoscaling_policy.this["cpu"]: Refreshing state... [id=cpu]
+
+Note: Objects have changed outside of Terraform
+
+Terraform detected the following changes made outside of Terraform since the
+last "terraform apply" which may have affected this plan:
+
+  # module.chatbot[0].module.lambda_function.aws_lambda_function.this[0] has changed
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "chatbot-prod-api-lambda"
+      ~ last_modified                  = "2024-12-19T09:31:50.000+0000" -> "2024-12-19T09:32:12.000+0000"
+        tags                           = {}
+        # (20 unchanged attributes hidden)
+
+        # (6 unchanged blocks hidden)
+    }
+
+  # module.core.module.ses_developer_pagopa_it.aws_iam_access_key.ses_user[0] has been deleted
+  - resource "aws_iam_access_key" "ses_user" {
+      - id                   = "AKIAS25JQJNZ2K4WXMH7" -> null
+      - secret               = (sensitive value) -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.core.module.ses_developer_pagopa_it.aws_iam_user.ses_user[0] has been deleted
+  - resource "aws_iam_user" "ses_user" {
+        id            = "DevPortal"
+      - name          = "DevPortal" -> null
+        tags          = {}
+        # (5 unchanged attributes hidden)
+    }
+
+
+Unless you have made equivalent changes to your configuration, or ignored the
+relevant attributes using ignore_changes, the following plan may include
+actions to undo or respond to these changes.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+-/+ destroy and then create replacement
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # module.active_campaign[0].aws_cloudwatch_event_rule.cognito_events will be created
+  + resource "aws_cloudwatch_event_rule" "cognito_events" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + event_pattern  = jsonencode(
+            {
+              + detail      = {
+                  + eventName   = [
+                      + "UpdateUserAttributes",
+                      + "DeleteUser",
+                      + "ConfirmSignUp",
+                    ]
+                  + eventSource = [
+                      + "cognito-idp.amazonaws.com",
+                    ]
+                }
+              + detail-type = [
+                  + "AWS API Call via CloudTrail",
+                ]
+              + source      = [
+                  + "aws.cognito-idp",
+                ]
+            }
+        )
+      + force_destroy  = false
+      + id             = (known after apply)
+      + name           = "ac-prod-cognito-events-rule"
+      + name_prefix    = (known after apply)
+      + tags_all       = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].aws_cloudwatch_event_target.cognito_events_sqs will be created
+  + resource "aws_cloudwatch_event_target" "cognito_events_sqs" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + force_destroy  = false
+      + id             = (known after apply)
+      + rule           = "ac-prod-cognito-events-rule"
+      + target_id      = "ac-prod-events.fifo"
+
+      + sqs_target {
+          + message_group_id = "userEvents"
+        }
+    }
+
+  # module.active_campaign[0].aws_cloudwatch_log_group.pipe will be created
+  + resource "aws_cloudwatch_log_group" "pipe" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "ac-prod-webinar-subscriptions-pipe"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 30
+      + skip_destroy      = false
+      + tags_all          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].aws_cloudwatch_metric_alarm.pipe_failed will be created
+  + resource "aws_cloudwatch_metric_alarm" "pipe_failed" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_description                     = "This metric monitors the webinar subscriptions eventbridge pipe failures"
+      + alarm_name                            = "ac-prod-webinar-subs-pipe-errors"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanOrEqualToThreshold"
+      + dimensions                            = {
+          + "PipeName" = "ac-prod-webinar-subscriptions-pipe"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 1
+      + id                                    = (known after apply)
+      + metric_name                           = "ExecutionFailed"
+      + namespace                             = "AWS/EventBridge/Pipes"
+      + period                                = 60
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "missing"
+    }
+
+  # module.active_campaign[0].aws_cloudwatch_metric_alarm.resync_dlq will be created
+  + resource "aws_cloudwatch_metric_alarm" "resync_dlq" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_description                     = "This metric monitors messages put in the dead letter queue"
+      + alarm_name                            = "ac-prod-sqs-messages-in-resync-dlq"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanOrEqualToThreshold"
+      + dimensions                            = {
+          + "QueueName" = "ac-prod-resync-events-dlq.fifo"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 1
+      + id                                    = (known after apply)
+      + metric_name                           = "ApproximateNumberOfMessagesVisible"
+      + namespace                             = "AWS/SQS"
+      + period                                = 60
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "missing"
+    }
+
+  # module.active_campaign[0].aws_iam_policy.lambda_policy will be created
+  + resource "aws_iam_policy" "lambda_policy" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Lambda policy for accessing SQS and logging"
+      + id               = (known after apply)
+      + name             = "ac-prod-sync-lambda-policy"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags_all         = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].aws_iam_policy.pipes will be created
+  + resource "aws_iam_policy" "pipes" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Policy to allow webinar subscriptions pipe to deploy website"
+      + id               = (known after apply)
+      + name             = "ac-prod-webinar-subscriptions-pipe-policy"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags_all         = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].aws_iam_role.pipes_role will be created
+  + resource "aws_iam_role" "pipes_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "pipes.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "ac-prod-webinar-subscriptions-pipe-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.active_campaign[0].aws_iam_role_policy_attachment.lambda_cognito_policy_attach will be created
+  + resource "aws_iam_role_policy_attachment" "lambda_cognito_policy_attach" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoReadOnly"
+      + role       = "ac-prod-sync-lambda"
+    }
+
+  # module.active_campaign[0].aws_iam_role_policy_attachment.lambda_policy_attach will be created
+  + resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "ac-prod-sync-lambda"
+    }
+
+  # module.active_campaign[0].aws_iam_role_policy_attachment.lambda_resync_cognito_policy_attach will be created
+  + resource "aws_iam_role_policy_attachment" "lambda_resync_cognito_policy_attach" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoReadOnly"
+      + role       = "ac-prod-resync-lambda"
+    }
+
+  # module.active_campaign[0].aws_iam_role_policy_attachment.lambda_resync_policy_attach will be created
+  + resource "aws_iam_role_policy_attachment" "lambda_resync_policy_attach" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "ac-prod-resync-lambda"
+    }
+
+  # module.active_campaign[0].aws_iam_role_policy_attachment.pipes will be created
+  + resource "aws_iam_role_policy_attachment" "pipes" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "ac-prod-webinar-subscriptions-pipe-role"
+    }
+
+  # module.active_campaign[0].aws_pipes_pipe.dynamodb_to_sqs will be created
+  + resource "aws_pipes_pipe" "dynamodb_to_sqs" {
+      + arn           = (known after apply)
+      + description   = "Managed by Terraform"
+      + desired_state = "RUNNING"
+      + id            = (known after apply)
+      + name          = "ac-prod-webinar-subscriptions-pipe"
+      + name_prefix   = (known after apply)
+      + role_arn      = (known after apply)
+      + source        = (known after apply)
+      + tags_all      = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + target        = (known after apply)
+
+      + log_configuration {
+          + include_execution_data = [
+              + "ALL",
+            ]
+          + level                  = "ERROR"
+
+          + cloudwatch_logs_log_destination {
+              + log_group_arn = (known after apply)
+            }
+        }
+
+      + source_parameters {
+          + dynamodb_stream_parameters {
+              + batch_size                         = 1
+              + maximum_batching_window_in_seconds = (known after apply)
+              + maximum_record_age_in_seconds      = (known after apply)
+              + parallelization_factor             = (known after apply)
+              + starting_position                  = "LATEST"
+            }
+        }
+
+      + target_parameters {
+          + input_template = jsonencode(
+                {
+                  + detail    = {
+                      + additionalEventData = {
+                          + sub = "<$.dynamodb.Keys.username.S>"
+                        }
+                      + eventName           = "Dynamo<$.eventName>"
+                    }
+                  + eventID   = "<$.eventID>"
+                  + webinarId = "<$.dynamodb.Keys.webinarId.S>"
+                }
+            )
+
+          + sqs_queue_parameters {
+              + message_group_id = "$.eventID"
+            }
+        }
+    }
+
+  # module.active_campaign[0].aws_sns_topic.alerts will be created
+  + resource "aws_sns_topic" "alerts" {
+      + arn                         = (known after apply)
+      + beginning_archive_time      = (known after apply)
+      + content_based_deduplication = false
+      + fifo_topic                  = false
+      + id                          = (known after apply)
+      + name                        = "ac-prod-cloudwatch-alarms"
+      + name_prefix                 = (known after apply)
+      + owner                       = (known after apply)
+      + policy                      = (known after apply)
+      + signature_version           = (known after apply)
+      + tags_all                    = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tracing_config              = (known after apply)
+    }
+
+  # module.active_campaign[0].aws_sns_topic_policy.alerts will be created
+  + resource "aws_sns_topic_policy" "alerts" {
+      + arn    = (known after apply)
+      + id     = (known after apply)
+      + owner  = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.active_campaign[0].aws_sqs_queue.fifo_dlq_queue will be created
+  + resource "aws_sqs_queue" "fifo_dlq_queue" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = true
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = (known after apply)
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "ac-prod-events-dlq.fifo"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + sqs_managed_sse_enabled           = (known after apply)
+      + tags_all                          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 360
+    }
+
+  # module.active_campaign[0].aws_sqs_queue.fifo_queue will be created
+  + resource "aws_sqs_queue" "fifo_queue" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = true
+      + deduplication_scope               = "queue"
+      + delay_seconds                     = 0
+      + fifo_queue                        = true
+      + fifo_throughput_limit             = "perQueue"
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = (known after apply)
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "ac-prod-events.fifo"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + sqs_managed_sse_enabled           = (known after apply)
+      + tags_all                          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 40
+    }
+
+  # module.active_campaign[0].aws_sqs_queue.fifo_resync_dlq_queue will be created
+  + resource "aws_sqs_queue" "fifo_resync_dlq_queue" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = true
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = (known after apply)
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "ac-prod-resync-events-dlq.fifo"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + sqs_managed_sse_enabled           = (known after apply)
+      + tags_all                          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 30
+    }
+
+  # module.chatbot[0].aws_iam_policy.deploy_chatbot will be created
+  + resource "aws_iam_policy" "deploy_chatbot" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Policy to allow to deploy the chatbot"
+      + id               = (known after apply)
+      + name             = "DeployChatbot"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "lambda:*",
+                          + "ecr:GetAuthorizationToken",
+                          + "ecr:CompleteLayerUpload",
+                          + "ecr:GetAuthorizationToken",
+                          + "ecr:UploadLayerPart",
+                          + "ecr:InitiateLayerUpload",
+                          + "ecr:BatchCheckLayerAvailability",
+                          + "ecr:PutImage",
+                          + "ecr:BatchGetImage",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "iam:PassRole",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags_all         = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.chatbot[0].aws_iam_role.deploy_chatbot will be created
+  + resource "aws_iam_role" "deploy_chatbot" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + "ForAllValues:StringEquals" = {
+                              + "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+                              + "token.actions.githubusercontent.com:iss" = "https://token.actions.githubusercontent.com"
+                            }
+                          + StringLike                  = {
+                              + "token.actions.githubusercontent.com:sub" = "repo:pagopa/developer-portal:*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::195239627635:oidc-provider/token.actions.githubusercontent.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + description           = "Role to assume to deploy the chatbot"
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "GitHubActionDeployChatbot"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.chatbot[0].aws_iam_role_policy_attachment.deploy_chatbot will be created
+  + resource "aws_iam_role_policy_attachment" "deploy_chatbot" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "GitHubActionDeployChatbot"
+    }
+
+  # module.chatbot[0].awscc_bedrock_guardrail.guardrail will be updated in-place
+  ~ resource "awscc_bedrock_guardrail" "guardrail" {
+      ~ content_policy_config               = {
+          ~ filters_config = [
+              ~ {
+                  ~ type            = "VIOLENCE" -> "SEXUAL"
+                    # (2 unchanged attributes hidden)
+                },
+              ~ {
+                  ~ output_strength = "NONE" -> "MEDIUM"
+                  ~ type            = "PROMPT_ATTACK" -> "HATE"
+                    # (1 unchanged attribute hidden)
+                },
+              ~ {
+                  ~ type            = "MISCONDUCT" -> "VIOLENCE"
+                    # (2 unchanged attributes hidden)
+                },
+              ~ {
+                  ~ type            = "HATE" -> "INSULTS"
+                    # (2 unchanged attributes hidden)
+                },
+              ~ {
+                  ~ type            = "SEXUAL" -> "MISCONDUCT"
+                    # (2 unchanged attributes hidden)
+                },
+              ~ {
+                  ~ output_strength = "MEDIUM" -> "NONE"
+                  ~ type            = "INSULTS" -> "PROMPT_ATTACK"
+                    # (1 unchanged attribute hidden)
+                },
+            ]
+        }
+      + contextual_grounding_policy_config  = (known after apply)
+      + failure_recommendations             = (known after apply)
+        id                                  = "arn:aws:bedrock:eu-west-3:195239627635:guardrail/nx6jtugcv92a"
+      + kms_key_arn                         = (known after apply)
+        name                                = "chatbot-prod-safety-block-guardrail"
+      + sensitive_information_policy_config = (known after apply)
+      + status_reasons                      = (known after apply)
+      ~ tags                                = [
+          ~ {
+              ~ key   = "Environment" -> "CostCenter"
+              ~ value = "prod" -> "BD110 - PORTALS and TOOLS"
+            },
+          ~ {
+              ~ key   = "Owner" -> "CreatedBy"
+              ~ value = "Devportal" -> "Terraform"
+            },
+          ~ {
+              ~ key   = "CreatedBy" -> "Environment"
+              ~ value = "Terraform" -> "prod"
+            },
+          ~ {
+              ~ key   = "CostCenter" -> "Owner"
+              ~ value = "BD110 - PORTALS and TOOLS" -> "Devportal"
+            },
+            {
+                key   = "Source"
+                value = "https://github.com/pagopa/developer-portal"
+            },
+        ]
+      + topic_policy_config                 = (known after apply)
+      + word_policy_config                  = (known after apply)
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.cms.data.aws_iam_policy_document.ecs_task_execution will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "ecs_task_execution" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "ssm:DescribeParameters",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "*",
+            ]
+        }
+      + statement {
+          + actions   = [
+              + "ssm:GetParameters",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/access_key_id",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/access_key_secret",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/admin_jwt_secret",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/api_token_salt",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/app_keys",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/database/password",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/github_pat",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_gsuite_hd",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_oauth_client_id",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_oauth_client_secret",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/jwt_secret",
+              + "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/transfer_token_salt",
+              + (known after apply),
+              + (known after apply),
+            ]
+        }
+      + statement {
+          + actions   = [
+              + "s3:GetBucketLocation",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:s3:::cms-medialibrary-7698",
+            ]
+        }
+    }
+
+  # module.cms.aws_ecs_task_definition.cms_task_def must be replaced
+-/+ resource "aws_ecs_task_definition" "cms_task_def" {
+      ~ arn                      = "arn:aws:ecs:eu-south-1:195239627635:task-definition/cms-task-def:30" -> (known after apply)
+      ~ arn_without_revision     = "arn:aws:ecs:eu-south-1:195239627635:task-definition/cms-task-def" -> (known after apply)
+      ~ container_definitions    = (sensitive value) # forces replacement
+      ~ id                       = "cms-task-def" -> (known after apply)
+      ~ revision                 = 30 -> (known after apply)
+      - tags                     = {} -> null
+        # (10 unchanged attributes hidden)
+    }
+
+  # module.website.aws_cloudfront_response_headers_policy.websites will be updated in-place
+  ~ resource "aws_cloudfront_response_headers_policy" "websites" {
+        id      = "4d8e7e46-e2ab-4a9c-ade2-20a58ab57757"
+        name    = "websites"
+        # (2 unchanged attributes hidden)
+
+      ~ security_headers_config {
+          ~ content_security_policy {
+              ~ content_security_policy = "script-src 'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org/ https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' recaptcha.net https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/; object-src 'none'; form-action 'self'; font-src data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/; connect-src 'self' https://cognito-identity.eu-south-1.amazonaws.com/ https://dynamodb.eu-south-1.amazonaws.com/ https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/ https://*.developer.pagopa.it; img-src data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net  https://*.googleusercontent.com https://*.developer.pagopa.it; frame-src https://player.vimeo.com/ https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/" -> "script-src 'self' 'unsafe-inline' www.youtube.com https://*.cookielaw.org/ https://*.onetrust.com https://www.google-analytics.com https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net https://www.gstatic.com https://www.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' recaptcha.net https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/; object-src 'none'; form-action 'self'; font-src data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/; connect-src 'self' https://cognito-identity.eu-south-1.amazonaws.com/ https://dynamodb.eu-south-1.amazonaws.com/ https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/ https://*.developer.pagopa.it; img-src data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net  https://*.googleusercontent.com https://*.dev.developer.pagopa.it https://*.developer.pagopa.it; frame-src https://player.vimeo.com/ https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/"
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+  # module.website.aws_iam_policy.deploy_website will be updated in-place
+  ~ resource "aws_iam_policy" "deploy_website" {
+        id               = "arn:aws:iam::195239627635:policy/DeployWebsite"
+        name             = "DeployWebsite"
+      ~ policy           = jsonencode(
+          ~ {
+              ~ Statement = [
+                    # (2 unchanged elements hidden)
+                    {
+                        Action   = [
+                            "cloudfront:CreateInvalidation",
+                        ]
+                        Effect   = "Allow"
+                        Resource = [
+                            "arn:aws:cloudfront::195239627635:distribution/E2U6BETMBL9NVY",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "lambda:UpdateFunctionCode",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:lambda:eu-south-1:195239627635:function:ac-prod-*",
+                        ]
+                    },
+                ]
+                # (1 unchanged attribute hidden)
+            }
+        )
+        tags             = {}
+        # (6 unchanged attributes hidden)
+    }
+
+  # module.active_campaign[0].module.active_campaign_api_key.aws_ssm_parameter.ignore_value[0] will be created
+  + resource "aws_ssm_parameter" "ignore_value" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/ac/api_key"
+      + tags_all       = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.active_campaign[0].module.active_campaign_base_url.aws_ssm_parameter.ignore_value[0] will be created
+  + resource "aws_ssm_parameter" "ignore_value" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/ac/base_url"
+      + tags_all       = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_resync.data.aws_iam_policy_document.logs[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "logs" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "logs:CreateLogGroup",
+              + "logs:CreateLogStream",
+              + "logs:PutLogEvents",
+            ]
+          + effect    = "Allow"
+          + resources = (known after apply)
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_cloudwatch_log_group.lambda[0] will be created
+  + resource "aws_cloudwatch_log_group" "lambda" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/aws/lambda/ac-prod-resync-lambda"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 0
+      + skip_destroy      = false
+      + tags              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_iam_policy.logs[0] will be created
+  + resource "aws_iam_policy" "logs" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + id               = (known after apply)
+      + name             = "ac-prod-resync-lambda-logs"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all         = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_iam_role.lambda[0] will be created
+  + resource "aws_iam_role" "lambda" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "ac-prod-resync-lambda"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_iam_role_policy_attachment.logs[0] will be created
+  + resource "aws_iam_role_policy_attachment" "logs" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "ac-prod-resync-lambda"
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_lambda_event_source_mapping.this["sqs"] will be created
+  + resource "aws_lambda_event_source_mapping" "this" {
+      + batch_size                    = 1
+      + enabled                       = true
+      + event_source_arn              = (known after apply)
+      + function_arn                  = (known after apply)
+      + function_name                 = (known after apply)
+      + id                            = (known after apply)
+      + last_modified                 = (known after apply)
+      + last_processing_result        = (known after apply)
+      + maximum_record_age_in_seconds = (known after apply)
+      + maximum_retry_attempts        = (known after apply)
+      + parallelization_factor        = (known after apply)
+      + state                         = (known after apply)
+      + state_transition_reason       = (known after apply)
+      + uuid                          = (known after apply)
+
+      + scaling_config {
+          + maximum_concurrency = 2
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_lambda_function.this[0] will be created
+  + resource "aws_lambda_function" "this" {
+      + architectures                  = [
+          + "x86_64",
+        ]
+      + arn                            = (known after apply)
+      + code_sha256                    = (known after apply)
+      + description                    = "Lambda function that resyncs Active Campaign failed events"
+      + filename                       = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+      + function_name                  = "ac-prod-resync-lambda"
+      + handler                        = "index.resyncQueue"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 256
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs20.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = (known after apply)
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all                       = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + timeout                        = 120
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = {
+              + "AC_API_KEY_PARAM"           = "/ac/api_key"
+              + "AC_BASE_URL_PARAM"          = "/ac/base_url"
+              + "COGNITO_USER_POOL_ID"       = (sensitive value)
+              + "DYNAMO_WEBINARS_TABLE_NAME" = "WebinarSubscriptions"
+            }
+        }
+
+      + ephemeral_storage {
+          + size = 512
+        }
+
+      + timeouts {}
+    }
+
+  # module.active_campaign[0].module.lambda_resync.aws_lambda_permission.unqualified_alias_triggers["sqs"] will be created
+  + resource "aws_lambda_permission" "unqualified_alias_triggers" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "ac-prod-resync-lambda"
+      + id                  = (known after apply)
+      + principal           = "sqs.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "sqs"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_resync.local_file.archive_plan[0] will be created
+  + resource "local_file" "archive_plan" {
+      + content              = jsonencode(
+            {
+              + artifacts_dir = "builds"
+              + build_plan    = [
+                  + [
+                      + "zip",
+                      + "modules/active_campaign/functions",
+                      + null,
+                    ],
+                ]
+              + filename      = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+              + runtime       = "nodejs20.x"
+            }
+        )
+      + content_base64sha256 = (known after apply)
+      + content_base64sha512 = (known after apply)
+      + content_md5          = (known after apply)
+      + content_sha1         = (known after apply)
+      + content_sha256       = (known after apply)
+      + content_sha512       = (known after apply)
+      + directory_permission = "0755"
+      + file_permission      = "0644"
+      + filename             = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.plan.json"
+      + id                   = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_resync.null_resource.archive[0] will be created
+  + resource "null_resource" "archive" {
+      + id       = (known after apply)
+      + triggers = {
+          + "filename"  = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+          + "timestamp" = "1732728088705108000"
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_sync.data.aws_iam_policy_document.logs[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "logs" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "logs:CreateLogGroup",
+              + "logs:CreateLogStream",
+              + "logs:PutLogEvents",
+            ]
+          + effect    = "Allow"
+          + resources = (known after apply)
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_cloudwatch_log_group.lambda[0] will be created
+  + resource "aws_cloudwatch_log_group" "lambda" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/aws/lambda/ac-prod-sync-lambda"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 0
+      + skip_destroy      = false
+      + tags              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all          = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_iam_policy.logs[0] will be created
+  + resource "aws_iam_policy" "logs" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + id               = (known after apply)
+      + name             = "ac-prod-sync-lambda-logs"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all         = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_iam_role.lambda[0] will be created
+  + resource "aws_iam_role" "lambda" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "ac-prod-sync-lambda"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all              = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_iam_role_policy_attachment.logs[0] will be created
+  + resource "aws_iam_role_policy_attachment" "logs" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "ac-prod-sync-lambda"
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_lambda_event_source_mapping.this["sqs"] will be created
+  + resource "aws_lambda_event_source_mapping" "this" {
+      + batch_size                    = 1
+      + enabled                       = true
+      + event_source_arn              = (known after apply)
+      + function_arn                  = (known after apply)
+      + function_name                 = (known after apply)
+      + id                            = (known after apply)
+      + last_modified                 = (known after apply)
+      + last_processing_result        = (known after apply)
+      + maximum_record_age_in_seconds = (known after apply)
+      + maximum_retry_attempts        = (known after apply)
+      + parallelization_factor        = (known after apply)
+      + state                         = (known after apply)
+      + state_transition_reason       = (known after apply)
+      + uuid                          = (known after apply)
+
+      + scaling_config {
+          + maximum_concurrency = 2
+        }
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_lambda_function.this[0] will be created
+  + resource "aws_lambda_function" "this" {
+      + architectures                  = [
+          + "x86_64",
+        ]
+      + arn                            = (known after apply)
+      + code_sha256                    = (known after apply)
+      + description                    = "Lambda function that syncs Active Campaign"
+      + filename                       = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+      + function_name                  = "ac-prod-sync-lambda"
+      + handler                        = "index.sqsQueue"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 256
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs20.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = (known after apply)
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + tags_all                       = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + timeout                        = 30
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = {
+              + "AC_API_KEY_PARAM"     = "/ac/api_key"
+              + "AC_BASE_URL_PARAM"    = "/ac/base_url"
+              + "COGNITO_USER_POOL_ID" = (sensitive value)
+            }
+        }
+
+      + ephemeral_storage {
+          + size = 512
+        }
+
+      + timeouts {}
+    }
+
+  # module.active_campaign[0].module.lambda_sync.aws_lambda_permission.unqualified_alias_triggers["sqs"] will be created
+  + resource "aws_lambda_permission" "unqualified_alias_triggers" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "ac-prod-sync-lambda"
+      + id                  = (known after apply)
+      + principal           = "sqs.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "sqs"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_sync.local_file.archive_plan[0] will be created
+  + resource "local_file" "archive_plan" {
+      + content              = jsonencode(
+            {
+              + artifacts_dir = "builds"
+              + build_plan    = [
+                  + [
+                      + "zip",
+                      + "modules/active_campaign/functions",
+                      + null,
+                    ],
+                ]
+              + filename      = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+              + runtime       = "nodejs20.x"
+            }
+        )
+      + content_base64sha256 = (known after apply)
+      + content_base64sha512 = (known after apply)
+      + content_md5          = (known after apply)
+      + content_sha1         = (known after apply)
+      + content_sha256       = (known after apply)
+      + content_sha512       = (known after apply)
+      + directory_permission = "0755"
+      + file_permission      = "0644"
+      + filename             = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.plan.json"
+      + id                   = (known after apply)
+    }
+
+  # module.active_campaign[0].module.lambda_sync.null_resource.archive[0] will be created
+  + resource "null_resource" "archive" {
+      + id       = (known after apply)
+      + triggers = {
+          + "filename"  = "builds/152957964abf20e4a105ef8e1f6ef58180fa4450bf3091dba901c5a887fb3c66.zip"
+          + "timestamp" = "1732728088705108000"
+        }
+    }
+
+  # module.cms.module.iam_policy_ecs_task_execution.aws_iam_policy.policy[0] will be updated in-place
+  ~ resource "aws_iam_policy" "policy" {
+        id               = "arn:aws:iam::195239627635:policy/CMSTaskExecutionPolicies"
+        name             = "CMSTaskExecutionPolicies"
+      ~ policy           = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "ssm:DescribeParameters"
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                    },
+                  - {
+                      - Action   = "ssm:GetParameters"
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/transfer_token_salt",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/jwt_secret",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_oauth_client_secret",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_oauth_client_id",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/google_gsuite_hd",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/github_pat",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/database/password",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/app_keys",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/api_token_salt",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/admin_jwt_secret",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/access_key_secret",
+                          - "arn:aws:ssm:eu-south-1:195239627635:parameter/cms/access_key_id",
+                        ]
+                    },
+                  - {
+                      - Action   = "s3:GetBucketLocation"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::cms-medialibrary-7698"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        tags             = {}
+        # (6 unchanged attributes hidden)
+    }
+
+  # module.core.module.ses_developer_pagopa_it.aws_iam_access_key.ses_user[0] will be created
+  + resource "aws_iam_access_key" "ses_user" {
+      + create_date                    = (known after apply)
+      + encrypted_secret               = (known after apply)
+      + encrypted_ses_smtp_password_v4 = (known after apply)
+      + id                             = (known after apply)
+      + key_fingerprint                = (known after apply)
+      + secret                         = (sensitive value)
+      + ses_smtp_password_v4           = (sensitive value)
+      + status                         = "Active"
+      + user                           = "DevPortal"
+    }
+
+  # module.core.module.ses_developer_pagopa_it.aws_iam_group_membership.ses_group[0] will be updated in-place
+  ~ resource "aws_iam_group_membership" "ses_group" {
+        id    = "DevPortalSESMembership"
+        name  = "DevPortalSESMembership"
+      ~ users = [
+          + "DevPortal",
+        ]
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.core.module.ses_developer_pagopa_it.aws_iam_user.ses_user[0] will be created
+  + resource "aws_iam_user" "ses_user" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "DevPortal"
+      + path          = "/"
+      + tags_all      = {
+          + "CostCenter"  = "BD110 - PORTALS and TOOLS"
+          + "CreatedBy"   = "Terraform"
+          + "Environment" = "prod"
+          + "Owner"       = "Devportal"
+          + "Source"      = "https://github.com/pagopa/developer-portal"
+        }
+      + unique_id     = (known after apply)
+    }
+
+  # module.website.module.cognito_create_auth_challenge_function.aws_lambda_function.this[0] will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "cognito_create_auth_challenge"
+      ~ last_modified                  = "2024-10-31T09:05:01.000+0000" -> (known after apply)
+      ~ source_code_hash               = "tpk1wwfjnXd9iSmjVqPX5CxBOCBIHSUD65CYUK3//us=" -> "dLfWlj5sCPN1Zt5LQNEXZAPQLhGon4BobpX/6evTo7w="
+        tags                           = {}
+        # (22 unchanged attributes hidden)
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # module.website.module.cognito_custom_message_function.aws_lambda_function.this[0] will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "cognito_custom_message"
+      ~ last_modified                  = "2024-10-31T09:05:16.000+0000" -> (known after apply)
+      ~ source_code_hash               = "tpk1wwfjnXd9iSmjVqPX5CxBOCBIHSUD65CYUK3//us=" -> "dLfWlj5sCPN1Zt5LQNEXZAPQLhGon4BobpX/6evTo7w="
+        tags                           = {}
+        # (22 unchanged attributes hidden)
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # module.website.module.cognito_define_auth_challenge_function.aws_lambda_function.this[0] will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "cognito_define_auth_challenge"
+      ~ last_modified                  = "2024-10-31T09:05:08.000+0000" -> (known after apply)
+      ~ source_code_hash               = "tpk1wwfjnXd9iSmjVqPX5CxBOCBIHSUD65CYUK3//us=" -> "dLfWlj5sCPN1Zt5LQNEXZAPQLhGon4BobpX/6evTo7w="
+        tags                           = {}
+        # (22 unchanged attributes hidden)
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # module.website.module.cognito_post_confirmation_function.aws_lambda_function.this[0] will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "cognito_post_confirmation"
+      ~ last_modified                  = "2024-10-31T09:05:31.000+0000" -> (known after apply)
+      ~ source_code_hash               = "tpk1wwfjnXd9iSmjVqPX5CxBOCBIHSUD65CYUK3//us=" -> "dLfWlj5sCPN1Zt5LQNEXZAPQLhGon4BobpX/6evTo7w="
+        tags                           = {}
+        # (22 unchanged attributes hidden)
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # module.website.module.cognito_verify_auth_challenge_function.aws_lambda_function.this[0] will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "cognito_verify_auth_challenge"
+      ~ last_modified                  = "2024-10-31T09:05:24.000+0000" -> (known after apply)
+      ~ source_code_hash               = "tpk1wwfjnXd9iSmjVqPX5CxBOCBIHSUD65CYUK3//us=" -> "dLfWlj5sCPN1Zt5LQNEXZAPQLhGon4BobpX/6evTo7w="
+        tags                           = {}
+        # (22 unchanged attributes hidden)
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # module.website.module.dynamodb_webinar_subscriptions.aws_dynamodb_table.this[0] will be updated in-place
+  ~ resource "aws_dynamodb_table" "this" {
+        id                          = "WebinarSubscriptions"
+        name                        = "WebinarSubscriptions"
+      + stream_arn                  = (known after apply)
+      ~ stream_enabled              = false -> true
+      + stream_view_type            = "KEYS_ONLY"
+        tags                        = {
+            "Name" = "WebinarSubscriptions"
+        }
+        # (9 unchanged attributes hidden)
+
+        # (6 unchanged blocks hidden)
+    }
+
+Plan: 45 to add, 11 to change, 1 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: 
+
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+

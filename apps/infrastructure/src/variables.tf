@@ -86,6 +86,20 @@ variable "dns_domain_name_cms" {
   default     = null
 }
 
+# RDS Aurora PostgreSQL Serverless for CMS Strapi
+# RDS aurora
+variable "rds_cms_scaling_configuration" {
+  type = object({
+    min_capacity = number
+    max_capacity = number
+  })
+  description = "Scaling configuration for the RDS Aurora instance"
+  default = {
+    min_capacity = 0.5
+    max_capacity = 1
+  }
+}
+
 variable "aws_chatbot_region" {
   type        = string
   description = "AWS region to create AI chatbot's resources"
@@ -138,6 +152,24 @@ variable "chatbot_ecs_monitoring" {
     image_uri = "ghcr.io/langfuse/langfuse:sha-9375250"
     port      = 3000
   }
+}
+
+variable "chatbot_models" {
+  type = object({
+    provider   = optional(string, "google")
+    generation = optional(string, "gemini-2.0-flash")
+    embeddings = optional(string, "text-embedding-004")
+    reranker   = optional(string, "semantic-ranker-512-003")
+  })
+
+  default = {
+    provider   = "google"
+    generation = "gemini-2.0-flash"
+    embeddings = "text-embedding-004"
+    reranker   = "semantic-ranker-512-003"
+  }
+
+  description = "The models used by the AI chatbot"
 }
 
 ################################################################################
