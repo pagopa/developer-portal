@@ -32,7 +32,7 @@ def can_evaluate() -> bool:
 
 
 def count_queries_created_today() -> int:
-    today = datetime.datetime.utcnow().date().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
@@ -74,7 +74,7 @@ async def query_creation(
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
-    
+
     now = datetime.datetime.now(datetime.UTC)
     trace_id = str(uuid.uuid4())
     userId = current_user_id(authorization)
@@ -105,7 +105,9 @@ async def query_creation(
             "messages": messages,
         }
         background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
-        LOGGER.info(f"[queries] trace_id {trace_id} background_task for evaluate launched.")
+        LOGGER.info(
+            f"[queries] trace_id {trace_id} background_task for evaluate launched."
+        )
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
