@@ -46,6 +46,11 @@ jobs:
         with:
           dir: ./soap-api
 
+      - name: Generate SOAP API metadata
+        uses: ./.github/actions/generate-soap-api-metadata
+        with:
+          soap-api-directory: ./soap-api
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
