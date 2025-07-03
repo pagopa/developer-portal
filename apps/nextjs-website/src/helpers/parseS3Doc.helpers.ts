@@ -184,6 +184,8 @@ export const parseS3GuidePage = async (props: {
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
 }) => {
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time('[guide-performance] parseS3GuidePage');
   const { guideProps, guidePath, guidesMetadata, products } = props;
 
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
@@ -215,6 +217,8 @@ export const parseS3GuidePage = async (props: {
       'guidesMetadataLength',
       guidesMetadata.length
     );
+    // eslint-disable-next-line functional/no-expression-statements
+    console.timeEnd('[guide-performance] parseS3GuidePage');
     return undefined;
   }
 
@@ -274,6 +278,8 @@ export const parseS3GuidePage = async (props: {
     },
   };
 
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd('parseS3GuidePage');
   return result;
 };
 

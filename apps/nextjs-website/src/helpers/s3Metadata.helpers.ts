@@ -28,6 +28,7 @@ export async function downloadFileAsText(
 
   // eslint-disable-next-line functional/no-try-statements
   try {
+    console.time(`[guide-performance] downloadFileAsText - ${path}`);
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -39,12 +40,14 @@ export async function downloadFileAsText(
 
     // Read the response body as text
     const fileContent = await response.text();
+    console.timeEnd(`[guide-performance] downloadFileAsText - ${path}`);
 
     // Cache the result
     s3FileCache.set(url, fileContent);
 
     return fileContent;
   } catch (error) {
+    console.timeEnd(`[guide-performance] downloadFileAsText - ${path}`);
     console.error(`[downloadFileAsText] Error downloading ${path}:`, error);
     return;
   }
@@ -61,6 +64,7 @@ export async function fetchMetadataFromCDN(
         'STATIC_CONTENTS_URL is not defined in the environment variables.'
       );
     }
+    console.time(`[guide-performance] fetchMetadataFromCDN - ${path}`);
     const response = await fetch(`${staticContentsUrl}/${path}`);
     if (!response.ok) {
       // eslint-disable-next-line functional/no-throw-statements
@@ -69,8 +73,10 @@ export async function fetchMetadataFromCDN(
       );
     }
     const bodyContent = await response.json();
+    console.timeEnd(`[guide-performance] fetchMetadataFromCDN - ${path}`);
     return bodyContent as readonly JsonMetadata[];
   } catch (error) {
+    console.timeEnd(`[guide-performance] fetchMetadataFromCDN - ${path}`);
     console.error('Error fetching metadata from CDN:', error);
     return null;
   }
@@ -110,8 +116,12 @@ export const getGuidesMetadata = async () => {
     return guidesMetadataCache;
   }
 
+  console.time('[guide-performance] getGuidesMetadata - fetchMetadataFromCDN');
   guidesMetadataCache = await fetchMetadataFromCDN(
     S3_GUIDES_METADATA_JSON_PATH
+  );
+  console.timeEnd(
+    '[guide-performance] getGuidesMetadata - fetchMetadataFromCDN'
   );
   guidesMetadataCacheTime = now;
 
