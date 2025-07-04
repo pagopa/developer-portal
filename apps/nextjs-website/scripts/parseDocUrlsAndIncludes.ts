@@ -15,6 +15,9 @@ type UrlParsingMetadata = {
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
+const DOCUMENTATION_PATH =
+  process.env.DOCUMENTATION_PATH || 'devportal-docs/docs';
+
 const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
 
 function loadMetadata(filePath: string): UrlParsingMetadata[] {
@@ -28,17 +31,41 @@ function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
   value: string
 ): string {
-  const lastPart = value.split('/').at(-1) || '';
-  const name = lastPart.replace('.md', '').replace(' "mention"', '');
+  const splitValue = value
+    .replace(' "mention"', '')
+    .replace('README.md', '')
+    .split('/')
+    .filter((val) => {
+      return val != '';
+    });
+  const lastPart = splitValue.at(-1) || '';
+  const secondToLastPart = splitValue.at(-2) || '';
+  const name = lastPart.replace('.md', '');
+  if (name.length <= 1) {
+    return value;
+  }
   if (metadata) {
-    const guides = metadata.guides.find((guide) =>
+    const guides = metadata.guides.filter((guide) =>
       guide.guidePath.includes(name)
     );
-    return guides?.guideUrl || value;
-  } else return value;
+    if (guides.length <= 0) {
+      return value;
+    }
+    if (guides.length == 1) {
+      return guides[0].guideUrl || value;
+    } else {
+      const guide = guides.find((guide) =>
+        guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
+      );
+
+      return guide?.guideUrl || value;
+    }
+  } else {
+    return value;
+  }
 }
 
-async function findMarkdownFiles(
+async function recursiveParseMarkdownFiles(
   dirPath: string,
   guideMetadata?: UrlParsingMetadata
 ) {
@@ -53,27 +80,23 @@ async function findMarkdownFiles(
   for (const item of items) {
     const fullPath = path.join(dirPath, item.name);
     if (item.isDirectory()) {
-      await findMarkdownFiles(
+      await recursiveParseMarkdownFiles(
         fullPath,
         metadata.find((data) => data.dirName === item.name)
       );
     } else if (item.isFile() && fullPath.endsWith('.md')) {
       // eslint-disable-next-line functional/no-let
-      const fileContent = await fs.promises.readFile(fullPath, 'utf8');
+      let fileContent = await fs.promises.readFile(fullPath, 'utf8');
       const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
       const matches = [...fileContent.matchAll(regex)];
-      // eslint-disable-next-line functional/no-let
-      let hasUpdated = false;
       for (const match of matches) {
-        if (match[2] === metadata[0]) continue;
-        hasUpdated = true;
-        const replace = replaceUrl(metadata[0], match[2]);
-        console.log('REPLACE ', replace);
-        fileContent.replace(match[2] || '', replace);
+        const replace = replaceUrl(guideMetadata, match[2]);
+        fileContent = fileContent.replace(match[2] || '', replace);
       }
-      if (hasUpdated) {
-        console.log('Updating file:', fullPath);
+      try {
         fs.writeFileSync(fullPath, fileContent, 'utf8');
+      } catch (error) {
+        console.error(`Error writing to file ${fullPath}:`, error);
       }
     }
   }
@@ -81,9 +104,7 @@ async function findMarkdownFiles(
 
 async function main() {
   try {
-    await findMarkdownFiles(
-      '/home/marbert/Projects/developer-portal/apps/nextjs-website/docs'
-    );
+    await recursiveParseMarkdownFiles(DOCUMENTATION_PATH);
   } catch (error) {
     console.error('Error:', error);
     process.exit(1); // Exit with error code for CI pipeline visibility
