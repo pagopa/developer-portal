@@ -122,7 +122,6 @@ export async function fetchMetadataFromCDN<T>(
   // Check if we already have a request in progress for this path
   const cacheKey = `fetchMetadataFromCDN:${path}`;
   if (requestCache.has(cacheKey)) {
-    console.log(`Using cached request for ${path}`);
     const result = await requestCache.get(cacheKey);
     return result;
   }
