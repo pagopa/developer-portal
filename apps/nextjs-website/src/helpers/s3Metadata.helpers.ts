@@ -26,6 +26,7 @@ const INITIAL_RETRY_DELAY_MS = parseInt(
   process.env.CDN_RETRY_DELAY_MS || '1000',
   10
 );
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
 
 // Global promise cache to prevent concurrent requests to the same endpoint
 const requestCache = new Map<string, Promise<any>>();
@@ -91,7 +92,7 @@ export async function downloadFileAsText(
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
-        signal: AbortSignal.timeout(30000), // 30 second timeout
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
       });
 
       if (!response.ok) {
@@ -139,7 +140,7 @@ export async function fetchMetadataFromCDN<T>(
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
-        signal: AbortSignal.timeout(30000), // 30 second timeout
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
       });
 
       if (!response.ok) {
