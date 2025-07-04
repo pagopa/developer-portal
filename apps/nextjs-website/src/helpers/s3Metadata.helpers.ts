@@ -20,12 +20,19 @@ export interface SoapApiJsonMetadata {
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
+// Generate unique identifiers for timing labels
+const generateTimingId = () =>
+  `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
 // Retry configuration - configurable via environment variables
 const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '5000',
+  process.env.CDN_RETRY_DELAY_MS || '1000',
   10
 );
+
+// Global promise cache to prevent concurrent requests to the same endpoint
+const requestCache = new Map<string, Promise<any>>();
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -75,10 +82,27 @@ async function withRetries<T>(
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  return withRetries(
+  const timingId = generateTimingId();
+  const timingLabel = `[guide-performance] downloadFileAsText - ${path} - ${timingId}`;
+  console.time(timingLabel);
+
+  // Check if we already have a request in progress for this path
+  const cacheKey = `downloadFileAsText:${path}`;
+  if (requestCache.has(cacheKey)) {
+    console.log(`Using cached request for ${path}`);
+    const result = await requestCache.get(cacheKey);
+    console.timeEnd(timingLabel);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(30000), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -92,13 +116,35 @@ export async function downloadFileAsText(
     },
     `file download from ${path}`,
     undefined
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  console.timeEnd(timingLabel);
+  return result;
 }
 
 export async function fetchMetadataFromCDN<T>(
   path: string
 ): Promise<readonly T[] | null> {
-  return withRetries(
+  const timingId = generateTimingId();
+  const timingLabel = `[guide-performance] fetchMetadataFromCDN - ${path} - ${timingId}`;
+  console.time(timingLabel);
+
+  // Check if we already have a request in progress for this path
+  const cacheKey = `fetchMetadataFromCDN:${path}`;
+  if (requestCache.has(cacheKey)) {
+    console.log(`Using cached request for ${path}`);
+    const result = await requestCache.get(cacheKey);
+    console.timeEnd(timingLabel);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       if (!staticContentsUrl) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -108,7 +154,10 @@ export async function fetchMetadataFromCDN<T>(
       }
 
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(30000), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -122,7 +171,15 @@ export async function fetchMetadataFromCDN<T>(
     },
     `metadata fetch from ${path}`,
     null
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  console.timeEnd(timingLabel);
+  return result;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
@@ -142,11 +199,15 @@ let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 export const getGuidesMetadata = async () => {
+  const timingId = generateTimingId();
+  const timingLabel = `[guide-performance] getGuidesMetadata - fetchMetadataFromCDN - ${timingId}`;
+  console.time(timingLabel);
   if (!guidesMetadataCache) {
     guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
+  console.timeEnd(timingLabel);
   return guidesMetadataCache || [];
 };
 

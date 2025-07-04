@@ -178,12 +178,20 @@ export const parseS3Doc = async <T>(
   }
 };
 
+// Generate unique identifiers for timing labels
+const generateTimingId = () =>
+  `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
 export const parseS3GuidePage = async (props: {
   readonly guideProps: GuideDefinition;
   readonly guidePath: string;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
 }) => {
+  const timingId = generateTimingId();
+  const timingLabel = `[guide-performance] parseS3GuidePage - ${props.guidePath} - ${timingId}`;
+  // eslint-disable-next-line functional/no-expression-statements
+  console.time(timingLabel);
   const { guideProps, guidePath, guidesMetadata, products } = props;
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
@@ -213,6 +221,8 @@ export const parseS3GuidePage = async (props: {
       'guidesMetadataLength',
       guidesMetadata.length
     );
+    // eslint-disable-next-line functional/no-expression-statements
+    console.timeEnd(timingLabel);
     return undefined;
   }
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
@@ -229,7 +239,7 @@ export const parseS3GuidePage = async (props: {
     guidePageMetadata &&
     (await downloadFileAsText(guidePageMetadata.menuS3Path));
   const body = await downloadFileAsText(guidePageMetadata.contentS3Path);
-  return {
+  const result = {
     ...guideProps,
     guide: {
       name: guideProps.guide.name,
@@ -267,6 +277,9 @@ export const parseS3GuidePage = async (props: {
       })),
     },
   };
+  // eslint-disable-next-line functional/no-expression-statements
+  console.timeEnd(timingLabel);
+  return result;
 };
 
 export const parseDoc = async <T>(
