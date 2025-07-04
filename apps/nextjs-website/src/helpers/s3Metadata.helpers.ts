@@ -12,6 +12,11 @@ export interface JsonMetadata {
   readonly lastModified?: string;
 }
 
+export interface SoapApiJsonMetadata {
+  readonly dirName: string;
+  readonly contentS3Paths: readonly string[];
+}
+
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -90,9 +95,9 @@ export async function downloadFileAsText(
   );
 }
 
-export async function fetchMetadataFromCDN(
+export async function fetchMetadataFromCDN<T>(
   path: string
-): Promise<readonly JsonMetadata[] | null> {
+): Promise<readonly T[] | null> {
   return withRetries(
     async () => {
       if (!staticContentsUrl) {
@@ -113,7 +118,7 @@ export async function fetchMetadataFromCDN(
       }
 
       const bodyContent = await response.json();
-      return bodyContent as readonly JsonMetadata[];
+      return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
     null
@@ -127,14 +132,18 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const S3_SOAP_API_METADATA_JSON_PATH =
+  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
+  'soap-api/soap-api-metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
 let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
+let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 export const getGuidesMetadata = async () => {
   if (!guidesMetadataCache) {
-    guidesMetadataCache = await fetchMetadataFromCDN(
+    guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
@@ -143,7 +152,7 @@ export const getGuidesMetadata = async () => {
 
 export const getSolutionsMetadata = async () => {
   if (!solutionsMetadataCache) {
-    solutionsMetadataCache = await fetchMetadataFromCDN(
+    solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_SOLUTIONS_METADATA_JSON_PATH
     );
   }
@@ -152,9 +161,18 @@ export const getSolutionsMetadata = async () => {
 
 export const getReleaseNotesMetadata = async () => {
   if (!releaseNotesMetadataCache) {
-    releaseNotesMetadataCache = await fetchMetadataFromCDN(
+    releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_RELEASE_NOTES_METADATA_JSON_PATH
     );
   }
   return releaseNotesMetadataCache || [];
+};
+
+export const getSoapApiMetadata = async () => {
+  if (!soapApiMetadataCache) {
+    soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
+      S3_SOAP_API_METADATA_JSON_PATH
+    );
+  }
+  return soapApiMetadataCache || [];
 };
