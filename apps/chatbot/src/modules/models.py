@@ -132,7 +132,10 @@ def get_embed_model(
 
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
-            api_key=get_ssm_parameter(name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY")),
+            api_key=get_ssm_parameter(
+                name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
+                default=os.getenv("CHB_AWS_GOOGLE_API_KEY")
+            ),
             embed_batch_size=embed_batch_size,
         )
         LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
