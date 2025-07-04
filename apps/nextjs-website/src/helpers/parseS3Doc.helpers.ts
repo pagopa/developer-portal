@@ -229,7 +229,7 @@ export const parseS3GuidePage = async (props: {
     guidePageMetadata &&
     (await downloadFileAsText(guidePageMetadata.menuS3Path));
   const body = await downloadFileAsText(guidePageMetadata.contentS3Path);
-  const result = {
+  return {
     ...guideProps,
     guide: {
       name: guideProps.guide.name,
