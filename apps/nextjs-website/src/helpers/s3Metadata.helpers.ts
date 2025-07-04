@@ -20,10 +20,6 @@ export interface SoapApiJsonMetadata {
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-// Generate unique identifiers for timing labels
-const generateTimingId = () =>
-  `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
 // Retry configuration - configurable via environment variables
 const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
@@ -82,16 +78,11 @@ async function withRetries<T>(
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  const timingId = generateTimingId();
-  const timingLabel = `[guide-performance] downloadFileAsText - ${path} - ${timingId}`;
-  console.time(timingLabel);
-
   // Check if we already have a request in progress for this path
   const cacheKey = `downloadFileAsText:${path}`;
   if (requestCache.has(cacheKey)) {
     console.log(`Using cached request for ${path}`);
     const result = await requestCache.get(cacheKey);
-    console.timeEnd(timingLabel);
     return result;
   }
 
@@ -123,23 +114,17 @@ export async function downloadFileAsText(
 
   requestCache.set(cacheKey, requestPromise);
   const result = await requestPromise;
-  console.timeEnd(timingLabel);
   return result;
 }
 
 export async function fetchMetadataFromCDN<T>(
   path: string
 ): Promise<readonly T[] | null> {
-  const timingId = generateTimingId();
-  const timingLabel = `[guide-performance] fetchMetadataFromCDN - ${path} - ${timingId}`;
-  console.time(timingLabel);
-
   // Check if we already have a request in progress for this path
   const cacheKey = `fetchMetadataFromCDN:${path}`;
   if (requestCache.has(cacheKey)) {
     console.log(`Using cached request for ${path}`);
     const result = await requestCache.get(cacheKey);
-    console.timeEnd(timingLabel);
     return result;
   }
 
@@ -178,7 +163,6 @@ export async function fetchMetadataFromCDN<T>(
 
   requestCache.set(cacheKey, requestPromise);
   const result = await requestPromise;
-  console.timeEnd(timingLabel);
   return result;
 }
 
@@ -199,15 +183,11 @@ let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 export const getGuidesMetadata = async () => {
-  const timingId = generateTimingId();
-  const timingLabel = `[guide-performance] getGuidesMetadata - fetchMetadataFromCDN - ${timingId}`;
-  console.time(timingLabel);
   if (!guidesMetadataCache) {
     guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
-  console.timeEnd(timingLabel);
   return guidesMetadataCache || [];
 };
 
