@@ -11,7 +11,7 @@ from src.modules.utils import (
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
 )
-from src.modules.documents import WEBSITE_URL, STRAPI_API_KEY
+from src.modules.documents import STRAPI_API_KEY
 from src.modules.vector_database import REDIS_CLIENT, INDEX_ID
 from src.modules.models import get_llm, get_embed_model, PROVIDER
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
@@ -23,6 +23,7 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 
 
 def test_aws_credentials() -> None:

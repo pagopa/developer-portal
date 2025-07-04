@@ -152,8 +152,8 @@ class EventHandler(BaseEventHandler, extra="allow"):
                 usage = (
                     self._parse_token_usage(event.response) if event.response else None
                 )
-                LOGGER.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
-                LOGGER.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
+                # LOGGER.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
+                # LOGGER.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
 
         if isinstance(event, EmbeddingEndEvent):
             token_count = sum(
@@ -169,7 +169,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
                     else 0
                 ),
             }
-            LOGGER.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
+            # LOGGER.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
 
         if isinstance(event, ReRankEndEvent):
 

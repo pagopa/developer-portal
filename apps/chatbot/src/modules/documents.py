@@ -19,7 +19,9 @@ from src.modules.utils import get_ssm_parameter
 
 
 LOGGER = get_logger(__name__)
-STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
+STRAPI_API_KEY = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
+)
 DYNAMIC_HTMLS = [
     "/case-histories/",
     "/release-notes/",
