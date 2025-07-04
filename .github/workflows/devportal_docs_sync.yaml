@@ -31,6 +31,10 @@ jobs:
         run: |
           npm run generate-url-parsing-metadata -w gitbook-docs
 
+      - name: Parse GitBook docs
+        run: |
+          npm run parse-docs -w nextjs-website
+
       - name: Replace include tags in docs
         run: |
           bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
