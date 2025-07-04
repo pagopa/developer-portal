@@ -1,4 +1,5 @@
 import os
+import copy
 from pathlib import Path
 from typing import Union, Tuple, Optional, List, Any, Dict
 
@@ -17,7 +18,10 @@ from llama_index.core.agent.workflow import (
     ToolCall,
     ToolCallResult,
     AgentStream,
+    AgentSetup,
 )
+from llama_index.core.tools.types import ToolOutput
+from llama_index.core.schema import QueryBundle
 from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
@@ -47,9 +51,11 @@ RESPONSE_TYPE = Union[
     PydanticResponse,
     AgentInput,
     AgentOutput,
+    AgentSetup,
+    AgentStream,
     ToolCall,
     ToolCallResult,
-    AgentStream,
+    ToolOutput,
 ]
 
 
@@ -193,29 +199,48 @@ class Chatbot:
         return chat_history
 
     def _mask_trace(self, data: Any) -> Any:
+        """Mask PII recursively in data sent to Langfuse (without altering real output)."""
 
-        if isinstance(data, str):
-            data = self.mask_pii(data)
+        if (
+            isinstance(data, (str, list, dict, tuple))
+            or isinstance(data, (QueryBundle, ChatMessage))
+            or isinstance(data, RESPONSE_TYPE)
+        ):
+            try:
+                masked_data = copy.deepcopy(data)
 
-        if isinstance(data, dict):
-            for key, value in data.items():
-                data[key] = self._mask_trace(value)
+                if isinstance(masked_data, str):
+                    return self.mask_pii(masked_data)
 
-        if isinstance(data, list):
-            for i, value in enumerate(data):
-                data[i] = self._mask_trace(value)
+                if isinstance(masked_data, QueryBundle):
+                    return self._mask_trace(masked_data.query_str)
 
-        if isinstance(data, tuple):
-            data_as_list = list(data)
-            for i, value in enumerate(data_as_list):
-                data_as_list[i] = self._mask_trace(value)
-            data = tuple(data_as_list)
+                elif isinstance(masked_data, dict):
+                    return {k: self._mask_trace(v) for k, v in masked_data.items()}
 
-        if isinstance(data, ChatMessage):
-            for i, block in enumerate(data.blocks):
-                data.blocks[i].text = self._mask_trace(block.text)
+                elif isinstance(masked_data, list):
+                    return [self._mask_trace(item) for item in masked_data]
 
-        return data
+                elif isinstance(masked_data, tuple):
+                    return tuple(self._mask_trace(item) for item in masked_data)
+
+                elif isinstance(masked_data, ChatMessage):
+                    for i, block in enumerate(masked_data.blocks):
+                        data.blocks[i].text = self._mask_trace(block.text)
+
+                elif isinstance(masked_data, RESPONSE_TYPE):
+                    for field in vars(masked_data):
+                        value = getattr(masked_data, field)
+                        setattr(masked_data, field, self._mask_trace(value))
+                else:
+                    pass
+
+                return masked_data
+
+            except Exception as e:
+                LOGGER.error("Masking failed:", e)
+        else:
+            return data
 
     def chat_generate(
         self,
@@ -257,10 +282,12 @@ class Chatbot:
 
     def get_final_response(self, response_json: dict) -> str:
 
-        final_response = response_json["response"] + "\n\nRif:"
+        final_response = response_json["response"]
 
-        for ref in response_json["references"]:
-            final_response += "\n" + ref
+        if len(response_json["references"]) > 0:
+            final_response += "\n\nRif:"
+            for ref in response_json["references"]:
+                final_response += "\n" + ref
 
         return final_response
 
