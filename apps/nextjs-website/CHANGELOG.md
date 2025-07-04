@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 8.2.0
+
+### Minor Changes
+
+- 1d3b9df: Add Soap Api detail pages
+
+### Patch Changes
+
+- 62c4bbb: Avoid fetching the same file multiple times
+
 ## 8.1.0
 
 ### Minor Changes
