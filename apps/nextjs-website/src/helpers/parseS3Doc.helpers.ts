@@ -267,7 +267,6 @@ export const parseS3GuidePage = async (props: {
       })),
     },
   };
-  return result;
 };
 
 export const parseDoc = async <T>(
