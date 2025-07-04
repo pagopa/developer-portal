@@ -23,9 +23,13 @@ const delay = (ms: number): Promise<void> =>
 // Retry configuration - configurable via environment variables
 const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '5000',
+  process.env.CDN_RETRY_DELAY_MS || '1000',
   10
 );
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+
+// Global promise cache to prevent concurrent requests to the same endpoint
+const requestCache = new Map<string, Promise<any>>();
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -75,10 +79,21 @@ async function withRetries<T>(
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  return withRetries(
+  // Check if we already have a request in progress for this path
+  const cacheKey = `downloadFileAsText:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -92,13 +107,28 @@ export async function downloadFileAsText(
     },
     `file download from ${path}`,
     undefined
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
 export async function fetchMetadataFromCDN<T>(
   path: string
 ): Promise<readonly T[] | null> {
-  return withRetries(
+  // Check if we already have a request in progress for this path
+  const cacheKey = `fetchMetadataFromCDN:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       if (!staticContentsUrl) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -108,7 +138,10 @@ export async function fetchMetadataFromCDN<T>(
       }
 
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -122,7 +155,14 @@ export async function fetchMetadataFromCDN<T>(
     },
     `metadata fetch from ${path}`,
     null
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
