@@ -10,7 +10,7 @@ const SwaggerDescription = ({
     <Typography
       sx={{
         fontWeight: 700,
-        fontSize: 16,
+        fontSize: 18,
         marginTop: '16px',
         marginBottom: '16px',
       }}

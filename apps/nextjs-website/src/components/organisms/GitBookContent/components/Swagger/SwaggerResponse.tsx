@@ -48,7 +48,7 @@ const SwaggerResponse = ({
             <Typography sx={{ marginBottom: '16px' }}>{status}</Typography>
           </div>
 
-          <Typography sx={{ fontWeight: 700, fontSize: 16 }}>
+          <Typography sx={{ fontWeight: 700, fontSize: 18 }}>
             {description}
           </Typography>
         </div>
