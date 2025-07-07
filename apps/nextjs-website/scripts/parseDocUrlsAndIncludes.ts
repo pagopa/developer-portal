@@ -27,6 +27,66 @@ function loadMetadata(filePath: string): UrlParsingMetadata[] {
   return JSON.parse(file);
 }
 
+async function parseIncludesFromMarkdown(
+  fileContent: string,
+  hashDir: string
+): Promise<string> {
+  if (!fileContent.includes('{% include')) return fileContent;
+  const regex = /{% include\s+['"]([^'"]+)['"]\s*%}/g;
+  const matches = [...fileContent.matchAll(regex)];
+  // eslint-disable-next-line functional/no-let
+  let updatedFileContent = fileContent;
+  for (const match of matches) {
+    const replaceValue = await replaceIncludes(match[0], match[1], hashDir);
+    updatedFileContent = updatedFileContent.replace(match[0], replaceValue);
+  }
+  return updatedFileContent;
+}
+
+function parseUrlsFromMarkdown(
+  fileContent: string,
+  guideMetadata: UrlParsingMetadata | undefined
+): string {
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const matches = [...fileContent.matchAll(regex)];
+  // eslint-disable-next-line functional/no-let
+  let updatedFileContent = fileContent;
+  for (const match of matches) {
+    const replace = replaceUrl(guideMetadata, match[2]);
+    updatedFileContent = updatedFileContent.replace(match[2] || '', replace);
+  }
+  return updatedFileContent;
+}
+
+async function replaceIncludes(
+  fullInclude: string,
+  pathToInclude: string,
+  hashDir: string
+): Promise<string> {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const fs = require('fs');
+  const mappedIncludePath = mapIncludePath(pathToInclude, hashDir);
+  const includeContent = (await fs.promises.readFile(
+    mappedIncludePath,
+    'utf8'
+  )) as string;
+  if (!includeContent || includeContent.length <= 0) {
+    return fullInclude;
+  }
+  return fullInclude + '\n' + includeContent + '{% endinclude %}';
+}
+
+function mapIncludePath(includePath: string, hashDir: string): string {
+  // Normalize the path to use POSIX separators
+  const normalized = includePath.replace(/\\/g, '/');
+  // Match leading ../ segments followed by .gitbook/includes
+  const replaced = normalized.replace(
+    /^((\.\.\/)*)\.gitbook\/includes/,
+    `./${hashDir}/.gitbook/includes`
+  );
+  return replaced;
+}
+
 function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
   value: string
@@ -82,19 +142,22 @@ async function recursiveParseMarkdownFiles(
     if (item.isDirectory()) {
       await recursiveParseMarkdownFiles(
         fullPath,
-        metadata.find((data) => data.dirName === item.name)
+        guideMetadata
+          ? guideMetadata
+          : metadata.find((data) => data.dirName === item.name)
       );
     } else if (item.isFile() && fullPath.endsWith('.md')) {
-      // eslint-disable-next-line functional/no-let
-      let fileContent = await fs.promises.readFile(fullPath, 'utf8');
-      const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-      const matches = [...fileContent.matchAll(regex)];
-      for (const match of matches) {
-        const replace = replaceUrl(guideMetadata, match[2]);
-        fileContent = fileContent.replace(match[2] || '', replace);
-      }
+      if (!guideMetadata) return;
+      const urlParsedFileContent = parseUrlsFromMarkdown(
+        await fs.promises.readFile(fullPath, 'utf8'),
+        guideMetadata
+      );
+      const includesParsedFileContent = await parseIncludesFromMarkdown(
+        urlParsedFileContent,
+        guideMetadata?.dirName || ''
+      );
       try {
-        fs.writeFileSync(fullPath, fileContent, 'utf8');
+        fs.writeFileSync(fullPath, includesParsedFileContent, 'utf8');
       } catch (error) {
         console.error(`Error writing to file ${fullPath}:`, error);
       }
