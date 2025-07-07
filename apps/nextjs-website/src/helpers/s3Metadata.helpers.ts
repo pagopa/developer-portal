@@ -92,7 +92,7 @@ export async function downloadFileAsText(
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
-        cache: 'force-cache',
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
       });
 
       if (!response.ok) {
@@ -142,7 +142,7 @@ export async function fetchMetadataFromCDN<T>(
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
-        cache: 'force-cache',
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
       });
 
       if (!response.ok) {
