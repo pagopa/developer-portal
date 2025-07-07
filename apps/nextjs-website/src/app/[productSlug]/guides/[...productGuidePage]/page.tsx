@@ -61,23 +61,10 @@ export async function generateMetadata({
     return makeMetadataFromStrapi(props?.seo);
   }
 
-  const minimumPathLength = 2;
-  const pagePath = props.page.path.split('/');
-  const parentName =
-    pagePath.length >= minimumPathLength
-      ? pagePath[pagePath.length - minimumPathLength]
-          .toLowerCase()
-          .replaceAll(' ', '')
-          .replaceAll('-', ' ')
-          .split(' ')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ')
-      : '';
 
   return makeMetadata({
     title: [
       props.page.title,
-      parentName,
       [props.guide.name, !props.version.main && props.version.name]
         .filter(Boolean)
         .join(' '),
