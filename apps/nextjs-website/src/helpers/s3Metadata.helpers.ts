@@ -12,15 +12,24 @@ export interface JsonMetadata {
   readonly lastModified?: string;
 }
 
+export interface SoapApiJsonMetadata {
+  readonly dirName: string;
+  readonly contentS3Paths: readonly string[];
+}
+
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
 const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '5000',
+  process.env.CDN_RETRY_DELAY_MS || '1000',
   10
 );
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+
+// Global promise cache to prevent concurrent requests to the same endpoint
+const requestCache = new Map<string, Promise<any>>();
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -70,10 +79,21 @@ async function withRetries<T>(
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  return withRetries(
+  // Check if we already have a request in progress for this path
+  const cacheKey = `downloadFileAsText:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -87,13 +107,28 @@ export async function downloadFileAsText(
     },
     `file download from ${path}`,
     undefined
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
-export async function fetchMetadataFromCDN(
+export async function fetchMetadataFromCDN<T>(
   path: string
-): Promise<readonly JsonMetadata[] | null> {
-  return withRetries(
+): Promise<readonly T[] | null> {
+  // Check if we already have a request in progress for this path
+  const cacheKey = `fetchMetadataFromCDN:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
     async () => {
       if (!staticContentsUrl) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -103,7 +138,10 @@ export async function fetchMetadataFromCDN(
       }
 
       const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -113,11 +151,18 @@ export async function fetchMetadataFromCDN(
       }
 
       const bodyContent = await response.json();
-      return bodyContent as readonly JsonMetadata[];
+      return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
     null
-  );
+  ).finally(() => {
+    // Remove from cache when done (success or failure)
+    requestCache.delete(cacheKey);
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
@@ -127,14 +172,18 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const S3_SOAP_API_METADATA_JSON_PATH =
+  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
+  'soap-api/soap-api-metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
 let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
+let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 export const getGuidesMetadata = async () => {
   if (!guidesMetadataCache) {
-    guidesMetadataCache = await fetchMetadataFromCDN(
+    guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_GUIDES_METADATA_JSON_PATH
     );
   }
@@ -143,7 +192,7 @@ export const getGuidesMetadata = async () => {
 
 export const getSolutionsMetadata = async () => {
   if (!solutionsMetadataCache) {
-    solutionsMetadataCache = await fetchMetadataFromCDN(
+    solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_SOLUTIONS_METADATA_JSON_PATH
     );
   }
@@ -152,9 +201,18 @@ export const getSolutionsMetadata = async () => {
 
 export const getReleaseNotesMetadata = async () => {
   if (!releaseNotesMetadataCache) {
-    releaseNotesMetadataCache = await fetchMetadataFromCDN(
+    releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
       S3_RELEASE_NOTES_METADATA_JSON_PATH
     );
   }
   return releaseNotesMetadataCache || [];
+};
+
+export const getSoapApiMetadata = async () => {
+  if (!soapApiMetadataCache) {
+    soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
+      S3_SOAP_API_METADATA_JSON_PATH
+    );
+  }
+  return soapApiMetadataCache || [];
 };
