@@ -16,3 +16,12 @@ output "security_groups" {
     ecs_tasks     = aws_security_group.ecs_tasks.id
   }
 }
+
+
+output "internal_load_balancer" {
+  value = {
+    dns_name = module.cms_load_balancer_internal.dns_name
+    arn      = module.cms_load_balancer_internal.arn
+  }
+
+}
