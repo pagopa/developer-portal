@@ -17,13 +17,13 @@
   ],
   "scripts": {
     "clean": "shx rm -rf dist/",
-    "compile": "npm run clean && tsc",
+    "build": "npm run clean && tsc",
     "lint": "eslint src",
     "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
-    "gitbook-docs/dist": "*"
+    "gitbook-docs": "*"
   },
   "devDependencies": {
     "eslint": "^8.40.0",
