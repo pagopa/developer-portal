@@ -70,14 +70,14 @@ module "cms_load_balancer_internal" {
       port     = 8080
       protocol = "HTTP"
       forward = {
-        target_group_key = "cms-target-group"
+        target_group_key = "cms-target-group-internal"
       }
     }
   }
 
   target_groups = {
-    cms-target-group = {
-      name        = "cms-target-group"
+    cms-target-group-internal = {
+      name        = "cms-target-group-internal"
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
