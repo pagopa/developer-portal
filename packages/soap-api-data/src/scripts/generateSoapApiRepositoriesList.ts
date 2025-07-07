@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { fetchFromStrapi } from 'gitbook-docs/helpers/fetchFromStrapi';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'path';
 
