@@ -9,6 +9,9 @@ const makeStrapiApiDataListPopulate = () =>
       apiRestDetail: {
         populate: ['slug', 'specUrls'],
       },
+      apiSoapDetail: {
+        populate: ['slug', 'repositoryUrl', 'dirName'],
+      },
       icon: { populate: '*' },
       product: {
         ...productRelationsPopulate,

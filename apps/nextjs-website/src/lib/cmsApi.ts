@@ -12,7 +12,7 @@ import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
-import { fetchSolutions } from './strapi/fetches/fetchSolutions';
+import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -24,9 +24,8 @@ import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
 import { makeProductsProps } from './strapi/makeProps/makeProducts';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
-import { fetchGuides } from './strapi/fetches/fetchGuides';
+import { fetchGuide, fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
-import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
@@ -35,13 +34,21 @@ import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import { fetchReleaseNotes } from '@/lib/strapi/fetches/fetchReleaseNotes';
+import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
+import {
+  makeGuide as makeGuideS3,
+  makeSolution as makeSolutionS3,
+  makeReleaseNote as makeReleaseNoteS3,
+} from '@/helpers/makeS3Docs.helpers';
+// import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
+import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
 import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
+import { JsonMetadata } from '@/helpers/s3Metadata.helpers';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
-  makeBuildConfig(process.env),
+  makeBuildConfig(Object.keys(secrets).length > 0 ? secrets : process.env),
   E.map(makeBuildEnv),
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
@@ -155,7 +162,7 @@ export const getApiDataProps = async () => {
     getCacheKey('getApiDataProps'),
     async () => {
       const strapiApiDataList = await fetchApiDataList(buildEnv);
-      return makeApiDataListProps(strapiApiDataList);
+      return await makeApiDataListProps(strapiApiDataList);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
@@ -205,11 +212,6 @@ export const getOverviewsProps = async () => {
   );
 };
 
-export const getReleaseNotesProps = async () => {
-  const strapiReleaseNotes = await fetchReleaseNotes(buildEnv);
-  return makeReleaseNotesProps(strapiReleaseNotes).flatMap(makeReleaseNote);
-};
-
 export const getGuideListPagesProps = async () => {
   return withCache(
     getCacheKey('getGuideListPagesProps'),
@@ -221,31 +223,70 @@ export const getGuideListPagesProps = async () => {
   );
 };
 
-// Due to not exported type from 'gitbook-docs/parseDoc' and problems with the derivative types,
-// we had to manage cache with two dedicated variables
-// eslint-disable-next-line
-let cachedGuides: any[] = []; // We need to use any[] because of the type issue makeGuide derived type are not statically defined
-// eslint-disable-next-line
-let isCached: boolean = false;
-
 export const getGuidesProps = async () => {
-  if (!isCached) {
-    // eslint-disable-next-line functional/no-expression-statements
-    cachedGuides = await getGuidesPropsCache();
-    // eslint-disable-next-line functional/no-expression-statements
-    isCached = true;
-  }
-  return cachedGuides;
-};
-
-// TODO: Manage all fetched resources with cache in a dedicated helper function
-export const getGuidesPropsCache = async () => {
   return withCache(
     getCacheKey('getGuidesPropsCache'),
     async () => {
       const strapiGuides = await fetchGuides(buildEnv);
-      return makeGuidesProps(strapiGuides).flatMap(makeGuide);
+      return makeGuidesProps(strapiGuides);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
+};
+
+export const getGuides = async () => {
+  const strapiGuides = await fetchGuides(buildEnv);
+  return makeGuidesProps(strapiGuides);
+};
+
+export const getGuideProps = async (
+  guidePaths: ReadonlyArray<string>,
+  productSlug: string
+) => {
+  const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
+  if (!strapiGuides || strapiGuides.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const guide = makeGuidesProps(strapiGuides)[0];
+  return await makeGuideS3({ guideDefinition: guide, guidePaths });
+};
+
+export const getGuidePageProps = async (
+  guideSlug: string,
+  productSlug: string
+) => {
+  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+  if (!strapiGuides || strapiGuides.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const guidesProps = makeGuidesProps(strapiGuides);
+  return guidesProps[0];
+};
+
+export const getSolutionProps = async (
+  solutionsSlug: string,
+  jsonMetadata?: JsonMetadata
+) => {
+  const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
+  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const solution = makeSolutionsProps(strapiSolutions)[0];
+  return await makeSolutionS3(solution, jsonMetadata);
+};
+
+export const getReleaseNoteProps = async (
+  productSlug: string,
+  jsonMetadata?: JsonMetadata
+) => {
+  const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
+  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
+  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };
