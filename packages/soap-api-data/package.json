@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "clean": "shx rm -rf dist/",
-    "build": "npm run clean && tsc",
+    "compile": "npm run clean && tsc",
     "lint": "eslint src",
     "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts"
   },
