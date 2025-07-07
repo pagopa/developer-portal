@@ -1,0 +1,35 @@
+{
+  "name": "soap-api-data",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./": "./dist/"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "shx rm -rf dist/",
+    "compile": "npm run clean && tsc",
+    "lint": "eslint src",
+    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts"
+  },
+  "dependencies": {
+    "@markdoc/markdoc": "0.3.0",
+    "gitbook-docs/dist": "*"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "eslint-config-custom": "*",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}

@@ -35,7 +35,7 @@ runs:
         STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
       run: |
         echo "Running fetch-soap-api-from-strapi..."
-        npm run fetch-soap-api-from-strapi -w gitbook-docs
+        npm run fetch-soap-api-from-strapi -w soap-api-data
 
     - name: Clone each SOAP repository
       shell: bash
