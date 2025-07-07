@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
-    "gitbook-docs": "*"
+    "gitbook-docs": "file:../gitbook-docs"
   },
   "devDependencies": {
     "eslint": "^8.40.0",
