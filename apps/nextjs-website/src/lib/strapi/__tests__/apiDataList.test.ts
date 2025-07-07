@@ -19,6 +19,7 @@ const makeStrapiResponseJson = () => ({
         publishedAt: '2024-07-12T12:44:41.272Z',
         locale: 'it',
         apiSoapUrl: null,
+        apiSoapDetail: null,
         apiRestDetail: {
           id: 12,
           slug: 'flussi-di-rendicontazione',
@@ -53,6 +54,7 @@ const makeStrapiResponseJson = () => ({
         publishedAt: '2024-07-11T17:15:11.254Z',
         locale: 'it',
         apiSoapUrl: null,
+        apiSoapDetail: null,
         apiRestDetail: {
           id: 2,
           slug: 'firma-con-io-main',
@@ -82,6 +84,14 @@ const makeStrapiResponseJson = () => ({
         publishedAt: '2024-07-11T17:20:00.616Z',
         locale: 'it',
         apiSoapUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
+        apiSoapDetail: {
+          id: 1,
+          repositoryUrl: 'https://github.com/pagopa/pagopa-api/',
+          dirName: 'pagopa-api',
+          slug: 'pagopa-soap-api',
+          branch: 'develop',
+          repositoryPath: 'tree/develop/wsdl',
+        },
         apiRestDetail: null,
         icon: mediaVectorJson,
         bannerLinks: bannerLinksJson,

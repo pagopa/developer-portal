@@ -289,10 +289,20 @@ class Chatbot:
                 retrieved_contexts = [""]
                 LOGGER.error(f"Exception: {e}")
 
-            if response_str[:7] == "```json" and response_str[-3:] == "```":
-                response_str = response_str[7:-3]
-            response_str = response_str.strip()
-            response_json = json.loads(response_str)
+            try:
+                if response_str[:7] == "```json" and response_str[-3:] == "```":
+                    response_str = response_str[7:-3]
+                response_str = response_str.strip()
+
+                response_json = json.loads(response_str)
+            except Exception as e:
+                LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
+                response_json = {
+                    "response": "Mi dispiace, non sono riuscito a elaborare la risposta.",
+                    "topics": ["none"],
+                    "references": [],
+                    "contexts": [],
+                }
 
             if "contexts" not in response_json.keys():
                 response_json["contexts"] = retrieved_contexts
@@ -327,13 +337,17 @@ class Chatbot:
         trace_id: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
-        chat_history = self._messages_to_chathistory(messages)
-        condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
-            chat_history=chat_history, query_str=query_str
-        )
-        condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+
+        if messages is not None:
+            chat_history = self._messages_to_chathistory(messages)
+            condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
+                chat_history=chat_history, query_str=query_str
+            )
+            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+            query_str = condense_query_response.text.strip()
+
         scores = self.judge.evaluate(
-            query_str=condense_query_response.text,
+            query_str=query_str,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )

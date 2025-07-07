@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 0.5.1
+
+### Patch Changes
+
+- 8164b76: Add openapi tag parsing
+
 ## 0.5.0
 
 ### Minor Changes
