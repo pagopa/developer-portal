@@ -61,7 +61,6 @@ export async function generateMetadata({
     return makeMetadataFromStrapi(props?.seo);
   }
 
-
   return makeMetadata({
     title: [
       props.page.title,
