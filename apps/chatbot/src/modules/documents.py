@@ -35,7 +35,9 @@ AWS_S3_CLIENT = boto3.client(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_DEFAULT_REGION,
 )
-AWS_S3_BUCKET_NAME_STATIC_CONTENT = "devportal-d-website-static-content"
+AWS_S3_BUCKET_NAME_STATIC_CONTENT = os.getenv(
+    "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
+)
 
 
 def remove_figure_blocks(md_text):
