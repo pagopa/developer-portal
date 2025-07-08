@@ -23,6 +23,7 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
+WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 
 
 def test_aws_credentials() -> None:

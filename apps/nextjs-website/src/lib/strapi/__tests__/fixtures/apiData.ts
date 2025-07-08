@@ -11,6 +11,7 @@ export const apiDataRestJson = {
     publishedAt: '2024-07-11T17:16:22.910Z',
     locale: 'it',
     apiSoapUrl: null,
+    apiSoapDetail: null,
     apiRestDetail: {
       id: 3,
       slug: 'send-main',
@@ -40,6 +41,14 @@ export const apiDataSoapJson = {
     locale: 'it',
     apiSoapUrl: 'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
     apiRestDetail: null,
+    apiSoapDetail: {
+      id: 1,
+      repositoryUrl: 'https://github.com/pagopa/pagopa-api/',
+      dirName: 'pagopa-api',
+      slug: 'pagopa-soap-api',
+      branch: 'develop',
+      repositoryPath: 'tree/develop/wsdl',
+    },
     icon: {
       data: {
         id: 84,

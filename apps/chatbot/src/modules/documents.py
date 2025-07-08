@@ -23,7 +23,9 @@ from src.modules.utils import get_ssm_parameter
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
-STRAPI_API_KEY = get_ssm_parameter(os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"))
+STRAPI_API_KEY = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
+)
 AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
