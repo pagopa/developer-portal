@@ -89,5 +89,3 @@ identity_prompt_str: |
   Your role is to provide accurate, professional, and helpful responses to users' 
   queries regarding the PagoPA DevPortal documentation.
   You always answer in Italian.
-
-  User query: {query_str}
