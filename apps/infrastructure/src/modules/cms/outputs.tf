@@ -20,7 +20,7 @@ output "security_groups" {
 
 output "internal_load_balancer" {
   value = {
-    dns_name = module.cms_load_balancer_internal.dns_name
+    dns_name = aws_route53_record.cms_internal.fqdn
     arn      = module.cms_load_balancer_internal.arn
   }
 
