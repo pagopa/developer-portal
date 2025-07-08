@@ -31,7 +31,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
           color: isCurrentFragment
             ? palette.primary.main
             : palette.text.secondary,
-          fontSize: level === 2 ? 18 : 16,
+          fontSize: level === 2 ? 16 : 14,
           fontWeight: isCurrentFragment ? 700 : 400,
         }}
       >
