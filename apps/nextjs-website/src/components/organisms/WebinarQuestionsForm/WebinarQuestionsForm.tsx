@@ -3,19 +3,36 @@ import { snackbarAutoHideDurationMs } from '@/config';
 import { sendWebinarQuestion } from '@/lib/webinarApi';
 import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Alert, Card, Snackbar, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
+import ForumIcon from '@mui/icons-material/Forum';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const MAX_QUESTION_LENGTH = 240;
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
+  // eslint-disable-next-line functional/no-return-void
+  onClick?: () => void;
   disabled?: boolean;
   webinarSlug: string;
 };
 
 export const WebinarQuestionsForm = ({
+  onClick = () => {
+    return;
+  },
   disabled = false,
   webinarSlug,
 }: WebinarQuestionsFormProps) => {
@@ -62,6 +79,7 @@ export const WebinarQuestionsForm = ({
     }
   };
 
+  const { palette } = useTheme();
   const hasFormState = formState === 'submitting' || formState === 'submitted';
   const btnDisabled = !question || hasFormState || disabled;
   const startIcon = hasFormState ? <Done /> : null;
@@ -77,11 +95,39 @@ export const WebinarQuestionsForm = ({
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100%',
+          minHeight: '200px',
+          width: '303px',
           gap: 3,
-          p: 3,
+          borderTopRightRadius: '16px',
+          borderBottomRightRadius: '16px',
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
         }}
       >
+        <Stack
+          direction='row'
+          sx={{
+            p: '16px',
+            gap: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            width: '100%',
+            height: '60px',
+            backgroundColor: palette.primary.main,
+            borderTopRightRadius: '16px',
+          }}
+        >
+          <ForumIcon width={'32px'} height={'32px'} sx={{ color: 'white' }} />
+          <Typography sx={{ color: 'white' }}>Question box</Typography>
+          <Button
+            startIcon={<ArrowLeftIcon width={'32px'} height={'32px'} />}
+            onClick={() => onClick()}
+            sx={{ color: 'white' }}
+          >
+            Riduci
+          </Button>
+        </Stack>
         <Typography
           variant='body2'
           sx={{ fontWeight: 600 }}

@@ -1,10 +1,12 @@
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import ForumIcon from '@mui/icons-material/Forum';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
@@ -16,10 +18,7 @@ const WebinarPlayerSection = ({
 }: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
 
-  const showQuestionForm = useMemo(
-    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
-  );
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
 
   return (
     webinar.playerSrc && (
@@ -32,26 +31,45 @@ const WebinarPlayerSection = ({
               justifyContent: 'left',
               alignContent: 'stretch',
               flexGrow: 1,
-              gap: 3,
+              gap: 0,
               marginBottom: 10,
             }}
           >
             <Box
               sx={{
                 width: {
-                  md: showQuestionForm ? '66%' : '100%',
+                  md: showQuestionForm ? '80%' : '100%',
                 },
               }}
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            {showQuestionForm && (
+            {showQuestionForm ? (
               <Box>
                 <WebinarQuestionsForm
+                  onClick={() => {
+                    setShowQuestionForm(false);
+                  }}
                   webinarSlug={webinar.slug}
                   disabled={webinarState === WebinarState.comingSoon}
                 />
               </Box>
+            ) : (
+              <Button
+                startIcon={<ForumIcon width={'32px'} height={'32px'} />}
+                endIcon={<ArrowRightIcon width={'32px'} height={'32px'} />}
+                variant='contained'
+                onClick={() => setShowQuestionForm(true)}
+                sx={{
+                  width: '96px',
+                  height: '64px',
+                  borderTopRightRadius: '16px',
+                  borderBottomRightRadius: '16px',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  backgroundColor: palette.primary.main,
+                }}
+              />
             )}
           </Box>
         </EContainer>
