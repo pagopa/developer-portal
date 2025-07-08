@@ -35,7 +35,7 @@ AWS_S3_CLIENT = boto3.client(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_DEFAULT_REGION,
 )
-AWS_S3_STATIC_CONTENT_BUCKET_NAME = "devportal-d-website-static-content"
+AWS_S3_BUCKET_NAME_STATIC_CONTENT = "devportal-d-website-static-content"
 
 
 def remove_figure_blocks(md_text):
@@ -136,7 +136,7 @@ def read_file_from_s3(file_path: str) -> str:
     """
 
     response = AWS_S3_CLIENT.get_object(
-        Bucket=AWS_S3_STATIC_CONTENT_BUCKET_NAME,
+        Bucket=AWS_S3_BUCKET_NAME_STATIC_CONTENT,
         Key=file_path,
     )
     text = response["Body"].read().decode("utf-8")

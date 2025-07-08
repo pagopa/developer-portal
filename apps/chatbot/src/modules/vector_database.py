@@ -81,7 +81,6 @@ DYNAMIC_HTMLS = [
 def build_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
-    documentation_dir: str,
     chunk_size: int,
     chunk_overlap: int,
 ) -> VectorStoreIndex:
@@ -90,7 +89,6 @@ def build_index_redis(
     Args:
         llm (BaseLLM): The language model to use for the index.
         embed_model (BaseEmbedding): The embedding model to use for the index.
-        documentation_dir (str): Directory containing the documentation files.
         chunk_size (int): chunk size for the node parser.
         chunk_overlap (int): Overlap size for the node parser.
     Returns:
