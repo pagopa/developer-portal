@@ -20,6 +20,7 @@
 | <a name="module_cms_ecs_cluster"></a> [cms\_ecs\_cluster](#module\_cms\_ecs\_cluster) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/cluster | 8b97783def49997d18a6fcb00dc21ce1edc0f538 |
 | <a name="module_cms_ecs_service"></a> [cms\_ecs\_service](#module\_cms\_ecs\_service) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service | 8b97783def49997d18a6fcb00dc21ce1edc0f538 |
 | <a name="module_cms_load_balancer"></a> [cms\_load\_balancer](#module\_cms\_load\_balancer) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
+| <a name="module_cms_load_balancer_internal"></a> [cms\_load\_balancer\_internal](#module\_cms\_load\_balancer\_internal) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
 | <a name="module_cms_log_group"></a> [cms\_log\_group](#module\_cms\_log\_group) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/log-group | bf969da953bdbea229392255d2b36e7b720e917e |
 | <a name="module_cms_rds"></a> [cms\_rds](#module\_cms\_rds) | git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git | 7bf5933100eb355b13854232e5d63c62ea7cad35 |
 | <a name="module_cms_ssl_certificate"></a> [cms\_ssl\_certificate](#module\_cms\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 8d0b22f1f242a1b36e29b8cb38aaeac9b887500d |
@@ -32,7 +33,6 @@
 | <a name="module_iam_role_task_role"></a> [iam\_role\_task\_role](#module\_iam\_role\_task\_role) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_user_cms"></a> [iam\_user\_cms](#module\_iam\_user\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_s3_bucket_cms"></a> [s3\_bucket\_cms](#module\_s3\_bucket\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14 |
-| <a name="module_secret_chb_strapi_api_key"></a> [secret\_chb\_strapi\_api\_key](#module\_secret\_chb\_strapi\_api\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_access_key_id"></a> [secret\_cms\_access\_key\_id](#module\_secret\_cms\_access\_key\_id) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_access_key_secret"></a> [secret\_cms\_access\_key\_secret](#module\_secret\_cms\_access\_key\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_admin_jwt_secret"></a> [secret\_cms\_admin\_jwt\_secret](#module\_secret\_cms\_admin\_jwt\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
@@ -57,7 +57,9 @@
 | [aws_iam_role.deploy_cms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.deploy_cms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_route53_record.certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.cms_internal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.strapi_media_library](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_zone.internal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_security_group.cms_database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.cms_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.ecs_tasks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -105,5 +107,6 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_internal_load_balancer"></a> [internal\_load\_balancer](#output\_internal\_load\_balancer) | n/a |
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | n/a |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | n/a |
