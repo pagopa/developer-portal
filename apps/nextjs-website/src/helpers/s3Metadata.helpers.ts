@@ -107,9 +107,11 @@ export async function downloadFileAsText(
     },
     `file download from ${path}`,
     undefined
-  ).finally(() => {
-    // Remove from cache when done (success or failure)
+  ).catch((error) => {
+    // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
   });
 
   requestCache.set(cacheKey, requestPromise);
@@ -155,9 +157,11 @@ export async function fetchMetadataFromCDN<T>(
     },
     `metadata fetch from ${path}`,
     null
-  ).finally(() => {
-    // Remove from cache when done (success or failure)
+  ).catch((error) => {
+    // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
   });
 
   requestCache.set(cacheKey, requestPromise);
