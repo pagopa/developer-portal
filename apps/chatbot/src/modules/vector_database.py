@@ -85,7 +85,7 @@ def build_index_redis(
     chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
-    Builds a new vector index and stores it on Redis using the provided llm and embed_model.
+    Builds a new vector index and stores it in Redis.
     Args:
         llm (BaseLLM): The language model to use for the index.
         embed_model (BaseEmbedding): The embedding model to use for the index.
@@ -95,7 +95,7 @@ def build_index_redis(
         VectorStoreIndex: The newly created vector store index.
     """
 
-    LOGGER.info("Storing vector index and hash table on Redis..")
+    LOGGER.info("Storing vector index in Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -203,13 +203,13 @@ def load_index_redis(
 
 def delete_old_index():
     """
-    Deletes the old index and its hash table from Redis if the INDEX_ID is not 'default-index'.
+    Deletes the old index from Redis if the INDEX_ID is not 'default-index'.
     This function is called after creating a new index to ensure that only the latest index is retained.
     """
 
     if INDEX_ID != "default-index":
         for key in REDIS_CLIENT.scan_iter():
-            if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
+            if f"{INDEX_ID}/vector" in str(key):
                 REDIS_CLIENT.delete(key)
 
-        LOGGER.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        LOGGER.info(f"Deleted index with ID: {INDEX_ID} from Redis.")
