@@ -240,7 +240,7 @@ export async function getReleaseNote(
   );
 
   if (!releaseNoteProps) {
-    return null;
+    return undefined;
   }
 
   return {
