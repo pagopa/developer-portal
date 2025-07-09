@@ -32,7 +32,7 @@ def can_evaluate() -> bool:
 
 
 def count_queries_created_today() -> int:
-    today = datetime.datetime.utcnow().date().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
@@ -62,7 +62,6 @@ def backfill_created_at_date() -> None:
 async def evaluate(evaluation_data: dict) -> dict:
     if os.getenv("environment", "development") != "test":
         evaluation_result = chatbot.evaluate(**evaluation_data)
-        LOGGER.info(f"[queries] evaluation_result={evaluation_result})")
     else:
         evaluation_result = {}
     return evaluation_result
@@ -74,11 +73,10 @@ async def query_creation(
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
-    
+
     now = datetime.datetime.now(datetime.UTC)
     trace_id = str(uuid.uuid4())
     userId = current_user_id(authorization)
-    LOGGER.info(f"[queries] trace_id {trace_id} starting processing for user {userId}")
     session = find_or_create_session(userId, now=now)
     salt = session_salt(session["id"])
     query_str = nh3.clean(query.question)
@@ -92,9 +90,7 @@ async def query_creation(
         user_id=user_id,
         messages=messages,
     )
-    LOGGER.info(f"[queries] trace_id {trace_id} chat_generate done.")
     answer = chatbot.get_final_response(answer_json)
-    LOGGER.info(f"[queries] trace_id {trace_id} get_final_response done.")
 
     if can_evaluate():
         evaluation_data = {
@@ -105,7 +101,6 @@ async def query_creation(
             "messages": messages,
         }
         background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
-        LOGGER.info(f"[queries] trace_id {trace_id} background_task for evaluate launched.")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
@@ -131,7 +126,6 @@ async def query_creation(
     bodyToSave["topics"] = answer_json.get("topics", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
-        LOGGER.info(f"[queries] trace_id {trace_id} iwrite to dynamodb.")
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
     return bodyToReturn

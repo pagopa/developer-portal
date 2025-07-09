@@ -30,12 +30,12 @@ export async function downloadFileAsText(
   try {
     const response = await fetch(url);
 
-    if (!response.ok) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error(
-        `Failed to download file from ${url}: ${response.statusText}`
-      );
-    }
+      if (!response.ok) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error(
+          `Failed to download file from ${url}: ${response.statusText}`
+        );
+      }
 
     // Read the response body as text
     const fileContent = await response.text();
@@ -50,30 +50,54 @@ export async function downloadFileAsText(
   }
 }
 
-export async function fetchMetadataFromCDN(
+export async function fetchMetadataFromCDN<T>(
   path: string
-): Promise<readonly JsonMetadata[] | null> {
-  // eslint-disable-next-line functional/no-try-statements
-  try {
-    if (!staticContentsUrl) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error(
-        'STATIC_CONTENTS_URL is not defined in the environment variables.'
-      );
-    }
-    const response = await fetch(`${staticContentsUrl}/${path}`);
-    if (!response.ok) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error(
-        `Failed to fetch metadata from ${staticContentsUrl}/${path}: ${response.statusText}`
-      );
-    }
-    const bodyContent = await response.json();
-    return bodyContent as readonly JsonMetadata[];
-  } catch (error) {
-    console.error('Error fetching metadata from CDN:', error);
-    return null;
+): Promise<readonly T[] | null> {
+  // Check if we already have a request in progress for this path
+  const cacheKey = `fetchMetadataFromCDN:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
   }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
+    async () => {
+      if (!staticContentsUrl) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error(
+          'STATIC_CONTENTS_URL is not defined in the environment variables.'
+        );
+      }
+
+      const url = `${staticContentsUrl}/${path}`;
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
+
+      if (!response.ok) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error(
+          `Failed to fetch metadata from ${url}: ${response.statusText}`
+        );
+      }
+
+      const bodyContent = await response.json();
+      return bodyContent as readonly T[];
+    },
+    `metadata fetch from ${path}`,
+    null
+  ).catch((error) => {
+    // On failure, remove from cache to allow retries on subsequent calls
+    requestCache.delete(cacheKey);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
@@ -83,6 +107,9 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const S3_SOAP_API_METADATA_JSON_PATH =
+  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
+  'soap-api/soap-api-metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
@@ -152,4 +179,13 @@ export const getReleaseNotesMetadata = async () => {
   releaseNotesMetadataCacheTime = now;
 
   return releaseNotesMetadataCache || [];
+};
+
+export const getSoapApiMetadata = async () => {
+  if (!soapApiMetadataCache) {
+    soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
+      S3_SOAP_API_METADATA_JSON_PATH
+    );
+  }
+  return soapApiMetadataCache || [];
 };

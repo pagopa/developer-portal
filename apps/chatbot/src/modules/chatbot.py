@@ -1,12 +1,10 @@
 import os
-import re
-import time
-import json
-import yaml
+import copy
 from pathlib import Path
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
+from llama_index.core.async_utils import asyncio_run
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response,
@@ -14,11 +12,16 @@ from llama_index.core.base.response.schema import (
     AsyncStreamingResponse,
     PydanticResponse,
 )
-from llama_index.core.chat_engine.types import (
-    AgentChatResponse,
-    StreamingAgentChatResponse,
+from llama_index.core.agent.workflow import (
+    AgentInput,
+    AgentOutput,
+    ToolCall,
+    ToolCallResult,
+    AgentStream,
+    AgentSetup,
 )
-from llama_index.core.async_utils import asyncio_run
+from llama_index.core.tools.types import ToolOutput
+from llama_index.core.schema import QueryBundle
 from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
@@ -41,24 +44,18 @@ LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
-USE_PRESIDIO = (
-    True if (os.getenv("CHB_USE_PRESIDIO", "True")).lower() == "true" else False
-)
-USE_ASYNC = (
-    True if (os.getenv("CHB_ENGINE_USE_ASYNC", "True")).lower() == "true" else False
-)
-USE_STREAMING = (
-    True
-    if (os.getenv("CHB_ENGINE_USE_STREAMING", "False")).lower() == "true"
-    else False
-)
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,
     AsyncStreamingResponse,
     PydanticResponse,
-    AgentChatResponse,
-    StreamingAgentChatResponse,
+    AgentInput,
+    AgentOutput,
+    AgentSetup,
+    AgentStream,
+    ToolCall,
+    ToolCallResult,
+    ToolOutput,
 ]
 
 
@@ -68,39 +65,27 @@ class Chatbot:
         params: dict | None = None,
         prompts: dict | None = None,
     ):
-        self.params = (
-            params
-            if params
-            else yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-        )
-        self.prompts = (
-            prompts
-            if prompts
-            else yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-        )
-
-        if USE_PRESIDIO:
-            self.pii = PresidioPII(config=params["config_presidio"])
-
+        self.params = params
+        self.prompts = prompts
+        self.pii = PresidioPII(config=params["config_presidio"])
         self.model = get_llm()
-        self.judge = Evaluator(llm=get_llm())
+        self.judge = Evaluator()
         self.embed_model = get_embed_model()
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
+            self._get_prompt_templates()
+        )
         self.index = load_index_redis(
             self.model,
             self.embed_model,
             chunk_size=params["vector_index"]["chunk_size"],
             chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
-        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
-            self._get_prompt_templates()
-        )
         self.engine = get_engine(
             self.index,
             llm=self.model,
-            system_prompt=self.prompts["system_prompt_str"],
+            identity_prompt=self.prompts["identity_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            condense_template=self.condense_prompt_tmpl,
             verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(
@@ -111,7 +96,9 @@ class Chatbot:
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
 
-    def _get_prompt_templates(self) -> Tuple[PromptTemplate, PromptTemplate]:
+    def _get_prompt_templates(
+        self,
+    ) -> Tuple[PromptTemplate, PromptTemplate, PromptTemplate]:
 
         qa_prompt_tmpl = PromptTemplate(
             self.prompts["qa_prompt_str"],
@@ -140,56 +127,46 @@ class Chatbot:
 
         return qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl
 
-    def _get_response_str(self, engine_response: RESPONSE_TYPE) -> str:
+    def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
 
-        if isinstance(engine_response, StreamingAgentChatResponse):
-            response_str = ""
-            for token in engine_response.response_gen:
-                response_str += token
-        if isinstance(engine_response, AgentChatResponse):
-            response_str = engine_response.response
-        else:
-            engine_response = engine_response.get_response()
-            response_str = engine_response.response
+        tool_calls = engine_response.tool_calls
+        product_list = []
+        references_list = []
+        retrieved_contexts = []
 
-        response_str = response_str.strip()
-        nodes = engine_response.source_nodes
+        for tool_call in tool_calls:
+            raw_output = tool_call.tool_output.raw_output
+            product_list += getattr(raw_output, "products", [])
+            references = getattr(raw_output, "references", [])
 
-        if (
-            response_str is None
-            or response_str == "Empty Response"
-            or response_str == ""
-            or len(nodes) == 0
-        ):
-            response_str = (
-                '{"response": "Mi dispiace, posso rispondere solo a domande riguardo '
-                "la documentazione del DevPortal di PagoPA. "
-                'Prova a riformulare la domanda.", '
-                '"topics": ["none"], "references": []}'
-            )
-        if (
-            re.search(r'"response":', response_str) is None
-            and re.search(r'"topics":', response_str) is None
-            and re.search(r'"references":', response_str) is None
-        ):
-            response_str = (
-                '{{"response": "{response_str}", "topics": ["none"], "references": []}}'
-            ).format(response_str=response_str)
+            for ref in references:
+                references_list.append(f"[{ref.title}]({WEBSITE_URL}{ref.filepath})")
 
-        return response_str
+            nodes = getattr(raw_output, "source_nodes", [])
+            for node in nodes:
+                url = WEBSITE_URL + node.metadata["filepath"]
+                retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+
+        response_json = {
+            "response": engine_response.response.content.strip(),
+            "products": product_list,
+            "references": references_list,
+            "contexts": retrieved_contexts,
+        }
+
+        return response_json
 
     def mask_pii(self, message: str) -> str:
-        if USE_PRESIDIO:
-            try:
-                split_message = message.split("Rif:")
-                masked_message = self.pii.mask_pii(split_message[0])
-                if len(split_message) > 1:
-                    masked_message = masked_message + "Rif:" + split_message[1]
-                return masked_message
-            except Exception as e:
-                LOGGER.debug(f"Exception: {e}")
-        else:
-            return message
+        try:
+            split_message = message.split("Rif:")
+            message = self.pii.mask_pii(split_message[0])
+            if len(split_message) > 1:
+                message += "Rif:" + split_message[1]
+
+        except Exception as e:
+            LOGGER.debug(f"Exception: {e}")
+
+        return message
 
     def _messages_to_chathistory(
         self, messages: Optional[List[Dict[str, str]]] = None
@@ -222,29 +199,48 @@ class Chatbot:
         return chat_history
 
     def _mask_trace(self, data: Any) -> Any:
+        """Mask PII recursively in data sent to Langfuse (without altering real output)."""
 
-        if isinstance(data, str):
-            data = self.mask_pii(data)
+        if (
+            isinstance(data, (str, list, dict, tuple))
+            or isinstance(data, (QueryBundle, ChatMessage))
+            or isinstance(data, RESPONSE_TYPE)
+        ):
+            try:
+                masked_data = copy.deepcopy(data)
 
-        if isinstance(data, dict):
-            for key, value in data.items():
-                data[key] = self._mask_trace(value)
+                if isinstance(masked_data, str):
+                    return self.mask_pii(masked_data)
 
-        if isinstance(data, list):
-            for i, value in enumerate(data):
-                data[i] = self._mask_trace(value)
+                if isinstance(masked_data, QueryBundle):
+                    return self._mask_trace(masked_data.query_str)
 
-        if isinstance(data, tuple):
-            data_as_list = list(data)
-            for i, value in enumerate(data_as_list):
-                data_as_list[i] = self._mask_trace(value)
-            data = tuple(data_as_list)
+                elif isinstance(masked_data, dict):
+                    return {k: self._mask_trace(v) for k, v in masked_data.items()}
 
-        if isinstance(data, ChatMessage):
-            for i, block in enumerate(data.blocks):
-                data.blocks[i].text = self._mask_trace(block.text)
+                elif isinstance(masked_data, list):
+                    return [self._mask_trace(item) for item in masked_data]
 
-        return data
+                elif isinstance(masked_data, tuple):
+                    return tuple(self._mask_trace(item) for item in masked_data)
+
+                elif isinstance(masked_data, ChatMessage):
+                    for i, block in enumerate(masked_data.blocks):
+                        data.blocks[i].text = self._mask_trace(block.text)
+
+                elif isinstance(masked_data, RESPONSE_TYPE):
+                    for field in vars(masked_data):
+                        value = getattr(masked_data, field)
+                        setattr(masked_data, field, self._mask_trace(value))
+                else:
+                    pass
+
+                return masked_data
+
+            except Exception as e:
+                LOGGER.error("Masking failed:", e)
+        else:
+            return data
 
     def chat_generate(
         self,
@@ -258,62 +254,26 @@ class Chatbot:
         chat_history = self._messages_to_chathistory(messages)
         LOGGER.info(f"Langfuse trace id: {trace_id}")
 
-        start_time = time.time()
         with self.instrumentor.observe(
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                if USE_ASYNC and not USE_STREAMING:
-                    engine_response = asyncio_run(
-                        self.engine.achat(query_str, chat_history)
-                    )
-                elif not USE_ASYNC and USE_STREAMING:
-                    engine_response = self.engine.stream_chat(query_str, chat_history)
-                elif USE_ASYNC and USE_STREAMING:
-                    engine_response = asyncio_run(
-                        self.engine.astream_chat(query_str, chat_history)
-                    )
-                else:
-                    engine_response = self.engine.chat(query_str, chat_history)
+                engine_response = asyncio_run(self.engine.run(query_str, chat_history))
+                response_json = self._get_response_json(engine_response)
 
-                retrieved_contexts = []
-                for node in engine_response.source_nodes:
-                    url = WEBSITE_URL + node.metadata["filepath"]
-                    retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
-
-                response_str = self._get_response_str(engine_response)
             except Exception as e:
-                response_str = (
-                    '{"response": "Scusa, non posso elaborare la tua richiesta. '
-                    'Prova a formulare una nuova domanda.", '
-                    '"topics": ["none"], "references": []}'
-                )
-                retrieved_contexts = [""]
-                LOGGER.error(f"Exception: {e}")
-
-            if response_str[:7] == "```json" and response_str[-3:] == "```":
-                response_str = response_str[7:-3]
-            response_str = response_str.strip()
-
-            try:
-                response_json = json.loads(response_str)
-            except Exception as e:
-                LOGGER.error(f"JSON parsing error: {e}. Response: {response_str}")
                 response_json = {
-                    "response": "Mi dispiace, non sono riuscito a elaborare la risposta.",
-                    "topics": ["none"],
+                    "response": "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda.",
+                    "products": ["none"],
                     "references": [],
                     "contexts": [],
                 }
-            LOGGER.info(f"Generated response in {time.time() - start_time:.4f} seconds")
-
-            if "contexts" not in response_json.keys():
-                response_json["contexts"] = retrieved_contexts
+                LOGGER.error(f"Exception: {e}")
 
             trace.update(
                 output=response_json["response"],
-                metadata={"contexts": retrieved_contexts},
-                tags=response_json["topics"],
+                metadata={"contexts": response_json["contexts"]},
+                tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
@@ -323,12 +283,11 @@ class Chatbot:
     def get_final_response(self, response_json: dict) -> str:
 
         final_response = response_json["response"]
-        if response_json["references"]:
+
+        if len(response_json["references"]) > 0:
             final_response += "\n\nRif:"
             for ref in response_json["references"]:
-                title = ref["title"]
-                url = WEBSITE_URL + ref["filepath"]
-                final_response += f"\n[{title}]({url})"
+                final_response += "\n" + ref
 
         return final_response
 
@@ -341,7 +300,6 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
-        start_time = time.time()
         if messages is not None:
             chat_history = self._messages_to_chathistory(messages)
             condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
@@ -355,7 +313,6 @@ class Chatbot:
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        LOGGER.info(f"Evaluation completed in {time.time() - start_time:.4f} seconds")
         for key, value in scores.items():
             add_langfuse_score(
                 trace_id=trace_id,

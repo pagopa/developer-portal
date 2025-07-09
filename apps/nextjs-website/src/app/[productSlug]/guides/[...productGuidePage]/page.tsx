@@ -55,22 +55,28 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const porps = await getGuidePage(
+  const props = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  if (porps?.seo) {
-    return makeMetadataFromStrapi(porps?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
   return makeMetadata({
-    title: porps?.page.title,
-    url: porps?.page.path,
+    title: [
+      props.page.title,
+      [props.guide.name, !props.version.main && props.version.name]
+        .filter(Boolean)
+        .join(' '),
+      props.product.name,
+    ]
+      .filter(Boolean)
+      .join(' | '),
+    url: props?.page.path,
   });
 }
-
-
 
 const Page = async ({ params }: { params: Params }) => {
   const [guideProps, urlReplaceMap] = await Promise.all([
