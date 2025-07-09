@@ -4,7 +4,7 @@ import { Box, Button, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
@@ -44,33 +44,37 @@ const WebinarPlayerSection = ({
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            {showQuestionForm ? (
-              <Box>
-                <WebinarQuestionsForm
-                  onClick={() => {
-                    setShowQuestionForm(false);
+            {webinarState === WebinarState.live ||
+            webinarState === WebinarState.comingSoon ? (
+              showQuestionForm ? (
+                <Box>
+                  <WebinarQuestionsForm
+                    interaction={() => {
+                      setShowQuestionForm(false);
+                    }}
+                    webinarSlug={webinar.slug}
+                    disabled={webinarState != WebinarState.live}
+                  />
+                </Box>
+              ) : (
+                <Button
+                  startIcon={<ForumIcon width={'32px'} height={'32px'} />}
+                  endIcon={<ArrowRightIcon width={'32px'} height={'32px'} />}
+                  variant='contained'
+                  onClick={() => setShowQuestionForm(true)}
+                  sx={{
+                    width: '96px',
+                    height: '64px',
+                    borderTopRightRadius: '16px',
+                    borderBottomRightRadius: '16px',
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
+                    backgroundColor: palette.primary.main,
+                    boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)',
                   }}
-                  webinarSlug={webinar.slug}
-                  disabled={webinarState === WebinarState.comingSoon}
                 />
-              </Box>
-            ) : (
-              <Button
-                startIcon={<ForumIcon width={'32px'} height={'32px'} />}
-                endIcon={<ArrowRightIcon width={'32px'} height={'32px'} />}
-                variant='contained'
-                onClick={() => setShowQuestionForm(true)}
-                sx={{
-                  width: '96px',
-                  height: '64px',
-                  borderTopRightRadius: '16px',
-                  borderBottomRightRadius: '16px',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  backgroundColor: palette.primary.main,
-                }}
-              />
-            )}
+              )
+            ) : null}
           </Box>
         </EContainer>
       </div>
