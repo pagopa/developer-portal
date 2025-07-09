@@ -50,19 +50,6 @@ def remove_figure_blocks(md_text):
     return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
 
-def extract_md_title(text):
-    """Extracts the title from Markdown text.
-    Args:
-        text (str): The Markdown text to process.
-    Returns:
-        str: The extracted title, or None if no title is found.
-    """
-    match = re.search(r"^# (.+)", text, re.MULTILINE)
-    if match:
-        return match.group(1).strip()
-    return None
-
-
 def filter_urls(urls: List[str]) -> List[str]:
     """
     Filters out HTML files that match specific patterns.
@@ -86,7 +73,6 @@ def filter_urls(urls: List[str]) -> List[str]:
         and "/pdnd-interoperabilita/api/" not in file
         and "/send/api/" not in file
         and "/profile/" not in file
-        and "/SUMMARY" not in file
     ]
     return filtered_urls
 
@@ -311,7 +297,13 @@ def get_static_and_dynamic_lists(
 
             url = WEBSITE_URL + item["path"]
             if url in filtered_urls:
-                static_urls.append({"url": url, "s3_file_path": item["contentS3Path"]})
+                static_urls.append(
+                    {
+                        "url": url,
+                        "s3_file_path": item["contentS3Path"],
+                        "title": item["title"],
+                    }
+                )
 
         static_urls_list = [url["url"] for url in static_urls]
         for url in filtered_urls:
@@ -339,9 +331,9 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
     ):
 
         url = item["url"]
+        title = item["title"]
         text = read_file_from_s3(item["s3_file_path"])
         text = remove_figure_blocks(text)
-        title = extract_md_title(text)
 
         static_docs.append(
             Document(
