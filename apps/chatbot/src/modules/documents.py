@@ -86,6 +86,7 @@ def filter_urls(urls: List[str]) -> List[str]:
         and "/pdnd-interoperabilita/api/" not in file
         and "/send/api/" not in file
         and "/profile/" not in file
+        and "/SUMMARY" not in file
     ]
     return filtered_urls
 
