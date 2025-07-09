@@ -12,23 +12,92 @@ export interface JsonMetadata {
   readonly lastModified?: string;
 }
 
-// Cache S3 file downloads to prevent redundant network calls
-const s3FileCache = new Map<string, string>();
+export interface SoapApiJsonMetadata {
+  readonly dirName: string;
+  readonly contentS3Paths: readonly string[];
+}
+
+const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+// Retry configuration - configurable via environment variables
+const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
+const INITIAL_RETRY_DELAY_MS = parseInt(
+  process.env.CDN_RETRY_DELAY_MS || '1000',
+  10
+);
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+
+// Global promise cache to prevent concurrent requests to the same endpoint
+const requestCache = new Map<string, Promise<any>>();
+
+async function withRetries<T>(
+  operation: () => Promise<T>,
+  operationName: string,
+  fallbackValue: T
+): Promise<T> {
+  // eslint-disable-next-line functional/no-let
+  let lastError: Error | null = null;
+
+  // eslint-disable-next-line functional/no-loop-statements
+  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      const result = await operation();
+
+      // Log successful retry if this wasn't the first attempt
+      if (attempt > 1) {
+        // eslint-disable-next-line no-console
+        console.log(
+          `Successfully completed ${operationName} on attempt ${attempt}`
+        );
+      }
+
+      return result;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      // eslint-disable-next-line no-console
+      console.error(
+        `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
+        error
+      );
+
+      // If this isn't the last attempt, wait before retrying
+      if (attempt < RETRY_ATTEMPTS) {
+        const delayMs = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
+        // eslint-disable-next-line no-console
+        console.log(`Retrying in ${delayMs}ms...`);
+        await delay(delayMs);
+      }
+    }
+  }
+
+  // eslint-disable-next-line no-console
+  console.error(
+    `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
+    lastError
+  );
+  return fallbackValue;
+}
 
 export async function downloadFileAsText(
   path: string
 ): Promise<string | undefined> {
-  const url = `${staticContentsUrl}/${path}`;
-
-  // Check cache first
-  if (s3FileCache.has(url)) {
-    const cached = s3FileCache.get(url);
-    return cached;
+  // Check if we already have a request in progress for this path
+  const cacheKey = `downloadFileAsText:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
   }
 
-  // eslint-disable-next-line functional/no-try-statements
-  try {
-    const response = await fetch(url);
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
+    async () => {
+      const url = `${staticContentsUrl}/${path}`;
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
@@ -37,17 +106,21 @@ export async function downloadFileAsText(
         );
       }
 
-    // Read the response body as text
-    const fileContent = await response.text();
+      // Read the response body as text
+      return await response.text();
+    },
+    `file download from ${path}`,
+    undefined
+  ).catch((error) => {
+    // On failure, remove from cache to allow retries on subsequent calls
+    requestCache.delete(cacheKey);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
+  });
 
-    // Cache the result
-    s3FileCache.set(url, fileContent);
-
-    return fileContent;
-  } catch (error) {
-    console.error(`[downloadFileAsText] Error downloading ${path}:`, error);
-    return;
-  }
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
 }
 
 export async function fetchMetadataFromCDN<T>(
@@ -114,6 +187,7 @@ const S3_SOAP_API_METADATA_JSON_PATH =
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
 let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
+let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 // Add timestamp-based cache invalidation
 // eslint-disable-next-line functional/no-let
@@ -137,7 +211,7 @@ export const getGuidesMetadata = async () => {
     return guidesMetadataCache;
   }
 
-  guidesMetadataCache = await fetchMetadataFromCDN(
+  guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     S3_GUIDES_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
@@ -155,7 +229,7 @@ export const getSolutionsMetadata = async () => {
     return solutionsMetadataCache;
   }
 
-  solutionsMetadataCache = await fetchMetadataFromCDN(
+  solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     S3_SOLUTIONS_METADATA_JSON_PATH
   );
   solutionsMetadataCacheTime = now;
@@ -173,7 +247,7 @@ export const getReleaseNotesMetadata = async () => {
     return releaseNotesMetadataCache;
   }
 
-  releaseNotesMetadataCache = await fetchMetadataFromCDN(
+  releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     S3_RELEASE_NOTES_METADATA_JSON_PATH
   );
   releaseNotesMetadataCacheTime = now;
