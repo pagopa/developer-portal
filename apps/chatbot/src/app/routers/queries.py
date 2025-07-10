@@ -32,7 +32,7 @@ def can_evaluate() -> bool:
 
 
 def count_queries_created_today() -> int:
-    today = datetime.datetime.utcnow().date().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
