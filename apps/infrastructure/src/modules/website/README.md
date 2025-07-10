@@ -133,6 +133,7 @@
 | <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
+| <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
 | <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
 | <a name="input_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#input\_ses\_domain\_identity\_arn) | The ARN of the SES domain identity | `string` | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
