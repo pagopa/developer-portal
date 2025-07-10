@@ -26,7 +26,7 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           variant='body1'
           fontWeight='bold'
           component='span'
-          sx={{ fontSize: '16px' }}
+          sx={{ fontSize: '18px' }}
         >
           {children}
         </Typography>
@@ -37,7 +37,7 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           variant='body1'
           fontStyle='italic'
           component='span'
-          sx={{ fontSize: '16px' }}
+          sx={{ fontSize: '18px' }}
         >
           {children}
         </Typography>
