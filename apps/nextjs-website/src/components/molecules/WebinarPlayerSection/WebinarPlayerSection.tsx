@@ -1,6 +1,6 @@
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
@@ -17,9 +17,8 @@ const WebinarPlayerSection = ({
   webinarState,
 }: WebinarPlayerSectionProps) => {
   const { palette } = useTheme();
-
   const [showQuestionForm, setShowQuestionForm] = useState(false);
-
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -58,21 +57,27 @@ const WebinarPlayerSection = ({
                 </Box>
               ) : (
                 <Button
-                  startIcon={<ForumIcon width={'32px'} height={'32px'} />}
-                  endIcon={<ArrowRightIcon width={'32px'} height={'32px'} />}
+                  startIcon={
+                    <ForumIcon style={{ width: '32px', height: '32px' }} />
+                  }
+                  endIcon={
+                    <ArrowRightIcon style={{ width: '32px', height: '32px' }} />
+                  }
                   variant='contained'
                   onClick={() => setShowQuestionForm(true)}
                   sx={{
-                    width: '96px',
+                    width: isSmallScreen ? '100%' : '96px',
                     height: '64px',
-                    borderTopRightRadius: '16px',
+                    borderTopRightRadius: isSmallScreen ? 0 : '16px',
                     borderBottomRightRadius: '16px',
+                    borderBottomLeftRadius: isSmallScreen ? '16px' : 0,
                     borderTopLeftRadius: 0,
-                    borderBottomLeftRadius: 0,
                     backgroundColor: palette.primary.main,
                     boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)',
                   }}
-                />
+                >
+                  asd
+                </Button>
               )
             ) : null}
           </Box>
