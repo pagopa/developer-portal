@@ -49,3 +49,9 @@ jobs:
             --field metadata_type=all
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Invalidate CloudFront asset bucket cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
