@@ -85,5 +85,12 @@ module "cms_ecs_service" {
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
+    cms-load-balancer-internal = {
+      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal"].arn
+      container_name   = "cms-docker"
+      container_port   = var.cms_app_port
+    }
   }
+
+
 }
