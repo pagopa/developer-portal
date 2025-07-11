@@ -63,11 +63,13 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: [
-      props.page.title,
-      [props.guide.name, !props.version.main && props.version.name]
-        .filter(Boolean)
-        .join(' '),
-      props.product.name,
+      props ? props.page.title : '',
+      props
+        ? [props.guide.name, !props.version.main && props.version.name]
+            .filter(Boolean)
+            .join(' ')
+        : [],
+      props ? props.product.name : '',
     ]
       .filter(Boolean)
       .join(' | '),
@@ -98,10 +100,11 @@ const Page = async ({ params }: { params: Params }) => {
     params?.productSlug
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!guideProps) {
-    return PageNotFound;
+    return <PageNotFound />;
   }
+
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const {
     product,
     page,
