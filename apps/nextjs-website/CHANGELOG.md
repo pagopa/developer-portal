@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 8.2.1
+
+### Patch Changes
+
+- 10f945a: Fix replace_inlcude_tags script name
+
 ## 8.2.0
 
 ### Minor Changes
