@@ -3,26 +3,19 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
-import { loadEnvConfig } from '../helpers/s3Bucket.helper';
+import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import { readdir } from 'fs/promises';
 import path from 'path';
-import {
-  fetchFromStrapi,
-  validateStrapiEnvironment,
-} from '../helpers/fetchFromStrapi';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
   StrapiGuide,
   GuideInfo,
   generateUrlPath,
 } from '../helpers/guidesMetadataHelper';
-
 // Load environment variables from .env file
-loadEnvConfig();
-
-// Validate environment variables
-validateStrapiEnvironment();
+dotenv.config();
 
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
@@ -91,8 +84,7 @@ async function convertGuideToUrlParsingItems(
             filePath,
             guideInfo.guideSlug,
             guideInfo.productSlug,
-            guideInfo.versionName,
-            guideInfo.dirName
+            guideInfo.versionName
           );
           item.guides.push({
             guidePath: filePath || '',

@@ -27,10 +27,9 @@ export function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
-  versionName?: string,
-  dirName?: string
+  versionName?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, undefined, dirName);
+  const restOfPath = sitePathFromS3Path(filePath, undefined);
   return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
     .filter(Boolean)
     .join('/');
