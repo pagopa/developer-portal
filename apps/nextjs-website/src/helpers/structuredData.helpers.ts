@@ -230,7 +230,7 @@ export function convertApiToStructuredDataSoftwareApplication(
   return (
     api &&
     makeSoftwareApplication({
-      name: api.specURLsName,
+      name: api.specUrlsName,
       url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
     })
   );

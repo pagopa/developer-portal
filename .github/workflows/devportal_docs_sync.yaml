@@ -39,7 +39,8 @@ jobs:
 
       - name: Sync docs folder to S3
         run: |
-          aws s3 sync devportal-docs/docs s3://${{ vars.S3_BUCKET_NAME }}/${{ vars.S3_PATH_TO_GITBOOK_DOCS }} --delete
+          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}" && \
+          aws s3 sync devportal-docs/docs s3://devportal-${FIRST_LETTER}-website-static-content/devportal-docs/docs --delete
 
       - name: Trigger metadata generation
         run: |
@@ -48,3 +49,9 @@ jobs:
             --field metadata_type=all
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Invalidate CloudFront asset bucket cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"

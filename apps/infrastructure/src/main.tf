@@ -108,6 +108,8 @@ module "website" {
     app_name        = "website"
     instance_number = "01"
   }
+
+  next_public_soap_api_page_active = true
 }
 
 module "cms" {

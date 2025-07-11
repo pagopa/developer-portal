@@ -79,7 +79,7 @@ const Swagger = ({
           >
             {method}
           </Typography>
-          <Typography component={'div'} sx={{ fontWeight: 700, fontSize: 16 }}>
+          <Typography component={'div'} sx={{ fontWeight: 700, fontSize: 18 }}>
             {summary}
           </Typography>
         </div>
@@ -88,7 +88,7 @@ const Swagger = ({
         {children ? (
           <>
             <Typography
-              sx={{ fontWeight: 700, fontSize: 16, marginBottom: '16px' }}
+              sx={{ fontWeight: 700, fontSize: 18, marginBottom: '16px' }}
             >
               {t('parameters.header')}
             </Typography>
@@ -96,7 +96,7 @@ const Swagger = ({
           </>
         ) : (
           <Typography
-            sx={{ fontWeight: 700, fontSize: 16, marginBottom: '16px' }}
+            sx={{ fontWeight: 700, fontSize: 18, marginBottom: '16px' }}
           >
             {t('parameters.empty')}
           </Typography>
