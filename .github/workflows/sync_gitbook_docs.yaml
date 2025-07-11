@@ -49,9 +49,11 @@ jobs:
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
       - name: Sync docs folder to S3
+        working-directory: ./devportal-docs
         run: |  
-          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}" && \  
-          aws s3 sync devportal-docs/docs s3://devportal-${FIRST_LETTER}-website-static-content/devportal-docs/docs --delete 
+          FIRST_LETTER="${{ inputs.environment }}"
+          FIRST_LETTER="${FIRST_LETTER:0:1}"
+          aws s3 sync docs s3://devportal-${FIRST_LETTER}-website-static-content/devportal-docs/docs --delete 
 
       - name: Trigger metadata generation
         run: |
