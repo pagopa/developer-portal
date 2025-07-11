@@ -1,4 +1,4 @@
-name: DevPortal Docs Sync
+name: Sync GitBook Docs
 
 on:
   workflow_dispatch:
