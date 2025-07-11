@@ -63,11 +63,13 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: [
-      props.page.title,
-      [props.guide.name, !props.version.main && props.version.name]
-        .filter(Boolean)
-        .join(' '),
-      props.product.name,
+      props ? props.page.title : '',
+      props
+        ? [props.guide.name, !props.version.main && props.version.name]
+            .filter(Boolean)
+            .join(' ')
+        : [],
+      props ? props.product.name : '',
     ]
       .filter(Boolean)
       .join(' | '),
