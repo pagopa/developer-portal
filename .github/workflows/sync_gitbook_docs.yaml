@@ -50,6 +50,15 @@ jobs:
           ref: docs/from-gitbook
           path: devportal-docs
 
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
       - name: Replace include tags in docs
         run: |
           bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
@@ -64,7 +73,8 @@ jobs:
         working-directory: ./devportal-docs
         run: |    
           aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
-
+      
+      
       - name: Generate guides metadata      
         if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
         env:
