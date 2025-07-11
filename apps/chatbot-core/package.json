@@ -1,5 +1,5 @@
 {
-  "name": "chatbot",
+  "name": "chatbot-core",
   "version": "5.2.1",
   "private": true,
   "scripts": {}

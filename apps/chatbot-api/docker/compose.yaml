@@ -26,7 +26,7 @@ services:
       - ntw
 
   core:
-    #image: chatbot-core-main:0.1
+    # image: chatbot-core-main:0.1
     build:
       context: ../../chatbot-core
       dockerfile: ../chatbot-core/docker/lambda.main.Dockerfile
