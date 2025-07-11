@@ -1,12 +1,20 @@
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Stack } from '@mui/system';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
@@ -61,7 +69,18 @@ const WebinarPlayerSection = ({
                     <ForumIcon style={{ width: '32px', height: '32px' }} />
                   }
                   endIcon={
-                    <ArrowRightIcon style={{ width: '32px', height: '32px' }} />
+                    <Stack direction='row'>
+                      {isSmallScreen ? (
+                        <ArrowDropDownIcon
+                          style={{ width: '32px', height: '32px' }}
+                        />
+                      ) : (
+                        <ArrowRightIcon
+                          style={{ width: '32px', height: '32px' }}
+                        />
+                      )}
+                      <Typography>Expand</Typography>
+                    </Stack>
                   }
                   variant='contained'
                   onClick={() => setShowQuestionForm(true)}
@@ -76,7 +95,7 @@ const WebinarPlayerSection = ({
                     boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)',
                   }}
                 >
-                  asd
+                  Question box
                 </Button>
               )
             ) : null}
