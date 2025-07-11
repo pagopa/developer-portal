@@ -10,6 +10,7 @@ on:
         default: dev
         options:
           - dev
+          - uat
           - prod
       metadata_type:
         description: 'Type of metadata to generate'
@@ -68,7 +69,7 @@ jobs:
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
         run: npm run generate-guides-metadata -w gitbook-docs
-        
+
       - name: Generate solutions metadata
         # For push events, run all metadata types
         if: github.event_name == 'push' || inputs.metadata_type == 'solutions' || inputs.metadata_type == 'all'

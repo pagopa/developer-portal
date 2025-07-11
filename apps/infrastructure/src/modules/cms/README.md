@@ -1,6 +1,3 @@
-# cms
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -35,6 +32,7 @@
 | <a name="module_iam_role_task_role"></a> [iam\_role\_task\_role](#module\_iam\_role\_task\_role) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_user_cms"></a> [iam\_user\_cms](#module\_iam\_user\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_s3_bucket_cms"></a> [s3\_bucket\_cms](#module\_s3\_bucket\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14 |
+| <a name="module_secret_chb_strapi_api_key"></a> [secret\_chb\_strapi\_api\_key](#module\_secret\_chb\_strapi\_api\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_access_key_id"></a> [secret\_cms\_access\_key\_id](#module\_secret\_cms\_access\_key\_id) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_access_key_secret"></a> [secret\_cms\_access\_key\_secret](#module\_secret\_cms\_access\_key\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_admin_jwt_secret"></a> [secret\_cms\_admin\_jwt\_secret](#module\_secret\_cms\_admin\_jwt\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
@@ -88,6 +86,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
+| <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
+| <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
 | <a name="input_ac_api_key_param"></a> [ac\_api\_key\_param](#input\_ac\_api\_key\_param) | Active Campaign API key SSM parameter ARN | `string` | `null` | no |
 | <a name="input_ac_base_url_param"></a> [ac\_base\_url\_param](#input\_ac\_base\_url\_param) | Active Campaign base URL SSM parameter ARN | `string` | `null` | no |
 | <a name="input_ac_integration_is_enabled"></a> [ac\_integration\_is\_enabled](#input\_ac\_integration\_is\_enabled) | Enable Active Campaign integration for Strapi | `bool` | `false` | no |
@@ -95,12 +97,9 @@
 | <a name="input_cms_app_cpu"></a> [cms\_app\_cpu](#input\_cms\_app\_cpu) | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | `"1024"` | no |
 | <a name="input_cms_app_memory"></a> [cms\_app\_memory](#input\_cms\_app\_memory) | Fargate instance memory to provision (in MiB) | `string` | `"3072"` | no |
 | <a name="input_cms_app_port"></a> [cms\_app\_port](#input\_cms\_app\_port) | The standard app port used by CMS Strapi | `number` | `1337` | no |
-| <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_dns_domain_name_cms"></a> [dns\_domain\_name\_cms](#input\_dns\_domain\_name\_cms) | DNS domain name of the Developer Portal's CMS | `map(any)` | `null` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
-| <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
-| <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_rds_scaling_configuration"></a> [rds\_scaling\_configuration](#input\_rds\_scaling\_configuration) | Scaling configuration for the RDS Aurora instance | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | <pre>{<br/>  "max_capacity": 1,<br/>  "min_capacity": 0.5<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
@@ -108,4 +107,3 @@
 |------|-------------|
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | n/a |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | n/a |
-<!-- END_TF_DOCS -->

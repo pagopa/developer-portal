@@ -20,7 +20,11 @@ import {
   getWebinarsProps,
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
-import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
+import {
+  getGuidesMetadata,
+  getReleaseNotesMetadata,
+  getSolutionsMetadata,
+} from '@/helpers/s3Metadata.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -49,7 +53,7 @@ export async function getGuidePage(
     'guides',
     ...guidePaths,
   ].join('/');
-  return manageUndefined(
+  const parsedGuidePage = manageUndefined(
     await parseS3GuidePage({
       guideProps,
       guidePath,
@@ -57,6 +61,7 @@ export async function getGuidePage(
       products,
     })
   );
+  return parsedGuidePage;
 }
 
 export async function getGuide(
@@ -189,7 +194,7 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 export async function getApiDataParams() {
   const props = (await getApiDataListPagesProps()).flatMap(
     (apiDataListPageProps) =>
-      apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
+      apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
         apiDataSlug,
       }))
@@ -226,12 +231,16 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesPath = releaseNoteSubPathSlugs?.join('/');
-  const path = `/${productSlug}/${releaseNotesPath}`;
+  const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
+    '/'
+  )}`;
+  const releaseNotesMetadata = await getReleaseNotesMetadata();
+
   const releaseNoteProps = manageUndefined(
-    (
-      await getReleaseNoteProps(productSlug, releaseNoteSubPathSlugs || [])
-    ).find(({ page }) => page.path === path)
+    await getReleaseNoteProps(
+      productSlug,
+      releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
+    )
   );
 
   return {
@@ -273,14 +282,16 @@ export async function getSolutionDetail(
   solutionSlug: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsFromStrapi = await getSolutionProps(
-    solutionSlug,
-    solutionSubPathSlugs
-  );
+  const solutionsMetadata = await getSolutionsMetadata();
 
-  return solutionsFromStrapi.find(
-    ({ page }) =>
-      page.path ===
-      `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+  return manageUndefined(
+    await getSolutionProps(
+      solutionSlug,
+      solutionsMetadata.find(
+        ({ path }) =>
+          path ===
+          `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+      )
+    )
   );
 }

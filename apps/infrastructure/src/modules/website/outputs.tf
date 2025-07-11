@@ -56,3 +56,7 @@ output "lambda_initializer" {
     arn  = module.opennext.initializer.lambda_function.arn
   }
 }
+
+output "opennext_cdn_distribution_id" {
+  value = module.opennext.cloudfront.distribution_id
+}

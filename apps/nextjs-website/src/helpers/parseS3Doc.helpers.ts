@@ -268,3 +268,44 @@ export const parseS3GuidePage = async (props: {
     },
   };
 };
+
+export const parseDoc = async <T>(
+  source: DocSource<T>,
+  jsonMetadata?: JsonMetadata
+  // eslint-disable-next-line functional/prefer-readonly-type
+): Promise<DocPage<T> | undefined> => {
+  if (!jsonMetadata) {
+    return undefined;
+  }
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const menu = await downloadFileAsText(jsonMetadata.menuS3Path);
+    const body = await downloadFileAsText(jsonMetadata.contentS3Path);
+    const title = body && parseTitle(body);
+    const filePath = jsonMetadata.contentS3Path;
+    if (!menu || !body) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`Menu or body not found for '${filePath}'`);
+    }
+    if (!title || typeof title !== 'string') {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`Title (h1) not found for '${filePath}'`);
+    }
+    const docPage: DocPage<T> = {
+      ...source,
+      page: {
+        path: jsonMetadata.path,
+        isIndex: path.parse(filePath).name === 'README',
+        title,
+        menu,
+        body,
+      },
+    };
+    return docPage;
+  } catch (error) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(error);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
+  }
+};

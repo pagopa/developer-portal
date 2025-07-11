@@ -3,29 +3,22 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
+import dotenv from 'dotenv';
+import { SitemapItem } from '../sitemapItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
   writeSitemapJson,
-  loadEnvConfig,
-  validateS3Environment,
 } from '../helpers/s3Bucket.helper';
-import { SitemapItem } from '../sitemapItem';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import {
-  fetchFromStrapi,
-  validateStrapiEnvironment,
-} from '../helpers/fetchFromStrapi';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
-loadEnvConfig();
+dotenv.config();
 
-// Validate environment variables
-validateStrapiEnvironment();
-const { s3BucketName } = validateS3Environment();
-
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
@@ -72,7 +65,7 @@ async function convertReleaseNoteToSitemapItems(
     const releaseNoteFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
-        `${s3BucketName}`,
+        `${S3_BUCKET_NAME}`,
         s3Client
       )
     ).filter((file) => file.endsWith('.md'));
@@ -81,12 +74,12 @@ async function convertReleaseNoteToSitemapItems(
     );
     for (const filePath of releaseNoteFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2) {
+      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
         continue;
       }
       const content = await downloadS3File(
         filePath,
-        `${s3BucketName}`,
+        `${S3_BUCKET_NAME}`,
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
@@ -126,12 +119,11 @@ async function main() {
     await writeSitemapJson(
       sitemapItems,
       S3_RELEASE_NOTES_METADATA_JSON_PATH,
-      `${s3BucketName}`,
+      `${S3_BUCKET_NAME}`,
       s3Client
     );
   } catch (error) {
     console.error('Error:', error);
-    process.exit(1); // Exit with error code for CI pipeline visibility
   }
 }
 

@@ -93,6 +93,16 @@
       },
       "component": "common.banner-link",
       "max": 2
+    },
+    "apiSoapDetail": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "api.api-soap-detail"
     }
   }
 }

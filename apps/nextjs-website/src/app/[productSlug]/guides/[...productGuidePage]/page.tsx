@@ -21,6 +21,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
 import { REVALIDATE_LONG_INTERVAL } from '@/config';
+import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
 type Params = {
   productSlug: string;
@@ -51,33 +52,45 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const porps = await getGuidePage(
+  const props = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
   );
 
-  if (porps?.seo) {
-    return makeMetadataFromStrapi(porps?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
   return makeMetadata({
-    title: porps?.page.title,
-    url: porps?.page.path,
+    title: [
+      props.page.title,
+      [props.guide.name, !props.version.main && props.version.name]
+        .filter(Boolean)
+        .join(' '),
+      props.product.name,
+    ]
+      .filter(Boolean)
+      .join(' | '),
+    url: props?.page.path,
   });
 }
 
 export const revalidate = REVALIDATE_LONG_INTERVAL;
-// export const dynamicParams = true;
-// export async function generateStaticParams() {
-//   const guides = await getGuidesProps();
-//   const guideParams = guides.map((guide) => {
-//     return {
-//       productSlug: guide.product.slug,
-//       productGuidePage: [guide.guide.slug],
-//     };
-//   });
-//   return guideParams;
-// }
+
+const PRODUCT_SLUG_PATH_INDEX = 1;
+const GUIDE_SUB_PATH_INDEX = 3;
+export async function generateStaticParams(): Promise<Params[]> {
+  const guides = await getGuidesMetadata();
+  return guides
+    .map(({ path }) => path.split('/'))
+    .filter((paths) => paths.length > GUIDE_SUB_PATH_INDEX)
+    .map((paths) => {
+      return {
+        productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
+        productGuidePage: paths.slice(GUIDE_SUB_PATH_INDEX),
+      };
+    });
+}
 
 const Page = async ({ params }: { params: Params }) => {
   const guideProps = await getGuidePage(

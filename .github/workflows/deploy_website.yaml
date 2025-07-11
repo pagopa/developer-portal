@@ -1,11 +1,6 @@
 name: Deploy Website
 
 on:
-  pull_request:
-    types:
-      - closed # Trigger when the PR is closed
-    branches:
-      - 'main' # Target branch is main
   workflow_dispatch:
     inputs:
       environment:
@@ -36,61 +31,6 @@ env:
   LATEST_DEPLOYED_IN_PRODUCTION_TAG: latest-deployed-in-production
 
 jobs:
-
-  cd_deploy:
-    name: Deploy to S3 (on ${{ matrix.environment }})
-    # Trigger when the PR is merged or on a webhook (e.g. trigger deploy from CMS)
-    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'repository_dispatch'
-    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
-    strategy:
-      matrix:
-        environment: [ 'dev' ]
-      fail-fast: false # Do not cancel any other jobs in the matrix, if a single job fails
-
-    environment: ${{ matrix.environment }}
-    
-    concurrency:
-      group: ${{ github.workflow }}-${{ matrix.environment }}
-      cancel-in-progress: false
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-
-      - name: Increase action disk space
-        uses: ./.github/actions/increase-disk-space
-
-      - name: Deploy website
-        uses: ./.github/actions/deploy
-        with:
-          environment: ${{ matrix.environment }}
-          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
-          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
-          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
-          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
-          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
-          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
-          iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
-          bucket: ${{ vars.S3_BUCKET_NAME }}
-          static_contents_url: ${{ vars.STATIC_CONTENTS_URL }}
-          cloudfront_distribution_id: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
-          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
-          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
-          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          chatbot_host: ${{ vars.NEXT_PUBLIC_CHATBOT_HOST }}
-          chat_max_history_messages: ${{ vars.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES }}
-          website_name: ${{ vars.NEXT_PUBLIC_WEBSITE_NAME }}
-          organization_name: ${{ vars.NEXT_PUBLIC_ORGANIZATION_NAME }}
-          organization_logo: ${{ vars.NEXT_PUBLIC_ORGANIZATION_LOGO }}
-          organization_social_links: ${{ vars.NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS }}
-          chatbot_active: ${{ vars.NEXT_PUBLIC_CHATBOT_ACTIVE }}
-          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
-          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
-          s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
-          s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-          matomo_script_src: ${{ vars.NEXT_PUBLIC_MATOMO_SCRIPT_SRC }}
-          webinar_question_lifetime_in_seconds: ${{ vars.NEXT_PUBLIC_WEBINAR_QUESTION_LIFETIME_IN_SECONDS }}
 
   manual_deploy:
     name: Deploy to S3 (manual on ${{ inputs.environment }})

@@ -40,12 +40,10 @@ except ImportError:
         "Please install llama-index to use the Langfuse llama-index integration: 'pip install llama-index'"
     )
 
-from logging import getLogger
+from src.modules.logger import get_logger
 
 
-logger = getLogger(__name__)
-
-
+LOGGER = get_logger(__name__)
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
@@ -83,7 +81,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
         return "EventHandler"
 
     def handle(self, event: BaseEvent) -> None:
-        logger.debug(f"Event {type(event).__name__} received: {event}")
+        LOGGER.debug(f"Event {type(event).__name__} received: {event}")
 
         if isinstance(
             event,
@@ -111,7 +109,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
         ],
     ) -> None:
         if event.span_id is None:
-            logger.warning("Span ID is not set")
+            LOGGER.warning("Span ID is not set")
             return
 
         model_data = event.model_dict
@@ -144,7 +142,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
         ],
     ) -> None:
         if event.span_id is None:
-            logger.warning("Span ID is not set")
+            LOGGER.warning("Span ID is not set")
             return
 
         usage = None
@@ -154,8 +152,8 @@ class EventHandler(BaseEventHandler, extra="allow"):
                 usage = (
                     self._parse_token_usage(event.response) if event.response else None
                 )
-                logger.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
-                logger.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
+                # LOGGER.info(f"[{MODEL_ID}] Input Tokens: {usage["input"]}")
+                # LOGGER.info(f"[{MODEL_ID}] Output Tokens: {usage["output"]}")
 
         if isinstance(event, EmbeddingEndEvent):
             token_count = sum(
@@ -171,7 +169,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
                     else 0
                 ),
             }
-            logger.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
+            # LOGGER.info(f"[{EMBED_MODEL_ID}] Embedding Tokens: {usage["total"]}")
 
         if isinstance(event, ReRankEndEvent):
 
@@ -181,7 +179,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
                 "total_cost": np.ceil(num_chunks / 100) * RERANK_COST[RERANKER_ID],
             }
 
-            logger.info(f"[{RERANKER_ID}] reranking {num_chunks} chunks")
+            LOGGER.info(f"[{RERANKER_ID}] reranking {num_chunks} chunks")
 
         self._get_generation_client(event.span_id).update(
             usage=usage, end_time=_get_timestamp()
@@ -201,7 +199,7 @@ class EventHandler(BaseEventHandler, extra="allow"):
     def _get_generation_client(self, id: str) -> StatefulGenerationClient:
         trace_id = self._context.trace_id
         if trace_id is None:
-            logger.warning(
+            LOGGER.warning(
                 "Trace ID is not set. Creating generation client with new trace id."
             )
             trace_id = str(create_uuid())

@@ -85,6 +85,11 @@ variable "website_cdn" {
   description = "The CloudFront distribution used to serve the website"
 }
 
+variable "opennext_cdn_distribution_id" {
+  type        = string
+  description = "The ID of the CloudFront distribution used to serve the OpenNext website"
+}
+
 variable "assets_opennext_bucket" {
   type = object({
     name = string

@@ -27,6 +27,10 @@ jobs:
           ref: docs/from-gitbook
           path: devportal-docs
 
+      - name: Generate Metadata for Url parsing
+        run: |
+          npm run generate-url-parsing-metadata -w gitbook-docs
+
       - name: Replace include tags in docs
         run: |
           bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs

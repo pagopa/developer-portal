@@ -1,0 +1,57 @@
+name: Generate SOAP API Metadata
+description: Gene
+
+inputs:
+  soap-api-directory:
+    description: Directory
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate wsdl.xml index JSON
+      shell: bash
+      run: |
+        repo_data_json="./soap-api-repositories.json"
+        root_dir="${{ inputs.soap-api-directory }}"
+        output_json="soap-api-metadata.json"
+        tmpfile=$(mktemp)
+        echo "[" > "$tmpfile"
+        count=$(jq length "$repo_data_json")
+        first=1
+        for i in $(seq 0 $((count - 1))); do
+          repo_name=$(jq -r ".[$i].dirName" "$repo_data_json")
+          repo_path=$(jq -r ".[$i].repositoryPath // empty" "$repo_data_json")
+          branch_name=$(jq -r ".[$i].branch // empty" "$repo_data_json")
+          # Remove leading 'tree/<branch>/' if present, where branch may contain slashes
+          if [ -n "$repo_path" ]; then
+            if [ -n "$branch_name" ]; then
+              prefix="tree/$branch_name/"
+              if [[ "$repo_path" == "$prefix"* ]]; then
+                repo_path="${repo_path#$prefix}"
+              fi
+            fi
+            search_dir="$root_dir/$repo_name/$repo_path"
+          else
+            search_dir="$root_dir/$repo_name"
+          fi
+          # Find .wsdl.xml files
+          if [ -d "$search_dir" ]; then
+            mapfile -t wsdl_files < <(find "$search_dir" -type f -name '*.wsdl.xml')
+            if [ "${#wsdl_files[@]}" -gt 0 ]; then
+              rel_paths=()
+              for f in "${wsdl_files[@]}"; do
+                rel_path=$(realpath --relative-to="$root_dir" "$f")
+                rel_paths+=("\"$rel_path\"")
+              done
+              rel_paths_joined=$(IFS=,; echo "${rel_paths[*]}")
+              [ $first -eq 1 ] || echo "," >> "$tmpfile"
+              first=0
+              echo "  {\"dirName\": \"$repo_name\", \"contentS3Paths\": [${rel_paths_joined}]}" >> "$tmpfile"
+            fi
+          fi
+        done
+        echo "]" >> "$tmpfile"
+        mv "$tmpfile" "$output_json"
+        mv "$output_json" "$root_dir"
+        echo "Generated $output_json"

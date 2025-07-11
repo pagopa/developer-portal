@@ -23,13 +23,16 @@ import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 export type ApiDataPageProps = {
   readonly title?: string;
   readonly product?: Product;
+  readonly apiType?: 'rest' | 'soap';
   readonly apiDataSlug: string;
-  readonly specURLsName?: string;
-  readonly specURLs: {
+  readonly specUrlsName?: string;
+  readonly restApiSpecUrls: {
     name?: string;
     url: string;
     hideTryIt?: boolean;
   }[];
+  readonly apiSoapUrl?: string;
+  readonly apiSoapUrlList: readonly string[];
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
@@ -50,7 +53,7 @@ export const generateMetadata = async (
   }
 
   return makeMetadata({
-    title: [ApiDataProps?.specURLsName, ApiDataProps?.product?.name]
+    title: [ApiDataProps?.specUrlsName, ApiDataProps?.product?.name]
       .filter(Boolean)
       .join(' | '),
     description: ApiDataProps?.product?.description,

@@ -1,10 +1,11 @@
 import yaml
 from logging import getLogger
 from src.modules.chatbot import Chatbot
+from src.modules.logger import get_logger
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
-logger.info("Initializing chatbot...")
+LOGGER.info("Initializing chatbot...")
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))

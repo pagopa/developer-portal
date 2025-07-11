@@ -22,7 +22,12 @@ from src.modules.utils import get_ssm_parameter
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
-GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+if GOOGLE_SERVICE_ACCOUNT is None:
+    with open("./.google_service_account.json", "r") as file:
+        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+else:
+    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
     GOOGLE_JSON_ACCOUNT_INFO
 )

@@ -1,5 +1,21 @@
 # storybook-app
 
+## 0.16.1
+
+### Patch Changes
+
+- 1d3b9df: Add Soap Api detail pages
+
+## 0.16.0
+
+### Minor Changes
+
+- 30ccdc9: Add ApiSoapSection a new component to display a structured and styled representation of a WSDL file for SOAP API and a showcase Storybook's story for it
+
+### Patch Changes
+
+- 79f59c3: Add Feedback form to chatbot for Pagopa Users. Update Feedback API
+
 ## 0.15.0
 
 ### Minor Changes

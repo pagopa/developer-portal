@@ -2,7 +2,7 @@
 rm -rf ./docs
 mv ./checkout_path/docs .
 
-./scripts/include_replacer.sh ./docs
+./scripts/replace-include-tags.sh ./docs
 
 # copy all the gitbook assets to public assets of nextjs-website
 dest='public/gitbook/'

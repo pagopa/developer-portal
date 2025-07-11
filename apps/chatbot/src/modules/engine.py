@@ -1,25 +1,68 @@
 import os
-from llama_index.core import VectorStoreIndex, PromptTemplate
+from typing import List
+
 from llama_index.core.llms.llm import LLM
+from llama_index.core import VectorStoreIndex, PromptTemplate
+from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.retrievers import AutoMergingRetriever
-from llama_index.core.chat_engine import CondensePlusContextChatEngine
-from llama_index.core.postprocessor import SimilarityPostprocessor
+from llama_index.core.query_engine import RetrieverQueryEngine
+from llama_index.core.tools import QueryEngineTool, FunctionTool
+from llama_index.core.objects import ObjectIndex
+from llama_index.core.agent.workflow import ReActAgent
 
 
 PROVIDER = os.getenv("CHB_PROVIDER", "google")
-RERANKER_ID = os.getenv("CHB_RERANKER_ID")
+RERANKER_ID = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
 SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
+USE_ASYNC = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
 
-def get_automerging_engine(
+class Reference(BaseModel):
+    """a reference that support the generated answer."""
+
+    title: str
+    filepath: str
+
+
+class RAGOutput(BaseModel):
+    """A structured output for a RAG query."""
+
+    response: str = Field(..., description="The generated answer to the user's query.")
+    products: List[str] = Field(
+        ...,
+        description=(
+            "A list of products. The list contains one or more of the PagoPA products: "
+            "'firma-con-io', 'app-io', 'piattaforma-pago-pa', 'send', and 'pdnd'"
+        ),
+    )
+    references: List[Reference] = Field(
+        ...,
+        description="list where each element reports the title and the filepaths of the relative source node.",
+    )
+
+
+def get_engine(
     index: VectorStoreIndex,
     llm: LLM,
-    system_prompt: str | None = None,
+    identity_prompt: str | None = None,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
-    condense_template: PromptTemplate | None = None,
     verbose: bool = True,
-) -> CondensePlusContextChatEngine:
+) -> ReActAgent:
+    """
+    Creates a CondensePlusContextChatEngine with an AutoMergingRetriever and a reranker.
+    Args:
+        index (VectorStoreIndex): The vector store index to use for retrieval.
+        llm (LLM): The language model to use for generating responses.
+        identity_prompt (str | None): Optional prompt for the agent's identity.
+        text_qa_template (PromptTemplate | None): Optional template for text QA.
+        refine_template (PromptTemplate | None): Optional template for refining context.
+        verbose (bool): Whether to enable verbose logging.
+    Returns:
+        ReActAgent: An agent that uses RAG (Retrieval-Augmented Generation) to answer questions.
+    Raises:
+        AssertionError: If the provider is not 'aws' or 'google'.
+    """
 
     base_retriever = index.as_retriever(similarity_top_k=SIMILARITY_TOPK)
     retriever = AutoMergingRetriever(
@@ -47,12 +90,44 @@ def get_automerging_engine(
     else:
         raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
 
-    return CondensePlusContextChatEngine.from_defaults(
+    query_engine = RetrieverQueryEngine.from_args(
         retriever=retriever,
-        llm=llm,
-        system_prompt=system_prompt,
-        context_prompt=text_qa_template,
-        context_refine_prompt=refine_template,
-        condense_prompt=condense_template,
+        llm=llm.as_structured_llm(output_cls=RAGOutput),
+        text_qa_template=text_qa_template,
+        refine_template=refine_template,
         node_postprocessors=[reranker],
+        use_async=USE_ASYNC,
+    )
+
+    query_engine_tool = QueryEngineTool.from_defaults(
+        query_engine=query_engine,
+        name="rag_tool",
+        description=(
+            "A tool to answer questions using the RAG (Retrieval-Augmented Generation) "
+            "approach. It retrieves relevant information from the index and generates a "
+            "structured response."
+        ),
+    )
+
+    async def identity_fn() -> str:
+        """Useful to reply questions about the agent identity."""
+        return identity_prompt
+
+    identity_tool = FunctionTool.from_defaults(
+        fn=identity_fn,
+        name="discovery_identity",
+        description="Responds to identity or personality questions like 'Who are you?', 'What is your name?', 'I am ..., and you?', or similar.",
+    )
+
+    obj_index = ObjectIndex.from_objects([identity_tool, query_engine_tool])
+
+    return ReActAgent(
+        name="rag_agent",
+        description=(
+            "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
+            "It retrieves relevant information from the index and generates a structured response."
+        ),
+        tool_retriever=obj_index.as_retriever(similarity_top_k=2),
+        llm=llm,
+        verbose=verbose,
     )

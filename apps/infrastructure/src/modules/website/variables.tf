@@ -93,7 +93,7 @@ variable "mfa_code_duration_in_minutes" {
 variable "signup_allowed_email_domains" {
   type        = list(string)
   description = "List of allowed email domains for signup"
-  default     = ["pagopa.it", "uqido.com", "aizoongroup.com"]
+  default     = ["pagopa.it", "uqido.com", "aizoongroup.com", "dgsspa.com"]
 }
 
 variable "nextjs_version" {
@@ -110,5 +110,17 @@ variable "website_is_standalone" {
 variable "create_chatbot" {
   type        = bool
   description = "Defines if chatbot should be created"
+  default     = false
+}
+
+variable "next_public_feedback_form_enabled" {
+  type        = bool
+  description = "Defines if the feedback form should be enabled"
+  default     = false
+}
+
+variable "next_public_soap_api_page_active" {
+  type        = bool
+  description = "Defines if the SOAP API page should be active"
   default     = false
 }

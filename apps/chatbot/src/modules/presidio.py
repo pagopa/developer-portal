@@ -14,9 +14,11 @@ from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
 
+from src.modules.logger import get_logger
+
 
 logging.getLogger("presidio-analyzer").setLevel(logging.ERROR)
-logger = logging.getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 # see supported entities by Presidio with their description at:

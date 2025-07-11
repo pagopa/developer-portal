@@ -18,6 +18,11 @@ const nextConfig = {
       transform: '@mui/icons-material/{{member}}',
     },
   },
+  experimental: {
+    cpus: 1,
+    workerThreads: false,
+  },
 };
 
+// eslint-disable-next-line
 module.exports = nextConfig;
