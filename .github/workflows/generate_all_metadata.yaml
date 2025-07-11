@@ -10,6 +10,7 @@ on:
         default: dev
         options:
           - dev
+          - uat
           - prod
       metadata_type:
         description: 'Type of metadata to generate'

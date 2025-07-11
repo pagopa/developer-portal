@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "0.4.1",
+  "version": "0.5.1",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -21,9 +21,10 @@
     "lint": "eslint src",
     "test": "jest -i",
     "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
-    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
-    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts"
+    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
+    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
+    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

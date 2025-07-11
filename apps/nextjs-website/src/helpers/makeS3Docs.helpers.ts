@@ -12,10 +12,12 @@ import {
   DocPage,
   DocSource,
   makeParseS3DocsEnv,
+  parseDoc,
   parseS3Doc,
 } from './parseS3Doc.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { JsonMetadata } from './s3Metadata.helpers';
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -138,42 +140,34 @@ export const makeGuide = (props: {
 
 export const makeSolution = (
   solution: SolutionTemplateProps,
-  solutionPaths: readonly string[]
+  jsonMetadata?: JsonMetadata
 ) => {
-  const docs = [
-    {
-      ...solution,
-      source: {
-        pathPrefix: `/solutions/${solution.slug}/details`,
-        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${solution.dirName}`,
-        dirPath: `${s3DocsPath}/${solution.dirName}`,
-        spaceId: solution.dirName,
-      },
+  const doc = {
+    ...solution,
+    source: {
+      pathPrefix: `/solutions/${solution.slug}/details`,
+      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${solution.dirName}`,
+      dirPath: `${s3DocsPath}/${solution.dirName}`,
+      spaceId: solution.dirName,
     },
-  ];
+  };
 
-  return parseDocOrThrow(docs, solutionPaths);
+  return parseDoc(doc, jsonMetadata);
 };
 
 export const makeReleaseNote = (
   releaseNote: ReleaseNotePageProps,
-  releaseNotePaths: readonly string[]
+  jsonMetadata?: JsonMetadata
 ) => {
-  const paths =
-    releaseNotePaths.length > 2
-      ? releaseNotePaths
-      : [...releaseNotePaths, 'README'];
-  const docs = [
-    {
-      ...releaseNote,
-      source: {
-        pathPrefix: `/${releaseNote.product.slug}/release-note`,
-        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${releaseNote.dirName}`,
-        dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
-        spaceId: releaseNote.dirName,
-      },
+  const doc = {
+    ...releaseNote,
+    source: {
+      pathPrefix: `/${releaseNote.product.slug}/release-note`,
+      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${releaseNote.dirName}`,
+      dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
+      spaceId: releaseNote.dirName,
     },
-  ];
+  };
 
-  return parseDocOrThrow(docs, paths);
+  return parseDoc(doc, jsonMetadata);
 };

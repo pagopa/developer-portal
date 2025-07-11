@@ -1,5 +1,39 @@
 # chatbot
 
+## 6.0.0
+
+### Major Changes
+
+- 29518ce: Add ReAct agent
+
+## 5.2.2
+
+### Patch Changes
+
+- 55848bd: Add dignostic logs
+- 003845a: Fix bug that load the generated string as a JSON
+- 1e90cde: Fix log bug
+- 2a9c36f: Remove logs to speed production environment
+
+## 5.2.1
+
+### Patch Changes
+
+- 4bb3a3d: Add monitor.py as refactor of the code
+
+## 5.2.0
+
+### Minor Changes
+
+- e0705a8: Add API documentation to the vector index
+
+### Patch Changes
+
+- 1c942c4: fixed auth JWT decode
+- 5483b3d: Fix bug user-feedback on Langfuse
+- 4a26f5a: Add a logs format to all the modules scritpts
+- 873b4ab: Fix double run of Presidio in Langfuse
+
 ## 5.1.0
 
 ### Minor Changes
