@@ -1,9 +1,20 @@
 name: DevPortal Docs Sync
 
 on:
-  schedule:
-    - cron: '0 23 * * *'  # Run daily at midnight UTC
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+
+  # schedule:
+  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -11,10 +22,10 @@ permissions:
   contents: read
 
 jobs:
-  sync_docs:
-    name: Sync Docs to S3
+  sync_gitbook_docs:
+    name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout current repository
@@ -45,7 +56,7 @@ jobs:
       - name: Trigger metadata generation
         run: |
           gh workflow run generate_all_metadata.yaml \
-            --field environment=dev \
+            --field environment=${{ inputs.environment }} \
             --field metadata_type=all
         env:
           GH_TOKEN: ${{ github.token }}
